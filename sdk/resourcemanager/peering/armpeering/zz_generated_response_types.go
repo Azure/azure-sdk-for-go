@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,472 +8,217 @@
 
 package armpeering
 
-import "net/http"
-
 // CdnPeeringPrefixesClientListResponse contains the response from method CdnPeeringPrefixesClient.List.
 type CdnPeeringPrefixesClientListResponse struct {
-	CdnPeeringPrefixesClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CdnPeeringPrefixesClientListResult contains the result from method CdnPeeringPrefixesClient.List.
-type CdnPeeringPrefixesClientListResult struct {
 	CdnPeeringPrefixListResult
 }
 
 // ConnectionMonitorTestsClientCreateOrUpdateResponse contains the response from method ConnectionMonitorTestsClient.CreateOrUpdate.
 type ConnectionMonitorTestsClientCreateOrUpdateResponse struct {
-	ConnectionMonitorTestsClientCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ConnectionMonitorTestsClientCreateOrUpdateResult contains the result from method ConnectionMonitorTestsClient.CreateOrUpdate.
-type ConnectionMonitorTestsClientCreateOrUpdateResult struct {
 	ConnectionMonitorTest
 }
 
 // ConnectionMonitorTestsClientDeleteResponse contains the response from method ConnectionMonitorTestsClient.Delete.
 type ConnectionMonitorTestsClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // ConnectionMonitorTestsClientGetResponse contains the response from method ConnectionMonitorTestsClient.Get.
 type ConnectionMonitorTestsClientGetResponse struct {
-	ConnectionMonitorTestsClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ConnectionMonitorTestsClientGetResult contains the result from method ConnectionMonitorTestsClient.Get.
-type ConnectionMonitorTestsClientGetResult struct {
 	ConnectionMonitorTest
 }
 
 // ConnectionMonitorTestsClientListByPeeringServiceResponse contains the response from method ConnectionMonitorTestsClient.ListByPeeringService.
 type ConnectionMonitorTestsClientListByPeeringServiceResponse struct {
-	ConnectionMonitorTestsClientListByPeeringServiceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ConnectionMonitorTestsClientListByPeeringServiceResult contains the result from method ConnectionMonitorTestsClient.ListByPeeringService.
-type ConnectionMonitorTestsClientListByPeeringServiceResult struct {
 	ConnectionMonitorTestListResult
 }
 
 // LegacyPeeringsClientListResponse contains the response from method LegacyPeeringsClient.List.
 type LegacyPeeringsClientListResponse struct {
-	LegacyPeeringsClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// LegacyPeeringsClientListResult contains the result from method LegacyPeeringsClient.List.
-type LegacyPeeringsClientListResult struct {
 	ListResult
 }
 
 // LocationsClientListResponse contains the response from method LocationsClient.List.
 type LocationsClientListResponse struct {
-	LocationsClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// LocationsClientListResult contains the result from method LocationsClient.List.
-type LocationsClientListResult struct {
 	LocationListResult
 }
 
 // LookingGlassClientInvokeResponse contains the response from method LookingGlassClient.Invoke.
 type LookingGlassClientInvokeResponse struct {
-	LookingGlassClientInvokeResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// LookingGlassClientInvokeResult contains the result from method LookingGlassClient.Invoke.
-type LookingGlassClientInvokeResult struct {
 	LookingGlassOutput
 }
 
 // ManagementClientCheckServiceProviderAvailabilityResponse contains the response from method ManagementClient.CheckServiceProviderAvailability.
 type ManagementClientCheckServiceProviderAvailabilityResponse struct {
-	ManagementClientCheckServiceProviderAvailabilityResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ManagementClientCheckServiceProviderAvailabilityResult contains the result from method ManagementClient.CheckServiceProviderAvailability.
-type ManagementClientCheckServiceProviderAvailabilityResult struct {
 	Value *Enum0
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.List.
 type OperationsClientListResponse struct {
-	OperationsClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsClientListResult contains the result from method OperationsClient.List.
-type OperationsClientListResult struct {
 	OperationListResult
 }
 
 // PeerAsnsClientCreateOrUpdateResponse contains the response from method PeerAsnsClient.CreateOrUpdate.
 type PeerAsnsClientCreateOrUpdateResponse struct {
-	PeerAsnsClientCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PeerAsnsClientCreateOrUpdateResult contains the result from method PeerAsnsClient.CreateOrUpdate.
-type PeerAsnsClientCreateOrUpdateResult struct {
 	PeerAsn
 }
 
 // PeerAsnsClientDeleteResponse contains the response from method PeerAsnsClient.Delete.
 type PeerAsnsClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // PeerAsnsClientGetResponse contains the response from method PeerAsnsClient.Get.
 type PeerAsnsClientGetResponse struct {
-	PeerAsnsClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PeerAsnsClientGetResult contains the result from method PeerAsnsClient.Get.
-type PeerAsnsClientGetResult struct {
 	PeerAsn
 }
 
 // PeerAsnsClientListBySubscriptionResponse contains the response from method PeerAsnsClient.ListBySubscription.
 type PeerAsnsClientListBySubscriptionResponse struct {
-	PeerAsnsClientListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PeerAsnsClientListBySubscriptionResult contains the result from method PeerAsnsClient.ListBySubscription.
-type PeerAsnsClientListBySubscriptionResult struct {
 	PeerAsnListResult
 }
 
 // PeeringsClientCreateOrUpdateResponse contains the response from method PeeringsClient.CreateOrUpdate.
 type PeeringsClientCreateOrUpdateResponse struct {
-	PeeringsClientCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PeeringsClientCreateOrUpdateResult contains the result from method PeeringsClient.CreateOrUpdate.
-type PeeringsClientCreateOrUpdateResult struct {
 	Peering
 }
 
 // PeeringsClientDeleteResponse contains the response from method PeeringsClient.Delete.
 type PeeringsClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // PeeringsClientGetResponse contains the response from method PeeringsClient.Get.
 type PeeringsClientGetResponse struct {
-	PeeringsClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PeeringsClientGetResult contains the result from method PeeringsClient.Get.
-type PeeringsClientGetResult struct {
 	Peering
 }
 
 // PeeringsClientListByResourceGroupResponse contains the response from method PeeringsClient.ListByResourceGroup.
 type PeeringsClientListByResourceGroupResponse struct {
-	PeeringsClientListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PeeringsClientListByResourceGroupResult contains the result from method PeeringsClient.ListByResourceGroup.
-type PeeringsClientListByResourceGroupResult struct {
 	ListResult
 }
 
 // PeeringsClientListBySubscriptionResponse contains the response from method PeeringsClient.ListBySubscription.
 type PeeringsClientListBySubscriptionResponse struct {
-	PeeringsClientListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PeeringsClientListBySubscriptionResult contains the result from method PeeringsClient.ListBySubscription.
-type PeeringsClientListBySubscriptionResult struct {
 	ListResult
 }
 
 // PeeringsClientUpdateResponse contains the response from method PeeringsClient.Update.
 type PeeringsClientUpdateResponse struct {
-	PeeringsClientUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PeeringsClientUpdateResult contains the result from method PeeringsClient.Update.
-type PeeringsClientUpdateResult struct {
 	Peering
 }
 
 // PrefixesClientCreateOrUpdateResponse contains the response from method PrefixesClient.CreateOrUpdate.
 type PrefixesClientCreateOrUpdateResponse struct {
-	PrefixesClientCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrefixesClientCreateOrUpdateResult contains the result from method PrefixesClient.CreateOrUpdate.
-type PrefixesClientCreateOrUpdateResult struct {
 	ServicePrefix
 }
 
 // PrefixesClientDeleteResponse contains the response from method PrefixesClient.Delete.
 type PrefixesClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // PrefixesClientGetResponse contains the response from method PrefixesClient.Get.
 type PrefixesClientGetResponse struct {
-	PrefixesClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrefixesClientGetResult contains the result from method PrefixesClient.Get.
-type PrefixesClientGetResult struct {
 	ServicePrefix
 }
 
 // PrefixesClientListByPeeringServiceResponse contains the response from method PrefixesClient.ListByPeeringService.
 type PrefixesClientListByPeeringServiceResponse struct {
-	PrefixesClientListByPeeringServiceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrefixesClientListByPeeringServiceResult contains the result from method PrefixesClient.ListByPeeringService.
-type PrefixesClientListByPeeringServiceResult struct {
 	ServicePrefixListResult
 }
 
 // ReceivedRoutesClientListByPeeringResponse contains the response from method ReceivedRoutesClient.ListByPeering.
 type ReceivedRoutesClientListByPeeringResponse struct {
-	ReceivedRoutesClientListByPeeringResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ReceivedRoutesClientListByPeeringResult contains the result from method ReceivedRoutesClient.ListByPeering.
-type ReceivedRoutesClientListByPeeringResult struct {
 	ReceivedRouteListResult
 }
 
 // RegisteredAsnsClientCreateOrUpdateResponse contains the response from method RegisteredAsnsClient.CreateOrUpdate.
 type RegisteredAsnsClientCreateOrUpdateResponse struct {
-	RegisteredAsnsClientCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RegisteredAsnsClientCreateOrUpdateResult contains the result from method RegisteredAsnsClient.CreateOrUpdate.
-type RegisteredAsnsClientCreateOrUpdateResult struct {
 	RegisteredAsn
 }
 
 // RegisteredAsnsClientDeleteResponse contains the response from method RegisteredAsnsClient.Delete.
 type RegisteredAsnsClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // RegisteredAsnsClientGetResponse contains the response from method RegisteredAsnsClient.Get.
 type RegisteredAsnsClientGetResponse struct {
-	RegisteredAsnsClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RegisteredAsnsClientGetResult contains the result from method RegisteredAsnsClient.Get.
-type RegisteredAsnsClientGetResult struct {
 	RegisteredAsn
 }
 
 // RegisteredAsnsClientListByPeeringResponse contains the response from method RegisteredAsnsClient.ListByPeering.
 type RegisteredAsnsClientListByPeeringResponse struct {
-	RegisteredAsnsClientListByPeeringResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RegisteredAsnsClientListByPeeringResult contains the result from method RegisteredAsnsClient.ListByPeering.
-type RegisteredAsnsClientListByPeeringResult struct {
 	RegisteredAsnListResult
 }
 
 // RegisteredPrefixesClientCreateOrUpdateResponse contains the response from method RegisteredPrefixesClient.CreateOrUpdate.
 type RegisteredPrefixesClientCreateOrUpdateResponse struct {
-	RegisteredPrefixesClientCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RegisteredPrefixesClientCreateOrUpdateResult contains the result from method RegisteredPrefixesClient.CreateOrUpdate.
-type RegisteredPrefixesClientCreateOrUpdateResult struct {
 	RegisteredPrefix
 }
 
 // RegisteredPrefixesClientDeleteResponse contains the response from method RegisteredPrefixesClient.Delete.
 type RegisteredPrefixesClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // RegisteredPrefixesClientGetResponse contains the response from method RegisteredPrefixesClient.Get.
 type RegisteredPrefixesClientGetResponse struct {
-	RegisteredPrefixesClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RegisteredPrefixesClientGetResult contains the result from method RegisteredPrefixesClient.Get.
-type RegisteredPrefixesClientGetResult struct {
 	RegisteredPrefix
 }
 
 // RegisteredPrefixesClientListByPeeringResponse contains the response from method RegisteredPrefixesClient.ListByPeering.
 type RegisteredPrefixesClientListByPeeringResponse struct {
-	RegisteredPrefixesClientListByPeeringResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RegisteredPrefixesClientListByPeeringResult contains the result from method RegisteredPrefixesClient.ListByPeering.
-type RegisteredPrefixesClientListByPeeringResult struct {
 	RegisteredPrefixListResult
 }
 
 // ServiceCountriesClientListResponse contains the response from method ServiceCountriesClient.List.
 type ServiceCountriesClientListResponse struct {
-	ServiceCountriesClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ServiceCountriesClientListResult contains the result from method ServiceCountriesClient.List.
-type ServiceCountriesClientListResult struct {
 	ServiceCountryListResult
 }
 
 // ServiceLocationsClientListResponse contains the response from method ServiceLocationsClient.List.
 type ServiceLocationsClientListResponse struct {
-	ServiceLocationsClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ServiceLocationsClientListResult contains the result from method ServiceLocationsClient.List.
-type ServiceLocationsClientListResult struct {
 	ServiceLocationListResult
 }
 
 // ServiceProvidersClientListResponse contains the response from method ServiceProvidersClient.List.
 type ServiceProvidersClientListResponse struct {
-	ServiceProvidersClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ServiceProvidersClientListResult contains the result from method ServiceProvidersClient.List.
-type ServiceProvidersClientListResult struct {
 	ServiceProviderListResult
 }
 
 // ServicesClientCreateOrUpdateResponse contains the response from method ServicesClient.CreateOrUpdate.
 type ServicesClientCreateOrUpdateResponse struct {
-	ServicesClientCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ServicesClientCreateOrUpdateResult contains the result from method ServicesClient.CreateOrUpdate.
-type ServicesClientCreateOrUpdateResult struct {
 	Service
 }
 
 // ServicesClientDeleteResponse contains the response from method ServicesClient.Delete.
 type ServicesClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // ServicesClientGetResponse contains the response from method ServicesClient.Get.
 type ServicesClientGetResponse struct {
-	ServicesClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ServicesClientGetResult contains the result from method ServicesClient.Get.
-type ServicesClientGetResult struct {
 	Service
 }
 
 // ServicesClientInitializeConnectionMonitorResponse contains the response from method ServicesClient.InitializeConnectionMonitor.
 type ServicesClientInitializeConnectionMonitorResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // ServicesClientListByResourceGroupResponse contains the response from method ServicesClient.ListByResourceGroup.
 type ServicesClientListByResourceGroupResponse struct {
-	ServicesClientListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ServicesClientListByResourceGroupResult contains the result from method ServicesClient.ListByResourceGroup.
-type ServicesClientListByResourceGroupResult struct {
 	ServiceListResult
 }
 
 // ServicesClientListBySubscriptionResponse contains the response from method ServicesClient.ListBySubscription.
 type ServicesClientListBySubscriptionResponse struct {
-	ServicesClientListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ServicesClientListBySubscriptionResult contains the result from method ServicesClient.ListBySubscription.
-type ServicesClientListBySubscriptionResult struct {
 	ServiceListResult
 }
 
 // ServicesClientUpdateResponse contains the response from method ServicesClient.Update.
 type ServicesClientUpdateResponse struct {
-	ServicesClientUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ServicesClientUpdateResult contains the result from method ServicesClient.Update.
-type ServicesClientUpdateResult struct {
 	Service
 }

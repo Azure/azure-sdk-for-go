@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armcostmanagement
 
 const (
 	moduleName    = "armcostmanagement"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // AccumulatedType - Show costs accumulated over time.
@@ -27,11 +27,6 @@ func PossibleAccumulatedTypeValues() []AccumulatedType {
 		AccumulatedTypeFalse,
 		AccumulatedTypeTrue,
 	}
-}
-
-// ToPtr returns a *AccumulatedType pointing to the current value.
-func (c AccumulatedType) ToPtr() *AccumulatedType {
-	return &c
 }
 
 // AlertCategory - Alert category
@@ -52,11 +47,6 @@ func PossibleAlertCategoryValues() []AlertCategory {
 		AlertCategorySystem,
 		AlertCategoryUsage,
 	}
-}
-
-// ToPtr returns a *AlertCategory pointing to the current value.
-func (c AlertCategory) ToPtr() *AlertCategory {
-	return &c
 }
 
 // AlertCriteria - Criteria that triggered alert
@@ -99,11 +89,6 @@ func PossibleAlertCriteriaValues() []AlertCriteria {
 	}
 }
 
-// ToPtr returns a *AlertCriteria pointing to the current value.
-func (c AlertCriteria) ToPtr() *AlertCriteria {
-	return &c
-}
-
 // AlertOperator - operator used to compare currentSpend with amount
 type AlertOperator string
 
@@ -128,11 +113,6 @@ func PossibleAlertOperatorValues() []AlertOperator {
 	}
 }
 
-// ToPtr returns a *AlertOperator pointing to the current value.
-func (c AlertOperator) ToPtr() *AlertOperator {
-	return &c
-}
-
 // AlertSource - Source of alert
 type AlertSource string
 
@@ -147,11 +127,6 @@ func PossibleAlertSourceValues() []AlertSource {
 		AlertSourcePreset,
 		AlertSourceUser,
 	}
-}
-
-// ToPtr returns a *AlertSource pointing to the current value.
-func (c AlertSource) ToPtr() *AlertSource {
-	return &c
 }
 
 // AlertStatus - alert status
@@ -174,11 +149,6 @@ func PossibleAlertStatusValues() []AlertStatus {
 		AlertStatusOverridden,
 		AlertStatusResolved,
 	}
-}
-
-// ToPtr returns a *AlertStatus pointing to the current value.
-func (c AlertStatus) ToPtr() *AlertStatus {
-	return &c
 }
 
 // AlertTimeGrainType - Type of timegrain cadence
@@ -207,11 +177,6 @@ func PossibleAlertTimeGrainTypeValues() []AlertTimeGrainType {
 	}
 }
 
-// ToPtr returns a *AlertTimeGrainType pointing to the current value.
-func (c AlertTimeGrainType) ToPtr() *AlertTimeGrainType {
-	return &c
-}
-
 // AlertType - type of alert
 type AlertType string
 
@@ -238,11 +203,6 @@ func PossibleAlertTypeValues() []AlertType {
 	}
 }
 
-// ToPtr returns a *AlertType pointing to the current value.
-func (c AlertType) ToPtr() *AlertType {
-	return &c
-}
-
 // ChartType - Chart type of the main view in Cost Analysis. Required.
 type ChartType string
 
@@ -263,11 +223,6 @@ func PossibleChartTypeValues() []ChartType {
 		ChartTypeStackedColumn,
 		ChartTypeTable,
 	}
-}
-
-// ToPtr returns a *ChartType pointing to the current value.
-func (c ChartType) ToPtr() *ChartType {
-	return &c
 }
 
 // ExecutionStatus - The last known status of the export execution.
@@ -296,11 +251,6 @@ func PossibleExecutionStatusValues() []ExecutionStatus {
 	}
 }
 
-// ToPtr returns a *ExecutionStatus pointing to the current value.
-func (c ExecutionStatus) ToPtr() *ExecutionStatus {
-	return &c
-}
-
 // ExecutionType - The type of the export execution.
 type ExecutionType string
 
@@ -315,11 +265,6 @@ func PossibleExecutionTypeValues() []ExecutionType {
 		ExecutionTypeOnDemand,
 		ExecutionTypeScheduled,
 	}
-}
-
-// ToPtr returns a *ExecutionType pointing to the current value.
-func (c ExecutionType) ToPtr() *ExecutionType {
-	return &c
 }
 
 // ExportType - The type of the export. Note that 'Usage' is equivalent to 'ActualCost' and is applicable to exports that
@@ -341,11 +286,6 @@ func PossibleExportTypeValues() []ExportType {
 	}
 }
 
-// ToPtr returns a *ExportType pointing to the current value.
-func (c ExportType) ToPtr() *ExportType {
-	return &c
-}
-
 type ExternalCloudProviderType string
 
 const (
@@ -359,11 +299,6 @@ func PossibleExternalCloudProviderTypeValues() []ExternalCloudProviderType {
 		ExternalCloudProviderTypeExternalBillingAccounts,
 		ExternalCloudProviderTypeExternalSubscriptions,
 	}
-}
-
-// ToPtr returns a *ExternalCloudProviderType pointing to the current value.
-func (c ExternalCloudProviderType) ToPtr() *ExternalCloudProviderType {
-	return &c
 }
 
 // ForecastTimeframeType - The time frame for pulling data for the forecast. If custom, then a specific time period must be
@@ -391,11 +326,6 @@ func PossibleForecastTimeframeTypeValues() []ForecastTimeframeType {
 	}
 }
 
-// ToPtr returns a *ForecastTimeframeType pointing to the current value.
-func (c ForecastTimeframeType) ToPtr() *ForecastTimeframeType {
-	return &c
-}
-
 // ForecastType - The type of the forecast.
 type ForecastType string
 
@@ -414,11 +344,6 @@ func PossibleForecastTypeValues() []ForecastType {
 	}
 }
 
-// ToPtr returns a *ForecastType pointing to the current value.
-func (c ForecastType) ToPtr() *ForecastType {
-	return &c
-}
-
 // FormatType - The format of the export being delivered. Currently only 'Csv' is supported.
 type FormatType string
 
@@ -433,11 +358,6 @@ func PossibleFormatTypeValues() []FormatType {
 	}
 }
 
-// ToPtr returns a *FormatType pointing to the current value.
-func (c FormatType) ToPtr() *FormatType {
-	return &c
-}
-
 // FunctionType - The name of the aggregation function to use.
 type FunctionType string
 
@@ -450,11 +370,6 @@ func PossibleFunctionTypeValues() []FunctionType {
 	return []FunctionType{
 		FunctionTypeSum,
 	}
-}
-
-// ToPtr returns a *FunctionType pointing to the current value.
-func (c FunctionType) ToPtr() *FunctionType {
-	return &c
 }
 
 // GenerateDetailedCostReportMetricType - The type of the detailed report. By default ActualCost is provided
@@ -473,11 +388,6 @@ func PossibleGenerateDetailedCostReportMetricTypeValues() []GenerateDetailedCost
 	}
 }
 
-// ToPtr returns a *GenerateDetailedCostReportMetricType pointing to the current value.
-func (c GenerateDetailedCostReportMetricType) ToPtr() *GenerateDetailedCostReportMetricType {
-	return &c
-}
-
 // GranularityType - The granularity of rows in the export. Currently only 'Daily' is supported.
 type GranularityType string
 
@@ -490,11 +400,6 @@ func PossibleGranularityTypeValues() []GranularityType {
 	return []GranularityType{
 		GranularityTypeDaily,
 	}
-}
-
-// ToPtr returns a *GranularityType pointing to the current value.
-func (c GranularityType) ToPtr() *GranularityType {
-	return &c
 }
 
 // KpiType - KPI type (Forecast, Budget).
@@ -511,11 +416,6 @@ func PossibleKpiTypeValues() []KpiType {
 		KpiTypeBudget,
 		KpiTypeForecast,
 	}
-}
-
-// ToPtr returns a *KpiType pointing to the current value.
-func (c KpiType) ToPtr() *KpiType {
-	return &c
 }
 
 // MetricType - Metric to use when displaying costs.
@@ -536,22 +436,13 @@ func PossibleMetricTypeValues() []MetricType {
 	}
 }
 
-// ToPtr returns a *MetricType pointing to the current value.
-func (c MetricType) ToPtr() *MetricType {
-	return &c
-}
-
 // OperationStatusType - The status of the long running operation.
 type OperationStatusType string
 
 const (
-	OperationStatusTypeCompleted       OperationStatusType = "Completed"
-	OperationStatusTypeFailed          OperationStatusType = "Failed"
-	OperationStatusTypeInProgress      OperationStatusType = "InProgress"
-	OperationStatusTypeNoDataFound     OperationStatusType = "NoDataFound"
-	OperationStatusTypeQueued          OperationStatusType = "Queued"
-	OperationStatusTypeReadyToDownload OperationStatusType = "ReadyToDownload"
-	OperationStatusTypeTimedOut        OperationStatusType = "TimedOut"
+	OperationStatusTypeCompleted OperationStatusType = "Completed"
+	OperationStatusTypeFailed    OperationStatusType = "Failed"
+	OperationStatusTypeRunning   OperationStatusType = "Running"
 )
 
 // PossibleOperationStatusTypeValues returns the possible values for the OperationStatusType const type.
@@ -559,17 +450,8 @@ func PossibleOperationStatusTypeValues() []OperationStatusType {
 	return []OperationStatusType{
 		OperationStatusTypeCompleted,
 		OperationStatusTypeFailed,
-		OperationStatusTypeInProgress,
-		OperationStatusTypeNoDataFound,
-		OperationStatusTypeQueued,
-		OperationStatusTypeReadyToDownload,
-		OperationStatusTypeTimedOut,
+		OperationStatusTypeRunning,
 	}
-}
-
-// ToPtr returns a *OperationStatusType pointing to the current value.
-func (c OperationStatusType) ToPtr() *OperationStatusType {
-	return &c
 }
 
 // OperatorType - The operator to use for comparison.
@@ -588,11 +470,6 @@ func PossibleOperatorTypeValues() []OperatorType {
 	}
 }
 
-// ToPtr returns a *OperatorType pointing to the current value.
-func (c OperatorType) ToPtr() *OperatorType {
-	return &c
-}
-
 // PivotType - Data type to show in view.
 type PivotType string
 
@@ -607,11 +484,6 @@ func PossiblePivotTypeValues() []PivotType {
 		PivotTypeDimension,
 		PivotTypeTagKey,
 	}
-}
-
-// ToPtr returns a *PivotType pointing to the current value.
-func (c PivotType) ToPtr() *PivotType {
-	return &c
 }
 
 // QueryColumnType - The type of the column in the export.
@@ -630,11 +502,6 @@ func PossibleQueryColumnTypeValues() []QueryColumnType {
 	}
 }
 
-// ToPtr returns a *QueryColumnType pointing to the current value.
-func (c QueryColumnType) ToPtr() *QueryColumnType {
-	return &c
-}
-
 // QueryOperatorType - The operator to use for comparison.
 type QueryOperatorType string
 
@@ -647,11 +514,6 @@ func PossibleQueryOperatorTypeValues() []QueryOperatorType {
 	return []QueryOperatorType{
 		QueryOperatorTypeIn,
 	}
-}
-
-// ToPtr returns a *QueryOperatorType pointing to the current value.
-func (c QueryOperatorType) ToPtr() *QueryOperatorType {
-	return &c
 }
 
 // RecurrenceType - The schedule recurrence.
@@ -674,11 +536,6 @@ func PossibleRecurrenceTypeValues() []RecurrenceType {
 	}
 }
 
-// ToPtr returns a *RecurrenceType pointing to the current value.
-func (c RecurrenceType) ToPtr() *RecurrenceType {
-	return &c
-}
-
 // ReportConfigColumnType - The type of the column in the report.
 type ReportConfigColumnType string
 
@@ -695,30 +552,20 @@ func PossibleReportConfigColumnTypeValues() []ReportConfigColumnType {
 	}
 }
 
-// ToPtr returns a *ReportConfigColumnType pointing to the current value.
-func (c ReportConfigColumnType) ToPtr() *ReportConfigColumnType {
-	return &c
-}
-
-// ReportConfigSortingDirection - Direction of sort.
-type ReportConfigSortingDirection string
+// ReportConfigSortingType - Direction of sort.
+type ReportConfigSortingType string
 
 const (
-	ReportConfigSortingDirectionAscending  ReportConfigSortingDirection = "Ascending"
-	ReportConfigSortingDirectionDescending ReportConfigSortingDirection = "Descending"
+	ReportConfigSortingTypeAscending  ReportConfigSortingType = "Ascending"
+	ReportConfigSortingTypeDescending ReportConfigSortingType = "Descending"
 )
 
-// PossibleReportConfigSortingDirectionValues returns the possible values for the ReportConfigSortingDirection const type.
-func PossibleReportConfigSortingDirectionValues() []ReportConfigSortingDirection {
-	return []ReportConfigSortingDirection{
-		ReportConfigSortingDirectionAscending,
-		ReportConfigSortingDirectionDescending,
+// PossibleReportConfigSortingTypeValues returns the possible values for the ReportConfigSortingType const type.
+func PossibleReportConfigSortingTypeValues() []ReportConfigSortingType {
+	return []ReportConfigSortingType{
+		ReportConfigSortingTypeAscending,
+		ReportConfigSortingTypeDescending,
 	}
-}
-
-// ToPtr returns a *ReportConfigSortingDirection pointing to the current value.
-func (c ReportConfigSortingDirection) ToPtr() *ReportConfigSortingDirection {
-	return &c
 }
 
 // ReportGranularityType - The granularity of rows in the report.
@@ -737,9 +584,30 @@ func PossibleReportGranularityTypeValues() []ReportGranularityType {
 	}
 }
 
-// ToPtr returns a *ReportGranularityType pointing to the current value.
-func (c ReportGranularityType) ToPtr() *ReportGranularityType {
-	return &c
+// ReportOperationStatusType - The status of the long running operation.
+type ReportOperationStatusType string
+
+const (
+	ReportOperationStatusTypeCompleted       ReportOperationStatusType = "Completed"
+	ReportOperationStatusTypeFailed          ReportOperationStatusType = "Failed"
+	ReportOperationStatusTypeInProgress      ReportOperationStatusType = "InProgress"
+	ReportOperationStatusTypeNoDataFound     ReportOperationStatusType = "NoDataFound"
+	ReportOperationStatusTypeQueued          ReportOperationStatusType = "Queued"
+	ReportOperationStatusTypeReadyToDownload ReportOperationStatusType = "ReadyToDownload"
+	ReportOperationStatusTypeTimedOut        ReportOperationStatusType = "TimedOut"
+)
+
+// PossibleReportOperationStatusTypeValues returns the possible values for the ReportOperationStatusType const type.
+func PossibleReportOperationStatusTypeValues() []ReportOperationStatusType {
+	return []ReportOperationStatusType{
+		ReportOperationStatusTypeCompleted,
+		ReportOperationStatusTypeFailed,
+		ReportOperationStatusTypeInProgress,
+		ReportOperationStatusTypeNoDataFound,
+		ReportOperationStatusTypeQueued,
+		ReportOperationStatusTypeReadyToDownload,
+		ReportOperationStatusTypeTimedOut,
+	}
 }
 
 // ReportTimeframeType - The time frame for pulling data for the report. If custom, then a specific time period must be provided.
@@ -762,11 +630,6 @@ func PossibleReportTimeframeTypeValues() []ReportTimeframeType {
 	}
 }
 
-// ToPtr returns a *ReportTimeframeType pointing to the current value.
-func (c ReportTimeframeType) ToPtr() *ReportTimeframeType {
-	return &c
-}
-
 // ReportType - The type of the report. Usage represents actual usage, forecast represents forecasted data and UsageAndForecast
 // represents both usage and forecasted data. Actual usage and forecasted data can be
 // differentiated based on dates.
@@ -783,11 +646,6 @@ func PossibleReportTypeValues() []ReportType {
 	}
 }
 
-// ToPtr returns a *ReportType pointing to the current value.
-func (c ReportType) ToPtr() *ReportType {
-	return &c
-}
-
 // StatusType - The status of the export's schedule. If 'Inactive', the export's schedule is paused.
 type StatusType string
 
@@ -802,11 +660,6 @@ func PossibleStatusTypeValues() []StatusType {
 		StatusTypeActive,
 		StatusTypeInactive,
 	}
-}
-
-// ToPtr returns a *StatusType pointing to the current value.
-func (c StatusType) ToPtr() *StatusType {
-	return &c
 }
 
 // TimeframeType - The time frame for pulling data for the export. If custom, then a specific time period must be provided.
@@ -831,9 +684,4 @@ func PossibleTimeframeTypeValues() []TimeframeType {
 		TimeframeTypeTheLastMonth,
 		TimeframeTypeWeekToDate,
 	}
-}
-
-// ToPtr returns a *TimeframeType pointing to the current value.
-func (c TimeframeType) ToPtr() *TimeframeType {
-	return &c
 }

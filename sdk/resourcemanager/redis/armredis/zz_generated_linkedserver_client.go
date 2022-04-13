@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type LinkedServerClient struct {
 // ID forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewLinkedServerClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LinkedServerClient {
+func NewLinkedServerClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LinkedServerClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &LinkedServerClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreate - Adds a linked server to the Redis cache (requires Premium SKU).
@@ -58,22 +63,16 @@ func NewLinkedServerClient(subscriptionID string, credential azcore.TokenCredent
 // parameters - Parameters supplied to the Create Linked server operation.
 // options - LinkedServerClientBeginCreateOptions contains the optional parameters for the LinkedServerClient.BeginCreate
 // method.
-func (client *LinkedServerClient) BeginCreate(ctx context.Context, resourceGroupName string, name string, linkedServerName string, parameters LinkedServerCreateParameters, options *LinkedServerClientBeginCreateOptions) (LinkedServerClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, name, linkedServerName, parameters, options)
-	if err != nil {
-		return LinkedServerClientCreatePollerResponse{}, err
+func (client *LinkedServerClient) BeginCreate(ctx context.Context, resourceGroupName string, name string, linkedServerName string, parameters LinkedServerCreateParameters, options *LinkedServerClientBeginCreateOptions) (*armruntime.Poller[LinkedServerClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, name, linkedServerName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[LinkedServerClientCreateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[LinkedServerClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := LinkedServerClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("LinkedServerClient.Create", "", resp, client.pl)
-	if err != nil {
-		return LinkedServerClientCreatePollerResponse{}, err
-	}
-	result.Poller = &LinkedServerClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Adds a linked server to the Redis cache (requires Premium SKU).
@@ -141,7 +140,7 @@ func (client *LinkedServerClient) Delete(ctx context.Context, resourceGroupName 
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return LinkedServerClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return LinkedServerClientDeleteResponse{RawResponse: resp}, nil
+	return LinkedServerClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -227,7 +226,7 @@ func (client *LinkedServerClient) getCreateRequest(ctx context.Context, resource
 
 // getHandleResponse handles the Get response.
 func (client *LinkedServerClient) getHandleResponse(resp *http.Response) (LinkedServerClientGetResponse, error) {
-	result := LinkedServerClientGetResponse{RawResponse: resp}
+	result := LinkedServerClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LinkedServerWithProperties); err != nil {
 		return LinkedServerClientGetResponse{}, err
 	}
@@ -239,16 +238,32 @@ func (client *LinkedServerClient) getHandleResponse(resp *http.Response) (Linked
 // resourceGroupName - The name of the resource group.
 // name - The name of the redis cache.
 // options - LinkedServerClientListOptions contains the optional parameters for the LinkedServerClient.List method.
-func (client *LinkedServerClient) List(resourceGroupName string, name string, options *LinkedServerClientListOptions) *LinkedServerClientListPager {
-	return &LinkedServerClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, name, options)
+func (client *LinkedServerClient) List(resourceGroupName string, name string, options *LinkedServerClientListOptions) *runtime.Pager[LinkedServerClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[LinkedServerClientListResponse]{
+		More: func(page LinkedServerClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp LinkedServerClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.LinkedServerWithPropertiesList.NextLink)
+		Fetcher: func(ctx context.Context, page *LinkedServerClientListResponse) (LinkedServerClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, name, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return LinkedServerClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return LinkedServerClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return LinkedServerClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -279,7 +294,7 @@ func (client *LinkedServerClient) listCreateRequest(ctx context.Context, resourc
 
 // listHandleResponse handles the List response.
 func (client *LinkedServerClient) listHandleResponse(resp *http.Response) (LinkedServerClientListResponse, error) {
-	result := LinkedServerClientListResponse{RawResponse: resp}
+	result := LinkedServerClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LinkedServerWithPropertiesList); err != nil {
 		return LinkedServerClientListResponse{}, err
 	}

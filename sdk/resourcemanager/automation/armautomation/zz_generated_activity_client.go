@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type ActivityClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewActivityClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ActivityClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewActivityClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ActivityClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ActivityClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Retrieve the activity in the module identified by module name and activity name.
@@ -108,7 +113,7 @@ func (client *ActivityClient) getCreateRequest(ctx context.Context, resourceGrou
 
 // getHandleResponse handles the Get response.
 func (client *ActivityClient) getHandleResponse(resp *http.Response) (ActivityClientGetResponse, error) {
-	result := ActivityClientGetResponse{RawResponse: resp}
+	result := ActivityClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Activity); err != nil {
 		return ActivityClientGetResponse{}, err
 	}
@@ -121,16 +126,32 @@ func (client *ActivityClient) getHandleResponse(resp *http.Response) (ActivityCl
 // automationAccountName - The name of the automation account.
 // moduleName - The name of module.
 // options - ActivityClientListByModuleOptions contains the optional parameters for the ActivityClient.ListByModule method.
-func (client *ActivityClient) ListByModule(resourceGroupName string, automationAccountName string, moduleName string, options *ActivityClientListByModuleOptions) *ActivityClientListByModulePager {
-	return &ActivityClientListByModulePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByModuleCreateRequest(ctx, resourceGroupName, automationAccountName, moduleName, options)
+func (client *ActivityClient) ListByModule(resourceGroupName string, automationAccountName string, moduleName string, options *ActivityClientListByModuleOptions) *runtime.Pager[ActivityClientListByModuleResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ActivityClientListByModuleResponse]{
+		More: func(page ActivityClientListByModuleResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ActivityClientListByModuleResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ActivityListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ActivityClientListByModuleResponse) (ActivityClientListByModuleResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByModuleCreateRequest(ctx, resourceGroupName, automationAccountName, moduleName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ActivityClientListByModuleResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ActivityClientListByModuleResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ActivityClientListByModuleResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByModuleHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByModuleCreateRequest creates the ListByModule request.
@@ -165,7 +186,7 @@ func (client *ActivityClient) listByModuleCreateRequest(ctx context.Context, res
 
 // listByModuleHandleResponse handles the ListByModule response.
 func (client *ActivityClient) listByModuleHandleResponse(resp *http.Response) (ActivityClientListByModuleResponse, error) {
-	result := ActivityClientListByModuleResponse{RawResponse: resp}
+	result := ActivityClientListByModuleResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActivityListResult); err != nil {
 		return ActivityClientListByModuleResponse{}, err
 	}

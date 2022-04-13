@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,74 +17,79 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deploymentmanager/armdeploymentmanager"
 )
 
-// x-ms-original-file: specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/step_health_check_createorupdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/step_health_check_createorupdate.json
 func ExampleStepsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdeploymentmanager.NewStepsClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentmanager.NewStepsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<step-name>",
 		&armdeploymentmanager.StepsClientCreateOrUpdateOptions{StepInfo: &armdeploymentmanager.StepResource{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Tags:     map[string]*string{},
 			Properties: &armdeploymentmanager.HealthCheckStepProperties{
-				StepType: armdeploymentmanager.StepTypeHealthCheck.ToPtr(),
+				StepType: to.Ptr(armdeploymentmanager.StepTypeHealthCheck),
 				Attributes: &armdeploymentmanager.RestHealthCheckStepAttributes{
-					Type:                 to.StringPtr("<type>"),
-					HealthyStateDuration: to.StringPtr("<healthy-state-duration>"),
-					MaxElasticDuration:   to.StringPtr("<max-elastic-duration>"),
-					WaitDuration:         to.StringPtr("<wait-duration>"),
+					Type:                 to.Ptr("<type>"),
+					HealthyStateDuration: to.Ptr("<healthy-state-duration>"),
+					MaxElasticDuration:   to.Ptr("<max-elastic-duration>"),
+					WaitDuration:         to.Ptr("<wait-duration>"),
 					Properties: &armdeploymentmanager.RestParameters{
 						HealthChecks: []*armdeploymentmanager.RestHealthCheck{
 							{
-								Name: to.StringPtr("<name>"),
+								Name: to.Ptr("<name>"),
 								Response: &armdeploymentmanager.RestResponse{
 									Regex: &armdeploymentmanager.RestResponseRegex{
-										MatchQuantifier: armdeploymentmanager.RestMatchQuantifierAll.ToPtr(),
+										MatchQuantifier: to.Ptr(armdeploymentmanager.RestMatchQuantifierAll),
 										Matches: []*string{
-											to.StringPtr("(?i)Contoso-App"),
-											to.StringPtr("(?i)\"health_status\":((.|\n)*)\"(green|yellow)\""),
-											to.StringPtr("(?mi)^(\"application_host\": 94781052)$")},
+											to.Ptr("(?i)Contoso-App"),
+											to.Ptr("(?i)\"health_status\":((.|\n)*)\"(green|yellow)\""),
+											to.Ptr("(?mi)^(\"application_host\": 94781052)$")},
 									},
 									SuccessStatusCodes: []*string{
-										to.StringPtr("OK")},
+										to.Ptr("OK")},
 								},
 								Request: &armdeploymentmanager.RestRequest{
-									Method: armdeploymentmanager.RestRequestMethodGET.ToPtr(),
+									Method: to.Ptr(armdeploymentmanager.RestRequestMethodGET),
 									Authentication: &armdeploymentmanager.APIKeyAuthentication{
-										Type:  armdeploymentmanager.RestAuthTypeAPIKey.ToPtr(),
-										Name:  to.StringPtr("<name>"),
-										In:    armdeploymentmanager.RestAuthLocationQuery.ToPtr(),
-										Value: to.StringPtr("<value>"),
+										Type:  to.Ptr(armdeploymentmanager.RestAuthTypeAPIKey),
+										Name:  to.Ptr("<name>"),
+										In:    to.Ptr(armdeploymentmanager.RestAuthLocationQuery),
+										Value: to.Ptr("<value>"),
 									},
-									URI: to.StringPtr("<uri>"),
+									URI: to.Ptr("<uri>"),
 								},
 							},
 							{
-								Name: to.StringPtr("<name>"),
+								Name: to.Ptr("<name>"),
 								Response: &armdeploymentmanager.RestResponse{
 									Regex: &armdeploymentmanager.RestResponseRegex{
-										MatchQuantifier: armdeploymentmanager.RestMatchQuantifierAll.ToPtr(),
+										MatchQuantifier: to.Ptr(armdeploymentmanager.RestMatchQuantifierAll),
 										Matches: []*string{
-											to.StringPtr("(?i)Contoso-Service-EndToEnd"),
-											to.StringPtr("(?i)\"health_status\":((.|\n)*)\"(green)\"")},
+											to.Ptr("(?i)Contoso-Service-EndToEnd"),
+											to.Ptr("(?i)\"health_status\":((.|\n)*)\"(green)\"")},
 									},
 									SuccessStatusCodes: []*string{
-										to.StringPtr("OK")},
+										to.Ptr("OK")},
 								},
 								Request: &armdeploymentmanager.RestRequest{
-									Method: armdeploymentmanager.RestRequestMethodGET.ToPtr(),
+									Method: to.Ptr(armdeploymentmanager.RestRequestMethodGET),
 									Authentication: &armdeploymentmanager.APIKeyAuthentication{
-										Type:  armdeploymentmanager.RestAuthTypeAPIKey.ToPtr(),
-										Name:  to.StringPtr("<name>"),
-										In:    armdeploymentmanager.RestAuthLocationHeader.ToPtr(),
-										Value: to.StringPtr("<value>"),
+										Type:  to.Ptr(armdeploymentmanager.RestAuthTypeAPIKey),
+										Name:  to.Ptr("<name>"),
+										In:    to.Ptr(armdeploymentmanager.RestAuthLocationHeader),
+										Value: to.Ptr("<value>"),
 									},
-									URI: to.StringPtr("<uri>"),
+									URI: to.Ptr("<uri>"),
 								},
 							}},
 					},
@@ -93,58 +98,79 @@ func ExampleStepsClient_CreateOrUpdate() {
 		},
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/step_get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/step_get.json
 func ExampleStepsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdeploymentmanager.NewStepsClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentmanager.NewStepsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<step-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.StepsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/step_delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/step_delete.json
 func ExampleStepsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdeploymentmanager.NewStepsClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentmanager.NewStepsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<step-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/steps_list.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/steps_list.json
 func ExampleStepsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdeploymentmanager.NewStepsClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentmanager.NewStepsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.List(ctx,
 		"<resource-group-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.StepsClientListResult)
+	// TODO: use response item
+	_ = res
 }

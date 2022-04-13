@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armcontainerservice
 
 const (
 	moduleName    = "armcontainerservice"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 // AgentPoolMode - A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent
@@ -33,11 +33,6 @@ func PossibleAgentPoolModeValues() []AgentPoolMode {
 	}
 }
 
-// ToPtr returns a *AgentPoolMode pointing to the current value.
-func (c AgentPoolMode) ToPtr() *AgentPoolMode {
-	return &c
-}
-
 // AgentPoolType - The type of Agent Pool.
 type AgentPoolType string
 
@@ -56,11 +51,6 @@ func PossibleAgentPoolTypeValues() []AgentPoolType {
 	}
 }
 
-// ToPtr returns a *AgentPoolType pointing to the current value.
-func (c AgentPoolType) ToPtr() *AgentPoolType {
-	return &c
-}
-
 // Code - Tells whether the cluster is Running or Stopped
 type Code string
 
@@ -77,11 +67,6 @@ func PossibleCodeValues() []Code {
 		CodeRunning,
 		CodeStopped,
 	}
-}
-
-// ToPtr returns a *Code pointing to the current value.
-func (c Code) ToPtr() *Code {
-	return &c
 }
 
 // ConnectionStatus - The private link service connection status.
@@ -104,11 +89,6 @@ func PossibleConnectionStatusValues() []ConnectionStatus {
 	}
 }
 
-// ToPtr returns a *ConnectionStatus pointing to the current value.
-func (c ConnectionStatus) ToPtr() *ConnectionStatus {
-	return &c
-}
-
 // ContainerServiceStorageProfileTypes - Specifies what kind of storage to use. If omitted, the default will be chosen on
 // your behalf based on the choice of orchestrator.
 type ContainerServiceStorageProfileTypes string
@@ -124,11 +104,6 @@ func PossibleContainerServiceStorageProfileTypesValues() []ContainerServiceStora
 		ContainerServiceStorageProfileTypesManagedDisks,
 		ContainerServiceStorageProfileTypesStorageAccount,
 	}
-}
-
-// ToPtr returns a *ContainerServiceStorageProfileTypes pointing to the current value.
-func (c ContainerServiceStorageProfileTypes) ToPtr() *ContainerServiceStorageProfileTypes {
-	return &c
 }
 
 // ContainerServiceVMSizeTypes - Size of agent VMs. Note: This is no longer maintained.
@@ -491,11 +466,6 @@ func PossibleContainerServiceVMSizeTypesValues() []ContainerServiceVMSizeTypes {
 	}
 }
 
-// ToPtr returns a *ContainerServiceVMSizeTypes pointing to the current value.
-func (c ContainerServiceVMSizeTypes) ToPtr() *ContainerServiceVMSizeTypes {
-	return &c
-}
-
 // Count - Number of masters (VMs) in the container service cluster. Allowed values are 1, 3, and 5. The default value is
 // 1.
 type Count int32
@@ -513,11 +483,6 @@ func PossibleCountValues() []Count {
 		CountThree,
 		CountFive,
 	}
-}
-
-// ToPtr returns a *Count pointing to the current value.
-func (c Count) ToPtr() *Count {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -538,11 +503,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
 	}
-}
-
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
 }
 
 // Expander - If not specified, the default is 'random'. See expanders [https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#what-are-expanders]
@@ -575,11 +535,6 @@ func PossibleExpanderValues() []Expander {
 	}
 }
 
-// ToPtr returns a *Expander pointing to the current value.
-func (c Expander) ToPtr() *Expander {
-	return &c
-}
-
 // ExtendedLocationTypes - The type of extendedLocation.
 type ExtendedLocationTypes string
 
@@ -594,9 +549,21 @@ func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
 	}
 }
 
-// ToPtr returns a *ExtendedLocationTypes pointing to the current value.
-func (c ExtendedLocationTypes) ToPtr() *ExtendedLocationTypes {
-	return &c
+type Format string
+
+const (
+	// FormatAzure - Return azure auth-provider kubeconfig. This format is deprecated in 1.22 and will be fully removed in 1.25.
+	FormatAzure Format = "azure"
+	// FormatExec - Return exec format kubeconfig. This format requires kubelogin binary in the path.
+	FormatExec Format = "exec"
+)
+
+// PossibleFormatValues returns the possible values for the Format const type.
+func PossibleFormatValues() []Format {
+	return []Format{
+		FormatAzure,
+		FormatExec,
+	}
 }
 
 // GPUInstanceProfile - GPUInstanceProfile to be used to specify GPU MIG instance profile for supported GPU VM SKU.
@@ -621,11 +588,6 @@ func PossibleGPUInstanceProfileValues() []GPUInstanceProfile {
 	}
 }
 
-// ToPtr returns a *GPUInstanceProfile pointing to the current value.
-func (c GPUInstanceProfile) ToPtr() *GPUInstanceProfile {
-	return &c
-}
-
 // IPFamily - The IP version to use for cluster networking and IP assignment.
 type IPFamily string
 
@@ -640,11 +602,6 @@ func PossibleIPFamilyValues() []IPFamily {
 		IPFamilyIPv4,
 		IPFamilyIPv6,
 	}
-}
-
-// ToPtr returns a *IPFamily pointing to the current value.
-func (c IPFamily) ToPtr() *IPFamily {
-	return &c
 }
 
 // KubeletDiskType - Determines the placement of emptyDir volumes, container runtime data root, and Kubelet ephemeral storage.
@@ -665,11 +622,6 @@ func PossibleKubeletDiskTypeValues() []KubeletDiskType {
 	}
 }
 
-// ToPtr returns a *KubeletDiskType pointing to the current value.
-func (c KubeletDiskType) ToPtr() *KubeletDiskType {
-	return &c
-}
-
 // LicenseType - The license type to use for Windows VMs. See Azure Hybrid User Benefits [https://azure.microsoft.com/pricing/hybrid-benefit/faq/]
 // for more details.
 type LicenseType string
@@ -687,11 +639,6 @@ func PossibleLicenseTypeValues() []LicenseType {
 		LicenseTypeNone,
 		LicenseTypeWindowsServer,
 	}
-}
-
-// ToPtr returns a *LicenseType pointing to the current value.
-func (c LicenseType) ToPtr() *LicenseType {
-	return &c
 }
 
 // LoadBalancerSKU - The default is 'standard'. See Azure Load Balancer SKUs [https://docs.microsoft.com/azure/load-balancer/skus]
@@ -715,11 +662,6 @@ func PossibleLoadBalancerSKUValues() []LoadBalancerSKU {
 	}
 }
 
-// ToPtr returns a *LoadBalancerSKU pointing to the current value.
-func (c LoadBalancerSKU) ToPtr() *LoadBalancerSKU {
-	return &c
-}
-
 // ManagedClusterPodIdentityProvisioningState - The current provisioning state of the pod identity.
 type ManagedClusterPodIdentityProvisioningState string
 
@@ -740,11 +682,6 @@ func PossibleManagedClusterPodIdentityProvisioningStateValues() []ManagedCluster
 	}
 }
 
-// ToPtr returns a *ManagedClusterPodIdentityProvisioningState pointing to the current value.
-func (c ManagedClusterPodIdentityProvisioningState) ToPtr() *ManagedClusterPodIdentityProvisioningState {
-	return &c
-}
-
 // ManagedClusterSKUName - The name of a managed cluster SKU.
 type ManagedClusterSKUName string
 
@@ -757,11 +694,6 @@ func PossibleManagedClusterSKUNameValues() []ManagedClusterSKUName {
 	return []ManagedClusterSKUName{
 		ManagedClusterSKUNameBasic,
 	}
-}
-
-// ToPtr returns a *ManagedClusterSKUName pointing to the current value.
-func (c ManagedClusterSKUName) ToPtr() *ManagedClusterSKUName {
-	return &c
 }
 
 // ManagedClusterSKUTier - If not specified, the default is 'Free'. See uptime SLA [https://docs.microsoft.com/azure/aks/uptime-sla]
@@ -784,11 +716,6 @@ func PossibleManagedClusterSKUTierValues() []ManagedClusterSKUTier {
 	}
 }
 
-// ToPtr returns a *ManagedClusterSKUTier pointing to the current value.
-func (c ManagedClusterSKUTier) ToPtr() *ManagedClusterSKUTier {
-	return &c
-}
-
 // NetworkMode - This cannot be specified if networkPlugin is anything other than 'azure'.
 type NetworkMode string
 
@@ -806,11 +733,6 @@ func PossibleNetworkModeValues() []NetworkMode {
 		NetworkModeBridge,
 		NetworkModeTransparent,
 	}
-}
-
-// ToPtr returns a *NetworkMode pointing to the current value.
-func (c NetworkMode) ToPtr() *NetworkMode {
-	return &c
 }
 
 // NetworkPlugin - Network plugin used for building the Kubernetes network.
@@ -833,11 +755,6 @@ func PossibleNetworkPluginValues() []NetworkPlugin {
 	}
 }
 
-// ToPtr returns a *NetworkPlugin pointing to the current value.
-func (c NetworkPlugin) ToPtr() *NetworkPlugin {
-	return &c
-}
-
 // NetworkPolicy - Network policy used for building the Kubernetes network.
 type NetworkPolicy string
 
@@ -856,11 +773,6 @@ func PossibleNetworkPolicyValues() []NetworkPolicy {
 		NetworkPolicyAzure,
 		NetworkPolicyCalico,
 	}
-}
-
-// ToPtr returns a *NetworkPolicy pointing to the current value.
-func (c NetworkPolicy) ToPtr() *NetworkPolicy {
-	return &c
 }
 
 // OSDiskType - The default is 'Ephemeral' if the VM supports it and has a cache disk larger than the requested OSDiskSizeGB.
@@ -887,11 +799,6 @@ func PossibleOSDiskTypeValues() []OSDiskType {
 	}
 }
 
-// ToPtr returns a *OSDiskType pointing to the current value.
-func (c OSDiskType) ToPtr() *OSDiskType {
-	return &c
-}
-
 // OSSKU - Specifies an OS SKU. This value must not be specified if OSType is Windows.
 type OSSKU string
 
@@ -906,11 +813,6 @@ func PossibleOSSKUValues() []OSSKU {
 		OSSKUCBLMariner,
 		OSSKUUbuntu,
 	}
-}
-
-// ToPtr returns a *OSSKU pointing to the current value.
-func (c OSSKU) ToPtr() *OSSKU {
-	return &c
 }
 
 // OSType - The operating system type. The default is Linux.
@@ -929,11 +831,6 @@ func PossibleOSTypeValues() []OSType {
 		OSTypeLinux,
 		OSTypeWindows,
 	}
-}
-
-// ToPtr returns a *OSType pointing to the current value.
-func (c OSType) ToPtr() *OSType {
-	return &c
 }
 
 // OutboundType - This can only be set at cluster creation time and cannot be changed later. For more information see egress
@@ -964,11 +861,6 @@ func PossibleOutboundTypeValues() []OutboundType {
 	}
 }
 
-// ToPtr returns a *OutboundType pointing to the current value.
-func (c OutboundType) ToPtr() *OutboundType {
-	return &c
-}
-
 // PrivateEndpointConnectionProvisioningState - The current provisioning state.
 type PrivateEndpointConnectionProvisioningState string
 
@@ -989,11 +881,6 @@ func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpoin
 	}
 }
 
-// ToPtr returns a *PrivateEndpointConnectionProvisioningState pointing to the current value.
-func (c PrivateEndpointConnectionProvisioningState) ToPtr() *PrivateEndpointConnectionProvisioningState {
-	return &c
-}
-
 // PublicNetworkAccess - Allow or deny public network access for AKS
 type PublicNetworkAccess string
 
@@ -1008,11 +895,6 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
 	}
-}
-
-// ToPtr returns a *PublicNetworkAccess pointing to the current value.
-func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
-	return &c
 }
 
 // ResourceIdentityType - For more information see use managed identities in AKS [https://docs.microsoft.com/azure/aks/use-managed-identity].
@@ -1040,11 +922,6 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	}
 }
 
-// ToPtr returns a *ResourceIdentityType pointing to the current value.
-func (c ResourceIdentityType) ToPtr() *ResourceIdentityType {
-	return &c
-}
-
 // ScaleDownMode - Describes how VMs are added to or removed from Agent Pools. See billing states [https://docs.microsoft.com/azure/virtual-machines/states-billing].
 type ScaleDownMode string
 
@@ -1062,11 +939,6 @@ func PossibleScaleDownModeValues() []ScaleDownMode {
 		ScaleDownModeDeallocate,
 		ScaleDownModeDelete,
 	}
-}
-
-// ToPtr returns a *ScaleDownMode pointing to the current value.
-func (c ScaleDownMode) ToPtr() *ScaleDownMode {
-	return &c
 }
 
 // ScaleSetEvictionPolicy - The eviction policy specifies what to do with the VM when it is evicted. The default is Delete.
@@ -1091,11 +963,6 @@ func PossibleScaleSetEvictionPolicyValues() []ScaleSetEvictionPolicy {
 	}
 }
 
-// ToPtr returns a *ScaleSetEvictionPolicy pointing to the current value.
-func (c ScaleSetEvictionPolicy) ToPtr() *ScaleSetEvictionPolicy {
-	return &c
-}
-
 // ScaleSetPriority - The Virtual Machine Scale Set priority.
 type ScaleSetPriority string
 
@@ -1115,11 +982,6 @@ func PossibleScaleSetPriorityValues() []ScaleSetPriority {
 	}
 }
 
-// ToPtr returns a *ScaleSetPriority pointing to the current value.
-func (c ScaleSetPriority) ToPtr() *ScaleSetPriority {
-	return &c
-}
-
 // SnapshotType - The type of a snapshot. The default is NodePool.
 type SnapshotType string
 
@@ -1133,11 +995,6 @@ func PossibleSnapshotTypeValues() []SnapshotType {
 	return []SnapshotType{
 		SnapshotTypeNodePool,
 	}
-}
-
-// ToPtr returns a *SnapshotType pointing to the current value.
-func (c SnapshotType) ToPtr() *SnapshotType {
-	return &c
 }
 
 // UpgradeChannel - For more information see setting the AKS cluster auto-upgrade channel [https://docs.microsoft.com/azure/aks/upgrade-cluster#set-auto-upgrade-channel].
@@ -1178,11 +1035,6 @@ func PossibleUpgradeChannelValues() []UpgradeChannel {
 	}
 }
 
-// ToPtr returns a *UpgradeChannel pointing to the current value.
-func (c UpgradeChannel) ToPtr() *UpgradeChannel {
-	return &c
-}
-
 // WeekDay - The weekday enum.
 type WeekDay string
 
@@ -1209,11 +1061,6 @@ func PossibleWeekDayValues() []WeekDay {
 	}
 }
 
-// ToPtr returns a *WeekDay pointing to the current value.
-func (c WeekDay) ToPtr() *WeekDay {
-	return &c
-}
-
 // WorkloadRuntime - Determines the type of workload a node can run.
 type WorkloadRuntime string
 
@@ -1230,9 +1077,4 @@ func PossibleWorkloadRuntimeValues() []WorkloadRuntime {
 		WorkloadRuntimeOCIContainer,
 		WorkloadRuntimeWasmWasi,
 	}
-}
-
-// ToPtr returns a *WorkloadRuntime pointing to the current value.
-func (c WorkloadRuntime) ToPtr() *WorkloadRuntime {
-	return &c
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -32,19 +33,23 @@ type QuotaRequestStatusClient struct {
 // NewQuotaRequestStatusClient creates a new instance of QuotaRequestStatusClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewQuotaRequestStatusClient(credential azcore.TokenCredential, options *arm.ClientOptions) *QuotaRequestStatusClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewQuotaRequestStatusClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*QuotaRequestStatusClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &QuotaRequestStatusClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - For the specified Azure region (location), get the details and status of the quota request by the quota request ID
@@ -103,7 +108,7 @@ func (client *QuotaRequestStatusClient) getCreateRequest(ctx context.Context, su
 
 // getHandleResponse handles the Get response.
 func (client *QuotaRequestStatusClient) getHandleResponse(resp *http.Response) (QuotaRequestStatusClientGetResponse, error) {
-	result := QuotaRequestStatusClientGetResponse{RawResponse: resp}
+	result := QuotaRequestStatusClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaRequestDetails); err != nil {
 		return QuotaRequestStatusClientGetResponse{}, err
 	}
@@ -117,16 +122,32 @@ func (client *QuotaRequestStatusClient) getHandleResponse(resp *http.Response) (
 // providerID - Azure resource provider ID.
 // location - Azure region.
 // options - QuotaRequestStatusClientListOptions contains the optional parameters for the QuotaRequestStatusClient.List method.
-func (client *QuotaRequestStatusClient) List(subscriptionID string, providerID string, location string, options *QuotaRequestStatusClientListOptions) *QuotaRequestStatusClientListPager {
-	return &QuotaRequestStatusClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, subscriptionID, providerID, location, options)
+func (client *QuotaRequestStatusClient) List(subscriptionID string, providerID string, location string, options *QuotaRequestStatusClientListOptions) *runtime.Pager[QuotaRequestStatusClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[QuotaRequestStatusClientListResponse]{
+		More: func(page QuotaRequestStatusClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp QuotaRequestStatusClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.QuotaRequestDetailsList.NextLink)
+		Fetcher: func(ctx context.Context, page *QuotaRequestStatusClientListResponse) (QuotaRequestStatusClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, subscriptionID, providerID, location, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return QuotaRequestStatusClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return QuotaRequestStatusClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return QuotaRequestStatusClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -166,7 +187,7 @@ func (client *QuotaRequestStatusClient) listCreateRequest(ctx context.Context, s
 
 // listHandleResponse handles the List response.
 func (client *QuotaRequestStatusClient) listHandleResponse(resp *http.Response) (QuotaRequestStatusClientListResponse, error) {
-	result := QuotaRequestStatusClientListResponse{RawResponse: resp}
+	result := QuotaRequestStatusClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaRequestDetailsList); err != nil {
 		return QuotaRequestStatusClientListResponse{}, err
 	}

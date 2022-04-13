@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armresourcehealth
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // AvailabilityStatus - availabilityStatus of a resource.
 type AvailabilityStatus struct {
@@ -42,14 +37,6 @@ type AvailabilityStatusListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AvailabilityStatusListResult.
-func (a AvailabilityStatusListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
 // AvailabilityStatusProperties - Properties of availability state.
 type AvailabilityStatusProperties struct {
 	// Availability status of the resource. When it is null, this availabilityStatus object represents an availability impacting
@@ -75,7 +62,7 @@ type AvailabilityStatusProperties struct {
 	HealthEventType *string `json:"healthEventType,omitempty"`
 
 	// Timestamp for when last change in health status occurred.
-	OccuredTime *time.Time `json:"occuredTime,omitempty"`
+	OccurredTime *time.Time `json:"occurredTime,omitempty"`
 
 	// Chronicity of the availability transition.
 	ReasonChronicity *ReasonChronicityTypes `json:"reasonChronicity,omitempty"`
@@ -85,7 +72,7 @@ type AvailabilityStatusProperties struct {
 	ReasonType *string `json:"reasonType,omitempty"`
 
 	// An annotation describing a change in the availabilityState to Available from Unavailable with a reasonType of type Unplanned
-	RecentlyResolvedState *AvailabilityStatusPropertiesRecentlyResolvedState `json:"recentlyResolvedState,omitempty"`
+	RecentlyResolved *AvailabilityStatusPropertiesRecentlyResolved `json:"recentlyResolved,omitempty"`
 
 	// Lists actions the user can take based on the current availabilityState of the resource.
 	RecommendedActions []*RecommendedAction `json:"recommendedActions,omitempty"`
@@ -106,98 +93,14 @@ type AvailabilityStatusProperties struct {
 
 	// Summary description of the availability status.
 	Summary *string `json:"summary,omitempty"`
+
+	// Title description of the availability status.
+	Title *string `json:"title,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AvailabilityStatusProperties.
-func (a AvailabilityStatusProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "availabilityState", a.AvailabilityState)
-	populate(objectMap, "detailedStatus", a.DetailedStatus)
-	populate(objectMap, "healthEventCategory", a.HealthEventCategory)
-	populate(objectMap, "healthEventCause", a.HealthEventCause)
-	populate(objectMap, "healthEventId", a.HealthEventID)
-	populate(objectMap, "healthEventType", a.HealthEventType)
-	populateTimeRFC3339(objectMap, "occuredTime", a.OccuredTime)
-	populate(objectMap, "reasonChronicity", a.ReasonChronicity)
-	populate(objectMap, "reasonType", a.ReasonType)
-	populate(objectMap, "recentlyResolvedState", a.RecentlyResolvedState)
-	populate(objectMap, "recommendedActions", a.RecommendedActions)
-	populateTimeRFC3339(objectMap, "reportedTime", a.ReportedTime)
-	populateTimeRFC3339(objectMap, "resolutionETA", a.ResolutionETA)
-	populateTimeRFC3339(objectMap, "rootCauseAttributionTime", a.RootCauseAttributionTime)
-	populate(objectMap, "serviceImpactingEvents", a.ServiceImpactingEvents)
-	populate(objectMap, "summary", a.Summary)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AvailabilityStatusProperties.
-func (a *AvailabilityStatusProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "availabilityState":
-			err = unpopulate(val, &a.AvailabilityState)
-			delete(rawMsg, key)
-		case "detailedStatus":
-			err = unpopulate(val, &a.DetailedStatus)
-			delete(rawMsg, key)
-		case "healthEventCategory":
-			err = unpopulate(val, &a.HealthEventCategory)
-			delete(rawMsg, key)
-		case "healthEventCause":
-			err = unpopulate(val, &a.HealthEventCause)
-			delete(rawMsg, key)
-		case "healthEventId":
-			err = unpopulate(val, &a.HealthEventID)
-			delete(rawMsg, key)
-		case "healthEventType":
-			err = unpopulate(val, &a.HealthEventType)
-			delete(rawMsg, key)
-		case "occuredTime":
-			err = unpopulateTimeRFC3339(val, &a.OccuredTime)
-			delete(rawMsg, key)
-		case "reasonChronicity":
-			err = unpopulate(val, &a.ReasonChronicity)
-			delete(rawMsg, key)
-		case "reasonType":
-			err = unpopulate(val, &a.ReasonType)
-			delete(rawMsg, key)
-		case "recentlyResolvedState":
-			err = unpopulate(val, &a.RecentlyResolvedState)
-			delete(rawMsg, key)
-		case "recommendedActions":
-			err = unpopulate(val, &a.RecommendedActions)
-			delete(rawMsg, key)
-		case "reportedTime":
-			err = unpopulateTimeRFC3339(val, &a.ReportedTime)
-			delete(rawMsg, key)
-		case "resolutionETA":
-			err = unpopulateTimeRFC3339(val, &a.ResolutionETA)
-			delete(rawMsg, key)
-		case "rootCauseAttributionTime":
-			err = unpopulateTimeRFC3339(val, &a.RootCauseAttributionTime)
-			delete(rawMsg, key)
-		case "serviceImpactingEvents":
-			err = unpopulate(val, &a.ServiceImpactingEvents)
-			delete(rawMsg, key)
-		case "summary":
-			err = unpopulate(val, &a.Summary)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// AvailabilityStatusPropertiesRecentlyResolvedState - An annotation describing a change in the availabilityState to Available
+// AvailabilityStatusPropertiesRecentlyResolved - An annotation describing a change in the availabilityState to Available
 // from Unavailable with a reasonType of type Unplanned
-type AvailabilityStatusPropertiesRecentlyResolvedState struct {
+type AvailabilityStatusPropertiesRecentlyResolved struct {
 	// Timestamp when the availabilityState changes to Available.
 	ResolvedTime *time.Time `json:"resolvedTime,omitempty"`
 
@@ -206,41 +109,6 @@ type AvailabilityStatusPropertiesRecentlyResolvedState struct {
 
 	// Timestamp for when the availabilityState changed to Unavailable
 	UnavailableOccurredTime *time.Time `json:"unavailableOccurredTime,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AvailabilityStatusPropertiesRecentlyResolvedState.
-func (a AvailabilityStatusPropertiesRecentlyResolvedState) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "resolvedTime", a.ResolvedTime)
-	populate(objectMap, "unavailabilitySummary", a.UnavailabilitySummary)
-	populateTimeRFC3339(objectMap, "unavailableOccurredTime", a.UnavailableOccurredTime)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AvailabilityStatusPropertiesRecentlyResolvedState.
-func (a *AvailabilityStatusPropertiesRecentlyResolvedState) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "resolvedTime":
-			err = unpopulateTimeRFC3339(val, &a.ResolvedTime)
-			delete(rawMsg, key)
-		case "unavailabilitySummary":
-			err = unpopulate(val, &a.UnavailabilitySummary)
-			delete(rawMsg, key)
-		case "unavailableOccurredTime":
-			err = unpopulateTimeRFC3339(val, &a.UnavailableOccurredTime)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // AvailabilityStatusesClientGetByResourceOptions contains the optional parameters for the AvailabilityStatusesClient.GetByResource
@@ -278,131 +146,37 @@ type AvailabilityStatusesClientListOptions struct {
 	Filter *string
 }
 
-// ChildAvailabilityStatusesClientGetByResourceOptions contains the optional parameters for the ChildAvailabilityStatusesClient.GetByResource
-// method.
-type ChildAvailabilityStatusesClientGetByResourceOptions struct {
-	// Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
-	Expand *string
-	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
-	Filter *string
+// ErrorResponse - Error details.
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorResponseError `json:"error,omitempty"`
 }
 
-// ChildAvailabilityStatusesClientListOptions contains the optional parameters for the ChildAvailabilityStatusesClient.List
-// method.
-type ChildAvailabilityStatusesClientListOptions struct {
-	// Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
-	Expand *string
-	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
-	Filter *string
+// ErrorResponseError - The error object.
+type ErrorResponseError struct {
+	// READ-ONLY; The error code.
+	Code *string `json:"code,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error details.
+	Details *string `json:"details,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error message.
+	Message *string `json:"message,omitempty" azure:"ro"`
 }
 
-// ChildResourcesClientListOptions contains the optional parameters for the ChildResourcesClient.List method.
-type ChildResourcesClientListOptions struct {
-	// Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
-	Expand *string
-	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
-	Filter *string
-}
-
-// EmergingIssue - On-going emerging issue from azure status.
-type EmergingIssue struct {
-	// Timestamp for when last time refreshed for ongoing emerging issue.
-	RefreshTimestamp *time.Time `json:"refreshTimestamp,omitempty"`
-
-	// The list of emerging issues of active event type.
-	StatusActiveEvents []*StatusActiveEvent `json:"statusActiveEvents,omitempty"`
-
-	// The list of emerging issues of banner type.
-	StatusBanners []*StatusBanner `json:"statusBanners,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EmergingIssue.
-func (e EmergingIssue) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "refreshTimestamp", e.RefreshTimestamp)
-	populate(objectMap, "statusActiveEvents", e.StatusActiveEvents)
-	populate(objectMap, "statusBanners", e.StatusBanners)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EmergingIssue.
-func (e *EmergingIssue) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "refreshTimestamp":
-			err = unpopulateTimeRFC3339(val, &e.RefreshTimestamp)
-			delete(rawMsg, key)
-		case "statusActiveEvents":
-			err = unpopulate(val, &e.StatusActiveEvents)
-			delete(rawMsg, key)
-		case "statusBanners":
-			err = unpopulate(val, &e.StatusBanners)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// EmergingIssueImpact - Object of the emerging issue impact on services and regions.
-type EmergingIssueImpact struct {
-	// The impacted service id.
+// ImpactedRegion - Object of impacted region.
+type ImpactedRegion struct {
+	// The impacted region id.
 	ID *string `json:"id,omitempty"`
 
-	// The impacted service name.
+	// The impacted region name.
 	Name *string `json:"name,omitempty"`
-
-	// The list of impacted regions for corresponding emerging issues.
-	Regions []*ImpactedRegion `json:"regions,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type EmergingIssueImpact.
-func (e EmergingIssueImpact) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", e.ID)
-	populate(objectMap, "name", e.Name)
-	populate(objectMap, "regions", e.Regions)
-	return json.Marshal(objectMap)
-}
-
-// EmergingIssueListResult - The list of emerging issues.
-type EmergingIssueListResult struct {
-	// The link used to get the next page of emerging issues.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// The list of emerging issues.
-	Value []*EmergingIssuesGetResult `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EmergingIssueListResult.
-func (e EmergingIssueListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", e.NextLink)
-	populate(objectMap, "value", e.Value)
-	return json.Marshal(objectMap)
-}
-
-// EmergingIssuesClientGetOptions contains the optional parameters for the EmergingIssuesClient.Get method.
-type EmergingIssuesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EmergingIssuesClientListOptions contains the optional parameters for the EmergingIssuesClient.List method.
-type EmergingIssuesClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EmergingIssuesGetResult - The Get EmergingIssues operation response.
-type EmergingIssuesGetResult struct {
-	// The emerging issue entity properties.
-	Properties *EmergingIssue `json:"properties,omitempty"`
+// ImpactedResourceStatus - impactedResource with health status
+type ImpactedResourceStatus struct {
+	// Properties of impacted resource status.
+	Properties *ImpactedResourceStatusProperties `json:"properties,omitempty"`
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -414,13 +188,22 @@ type EmergingIssuesGetResult struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// ImpactedRegion - Object of impacted region.
-type ImpactedRegion struct {
-	// The impacted region id.
-	ID *string `json:"id,omitempty"`
+// ImpactedResourceStatusProperties - Properties of impacted resource status.
+type ImpactedResourceStatusProperties struct {
+	// Impacted resource status of the resource.
+	AvailabilityState *AvailabilityStateValues `json:"availabilityState,omitempty"`
 
-	// The impacted region name.
-	Name *string `json:"name,omitempty"`
+	// Timestamp for when last change in health status occurred.
+	OccurredTime *time.Time `json:"occurredTime,omitempty"`
+
+	// When the resource's availabilityState is Unavailable, it describes where the health impacting event was originated.
+	ReasonType *ReasonTypeValues `json:"reasonType,omitempty"`
+
+	// Summary description of the impacted resource status.
+	Summary *string `json:"summary,omitempty"`
+
+	// Title description of the impacted resource status.
+	Title *string `json:"title,omitempty"`
 }
 
 // Operation available in the resourcehealth resource provider.
@@ -451,13 +234,6 @@ type OperationDisplay struct {
 type OperationListResult struct {
 	// REQUIRED; List of operations available in the resourcehealth resource provider.
 	Value []*Operation `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
@@ -507,49 +283,6 @@ type ServiceImpactingEvent struct {
 	Status *ServiceImpactingEventStatus `json:"status,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ServiceImpactingEvent.
-func (s ServiceImpactingEvent) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "correlationId", s.CorrelationID)
-	populateTimeRFC3339(objectMap, "eventStartTime", s.EventStartTime)
-	populateTimeRFC3339(objectMap, "eventStatusLastModifiedTime", s.EventStatusLastModifiedTime)
-	populate(objectMap, "incidentProperties", s.IncidentProperties)
-	populate(objectMap, "status", s.Status)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ServiceImpactingEvent.
-func (s *ServiceImpactingEvent) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "correlationId":
-			err = unpopulate(val, &s.CorrelationID)
-			delete(rawMsg, key)
-		case "eventStartTime":
-			err = unpopulateTimeRFC3339(val, &s.EventStartTime)
-			delete(rawMsg, key)
-		case "eventStatusLastModifiedTime":
-			err = unpopulateTimeRFC3339(val, &s.EventStatusLastModifiedTime)
-			delete(rawMsg, key)
-		case "incidentProperties":
-			err = unpopulate(val, &s.IncidentProperties)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &s.Status)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ServiceImpactingEventIncidentProperties - Properties of the service impacting event.
 type ServiceImpactingEventIncidentProperties struct {
 	// Type of Event.
@@ -571,102 +304,6 @@ type ServiceImpactingEventStatus struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// StatusActiveEvent - Active event type of emerging issue.
-type StatusActiveEvent struct {
-	// The cloud type of this active event.
-	Cloud *string `json:"cloud,omitempty"`
-
-	// The details of active event.
-	Description *string `json:"description,omitempty"`
-
-	// The list of emerging issues impacts.
-	Impacts []*EmergingIssueImpact `json:"impacts,omitempty"`
-
-	// The last time modified on this banner.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
-
-	// The boolean value of this active event if published or not.
-	Published *bool `json:"published,omitempty"`
-
-	// The severity level of this active event.
-	Severity *SeverityValues `json:"severity,omitempty"`
-
-	// The stage of this active event.
-	Stage *StageValues `json:"stage,omitempty"`
-
-	// The impact start time on this active event.
-	StartTime *time.Time `json:"startTime,omitempty"`
-
-	// The active event title.
-	Title *string `json:"title,omitempty"`
-
-	// The tracking id of this active event.
-	TrackingID *string `json:"trackingId,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type StatusActiveEvent.
-func (s StatusActiveEvent) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "cloud", s.Cloud)
-	populate(objectMap, "description", s.Description)
-	populate(objectMap, "impacts", s.Impacts)
-	populateTimeRFC3339(objectMap, "lastModifiedTime", s.LastModifiedTime)
-	populate(objectMap, "published", s.Published)
-	populate(objectMap, "severity", s.Severity)
-	populate(objectMap, "stage", s.Stage)
-	populateTimeRFC3339(objectMap, "startTime", s.StartTime)
-	populate(objectMap, "title", s.Title)
-	populate(objectMap, "trackingId", s.TrackingID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type StatusActiveEvent.
-func (s *StatusActiveEvent) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "cloud":
-			err = unpopulate(val, &s.Cloud)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &s.Description)
-			delete(rawMsg, key)
-		case "impacts":
-			err = unpopulate(val, &s.Impacts)
-			delete(rawMsg, key)
-		case "lastModifiedTime":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedTime)
-			delete(rawMsg, key)
-		case "published":
-			err = unpopulate(val, &s.Published)
-			delete(rawMsg, key)
-		case "severity":
-			err = unpopulate(val, &s.Severity)
-			delete(rawMsg, key)
-		case "stage":
-			err = unpopulate(val, &s.Stage)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &s.StartTime)
-			delete(rawMsg, key)
-		case "title":
-			err = unpopulate(val, &s.Title)
-			delete(rawMsg, key)
-		case "trackingId":
-			err = unpopulate(val, &s.TrackingID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // StatusBanner - Banner type of emerging issue.
 type StatusBanner struct {
 	// The cloud type of this banner.
@@ -680,60 +317,4 @@ type StatusBanner struct {
 
 	// The banner title.
 	Title *string `json:"title,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type StatusBanner.
-func (s StatusBanner) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "cloud", s.Cloud)
-	populateTimeRFC3339(objectMap, "lastModifiedTime", s.LastModifiedTime)
-	populate(objectMap, "message", s.Message)
-	populate(objectMap, "title", s.Title)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type StatusBanner.
-func (s *StatusBanner) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "cloud":
-			err = unpopulate(val, &s.Cloud)
-			delete(rawMsg, key)
-		case "lastModifiedTime":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedTime)
-			delete(rawMsg, key)
-		case "message":
-			err = unpopulate(val, &s.Message)
-			delete(rawMsg, key)
-		case "title":
-			err = unpopulate(val, &s.Title)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

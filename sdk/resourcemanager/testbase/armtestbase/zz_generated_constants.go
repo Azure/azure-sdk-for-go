@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armtestbase
 
 const (
 	moduleName    = "armtestbase"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // Action - The action of the command.
@@ -33,11 +33,6 @@ func PossibleActionValues() []Action {
 		ActionLaunch,
 		ActionUninstall,
 	}
-}
-
-// ToPtr returns a *Action pointing to the current value.
-func (c Action) ToPtr() *Action {
-	return &c
 }
 
 type AnalysisResultName string
@@ -63,11 +58,6 @@ func PossibleAnalysisResultNameValues() []AnalysisResultName {
 		AnalysisResultNameScriptExecution,
 		AnalysisResultNameTestAnalysis,
 	}
-}
-
-// ToPtr returns a *AnalysisResultName pointing to the current value.
-func (c AnalysisResultName) ToPtr() *AnalysisResultName {
-	return &c
 }
 
 // AnalysisResultType - Type of the Analysis Result.
@@ -96,11 +86,6 @@ func PossibleAnalysisResultTypeValues() []AnalysisResultType {
 	}
 }
 
-// ToPtr returns a *AnalysisResultType pointing to the current value.
-func (c AnalysisResultType) ToPtr() *AnalysisResultType {
-	return &c
-}
-
 // AnalysisStatus - The analysis status.
 type AnalysisStatus string
 
@@ -127,11 +112,6 @@ func PossibleAnalysisStatusValues() []AnalysisStatus {
 	}
 }
 
-// ToPtr returns a *AnalysisStatus pointing to the current value.
-func (c AnalysisStatus) ToPtr() *AnalysisStatus {
-	return &c
-}
-
 // Category - The category of the failure.
 type Category string
 
@@ -154,11 +134,6 @@ func PossibleCategoryValues() []Category {
 	}
 }
 
-// ToPtr returns a *Category pointing to the current value.
-func (c Category) ToPtr() *Category {
-	return &c
-}
-
 // ContentType - The type of command content.
 type ContentType string
 
@@ -175,11 +150,6 @@ func PossibleContentTypeValues() []ContentType {
 		ContentTypeInline,
 		ContentTypePath,
 	}
-}
-
-// ToPtr returns a *ContentType pointing to the current value.
-func (c ContentType) ToPtr() *ContentType {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -200,11 +170,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
 	}
-}
-
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
 }
 
 // ExecutionStatus - The execution status of a test.
@@ -235,11 +200,6 @@ func PossibleExecutionStatusValues() []ExecutionStatus {
 	}
 }
 
-// ToPtr returns a *ExecutionStatus pointing to the current value.
-func (c ExecutionStatus) ToPtr() *ExecutionStatus {
-	return &c
-}
-
 // Grade - The grade of a test.
 type Grade string
 
@@ -260,11 +220,6 @@ func PossibleGradeValues() []Grade {
 	}
 }
 
-// ToPtr returns a *Grade pointing to the current value.
-func (c Grade) ToPtr() *Grade {
-	return &c
-}
-
 type OsUpdateType string
 
 const (
@@ -278,11 +233,6 @@ func PossibleOsUpdateTypeValues() []OsUpdateType {
 		OsUpdateTypeFeatureUpdate,
 		OsUpdateTypeSecurityUpdate,
 	}
-}
-
-// ToPtr returns a *OsUpdateType pointing to the current value.
-func (c OsUpdateType) ToPtr() *OsUpdateType {
-	return &c
 }
 
 // PackageStatus - The status of the package.
@@ -315,11 +265,6 @@ func PossiblePackageStatusValues() []PackageStatus {
 	}
 }
 
-// ToPtr returns a *PackageStatus pointing to the current value.
-func (c PackageStatus) ToPtr() *PackageStatus {
-	return &c
-}
-
 // ProvisioningState - ARM provisioning state, see https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property
 type ProvisioningState string
 
@@ -344,11 +289,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // Reason - The reason for unavailability of a name. Required if nameAvailable == false.
 type Reason string
 
@@ -363,11 +303,6 @@ func PossibleReasonValues() []Reason {
 		ReasonAlreadyExists,
 		ReasonInvalid,
 	}
-}
-
-// ToPtr returns a *Reason pointing to the current value.
-func (c Reason) ToPtr() *Reason {
-	return &c
 }
 
 // TestAnalysisStatus - The status of the analysis.
@@ -388,11 +323,6 @@ func PossibleTestAnalysisStatusValues() []TestAnalysisStatus {
 		TestAnalysisStatusFailed,
 		TestAnalysisStatusNone,
 	}
-}
-
-// ToPtr returns a *TestAnalysisStatus pointing to the current value.
-func (c TestAnalysisStatus) ToPtr() *TestAnalysisStatus {
-	return &c
 }
 
 // TestStatus - The status of a test.
@@ -423,11 +353,6 @@ func PossibleTestStatusValues() []TestStatus {
 	}
 }
 
-// ToPtr returns a *TestStatus pointing to the current value.
-func (c TestStatus) ToPtr() *TestStatus {
-	return &c
-}
-
 // TestType - The test type.
 type TestType string
 
@@ -444,11 +369,6 @@ func PossibleTestTypeValues() []TestType {
 	}
 }
 
-// ToPtr returns a *TestType pointing to the current value.
-func (c TestType) ToPtr() *TestType {
-	return &c
-}
-
 // Tier - The tier of this particular SKU.
 type Tier string
 
@@ -461,11 +381,6 @@ func PossibleTierValues() []Tier {
 	return []Tier{
 		TierStandard,
 	}
-}
-
-// ToPtr returns a *Tier pointing to the current value.
-func (c Tier) ToPtr() *Tier {
-	return &c
 }
 
 // Type - The type of this release (OS update).
@@ -482,11 +397,6 @@ func PossibleTypeValues() []Type {
 		TypeFeatureUpdate,
 		TypeSecurityUpdate,
 	}
-}
-
-// ToPtr returns a *Type pointing to the current value.
-func (c Type) ToPtr() *Type {
-	return &c
 }
 
 // ValidationRunStatus - The status of the validation run of the package.
@@ -507,9 +417,4 @@ func PossibleValidationRunStatusValues() []ValidationRunStatus {
 		ValidationRunStatusPending,
 		ValidationRunStatusUnknown,
 	}
-}
-
-// ToPtr returns a *ValidationRunStatus pointing to the current value.
-func (c ValidationRunStatus) ToPtr() *ValidationRunStatus {
-	return &c
 }

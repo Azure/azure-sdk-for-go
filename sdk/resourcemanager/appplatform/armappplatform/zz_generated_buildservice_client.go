@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type BuildServiceClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewBuildServiceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BuildServiceClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewBuildServiceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BuildServiceClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &BuildServiceClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdateBuild - Create or update a KPack build.
@@ -103,7 +108,7 @@ func (client *BuildServiceClient) createOrUpdateBuildCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, buildParam)
@@ -111,7 +116,7 @@ func (client *BuildServiceClient) createOrUpdateBuildCreateRequest(ctx context.C
 
 // createOrUpdateBuildHandleResponse handles the CreateOrUpdateBuild response.
 func (client *BuildServiceClient) createOrUpdateBuildHandleResponse(resp *http.Response) (BuildServiceClientCreateOrUpdateBuildResponse, error) {
-	result := BuildServiceClientCreateOrUpdateBuildResponse{RawResponse: resp}
+	result := BuildServiceClientCreateOrUpdateBuildResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Build); err != nil {
 		return BuildServiceClientCreateOrUpdateBuildResponse{}, err
 	}
@@ -169,7 +174,7 @@ func (client *BuildServiceClient) getBuildCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -177,7 +182,7 @@ func (client *BuildServiceClient) getBuildCreateRequest(ctx context.Context, res
 
 // getBuildHandleResponse handles the GetBuild response.
 func (client *BuildServiceClient) getBuildHandleResponse(resp *http.Response) (BuildServiceClientGetBuildResponse, error) {
-	result := BuildServiceClientGetBuildResponse{RawResponse: resp}
+	result := BuildServiceClientGetBuildResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Build); err != nil {
 		return BuildServiceClientGetBuildResponse{}, err
 	}
@@ -241,7 +246,7 @@ func (client *BuildServiceClient) getBuildResultCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -249,7 +254,7 @@ func (client *BuildServiceClient) getBuildResultCreateRequest(ctx context.Contex
 
 // getBuildResultHandleResponse handles the GetBuildResult response.
 func (client *BuildServiceClient) getBuildResultHandleResponse(resp *http.Response) (BuildServiceClientGetBuildResultResponse, error) {
-	result := BuildServiceClientGetBuildResultResponse{RawResponse: resp}
+	result := BuildServiceClientGetBuildResultResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BuildResult); err != nil {
 		return BuildServiceClientGetBuildResultResponse{}, err
 	}
@@ -313,7 +318,7 @@ func (client *BuildServiceClient) getBuildResultLogCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -321,7 +326,7 @@ func (client *BuildServiceClient) getBuildResultLogCreateRequest(ctx context.Con
 
 // getBuildResultLogHandleResponse handles the GetBuildResultLog response.
 func (client *BuildServiceClient) getBuildResultLogHandleResponse(resp *http.Response) (BuildServiceClientGetBuildResultLogResponse, error) {
-	result := BuildServiceClientGetBuildResultLogResponse{RawResponse: resp}
+	result := BuildServiceClientGetBuildResultLogResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BuildResultLog); err != nil {
 		return BuildServiceClientGetBuildResultLogResponse{}, err
 	}
@@ -375,7 +380,7 @@ func (client *BuildServiceClient) getBuildServiceCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -383,7 +388,7 @@ func (client *BuildServiceClient) getBuildServiceCreateRequest(ctx context.Conte
 
 // getBuildServiceHandleResponse handles the GetBuildService response.
 func (client *BuildServiceClient) getBuildServiceHandleResponse(resp *http.Response) (BuildServiceClientGetBuildServiceResponse, error) {
-	result := BuildServiceClientGetBuildServiceResponse{RawResponse: resp}
+	result := BuildServiceClientGetBuildServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BuildService); err != nil {
 		return BuildServiceClientGetBuildServiceResponse{}, err
 	}
@@ -437,7 +442,7 @@ func (client *BuildServiceClient) getResourceUploadURLCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -445,7 +450,7 @@ func (client *BuildServiceClient) getResourceUploadURLCreateRequest(ctx context.
 
 // getResourceUploadURLHandleResponse handles the GetResourceUploadURL response.
 func (client *BuildServiceClient) getResourceUploadURLHandleResponse(resp *http.Response) (BuildServiceClientGetResourceUploadURLResponse, error) {
-	result := BuildServiceClientGetResourceUploadURLResponse{RawResponse: resp}
+	result := BuildServiceClientGetResourceUploadURLResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceUploadDefinition); err != nil {
 		return BuildServiceClientGetResourceUploadURLResponse{}, err
 	}
@@ -504,7 +509,7 @@ func (client *BuildServiceClient) getSupportedBuildpackCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -512,7 +517,7 @@ func (client *BuildServiceClient) getSupportedBuildpackCreateRequest(ctx context
 
 // getSupportedBuildpackHandleResponse handles the GetSupportedBuildpack response.
 func (client *BuildServiceClient) getSupportedBuildpackHandleResponse(resp *http.Response) (BuildServiceClientGetSupportedBuildpackResponse, error) {
-	result := BuildServiceClientGetSupportedBuildpackResponse{RawResponse: resp}
+	result := BuildServiceClientGetSupportedBuildpackResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SupportedBuildpackResource); err != nil {
 		return BuildServiceClientGetSupportedBuildpackResponse{}, err
 	}
@@ -571,7 +576,7 @@ func (client *BuildServiceClient) getSupportedStackCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -579,7 +584,7 @@ func (client *BuildServiceClient) getSupportedStackCreateRequest(ctx context.Con
 
 // getSupportedStackHandleResponse handles the GetSupportedStack response.
 func (client *BuildServiceClient) getSupportedStackHandleResponse(resp *http.Response) (BuildServiceClientGetSupportedStackResponse, error) {
-	result := BuildServiceClientGetSupportedStackResponse{RawResponse: resp}
+	result := BuildServiceClientGetSupportedStackResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SupportedStackResource); err != nil {
 		return BuildServiceClientGetSupportedStackResponse{}, err
 	}
@@ -595,16 +600,32 @@ func (client *BuildServiceClient) getSupportedStackHandleResponse(resp *http.Res
 // buildName - The name of the build resource.
 // options - BuildServiceClientListBuildResultsOptions contains the optional parameters for the BuildServiceClient.ListBuildResults
 // method.
-func (client *BuildServiceClient) ListBuildResults(resourceGroupName string, serviceName string, buildServiceName string, buildName string, options *BuildServiceClientListBuildResultsOptions) *BuildServiceClientListBuildResultsPager {
-	return &BuildServiceClientListBuildResultsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBuildResultsCreateRequest(ctx, resourceGroupName, serviceName, buildServiceName, buildName, options)
+func (client *BuildServiceClient) ListBuildResults(resourceGroupName string, serviceName string, buildServiceName string, buildName string, options *BuildServiceClientListBuildResultsOptions) *runtime.Pager[BuildServiceClientListBuildResultsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[BuildServiceClientListBuildResultsResponse]{
+		More: func(page BuildServiceClientListBuildResultsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp BuildServiceClientListBuildResultsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.BuildResultCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *BuildServiceClientListBuildResultsResponse) (BuildServiceClientListBuildResultsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBuildResultsCreateRequest(ctx, resourceGroupName, serviceName, buildServiceName, buildName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return BuildServiceClientListBuildResultsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return BuildServiceClientListBuildResultsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return BuildServiceClientListBuildResultsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBuildResultsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBuildResultsCreateRequest creates the ListBuildResults request.
@@ -635,7 +656,7 @@ func (client *BuildServiceClient) listBuildResultsCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -643,7 +664,7 @@ func (client *BuildServiceClient) listBuildResultsCreateRequest(ctx context.Cont
 
 // listBuildResultsHandleResponse handles the ListBuildResults response.
 func (client *BuildServiceClient) listBuildResultsHandleResponse(resp *http.Response) (BuildServiceClientListBuildResultsResponse, error) {
-	result := BuildServiceClientListBuildResultsResponse{RawResponse: resp}
+	result := BuildServiceClientListBuildResultsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BuildResultCollection); err != nil {
 		return BuildServiceClientListBuildResultsResponse{}, err
 	}
@@ -657,16 +678,32 @@ func (client *BuildServiceClient) listBuildResultsHandleResponse(resp *http.Resp
 // serviceName - The name of the Service resource.
 // options - BuildServiceClientListBuildServicesOptions contains the optional parameters for the BuildServiceClient.ListBuildServices
 // method.
-func (client *BuildServiceClient) ListBuildServices(resourceGroupName string, serviceName string, options *BuildServiceClientListBuildServicesOptions) *BuildServiceClientListBuildServicesPager {
-	return &BuildServiceClientListBuildServicesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBuildServicesCreateRequest(ctx, resourceGroupName, serviceName, options)
+func (client *BuildServiceClient) ListBuildServices(resourceGroupName string, serviceName string, options *BuildServiceClientListBuildServicesOptions) *runtime.Pager[BuildServiceClientListBuildServicesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[BuildServiceClientListBuildServicesResponse]{
+		More: func(page BuildServiceClientListBuildServicesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp BuildServiceClientListBuildServicesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.BuildServiceCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *BuildServiceClientListBuildServicesResponse) (BuildServiceClientListBuildServicesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBuildServicesCreateRequest(ctx, resourceGroupName, serviceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return BuildServiceClientListBuildServicesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return BuildServiceClientListBuildServicesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return BuildServiceClientListBuildServicesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBuildServicesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBuildServicesCreateRequest creates the ListBuildServices request.
@@ -689,7 +726,7 @@ func (client *BuildServiceClient) listBuildServicesCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -697,7 +734,7 @@ func (client *BuildServiceClient) listBuildServicesCreateRequest(ctx context.Con
 
 // listBuildServicesHandleResponse handles the ListBuildServices response.
 func (client *BuildServiceClient) listBuildServicesHandleResponse(resp *http.Response) (BuildServiceClientListBuildServicesResponse, error) {
-	result := BuildServiceClientListBuildServicesResponse{RawResponse: resp}
+	result := BuildServiceClientListBuildServicesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BuildServiceCollection); err != nil {
 		return BuildServiceClientListBuildServicesResponse{}, err
 	}
@@ -711,16 +748,32 @@ func (client *BuildServiceClient) listBuildServicesHandleResponse(resp *http.Res
 // serviceName - The name of the Service resource.
 // buildServiceName - The name of the build service resource.
 // options - BuildServiceClientListBuildsOptions contains the optional parameters for the BuildServiceClient.ListBuilds method.
-func (client *BuildServiceClient) ListBuilds(resourceGroupName string, serviceName string, buildServiceName string, options *BuildServiceClientListBuildsOptions) *BuildServiceClientListBuildsPager {
-	return &BuildServiceClientListBuildsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBuildsCreateRequest(ctx, resourceGroupName, serviceName, buildServiceName, options)
+func (client *BuildServiceClient) ListBuilds(resourceGroupName string, serviceName string, buildServiceName string, options *BuildServiceClientListBuildsOptions) *runtime.Pager[BuildServiceClientListBuildsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[BuildServiceClientListBuildsResponse]{
+		More: func(page BuildServiceClientListBuildsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp BuildServiceClientListBuildsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.BuildCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *BuildServiceClientListBuildsResponse) (BuildServiceClientListBuildsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBuildsCreateRequest(ctx, resourceGroupName, serviceName, buildServiceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return BuildServiceClientListBuildsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return BuildServiceClientListBuildsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return BuildServiceClientListBuildsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBuildsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBuildsCreateRequest creates the ListBuilds request.
@@ -747,7 +800,7 @@ func (client *BuildServiceClient) listBuildsCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -755,7 +808,7 @@ func (client *BuildServiceClient) listBuildsCreateRequest(ctx context.Context, r
 
 // listBuildsHandleResponse handles the ListBuilds response.
 func (client *BuildServiceClient) listBuildsHandleResponse(resp *http.Response) (BuildServiceClientListBuildsResponse, error) {
-	result := BuildServiceClientListBuildsResponse{RawResponse: resp}
+	result := BuildServiceClientListBuildsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BuildCollection); err != nil {
 		return BuildServiceClientListBuildsResponse{}, err
 	}
@@ -809,7 +862,7 @@ func (client *BuildServiceClient) listSupportedBuildpacksCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -817,7 +870,7 @@ func (client *BuildServiceClient) listSupportedBuildpacksCreateRequest(ctx conte
 
 // listSupportedBuildpacksHandleResponse handles the ListSupportedBuildpacks response.
 func (client *BuildServiceClient) listSupportedBuildpacksHandleResponse(resp *http.Response) (BuildServiceClientListSupportedBuildpacksResponse, error) {
-	result := BuildServiceClientListSupportedBuildpacksResponse{RawResponse: resp}
+	result := BuildServiceClientListSupportedBuildpacksResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SupportedBuildpacksCollection); err != nil {
 		return BuildServiceClientListSupportedBuildpacksResponse{}, err
 	}
@@ -871,7 +924,7 @@ func (client *BuildServiceClient) listSupportedStacksCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -879,7 +932,7 @@ func (client *BuildServiceClient) listSupportedStacksCreateRequest(ctx context.C
 
 // listSupportedStacksHandleResponse handles the ListSupportedStacks response.
 func (client *BuildServiceClient) listSupportedStacksHandleResponse(resp *http.Response) (BuildServiceClientListSupportedStacksResponse, error) {
-	result := BuildServiceClientListSupportedStacksResponse{RawResponse: resp}
+	result := BuildServiceClientListSupportedStacksResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SupportedStacksCollection); err != nil {
 		return BuildServiceClientListSupportedStacksResponse{}, err
 	}

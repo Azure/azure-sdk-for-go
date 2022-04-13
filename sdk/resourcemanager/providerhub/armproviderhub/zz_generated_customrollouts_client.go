@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type CustomRolloutsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewCustomRolloutsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CustomRolloutsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewCustomRolloutsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CustomRolloutsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &CustomRolloutsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates the rollout details.
@@ -99,7 +104,7 @@ func (client *CustomRolloutsClient) createOrUpdateCreateRequest(ctx context.Cont
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *CustomRolloutsClient) createOrUpdateHandleResponse(resp *http.Response) (CustomRolloutsClientCreateOrUpdateResponse, error) {
-	result := CustomRolloutsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := CustomRolloutsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomRollout); err != nil {
 		return CustomRolloutsClientCreateOrUpdateResponse{}, err
 	}
@@ -154,7 +159,7 @@ func (client *CustomRolloutsClient) getCreateRequest(ctx context.Context, provid
 
 // getHandleResponse handles the Get response.
 func (client *CustomRolloutsClient) getHandleResponse(resp *http.Response) (CustomRolloutsClientGetResponse, error) {
-	result := CustomRolloutsClientGetResponse{RawResponse: resp}
+	result := CustomRolloutsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomRollout); err != nil {
 		return CustomRolloutsClientGetResponse{}, err
 	}
@@ -166,16 +171,32 @@ func (client *CustomRolloutsClient) getHandleResponse(resp *http.Response) (Cust
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // options - CustomRolloutsClientListByProviderRegistrationOptions contains the optional parameters for the CustomRolloutsClient.ListByProviderRegistration
 // method.
-func (client *CustomRolloutsClient) ListByProviderRegistration(providerNamespace string, options *CustomRolloutsClientListByProviderRegistrationOptions) *CustomRolloutsClientListByProviderRegistrationPager {
-	return &CustomRolloutsClientListByProviderRegistrationPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByProviderRegistrationCreateRequest(ctx, providerNamespace, options)
+func (client *CustomRolloutsClient) ListByProviderRegistration(providerNamespace string, options *CustomRolloutsClientListByProviderRegistrationOptions) *runtime.Pager[CustomRolloutsClientListByProviderRegistrationResponse] {
+	return runtime.NewPager(runtime.PageProcessor[CustomRolloutsClientListByProviderRegistrationResponse]{
+		More: func(page CustomRolloutsClientListByProviderRegistrationResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp CustomRolloutsClientListByProviderRegistrationResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CustomRolloutArrayResponseWithContinuation.NextLink)
+		Fetcher: func(ctx context.Context, page *CustomRolloutsClientListByProviderRegistrationResponse) (CustomRolloutsClientListByProviderRegistrationResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByProviderRegistrationCreateRequest(ctx, providerNamespace, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CustomRolloutsClientListByProviderRegistrationResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CustomRolloutsClientListByProviderRegistrationResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CustomRolloutsClientListByProviderRegistrationResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByProviderRegistrationHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByProviderRegistrationCreateRequest creates the ListByProviderRegistration request.
@@ -202,7 +223,7 @@ func (client *CustomRolloutsClient) listByProviderRegistrationCreateRequest(ctx 
 
 // listByProviderRegistrationHandleResponse handles the ListByProviderRegistration response.
 func (client *CustomRolloutsClient) listByProviderRegistrationHandleResponse(resp *http.Response) (CustomRolloutsClientListByProviderRegistrationResponse, error) {
-	result := CustomRolloutsClientListByProviderRegistrationResponse{RawResponse: resp}
+	result := CustomRolloutsClientListByProviderRegistrationResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomRolloutArrayResponseWithContinuation); err != nil {
 		return CustomRolloutsClientListByProviderRegistrationResponse{}, err
 	}

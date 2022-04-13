@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type OnPremiseSensorsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewOnPremiseSensorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OnPremiseSensorsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewOnPremiseSensorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OnPremiseSensorsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &OnPremiseSensorsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create or update on-premise IoT sensor
@@ -93,7 +98,7 @@ func (client *OnPremiseSensorsClient) createOrUpdateCreateRequest(ctx context.Co
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *OnPremiseSensorsClient) createOrUpdateHandleResponse(resp *http.Response) (OnPremiseSensorsClientCreateOrUpdateResponse, error) {
-	result := OnPremiseSensorsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := OnPremiseSensorsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OnPremiseSensor); err != nil {
 		return OnPremiseSensorsClientCreateOrUpdateResponse{}, err
 	}
@@ -116,7 +121,7 @@ func (client *OnPremiseSensorsClient) Delete(ctx context.Context, onPremiseSenso
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return OnPremiseSensorsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return OnPremiseSensorsClientDeleteResponse{RawResponse: resp}, nil
+	return OnPremiseSensorsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -158,7 +163,7 @@ func (client *OnPremiseSensorsClient) DownloadActivation(ctx context.Context, on
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return OnPremiseSensorsClientDownloadActivationResponse{}, runtime.NewResponseError(resp)
 	}
-	return OnPremiseSensorsClientDownloadActivationResponse{RawResponse: resp}, nil
+	return OnPremiseSensorsClientDownloadActivationResponse{Body: resp.Body}, nil
 }
 
 // downloadActivationCreateRequest creates the DownloadActivation request.
@@ -202,7 +207,7 @@ func (client *OnPremiseSensorsClient) DownloadResetPassword(ctx context.Context,
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return OnPremiseSensorsClientDownloadResetPasswordResponse{}, runtime.NewResponseError(resp)
 	}
-	return OnPremiseSensorsClientDownloadResetPasswordResponse{RawResponse: resp}, nil
+	return OnPremiseSensorsClientDownloadResetPasswordResponse{Body: resp.Body}, nil
 }
 
 // downloadResetPasswordCreateRequest creates the DownloadResetPassword request.
@@ -271,7 +276,7 @@ func (client *OnPremiseSensorsClient) getCreateRequest(ctx context.Context, onPr
 
 // getHandleResponse handles the Get response.
 func (client *OnPremiseSensorsClient) getHandleResponse(resp *http.Response) (OnPremiseSensorsClientGetResponse, error) {
-	result := OnPremiseSensorsClientGetResponse{RawResponse: resp}
+	result := OnPremiseSensorsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OnPremiseSensor); err != nil {
 		return OnPremiseSensorsClientGetResponse{}, err
 	}
@@ -316,7 +321,7 @@ func (client *OnPremiseSensorsClient) listCreateRequest(ctx context.Context, opt
 
 // listHandleResponse handles the List response.
 func (client *OnPremiseSensorsClient) listHandleResponse(resp *http.Response) (OnPremiseSensorsClientListResponse, error) {
-	result := OnPremiseSensorsClientListResponse{RawResponse: resp}
+	result := OnPremiseSensorsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OnPremiseSensorsList); err != nil {
 		return OnPremiseSensorsClientListResponse{}, err
 	}

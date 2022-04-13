@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type SourceControlsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSourceControlsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SourceControlsClient {
+func NewSourceControlsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SourceControlsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SourceControlsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Creates a source control.
@@ -95,7 +100,7 @@ func (client *SourceControlsClient) createCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, sourceControl)
@@ -103,7 +108,7 @@ func (client *SourceControlsClient) createCreateRequest(ctx context.Context, res
 
 // createHandleResponse handles the Create response.
 func (client *SourceControlsClient) createHandleResponse(resp *http.Response) (SourceControlsClientCreateResponse, error) {
-	result := SourceControlsClientCreateResponse{RawResponse: resp}
+	result := SourceControlsClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControl); err != nil {
 		return SourceControlsClientCreateResponse{}, err
 	}
@@ -128,7 +133,7 @@ func (client *SourceControlsClient) Delete(ctx context.Context, resourceGroupNam
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return SourceControlsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SourceControlsClientDeleteResponse{RawResponse: resp}, nil
+	return SourceControlsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -155,7 +160,7 @@ func (client *SourceControlsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -206,7 +211,7 @@ func (client *SourceControlsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -214,7 +219,7 @@ func (client *SourceControlsClient) getCreateRequest(ctx context.Context, resour
 
 // getHandleResponse handles the Get response.
 func (client *SourceControlsClient) getHandleResponse(resp *http.Response) (SourceControlsClientGetResponse, error) {
-	result := SourceControlsClientGetResponse{RawResponse: resp}
+	result := SourceControlsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControl); err != nil {
 		return SourceControlsClientGetResponse{}, err
 	}
@@ -226,16 +231,32 @@ func (client *SourceControlsClient) getHandleResponse(resp *http.Response) (Sour
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - SourceControlsClientListOptions contains the optional parameters for the SourceControlsClient.List method.
-func (client *SourceControlsClient) List(resourceGroupName string, workspaceName string, options *SourceControlsClientListOptions) *SourceControlsClientListPager {
-	return &SourceControlsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
+func (client *SourceControlsClient) List(resourceGroupName string, workspaceName string, options *SourceControlsClientListOptions) *runtime.Pager[SourceControlsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SourceControlsClientListResponse]{
+		More: func(page SourceControlsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SourceControlsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SourceControlList.NextLink)
+		Fetcher: func(ctx context.Context, page *SourceControlsClientListResponse) (SourceControlsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SourceControlsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SourceControlsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SourceControlsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -258,7 +279,7 @@ func (client *SourceControlsClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -266,7 +287,7 @@ func (client *SourceControlsClient) listCreateRequest(ctx context.Context, resou
 
 // listHandleResponse handles the List response.
 func (client *SourceControlsClient) listHandleResponse(resp *http.Response) (SourceControlsClientListResponse, error) {
-	result := SourceControlsClientListResponse{RawResponse: resp}
+	result := SourceControlsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControlList); err != nil {
 		return SourceControlsClientListResponse{}, err
 	}

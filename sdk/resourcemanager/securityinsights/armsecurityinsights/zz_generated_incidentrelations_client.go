@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type IncidentRelationsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewIncidentRelationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IncidentRelationsClient {
+func NewIncidentRelationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IncidentRelationsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &IncidentRelationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates the incident relation.
@@ -102,7 +107,7 @@ func (client *IncidentRelationsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, relation)
@@ -110,7 +115,7 @@ func (client *IncidentRelationsClient) createOrUpdateCreateRequest(ctx context.C
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *IncidentRelationsClient) createOrUpdateHandleResponse(resp *http.Response) (IncidentRelationsClientCreateOrUpdateResponse, error) {
-	result := IncidentRelationsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := IncidentRelationsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Relation); err != nil {
 		return IncidentRelationsClientCreateOrUpdateResponse{}, err
 	}
@@ -137,7 +142,7 @@ func (client *IncidentRelationsClient) Delete(ctx context.Context, resourceGroup
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return IncidentRelationsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return IncidentRelationsClientDeleteResponse{RawResponse: resp}, nil
+	return IncidentRelationsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -168,7 +173,7 @@ func (client *IncidentRelationsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -224,7 +229,7 @@ func (client *IncidentRelationsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -232,7 +237,7 @@ func (client *IncidentRelationsClient) getCreateRequest(ctx context.Context, res
 
 // getHandleResponse handles the Get response.
 func (client *IncidentRelationsClient) getHandleResponse(resp *http.Response) (IncidentRelationsClientGetResponse, error) {
-	result := IncidentRelationsClientGetResponse{RawResponse: resp}
+	result := IncidentRelationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Relation); err != nil {
 		return IncidentRelationsClientGetResponse{}, err
 	}
@@ -245,16 +250,32 @@ func (client *IncidentRelationsClient) getHandleResponse(resp *http.Response) (I
 // workspaceName - The name of the workspace.
 // incidentID - Incident ID
 // options - IncidentRelationsClientListOptions contains the optional parameters for the IncidentRelationsClient.List method.
-func (client *IncidentRelationsClient) List(resourceGroupName string, workspaceName string, incidentID string, options *IncidentRelationsClientListOptions) *IncidentRelationsClientListPager {
-	return &IncidentRelationsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, workspaceName, incidentID, options)
+func (client *IncidentRelationsClient) List(resourceGroupName string, workspaceName string, incidentID string, options *IncidentRelationsClientListOptions) *runtime.Pager[IncidentRelationsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[IncidentRelationsClientListResponse]{
+		More: func(page IncidentRelationsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp IncidentRelationsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RelationList.NextLink)
+		Fetcher: func(ctx context.Context, page *IncidentRelationsClientListResponse) (IncidentRelationsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, workspaceName, incidentID, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return IncidentRelationsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return IncidentRelationsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return IncidentRelationsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -281,7 +302,7 @@ func (client *IncidentRelationsClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -301,7 +322,7 @@ func (client *IncidentRelationsClient) listCreateRequest(ctx context.Context, re
 
 // listHandleResponse handles the List response.
 func (client *IncidentRelationsClient) listHandleResponse(resp *http.Response) (IncidentRelationsClientListResponse, error) {
-	result := IncidentRelationsClientListResponse{RawResponse: resp}
+	result := IncidentRelationsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RelationList); err != nil {
 		return IncidentRelationsClientListResponse{}, err
 	}

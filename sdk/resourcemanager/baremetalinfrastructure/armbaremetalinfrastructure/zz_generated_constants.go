@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armbaremetalinfrastructure
 
 const (
 	moduleName    = "armbaremetalinfrastructure"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // AzureBareMetalHardwareTypeNamesEnum - Name of the hardware type (vendor and/or their product name)
@@ -27,11 +27,6 @@ func PossibleAzureBareMetalHardwareTypeNamesEnumValues() []AzureBareMetalHardwar
 		AzureBareMetalHardwareTypeNamesEnumCiscoUCS,
 		AzureBareMetalHardwareTypeNamesEnumHPE,
 	}
-}
-
-// ToPtr returns a *AzureBareMetalHardwareTypeNamesEnum pointing to the current value.
-func (c AzureBareMetalHardwareTypeNamesEnum) ToPtr() *AzureBareMetalHardwareTypeNamesEnum {
-	return &c
 }
 
 // AzureBareMetalInstancePowerStateEnum - Resource power state
@@ -56,11 +51,6 @@ func PossibleAzureBareMetalInstancePowerStateEnumValues() []AzureBareMetalInstan
 		AzureBareMetalInstancePowerStateEnumStopping,
 		AzureBareMetalInstancePowerStateEnumUnknown,
 	}
-}
-
-// ToPtr returns a *AzureBareMetalInstancePowerStateEnum pointing to the current value.
-func (c AzureBareMetalInstancePowerStateEnum) ToPtr() *AzureBareMetalInstancePowerStateEnum {
-	return &c
 }
 
 // AzureBareMetalInstanceSizeNamesEnum - Specifies the AzureBareMetal instance SKU.
@@ -161,11 +151,6 @@ func PossibleAzureBareMetalInstanceSizeNamesEnumValues() []AzureBareMetalInstanc
 	}
 }
 
-// ToPtr returns a *AzureBareMetalInstanceSizeNamesEnum pointing to the current value.
-func (c AzureBareMetalInstanceSizeNamesEnum) ToPtr() *AzureBareMetalInstanceSizeNamesEnum {
-	return &c
-}
-
 // AzureBareMetalProvisioningStatesEnum - State of provisioning of the AzureBareMetalInstance
 type AzureBareMetalProvisioningStatesEnum string
 
@@ -192,11 +177,6 @@ func PossibleAzureBareMetalProvisioningStatesEnumValues() []AzureBareMetalProvis
 	}
 }
 
-// ToPtr returns a *AzureBareMetalProvisioningStatesEnum pointing to the current value.
-func (c AzureBareMetalProvisioningStatesEnum) ToPtr() *AzureBareMetalProvisioningStatesEnum {
-	return &c
-}
-
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -215,9 +195,4 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
 	}
-}
-
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armredis
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // AccessKeys - Redis cache access keys.
 type AccessKeys struct {
@@ -22,6 +17,11 @@ type AccessKeys struct {
 
 	// READ-ONLY; The current secondary key that clients can use to authenticate with Redis cache.
 	SecondaryKey *string `json:"secondaryKey,omitempty" azure:"ro"`
+}
+
+// AsyncOperationStatusClientGetOptions contains the optional parameters for the AsyncOperationStatusClient.Get method.
+type AsyncOperationStatusClientGetOptions struct {
+	// placeholder for future optional parameters
 }
 
 // CheckNameAvailabilityParameters - Parameters body to pass for resource name availability check.
@@ -35,22 +35,26 @@ type CheckNameAvailabilityParameters struct {
 
 // ClientBeginCreateOptions contains the optional parameters for the Client.BeginCreate method.
 type ClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
 type ClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ClientBeginExportDataOptions contains the optional parameters for the Client.BeginExportData method.
 type ClientBeginExportDataOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ClientBeginImportDataOptions contains the optional parameters for the Client.BeginImportData method.
 type ClientBeginImportDataOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ClientCheckNameAvailabilityOptions contains the optional parameters for the Client.CheckNameAvailability method.
@@ -132,21 +136,6 @@ type CommonProperties struct {
 	TenantSettings map[string]*string `json:"tenantSettings,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CommonProperties.
-func (c CommonProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "enableNonSslPort", c.EnableNonSSLPort)
-	populate(objectMap, "minimumTlsVersion", c.MinimumTLSVersion)
-	populate(objectMap, "publicNetworkAccess", c.PublicNetworkAccess)
-	populate(objectMap, "redisConfiguration", c.RedisConfiguration)
-	populate(objectMap, "redisVersion", c.RedisVersion)
-	populate(objectMap, "replicasPerMaster", c.ReplicasPerMaster)
-	populate(objectMap, "replicasPerPrimary", c.ReplicasPerPrimary)
-	populate(objectMap, "shardCount", c.ShardCount)
-	populate(objectMap, "tenantSettings", c.TenantSettings)
-	return json.Marshal(objectMap)
-}
-
 // CommonPropertiesRedisConfiguration - All Redis Settings. Few possible keys:
 // rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
 // etc.
@@ -194,96 +183,9 @@ type CommonPropertiesRedisConfiguration struct {
 	// READ-ONLY; Preferred auth method to communicate to storage account used for data persistence, specify SAS or ManagedIdentity,
 	// default value is SAS
 	PreferredDataPersistenceAuthMethod *string `json:"preferred-data-persistence-auth-method,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type CommonPropertiesRedisConfiguration.
-func (c CommonPropertiesRedisConfiguration) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "aof-storage-connection-string-0", c.AofStorageConnectionString0)
-	populate(objectMap, "aof-storage-connection-string-1", c.AofStorageConnectionString1)
-	populate(objectMap, "maxclients", c.Maxclients)
-	populate(objectMap, "maxfragmentationmemory-reserved", c.MaxfragmentationmemoryReserved)
-	populate(objectMap, "maxmemory-delta", c.MaxmemoryDelta)
-	populate(objectMap, "maxmemory-policy", c.MaxmemoryPolicy)
-	populate(objectMap, "maxmemory-reserved", c.MaxmemoryReserved)
-	populate(objectMap, "preferred-data-archive-auth-method", c.PreferredDataArchiveAuthMethod)
-	populate(objectMap, "preferred-data-persistence-auth-method", c.PreferredDataPersistenceAuthMethod)
-	populate(objectMap, "rdb-backup-enabled", c.RdbBackupEnabled)
-	populate(objectMap, "rdb-backup-frequency", c.RdbBackupFrequency)
-	populate(objectMap, "rdb-backup-max-snapshot-count", c.RdbBackupMaxSnapshotCount)
-	populate(objectMap, "rdb-storage-connection-string", c.RdbStorageConnectionString)
-	if c.AdditionalProperties != nil {
-		for key, val := range c.AdditionalProperties {
-			objectMap[key] = val
-		}
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CommonPropertiesRedisConfiguration.
-func (c *CommonPropertiesRedisConfiguration) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "aof-storage-connection-string-0":
-			err = unpopulate(val, &c.AofStorageConnectionString0)
-			delete(rawMsg, key)
-		case "aof-storage-connection-string-1":
-			err = unpopulate(val, &c.AofStorageConnectionString1)
-			delete(rawMsg, key)
-		case "maxclients":
-			err = unpopulate(val, &c.Maxclients)
-			delete(rawMsg, key)
-		case "maxfragmentationmemory-reserved":
-			err = unpopulate(val, &c.MaxfragmentationmemoryReserved)
-			delete(rawMsg, key)
-		case "maxmemory-delta":
-			err = unpopulate(val, &c.MaxmemoryDelta)
-			delete(rawMsg, key)
-		case "maxmemory-policy":
-			err = unpopulate(val, &c.MaxmemoryPolicy)
-			delete(rawMsg, key)
-		case "maxmemory-reserved":
-			err = unpopulate(val, &c.MaxmemoryReserved)
-			delete(rawMsg, key)
-		case "preferred-data-archive-auth-method":
-			err = unpopulate(val, &c.PreferredDataArchiveAuthMethod)
-			delete(rawMsg, key)
-		case "preferred-data-persistence-auth-method":
-			err = unpopulate(val, &c.PreferredDataPersistenceAuthMethod)
-			delete(rawMsg, key)
-		case "rdb-backup-enabled":
-			err = unpopulate(val, &c.RdbBackupEnabled)
-			delete(rawMsg, key)
-		case "rdb-backup-frequency":
-			err = unpopulate(val, &c.RdbBackupFrequency)
-			delete(rawMsg, key)
-		case "rdb-backup-max-snapshot-count":
-			err = unpopulate(val, &c.RdbBackupMaxSnapshotCount)
-			delete(rawMsg, key)
-		case "rdb-storage-connection-string":
-			err = unpopulate(val, &c.RdbStorageConnectionString)
-			delete(rawMsg, key)
-		default:
-			if c.AdditionalProperties == nil {
-				c.AdditionalProperties = map[string]interface{}{}
-			}
-			if val != nil {
-				var aux interface{}
-				err = json.Unmarshal(val, &aux)
-				c.AdditionalProperties[key] = aux
-			}
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+	// READ-ONLY; Zonal Configuration
+	ZonalConfiguration *string `json:"zonal-configuration,omitempty" azure:"ro"`
 }
 
 // CreateParameters - Parameters supplied to the Create Redis operation.
@@ -302,17 +204,6 @@ type CreateParameters struct {
 
 	// A list of availability zones denoting where the resource needs to come from.
 	Zones []*string `json:"zones,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CreateParameters.
-func (c CreateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "identity", c.Identity)
-	populate(objectMap, "location", c.Location)
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "tags", c.Tags)
-	populate(objectMap, "zones", c.Zones)
-	return json.Marshal(objectMap)
 }
 
 // CreateProperties - Properties supplied to Create Redis operation.
@@ -360,22 +251,56 @@ type CreateProperties struct {
 	TenantSettings map[string]*string `json:"tenantSettings,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CreateProperties.
-func (c CreateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "enableNonSslPort", c.EnableNonSSLPort)
-	populate(objectMap, "minimumTlsVersion", c.MinimumTLSVersion)
-	populate(objectMap, "publicNetworkAccess", c.PublicNetworkAccess)
-	populate(objectMap, "redisConfiguration", c.RedisConfiguration)
-	populate(objectMap, "redisVersion", c.RedisVersion)
-	populate(objectMap, "replicasPerMaster", c.ReplicasPerMaster)
-	populate(objectMap, "replicasPerPrimary", c.ReplicasPerPrimary)
-	populate(objectMap, "sku", c.SKU)
-	populate(objectMap, "shardCount", c.ShardCount)
-	populate(objectMap, "staticIP", c.StaticIP)
-	populate(objectMap, "subnetId", c.SubnetID)
-	populate(objectMap, "tenantSettings", c.TenantSettings)
-	return json.Marshal(objectMap)
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info interface{} `json:"info,omitempty" azure:"ro"`
+
+	// READ-ONLY; The additional info type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error code.
+	Code *string `json:"code,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error message.
+	Message *string `json:"message,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error target.
+	Target *string `json:"target,omitempty" azure:"ro"`
+}
+
+// ErrorDetailAutoGenerated - The error detail.
+type ErrorDetailAutoGenerated struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error code.
+	Code *string `json:"code,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetailAutoGenerated `json:"details,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error message.
+	Message *string `json:"message,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error target.
+	Target *string `json:"target,omitempty" azure:"ro"`
+}
+
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // ExportRDBParameters - Parameters for Redis export operation.
@@ -431,14 +356,6 @@ type FirewallRuleListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type FirewallRuleListResult.
-func (f FirewallRuleListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", f.NextLink)
-	populate(objectMap, "value", f.Value)
-	return json.Marshal(objectMap)
-}
-
 // FirewallRuleProperties - Specifies a range of IP addresses permitted to connect to the cache
 type FirewallRuleProperties struct {
 	// REQUIRED; highest IP address included in the range
@@ -483,14 +400,6 @@ type ImportRDBParameters struct {
 	Format *string `json:"format,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ImportRDBParameters.
-func (i ImportRDBParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "files", i.Files)
-	populate(objectMap, "format", i.Format)
-	return json.Marshal(objectMap)
-}
-
 // InstanceDetails - Details of single instance of redis.
 type InstanceDetails struct {
 	// READ-ONLY; Specifies whether the instance is a primary node.
@@ -520,7 +429,8 @@ type LinkedServer struct {
 
 // LinkedServerClientBeginCreateOptions contains the optional parameters for the LinkedServerClient.BeginCreate method.
 type LinkedServerClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // LinkedServerClientDeleteOptions contains the optional parameters for the LinkedServerClient.Delete method.
@@ -595,14 +505,6 @@ type LinkedServerWithPropertiesList struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LinkedServerWithPropertiesList.
-func (l LinkedServerWithPropertiesList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
-}
-
 // ListResult - The response of list Redis operation.
 type ListResult struct {
 	// List of Redis cache instances.
@@ -610,14 +512,6 @@ type ListResult struct {
 
 	// READ-ONLY; Link for next page of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ListResult.
-func (l ListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
 }
 
 // ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
@@ -640,16 +534,6 @@ type ManagedServiceIdentity struct {
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ManagedServiceIdentity.
-func (m ManagedServiceIdentity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "principalId", m.PrincipalID)
-	populate(objectMap, "tenantId", m.TenantID)
-	populate(objectMap, "type", m.Type)
-	populate(objectMap, "userAssignedIdentities", m.UserAssignedIdentities)
-	return json.Marshal(objectMap)
-}
-
 // NotificationListResponse - The response of listUpgradeNotifications.
 type NotificationListResponse struct {
 	// List of all notifications.
@@ -657,14 +541,6 @@ type NotificationListResponse struct {
 
 	// READ-ONLY; Link for next set of notifications.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type NotificationListResponse.
-func (n NotificationListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", n.NextLink)
-	populate(objectMap, "value", n.Value)
-	return json.Marshal(objectMap)
 }
 
 // Operation - REST API operation
@@ -701,12 +577,61 @@ type OperationListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
+// OperationStatus - Asynchronous operation status
+type OperationStatus struct {
+	// REQUIRED; Operation status.
+	Status *string `json:"status,omitempty"`
+
+	// The end time of the operation.
+	EndTime *time.Time `json:"endTime,omitempty"`
+
+	// If present, details of the operation error.
+	Error *ErrorDetailAutoGenerated `json:"error,omitempty"`
+
+	// Fully qualified ID for the async operation.
+	ID *string `json:"id,omitempty"`
+
+	// Name of the async operation.
+	Name *string `json:"name,omitempty"`
+
+	// The operations list.
+	Operations []*OperationStatusResult `json:"operations,omitempty"`
+
+	// Percent of the operation that is complete.
+	PercentComplete *float32 `json:"percentComplete,omitempty"`
+
+	// Additional properties from RP, only when operation is successful
+	Properties map[string]interface{} `json:"properties,omitempty"`
+
+	// The start time of the operation.
+	StartTime *time.Time `json:"startTime,omitempty"`
+}
+
+// OperationStatusResult - The current status of an async operation.
+type OperationStatusResult struct {
+	// REQUIRED; Operation status.
+	Status *string `json:"status,omitempty"`
+
+	// The end time of the operation.
+	EndTime *time.Time `json:"endTime,omitempty"`
+
+	// If present, details of the operation error.
+	Error *ErrorDetailAutoGenerated `json:"error,omitempty"`
+
+	// Fully qualified ID for the async operation.
+	ID *string `json:"id,omitempty"`
+
+	// Name of the async operation.
+	Name *string `json:"name,omitempty"`
+
+	// The operations list.
+	Operations []*OperationStatusResult `json:"operations,omitempty"`
+
+	// Percent of the operation that is complete.
+	PercentComplete *float32 `json:"percentComplete,omitempty"`
+
+	// The start time of the operation.
+	StartTime *time.Time `json:"startTime,omitempty"`
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
@@ -722,6 +647,9 @@ type PatchSchedule struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty" azure:"ro"`
 
+	// READ-ONLY; The geo-location where the resource lives
+	Location *string `json:"location,omitempty" azure:"ro"`
+
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
@@ -736,14 +664,6 @@ type PatchScheduleListResult struct {
 
 	// READ-ONLY; Link for next page of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PatchScheduleListResult.
-func (p PatchScheduleListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // PatchSchedulesClientCreateOrUpdateOptions contains the optional parameters for the PatchSchedulesClient.CreateOrUpdate
@@ -795,13 +715,6 @@ type PrivateEndpointConnectionListResult struct {
 	Value []*PrivateEndpointConnection `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnectionListResult.
-func (p PrivateEndpointConnectionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PrivateEndpointConnectionProperties - Properties of the PrivateEndpointConnectProperties.
 type PrivateEndpointConnectionProperties struct {
 	// REQUIRED; A collection of information about the state of the connection between service consumer and provider.
@@ -817,7 +730,8 @@ type PrivateEndpointConnectionProperties struct {
 // PrivateEndpointConnectionsClientBeginPutOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginPut
 // method.
 type PrivateEndpointConnectionsClientBeginPutOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // PrivateEndpointConnectionsClientDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Delete
@@ -859,13 +773,6 @@ type PrivateLinkResourceListResult struct {
 	Value []*PrivateLinkResource `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceListResult.
-func (p PrivateLinkResourceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PrivateLinkResourceProperties - Properties of a private link resource.
 type PrivateLinkResourceProperties struct {
 	// The private link resource Private link DNS zone name.
@@ -876,15 +783,6 @@ type PrivateLinkResourceProperties struct {
 
 	// READ-ONLY; The private link resource required member names.
 	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceProperties.
-func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "groupId", p.GroupID)
-	populate(objectMap, "requiredMembers", p.RequiredMembers)
-	populate(objectMap, "requiredZoneNames", p.RequiredZoneNames)
-	return json.Marshal(objectMap)
 }
 
 // PrivateLinkResourcesClientListByRedisCacheOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByRedisCache
@@ -975,32 +873,6 @@ type Properties struct {
 	SSLPort *int32 `json:"sslPort,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Properties.
-func (p Properties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "accessKeys", p.AccessKeys)
-	populate(objectMap, "enableNonSslPort", p.EnableNonSSLPort)
-	populate(objectMap, "hostName", p.HostName)
-	populate(objectMap, "instances", p.Instances)
-	populate(objectMap, "linkedServers", p.LinkedServers)
-	populate(objectMap, "minimumTlsVersion", p.MinimumTLSVersion)
-	populate(objectMap, "port", p.Port)
-	populate(objectMap, "privateEndpointConnections", p.PrivateEndpointConnections)
-	populate(objectMap, "provisioningState", p.ProvisioningState)
-	populate(objectMap, "publicNetworkAccess", p.PublicNetworkAccess)
-	populate(objectMap, "redisConfiguration", p.RedisConfiguration)
-	populate(objectMap, "redisVersion", p.RedisVersion)
-	populate(objectMap, "replicasPerMaster", p.ReplicasPerMaster)
-	populate(objectMap, "replicasPerPrimary", p.ReplicasPerPrimary)
-	populate(objectMap, "sku", p.SKU)
-	populate(objectMap, "sslPort", p.SSLPort)
-	populate(objectMap, "shardCount", p.ShardCount)
-	populate(objectMap, "staticIP", p.StaticIP)
-	populate(objectMap, "subnetId", p.SubnetID)
-	populate(objectMap, "tenantSettings", p.TenantSettings)
-	return json.Marshal(objectMap)
-}
-
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
@@ -1024,15 +896,6 @@ type RebootParameters struct {
 
 	// If clustering is enabled, the ID of the shard to be rebooted.
 	ShardID *int32 `json:"shardId,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RebootParameters.
-func (r RebootParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "ports", r.Ports)
-	populate(objectMap, "rebootType", r.RebootType)
-	populate(objectMap, "shardId", r.ShardID)
-	return json.Marshal(objectMap)
 }
 
 // RegenerateKeyParameters - Specifies which Redis access keys to reset.
@@ -1080,20 +943,6 @@ type ResourceInfo struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ResourceInfo.
-func (r ResourceInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "identity", r.Identity)
-	populate(objectMap, "location", r.Location)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "properties", r.Properties)
-	populate(objectMap, "tags", r.Tags)
-	populate(objectMap, "type", r.Type)
-	populate(objectMap, "zones", r.Zones)
-	return json.Marshal(objectMap)
-}
-
 // SKU parameters supplied to the create Redis operation.
 type SKU struct {
 	// REQUIRED; The size of the Redis cache to deploy. Valid values: for C (Basic/Standard) family (0, 1, 2, 3, 4, 5, 6), for
@@ -1111,13 +960,6 @@ type SKU struct {
 type ScheduleEntries struct {
 	// REQUIRED; List of patch schedules for a Redis cache.
 	ScheduleEntries []*ScheduleEntry `json:"scheduleEntries,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ScheduleEntries.
-func (s ScheduleEntries) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "scheduleEntries", s.ScheduleEntries)
-	return json.Marshal(objectMap)
 }
 
 // ScheduleEntry - Patch schedule entry for a Premium Redis Cache.
@@ -1151,17 +993,6 @@ type TrackedResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
-func (t TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "tags", t.Tags)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
 // UpdateParameters - Parameters supplied to the Update Redis operation.
 type UpdateParameters struct {
 	// The identity of the resource.
@@ -1172,15 +1003,6 @@ type UpdateParameters struct {
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type UpdateParameters.
-func (u UpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "identity", u.Identity)
-	populate(objectMap, "properties", u.Properties)
-	populate(objectMap, "tags", u.Tags)
-	return json.Marshal(objectMap)
 }
 
 // UpdateProperties - Patchable properties of the redis cache.
@@ -1220,22 +1042,6 @@ type UpdateProperties struct {
 	TenantSettings map[string]*string `json:"tenantSettings,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type UpdateProperties.
-func (u UpdateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "enableNonSslPort", u.EnableNonSSLPort)
-	populate(objectMap, "minimumTlsVersion", u.MinimumTLSVersion)
-	populate(objectMap, "publicNetworkAccess", u.PublicNetworkAccess)
-	populate(objectMap, "redisConfiguration", u.RedisConfiguration)
-	populate(objectMap, "redisVersion", u.RedisVersion)
-	populate(objectMap, "replicasPerMaster", u.ReplicasPerMaster)
-	populate(objectMap, "replicasPerPrimary", u.ReplicasPerPrimary)
-	populate(objectMap, "sku", u.SKU)
-	populate(objectMap, "shardCount", u.ShardCount)
-	populate(objectMap, "tenantSettings", u.TenantSettings)
-	return json.Marshal(objectMap)
-}
-
 // UpgradeNotification - Properties of upgrade notification.
 type UpgradeNotification struct {
 	// READ-ONLY; Name of upgrade notification.
@@ -1248,41 +1054,6 @@ type UpgradeNotification struct {
 	UpsellNotification map[string]*string `json:"upsellNotification,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type UpgradeNotification.
-func (u UpgradeNotification) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "name", u.Name)
-	populateTimeRFC3339(objectMap, "timestamp", u.Timestamp)
-	populate(objectMap, "upsellNotification", u.UpsellNotification)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type UpgradeNotification.
-func (u *UpgradeNotification) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "name":
-			err = unpopulate(val, &u.Name)
-			delete(rawMsg, key)
-		case "timestamp":
-			err = unpopulateTimeRFC3339(val, &u.Timestamp)
-			delete(rawMsg, key)
-		case "upsellNotification":
-			err = unpopulate(val, &u.UpsellNotification)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // UserAssignedIdentity - User assigned identity properties
 type UserAssignedIdentity struct {
 	// READ-ONLY; The client ID of the assigned identity.
@@ -1290,21 +1061,4 @@ type UserAssignedIdentity struct {
 
 	// READ-ONLY; The principal ID of the assigned identity.
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

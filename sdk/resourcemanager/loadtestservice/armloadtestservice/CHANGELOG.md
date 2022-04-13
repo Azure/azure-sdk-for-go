@@ -1,5 +1,101 @@
 # Release History
 
+## 0.3.0 (2022-04-12)
+### Breaking Changes
+
+- Function `NewLoadTestsClient` return value(s) have been changed from `(*LoadTestsClient)` to `(*LoadTestsClient, error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*LoadTestsClient.ListByResourceGroup` return value(s) have been changed from `(*LoadTestsClientListByResourceGroupPager)` to `(*runtime.Pager[LoadTestsClientListByResourceGroupResponse])`
+- Function `*LoadTestsClient.ListBySubscription` return value(s) have been changed from `(*LoadTestsClientListBySubscriptionPager)` to `(*runtime.Pager[LoadTestsClientListBySubscriptionResponse])`
+- Function `*LoadTestsClient.BeginDelete` return value(s) have been changed from `(LoadTestsClientDeletePollerResponse, error)` to `(*armruntime.Poller[LoadTestsClientDeleteResponse], error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `LoadTestResource.Identity` has been changed from `*SystemAssignedServiceIdentity` to `*ManagedServiceIdentity`
+- Type of `LoadTestResourcePatchRequestBody.Tags` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `LoadTestResourcePatchRequestBody.Identity` has been changed from `*SystemAssignedServiceIdentity` to `*ManagedServiceIdentity`
+- Const `SystemAssignedServiceIdentityTypeSystemAssigned` has been removed
+- Const `SystemAssignedServiceIdentityTypeNone` has been removed
+- Function `*LoadTestsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `ResourceState.ToPtr` has been removed
+- Function `SystemAssignedServiceIdentityType.ToPtr` has been removed
+- Function `*LoadTestsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*LoadTestsClientDeletePoller.Done` has been removed
+- Function `*LoadTestsClientListByResourceGroupPager.Err` has been removed
+- Function `*LoadTestsClientListBySubscriptionPager.Err` has been removed
+- Function `*LoadTestsClientDeletePoller.Poll` has been removed
+- Function `*LoadTestsClientDeletePoller.ResumeToken` has been removed
+- Function `*LoadTestsClientDeletePollerResponse.Resume` has been removed
+- Function `*LoadTestsClient.Update` has been removed
+- Function `LoadTestsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*LoadTestsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `ActionType.ToPtr` has been removed
+- Function `*LoadTestsClientListBySubscriptionPager.NextPage` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*LoadTestsClient.CreateOrUpdate` has been removed
+- Function `PossibleSystemAssignedServiceIdentityTypeValues` has been removed
+- Function `*LoadTestsClientDeletePoller.FinalResponse` has been removed
+- Function `Origin.ToPtr` has been removed
+- Struct `LoadTestsClientCreateOrUpdateOptions` has been removed
+- Struct `LoadTestsClientCreateOrUpdateResult` has been removed
+- Struct `LoadTestsClientDeletePoller` has been removed
+- Struct `LoadTestsClientDeletePollerResponse` has been removed
+- Struct `LoadTestsClientGetResult` has been removed
+- Struct `LoadTestsClientListByResourceGroupPager` has been removed
+- Struct `LoadTestsClientListByResourceGroupResult` has been removed
+- Struct `LoadTestsClientListBySubscriptionPager` has been removed
+- Struct `LoadTestsClientListBySubscriptionResult` has been removed
+- Struct `LoadTestsClientUpdateOptions` has been removed
+- Struct `LoadTestsClientUpdateResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `SystemAssignedServiceIdentity` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `LoadTestsClientCreateOrUpdateResult` of struct `LoadTestsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `LoadTestsClientCreateOrUpdateResponse` has been removed
+- Field `LoadTestsClientListBySubscriptionResult` of struct `LoadTestsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `LoadTestsClientListBySubscriptionResponse` has been removed
+- Field `LoadTestsClientListByResourceGroupResult` of struct `LoadTestsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `LoadTestsClientListByResourceGroupResponse` has been removed
+- Field `LoadTestsClientUpdateResult` of struct `LoadTestsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `LoadTestsClientUpdateResponse` has been removed
+- Field `LoadTestsClientGetResult` of struct `LoadTestsClientGetResponse` has been removed
+- Field `RawResponse` of struct `LoadTestsClientGetResponse` has been removed
+- Field `RawResponse` of struct `LoadTestsClientDeleteResponse` has been removed
+
+### Features Added
+
+- New const `ManagedServiceIdentityTypeNone`
+- New const `ManagedServiceIdentityTypeSystemAssigned`
+- New const `ManagedServiceIdentityTypeSystemAssignedUserAssigned`
+- New const `TypeSystemAssigned`
+- New const `ManagedServiceIdentityTypeUserAssigned`
+- New const `TypeUserAssigned`
+- New function `*LoadTestsClient.BeginCreateOrUpdate(context.Context, string, string, LoadTestResource, *LoadTestsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[LoadTestsClientCreateOrUpdateResponse], error)`
+- New function `*LoadTestsClient.BeginUpdate(context.Context, string, string, LoadTestResourcePatchRequestBody, *LoadTestsClientBeginUpdateOptions) (*armruntime.Poller[LoadTestsClientUpdateResponse], error)`
+- New function `ManagedServiceIdentity.MarshalJSON() ([]byte, error)`
+- New function `PossibleTypeValues() []Type`
+- New function `PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType`
+- New struct `EncryptionProperties`
+- New struct `EncryptionPropertiesIdentity`
+- New struct `LoadTestsClientBeginCreateOrUpdateOptions`
+- New struct `LoadTestsClientBeginUpdateOptions`
+- New struct `ManagedServiceIdentity`
+- New struct `UserAssignedIdentity`
+- New field `Encryption` in struct `LoadTestProperties`
+- New anonymous field `LoadTestResourcePageList` in struct `LoadTestsClientListBySubscriptionResponse`
+- New anonymous field `LoadTestResourcePageList` in struct `LoadTestsClientListByResourceGroupResponse`
+- New field `Encryption` in struct `LoadTestResourcePatchRequestBodyProperties`
+- New anonymous field `LoadTestResource` in struct `LoadTestsClientUpdateResponse`
+- New field `ResumeToken` in struct `LoadTestsClientBeginDeleteOptions`
+- New anonymous field `LoadTestResource` in struct `LoadTestsClientCreateOrUpdateResponse`
+- New anonymous field `LoadTestResource` in struct `LoadTestsClientGetResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

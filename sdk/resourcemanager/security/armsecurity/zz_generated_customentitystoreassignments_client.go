@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type CustomEntityStoreAssignmentsClient struct {
 // subscriptionID - Azure subscription ID
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewCustomEntityStoreAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CustomEntityStoreAssignmentsClient {
+func NewCustomEntityStoreAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CustomEntityStoreAssignmentsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &CustomEntityStoreAssignmentsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Creates a custom entity store assignment for the provided subscription, if not already exists.
@@ -99,7 +104,7 @@ func (client *CustomEntityStoreAssignmentsClient) createCreateRequest(ctx contex
 
 // createHandleResponse handles the Create response.
 func (client *CustomEntityStoreAssignmentsClient) createHandleResponse(resp *http.Response) (CustomEntityStoreAssignmentsClientCreateResponse, error) {
-	result := CustomEntityStoreAssignmentsClientCreateResponse{RawResponse: resp}
+	result := CustomEntityStoreAssignmentsClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomEntityStoreAssignment); err != nil {
 		return CustomEntityStoreAssignmentsClientCreateResponse{}, err
 	}
@@ -124,7 +129,7 @@ func (client *CustomEntityStoreAssignmentsClient) Delete(ctx context.Context, re
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return CustomEntityStoreAssignmentsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return CustomEntityStoreAssignmentsClientDeleteResponse{RawResponse: resp}, nil
+	return CustomEntityStoreAssignmentsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -202,7 +207,7 @@ func (client *CustomEntityStoreAssignmentsClient) getCreateRequest(ctx context.C
 
 // getHandleResponse handles the Get response.
 func (client *CustomEntityStoreAssignmentsClient) getHandleResponse(resp *http.Response) (CustomEntityStoreAssignmentsClientGetResponse, error) {
-	result := CustomEntityStoreAssignmentsClientGetResponse{RawResponse: resp}
+	result := CustomEntityStoreAssignmentsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomEntityStoreAssignment); err != nil {
 		return CustomEntityStoreAssignmentsClientGetResponse{}, err
 	}
@@ -214,16 +219,32 @@ func (client *CustomEntityStoreAssignmentsClient) getHandleResponse(resp *http.R
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // options - CustomEntityStoreAssignmentsClientListByResourceGroupOptions contains the optional parameters for the CustomEntityStoreAssignmentsClient.ListByResourceGroup
 // method.
-func (client *CustomEntityStoreAssignmentsClient) ListByResourceGroup(resourceGroupName string, options *CustomEntityStoreAssignmentsClientListByResourceGroupOptions) *CustomEntityStoreAssignmentsClientListByResourceGroupPager {
-	return &CustomEntityStoreAssignmentsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *CustomEntityStoreAssignmentsClient) ListByResourceGroup(resourceGroupName string, options *CustomEntityStoreAssignmentsClientListByResourceGroupOptions) *runtime.Pager[CustomEntityStoreAssignmentsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[CustomEntityStoreAssignmentsClientListByResourceGroupResponse]{
+		More: func(page CustomEntityStoreAssignmentsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp CustomEntityStoreAssignmentsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CustomEntityStoreAssignmentsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *CustomEntityStoreAssignmentsClientListByResourceGroupResponse) (CustomEntityStoreAssignmentsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CustomEntityStoreAssignmentsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CustomEntityStoreAssignmentsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CustomEntityStoreAssignmentsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -250,7 +271,7 @@ func (client *CustomEntityStoreAssignmentsClient) listByResourceGroupCreateReque
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *CustomEntityStoreAssignmentsClient) listByResourceGroupHandleResponse(resp *http.Response) (CustomEntityStoreAssignmentsClientListByResourceGroupResponse, error) {
-	result := CustomEntityStoreAssignmentsClientListByResourceGroupResponse{RawResponse: resp}
+	result := CustomEntityStoreAssignmentsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomEntityStoreAssignmentsListResult); err != nil {
 		return CustomEntityStoreAssignmentsClientListByResourceGroupResponse{}, err
 	}
@@ -261,16 +282,32 @@ func (client *CustomEntityStoreAssignmentsClient) listByResourceGroupHandleRespo
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - CustomEntityStoreAssignmentsClientListBySubscriptionOptions contains the optional parameters for the CustomEntityStoreAssignmentsClient.ListBySubscription
 // method.
-func (client *CustomEntityStoreAssignmentsClient) ListBySubscription(options *CustomEntityStoreAssignmentsClientListBySubscriptionOptions) *CustomEntityStoreAssignmentsClientListBySubscriptionPager {
-	return &CustomEntityStoreAssignmentsClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *CustomEntityStoreAssignmentsClient) ListBySubscription(options *CustomEntityStoreAssignmentsClientListBySubscriptionOptions) *runtime.Pager[CustomEntityStoreAssignmentsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[CustomEntityStoreAssignmentsClientListBySubscriptionResponse]{
+		More: func(page CustomEntityStoreAssignmentsClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp CustomEntityStoreAssignmentsClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CustomEntityStoreAssignmentsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *CustomEntityStoreAssignmentsClientListBySubscriptionResponse) (CustomEntityStoreAssignmentsClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CustomEntityStoreAssignmentsClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CustomEntityStoreAssignmentsClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CustomEntityStoreAssignmentsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -293,7 +330,7 @@ func (client *CustomEntityStoreAssignmentsClient) listBySubscriptionCreateReques
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *CustomEntityStoreAssignmentsClient) listBySubscriptionHandleResponse(resp *http.Response) (CustomEntityStoreAssignmentsClientListBySubscriptionResponse, error) {
-	result := CustomEntityStoreAssignmentsClientListBySubscriptionResponse{RawResponse: resp}
+	result := CustomEntityStoreAssignmentsClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomEntityStoreAssignmentsListResult); err != nil {
 		return CustomEntityStoreAssignmentsClientListBySubscriptionResponse{}, err
 	}

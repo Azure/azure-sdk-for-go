@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,350 +19,400 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric"
 )
 
-// x-ms-original-file: specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ClusterGetOperation_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ClusterGetOperation_example.json
 func ExampleClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armservicefabric.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ClustersClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ClusterPutOperation_example_max.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ClusterPutOperation_example_max.json
 func ExampleClustersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armservicefabric.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		armservicefabric.Cluster{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Tags:     map[string]*string{},
 			Properties: &armservicefabric.ClusterProperties{
 				AddOnFeatures: []*armservicefabric.AddOnFeatures{
-					armservicefabric.AddOnFeatures("RepairManager").ToPtr(),
-					armservicefabric.AddOnFeatures("DnsService").ToPtr(),
-					armservicefabric.AddOnFeatures("BackupRestoreService").ToPtr(),
-					armservicefabric.AddOnFeatures("ResourceMonitorService").ToPtr()},
+					to.Ptr(armservicefabric.AddOnFeaturesRepairManager),
+					to.Ptr(armservicefabric.AddOnFeaturesDNSService),
+					to.Ptr(armservicefabric.AddOnFeaturesBackupRestoreService),
+					to.Ptr(armservicefabric.AddOnFeaturesResourceMonitorService)},
 				ApplicationTypeVersionsCleanupPolicy: &armservicefabric.ApplicationTypeVersionsCleanupPolicy{
-					MaxUnusedVersionsToKeep: to.Int64Ptr(2),
+					MaxUnusedVersionsToKeep: to.Ptr[int64](2),
 				},
 				AzureActiveDirectory: &armservicefabric.AzureActiveDirectory{
-					ClientApplication:  to.StringPtr("<client-application>"),
-					ClusterApplication: to.StringPtr("<cluster-application>"),
-					TenantID:           to.StringPtr("<tenant-id>"),
+					ClientApplication:  to.Ptr("<client-application>"),
+					ClusterApplication: to.Ptr("<cluster-application>"),
+					TenantID:           to.Ptr("<tenant-id>"),
 				},
 				CertificateCommonNames: &armservicefabric.ServerCertificateCommonNames{
 					CommonNames: []*armservicefabric.ServerCertificateCommonName{
 						{
-							CertificateCommonName:       to.StringPtr("<certificate-common-name>"),
-							CertificateIssuerThumbprint: to.StringPtr("<certificate-issuer-thumbprint>"),
+							CertificateCommonName:       to.Ptr("<certificate-common-name>"),
+							CertificateIssuerThumbprint: to.Ptr("<certificate-issuer-thumbprint>"),
 						}},
-					X509StoreName: armservicefabric.StoreName("My").ToPtr(),
+					X509StoreName: to.Ptr(armservicefabric.StoreNameMy),
 				},
 				ClientCertificateCommonNames: []*armservicefabric.ClientCertificateCommonName{
 					{
-						CertificateCommonName:       to.StringPtr("<certificate-common-name>"),
-						CertificateIssuerThumbprint: to.StringPtr("<certificate-issuer-thumbprint>"),
-						IsAdmin:                     to.BoolPtr(true),
+						CertificateCommonName:       to.Ptr("<certificate-common-name>"),
+						CertificateIssuerThumbprint: to.Ptr("<certificate-issuer-thumbprint>"),
+						IsAdmin:                     to.Ptr(true),
 					}},
 				ClientCertificateThumbprints: []*armservicefabric.ClientCertificateThumbprint{
 					{
-						CertificateThumbprint: to.StringPtr("<certificate-thumbprint>"),
-						IsAdmin:               to.BoolPtr(true),
+						CertificateThumbprint: to.Ptr("<certificate-thumbprint>"),
+						IsAdmin:               to.Ptr(true),
 					}},
-				ClusterCodeVersion: to.StringPtr("<cluster-code-version>"),
+				ClusterCodeVersion: to.Ptr("<cluster-code-version>"),
 				DiagnosticsStorageAccountConfig: &armservicefabric.DiagnosticsStorageAccountConfig{
-					BlobEndpoint:            to.StringPtr("<blob-endpoint>"),
-					ProtectedAccountKeyName: to.StringPtr("<protected-account-key-name>"),
-					QueueEndpoint:           to.StringPtr("<queue-endpoint>"),
-					StorageAccountName:      to.StringPtr("<storage-account-name>"),
-					TableEndpoint:           to.StringPtr("<table-endpoint>"),
+					BlobEndpoint:            to.Ptr("<blob-endpoint>"),
+					ProtectedAccountKeyName: to.Ptr("<protected-account-key-name>"),
+					QueueEndpoint:           to.Ptr("<queue-endpoint>"),
+					StorageAccountName:      to.Ptr("<storage-account-name>"),
+					TableEndpoint:           to.Ptr("<table-endpoint>"),
 				},
-				EventStoreServiceEnabled: to.BoolPtr(true),
+				EventStoreServiceEnabled: to.Ptr(true),
 				FabricSettings: []*armservicefabric.SettingsSectionDescription{
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("<name>"),
 						Parameters: []*armservicefabric.SettingsParameterDescription{
 							{
-								Name:  to.StringPtr("<name>"),
-								Value: to.StringPtr("<value>"),
+								Name:  to.Ptr("<name>"),
+								Value: to.Ptr("<value>"),
 							}},
 					}},
-				InfrastructureServiceManager: to.BoolPtr(true),
-				ManagementEndpoint:           to.StringPtr("<management-endpoint>"),
+				InfrastructureServiceManager: to.Ptr(true),
+				ManagementEndpoint:           to.Ptr("<management-endpoint>"),
 				NodeTypes: []*armservicefabric.NodeTypeDescription{
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("<name>"),
 						ApplicationPorts: &armservicefabric.EndpointRangeDescription{
-							EndPort:   to.Int32Ptr(30000),
-							StartPort: to.Int32Ptr(20000),
+							EndPort:   to.Ptr[int32](30000),
+							StartPort: to.Ptr[int32](20000),
 						},
-						ClientConnectionEndpointPort: to.Int32Ptr(19000),
-						DurabilityLevel:              armservicefabric.DurabilityLevel("Silver").ToPtr(),
+						ClientConnectionEndpointPort: to.Ptr[int32](19000),
+						DurabilityLevel:              to.Ptr(armservicefabric.DurabilityLevelSilver),
 						EphemeralPorts: &armservicefabric.EndpointRangeDescription{
-							EndPort:   to.Int32Ptr(64000),
-							StartPort: to.Int32Ptr(49000),
+							EndPort:   to.Ptr[int32](64000),
+							StartPort: to.Ptr[int32](49000),
 						},
-						HTTPGatewayEndpointPort:   to.Int32Ptr(19007),
-						IsPrimary:                 to.BoolPtr(true),
-						IsStateless:               to.BoolPtr(false),
-						MultipleAvailabilityZones: to.BoolPtr(true),
-						VMInstanceCount:           to.Int32Ptr(5),
+						HTTPGatewayEndpointPort:   to.Ptr[int32](19007),
+						IsPrimary:                 to.Ptr(true),
+						IsStateless:               to.Ptr(false),
+						MultipleAvailabilityZones: to.Ptr(true),
+						VMInstanceCount:           to.Ptr[int32](5),
 					}},
 				Notifications: []*armservicefabric.Notification{
 					{
-						IsEnabled:            to.BoolPtr(true),
-						NotificationCategory: armservicefabric.NotificationCategory("WaveProgress").ToPtr(),
-						NotificationLevel:    armservicefabric.NotificationLevel("Critical").ToPtr(),
+						IsEnabled:            to.Ptr(true),
+						NotificationCategory: to.Ptr(armservicefabric.NotificationCategoryWaveProgress),
+						NotificationLevel:    to.Ptr(armservicefabric.NotificationLevelCritical),
 						NotificationTargets: []*armservicefabric.NotificationTarget{
 							{
-								NotificationChannel: armservicefabric.NotificationChannel("EmailUser").ToPtr(),
+								NotificationChannel: to.Ptr(armservicefabric.NotificationChannelEmailUser),
 								Receivers: []*string{
-									to.StringPtr("****@microsoft.com"),
-									to.StringPtr("****@microsoft.com")},
+									to.Ptr("****@microsoft.com"),
+									to.Ptr("****@microsoft.com")},
 							},
 							{
-								NotificationChannel: armservicefabric.NotificationChannel("EmailSubscription").ToPtr(),
+								NotificationChannel: to.Ptr(armservicefabric.NotificationChannelEmailSubscription),
 								Receivers: []*string{
-									to.StringPtr("Owner"),
-									to.StringPtr("AccountAdmin")},
+									to.Ptr("Owner"),
+									to.Ptr("AccountAdmin")},
 							}},
 					},
 					{
-						IsEnabled:            to.BoolPtr(true),
-						NotificationCategory: armservicefabric.NotificationCategory("WaveProgress").ToPtr(),
-						NotificationLevel:    armservicefabric.NotificationLevel("All").ToPtr(),
+						IsEnabled:            to.Ptr(true),
+						NotificationCategory: to.Ptr(armservicefabric.NotificationCategoryWaveProgress),
+						NotificationLevel:    to.Ptr(armservicefabric.NotificationLevelAll),
 						NotificationTargets: []*armservicefabric.NotificationTarget{
 							{
-								NotificationChannel: armservicefabric.NotificationChannel("EmailUser").ToPtr(),
+								NotificationChannel: to.Ptr(armservicefabric.NotificationChannelEmailUser),
 								Receivers: []*string{
-									to.StringPtr("****@microsoft.com"),
-									to.StringPtr("****@microsoft.com")},
+									to.Ptr("****@microsoft.com"),
+									to.Ptr("****@microsoft.com")},
 							},
 							{
-								NotificationChannel: armservicefabric.NotificationChannel("EmailSubscription").ToPtr(),
+								NotificationChannel: to.Ptr(armservicefabric.NotificationChannelEmailSubscription),
 								Receivers: []*string{
-									to.StringPtr("Owner"),
-									to.StringPtr("AccountAdmin")},
+									to.Ptr("Owner"),
+									to.Ptr("AccountAdmin")},
 							}},
 					}},
-				ReliabilityLevel: armservicefabric.ReliabilityLevel("Platinum").ToPtr(),
+				ReliabilityLevel: to.Ptr(armservicefabric.ReliabilityLevelPlatinum),
 				ReverseProxyCertificateCommonNames: &armservicefabric.ServerCertificateCommonNames{
 					CommonNames: []*armservicefabric.ServerCertificateCommonName{
 						{
-							CertificateCommonName:       to.StringPtr("<certificate-common-name>"),
-							CertificateIssuerThumbprint: to.StringPtr("<certificate-issuer-thumbprint>"),
+							CertificateCommonName:       to.Ptr("<certificate-common-name>"),
+							CertificateIssuerThumbprint: to.Ptr("<certificate-issuer-thumbprint>"),
 						}},
-					X509StoreName: armservicefabric.StoreName("My").ToPtr(),
+					X509StoreName: to.Ptr(armservicefabric.StoreNameMy),
 				},
-				SfZonalUpgradeMode: armservicefabric.SfZonalUpgradeMode("Hierarchical").ToPtr(),
+				SfZonalUpgradeMode: to.Ptr(armservicefabric.SfZonalUpgradeModeHierarchical),
 				UpgradeDescription: &armservicefabric.ClusterUpgradePolicy{
 					DeltaHealthPolicy: &armservicefabric.ClusterUpgradeDeltaHealthPolicy{
 						ApplicationDeltaHealthPolicies: map[string]*armservicefabric.ApplicationDeltaHealthPolicy{
 							"fabric:/myApp1": {
 								DefaultServiceTypeDeltaHealthPolicy: &armservicefabric.ServiceTypeDeltaHealthPolicy{
-									MaxPercentDeltaUnhealthyServices: to.Int32Ptr(0),
+									MaxPercentDeltaUnhealthyServices: to.Ptr[int32](0),
 								},
 								ServiceTypeDeltaHealthPolicies: map[string]*armservicefabric.ServiceTypeDeltaHealthPolicy{
 									"myServiceType1": {
-										MaxPercentDeltaUnhealthyServices: to.Int32Ptr(0),
+										MaxPercentDeltaUnhealthyServices: to.Ptr[int32](0),
 									},
 								},
 							},
 						},
-						MaxPercentDeltaUnhealthyApplications:       to.Int32Ptr(0),
-						MaxPercentDeltaUnhealthyNodes:              to.Int32Ptr(0),
-						MaxPercentUpgradeDomainDeltaUnhealthyNodes: to.Int32Ptr(0),
+						MaxPercentDeltaUnhealthyApplications:       to.Ptr[int32](0),
+						MaxPercentDeltaUnhealthyNodes:              to.Ptr[int32](0),
+						MaxPercentUpgradeDomainDeltaUnhealthyNodes: to.Ptr[int32](0),
 					},
-					ForceRestart:              to.BoolPtr(false),
-					HealthCheckRetryTimeout:   to.StringPtr("<health-check-retry-timeout>"),
-					HealthCheckStableDuration: to.StringPtr("<health-check-stable-duration>"),
-					HealthCheckWaitDuration:   to.StringPtr("<health-check-wait-duration>"),
+					ForceRestart:              to.Ptr(false),
+					HealthCheckRetryTimeout:   to.Ptr("<health-check-retry-timeout>"),
+					HealthCheckStableDuration: to.Ptr("<health-check-stable-duration>"),
+					HealthCheckWaitDuration:   to.Ptr("<health-check-wait-duration>"),
 					HealthPolicy: &armservicefabric.ClusterHealthPolicy{
 						ApplicationHealthPolicies: map[string]*armservicefabric.ApplicationHealthPolicy{
 							"fabric:/myApp1": {
 								DefaultServiceTypeHealthPolicy: &armservicefabric.ServiceTypeHealthPolicy{
-									MaxPercentUnhealthyServices: to.Int32Ptr(0),
+									MaxPercentUnhealthyServices: to.Ptr[int32](0),
 								},
 								ServiceTypeHealthPolicies: map[string]*armservicefabric.ServiceTypeHealthPolicy{
 									"myServiceType1": {
-										MaxPercentUnhealthyServices: to.Int32Ptr(100),
+										MaxPercentUnhealthyServices: to.Ptr[int32](100),
 									},
 								},
 							},
 						},
-						MaxPercentUnhealthyApplications: to.Int32Ptr(0),
-						MaxPercentUnhealthyNodes:        to.Int32Ptr(0),
+						MaxPercentUnhealthyApplications: to.Ptr[int32](0),
+						MaxPercentUnhealthyNodes:        to.Ptr[int32](0),
 					},
-					UpgradeDomainTimeout:          to.StringPtr("<upgrade-domain-timeout>"),
-					UpgradeReplicaSetCheckTimeout: to.StringPtr("<upgrade-replica-set-check-timeout>"),
-					UpgradeTimeout:                to.StringPtr("<upgrade-timeout>"),
+					UpgradeDomainTimeout:          to.Ptr("<upgrade-domain-timeout>"),
+					UpgradeReplicaSetCheckTimeout: to.Ptr("<upgrade-replica-set-check-timeout>"),
+					UpgradeTimeout:                to.Ptr("<upgrade-timeout>"),
 				},
-				UpgradeMode:                   armservicefabric.UpgradeMode("Manual").ToPtr(),
-				UpgradePauseEndTimestampUTC:   to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-25T22:00:00Z"); return t }()),
-				UpgradePauseStartTimestampUTC: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-21T22:00:00Z"); return t }()),
-				UpgradeWave:                   armservicefabric.ClusterUpgradeCadence("Wave1").ToPtr(),
-				VMImage:                       to.StringPtr("<vmimage>"),
-				VmssZonalUpgradeMode:          armservicefabric.VmssZonalUpgradeMode("Parallel").ToPtr(),
+				UpgradeMode:                   to.Ptr(armservicefabric.UpgradeModeManual),
+				UpgradePauseEndTimestampUTC:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-25T22:00:00Z"); return t }()),
+				UpgradePauseStartTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-21T22:00:00Z"); return t }()),
+				UpgradeWave:                   to.Ptr(armservicefabric.ClusterUpgradeCadenceWave1),
+				VMImage:                       to.Ptr("<vmimage>"),
+				VmssZonalUpgradeMode:          to.Ptr(armservicefabric.VmssZonalUpgradeModeParallel),
 			},
 		},
-		nil)
+		&armservicefabric.ClustersClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ClustersClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ClusterPatchOperation_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ClusterPatchOperation_example.json
 func ExampleClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armservicefabric.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		armservicefabric.ClusterUpdateParameters{
 			Properties: &armservicefabric.ClusterPropertiesUpdateParameters{
-				EventStoreServiceEnabled: to.BoolPtr(true),
+				EventStoreServiceEnabled: to.Ptr(true),
 				NodeTypes: []*armservicefabric.NodeTypeDescription{
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("<name>"),
 						ApplicationPorts: &armservicefabric.EndpointRangeDescription{
-							EndPort:   to.Int32Ptr(30000),
-							StartPort: to.Int32Ptr(20000),
+							EndPort:   to.Ptr[int32](30000),
+							StartPort: to.Ptr[int32](20000),
 						},
-						ClientConnectionEndpointPort: to.Int32Ptr(19000),
-						DurabilityLevel:              armservicefabric.DurabilityLevel("Bronze").ToPtr(),
+						ClientConnectionEndpointPort: to.Ptr[int32](19000),
+						DurabilityLevel:              to.Ptr(armservicefabric.DurabilityLevelBronze),
 						EphemeralPorts: &armservicefabric.EndpointRangeDescription{
-							EndPort:   to.Int32Ptr(64000),
-							StartPort: to.Int32Ptr(49000),
+							EndPort:   to.Ptr[int32](64000),
+							StartPort: to.Ptr[int32](49000),
 						},
-						HTTPGatewayEndpointPort: to.Int32Ptr(19007),
-						IsPrimary:               to.BoolPtr(true),
-						VMInstanceCount:         to.Int32Ptr(5),
+						HTTPGatewayEndpointPort: to.Ptr[int32](19007),
+						IsPrimary:               to.Ptr(true),
+						VMInstanceCount:         to.Ptr[int32](5),
 					},
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("<name>"),
 						ApplicationPorts: &armservicefabric.EndpointRangeDescription{
-							EndPort:   to.Int32Ptr(2000),
-							StartPort: to.Int32Ptr(1000),
+							EndPort:   to.Ptr[int32](2000),
+							StartPort: to.Ptr[int32](1000),
 						},
-						ClientConnectionEndpointPort: to.Int32Ptr(0),
-						DurabilityLevel:              armservicefabric.DurabilityLevel("Bronze").ToPtr(),
+						ClientConnectionEndpointPort: to.Ptr[int32](0),
+						DurabilityLevel:              to.Ptr(armservicefabric.DurabilityLevelBronze),
 						EphemeralPorts: &armservicefabric.EndpointRangeDescription{
-							EndPort:   to.Int32Ptr(4000),
-							StartPort: to.Int32Ptr(3000),
+							EndPort:   to.Ptr[int32](4000),
+							StartPort: to.Ptr[int32](3000),
 						},
-						HTTPGatewayEndpointPort: to.Int32Ptr(0),
-						IsPrimary:               to.BoolPtr(false),
-						VMInstanceCount:         to.Int32Ptr(3),
+						HTTPGatewayEndpointPort: to.Ptr[int32](0),
+						IsPrimary:               to.Ptr(false),
+						VMInstanceCount:         to.Ptr[int32](3),
 					}},
-				ReliabilityLevel:              armservicefabric.ReliabilityLevel("Bronze").ToPtr(),
-				UpgradeMode:                   armservicefabric.UpgradeMode("Automatic").ToPtr(),
-				UpgradePauseEndTimestampUTC:   to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-25T22:00:00Z"); return t }()),
-				UpgradePauseStartTimestampUTC: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-21T22:00:00Z"); return t }()),
-				UpgradeWave:                   armservicefabric.ClusterUpgradeCadence("Wave").ToPtr(),
+				ReliabilityLevel:              to.Ptr(armservicefabric.ReliabilityLevelBronze),
+				UpgradeMode:                   to.Ptr(armservicefabric.UpgradeModeAutomatic),
+				UpgradePauseEndTimestampUTC:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-25T22:00:00Z"); return t }()),
+				UpgradePauseStartTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-21T22:00:00Z"); return t }()),
+				UpgradeWave:                   to.Ptr(armservicefabric.ClusterUpgradeCadence("Wave")),
 			},
 			Tags: map[string]*string{
-				"a": to.StringPtr("b"),
+				"a": to.Ptr("b"),
 			},
 		},
-		nil)
+		&armservicefabric.ClustersClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ClustersClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ClusterDeleteOperation_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ClusterDeleteOperation_example.json
 func ExampleClustersClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armservicefabric.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ClusterListByResourceGroupOperation_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ClusterListByResourceGroupOperation_example.json
 func ExampleClustersClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armservicefabric.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ListByResourceGroup(ctx,
 		"<resource-group-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ClustersClientListByResourceGroupResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ClusterListOperation_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ClusterListOperation_example.json
 func ExampleClustersClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armservicefabric.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.List(ctx,
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ClustersClientListResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ListUpgradableVersionsMinMax_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ListUpgradableVersionsMinMax_example.json
 func ExampleClustersClient_ListUpgradableVersions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armservicefabric.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ListUpgradableVersions(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		&armservicefabric.ClustersClientListUpgradableVersionsOptions{VersionsDescription: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ClustersClientListUpgradableVersionsResult)
+	// TODO: use response item
+	_ = res
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type VendorSKUsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewVendorSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VendorSKUsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewVendorSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VendorSKUsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &VendorSKUsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a sku. This operation can take up to 2 hours to complete. This is expected service
@@ -57,22 +62,18 @@ func NewVendorSKUsClient(subscriptionID string, credential azcore.TokenCredentia
 // parameters - Parameters supplied to the create or update sku operation.
 // options - VendorSKUsClientBeginCreateOrUpdateOptions contains the optional parameters for the VendorSKUsClient.BeginCreateOrUpdate
 // method.
-func (client *VendorSKUsClient) BeginCreateOrUpdate(ctx context.Context, vendorName string, skuName string, parameters VendorSKU, options *VendorSKUsClientBeginCreateOrUpdateOptions) (VendorSKUsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, vendorName, skuName, parameters, options)
-	if err != nil {
-		return VendorSKUsClientCreateOrUpdatePollerResponse{}, err
+func (client *VendorSKUsClient) BeginCreateOrUpdate(ctx context.Context, vendorName string, skuName string, parameters VendorSKU, options *VendorSKUsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[VendorSKUsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, vendorName, skuName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VendorSKUsClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[VendorSKUsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VendorSKUsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VendorSKUsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return VendorSKUsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &VendorSKUsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a sku. This operation can take up to 2 hours to complete. This is expected service
@@ -113,7 +114,7 @@ func (client *VendorSKUsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -124,22 +125,18 @@ func (client *VendorSKUsClient) createOrUpdateCreateRequest(ctx context.Context,
 // vendorName - The name of the vendor.
 // skuName - The name of the sku.
 // options - VendorSKUsClientBeginDeleteOptions contains the optional parameters for the VendorSKUsClient.BeginDelete method.
-func (client *VendorSKUsClient) BeginDelete(ctx context.Context, vendorName string, skuName string, options *VendorSKUsClientBeginDeleteOptions) (VendorSKUsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, vendorName, skuName, options)
-	if err != nil {
-		return VendorSKUsClientDeletePollerResponse{}, err
+func (client *VendorSKUsClient) BeginDelete(ctx context.Context, vendorName string, skuName string, options *VendorSKUsClientBeginDeleteOptions) (*armruntime.Poller[VendorSKUsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, vendorName, skuName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VendorSKUsClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[VendorSKUsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VendorSKUsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VendorSKUsClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return VendorSKUsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &VendorSKUsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified sku. This operation can take up to 2 hours to complete. This is expected service behavior.
@@ -179,7 +176,7 @@ func (client *VendorSKUsClient) deleteCreateRequest(ctx context.Context, vendorN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -225,7 +222,7 @@ func (client *VendorSKUsClient) getCreateRequest(ctx context.Context, vendorName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -233,7 +230,7 @@ func (client *VendorSKUsClient) getCreateRequest(ctx context.Context, vendorName
 
 // getHandleResponse handles the Get response.
 func (client *VendorSKUsClient) getHandleResponse(resp *http.Response) (VendorSKUsClientGetResponse, error) {
-	result := VendorSKUsClientGetResponse{RawResponse: resp}
+	result := VendorSKUsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VendorSKU); err != nil {
 		return VendorSKUsClientGetResponse{}, err
 	}
@@ -244,16 +241,32 @@ func (client *VendorSKUsClient) getHandleResponse(resp *http.Response) (VendorSK
 // If the operation fails it returns an *azcore.ResponseError type.
 // vendorName - The name of the vendor.
 // options - VendorSKUsClientListOptions contains the optional parameters for the VendorSKUsClient.List method.
-func (client *VendorSKUsClient) List(vendorName string, options *VendorSKUsClientListOptions) *VendorSKUsClientListPager {
-	return &VendorSKUsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, vendorName, options)
+func (client *VendorSKUsClient) List(vendorName string, options *VendorSKUsClientListOptions) *runtime.Pager[VendorSKUsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[VendorSKUsClientListResponse]{
+		More: func(page VendorSKUsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp VendorSKUsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.VendorSKUListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *VendorSKUsClientListResponse) (VendorSKUsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, vendorName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return VendorSKUsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return VendorSKUsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return VendorSKUsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -272,7 +285,7 @@ func (client *VendorSKUsClient) listCreateRequest(ctx context.Context, vendorNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -280,9 +293,65 @@ func (client *VendorSKUsClient) listCreateRequest(ctx context.Context, vendorNam
 
 // listHandleResponse handles the List response.
 func (client *VendorSKUsClient) listHandleResponse(resp *http.Response) (VendorSKUsClientListResponse, error) {
-	result := VendorSKUsClientListResponse{RawResponse: resp}
+	result := VendorSKUsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VendorSKUListResult); err != nil {
 		return VendorSKUsClientListResponse{}, err
+	}
+	return result, nil
+}
+
+// ListCredential - Generate credentials for publishing SKU images.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vendorName - The name of the vendor.
+// skuName - The name of the sku.
+// options - VendorSKUsClientListCredentialOptions contains the optional parameters for the VendorSKUsClient.ListCredential
+// method.
+func (client *VendorSKUsClient) ListCredential(ctx context.Context, vendorName string, skuName string, options *VendorSKUsClientListCredentialOptions) (VendorSKUsClientListCredentialResponse, error) {
+	req, err := client.listCredentialCreateRequest(ctx, vendorName, skuName, options)
+	if err != nil {
+		return VendorSKUsClientListCredentialResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return VendorSKUsClientListCredentialResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return VendorSKUsClientListCredentialResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.listCredentialHandleResponse(resp)
+}
+
+// listCredentialCreateRequest creates the ListCredential request.
+func (client *VendorSKUsClient) listCredentialCreateRequest(ctx context.Context, vendorName string, skuName string, options *VendorSKUsClientListCredentialOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/vendors/{vendorName}/vendorSkus/{skuName}/listCredential"
+	if vendorName == "" {
+		return nil, errors.New("parameter vendorName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vendorName}", url.PathEscape(vendorName))
+	if skuName == "" {
+		return nil, errors.New("parameter skuName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{skuName}", url.PathEscape(skuName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// listCredentialHandleResponse handles the ListCredential response.
+func (client *VendorSKUsClient) listCredentialHandleResponse(resp *http.Response) (VendorSKUsClientListCredentialResponse, error) {
+	result := VendorSKUsClientListCredentialResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SKUCredential); err != nil {
+		return VendorSKUsClientListCredentialResponse{}, err
 	}
 	return result, nil
 }

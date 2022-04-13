@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type NodeReportsClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewNodeReportsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *NodeReportsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewNodeReportsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NodeReportsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &NodeReportsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Retrieve the Dsc node report data by node id and report id.
@@ -108,7 +113,7 @@ func (client *NodeReportsClient) getCreateRequest(ctx context.Context, resourceG
 
 // getHandleResponse handles the Get response.
 func (client *NodeReportsClient) getHandleResponse(resp *http.Response) (NodeReportsClientGetResponse, error) {
-	result := NodeReportsClientGetResponse{RawResponse: resp}
+	result := NodeReportsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscNodeReport); err != nil {
 		return NodeReportsClientGetResponse{}, err
 	}
@@ -173,8 +178,8 @@ func (client *NodeReportsClient) getContentCreateRequest(ctx context.Context, re
 
 // getContentHandleResponse handles the GetContent response.
 func (client *NodeReportsClient) getContentHandleResponse(resp *http.Response) (NodeReportsClientGetContentResponse, error) {
-	result := NodeReportsClientGetContentResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Object); err != nil {
+	result := NodeReportsClientGetContentResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Interface); err != nil {
 		return NodeReportsClientGetContentResponse{}, err
 	}
 	return result, nil
@@ -186,16 +191,32 @@ func (client *NodeReportsClient) getContentHandleResponse(resp *http.Response) (
 // automationAccountName - The name of the automation account.
 // nodeID - The parameters supplied to the list operation.
 // options - NodeReportsClientListByNodeOptions contains the optional parameters for the NodeReportsClient.ListByNode method.
-func (client *NodeReportsClient) ListByNode(resourceGroupName string, automationAccountName string, nodeID string, options *NodeReportsClientListByNodeOptions) *NodeReportsClientListByNodePager {
-	return &NodeReportsClientListByNodePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByNodeCreateRequest(ctx, resourceGroupName, automationAccountName, nodeID, options)
+func (client *NodeReportsClient) ListByNode(resourceGroupName string, automationAccountName string, nodeID string, options *NodeReportsClientListByNodeOptions) *runtime.Pager[NodeReportsClientListByNodeResponse] {
+	return runtime.NewPager(runtime.PageProcessor[NodeReportsClientListByNodeResponse]{
+		More: func(page NodeReportsClientListByNodeResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp NodeReportsClientListByNodeResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DscNodeReportListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *NodeReportsClientListByNodeResponse) (NodeReportsClientListByNodeResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByNodeCreateRequest(ctx, resourceGroupName, automationAccountName, nodeID, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return NodeReportsClientListByNodeResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return NodeReportsClientListByNodeResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return NodeReportsClientListByNodeResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByNodeHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByNodeCreateRequest creates the ListByNode request.
@@ -233,7 +254,7 @@ func (client *NodeReportsClient) listByNodeCreateRequest(ctx context.Context, re
 
 // listByNodeHandleResponse handles the ListByNode response.
 func (client *NodeReportsClient) listByNodeHandleResponse(resp *http.Response) (NodeReportsClientListByNodeResponse, error) {
-	result := NodeReportsClientListByNodeResponse{RawResponse: resp}
+	result := NodeReportsClientListByNodeResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscNodeReportListResult); err != nil {
 		return NodeReportsClientListByNodeResponse{}, err
 	}

@@ -1,5 +1,5251 @@
 # Release History
 
+## 0.4.0 (2022-04-13)
+### Breaking Changes
+
+- Function `*DscpConfigurationClient.List` return value(s) have been changed from `(*DscpConfigurationClientListPager)` to `(*runtime.Pager[DscpConfigurationClientListResponse])`
+- Function `*WatchersClient.BeginDelete` return value(s) have been changed from `(WatchersClientDeletePollerResponse, error)` to `(*armruntime.Poller[WatchersClientDeleteResponse], error)`
+- Function `NewCustomIPPrefixesClient` return value(s) have been changed from `(*CustomIPPrefixesClient)` to `(*CustomIPPrefixesClient, error)`
+- Function `NewRoutesClient` return value(s) have been changed from `(*RoutesClient)` to `(*RoutesClient, error)`
+- Function `NewVPNSitesConfigurationClient` return value(s) have been changed from `(*VPNSitesConfigurationClient)` to `(*VPNSitesConfigurationClient, error)`
+- Function `*VirtualApplianceSitesClient.BeginDelete` return value(s) have been changed from `(VirtualApplianceSitesClientDeletePollerResponse, error)` to `(*armruntime.Poller[VirtualApplianceSitesClientDeleteResponse], error)`
+- Function `NewExpressRouteConnectionsClient` return value(s) have been changed from `(*ExpressRouteConnectionsClient)` to `(*ExpressRouteConnectionsClient, error)`
+- Function `*ExpressRouteGatewaysClient.BeginCreateOrUpdate` return value(s) have been changed from `(ExpressRouteGatewaysClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ExpressRouteGatewaysClientCreateOrUpdateResponse], error)`
+- Function `NewVirtualHubRouteTableV2SClient` return value(s) have been changed from `(*VirtualHubRouteTableV2SClient)` to `(*VirtualHubRouteTableV2SClient, error)`
+- Function `NewRouteFiltersClient` return value(s) have been changed from `(*RouteFiltersClient)` to `(*RouteFiltersClient, error)`
+- Function `*VPNServerConfigurationsClient.ListByResourceGroup` return value(s) have been changed from `(*VPNServerConfigurationsClientListByResourceGroupPager)` to `(*runtime.Pager[VPNServerConfigurationsClientListByResourceGroupResponse])`
+- Function `*PublicIPAddressesClient.BeginDelete` return value(s) have been changed from `(PublicIPAddressesClientDeletePollerResponse, error)` to `(*armruntime.Poller[PublicIPAddressesClientDeleteResponse], error)`
+- Function `*NatGatewaysClient.List` return value(s) have been changed from `(*NatGatewaysClientListPager)` to `(*runtime.Pager[NatGatewaysClientListResponse])`
+- Function `*SubnetsClient.BeginUnprepareNetworkPolicies` return value(s) have been changed from `(SubnetsClientUnprepareNetworkPoliciesPollerResponse, error)` to `(*armruntime.Poller[SubnetsClientUnprepareNetworkPoliciesResponse], error)`
+- Function `*ManagementClient.BeginPutBastionShareableLink` return value(s) have been changed from `(ManagementClientPutBastionShareableLinkPollerResponse, error)` to `(*armruntime.Poller[*runtime.Pager[ManagementClientPutBastionShareableLinkResponse]], error)`
+- Function `*RouteFiltersClient.BeginDelete` return value(s) have been changed from `(RouteFiltersClientDeletePollerResponse, error)` to `(*armruntime.Poller[RouteFiltersClientDeleteResponse], error)`
+- Function `*PrivateEndpointsClient.ListBySubscription` return value(s) have been changed from `(*PrivateEndpointsClientListBySubscriptionPager)` to `(*runtime.Pager[PrivateEndpointsClientListBySubscriptionResponse])`
+- Function `*InterfaceTapConfigurationsClient.List` return value(s) have been changed from `(*InterfaceTapConfigurationsClientListPager)` to `(*runtime.Pager[InterfaceTapConfigurationsClientListResponse])`
+- Function `*InterfacesClient.ListCloudServiceRoleInstanceNetworkInterfaces` return value(s) have been changed from `(*InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesPager)` to `(*runtime.Pager[InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesResponse])`
+- Function `*PrivateDNSZoneGroupsClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateDNSZoneGroupsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateDNSZoneGroupsClientCreateOrUpdateResponse], error)`
+- Function `*RouteTablesClient.BeginCreateOrUpdate` return value(s) have been changed from `(RouteTablesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[RouteTablesClientCreateOrUpdateResponse], error)`
+- Function `*VirtualNetworkPeeringsClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualNetworkPeeringsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkPeeringsClientCreateOrUpdateResponse], error)`
+- Function `*VirtualApplianceSitesClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualApplianceSitesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualApplianceSitesClientCreateOrUpdateResponse], error)`
+- Function `*VirtualAppliancesClient.ListByResourceGroup` return value(s) have been changed from `(*VirtualAppliancesClientListByResourceGroupPager)` to `(*runtime.Pager[VirtualAppliancesClientListByResourceGroupResponse])`
+- Function `*ApplicationGatewayPrivateLinkResourcesClient.List` return value(s) have been changed from `(*ApplicationGatewayPrivateLinkResourcesClientListPager)` to `(*runtime.Pager[ApplicationGatewayPrivateLinkResourcesClientListResponse])`
+- Function `*InterfaceTapConfigurationsClient.BeginDelete` return value(s) have been changed from `(InterfaceTapConfigurationsClientDeletePollerResponse, error)` to `(*armruntime.Poller[InterfaceTapConfigurationsClientDeleteResponse], error)`
+- Function `*ApplicationGatewaysClient.ListAvailableSSLPredefinedPolicies` return value(s) have been changed from `(*ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesPager)` to `(*runtime.Pager[ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse])`
+- Function `*ApplicationSecurityGroupsClient.BeginDelete` return value(s) have been changed from `(ApplicationSecurityGroupsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ApplicationSecurityGroupsClientDeleteResponse], error)`
+- Function `*VPNGatewaysClient.BeginReset` return value(s) have been changed from `(VPNGatewaysClientResetPollerResponse, error)` to `(*armruntime.Poller[VPNGatewaysClientResetResponse], error)`
+- Function `*AzureFirewallFqdnTagsClient.ListAll` return value(s) have been changed from `(*AzureFirewallFqdnTagsClientListAllPager)` to `(*runtime.Pager[AzureFirewallFqdnTagsClientListAllResponse])`
+- Function `*DscpConfigurationClient.BeginDelete` return value(s) have been changed from `(DscpConfigurationClientDeletePollerResponse, error)` to `(*armruntime.Poller[DscpConfigurationClientDeleteResponse], error)`
+- Function `*LoadBalancersClient.BeginCreateOrUpdate` return value(s) have been changed from `(LoadBalancersClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[LoadBalancersClientCreateOrUpdateResponse], error)`
+- Function `*VirtualHubIPConfigurationClient.List` return value(s) have been changed from `(*VirtualHubIPConfigurationClientListPager)` to `(*runtime.Pager[VirtualHubIPConfigurationClientListResponse])`
+- Function `*PublicIPPrefixesClient.BeginDelete` return value(s) have been changed from `(PublicIPPrefixesClientDeletePollerResponse, error)` to `(*armruntime.Poller[PublicIPPrefixesClientDeleteResponse], error)`
+- Function `*ApplicationGatewaysClient.BeginBackendHealth` return value(s) have been changed from `(ApplicationGatewaysClientBackendHealthPollerResponse, error)` to `(*armruntime.Poller[ApplicationGatewaysClientBackendHealthResponse], error)`
+- Function `*VirtualNetworkGatewayNatRulesClient.BeginDelete` return value(s) have been changed from `(VirtualNetworkGatewayNatRulesClientDeletePollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkGatewayNatRulesClientDeleteResponse], error)`
+- Function `*VPNGatewaysClient.List` return value(s) have been changed from `(*VPNGatewaysClientListPager)` to `(*runtime.Pager[VPNGatewaysClientListResponse])`
+- Function `NewNatRulesClient` return value(s) have been changed from `(*NatRulesClient)` to `(*NatRulesClient, error)`
+- Function `*WatchersClient.BeginGetAzureReachabilityReport` return value(s) have been changed from `(WatchersClientGetAzureReachabilityReportPollerResponse, error)` to `(*armruntime.Poller[WatchersClientGetAzureReachabilityReportResponse], error)`
+- Function `NewDdosProtectionPlansClient` return value(s) have been changed from `(*DdosProtectionPlansClient)` to `(*DdosProtectionPlansClient, error)`
+- Function `*InboundNatRulesClient.BeginDelete` return value(s) have been changed from `(InboundNatRulesClientDeletePollerResponse, error)` to `(*armruntime.Poller[InboundNatRulesClientDeleteResponse], error)`
+- Function `*PrivateEndpointsClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointsClientDeletePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointsClientDeleteResponse], error)`
+- Function `*VirtualNetworkGatewaysClient.List` return value(s) have been changed from `(*VirtualNetworkGatewaysClientListPager)` to `(*runtime.Pager[VirtualNetworkGatewaysClientListResponse])`
+- Function `*RouteFilterRulesClient.BeginDelete` return value(s) have been changed from `(RouteFilterRulesClientDeletePollerResponse, error)` to `(*armruntime.Poller[RouteFilterRulesClientDeleteResponse], error)`
+- Function `*ExpressRouteConnectionsClient.BeginDelete` return value(s) have been changed from `(ExpressRouteConnectionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ExpressRouteConnectionsClientDeleteResponse], error)`
+- Function `*AzureFirewallsClient.List` return value(s) have been changed from `(*AzureFirewallsClientListPager)` to `(*runtime.Pager[AzureFirewallsClientListResponse])`
+- Function `*RoutingIntentClient.BeginCreateOrUpdate` return value(s) have been changed from `(RoutingIntentClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[RoutingIntentClientCreateOrUpdateResponse], error)`
+- Function `*BgpServiceCommunitiesClient.List` return value(s) have been changed from `(*BgpServiceCommunitiesClientListPager)` to `(*runtime.Pager[BgpServiceCommunitiesClientListResponse])`
+- Function `*PrivateLinkServicesClient.BeginCheckPrivateLinkServiceVisibility` return value(s) have been changed from `(PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityPollerResponse, error)` to `(*armruntime.Poller[PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityResponse], error)`
+- Function `NewServiceTagInformationClient` return value(s) have been changed from `(*ServiceTagInformationClient)` to `(*ServiceTagInformationClient, error)`
+- Function `*VPNServerConfigurationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(VPNServerConfigurationsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VPNServerConfigurationsClientCreateOrUpdateResponse], error)`
+- Function `*SecurityGroupsClient.List` return value(s) have been changed from `(*SecurityGroupsClientListPager)` to `(*runtime.Pager[SecurityGroupsClientListResponse])`
+- Function `*AvailableEndpointServicesClient.List` return value(s) have been changed from `(*AvailableEndpointServicesClientListPager)` to `(*runtime.Pager[AvailableEndpointServicesClientListResponse])`
+- Function `*ExpressRouteCircuitAuthorizationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ExpressRouteCircuitAuthorizationsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ExpressRouteCircuitAuthorizationsClientCreateOrUpdateResponse], error)`
+- Function `*ConnectionMonitorsClient.BeginDelete` return value(s) have been changed from `(ConnectionMonitorsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ConnectionMonitorsClientDeleteResponse], error)`
+- Function `*DdosProtectionPlansClient.BeginDelete` return value(s) have been changed from `(DdosProtectionPlansClientDeletePollerResponse, error)` to `(*armruntime.Poller[DdosProtectionPlansClientDeleteResponse], error)`
+- Function `*InterfaceLoadBalancersClient.List` return value(s) have been changed from `(*InterfaceLoadBalancersClientListPager)` to `(*runtime.Pager[InterfaceLoadBalancersClientListResponse])`
+- Function `*ExpressRouteGatewaysClient.BeginUpdateTags` return value(s) have been changed from `(ExpressRouteGatewaysClientUpdateTagsPollerResponse, error)` to `(*armruntime.Poller[ExpressRouteGatewaysClientUpdateTagsResponse], error)`
+- Function `*PacketCapturesClient.BeginGetStatus` return value(s) have been changed from `(PacketCapturesClientGetStatusPollerResponse, error)` to `(*armruntime.Poller[PacketCapturesClientGetStatusResponse], error)`
+- Function `*ApplicationSecurityGroupsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ApplicationSecurityGroupsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ApplicationSecurityGroupsClientCreateOrUpdateResponse], error)`
+- Function `*ConnectionMonitorsClient.BeginStop` return value(s) have been changed from `(ConnectionMonitorsClientStopPollerResponse, error)` to `(*armruntime.Poller[ConnectionMonitorsClientStopResponse], error)`
+- Function `*RouteFiltersClient.BeginCreateOrUpdate` return value(s) have been changed from `(RouteFiltersClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[RouteFiltersClientCreateOrUpdateResponse], error)`
+- Function `*InboundNatRulesClient.BeginCreateOrUpdate` return value(s) have been changed from `(InboundNatRulesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[InboundNatRulesClientCreateOrUpdateResponse], error)`
+- Function `*AvailablePrivateEndpointTypesClient.ListByResourceGroup` return value(s) have been changed from `(*AvailablePrivateEndpointTypesClientListByResourceGroupPager)` to `(*runtime.Pager[AvailablePrivateEndpointTypesClientListByResourceGroupResponse])`
+- Function `*ExpressRouteCircuitsClient.BeginListRoutesTableSummary` return value(s) have been changed from `(ExpressRouteCircuitsClientListRoutesTableSummaryPollerResponse, error)` to `(*armruntime.Poller[ExpressRouteCircuitsClientListRoutesTableSummaryResponse], error)`
+- Function `*VirtualNetworkGatewayConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualNetworkGatewayConnectionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkGatewayConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*IPGroupsClient.BeginDelete` return value(s) have been changed from `(IPGroupsClientDeletePollerResponse, error)` to `(*armruntime.Poller[IPGroupsClientDeleteResponse], error)`
+- Function `*WatchersClient.BeginGetTroubleshootingResult` return value(s) have been changed from `(WatchersClientGetTroubleshootingResultPollerResponse, error)` to `(*armruntime.Poller[WatchersClientGetTroubleshootingResultResponse], error)`
+- Function `*SecurityPartnerProvidersClient.BeginDelete` return value(s) have been changed from `(SecurityPartnerProvidersClientDeletePollerResponse, error)` to `(*armruntime.Poller[SecurityPartnerProvidersClientDeleteResponse], error)`
+- Function `*DscpConfigurationClient.BeginCreateOrUpdate` return value(s) have been changed from `(DscpConfigurationClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[DscpConfigurationClientCreateOrUpdateResponse], error)`
+- Function `*SecurityRulesClient.List` return value(s) have been changed from `(*SecurityRulesClientListPager)` to `(*runtime.Pager[SecurityRulesClientListResponse])`
+- Function `*PublicIPPrefixesClient.List` return value(s) have been changed from `(*PublicIPPrefixesClientListPager)` to `(*runtime.Pager[PublicIPPrefixesClientListResponse])`
+- Function `*WatchersClient.BeginVerifyIPFlow` return value(s) have been changed from `(WatchersClientVerifyIPFlowPollerResponse, error)` to `(*armruntime.Poller[WatchersClientVerifyIPFlowResponse], error)`
+- Function `NewInterfaceIPConfigurationsClient` return value(s) have been changed from `(*InterfaceIPConfigurationsClient)` to `(*InterfaceIPConfigurationsClient, error)`
+- Function `*LocalNetworkGatewaysClient.List` return value(s) have been changed from `(*LocalNetworkGatewaysClientListPager)` to `(*runtime.Pager[LocalNetworkGatewaysClientListResponse])`
+- Function `*PrivateLinkServicesClient.ListAutoApprovedPrivateLinkServicesByResourceGroup` return value(s) have been changed from `(*PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupPager)` to `(*runtime.Pager[PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse])`
+- Function `NewServiceEndpointPoliciesClient` return value(s) have been changed from `(*ServiceEndpointPoliciesClient)` to `(*ServiceEndpointPoliciesClient, error)`
+- Function `NewSecurityPartnerProvidersClient` return value(s) have been changed from `(*SecurityPartnerProvidersClient)` to `(*SecurityPartnerProvidersClient, error)`
+- Function `NewSecurityGroupsClient` return value(s) have been changed from `(*SecurityGroupsClient)` to `(*SecurityGroupsClient, error)`
+- Function `*NatRulesClient.BeginCreateOrUpdate` return value(s) have been changed from `(NatRulesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[NatRulesClientCreateOrUpdateResponse], error)`
+- Function `*NatGatewaysClient.BeginDelete` return value(s) have been changed from `(NatGatewaysClientDeletePollerResponse, error)` to `(*armruntime.Poller[NatGatewaysClientDeleteResponse], error)`
+- Function `*DdosCustomPoliciesClient.BeginDelete` return value(s) have been changed from `(DdosCustomPoliciesClientDeletePollerResponse, error)` to `(*armruntime.Poller[DdosCustomPoliciesClientDeleteResponse], error)`
+- Function `NewLoadBalancerFrontendIPConfigurationsClient` return value(s) have been changed from `(*LoadBalancerFrontendIPConfigurationsClient)` to `(*LoadBalancerFrontendIPConfigurationsClient, error)`
+- Function `*ExpressRouteCircuitPeeringsClient.List` return value(s) have been changed from `(*ExpressRouteCircuitPeeringsClientListPager)` to `(*runtime.Pager[ExpressRouteCircuitPeeringsClientListResponse])`
+- Function `*VirtualNetworksClient.List` return value(s) have been changed from `(*VirtualNetworksClientListPager)` to `(*runtime.Pager[VirtualNetworksClientListResponse])`
+- Function `NewWatchersClient` return value(s) have been changed from `(*WatchersClient)` to `(*WatchersClient, error)`
+- Function `*SecurityRulesClient.BeginCreateOrUpdate` return value(s) have been changed from `(SecurityRulesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[SecurityRulesClientCreateOrUpdateResponse], error)`
+- Function `NewHubVirtualNetworkConnectionsClient` return value(s) have been changed from `(*HubVirtualNetworkConnectionsClient)` to `(*HubVirtualNetworkConnectionsClient, error)`
+- Function `*AvailableServiceAliasesClient.ListByResourceGroup` return value(s) have been changed from `(*AvailableServiceAliasesClientListByResourceGroupPager)` to `(*runtime.Pager[AvailableServiceAliasesClientListByResourceGroupResponse])`
+- Function `*ManagementClient.GetBastionShareableLink` return value(s) have been changed from `(*ManagementClientGetBastionShareableLinkPager)` to `(*runtime.Pager[ManagementClientGetBastionShareableLinkResponse])`
+- Function `*RoutesClient.BeginCreateOrUpdate` return value(s) have been changed from `(RoutesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[RoutesClientCreateOrUpdateResponse], error)`
+- Function `NewIPGroupsClient` return value(s) have been changed from `(*IPGroupsClient)` to `(*IPGroupsClient, error)`
+- Function `*VPNSitesClient.BeginCreateOrUpdate` return value(s) have been changed from `(VPNSitesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VPNSitesClientCreateOrUpdateResponse], error)`
+- Function `*RoutesClient.List` return value(s) have been changed from `(*RoutesClientListPager)` to `(*runtime.Pager[RoutesClientListResponse])`
+- Function `*DdosProtectionPlansClient.List` return value(s) have been changed from `(*DdosProtectionPlansClientListPager)` to `(*runtime.Pager[DdosProtectionPlansClientListResponse])`
+- Function `*VirtualRouterPeeringsClient.List` return value(s) have been changed from `(*VirtualRouterPeeringsClientListPager)` to `(*runtime.Pager[VirtualRouterPeeringsClientListResponse])`
+- Function `NewInterfaceTapConfigurationsClient` return value(s) have been changed from `(*InterfaceTapConfigurationsClient)` to `(*InterfaceTapConfigurationsClient, error)`
+- Function `*VirtualNetworkGatewaysClient.BeginReset` return value(s) have been changed from `(VirtualNetworkGatewaysClientResetPollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkGatewaysClientResetResponse], error)`
+- Function `*BastionHostsClient.List` return value(s) have been changed from `(*BastionHostsClientListPager)` to `(*runtime.Pager[BastionHostsClientListResponse])`
+- Function `*ApplicationGatewaysClient.BeginBackendHealthOnDemand` return value(s) have been changed from `(ApplicationGatewaysClientBackendHealthOnDemandPollerResponse, error)` to `(*armruntime.Poller[ApplicationGatewaysClientBackendHealthOnDemandResponse], error)`
+- Function `*ApplicationGatewaysClient.BeginStart` return value(s) have been changed from `(ApplicationGatewaysClientStartPollerResponse, error)` to `(*armruntime.Poller[ApplicationGatewaysClientStartResponse], error)`
+- Function `*UsagesClient.List` return value(s) have been changed from `(*UsagesClientListPager)` to `(*runtime.Pager[UsagesClientListResponse])`
+- Function `*InterfacesClient.BeginGetEffectiveRouteTable` return value(s) have been changed from `(InterfacesClientGetEffectiveRouteTablePollerResponse, error)` to `(*armruntime.Poller[InterfacesClientGetEffectiveRouteTableResponse], error)`
+- Function `*VPNConnectionsClient.BeginDelete` return value(s) have been changed from `(VPNConnectionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[VPNConnectionsClientDeleteResponse], error)`
+- Function `*InterfacesClient.BeginDelete` return value(s) have been changed from `(InterfacesClientDeletePollerResponse, error)` to `(*armruntime.Poller[InterfacesClientDeleteResponse], error)`
+- Function `NewVirtualHubsClient` return value(s) have been changed from `(*VirtualHubsClient)` to `(*VirtualHubsClient, error)`
+- Function `*HubVirtualNetworkConnectionsClient.BeginDelete` return value(s) have been changed from `(HubVirtualNetworkConnectionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[HubVirtualNetworkConnectionsClientDeleteResponse], error)`
+- Function `*PublicIPAddressesClient.BeginCreateOrUpdate` return value(s) have been changed from `(PublicIPAddressesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[PublicIPAddressesClientCreateOrUpdateResponse], error)`
+- Function `*PublicIPAddressesClient.ListVirtualMachineScaleSetPublicIPAddresses` return value(s) have been changed from `(*PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesPager)` to `(*runtime.Pager[PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse])`
+- Function `NewApplicationSecurityGroupsClient` return value(s) have been changed from `(*ApplicationSecurityGroupsClient)` to `(*ApplicationSecurityGroupsClient, error)`
+- Function `*VirtualRouterPeeringsClient.BeginDelete` return value(s) have been changed from `(VirtualRouterPeeringsClientDeletePollerResponse, error)` to `(*armruntime.Poller[VirtualRouterPeeringsClientDeleteResponse], error)`
+- Function `*NatGatewaysClient.ListAll` return value(s) have been changed from `(*NatGatewaysClientListAllPager)` to `(*runtime.Pager[NatGatewaysClientListAllResponse])`
+- Function `*InboundSecurityRuleClient.BeginCreateOrUpdate` return value(s) have been changed from `(InboundSecurityRuleClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[InboundSecurityRuleClientCreateOrUpdateResponse], error)`
+- Function `*IPAllocationsClient.ListByResourceGroup` return value(s) have been changed from `(*IPAllocationsClientListByResourceGroupPager)` to `(*runtime.Pager[IPAllocationsClientListByResourceGroupResponse])`
+- Function `NewProfilesClient` return value(s) have been changed from `(*ProfilesClient)` to `(*ProfilesClient, error)`
+- Function `*FlowLogsClient.BeginDelete` return value(s) have been changed from `(FlowLogsClientDeletePollerResponse, error)` to `(*armruntime.Poller[FlowLogsClientDeleteResponse], error)`
+- Function `*VPNServerConfigurationsAssociatedWithVirtualWanClient.BeginList` return value(s) have been changed from `(VPNServerConfigurationsAssociatedWithVirtualWanClientListPollerResponse, error)` to `(*armruntime.Poller[VPNServerConfigurationsAssociatedWithVirtualWanClientListResponse], error)`
+- Function `NewRouteTablesClient` return value(s) have been changed from `(*RouteTablesClient)` to `(*RouteTablesClient, error)`
+- Function `NewVPNSitesClient` return value(s) have been changed from `(*VPNSitesClient)` to `(*VPNSitesClient, error)`
+- Function `*SecurityGroupsClient.BeginCreateOrUpdate` return value(s) have been changed from `(SecurityGroupsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[SecurityGroupsClientCreateOrUpdateResponse], error)`
+- Function `NewAzureFirewallFqdnTagsClient` return value(s) have been changed from `(*AzureFirewallFqdnTagsClient)` to `(*AzureFirewallFqdnTagsClient, error)`
+- Function `*AzureFirewallsClient.ListAll` return value(s) have been changed from `(*AzureFirewallsClientListAllPager)` to `(*runtime.Pager[AzureFirewallsClientListAllResponse])`
+- Function `*VirtualHubsClient.List` return value(s) have been changed from `(*VirtualHubsClientListPager)` to `(*runtime.Pager[VirtualHubsClientListResponse])`
+- Function `*FirewallPoliciesClient.BeginDelete` return value(s) have been changed from `(FirewallPoliciesClientDeletePollerResponse, error)` to `(*armruntime.Poller[FirewallPoliciesClientDeleteResponse], error)`
+- Function `*SecurityPartnerProvidersClient.ListByResourceGroup` return value(s) have been changed from `(*SecurityPartnerProvidersClientListByResourceGroupPager)` to `(*runtime.Pager[SecurityPartnerProvidersClientListByResourceGroupResponse])`
+- Function `*VirtualAppliancesClient.BeginDelete` return value(s) have been changed from `(VirtualAppliancesClientDeletePollerResponse, error)` to `(*armruntime.Poller[VirtualAppliancesClientDeleteResponse], error)`
+- Function `*ExpressRouteCircuitConnectionsClient.BeginDelete` return value(s) have been changed from `(ExpressRouteCircuitConnectionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ExpressRouteCircuitConnectionsClientDeleteResponse], error)`
+- Function `NewLoadBalancersClient` return value(s) have been changed from `(*LoadBalancersClient)` to `(*LoadBalancersClient, error)`
+- Function `*VPNGatewaysClient.BeginCreateOrUpdate` return value(s) have been changed from `(VPNGatewaysClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VPNGatewaysClientCreateOrUpdateResponse], error)`
+- Function `*LoadBalancersClient.BeginDelete` return value(s) have been changed from `(LoadBalancersClientDeletePollerResponse, error)` to `(*armruntime.Poller[LoadBalancersClientDeleteResponse], error)`
+- Function `*SubnetsClient.BeginCreateOrUpdate` return value(s) have been changed from `(SubnetsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[SubnetsClientCreateOrUpdateResponse], error)`
+- Function `NewDdosCustomPoliciesClient` return value(s) have been changed from `(*DdosCustomPoliciesClient)` to `(*DdosCustomPoliciesClient, error)`
+- Function `*LoadBalancersClient.BeginSwapPublicIPAddresses` return value(s) have been changed from `(LoadBalancersClientSwapPublicIPAddressesPollerResponse, error)` to `(*armruntime.Poller[LoadBalancersClientSwapPublicIPAddressesResponse], error)`
+- Function `*VirtualAppliancesClient.List` return value(s) have been changed from `(*VirtualAppliancesClientListPager)` to `(*runtime.Pager[VirtualAppliancesClientListResponse])`
+- Function `*VPNGatewaysClient.BeginStopPacketCapture` return value(s) have been changed from `(VPNGatewaysClientStopPacketCapturePollerResponse, error)` to `(*armruntime.Poller[VPNGatewaysClientStopPacketCaptureResponse], error)`
+- Function `*ServiceTagInformationClient.List` return value(s) have been changed from `(*ServiceTagInformationClientListPager)` to `(*runtime.Pager[ServiceTagInformationClientListResponse])`
+- Function `*LoadBalancerBackendAddressPoolsClient.BeginCreateOrUpdate` return value(s) have been changed from `(LoadBalancerBackendAddressPoolsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[LoadBalancerBackendAddressPoolsClientCreateOrUpdateResponse], error)`
+- Function `*LoadBalancerFrontendIPConfigurationsClient.List` return value(s) have been changed from `(*LoadBalancerFrontendIPConfigurationsClientListPager)` to `(*runtime.Pager[LoadBalancerFrontendIPConfigurationsClientListResponse])`
+- Function `*VPNSitesClient.BeginDelete` return value(s) have been changed from `(VPNSitesClientDeletePollerResponse, error)` to `(*armruntime.Poller[VPNSitesClientDeleteResponse], error)`
+- Function `*VPNConnectionsClient.ListByVPNGateway` return value(s) have been changed from `(*VPNConnectionsClientListByVPNGatewayPager)` to `(*runtime.Pager[VPNConnectionsClientListByVPNGatewayResponse])`
+- Function `*RouteFiltersClient.ListByResourceGroup` return value(s) have been changed from `(*RouteFiltersClientListByResourceGroupPager)` to `(*runtime.Pager[RouteFiltersClientListByResourceGroupResponse])`
+- Function `NewPrivateEndpointsClient` return value(s) have been changed from `(*PrivateEndpointsClient)` to `(*PrivateEndpointsClient, error)`
+- Function `NewInboundSecurityRuleClient` return value(s) have been changed from `(*InboundSecurityRuleClient)` to `(*InboundSecurityRuleClient, error)`
+- Function `*ExpressRouteCircuitAuthorizationsClient.List` return value(s) have been changed from `(*ExpressRouteCircuitAuthorizationsClientListPager)` to `(*runtime.Pager[ExpressRouteCircuitAuthorizationsClientListResponse])`
+- Function `NewServiceAssociationLinksClient` return value(s) have been changed from `(*ServiceAssociationLinksClient)` to `(*ServiceAssociationLinksClient, error)`
+- Function `NewSecurityRulesClient` return value(s) have been changed from `(*SecurityRulesClient)` to `(*SecurityRulesClient, error)`
+- Function `NewManagementClient` return value(s) have been changed from `(*ManagementClient)` to `(*ManagementClient, error)`
+- Function `*VirtualNetworkGatewayConnectionsClient.BeginDelete` return value(s) have been changed from `(VirtualNetworkGatewayConnectionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkGatewayConnectionsClientDeleteResponse], error)`
+- Function `*PrivateEndpointsClient.List` return value(s) have been changed from `(*PrivateEndpointsClientListPager)` to `(*runtime.Pager[PrivateEndpointsClientListResponse])`
+- Function `*SecurityGroupsClient.ListAll` return value(s) have been changed from `(*SecurityGroupsClientListAllPager)` to `(*runtime.Pager[SecurityGroupsClientListAllResponse])`
+- Function `*ExpressRouteCrossConnectionPeeringsClient.BeginDelete` return value(s) have been changed from `(ExpressRouteCrossConnectionPeeringsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ExpressRouteCrossConnectionPeeringsClientDeleteResponse], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginGenerateVPNProfile` return value(s) have been changed from `(VirtualNetworkGatewaysClientGenerateVPNProfilePollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkGatewaysClientGenerateVPNProfileResponse], error)`
+- Function `*VirtualNetworkGatewayConnectionsClient.BeginResetConnection` return value(s) have been changed from `(VirtualNetworkGatewayConnectionsClientResetConnectionPollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkGatewayConnectionsClientResetConnectionResponse], error)`
+- Function `*VirtualNetworkGatewayConnectionsClient.BeginGetIkeSas` return value(s) have been changed from `(VirtualNetworkGatewayConnectionsClientGetIkeSasPollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkGatewayConnectionsClientGetIkeSasResponse], error)`
+- Function `*P2SVPNGatewaysClient.BeginGetP2SVPNConnectionHealth` return value(s) have been changed from `(P2SVPNGatewaysClientGetP2SVPNConnectionHealthPollerResponse, error)` to `(*armruntime.Poller[P2SVPNGatewaysClientGetP2SVPNConnectionHealthResponse], error)`
+- Function `*VirtualHubsClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualHubsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualHubsClientCreateOrUpdateResponse], error)`
+- Function `*ExpressRouteCrossConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ExpressRouteCrossConnectionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ExpressRouteCrossConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*PacketCapturesClient.BeginCreate` return value(s) have been changed from `(PacketCapturesClientCreatePollerResponse, error)` to `(*armruntime.Poller[PacketCapturesClientCreateResponse], error)`
+- Function `*InterfaceIPConfigurationsClient.List` return value(s) have been changed from `(*InterfaceIPConfigurationsClientListPager)` to `(*runtime.Pager[InterfaceIPConfigurationsClientListResponse])`
+- Function `*ExpressRoutePortsClient.ListByResourceGroup` return value(s) have been changed from `(*ExpressRoutePortsClientListByResourceGroupPager)` to `(*runtime.Pager[ExpressRoutePortsClientListByResourceGroupResponse])`
+- Function `*VirtualNetworkGatewaysClient.BeginGetVpnclientIPSecParameters` return value(s) have been changed from `(VirtualNetworkGatewaysClientGetVpnclientIPSecParametersPollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkGatewaysClientGetVpnclientIPSecParametersResponse], error)`
+- Function `*P2SVPNGatewaysClient.ListByResourceGroup` return value(s) have been changed from `(*P2SVPNGatewaysClientListByResourceGroupPager)` to `(*runtime.Pager[P2SVPNGatewaysClientListByResourceGroupResponse])`
+- Function `NewExpressRouteCircuitsClient` return value(s) have been changed from `(*ExpressRouteCircuitsClient)` to `(*ExpressRouteCircuitsClient, error)`
+- Function `*BastionHostsClient.BeginUpdateTags` return value(s) have been changed from `(BastionHostsClientUpdateTagsPollerResponse, error)` to `(*armruntime.Poller[BastionHostsClientUpdateTagsResponse], error)`
+- Function `*VPNSiteLinksClient.ListByVPNSite` return value(s) have been changed from `(*VPNSiteLinksClientListByVPNSitePager)` to `(*runtime.Pager[VPNSiteLinksClientListByVPNSiteResponse])`
+- Function `*PrivateLinkServicesClient.List` return value(s) have been changed from `(*PrivateLinkServicesClientListPager)` to `(*runtime.Pager[PrivateLinkServicesClientListResponse])`
+- Function `NewFirewallPolicyIdpsSignaturesOverridesClient` return value(s) have been changed from `(*FirewallPolicyIdpsSignaturesOverridesClient)` to `(*FirewallPolicyIdpsSignaturesOverridesClient, error)`
+- Function `*PrivateDNSZoneGroupsClient.List` return value(s) have been changed from `(*PrivateDNSZoneGroupsClientListPager)` to `(*runtime.Pager[PrivateDNSZoneGroupsClientListResponse])`
+- Function `*ExpressRouteConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ExpressRouteConnectionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ExpressRouteConnectionsClientCreateOrUpdateResponse], error)`
+- Function `NewPublicIPAddressesClient` return value(s) have been changed from `(*PublicIPAddressesClient)` to `(*PublicIPAddressesClient, error)`
+- Function `*ServiceEndpointPoliciesClient.BeginDelete` return value(s) have been changed from `(ServiceEndpointPoliciesClientDeletePollerResponse, error)` to `(*armruntime.Poller[ServiceEndpointPoliciesClientDeleteResponse], error)`
+- Function `NewExpressRouteGatewaysClient` return value(s) have been changed from `(*ExpressRouteGatewaysClient)` to `(*ExpressRouteGatewaysClient, error)`
+- Function `*VPNConnectionsClient.BeginStopPacketCapture` return value(s) have been changed from `(VPNConnectionsClientStopPacketCapturePollerResponse, error)` to `(*armruntime.Poller[VPNConnectionsClientStopPacketCaptureResponse], error)`
+- Function `*VirtualHubsClient.BeginGetEffectiveVirtualHubRoutes` return value(s) have been changed from `(VirtualHubsClientGetEffectiveVirtualHubRoutesPollerResponse, error)` to `(*armruntime.Poller[VirtualHubsClientGetEffectiveVirtualHubRoutesResponse], error)`
+- Function `NewFlowLogsClient` return value(s) have been changed from `(*FlowLogsClient)` to `(*FlowLogsClient, error)`
+- Function `*BastionHostsClient.ListByResourceGroup` return value(s) have been changed from `(*BastionHostsClientListByResourceGroupPager)` to `(*runtime.Pager[BastionHostsClientListByResourceGroupResponse])`
+- Function `*FirewallPolicyRuleCollectionGroupsClient.List` return value(s) have been changed from `(*FirewallPolicyRuleCollectionGroupsClientListPager)` to `(*runtime.Pager[FirewallPolicyRuleCollectionGroupsClientListResponse])`
+- Function `*ApplicationGatewaysClient.List` return value(s) have been changed from `(*ApplicationGatewaysClientListPager)` to `(*runtime.Pager[ApplicationGatewaysClientListResponse])`
+- Function `*P2SVPNGatewaysClient.BeginGenerateVPNProfile` return value(s) have been changed from `(P2SVPNGatewaysClientGenerateVPNProfilePollerResponse, error)` to `(*armruntime.Poller[P2SVPNGatewaysClientGenerateVPNProfileResponse], error)`
+- Function `NewPublicIPPrefixesClient` return value(s) have been changed from `(*PublicIPPrefixesClient)` to `(*PublicIPPrefixesClient, error)`
+- Function `*VPNLinkConnectionsClient.ListByVPNConnection` return value(s) have been changed from `(*VPNLinkConnectionsClientListByVPNConnectionPager)` to `(*runtime.Pager[VPNLinkConnectionsClientListByVPNConnectionResponse])`
+- Function `*ServiceEndpointPoliciesClient.ListByResourceGroup` return value(s) have been changed from `(*ServiceEndpointPoliciesClientListByResourceGroupPager)` to `(*runtime.Pager[ServiceEndpointPoliciesClientListByResourceGroupResponse])`
+- Function `*VPNGatewaysClient.ListByResourceGroup` return value(s) have been changed from `(*VPNGatewaysClientListByResourceGroupPager)` to `(*runtime.Pager[VPNGatewaysClientListByResourceGroupResponse])`
+- Function `*ExpressRouteCircuitsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ExpressRouteCircuitsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ExpressRouteCircuitsClientCreateOrUpdateResponse], error)`
+- Function `NewVPNServerConfigurationsAssociatedWithVirtualWanClient` return value(s) have been changed from `(*VPNServerConfigurationsAssociatedWithVirtualWanClient)` to `(*VPNServerConfigurationsAssociatedWithVirtualWanClient, error)`
+- Function `*IPAllocationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(IPAllocationsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[IPAllocationsClientCreateOrUpdateResponse], error)`
+- Function `NewExpressRouteCircuitPeeringsClient` return value(s) have been changed from `(*ExpressRouteCircuitPeeringsClient)` to `(*ExpressRouteCircuitPeeringsClient, error)`
+- Function `NewInterfacesClient` return value(s) have been changed from `(*InterfacesClient)` to `(*InterfacesClient, error)`
+- Function `*PacketCapturesClient.BeginStop` return value(s) have been changed from `(PacketCapturesClientStopPollerResponse, error)` to `(*armruntime.Poller[PacketCapturesClientStopResponse], error)`
+- Function `*VirtualApplianceSitesClient.List` return value(s) have been changed from `(*VirtualApplianceSitesClientListPager)` to `(*runtime.Pager[VirtualApplianceSitesClientListResponse])`
+- Function `*VirtualApplianceSKUsClient.List` return value(s) have been changed from `(*VirtualApplianceSKUsClientListPager)` to `(*runtime.Pager[VirtualApplianceSKUsClientListResponse])`
+- Function `*ExpressRouteCrossConnectionsClient.BeginListRoutesTable` return value(s) have been changed from `(ExpressRouteCrossConnectionsClientListRoutesTablePollerResponse, error)` to `(*armruntime.Poller[ExpressRouteCrossConnectionsClientListRoutesTableResponse], error)`
+- Function `*NatRulesClient.BeginDelete` return value(s) have been changed from `(NatRulesClientDeletePollerResponse, error)` to `(*armruntime.Poller[NatRulesClientDeleteResponse], error)`
+- Function `NewVirtualNetworkGatewayConnectionsClient` return value(s) have been changed from `(*VirtualNetworkGatewayConnectionsClient)` to `(*VirtualNetworkGatewayConnectionsClient, error)`
+- Function `NewInterfaceLoadBalancersClient` return value(s) have been changed from `(*InterfaceLoadBalancersClient)` to `(*InterfaceLoadBalancersClient, error)`
+- Function `*BastionHostsClient.BeginDelete` return value(s) have been changed from `(BastionHostsClientDeletePollerResponse, error)` to `(*armruntime.Poller[BastionHostsClientDeleteResponse], error)`
+- Function `NewVirtualNetworkPeeringsClient` return value(s) have been changed from `(*VirtualNetworkPeeringsClient)` to `(*VirtualNetworkPeeringsClient, error)`
+- Function `NewInboundNatRulesClient` return value(s) have been changed from `(*InboundNatRulesClient)` to `(*InboundNatRulesClient, error)`
+- Function `*VirtualHubRouteTableV2SClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualHubRouteTableV2SClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualHubRouteTableV2SClientCreateOrUpdateResponse], error)`
+- Function `*FirewallPolicyRuleCollectionGroupsClient.BeginCreateOrUpdate` return value(s) have been changed from `(FirewallPolicyRuleCollectionGroupsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[FirewallPolicyRuleCollectionGroupsClientCreateOrUpdateResponse], error)`
+- Function `*VPNSitesConfigurationClient.BeginDownload` return value(s) have been changed from `(VPNSitesConfigurationClientDownloadPollerResponse, error)` to `(*armruntime.Poller[VPNSitesConfigurationClientDownloadResponse], error)`
+- Function `*VPNServerConfigurationsClient.List` return value(s) have been changed from `(*VPNServerConfigurationsClientListPager)` to `(*runtime.Pager[VPNServerConfigurationsClientListResponse])`
+- Function `NewVPNGatewaysClient` return value(s) have been changed from `(*VPNGatewaysClient)` to `(*VPNGatewaysClient, error)`
+- Function `*VirtualNetworkTapsClient.BeginDelete` return value(s) have been changed from `(VirtualNetworkTapsClientDeletePollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkTapsClientDeleteResponse], error)`
+- Function `*VirtualNetworkGatewaysClient.ListConnections` return value(s) have been changed from `(*VirtualNetworkGatewaysClientListConnectionsPager)` to `(*runtime.Pager[VirtualNetworkGatewaysClientListConnectionsResponse])`
+- Function `*NatGatewaysClient.BeginCreateOrUpdate` return value(s) have been changed from `(NatGatewaysClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[NatGatewaysClientCreateOrUpdateResponse], error)`
+- Function `NewApplicationGatewayPrivateEndpointConnectionsClient` return value(s) have been changed from `(*ApplicationGatewayPrivateEndpointConnectionsClient)` to `(*ApplicationGatewayPrivateEndpointConnectionsClient, error)`
+- Function `*VirtualNetworkGatewaysClient.BeginGetVpnclientConnectionHealth` return value(s) have been changed from `(VirtualNetworkGatewaysClientGetVpnclientConnectionHealthPollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkGatewaysClientGetVpnclientConnectionHealthResponse], error)`
+- Function `NewSubnetsClient` return value(s) have been changed from `(*SubnetsClient)` to `(*SubnetsClient, error)`
+- Function `NewVPNSiteLinksClient` return value(s) have been changed from `(*VPNSiteLinksClient)` to `(*VPNSiteLinksClient, error)`
+- Function `NewExpressRouteCircuitAuthorizationsClient` return value(s) have been changed from `(*ExpressRouteCircuitAuthorizationsClient)` to `(*ExpressRouteCircuitAuthorizationsClient, error)`
+- Function `*VirtualNetworkGatewaysClient.BeginGetVPNProfilePackageURL` return value(s) have been changed from `(VirtualNetworkGatewaysClientGetVPNProfilePackageURLPollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse], error)`
+- Function `*SecurityPartnerProvidersClient.List` return value(s) have been changed from `(*SecurityPartnerProvidersClientListPager)` to `(*runtime.Pager[SecurityPartnerProvidersClientListResponse])`
+- Function `*WatchersClient.BeginGetNetworkConfigurationDiagnostic` return value(s) have been changed from `(WatchersClientGetNetworkConfigurationDiagnosticPollerResponse, error)` to `(*armruntime.Poller[WatchersClientGetNetworkConfigurationDiagnosticResponse], error)`
+- Function `*FirewallPolicyRuleCollectionGroupsClient.BeginDelete` return value(s) have been changed from `(FirewallPolicyRuleCollectionGroupsClientDeletePollerResponse, error)` to `(*armruntime.Poller[FirewallPolicyRuleCollectionGroupsClientDeleteResponse], error)`
+- Function `*ConnectionMonitorsClient.List` parameter(s) have been changed from `(context.Context, string, string, *ConnectionMonitorsClientListOptions)` to `(string, string, *ConnectionMonitorsClientListOptions)`
+- Function `*ConnectionMonitorsClient.List` return value(s) have been changed from `(ConnectionMonitorsClientListResponse, error)` to `(*runtime.Pager[ConnectionMonitorsClientListResponse])`
+- Function `*PeerExpressRouteCircuitConnectionsClient.List` return value(s) have been changed from `(*PeerExpressRouteCircuitConnectionsClientListPager)` to `(*runtime.Pager[PeerExpressRouteCircuitConnectionsClientListResponse])`
+- Function `*ExpressRoutePortsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ExpressRoutePortsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ExpressRoutePortsClientCreateOrUpdateResponse], error)`
+- Function `*VirtualNetworksClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualNetworksClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualNetworksClientCreateOrUpdateResponse], error)`
+- Function `*PublicIPAddressesClient.List` return value(s) have been changed from `(*PublicIPAddressesClientListPager)` to `(*runtime.Pager[PublicIPAddressesClientListResponse])`
+- Function `*VirtualNetworkGatewayConnectionsClient.List` return value(s) have been changed from `(*VirtualNetworkGatewayConnectionsClientListPager)` to `(*runtime.Pager[VirtualNetworkGatewayConnectionsClientListResponse])`
+- Function `*VirtualRoutersClient.BeginDelete` return value(s) have been changed from `(VirtualRoutersClientDeletePollerResponse, error)` to `(*armruntime.Poller[VirtualRoutersClientDeleteResponse], error)`
+- Function `*CustomIPPrefixesClient.BeginDelete` return value(s) have been changed from `(CustomIPPrefixesClientDeletePollerResponse, error)` to `(*armruntime.Poller[CustomIPPrefixesClientDeleteResponse], error)`
+- Function `NewAvailableEndpointServicesClient` return value(s) have been changed from `(*AvailableEndpointServicesClient)` to `(*AvailableEndpointServicesClient, error)`
+- Function `*LoadBalancerOutboundRulesClient.List` return value(s) have been changed from `(*LoadBalancerOutboundRulesClientListPager)` to `(*runtime.Pager[LoadBalancerOutboundRulesClientListResponse])`
+- Function `*VirtualRoutersClient.ListByResourceGroup` return value(s) have been changed from `(*VirtualRoutersClientListByResourceGroupPager)` to `(*runtime.Pager[VirtualRoutersClientListByResourceGroupResponse])`
+- Function `*LocalNetworkGatewaysClient.BeginDelete` return value(s) have been changed from `(LocalNetworkGatewaysClientDeletePollerResponse, error)` to `(*armruntime.Poller[LocalNetworkGatewaysClientDeleteResponse], error)`
+- Function `*ExpressRouteCircuitsClient.ListAll` return value(s) have been changed from `(*ExpressRouteCircuitsClientListAllPager)` to `(*runtime.Pager[ExpressRouteCircuitsClientListAllResponse])`
+- Function `*CustomIPPrefixesClient.ListAll` return value(s) have been changed from `(*CustomIPPrefixesClientListAllPager)` to `(*runtime.Pager[CustomIPPrefixesClientListAllResponse])`
+- Function `*ManagementClient.BeginGetActiveSessions` return value(s) have been changed from `(ManagementClientGetActiveSessionsPollerResponse, error)` to `(*armruntime.Poller[*runtime.Pager[ManagementClientGetActiveSessionsResponse]], error)`
+- Function `NewVPNConnectionsClient` return value(s) have been changed from `(*VPNConnectionsClient)` to `(*VPNConnectionsClient, error)`
+- Function `*NatRulesClient.ListByVPNGateway` return value(s) have been changed from `(*NatRulesClientListByVPNGatewayPager)` to `(*runtime.Pager[NatRulesClientListByVPNGatewayResponse])`
+- Function `*InterfaceTapConfigurationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(InterfaceTapConfigurationsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[InterfaceTapConfigurationsClientCreateOrUpdateResponse], error)`
+- Function `*PrivateDNSZoneGroupsClient.BeginDelete` return value(s) have been changed from `(PrivateDNSZoneGroupsClientDeletePollerResponse, error)` to `(*armruntime.Poller[PrivateDNSZoneGroupsClientDeleteResponse], error)`
+- Function `*InterfacesClient.ListVirtualMachineScaleSetIPConfigurations` return value(s) have been changed from `(*InterfacesClientListVirtualMachineScaleSetIPConfigurationsPager)` to `(*runtime.Pager[InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse])`
+- Function `*ExpressRoutePortsClient.BeginDelete` return value(s) have been changed from `(ExpressRoutePortsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ExpressRoutePortsClientDeleteResponse], error)`
+- Function `*VirtualNetworkPeeringsClient.List` return value(s) have been changed from `(*VirtualNetworkPeeringsClientListPager)` to `(*runtime.Pager[VirtualNetworkPeeringsClientListResponse])`
+- Function `*ServiceEndpointPolicyDefinitionsClient.BeginDelete` return value(s) have been changed from `(ServiceEndpointPolicyDefinitionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ServiceEndpointPolicyDefinitionsClientDeleteResponse], error)`
+- Function `*VirtualHubIPConfigurationClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualHubIPConfigurationClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualHubIPConfigurationClientCreateOrUpdateResponse], error)`
+- Function `*ManagementClient.BeginDeleteBastionShareableLink` return value(s) have been changed from `(ManagementClientDeleteBastionShareableLinkPollerResponse, error)` to `(*armruntime.Poller[ManagementClientDeleteBastionShareableLinkResponse], error)`
+- Function `*ExpressRouteCircuitsClient.BeginListArpTable` return value(s) have been changed from `(ExpressRouteCircuitsClientListArpTablePollerResponse, error)` to `(*armruntime.Poller[ExpressRouteCircuitsClientListArpTableResponse], error)`
+- Function `NewFirewallPoliciesClient` return value(s) have been changed from `(*FirewallPoliciesClient)` to `(*FirewallPoliciesClient, error)`
+- Function `*ExpressRouteCrossConnectionsClient.BeginListRoutesTableSummary` return value(s) have been changed from `(ExpressRouteCrossConnectionsClientListRoutesTableSummaryPollerResponse, error)` to `(*armruntime.Poller[ExpressRouteCrossConnectionsClientListRoutesTableSummaryResponse], error)`
+- Function `*LoadBalancerNetworkInterfacesClient.List` return value(s) have been changed from `(*LoadBalancerNetworkInterfacesClientListPager)` to `(*runtime.Pager[LoadBalancerNetworkInterfacesClientListResponse])`
+- Function `*ExpressRouteLinksClient.List` return value(s) have been changed from `(*ExpressRouteLinksClientListPager)` to `(*runtime.Pager[ExpressRouteLinksClientListResponse])`
+- Function `*VirtualHubRouteTableV2SClient.BeginDelete` return value(s) have been changed from `(VirtualHubRouteTableV2SClientDeletePollerResponse, error)` to `(*armruntime.Poller[VirtualHubRouteTableV2SClientDeleteResponse], error)`
+- Function `*LoadBalancersClient.List` return value(s) have been changed from `(*LoadBalancersClientListPager)` to `(*runtime.Pager[LoadBalancersClientListResponse])`
+- Function `*WatchersClient.BeginListAvailableProviders` return value(s) have been changed from `(WatchersClientListAvailableProvidersPollerResponse, error)` to `(*armruntime.Poller[WatchersClientListAvailableProvidersResponse], error)`
+- Function `*PrivateLinkServicesClient.BeginCheckPrivateLinkServiceVisibilityByResourceGroup` return value(s) have been changed from `(PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupPollerResponse, error)` to `(*armruntime.Poller[PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupResponse], error)`
+- Function `*ConnectionMonitorsClient.BeginQuery` return value(s) have been changed from `(ConnectionMonitorsClientQueryPollerResponse, error)` to `(*armruntime.Poller[ConnectionMonitorsClientQueryResponse], error)`
+- Function `*RoutingIntentClient.BeginDelete` return value(s) have been changed from `(RoutingIntentClientDeletePollerResponse, error)` to `(*armruntime.Poller[RoutingIntentClientDeleteResponse], error)`
+- Function `*LoadBalancerProbesClient.List` return value(s) have been changed from `(*LoadBalancerProbesClientListPager)` to `(*runtime.Pager[LoadBalancerProbesClientListResponse])`
+- Function `*PublicIPPrefixesClient.BeginCreateOrUpdate` return value(s) have been changed from `(PublicIPPrefixesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[PublicIPPrefixesClientCreateOrUpdateResponse], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualNetworkGatewaysClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkGatewaysClientCreateOrUpdateResponse], error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*WatchersClient.BeginGetNextHop` return value(s) have been changed from `(WatchersClientGetNextHopPollerResponse, error)` to `(*armruntime.Poller[WatchersClientGetNextHopResponse], error)`
+- Function `*HubRouteTablesClient.BeginDelete` return value(s) have been changed from `(HubRouteTablesClientDeletePollerResponse, error)` to `(*armruntime.Poller[HubRouteTablesClientDeleteResponse], error)`
+- Function `*P2SVPNGatewaysClient.BeginDisconnectP2SVPNConnections` return value(s) have been changed from `(P2SVPNGatewaysClientDisconnectP2SVPNConnectionsPollerResponse, error)` to `(*armruntime.Poller[P2SVPNGatewaysClientDisconnectP2SVPNConnectionsResponse], error)`
+- Function `*PrivateLinkServicesClient.ListPrivateEndpointConnections` return value(s) have been changed from `(*PrivateLinkServicesClientListPrivateEndpointConnectionsPager)` to `(*runtime.Pager[PrivateLinkServicesClientListPrivateEndpointConnectionsResponse])`
+- Function `*InterfacesClient.BeginCreateOrUpdate` return value(s) have been changed from `(InterfacesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[InterfacesClientCreateOrUpdateResponse], error)`
+- Function `NewExpressRoutePortsLocationsClient` return value(s) have been changed from `(*ExpressRoutePortsLocationsClient)` to `(*ExpressRoutePortsLocationsClient, error)`
+- Function `*LoadBalancerLoadBalancingRulesClient.List` return value(s) have been changed from `(*LoadBalancerLoadBalancingRulesClientListPager)` to `(*runtime.Pager[LoadBalancerLoadBalancingRulesClientListResponse])`
+- Function `*WatchersClient.BeginGetFlowLogStatus` return value(s) have been changed from `(WatchersClientGetFlowLogStatusPollerResponse, error)` to `(*armruntime.Poller[WatchersClientGetFlowLogStatusResponse], error)`
+- Function `*AvailableServiceAliasesClient.List` return value(s) have been changed from `(*AvailableServiceAliasesClientListPager)` to `(*runtime.Pager[AvailableServiceAliasesClientListResponse])`
+- Function `*VirtualNetworkGatewaysClient.BeginGeneratevpnclientpackage` return value(s) have been changed from `(VirtualNetworkGatewaysClientGeneratevpnclientpackagePollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse], error)`
+- Function `NewVirtualHubBgpConnectionsClient` return value(s) have been changed from `(*VirtualHubBgpConnectionsClient)` to `(*VirtualHubBgpConnectionsClient, error)`
+- Function `*AvailablePrivateEndpointTypesClient.List` return value(s) have been changed from `(*AvailablePrivateEndpointTypesClientListPager)` to `(*runtime.Pager[AvailablePrivateEndpointTypesClientListResponse])`
+- Function `*VPNGatewaysClient.BeginDelete` return value(s) have been changed from `(VPNGatewaysClientDeletePollerResponse, error)` to `(*armruntime.Poller[VPNGatewaysClientDeleteResponse], error)`
+- Function `*PublicIPAddressesClient.ListCloudServicePublicIPAddresses` return value(s) have been changed from `(*PublicIPAddressesClientListCloudServicePublicIPAddressesPager)` to `(*runtime.Pager[PublicIPAddressesClientListCloudServicePublicIPAddressesResponse])`
+- Function `NewLoadBalancerProbesClient` return value(s) have been changed from `(*LoadBalancerProbesClient)` to `(*LoadBalancerProbesClient, error)`
+- Function `*ConnectionMonitorsClient.BeginStart` return value(s) have been changed from `(ConnectionMonitorsClientStartPollerResponse, error)` to `(*armruntime.Poller[ConnectionMonitorsClientStartResponse], error)`
+- Function `*ApplicationGatewaysClient.ListAll` return value(s) have been changed from `(*ApplicationGatewaysClientListAllPager)` to `(*runtime.Pager[ApplicationGatewaysClientListAllResponse])`
+- Function `NewPrivateDNSZoneGroupsClient` return value(s) have been changed from `(*PrivateDNSZoneGroupsClient)` to `(*PrivateDNSZoneGroupsClient, error)`
+- Function `*ExpressRouteCrossConnectionsClient.ListByResourceGroup` return value(s) have been changed from `(*ExpressRouteCrossConnectionsClientListByResourceGroupPager)` to `(*runtime.Pager[ExpressRouteCrossConnectionsClientListByResourceGroupResponse])`
+- Function `*VirtualWansClient.ListByResourceGroup` return value(s) have been changed from `(*VirtualWansClientListByResourceGroupPager)` to `(*runtime.Pager[VirtualWansClientListByResourceGroupResponse])`
+- Function `*SecurityRulesClient.BeginDelete` return value(s) have been changed from `(SecurityRulesClientDeletePollerResponse, error)` to `(*armruntime.Poller[SecurityRulesClientDeleteResponse], error)`
+- Function `*PrivateLinkServicesClient.BeginDelete` return value(s) have been changed from `(PrivateLinkServicesClientDeletePollerResponse, error)` to `(*armruntime.Poller[PrivateLinkServicesClientDeleteResponse], error)`
+- Function `*LocalNetworkGatewaysClient.BeginCreateOrUpdate` return value(s) have been changed from `(LocalNetworkGatewaysClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[LocalNetworkGatewaysClientCreateOrUpdateResponse], error)`
+- Function `*WebApplicationFirewallPoliciesClient.BeginDelete` return value(s) have been changed from `(WebApplicationFirewallPoliciesClientDeletePollerResponse, error)` to `(*armruntime.Poller[WebApplicationFirewallPoliciesClientDeleteResponse], error)`
+- Function `*PublicIPAddressesClient.ListCloudServiceRoleInstancePublicIPAddresses` return value(s) have been changed from `(*PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesPager)` to `(*runtime.Pager[PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse])`
+- Function `*PacketCapturesClient.BeginDelete` return value(s) have been changed from `(PacketCapturesClientDeletePollerResponse, error)` to `(*armruntime.Poller[PacketCapturesClientDeleteResponse], error)`
+- Function `*DdosProtectionPlansClient.BeginCreateOrUpdate` return value(s) have been changed from `(DdosProtectionPlansClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[DdosProtectionPlansClientCreateOrUpdateResponse], error)`
+- Function `*VirtualNetworkGatewayConnectionsClient.BeginUpdateTags` return value(s) have been changed from `(VirtualNetworkGatewayConnectionsClientUpdateTagsPollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkGatewayConnectionsClientUpdateTagsResponse], error)`
+- Function `*ExpressRouteCircuitPeeringsClient.BeginDelete` return value(s) have been changed from `(ExpressRouteCircuitPeeringsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ExpressRouteCircuitPeeringsClientDeleteResponse], error)`
+- Function `*HubRouteTablesClient.List` return value(s) have been changed from `(*HubRouteTablesClientListPager)` to `(*runtime.Pager[HubRouteTablesClientListResponse])`
+- Function `*SubnetsClient.BeginPrepareNetworkPolicies` return value(s) have been changed from `(SubnetsClientPrepareNetworkPoliciesPollerResponse, error)` to `(*armruntime.Poller[SubnetsClientPrepareNetworkPoliciesResponse], error)`
+- Function `NewLoadBalancerLoadBalancingRulesClient` return value(s) have been changed from `(*LoadBalancerLoadBalancingRulesClient)` to `(*LoadBalancerLoadBalancingRulesClient, error)`
+- Function `NewVirtualWansClient` return value(s) have been changed from `(*VirtualWansClient)` to `(*VirtualWansClient, error)`
+- Function `NewVirtualRoutersClient` return value(s) have been changed from `(*VirtualRoutersClient)` to `(*VirtualRoutersClient, error)`
+- Function `*VirtualRoutersClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualRoutersClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualRoutersClientCreateOrUpdateResponse], error)`
+- Function `*PrivateLinkServicesClient.ListAutoApprovedPrivateLinkServices` return value(s) have been changed from `(*PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesPager)` to `(*runtime.Pager[PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse])`
+- Function `NewVirtualApplianceSitesClient` return value(s) have been changed from `(*VirtualApplianceSitesClient)` to `(*VirtualApplianceSitesClient, error)`
+- Function `*ProfilesClient.ListAll` return value(s) have been changed from `(*ProfilesClientListAllPager)` to `(*runtime.Pager[ProfilesClientListAllResponse])`
+- Function `*LoadBalancersClient.BeginListInboundNatRulePortMappings` return value(s) have been changed from `(LoadBalancersClientListInboundNatRulePortMappingsPollerResponse, error)` to `(*armruntime.Poller[LoadBalancersClientListInboundNatRulePortMappingsResponse], error)`
+- Function `NewLocalNetworkGatewaysClient` return value(s) have been changed from `(*LocalNetworkGatewaysClient)` to `(*LocalNetworkGatewaysClient, error)`
+- Function `NewVirtualHubBgpConnectionClient` return value(s) have been changed from `(*VirtualHubBgpConnectionClient)` to `(*VirtualHubBgpConnectionClient, error)`
+- Function `*RoutesClient.BeginDelete` return value(s) have been changed from `(RoutesClientDeletePollerResponse, error)` to `(*armruntime.Poller[RoutesClientDeleteResponse], error)`
+- Function `*ExpressRoutePortsClient.List` return value(s) have been changed from `(*ExpressRoutePortsClientListPager)` to `(*runtime.Pager[ExpressRoutePortsClientListResponse])`
+- Function `NewVirtualNetworkGatewayNatRulesClient` return value(s) have been changed from `(*VirtualNetworkGatewayNatRulesClient)` to `(*VirtualNetworkGatewayNatRulesClient, error)`
+- Function `*WatchersClient.BeginSetFlowLogConfiguration` return value(s) have been changed from `(WatchersClientSetFlowLogConfigurationPollerResponse, error)` to `(*armruntime.Poller[WatchersClientSetFlowLogConfigurationResponse], error)`
+- Function `*PrivateEndpointsClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateEndpointsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointsClientCreateOrUpdateResponse], error)`
+- Function `*WatchersClient.BeginCheckConnectivity` return value(s) have been changed from `(WatchersClientCheckConnectivityPollerResponse, error)` to `(*armruntime.Poller[WatchersClientCheckConnectivityResponse], error)`
+- Function `NewRouteFilterRulesClient` return value(s) have been changed from `(*RouteFilterRulesClient)` to `(*RouteFilterRulesClient, error)`
+- Function `NewVirtualHubIPConfigurationClient` return value(s) have been changed from `(*VirtualHubIPConfigurationClient)` to `(*VirtualHubIPConfigurationClient, error)`
+- Function `*PrivateLinkServicesClient.ListBySubscription` return value(s) have been changed from `(*PrivateLinkServicesClientListBySubscriptionPager)` to `(*runtime.Pager[PrivateLinkServicesClientListBySubscriptionResponse])`
+- Function `*ApplicationSecurityGroupsClient.ListAll` return value(s) have been changed from `(*ApplicationSecurityGroupsClientListAllPager)` to `(*runtime.Pager[ApplicationSecurityGroupsClientListAllResponse])`
+- Function `*WebApplicationFirewallPoliciesClient.List` return value(s) have been changed from `(*WebApplicationFirewallPoliciesClientListPager)` to `(*runtime.Pager[WebApplicationFirewallPoliciesClientListResponse])`
+- Function `*LoadBalancerBackendAddressPoolsClient.BeginDelete` return value(s) have been changed from `(LoadBalancerBackendAddressPoolsClientDeletePollerResponse, error)` to `(*armruntime.Poller[LoadBalancerBackendAddressPoolsClientDeleteResponse], error)`
+- Function `*VirtualAppliancesClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualAppliancesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualAppliancesClientCreateOrUpdateResponse], error)`
+- Function `NewFirewallPolicyIdpsSignaturesFilterValuesClient` return value(s) have been changed from `(*FirewallPolicyIdpsSignaturesFilterValuesClient)` to `(*FirewallPolicyIdpsSignaturesFilterValuesClient, error)`
+- Function `NewDefaultSecurityRulesClient` return value(s) have been changed from `(*DefaultSecurityRulesClient)` to `(*DefaultSecurityRulesClient, error)`
+- Function `NewWebCategoriesClient` return value(s) have been changed from `(*WebCategoriesClient)` to `(*WebCategoriesClient, error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*RouteFiltersClient.List` return value(s) have been changed from `(*RouteFiltersClientListPager)` to `(*runtime.Pager[RouteFiltersClientListResponse])`
+- Function `NewP2SVPNGatewaysClient` return value(s) have been changed from `(*P2SVPNGatewaysClient)` to `(*P2SVPNGatewaysClient, error)`
+- Function `*FirewallPoliciesClient.ListAll` return value(s) have been changed from `(*FirewallPoliciesClientListAllPager)` to `(*runtime.Pager[FirewallPoliciesClientListAllResponse])`
+- Function `*InterfacesClient.List` return value(s) have been changed from `(*InterfacesClientListPager)` to `(*runtime.Pager[InterfacesClientListResponse])`
+- Function `*ExpressRouteGatewaysClient.BeginDelete` return value(s) have been changed from `(ExpressRouteGatewaysClientDeletePollerResponse, error)` to `(*armruntime.Poller[ExpressRouteGatewaysClientDeleteResponse], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginStopPacketCapture` return value(s) have been changed from `(VirtualNetworkGatewaysClientStopPacketCapturePollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkGatewaysClientStopPacketCaptureResponse], error)`
+- Function `*PrivateLinkServicesClient.BeginDeletePrivateEndpointConnection` return value(s) have been changed from `(PrivateLinkServicesClientDeletePrivateEndpointConnectionPollerResponse, error)` to `(*armruntime.Poller[PrivateLinkServicesClientDeletePrivateEndpointConnectionResponse], error)`
+- Function `*VirtualWansClient.List` return value(s) have been changed from `(*VirtualWansClientListPager)` to `(*runtime.Pager[VirtualWansClientListResponse])`
+- Function `*InterfacesClient.BeginListEffectiveNetworkSecurityGroups` return value(s) have been changed from `(InterfacesClientListEffectiveNetworkSecurityGroupsPollerResponse, error)` to `(*armruntime.Poller[InterfacesClientListEffectiveNetworkSecurityGroupsResponse], error)`
+- Function `*CustomIPPrefixesClient.BeginCreateOrUpdate` return value(s) have been changed from `(CustomIPPrefixesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[CustomIPPrefixesClientCreateOrUpdateResponse], error)`
+- Function `*ServiceEndpointPoliciesClient.BeginCreateOrUpdate` return value(s) have been changed from `(ServiceEndpointPoliciesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ServiceEndpointPoliciesClientCreateOrUpdateResponse], error)`
+- Function `*ApplicationSecurityGroupsClient.List` return value(s) have been changed from `(*ApplicationSecurityGroupsClientListPager)` to `(*runtime.Pager[ApplicationSecurityGroupsClientListResponse])`
+- Function `*AzureFirewallsClient.BeginUpdateTags` return value(s) have been changed from `(AzureFirewallsClientUpdateTagsPollerResponse, error)` to `(*armruntime.Poller[AzureFirewallsClientUpdateTagsResponse], error)`
+- Function `*VirtualNetworkTapsClient.ListAll` return value(s) have been changed from `(*VirtualNetworkTapsClientListAllPager)` to `(*runtime.Pager[VirtualNetworkTapsClientListAllResponse])`
+- Function `*FlowLogsClient.List` return value(s) have been changed from `(*FlowLogsClientListPager)` to `(*runtime.Pager[FlowLogsClientListResponse])`
+- Function `NewVirtualApplianceSKUsClient` return value(s) have been changed from `(*VirtualApplianceSKUsClient)` to `(*VirtualApplianceSKUsClient, error)`
+- Function `*ExpressRouteCircuitsClient.BeginDelete` return value(s) have been changed from `(ExpressRouteCircuitsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ExpressRouteCircuitsClientDeleteResponse], error)`
+- Function `*FirewallPoliciesClient.List` return value(s) have been changed from `(*FirewallPoliciesClientListPager)` to `(*runtime.Pager[FirewallPoliciesClientListResponse])`
+- Function `*ProfilesClient.List` return value(s) have been changed from `(*ProfilesClientListPager)` to `(*runtime.Pager[ProfilesClientListResponse])`
+- Function `*VirtualNetworkGatewaysClient.BeginGetBgpPeerStatus` return value(s) have been changed from `(VirtualNetworkGatewaysClientGetBgpPeerStatusPollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkGatewaysClientGetBgpPeerStatusResponse], error)`
+- Function `*VirtualWansClient.BeginDelete` return value(s) have been changed from `(VirtualWansClientDeletePollerResponse, error)` to `(*armruntime.Poller[VirtualWansClientDeleteResponse], error)`
+- Function `*VirtualNetworksClient.BeginDelete` return value(s) have been changed from `(VirtualNetworksClientDeletePollerResponse, error)` to `(*armruntime.Poller[VirtualNetworksClientDeleteResponse], error)`
+- Function `*P2SVPNGatewaysClient.List` return value(s) have been changed from `(*P2SVPNGatewaysClientListPager)` to `(*runtime.Pager[P2SVPNGatewaysClientListResponse])`
+- Function `*VirtualNetworkGatewayConnectionsClient.BeginStopPacketCapture` return value(s) have been changed from `(VirtualNetworkGatewayConnectionsClientStopPacketCapturePollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkGatewayConnectionsClientStopPacketCaptureResponse], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginGetAdvertisedRoutes` return value(s) have been changed from `(VirtualNetworkGatewaysClientGetAdvertisedRoutesPollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkGatewaysClientGetAdvertisedRoutesResponse], error)`
+- Function `*InterfacesClient.ListAll` return value(s) have been changed from `(*InterfacesClientListAllPager)` to `(*runtime.Pager[InterfacesClientListAllResponse])`
+- Function `*ExpressRouteServiceProvidersClient.List` return value(s) have been changed from `(*ExpressRouteServiceProvidersClientListPager)` to `(*runtime.Pager[ExpressRouteServiceProvidersClientListResponse])`
+- Function `*InterfacesClient.ListCloudServiceNetworkInterfaces` return value(s) have been changed from `(*InterfacesClientListCloudServiceNetworkInterfacesPager)` to `(*runtime.Pager[InterfacesClientListCloudServiceNetworkInterfacesResponse])`
+- Function `*SecurityGroupsClient.BeginDelete` return value(s) have been changed from `(SecurityGroupsClientDeletePollerResponse, error)` to `(*armruntime.Poller[SecurityGroupsClientDeleteResponse], error)`
+- Function `*P2SVPNGatewaysClient.BeginReset` return value(s) have been changed from `(P2SVPNGatewaysClientResetPollerResponse, error)` to `(*armruntime.Poller[P2SVPNGatewaysClientResetResponse], error)`
+- Function `*ExpressRouteCircuitsClient.BeginListRoutesTable` return value(s) have been changed from `(ExpressRouteCircuitsClientListRoutesTablePollerResponse, error)` to `(*armruntime.Poller[ExpressRouteCircuitsClientListRoutesTableResponse], error)`
+- Function `*IPGroupsClient.List` return value(s) have been changed from `(*IPGroupsClientListPager)` to `(*runtime.Pager[IPGroupsClientListResponse])`
+- Function `*VPNGatewaysClient.BeginStartPacketCapture` return value(s) have been changed from `(VPNGatewaysClientStartPacketCapturePollerResponse, error)` to `(*armruntime.Poller[VPNGatewaysClientStartPacketCaptureResponse], error)`
+- Function `*VPNConnectionsClient.BeginStartPacketCapture` return value(s) have been changed from `(VPNConnectionsClientStartPacketCapturePollerResponse, error)` to `(*armruntime.Poller[VPNConnectionsClientStartPacketCaptureResponse], error)`
+- Function `NewLoadBalancerNetworkInterfacesClient` return value(s) have been changed from `(*LoadBalancerNetworkInterfacesClient)` to `(*LoadBalancerNetworkInterfacesClient, error)`
+- Function `*ApplicationGatewaysClient.BeginStop` return value(s) have been changed from `(ApplicationGatewaysClientStopPollerResponse, error)` to `(*armruntime.Poller[ApplicationGatewaysClientStopResponse], error)`
+- Function `NewFirewallPolicyRuleCollectionGroupsClient` return value(s) have been changed from `(*FirewallPolicyRuleCollectionGroupsClient)` to `(*FirewallPolicyRuleCollectionGroupsClient, error)`
+- Function `*AzureFirewallsClient.BeginDelete` return value(s) have been changed from `(AzureFirewallsClientDeletePollerResponse, error)` to `(*armruntime.Poller[AzureFirewallsClientDeleteResponse], error)`
+- Function `NewVirtualRouterPeeringsClient` return value(s) have been changed from `(*VirtualRouterPeeringsClient)` to `(*VirtualRouterPeeringsClient, error)`
+- Function `*HubVirtualNetworkConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(HubVirtualNetworkConnectionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[HubVirtualNetworkConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*DefaultSecurityRulesClient.List` return value(s) have been changed from `(*DefaultSecurityRulesClientListPager)` to `(*runtime.Pager[DefaultSecurityRulesClientListResponse])`
+- Function `*VirtualNetworkTapsClient.ListByResourceGroup` return value(s) have been changed from `(*VirtualNetworkTapsClientListByResourceGroupPager)` to `(*runtime.Pager[VirtualNetworkTapsClientListByResourceGroupResponse])`
+- Function `*InterfacesClient.ListVirtualMachineScaleSetVMNetworkInterfaces` return value(s) have been changed from `(*InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesPager)` to `(*runtime.Pager[InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse])`
+- Function `NewBgpServiceCommunitiesClient` return value(s) have been changed from `(*BgpServiceCommunitiesClient)` to `(*BgpServiceCommunitiesClient, error)`
+- Function `*P2SVPNGatewaysClient.BeginCreateOrUpdate` return value(s) have been changed from `(P2SVPNGatewaysClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[P2SVPNGatewaysClientCreateOrUpdateResponse], error)`
+- Function `*ExpressRouteCircuitAuthorizationsClient.BeginDelete` return value(s) have been changed from `(ExpressRouteCircuitAuthorizationsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ExpressRouteCircuitAuthorizationsClientDeleteResponse], error)`
+- Function `*ApplicationGatewayPrivateEndpointConnectionsClient.BeginUpdate` return value(s) have been changed from `(ApplicationGatewayPrivateEndpointConnectionsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[ApplicationGatewayPrivateEndpointConnectionsClientUpdateResponse], error)`
+- Function `*ProfilesClient.BeginDelete` return value(s) have been changed from `(ProfilesClientDeletePollerResponse, error)` to `(*armruntime.Poller[ProfilesClientDeleteResponse], error)`
+- Function `NewPrivateLinkServicesClient` return value(s) have been changed from `(*PrivateLinkServicesClient)` to `(*PrivateLinkServicesClient, error)`
+- Function `*LoadBalancersClient.ListAll` return value(s) have been changed from `(*LoadBalancersClientListAllPager)` to `(*runtime.Pager[LoadBalancersClientListAllResponse])`
+- Function `*P2SVPNGatewaysClient.BeginUpdateTags` return value(s) have been changed from `(P2SVPNGatewaysClientUpdateTagsPollerResponse, error)` to `(*armruntime.Poller[P2SVPNGatewaysClientUpdateTagsResponse], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginResetVPNClientSharedKey` return value(s) have been changed from `(VirtualNetworkGatewaysClientResetVPNClientSharedKeyPollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkGatewaysClientResetVPNClientSharedKeyResponse], error)`
+- Function `*FirewallPoliciesClient.BeginCreateOrUpdate` return value(s) have been changed from `(FirewallPoliciesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[FirewallPoliciesClientCreateOrUpdateResponse], error)`
+- Function `NewExpressRouteServiceProvidersClient` return value(s) have been changed from `(*ExpressRouteServiceProvidersClient)` to `(*ExpressRouteServiceProvidersClient, error)`
+- Function `*InterfacesClient.ListVirtualMachineScaleSetNetworkInterfaces` return value(s) have been changed from `(*InterfacesClientListVirtualMachineScaleSetNetworkInterfacesPager)` to `(*runtime.Pager[InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse])`
+- Function `NewServiceTagsClient` return value(s) have been changed from `(*ServiceTagsClient)` to `(*ServiceTagsClient, error)`
+- Function `*VPNLinkConnectionsClient.BeginResetConnection` return value(s) have been changed from `(VPNLinkConnectionsClientResetConnectionPollerResponse, error)` to `(*armruntime.Poller[VPNLinkConnectionsClientResetConnectionResponse], error)`
+- Function `NewNatGatewaysClient` return value(s) have been changed from `(*NatGatewaysClient)` to `(*NatGatewaysClient, error)`
+- Function `*SecurityPartnerProvidersClient.BeginCreateOrUpdate` return value(s) have been changed from `(SecurityPartnerProvidersClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[SecurityPartnerProvidersClientCreateOrUpdateResponse], error)`
+- Function `*ServiceEndpointPolicyDefinitionsClient.ListByResourceGroup` return value(s) have been changed from `(*ServiceEndpointPolicyDefinitionsClientListByResourceGroupPager)` to `(*runtime.Pager[ServiceEndpointPolicyDefinitionsClientListByResourceGroupResponse])`
+- Function `*ApplicationGatewayPrivateEndpointConnectionsClient.List` return value(s) have been changed from `(*ApplicationGatewayPrivateEndpointConnectionsClientListPager)` to `(*runtime.Pager[ApplicationGatewayPrivateEndpointConnectionsClientListResponse])`
+- Function `*VirtualHubBgpConnectionClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualHubBgpConnectionClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualHubBgpConnectionClientCreateOrUpdateResponse], error)`
+- Function `NewWebApplicationFirewallPoliciesClient` return value(s) have been changed from `(*WebApplicationFirewallPoliciesClient)` to `(*WebApplicationFirewallPoliciesClient, error)`
+- Function `NewExpressRoutePortsClient` return value(s) have been changed from `(*ExpressRoutePortsClient)` to `(*ExpressRoutePortsClient, error)`
+- Function `*VirtualNetworkGatewaysClient.BeginDelete` return value(s) have been changed from `(VirtualNetworkGatewaysClientDeletePollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkGatewaysClientDeleteResponse], error)`
+- Function `NewPeerExpressRouteCircuitConnectionsClient` return value(s) have been changed from `(*PeerExpressRouteCircuitConnectionsClient)` to `(*PeerExpressRouteCircuitConnectionsClient, error)`
+- Function `*ApplicationGatewaysClient.BeginCreateOrUpdate` return value(s) have been changed from `(ApplicationGatewaysClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ApplicationGatewaysClientCreateOrUpdateResponse], error)`
+- Function `*ConnectionMonitorsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ConnectionMonitorsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ConnectionMonitorsClientCreateOrUpdateResponse], error)`
+- Function `*DdosCustomPoliciesClient.BeginCreateOrUpdate` return value(s) have been changed from `(DdosCustomPoliciesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[DdosCustomPoliciesClientCreateOrUpdateResponse], error)`
+- Function `*ApplicationGatewayPrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(ApplicationGatewayPrivateEndpointConnectionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ApplicationGatewayPrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*ManagementClient.BeginGeneratevirtualwanvpnserverconfigurationvpnprofile` return value(s) have been changed from `(ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofilePollerResponse, error)` to `(*armruntime.Poller[ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofileResponse], error)`
+- Function `*VirtualNetworkGatewayConnectionsClient.BeginResetSharedKey` return value(s) have been changed from `(VirtualNetworkGatewayConnectionsClientResetSharedKeyPollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkGatewayConnectionsClientResetSharedKeyResponse], error)`
+- Function `NewAvailablePrivateEndpointTypesClient` return value(s) have been changed from `(*AvailablePrivateEndpointTypesClient)` to `(*AvailablePrivateEndpointTypesClient, error)`
+- Function `*RouteTablesClient.List` return value(s) have been changed from `(*RouteTablesClientListPager)` to `(*runtime.Pager[RouteTablesClientListResponse])`
+- Function `NewVirtualNetworkGatewaysClient` return value(s) have been changed from `(*VirtualNetworkGatewaysClient)` to `(*VirtualNetworkGatewaysClient, error)`
+- Function `*ExpressRouteCircuitConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ExpressRouteCircuitConnectionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ExpressRouteCircuitConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*AvailableResourceGroupDelegationsClient.List` return value(s) have been changed from `(*AvailableResourceGroupDelegationsClientListPager)` to `(*runtime.Pager[AvailableResourceGroupDelegationsClientListResponse])`
+- Function `*VirtualNetworksClient.ListUsage` return value(s) have been changed from `(*VirtualNetworksClientListUsagePager)` to `(*runtime.Pager[VirtualNetworksClientListUsageResponse])`
+- Function `*VirtualNetworkGatewaysClient.BeginStartPacketCapture` return value(s) have been changed from `(VirtualNetworkGatewaysClientStartPacketCapturePollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkGatewaysClientStartPacketCaptureResponse], error)`
+- Function `NewAvailableDelegationsClient` return value(s) have been changed from `(*AvailableDelegationsClient)` to `(*AvailableDelegationsClient, error)`
+- Function `NewConnectionMonitorsClient` return value(s) have been changed from `(*ConnectionMonitorsClient)` to `(*ConnectionMonitorsClient, error)`
+- Function `*LoadBalancerBackendAddressPoolsClient.List` return value(s) have been changed from `(*LoadBalancerBackendAddressPoolsClientListPager)` to `(*runtime.Pager[LoadBalancerBackendAddressPoolsClientListResponse])`
+- Function `NewResourceNavigationLinksClient` return value(s) have been changed from `(*ResourceNavigationLinksClient)` to `(*ResourceNavigationLinksClient, error)`
+- Function `*IPAllocationsClient.List` return value(s) have been changed from `(*IPAllocationsClientListPager)` to `(*runtime.Pager[IPAllocationsClientListResponse])`
+- Function `*AzureFirewallsClient.BeginCreateOrUpdate` return value(s) have been changed from `(AzureFirewallsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[AzureFirewallsClientCreateOrUpdateResponse], error)`
+- Function `*AvailableDelegationsClient.List` return value(s) have been changed from `(*AvailableDelegationsClientListPager)` to `(*runtime.Pager[AvailableDelegationsClientListResponse])`
+- Function `NewFirewallPolicyIdpsSignaturesClient` return value(s) have been changed from `(*FirewallPolicyIdpsSignaturesClient)` to `(*FirewallPolicyIdpsSignaturesClient, error)`
+- Function `*WatchersClient.List` parameter(s) have been changed from `(context.Context, string, *WatchersClientListOptions)` to `(string, *WatchersClientListOptions)`
+- Function `*WatchersClient.List` return value(s) have been changed from `(WatchersClientListResponse, error)` to `(*runtime.Pager[WatchersClientListResponse])`
+- Function `*VirtualNetworkGatewayConnectionsClient.BeginSetSharedKey` return value(s) have been changed from `(VirtualNetworkGatewayConnectionsClientSetSharedKeyPollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkGatewayConnectionsClientSetSharedKeyResponse], error)`
+- Function `*RouteFilterRulesClient.BeginCreateOrUpdate` return value(s) have been changed from `(RouteFilterRulesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[RouteFilterRulesClientCreateOrUpdateResponse], error)`
+- Function `NewVirtualNetworkTapsClient` return value(s) have been changed from `(*VirtualNetworkTapsClient)` to `(*VirtualNetworkTapsClient, error)`
+- Function `*VirtualNetworkGatewaysClient.BeginGetLearnedRoutes` return value(s) have been changed from `(VirtualNetworkGatewaysClientGetLearnedRoutesPollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkGatewaysClientGetLearnedRoutesResponse], error)`
+- Function `*ExpressRouteCrossConnectionsClient.List` return value(s) have been changed from `(*ExpressRouteCrossConnectionsClientListPager)` to `(*runtime.Pager[ExpressRouteCrossConnectionsClientListResponse])`
+- Function `*ServiceEndpointPoliciesClient.List` return value(s) have been changed from `(*ServiceEndpointPoliciesClientListPager)` to `(*runtime.Pager[ServiceEndpointPoliciesClientListResponse])`
+- Function `NewAvailableResourceGroupDelegationsClient` return value(s) have been changed from `(*AvailableResourceGroupDelegationsClient)` to `(*AvailableResourceGroupDelegationsClient, error)`
+- Function `*VirtualHubsClient.ListByResourceGroup` return value(s) have been changed from `(*VirtualHubsClientListByResourceGroupPager)` to `(*runtime.Pager[VirtualHubsClientListByResourceGroupResponse])`
+- Function `*ExpressRouteCrossConnectionsClient.BeginListArpTable` return value(s) have been changed from `(ExpressRouteCrossConnectionsClientListArpTablePollerResponse, error)` to `(*armruntime.Poller[ExpressRouteCrossConnectionsClientListArpTableResponse], error)`
+- Function `NewExpressRouteCrossConnectionsClient` return value(s) have been changed from `(*ExpressRouteCrossConnectionsClient)` to `(*ExpressRouteCrossConnectionsClient, error)`
+- Function `*BastionHostsClient.BeginCreateOrUpdate` return value(s) have been changed from `(BastionHostsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[BastionHostsClientCreateOrUpdateResponse], error)`
+- Function `NewVirtualAppliancesClient` return value(s) have been changed from `(*VirtualAppliancesClient)` to `(*VirtualAppliancesClient, error)`
+- Function `*VirtualNetworkTapsClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualNetworkTapsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkTapsClientCreateOrUpdateResponse], error)`
+- Function `*WatchersClient.BeginGetVMSecurityRules` return value(s) have been changed from `(WatchersClientGetVMSecurityRulesPollerResponse, error)` to `(*armruntime.Poller[WatchersClientGetVMSecurityRulesResponse], error)`
+- Function `NewRoutingIntentClient` return value(s) have been changed from `(*RoutingIntentClient)` to `(*RoutingIntentClient, error)`
+- Function `NewVPNServerConfigurationsClient` return value(s) have been changed from `(*VPNServerConfigurationsClient)` to `(*VPNServerConfigurationsClient, error)`
+- Function `*VPNSitesClient.ListByResourceGroup` return value(s) have been changed from `(*VPNSitesClientListByResourceGroupPager)` to `(*runtime.Pager[VPNSitesClientListByResourceGroupResponse])`
+- Function `NewDscpConfigurationClient` return value(s) have been changed from `(*DscpConfigurationClient)` to `(*DscpConfigurationClient, error)`
+- Function `NewApplicationGatewaysClient` return value(s) have been changed from `(*ApplicationGatewaysClient)` to `(*ApplicationGatewaysClient, error)`
+- Function `*VPNServerConfigurationsClient.BeginDelete` return value(s) have been changed from `(VPNServerConfigurationsClientDeletePollerResponse, error)` to `(*armruntime.Poller[VPNServerConfigurationsClientDeleteResponse], error)`
+- Function `NewHubRouteTablesClient` return value(s) have been changed from `(*HubRouteTablesClient)` to `(*HubRouteTablesClient, error)`
+- Function `*WatchersClient.ListAll` parameter(s) have been changed from `(context.Context, *WatchersClientListAllOptions)` to `(*WatchersClientListAllOptions)`
+- Function `*WatchersClient.ListAll` return value(s) have been changed from `(WatchersClientListAllResponse, error)` to `(*runtime.Pager[WatchersClientListAllResponse])`
+- Function `NewLoadBalancerBackendAddressPoolsClient` return value(s) have been changed from `(*LoadBalancerBackendAddressPoolsClient)` to `(*LoadBalancerBackendAddressPoolsClient, error)`
+- Function `*VirtualNetworkGatewaysClient.BeginSetVpnclientIPSecParameters` return value(s) have been changed from `(VirtualNetworkGatewaysClientSetVpnclientIPSecParametersPollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkGatewaysClientSetVpnclientIPSecParametersResponse], error)`
+- Function `NewExpressRouteCircuitConnectionsClient` return value(s) have been changed from `(*ExpressRouteCircuitConnectionsClient)` to `(*ExpressRouteCircuitConnectionsClient, error)`
+- Function `*ExpressRouteCircuitsClient.List` return value(s) have been changed from `(*ExpressRouteCircuitsClientListPager)` to `(*runtime.Pager[ExpressRouteCircuitsClientListResponse])`
+- Function `*IPGroupsClient.BeginCreateOrUpdate` return value(s) have been changed from `(IPGroupsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[IPGroupsClientCreateOrUpdateResponse], error)`
+- Function `*VirtualHubRouteTableV2SClient.List` return value(s) have been changed from `(*VirtualHubRouteTableV2SClientListPager)` to `(*runtime.Pager[VirtualHubRouteTableV2SClientListResponse])`
+- Function `*PublicIPAddressesClient.ListVirtualMachineScaleSetVMPublicIPAddresses` return value(s) have been changed from `(*PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesPager)` to `(*runtime.Pager[PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse])`
+- Function `*VPNSitesClient.List` return value(s) have been changed from `(*VPNSitesClientListPager)` to `(*runtime.Pager[VPNSitesClientListResponse])`
+- Function `*VirtualHubBgpConnectionClient.BeginDelete` return value(s) have been changed from `(VirtualHubBgpConnectionClientDeletePollerResponse, error)` to `(*armruntime.Poller[VirtualHubBgpConnectionClientDeleteResponse], error)`
+- Function `NewAzureFirewallsClient` return value(s) have been changed from `(*AzureFirewallsClient)` to `(*AzureFirewallsClient, error)`
+- Function `*RouteTablesClient.BeginDelete` return value(s) have been changed from `(RouteTablesClientDeletePollerResponse, error)` to `(*armruntime.Poller[RouteTablesClientDeleteResponse], error)`
+- Function `*RouteTablesClient.ListAll` return value(s) have been changed from `(*RouteTablesClientListAllPager)` to `(*runtime.Pager[RouteTablesClientListAllResponse])`
+- Function `*ServiceEndpointPolicyDefinitionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ServiceEndpointPolicyDefinitionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ServiceEndpointPolicyDefinitionsClientCreateOrUpdateResponse], error)`
+- Function `*ExpressRouteCircuitPeeringsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ExpressRouteCircuitPeeringsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ExpressRouteCircuitPeeringsClientCreateOrUpdateResponse], error)`
+- Function `NewUsagesClient` return value(s) have been changed from `(*UsagesClient)` to `(*UsagesClient, error)`
+- Function `*VirtualNetworkGatewayConnectionsClient.BeginStartPacketCapture` return value(s) have been changed from `(VirtualNetworkGatewayConnectionsClientStartPacketCapturePollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkGatewayConnectionsClientStartPacketCaptureResponse], error)`
+- Function `*VirtualRouterPeeringsClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualRouterPeeringsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualRouterPeeringsClientCreateOrUpdateResponse], error)`
+- Function `NewVPNSiteLinkConnectionsClient` return value(s) have been changed from `(*VPNSiteLinkConnectionsClient)` to `(*VPNSiteLinkConnectionsClient, error)`
+- Function `*RouteFilterRulesClient.ListByRouteFilter` return value(s) have been changed from `(*RouteFilterRulesClientListByRouteFilterPager)` to `(*runtime.Pager[RouteFilterRulesClientListByRouteFilterResponse])`
+- Function `*ApplicationGatewaysClient.BeginDelete` return value(s) have been changed from `(ApplicationGatewaysClientDeletePollerResponse, error)` to `(*armruntime.Poller[ApplicationGatewaysClientDeleteResponse], error)`
+- Function `*ExpressRouteCircuitConnectionsClient.List` return value(s) have been changed from `(*ExpressRouteCircuitConnectionsClientListPager)` to `(*runtime.Pager[ExpressRouteCircuitConnectionsClientListResponse])`
+- Function `*DdosProtectionPlansClient.ListByResourceGroup` return value(s) have been changed from `(*DdosProtectionPlansClientListByResourceGroupPager)` to `(*runtime.Pager[DdosProtectionPlansClientListByResourceGroupResponse])`
+- Function `*FlowLogsClient.BeginCreateOrUpdate` return value(s) have been changed from `(FlowLogsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[FlowLogsClientCreateOrUpdateResponse], error)`
+- Function `NewIPAllocationsClient` return value(s) have been changed from `(*IPAllocationsClient)` to `(*IPAllocationsClient, error)`
+- Function `*VirtualWansClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualWansClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualWansClientCreateOrUpdateResponse], error)`
+- Function `*VirtualHubBgpConnectionsClient.BeginListLearnedRoutes` return value(s) have been changed from `(VirtualHubBgpConnectionsClientListLearnedRoutesPollerResponse, error)` to `(*armruntime.Poller[VirtualHubBgpConnectionsClientListLearnedRoutesResponse], error)`
+- Function `*P2SVPNGatewaysClient.BeginDelete` return value(s) have been changed from `(P2SVPNGatewaysClientDeletePollerResponse, error)` to `(*armruntime.Poller[P2SVPNGatewaysClientDeleteResponse], error)`
+- Function `*VirtualNetworksClient.ListAll` return value(s) have been changed from `(*VirtualNetworksClientListAllPager)` to `(*runtime.Pager[VirtualNetworksClientListAllResponse])`
+- Function `*VirtualNetworkGatewayNatRulesClient.ListByVirtualNetworkGateway` return value(s) have been changed from `(*VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayPager)` to `(*runtime.Pager[VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse])`
+- Function `*PrivateLinkServicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateLinkServicesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateLinkServicesClientCreateOrUpdateResponse], error)`
+- Function `*WebCategoriesClient.ListBySubscription` return value(s) have been changed from `(*WebCategoriesClientListBySubscriptionPager)` to `(*runtime.Pager[WebCategoriesClientListBySubscriptionResponse])`
+- Function `*ExpressRouteCrossConnectionPeeringsClient.List` return value(s) have been changed from `(*ExpressRouteCrossConnectionPeeringsClientListPager)` to `(*runtime.Pager[ExpressRouteCrossConnectionPeeringsClientListResponse])`
+- Function `*HubVirtualNetworkConnectionsClient.List` return value(s) have been changed from `(*HubVirtualNetworkConnectionsClientListPager)` to `(*runtime.Pager[HubVirtualNetworkConnectionsClientListResponse])`
+- Function `*HubRouteTablesClient.BeginCreateOrUpdate` return value(s) have been changed from `(HubRouteTablesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[HubRouteTablesClientCreateOrUpdateResponse], error)`
+- Function `NewBastionHostsClient` return value(s) have been changed from `(*BastionHostsClient)` to `(*BastionHostsClient, error)`
+- Function `*SubnetsClient.List` return value(s) have been changed from `(*SubnetsClientListPager)` to `(*runtime.Pager[SubnetsClientListResponse])`
+- Function `*VirtualHubsClient.BeginDelete` return value(s) have been changed from `(VirtualHubsClientDeletePollerResponse, error)` to `(*armruntime.Poller[VirtualHubsClientDeleteResponse], error)`
+- Function `*VirtualHubIPConfigurationClient.BeginDelete` return value(s) have been changed from `(VirtualHubIPConfigurationClientDeletePollerResponse, error)` to `(*armruntime.Poller[VirtualHubIPConfigurationClientDeleteResponse], error)`
+- Function `*ExpressRouteCrossConnectionPeeringsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ExpressRouteCrossConnectionPeeringsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ExpressRouteCrossConnectionPeeringsClientCreateOrUpdateResponse], error)`
+- Function `*WebApplicationFirewallPoliciesClient.ListAll` return value(s) have been changed from `(*WebApplicationFirewallPoliciesClientListAllPager)` to `(*runtime.Pager[WebApplicationFirewallPoliciesClientListAllResponse])`
+- Function `NewPacketCapturesClient` return value(s) have been changed from `(*PacketCapturesClient)` to `(*PacketCapturesClient, error)`
+- Function `*VirtualHubBgpConnectionsClient.List` return value(s) have been changed from `(*VirtualHubBgpConnectionsClientListPager)` to `(*runtime.Pager[VirtualHubBgpConnectionsClientListResponse])`
+- Function `*DscpConfigurationClient.ListAll` return value(s) have been changed from `(*DscpConfigurationClientListAllPager)` to `(*runtime.Pager[DscpConfigurationClientListAllResponse])`
+- Function `NewVirtualNetworksClient` return value(s) have been changed from `(*VirtualNetworksClient)` to `(*VirtualNetworksClient, error)`
+- Function `*VPNLinkConnectionsClient.BeginGetIkeSas` return value(s) have been changed from `(VPNLinkConnectionsClientGetIkeSasPollerResponse, error)` to `(*armruntime.Poller[VPNLinkConnectionsClientGetIkeSasResponse], error)`
+- Function `NewVPNLinkConnectionsClient` return value(s) have been changed from `(*VPNLinkConnectionsClient)` to `(*VPNLinkConnectionsClient, error)`
+- Function `*VirtualNetworkGatewaysClient.BeginDisconnectVirtualNetworkGatewayVPNConnections` return value(s) have been changed from `(VirtualNetworkGatewaysClientDisconnectVirtualNetworkGatewayVPNConnectionsPollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkGatewaysClientDisconnectVirtualNetworkGatewayVPNConnectionsResponse], error)`
+- Function `*P2SVPNGatewaysClient.BeginGetP2SVPNConnectionHealthDetailed` return value(s) have been changed from `(P2SVPNGatewaysClientGetP2SVPNConnectionHealthDetailedPollerResponse, error)` to `(*armruntime.Poller[P2SVPNGatewaysClientGetP2SVPNConnectionHealthDetailedResponse], error)`
+- Function `*VirtualNetworkPeeringsClient.BeginDelete` return value(s) have been changed from `(VirtualNetworkPeeringsClientDeletePollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkPeeringsClientDeleteResponse], error)`
+- Function `*InboundNatRulesClient.List` return value(s) have been changed from `(*InboundNatRulesClientListPager)` to `(*runtime.Pager[InboundNatRulesClientListResponse])`
+- Function `*VirtualHubBgpConnectionsClient.BeginListAdvertisedRoutes` return value(s) have been changed from `(VirtualHubBgpConnectionsClientListAdvertisedRoutesPollerResponse, error)` to `(*armruntime.Poller[VirtualHubBgpConnectionsClientListAdvertisedRoutesResponse], error)`
+- Function `NewExpressRouteLinksClient` return value(s) have been changed from `(*ExpressRouteLinksClient)` to `(*ExpressRouteLinksClient, error)`
+- Function `*ManagementClient.DisconnectActiveSessions` return value(s) have been changed from `(*ManagementClientDisconnectActiveSessionsPager)` to `(*runtime.Pager[ManagementClientDisconnectActiveSessionsResponse])`
+- Function `*VirtualRoutersClient.List` return value(s) have been changed from `(*VirtualRoutersClientListPager)` to `(*runtime.Pager[VirtualRoutersClientListResponse])`
+- Function `*VirtualNetworkGatewayNatRulesClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualNetworkGatewayNatRulesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkGatewayNatRulesClientCreateOrUpdateResponse], error)`
+- Function `NewApplicationGatewayPrivateLinkResourcesClient` return value(s) have been changed from `(*ApplicationGatewayPrivateLinkResourcesClient)` to `(*ApplicationGatewayPrivateLinkResourcesClient, error)`
+- Function `*ExpressRoutePortsLocationsClient.List` return value(s) have been changed from `(*ExpressRoutePortsLocationsClientListPager)` to `(*runtime.Pager[ExpressRoutePortsLocationsClientListResponse])`
+- Function `*VPNConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(VPNConnectionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VPNConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*RoutingIntentClient.List` return value(s) have been changed from `(*RoutingIntentClientListPager)` to `(*runtime.Pager[RoutingIntentClientListResponse])`
+- Function `*VPNGatewaysClient.BeginUpdateTags` return value(s) have been changed from `(VPNGatewaysClientUpdateTagsPollerResponse, error)` to `(*armruntime.Poller[VPNGatewaysClientUpdateTagsResponse], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginUpdateTags` return value(s) have been changed from `(VirtualNetworkGatewaysClientUpdateTagsPollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkGatewaysClientUpdateTagsResponse], error)`
+- Function `*PublicIPPrefixesClient.ListAll` return value(s) have been changed from `(*PublicIPPrefixesClientListAllPager)` to `(*runtime.Pager[PublicIPPrefixesClientListAllResponse])`
+- Function `NewServiceEndpointPolicyDefinitionsClient` return value(s) have been changed from `(*ServiceEndpointPolicyDefinitionsClient)` to `(*ServiceEndpointPolicyDefinitionsClient, error)`
+- Function `*WatchersClient.BeginGetTroubleshooting` return value(s) have been changed from `(WatchersClientGetTroubleshootingPollerResponse, error)` to `(*armruntime.Poller[WatchersClientGetTroubleshootingResponse], error)`
+- Function `NewAvailableServiceAliasesClient` return value(s) have been changed from `(*AvailableServiceAliasesClient)` to `(*AvailableServiceAliasesClient, error)`
+- Function `*PublicIPAddressesClient.ListAll` return value(s) have been changed from `(*PublicIPAddressesClientListAllPager)` to `(*runtime.Pager[PublicIPAddressesClientListAllResponse])`
+- Function `*IPGroupsClient.ListByResourceGroup` return value(s) have been changed from `(*IPGroupsClientListByResourceGroupPager)` to `(*runtime.Pager[IPGroupsClientListByResourceGroupResponse])`
+- Function `*CustomIPPrefixesClient.List` return value(s) have been changed from `(*CustomIPPrefixesClientListPager)` to `(*runtime.Pager[CustomIPPrefixesClientListResponse])`
+- Function `*PacketCapturesClient.List` parameter(s) have been changed from `(context.Context, string, string, *PacketCapturesClientListOptions)` to `(string, string, *PacketCapturesClientListOptions)`
+- Function `*PacketCapturesClient.List` return value(s) have been changed from `(PacketCapturesClientListResponse, error)` to `(*runtime.Pager[PacketCapturesClientListResponse])`
+- Function `*IPAllocationsClient.BeginDelete` return value(s) have been changed from `(IPAllocationsClientDeletePollerResponse, error)` to `(*armruntime.Poller[IPAllocationsClientDeleteResponse], error)`
+- Function `NewLoadBalancerOutboundRulesClient` return value(s) have been changed from `(*LoadBalancerOutboundRulesClient)` to `(*LoadBalancerOutboundRulesClient, error)`
+- Function `NewExpressRouteCrossConnectionPeeringsClient` return value(s) have been changed from `(*ExpressRouteCrossConnectionPeeringsClient)` to `(*ExpressRouteCrossConnectionPeeringsClient, error)`
+- Function `*SubnetsClient.BeginDelete` return value(s) have been changed from `(SubnetsClientDeletePollerResponse, error)` to `(*armruntime.Poller[SubnetsClientDeleteResponse], error)`
+- Type of `BastionActiveSession.StartTime` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*VirtualAppliancesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `PacketCapturesClientStopPollerResponse.PollUntilDone` has been removed
+- Function `*BastionHostsClientDeletePoller.FinalResponse` has been removed
+- Function `*WatchersClientGetVMSecurityRulesPollerResponse.Resume` has been removed
+- Function `*ExpressRoutePortsClientListPager.Err` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientResetSharedKeyPollerResponse.Resume` has been removed
+- Function `*WatchersClientGetVMSecurityRulesPoller.Poll` has been removed
+- Function `*PrivateLinkServicesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualHubRouteTableV2SClientDeletePollerResponse.Resume` has been removed
+- Function `*InterfacesClientListCloudServiceNetworkInterfacesPager.NextPage` has been removed
+- Function `*VPNServerConfigurationsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*AvailablePrivateEndpointTypesClientListPager.Err` has been removed
+- Function `*ManagementClientGetActiveSessionsPollerResponse.Resume` has been removed
+- Function `*InterfacesClientDeletePoller.ResumeToken` has been removed
+- Function `*VPNSitesConfigurationClientDownloadPoller.FinalResponse` has been removed
+- Function `*HubRouteTablesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `ServiceEndpointPoliciesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VPNLinkConnectionsClientListByVPNConnectionPager.NextPage` has been removed
+- Function `*VirtualHubBgpConnectionsClientListLearnedRoutesPoller.Done` has been removed
+- Function `*VirtualRouterPeeringsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointsClientDeletePoller.Poll` has been removed
+- Function `*ExpressRouteCircuitPeeringsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualNetworkGatewaysClientGetVpnclientConnectionHealthPoller.ResumeToken` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientResetConnectionPoller.Done` has been removed
+- Function `*RouteTablesClientDeletePoller.Done` has been removed
+- Function `*VPNGatewaysClientResetPoller.Poll` has been removed
+- Function `*InterfacesClientListEffectiveNetworkSecurityGroupsPoller.ResumeToken` has been removed
+- Function `*NatGatewaysClientDeletePoller.ResumeToken` has been removed
+- Function `*VirtualRoutersClientDeletePoller.Poll` has been removed
+- Function `*LoadBalancerBackendAddressPoolsClientListPager.PageResponse` has been removed
+- Function `*ServiceEndpointPoliciesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*LoadBalancerBackendAddressPoolsClientDeletePoller.Poll` has been removed
+- Function `*WatchersClientDeletePoller.Done` has been removed
+- Function `*InboundNatRulesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientGetIkeSasPollerResponse.Resume` has been removed
+- Function `*PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupPoller.ResumeToken` has been removed
+- Function `*InterfacesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*FirewallPoliciesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ServiceEndpointPoliciesClientListByResourceGroupPager.Err` has been removed
+- Function `AzureFirewallSKUTier.ToPtr` has been removed
+- Function `BastionHostSKUName.ToPtr` has been removed
+- Function `*IPAllocationsClientListPager.PageResponse` has been removed
+- Function `SecurityPartnerProvidersClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ExpressRouteCircuitsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*RoutesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*AvailableServiceAliasesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*ConnectionMonitorsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `WebApplicationFirewallTransform.ToPtr` has been removed
+- Function `VirtualNetworkGatewaysClientDisconnectVirtualNetworkGatewayVPNConnectionsPollerResponse.PollUntilDone` has been removed
+- Function `*ServiceEndpointPoliciesClientDeletePoller.FinalResponse` has been removed
+- Function `*VirtualHubsClientGetEffectiveVirtualHubRoutesPoller.FinalResponse` has been removed
+- Function `*ApplicationSecurityGroupsClientListAllPager.PageResponse` has been removed
+- Function `*VirtualApplianceSitesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VirtualHubsClientDeletePollerResponse.Resume` has been removed
+- Function `*ServiceEndpointPolicyDefinitionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualHubBgpConnectionClientCreateOrUpdatePoller.Done` has been removed
+- Function `*NatGatewaysClientListPager.Err` has been removed
+- Function `*IPGroupsClientListPager.Err` has been removed
+- Function `*VirtualWansClientDeletePoller.Done` has been removed
+- Function `ConnectionMonitorsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesPager.PageResponse` has been removed
+- Function `*VirtualNetworkGatewayNatRulesClientDeletePoller.Done` has been removed
+- Function `*ManagementClientGetBastionShareableLinkPager.PageResponse` has been removed
+- Function `EffectiveRouteSource.ToPtr` has been removed
+- Function `*AzureFirewallsClientListAllPager.PageResponse` has been removed
+- Function `*ExpressRouteCircuitConnectionsClientDeletePoller.FinalResponse` has been removed
+- Function `*ApplicationGatewaysClientStopPollerResponse.Resume` has been removed
+- Function `*ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofilePoller.ResumeToken` has been removed
+- Function `*VirtualHubBgpConnectionClientDeletePoller.FinalResponse` has been removed
+- Function `*IPGroupsClientDeletePoller.ResumeToken` has been removed
+- Function `*ExpressRouteCircuitsClientListRoutesTablePoller.FinalResponse` has been removed
+- Function `*RouteTablesClientListPager.Err` has been removed
+- Function `*VirtualNetworkGatewaysClientStartPacketCapturePoller.ResumeToken` has been removed
+- Function `*AzureFirewallsClientDeletePoller.ResumeToken` has been removed
+- Function `*InterfaceTapConfigurationsClientDeletePoller.Done` has been removed
+- Function `*ServiceEndpointPoliciesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VPNGatewaysClientUpdateTagsPoller.Done` has been removed
+- Function `*VirtualNetworkTapsClientListByResourceGroupPager.Err` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientListPager.PageResponse` has been removed
+- Function `LoadDistribution.ToPtr` has been removed
+- Function `*ApplicationGatewaysClientStopPoller.Poll` has been removed
+- Function `*ExpressRouteCrossConnectionsClientListArpTablePoller.Poll` has been removed
+- Function `*RoutingIntentClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VPNConnectionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VPNConnectionsClientStopPacketCapturePollerResponse.Resume` has been removed
+- Function `*AzureFirewallsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualWansClientCreateOrUpdatePoller.Done` has been removed
+- Function `*PacketCapturesClientCreatePoller.ResumeToken` has been removed
+- Function `*PublicIPPrefixesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*LoadBalancersClientListInboundNatRulePortMappingsPoller.Poll` has been removed
+- Function `*PacketCapturesClientGetStatusPoller.ResumeToken` has been removed
+- Function `*ExpressRouteGatewaysClientDeletePollerResponse.Resume` has been removed
+- Function `*VirtualNetworkGatewaysClientStartPacketCapturePoller.Done` has been removed
+- Function `*SubnetsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesPager.PageResponse` has been removed
+- Function `*PacketCapturesClientStopPoller.ResumeToken` has been removed
+- Function `*VirtualHubRouteTableV2SClientDeletePoller.Poll` has been removed
+- Function `VirtualNetworkPrivateLinkServiceNetworkPolicies.ToPtr` has been removed
+- Function `VirtualAppliancesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*NatGatewaysClientDeletePollerResponse.Resume` has been removed
+- Function `VPNLinkConnectionsClientResetConnectionPollerResponse.PollUntilDone` has been removed
+- Function `*AzureFirewallsClientListPager.NextPage` has been removed
+- Function `PublicIPPrefixesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ExpressRouteServiceProvidersClientListPager.Err` has been removed
+- Function `LoadBalancersClientSwapPublicIPAddressesPollerResponse.PollUntilDone` has been removed
+- Function `*ExpressRouteCrossConnectionsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*PrivateLinkServicesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualNetworksClientDeletePoller.Done` has been removed
+- Function `*VirtualNetworkGatewaysClientGeneratevpnclientpackagePoller.Poll` has been removed
+- Function `DdosCustomPolicyTriggerSensitivityOverride.ToPtr` has been removed
+- Function `P2SVPNGatewaysClientResetPollerResponse.PollUntilDone` has been removed
+- Function `*ExpressRouteCircuitPeeringsClientListPager.NextPage` has been removed
+- Function `*VirtualNetworksClientDeletePoller.FinalResponse` has been removed
+- Function `ExpressRouteCircuitPeeringsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `PrivateEndpointsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualNetworkGatewaysClientGeneratevpnclientpackagePoller.Done` has been removed
+- Function `*PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupPoller.Poll` has been removed
+- Function `*HubVirtualNetworkConnectionsClientDeletePoller.ResumeToken` has been removed
+- Function `*BastionHostsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*SecurityRulesClientListPager.Err` has been removed
+- Function `*NatGatewaysClientCreateOrUpdatePoller.Done` has been removed
+- Function `PacketCapturesClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateLinkServicesClientDeletePoller.Done` has been removed
+- Function `*ApplicationGatewaysClientStartPoller.ResumeToken` has been removed
+- Function `IPGroupsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `RoutingState.ToPtr` has been removed
+- Function `*VPNLinkConnectionsClientListByVPNConnectionPager.Err` has been removed
+- Function `*VirtualNetworkGatewaysClientStopPacketCapturePoller.FinalResponse` has been removed
+- Function `*LoadBalancerNetworkInterfacesClientListPager.NextPage` has been removed
+- Function `VirtualNetworkGatewayNatRulesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ExpressRouteGatewaysClientDeletePoller.FinalResponse` has been removed
+- Function `*ManagementClientPutBastionShareableLinkPollerResponse.Resume` has been removed
+- Function `InboundNatRulesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualNetworkGatewaysClientGenerateVPNProfilePoller.Poll` has been removed
+- Function `*P2SVPNGatewaysClientListByResourceGroupPager.NextPage` has been removed
+- Function `*VirtualNetworkGatewayNatRulesClientDeletePoller.ResumeToken` has been removed
+- Function `*LoadBalancerBackendAddressPoolsClientDeletePoller.Done` has been removed
+- Function `*PrivateDNSZoneGroupsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ExpressRouteCircuitConnectionsClientDeletePoller.ResumeToken` has been removed
+- Function `*VirtualNetworksClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `DdosCustomPolicyProtocol.ToPtr` has been removed
+- Function `*DscpConfigurationClientListPager.Err` has been removed
+- Function `*FlowLogsClientDeletePoller.FinalResponse` has been removed
+- Function `*FlowLogsClientListPager.Err` has been removed
+- Function `*AvailableServiceAliasesClientListByResourceGroupPager.Err` has been removed
+- Function `*RouteFilterRulesClientDeletePoller.Poll` has been removed
+- Function `*ExpressRouteCrossConnectionPeeringsClientDeletePoller.Done` has been removed
+- Function `*VirtualHubBgpConnectionClientDeletePoller.Poll` has been removed
+- Function `*ApplicationGatewaysClientListPager.NextPage` has been removed
+- Function `*VirtualNetworkGatewayNatRulesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ApplicationSecurityGroupsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ServiceEndpointPolicyDefinitionsClientDeletePoller.Done` has been removed
+- Function `*WatchersClientGetNextHopPoller.Poll` has been removed
+- Function `*ManagementClientGetActiveSessionsPager.PageResponse` has been removed
+- Function `RoutesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VPNGatewaysClientStopPacketCapturePollerResponse.Resume` has been removed
+- Function `ApplicationGatewayRequestRoutingRuleType.ToPtr` has been removed
+- Function `*AzureFirewallsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*PublicIPPrefixesClientDeletePoller.Done` has been removed
+- Function `VirtualNetworkGatewayConnectionsClientSetSharedKeyPollerResponse.PollUntilDone` has been removed
+- Function `*DscpConfigurationClientDeletePoller.Done` has been removed
+- Function `*VirtualNetworkTapsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*InboundNatRulesClientDeletePoller.ResumeToken` has been removed
+- Function `*RoutesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*LoadBalancerBackendAddressPoolsClientDeletePoller.FinalResponse` has been removed
+- Function `*VirtualNetworkTapsClientDeletePoller.Poll` has been removed
+- Function `*P2SVPNGatewaysClientUpdateTagsPoller.ResumeToken` has been removed
+- Function `*ExpressRouteCircuitsClientDeletePoller.ResumeToken` has been removed
+- Function `*VPNGatewaysClientStartPacketCapturePoller.ResumeToken` has been removed
+- Function `*SecurityPartnerProvidersClientDeletePollerResponse.Resume` has been removed
+- Function `*LoadBalancerBackendAddressPoolsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ExpressRouteCrossConnectionPeeringsClientDeletePollerResponse.Resume` has been removed
+- Function `*VirtualNetworkTapsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VPNGatewaysClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `VPNLinkConnectionMode.ToPtr` has been removed
+- Function `*VPNGatewaysClientListPager.PageResponse` has been removed
+- Function `*VirtualNetworkGatewaysClientGetVPNProfilePackageURLPoller.ResumeToken` has been removed
+- Function `*P2SVPNGatewaysClientDisconnectP2SVPNConnectionsPoller.FinalResponse` has been removed
+- Function `*DdosProtectionPlansClientListByResourceGroupPager.Err` has been removed
+- Function `IkeEncryption.ToPtr` has been removed
+- Function `*ApplicationGatewayPrivateEndpointConnectionsClientListPager.Err` has been removed
+- Function `*VirtualApplianceSKUsClientListPager.PageResponse` has been removed
+- Function `*ManagementClientPutBastionShareableLinkPager.Err` has been removed
+- Function `*VPNLinkConnectionsClientResetConnectionPollerResponse.Resume` has been removed
+- Function `*ApplicationGatewaysClientStartPoller.Done` has been removed
+- Function `LoadBalancerSKUTier.ToPtr` has been removed
+- Function `ApplicationGatewayCustomErrorStatusCode.ToPtr` has been removed
+- Function `*SubnetsClientDeletePoller.Poll` has been removed
+- Function `*FirewallPoliciesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*InterfacesClientListVirtualMachineScaleSetNetworkInterfacesPager.PageResponse` has been removed
+- Function `ApplicationGatewaySSLProtocol.ToPtr` has been removed
+- Function `BastionConnectProtocol.ToPtr` has been removed
+- Function `ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofilePollerResponse.PollUntilDone` has been removed
+- Function `*NatGatewaysClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*HubRouteTablesClientDeletePoller.ResumeToken` has been removed
+- Function `*SecurityGroupsClientListAllPager.Err` has been removed
+- Function `*LocalNetworkGatewaysClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VirtualAppliancesClientListPager.Err` has been removed
+- Function `*WatchersClientGetFlowLogStatusPoller.Poll` has been removed
+- Function `*VirtualNetworkGatewaysClientDeletePoller.ResumeToken` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientSetSharedKeyPoller.Poll` has been removed
+- Function `*ExpressRouteCircuitPeeringsClientDeletePoller.FinalResponse` has been removed
+- Function `*ApplicationGatewaysClientDeletePoller.FinalResponse` has been removed
+- Function `VirtualRoutersClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*CustomIPPrefixesClientListPager.NextPage` has been removed
+- Function `*InterfaceTapConfigurationsClientListPager.PageResponse` has been removed
+- Function `VirtualNetworkPrivateEndpointNetworkPolicies.ToPtr` has been removed
+- Function `ServiceEndpointPolicyDefinitionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ConnectionMonitorsClientStartPoller.FinalResponse` has been removed
+- Function `*PublicIPPrefixesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `VirtualRouterPeeringsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientUpdateTagsPoller.FinalResponse` has been removed
+- Function `ProtocolType.ToPtr` has been removed
+- Function `VPNGatewaysClientResetPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualHubIPConfigurationClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*SecurityPartnerProvidersClientListPager.Err` has been removed
+- Function `*P2SVPNGatewaysClientGetP2SVPNConnectionHealthPoller.Poll` has been removed
+- Function `*InterfacesClientListPager.Err` has been removed
+- Function `*InboundSecurityRuleClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ConnectionMonitorsClientDeletePoller.FinalResponse` has been removed
+- Function `*P2SVPNGatewaysClientListPager.NextPage` has been removed
+- Function `*AvailableEndpointServicesClientListPager.NextPage` has been removed
+- Function `*VPNServerConfigurationsAssociatedWithVirtualWanClientListPoller.ResumeToken` has been removed
+- Function `*PublicIPPrefixesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualNetworkGatewaysClientUpdateTagsPoller.FinalResponse` has been removed
+- Function `*VirtualWansClientCreateOrUpdatePoller.Poll` has been removed
+- Function `VPNServerConfigurationsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ExpressRouteCircuitPeeringsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*BastionHostsClientListPager.PageResponse` has been removed
+- Function `PreferredRoutingGateway.ToPtr` has been removed
+- Function `VirtualNetworkGatewayConnectionsClientGetIkeSasPollerResponse.PollUntilDone` has been removed
+- Function `VirtualHubBgpConnectionsClientListAdvertisedRoutesPollerResponse.PollUntilDone` has been removed
+- Function `*ServiceEndpointPoliciesClientListPager.NextPage` has been removed
+- Function `*AzureFirewallsClientListPager.PageResponse` has been removed
+- Function `*NatRulesClientDeletePoller.Poll` has been removed
+- Function `*VirtualHubBgpConnectionClientDeletePoller.ResumeToken` has been removed
+- Function `*ServiceEndpointPoliciesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VirtualNetworkGatewaysClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*P2SVPNGatewaysClientListPager.PageResponse` has been removed
+- Function `*ExpressRouteCircuitsClientDeletePoller.Done` has been removed
+- Function `*ExpressRoutePortsLocationsClientListPager.Err` has been removed
+- Function `*BastionHostsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ExpressRoutePortsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*PrivateDNSZoneGroupsClientDeletePoller.FinalResponse` has been removed
+- Function `WatchersClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `PcError.ToPtr` has been removed
+- Function `*PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesPager.PageResponse` has been removed
+- Function `*VPNSitesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualRouterPeeringsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `NetworkInterfaceNicType.ToPtr` has been removed
+- Function `*VirtualRoutersClientListByResourceGroupPager.Err` has been removed
+- Function `*RoutingIntentClientListPager.NextPage` has been removed
+- Function `*ApplicationGatewayPrivateEndpointConnectionsClientUpdatePoller.Poll` has been removed
+- Function `*AzureFirewallFqdnTagsClientListAllPager.PageResponse` has been removed
+- Function `*ApplicationGatewaysClientListPager.Err` has been removed
+- Function `*SubnetsClientDeletePoller.FinalResponse` has been removed
+- Function `*PublicIPAddressesClientListPager.Err` has been removed
+- Function `*VirtualNetworksClientListUsagePager.NextPage` has been removed
+- Function `*VirtualNetworkGatewaysClientGenerateVPNProfilePollerResponse.Resume` has been removed
+- Function `*ExpressRouteCircuitsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*SecurityGroupsClientListAllPager.NextPage` has been removed
+- Function `RoutingIntentClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VPNLinkConnectionsClientResetConnectionPoller.ResumeToken` has been removed
+- Function `*VirtualNetworkGatewaysClientResetVPNClientSharedKeyPoller.Done` has been removed
+- Function `*WebApplicationFirewallPoliciesClientListPager.NextPage` has been removed
+- Function `*VirtualRouterPeeringsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `RouteFilterRuleType.ToPtr` has been removed
+- Function `*CustomIPPrefixesClientListPager.Err` has been removed
+- Function `*ExpressRouteCrossConnectionPeeringsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*WebApplicationFirewallPoliciesClientListPager.PageResponse` has been removed
+- Function `*WatchersClientGetAzureReachabilityReportPollerResponse.Resume` has been removed
+- Function `IPAllocationMethod.ToPtr` has been removed
+- Function `ServiceEndpointPolicyDefinitionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*InboundNatRulesClientListPager.Err` has been removed
+- Function `*WebApplicationFirewallPoliciesClientDeletePoller.Poll` has been removed
+- Function `OutputType.ToPtr` has been removed
+- Function `*ExpressRoutePortsClientListPager.PageResponse` has been removed
+- Function `VPNSitesConfigurationClientDownloadPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualHubsClientGetEffectiveVirtualHubRoutesPoller.Done` has been removed
+- Function `*VirtualRoutersClientDeletePoller.FinalResponse` has been removed
+- Function `*BastionHostsClientListByResourceGroupPager.Err` has been removed
+- Function `*InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesPager.Err` has been removed
+- Function `*LoadBalancersClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VPNGatewaysClientDeletePoller.FinalResponse` has been removed
+- Function `*InterfaceTapConfigurationsClientListPager.Err` has been removed
+- Function `*VPNSitesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*InterfacesClientListAllPager.NextPage` has been removed
+- Function `*PublicIPAddressesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `ManagementClientPutBastionShareableLinkPollerResponse.PollUntilDone` has been removed
+- Function `*WatchersClientGetNextHopPoller.FinalResponse` has been removed
+- Function `*ExpressRouteCircuitConnectionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualNetworkGatewaysClientListConnectionsPager.NextPage` has been removed
+- Function `*VirtualApplianceSitesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ServiceEndpointPoliciesClientDeletePoller.Done` has been removed
+- Function `LocalNetworkGatewaysClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ServiceTagInformationClientListPager.Err` has been removed
+- Function `*LoadBalancerLoadBalancingRulesClientListPager.NextPage` has been removed
+- Function `ServiceEndpointPoliciesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*P2SVPNGatewaysClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*RouteFiltersClientDeletePoller.Poll` has been removed
+- Function `*ApplicationSecurityGroupsClientDeletePoller.Poll` has been removed
+- Function `*VirtualNetworkGatewaysClientGetVpnclientConnectionHealthPollerResponse.Resume` has been removed
+- Function `*LocalNetworkGatewaysClientDeletePoller.ResumeToken` has been removed
+- Function `*ApplicationGatewaysClientBackendHealthPollerResponse.Resume` has been removed
+- Function `*PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesPager.NextPage` has been removed
+- Function `*DscpConfigurationClientDeletePoller.Poll` has been removed
+- Function `*VirtualWansClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VPNConnectionsClientDeletePoller.Done` has been removed
+- Function `VirtualAppliancesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*BastionHostsClientUpdateTagsPoller.ResumeToken` has been removed
+- Function `*PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityPoller.ResumeToken` has been removed
+- Function `*RoutingIntentClientDeletePollerResponse.Resume` has been removed
+- Function `*RouteFilterRulesClientDeletePoller.FinalResponse` has been removed
+- Function `VPNSitesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VPNConnectionsClientDeletePoller.ResumeToken` has been removed
+- Function `*PrivateDNSZoneGroupsClientListPager.PageResponse` has been removed
+- Function `*VirtualAppliancesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*LoadBalancerBackendAddressPoolsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualNetworkTapsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VirtualWansClientListPager.Err` has been removed
+- Function `*ExpressRoutePortsClientDeletePollerResponse.Resume` has been removed
+- Function `*ExpressRouteCrossConnectionsClientListRoutesTablePoller.ResumeToken` has been removed
+- Function `*ApplicationGatewaysClientDeletePoller.ResumeToken` has been removed
+- Function `*VirtualNetworkTapsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*NatGatewaysClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*LocalNetworkGatewaysClientDeletePollerResponse.Resume` has been removed
+- Function `*DdosProtectionPlansClientListPager.NextPage` has been removed
+- Function `*VPNServerConfigurationsAssociatedWithVirtualWanClientListPoller.FinalResponse` has been removed
+- Function `*VirtualRoutersClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `SecurityPartnerProvidersClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualNetworkGatewaysClientGetAdvertisedRoutesPoller.Poll` has been removed
+- Function `*WebApplicationFirewallPoliciesClientDeletePoller.ResumeToken` has been removed
+- Function `*ManagementClientGetBastionShareableLinkPager.Err` has been removed
+- Function `VirtualNetworkGatewayConnectionStatus.ToPtr` has been removed
+- Function `*VirtualNetworkTapsClientDeletePoller.ResumeToken` has been removed
+- Function `*SubnetsClientDeletePoller.Done` has been removed
+- Function `EvaluationState.ToPtr` has been removed
+- Function `WatchersClientGetTroubleshootingPollerResponse.PollUntilDone` has been removed
+- Function `*VPNGatewaysClientListPager.Err` has been removed
+- Function `*VirtualRoutersClientListPager.NextPage` has been removed
+- Function `*InboundNatRulesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*PrivateEndpointsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `ApplicationSecurityGroupsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AvailablePrivateEndpointTypesClientListByResourceGroupPager.Err` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*InterfacesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*RouteFiltersClientListByResourceGroupPager.Err` has been removed
+- Function `*VPNGatewaysClientResetPoller.ResumeToken` has been removed
+- Function `*RouteFiltersClientCreateOrUpdatePoller.Done` has been removed
+- Function `*SubnetsClientUnprepareNetworkPoliciesPoller.FinalResponse` has been removed
+- Function `*VirtualAppliancesClientListByResourceGroupPager.NextPage` has been removed
+- Function `*VirtualNetworkGatewaysClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VPNServerConfigurationsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*LocalNetworkGatewaysClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ServiceEndpointPoliciesClientListPager.Err` has been removed
+- Function `ExpressRouteGatewaysClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualWansClientListByResourceGroupPager.NextPage` has been removed
+- Function `*VirtualApplianceSitesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*InterfacesClientGetEffectiveRouteTablePoller.Done` has been removed
+- Function `*RouteFiltersClientListPager.NextPage` has been removed
+- Function `GatewayLoadBalancerTunnelInterfaceType.ToPtr` has been removed
+- Function `*PublicIPPrefixesClientDeletePoller.FinalResponse` has been removed
+- Function `FirewallPolicyFilterRuleCollectionActionType.ToPtr` has been removed
+- Function `P2SVPNGatewaysClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DdosCustomPoliciesClientDeletePoller.ResumeToken` has been removed
+- Function `*SecurityRulesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*HubVirtualNetworkConnectionsClientListPager.PageResponse` has been removed
+- Function `WatchersClientCheckConnectivityPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualNetworkTapsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `RouteFilterRulesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientUpdateTagsPollerResponse.Resume` has been removed
+- Function `*RoutesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*DdosCustomPoliciesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*IPGroupsClientDeletePoller.Poll` has been removed
+- Function `*VPNConnectionsClientStartPacketCapturePoller.FinalResponse` has been removed
+- Function `*VirtualHubsClientDeletePoller.ResumeToken` has been removed
+- Function `*VirtualHubsClientGetEffectiveVirtualHubRoutesPoller.ResumeToken` has been removed
+- Function `*PublicIPAddressesClientListCloudServicePublicIPAddressesPager.Err` has been removed
+- Function `*FirewallPoliciesClientDeletePoller.Done` has been removed
+- Function `*PrivateEndpointsClientListPager.NextPage` has been removed
+- Function `*RouteFiltersClientDeletePoller.FinalResponse` has been removed
+- Function `*LoadBalancersClientListPager.Err` has been removed
+- Function `*RouteFilterRulesClientDeletePollerResponse.Resume` has been removed
+- Function `*ApplicationGatewaysClientListAllPager.Err` has been removed
+- Function `*RouteFilterRulesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ApplicationGatewayPrivateEndpointConnectionsClientDeletePoller.FinalResponse` has been removed
+- Function `*P2SVPNGatewaysClientResetPollerResponse.Resume` has been removed
+- Function `*HubVirtualNetworkConnectionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*BastionHostsClientListPager.NextPage` has been removed
+- Function `*VirtualHubRouteTableV2SClientListPager.NextPage` has been removed
+- Function `*WatchersClientDeletePoller.FinalResponse` has been removed
+- Function `*ExpressRouteCircuitConnectionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `ExpressRouteCircuitPeeringAdvertisedPublicPrefixState.ToPtr` has been removed
+- Function `*PublicIPAddressesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ProfilesClientDeletePoller.Poll` has been removed
+- Function `*DdosProtectionPlansClientListByResourceGroupPager.NextPage` has been removed
+- Function `*VirtualHubRouteTableV2SClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VirtualNetworkPeeringsClientDeletePoller.ResumeToken` has been removed
+- Function `*LoadBalancersClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualNetworkGatewaysClientUpdateTagsPoller.ResumeToken` has been removed
+- Function `*ApplicationGatewayPrivateEndpointConnectionsClientListPager.NextPage` has been removed
+- Function `VirtualNetworksClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientResetSharedKeyPoller.Poll` has been removed
+- Function `*VPNGatewaysClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientResetSharedKeyPoller.FinalResponse` has been removed
+- Function `*VPNGatewaysClientStartPacketCapturePoller.Poll` has been removed
+- Function `*ApplicationGatewaysClientListAllPager.PageResponse` has been removed
+- Function `*ExpressRouteCrossConnectionsClientListRoutesTablePoller.Done` has been removed
+- Function `*FlowLogsClientDeletePoller.Done` has been removed
+- Function `*VirtualNetworkTapsClientListAllPager.PageResponse` has been removed
+- Function `VPNGatewaysClientStopPacketCapturePollerResponse.PollUntilDone` has been removed
+- Function `ExpressRouteLinkMacSecCipher.ToPtr` has been removed
+- Function `ExpressRouteCrossConnectionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*IPGroupsClientListPager.NextPage` has been removed
+- Function `*VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayPager.Err` has been removed
+- Function `*VirtualRoutersClientDeletePollerResponse.Resume` has been removed
+- Function `*VirtualHubsClientDeletePoller.FinalResponse` has been removed
+- Function `FirewallPolicyRuleCollectionType.ToPtr` has been removed
+- Function `*PrivateDNSZoneGroupsClientListPager.NextPage` has been removed
+- Function `*HubRouteTablesClientDeletePoller.Done` has been removed
+- Function `*VirtualApplianceSitesClientDeletePollerResponse.Resume` has been removed
+- Function `*IPAllocationsClientListPager.Err` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientStopPacketCapturePoller.Poll` has been removed
+- Function `Protocol.ToPtr` has been removed
+- Function `*ExpressRouteCircuitPeeringsClientDeletePollerResponse.Resume` has been removed
+- Function `*VirtualNetworkGatewaysClientGetVPNProfilePackageURLPoller.Done` has been removed
+- Function `ExpressRouteCrossConnectionPeeringsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ExpressRoutePortsLocationsClientListPager.PageResponse` has been removed
+- Function `*ServiceEndpointPoliciesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*P2SVPNGatewaysClientResetPoller.Done` has been removed
+- Function `*NatGatewaysClientListPager.NextPage` has been removed
+- Function `*VPNConnectionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VPNGatewaysClientStopPacketCapturePoller.Done` has been removed
+- Function `*WatchersClientListAvailableProvidersPoller.Done` has been removed
+- Function `SecurityProviderName.ToPtr` has been removed
+- Function `*InboundSecurityRuleClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualApplianceSitesClientListPager.PageResponse` has been removed
+- Function `*ConnectionMonitorsClientDeletePollerResponse.Resume` has been removed
+- Function `*VirtualHubBgpConnectionClientDeletePoller.Done` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*VirtualNetworkGatewaysClientResetVPNClientSharedKeyPollerResponse.Resume` has been removed
+- Function `*InterfaceTapConfigurationsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `ManagedRuleEnabledState.ToPtr` has been removed
+- Function `*AvailableResourceGroupDelegationsClientListPager.NextPage` has been removed
+- Function `*VirtualNetworkPeeringsClientListPager.NextPage` has been removed
+- Function `*InboundNatRulesClientDeletePoller.FinalResponse` has been removed
+- Function `*PrivateLinkServicesClientListPager.NextPage` has been removed
+- Function `*FirewallPolicyRuleCollectionGroupsClientListPager.Err` has been removed
+- Function `*SecurityGroupsClientListAllPager.PageResponse` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualNetworkGatewaysClientUpdateTagsPoller.Poll` has been removed
+- Function `*VirtualNetworkGatewaysClientGetLearnedRoutesPoller.Poll` has been removed
+- Function `*ExpressRouteCrossConnectionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*IPAllocationsClientDeletePoller.ResumeToken` has been removed
+- Function `SingleQueryResultSeverity.ToPtr` has been removed
+- Function `*VPNServerConfigurationsAssociatedWithVirtualWanClientListPollerResponse.Resume` has been removed
+- Function `VirtualNetworkGatewayType.ToPtr` has been removed
+- Function `*ExpressRouteGatewaysClientUpdateTagsPoller.FinalResponse` has been removed
+- Function `*ExpressRouteCrossConnectionsClientListRoutesTableSummaryPoller.Done` has been removed
+- Function `*LoadBalancerFrontendIPConfigurationsClientListPager.NextPage` has been removed
+- Function `ExpressRouteCrossConnectionsClientListRoutesTableSummaryPollerResponse.PollUntilDone` has been removed
+- Function `*ServiceEndpointPolicyDefinitionsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*HubVirtualNetworkConnectionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientResetSharedKeyPoller.ResumeToken` has been removed
+- Function `*LoadBalancersClientSwapPublicIPAddressesPoller.FinalResponse` has been removed
+- Function `*RoutesClientDeletePoller.Done` has been removed
+- Function `ConnectionMonitorType.ToPtr` has been removed
+- Function `*RoutingIntentClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualNetworkGatewaysClientGetVPNProfilePackageURLPoller.FinalResponse` has been removed
+- Function `*VirtualHubBgpConnectionsClientListPager.PageResponse` has been removed
+- Function `PrivateLinkServicesClientDeletePrivateEndpointConnectionPollerResponse.PollUntilDone` has been removed
+- Function `*NatGatewaysClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*IPGroupsClientListPager.PageResponse` has been removed
+- Function `*WatchersClientGetFlowLogStatusPoller.Done` has been removed
+- Function `*ExpressRouteCrossConnectionPeeringsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `VPNConnectionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualNetworkGatewaysClientDeletePollerResponse.Resume` has been removed
+- Function `LocalNetworkGatewaysClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `IPAllocationsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ExpressRouteGatewaysClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ApplicationGatewaysClientCreateOrUpdatePoller.Done` has been removed
+- Function `*RoutingIntentClientListPager.Err` has been removed
+- Function `*InboundSecurityRuleClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ServiceEndpointPoliciesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ServiceEndpointPolicyDefinitionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ApplicationGatewaysClientBackendHealthPoller.Done` has been removed
+- Function `*AzureFirewallsClientDeletePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointsClientListPager.Err` has been removed
+- Function `*ExpressRouteCircuitAuthorizationsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualNetworkGatewaysClientUpdateTagsPollerResponse.Resume` has been removed
+- Function `*VPNConnectionsClientStartPacketCapturePollerResponse.Resume` has been removed
+- Function `*PublicIPAddressesClientListPager.PageResponse` has been removed
+- Function `*ExpressRouteCircuitsClientListRoutesTablePoller.Done` has been removed
+- Function `*VPNGatewaysClientResetPollerResponse.Resume` has been removed
+- Function `ApplicationGatewaysClientStopPollerResponse.PollUntilDone` has been removed
+- Function `*VPNGatewaysClientUpdateTagsPoller.ResumeToken` has been removed
+- Function `*WatchersClientDeletePollerResponse.Resume` has been removed
+- Function `VPNGatewaysClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ExpressRouteGatewaysClientUpdateTagsPoller.Done` has been removed
+- Function `*VPNGatewaysClientStopPacketCapturePoller.ResumeToken` has been removed
+- Function `LoadBalancerBackendAddressPoolsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ExpressRouteCircuitAuthorizationsClientListPager.PageResponse` has been removed
+- Function `*ExpressRoutePortsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*WatchersClientGetVMSecurityRulesPoller.Done` has been removed
+- Function `*DdosProtectionPlansClientListPager.Err` has been removed
+- Function `*ExpressRouteCircuitConnectionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualHubRouteTableV2SClientDeletePoller.Done` has been removed
+- Function `*VirtualNetworkTapsClientListAllPager.NextPage` has been removed
+- Function `CoverageLevel.ToPtr` has been removed
+- Function `*VirtualNetworksClientDeletePoller.Poll` has been removed
+- Function `*ApplicationGatewaysClientBackendHealthPoller.ResumeToken` has been removed
+- Function `*IPGroupsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*LoadBalancersClientDeletePollerResponse.Resume` has been removed
+- Function `*DdosCustomPoliciesClientDeletePoller.Done` has been removed
+- Function `*ExpressRouteCircuitsClientListAllPager.PageResponse` has been removed
+- Function `Access.ToPtr` has been removed
+- Function `*VirtualHubBgpConnectionsClientListAdvertisedRoutesPollerResponse.Resume` has been removed
+- Function `*WatchersClientGetTroubleshootingPoller.ResumeToken` has been removed
+- Function `ExpressRoutePortsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*BastionHostsClientUpdateTagsPoller.FinalResponse` has been removed
+- Function `*P2SVPNGatewaysClientResetPoller.ResumeToken` has been removed
+- Function `*WatchersClientGetAzureReachabilityReportPoller.Done` has been removed
+- Function `*PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupPager.Err` has been removed
+- Function `*VirtualNetworksClientListAllPager.PageResponse` has been removed
+- Function `*ExpressRouteCrossConnectionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `ApplicationGatewayFirewallMode.ToPtr` has been removed
+- Function `*P2SVPNGatewaysClientGetP2SVPNConnectionHealthDetailedPoller.Done` has been removed
+- Function `VirtualNetworkGatewayNatRulesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ExpressRouteCircuitsClientDeletePoller.FinalResponse` has been removed
+- Function `AzureFirewallSKUName.ToPtr` has been removed
+- Function `*ExpressRouteCircuitPeeringsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PublicIPAddressesClientDeletePoller.Done` has been removed
+- Function `*VirtualRouterPeeringsClientDeletePoller.Poll` has been removed
+- Function `*DdosCustomPoliciesClientDeletePoller.FinalResponse` has been removed
+- Function `ApplicationGatewaySSLPolicyType.ToPtr` has been removed
+- Function `*InterfacesClientGetEffectiveRouteTablePollerResponse.Resume` has been removed
+- Function `FirewallPolicyRuleApplicationProtocolType.ToPtr` has been removed
+- Function `*RouteFiltersClientListByResourceGroupPager.NextPage` has been removed
+- Function `*ExpressRouteCircuitAuthorizationsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*RouteTablesClientListPager.NextPage` has been removed
+- Function `*RouteFilterRulesClientListByRouteFilterPager.PageResponse` has been removed
+- Function `*ProfilesClientListPager.NextPage` has been removed
+- Function `*ExpressRouteCircuitsClientListPager.NextPage` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*BastionHostsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualRouterPeeringsClientListPager.PageResponse` has been removed
+- Function `*VirtualHubRouteTableV2SClientDeletePoller.ResumeToken` has been removed
+- Function `*P2SVPNGatewaysClientDisconnectP2SVPNConnectionsPoller.ResumeToken` has been removed
+- Function `ApplicationGatewayOperationalState.ToPtr` has been removed
+- Function `*IPGroupsClientDeletePollerResponse.Resume` has been removed
+- Function `*NatGatewaysClientDeletePoller.Poll` has been removed
+- Function `ExpressRouteCircuitsClientListArpTablePollerResponse.PollUntilDone` has been removed
+- Function `*ConnectionMonitorsClientQueryPollerResponse.Resume` has been removed
+- Function `*CustomIPPrefixesClientDeletePoller.Done` has been removed
+- Function `FirewallPolicyRuleType.ToPtr` has been removed
+- Function `*ExpressRouteCircuitsClientListRoutesTableSummaryPollerResponse.Resume` has been removed
+- Function `*ApplicationGatewaysClientListAllPager.NextPage` has been removed
+- Function `*ExpressRouteLinksClientListPager.NextPage` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientDeletePollerResponse.Resume` has been removed
+- Function `*VirtualNetworkGatewaysClientGetVPNProfilePackageURLPoller.Poll` has been removed
+- Function `*SecurityGroupsClientDeletePoller.ResumeToken` has been removed
+- Function `*VirtualRouterPeeringsClientListPager.Err` has been removed
+- Function `*DdosCustomPoliciesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*FirewallPoliciesClientDeletePoller.ResumeToken` has been removed
+- Function `*PublicIPAddressesClientDeletePollerResponse.Resume` has been removed
+- Function `*LoadBalancersClientListInboundNatRulePortMappingsPoller.Done` has been removed
+- Function `*RouteFiltersClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ProfilesClientListPager.PageResponse` has been removed
+- Function `*InterfacesClientListVirtualMachineScaleSetIPConfigurationsPager.Err` has been removed
+- Function `*VirtualNetworkGatewaysClientGetAdvertisedRoutesPoller.Done` has been removed
+- Function `*PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesPager.Err` has been removed
+- Function `*ExpressRoutePortsClientDeletePoller.Poll` has been removed
+- Function `*LoadBalancersClientListPager.NextPage` has been removed
+- Function `*FirewallPoliciesClientListAllPager.Err` has been removed
+- Function `*InterfacesClientGetEffectiveRouteTablePoller.ResumeToken` has been removed
+- Function `*PublicIPAddressesClientListAllPager.PageResponse` has been removed
+- Function `*VPNGatewaysClientDeletePoller.Done` has been removed
+- Function `*PrivateEndpointsClientDeletePoller.FinalResponse` has been removed
+- Function `*ExpressRouteCircuitsClientListArpTablePoller.FinalResponse` has been removed
+- Function `*InterfaceTapConfigurationsClientDeletePoller.FinalResponse` has been removed
+- Function `*ExpressRouteCircuitAuthorizationsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `InterfaceTapConfigurationsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*SecurityGroupsClientListPager.Err` has been removed
+- Function `ApplicationGatewaysClientStartPollerResponse.PollUntilDone` has been removed
+- Function `*ExpressRouteCircuitsClientListRoutesTablePoller.Poll` has been removed
+- Function `IssueType.ToPtr` has been removed
+- Function `*ExpressRouteCrossConnectionPeeringsClientDeletePoller.FinalResponse` has been removed
+- Function `*RoutingIntentClientDeletePoller.FinalResponse` has been removed
+- Function `*ExpressRouteCrossConnectionsClientListArpTablePollerResponse.Resume` has been removed
+- Function `*ExpressRouteCircuitPeeringsClientDeletePoller.Poll` has been removed
+- Function `*ExpressRouteCrossConnectionPeeringsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ExpressRouteConnectionsClientDeletePollerResponse.Resume` has been removed
+- Function `*RouteTablesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VPNConnectionsClientDeletePollerResponse.Resume` has been removed
+- Function `*ExpressRouteCircuitAuthorizationsClientDeletePoller.Poll` has been removed
+- Function `*InboundNatRulesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*FirewallPolicyRuleCollectionGroupsClientListPager.NextPage` has been removed
+- Function `*VirtualNetworkGatewaysClientDisconnectVirtualNetworkGatewayVPNConnectionsPoller.ResumeToken` has been removed
+- Function `*InterfaceTapConfigurationsClientDeletePoller.Poll` has been removed
+- Function `*ApplicationGatewaysClientStartPoller.Poll` has been removed
+- Function `VirtualHubIPConfigurationClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PeerExpressRouteCircuitConnectionsClientListPager.PageResponse` has been removed
+- Function `*SecurityGroupsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VirtualNetworkGatewaysClientGetLearnedRoutesPoller.FinalResponse` has been removed
+- Function `*HubVirtualNetworkConnectionsClientDeletePollerResponse.Resume` has been removed
+- Function `*PacketCapturesClientCreatePoller.Done` has been removed
+- Function `*ExpressRouteCircuitsClientListRoutesTablePoller.ResumeToken` has been removed
+- Function `*ApplicationGatewayPrivateEndpointConnectionsClientDeletePoller.Poll` has been removed
+- Function `*VPNGatewaysClientCreateOrUpdatePoller.Done` has been removed
+- Function `*SubnetsClientUnprepareNetworkPoliciesPoller.Poll` has been removed
+- Function `*VirtualAppliancesClientDeletePoller.Poll` has been removed
+- Function `*ConnectionMonitorsClientDeletePoller.Done` has been removed
+- Function `*LoadBalancersClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VPNGatewaysClientListByResourceGroupPager.NextPage` has been removed
+- Function `WebApplicationFirewallRuleType.ToPtr` has been removed
+- Function `*ManagementClientGetActiveSessionsPoller.ResumeToken` has been removed
+- Function `*WatchersClientGetFlowLogStatusPollerResponse.Resume` has been removed
+- Function `OrderByOrder.ToPtr` has been removed
+- Function `*VirtualHubsClientDeletePoller.Poll` has been removed
+- Function `*VPNConnectionsClientStopPacketCapturePoller.FinalResponse` has been removed
+- Function `*VirtualNetworkTapsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ExpressRouteCrossConnectionsClientListRoutesTablePollerResponse.Resume` has been removed
+- Function `*DdosProtectionPlansClientDeletePollerResponse.Resume` has been removed
+- Function `*VPNSitesClientListPager.NextPage` has been removed
+- Function `VerbosityLevel.ToPtr` has been removed
+- Function `*PublicIPPrefixesClientListPager.PageResponse` has been removed
+- Function `PublicIPPrefixesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ExpressRouteCrossConnectionPeeringsClientListPager.PageResponse` has been removed
+- Function `*InterfaceLoadBalancersClientListPager.PageResponse` has been removed
+- Function `*SecurityRulesClientDeletePoller.FinalResponse` has been removed
+- Function `*WatchersClientGetTroubleshootingPollerResponse.Resume` has been removed
+- Function `*P2SVPNGatewaysClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*ApplicationGatewaysClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ApplicationSecurityGroupsClientListAllPager.Err` has been removed
+- Function `*SecurityPartnerProvidersClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*SecurityPartnerProvidersClientListByResourceGroupPager.NextPage` has been removed
+- Function `*ApplicationGatewaysClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PacketCapturesClientGetStatusPollerResponse.Resume` has been removed
+- Function `*P2SVPNGatewaysClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualNetworkGatewaysClientSetVpnclientIPSecParametersPoller.ResumeToken` has been removed
+- Function `*VirtualApplianceSitesClientDeletePoller.Poll` has been removed
+- Function `*VirtualRouterPeeringsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `ApplicationGatewayPrivateEndpointConnectionsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `EffectiveRouteState.ToPtr` has been removed
+- Function `*WatchersClientListAvailableProvidersPoller.FinalResponse` has been removed
+- Function `*WatchersClientGetTroubleshootingResultPoller.FinalResponse` has been removed
+- Function `RoutesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `NetworkOperationStatus.ToPtr` has been removed
+- Function `*VirtualHubRouteTableV2SClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VPNSitesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualNetworkPeeringsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*DdosCustomPoliciesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*PublicIPAddressesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*BastionHostsClientDeletePoller.Poll` has been removed
+- Function `AzureFirewallsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*RouteTablesClientDeletePollerResponse.Resume` has been removed
+- Function `*VirtualNetworkGatewaysClientStopPacketCapturePoller.Done` has been removed
+- Function `*VPNSitesClientListByResourceGroupPager.NextPage` has been removed
+- Function `*HubRouteTablesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualHubBgpConnectionsClientListAdvertisedRoutesPoller.Done` has been removed
+- Function `*ServiceTagInformationClientListPager.PageResponse` has been removed
+- Function `*ExpressRouteCircuitPeeringsClientListPager.PageResponse` has been removed
+- Function `*VirtualNetworkPeeringsClientDeletePoller.FinalResponse` has been removed
+- Function `*FirewallPolicyRuleCollectionGroupsClientDeletePoller.Done` has been removed
+- Function `*VirtualNetworkGatewaysClientResetVPNClientSharedKeyPoller.Poll` has been removed
+- Function `*InterfacesClientListPager.NextPage` has been removed
+- Function `DestinationPortBehavior.ToPtr` has been removed
+- Function `*WatchersClientCheckConnectivityPoller.Done` has been removed
+- Function `InterfacesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualHubIPConfigurationClientListPager.PageResponse` has been removed
+- Function `*CustomIPPrefixesClientDeletePollerResponse.Resume` has been removed
+- Function `*VPNSitesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*RouteFilterRulesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*LocalNetworkGatewaysClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VPNSitesConfigurationClientDownloadPollerResponse.Resume` has been removed
+- Function `WebApplicationFirewallMatchVariable.ToPtr` has been removed
+- Function `*VirtualNetworksClientListAllPager.NextPage` has been removed
+- Function `*RoutesClientDeletePoller.Poll` has been removed
+- Function `*VPNLinkConnectionsClientGetIkeSasPoller.ResumeToken` has been removed
+- Function `*WatchersClientVerifyIPFlowPollerResponse.Resume` has been removed
+- Function `*IPAllocationsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ApplicationGatewayPrivateEndpointConnectionsClientDeletePoller.ResumeToken` has been removed
+- Function `*VirtualNetworkGatewaysClientGetAdvertisedRoutesPollerResponse.Resume` has been removed
+- Function `*P2SVPNGatewaysClientGenerateVPNProfilePoller.Poll` has been removed
+- Function `*WatchersClientListAvailableProvidersPoller.ResumeToken` has been removed
+- Function `*ApplicationSecurityGroupsClientListPager.NextPage` has been removed
+- Function `InterfaceTapConfigurationsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualNetworkGatewaysClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*WatchersClientGetTroubleshootingResultPoller.Done` has been removed
+- Function `InboundSecurityRuleClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*AvailableServiceAliasesClientListPager.PageResponse` has been removed
+- Function `*SubnetsClientUnprepareNetworkPoliciesPollerResponse.Resume` has been removed
+- Function `*LoadBalancerBackendAddressPoolsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*InterfacesClientListAllPager.PageResponse` has been removed
+- Function `*ExpressRouteCircuitsClientDeletePoller.Poll` has been removed
+- Function `*LoadBalancerProbesClientListPager.PageResponse` has been removed
+- Function `*VirtualNetworkGatewayNatRulesClientDeletePollerResponse.Resume` has been removed
+- Function `*IPAllocationsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `VirtualNetworkGatewaysClientStartPacketCapturePollerResponse.PollUntilDone` has been removed
+- Function `*DscpConfigurationClientListPager.PageResponse` has been removed
+- Function `*IPGroupsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ApplicationSecurityGroupsClientDeletePoller.FinalResponse` has been removed
+- Function `*PrivateLinkServicesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VirtualRoutersClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualApplianceSitesClientDeletePoller.Done` has been removed
+- Function `*LoadBalancersClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualNetworkGatewaysClientResetVPNClientSharedKeyPoller.FinalResponse` has been removed
+- Function `*ExpressRouteCrossConnectionsClientListByResourceGroupPager.Err` has been removed
+- Function `*HubVirtualNetworkConnectionsClientListPager.NextPage` has been removed
+- Function `*P2SVPNGatewaysClientResetPoller.FinalResponse` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientResetConnectionPoller.FinalResponse` has been removed
+- Function `*FlowLogsClientListPager.PageResponse` has been removed
+- Function `*LocalNetworkGatewaysClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*HubVirtualNetworkConnectionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `SingleQueryResultMode.ToPtr` has been removed
+- Function `*ExpressRouteCircuitPeeringsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*P2SVPNGatewaysClientGetP2SVPNConnectionHealthPoller.ResumeToken` has been removed
+- Function `*WatchersClientVerifyIPFlowPoller.Poll` has been removed
+- Function `*AvailableServiceAliasesClientListByResourceGroupPager.NextPage` has been removed
+- Function `*NatGatewaysClientListAllPager.NextPage` has been removed
+- Function `*ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofilePoller.FinalResponse` has been removed
+- Function `*VirtualHubRouteTableV2SClientDeletePoller.FinalResponse` has been removed
+- Function `*VirtualNetworkGatewayNatRulesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*LoadBalancerBackendAddressPoolsClientListPager.Err` has been removed
+- Function `*DdosProtectionPlansClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*ExpressRouteCircuitConnectionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*SecurityGroupsClientDeletePoller.FinalResponse` has been removed
+- Function `*ExpressRouteConnectionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*PacketCapturesClientStopPoller.FinalResponse` has been removed
+- Function `*HubRouteTablesClientDeletePoller.FinalResponse` has been removed
+- Function `HubBgpConnectionStatus.ToPtr` has been removed
+- Function `*RouteFiltersClientDeletePollerResponse.Resume` has been removed
+- Function `*InterfacesClientListVirtualMachineScaleSetIPConfigurationsPager.NextPage` has been removed
+- Function `*ExpressRouteCircuitsClientDeletePollerResponse.Resume` has been removed
+- Function `*InterfaceIPConfigurationsClientListPager.PageResponse` has been removed
+- Function `VPNAuthenticationType.ToPtr` has been removed
+- Function `*InterfacesClientGetEffectiveRouteTablePoller.Poll` has been removed
+- Function `ApplicationGatewayLoadDistributionAlgorithm.ToPtr` has been removed
+- Function `*VirtualApplianceSKUsClientListPager.Err` has been removed
+- Function `VirtualHubBgpConnectionClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VPNSitesClientListByResourceGroupPager.Err` has been removed
+- Function `*RouteTablesClientListPager.PageResponse` has been removed
+- Function `*SecurityRulesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*RouteTablesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `P2SVPNGatewaysClientGenerateVPNProfilePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateLinkServicesClientDeletePoller.FinalResponse` has been removed
+- Function `*VirtualHubRouteTableV2SClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*SecurityRulesClientDeletePoller.ResumeToken` has been removed
+- Function `*NatRulesClientListByVPNGatewayPager.Err` has been removed
+- Function `*SubnetsClientListPager.NextPage` has been removed
+- Function `*DefaultSecurityRulesClientListPager.NextPage` has been removed
+- Function `*SubnetsClientListPager.Err` has been removed
+- Function `*ProfilesClientDeletePoller.ResumeToken` has been removed
+- Function `*VirtualHubIPConfigurationClientDeletePoller.ResumeToken` has been removed
+- Function `*RoutingIntentClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ExpressRouteCircuitsClientListPager.Err` has been removed
+- Function `*PacketCapturesClientCreatePollerResponse.Resume` has been removed
+- Function `*VirtualHubBgpConnectionsClientListAdvertisedRoutesPoller.ResumeToken` has been removed
+- Function `ConnectionMonitorsClientStartPollerResponse.PollUntilDone` has been removed
+- Function `ExpressRouteCircuitConnectionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ExpressRoutePortsClientListPager.NextPage` has been removed
+- Function `*VirtualNetworkTapsClientDeletePollerResponse.Resume` has been removed
+- Function `IPAllocationsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VPNGatewaysClientResetPoller.Done` has been removed
+- Function `*VirtualNetworkGatewaysClientResetPoller.Poll` has been removed
+- Function `*P2SVPNGatewaysClientGetP2SVPNConnectionHealthPoller.Done` has been removed
+- Function `*DdosProtectionPlansClientDeletePoller.Done` has been removed
+- Function `*ExpressRouteCrossConnectionPeeringsClientDeletePoller.ResumeToken` has been removed
+- Function `*AzureFirewallsClientDeletePoller.FinalResponse` has been removed
+- Function `*WatchersClientSetFlowLogConfigurationPoller.ResumeToken` has been removed
+- Function `*LoadBalancersClientListAllPager.PageResponse` has been removed
+- Function `NextHopType.ToPtr` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientDeletePoller.FinalResponse` has been removed
+- Function `ExpressRoutePortsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualRoutersClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualApplianceSitesClientListPager.Err` has been removed
+- Function `*VirtualHubBgpConnectionsClientListAdvertisedRoutesPoller.Poll` has been removed
+- Function `*PrivateLinkServicesClientListPager.Err` has been removed
+- Function `*RouteTablesClientDeletePoller.FinalResponse` has been removed
+- Function `*RouteFiltersClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*LoadBalancersClientSwapPublicIPAddressesPoller.Done` has been removed
+- Function `*P2SVPNGatewaysClientDeletePoller.Poll` has been removed
+- Function `AssociationType.ToPtr` has been removed
+- Function `*ExpressRouteCrossConnectionsClientListPager.NextPage` has been removed
+- Function `*SecurityPartnerProvidersClientDeletePoller.FinalResponse` has been removed
+- Function `*VPNGatewaysClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*ExpressRouteCircuitConnectionsClientListPager.Err` has been removed
+- Function `VirtualHubBgpConnectionClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*CustomIPPrefixesClientListAllPager.NextPage` has been removed
+- Function `*ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesPager.PageResponse` has been removed
+- Function `*VirtualWansClientListPager.NextPage` has been removed
+- Function `ExpressRouteCircuitAuthorizationsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ApplicationGatewaysClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PublicIPAddressesClientListCloudServicePublicIPAddressesPager.PageResponse` has been removed
+- Function `*PrivateEndpointsClientDeletePoller.Done` has been removed
+- Function `*ApplicationSecurityGroupsClientListPager.PageResponse` has been removed
+- Function `VPNGatewayGeneration.ToPtr` has been removed
+- Function `*IPAllocationsClientDeletePoller.FinalResponse` has been removed
+- Function `*WatchersClientGetNextHopPollerResponse.Resume` has been removed
+- Function `*PublicIPPrefixesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesPager.Err` has been removed
+- Function `VirtualNetworkEncryptionEnforcement.ToPtr` has been removed
+- Function `*InboundNatRulesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VPNConnectionsClientStopPacketCapturePoller.Poll` has been removed
+- Function `*P2SVPNGatewaysClientDeletePoller.FinalResponse` has been removed
+- Function `*ExpressRoutePortsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `VPNSitesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*RoutesClientDeletePollerResponse.Resume` has been removed
+- Function `*SubnetsClientPrepareNetworkPoliciesPoller.Poll` has been removed
+- Function `*VirtualHubBgpConnectionsClientListLearnedRoutesPoller.FinalResponse` has been removed
+- Function `*RouteFilterRulesClientListByRouteFilterPager.Err` has been removed
+- Function `*VirtualNetworkGatewayNatRulesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*P2SVPNGatewaysClientResetPoller.Poll` has been removed
+- Function `PrivateLinkServicesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualHubRouteTableV2SClientListPager.PageResponse` has been removed
+- Function `*ManagementClientGetBastionShareableLinkPager.NextPage` has been removed
+- Function `*VirtualNetworksClientListAllPager.Err` has been removed
+- Function `*IPAllocationsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*ManagementClientPutBastionShareableLinkPager.PageResponse` has been removed
+- Function `*HubRouteTablesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*SubnetsClientDeletePoller.ResumeToken` has been removed
+- Function `*HubRouteTablesClientListPager.Err` has been removed
+- Function `*LoadBalancersClientDeletePoller.ResumeToken` has been removed
+- Function `WatchersClientGetFlowLogStatusPollerResponse.PollUntilDone` has been removed
+- Function `*VPNSitesConfigurationClientDownloadPoller.Done` has been removed
+- Function `*InterfacesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ServiceEndpointPolicyDefinitionsClientListByResourceGroupPager.Err` has been removed
+- Function `*IPAllocationsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `OfficeTrafficCategory.ToPtr` has been removed
+- Function `DscpConfigurationClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ExpressRouteGatewaysClientUpdateTagsPollerResponse.Resume` has been removed
+- Function `*PrivateDNSZoneGroupsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VirtualHubIPConfigurationClientListPager.Err` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientStartPacketCapturePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `ExpressRouteConnectionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofilePoller.Poll` has been removed
+- Function `*ManagementClientDeleteBastionShareableLinkPollerResponse.Resume` has been removed
+- Function `*ExpressRouteCrossConnectionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*FirewallPoliciesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ExpressRouteCircuitPeeringsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ServiceEndpointPolicyDefinitionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ExpressRouteCircuitsClientListArpTablePoller.ResumeToken` has been removed
+- Function `*LoadBalancersClientListAllPager.Err` has been removed
+- Function `*SubnetsClientUnprepareNetworkPoliciesPoller.Done` has been removed
+- Function `*VirtualHubsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ApplicationGatewaysClientDeletePoller.Done` has been removed
+- Function `*ConnectionMonitorsClientQueryPoller.Poll` has been removed
+- Function `VirtualNetworkGatewaysClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `FirewallPolicyIntrusionDetectionProtocol.ToPtr` has been removed
+- Function `*ApplicationSecurityGroupsClientListAllPager.NextPage` has been removed
+- Function `*VirtualAppliancesClientDeletePollerResponse.Resume` has been removed
+- Function `*VirtualWansClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `VirtualNetworkGatewayConnectionsClientUpdateTagsPollerResponse.PollUntilDone` has been removed
+- Function `*AzureFirewallsClientUpdateTagsPollerResponse.Resume` has been removed
+- Function `*WatchersClientGetAzureReachabilityReportPoller.FinalResponse` has been removed
+- Function `*ExpressRouteCircuitsClientListPager.PageResponse` has been removed
+- Function `*ConnectionMonitorsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*PublicIPPrefixesClientDeletePollerResponse.Resume` has been removed
+- Function `*ServiceEndpointPoliciesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*ExpressRouteCircuitConnectionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*RouteFilterRulesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ApplicationGatewayPrivateEndpointConnectionsClientUpdatePoller.FinalResponse` has been removed
+- Function `*PrivateLinkServicesClientListBySubscriptionPager.Err` has been removed
+- Function `*AzureFirewallsClientDeletePoller.Poll` has been removed
+- Function `*WebCategoriesClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*IPAllocationsClientDeletePoller.Done` has been removed
+- Function `P2SVPNGatewaysClientDisconnectP2SVPNConnectionsPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientResetConnectionPoller.Poll` has been removed
+- Function `*VirtualRouterPeeringsClientDeletePoller.Done` has been removed
+- Function `*SubnetsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*P2SVPNGatewaysClientDeletePoller.ResumeToken` has been removed
+- Function `*IPGroupsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ExpressRouteCircuitsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ApplicationSecurityGroupsClientDeletePoller.ResumeToken` has been removed
+- Function `RouteTablesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualHubBgpConnectionsClientListLearnedRoutesPoller.ResumeToken` has been removed
+- Function `*P2SVPNGatewaysClientUpdateTagsPollerResponse.Resume` has been removed
+- Function `*VirtualNetworkGatewaysClientStartPacketCapturePollerResponse.Resume` has been removed
+- Function `*WatchersClientGetVMSecurityRulesPoller.FinalResponse` has been removed
+- Function `*InterfacesClientDeletePollerResponse.Resume` has been removed
+- Function `WatchersClientGetNetworkConfigurationDiagnosticPollerResponse.PollUntilDone` has been removed
+- Function `*RoutesClientListPager.PageResponse` has been removed
+- Function `*ApplicationGatewaysClientBackendHealthOnDemandPoller.FinalResponse` has been removed
+- Function `*ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesPager.Err` has been removed
+- Function `*ApplicationGatewaysClientBackendHealthOnDemandPoller.ResumeToken` has been removed
+- Function `*VirtualRoutersClientListPager.PageResponse` has been removed
+- Function `*NatGatewaysClientListAllPager.Err` has been removed
+- Function `*VirtualRoutersClientListByResourceGroupPager.NextPage` has been removed
+- Function `ExpressRouteCircuitConnectionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ConnectionMonitorsClientStopPoller.ResumeToken` has been removed
+- Function `*VirtualHubIPConfigurationClientDeletePoller.Done` has been removed
+- Function `*VirtualRoutersClientDeletePoller.ResumeToken` has been removed
+- Function `ConnectionMonitorEndpointFilterType.ToPtr` has been removed
+- Function `*WatchersClientGetTroubleshootingPoller.Poll` has been removed
+- Function `*PrivateLinkServicesClientListPrivateEndpointConnectionsPager.Err` has been removed
+- Function `*RoutingIntentClientDeletePoller.Poll` has been removed
+- Function `*VPNGatewaysClientStartPacketCapturePoller.FinalResponse` has been removed
+- Function `PcProtocol.ToPtr` has been removed
+- Function `*VPNConnectionsClientDeletePoller.FinalResponse` has been removed
+- Function `VPNLinkConnectionsClientGetIkeSasPollerResponse.PollUntilDone` has been removed
+- Function `*PrivateDNSZoneGroupsClientDeletePollerResponse.Resume` has been removed
+- Function `*VPNSitesClientDeletePoller.FinalResponse` has been removed
+- Function `*AvailableDelegationsClientListPager.PageResponse` has been removed
+- Function `*PublicIPPrefixesClientDeletePoller.Poll` has been removed
+- Function `VirtualNetworkGatewayConnectionProtocol.ToPtr` has been removed
+- Function `*PublicIPAddressesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualNetworkGatewaysClientStopPacketCapturePoller.Poll` has been removed
+- Function `*VirtualAppliancesClientListPager.PageResponse` has been removed
+- Function `*ApplicationGatewaysClientStartPoller.FinalResponse` has been removed
+- Function `*LoadBalancersClientListPager.PageResponse` has been removed
+- Function `SecurityGroupsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `Direction.ToPtr` has been removed
+- Function `*VirtualHubRouteTableV2SClientListPager.Err` has been removed
+- Function `ManagementClientGetActiveSessionsPollerResponse.PollUntilDone` has been removed
+- Function `*PacketCapturesClientDeletePoller.FinalResponse` has been removed
+- Function `*CustomIPPrefixesClientListPager.PageResponse` has been removed
+- Function `*VirtualNetworkGatewaysClientSetVpnclientIPSecParametersPollerResponse.Resume` has been removed
+- Function `*HubVirtualNetworkConnectionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*AvailableDelegationsClientListPager.Err` has been removed
+- Function `*DscpConfigurationClientListPager.NextPage` has been removed
+- Function `*WebApplicationFirewallPoliciesClientDeletePoller.FinalResponse` has been removed
+- Function `*P2SVPNGatewaysClientDeletePollerResponse.Resume` has been removed
+- Function `*DdosProtectionPlansClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VPNSitesClientListPager.PageResponse` has been removed
+- Function `*InboundNatRulesClientListPager.PageResponse` has been removed
+- Function `*RouteFilterRulesClientDeletePoller.Done` has been removed
+- Function `VirtualNetworkGatewayConnectionMode.ToPtr` has been removed
+- Function `*FirewallPoliciesClientListPager.PageResponse` has been removed
+- Function `VirtualNetworkGatewaySKUTier.ToPtr` has been removed
+- Function `CustomIPPrefixesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VPNServerConfigurationsClientDeletePoller.FinalResponse` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientGetIkeSasPoller.FinalResponse` has been removed
+- Function `SubnetsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*CustomIPPrefixesClientListAllPager.PageResponse` has been removed
+- Function `*VirtualNetworkPeeringsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofilePoller.Done` has been removed
+- Function `*ExpressRouteCrossConnectionsClientListRoutesTablePoller.Poll` has been removed
+- Function `*RouteFiltersClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*SecurityPartnerProvidersClientListPager.PageResponse` has been removed
+- Function `*PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesPager.Err` has been removed
+- Function `*ProfilesClientListAllPager.Err` has been removed
+- Function `VirtualNetworkPeeringLevel.ToPtr` has been removed
+- Function `*NatRulesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ManagementClientGetActiveSessionsPoller.Done` has been removed
+- Function `*VirtualWansClientDeletePoller.ResumeToken` has been removed
+- Function `IkeIntegrity.ToPtr` has been removed
+- Function `HubRouteTablesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*RoutesClientDeletePoller.FinalResponse` has been removed
+- Function `ExpressRouteGatewaysClientUpdateTagsPollerResponse.PollUntilDone` has been removed
+- Function `*PacketCapturesClientDeletePoller.Poll` has been removed
+- Function `*PacketCapturesClientGetStatusPoller.Done` has been removed
+- Function `*FirewallPolicyRuleCollectionGroupsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*NatRulesClientDeletePoller.Done` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*BastionHostsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `ApplicationGatewayTier.ToPtr` has been removed
+- Function `HTTPMethod.ToPtr` has been removed
+- Function `VirtualNetworkPeeringsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientSetSharedKeyPoller.Done` has been removed
+- Function `*VirtualHubsClientDeletePoller.Done` has been removed
+- Function `*SecurityPartnerProvidersClientDeletePoller.ResumeToken` has been removed
+- Function `*AvailableEndpointServicesClientListPager.Err` has been removed
+- Function `*P2SVPNGatewaysClientGetP2SVPNConnectionHealthPollerResponse.Resume` has been removed
+- Function `*AvailableServiceAliasesClientListPager.NextPage` has been removed
+- Function `*WatchersClientListAvailableProvidersPollerResponse.Resume` has been removed
+- Function `*WatchersClientSetFlowLogConfigurationPoller.Poll` has been removed
+- Function `*InboundNatRulesClientDeletePoller.Done` has been removed
+- Function `*IPGroupsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VPNServerConfigurationsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*SecurityRulesClientListPager.PageResponse` has been removed
+- Function `*VirtualNetworkGatewaysClientDeletePoller.FinalResponse` has been removed
+- Function `*ExpressRouteCrossConnectionPeeringsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `CommissionedState.ToPtr` has been removed
+- Function `*ExpressRouteConnectionsClientDeletePoller.Poll` has been removed
+- Function `*DdosCustomPoliciesClientDeletePoller.Poll` has been removed
+- Function `ExpressRouteCircuitsClientListRoutesTableSummaryPollerResponse.PollUntilDone` has been removed
+- Function `*ApplicationSecurityGroupsClientDeletePollerResponse.Resume` has been removed
+- Function `*ManagementClientDeleteBastionShareableLinkPoller.ResumeToken` has been removed
+- Function `*ExpressRouteConnectionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `TunnelConnectionStatus.ToPtr` has been removed
+- Function `*PeerExpressRouteCircuitConnectionsClientListPager.Err` has been removed
+- Function `*VirtualNetworkGatewaysClientSetVpnclientIPSecParametersPoller.Done` has been removed
+- Function `*BgpServiceCommunitiesClientListPager.PageResponse` has been removed
+- Function `*ExpressRoutePortsLocationsClientListPager.NextPage` has been removed
+- Function `ExpressRouteGatewaysClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*SecurityGroupsClientDeletePoller.Done` has been removed
+- Function `VirtualNetworkGatewaysClientGetVpnclientIPSecParametersPollerResponse.PollUntilDone` has been removed
+- Function `ConnectionState.ToPtr` has been removed
+- Function `*ManagementClientDeleteBastionShareableLinkPoller.Poll` has been removed
+- Function `*ServiceEndpointPolicyDefinitionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `AuthorizationUseStatus.ToPtr` has been removed
+- Function `*P2SVPNGatewaysClientDisconnectP2SVPNConnectionsPoller.Poll` has been removed
+- Function `BastionHostsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AvailableResourceGroupDelegationsClientListPager.PageResponse` has been removed
+- Function `*VirtualApplianceSKUsClientListPager.NextPage` has been removed
+- Function `*VirtualWansClientDeletePoller.FinalResponse` has been removed
+- Function `VirtualHubRouteTableV2SClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ApplicationSecurityGroupsClientListPager.Err` has been removed
+- Function `*VirtualHubBgpConnectionsClientListPager.Err` has been removed
+- Function `*VirtualAppliancesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ExpressRouteConnectionsClientDeletePoller.FinalResponse` has been removed
+- Function `*ExpressRoutePortsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VirtualHubIPConfigurationClientDeletePollerResponse.Resume` has been removed
+- Function `VirtualApplianceSitesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VPNServerConfigurationsAssociatedWithVirtualWanClientListPoller.Poll` has been removed
+- Function `*InterfaceTapConfigurationsClientDeletePoller.ResumeToken` has been removed
+- Function `*IPGroupsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*VirtualApplianceSitesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ExpressRoutePortsClientDeletePoller.ResumeToken` has been removed
+- Function `FirewallPolicyIntrusionDetectionStateType.ToPtr` has been removed
+- Function `*InterfacesClientListPager.PageResponse` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientUpdateTagsPoller.Done` has been removed
+- Function `*IPAllocationsClientListPager.NextPage` has been removed
+- Function `*DdosProtectionPlansClientDeletePoller.Poll` has been removed
+- Function `*VPNLinkConnectionsClientGetIkeSasPoller.Poll` has been removed
+- Function `*VirtualRoutersClientDeletePoller.Done` has been removed
+- Function `NatGatewaysClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `ConnectionMonitorEndpointFilterItemType.ToPtr` has been removed
+- Function `*PrivateLinkServicesClientListPrivateEndpointConnectionsPager.PageResponse` has been removed
+- Function `RouteFiltersClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ExpressRouteCircuitsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*UsagesClientListPager.NextPage` has been removed
+- Function `*SubnetsClientUnprepareNetworkPoliciesPoller.ResumeToken` has been removed
+- Function `PrivateEndpointsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*CustomIPPrefixesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*RouteTablesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*InboundNatRulesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ManagementClientDeleteBastionShareableLinkPoller.Done` has been removed
+- Function `*DscpConfigurationClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `VirtualNetworkGatewaysClientGetVPNProfilePackageURLPollerResponse.PollUntilDone` has been removed
+- Function `*VPNGatewaysClientListPager.NextPage` has been removed
+- Function `*P2SVPNGatewaysClientGenerateVPNProfilePoller.Done` has been removed
+- Function `*VirtualNetworkGatewayNatRulesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*LoadBalancerLoadBalancingRulesClientListPager.PageResponse` has been removed
+- Function `*ApplicationGatewaysClientStopPoller.ResumeToken` has been removed
+- Function `*VirtualHubsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ManagementClientDisconnectActiveSessionsPager.NextPage` has been removed
+- Function `ApplicationGatewaySKUName.ToPtr` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientDeletePoller.ResumeToken` has been removed
+- Function `*VirtualRouterPeeringsClientDeletePoller.FinalResponse` has been removed
+- Function `*VirtualNetworkTapsClientListAllPager.Err` has been removed
+- Function `CustomIPPrefixesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*SubnetsClientPrepareNetworkPoliciesPoller.FinalResponse` has been removed
+- Function `*VPNGatewaysClientDeletePoller.Poll` has been removed
+- Function `*PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesPager.NextPage` has been removed
+- Function `*PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityPoller.Poll` has been removed
+- Function `UsageUnit.ToPtr` has been removed
+- Function `*VirtualNetworkGatewaysClientStartPacketCapturePoller.Poll` has been removed
+- Function `*VirtualHubsClientListPager.PageResponse` has been removed
+- Function `ApplicationGatewayPrivateEndpointConnectionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*DscpConfigurationClientListAllPager.NextPage` has been removed
+- Function `*ExpressRouteCircuitPeeringsClientDeletePoller.Done` has been removed
+- Function `*PrivateEndpointsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*SecurityPartnerProvidersClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `WebApplicationFirewallPoliciesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualAppliancesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientStartPacketCapturePoller.Done` has been removed
+- Function `*AzureFirewallsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `ExpressRoutePortsEncapsulation.ToPtr` has been removed
+- Function `*VirtualNetworkPeeringsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*SecurityGroupsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ApplicationSecurityGroupsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ExpressRoutePortsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*ExpressRouteCrossConnectionsClientListRoutesTablePoller.FinalResponse` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientUpdateTagsPoller.ResumeToken` has been removed
+- Function `VirtualNetworkPeeringsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*BastionHostsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*VirtualHubBgpConnectionClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*WebApplicationFirewallPoliciesClientDeletePollerResponse.Resume` has been removed
+- Function `*VirtualHubsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualNetworkGatewaysClientGetAdvertisedRoutesPoller.FinalResponse` has been removed
+- Function `ExpressRouteCircuitPeeringState.ToPtr` has been removed
+- Function `*SecurityRulesClientDeletePoller.Done` has been removed
+- Function `VirtualHubBgpConnectionsClientListLearnedRoutesPollerResponse.PollUntilDone` has been removed
+- Function `WatchersClientListAvailableProvidersPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualRouterPeeringsClientListPager.NextPage` has been removed
+- Function `*ConnectionMonitorsClientStartPoller.ResumeToken` has been removed
+- Function `*HubVirtualNetworkConnectionsClientListPager.Err` has been removed
+- Function `*ApplicationGatewaysClientDeletePoller.Poll` has been removed
+- Function `*NatGatewaysClientDeletePoller.Done` has been removed
+- Function `OwaspCrsExclusionEntrySelectorMatchOperator.ToPtr` has been removed
+- Function `*VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayPager.NextPage` has been removed
+- Function `*DdosProtectionPlansClientCreateOrUpdatePoller.Done` has been removed
+- Function `VirtualNetworkGatewaysClientGetLearnedRoutesPollerResponse.PollUntilDone` has been removed
+- Function `*ManagementClientGetActiveSessionsPager.NextPage` has been removed
+- Function `IPFlowProtocol.ToPtr` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientStartPacketCapturePoller.ResumeToken` has been removed
+- Function `*P2SVPNGatewaysClientGetP2SVPNConnectionHealthDetailedPoller.Poll` has been removed
+- Function `*ExpressRouteCrossConnectionsClientListPager.PageResponse` has been removed
+- Function `*PrivateLinkServicesClientListPrivateEndpointConnectionsPager.NextPage` has been removed
+- Function `*InterfacesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualHubIPConfigurationClientListPager.NextPage` has been removed
+- Function `ExpressRouteCircuitSKUFamily.ToPtr` has been removed
+- Function `*HubRouteTablesClientListPager.NextPage` has been removed
+- Function `*InterfacesClientListEffectiveNetworkSecurityGroupsPollerResponse.Resume` has been removed
+- Function `*RouteFilterRulesClientDeletePoller.ResumeToken` has been removed
+- Function `*VirtualHubBgpConnectionsClientListLearnedRoutesPollerResponse.Resume` has been removed
+- Function `FirewallPolicyNatRuleCollectionActionType.ToPtr` has been removed
+- Function `*LoadBalancerBackendAddressPoolsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PacketCapturesClientCreatePoller.Poll` has been removed
+- Function `*VPNLinkConnectionsClientResetConnectionPoller.FinalResponse` has been removed
+- Function `VirtualNetworksClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `ExpressRouteCircuitsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualWansClientListByResourceGroupPager.Err` has been removed
+- Function `*PublicIPPrefixesClientListPager.NextPage` has been removed
+- Function `*VirtualNetworkTapsClientDeletePoller.FinalResponse` has been removed
+- Function `*ExpressRouteGatewaysClientCreateOrUpdatePoller.Poll` has been removed
+- Function `AzureFirewallNatRCActionType.ToPtr` has been removed
+- Function `*ConnectionMonitorsClientStopPoller.FinalResponse` has been removed
+- Function `VPNType.ToPtr` has been removed
+- Function `InterfacesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ExpressRouteCircuitsClientListRoutesTableSummaryPoller.Done` has been removed
+- Function `AuthenticationMethod.ToPtr` has been removed
+- Function `*CustomIPPrefixesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualRoutersClientListPager.Err` has been removed
+- Function `*ProfilesClientDeletePoller.Done` has been removed
+- Function `*ConnectionMonitorsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ConnectionMonitorsClientDeletePoller.Poll` has been removed
+- Function `*VirtualAppliancesClientListByResourceGroupPager.Err` has been removed
+- Function `*VPNConnectionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `ResourceIdentityType.ToPtr` has been removed
+- Function `*FlowLogsClientDeletePoller.Poll` has been removed
+- Function `*PublicIPPrefixesClientListAllPager.PageResponse` has been removed
+- Function `P2SVPNGatewaysClientUpdateTagsPollerResponse.PollUntilDone` has been removed
+- Function `InboundSecurityRulesProtocol.ToPtr` has been removed
+- Function `ExpressRouteCrossConnectionPeeringsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `P2SVPNGatewaysClientGetP2SVPNConnectionHealthPollerResponse.PollUntilDone` has been removed
+- Function `DdosProtectionPlansClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `PfsGroup.ToPtr` has been removed
+- Function `*CustomIPPrefixesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `VPNGatewaysClientStartPacketCapturePollerResponse.PollUntilDone` has been removed
+- Function `*ApplicationGatewayPrivateEndpointConnectionsClientUpdatePoller.Done` has been removed
+- Function `*VirtualNetworkGatewaysClientListPager.PageResponse` has been removed
+- Function `*PrivateLinkServicesClientListBySubscriptionPager.NextPage` has been removed
+- Function `*WatchersClientGetNetworkConfigurationDiagnosticPoller.Done` has been removed
+- Function `*VirtualNetworkGatewaysClientSetVpnclientIPSecParametersPoller.Poll` has been removed
+- Function `*InterfaceIPConfigurationsClientListPager.Err` has been removed
+- Function `*ManagementClientDeleteBastionShareableLinkPoller.FinalResponse` has been removed
+- Function `*VirtualAppliancesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `LoadBalancersClientListInboundNatRulePortMappingsPollerResponse.PollUntilDone` has been removed
+- Function `VirtualNetworkPeeringState.ToPtr` has been removed
+- Function `*VPNSitesClientListPager.Err` has been removed
+- Function `*SubnetsClientPrepareNetworkPoliciesPollerResponse.Resume` has been removed
+- Function `*P2SVPNGatewaysClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `SubnetsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualApplianceSitesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ExpressRouteGatewaysClientDeletePoller.ResumeToken` has been removed
+- Function `*ServiceTagInformationClientListPager.NextPage` has been removed
+- Function `LoadBalancerSKUName.ToPtr` has been removed
+- Function `*PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupPager.PageResponse` has been removed
+- Function `*PrivateLinkServicesClientDeletePollerResponse.Resume` has been removed
+- Function `*PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesPager.NextPage` has been removed
+- Function `*LoadBalancersClientDeletePoller.Done` has been removed
+- Function `HubVirtualNetworkConnectionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ExpressRouteCircuitConnectionsClientDeletePoller.Poll` has been removed
+- Function `*ExpressRouteCircuitConnectionsClientListPager.NextPage` has been removed
+- Function `*VirtualNetworkGatewaysClientGeneratevpnclientpackagePoller.ResumeToken` has been removed
+- Function `*AzureFirewallsClientListPager.Err` has been removed
+- Function `*InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesPager.NextPage` has been removed
+- Function `DhGroup.ToPtr` has been removed
+- Function `*VirtualNetworkGatewayNatRulesClientDeletePoller.FinalResponse` has been removed
+- Function `*VPNServerConfigurationsClientDeletePoller.ResumeToken` has been removed
+- Function `*DdosProtectionPlansClientDeletePoller.ResumeToken` has been removed
+- Function `*VirtualNetworkPeeringsClientListPager.Err` has been removed
+- Function `WebApplicationFirewallPolicyResourceState.ToPtr` has been removed
+- Function `VirtualNetworkGatewayConnectionsClientStartPacketCapturePollerResponse.PollUntilDone` has been removed
+- Function `*FlowLogsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ConnectionMonitorsClientQueryPoller.ResumeToken` has been removed
+- Function `*SecurityPartnerProvidersClientListPager.NextPage` has been removed
+- Function `*BgpServiceCommunitiesClientListPager.NextPage` has been removed
+- Function `*PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesPager.Err` has been removed
+- Function `*PublicIPPrefixesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ConnectionMonitorsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*SecurityPartnerProvidersClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*ApplicationGatewayPrivateEndpointConnectionsClientDeletePollerResponse.Resume` has been removed
+- Function `*IPGroupsClientDeletePoller.Done` has been removed
+- Function `ProcessorArchitecture.ToPtr` has been removed
+- Function `PublicIPAddressesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*CustomIPPrefixesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VPNServerConfigurationsClientDeletePoller.Done` has been removed
+- Function `SubnetsClientPrepareNetworkPoliciesPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualWansClientListByResourceGroupPager.PageResponse` has been removed
+- Function `InterfacesClientListEffectiveNetworkSecurityGroupsPollerResponse.PollUntilDone` has been removed
+- Function `WatchersClientGetTroubleshootingResultPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualNetworkGatewaysClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `LoadBalancersClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ApplicationSecurityGroupsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ExpressRouteCircuitsClientListRoutesTableSummaryPoller.ResumeToken` has been removed
+- Function `*PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesPager.Err` has been removed
+- Function `*FirewallPolicyRuleCollectionGroupsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `RouteFiltersClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ConnectionMonitorsClientStopPollerResponse.Resume` has been removed
+- Function `*VirtualHubBgpConnectionsClientListAdvertisedRoutesPoller.FinalResponse` has been removed
+- Function `*FlowLogsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `ApplicationGatewayRedirectType.ToPtr` has been removed
+- Function `*WatchersClientCheckConnectivityPollerResponse.Resume` has been removed
+- Function `*RouteFilterRulesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `ExpressRouteLinkMacSecSciState.ToPtr` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientStopPacketCapturePollerResponse.Resume` has been removed
+- Function `*WatchersClientSetFlowLogConfigurationPoller.FinalResponse` has been removed
+- Function `*VirtualHubsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*AzureFirewallFqdnTagsClientListAllPager.NextPage` has been removed
+- Function `*VirtualNetworksClientListPager.NextPage` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientStopPacketCapturePoller.Done` has been removed
+- Function `*WatchersClientVerifyIPFlowPoller.ResumeToken` has been removed
+- Function `*ExpressRouteGatewaysClientUpdateTagsPoller.Poll` has been removed
+- Function `*ExpressRouteGatewaysClientDeletePoller.Poll` has been removed
+- Function `*LoadBalancerOutboundRulesClientListPager.NextPage` has been removed
+- Function `*WebCategoriesClientListBySubscriptionPager.NextPage` has been removed
+- Function `*PrivateDNSZoneGroupsClientListPager.Err` has been removed
+- Function `*VirtualNetworkGatewaysClientGeneratevpnclientpackagePollerResponse.Resume` has been removed
+- Function `*WatchersClientGetNetworkConfigurationDiagnosticPoller.FinalResponse` has been removed
+- Function `*AvailablePrivateEndpointTypesClientListByResourceGroupPager.NextPage` has been removed
+- Function `SecurityGroupsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualNetworkGatewaysClientGetVpnclientIPSecParametersPoller.Done` has been removed
+- Function `*InterfacesClientDeletePoller.Done` has been removed
+- Function `*ConnectionMonitorsClientStopPoller.Done` has been removed
+- Function `*VPNGatewaysClientStopPacketCapturePoller.Poll` has been removed
+- Function `*ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesPager.NextPage` has been removed
+- Function `*RoutingIntentClientDeletePoller.Done` has been removed
+- Function `*InterfaceLoadBalancersClientListPager.NextPage` has been removed
+- Function `*ApplicationSecurityGroupsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*WatchersClientGetNextHopPoller.Done` has been removed
+- Function `*VirtualHubRouteTableV2SClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `VirtualNetworkGatewaysClientGetVpnclientConnectionHealthPollerResponse.PollUntilDone` has been removed
+- Function `*FirewallPolicyRuleCollectionGroupsClientDeletePoller.Poll` has been removed
+- Function `*NatRulesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualNetworkGatewaysClientListConnectionsPager.PageResponse` has been removed
+- Function `*VPNSitesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*SubnetsClientListPager.PageResponse` has been removed
+- Function `*InterfaceTapConfigurationsClientCreateOrUpdatePoller.Done` has been removed
+- Function `SecurityRulesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `CircuitConnectionStatus.ToPtr` has been removed
+- Function `*InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesPager.NextPage` has been removed
+- Function `*VirtualNetworksClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VPNSitesClientDeletePoller.Done` has been removed
+- Function `*RouteFiltersClientDeletePoller.ResumeToken` has been removed
+- Function `*VirtualWansClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*WatchersClientSetFlowLogConfigurationPollerResponse.Resume` has been removed
+- Function `*RoutesClientListPager.Err` has been removed
+- Function `*VPNGatewaysClientDeletePoller.ResumeToken` has been removed
+- Function `*PrivateLinkServicesClientDeletePrivateEndpointConnectionPoller.Done` has been removed
+- Function `*VirtualNetworkGatewaysClientStopPacketCapturePoller.ResumeToken` has been removed
+- Function `*RouteTablesClientDeletePoller.ResumeToken` has been removed
+- Function `*PeerExpressRouteCircuitConnectionsClientListPager.NextPage` has been removed
+- Function `*FirewallPolicyRuleCollectionGroupsClientDeletePoller.FinalResponse` has been removed
+- Function `*VirtualNetworkGatewaysClientGenerateVPNProfilePoller.FinalResponse` has been removed
+- Function `VirtualNetworkGatewaySKUName.ToPtr` has been removed
+- Function `WatchersClientVerifyIPFlowPollerResponse.PollUntilDone` has been removed
+- Function `*LoadBalancerBackendAddressPoolsClientDeletePoller.ResumeToken` has been removed
+- Function `AzureFirewallRCActionType.ToPtr` has been removed
+- Function `ExpressRoutePeeringState.ToPtr` has been removed
+- Function `*VPNGatewaysClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualHubIPConfigurationClientDeletePoller.FinalResponse` has been removed
+- Function `VPNGatewaysClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateLinkServicesClientDeletePrivateEndpointConnectionPollerResponse.Resume` has been removed
+- Function `*RoutesClientDeletePoller.ResumeToken` has been removed
+- Function `PublicIPAddressMigrationPhase.ToPtr` has been removed
+- Function `*VPNServerConfigurationsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*IPAllocationsClientDeletePollerResponse.Resume` has been removed
+- Function `*ExpressRouteCircuitAuthorizationsClientDeletePoller.FinalResponse` has been removed
+- Function `*ExpressRouteGatewaysClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*WatchersClientDeletePoller.Poll` has been removed
+- Function `*VPNLinkConnectionsClientResetConnectionPoller.Done` has been removed
+- Function `*VPNConnectionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*PrivateEndpointsClientListBySubscriptionPager.Err` has been removed
+- Function `*VirtualNetworkGatewaysClientListConnectionsPager.Err` has been removed
+- Function `*FirewallPolicyRuleCollectionGroupsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*RouteFiltersClientListPager.PageResponse` has been removed
+- Function `*RouteFiltersClientListPager.Err` has been removed
+- Function `*WebApplicationFirewallPoliciesClientListAllPager.NextPage` has been removed
+- Function `*ExpressRouteCircuitAuthorizationsClientListPager.Err` has been removed
+- Function `*DscpConfigurationClientDeletePoller.FinalResponse` has been removed
+- Function `*ApplicationGatewayPrivateLinkResourcesClientListPager.Err` has been removed
+- Function `*ConnectionMonitorsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `ApplicationGatewayCookieBasedAffinity.ToPtr` has been removed
+- Function `*WatchersClientGetTroubleshootingPoller.FinalResponse` has been removed
+- Function `*LocalNetworkGatewaysClientListPager.Err` has been removed
+- Function `SecurityRuleDirection.ToPtr` has been removed
+- Function `*ProfilesClientListAllPager.NextPage` has been removed
+- Function `*InterfacesClientGetEffectiveRouteTablePoller.FinalResponse` has been removed
+- Function `*NatGatewaysClientListAllPager.PageResponse` has been removed
+- Function `*DdosProtectionPlansClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*InterfacesClientListCloudServiceNetworkInterfacesPager.Err` has been removed
+- Function `*FlowLogsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*InterfacesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VirtualRouterPeeringsClientDeletePollerResponse.Resume` has been removed
+- Function `*VPNSitesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*IPAllocationsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ProfilesClientListAllPager.PageResponse` has been removed
+- Function `*PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupPollerResponse.Resume` has been removed
+- Function `*VirtualRoutersClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ApplicationGatewayPrivateEndpointConnectionsClientUpdatePoller.ResumeToken` has been removed
+- Function `VPNNatRuleMode.ToPtr` has been removed
+- Function `*VirtualWansClientDeletePollerResponse.Resume` has been removed
+- Function `*RouteFiltersClientDeletePoller.Done` has been removed
+- Function `ApplicationGatewaysClientBackendHealthOnDemandPollerResponse.PollUntilDone` has been removed
+- Function `*VPNSitesConfigurationClientDownloadPoller.ResumeToken` has been removed
+- Function `IPSecEncryption.ToPtr` has been removed
+- Function `*ProfilesClientDeletePoller.FinalResponse` has been removed
+- Function `*IPAllocationsClientDeletePoller.Poll` has been removed
+- Function `PrivateLinkServicesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*InterfacesClientListVirtualMachineScaleSetNetworkInterfacesPager.NextPage` has been removed
+- Function `IPVersion.ToPtr` has been removed
+- Function `*VirtualNetworkGatewaysClientGetLearnedRoutesPollerResponse.Resume` has been removed
+- Function `*InterfaceTapConfigurationsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ApplicationGatewaysClientBackendHealthOnDemandPollerResponse.Resume` has been removed
+- Function `*WebApplicationFirewallPoliciesClientListAllPager.PageResponse` has been removed
+- Function `*RoutingIntentClientListPager.PageResponse` has been removed
+- Function `*WatchersClientGetTroubleshootingResultPoller.ResumeToken` has been removed
+- Function `*VPNGatewaysClientListByResourceGroupPager.Err` has been removed
+- Function `*VirtualHubIPConfigurationClientCreateOrUpdatePoller.Done` has been removed
+- Function `BgpPeerState.ToPtr` has been removed
+- Function `*IPAllocationsClientListByResourceGroupPager.Err` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientDeletePoller.Poll` has been removed
+- Function `*WatchersClientGetNetworkConfigurationDiagnosticPoller.Poll` has been removed
+- Function `*LoadBalancerBackendAddressPoolsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `DscpConfigurationClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `HubVirtualNetworkConnectionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PacketCapturesClientGetStatusPoller.FinalResponse` has been removed
+- Function `*AzureFirewallsClientUpdateTagsPoller.FinalResponse` has been removed
+- Function `*DdosProtectionPlansClientDeletePoller.FinalResponse` has been removed
+- Function `*AvailableResourceGroupDelegationsClientListPager.Err` has been removed
+- Function `*P2SVPNGatewaysClientUpdateTagsPoller.Poll` has been removed
+- Function `*PrivateLinkServicesClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*P2SVPNGatewaysClientUpdateTagsPoller.Done` has been removed
+- Function `*VirtualNetworkGatewaysClientGetVpnclientConnectionHealthPoller.Done` has been removed
+- Function `*ExpressRouteCircuitsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VPNLinkConnectionsClientGetIkeSasPoller.Done` has been removed
+- Function `DeleteOptions.ToPtr` has been removed
+- Function `*ExpressRouteCircuitAuthorizationsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*InterfaceTapConfigurationsClientDeletePollerResponse.Resume` has been removed
+- Function `*VPNConnectionsClientDeletePoller.Poll` has been removed
+- Function `*ApplicationGatewayPrivateLinkResourcesClientListPager.NextPage` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientSetSharedKeyPoller.FinalResponse` has been removed
+- Function `*HubVirtualNetworkConnectionsClientDeletePoller.Poll` has been removed
+- Function `*ExpressRouteGatewaysClientCreateOrUpdatePoller.Done` has been removed
+- Function `*RouteFilterRulesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualNetworksClientListPager.Err` has been removed
+- Function `*RouteFiltersClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ManagementClientGetActiveSessionsPoller.Poll` has been removed
+- Function `*PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesPager.PageResponse` has been removed
+- Function `*ExpressRouteConnectionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*WatchersClientGetAzureReachabilityReportPoller.Poll` has been removed
+- Function `ExpressRoutePeeringType.ToPtr` has been removed
+- Function `AzureFirewallApplicationRuleProtocolType.ToPtr` has been removed
+- Function `ManagementClientDeleteBastionShareableLinkPollerResponse.PollUntilDone` has been removed
+- Function `HubRouteTablesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*WatchersClientGetTroubleshootingPoller.Done` has been removed
+- Function `*AvailableEndpointServicesClientListPager.PageResponse` has been removed
+- Function `*WebCategoriesClientListBySubscriptionPager.Err` has been removed
+- Function `*PublicIPAddressesClientListCloudServicePublicIPAddressesPager.NextPage` has been removed
+- Function `ExpressRouteConnectionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualNetworkGatewayNatRulesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*P2SVPNGatewaysClientGenerateVPNProfilePoller.FinalResponse` has been removed
+- Function `*BgpServiceCommunitiesClientListPager.Err` has been removed
+- Function `*VPNConnectionsClientStartPacketCapturePoller.Poll` has been removed
+- Function `*ManagementClientPutBastionShareableLinkPoller.Poll` has been removed
+- Function `*ExpressRouteCircuitAuthorizationsClientListPager.NextPage` has been removed
+- Function `LoadBalancersClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VPNGatewaysClientStartPacketCapturePollerResponse.Resume` has been removed
+- Function `VirtualNetworkGatewayConnectionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualHubIPConfigurationClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ExpressRoutePortsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*LoadBalancerBackendAddressPoolsClientListPager.NextPage` has been removed
+- Function `*InterfaceTapConfigurationsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*FirewallPolicyRuleCollectionGroupsClientListPager.PageResponse` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ServiceEndpointPolicyDefinitionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `ExpressRouteLinkAdminState.ToPtr` has been removed
+- Function `PublicIPPrefixSKUTier.ToPtr` has been removed
+- Function `*ApplicationGatewaysClientBackendHealthOnDemandPoller.Poll` has been removed
+- Function `PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupPollerResponse.PollUntilDone` has been removed
+- Function `*ExpressRoutePortsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*SubnetsClientPrepareNetworkPoliciesPoller.Done` has been removed
+- Function `PreferredIPVersion.ToPtr` has been removed
+- Function `*WatchersClientGetNetworkConfigurationDiagnosticPollerResponse.Resume` has been removed
+- Function `*LoadBalancerOutboundRulesClientListPager.PageResponse` has been removed
+- Function `SecurityRuleProtocol.ToPtr` has been removed
+- Function `*ExpressRouteConnectionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*LocalNetworkGatewaysClientDeletePoller.Done` has been removed
+- Function `*CustomIPPrefixesClientDeletePoller.Poll` has been removed
+- Function `*P2SVPNGatewaysClientGenerateVPNProfilePoller.ResumeToken` has been removed
+- Function `P2SVPNGatewaysClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualHubsClientGetEffectiveVirtualHubRoutesPollerResponse.Resume` has been removed
+- Function `*ApplicationGatewayPrivateEndpointConnectionsClientUpdatePollerResponse.Resume` has been removed
+- Function `FlowLogsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PublicIPPrefixesClientDeletePoller.ResumeToken` has been removed
+- Function `*VPNServerConfigurationsClientListPager.NextPage` has been removed
+- Function `ProfilesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `EndpointType.ToPtr` has been removed
+- Function `*InterfacesClientListEffectiveNetworkSecurityGroupsPoller.Done` has been removed
+- Function `*ExpressRouteCrossConnectionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesPager.PageResponse` has been removed
+- Function `*InterfacesClientListVirtualMachineScaleSetNetworkInterfacesPager.Err` has been removed
+- Function `*VirtualNetworkPeeringsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `VirtualHubsClientGetEffectiveVirtualHubRoutesPollerResponse.PollUntilDone` has been removed
+- Function `WatchersClientGetVMSecurityRulesPollerResponse.PollUntilDone` has been removed
+- Function `*NatRulesClientCreateOrUpdatePoller.Done` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `*VPNServerConfigurationsClientListPager.Err` has been removed
+- Function `*ExpressRouteCircuitsClientListArpTablePoller.Done` has been removed
+- Function `VPNServerConfigurationsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualNetworkPeeringsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VirtualNetworkGatewaysClientGetVpnclientIPSecParametersPollerResponse.Resume` has been removed
+- Function `*ServiceEndpointPoliciesClientListPager.PageResponse` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientStartPacketCapturePoller.FinalResponse` has been removed
+- Function `*VirtualHubsClientCreateOrUpdatePoller.Done` has been removed
+- Function `ConnectionMonitorsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `WebApplicationFirewallEnabledState.ToPtr` has been removed
+- Function `ExpressRouteCircuitsClientListRoutesTablePollerResponse.PollUntilDone` has been removed
+- Function `*SecurityGroupsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VPNConnectionsClientStartPacketCapturePoller.ResumeToken` has been removed
+- Function `*SecurityGroupsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*PrivateLinkServicesClientDeletePoller.ResumeToken` has been removed
+- Function `*VirtualNetworksClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*AzureFirewallFqdnTagsClientListAllPager.Err` has been removed
+- Function `*VirtualNetworkTapsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*VPNServerConfigurationsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*VirtualNetworkGatewaysClientGetVpnclientConnectionHealthPoller.Poll` has been removed
+- Function `*ConnectionMonitorsClientStartPoller.Poll` has been removed
+- Function `*P2SVPNGatewaysClientGetP2SVPNConnectionHealthDetailedPoller.FinalResponse` has been removed
+- Function `*P2SVPNGatewaysClientDisconnectP2SVPNConnectionsPollerResponse.Resume` has been removed
+- Function `*VirtualWansClientListPager.PageResponse` has been removed
+- Function `*VPNSitesConfigurationClientDownloadPoller.Poll` has been removed
+- Function `*FlowLogsClientDeletePoller.ResumeToken` has been removed
+- Function `*VPNSiteLinksClientListByVPNSitePager.Err` has been removed
+- Function `*VirtualRouterPeeringsClientCreateOrUpdatePoller.Done` has been removed
+- Function `VirtualNetworkTapsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ManagementClientPutBastionShareableLinkPoller.ResumeToken` has been removed
+- Function `*InterfaceTapConfigurationsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualNetworkGatewaysClientGenerateVPNProfilePoller.ResumeToken` has been removed
+- Function `*AvailablePrivateEndpointTypesClientListPager.NextPage` has been removed
+- Function `PrivateDNSZoneGroupsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `VirtualApplianceSitesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*InterfaceTapConfigurationsClientListPager.NextPage` has been removed
+- Function `*SecurityPartnerProvidersClientDeletePoller.Poll` has been removed
+- Function `SecurityPartnerProviderConnectionStatus.ToPtr` has been removed
+- Function `*DscpConfigurationClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*IPGroupsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*AvailableServiceAliasesClientListPager.Err` has been removed
+- Function `*ManagementClientPutBastionShareableLinkPager.NextPage` has been removed
+- Function `*VirtualNetworkGatewaysClientGetVpnclientIPSecParametersPoller.Poll` has been removed
+- Function `P2SVPNGatewaysClientGetP2SVPNConnectionHealthDetailedPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualNetworkGatewaysClientDisconnectVirtualNetworkGatewayVPNConnectionsPoller.Poll` has been removed
+- Function `*PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesPager.NextPage` has been removed
+- Function `VirtualHubsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualRouterPeeringsClientDeletePoller.ResumeToken` has been removed
+- Function `*VirtualHubIPConfigurationClientDeletePoller.Poll` has been removed
+- Function `IPGroupsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*LoadBalancerNetworkInterfacesClientListPager.Err` has been removed
+- Function `*AvailableDelegationsClientListPager.NextPage` has been removed
+- Function `*ExpressRouteCrossConnectionsClientListRoutesTableSummaryPoller.ResumeToken` has been removed
+- Function `*LoadBalancersClientListInboundNatRulePortMappingsPoller.FinalResponse` has been removed
+- Function `*IPGroupsClientListByResourceGroupPager.Err` has been removed
+- Function `*HubRouteTablesClientDeletePoller.Poll` has been removed
+- Function `*ServiceEndpointPolicyDefinitionsClientListByResourceGroupPager.NextPage` has been removed
+- Function `VirtualNetworkGatewaysClientGetAdvertisedRoutesPollerResponse.PollUntilDone` has been removed
+- Function `*P2SVPNGatewaysClientGetP2SVPNConnectionHealthDetailedPoller.ResumeToken` has been removed
+- Function `*LoadBalancersClientListInboundNatRulePortMappingsPollerResponse.Resume` has been removed
+- Function `VPNServerConfigurationsAssociatedWithVirtualWanClientListPollerResponse.PollUntilDone` has been removed
+- Function `*VPNSiteLinksClientListByVPNSitePager.NextPage` has been removed
+- Function `VirtualNetworkGatewaysClientGeneratevpnclientpackagePollerResponse.PollUntilDone` has been removed
+- Function `ConnectionMonitorsClientStopPollerResponse.PollUntilDone` has been removed
+- Function `WatchersClientSetFlowLogConfigurationPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualHubBgpConnectionClientDeletePollerResponse.Resume` has been removed
+- Function `*ExpressRouteCrossConnectionPeeringsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ApplicationGatewayPrivateEndpointConnectionsClientDeletePoller.Done` has been removed
+- Function `*RoutesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `RouteNextHopType.ToPtr` has been removed
+- Function `*DdosCustomPoliciesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualNetworkGatewaysClientUpdateTagsPoller.Done` has been removed
+- Function `*VirtualAppliancesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `RoutingIntentClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ServiceEndpointPolicyDefinitionsClientDeletePollerResponse.Resume` has been removed
+- Function `*SubnetsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ServiceEndpointPolicyDefinitionsClientDeletePoller.FinalResponse` has been removed
+- Function `ProbeProtocol.ToPtr` has been removed
+- Function `*IPGroupsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `PublicIPAddressSKUName.ToPtr` has been removed
+- Function `*VirtualNetworksClientListPager.PageResponse` has been removed
+- Function `*PublicIPAddressesClientListPager.NextPage` has been removed
+- Function `*VPNConnectionsClientListByVPNGatewayPager.Err` has been removed
+- Function `*SubnetsClientDeletePollerResponse.Resume` has been removed
+- Function `*ExpressRouteCrossConnectionsClientListPager.Err` has been removed
+- Function `*BastionHostsClientDeletePoller.ResumeToken` has been removed
+- Function `BastionHostsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VPNSitesClientDeletePollerResponse.Resume` has been removed
+- Function `*VPNServerConfigurationsClientDeletePoller.Poll` has been removed
+- Function `*P2SVPNGatewaysClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientDeletePoller.Done` has been removed
+- Function `*VPNGatewaysClientUpdateTagsPoller.Poll` has been removed
+- Function `*RoutingIntentClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualHubBgpConnectionsClientListPager.NextPage` has been removed
+- Function `*LoadBalancersClientDeletePoller.Poll` has been removed
+- Function `*VirtualHubBgpConnectionClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*LoadBalancerProbesClientListPager.NextPage` has been removed
+- Function `*WebApplicationFirewallPoliciesClientListAllPager.Err` has been removed
+- Function `*NatGatewaysClientDeletePoller.FinalResponse` has been removed
+- Function `VirtualWansClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VPNServerConfigurationsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `FirewallPolicyRuleCollectionGroupsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*P2SVPNGatewaysClientGetP2SVPNConnectionHealthPoller.FinalResponse` has been removed
+- Function `*DscpConfigurationClientDeletePollerResponse.Resume` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientStopPacketCapturePoller.FinalResponse` has been removed
+- Function `*ExpressRouteCrossConnectionsClientListRoutesTableSummaryPoller.FinalResponse` has been removed
+- Function `*VirtualNetworksClientDeletePoller.ResumeToken` has been removed
+- Function `*P2SVPNGatewaysClientGetP2SVPNConnectionHealthDetailedPollerResponse.Resume` has been removed
+- Function `ApplicationGatewaysClientBackendHealthPollerResponse.PollUntilDone` has been removed
+- Function `*BastionHostsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*VPNGatewaysClientUpdateTagsPollerResponse.Resume` has been removed
+- Function `*WebApplicationFirewallPoliciesClientListPager.Err` has been removed
+- Function `*VirtualNetworkGatewaysClientGetBgpPeerStatusPoller.FinalResponse` has been removed
+- Function `*VirtualNetworkGatewaysClientGenerateVPNProfilePoller.Done` has been removed
+- Function `*VirtualAppliancesClientListPager.NextPage` has been removed
+- Function `*VirtualNetworkGatewaysClientDeletePoller.Done` has been removed
+- Function `ExpressRouteCrossConnectionsClientListRoutesTablePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateDNSZoneGroupsClientDeletePoller.Poll` has been removed
+- Function `*InterfacesClientListEffectiveNetworkSecurityGroupsPoller.FinalResponse` has been removed
+- Function `*FlowLogsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*WatchersClientVerifyIPFlowPoller.FinalResponse` has been removed
+- Function `FirewallPoliciesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ApplicationGatewaysClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityPollerResponse.PollUntilDone` has been removed
+- Function `*NatRulesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*FirewallPoliciesClientListAllPager.NextPage` has been removed
+- Function `*VirtualNetworkPeeringsClientDeletePoller.Poll` has been removed
+- Function `*VirtualHubsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*ApplicationGatewaysClientStopPoller.Done` has been removed
+- Function `*ManagementClientPutBastionShareableLinkPoller.Done` has been removed
+- Function `WatchersClientGetNextHopPollerResponse.PollUntilDone` has been removed
+- Function `*SecurityRulesClientDeletePoller.Poll` has been removed
+- Function `*SecurityRulesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*IPGroupsClientDeletePoller.FinalResponse` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*VirtualAppliancesClientDeletePoller.FinalResponse` has been removed
+- Function `ApplicationGatewaySSLPolicyName.ToPtr` has been removed
+- Function `*WatchersClientGetTroubleshootingResultPollerResponse.Resume` has been removed
+- Function `*NatRulesClientDeletePollerResponse.Resume` has been removed
+- Function `*DscpConfigurationClientDeletePoller.ResumeToken` has been removed
+- Function `*PublicIPPrefixesClientListPager.Err` has been removed
+- Function `*NatRulesClientListByVPNGatewayPager.PageResponse` has been removed
+- Function `*ApplicationGatewaysClientBackendHealthPoller.Poll` has been removed
+- Function `*PrivateDNSZoneGroupsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*WatchersClientGetFlowLogStatusPoller.FinalResponse` has been removed
+- Function `*VPNServerConfigurationsClientListByResourceGroupPager.Err` has been removed
+- Function `*ApplicationGatewaysClientBackendHealthPoller.FinalResponse` has been removed
+- Function `NatRulesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*LoadBalancerLoadBalancingRulesClientListPager.Err` has been removed
+- Function `*SubnetsClientPrepareNetworkPoliciesPoller.ResumeToken` has been removed
+- Function `*SubnetsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualNetworkPeeringsClientDeletePoller.Done` has been removed
+- Function `*BastionHostsClientUpdateTagsPollerResponse.Resume` has been removed
+- Function `*VPNServerConfigurationsClientListPager.PageResponse` has been removed
+- Function `*HubRouteTablesClientCreateOrUpdatePoller.Done` has been removed
+- Function `VPNConnectionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ExtendedLocationTypes.ToPtr` has been removed
+- Function `*RouteFilterRulesClientListByRouteFilterPager.NextPage` has been removed
+- Function `*DscpConfigurationClientListAllPager.PageResponse` has been removed
+- Function `PublicIPAddressesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PacketCapturesClientGetStatusPoller.Poll` has been removed
+- Function `ConnectionStatus.ToPtr` has been removed
+- Function `*PublicIPAddressesClientDeletePoller.ResumeToken` has been removed
+- Function `*NatRulesClientDeletePoller.FinalResponse` has been removed
+- Function `VirtualHubIPConfigurationClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*LoadBalancersClientSwapPublicIPAddressesPoller.Poll` has been removed
+- Function `*VirtualNetworkGatewaysClientDeletePoller.Poll` has been removed
+- Function `*IPAllocationsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ExpressRouteGatewaysClientUpdateTagsPoller.ResumeToken` has been removed
+- Function `*ConnectionMonitorsClientQueryPoller.FinalResponse` has been removed
+- Function `AzureFirewallsClientUpdateTagsPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualNetworkGatewayNatRulesClientDeletePoller.Poll` has been removed
+- Function `*VirtualNetworkGatewaysClientDisconnectVirtualNetworkGatewayVPNConnectionsPollerResponse.Resume` has been removed
+- Function `*FirewallPoliciesClientDeletePoller.FinalResponse` has been removed
+- Function `*WatchersClientDeletePoller.ResumeToken` has been removed
+- Function `*InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesPager.PageResponse` has been removed
+- Function `*VPNConnectionsClientListByVPNGatewayPager.PageResponse` has been removed
+- Function `*ExpressRouteCircuitsClientListAllPager.NextPage` has been removed
+- Function `*FirewallPolicyRuleCollectionGroupsClientDeletePoller.ResumeToken` has been removed
+- Function `*ExpressRouteCircuitAuthorizationsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientSetSharedKeyPollerResponse.Resume` has been removed
+- Function `VPNGatewayTunnelingProtocol.ToPtr` has been removed
+- Function `*WatchersClientListAvailableProvidersPoller.Poll` has been removed
+- Function `*RouteTablesClientCreateOrUpdatePoller.Done` has been removed
+- Function `InterfacesClientGetEffectiveRouteTablePollerResponse.PollUntilDone` has been removed
+- Function `*P2SVPNGatewaysClientListPager.Err` has been removed
+- Function `LoadBalancerBackendAddressPoolsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualNetworkGatewaysClientListPager.Err` has been removed
+- Function `*VirtualNetworkTapsClientDeletePoller.Done` has been removed
+- Function `*VirtualNetworkGatewaysClientResetPollerResponse.Resume` has been removed
+- Function `*VirtualWansClientDeletePoller.Poll` has been removed
+- Function `VPNGatewaysClientUpdateTagsPollerResponse.PollUntilDone` has been removed
+- Function `*PacketCapturesClientDeletePollerResponse.Resume` has been removed
+- Function `FirewallPoliciesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*FlowLogsClientCreateOrUpdatePoller.Done` has been removed
+- Function `Severity.ToPtr` has been removed
+- Function `VirtualNetworkGatewaysClientGenerateVPNProfilePollerResponse.PollUntilDone` has been removed
+- Function `*VPNSitesClientDeletePoller.ResumeToken` has been removed
+- Function `VirtualNetworkGatewaysClientUpdateTagsPollerResponse.PollUntilDone` has been removed
+- Function `*WatchersClientGetVMSecurityRulesPoller.ResumeToken` has been removed
+- Function `*PublicIPAddressesClientDeletePoller.FinalResponse` has been removed
+- Function `*VirtualNetworkGatewaysClientResetPoller.ResumeToken` has been removed
+- Function `*WatchersClientVerifyIPFlowPoller.Done` has been removed
+- Function `*ExpressRouteCrossConnectionsClientListArpTablePoller.FinalResponse` has been removed
+- Function `IPAllocationType.ToPtr` has been removed
+- Function `*PacketCapturesClientStopPoller.Done` has been removed
+- Function `*ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofilePollerResponse.Resume` has been removed
+- Function `*VPNGatewaysClientStartPacketCapturePoller.Done` has been removed
+- Function `*VirtualNetworkGatewaysClientResetPoller.FinalResponse` has been removed
+- Function `*LoadBalancersClientSwapPublicIPAddressesPoller.ResumeToken` has been removed
+- Function `*VirtualNetworkGatewaysClientGetBgpPeerStatusPollerResponse.Resume` has been removed
+- Function `*LocalNetworkGatewaysClientListPager.PageResponse` has been removed
+- Function `*P2SVPNGatewaysClientGenerateVPNProfilePollerResponse.Resume` has been removed
+- Function `*VPNConnectionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*LoadBalancerFrontendIPConfigurationsClientListPager.PageResponse` has been removed
+- Function `*SubnetsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VPNLinkConnectionsClientListByVPNConnectionPager.PageResponse` has been removed
+- Function `*ProfilesClientDeletePollerResponse.Resume` has been removed
+- Function `*PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupPoller.Done` has been removed
+- Function `SubnetsClientUnprepareNetworkPoliciesPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualAppliancesClientDeletePoller.ResumeToken` has been removed
+- Function `NatRulesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualApplianceSitesClientListPager.NextPage` has been removed
+- Function `*PrivateDNSZoneGroupsClientCreateOrUpdatePoller.Done` has been removed
+- Function `VPNConnectionsClientStopPacketCapturePollerResponse.PollUntilDone` has been removed
+- Function `*AzureFirewallsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*SecurityRulesClientListPager.NextPage` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*VPNLinkConnectionsClientGetIkeSasPollerResponse.Resume` has been removed
+- Function `*BastionHostsClientUpdateTagsPoller.Done` has been removed
+- Function `*CustomIPPrefixesClientDeletePoller.FinalResponse` has been removed
+- Function `*RouteTablesClientDeletePoller.Poll` has been removed
+- Function `*ApplicationGatewayPrivateEndpointConnectionsClientListPager.PageResponse` has been removed
+- Function `*ExpressRouteLinksClientListPager.Err` has been removed
+- Function `*DdosProtectionPlansClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityPoller.FinalResponse` has been removed
+- Function `VirtualNetworkGatewayConnectionsClientResetSharedKeyPollerResponse.PollUntilDone` has been removed
+- Function `*ProfilesClientListPager.Err` has been removed
+- Function `*VPNGatewaysClientStopPacketCapturePoller.FinalResponse` has been removed
+- Function `*ManagementClientDisconnectActiveSessionsPager.PageResponse` has been removed
+- Function `*UsagesClientListPager.Err` has been removed
+- Function `*ExpressRouteCircuitsClientListRoutesTableSummaryPoller.FinalResponse` has been removed
+- Function `PublicIPPrefixSKUName.ToPtr` has been removed
+- Function `*WatchersClientGetTroubleshootingResultPoller.Poll` has been removed
+- Function `*DscpConfigurationClientCreateOrUpdatePoller.Poll` has been removed
+- Function `SyncRemoteAddressSpace.ToPtr` has been removed
+- Function `*VirtualNetworkGatewaysClientGetVpnclientConnectionHealthPoller.FinalResponse` has been removed
+- Function `*ExpressRoutePortsClientListByResourceGroupPager.Err` has been removed
+- Function `PcStatus.ToPtr` has been removed
+- Function `*WebApplicationFirewallPoliciesClientDeletePoller.Done` has been removed
+- Function `*WatchersClientCheckConnectivityPoller.ResumeToken` has been removed
+- Function `*VirtualNetworkGatewaysClientGetLearnedRoutesPoller.ResumeToken` has been removed
+- Function `*VPNConnectionsClientStopPacketCapturePoller.ResumeToken` has been removed
+- Function `*VirtualNetworksClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*InboundNatRulesClientDeletePoller.Poll` has been removed
+- Function `*P2SVPNGatewaysClientDisconnectP2SVPNConnectionsPoller.Done` has been removed
+- Function `*InterfacesClientListCloudServiceNetworkInterfacesPager.PageResponse` has been removed
+- Function `*DscpConfigurationClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupPoller.FinalResponse` has been removed
+- Function `*FlowLogsClientListPager.NextPage` has been removed
+- Function `*NatRulesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*PublicIPPrefixesClientListAllPager.NextPage` has been removed
+- Function `*VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayPager.PageResponse` has been removed
+- Function `*ExpressRouteCircuitAuthorizationsClientDeletePoller.ResumeToken` has been removed
+- Function `*InboundNatRulesClientDeletePollerResponse.Resume` has been removed
+- Function `*VirtualApplianceSitesClientDeletePoller.FinalResponse` has been removed
+- Function `*PrivateLinkServicesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*LoadBalancerNetworkInterfacesClientListPager.PageResponse` has been removed
+- Function `*ExpressRouteServiceProvidersClientListPager.PageResponse` has been removed
+- Function `*ApplicationGatewaysClientListPager.PageResponse` has been removed
+- Function `*BastionHostsClientDeletePollerResponse.Resume` has been removed
+- Function `*ConnectionMonitorsClientQueryPoller.Done` has been removed
+- Function `*FirewallPoliciesClientDeletePoller.Poll` has been removed
+- Function `*InboundNatRulesClientListPager.NextPage` has been removed
+- Function `*AzureFirewallsClientCreateOrUpdatePoller.Done` has been removed
+- Function `VirtualWansClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `AzureFirewallsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*DdosCustomPoliciesClientDeletePollerResponse.Resume` has been removed
+- Function `*SecurityPartnerProvidersClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ConnectionMonitorsClientStopPoller.Poll` has been removed
+- Function `*ExpressRouteCrossConnectionsClientListRoutesTableSummaryPollerResponse.Resume` has been removed
+- Function `*InboundSecurityRuleClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `VPNConnectionsClientStartPacketCapturePollerResponse.PollUntilDone` has been removed
+- Function `*PublicIPPrefixesClientListAllPager.Err` has been removed
+- Function `NatGatewaysClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*RouteTablesClientListAllPager.NextPage` has been removed
+- Function `*SecurityPartnerProvidersClientListByResourceGroupPager.Err` has been removed
+- Function `*VirtualNetworkGatewaysClientDisconnectVirtualNetworkGatewayVPNConnectionsPoller.Done` has been removed
+- Function `FlowLogFormatType.ToPtr` has been removed
+- Function `*LoadBalancerOutboundRulesClientListPager.Err` has been removed
+- Function `*PrivateDNSZoneGroupsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ExpressRouteConnectionsClientDeletePoller.Done` has been removed
+- Function `*BastionHostsClientDeletePoller.Done` has been removed
+- Function `*VPNGatewaysClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ServiceEndpointPoliciesClientListByResourceGroupPager.NextPage` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientGetIkeSasPoller.ResumeToken` has been removed
+- Function `ApplicationGatewaysClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `PacketCapturesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ExpressRouteCircuitConnectionsClientListPager.PageResponse` has been removed
+- Function `*VirtualApplianceSitesClientDeletePoller.ResumeToken` has been removed
+- Function `*AzureFirewallsClientListAllPager.NextPage` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientStartPacketCapturePoller.Poll` has been removed
+- Function `*PublicIPAddressesClientDeletePoller.Poll` has been removed
+- Function `*VPNConnectionsClientStopPacketCapturePoller.Done` has been removed
+- Function `InboundNatRulesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `SecurityRulesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `VirtualNetworkGatewaysClientResetVPNClientSharedKeyPollerResponse.PollUntilDone` has been removed
+- Function `*PacketCapturesClientStopPollerResponse.Resume` has been removed
+- Function `EffectiveSecurityRuleProtocol.ToPtr` has been removed
+- Function `*SecurityPartnerProvidersClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualNetworkGatewaysClientGetBgpPeerStatusPoller.ResumeToken` has been removed
+- Function `*VirtualNetworksClientCreateOrUpdatePoller.Done` has been removed
+- Function `*BastionHostsClientUpdateTagsPoller.Poll` has been removed
+- Function `*ConnectionMonitorsClientStartPoller.Done` has been removed
+- Function `*VirtualHubsClientListPager.NextPage` has been removed
+- Function `*VirtualNetworkGatewaysClientStopPacketCapturePollerResponse.Resume` has been removed
+- Function `*ApplicationGatewayPrivateLinkResourcesClientListPager.PageResponse` has been removed
+- Function `*ExpressRouteCrossConnectionPeeringsClientListPager.NextPage` has been removed
+- Function `*ExpressRouteCircuitPeeringsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*InterfacesClientListEffectiveNetworkSecurityGroupsPoller.Poll` has been removed
+- Function `*DefaultSecurityRulesClientListPager.Err` has been removed
+- Function `*VPNLinkConnectionsClientGetIkeSasPoller.FinalResponse` has been removed
+- Function `*VirtualNetworkGatewaysClientListPager.NextPage` has been removed
+- Function `*RoutesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*RoutingIntentClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*BastionHostsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*AzureFirewallsClientUpdateTagsPoller.ResumeToken` has been removed
+- Function `*PrivateLinkServicesClientDeletePrivateEndpointConnectionPoller.FinalResponse` has been removed
+- Function `*LoadBalancersClientListInboundNatRulePortMappingsPoller.ResumeToken` has been removed
+- Function `*VPNGatewaysClientDeletePollerResponse.Resume` has been removed
+- Function `*ExpressRouteConnectionsClientDeletePoller.ResumeToken` has been removed
+- Function `SingleQueryResultDirection.ToPtr` has been removed
+- Function `*AzureFirewallsClientListAllPager.Err` has been removed
+- Function `*VPNServerConfigurationsAssociatedWithVirtualWanClientListPoller.Done` has been removed
+- Function `HubVirtualNetworkConnectionStatus.ToPtr` has been removed
+- Function `*VirtualHubsClientListByResourceGroupPager.Err` has been removed
+- Function `*FirewallPoliciesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualNetworksClientListUsagePager.PageResponse` has been removed
+- Function `*PublicIPAddressesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `WebApplicationFirewallOperator.ToPtr` has been removed
+- Function `DdosCustomPoliciesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `Origin.ToPtr` has been removed
+- Function `*DscpConfigurationClientListAllPager.Err` has been removed
+- Function `*VirtualHubBgpConnectionsClientListLearnedRoutesPoller.Poll` has been removed
+- Function `*HubRouteTablesClientListPager.PageResponse` has been removed
+- Function `*HubVirtualNetworkConnectionsClientDeletePoller.Done` has been removed
+- Function `*ExpressRouteGatewaysClientDeletePoller.Done` has been removed
+- Function `*RoutesClientListPager.NextPage` has been removed
+- Function `*SecurityRulesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*WatchersClientCheckConnectivityPoller.Poll` has been removed
+- Function `*DdosProtectionPlansClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `VirtualWanSecurityProviderType.ToPtr` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientResetConnectionPollerResponse.Resume` has been removed
+- Function `*ApplicationGatewaysClientStartPollerResponse.Resume` has been removed
+- Function `*VirtualNetworkGatewaysClientResetPoller.Done` has been removed
+- Function `*VPNServerConfigurationsClientDeletePollerResponse.Resume` has been removed
+- Function `*ExpressRouteCircuitConnectionsClientDeletePoller.Done` has been removed
+- Function `*VirtualNetworksClientListUsagePager.Err` has been removed
+- Function `*P2SVPNGatewaysClientDeletePoller.Done` has been removed
+- Function `VirtualNetworkGatewaysClientResetPollerResponse.PollUntilDone` has been removed
+- Function `VirtualNetworkGatewaysClientSetVpnclientIPSecParametersPollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointsClientDeletePollerResponse.Resume` has been removed
+- Function `*NatGatewaysClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ServiceEndpointPoliciesClientDeletePoller.ResumeToken` has been removed
+- Function `VirtualNetworkTapsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*FirewallPoliciesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*SecurityGroupsClientListPager.PageResponse` has been removed
+- Function `BastionHostsClientUpdateTagsPollerResponse.PollUntilDone` has been removed
+- Function `*ManagementClientDisconnectActiveSessionsPager.Err` has been removed
+- Function `*VirtualRoutersClientCreateOrUpdatePoller.Done` has been removed
+- Function `*PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityPollerResponse.Resume` has been removed
+- Function `*AvailablePrivateEndpointTypesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*VirtualNetworkGatewaysClientResetVPNClientSharedKeyPoller.ResumeToken` has been removed
+- Function `*ExpressRouteCircuitsClientListArpTablePoller.Poll` has been removed
+- Function `*ExpressRoutePortsClientDeletePoller.FinalResponse` has been removed
+- Function `ApplicationGatewayProtocol.ToPtr` has been removed
+- Function `*VirtualHubIPConfigurationClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*AvailablePrivateEndpointTypesClientListPager.PageResponse` has been removed
+- Function `FirewallPolicyRuleCollectionGroupsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `ExpressRouteCircuitsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*WatchersClientGetFlowLogStatusPoller.ResumeToken` has been removed
+- Function `*InterfacesClientDeletePoller.Poll` has been removed
+- Function `VPNClientProtocol.ToPtr` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientResetSharedKeyPoller.Done` has been removed
+- Function `*ExpressRouteServiceProvidersClientListPager.NextPage` has been removed
+- Function `*ExpressRouteCircuitsClientListAllPager.Err` has been removed
+- Function `*RouteTablesClientListAllPager.PageResponse` has been removed
+- Function `*LoadBalancerBackendAddressPoolsClientDeletePollerResponse.Resume` has been removed
+- Function `*RouteTablesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateLinkServicesClientDeletePrivateEndpointConnectionPoller.Poll` has been removed
+- Function `*LoadBalancersClientDeletePoller.FinalResponse` has been removed
+- Function `*ExpressRouteCrossConnectionsClientListRoutesTableSummaryPoller.Poll` has been removed
+- Function `*PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupPager.NextPage` has been removed
+- Function `*FirewallPoliciesClientListPager.Err` has been removed
+- Function `*VPNConnectionsClientStartPacketCapturePoller.Done` has been removed
+- Function `*VirtualHubBgpConnectionClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientGetIkeSasPoller.Poll` has been removed
+- Function `VirtualHubsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ExpressRouteCircuitPeeringsClientDeletePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VPNServerConfigurationsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*P2SVPNGatewaysClientListByResourceGroupPager.Err` has been removed
+- Function `*ExpressRouteCircuitsClientListRoutesTableSummaryPoller.Poll` has been removed
+- Function `*VirtualHubBgpConnectionClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `VirtualNetworkGatewayConnectionsClientResetConnectionPollerResponse.PollUntilDone` has been removed
+- Function `VirtualNetworkGatewayConnectionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualNetworkGatewaysClientGetAdvertisedRoutesPoller.ResumeToken` has been removed
+- Function `LoadBalancerOutboundRuleProtocol.ToPtr` has been removed
+- Function `*IPAllocationsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*VirtualNetworkGatewaysClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ApplicationGatewaysClientStopPoller.FinalResponse` has been removed
+- Function `*ServiceEndpointPolicyDefinitionsClientDeletePoller.Poll` has been removed
+- Function `*LoadBalancerProbesClientListPager.Err` has been removed
+- Function `*ExpressRouteCircuitConnectionsClientDeletePollerResponse.Resume` has been removed
+- Function `*ConnectionMonitorsClientDeletePoller.ResumeToken` has been removed
+- Function `*InterfacesClientDeletePoller.FinalResponse` has been removed
+- Function `*ExpressRouteCircuitsClientListArpTablePollerResponse.Resume` has been removed
+- Function `*VirtualNetworkGatewaysClientGeneratevpnclientpackagePoller.FinalResponse` has been removed
+- Function `*ExpressRouteCrossConnectionsClientListArpTablePoller.ResumeToken` has been removed
+- Function `IPSecIntegrity.ToPtr` has been removed
+- Function `PrivateDNSZoneGroupsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ApplicationGatewaySSLCipherSuite.ToPtr` has been removed
+- Function `*PrivateDNSZoneGroupsClientDeletePoller.ResumeToken` has been removed
+- Function `VirtualNetworkGatewaysClientGetBgpPeerStatusPollerResponse.PollUntilDone` has been removed
+- Function `*WatchersClientCheckConnectivityPoller.FinalResponse` has been removed
+- Function `*WatchersClientSetFlowLogConfigurationPoller.Done` has been removed
+- Function `*VirtualNetworkGatewaysClientGetBgpPeerStatusPoller.Done` has been removed
+- Function `*HubVirtualNetworkConnectionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VPNGatewaysClientUpdateTagsPoller.FinalResponse` has been removed
+- Function `*CustomIPPrefixesClientDeletePoller.ResumeToken` has been removed
+- Function `VirtualNetworkGatewaysClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*SecurityGroupsClientListPager.NextPage` has been removed
+- Function `*FirewallPolicyRuleCollectionGroupsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*DdosCustomPoliciesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `FirewallPolicyRuleNetworkProtocol.ToPtr` has been removed
+- Function `*SecurityRulesClientDeletePollerResponse.Resume` has been removed
+- Function `*ApplicationGatewaysClientDeletePollerResponse.Resume` has been removed
+- Function `*ExpressRouteCrossConnectionsClientListArpTablePoller.Done` has been removed
+- Function `*AzureFirewallsClientDeletePoller.Done` has been removed
+- Function `ExpressRouteCrossConnectionsClientListArpTablePollerResponse.PollUntilDone` has been removed
+- Function `*NatRulesClientDeletePoller.ResumeToken` has been removed
+- Function `ConnectionMonitorSourceStatus.ToPtr` has been removed
+- Function `*PrivateLinkServicesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*P2SVPNGatewaysClientUpdateTagsPoller.FinalResponse` has been removed
+- Function `*VirtualNetworkGatewaysClientSetVpnclientIPSecParametersPoller.FinalResponse` has been removed
+- Function `*ApplicationGatewaysClientBackendHealthOnDemandPoller.Done` has been removed
+- Function `DdosCustomPoliciesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AzureFirewallsClientUpdateTagsPoller.Done` has been removed
+- Function `*ServiceEndpointPoliciesClientDeletePoller.Poll` has been removed
+- Function `*ManagementClientGetActiveSessionsPager.Err` has been removed
+- Function `ExpressRouteCircuitAuthorizationsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AzureFirewallsClientUpdateTagsPoller.Poll` has been removed
+- Function `*CustomIPPrefixesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VPNSiteLinksClientListByVPNSitePager.PageResponse` has been removed
+- Function `*VirtualHubIPConfigurationClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PacketCapturesClientStopPoller.Poll` has been removed
+- Function `TransportProtocol.ToPtr` has been removed
+- Function `*VirtualNetworksClientDeletePollerResponse.Resume` has been removed
+- Function `DdosProtectionPlansClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*LocalNetworkGatewaysClientDeletePoller.FinalResponse` has been removed
+- Function `*ServiceEndpointPolicyDefinitionsClientDeletePoller.ResumeToken` has been removed
+- Function `*PrivateLinkServicesClientDeletePoller.Poll` has been removed
+- Function `*ApplicationSecurityGroupsClientDeletePoller.Done` has been removed
+- Function `*ExpressRouteCrossConnectionsClientListByResourceGroupPager.NextPage` has been removed
+- Function `SecurityRuleAccess.ToPtr` has been removed
+- Function `*PacketCapturesClientDeletePoller.ResumeToken` has been removed
+- Function `NetworkInterfaceMigrationPhase.ToPtr` has been removed
+- Function `*PacketCapturesClientCreatePoller.FinalResponse` has been removed
+- Function `VirtualHubRouteTableV2SClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ExpressRouteCrossConnectionPeeringsClientDeletePoller.Poll` has been removed
+- Function `DdosSettingsProtectionCoverage.ToPtr` has been removed
+- Function `VirtualNetworkGatewayConnectionsClientStopPacketCapturePollerResponse.PollUntilDone` has been removed
+- Function `*InterfacesClientListAllPager.Err` has been removed
+- Function `*SecurityPartnerProvidersClientDeletePoller.Done` has been removed
+- Function `WatchersClientGetAzureReachabilityReportPollerResponse.PollUntilDone` has been removed
+- Function `*DscpConfigurationClientCreateOrUpdatePoller.Done` has been removed
+- Function `*PrivateEndpointsClientListBySubscriptionPager.NextPage` has been removed
+- Function `*FirewallPoliciesClientListAllPager.PageResponse` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientListPager.Err` has been removed
+- Function `*CustomIPPrefixesClientListAllPager.Err` has been removed
+- Function `*NatGatewaysClientListPager.PageResponse` has been removed
+- Function `*NatRulesClientListByVPNGatewayPager.NextPage` has been removed
+- Function `*VirtualNetworkGatewaysClientGetVPNProfilePackageURLPollerResponse.Resume` has been removed
+- Function `ApplicationGatewayBackendHealthServerHealth.ToPtr` has been removed
+- Function `*ServiceEndpointPoliciesClientDeletePollerResponse.Resume` has been removed
+- Function `*WatchersClientGetAzureReachabilityReportPoller.ResumeToken` has been removed
+- Function `*FlowLogsClientDeletePollerResponse.Resume` has been removed
+- Function `*InterfacesClientListVirtualMachineScaleSetIPConfigurationsPager.PageResponse` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientUpdateTagsPoller.Poll` has been removed
+- Function `*VPNLinkConnectionsClientResetConnectionPoller.Poll` has been removed
+- Function `*LocalNetworkGatewaysClientListPager.NextPage` has been removed
+- Function `*FirewallPoliciesClientListPager.NextPage` has been removed
+- Function `*ApplicationSecurityGroupsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ExpressRouteCircuitAuthorizationsClientDeletePollerResponse.Resume` has been removed
+- Function `*LoadBalancersClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualAppliancesClientDeletePoller.Done` has been removed
+- Function `*RouteFiltersClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*PrivateLinkServicesClientListPager.PageResponse` has been removed
+- Function `*VirtualNetworkPeeringsClientDeletePollerResponse.Resume` has been removed
+- Function `*BastionHostsClientListPager.Err` has been removed
+- Function `*SecurityGroupsClientDeletePollerResponse.Resume` has been removed
+- Function `*FirewallPolicyRuleCollectionGroupsClientDeletePollerResponse.Resume` has been removed
+- Function `*ExpressRouteCircuitAuthorizationsClientDeletePoller.Done` has been removed
+- Function `*SecurityPartnerProvidersClientCreateOrUpdatePoller.Done` has been removed
+- Function `ExpressRouteLinkConnectorType.ToPtr` has been removed
+- Function `*ExpressRouteGatewaysClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `GatewayLoadBalancerTunnelProtocol.ToPtr` has been removed
+- Function `*DdosProtectionPlansClientListPager.PageResponse` has been removed
+- Function `*PrivateEndpointsClientDeletePoller.ResumeToken` has been removed
+- Function `*WatchersClientGetNetworkConfigurationDiagnosticPoller.ResumeToken` has been removed
+- Function `VirtualNetworkGatewayConnectionType.ToPtr` has been removed
+- Function `*RoutingIntentClientDeletePoller.ResumeToken` has been removed
+- Function `*LocalNetworkGatewaysClientDeletePoller.Poll` has been removed
+- Function `PublicIPAddressSKUTier.ToPtr` has been removed
+- Function `*ExpressRouteCrossConnectionPeeringsClientListPager.Err` has been removed
+- Function `VirtualNetworkGatewaysClientStopPacketCapturePollerResponse.PollUntilDone` has been removed
+- Function `*ExpressRouteLinksClientListPager.PageResponse` has been removed
+- Function `*InboundSecurityRuleClientCreateOrUpdatePoller.Done` has been removed
+- Function `*FirewallPolicyRuleCollectionGroupsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualHubRouteTableV2SClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualNetworkGatewaysClientGetLearnedRoutesPoller.Done` has been removed
+- Function `*DefaultSecurityRulesClientListPager.PageResponse` has been removed
+- Function `*RouteTablesClientListAllPager.Err` has been removed
+- Function `ApplicationSecurityGroupsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ApplicationGatewaysClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ConnectionMonitorsClientStartPollerResponse.Resume` has been removed
+- Function `*ExpressRoutePortsClientDeletePoller.Done` has been removed
+- Function `*PrivateEndpointsClientListPager.PageResponse` has been removed
+- Function `VirtualRouterPeeringsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SecurityGroupsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `VPNNatRuleType.ToPtr` has been removed
+- Function `VPNConnectionStatus.ToPtr` has been removed
+- Function `*VirtualNetworkGatewaysClientGetVpnclientIPSecParametersPoller.FinalResponse` has been removed
+- Function `WebApplicationFirewallAction.ToPtr` has been removed
+- Function `*LoadBalancersClientSwapPublicIPAddressesPollerResponse.Resume` has been removed
+- Function `RouteFilterRulesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientSetSharedKeyPoller.ResumeToken` has been removed
+- Function `*SecurityRulesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ManagementClientGetActiveSessionsPoller.FinalResponse` has been removed
+- Function `*VirtualNetworkGatewaysClientGetVpnclientIPSecParametersPoller.ResumeToken` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientResetConnectionPoller.ResumeToken` has been removed
+- Function `*ExpressRouteCrossConnectionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `OwaspCrsExclusionEntryMatchVariable.ToPtr` has been removed
+- Function `VirtualRoutersClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualNetworkGatewaysClientDisconnectVirtualNetworkGatewayVPNConnectionsPoller.FinalResponse` has been removed
+- Function `*InterfaceLoadBalancersClientListPager.Err` has been removed
+- Function `*VPNSitesClientDeletePoller.Poll` has been removed
+- Function `*LoadBalancerFrontendIPConfigurationsClientListPager.Err` has been removed
+- Function `ConnectionMonitorTestConfigurationProtocol.ToPtr` has been removed
+- Function `*VirtualHubsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `NatGatewaySKUName.ToPtr` has been removed
+- Function `ExpressRouteCircuitSKUTier.ToPtr` has been removed
+- Function `*PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityPoller.Done` has been removed
+- Function `HTTPConfigurationMethod.ToPtr` has been removed
+- Function `*UsagesClientListPager.PageResponse` has been removed
+- Function `*InterfaceIPConfigurationsClientListPager.NextPage` has been removed
+- Function `ConnectionMonitorsClientQueryPollerResponse.PollUntilDone` has been removed
+- Function `*PrivateDNSZoneGroupsClientDeletePoller.Done` has been removed
+- Function `*P2SVPNGatewaysClientCreateOrUpdatePoller.Done` has been removed
+- Function `*PacketCapturesClientDeletePoller.Done` has been removed
+- Function `FirewallPolicySKUTier.ToPtr` has been removed
+- Function `*VirtualHubsClientListPager.Err` has been removed
+- Function `*ExpressRouteCircuitPeeringsClientListPager.Err` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientStopPacketCapturePoller.ResumeToken` has been removed
+- Function `*FirewallPoliciesClientDeletePollerResponse.Resume` has been removed
+- Function `*VirtualNetworkGatewaysClientStartPacketCapturePoller.FinalResponse` has been removed
+- Function `WebApplicationFirewallMode.ToPtr` has been removed
+- Function `AzureFirewallThreatIntelMode.ToPtr` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientGetIkeSasPoller.Done` has been removed
+- Function `*VirtualRoutersClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*VPNGatewaysClientResetPoller.FinalResponse` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClientListPager.NextPage` has been removed
+- Function `*HubVirtualNetworkConnectionsClientDeletePoller.FinalResponse` has been removed
+- Function `AzureFirewallNetworkRuleProtocol.ToPtr` has been removed
+- Function `*PublicIPAddressesClientListAllPager.Err` has been removed
+- Function `*LocalNetworkGatewaysClientCreateOrUpdatePoller.Done` has been removed
+- Function `*HubRouteTablesClientDeletePollerResponse.Resume` has been removed
+- Function `*LoadBalancersClientListAllPager.NextPage` has been removed
+- Function `*PublicIPAddressesClientListAllPager.NextPage` has been removed
+- Function `ServiceProviderProvisioningState.ToPtr` has been removed
+- Function `*ExpressRouteConnectionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*HubRouteTablesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `PacketCapturesClientGetStatusPollerResponse.PollUntilDone` has been removed
+- Function `*WatchersClientGetNextHopPoller.ResumeToken` has been removed
+- Function `*VirtualNetworkPeeringsClientListPager.PageResponse` has been removed
+- Function `*SecurityGroupsClientDeletePoller.Poll` has been removed
+- Function `*VPNConnectionsClientListByVPNGatewayPager.NextPage` has been removed
+- Function `FlowLogsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `RouteTablesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateLinkServicesClientDeletePrivateEndpointConnectionPoller.ResumeToken` has been removed
+- Function `*ExpressRouteCircuitsClientListRoutesTablePollerResponse.Resume` has been removed
+- Function `*ManagementClientPutBastionShareableLinkPoller.FinalResponse` has been removed
+- Function `*VirtualHubsClientGetEffectiveVirtualHubRoutesPoller.Poll` has been removed
+- Function `*VirtualNetworkGatewaysClientGetBgpPeerStatusPoller.Poll` has been removed
+- Function `*PrivateEndpointsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Struct `ApplicationGatewayPrivateEndpointConnectionsClientDeletePoller` has been removed
+- Struct `ApplicationGatewayPrivateEndpointConnectionsClientDeletePollerResponse` has been removed
+- Struct `ApplicationGatewayPrivateEndpointConnectionsClientGetResult` has been removed
+- Struct `ApplicationGatewayPrivateEndpointConnectionsClientListPager` has been removed
+- Struct `ApplicationGatewayPrivateEndpointConnectionsClientListResult` has been removed
+- Struct `ApplicationGatewayPrivateEndpointConnectionsClientUpdatePoller` has been removed
+- Struct `ApplicationGatewayPrivateEndpointConnectionsClientUpdatePollerResponse` has been removed
+- Struct `ApplicationGatewayPrivateEndpointConnectionsClientUpdateResult` has been removed
+- Struct `ApplicationGatewayPrivateLinkResourcesClientListPager` has been removed
+- Struct `ApplicationGatewayPrivateLinkResourcesClientListResult` has been removed
+- Struct `ApplicationGatewaysClientBackendHealthOnDemandPoller` has been removed
+- Struct `ApplicationGatewaysClientBackendHealthOnDemandPollerResponse` has been removed
+- Struct `ApplicationGatewaysClientBackendHealthOnDemandResult` has been removed
+- Struct `ApplicationGatewaysClientBackendHealthPoller` has been removed
+- Struct `ApplicationGatewaysClientBackendHealthPollerResponse` has been removed
+- Struct `ApplicationGatewaysClientBackendHealthResult` has been removed
+- Struct `ApplicationGatewaysClientCreateOrUpdatePoller` has been removed
+- Struct `ApplicationGatewaysClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ApplicationGatewaysClientCreateOrUpdateResult` has been removed
+- Struct `ApplicationGatewaysClientDeletePoller` has been removed
+- Struct `ApplicationGatewaysClientDeletePollerResponse` has been removed
+- Struct `ApplicationGatewaysClientGetResult` has been removed
+- Struct `ApplicationGatewaysClientGetSSLPredefinedPolicyResult` has been removed
+- Struct `ApplicationGatewaysClientListAllPager` has been removed
+- Struct `ApplicationGatewaysClientListAllResult` has been removed
+- Struct `ApplicationGatewaysClientListAvailableRequestHeadersResult` has been removed
+- Struct `ApplicationGatewaysClientListAvailableResponseHeadersResult` has been removed
+- Struct `ApplicationGatewaysClientListAvailableSSLOptionsResult` has been removed
+- Struct `ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesPager` has been removed
+- Struct `ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResult` has been removed
+- Struct `ApplicationGatewaysClientListAvailableServerVariablesResult` has been removed
+- Struct `ApplicationGatewaysClientListAvailableWafRuleSetsResult` has been removed
+- Struct `ApplicationGatewaysClientListPager` has been removed
+- Struct `ApplicationGatewaysClientListResult` has been removed
+- Struct `ApplicationGatewaysClientStartPoller` has been removed
+- Struct `ApplicationGatewaysClientStartPollerResponse` has been removed
+- Struct `ApplicationGatewaysClientStopPoller` has been removed
+- Struct `ApplicationGatewaysClientStopPollerResponse` has been removed
+- Struct `ApplicationGatewaysClientUpdateTagsResult` has been removed
+- Struct `ApplicationSecurityGroupsClientCreateOrUpdatePoller` has been removed
+- Struct `ApplicationSecurityGroupsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ApplicationSecurityGroupsClientCreateOrUpdateResult` has been removed
+- Struct `ApplicationSecurityGroupsClientDeletePoller` has been removed
+- Struct `ApplicationSecurityGroupsClientDeletePollerResponse` has been removed
+- Struct `ApplicationSecurityGroupsClientGetResult` has been removed
+- Struct `ApplicationSecurityGroupsClientListAllPager` has been removed
+- Struct `ApplicationSecurityGroupsClientListAllResult` has been removed
+- Struct `ApplicationSecurityGroupsClientListPager` has been removed
+- Struct `ApplicationSecurityGroupsClientListResult` has been removed
+- Struct `ApplicationSecurityGroupsClientUpdateTagsResult` has been removed
+- Struct `AvailableDelegationsClientListPager` has been removed
+- Struct `AvailableDelegationsClientListResult` has been removed
+- Struct `AvailableEndpointServicesClientListPager` has been removed
+- Struct `AvailableEndpointServicesClientListResult` has been removed
+- Struct `AvailablePrivateEndpointTypesClientListByResourceGroupPager` has been removed
+- Struct `AvailablePrivateEndpointTypesClientListByResourceGroupResult` has been removed
+- Struct `AvailablePrivateEndpointTypesClientListPager` has been removed
+- Struct `AvailablePrivateEndpointTypesClientListResult` has been removed
+- Struct `AvailableResourceGroupDelegationsClientListPager` has been removed
+- Struct `AvailableResourceGroupDelegationsClientListResult` has been removed
+- Struct `AvailableServiceAliasesClientListByResourceGroupPager` has been removed
+- Struct `AvailableServiceAliasesClientListByResourceGroupResult` has been removed
+- Struct `AvailableServiceAliasesClientListPager` has been removed
+- Struct `AvailableServiceAliasesClientListResult` has been removed
+- Struct `AzureFirewallFqdnTagsClientListAllPager` has been removed
+- Struct `AzureFirewallFqdnTagsClientListAllResult` has been removed
+- Struct `AzureFirewallsClientCreateOrUpdatePoller` has been removed
+- Struct `AzureFirewallsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `AzureFirewallsClientCreateOrUpdateResult` has been removed
+- Struct `AzureFirewallsClientDeletePoller` has been removed
+- Struct `AzureFirewallsClientDeletePollerResponse` has been removed
+- Struct `AzureFirewallsClientGetResult` has been removed
+- Struct `AzureFirewallsClientListAllPager` has been removed
+- Struct `AzureFirewallsClientListAllResult` has been removed
+- Struct `AzureFirewallsClientListPager` has been removed
+- Struct `AzureFirewallsClientListResult` has been removed
+- Struct `AzureFirewallsClientUpdateTagsPoller` has been removed
+- Struct `AzureFirewallsClientUpdateTagsPollerResponse` has been removed
+- Struct `AzureFirewallsClientUpdateTagsResult` has been removed
+- Struct `BastionHostsClientCreateOrUpdatePoller` has been removed
+- Struct `BastionHostsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `BastionHostsClientCreateOrUpdateResult` has been removed
+- Struct `BastionHostsClientDeletePoller` has been removed
+- Struct `BastionHostsClientDeletePollerResponse` has been removed
+- Struct `BastionHostsClientGetResult` has been removed
+- Struct `BastionHostsClientListByResourceGroupPager` has been removed
+- Struct `BastionHostsClientListByResourceGroupResult` has been removed
+- Struct `BastionHostsClientListPager` has been removed
+- Struct `BastionHostsClientListResult` has been removed
+- Struct `BastionHostsClientUpdateTagsPoller` has been removed
+- Struct `BastionHostsClientUpdateTagsPollerResponse` has been removed
+- Struct `BastionHostsClientUpdateTagsResult` has been removed
+- Struct `BgpServiceCommunitiesClientListPager` has been removed
+- Struct `BgpServiceCommunitiesClientListResult` has been removed
+- Struct `ConnectionMonitorsClientCreateOrUpdatePoller` has been removed
+- Struct `ConnectionMonitorsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ConnectionMonitorsClientCreateOrUpdateResult` has been removed
+- Struct `ConnectionMonitorsClientDeletePoller` has been removed
+- Struct `ConnectionMonitorsClientDeletePollerResponse` has been removed
+- Struct `ConnectionMonitorsClientGetResult` has been removed
+- Struct `ConnectionMonitorsClientListResult` has been removed
+- Struct `ConnectionMonitorsClientQueryPoller` has been removed
+- Struct `ConnectionMonitorsClientQueryPollerResponse` has been removed
+- Struct `ConnectionMonitorsClientQueryResult` has been removed
+- Struct `ConnectionMonitorsClientStartPoller` has been removed
+- Struct `ConnectionMonitorsClientStartPollerResponse` has been removed
+- Struct `ConnectionMonitorsClientStopPoller` has been removed
+- Struct `ConnectionMonitorsClientStopPollerResponse` has been removed
+- Struct `ConnectionMonitorsClientUpdateTagsResult` has been removed
+- Struct `CustomIPPrefixesClientCreateOrUpdatePoller` has been removed
+- Struct `CustomIPPrefixesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `CustomIPPrefixesClientCreateOrUpdateResult` has been removed
+- Struct `CustomIPPrefixesClientDeletePoller` has been removed
+- Struct `CustomIPPrefixesClientDeletePollerResponse` has been removed
+- Struct `CustomIPPrefixesClientGetResult` has been removed
+- Struct `CustomIPPrefixesClientListAllPager` has been removed
+- Struct `CustomIPPrefixesClientListAllResult` has been removed
+- Struct `CustomIPPrefixesClientListPager` has been removed
+- Struct `CustomIPPrefixesClientListResult` has been removed
+- Struct `CustomIPPrefixesClientUpdateTagsResult` has been removed
+- Struct `DdosCustomPoliciesClientCreateOrUpdatePoller` has been removed
+- Struct `DdosCustomPoliciesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `DdosCustomPoliciesClientCreateOrUpdateResult` has been removed
+- Struct `DdosCustomPoliciesClientDeletePoller` has been removed
+- Struct `DdosCustomPoliciesClientDeletePollerResponse` has been removed
+- Struct `DdosCustomPoliciesClientGetResult` has been removed
+- Struct `DdosCustomPoliciesClientUpdateTagsResult` has been removed
+- Struct `DdosProtectionPlansClientCreateOrUpdatePoller` has been removed
+- Struct `DdosProtectionPlansClientCreateOrUpdatePollerResponse` has been removed
+- Struct `DdosProtectionPlansClientCreateOrUpdateResult` has been removed
+- Struct `DdosProtectionPlansClientDeletePoller` has been removed
+- Struct `DdosProtectionPlansClientDeletePollerResponse` has been removed
+- Struct `DdosProtectionPlansClientGetResult` has been removed
+- Struct `DdosProtectionPlansClientListByResourceGroupPager` has been removed
+- Struct `DdosProtectionPlansClientListByResourceGroupResult` has been removed
+- Struct `DdosProtectionPlansClientListPager` has been removed
+- Struct `DdosProtectionPlansClientListResult` has been removed
+- Struct `DdosProtectionPlansClientUpdateTagsResult` has been removed
+- Struct `DefaultSecurityRulesClientGetResult` has been removed
+- Struct `DefaultSecurityRulesClientListPager` has been removed
+- Struct `DefaultSecurityRulesClientListResult` has been removed
+- Struct `DscpConfigurationClientCreateOrUpdatePoller` has been removed
+- Struct `DscpConfigurationClientCreateOrUpdatePollerResponse` has been removed
+- Struct `DscpConfigurationClientCreateOrUpdateResult` has been removed
+- Struct `DscpConfigurationClientDeletePoller` has been removed
+- Struct `DscpConfigurationClientDeletePollerResponse` has been removed
+- Struct `DscpConfigurationClientGetResult` has been removed
+- Struct `DscpConfigurationClientListAllPager` has been removed
+- Struct `DscpConfigurationClientListAllResult` has been removed
+- Struct `DscpConfigurationClientListPager` has been removed
+- Struct `DscpConfigurationClientListResult` has been removed
+- Struct `ExpressRouteCircuitAuthorizationsClientCreateOrUpdatePoller` has been removed
+- Struct `ExpressRouteCircuitAuthorizationsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ExpressRouteCircuitAuthorizationsClientCreateOrUpdateResult` has been removed
+- Struct `ExpressRouteCircuitAuthorizationsClientDeletePoller` has been removed
+- Struct `ExpressRouteCircuitAuthorizationsClientDeletePollerResponse` has been removed
+- Struct `ExpressRouteCircuitAuthorizationsClientGetResult` has been removed
+- Struct `ExpressRouteCircuitAuthorizationsClientListPager` has been removed
+- Struct `ExpressRouteCircuitAuthorizationsClientListResult` has been removed
+- Struct `ExpressRouteCircuitConnectionsClientCreateOrUpdatePoller` has been removed
+- Struct `ExpressRouteCircuitConnectionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ExpressRouteCircuitConnectionsClientCreateOrUpdateResult` has been removed
+- Struct `ExpressRouteCircuitConnectionsClientDeletePoller` has been removed
+- Struct `ExpressRouteCircuitConnectionsClientDeletePollerResponse` has been removed
+- Struct `ExpressRouteCircuitConnectionsClientGetResult` has been removed
+- Struct `ExpressRouteCircuitConnectionsClientListPager` has been removed
+- Struct `ExpressRouteCircuitConnectionsClientListResult` has been removed
+- Struct `ExpressRouteCircuitPeeringsClientCreateOrUpdatePoller` has been removed
+- Struct `ExpressRouteCircuitPeeringsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ExpressRouteCircuitPeeringsClientCreateOrUpdateResult` has been removed
+- Struct `ExpressRouteCircuitPeeringsClientDeletePoller` has been removed
+- Struct `ExpressRouteCircuitPeeringsClientDeletePollerResponse` has been removed
+- Struct `ExpressRouteCircuitPeeringsClientGetResult` has been removed
+- Struct `ExpressRouteCircuitPeeringsClientListPager` has been removed
+- Struct `ExpressRouteCircuitPeeringsClientListResult` has been removed
+- Struct `ExpressRouteCircuitsClientCreateOrUpdatePoller` has been removed
+- Struct `ExpressRouteCircuitsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ExpressRouteCircuitsClientCreateOrUpdateResult` has been removed
+- Struct `ExpressRouteCircuitsClientDeletePoller` has been removed
+- Struct `ExpressRouteCircuitsClientDeletePollerResponse` has been removed
+- Struct `ExpressRouteCircuitsClientGetPeeringStatsResult` has been removed
+- Struct `ExpressRouteCircuitsClientGetResult` has been removed
+- Struct `ExpressRouteCircuitsClientGetStatsResult` has been removed
+- Struct `ExpressRouteCircuitsClientListAllPager` has been removed
+- Struct `ExpressRouteCircuitsClientListAllResult` has been removed
+- Struct `ExpressRouteCircuitsClientListArpTablePoller` has been removed
+- Struct `ExpressRouteCircuitsClientListArpTablePollerResponse` has been removed
+- Struct `ExpressRouteCircuitsClientListArpTableResult` has been removed
+- Struct `ExpressRouteCircuitsClientListPager` has been removed
+- Struct `ExpressRouteCircuitsClientListResult` has been removed
+- Struct `ExpressRouteCircuitsClientListRoutesTablePoller` has been removed
+- Struct `ExpressRouteCircuitsClientListRoutesTablePollerResponse` has been removed
+- Struct `ExpressRouteCircuitsClientListRoutesTableResult` has been removed
+- Struct `ExpressRouteCircuitsClientListRoutesTableSummaryPoller` has been removed
+- Struct `ExpressRouteCircuitsClientListRoutesTableSummaryPollerResponse` has been removed
+- Struct `ExpressRouteCircuitsClientListRoutesTableSummaryResult` has been removed
+- Struct `ExpressRouteCircuitsClientUpdateTagsResult` has been removed
+- Struct `ExpressRouteConnectionsClientCreateOrUpdatePoller` has been removed
+- Struct `ExpressRouteConnectionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ExpressRouteConnectionsClientCreateOrUpdateResult` has been removed
+- Struct `ExpressRouteConnectionsClientDeletePoller` has been removed
+- Struct `ExpressRouteConnectionsClientDeletePollerResponse` has been removed
+- Struct `ExpressRouteConnectionsClientGetResult` has been removed
+- Struct `ExpressRouteConnectionsClientListResult` has been removed
+- Struct `ExpressRouteCrossConnectionPeeringsClientCreateOrUpdatePoller` has been removed
+- Struct `ExpressRouteCrossConnectionPeeringsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ExpressRouteCrossConnectionPeeringsClientCreateOrUpdateResult` has been removed
+- Struct `ExpressRouteCrossConnectionPeeringsClientDeletePoller` has been removed
+- Struct `ExpressRouteCrossConnectionPeeringsClientDeletePollerResponse` has been removed
+- Struct `ExpressRouteCrossConnectionPeeringsClientGetResult` has been removed
+- Struct `ExpressRouteCrossConnectionPeeringsClientListPager` has been removed
+- Struct `ExpressRouteCrossConnectionPeeringsClientListResult` has been removed
+- Struct `ExpressRouteCrossConnectionsClientCreateOrUpdatePoller` has been removed
+- Struct `ExpressRouteCrossConnectionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ExpressRouteCrossConnectionsClientCreateOrUpdateResult` has been removed
+- Struct `ExpressRouteCrossConnectionsClientGetResult` has been removed
+- Struct `ExpressRouteCrossConnectionsClientListArpTablePoller` has been removed
+- Struct `ExpressRouteCrossConnectionsClientListArpTablePollerResponse` has been removed
+- Struct `ExpressRouteCrossConnectionsClientListArpTableResult` has been removed
+- Struct `ExpressRouteCrossConnectionsClientListByResourceGroupPager` has been removed
+- Struct `ExpressRouteCrossConnectionsClientListByResourceGroupResult` has been removed
+- Struct `ExpressRouteCrossConnectionsClientListPager` has been removed
+- Struct `ExpressRouteCrossConnectionsClientListResult` has been removed
+- Struct `ExpressRouteCrossConnectionsClientListRoutesTablePoller` has been removed
+- Struct `ExpressRouteCrossConnectionsClientListRoutesTablePollerResponse` has been removed
+- Struct `ExpressRouteCrossConnectionsClientListRoutesTableResult` has been removed
+- Struct `ExpressRouteCrossConnectionsClientListRoutesTableSummaryPoller` has been removed
+- Struct `ExpressRouteCrossConnectionsClientListRoutesTableSummaryPollerResponse` has been removed
+- Struct `ExpressRouteCrossConnectionsClientListRoutesTableSummaryResult` has been removed
+- Struct `ExpressRouteCrossConnectionsClientUpdateTagsResult` has been removed
+- Struct `ExpressRouteGatewaysClientCreateOrUpdatePoller` has been removed
+- Struct `ExpressRouteGatewaysClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ExpressRouteGatewaysClientCreateOrUpdateResult` has been removed
+- Struct `ExpressRouteGatewaysClientDeletePoller` has been removed
+- Struct `ExpressRouteGatewaysClientDeletePollerResponse` has been removed
+- Struct `ExpressRouteGatewaysClientGetResult` has been removed
+- Struct `ExpressRouteGatewaysClientListByResourceGroupResult` has been removed
+- Struct `ExpressRouteGatewaysClientListBySubscriptionResult` has been removed
+- Struct `ExpressRouteGatewaysClientUpdateTagsPoller` has been removed
+- Struct `ExpressRouteGatewaysClientUpdateTagsPollerResponse` has been removed
+- Struct `ExpressRouteGatewaysClientUpdateTagsResult` has been removed
+- Struct `ExpressRouteLinksClientGetResult` has been removed
+- Struct `ExpressRouteLinksClientListPager` has been removed
+- Struct `ExpressRouteLinksClientListResult` has been removed
+- Struct `ExpressRoutePortsClientCreateOrUpdatePoller` has been removed
+- Struct `ExpressRoutePortsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ExpressRoutePortsClientCreateOrUpdateResult` has been removed
+- Struct `ExpressRoutePortsClientDeletePoller` has been removed
+- Struct `ExpressRoutePortsClientDeletePollerResponse` has been removed
+- Struct `ExpressRoutePortsClientGenerateLOAResult` has been removed
+- Struct `ExpressRoutePortsClientGetResult` has been removed
+- Struct `ExpressRoutePortsClientListByResourceGroupPager` has been removed
+- Struct `ExpressRoutePortsClientListByResourceGroupResult` has been removed
+- Struct `ExpressRoutePortsClientListPager` has been removed
+- Struct `ExpressRoutePortsClientListResult` has been removed
+- Struct `ExpressRoutePortsClientUpdateTagsResult` has been removed
+- Struct `ExpressRoutePortsLocationsClientGetResult` has been removed
+- Struct `ExpressRoutePortsLocationsClientListPager` has been removed
+- Struct `ExpressRoutePortsLocationsClientListResult` has been removed
+- Struct `ExpressRouteServiceProvidersClientListPager` has been removed
+- Struct `ExpressRouteServiceProvidersClientListResult` has been removed
+- Struct `FirewallPoliciesClientCreateOrUpdatePoller` has been removed
+- Struct `FirewallPoliciesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `FirewallPoliciesClientCreateOrUpdateResult` has been removed
+- Struct `FirewallPoliciesClientDeletePoller` has been removed
+- Struct `FirewallPoliciesClientDeletePollerResponse` has been removed
+- Struct `FirewallPoliciesClientGetResult` has been removed
+- Struct `FirewallPoliciesClientListAllPager` has been removed
+- Struct `FirewallPoliciesClientListAllResult` has been removed
+- Struct `FirewallPoliciesClientListPager` has been removed
+- Struct `FirewallPoliciesClientListResult` has been removed
+- Struct `FirewallPolicyIdpsSignaturesClientListResult` has been removed
+- Struct `FirewallPolicyIdpsSignaturesFilterValuesClientListResult` has been removed
+- Struct `FirewallPolicyIdpsSignaturesOverridesClientGetResult` has been removed
+- Struct `FirewallPolicyIdpsSignaturesOverridesClientListResult` has been removed
+- Struct `FirewallPolicyIdpsSignaturesOverridesClientPatchResult` has been removed
+- Struct `FirewallPolicyIdpsSignaturesOverridesClientPutResult` has been removed
+- Struct `FirewallPolicyRuleCollectionGroupsClientCreateOrUpdatePoller` has been removed
+- Struct `FirewallPolicyRuleCollectionGroupsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `FirewallPolicyRuleCollectionGroupsClientCreateOrUpdateResult` has been removed
+- Struct `FirewallPolicyRuleCollectionGroupsClientDeletePoller` has been removed
+- Struct `FirewallPolicyRuleCollectionGroupsClientDeletePollerResponse` has been removed
+- Struct `FirewallPolicyRuleCollectionGroupsClientGetResult` has been removed
+- Struct `FirewallPolicyRuleCollectionGroupsClientListPager` has been removed
+- Struct `FirewallPolicyRuleCollectionGroupsClientListResult` has been removed
+- Struct `FlowLogsClientCreateOrUpdatePoller` has been removed
+- Struct `FlowLogsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `FlowLogsClientCreateOrUpdateResult` has been removed
+- Struct `FlowLogsClientDeletePoller` has been removed
+- Struct `FlowLogsClientDeletePollerResponse` has been removed
+- Struct `FlowLogsClientGetResult` has been removed
+- Struct `FlowLogsClientListPager` has been removed
+- Struct `FlowLogsClientListResult` has been removed
+- Struct `FlowLogsClientUpdateTagsResult` has been removed
+- Struct `HubRouteTablesClientCreateOrUpdatePoller` has been removed
+- Struct `HubRouteTablesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `HubRouteTablesClientCreateOrUpdateResult` has been removed
+- Struct `HubRouteTablesClientDeletePoller` has been removed
+- Struct `HubRouteTablesClientDeletePollerResponse` has been removed
+- Struct `HubRouteTablesClientGetResult` has been removed
+- Struct `HubRouteTablesClientListPager` has been removed
+- Struct `HubRouteTablesClientListResult` has been removed
+- Struct `HubVirtualNetworkConnectionsClientCreateOrUpdatePoller` has been removed
+- Struct `HubVirtualNetworkConnectionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `HubVirtualNetworkConnectionsClientCreateOrUpdateResult` has been removed
+- Struct `HubVirtualNetworkConnectionsClientDeletePoller` has been removed
+- Struct `HubVirtualNetworkConnectionsClientDeletePollerResponse` has been removed
+- Struct `HubVirtualNetworkConnectionsClientGetResult` has been removed
+- Struct `HubVirtualNetworkConnectionsClientListPager` has been removed
+- Struct `HubVirtualNetworkConnectionsClientListResult` has been removed
+- Struct `IPAllocationsClientCreateOrUpdatePoller` has been removed
+- Struct `IPAllocationsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `IPAllocationsClientCreateOrUpdateResult` has been removed
+- Struct `IPAllocationsClientDeletePoller` has been removed
+- Struct `IPAllocationsClientDeletePollerResponse` has been removed
+- Struct `IPAllocationsClientGetResult` has been removed
+- Struct `IPAllocationsClientListByResourceGroupPager` has been removed
+- Struct `IPAllocationsClientListByResourceGroupResult` has been removed
+- Struct `IPAllocationsClientListPager` has been removed
+- Struct `IPAllocationsClientListResult` has been removed
+- Struct `IPAllocationsClientUpdateTagsResult` has been removed
+- Struct `IPGroupsClientCreateOrUpdatePoller` has been removed
+- Struct `IPGroupsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `IPGroupsClientCreateOrUpdateResult` has been removed
+- Struct `IPGroupsClientDeletePoller` has been removed
+- Struct `IPGroupsClientDeletePollerResponse` has been removed
+- Struct `IPGroupsClientGetResult` has been removed
+- Struct `IPGroupsClientListByResourceGroupPager` has been removed
+- Struct `IPGroupsClientListByResourceGroupResult` has been removed
+- Struct `IPGroupsClientListPager` has been removed
+- Struct `IPGroupsClientListResult` has been removed
+- Struct `IPGroupsClientUpdateGroupsResult` has been removed
+- Struct `InboundNatRulesClientCreateOrUpdatePoller` has been removed
+- Struct `InboundNatRulesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `InboundNatRulesClientCreateOrUpdateResult` has been removed
+- Struct `InboundNatRulesClientDeletePoller` has been removed
+- Struct `InboundNatRulesClientDeletePollerResponse` has been removed
+- Struct `InboundNatRulesClientGetResult` has been removed
+- Struct `InboundNatRulesClientListPager` has been removed
+- Struct `InboundNatRulesClientListResult` has been removed
+- Struct `InboundSecurityRuleClientCreateOrUpdatePoller` has been removed
+- Struct `InboundSecurityRuleClientCreateOrUpdatePollerResponse` has been removed
+- Struct `InboundSecurityRuleClientCreateOrUpdateResult` has been removed
+- Struct `InterfaceIPConfigurationsClientGetResult` has been removed
+- Struct `InterfaceIPConfigurationsClientListPager` has been removed
+- Struct `InterfaceIPConfigurationsClientListResult` has been removed
+- Struct `InterfaceLoadBalancersClientListPager` has been removed
+- Struct `InterfaceLoadBalancersClientListResult` has been removed
+- Struct `InterfaceTapConfigurationsClientCreateOrUpdatePoller` has been removed
+- Struct `InterfaceTapConfigurationsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `InterfaceTapConfigurationsClientCreateOrUpdateResult` has been removed
+- Struct `InterfaceTapConfigurationsClientDeletePoller` has been removed
+- Struct `InterfaceTapConfigurationsClientDeletePollerResponse` has been removed
+- Struct `InterfaceTapConfigurationsClientGetResult` has been removed
+- Struct `InterfaceTapConfigurationsClientListPager` has been removed
+- Struct `InterfaceTapConfigurationsClientListResult` has been removed
+- Struct `InterfacesClientCreateOrUpdatePoller` has been removed
+- Struct `InterfacesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `InterfacesClientCreateOrUpdateResult` has been removed
+- Struct `InterfacesClientDeletePoller` has been removed
+- Struct `InterfacesClientDeletePollerResponse` has been removed
+- Struct `InterfacesClientGetCloudServiceNetworkInterfaceResult` has been removed
+- Struct `InterfacesClientGetEffectiveRouteTablePoller` has been removed
+- Struct `InterfacesClientGetEffectiveRouteTablePollerResponse` has been removed
+- Struct `InterfacesClientGetEffectiveRouteTableResult` has been removed
+- Struct `InterfacesClientGetResult` has been removed
+- Struct `InterfacesClientGetVirtualMachineScaleSetIPConfigurationResult` has been removed
+- Struct `InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceResult` has been removed
+- Struct `InterfacesClientListAllPager` has been removed
+- Struct `InterfacesClientListAllResult` has been removed
+- Struct `InterfacesClientListCloudServiceNetworkInterfacesPager` has been removed
+- Struct `InterfacesClientListCloudServiceNetworkInterfacesResult` has been removed
+- Struct `InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesPager` has been removed
+- Struct `InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesResult` has been removed
+- Struct `InterfacesClientListEffectiveNetworkSecurityGroupsPoller` has been removed
+- Struct `InterfacesClientListEffectiveNetworkSecurityGroupsPollerResponse` has been removed
+- Struct `InterfacesClientListEffectiveNetworkSecurityGroupsResult` has been removed
+- Struct `InterfacesClientListPager` has been removed
+- Struct `InterfacesClientListResult` has been removed
+- Struct `InterfacesClientListVirtualMachineScaleSetIPConfigurationsPager` has been removed
+- Struct `InterfacesClientListVirtualMachineScaleSetIPConfigurationsResult` has been removed
+- Struct `InterfacesClientListVirtualMachineScaleSetNetworkInterfacesPager` has been removed
+- Struct `InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResult` has been removed
+- Struct `InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesPager` has been removed
+- Struct `InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResult` has been removed
+- Struct `InterfacesClientUpdateTagsResult` has been removed
+- Struct `LoadBalancerBackendAddressPoolsClientCreateOrUpdatePoller` has been removed
+- Struct `LoadBalancerBackendAddressPoolsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `LoadBalancerBackendAddressPoolsClientCreateOrUpdateResult` has been removed
+- Struct `LoadBalancerBackendAddressPoolsClientDeletePoller` has been removed
+- Struct `LoadBalancerBackendAddressPoolsClientDeletePollerResponse` has been removed
+- Struct `LoadBalancerBackendAddressPoolsClientGetResult` has been removed
+- Struct `LoadBalancerBackendAddressPoolsClientListPager` has been removed
+- Struct `LoadBalancerBackendAddressPoolsClientListResult` has been removed
+- Struct `LoadBalancerFrontendIPConfigurationsClientGetResult` has been removed
+- Struct `LoadBalancerFrontendIPConfigurationsClientListPager` has been removed
+- Struct `LoadBalancerFrontendIPConfigurationsClientListResult` has been removed
+- Struct `LoadBalancerLoadBalancingRulesClientGetResult` has been removed
+- Struct `LoadBalancerLoadBalancingRulesClientListPager` has been removed
+- Struct `LoadBalancerLoadBalancingRulesClientListResult` has been removed
+- Struct `LoadBalancerNetworkInterfacesClientListPager` has been removed
+- Struct `LoadBalancerNetworkInterfacesClientListResult` has been removed
+- Struct `LoadBalancerOutboundRulesClientGetResult` has been removed
+- Struct `LoadBalancerOutboundRulesClientListPager` has been removed
+- Struct `LoadBalancerOutboundRulesClientListResult` has been removed
+- Struct `LoadBalancerProbesClientGetResult` has been removed
+- Struct `LoadBalancerProbesClientListPager` has been removed
+- Struct `LoadBalancerProbesClientListResult` has been removed
+- Struct `LoadBalancersClientCreateOrUpdatePoller` has been removed
+- Struct `LoadBalancersClientCreateOrUpdatePollerResponse` has been removed
+- Struct `LoadBalancersClientCreateOrUpdateResult` has been removed
+- Struct `LoadBalancersClientDeletePoller` has been removed
+- Struct `LoadBalancersClientDeletePollerResponse` has been removed
+- Struct `LoadBalancersClientGetResult` has been removed
+- Struct `LoadBalancersClientListAllPager` has been removed
+- Struct `LoadBalancersClientListAllResult` has been removed
+- Struct `LoadBalancersClientListInboundNatRulePortMappingsPoller` has been removed
+- Struct `LoadBalancersClientListInboundNatRulePortMappingsPollerResponse` has been removed
+- Struct `LoadBalancersClientListInboundNatRulePortMappingsResult` has been removed
+- Struct `LoadBalancersClientListPager` has been removed
+- Struct `LoadBalancersClientListResult` has been removed
+- Struct `LoadBalancersClientSwapPublicIPAddressesPoller` has been removed
+- Struct `LoadBalancersClientSwapPublicIPAddressesPollerResponse` has been removed
+- Struct `LoadBalancersClientUpdateTagsResult` has been removed
+- Struct `LocalNetworkGatewaysClientCreateOrUpdatePoller` has been removed
+- Struct `LocalNetworkGatewaysClientCreateOrUpdatePollerResponse` has been removed
+- Struct `LocalNetworkGatewaysClientCreateOrUpdateResult` has been removed
+- Struct `LocalNetworkGatewaysClientDeletePoller` has been removed
+- Struct `LocalNetworkGatewaysClientDeletePollerResponse` has been removed
+- Struct `LocalNetworkGatewaysClientGetResult` has been removed
+- Struct `LocalNetworkGatewaysClientListPager` has been removed
+- Struct `LocalNetworkGatewaysClientListResult` has been removed
+- Struct `LocalNetworkGatewaysClientUpdateTagsResult` has been removed
+- Struct `ManagementClientCheckDNSNameAvailabilityResult` has been removed
+- Struct `ManagementClientDeleteBastionShareableLinkPoller` has been removed
+- Struct `ManagementClientDeleteBastionShareableLinkPollerResponse` has been removed
+- Struct `ManagementClientDisconnectActiveSessionsPager` has been removed
+- Struct `ManagementClientDisconnectActiveSessionsResult` has been removed
+- Struct `ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofilePoller` has been removed
+- Struct `ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofilePollerResponse` has been removed
+- Struct `ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofileResult` has been removed
+- Struct `ManagementClientGetActiveSessionsPager` has been removed
+- Struct `ManagementClientGetActiveSessionsPoller` has been removed
+- Struct `ManagementClientGetActiveSessionsPollerResponse` has been removed
+- Struct `ManagementClientGetActiveSessionsResult` has been removed
+- Struct `ManagementClientGetBastionShareableLinkPager` has been removed
+- Struct `ManagementClientGetBastionShareableLinkResult` has been removed
+- Struct `ManagementClientPutBastionShareableLinkPager` has been removed
+- Struct `ManagementClientPutBastionShareableLinkPoller` has been removed
+- Struct `ManagementClientPutBastionShareableLinkPollerResponse` has been removed
+- Struct `ManagementClientPutBastionShareableLinkResult` has been removed
+- Struct `ManagementClientSupportedSecurityProvidersResult` has been removed
+- Struct `NatGatewaysClientCreateOrUpdatePoller` has been removed
+- Struct `NatGatewaysClientCreateOrUpdatePollerResponse` has been removed
+- Struct `NatGatewaysClientCreateOrUpdateResult` has been removed
+- Struct `NatGatewaysClientDeletePoller` has been removed
+- Struct `NatGatewaysClientDeletePollerResponse` has been removed
+- Struct `NatGatewaysClientGetResult` has been removed
+- Struct `NatGatewaysClientListAllPager` has been removed
+- Struct `NatGatewaysClientListAllResult` has been removed
+- Struct `NatGatewaysClientListPager` has been removed
+- Struct `NatGatewaysClientListResult` has been removed
+- Struct `NatGatewaysClientUpdateTagsResult` has been removed
+- Struct `NatRulesClientCreateOrUpdatePoller` has been removed
+- Struct `NatRulesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `NatRulesClientCreateOrUpdateResult` has been removed
+- Struct `NatRulesClientDeletePoller` has been removed
+- Struct `NatRulesClientDeletePollerResponse` has been removed
+- Struct `NatRulesClientGetResult` has been removed
+- Struct `NatRulesClientListByVPNGatewayPager` has been removed
+- Struct `NatRulesClientListByVPNGatewayResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `P2SVPNGatewaysClientCreateOrUpdatePoller` has been removed
+- Struct `P2SVPNGatewaysClientCreateOrUpdatePollerResponse` has been removed
+- Struct `P2SVPNGatewaysClientCreateOrUpdateResult` has been removed
+- Struct `P2SVPNGatewaysClientDeletePoller` has been removed
+- Struct `P2SVPNGatewaysClientDeletePollerResponse` has been removed
+- Struct `P2SVPNGatewaysClientDisconnectP2SVPNConnectionsPoller` has been removed
+- Struct `P2SVPNGatewaysClientDisconnectP2SVPNConnectionsPollerResponse` has been removed
+- Struct `P2SVPNGatewaysClientGenerateVPNProfilePoller` has been removed
+- Struct `P2SVPNGatewaysClientGenerateVPNProfilePollerResponse` has been removed
+- Struct `P2SVPNGatewaysClientGenerateVPNProfileResult` has been removed
+- Struct `P2SVPNGatewaysClientGetP2SVPNConnectionHealthDetailedPoller` has been removed
+- Struct `P2SVPNGatewaysClientGetP2SVPNConnectionHealthDetailedPollerResponse` has been removed
+- Struct `P2SVPNGatewaysClientGetP2SVPNConnectionHealthDetailedResult` has been removed
+- Struct `P2SVPNGatewaysClientGetP2SVPNConnectionHealthPoller` has been removed
+- Struct `P2SVPNGatewaysClientGetP2SVPNConnectionHealthPollerResponse` has been removed
+- Struct `P2SVPNGatewaysClientGetP2SVPNConnectionHealthResult` has been removed
+- Struct `P2SVPNGatewaysClientGetResult` has been removed
+- Struct `P2SVPNGatewaysClientListByResourceGroupPager` has been removed
+- Struct `P2SVPNGatewaysClientListByResourceGroupResult` has been removed
+- Struct `P2SVPNGatewaysClientListPager` has been removed
+- Struct `P2SVPNGatewaysClientListResult` has been removed
+- Struct `P2SVPNGatewaysClientResetPoller` has been removed
+- Struct `P2SVPNGatewaysClientResetPollerResponse` has been removed
+- Struct `P2SVPNGatewaysClientResetResult` has been removed
+- Struct `P2SVPNGatewaysClientUpdateTagsPoller` has been removed
+- Struct `P2SVPNGatewaysClientUpdateTagsPollerResponse` has been removed
+- Struct `P2SVPNGatewaysClientUpdateTagsResult` has been removed
+- Struct `PacketCapturesClientCreatePoller` has been removed
+- Struct `PacketCapturesClientCreatePollerResponse` has been removed
+- Struct `PacketCapturesClientCreateResult` has been removed
+- Struct `PacketCapturesClientDeletePoller` has been removed
+- Struct `PacketCapturesClientDeletePollerResponse` has been removed
+- Struct `PacketCapturesClientGetResult` has been removed
+- Struct `PacketCapturesClientGetStatusPoller` has been removed
+- Struct `PacketCapturesClientGetStatusPollerResponse` has been removed
+- Struct `PacketCapturesClientGetStatusResult` has been removed
+- Struct `PacketCapturesClientListResult` has been removed
+- Struct `PacketCapturesClientStopPoller` has been removed
+- Struct `PacketCapturesClientStopPollerResponse` has been removed
+- Struct `PeerExpressRouteCircuitConnectionsClientGetResult` has been removed
+- Struct `PeerExpressRouteCircuitConnectionsClientListPager` has been removed
+- Struct `PeerExpressRouteCircuitConnectionsClientListResult` has been removed
+- Struct `PrivateDNSZoneGroupsClientCreateOrUpdatePoller` has been removed
+- Struct `PrivateDNSZoneGroupsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateDNSZoneGroupsClientCreateOrUpdateResult` has been removed
+- Struct `PrivateDNSZoneGroupsClientDeletePoller` has been removed
+- Struct `PrivateDNSZoneGroupsClientDeletePollerResponse` has been removed
+- Struct `PrivateDNSZoneGroupsClientGetResult` has been removed
+- Struct `PrivateDNSZoneGroupsClientListPager` has been removed
+- Struct `PrivateDNSZoneGroupsClientListResult` has been removed
+- Struct `PrivateEndpointsClientCreateOrUpdatePoller` has been removed
+- Struct `PrivateEndpointsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateEndpointsClientCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointsClientDeletePoller` has been removed
+- Struct `PrivateEndpointsClientDeletePollerResponse` has been removed
+- Struct `PrivateEndpointsClientGetResult` has been removed
+- Struct `PrivateEndpointsClientListBySubscriptionPager` has been removed
+- Struct `PrivateEndpointsClientListBySubscriptionResult` has been removed
+- Struct `PrivateEndpointsClientListPager` has been removed
+- Struct `PrivateEndpointsClientListResult` has been removed
+- Struct `PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupPoller` has been removed
+- Struct `PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupPollerResponse` has been removed
+- Struct `PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupResult` has been removed
+- Struct `PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityPoller` has been removed
+- Struct `PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityPollerResponse` has been removed
+- Struct `PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityResult` has been removed
+- Struct `PrivateLinkServicesClientCreateOrUpdatePoller` has been removed
+- Struct `PrivateLinkServicesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateLinkServicesClientCreateOrUpdateResult` has been removed
+- Struct `PrivateLinkServicesClientDeletePoller` has been removed
+- Struct `PrivateLinkServicesClientDeletePollerResponse` has been removed
+- Struct `PrivateLinkServicesClientDeletePrivateEndpointConnectionPoller` has been removed
+- Struct `PrivateLinkServicesClientDeletePrivateEndpointConnectionPollerResponse` has been removed
+- Struct `PrivateLinkServicesClientGetPrivateEndpointConnectionResult` has been removed
+- Struct `PrivateLinkServicesClientGetResult` has been removed
+- Struct `PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupPager` has been removed
+- Struct `PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResult` has been removed
+- Struct `PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesPager` has been removed
+- Struct `PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResult` has been removed
+- Struct `PrivateLinkServicesClientListBySubscriptionPager` has been removed
+- Struct `PrivateLinkServicesClientListBySubscriptionResult` has been removed
+- Struct `PrivateLinkServicesClientListPager` has been removed
+- Struct `PrivateLinkServicesClientListPrivateEndpointConnectionsPager` has been removed
+- Struct `PrivateLinkServicesClientListPrivateEndpointConnectionsResult` has been removed
+- Struct `PrivateLinkServicesClientListResult` has been removed
+- Struct `PrivateLinkServicesClientUpdatePrivateEndpointConnectionResult` has been removed
+- Struct `ProfilesClientCreateOrUpdateResult` has been removed
+- Struct `ProfilesClientDeletePoller` has been removed
+- Struct `ProfilesClientDeletePollerResponse` has been removed
+- Struct `ProfilesClientGetResult` has been removed
+- Struct `ProfilesClientListAllPager` has been removed
+- Struct `ProfilesClientListAllResult` has been removed
+- Struct `ProfilesClientListPager` has been removed
+- Struct `ProfilesClientListResult` has been removed
+- Struct `ProfilesClientUpdateTagsResult` has been removed
+- Struct `PublicIPAddressesClientCreateOrUpdatePoller` has been removed
+- Struct `PublicIPAddressesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `PublicIPAddressesClientCreateOrUpdateResult` has been removed
+- Struct `PublicIPAddressesClientDeletePoller` has been removed
+- Struct `PublicIPAddressesClientDeletePollerResponse` has been removed
+- Struct `PublicIPAddressesClientGetCloudServicePublicIPAddressResult` has been removed
+- Struct `PublicIPAddressesClientGetResult` has been removed
+- Struct `PublicIPAddressesClientGetVirtualMachineScaleSetPublicIPAddressResult` has been removed
+- Struct `PublicIPAddressesClientListAllPager` has been removed
+- Struct `PublicIPAddressesClientListAllResult` has been removed
+- Struct `PublicIPAddressesClientListCloudServicePublicIPAddressesPager` has been removed
+- Struct `PublicIPAddressesClientListCloudServicePublicIPAddressesResult` has been removed
+- Struct `PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesPager` has been removed
+- Struct `PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResult` has been removed
+- Struct `PublicIPAddressesClientListPager` has been removed
+- Struct `PublicIPAddressesClientListResult` has been removed
+- Struct `PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesPager` has been removed
+- Struct `PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResult` has been removed
+- Struct `PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesPager` has been removed
+- Struct `PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResult` has been removed
+- Struct `PublicIPAddressesClientUpdateTagsResult` has been removed
+- Struct `PublicIPPrefixesClientCreateOrUpdatePoller` has been removed
+- Struct `PublicIPPrefixesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `PublicIPPrefixesClientCreateOrUpdateResult` has been removed
+- Struct `PublicIPPrefixesClientDeletePoller` has been removed
+- Struct `PublicIPPrefixesClientDeletePollerResponse` has been removed
+- Struct `PublicIPPrefixesClientGetResult` has been removed
+- Struct `PublicIPPrefixesClientListAllPager` has been removed
+- Struct `PublicIPPrefixesClientListAllResult` has been removed
+- Struct `PublicIPPrefixesClientListPager` has been removed
+- Struct `PublicIPPrefixesClientListResult` has been removed
+- Struct `PublicIPPrefixesClientUpdateTagsResult` has been removed
+- Struct `ResourceNavigationLinksClientListResult` has been removed
+- Struct `RouteFilterRulesClientCreateOrUpdatePoller` has been removed
+- Struct `RouteFilterRulesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `RouteFilterRulesClientCreateOrUpdateResult` has been removed
+- Struct `RouteFilterRulesClientDeletePoller` has been removed
+- Struct `RouteFilterRulesClientDeletePollerResponse` has been removed
+- Struct `RouteFilterRulesClientGetResult` has been removed
+- Struct `RouteFilterRulesClientListByRouteFilterPager` has been removed
+- Struct `RouteFilterRulesClientListByRouteFilterResult` has been removed
+- Struct `RouteFiltersClientCreateOrUpdatePoller` has been removed
+- Struct `RouteFiltersClientCreateOrUpdatePollerResponse` has been removed
+- Struct `RouteFiltersClientCreateOrUpdateResult` has been removed
+- Struct `RouteFiltersClientDeletePoller` has been removed
+- Struct `RouteFiltersClientDeletePollerResponse` has been removed
+- Struct `RouteFiltersClientGetResult` has been removed
+- Struct `RouteFiltersClientListByResourceGroupPager` has been removed
+- Struct `RouteFiltersClientListByResourceGroupResult` has been removed
+- Struct `RouteFiltersClientListPager` has been removed
+- Struct `RouteFiltersClientListResult` has been removed
+- Struct `RouteFiltersClientUpdateTagsResult` has been removed
+- Struct `RouteTablesClientCreateOrUpdatePoller` has been removed
+- Struct `RouteTablesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `RouteTablesClientCreateOrUpdateResult` has been removed
+- Struct `RouteTablesClientDeletePoller` has been removed
+- Struct `RouteTablesClientDeletePollerResponse` has been removed
+- Struct `RouteTablesClientGetResult` has been removed
+- Struct `RouteTablesClientListAllPager` has been removed
+- Struct `RouteTablesClientListAllResult` has been removed
+- Struct `RouteTablesClientListPager` has been removed
+- Struct `RouteTablesClientListResult` has been removed
+- Struct `RouteTablesClientUpdateTagsResult` has been removed
+- Struct `RoutesClientCreateOrUpdatePoller` has been removed
+- Struct `RoutesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `RoutesClientCreateOrUpdateResult` has been removed
+- Struct `RoutesClientDeletePoller` has been removed
+- Struct `RoutesClientDeletePollerResponse` has been removed
+- Struct `RoutesClientGetResult` has been removed
+- Struct `RoutesClientListPager` has been removed
+- Struct `RoutesClientListResult` has been removed
+- Struct `RoutingIntentClientCreateOrUpdatePoller` has been removed
+- Struct `RoutingIntentClientCreateOrUpdatePollerResponse` has been removed
+- Struct `RoutingIntentClientCreateOrUpdateResult` has been removed
+- Struct `RoutingIntentClientDeletePoller` has been removed
+- Struct `RoutingIntentClientDeletePollerResponse` has been removed
+- Struct `RoutingIntentClientGetResult` has been removed
+- Struct `RoutingIntentClientListPager` has been removed
+- Struct `RoutingIntentClientListResult` has been removed
+- Struct `SecurityGroupsClientCreateOrUpdatePoller` has been removed
+- Struct `SecurityGroupsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `SecurityGroupsClientCreateOrUpdateResult` has been removed
+- Struct `SecurityGroupsClientDeletePoller` has been removed
+- Struct `SecurityGroupsClientDeletePollerResponse` has been removed
+- Struct `SecurityGroupsClientGetResult` has been removed
+- Struct `SecurityGroupsClientListAllPager` has been removed
+- Struct `SecurityGroupsClientListAllResult` has been removed
+- Struct `SecurityGroupsClientListPager` has been removed
+- Struct `SecurityGroupsClientListResult` has been removed
+- Struct `SecurityGroupsClientUpdateTagsResult` has been removed
+- Struct `SecurityPartnerProvidersClientCreateOrUpdatePoller` has been removed
+- Struct `SecurityPartnerProvidersClientCreateOrUpdatePollerResponse` has been removed
+- Struct `SecurityPartnerProvidersClientCreateOrUpdateResult` has been removed
+- Struct `SecurityPartnerProvidersClientDeletePoller` has been removed
+- Struct `SecurityPartnerProvidersClientDeletePollerResponse` has been removed
+- Struct `SecurityPartnerProvidersClientGetResult` has been removed
+- Struct `SecurityPartnerProvidersClientListByResourceGroupPager` has been removed
+- Struct `SecurityPartnerProvidersClientListByResourceGroupResult` has been removed
+- Struct `SecurityPartnerProvidersClientListPager` has been removed
+- Struct `SecurityPartnerProvidersClientListResult` has been removed
+- Struct `SecurityPartnerProvidersClientUpdateTagsResult` has been removed
+- Struct `SecurityRulesClientCreateOrUpdatePoller` has been removed
+- Struct `SecurityRulesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `SecurityRulesClientCreateOrUpdateResult` has been removed
+- Struct `SecurityRulesClientDeletePoller` has been removed
+- Struct `SecurityRulesClientDeletePollerResponse` has been removed
+- Struct `SecurityRulesClientGetResult` has been removed
+- Struct `SecurityRulesClientListPager` has been removed
+- Struct `SecurityRulesClientListResult` has been removed
+- Struct `ServiceAssociationLinksClientListResult` has been removed
+- Struct `ServiceEndpointPoliciesClientCreateOrUpdatePoller` has been removed
+- Struct `ServiceEndpointPoliciesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ServiceEndpointPoliciesClientCreateOrUpdateResult` has been removed
+- Struct `ServiceEndpointPoliciesClientDeletePoller` has been removed
+- Struct `ServiceEndpointPoliciesClientDeletePollerResponse` has been removed
+- Struct `ServiceEndpointPoliciesClientGetResult` has been removed
+- Struct `ServiceEndpointPoliciesClientListByResourceGroupPager` has been removed
+- Struct `ServiceEndpointPoliciesClientListByResourceGroupResult` has been removed
+- Struct `ServiceEndpointPoliciesClientListPager` has been removed
+- Struct `ServiceEndpointPoliciesClientListResult` has been removed
+- Struct `ServiceEndpointPoliciesClientUpdateTagsResult` has been removed
+- Struct `ServiceEndpointPolicyDefinitionsClientCreateOrUpdatePoller` has been removed
+- Struct `ServiceEndpointPolicyDefinitionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ServiceEndpointPolicyDefinitionsClientCreateOrUpdateResult` has been removed
+- Struct `ServiceEndpointPolicyDefinitionsClientDeletePoller` has been removed
+- Struct `ServiceEndpointPolicyDefinitionsClientDeletePollerResponse` has been removed
+- Struct `ServiceEndpointPolicyDefinitionsClientGetResult` has been removed
+- Struct `ServiceEndpointPolicyDefinitionsClientListByResourceGroupPager` has been removed
+- Struct `ServiceEndpointPolicyDefinitionsClientListByResourceGroupResult` has been removed
+- Struct `ServiceTagInformationClientListPager` has been removed
+- Struct `ServiceTagInformationClientListResult` has been removed
+- Struct `ServiceTagsClientListResult` has been removed
+- Struct `SubnetsClientCreateOrUpdatePoller` has been removed
+- Struct `SubnetsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `SubnetsClientCreateOrUpdateResult` has been removed
+- Struct `SubnetsClientDeletePoller` has been removed
+- Struct `SubnetsClientDeletePollerResponse` has been removed
+- Struct `SubnetsClientGetResult` has been removed
+- Struct `SubnetsClientListPager` has been removed
+- Struct `SubnetsClientListResult` has been removed
+- Struct `SubnetsClientPrepareNetworkPoliciesPoller` has been removed
+- Struct `SubnetsClientPrepareNetworkPoliciesPollerResponse` has been removed
+- Struct `SubnetsClientUnprepareNetworkPoliciesPoller` has been removed
+- Struct `SubnetsClientUnprepareNetworkPoliciesPollerResponse` has been removed
+- Struct `UsagesClientListPager` has been removed
+- Struct `UsagesClientListResult` has been removed
+- Struct `VPNConnectionsClientCreateOrUpdatePoller` has been removed
+- Struct `VPNConnectionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VPNConnectionsClientCreateOrUpdateResult` has been removed
+- Struct `VPNConnectionsClientDeletePoller` has been removed
+- Struct `VPNConnectionsClientDeletePollerResponse` has been removed
+- Struct `VPNConnectionsClientGetResult` has been removed
+- Struct `VPNConnectionsClientListByVPNGatewayPager` has been removed
+- Struct `VPNConnectionsClientListByVPNGatewayResult` has been removed
+- Struct `VPNConnectionsClientStartPacketCapturePoller` has been removed
+- Struct `VPNConnectionsClientStartPacketCapturePollerResponse` has been removed
+- Struct `VPNConnectionsClientStartPacketCaptureResult` has been removed
+- Struct `VPNConnectionsClientStopPacketCapturePoller` has been removed
+- Struct `VPNConnectionsClientStopPacketCapturePollerResponse` has been removed
+- Struct `VPNConnectionsClientStopPacketCaptureResult` has been removed
+- Struct `VPNGatewaysClientCreateOrUpdatePoller` has been removed
+- Struct `VPNGatewaysClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VPNGatewaysClientCreateOrUpdateResult` has been removed
+- Struct `VPNGatewaysClientDeletePoller` has been removed
+- Struct `VPNGatewaysClientDeletePollerResponse` has been removed
+- Struct `VPNGatewaysClientGetResult` has been removed
+- Struct `VPNGatewaysClientListByResourceGroupPager` has been removed
+- Struct `VPNGatewaysClientListByResourceGroupResult` has been removed
+- Struct `VPNGatewaysClientListPager` has been removed
+- Struct `VPNGatewaysClientListResult` has been removed
+- Struct `VPNGatewaysClientResetPoller` has been removed
+- Struct `VPNGatewaysClientResetPollerResponse` has been removed
+- Struct `VPNGatewaysClientResetResult` has been removed
+- Struct `VPNGatewaysClientStartPacketCapturePoller` has been removed
+- Struct `VPNGatewaysClientStartPacketCapturePollerResponse` has been removed
+- Struct `VPNGatewaysClientStartPacketCaptureResult` has been removed
+- Struct `VPNGatewaysClientStopPacketCapturePoller` has been removed
+- Struct `VPNGatewaysClientStopPacketCapturePollerResponse` has been removed
+- Struct `VPNGatewaysClientStopPacketCaptureResult` has been removed
+- Struct `VPNGatewaysClientUpdateTagsPoller` has been removed
+- Struct `VPNGatewaysClientUpdateTagsPollerResponse` has been removed
+- Struct `VPNGatewaysClientUpdateTagsResult` has been removed
+- Struct `VPNLinkConnectionsClientGetIkeSasPoller` has been removed
+- Struct `VPNLinkConnectionsClientGetIkeSasPollerResponse` has been removed
+- Struct `VPNLinkConnectionsClientGetIkeSasResult` has been removed
+- Struct `VPNLinkConnectionsClientListByVPNConnectionPager` has been removed
+- Struct `VPNLinkConnectionsClientListByVPNConnectionResult` has been removed
+- Struct `VPNLinkConnectionsClientResetConnectionPoller` has been removed
+- Struct `VPNLinkConnectionsClientResetConnectionPollerResponse` has been removed
+- Struct `VPNServerConfigurationsAssociatedWithVirtualWanClientListPoller` has been removed
+- Struct `VPNServerConfigurationsAssociatedWithVirtualWanClientListPollerResponse` has been removed
+- Struct `VPNServerConfigurationsAssociatedWithVirtualWanClientListResult` has been removed
+- Struct `VPNServerConfigurationsClientCreateOrUpdatePoller` has been removed
+- Struct `VPNServerConfigurationsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VPNServerConfigurationsClientCreateOrUpdateResult` has been removed
+- Struct `VPNServerConfigurationsClientDeletePoller` has been removed
+- Struct `VPNServerConfigurationsClientDeletePollerResponse` has been removed
+- Struct `VPNServerConfigurationsClientGetResult` has been removed
+- Struct `VPNServerConfigurationsClientListByResourceGroupPager` has been removed
+- Struct `VPNServerConfigurationsClientListByResourceGroupResult` has been removed
+- Struct `VPNServerConfigurationsClientListPager` has been removed
+- Struct `VPNServerConfigurationsClientListResult` has been removed
+- Struct `VPNServerConfigurationsClientUpdateTagsResult` has been removed
+- Struct `VPNSiteLinkConnectionsClientGetResult` has been removed
+- Struct `VPNSiteLinksClientGetResult` has been removed
+- Struct `VPNSiteLinksClientListByVPNSitePager` has been removed
+- Struct `VPNSiteLinksClientListByVPNSiteResult` has been removed
+- Struct `VPNSitesClientCreateOrUpdatePoller` has been removed
+- Struct `VPNSitesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VPNSitesClientCreateOrUpdateResult` has been removed
+- Struct `VPNSitesClientDeletePoller` has been removed
+- Struct `VPNSitesClientDeletePollerResponse` has been removed
+- Struct `VPNSitesClientGetResult` has been removed
+- Struct `VPNSitesClientListByResourceGroupPager` has been removed
+- Struct `VPNSitesClientListByResourceGroupResult` has been removed
+- Struct `VPNSitesClientListPager` has been removed
+- Struct `VPNSitesClientListResult` has been removed
+- Struct `VPNSitesClientUpdateTagsResult` has been removed
+- Struct `VPNSitesConfigurationClientDownloadPoller` has been removed
+- Struct `VPNSitesConfigurationClientDownloadPollerResponse` has been removed
+- Struct `VirtualApplianceSKUsClientGetResult` has been removed
+- Struct `VirtualApplianceSKUsClientListPager` has been removed
+- Struct `VirtualApplianceSKUsClientListResult` has been removed
+- Struct `VirtualApplianceSitesClientCreateOrUpdatePoller` has been removed
+- Struct `VirtualApplianceSitesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualApplianceSitesClientCreateOrUpdateResult` has been removed
+- Struct `VirtualApplianceSitesClientDeletePoller` has been removed
+- Struct `VirtualApplianceSitesClientDeletePollerResponse` has been removed
+- Struct `VirtualApplianceSitesClientGetResult` has been removed
+- Struct `VirtualApplianceSitesClientListPager` has been removed
+- Struct `VirtualApplianceSitesClientListResult` has been removed
+- Struct `VirtualAppliancesClientCreateOrUpdatePoller` has been removed
+- Struct `VirtualAppliancesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualAppliancesClientCreateOrUpdateResult` has been removed
+- Struct `VirtualAppliancesClientDeletePoller` has been removed
+- Struct `VirtualAppliancesClientDeletePollerResponse` has been removed
+- Struct `VirtualAppliancesClientGetResult` has been removed
+- Struct `VirtualAppliancesClientListByResourceGroupPager` has been removed
+- Struct `VirtualAppliancesClientListByResourceGroupResult` has been removed
+- Struct `VirtualAppliancesClientListPager` has been removed
+- Struct `VirtualAppliancesClientListResult` has been removed
+- Struct `VirtualAppliancesClientUpdateTagsResult` has been removed
+- Struct `VirtualHubBgpConnectionClientCreateOrUpdatePoller` has been removed
+- Struct `VirtualHubBgpConnectionClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualHubBgpConnectionClientCreateOrUpdateResult` has been removed
+- Struct `VirtualHubBgpConnectionClientDeletePoller` has been removed
+- Struct `VirtualHubBgpConnectionClientDeletePollerResponse` has been removed
+- Struct `VirtualHubBgpConnectionClientGetResult` has been removed
+- Struct `VirtualHubBgpConnectionsClientListAdvertisedRoutesPoller` has been removed
+- Struct `VirtualHubBgpConnectionsClientListAdvertisedRoutesPollerResponse` has been removed
+- Struct `VirtualHubBgpConnectionsClientListAdvertisedRoutesResult` has been removed
+- Struct `VirtualHubBgpConnectionsClientListLearnedRoutesPoller` has been removed
+- Struct `VirtualHubBgpConnectionsClientListLearnedRoutesPollerResponse` has been removed
+- Struct `VirtualHubBgpConnectionsClientListLearnedRoutesResult` has been removed
+- Struct `VirtualHubBgpConnectionsClientListPager` has been removed
+- Struct `VirtualHubBgpConnectionsClientListResult` has been removed
+- Struct `VirtualHubIPConfigurationClientCreateOrUpdatePoller` has been removed
+- Struct `VirtualHubIPConfigurationClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualHubIPConfigurationClientCreateOrUpdateResult` has been removed
+- Struct `VirtualHubIPConfigurationClientDeletePoller` has been removed
+- Struct `VirtualHubIPConfigurationClientDeletePollerResponse` has been removed
+- Struct `VirtualHubIPConfigurationClientGetResult` has been removed
+- Struct `VirtualHubIPConfigurationClientListPager` has been removed
+- Struct `VirtualHubIPConfigurationClientListResult` has been removed
+- Struct `VirtualHubRouteTableV2SClientCreateOrUpdatePoller` has been removed
+- Struct `VirtualHubRouteTableV2SClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualHubRouteTableV2SClientCreateOrUpdateResult` has been removed
+- Struct `VirtualHubRouteTableV2SClientDeletePoller` has been removed
+- Struct `VirtualHubRouteTableV2SClientDeletePollerResponse` has been removed
+- Struct `VirtualHubRouteTableV2SClientGetResult` has been removed
+- Struct `VirtualHubRouteTableV2SClientListPager` has been removed
+- Struct `VirtualHubRouteTableV2SClientListResult` has been removed
+- Struct `VirtualHubsClientCreateOrUpdatePoller` has been removed
+- Struct `VirtualHubsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualHubsClientCreateOrUpdateResult` has been removed
+- Struct `VirtualHubsClientDeletePoller` has been removed
+- Struct `VirtualHubsClientDeletePollerResponse` has been removed
+- Struct `VirtualHubsClientGetEffectiveVirtualHubRoutesPoller` has been removed
+- Struct `VirtualHubsClientGetEffectiveVirtualHubRoutesPollerResponse` has been removed
+- Struct `VirtualHubsClientGetResult` has been removed
+- Struct `VirtualHubsClientListByResourceGroupPager` has been removed
+- Struct `VirtualHubsClientListByResourceGroupResult` has been removed
+- Struct `VirtualHubsClientListPager` has been removed
+- Struct `VirtualHubsClientListResult` has been removed
+- Struct `VirtualHubsClientUpdateTagsResult` has been removed
+- Struct `VirtualNetworkGatewayConnectionsClientCreateOrUpdatePoller` has been removed
+- Struct `VirtualNetworkGatewayConnectionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualNetworkGatewayConnectionsClientCreateOrUpdateResult` has been removed
+- Struct `VirtualNetworkGatewayConnectionsClientDeletePoller` has been removed
+- Struct `VirtualNetworkGatewayConnectionsClientDeletePollerResponse` has been removed
+- Struct `VirtualNetworkGatewayConnectionsClientGetIkeSasPoller` has been removed
+- Struct `VirtualNetworkGatewayConnectionsClientGetIkeSasPollerResponse` has been removed
+- Struct `VirtualNetworkGatewayConnectionsClientGetIkeSasResult` has been removed
+- Struct `VirtualNetworkGatewayConnectionsClientGetResult` has been removed
+- Struct `VirtualNetworkGatewayConnectionsClientGetSharedKeyResult` has been removed
+- Struct `VirtualNetworkGatewayConnectionsClientListPager` has been removed
+- Struct `VirtualNetworkGatewayConnectionsClientListResult` has been removed
+- Struct `VirtualNetworkGatewayConnectionsClientResetConnectionPoller` has been removed
+- Struct `VirtualNetworkGatewayConnectionsClientResetConnectionPollerResponse` has been removed
+- Struct `VirtualNetworkGatewayConnectionsClientResetSharedKeyPoller` has been removed
+- Struct `VirtualNetworkGatewayConnectionsClientResetSharedKeyPollerResponse` has been removed
+- Struct `VirtualNetworkGatewayConnectionsClientResetSharedKeyResult` has been removed
+- Struct `VirtualNetworkGatewayConnectionsClientSetSharedKeyPoller` has been removed
+- Struct `VirtualNetworkGatewayConnectionsClientSetSharedKeyPollerResponse` has been removed
+- Struct `VirtualNetworkGatewayConnectionsClientSetSharedKeyResult` has been removed
+- Struct `VirtualNetworkGatewayConnectionsClientStartPacketCapturePoller` has been removed
+- Struct `VirtualNetworkGatewayConnectionsClientStartPacketCapturePollerResponse` has been removed
+- Struct `VirtualNetworkGatewayConnectionsClientStartPacketCaptureResult` has been removed
+- Struct `VirtualNetworkGatewayConnectionsClientStopPacketCapturePoller` has been removed
+- Struct `VirtualNetworkGatewayConnectionsClientStopPacketCapturePollerResponse` has been removed
+- Struct `VirtualNetworkGatewayConnectionsClientStopPacketCaptureResult` has been removed
+- Struct `VirtualNetworkGatewayConnectionsClientUpdateTagsPoller` has been removed
+- Struct `VirtualNetworkGatewayConnectionsClientUpdateTagsPollerResponse` has been removed
+- Struct `VirtualNetworkGatewayConnectionsClientUpdateTagsResult` has been removed
+- Struct `VirtualNetworkGatewayNatRulesClientCreateOrUpdatePoller` has been removed
+- Struct `VirtualNetworkGatewayNatRulesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualNetworkGatewayNatRulesClientCreateOrUpdateResult` has been removed
+- Struct `VirtualNetworkGatewayNatRulesClientDeletePoller` has been removed
+- Struct `VirtualNetworkGatewayNatRulesClientDeletePollerResponse` has been removed
+- Struct `VirtualNetworkGatewayNatRulesClientGetResult` has been removed
+- Struct `VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayPager` has been removed
+- Struct `VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResult` has been removed
+- Struct `VirtualNetworkGatewaysClientCreateOrUpdatePoller` has been removed
+- Struct `VirtualNetworkGatewaysClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualNetworkGatewaysClientCreateOrUpdateResult` has been removed
+- Struct `VirtualNetworkGatewaysClientDeletePoller` has been removed
+- Struct `VirtualNetworkGatewaysClientDeletePollerResponse` has been removed
+- Struct `VirtualNetworkGatewaysClientDisconnectVirtualNetworkGatewayVPNConnectionsPoller` has been removed
+- Struct `VirtualNetworkGatewaysClientDisconnectVirtualNetworkGatewayVPNConnectionsPollerResponse` has been removed
+- Struct `VirtualNetworkGatewaysClientGenerateVPNProfilePoller` has been removed
+- Struct `VirtualNetworkGatewaysClientGenerateVPNProfilePollerResponse` has been removed
+- Struct `VirtualNetworkGatewaysClientGenerateVPNProfileResult` has been removed
+- Struct `VirtualNetworkGatewaysClientGeneratevpnclientpackagePoller` has been removed
+- Struct `VirtualNetworkGatewaysClientGeneratevpnclientpackagePollerResponse` has been removed
+- Struct `VirtualNetworkGatewaysClientGeneratevpnclientpackageResult` has been removed
+- Struct `VirtualNetworkGatewaysClientGetAdvertisedRoutesPoller` has been removed
+- Struct `VirtualNetworkGatewaysClientGetAdvertisedRoutesPollerResponse` has been removed
+- Struct `VirtualNetworkGatewaysClientGetAdvertisedRoutesResult` has been removed
+- Struct `VirtualNetworkGatewaysClientGetBgpPeerStatusPoller` has been removed
+- Struct `VirtualNetworkGatewaysClientGetBgpPeerStatusPollerResponse` has been removed
+- Struct `VirtualNetworkGatewaysClientGetBgpPeerStatusResult` has been removed
+- Struct `VirtualNetworkGatewaysClientGetLearnedRoutesPoller` has been removed
+- Struct `VirtualNetworkGatewaysClientGetLearnedRoutesPollerResponse` has been removed
+- Struct `VirtualNetworkGatewaysClientGetLearnedRoutesResult` has been removed
+- Struct `VirtualNetworkGatewaysClientGetResult` has been removed
+- Struct `VirtualNetworkGatewaysClientGetVPNProfilePackageURLPoller` has been removed
+- Struct `VirtualNetworkGatewaysClientGetVPNProfilePackageURLPollerResponse` has been removed
+- Struct `VirtualNetworkGatewaysClientGetVPNProfilePackageURLResult` has been removed
+- Struct `VirtualNetworkGatewaysClientGetVpnclientConnectionHealthPoller` has been removed
+- Struct `VirtualNetworkGatewaysClientGetVpnclientConnectionHealthPollerResponse` has been removed
+- Struct `VirtualNetworkGatewaysClientGetVpnclientConnectionHealthResult` has been removed
+- Struct `VirtualNetworkGatewaysClientGetVpnclientIPSecParametersPoller` has been removed
+- Struct `VirtualNetworkGatewaysClientGetVpnclientIPSecParametersPollerResponse` has been removed
+- Struct `VirtualNetworkGatewaysClientGetVpnclientIPSecParametersResult` has been removed
+- Struct `VirtualNetworkGatewaysClientListConnectionsPager` has been removed
+- Struct `VirtualNetworkGatewaysClientListConnectionsResult` has been removed
+- Struct `VirtualNetworkGatewaysClientListPager` has been removed
+- Struct `VirtualNetworkGatewaysClientListResult` has been removed
+- Struct `VirtualNetworkGatewaysClientResetPoller` has been removed
+- Struct `VirtualNetworkGatewaysClientResetPollerResponse` has been removed
+- Struct `VirtualNetworkGatewaysClientResetResult` has been removed
+- Struct `VirtualNetworkGatewaysClientResetVPNClientSharedKeyPoller` has been removed
+- Struct `VirtualNetworkGatewaysClientResetVPNClientSharedKeyPollerResponse` has been removed
+- Struct `VirtualNetworkGatewaysClientSetVpnclientIPSecParametersPoller` has been removed
+- Struct `VirtualNetworkGatewaysClientSetVpnclientIPSecParametersPollerResponse` has been removed
+- Struct `VirtualNetworkGatewaysClientSetVpnclientIPSecParametersResult` has been removed
+- Struct `VirtualNetworkGatewaysClientStartPacketCapturePoller` has been removed
+- Struct `VirtualNetworkGatewaysClientStartPacketCapturePollerResponse` has been removed
+- Struct `VirtualNetworkGatewaysClientStartPacketCaptureResult` has been removed
+- Struct `VirtualNetworkGatewaysClientStopPacketCapturePoller` has been removed
+- Struct `VirtualNetworkGatewaysClientStopPacketCapturePollerResponse` has been removed
+- Struct `VirtualNetworkGatewaysClientStopPacketCaptureResult` has been removed
+- Struct `VirtualNetworkGatewaysClientSupportedVPNDevicesResult` has been removed
+- Struct `VirtualNetworkGatewaysClientUpdateTagsPoller` has been removed
+- Struct `VirtualNetworkGatewaysClientUpdateTagsPollerResponse` has been removed
+- Struct `VirtualNetworkGatewaysClientUpdateTagsResult` has been removed
+- Struct `VirtualNetworkGatewaysClientVPNDeviceConfigurationScriptResult` has been removed
+- Struct `VirtualNetworkPeeringsClientCreateOrUpdatePoller` has been removed
+- Struct `VirtualNetworkPeeringsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualNetworkPeeringsClientCreateOrUpdateResult` has been removed
+- Struct `VirtualNetworkPeeringsClientDeletePoller` has been removed
+- Struct `VirtualNetworkPeeringsClientDeletePollerResponse` has been removed
+- Struct `VirtualNetworkPeeringsClientGetResult` has been removed
+- Struct `VirtualNetworkPeeringsClientListPager` has been removed
+- Struct `VirtualNetworkPeeringsClientListResult` has been removed
+- Struct `VirtualNetworkTapsClientCreateOrUpdatePoller` has been removed
+- Struct `VirtualNetworkTapsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualNetworkTapsClientCreateOrUpdateResult` has been removed
+- Struct `VirtualNetworkTapsClientDeletePoller` has been removed
+- Struct `VirtualNetworkTapsClientDeletePollerResponse` has been removed
+- Struct `VirtualNetworkTapsClientGetResult` has been removed
+- Struct `VirtualNetworkTapsClientListAllPager` has been removed
+- Struct `VirtualNetworkTapsClientListAllResult` has been removed
+- Struct `VirtualNetworkTapsClientListByResourceGroupPager` has been removed
+- Struct `VirtualNetworkTapsClientListByResourceGroupResult` has been removed
+- Struct `VirtualNetworkTapsClientUpdateTagsResult` has been removed
+- Struct `VirtualNetworksClientCheckIPAddressAvailabilityResult` has been removed
+- Struct `VirtualNetworksClientCreateOrUpdatePoller` has been removed
+- Struct `VirtualNetworksClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualNetworksClientCreateOrUpdateResult` has been removed
+- Struct `VirtualNetworksClientDeletePoller` has been removed
+- Struct `VirtualNetworksClientDeletePollerResponse` has been removed
+- Struct `VirtualNetworksClientGetResult` has been removed
+- Struct `VirtualNetworksClientListAllPager` has been removed
+- Struct `VirtualNetworksClientListAllResult` has been removed
+- Struct `VirtualNetworksClientListPager` has been removed
+- Struct `VirtualNetworksClientListResult` has been removed
+- Struct `VirtualNetworksClientListUsagePager` has been removed
+- Struct `VirtualNetworksClientListUsageResult` has been removed
+- Struct `VirtualNetworksClientUpdateTagsResult` has been removed
+- Struct `VirtualRouterPeeringsClientCreateOrUpdatePoller` has been removed
+- Struct `VirtualRouterPeeringsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualRouterPeeringsClientCreateOrUpdateResult` has been removed
+- Struct `VirtualRouterPeeringsClientDeletePoller` has been removed
+- Struct `VirtualRouterPeeringsClientDeletePollerResponse` has been removed
+- Struct `VirtualRouterPeeringsClientGetResult` has been removed
+- Struct `VirtualRouterPeeringsClientListPager` has been removed
+- Struct `VirtualRouterPeeringsClientListResult` has been removed
+- Struct `VirtualRoutersClientCreateOrUpdatePoller` has been removed
+- Struct `VirtualRoutersClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualRoutersClientCreateOrUpdateResult` has been removed
+- Struct `VirtualRoutersClientDeletePoller` has been removed
+- Struct `VirtualRoutersClientDeletePollerResponse` has been removed
+- Struct `VirtualRoutersClientGetResult` has been removed
+- Struct `VirtualRoutersClientListByResourceGroupPager` has been removed
+- Struct `VirtualRoutersClientListByResourceGroupResult` has been removed
+- Struct `VirtualRoutersClientListPager` has been removed
+- Struct `VirtualRoutersClientListResult` has been removed
+- Struct `VirtualWansClientCreateOrUpdatePoller` has been removed
+- Struct `VirtualWansClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualWansClientCreateOrUpdateResult` has been removed
+- Struct `VirtualWansClientDeletePoller` has been removed
+- Struct `VirtualWansClientDeletePollerResponse` has been removed
+- Struct `VirtualWansClientGetResult` has been removed
+- Struct `VirtualWansClientListByResourceGroupPager` has been removed
+- Struct `VirtualWansClientListByResourceGroupResult` has been removed
+- Struct `VirtualWansClientListPager` has been removed
+- Struct `VirtualWansClientListResult` has been removed
+- Struct `VirtualWansClientUpdateTagsResult` has been removed
+- Struct `WatchersClientCheckConnectivityPoller` has been removed
+- Struct `WatchersClientCheckConnectivityPollerResponse` has been removed
+- Struct `WatchersClientCheckConnectivityResult` has been removed
+- Struct `WatchersClientCreateOrUpdateResult` has been removed
+- Struct `WatchersClientDeletePoller` has been removed
+- Struct `WatchersClientDeletePollerResponse` has been removed
+- Struct `WatchersClientGetAzureReachabilityReportPoller` has been removed
+- Struct `WatchersClientGetAzureReachabilityReportPollerResponse` has been removed
+- Struct `WatchersClientGetAzureReachabilityReportResult` has been removed
+- Struct `WatchersClientGetFlowLogStatusPoller` has been removed
+- Struct `WatchersClientGetFlowLogStatusPollerResponse` has been removed
+- Struct `WatchersClientGetFlowLogStatusResult` has been removed
+- Struct `WatchersClientGetNetworkConfigurationDiagnosticPoller` has been removed
+- Struct `WatchersClientGetNetworkConfigurationDiagnosticPollerResponse` has been removed
+- Struct `WatchersClientGetNetworkConfigurationDiagnosticResult` has been removed
+- Struct `WatchersClientGetNextHopPoller` has been removed
+- Struct `WatchersClientGetNextHopPollerResponse` has been removed
+- Struct `WatchersClientGetNextHopResult` has been removed
+- Struct `WatchersClientGetResult` has been removed
+- Struct `WatchersClientGetTopologyResult` has been removed
+- Struct `WatchersClientGetTroubleshootingPoller` has been removed
+- Struct `WatchersClientGetTroubleshootingPollerResponse` has been removed
+- Struct `WatchersClientGetTroubleshootingResult` has been removed
+- Struct `WatchersClientGetTroubleshootingResultPoller` has been removed
+- Struct `WatchersClientGetTroubleshootingResultPollerResponse` has been removed
+- Struct `WatchersClientGetTroubleshootingResultResult` has been removed
+- Struct `WatchersClientGetVMSecurityRulesPoller` has been removed
+- Struct `WatchersClientGetVMSecurityRulesPollerResponse` has been removed
+- Struct `WatchersClientGetVMSecurityRulesResult` has been removed
+- Struct `WatchersClientListAllResult` has been removed
+- Struct `WatchersClientListAvailableProvidersPoller` has been removed
+- Struct `WatchersClientListAvailableProvidersPollerResponse` has been removed
+- Struct `WatchersClientListAvailableProvidersResult` has been removed
+- Struct `WatchersClientListResult` has been removed
+- Struct `WatchersClientSetFlowLogConfigurationPoller` has been removed
+- Struct `WatchersClientSetFlowLogConfigurationPollerResponse` has been removed
+- Struct `WatchersClientSetFlowLogConfigurationResult` has been removed
+- Struct `WatchersClientUpdateTagsResult` has been removed
+- Struct `WatchersClientVerifyIPFlowPoller` has been removed
+- Struct `WatchersClientVerifyIPFlowPollerResponse` has been removed
+- Struct `WatchersClientVerifyIPFlowResult` has been removed
+- Struct `WebApplicationFirewallPoliciesClientCreateOrUpdateResult` has been removed
+- Struct `WebApplicationFirewallPoliciesClientDeletePoller` has been removed
+- Struct `WebApplicationFirewallPoliciesClientDeletePollerResponse` has been removed
+- Struct `WebApplicationFirewallPoliciesClientGetResult` has been removed
+- Struct `WebApplicationFirewallPoliciesClientListAllPager` has been removed
+- Struct `WebApplicationFirewallPoliciesClientListAllResult` has been removed
+- Struct `WebApplicationFirewallPoliciesClientListPager` has been removed
+- Struct `WebApplicationFirewallPoliciesClientListResult` has been removed
+- Struct `WebCategoriesClientGetResult` has been removed
+- Struct `WebCategoriesClientListBySubscriptionPager` has been removed
+- Struct `WebCategoriesClientListBySubscriptionResult` has been removed
+- Field `VirtualNetworkGatewayConnectionsClientStopPacketCaptureResult` of struct `VirtualNetworkGatewayConnectionsClientStopPacketCaptureResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewayConnectionsClientStopPacketCaptureResponse` has been removed
+- Field `ApplicationGatewaysClientGetResult` of struct `ApplicationGatewaysClientGetResponse` has been removed
+- Field `RawResponse` of struct `ApplicationGatewaysClientGetResponse` has been removed
+- Field `RoutesClientListResult` of struct `RoutesClientListResponse` has been removed
+- Field `RawResponse` of struct `RoutesClientListResponse` has been removed
+- Field `PeerExpressRouteCircuitConnectionsClientGetResult` of struct `PeerExpressRouteCircuitConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PeerExpressRouteCircuitConnectionsClientGetResponse` has been removed
+- Field `RouteFiltersClientGetResult` of struct `RouteFiltersClientGetResponse` has been removed
+- Field `RawResponse` of struct `RouteFiltersClientGetResponse` has been removed
+- Field `RawResponse` of struct `LocalNetworkGatewaysClientDeleteResponse` has been removed
+- Field `PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResult` of struct `PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse` has been removed
+- Field `RawResponse` of struct `PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse` has been removed
+- Field `VirtualWansClientGetResult` of struct `VirtualWansClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualWansClientGetResponse` has been removed
+- Field `RawResponse` of struct `PacketCapturesClientDeleteResponse` has been removed
+- Field `ExpressRouteServiceProvidersClientListResult` of struct `ExpressRouteServiceProvidersClientListResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteServiceProvidersClientListResponse` has been removed
+- Field `ProfilesClientListResult` of struct `ProfilesClientListResponse` has been removed
+- Field `RawResponse` of struct `ProfilesClientListResponse` has been removed
+- Field `InterfaceTapConfigurationsClientListResult` of struct `InterfaceTapConfigurationsClientListResponse` has been removed
+- Field `RawResponse` of struct `InterfaceTapConfigurationsClientListResponse` has been removed
+- Field `IPAllocationsClientListResult` of struct `IPAllocationsClientListResponse` has been removed
+- Field `RawResponse` of struct `IPAllocationsClientListResponse` has been removed
+- Field `ServiceEndpointPoliciesClientListByResourceGroupResult` of struct `ServiceEndpointPoliciesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ServiceEndpointPoliciesClientListByResourceGroupResponse` has been removed
+- Field `FlowLogsClientUpdateTagsResult` of struct `FlowLogsClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `FlowLogsClientUpdateTagsResponse` has been removed
+- Field `VirtualHubIPConfigurationClientGetResult` of struct `VirtualHubIPConfigurationClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualHubIPConfigurationClientGetResponse` has been removed
+- Field `RawResponse` of struct `VPNSitesClientDeleteResponse` has been removed
+- Field `ApplicationSecurityGroupsClientListAllResult` of struct `ApplicationSecurityGroupsClientListAllResponse` has been removed
+- Field `RawResponse` of struct `ApplicationSecurityGroupsClientListAllResponse` has been removed
+- Field `SecurityGroupsClientCreateOrUpdateResult` of struct `SecurityGroupsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SecurityGroupsClientCreateOrUpdateResponse` has been removed
+- Field `WebApplicationFirewallPoliciesClientCreateOrUpdateResult` of struct `WebApplicationFirewallPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `WebApplicationFirewallPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `ExpressRoutePortsLocationsClientGetResult` of struct `ExpressRoutePortsLocationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ExpressRoutePortsLocationsClientGetResponse` has been removed
+- Field `InterfaceTapConfigurationsClientCreateOrUpdateResult` of struct `InterfaceTapConfigurationsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `InterfaceTapConfigurationsClientCreateOrUpdateResponse` has been removed
+- Field `PublicIPPrefixesClientCreateOrUpdateResult` of struct `PublicIPPrefixesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PublicIPPrefixesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `HubRouteTablesClientDeleteResponse` has been removed
+- Field `AzureFirewallsClientUpdateTagsResult` of struct `AzureFirewallsClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `AzureFirewallsClientUpdateTagsResponse` has been removed
+- Field `CustomIPPrefixesClientUpdateTagsResult` of struct `CustomIPPrefixesClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `CustomIPPrefixesClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointsClientDeleteResponse` has been removed
+- Field `ExpressRouteCrossConnectionsClientListRoutesTableResult` of struct `ExpressRouteCrossConnectionsClientListRoutesTableResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCrossConnectionsClientListRoutesTableResponse` has been removed
+- Field `RouteFilterRulesClientCreateOrUpdateResult` of struct `RouteFilterRulesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `RouteFilterRulesClientCreateOrUpdateResponse` has been removed
+- Field `ExpressRouteGatewaysClientListByResourceGroupResult` of struct `ExpressRouteGatewaysClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteGatewaysClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `VirtualWansClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewayNatRulesClientDeleteResponse` has been removed
+- Field `VirtualRouterPeeringsClientCreateOrUpdateResult` of struct `VirtualRouterPeeringsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualRouterPeeringsClientCreateOrUpdateResponse` has been removed
+- Field `VPNSitesClientGetResult` of struct `VPNSitesClientGetResponse` has been removed
+- Field `RawResponse` of struct `VPNSitesClientGetResponse` has been removed
+- Field `ExpressRouteCrossConnectionsClientListResult` of struct `ExpressRouteCrossConnectionsClientListResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCrossConnectionsClientListResponse` has been removed
+- Field `ConnectionMonitorsClientQueryResult` of struct `ConnectionMonitorsClientQueryResponse` has been removed
+- Field `RawResponse` of struct `ConnectionMonitorsClientQueryResponse` has been removed
+- Field `PrivateLinkServicesClientGetResult` of struct `PrivateLinkServicesClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesClientGetResponse` has been removed
+- Field `PrivateEndpointsClientListResult` of struct `PrivateEndpointsClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointsClientListResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCrossConnectionPeeringsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewaysClientDeleteResponse` has been removed
+- Field `CustomIPPrefixesClientGetResult` of struct `CustomIPPrefixesClientGetResponse` has been removed
+- Field `RawResponse` of struct `CustomIPPrefixesClientGetResponse` has been removed
+- Field `InterfacesClientGetCloudServiceNetworkInterfaceResult` of struct `InterfacesClientGetCloudServiceNetworkInterfaceResponse` has been removed
+- Field `RawResponse` of struct `InterfacesClientGetCloudServiceNetworkInterfaceResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkTapsClientDeleteResponse` has been removed
+- Field `ApplicationGatewaysClientUpdateTagsResult` of struct `ApplicationGatewaysClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `ApplicationGatewaysClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `FirewallPolicyRuleCollectionGroupsClientDeleteResponse` has been removed
+- Field `SecurityRulesClientCreateOrUpdateResult` of struct `SecurityRulesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SecurityRulesClientCreateOrUpdateResponse` has been removed
+- Field `FirewallPolicyIdpsSignaturesOverridesClientPutResult` of struct `FirewallPolicyIdpsSignaturesOverridesClientPutResponse` has been removed
+- Field `RawResponse` of struct `FirewallPolicyIdpsSignaturesOverridesClientPutResponse` has been removed
+- Field `ExpressRouteCircuitPeeringsClientGetResult` of struct `ExpressRouteCircuitPeeringsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCircuitPeeringsClientGetResponse` has been removed
+- Field `BastionHostsClientGetResult` of struct `BastionHostsClientGetResponse` has been removed
+- Field `RawResponse` of struct `BastionHostsClientGetResponse` has been removed
+- Field `VPNSiteLinksClientListByVPNSiteResult` of struct `VPNSiteLinksClientListByVPNSiteResponse` has been removed
+- Field `RawResponse` of struct `VPNSiteLinksClientListByVPNSiteResponse` has been removed
+- Field `VirtualHubBgpConnectionsClientListAdvertisedRoutesResult` of struct `VirtualHubBgpConnectionsClientListAdvertisedRoutesResponse` has been removed
+- Field `RawResponse` of struct `VirtualHubBgpConnectionsClientListAdvertisedRoutesResponse` has been removed
+- Field `VirtualNetworkPeeringsClientGetResult` of struct `VirtualNetworkPeeringsClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkPeeringsClientGetResponse` has been removed
+- Field `NatGatewaysClientCreateOrUpdateResult` of struct `NatGatewaysClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `NatGatewaysClientCreateOrUpdateResponse` has been removed
+- Field `VirtualNetworkGatewaysClientGetVPNProfilePackageURLResult` of struct `VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse` has been removed
+- Field `P2SVPNGatewaysClientGetP2SVPNConnectionHealthResult` of struct `P2SVPNGatewaysClientGetP2SVPNConnectionHealthResponse` has been removed
+- Field `RawResponse` of struct `P2SVPNGatewaysClientGetP2SVPNConnectionHealthResponse` has been removed
+- Field `PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResult` of struct `PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse` has been removed
+- Field `RawResponse` of struct `PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse` has been removed
+- Field `CustomIPPrefixesClientCreateOrUpdateResult` of struct `CustomIPPrefixesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `CustomIPPrefixesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualHubRouteTableV2SClientDeleteResponse` has been removed
+- Field `PrivateEndpointsClientListBySubscriptionResult` of struct `PrivateEndpointsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointsClientListBySubscriptionResponse` has been removed
+- Field `LoadBalancerOutboundRulesClientListResult` of struct `LoadBalancerOutboundRulesClientListResponse` has been removed
+- Field `RawResponse` of struct `LoadBalancerOutboundRulesClientListResponse` has been removed
+- Field `RawResponse` of struct `FirewallPoliciesClientDeleteResponse` has been removed
+- Field `VPNServerConfigurationsClientGetResult` of struct `VPNServerConfigurationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `VPNServerConfigurationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `LoadBalancersClientSwapPublicIPAddressesResponse` has been removed
+- Field `InboundNatRulesClientCreateOrUpdateResult` of struct `InboundNatRulesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `InboundNatRulesClientCreateOrUpdateResponse` has been removed
+- Field `VirtualNetworkTapsClientUpdateTagsResult` of struct `VirtualNetworkTapsClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkTapsClientUpdateTagsResponse` has been removed
+- Field `VirtualNetworksClientListUsageResult` of struct `VirtualNetworksClientListUsageResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworksClientListUsageResponse` has been removed
+- Field `DdosCustomPoliciesClientGetResult` of struct `DdosCustomPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `DdosCustomPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkPeeringsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewaysClientDisconnectVirtualNetworkGatewayVPNConnectionsResponse` has been removed
+- Field `RawResponse` of struct `RoutingIntentClientDeleteResponse` has been removed
+- Field `AvailableEndpointServicesClientListResult` of struct `AvailableEndpointServicesClientListResponse` has been removed
+- Field `RawResponse` of struct `AvailableEndpointServicesClientListResponse` has been removed
+- Field `VirtualNetworkGatewayConnectionsClientStartPacketCaptureResult` of struct `VirtualNetworkGatewayConnectionsClientStartPacketCaptureResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewayConnectionsClientStartPacketCaptureResponse` has been removed
+- Field `NatRulesClientListByVPNGatewayResult` of struct `NatRulesClientListByVPNGatewayResponse` has been removed
+- Field `RawResponse` of struct `NatRulesClientListByVPNGatewayResponse` has been removed
+- Field `RawResponse` of struct `IPAllocationsClientDeleteResponse` has been removed
+- Field `ApplicationGatewayPrivateEndpointConnectionsClientListResult` of struct `ApplicationGatewayPrivateEndpointConnectionsClientListResponse` has been removed
+- Field `RawResponse` of struct `ApplicationGatewayPrivateEndpointConnectionsClientListResponse` has been removed
+- Field `ApplicationGatewaysClientListAvailableResponseHeadersResult` of struct `ApplicationGatewaysClientListAvailableResponseHeadersResponse` has been removed
+- Field `RawResponse` of struct `ApplicationGatewaysClientListAvailableResponseHeadersResponse` has been removed
+- Field `VirtualNetworkGatewaysClientUpdateTagsResult` of struct `VirtualNetworkGatewaysClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewaysClientUpdateTagsResponse` has been removed
+- Field `VirtualNetworkGatewaysClientSupportedVPNDevicesResult` of struct `VirtualNetworkGatewaysClientSupportedVPNDevicesResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewaysClientSupportedVPNDevicesResponse` has been removed
+- Field `PublicIPAddressesClientListResult` of struct `PublicIPAddressesClientListResponse` has been removed
+- Field `RawResponse` of struct `PublicIPAddressesClientListResponse` has been removed
+- Field `FirewallPolicyRuleCollectionGroupsClientListResult` of struct `FirewallPolicyRuleCollectionGroupsClientListResponse` has been removed
+- Field `RawResponse` of struct `FirewallPolicyRuleCollectionGroupsClientListResponse` has been removed
+- Field `RawResponse` of struct `RouteFilterRulesClientDeleteResponse` has been removed
+- Field `LocalNetworkGatewaysClientUpdateTagsResult` of struct `LocalNetworkGatewaysClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `LocalNetworkGatewaysClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `VPNLinkConnectionsClientResetConnectionResponse` has been removed
+- Field `ExpressRouteGatewaysClientCreateOrUpdateResult` of struct `ExpressRouteGatewaysClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteGatewaysClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateDNSZoneGroupsClientDeleteResponse` has been removed
+- Field `FirewallPolicyRuleCollectionGroupsClientGetResult` of struct `FirewallPolicyRuleCollectionGroupsClientGetResponse` has been removed
+- Field `RawResponse` of struct `FirewallPolicyRuleCollectionGroupsClientGetResponse` has been removed
+- Field `ExpressRouteCircuitConnectionsClientCreateOrUpdateResult` of struct `ExpressRouteCircuitConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCircuitConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `ServiceEndpointPolicyDefinitionsClientGetResult` of struct `ServiceEndpointPolicyDefinitionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServiceEndpointPolicyDefinitionsClientGetResponse` has been removed
+- Field `VirtualHubRouteTableV2SClientCreateOrUpdateResult` of struct `VirtualHubRouteTableV2SClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualHubRouteTableV2SClientCreateOrUpdateResponse` has been removed
+- Field `ExpressRouteCircuitAuthorizationsClientCreateOrUpdateResult` of struct `ExpressRouteCircuitAuthorizationsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCircuitAuthorizationsClientCreateOrUpdateResponse` has been removed
+- Field `VirtualHubRouteTableV2SClientGetResult` of struct `VirtualHubRouteTableV2SClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualHubRouteTableV2SClientGetResponse` has been removed
+- Field `IPAllocationsClientCreateOrUpdateResult` of struct `IPAllocationsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `IPAllocationsClientCreateOrUpdateResponse` has been removed
+- Field `InterfacesClientListResult` of struct `InterfacesClientListResponse` has been removed
+- Field `RawResponse` of struct `InterfacesClientListResponse` has been removed
+- Field `ExpressRouteCircuitsClientCreateOrUpdateResult` of struct `ExpressRouteCircuitsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCircuitsClientCreateOrUpdateResponse` has been removed
+- Field `VirtualApplianceSKUsClientListResult` of struct `VirtualApplianceSKUsClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualApplianceSKUsClientListResponse` has been removed
+- Field `VirtualNetworkGatewaysClientSetVpnclientIPSecParametersResult` of struct `VirtualNetworkGatewaysClientSetVpnclientIPSecParametersResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewaysClientSetVpnclientIPSecParametersResponse` has been removed
+- Field `InterfaceIPConfigurationsClientGetResult` of struct `InterfaceIPConfigurationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `InterfaceIPConfigurationsClientGetResponse` has been removed
+- Field `ExpressRouteCircuitConnectionsClientGetResult` of struct `ExpressRouteCircuitConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCircuitConnectionsClientGetResponse` has been removed
+- Field `ExpressRouteGatewaysClientUpdateTagsResult` of struct `ExpressRouteGatewaysClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteGatewaysClientUpdateTagsResponse` has been removed
+- Field `VirtualNetworkGatewayConnectionsClientGetIkeSasResult` of struct `VirtualNetworkGatewayConnectionsClientGetIkeSasResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewayConnectionsClientGetIkeSasResponse` has been removed
+- Field `LoadBalancersClientCreateOrUpdateResult` of struct `LoadBalancersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `LoadBalancersClientCreateOrUpdateResponse` has been removed
+- Field `HubVirtualNetworkConnectionsClientGetResult` of struct `HubVirtualNetworkConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `HubVirtualNetworkConnectionsClientGetResponse` has been removed
+- Field `ApplicationGatewaysClientGetSSLPredefinedPolicyResult` of struct `ApplicationGatewaysClientGetSSLPredefinedPolicyResponse` has been removed
+- Field `RawResponse` of struct `ApplicationGatewaysClientGetSSLPredefinedPolicyResponse` has been removed
+- Field `SecurityGroupsClientGetResult` of struct `SecurityGroupsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SecurityGroupsClientGetResponse` has been removed
+- Field `InterfacesClientUpdateTagsResult` of struct `InterfacesClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `InterfacesClientUpdateTagsResponse` has been removed
+- Field `PrivateLinkServicesClientListPrivateEndpointConnectionsResult` of struct `PrivateLinkServicesClientListPrivateEndpointConnectionsResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesClientListPrivateEndpointConnectionsResponse` has been removed
+- Field `LoadBalancerFrontendIPConfigurationsClientListResult` of struct `LoadBalancerFrontendIPConfigurationsClientListResponse` has been removed
+- Field `RawResponse` of struct `LoadBalancerFrontendIPConfigurationsClientListResponse` has been removed
+- Field `HubVirtualNetworkConnectionsClientCreateOrUpdateResult` of struct `HubVirtualNetworkConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `HubVirtualNetworkConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `VPNGatewaysClientListByResourceGroupResult` of struct `VPNGatewaysClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `VPNGatewaysClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `VirtualHubsClientGetEffectiveVirtualHubRoutesResponse` has been removed
+- Field `ExpressRoutePortsClientUpdateTagsResult` of struct `ExpressRoutePortsClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `ExpressRoutePortsClientUpdateTagsResponse` has been removed
+- Field `VirtualWansClientUpdateTagsResult` of struct `VirtualWansClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `VirtualWansClientUpdateTagsResponse` has been removed
+- Field `VPNSitesClientListResult` of struct `VPNSitesClientListResponse` has been removed
+- Field `RawResponse` of struct `VPNSitesClientListResponse` has been removed
+- Field `VirtualHubsClientListByResourceGroupResult` of struct `VirtualHubsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `VirtualHubsClientListByResourceGroupResponse` has been removed
+- Field `RoutesClientGetResult` of struct `RoutesClientGetResponse` has been removed
+- Field `RawResponse` of struct `RoutesClientGetResponse` has been removed
+- Field `VirtualNetworkGatewaysClientGetVpnclientIPSecParametersResult` of struct `VirtualNetworkGatewaysClientGetVpnclientIPSecParametersResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewaysClientGetVpnclientIPSecParametersResponse` has been removed
+- Field `PublicIPAddressesClientGetCloudServicePublicIPAddressResult` of struct `PublicIPAddressesClientGetCloudServicePublicIPAddressResponse` has been removed
+- Field `RawResponse` of struct `PublicIPAddressesClientGetCloudServicePublicIPAddressResponse` has been removed
+- Field `PrivateEndpointsClientCreateOrUpdateResult` of struct `PrivateEndpointsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointsClientCreateOrUpdateResponse` has been removed
+- Field `VirtualApplianceSitesClientListResult` of struct `VirtualApplianceSitesClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualApplianceSitesClientListResponse` has been removed
+- Field `ConnectionMonitorsClientCreateOrUpdateResult` of struct `ConnectionMonitorsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ConnectionMonitorsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCircuitAuthorizationsClientDeleteResponse` has been removed
+- Field `NatRulesClientGetResult` of struct `NatRulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `NatRulesClientGetResponse` has been removed
+- Field `ApplicationGatewaysClientBackendHealthOnDemandResult` of struct `ApplicationGatewaysClientBackendHealthOnDemandResponse` has been removed
+- Field `RawResponse` of struct `ApplicationGatewaysClientBackendHealthOnDemandResponse` has been removed
+- Field `ApplicationGatewaysClientListAllResult` of struct `ApplicationGatewaysClientListAllResponse` has been removed
+- Field `RawResponse` of struct `ApplicationGatewaysClientListAllResponse` has been removed
+- Field `IPGroupsClientListResult` of struct `IPGroupsClientListResponse` has been removed
+- Field `RawResponse` of struct `IPGroupsClientListResponse` has been removed
+- Field `LoadBalancerBackendAddressPoolsClientGetResult` of struct `LoadBalancerBackendAddressPoolsClientGetResponse` has been removed
+- Field `RawResponse` of struct `LoadBalancerBackendAddressPoolsClientGetResponse` has been removed
+- Field `ServiceEndpointPoliciesClientGetResult` of struct `ServiceEndpointPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServiceEndpointPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewaysClientResetVPNClientSharedKeyResponse` has been removed
+- Field `PrivateEndpointsClientGetResult` of struct `PrivateEndpointsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointsClientGetResponse` has been removed
+- Field `ServiceAssociationLinksClientListResult` of struct `ServiceAssociationLinksClientListResponse` has been removed
+- Field `RawResponse` of struct `ServiceAssociationLinksClientListResponse` has been removed
+- Field `VirtualHubsClientGetResult` of struct `VirtualHubsClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualHubsClientGetResponse` has been removed
+- Field `PacketCapturesClientGetResult` of struct `PacketCapturesClientGetResponse` has been removed
+- Field `RawResponse` of struct `PacketCapturesClientGetResponse` has been removed
+- Field `RawResponse` of struct `BastionHostsClientDeleteResponse` has been removed
+- Field `LoadBalancerLoadBalancingRulesClientListResult` of struct `LoadBalancerLoadBalancingRulesClientListResponse` has been removed
+- Field `RawResponse` of struct `LoadBalancerLoadBalancingRulesClientListResponse` has been removed
+- Field `IPGroupsClientUpdateGroupsResult` of struct `IPGroupsClientUpdateGroupsResponse` has been removed
+- Field `RawResponse` of struct `IPGroupsClientUpdateGroupsResponse` has been removed
+- Field `RawResponse` of struct `NatGatewaysClientDeleteResponse` has been removed
+- Field `ExpressRouteCrossConnectionsClientUpdateTagsResult` of struct `ExpressRouteCrossConnectionsClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCrossConnectionsClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteGatewaysClientDeleteResponse` has been removed
+- Field `SubnetsClientGetResult` of struct `SubnetsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SubnetsClientGetResponse` has been removed
+- Field `VirtualAppliancesClientGetResult` of struct `VirtualAppliancesClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualAppliancesClientGetResponse` has been removed
+- Field `VirtualNetworkGatewayNatRulesClientGetResult` of struct `VirtualNetworkGatewayNatRulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewayNatRulesClientGetResponse` has been removed
+- Field `VirtualNetworkGatewaysClientCreateOrUpdateResult` of struct `VirtualNetworkGatewaysClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewaysClientCreateOrUpdateResponse` has been removed
+- Field `VirtualHubIPConfigurationClientListResult` of struct `VirtualHubIPConfigurationClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualHubIPConfigurationClientListResponse` has been removed
+- Field `WebCategoriesClientGetResult` of struct `WebCategoriesClientGetResponse` has been removed
+- Field `RawResponse` of struct `WebCategoriesClientGetResponse` has been removed
+- Field `HubRouteTablesClientGetResult` of struct `HubRouteTablesClientGetResponse` has been removed
+- Field `RawResponse` of struct `HubRouteTablesClientGetResponse` has been removed
+- Field `RawResponse` of struct `PublicIPAddressesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `ApplicationGatewaysClientDeleteResponse` has been removed
+- Field `ServiceEndpointPolicyDefinitionsClientListByResourceGroupResult` of struct `ServiceEndpointPolicyDefinitionsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ServiceEndpointPolicyDefinitionsClientListByResourceGroupResponse` has been removed
+- Field `SecurityPartnerProvidersClientUpdateTagsResult` of struct `SecurityPartnerProvidersClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `SecurityPartnerProvidersClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `SubnetsClientUnprepareNetworkPoliciesResponse` has been removed
+- Field `RawResponse` of struct `ServiceEndpointPoliciesClientDeleteResponse` has been removed
+- Field `AvailableServiceAliasesClientListResult` of struct `AvailableServiceAliasesClientListResponse` has been removed
+- Field `RawResponse` of struct `AvailableServiceAliasesClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualAppliancesClientDeleteResponse` has been removed
+- Field `NatRulesClientCreateOrUpdateResult` of struct `NatRulesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `NatRulesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ConnectionMonitorsClientDeleteResponse` has been removed
+- Field `VPNServerConfigurationsClientUpdateTagsResult` of struct `VPNServerConfigurationsClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `VPNServerConfigurationsClientUpdateTagsResponse` has been removed
+- Field `DefaultSecurityRulesClientListResult` of struct `DefaultSecurityRulesClientListResponse` has been removed
+- Field `RawResponse` of struct `DefaultSecurityRulesClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualRouterPeeringsClientDeleteResponse` has been removed
+- Field `VirtualNetworkTapsClientCreateOrUpdateResult` of struct `VirtualNetworkTapsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkTapsClientCreateOrUpdateResponse` has been removed
+- Field `P2SVPNGatewaysClientListByResourceGroupResult` of struct `P2SVPNGatewaysClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `P2SVPNGatewaysClientListByResourceGroupResponse` has been removed
+- Field `BastionHostsClientListResult` of struct `BastionHostsClientListResponse` has been removed
+- Field `RawResponse` of struct `BastionHostsClientListResponse` has been removed
+- Field `ExpressRoutePortsLocationsClientListResult` of struct `ExpressRoutePortsLocationsClientListResponse` has been removed
+- Field `RawResponse` of struct `ExpressRoutePortsLocationsClientListResponse` has been removed
+- Field `RouteTablesClientListResult` of struct `RouteTablesClientListResponse` has been removed
+- Field `RawResponse` of struct `RouteTablesClientListResponse` has been removed
+- Field `ServiceEndpointPoliciesClientUpdateTagsResult` of struct `ServiceEndpointPoliciesClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `ServiceEndpointPoliciesClientUpdateTagsResponse` has been removed
+- Field `ExpressRouteGatewaysClientGetResult` of struct `ExpressRouteGatewaysClientGetResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteGatewaysClientGetResponse` has been removed
+- Field `IPGroupsClientCreateOrUpdateResult` of struct `IPGroupsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `IPGroupsClientCreateOrUpdateResponse` has been removed
+- Field `VirtualNetworkGatewaysClientVPNDeviceConfigurationScriptResult` of struct `VirtualNetworkGatewaysClientVPNDeviceConfigurationScriptResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewaysClientVPNDeviceConfigurationScriptResponse` has been removed
+- Field `PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResult` of struct `PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse` has been removed
+- Field `VirtualNetworkGatewayConnectionsClientCreateOrUpdateResult` of struct `VirtualNetworkGatewayConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewayConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `ExpressRouteCircuitConnectionsClientListResult` of struct `ExpressRouteCircuitConnectionsClientListResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCircuitConnectionsClientListResponse` has been removed
+- Field `RawResponse` of struct `VPNConnectionsClientDeleteResponse` has been removed
+- Field `CustomIPPrefixesClientListAllResult` of struct `CustomIPPrefixesClientListAllResponse` has been removed
+- Field `RawResponse` of struct `CustomIPPrefixesClientListAllResponse` has been removed
+- Field `VPNConnectionsClientStartPacketCaptureResult` of struct `VPNConnectionsClientStartPacketCaptureResponse` has been removed
+- Field `RawResponse` of struct `VPNConnectionsClientStartPacketCaptureResponse` has been removed
+- Field `ExpressRouteCrossConnectionsClientGetResult` of struct `ExpressRouteCrossConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCrossConnectionsClientGetResponse` has been removed
+- Field `InterfacesClientListEffectiveNetworkSecurityGroupsResult` of struct `InterfacesClientListEffectiveNetworkSecurityGroupsResponse` has been removed
+- Field `RawResponse` of struct `InterfacesClientListEffectiveNetworkSecurityGroupsResponse` has been removed
+- Field `SecurityGroupsClientListResult` of struct `SecurityGroupsClientListResponse` has been removed
+- Field `RawResponse` of struct `SecurityGroupsClientListResponse` has been removed
+- Field `HubRouteTablesClientListResult` of struct `HubRouteTablesClientListResponse` has been removed
+- Field `RawResponse` of struct `HubRouteTablesClientListResponse` has been removed
+- Field `P2SVPNGatewaysClientGetP2SVPNConnectionHealthDetailedResult` of struct `P2SVPNGatewaysClientGetP2SVPNConnectionHealthDetailedResponse` has been removed
+- Field `RawResponse` of struct `P2SVPNGatewaysClientGetP2SVPNConnectionHealthDetailedResponse` has been removed
+- Field `VPNConnectionsClientStopPacketCaptureResult` of struct `VPNConnectionsClientStopPacketCaptureResponse` has been removed
+- Field `RawResponse` of struct `VPNConnectionsClientStopPacketCaptureResponse` has been removed
+- Field `WatchersClientCreateOrUpdateResult` of struct `WatchersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `WatchersClientCreateOrUpdateResponse` has been removed
+- Field `ApplicationGatewayPrivateEndpointConnectionsClientUpdateResult` of struct `ApplicationGatewayPrivateEndpointConnectionsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ApplicationGatewayPrivateEndpointConnectionsClientUpdateResponse` has been removed
+- Field `VirtualAppliancesClientUpdateTagsResult` of struct `VirtualAppliancesClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `VirtualAppliancesClientUpdateTagsResponse` has been removed
+- Field `VirtualNetworkPeeringsClientCreateOrUpdateResult` of struct `VirtualNetworkPeeringsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkPeeringsClientCreateOrUpdateResponse` has been removed
+- Field `ApplicationGatewayPrivateEndpointConnectionsClientGetResult` of struct `ApplicationGatewayPrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ApplicationGatewayPrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `WatchersClientListAvailableProvidersResult` of struct `WatchersClientListAvailableProvidersResponse` has been removed
+- Field `RawResponse` of struct `WatchersClientListAvailableProvidersResponse` has been removed
+- Field `DdosCustomPoliciesClientCreateOrUpdateResult` of struct `DdosCustomPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DdosCustomPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `InterfacesClientGetResult` of struct `InterfacesClientGetResponse` has been removed
+- Field `RawResponse` of struct `InterfacesClientGetResponse` has been removed
+- Field `VirtualNetworkGatewaysClientResetResult` of struct `VirtualNetworkGatewaysClientResetResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewaysClientResetResponse` has been removed
+- Field `ExpressRouteCrossConnectionPeeringsClientCreateOrUpdateResult` of struct `ExpressRouteCrossConnectionPeeringsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCrossConnectionPeeringsClientCreateOrUpdateResponse` has been removed
+- Field `SecurityPartnerProvidersClientListResult` of struct `SecurityPartnerProvidersClientListResponse` has been removed
+- Field `RawResponse` of struct `SecurityPartnerProvidersClientListResponse` has been removed
+- Field `LoadBalancerBackendAddressPoolsClientCreateOrUpdateResult` of struct `LoadBalancerBackendAddressPoolsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `LoadBalancerBackendAddressPoolsClientCreateOrUpdateResponse` has been removed
+- Field `ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofileResult` of struct `ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofileResponse` has been removed
+- Field `RawResponse` of struct `ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofileResponse` has been removed
+- Field `VirtualNetworkPeeringsClientListResult` of struct `VirtualNetworkPeeringsClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkPeeringsClientListResponse` has been removed
+- Field `BgpServiceCommunitiesClientListResult` of struct `BgpServiceCommunitiesClientListResponse` has been removed
+- Field `RawResponse` of struct `BgpServiceCommunitiesClientListResponse` has been removed
+- Field `LocalNetworkGatewaysClientCreateOrUpdateResult` of struct `LocalNetworkGatewaysClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `LocalNetworkGatewaysClientCreateOrUpdateResponse` has been removed
+- Field `AvailablePrivateEndpointTypesClientListResult` of struct `AvailablePrivateEndpointTypesClientListResponse` has been removed
+- Field `RawResponse` of struct `AvailablePrivateEndpointTypesClientListResponse` has been removed
+- Field `ExpressRouteConnectionsClientGetResult` of struct `ExpressRouteConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesClientDeletePrivateEndpointConnectionResponse` has been removed
+- Field `AvailablePrivateEndpointTypesClientListByResourceGroupResult` of struct `AvailablePrivateEndpointTypesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `AvailablePrivateEndpointTypesClientListByResourceGroupResponse` has been removed
+- Field `ExpressRouteCrossConnectionsClientCreateOrUpdateResult` of struct `ExpressRouteCrossConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCrossConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `ExpressRouteCrossConnectionPeeringsClientGetResult` of struct `ExpressRouteCrossConnectionPeeringsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCrossConnectionPeeringsClientGetResponse` has been removed
+- Field `P2SVPNGatewaysClientUpdateTagsResult` of struct `P2SVPNGatewaysClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `P2SVPNGatewaysClientUpdateTagsResponse` has been removed
+- Field `AvailableDelegationsClientListResult` of struct `AvailableDelegationsClientListResponse` has been removed
+- Field `RawResponse` of struct `AvailableDelegationsClientListResponse` has been removed
+- Field `VirtualHubBgpConnectionsClientListLearnedRoutesResult` of struct `VirtualHubBgpConnectionsClientListLearnedRoutesResponse` has been removed
+- Field `RawResponse` of struct `VirtualHubBgpConnectionsClientListLearnedRoutesResponse` has been removed
+- Field `RawResponse` of struct `ConnectionMonitorsClientStartResponse` has been removed
+- Field `P2SVPNGatewaysClientGenerateVPNProfileResult` of struct `P2SVPNGatewaysClientGenerateVPNProfileResponse` has been removed
+- Field `RawResponse` of struct `P2SVPNGatewaysClientGenerateVPNProfileResponse` has been removed
+- Field `AzureFirewallsClientListAllResult` of struct `AzureFirewallsClientListAllResponse` has been removed
+- Field `RawResponse` of struct `AzureFirewallsClientListAllResponse` has been removed
+- Field `WatchersClientGetTroubleshootingResultResult` of struct `WatchersClientGetTroubleshootingResultResponse` has been removed
+- Field `RawResponse` of struct `WatchersClientGetTroubleshootingResultResponse` has been removed
+- Field `RawResponse` of struct `WebApplicationFirewallPoliciesClientDeleteResponse` has been removed
+- Field `PacketCapturesClientListResult` of struct `PacketCapturesClientListResponse` has been removed
+- Field `RawResponse` of struct `PacketCapturesClientListResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCircuitConnectionsClientDeleteResponse` has been removed
+- Field `SecurityPartnerProvidersClientGetResult` of struct `SecurityPartnerProvidersClientGetResponse` has been removed
+- Field `RawResponse` of struct `SecurityPartnerProvidersClientGetResponse` has been removed
+- Field `InterfaceTapConfigurationsClientGetResult` of struct `InterfaceTapConfigurationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `InterfaceTapConfigurationsClientGetResponse` has been removed
+- Field `VPNSiteLinksClientGetResult` of struct `VPNSiteLinksClientGetResponse` has been removed
+- Field `RawResponse` of struct `VPNSiteLinksClientGetResponse` has been removed
+- Field `RawResponse` of struct `InterfacesClientDeleteResponse` has been removed
+- Field `ProfilesClientGetResult` of struct `ProfilesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ProfilesClientGetResponse` has been removed
+- Field `LocalNetworkGatewaysClientGetResult` of struct `LocalNetworkGatewaysClientGetResponse` has been removed
+- Field `RawResponse` of struct `LocalNetworkGatewaysClientGetResponse` has been removed
+- Field `RouteFiltersClientListByResourceGroupResult` of struct `RouteFiltersClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `RouteFiltersClientListByResourceGroupResponse` has been removed
+- Field `ApplicationSecurityGroupsClientGetResult` of struct `ApplicationSecurityGroupsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ApplicationSecurityGroupsClientGetResponse` has been removed
+- Field `AzureFirewallsClientGetResult` of struct `AzureFirewallsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AzureFirewallsClientGetResponse` has been removed
+- Field `VPNSitesClientUpdateTagsResult` of struct `VPNSitesClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `VPNSitesClientUpdateTagsResponse` has been removed
+- Field `SecurityGroupsClientUpdateTagsResult` of struct `SecurityGroupsClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `SecurityGroupsClientUpdateTagsResponse` has been removed
+- Field `PrivateLinkServicesClientCreateOrUpdateResult` of struct `PrivateLinkServicesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesClientCreateOrUpdateResponse` has been removed
+- Field `ManagementClientPutBastionShareableLinkResult` of struct `ManagementClientPutBastionShareableLinkResponse` has been removed
+- Field `RawResponse` of struct `ManagementClientPutBastionShareableLinkResponse` has been removed
+- Field `VirtualAppliancesClientCreateOrUpdateResult` of struct `VirtualAppliancesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualAppliancesClientCreateOrUpdateResponse` has been removed
+- Field `RouteTablesClientUpdateTagsResult` of struct `RouteTablesClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `RouteTablesClientUpdateTagsResponse` has been removed
+- Field `FirewallPoliciesClientGetResult` of struct `FirewallPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `FirewallPoliciesClientGetResponse` has been removed
+- Field `P2SVPNGatewaysClientResetResult` of struct `P2SVPNGatewaysClientResetResponse` has been removed
+- Field `RawResponse` of struct `P2SVPNGatewaysClientResetResponse` has been removed
+- Field `RawResponse` of struct `RouteTablesClientDeleteResponse` has been removed
+- Field `FirewallPolicyIdpsSignaturesOverridesClientListResult` of struct `FirewallPolicyIdpsSignaturesOverridesClientListResponse` has been removed
+- Field `RawResponse` of struct `FirewallPolicyIdpsSignaturesOverridesClientListResponse` has been removed
+- Field `VirtualHubBgpConnectionClientCreateOrUpdateResult` of struct `VirtualHubBgpConnectionClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualHubBgpConnectionClientCreateOrUpdateResponse` has been removed
+- Field `FirewallPolicyIdpsSignaturesClientListResult` of struct `FirewallPolicyIdpsSignaturesClientListResponse` has been removed
+- Field `RawResponse` of struct `FirewallPolicyIdpsSignaturesClientListResponse` has been removed
+- Field `FirewallPolicyIdpsSignaturesOverridesClientPatchResult` of struct `FirewallPolicyIdpsSignaturesOverridesClientPatchResponse` has been removed
+- Field `RawResponse` of struct `FirewallPolicyIdpsSignaturesOverridesClientPatchResponse` has been removed
+- Field `ApplicationGatewaysClientBackendHealthResult` of struct `ApplicationGatewaysClientBackendHealthResponse` has been removed
+- Field `RawResponse` of struct `ApplicationGatewaysClientBackendHealthResponse` has been removed
+- Field `RawResponse` of struct `ManagementClientDeleteBastionShareableLinkResponse` has been removed
+- Field `VPNGatewaysClientGetResult` of struct `VPNGatewaysClientGetResponse` has been removed
+- Field `RawResponse` of struct `VPNGatewaysClientGetResponse` has been removed
+- Field `ManagementClientGetBastionShareableLinkResult` of struct `ManagementClientGetBastionShareableLinkResponse` has been removed
+- Field `RawResponse` of struct `ManagementClientGetBastionShareableLinkResponse` has been removed
+- Field `LocalNetworkGatewaysClientListResult` of struct `LocalNetworkGatewaysClientListResponse` has been removed
+- Field `RawResponse` of struct `LocalNetworkGatewaysClientListResponse` has been removed
+- Field `RawResponse` of struct `ProfilesClientDeleteResponse` has been removed
+- Field `VirtualHubsClientUpdateTagsResult` of struct `VirtualHubsClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `VirtualHubsClientUpdateTagsResponse` has been removed
+- Field `VPNGatewaysClientResetResult` of struct `VPNGatewaysClientResetResponse` has been removed
+- Field `RawResponse` of struct `VPNGatewaysClientResetResponse` has been removed
+- Field `LoadBalancerOutboundRulesClientGetResult` of struct `LoadBalancerOutboundRulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `LoadBalancerOutboundRulesClientGetResponse` has been removed
+- Field `LoadBalancerProbesClientListResult` of struct `LoadBalancerProbesClientListResponse` has been removed
+- Field `RawResponse` of struct `LoadBalancerProbesClientListResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteConnectionsClientDeleteResponse` has been removed
+- Field `ExpressRouteCircuitsClientListArpTableResult` of struct `ExpressRouteCircuitsClientListArpTableResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCircuitsClientListArpTableResponse` has been removed
+- Field `InboundNatRulesClientListResult` of struct `InboundNatRulesClientListResponse` has been removed
+- Field `RawResponse` of struct `InboundNatRulesClientListResponse` has been removed
+- Field `RawResponse` of struct `P2SVPNGatewaysClientDisconnectP2SVPNConnectionsResponse` has been removed
+- Field `IPAllocationsClientListByResourceGroupResult` of struct `IPAllocationsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `IPAllocationsClientListByResourceGroupResponse` has been removed
+- Field `ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResult` of struct `ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse` has been removed
+- Field `RawResponse` of struct `ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse` has been removed
+- Field `NatGatewaysClientUpdateTagsResult` of struct `NatGatewaysClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `NatGatewaysClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `DscpConfigurationClientDeleteResponse` has been removed
+- Field `ServiceEndpointPoliciesClientListResult` of struct `ServiceEndpointPoliciesClientListResponse` has been removed
+- Field `RawResponse` of struct `ServiceEndpointPoliciesClientListResponse` has been removed
+- Field `ExpressRouteConnectionsClientListResult` of struct `ExpressRouteConnectionsClientListResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteConnectionsClientListResponse` has been removed
+- Field `LoadBalancersClientListInboundNatRulePortMappingsResult` of struct `LoadBalancersClientListInboundNatRulePortMappingsResponse` has been removed
+- Field `RawResponse` of struct `LoadBalancersClientListInboundNatRulePortMappingsResponse` has been removed
+- Field `WatchersClientListAllResult` of struct `WatchersClientListAllResponse` has been removed
+- Field `RawResponse` of struct `WatchersClientListAllResponse` has been removed
+- Field `VirtualNetworkGatewaysClientStopPacketCaptureResult` of struct `VirtualNetworkGatewaysClientStopPacketCaptureResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewaysClientStopPacketCaptureResponse` has been removed
+- Field `FlowLogsClientCreateOrUpdateResult` of struct `FlowLogsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `FlowLogsClientCreateOrUpdateResponse` has been removed
+- Field `ExpressRoutePortsClientGenerateLOAResult` of struct `ExpressRoutePortsClientGenerateLOAResponse` has been removed
+- Field `RawResponse` of struct `ExpressRoutePortsClientGenerateLOAResponse` has been removed
+- Field `VPNGatewaysClientCreateOrUpdateResult` of struct `VPNGatewaysClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VPNGatewaysClientCreateOrUpdateResponse` has been removed
+- Field `VPNSiteLinkConnectionsClientGetResult` of struct `VPNSiteLinkConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `VPNSiteLinkConnectionsClientGetResponse` has been removed
+- Field `VirtualNetworkGatewayConnectionsClientUpdateTagsResult` of struct `VirtualNetworkGatewayConnectionsClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewayConnectionsClientUpdateTagsResponse` has been removed
+- Field `VirtualRoutersClientGetResult` of struct `VirtualRoutersClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualRoutersClientGetResponse` has been removed
+- Field `RawResponse` of struct `VPNServerConfigurationsClientDeleteResponse` has been removed
+- Field `ExpressRouteCircuitsClientListRoutesTableResult` of struct `ExpressRouteCircuitsClientListRoutesTableResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCircuitsClientListRoutesTableResponse` has been removed
+- Field `DdosProtectionPlansClientUpdateTagsResult` of struct `DdosProtectionPlansClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `DdosProtectionPlansClientUpdateTagsResponse` has been removed
+- Field `VirtualApplianceSKUsClientGetResult` of struct `VirtualApplianceSKUsClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualApplianceSKUsClientGetResponse` has been removed
+- Field `IPGroupsClientListByResourceGroupResult` of struct `IPGroupsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `IPGroupsClientListByResourceGroupResponse` has been removed
+- Field `VirtualRouterPeeringsClientListResult` of struct `VirtualRouterPeeringsClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualRouterPeeringsClientListResponse` has been removed
+- Field `WebCategoriesClientListBySubscriptionResult` of struct `WebCategoriesClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `WebCategoriesClientListBySubscriptionResponse` has been removed
+- Field `ManagementClientSupportedSecurityProvidersResult` of struct `ManagementClientSupportedSecurityProvidersResponse` has been removed
+- Field `RawResponse` of struct `ManagementClientSupportedSecurityProvidersResponse` has been removed
+- Field `FlowLogsClientListResult` of struct `FlowLogsClientListResponse` has been removed
+- Field `RawResponse` of struct `FlowLogsClientListResponse` has been removed
+- Field `VirtualWansClientListResult` of struct `VirtualWansClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualWansClientListResponse` has been removed
+- Field `FirewallPoliciesClientListResult` of struct `FirewallPoliciesClientListResponse` has been removed
+- Field `RawResponse` of struct `FirewallPoliciesClientListResponse` has been removed
+- Field `ExpressRouteCircuitsClientGetStatsResult` of struct `ExpressRouteCircuitsClientGetStatsResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCircuitsClientGetStatsResponse` has been removed
+- Field `ExpressRouteCircuitsClientListRoutesTableSummaryResult` of struct `ExpressRouteCircuitsClientListRoutesTableSummaryResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCircuitsClientListRoutesTableSummaryResponse` has been removed
+- Field `VPNConnectionsClientGetResult` of struct `VPNConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `VPNConnectionsClientGetResponse` has been removed
+- Field `DscpConfigurationClientGetResult` of struct `DscpConfigurationClientGetResponse` has been removed
+- Field `RawResponse` of struct `DscpConfigurationClientGetResponse` has been removed
+- Field `ExpressRouteCircuitPeeringsClientListResult` of struct `ExpressRouteCircuitPeeringsClientListResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCircuitPeeringsClientListResponse` has been removed
+- Field `VirtualWansClientListByResourceGroupResult` of struct `VirtualWansClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `VirtualWansClientListByResourceGroupResponse` has been removed
+- Field `InterfacesClientGetEffectiveRouteTableResult` of struct `InterfacesClientGetEffectiveRouteTableResponse` has been removed
+- Field `RawResponse` of struct `InterfacesClientGetEffectiveRouteTableResponse` has been removed
+- Field `RawResponse` of struct `AzureFirewallsClientDeleteResponse` has been removed
+- Field `RouteTablesClientCreateOrUpdateResult` of struct `RouteTablesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `RouteTablesClientCreateOrUpdateResponse` has been removed
+- Field `DscpConfigurationClientListAllResult` of struct `DscpConfigurationClientListAllResponse` has been removed
+- Field `RawResponse` of struct `DscpConfigurationClientListAllResponse` has been removed
+- Field `PacketCapturesClientGetStatusResult` of struct `PacketCapturesClientGetStatusResponse` has been removed
+- Field `RawResponse` of struct `PacketCapturesClientGetStatusResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `HubRouteTablesClientCreateOrUpdateResult` of struct `HubRouteTablesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `HubRouteTablesClientCreateOrUpdateResponse` has been removed
+- Field `PrivateDNSZoneGroupsClientListResult` of struct `PrivateDNSZoneGroupsClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateDNSZoneGroupsClientListResponse` has been removed
+- Field `SecurityGroupsClientListAllResult` of struct `SecurityGroupsClientListAllResponse` has been removed
+- Field `RawResponse` of struct `SecurityGroupsClientListAllResponse` has been removed
+- Field `RoutingIntentClientListResult` of struct `RoutingIntentClientListResponse` has been removed
+- Field `RawResponse` of struct `RoutingIntentClientListResponse` has been removed
+- Field `DdosProtectionPlansClientGetResult` of struct `DdosProtectionPlansClientGetResponse` has been removed
+- Field `RawResponse` of struct `DdosProtectionPlansClientGetResponse` has been removed
+- Field `ManagementClientCheckDNSNameAvailabilityResult` of struct `ManagementClientCheckDNSNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `ManagementClientCheckDNSNameAvailabilityResponse` has been removed
+- Field `WebApplicationFirewallPoliciesClientListAllResult` of struct `WebApplicationFirewallPoliciesClientListAllResponse` has been removed
+- Field `RawResponse` of struct `WebApplicationFirewallPoliciesClientListAllResponse` has been removed
+- Field `SubnetsClientCreateOrUpdateResult` of struct `SubnetsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SubnetsClientCreateOrUpdateResponse` has been removed
+- Field `InboundNatRulesClientGetResult` of struct `InboundNatRulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `InboundNatRulesClientGetResponse` has been removed
+- Field `ApplicationGatewaysClientCreateOrUpdateResult` of struct `ApplicationGatewaysClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ApplicationGatewaysClientCreateOrUpdateResponse` has been removed
+- Field `NatGatewaysClientGetResult` of struct `NatGatewaysClientGetResponse` has been removed
+- Field `RawResponse` of struct `NatGatewaysClientGetResponse` has been removed
+- Field `ExpressRouteCircuitsClientGetResult` of struct `ExpressRouteCircuitsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCircuitsClientGetResponse` has been removed
+- Field `LoadBalancersClientUpdateTagsResult` of struct `LoadBalancersClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `LoadBalancersClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `VirtualRoutersClientDeleteResponse` has been removed
+- Field `FirewallPolicyIdpsSignaturesFilterValuesClientListResult` of struct `FirewallPolicyIdpsSignaturesFilterValuesClientListResponse` has been removed
+- Field `RawResponse` of struct `FirewallPolicyIdpsSignaturesFilterValuesClientListResponse` has been removed
+- Field `DscpConfigurationClientCreateOrUpdateResult` of struct `DscpConfigurationClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DscpConfigurationClientCreateOrUpdateResponse` has been removed
+- Field `RouteFilterRulesClientGetResult` of struct `RouteFilterRulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `RouteFilterRulesClientGetResponse` has been removed
+- Field `RouteTablesClientListAllResult` of struct `RouteTablesClientListAllResponse` has been removed
+- Field `RawResponse` of struct `RouteTablesClientListAllResponse` has been removed
+- Field `IPAllocationsClientUpdateTagsResult` of struct `IPAllocationsClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `IPAllocationsClientUpdateTagsResponse` has been removed
+- Field `RouteTablesClientGetResult` of struct `RouteTablesClientGetResponse` has been removed
+- Field `RawResponse` of struct `RouteTablesClientGetResponse` has been removed
+- Field `UsagesClientListResult` of struct `UsagesClientListResponse` has been removed
+- Field `RawResponse` of struct `UsagesClientListResponse` has been removed
+- Field `ExpressRouteCrossConnectionPeeringsClientListResult` of struct `ExpressRouteCrossConnectionPeeringsClientListResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCrossConnectionPeeringsClientListResponse` has been removed
+- Field `PublicIPAddressesClientCreateOrUpdateResult` of struct `PublicIPAddressesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PublicIPAddressesClientCreateOrUpdateResponse` has been removed
+- Field `P2SVPNGatewaysClientGetResult` of struct `P2SVPNGatewaysClientGetResponse` has been removed
+- Field `RawResponse` of struct `P2SVPNGatewaysClientGetResponse` has been removed
+- Field `ServiceEndpointPolicyDefinitionsClientCreateOrUpdateResult` of struct `ServiceEndpointPolicyDefinitionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServiceEndpointPolicyDefinitionsClientCreateOrUpdateResponse` has been removed
+- Field `ExpressRoutePortsClientListResult` of struct `ExpressRoutePortsClientListResponse` has been removed
+- Field `RawResponse` of struct `ExpressRoutePortsClientListResponse` has been removed
+- Field `PrivateDNSZoneGroupsClientCreateOrUpdateResult` of struct `PrivateDNSZoneGroupsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateDNSZoneGroupsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `RoutesClientDeleteResponse` has been removed
+- Field `ServiceTagInformationClientListResult` of struct `ServiceTagInformationClientListResponse` has been removed
+- Field `RawResponse` of struct `ServiceTagInformationClientListResponse` has been removed
+- Field `InterfacesClientListAllResult` of struct `InterfacesClientListAllResponse` has been removed
+- Field `RawResponse` of struct `InterfacesClientListAllResponse` has been removed
+- Field `SecurityRulesClientListResult` of struct `SecurityRulesClientListResponse` has been removed
+- Field `RawResponse` of struct `SecurityRulesClientListResponse` has been removed
+- Field `InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResult` of struct `InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse` has been removed
+- Field `RawResponse` of struct `InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse` has been removed
+- Field `VirtualNetworkGatewaysClientGetResult` of struct `VirtualNetworkGatewaysClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewaysClientGetResponse` has been removed
+- Field `AzureFirewallFqdnTagsClientListAllResult` of struct `AzureFirewallFqdnTagsClientListAllResponse` has been removed
+- Field `RawResponse` of struct `AzureFirewallFqdnTagsClientListAllResponse` has been removed
+- Field `RawResponse` of struct `PublicIPPrefixesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `LoadBalancerBackendAddressPoolsClientDeleteResponse` has been removed
+- Field `InboundSecurityRuleClientCreateOrUpdateResult` of struct `InboundSecurityRuleClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `InboundSecurityRuleClientCreateOrUpdateResponse` has been removed
+- Field `LoadBalancerBackendAddressPoolsClientListResult` of struct `LoadBalancerBackendAddressPoolsClientListResponse` has been removed
+- Field `RawResponse` of struct `LoadBalancerBackendAddressPoolsClientListResponse` has been removed
+- Field `DefaultSecurityRulesClientGetResult` of struct `DefaultSecurityRulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `DefaultSecurityRulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ApplicationGatewaysClientStartResponse` has been removed
+- Field `RawResponse` of struct `ApplicationGatewayPrivateEndpointConnectionsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `InterfaceTapConfigurationsClientDeleteResponse` has been removed
+- Field `PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResult` of struct `PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse` has been removed
+- Field `InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesResult` of struct `InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesResponse` has been removed
+- Field `RawResponse` of struct `InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesResponse` has been removed
+- Field `VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResult` of struct `VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse` has been removed
+- Field `WatchersClientGetVMSecurityRulesResult` of struct `WatchersClientGetVMSecurityRulesResponse` has been removed
+- Field `RawResponse` of struct `WatchersClientGetVMSecurityRulesResponse` has been removed
+- Field `ConnectionMonitorsClientGetResult` of struct `ConnectionMonitorsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ConnectionMonitorsClientGetResponse` has been removed
+- Field `LoadBalancersClientListAllResult` of struct `LoadBalancersClientListAllResponse` has been removed
+- Field `RawResponse` of struct `LoadBalancersClientListAllResponse` has been removed
+- Field `ExpressRouteCrossConnectionsClientListRoutesTableSummaryResult` of struct `ExpressRouteCrossConnectionsClientListRoutesTableSummaryResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCrossConnectionsClientListRoutesTableSummaryResponse` has been removed
+- Field `NatGatewaysClientListAllResult` of struct `NatGatewaysClientListAllResponse` has been removed
+- Field `RawResponse` of struct `NatGatewaysClientListAllResponse` has been removed
+- Field `RawResponse` of struct `DdosCustomPoliciesClientDeleteResponse` has been removed
+- Field `VPNGatewaysClientStopPacketCaptureResult` of struct `VPNGatewaysClientStopPacketCaptureResponse` has been removed
+- Field `RawResponse` of struct `VPNGatewaysClientStopPacketCaptureResponse` has been removed
+- Field `ConnectionMonitorsClientUpdateTagsResult` of struct `ConnectionMonitorsClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `ConnectionMonitorsClientUpdateTagsResponse` has been removed
+- Field `VirtualHubBgpConnectionClientGetResult` of struct `VirtualHubBgpConnectionClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualHubBgpConnectionClientGetResponse` has been removed
+- Field `WatchersClientSetFlowLogConfigurationResult` of struct `WatchersClientSetFlowLogConfigurationResponse` has been removed
+- Field `RawResponse` of struct `WatchersClientSetFlowLogConfigurationResponse` has been removed
+- Field `RawResponse` of struct `SecurityRulesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `LoadBalancersClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCircuitsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `ApplicationSecurityGroupsClientDeleteResponse` has been removed
+- Field `LoadBalancerFrontendIPConfigurationsClientGetResult` of struct `LoadBalancerFrontendIPConfigurationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `LoadBalancerFrontendIPConfigurationsClientGetResponse` has been removed
+- Field `VirtualHubRouteTableV2SClientListResult` of struct `VirtualHubRouteTableV2SClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualHubRouteTableV2SClientListResponse` has been removed
+- Field `LoadBalancerNetworkInterfacesClientListResult` of struct `LoadBalancerNetworkInterfacesClientListResponse` has been removed
+- Field `RawResponse` of struct `LoadBalancerNetworkInterfacesClientListResponse` has been removed
+- Field `PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupResult` of struct `PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupResponse` has been removed
+- Field `VirtualNetworksClientCheckIPAddressAvailabilityResult` of struct `VirtualNetworksClientCheckIPAddressAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworksClientCheckIPAddressAvailabilityResponse` has been removed
+- Field `WatchersClientCheckConnectivityResult` of struct `WatchersClientCheckConnectivityResponse` has been removed
+- Field `RawResponse` of struct `WatchersClientCheckConnectivityResponse` has been removed
+- Field `ConnectionMonitorsClientListResult` of struct `ConnectionMonitorsClientListResponse` has been removed
+- Field `RawResponse` of struct `ConnectionMonitorsClientListResponse` has been removed
+- Field `WatchersClientGetTroubleshootingResult` of struct `WatchersClientGetTroubleshootingResponse` has been removed
+- Field `RawResponse` of struct `WatchersClientGetTroubleshootingResponse` has been removed
+- Field `LoadBalancersClientGetResult` of struct `LoadBalancersClientGetResponse` has been removed
+- Field `RawResponse` of struct `LoadBalancersClientGetResponse` has been removed
+- Field `ExpressRouteCrossConnectionsClientListArpTableResult` of struct `ExpressRouteCrossConnectionsClientListArpTableResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCrossConnectionsClientListArpTableResponse` has been removed
+- Field `VirtualApplianceSitesClientCreateOrUpdateResult` of struct `VirtualApplianceSitesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualApplianceSitesClientCreateOrUpdateResponse` has been removed
+- Field `VirtualNetworkTapsClientListAllResult` of struct `VirtualNetworkTapsClientListAllResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkTapsClientListAllResponse` has been removed
+- Field `ProfilesClientListAllResult` of struct `ProfilesClientListAllResponse` has been removed
+- Field `RawResponse` of struct `ProfilesClientListAllResponse` has been removed
+- Field `RawResponse` of struct `RouteFiltersClientDeleteResponse` has been removed
+- Field `ApplicationSecurityGroupsClientCreateOrUpdateResult` of struct `ApplicationSecurityGroupsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ApplicationSecurityGroupsClientCreateOrUpdateResponse` has been removed
+- Field `SubnetsClientListResult` of struct `SubnetsClientListResponse` has been removed
+- Field `RawResponse` of struct `SubnetsClientListResponse` has been removed
+- Field `VirtualHubsClientCreateOrUpdateResult` of struct `VirtualHubsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualHubsClientCreateOrUpdateResponse` has been removed
+- Field `P2SVPNGatewaysClientListResult` of struct `P2SVPNGatewaysClientListResponse` has been removed
+- Field `RawResponse` of struct `P2SVPNGatewaysClientListResponse` has been removed
+- Field `ApplicationGatewaysClientListAvailableServerVariablesResult` of struct `ApplicationGatewaysClientListAvailableServerVariablesResponse` has been removed
+- Field `RawResponse` of struct `ApplicationGatewaysClientListAvailableServerVariablesResponse` has been removed
+- Field `VPNConnectionsClientCreateOrUpdateResult` of struct `VPNConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VPNConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `ApplicationSecurityGroupsClientListResult` of struct `ApplicationSecurityGroupsClientListResponse` has been removed
+- Field `RawResponse` of struct `ApplicationSecurityGroupsClientListResponse` has been removed
+- Field `RawResponse` of struct `HubVirtualNetworkConnectionsClientDeleteResponse` has been removed
+- Field `ExpressRouteCircuitAuthorizationsClientGetResult` of struct `ExpressRouteCircuitAuthorizationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCircuitAuthorizationsClientGetResponse` has been removed
+- Field `ProfilesClientUpdateTagsResult` of struct `ProfilesClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `ProfilesClientUpdateTagsResponse` has been removed
+- Field `VPNGatewaysClientStartPacketCaptureResult` of struct `VPNGatewaysClientStartPacketCaptureResponse` has been removed
+- Field `RawResponse` of struct `VPNGatewaysClientStartPacketCaptureResponse` has been removed
+- Field `PublicIPPrefixesClientGetResult` of struct `PublicIPPrefixesClientGetResponse` has been removed
+- Field `RawResponse` of struct `PublicIPPrefixesClientGetResponse` has been removed
+- Field `ExpressRouteLinksClientListResult` of struct `ExpressRouteLinksClientListResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteLinksClientListResponse` has been removed
+- Field `VPNGatewaysClientUpdateTagsResult` of struct `VPNGatewaysClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `VPNGatewaysClientUpdateTagsResponse` has been removed
+- Field `WatchersClientVerifyIPFlowResult` of struct `WatchersClientVerifyIPFlowResponse` has been removed
+- Field `RawResponse` of struct `WatchersClientVerifyIPFlowResponse` has been removed
+- Field `RawResponse` of struct `VirtualHubsClientDeleteResponse` has been removed
+- Field `VirtualHubsClientListResult` of struct `VirtualHubsClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualHubsClientListResponse` has been removed
+- Field `PrivateLinkServicesClientGetPrivateEndpointConnectionResult` of struct `PrivateLinkServicesClientGetPrivateEndpointConnectionResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesClientGetPrivateEndpointConnectionResponse` has been removed
+- Field `ExpressRouteLinksClientGetResult` of struct `ExpressRouteLinksClientGetResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteLinksClientGetResponse` has been removed
+- Field `InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResult` of struct `InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse` has been removed
+- Field `RawResponse` of struct `InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse` has been removed
+- Field `VirtualRoutersClientListResult` of struct `VirtualRoutersClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualRoutersClientListResponse` has been removed
+- Field `VirtualNetworkGatewaysClientListConnectionsResult` of struct `VirtualNetworkGatewaysClientListConnectionsResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewaysClientListConnectionsResponse` has been removed
+- Field `RoutingIntentClientGetResult` of struct `RoutingIntentClientGetResponse` has been removed
+- Field `RawResponse` of struct `RoutingIntentClientGetResponse` has been removed
+- Field `VirtualNetworkGatewayConnectionsClientListResult` of struct `VirtualNetworkGatewayConnectionsClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewayConnectionsClientListResponse` has been removed
+- Field `ExpressRouteGatewaysClientListBySubscriptionResult` of struct `ExpressRouteGatewaysClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteGatewaysClientListBySubscriptionResponse` has been removed
+- Field `ApplicationGatewaysClientListAvailableSSLOptionsResult` of struct `ApplicationGatewaysClientListAvailableSSLOptionsResponse` has been removed
+- Field `RawResponse` of struct `ApplicationGatewaysClientListAvailableSSLOptionsResponse` has been removed
+- Field `InterfacesClientListCloudServiceNetworkInterfacesResult` of struct `InterfacesClientListCloudServiceNetworkInterfacesResponse` has been removed
+- Field `RawResponse` of struct `InterfacesClientListCloudServiceNetworkInterfacesResponse` has been removed
+- Field `InterfacesClientGetVirtualMachineScaleSetIPConfigurationResult` of struct `InterfacesClientGetVirtualMachineScaleSetIPConfigurationResponse` has been removed
+- Field `RawResponse` of struct `InterfacesClientGetVirtualMachineScaleSetIPConfigurationResponse` has been removed
+- Field `ExpressRoutePortsClientCreateOrUpdateResult` of struct `ExpressRoutePortsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ExpressRoutePortsClientCreateOrUpdateResponse` has been removed
+- Field `VPNLinkConnectionsClientGetIkeSasResult` of struct `VPNLinkConnectionsClientGetIkeSasResponse` has been removed
+- Field `RawResponse` of struct `VPNLinkConnectionsClientGetIkeSasResponse` has been removed
+- Field `VirtualRoutersClientListByResourceGroupResult` of struct `VirtualRoutersClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `VirtualRoutersClientListByResourceGroupResponse` has been removed
+- Field `VirtualHubBgpConnectionsClientListResult` of struct `VirtualHubBgpConnectionsClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualHubBgpConnectionsClientListResponse` has been removed
+- Field `VirtualRoutersClientCreateOrUpdateResult` of struct `VirtualRoutersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualRoutersClientCreateOrUpdateResponse` has been removed
+- Field `SecurityRulesClientGetResult` of struct `SecurityRulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `SecurityRulesClientGetResponse` has been removed
+- Field `ApplicationGatewaysClientListAvailableRequestHeadersResult` of struct `ApplicationGatewaysClientListAvailableRequestHeadersResponse` has been removed
+- Field `RawResponse` of struct `ApplicationGatewaysClientListAvailableRequestHeadersResponse` has been removed
+- Field `RawResponse` of struct `InboundNatRulesClientDeleteResponse` has been removed
+- Field `ExpressRouteCircuitAuthorizationsClientListResult` of struct `ExpressRouteCircuitAuthorizationsClientListResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCircuitAuthorizationsClientListResponse` has been removed
+- Field `DscpConfigurationClientListResult` of struct `DscpConfigurationClientListResponse` has been removed
+- Field `RawResponse` of struct `DscpConfigurationClientListResponse` has been removed
+- Field `FlowLogsClientGetResult` of struct `FlowLogsClientGetResponse` has been removed
+- Field `RawResponse` of struct `FlowLogsClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewayConnectionsClientDeleteResponse` has been removed
+- Field `PublicIPPrefixesClientListAllResult` of struct `PublicIPPrefixesClientListAllResponse` has been removed
+- Field `RawResponse` of struct `PublicIPPrefixesClientListAllResponse` has been removed
+- Field `VirtualNetworkGatewaysClientStartPacketCaptureResult` of struct `VirtualNetworkGatewaysClientStartPacketCaptureResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewaysClientStartPacketCaptureResponse` has been removed
+- Field `InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceResult` of struct `InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceResponse` has been removed
+- Field `RawResponse` of struct `InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceResponse` has been removed
+- Field `InterfaceIPConfigurationsClientListResult` of struct `InterfaceIPConfigurationsClientListResponse` has been removed
+- Field `RawResponse` of struct `InterfaceIPConfigurationsClientListResponse` has been removed
+- Field `VPNServerConfigurationsClientCreateOrUpdateResult` of struct `VPNServerConfigurationsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VPNServerConfigurationsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `FlowLogsClientDeleteResponse` has been removed
+- Field `LoadBalancerLoadBalancingRulesClientGetResult` of struct `LoadBalancerLoadBalancingRulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `LoadBalancerLoadBalancingRulesClientGetResponse` has been removed
+- Field `WebApplicationFirewallPoliciesClientGetResult` of struct `WebApplicationFirewallPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `WebApplicationFirewallPoliciesClientGetResponse` has been removed
+- Field `ExpressRouteConnectionsClientCreateOrUpdateResult` of struct `ExpressRouteConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `VirtualNetworkGatewaysClientGetBgpPeerStatusResult` of struct `VirtualNetworkGatewaysClientGetBgpPeerStatusResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewaysClientGetBgpPeerStatusResponse` has been removed
+- Field `VPNServerConfigurationsAssociatedWithVirtualWanClientListResult` of struct `VPNServerConfigurationsAssociatedWithVirtualWanClientListResponse` has been removed
+- Field `RawResponse` of struct `VPNServerConfigurationsAssociatedWithVirtualWanClientListResponse` has been removed
+- Field `PublicIPAddressesClientGetVirtualMachineScaleSetPublicIPAddressResult` of struct `PublicIPAddressesClientGetVirtualMachineScaleSetPublicIPAddressResponse` has been removed
+- Field `RawResponse` of struct `PublicIPAddressesClientGetVirtualMachineScaleSetPublicIPAddressResponse` has been removed
+- Field `RawResponse` of struct `SubnetsClientPrepareNetworkPoliciesResponse` has been removed
+- Field `ApplicationGatewaysClientListAvailableWafRuleSetsResult` of struct `ApplicationGatewaysClientListAvailableWafRuleSetsResponse` has been removed
+- Field `RawResponse` of struct `ApplicationGatewaysClientListAvailableWafRuleSetsResponse` has been removed
+- Field `FirewallPoliciesClientListAllResult` of struct `FirewallPoliciesClientListAllResponse` has been removed
+- Field `RawResponse` of struct `FirewallPoliciesClientListAllResponse` has been removed
+- Field `ServiceEndpointPoliciesClientCreateOrUpdateResult` of struct `ServiceEndpointPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServiceEndpointPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `VirtualNetworksClientListAllResult` of struct `VirtualNetworksClientListAllResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworksClientListAllResponse` has been removed
+- Field `VirtualNetworkGatewaysClientGetVpnclientConnectionHealthResult` of struct `VirtualNetworkGatewaysClientGetVpnclientConnectionHealthResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewaysClientGetVpnclientConnectionHealthResponse` has been removed
+- Field `RawResponse` of struct `CustomIPPrefixesClientDeleteResponse` has been removed
+- Field `VirtualNetworkGatewayNatRulesClientCreateOrUpdateResult` of struct `VirtualNetworkGatewayNatRulesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewayNatRulesClientCreateOrUpdateResponse` has been removed
+- Field `RouteFiltersClientCreateOrUpdateResult` of struct `RouteFiltersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `RouteFiltersClientCreateOrUpdateResponse` has been removed
+- Field `DdosProtectionPlansClientListByResourceGroupResult` of struct `DdosProtectionPlansClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `DdosProtectionPlansClientListByResourceGroupResponse` has been removed
+- Field `VirtualNetworkGatewaysClientListResult` of struct `VirtualNetworkGatewaysClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewaysClientListResponse` has been removed
+- Field `SecurityPartnerProvidersClientCreateOrUpdateResult` of struct `SecurityPartnerProvidersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SecurityPartnerProvidersClientCreateOrUpdateResponse` has been removed
+- Field `ExpressRoutePortsClientListByResourceGroupResult` of struct `ExpressRoutePortsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ExpressRoutePortsClientListByResourceGroupResponse` has been removed
+- Field `VirtualNetworkGatewayConnectionsClientSetSharedKeyResult` of struct `VirtualNetworkGatewayConnectionsClientSetSharedKeyResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewayConnectionsClientSetSharedKeyResponse` has been removed
+- Field `PrivateDNSZoneGroupsClientGetResult` of struct `PrivateDNSZoneGroupsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateDNSZoneGroupsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ExpressRoutePortsClientDeleteResponse` has been removed
+- Field `ApplicationSecurityGroupsClientUpdateTagsResult` of struct `ApplicationSecurityGroupsClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `ApplicationSecurityGroupsClientUpdateTagsResponse` has been removed
+- Field `PrivateLinkServicesClientUpdatePrivateEndpointConnectionResult` of struct `PrivateLinkServicesClientUpdatePrivateEndpointConnectionResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesClientUpdatePrivateEndpointConnectionResponse` has been removed
+- Field `RawResponse` of struct `ConnectionMonitorsClientStopResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewayConnectionsClientResetConnectionResponse` has been removed
+- Field `VirtualNetworkGatewaysClientGeneratevpnclientpackageResult` of struct `VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse` has been removed
+- Field `HubVirtualNetworkConnectionsClientListResult` of struct `HubVirtualNetworkConnectionsClientListResponse` has been removed
+- Field `RawResponse` of struct `HubVirtualNetworkConnectionsClientListResponse` has been removed
+- Field `FirewallPolicyIdpsSignaturesOverridesClientGetResult` of struct `FirewallPolicyIdpsSignaturesOverridesClientGetResponse` has been removed
+- Field `RawResponse` of struct `FirewallPolicyIdpsSignaturesOverridesClientGetResponse` has been removed
+- Field `InterfacesClientListVirtualMachineScaleSetIPConfigurationsResult` of struct `InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse` has been removed
+- Field `RawResponse` of struct `InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse` has been removed
+- Field `ExpressRouteCrossConnectionsClientListByResourceGroupResult` of struct `ExpressRouteCrossConnectionsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCrossConnectionsClientListByResourceGroupResponse` has been removed
+- Field `ProfilesClientCreateOrUpdateResult` of struct `ProfilesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ProfilesClientCreateOrUpdateResponse` has been removed
+- Field `VPNSitesClientListByResourceGroupResult` of struct `VPNSitesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `VPNSitesClientListByResourceGroupResponse` has been removed
+- Field `AzureFirewallsClientCreateOrUpdateResult` of struct `AzureFirewallsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `AzureFirewallsClientCreateOrUpdateResponse` has been removed
+- Field `LoadBalancerProbesClientGetResult` of struct `LoadBalancerProbesClientGetResponse` has been removed
+- Field `RawResponse` of struct `LoadBalancerProbesClientGetResponse` has been removed
+- Field `ExpressRoutePortsClientGetResult` of struct `ExpressRoutePortsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ExpressRoutePortsClientGetResponse` has been removed
+- Field `RawResponse` of struct `WatchersClientDeleteResponse` has been removed
+- Field `ExpressRouteCircuitsClientGetPeeringStatsResult` of struct `ExpressRouteCircuitsClientGetPeeringStatsResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCircuitsClientGetPeeringStatsResponse` has been removed
+- Field `VirtualNetworkGatewaysClientGetLearnedRoutesResult` of struct `VirtualNetworkGatewaysClientGetLearnedRoutesResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewaysClientGetLearnedRoutesResponse` has been removed
+- Field `VirtualNetworkGatewayConnectionsClientResetSharedKeyResult` of struct `VirtualNetworkGatewayConnectionsClientResetSharedKeyResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewayConnectionsClientResetSharedKeyResponse` has been removed
+- Field `RawResponse` of struct `IPGroupsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesClientDeleteResponse` has been removed
+- Field `PacketCapturesClientCreateResult` of struct `PacketCapturesClientCreateResponse` has been removed
+- Field `RawResponse` of struct `PacketCapturesClientCreateResponse` has been removed
+- Field `RouteFiltersClientUpdateTagsResult` of struct `RouteFiltersClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `RouteFiltersClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `ServiceEndpointPolicyDefinitionsClientDeleteResponse` has been removed
+- Field `VPNConnectionsClientListByVPNGatewayResult` of struct `VPNConnectionsClientListByVPNGatewayResponse` has been removed
+- Field `RawResponse` of struct `VPNConnectionsClientListByVPNGatewayResponse` has been removed
+- Field `PublicIPAddressesClientGetResult` of struct `PublicIPAddressesClientGetResponse` has been removed
+- Field `RawResponse` of struct `PublicIPAddressesClientGetResponse` has been removed
+- Field `WatchersClientGetAzureReachabilityReportResult` of struct `WatchersClientGetAzureReachabilityReportResponse` has been removed
+- Field `RawResponse` of struct `WatchersClientGetAzureReachabilityReportResponse` has been removed
+- Field `BastionHostsClientUpdateTagsResult` of struct `BastionHostsClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `BastionHostsClientUpdateTagsResponse` has been removed
+- Field `VPNLinkConnectionsClientListByVPNConnectionResult` of struct `VPNLinkConnectionsClientListByVPNConnectionResponse` has been removed
+- Field `RawResponse` of struct `VPNLinkConnectionsClientListByVPNConnectionResponse` has been removed
+- Field `RawResponse` of struct `NatRulesClientDeleteResponse` has been removed
+- Field `WatchersClientGetResult` of struct `WatchersClientGetResponse` has been removed
+- Field `RawResponse` of struct `WatchersClientGetResponse` has been removed
+- Field `DdosCustomPoliciesClientUpdateTagsResult` of struct `DdosCustomPoliciesClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `DdosCustomPoliciesClientUpdateTagsResponse` has been removed
+- Field `SecurityPartnerProvidersClientListByResourceGroupResult` of struct `SecurityPartnerProvidersClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `SecurityPartnerProvidersClientListByResourceGroupResponse` has been removed
+- Field `RoutesClientCreateOrUpdateResult` of struct `RoutesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `RoutesClientCreateOrUpdateResponse` has been removed
+- Field `VPNServerConfigurationsClientListByResourceGroupResult` of struct `VPNServerConfigurationsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `VPNServerConfigurationsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCircuitPeeringsClientDeleteResponse` has been removed
+- Field `DdosProtectionPlansClientCreateOrUpdateResult` of struct `DdosProtectionPlansClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DdosProtectionPlansClientCreateOrUpdateResponse` has been removed
+- Field `VirtualNetworkGatewaysClientGenerateVPNProfileResult` of struct `VirtualNetworkGatewaysClientGenerateVPNProfileResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewaysClientGenerateVPNProfileResponse` has been removed
+- Field `AvailableResourceGroupDelegationsClientListResult` of struct `AvailableResourceGroupDelegationsClientListResponse` has been removed
+- Field `RawResponse` of struct `AvailableResourceGroupDelegationsClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworksClientDeleteResponse` has been removed
+- Field `VirtualNetworksClientListResult` of struct `VirtualNetworksClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworksClientListResponse` has been removed
+- Field `VirtualNetworkTapsClientGetResult` of struct `VirtualNetworkTapsClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkTapsClientGetResponse` has been removed
+- Field `ServiceTagsClientListResult` of struct `ServiceTagsClientListResponse` has been removed
+- Field `RawResponse` of struct `ServiceTagsClientListResponse` has been removed
+- Field `RawResponse` of struct `SecurityGroupsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `VPNSitesConfigurationClientDownloadResponse` has been removed
+- Field `VPNSitesClientCreateOrUpdateResult` of struct `VPNSitesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VPNSitesClientCreateOrUpdateResponse` has been removed
+- Field `VirtualAppliancesClientListByResourceGroupResult` of struct `VirtualAppliancesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `VirtualAppliancesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `P2SVPNGatewaysClientDeleteResponse` has been removed
+- Field `ManagementClientDisconnectActiveSessionsResult` of struct `ManagementClientDisconnectActiveSessionsResponse` has been removed
+- Field `RawResponse` of struct `ManagementClientDisconnectActiveSessionsResponse` has been removed
+- Field `WebApplicationFirewallPoliciesClientListResult` of struct `WebApplicationFirewallPoliciesClientListResponse` has been removed
+- Field `RawResponse` of struct `WebApplicationFirewallPoliciesClientListResponse` has been removed
+- Field `WatchersClientGetTopologyResult` of struct `WatchersClientGetTopologyResponse` has been removed
+- Field `RawResponse` of struct `WatchersClientGetTopologyResponse` has been removed
+- Field `PublicIPAddressesClientListCloudServicePublicIPAddressesResult` of struct `PublicIPAddressesClientListCloudServicePublicIPAddressesResponse` has been removed
+- Field `RawResponse` of struct `PublicIPAddressesClientListCloudServicePublicIPAddressesResponse` has been removed
+- Field `RawResponse` of struct `VirtualApplianceSitesClientDeleteResponse` has been removed
+- Field `PublicIPPrefixesClientListResult` of struct `PublicIPPrefixesClientListResponse` has been removed
+- Field `RawResponse` of struct `PublicIPPrefixesClientListResponse` has been removed
+- Field `InterfacesClientCreateOrUpdateResult` of struct `InterfacesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `InterfacesClientCreateOrUpdateResponse` has been removed
+- Field `VirtualRouterPeeringsClientGetResult` of struct `VirtualRouterPeeringsClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualRouterPeeringsClientGetResponse` has been removed
+- Field `FirewallPolicyRuleCollectionGroupsClientCreateOrUpdateResult` of struct `FirewallPolicyRuleCollectionGroupsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `FirewallPolicyRuleCollectionGroupsClientCreateOrUpdateResponse` has been removed
+- Field `VPNGatewaysClientListResult` of struct `VPNGatewaysClientListResponse` has been removed
+- Field `RawResponse` of struct `VPNGatewaysClientListResponse` has been removed
+- Field `IPGroupsClientGetResult` of struct `IPGroupsClientGetResponse` has been removed
+- Field `RawResponse` of struct `IPGroupsClientGetResponse` has been removed
+- Field `VirtualNetworksClientCreateOrUpdateResult` of struct `VirtualNetworksClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworksClientCreateOrUpdateResponse` has been removed
+- Field `WatchersClientGetFlowLogStatusResult` of struct `WatchersClientGetFlowLogStatusResponse` has been removed
+- Field `RawResponse` of struct `WatchersClientGetFlowLogStatusResponse` has been removed
+- Field `WatchersClientUpdateTagsResult` of struct `WatchersClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `WatchersClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `ApplicationGatewaysClientStopResponse` has been removed
+- Field `VirtualWansClientCreateOrUpdateResult` of struct `VirtualWansClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualWansClientCreateOrUpdateResponse` has been removed
+- Field `PrivateLinkServicesClientListResult` of struct `PrivateLinkServicesClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesClientListResponse` has been removed
+- Field `RawResponse` of struct `SecurityPartnerProvidersClientDeleteResponse` has been removed
+- Field `PrivateLinkServicesClientListBySubscriptionResult` of struct `PrivateLinkServicesClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesClientListBySubscriptionResponse` has been removed
+- Field `PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityResult` of struct `PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityResponse` has been removed
+- Field `RouteFilterRulesClientListByRouteFilterResult` of struct `RouteFilterRulesClientListByRouteFilterResponse` has been removed
+- Field `RawResponse` of struct `RouteFilterRulesClientListByRouteFilterResponse` has been removed
+- Field `VirtualNetworkGatewaysClientGetAdvertisedRoutesResult` of struct `VirtualNetworkGatewaysClientGetAdvertisedRoutesResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewaysClientGetAdvertisedRoutesResponse` has been removed
+- Field `RoutingIntentClientCreateOrUpdateResult` of struct `RoutingIntentClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `RoutingIntentClientCreateOrUpdateResponse` has been removed
+- Field `BastionHostsClientCreateOrUpdateResult` of struct `BastionHostsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `BastionHostsClientCreateOrUpdateResponse` has been removed
+- Field `PeerExpressRouteCircuitConnectionsClientListResult` of struct `PeerExpressRouteCircuitConnectionsClientListResponse` has been removed
+- Field `RawResponse` of struct `PeerExpressRouteCircuitConnectionsClientListResponse` has been removed
+- Field `VirtualNetworkGatewayConnectionsClientGetResult` of struct `VirtualNetworkGatewayConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewayConnectionsClientGetResponse` has been removed
+- Field `VirtualApplianceSitesClientGetResult` of struct `VirtualApplianceSitesClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualApplianceSitesClientGetResponse` has been removed
+- Field `ExpressRouteCircuitsClientUpdateTagsResult` of struct `ExpressRouteCircuitsClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCircuitsClientUpdateTagsResponse` has been removed
+- Field `VirtualAppliancesClientListResult` of struct `VirtualAppliancesClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualAppliancesClientListResponse` has been removed
+- Field `P2SVPNGatewaysClientCreateOrUpdateResult` of struct `P2SVPNGatewaysClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `P2SVPNGatewaysClientCreateOrUpdateResponse` has been removed
+- Field `RouteFiltersClientListResult` of struct `RouteFiltersClientListResponse` has been removed
+- Field `RawResponse` of struct `RouteFiltersClientListResponse` has been removed
+- Field `ExpressRouteCircuitsClientListResult` of struct `ExpressRouteCircuitsClientListResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCircuitsClientListResponse` has been removed
+- Field `PublicIPAddressesClientUpdateTagsResult` of struct `PublicIPAddressesClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `PublicIPAddressesClientUpdateTagsResponse` has been removed
+- Field `WatchersClientGetNextHopResult` of struct `WatchersClientGetNextHopResponse` has been removed
+- Field `RawResponse` of struct `WatchersClientGetNextHopResponse` has been removed
+- Field `VirtualNetworksClientUpdateTagsResult` of struct `VirtualNetworksClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworksClientUpdateTagsResponse` has been removed
+- Field `NatGatewaysClientListResult` of struct `NatGatewaysClientListResponse` has been removed
+- Field `RawResponse` of struct `NatGatewaysClientListResponse` has been removed
+- Field `RawResponse` of struct `DdosProtectionPlansClientDeleteResponse` has been removed
+- Field `WatchersClientGetNetworkConfigurationDiagnosticResult` of struct `WatchersClientGetNetworkConfigurationDiagnosticResponse` has been removed
+- Field `RawResponse` of struct `WatchersClientGetNetworkConfigurationDiagnosticResponse` has been removed
+- Field `AzureFirewallsClientListResult` of struct `AzureFirewallsClientListResponse` has been removed
+- Field `RawResponse` of struct `AzureFirewallsClientListResponse` has been removed
+- Field `VirtualNetworksClientGetResult` of struct `VirtualNetworksClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworksClientGetResponse` has been removed
+- Field `VirtualNetworkGatewayConnectionsClientGetSharedKeyResult` of struct `VirtualNetworkGatewayConnectionsClientGetSharedKeyResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkGatewayConnectionsClientGetSharedKeyResponse` has been removed
+- Field `ManagementClientGetActiveSessionsResult` of struct `ManagementClientGetActiveSessionsResponse` has been removed
+- Field `RawResponse` of struct `ManagementClientGetActiveSessionsResponse` has been removed
+- Field `VPNServerConfigurationsClientListResult` of struct `VPNServerConfigurationsClientListResponse` has been removed
+- Field `RawResponse` of struct `VPNServerConfigurationsClientListResponse` has been removed
+- Field `PublicIPAddressesClientListAllResult` of struct `PublicIPAddressesClientListAllResponse` has been removed
+- Field `RawResponse` of struct `PublicIPAddressesClientListAllResponse` has been removed
+- Field `BastionHostsClientListByResourceGroupResult` of struct `BastionHostsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `BastionHostsClientListByResourceGroupResponse` has been removed
+- Field `AvailableServiceAliasesClientListByResourceGroupResult` of struct `AvailableServiceAliasesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `AvailableServiceAliasesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `VirtualHubIPConfigurationClientDeleteResponse` has been removed
+- Field `ApplicationGatewaysClientListResult` of struct `ApplicationGatewaysClientListResponse` has been removed
+- Field `RawResponse` of struct `ApplicationGatewaysClientListResponse` has been removed
+- Field `RawResponse` of struct `PacketCapturesClientStopResponse` has been removed
+- Field `CustomIPPrefixesClientListResult` of struct `CustomIPPrefixesClientListResponse` has been removed
+- Field `RawResponse` of struct `CustomIPPrefixesClientListResponse` has been removed
+- Field `DdosProtectionPlansClientListResult` of struct `DdosProtectionPlansClientListResponse` has been removed
+- Field `RawResponse` of struct `DdosProtectionPlansClientListResponse` has been removed
+- Field `WatchersClientListResult` of struct `WatchersClientListResponse` has been removed
+- Field `RawResponse` of struct `WatchersClientListResponse` has been removed
+- Field `ResourceNavigationLinksClientListResult` of struct `ResourceNavigationLinksClientListResponse` has been removed
+- Field `RawResponse` of struct `ResourceNavigationLinksClientListResponse` has been removed
+- Field `ApplicationGatewayPrivateLinkResourcesClientListResult` of struct `ApplicationGatewayPrivateLinkResourcesClientListResponse` has been removed
+- Field `RawResponse` of struct `ApplicationGatewayPrivateLinkResourcesClientListResponse` has been removed
+- Field `RawResponse` of struct `SubnetsClientDeleteResponse` has been removed
+- Field `VirtualHubIPConfigurationClientCreateOrUpdateResult` of struct `VirtualHubIPConfigurationClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualHubIPConfigurationClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VPNGatewaysClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `VirtualHubBgpConnectionClientDeleteResponse` has been removed
+- Field `IPAllocationsClientGetResult` of struct `IPAllocationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `IPAllocationsClientGetResponse` has been removed
+- Field `LoadBalancersClientListResult` of struct `LoadBalancersClientListResponse` has been removed
+- Field `RawResponse` of struct `LoadBalancersClientListResponse` has been removed
+- Field `InterfaceLoadBalancersClientListResult` of struct `InterfaceLoadBalancersClientListResponse` has been removed
+- Field `RawResponse` of struct `InterfaceLoadBalancersClientListResponse` has been removed
+- Field `PublicIPPrefixesClientUpdateTagsResult` of struct `PublicIPPrefixesClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `PublicIPPrefixesClientUpdateTagsResponse` has been removed
+- Field `ExpressRouteCircuitsClientListAllResult` of struct `ExpressRouteCircuitsClientListAllResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCircuitsClientListAllResponse` has been removed
+- Field `PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResult` of struct `PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse` has been removed
+- Field `RawResponse` of struct `PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse` has been removed
+- Field `VirtualNetworkTapsClientListByResourceGroupResult` of struct `VirtualNetworkTapsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkTapsClientListByResourceGroupResponse` has been removed
+- Field `ExpressRouteCircuitPeeringsClientCreateOrUpdateResult` of struct `ExpressRouteCircuitPeeringsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ExpressRouteCircuitPeeringsClientCreateOrUpdateResponse` has been removed
+- Field `FirewallPoliciesClientCreateOrUpdateResult` of struct `FirewallPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `FirewallPoliciesClientCreateOrUpdateResponse` has been removed
+
+### Features Added
+
+- New function `*VirtualNetworkGatewayConnectionsClientStopPacketCaptureResponse.UnmarshalJSON([]byte) error`
+- New function `*VirtualNetworkGatewayConnectionsClientStartPacketCaptureResponse.UnmarshalJSON([]byte) error`
+- New function `*VPNGatewaysClientStopPacketCaptureResponse.UnmarshalJSON([]byte) error`
+- New function `*VirtualNetworkGatewaysClientStopPacketCaptureResponse.UnmarshalJSON([]byte) error`
+- New function `*VPNConnectionsClientStopPacketCaptureResponse.UnmarshalJSON([]byte) error`
+- New function `*VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse.UnmarshalJSON([]byte) error`
+- New function `*VPNConnectionsClientStartPacketCaptureResponse.UnmarshalJSON([]byte) error`
+- New function `*VirtualNetworkGatewayConnectionsClientGetIkeSasResponse.UnmarshalJSON([]byte) error`
+- New function `*VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse.UnmarshalJSON([]byte) error`
+- New function `*VPNGatewaysClientStartPacketCaptureResponse.UnmarshalJSON([]byte) error`
+- New function `*VirtualNetworkGatewaysClientStartPacketCaptureResponse.UnmarshalJSON([]byte) error`
+- New function `*VPNLinkConnectionsClientGetIkeSasResponse.UnmarshalJSON([]byte) error`
+- New function `*VirtualNetworkGatewaysClientGenerateVPNProfileResponse.UnmarshalJSON([]byte) error`
+- New field `ResumeToken` in struct `ExpressRouteCircuitAuthorizationsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `DdosProtectionPlansClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `VirtualNetworkGatewayConnectionsClientBeginStartPacketCaptureOptions`
+- New field `ResumeToken` in struct `VirtualRouterPeeringsClientBeginCreateOrUpdateOptions`
+- New anonymous field `SignaturesOverrides` in struct `FirewallPolicyIdpsSignaturesOverridesClientPutResponse`
+- New anonymous field `ExpressRouteCircuitsRoutesTableSummaryListResult` in struct `ExpressRouteCircuitsClientListRoutesTableSummaryResponse`
+- New field `ResumeToken` in struct `VPNGatewaysClientBeginCreateOrUpdateOptions`
+- New anonymous field `InboundNatRuleListResult` in struct `InboundNatRulesClientListResponse`
+- New anonymous field `CustomIPPrefix` in struct `CustomIPPrefixesClientCreateOrUpdateResponse`
+- New field `Value` in struct `VirtualNetworkGatewaysClientVPNDeviceConfigurationScriptResponse`
+- New anonymous field `ApplicationSecurityGroup` in struct `ApplicationSecurityGroupsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `LoadBalancerBackendAddressPoolsClientBeginDeleteOptions`
+- New anonymous field `ExpressRouteCrossConnectionPeering` in struct `ExpressRouteCrossConnectionPeeringsClientGetResponse`
+- New anonymous field `VirtualApplianceSiteListResult` in struct `VirtualApplianceSitesClientListResponse`
+- New field `ResumeToken` in struct `InterfacesClientBeginGetEffectiveRouteTableOptions`
+- New anonymous field `DscpConfigurationListResult` in struct `DscpConfigurationClientListAllResponse`
+- New anonymous field `TroubleshootingResult` in struct `WatchersClientGetTroubleshootingResultResponse`
+- New field `ResumeToken` in struct `P2SVPNGatewaysClientBeginDeleteOptions`
+- New anonymous field `ExpressRouteCrossConnection` in struct `ExpressRouteCrossConnectionsClientUpdateTagsResponse`
+- New anonymous field `FirewallPolicy` in struct `FirewallPoliciesClientCreateOrUpdateResponse`
+- New anonymous field `FlowLogInformation` in struct `WatchersClientSetFlowLogConfigurationResponse`
+- New anonymous field `EffectiveNetworkSecurityGroupListResult` in struct `InterfacesClientListEffectiveNetworkSecurityGroupsResponse`
+- New field `Value` in struct `VirtualNetworkGatewaysClientStartPacketCaptureResponse`
+- New anonymous field `ApplicationGatewayAvailableSSLOptions` in struct `ApplicationGatewaysClientListAvailableSSLOptionsResponse`
+- New field `ResumeToken` in struct `ApplicationSecurityGroupsClientBeginDeleteOptions`
+- New anonymous field `DscpConfiguration` in struct `DscpConfigurationClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `PrivateEndpointsClientBeginDeleteOptions`
+- New anonymous field `P2SVPNConnectionHealth` in struct `P2SVPNGatewaysClientGetP2SVPNConnectionHealthDetailedResponse`
+- New anonymous field `VPNServerConfigurationsResponse` in struct `VPNServerConfigurationsAssociatedWithVirtualWanClientListResponse`
+- New anonymous field `PublicIPAddressListResult` in struct `PublicIPAddressesClientListResponse`
+- New anonymous field `RouteTableListResult` in struct `RouteTablesClientListAllResponse`
+- New anonymous field `ApplicationSecurityGroup` in struct `ApplicationSecurityGroupsClientGetResponse`
+- New field `ResumeToken` in struct `VirtualNetworkGatewaysClientBeginDeleteOptions`
+- New anonymous field `PublicIPAddress` in struct `PublicIPAddressesClientGetVirtualMachineScaleSetPublicIPAddressResponse`
+- New anonymous field `GatewayRouteListResult` in struct `VirtualNetworkGatewaysClientGetAdvertisedRoutesResponse`
+- New anonymous field `ApplicationGatewayPrivateLinkResourceListResult` in struct `ApplicationGatewayPrivateLinkResourcesClientListResponse`
+- New anonymous field `Subnet` in struct `SubnetsClientGetResponse`
+- New anonymous field `BastionHost` in struct `BastionHostsClientUpdateTagsResponse`
+- New field `ResumeToken` in struct `VirtualNetworkGatewaysClientBeginGetBgpPeerStatusOptions`
+- New anonymous field `AutoApprovedPrivateLinkServicesResult` in struct `PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse`
+- New field `ResumeToken` in struct `WatchersClientBeginGetAzureReachabilityReportOptions`
+- New anonymous field `ApplicationGatewayAvailableWafRuleSetsResult` in struct `ApplicationGatewaysClientListAvailableWafRuleSetsResponse`
+- New anonymous field `DscpConfigurationListResult` in struct `DscpConfigurationClientListResponse`
+- New anonymous field `AvailableProvidersList` in struct `WatchersClientListAvailableProvidersResponse`
+- New anonymous field `ListVirtualNetworkGatewayNatRulesResult` in struct `VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse`
+- New anonymous field `LocalNetworkGateway` in struct `LocalNetworkGatewaysClientCreateOrUpdateResponse`
+- New anonymous field `VirtualWAN` in struct `VirtualWansClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `VirtualNetworkGatewaysClientBeginResetVPNClientSharedKeyOptions`
+- New anonymous field `ExpressRouteGatewayList` in struct `ExpressRouteGatewaysClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `PrivateLinkServicesClientBeginDeleteOptions`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateLinkServicesClientGetPrivateEndpointConnectionResponse`
+- New anonymous field `UsagesListResult` in struct `UsagesClientListResponse`
+- New anonymous field `VPNGateway` in struct `VPNGatewaysClientResetResponse`
+- New anonymous field `AvailablePrivateEndpointTypesResult` in struct `AvailablePrivateEndpointTypesClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `PublicIPAddressesClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `VirtualHubRouteTableV2SClientBeginDeleteOptions`
+- New anonymous field `CustomIPPrefix` in struct `CustomIPPrefixesClientGetResponse`
+- New anonymous field `InterfaceListResult` in struct `InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesResponse`
+- New anonymous field `HubIPConfiguration` in struct `VirtualHubIPConfigurationClientGetResponse`
+- New field `ResumeToken` in struct `WatchersClientBeginGetTroubleshootingOptions`
+- New field `ResumeToken` in struct `VPNConnectionsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `VirtualHubIPConfigurationClientBeginDeleteOptions`
+- New anonymous field `PublicIPAddress` in struct `PublicIPAddressesClientUpdateTagsResponse`
+- New anonymous field `ExpressRoutePort` in struct `ExpressRoutePortsClientUpdateTagsResponse`
+- New anonymous field `DdosProtectionPlanListResult` in struct `DdosProtectionPlansClientListResponse`
+- New field `ResumeToken` in struct `VirtualNetworkGatewaysClientBeginGetAdvertisedRoutesOptions`
+- New anonymous field `ExpressRouteConnection` in struct `ExpressRouteConnectionsClientCreateOrUpdateResponse`
+- New anonymous field `ExpressRouteCircuit` in struct `ExpressRouteCircuitsClientUpdateTagsResponse`
+- New anonymous field `IPAllocationListResult` in struct `IPAllocationsClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `P2SVPNGatewaysClientBeginGetP2SVPNConnectionHealthDetailedOptions`
+- New anonymous field `PublicIPPrefix` in struct `PublicIPPrefixesClientUpdateTagsResponse`
+- New anonymous field `InterfaceIPConfiguration` in struct `InterfaceIPConfigurationsClientGetResponse`
+- New anonymous field `ExpressRouteGateway` in struct `ExpressRouteGatewaysClientCreateOrUpdateResponse`
+- New anonymous field `NatGateway` in struct `NatGatewaysClientGetResponse`
+- New field `ResumeToken` in struct `PublicIPPrefixesClientBeginCreateOrUpdateOptions`
+- New anonymous field `ConnectionMonitorResult` in struct `ConnectionMonitorsClientCreateOrUpdateResponse`
+- New anonymous field `ExpressRouteCircuitListResult` in struct `ExpressRouteCircuitsClientListResponse`
+- New anonymous field `ApplicationGatewayAvailableSSLPredefinedPolicies` in struct `ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse`
+- New anonymous field `PublicIPAddressListResult` in struct `PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse`
+- New field `ResumeToken` in struct `ExpressRouteGatewaysClientBeginDeleteOptions`
+- New anonymous field `LoadBalancingRule` in struct `LoadBalancerLoadBalancingRulesClientGetResponse`
+- New field `ResumeToken` in struct `VirtualAppliancesClientBeginDeleteOptions`
+- New field `Value` in struct `VirtualNetworkGatewaysClientSupportedVPNDevicesResponse`
+- New field `ResumeToken` in struct `VirtualHubBgpConnectionClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `LocalNetworkGatewaysClientBeginCreateOrUpdateOptions`
+- New anonymous field `WebApplicationFirewallPolicy` in struct `WebApplicationFirewallPoliciesClientGetResponse`
+- New anonymous field `ListVPNSiteLinkConnectionsResult` in struct `VPNLinkConnectionsClientListByVPNConnectionResponse`
+- New field `ResumeToken` in struct `VirtualAppliancesClientBeginCreateOrUpdateOptions`
+- New anonymous field `VirtualNetworkGatewayListConnectionsResult` in struct `VirtualNetworkGatewaysClientListConnectionsResponse`
+- New field `ResumeToken` in struct `SecurityRulesClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `IPAllocationsClientBeginCreateOrUpdateOptions`
+- New anonymous field `ExpressRouteCircuitAuthorization` in struct `ExpressRouteCircuitAuthorizationsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `FirewallPoliciesClientBeginDeleteOptions`
+- New field `StringArray` in struct `ApplicationGatewaysClientListAvailableServerVariablesResponse`
+- New anonymous field `ExpressRoutePortsLocationListResult` in struct `ExpressRoutePortsLocationsClientListResponse`
+- New anonymous field `ExpressRouteLink` in struct `ExpressRouteLinksClientGetResponse`
+- New anonymous field `PacketCaptureResult` in struct `PacketCapturesClientGetResponse`
+- New anonymous field `PrivateEndpoint` in struct `PrivateEndpointsClientCreateOrUpdateResponse`
+- New anonymous field `InboundSecurityRule` in struct `InboundSecurityRuleClientCreateOrUpdateResponse`
+- New anonymous field `PublicIPPrefix` in struct `PublicIPPrefixesClientGetResponse`
+- New field `ResumeToken` in struct `WatchersClientBeginListAvailableProvidersOptions`
+- New field `ResumeToken` in struct `SecurityPartnerProvidersClientBeginDeleteOptions`
+- New anonymous field `HubVirtualNetworkConnection` in struct `HubVirtualNetworkConnectionsClientCreateOrUpdateResponse`
+- New anonymous field `AzureFirewall` in struct `AzureFirewallsClientUpdateTagsResponse`
+- New field `ResumeToken` in struct `ApplicationGatewaysClientBeginStopOptions`
+- New anonymous field `ExpressRouteCircuitsRoutesTableListResult` in struct `ExpressRouteCrossConnectionsClientListRoutesTableResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateLinkServicesClientUpdatePrivateEndpointConnectionResponse`
+- New field `ResumeToken` in struct `VirtualNetworkTapsClientBeginDeleteOptions`
+- New anonymous field `ExpressRouteServiceProviderListResult` in struct `ExpressRouteServiceProvidersClientListResponse`
+- New anonymous field `InboundNatRule` in struct `InboundNatRulesClientGetResponse`
+- New field `ResumeToken` in struct `ConnectionMonitorsClientBeginStopOptions`
+- New anonymous field `VirtualHubRouteTableV2` in struct `VirtualHubRouteTableV2SClientGetResponse`
+- New field `ResumeToken` in struct `PacketCapturesClientBeginStopOptions`
+- New field `ResumeToken` in struct `PrivateLinkServicesClientBeginCheckPrivateLinkServiceVisibilityByResourceGroupOptions`
+- New anonymous field `ExpressRoutePortListResult` in struct `ExpressRoutePortsClientListByResourceGroupResponse`
+- New anonymous field `VirtualNetworkGatewayListResult` in struct `VirtualNetworkGatewaysClientListResponse`
+- New anonymous field `VirtualNetworkTapListResult` in struct `VirtualNetworkTapsClientListAllResponse`
+- New field `ResumeToken` in struct `VPNSitesClientBeginDeleteOptions`
+- New anonymous field `BastionHost` in struct `BastionHostsClientCreateOrUpdateResponse`
+- New anonymous field `ExpressRouteCircuitConnectionListResult` in struct `ExpressRouteCircuitConnectionsClientListResponse`
+- New anonymous field `RoutingIntent` in struct `RoutingIntentClientGetResponse`
+- New field `ResumeToken` in struct `VirtualHubRouteTableV2SClientBeginCreateOrUpdateOptions`
+- New anonymous field `RouteTable` in struct `RouteTablesClientUpdateTagsResponse`
+- New anonymous field `ExpressRouteCircuitPeering` in struct `ExpressRouteCircuitPeeringsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `AzureFirewallsClientBeginDeleteOptions`
+- New anonymous field `ConfigurationDiagnosticResponse` in struct `WatchersClientGetNetworkConfigurationDiagnosticResponse`
+- New anonymous field `ExpressRouteCrossConnectionListResult` in struct `ExpressRouteCrossConnectionsClientListResponse`
+- New field `ResumeToken` in struct `VirtualNetworksClientBeginCreateOrUpdateOptions`
+- New anonymous field `ServiceEndpointPolicyListResult` in struct `ServiceEndpointPoliciesClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `ProfilesClientBeginDeleteOptions`
+- New anonymous field `ApplicationSecurityGroupListResult` in struct `ApplicationSecurityGroupsClientListAllResponse`
+- New field `ResumeToken` in struct `SecurityGroupsClientBeginCreateOrUpdateOptions`
+- New anonymous field `SecurityRuleListResult` in struct `SecurityRulesClientListResponse`
+- New field `ResumeToken` in struct `FirewallPolicyRuleCollectionGroupsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `WatchersClientBeginCheckConnectivityOptions`
+- New field `ResumeToken` in struct `IPGroupsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `VPNSitesConfigurationClientBeginDownloadOptions`
+- New anonymous field `VirtualNetworkTap` in struct `VirtualNetworkTapsClientUpdateTagsResponse`
+- New anonymous field `PacketCaptureQueryStatusResult` in struct `PacketCapturesClientGetStatusResponse`
+- New field `Value` in struct `VPNConnectionsClientStopPacketCaptureResponse`
+- New field `ResumeToken` in struct `WatchersClientBeginGetNextHopOptions`
+- New anonymous field `RouteFilterRule` in struct `RouteFilterRulesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `VirtualNetworkGatewayNatRulesClientBeginDeleteOptions`
+- New anonymous field `AuthorizationListResult` in struct `ExpressRouteCircuitAuthorizationsClientListResponse`
+- New anonymous field `VirtualAppliance` in struct `VirtualAppliancesClientCreateOrUpdateResponse`
+- New anonymous field `Interface` in struct `InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceResponse`
+- New field `ResumeToken` in struct `VirtualNetworkGatewaysClientBeginCreateOrUpdateOptions`
+- New anonymous field `VPNSiteLinkConnection` in struct `VPNSiteLinkConnectionsClientGetResponse`
+- New anonymous field `ServiceEndpointPolicyDefinitionListResult` in struct `ServiceEndpointPolicyDefinitionsClientListByResourceGroupResponse`
+- New anonymous field `BastionShareableLinkListResult` in struct `ManagementClientPutBastionShareableLinkResponse`
+- New anonymous field `VirtualHub` in struct `VirtualHubsClientUpdateTagsResponse`
+- New field `ResumeToken` in struct `P2SVPNGatewaysClientBeginCreateOrUpdateOptions`
+- New anonymous field `RouteFilter` in struct `RouteFiltersClientUpdateTagsResponse`
+- New anonymous field `ConnectionSharedKey` in struct `VirtualNetworkGatewayConnectionsClientSetSharedKeyResponse`
+- New field `ResumeToken` in struct `ConnectionMonitorsClientBeginQueryOptions`
+- New anonymous field `VPNGateway` in struct `VPNGatewaysClientGetResponse`
+- New field `ResumeToken` in struct `DscpConfigurationClientBeginCreateOrUpdateOptions`
+- New anonymous field `PublicIPAddressListResult` in struct `PublicIPAddressesClientListCloudServicePublicIPAddressesResponse`
+- New anonymous field `NatGatewayListResult` in struct `NatGatewaysClientListResponse`
+- New anonymous field `PrivateLinkService` in struct `PrivateLinkServicesClientGetResponse`
+- New anonymous field `SecurityRule` in struct `DefaultSecurityRulesClientGetResponse`
+- New anonymous field `VPNClientIPsecParameters` in struct `VirtualNetworkGatewaysClientGetVpnclientIPSecParametersResponse`
+- New anonymous field `ProfileListResult` in struct `ProfilesClientListAllResponse`
+- New anonymous field `ExpressRouteCircuitPeering` in struct `ExpressRouteCircuitPeeringsClientGetResponse`
+- New field `ResumeToken` in struct `PrivateDNSZoneGroupsClientBeginDeleteOptions`
+- New anonymous field `BastionHost` in struct `BastionHostsClientGetResponse`
+- New field `ResumeToken` in struct `ExpressRoutePortsClientBeginCreateOrUpdateOptions`
+- New anonymous field `ApplicationGatewayBackendHealth` in struct `ApplicationGatewaysClientBackendHealthResponse`
+- New field `ResumeToken` in struct `VirtualNetworkGatewaysClientBeginGetVpnclientIPSecParametersOptions`
+- New field `ResumeToken` in struct `VirtualHubBgpConnectionsClientBeginListAdvertisedRoutesOptions`
+- New anonymous field `ExpressRouteCircuitStats` in struct `ExpressRouteCircuitsClientGetStatsResponse`
+- New anonymous field `VirtualWAN` in struct `VirtualWansClientGetResponse`
+- New field `ResumeToken` in struct `VirtualNetworkGatewaysClientBeginStartPacketCaptureOptions`
+- New anonymous field `AzureWebCategoryListResult` in struct `WebCategoriesClientListBySubscriptionResponse`
+- New field `ResumeToken` in struct `VirtualNetworkGatewayConnectionsClientBeginSetSharedKeyOptions`
+- New field `ResumeToken` in struct `VPNGatewaysClientBeginStartPacketCaptureOptions`
+- New anonymous field `VirtualNetworkGatewayConnection` in struct `VirtualNetworkGatewayConnectionsClientGetResponse`
+- New anonymous field `Profile` in struct `ProfilesClientCreateOrUpdateResponse`
+- New anonymous field `BackendAddressInboundNatRulePortMappings` in struct `LoadBalancersClientListInboundNatRulePortMappingsResponse`
+- New field `Value` in struct `VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse`
+- New anonymous field `Profile` in struct `ProfilesClientGetResponse`
+- New anonymous field `PublicIPAddressListResult` in struct `PublicIPAddressesClientListAllResponse`
+- New anonymous field `PrivateDNSZoneGroup` in struct `PrivateDNSZoneGroupsClientGetResponse`
+- New field `ResumeToken` in struct `VirtualNetworkGatewaysClientBeginGetVpnclientConnectionHealthOptions`
+- New anonymous field `ExpressRoutePort` in struct `ExpressRoutePortsClientCreateOrUpdateResponse`
+- New anonymous field `VirtualNetworkGateway` in struct `VirtualNetworkGatewaysClientResetResponse`
+- New anonymous field `BackendAddressPool` in struct `LoadBalancerBackendAddressPoolsClientGetResponse`
+- New field `ResumeToken` in struct `ExpressRouteCircuitsClientBeginListArpTableOptions`
+- New anonymous field `Interface` in struct `InterfacesClientGetResponse`
+- New field `ResumeToken` in struct `VirtualNetworkGatewayConnectionsClientBeginUpdateTagsOptions`
+- New field `ResumeToken` in struct `VirtualNetworkGatewaysClientBeginGetLearnedRoutesOptions`
+- New field `ResumeToken` in struct `SecurityGroupsClientBeginDeleteOptions`
+- New anonymous field `IPGroupListResult` in struct `IPGroupsClientListResponse`
+- New field `ResumeToken` in struct `P2SVPNGatewaysClientBeginDisconnectP2SVPNConnectionsOptions`
+- New anonymous field `VPNGateway` in struct `VPNGatewaysClientCreateOrUpdateResponse`
+- New anonymous field `ExpressRouteLinkListResult` in struct `ExpressRouteLinksClientListResponse`
+- New anonymous field `WatcherListResult` in struct `WatchersClientListAllResponse`
+- New anonymous field `CustomIPPrefix` in struct `CustomIPPrefixesClientUpdateTagsResponse`
+- New anonymous field `InterfaceListResult` in struct `InterfacesClientListAllResponse`
+- New anonymous field `RouteTable` in struct `RouteTablesClientGetResponse`
+- New anonymous field `IPGroupListResult` in struct `IPGroupsClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `LoadBalancersClientBeginSwapPublicIPAddressesOptions`
+- New anonymous field `FirewallPolicyRuleCollectionGroup` in struct `FirewallPolicyRuleCollectionGroupsClientCreateOrUpdateResponse`
+- New anonymous field `ConnectionMonitorQueryResult` in struct `ConnectionMonitorsClientQueryResponse`
+- New anonymous field `ExpressRouteConnection` in struct `ExpressRouteConnectionsClientGetResponse`
+- New anonymous field `ConnectionMonitorResult` in struct `ConnectionMonitorsClientUpdateTagsResponse`
+- New anonymous field `PrivateEndpoint` in struct `PrivateEndpointsClientGetResponse`
+- New anonymous field `ListVirtualHubBgpConnectionResults` in struct `VirtualHubBgpConnectionsClientListResponse`
+- New field `ResumeToken` in struct `WatchersClientBeginGetTroubleshootingResultOptions`
+- New field `ResumeToken` in struct `ManagementClientBeginPutBastionShareableLinkOptions`
+- New field `StringArray` in struct `ApplicationGatewaysClientListAvailableRequestHeadersResponse`
+- New anonymous field `DdosCustomPolicy` in struct `DdosCustomPoliciesClientUpdateTagsResponse`
+- New anonymous field `PeerRouteList` in struct `VirtualHubBgpConnectionsClientListAdvertisedRoutesResponse`
+- New field `ResumeToken` in struct `VPNConnectionsClientBeginDeleteOptions`
+- New anonymous field `SubnetListResult` in struct `SubnetsClientListResponse`
+- New field `ResumeToken` in struct `BastionHostsClientBeginDeleteOptions`
+- New anonymous field `PrivateLinkService` in struct `PrivateLinkServicesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `VirtualNetworkGatewayConnectionsClientBeginCreateOrUpdateOptions`
+- New anonymous field `VirtualNetworkGatewayConnectionListResult` in struct `VirtualNetworkGatewayConnectionsClientListResponse`
+- New anonymous field `ExpressRouteCircuitsArpTableListResult` in struct `ExpressRouteCircuitsClientListArpTableResponse`
+- New field `ResumeToken` in struct `InterfacesClientBeginCreateOrUpdateOptions`
+- New anonymous field `Subnet` in struct `SubnetsClientCreateOrUpdateResponse`
+- New anonymous field `VirtualWAN` in struct `VirtualWansClientUpdateTagsResponse`
+- New anonymous field `Watcher` in struct `WatchersClientGetResponse`
+- New field `ResumeToken` in struct `FlowLogsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `P2SVPNGatewaysClientBeginUpdateTagsOptions`
+- New anonymous field `ServiceEndpointPolicyDefinition` in struct `ServiceEndpointPolicyDefinitionsClientGetResponse`
+- New field `ResumeToken` in struct `VirtualRoutersClientBeginDeleteOptions`
+- New anonymous field `IPGroup` in struct `IPGroupsClientUpdateGroupsResponse`
+- New anonymous field `RouteListResult` in struct `RoutesClientListResponse`
+- New anonymous field `GatewayRouteListResult` in struct `VirtualNetworkGatewaysClientGetLearnedRoutesResponse`
+- New field `ResumeToken` in struct `PrivateLinkServicesClientBeginDeletePrivateEndpointConnectionOptions`
+- New anonymous field `P2SVPNGateway` in struct `P2SVPNGatewaysClientResetResponse`
+- New anonymous field `SignaturesOverrides` in struct `FirewallPolicyIdpsSignaturesOverridesClientGetResponse`
+- New anonymous field `ApplicationGatewayPrivateEndpointConnection` in struct `ApplicationGatewayPrivateEndpointConnectionsClientGetResponse`
+- New anonymous field `AvailableServiceAliasesResult` in struct `AvailableServiceAliasesClientListResponse`
+- New anonymous field `PublicIPAddressListResult` in struct `PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse`
+- New anonymous field `VirtualNetworkListResult` in struct `VirtualNetworksClientListResponse`
+- New field `ResumeToken` in struct `VirtualHubsClientBeginCreateOrUpdateOptions`
+- New anonymous field `ListVPNGatewaysResult` in struct `VPNGatewaysClientListByResourceGroupResponse`
+- New anonymous field `ExpressRouteCircuitListResult` in struct `ExpressRouteCircuitsClientListAllResponse`
+- New field `ResumeToken` in struct `ExpressRouteGatewaysClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `ServiceEndpointPolicyDefinitionsClientBeginCreateOrUpdateOptions`
+- New anonymous field `VPNGatewayNatRule` in struct `NatRulesClientGetResponse`
+- New field `ResumeToken` in struct `ExpressRouteCrossConnectionPeeringsClientBeginDeleteOptions`
+- New anonymous field `VirtualApplianceSKU` in struct `VirtualApplianceSKUsClientGetResponse`
+- New anonymous field `VirtualNetworkGateway` in struct `VirtualNetworkGatewaysClientCreateOrUpdateResponse`
+- New anonymous field `ListVirtualHubIPConfigurationResults` in struct `VirtualHubIPConfigurationClientListResponse`
+- New anonymous field `VirtualNetworkPeering` in struct `VirtualNetworkPeeringsClientGetResponse`
+- New field `ResumeToken` in struct `NatGatewaysClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `RoutesClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `NatGatewaysClientBeginDeleteOptions`
+- New anonymous field `ExpressRouteGateway` in struct `ExpressRouteGatewaysClientUpdateTagsResponse`
+- New anonymous field `WebApplicationFirewallPolicyListResult` in struct `WebApplicationFirewallPoliciesClientListAllResponse`
+- New field `ResumeToken` in struct `ExpressRoutePortsClientBeginDeleteOptions`
+- New anonymous field `ApplicationGateway` in struct `ApplicationGatewaysClientGetResponse`
+- New anonymous field `PrivateLinkServiceVisibility` in struct `PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityResponse`
+- New field `ResumeToken` in struct `SubnetsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `VirtualHubsClientBeginGetEffectiveVirtualHubRoutesOptions`
+- New field `ResumeToken` in struct `IPAllocationsClientBeginDeleteOptions`
+- New anonymous field `RouteFilterRule` in struct `RouteFilterRulesClientGetResponse`
+- New field `ResumeToken` in struct `AzureFirewallsClientBeginCreateOrUpdateOptions`
+- New anonymous field `InterfaceListResult` in struct `InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse`
+- New field `ResumeToken` in struct `ApplicationGatewaysClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `VirtualNetworkPeeringsClientBeginDeleteOptions`
+- New anonymous field `IPAddressAvailabilityResult` in struct `VirtualNetworksClientCheckIPAddressAvailabilityResponse`
+- New anonymous field `ApplicationGateway` in struct `ApplicationGatewaysClientCreateOrUpdateResponse`
+- New anonymous field `ExpressRouteConnectionList` in struct `ExpressRouteConnectionsClientListResponse`
+- New anonymous field `VPNSiteLink` in struct `VPNSiteLinksClientGetResponse`
+- New anonymous field `SecurityRuleListResult` in struct `DefaultSecurityRulesClientListResponse`
+- New anonymous field `ConnectionResetSharedKey` in struct `VirtualNetworkGatewayConnectionsClientResetSharedKeyResponse`
+- New anonymous field `LoadBalancerBackendAddressPoolListResult` in struct `LoadBalancerBackendAddressPoolsClientListResponse`
+- New anonymous field `AzureFirewallListResult` in struct `AzureFirewallsClientListResponse`
+- New anonymous field `FirewallPolicyRuleCollectionGroupListResult` in struct `FirewallPolicyRuleCollectionGroupsClientListResponse`
+- New anonymous field `VPNServerConfiguration` in struct `VPNServerConfigurationsClientUpdateTagsResponse`
+- New field `ResumeToken` in struct `VirtualApplianceSitesClientBeginCreateOrUpdateOptions`
+- New anonymous field `PrivateLinkServiceListResult` in struct `PrivateLinkServicesClientListBySubscriptionResponse`
+- New field `ResumeToken` in struct `ExpressRouteCircuitConnectionsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `ManagementClientBeginGetActiveSessionsOptions`
+- New anonymous field `ServiceEndpointPolicy` in struct `ServiceEndpointPoliciesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `RouteFiltersClientBeginCreateOrUpdateOptions`
+- New anonymous field `VirtualHubRouteTableV2` in struct `VirtualHubRouteTableV2SClientCreateOrUpdateResponse`
+- New anonymous field `VirtualRouterListResult` in struct `VirtualRoutersClientListResponse`
+- New anonymous field `FlowLog` in struct `FlowLogsClientUpdateTagsResponse`
+- New field `ResumeToken` in struct `ExpressRouteConnectionsClientBeginDeleteOptions`
+- New anonymous field `InterfaceIPConfiguration` in struct `InterfacesClientGetVirtualMachineScaleSetIPConfigurationResponse`
+- New anonymous field `ListVPNSiteLinksResult` in struct `VPNSiteLinksClientListByVPNSiteResponse`
+- New anonymous field `RouteFilter` in struct `RouteFiltersClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `VirtualNetworkGatewayConnectionsClientBeginStopPacketCaptureOptions`
+- New field `ResumeToken` in struct `VPNGatewaysClientBeginUpdateTagsOptions`
+- New anonymous field `FlowLog` in struct `FlowLogsClientCreateOrUpdateResponse`
+- New anonymous field `ConnectionMonitorListResult` in struct `ConnectionMonitorsClientListResponse`
+- New anonymous field `NextHopResult` in struct `WatchersClientGetNextHopResponse`
+- New anonymous field `ApplicationGatewaySSLPredefinedPolicy` in struct `ApplicationGatewaysClientGetSSLPredefinedPolicyResponse`
+- New anonymous field `InterfaceTapConfiguration` in struct `InterfaceTapConfigurationsClientCreateOrUpdateResponse`
+- New anonymous field `AzureFirewall` in struct `AzureFirewallsClientGetResponse`
+- New anonymous field `ResourceNavigationLinksListResult` in struct `ResourceNavigationLinksClientListResponse`
+- New field `ResumeToken` in struct `ExpressRouteCrossConnectionsClientBeginListArpTableOptions`
+- New anonymous field `RouteFilterRuleListResult` in struct `RouteFilterRulesClientListByRouteFilterResponse`
+- New field `ResumeToken` in struct `ApplicationGatewaysClientBeginDeleteOptions`
+- New anonymous field `Watcher` in struct `WatchersClientUpdateTagsResponse`
+- New field `ResumeToken` in struct `PacketCapturesClientBeginDeleteOptions`
+- New anonymous field `ServiceEndpointPolicyListResult` in struct `ServiceEndpointPoliciesClientListResponse`
+- New anonymous field `ExpressRouteCircuitStats` in struct `ExpressRouteCircuitsClientGetPeeringStatsResponse`
+- New anonymous field `RouteTableListResult` in struct `RouteTablesClientListResponse`
+- New anonymous field `ApplicationSecurityGroupListResult` in struct `ApplicationSecurityGroupsClientListResponse`
+- New anonymous field `WebApplicationFirewallPolicyListResult` in struct `WebApplicationFirewallPoliciesClientListResponse`
+- New anonymous field `ListVPNSitesResult` in struct `VPNSitesClientListResponse`
+- New anonymous field `SecurityGroupListResult` in struct `SecurityGroupsClientListResponse`
+- New anonymous field `QueryResults` in struct `FirewallPolicyIdpsSignaturesClientListResponse`
+- New anonymous field `P2SVPNGateway` in struct `P2SVPNGatewaysClientCreateOrUpdateResponse`
+- New anonymous field `EffectiveRouteListResult` in struct `InterfacesClientGetEffectiveRouteTableResponse`
+- New anonymous field `VirtualNetworkPeeringListResult` in struct `VirtualNetworkPeeringsClientListResponse`
+- New anonymous field `DdosProtectionPlan` in struct `DdosProtectionPlansClientGetResponse`
+- New field `ResumeToken` in struct `VPNGatewaysClientBeginDeleteOptions`
+- New anonymous field `ExpressRouteCircuit` in struct `ExpressRouteCircuitsClientGetResponse`
+- New field `ResumeToken` in struct `PrivateEndpointsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `VPNLinkConnectionsClientBeginResetConnectionOptions`
+- New anonymous field `ServiceAssociationLinksListResult` in struct `ServiceAssociationLinksClientListResponse`
+- New anonymous field `ListP2SVPNGatewaysResult` in struct `P2SVPNGatewaysClientListByResourceGroupResponse`
+- New anonymous field `BastionHostListResult` in struct `BastionHostsClientListResponse`
+- New field `ResumeToken` in struct `InterfaceTapConfigurationsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `WebApplicationFirewallPoliciesClientBeginDeleteOptions`
+- New anonymous field `FirewallPolicyRuleCollectionGroup` in struct `FirewallPolicyRuleCollectionGroupsClientGetResponse`
+- New field `ResumeToken` in struct `VirtualHubsClientBeginDeleteOptions`
+- New anonymous field `AvailableDelegationsResult` in struct `AvailableResourceGroupDelegationsClientListResponse`
+- New anonymous field `ListVPNSitesResult` in struct `VPNSitesClientListByResourceGroupResponse`
+- New anonymous field `HubRouteTable` in struct `HubRouteTablesClientGetResponse`
+- New anonymous field `VirtualNetworkPeering` in struct `VirtualNetworkPeeringsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `ManagementClientBeginGeneratevirtualwanvpnserverconfigurationvpnprofileOptions`
+- New anonymous field `SignaturesOverrides` in struct `FirewallPolicyIdpsSignaturesOverridesClientPatchResponse`
+- New field `ResumeToken` in struct `ApplicationGatewayPrivateEndpointConnectionsClientBeginUpdateOptions`
+- New anonymous field `LoadBalancerListResult` in struct `LoadBalancersClientListAllResponse`
+- New field `ResumeToken` in struct `ApplicationGatewaysClientBeginBackendHealthOptions`
+- New field `ResumeToken` in struct `InterfacesClientBeginListEffectiveNetworkSecurityGroupsOptions`
+- New anonymous field `Interface` in struct `InterfacesClientCreateOrUpdateResponse`
+- New anonymous field `LocalNetworkGateway` in struct `LocalNetworkGatewaysClientGetResponse`
+- New anonymous field `ExpressRoutePort` in struct `ExpressRoutePortsClientGetResponse`
+- New anonymous field `OutboundRule` in struct `LoadBalancerOutboundRulesClientGetResponse`
+- New anonymous field `InterfaceIPConfigurationListResult` in struct `InterfaceIPConfigurationsClientListResponse`
+- New anonymous field `VPNServerConfiguration` in struct `VPNServerConfigurationsClientGetResponse`
+- New field `ResumeToken` in struct `VPNServerConfigurationsAssociatedWithVirtualWanClientBeginListOptions`
+- New anonymous field `VirtualNetwork` in struct `VirtualNetworksClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `BastionHostsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `ExpressRouteCircuitAuthorizationsClientBeginDeleteOptions`
+- New anonymous field `FrontendIPConfiguration` in struct `LoadBalancerFrontendIPConfigurationsClientGetResponse`
+- New field `ResumeToken` in struct `SubnetsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `LoadBalancersClientBeginListInboundNatRulePortMappingsOptions`
+- New field `ResumeToken` in struct `VirtualApplianceSitesClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `PrivateLinkServicesClientBeginCheckPrivateLinkServiceVisibilityOptions`
+- New field `ResumeToken` in struct `ServiceEndpointPoliciesClientBeginDeleteOptions`
+- New anonymous field `VPNProfileResponse` in struct `P2SVPNGatewaysClientGenerateVPNProfileResponse`
+- New anonymous field `SecurityPartnerProviderListResult` in struct `SecurityPartnerProvidersClientListResponse`
+- New field `ResumeToken` in struct `WatchersClientBeginVerifyIPFlowOptions`
+- New field `ResumeToken` in struct `NatRulesClientBeginCreateOrUpdateOptions`
+- New anonymous field `ListVPNGatewaysResult` in struct `VPNGatewaysClientListResponse`
+- New anonymous field `ApplicationGatewayListResult` in struct `ApplicationGatewaysClientListResponse`
+- New anonymous field `CustomIPPrefixListResult` in struct `CustomIPPrefixesClientListResponse`
+- New field `ResumeToken` in struct `ServiceEndpointPolicyDefinitionsClientBeginDeleteOptions`
+- New anonymous field `SecurityRule` in struct `SecurityRulesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `NatRulesClientBeginDeleteOptions`
+- New anonymous field `VirtualRouterPeering` in struct `VirtualRouterPeeringsClientGetResponse`
+- New anonymous field `VPNSite` in struct `VPNSitesClientCreateOrUpdateResponse`
+- New anonymous field `SecurityPartnerProviderListResult` in struct `SecurityPartnerProvidersClientListByResourceGroupResponse`
+- New anonymous field `DNSNameAvailabilityResult` in struct `ManagementClientCheckDNSNameAvailabilityResponse`
+- New anonymous field `BastionShareableLinkListResult` in struct `ManagementClientGetBastionShareableLinkResponse`
+- New field `ResumeToken` in struct `P2SVPNGatewaysClientBeginGenerateVPNProfileOptions`
+- New anonymous field `LoadBalancerProbeListResult` in struct `LoadBalancerProbesClientListResponse`
+- New field `ResumeToken` in struct `DdosCustomPoliciesClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `PacketCapturesClientBeginGetStatusOptions`
+- New anonymous field `GenerateExpressRoutePortsLOAResult` in struct `ExpressRoutePortsClientGenerateLOAResponse`
+- New anonymous field `InterfaceListResult` in struct `LoadBalancerNetworkInterfacesClientListResponse`
+- New anonymous field `P2SVPNGateway` in struct `P2SVPNGatewaysClientGetP2SVPNConnectionHealthResponse`
+- New anonymous field `ConnectionMonitorResult` in struct `ConnectionMonitorsClientGetResponse`
+- New field `ResumeToken` in struct `RouteFiltersClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `VirtualNetworkGatewaysClientBeginDisconnectVirtualNetworkGatewayVPNConnectionsOptions`
+- New field `ResumeToken` in struct `BastionHostsClientBeginUpdateTagsOptions`
+- New anonymous field `HubRouteTable` in struct `HubRouteTablesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `CustomIPPrefixesClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `HubVirtualNetworkConnectionsClientBeginCreateOrUpdateOptions`
+- New anonymous field `P2SVPNGateway` in struct `P2SVPNGatewaysClientGetResponse`
+- New anonymous field `ApplicationGatewayPrivateEndpointConnectionListResult` in struct `ApplicationGatewayPrivateEndpointConnectionsClientListResponse`
+- New field `ResumeToken` in struct `VirtualNetworkGatewaysClientBeginGeneratevpnclientpackageOptions`
+- New field `ResumeToken` in struct `VirtualHubBgpConnectionsClientBeginListLearnedRoutesOptions`
+- New anonymous field `HubVirtualNetworkConnection` in struct `HubVirtualNetworkConnectionsClientGetResponse`
+- New anonymous field `ListRoutingIntentResult` in struct `RoutingIntentClientListResponse`
+- New field `ResumeToken` in struct `VirtualNetworkGatewayConnectionsClientBeginDeleteOptions`
+- New anonymous field `VirtualRouter` in struct `VirtualRoutersClientGetResponse`
+- New anonymous field `PrivateLinkServiceVisibility` in struct `PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupResponse`
+- New anonymous field `VirtualNetworkGateway` in struct `VirtualNetworkGatewaysClientUpdateTagsResponse`
+- New anonymous field `DdosProtectionPlan` in struct `DdosProtectionPlansClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `ServiceEndpointPoliciesClientBeginCreateOrUpdateOptions`
+- New anonymous field `PrivateEndpointListResult` in struct `PrivateEndpointsClientListBySubscriptionResponse`
+- New anonymous field `ListVirtualWANsResult` in struct `VirtualWansClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `LoadBalancersClientBeginCreateOrUpdateOptions`
+- New anonymous field `ListVPNServerConfigurationsResult` in struct `VPNServerConfigurationsClientListResponse`
+- New anonymous field `VPNConnection` in struct `VPNConnectionsClientCreateOrUpdateResponse`
+- New anonymous field `PrivateLinkServiceListResult` in struct `PrivateLinkServicesClientListResponse`
+- New field `ResumeToken` in struct `DscpConfigurationClientBeginDeleteOptions`
+- New anonymous field `VirtualAppliance` in struct `VirtualAppliancesClientUpdateTagsResponse`
+- New field `Value` in struct `VPNGatewaysClientStartPacketCaptureResponse`
+- New anonymous field `ExpressRouteCrossConnectionPeering` in struct `ExpressRouteCrossConnectionPeeringsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `P2SVPNGatewaysClientBeginGetP2SVPNConnectionHealthOptions`
+- New anonymous field `VPNProfileResponse` in struct `ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofileResponse`
+- New anonymous field `VirtualNetworkTap` in struct `VirtualNetworkTapsClientGetResponse`
+- New anonymous field `Interface` in struct `InterfacesClientGetCloudServiceNetworkInterfaceResponse`
+- New anonymous field `Route` in struct `RoutesClientCreateOrUpdateResponse`
+- New anonymous field `VPNSite` in struct `VPNSitesClientGetResponse`
+- New anonymous field `LocalNetworkGateway` in struct `LocalNetworkGatewaysClientUpdateTagsResponse`
+- New field `ResumeToken` in struct `ExpressRouteCircuitPeeringsClientBeginDeleteOptions`
+- New anonymous field `CustomIPPrefixListResult` in struct `CustomIPPrefixesClientListAllResponse`
+- New anonymous field `LoadBalancerOutboundRuleListResult` in struct `LoadBalancerOutboundRulesClientListResponse`
+- New field `ResumeToken` in struct `PublicIPAddressesClientBeginDeleteOptions`
+- New anonymous field `BackendAddressPool` in struct `LoadBalancerBackendAddressPoolsClientCreateOrUpdateResponse`
+- New anonymous field `InterfaceIPConfigurationListResult` in struct `InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse`
+- New anonymous field `PrivateEndpointListResult` in struct `PrivateEndpointsClientListResponse`
+- New anonymous field `VirtualNetworkGatewayConnection` in struct `VirtualNetworkGatewayConnectionsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `HubVirtualNetworkConnectionsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `VirtualNetworkGatewayConnectionsClientBeginResetSharedKeyOptions`
+- New anonymous field `ApplicationGateway` in struct `ApplicationGatewaysClientUpdateTagsResponse`
+- New field `ResumeToken` in struct `RouteTablesClientBeginCreateOrUpdateOptions`
+- New anonymous field `Interface` in struct `InterfacesClientUpdateTagsResponse`
+- New field `ResumeToken` in struct `InboundNatRulesClientBeginDeleteOptions`
+- New anonymous field `VirtualNetwork` in struct `VirtualNetworksClientGetResponse`
+- New field `ResumeToken` in struct `VirtualNetworkGatewayConnectionsClientBeginGetIkeSasOptions`
+- New anonymous field `ExpressRouteCircuit` in struct `ExpressRouteCircuitsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `VPNServerConfigurationsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `VPNServerConfigurationsClientBeginCreateOrUpdateOptions`
+- New anonymous field `ListHubRouteTablesResult` in struct `HubRouteTablesClientListResponse`
+- New anonymous field `P2SVPNGateway` in struct `P2SVPNGatewaysClientUpdateTagsResponse`
+- New field `ResumeToken` in struct `RouteFilterRulesClientBeginCreateOrUpdateOptions`
+- New anonymous field `VirtualRouterPeering` in struct `VirtualRouterPeeringsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `SecurityRulesClientBeginCreateOrUpdateOptions`
+- New anonymous field `VirtualRouter` in struct `VirtualRoutersClientCreateOrUpdateResponse`
+- New anonymous field `VirtualAppliance` in struct `VirtualAppliancesClientGetResponse`
+- New anonymous field `InterfaceLoadBalancerListResult` in struct `InterfaceLoadBalancersClientListResponse`
+- New anonymous field `VirtualApplianceSKUListResult` in struct `VirtualApplianceSKUsClientListResponse`
+- New field `ResumeToken` in struct `VirtualHubBgpConnectionClientBeginCreateOrUpdateOptions`
+- New anonymous field `Profile` in struct `ProfilesClientUpdateTagsResponse`
+- New anonymous field `BastionSessionDeleteResult` in struct `ManagementClientDisconnectActiveSessionsResponse`
+- New anonymous field `RouteFilter` in struct `RouteFiltersClientGetResponse`
+- New anonymous field `ListP2SVPNGatewaysResult` in struct `P2SVPNGatewaysClientListResponse`
+- New anonymous field `ApplicationGatewayPrivateEndpointConnection` in struct `ApplicationGatewayPrivateEndpointConnectionsClientUpdateResponse`
+- New anonymous field `VirtualNetwork` in struct `VirtualNetworksClientUpdateTagsResponse`
+- New anonymous field `Watcher` in struct `WatchersClientCreateOrUpdateResponse`
+- New anonymous field `AvailableDelegationsResult` in struct `AvailableDelegationsClientListResponse`
+- New field `Value` in struct `VirtualNetworkGatewaysClientStopPacketCaptureResponse`
+- New anonymous field `ServiceEndpointPolicy` in struct `ServiceEndpointPoliciesClientGetResponse`
+- New anonymous field `VPNGateway` in struct `VPNGatewaysClientUpdateTagsResponse`
+- New anonymous field `ExpressRouteCircuitConnection` in struct `ExpressRouteCircuitConnectionsClientCreateOrUpdateResponse`
+- New anonymous field `SecurityRule` in struct `SecurityRulesClientGetResponse`
+- New field `Value` in struct `VirtualNetworkGatewayConnectionsClientStopPacketCaptureResponse`
+- New field `ResumeToken` in struct `SubnetsClientBeginUnprepareNetworkPoliciesOptions`
+- New anonymous field `PacketCaptureResult` in struct `PacketCapturesClientCreateResponse`
+- New field `ResumeToken` in struct `FlowLogsClientBeginCreateOrUpdateOptions`
+- New anonymous field `VPNGatewayNatRule` in struct `NatRulesClientCreateOrUpdateResponse`
+- New anonymous field `LoadBalancer` in struct `LoadBalancersClientGetResponse`
+- New field `ResumeToken` in struct `RouteFilterRulesClientBeginDeleteOptions`
+- New anonymous field `BgpPeerStatusListResult` in struct `VirtualNetworkGatewaysClientGetBgpPeerStatusResponse`
+- New anonymous field `DdosCustomPolicy` in struct `DdosCustomPoliciesClientCreateOrUpdateResponse`
+- New anonymous field `ListVirtualHubsResult` in struct `VirtualHubsClientListResponse`
+- New anonymous field `ListVPNServerConfigurationsResult` in struct `VPNServerConfigurationsClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `ConnectionMonitorsClientBeginStartOptions`
+- New anonymous field `VirtualRouterListResult` in struct `VirtualRoutersClientListByResourceGroupResponse`
+- New anonymous field `SecurityGroup` in struct `SecurityGroupsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `ExpressRouteCrossConnectionsClientBeginListRoutesTableSummaryOptions`
+- New anonymous field `VirtualNetworkGatewayNatRule` in struct `VirtualNetworkGatewayNatRulesClientCreateOrUpdateResponse`
+- New anonymous field `InboundNatRule` in struct `InboundNatRulesClientCreateOrUpdateResponse`
+- New anonymous field `VirtualNetworkListResult` in struct `VirtualNetworksClientListAllResponse`
+- New anonymous field `DdosProtectionPlanListResult` in struct `DdosProtectionPlansClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `CustomIPPrefixesClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `VirtualRouterPeeringsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `FirewallPolicyRuleCollectionGroupsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `VirtualRoutersClientBeginCreateOrUpdateOptions`
+- New anonymous field `PublicIPPrefix` in struct `PublicIPPrefixesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `WatchersClientBeginSetFlowLogConfigurationOptions`
+- New anonymous field `ExpressRouteCircuitsArpTableListResult` in struct `ExpressRouteCrossConnectionsClientListArpTableResponse`
+- New field `StringArray` in struct `ApplicationGatewaysClientListAvailableResponseHeadersResponse`
+- New field `Value` in struct `VirtualNetworkGatewayConnectionsClientGetIkeSasResponse`
+- New anonymous field `VPNClientConnectionHealthDetailListResult` in struct `VirtualNetworkGatewaysClientGetVpnclientConnectionHealthResponse`
+- New field `ResumeToken` in struct `VPNConnectionsClientBeginStopPacketCaptureOptions`
+- New field `ResumeToken` in struct `IPGroupsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `ApplicationGatewaysClientBeginBackendHealthOnDemandOptions`
+- New anonymous field `VirtualHub` in struct `VirtualHubsClientCreateOrUpdateResponse`
+- New anonymous field `AzureFirewall` in struct `AzureFirewallsClientCreateOrUpdateResponse`
+- New anonymous field `SecurityGroupViewResult` in struct `WatchersClientGetVMSecurityRulesResponse`
+- New anonymous field `PacketCaptureListResult` in struct `PacketCapturesClientListResponse`
+- New anonymous field `NatGateway` in struct `NatGatewaysClientUpdateTagsResponse`
+- New anonymous field `IPAllocationListResult` in struct `IPAllocationsClientListResponse`
+- New field `ResumeToken` in struct `VirtualNetworkPeeringsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `WatchersClientBeginDeleteOptions`
+- New anonymous field `HubIPConfiguration` in struct `VirtualHubIPConfigurationClientCreateOrUpdateResponse`
+- New anonymous field `SecurityPartnerProvider` in struct `SecurityPartnerProvidersClientCreateOrUpdateResponse`
+- New anonymous field `LocalNetworkGatewayListResult` in struct `LocalNetworkGatewaysClientListResponse`
+- New field `ResumeToken` in struct `WatchersClientBeginGetVMSecurityRulesOptions`
+- New anonymous field `FlowLogInformation` in struct `WatchersClientGetFlowLogStatusResponse`
+- New anonymous field `ExpressRouteCircuitConnection` in struct `ExpressRouteCircuitConnectionsClientGetResponse`
+- New field `ResumeToken` in struct `LoadBalancersClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `WatchersClientBeginGetFlowLogStatusOptions`
+- New anonymous field `VirtualNetworkGatewayNatRule` in struct `VirtualNetworkGatewayNatRulesClientGetResponse`
+- New anonymous field `ExpressRoutePortsLocation` in struct `ExpressRoutePortsLocationsClientGetResponse`
+- New field `ResumeToken` in struct `VirtualNetworkTapsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `VirtualNetworkGatewayNatRulesClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `RoutingIntentClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `PublicIPPrefixesClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `FirewallPoliciesClientBeginCreateOrUpdateOptions`
+- New anonymous field `Probe` in struct `LoadBalancerProbesClientGetResponse`
+- New field `ResumeToken` in struct `InterfaceTapConfigurationsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `WatchersClientBeginGetNetworkConfigurationDiagnosticOptions`
+- New anonymous field `LoadBalancerLoadBalancingRuleListResult` in struct `LoadBalancerLoadBalancingRulesClientListResponse`
+- New field `ResumeToken` in struct `ExpressRouteCircuitConnectionsClientBeginDeleteOptions`
+- New anonymous field `VerificationIPFlowResult` in struct `WatchersClientVerifyIPFlowResponse`
+- New anonymous field `InterfaceTapConfiguration` in struct `InterfaceTapConfigurationsClientGetResponse`
+- New anonymous field `ExpressRouteCrossConnectionPeeringList` in struct `ExpressRouteCrossConnectionPeeringsClientListResponse`
+- New field `ResumeToken` in struct `AzureFirewallsClientBeginUpdateTagsOptions`
+- New anonymous field `VPNSite` in struct `VPNSitesClientUpdateTagsResponse`
+- New anonymous field `BgpServiceCommunityListResult` in struct `BgpServiceCommunitiesClientListResponse`
+- New field `ResumeToken` in struct `InterfacesClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `InboundNatRulesClientBeginCreateOrUpdateOptions`
+- New anonymous field `VirtualRouterPeeringListResult` in struct `VirtualRouterPeeringsClientListResponse`
+- New anonymous field `BastionActiveSessionListResult` in struct `ManagementClientGetActiveSessionsResponse`
+- New anonymous field `AzureWebCategory` in struct `WebCategoriesClientGetResponse`
+- New field `ResumeToken` in struct `VirtualWansClientBeginDeleteOptions`
+- New anonymous field `PrivateDNSZoneGroupListResult` in struct `PrivateDNSZoneGroupsClientListResponse`
+- New field `ResumeToken` in struct `VirtualNetworkGatewaysClientBeginGenerateVPNProfileOptions`
+- New anonymous field `ExpressRouteGatewayList` in struct `ExpressRouteGatewaysClientListBySubscriptionResponse`
+- New field `ResumeToken` in struct `VirtualHubIPConfigurationClientBeginCreateOrUpdateOptions`
+- New anonymous field `AzureFirewallListResult` in struct `AzureFirewallsClientListAllResponse`
+- New anonymous field `DdosProtectionPlan` in struct `DdosProtectionPlansClientUpdateTagsResponse`
+- New anonymous field `ExpressRouteCrossConnection` in struct `ExpressRouteCrossConnectionsClientCreateOrUpdateResponse`
+- New anonymous field `LoadBalancer` in struct `LoadBalancersClientUpdateTagsResponse`
+- New anonymous field `ListVirtualHubsResult` in struct `VirtualHubsClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `VirtualNetworkGatewaysClientBeginStopPacketCaptureOptions`
+- New field `ResumeToken` in struct `ExpressRouteCircuitPeeringsClientBeginCreateOrUpdateOptions`
+- New field `Value` in struct `VPNConnectionsClientStartPacketCaptureResponse`
+- New field `ResumeToken` in struct `ConnectionMonitorsClientBeginCreateOrUpdateOptions`
+- New anonymous field `VirtualNetworkGateway` in struct `VirtualNetworkGatewaysClientGetResponse`
+- New anonymous field `FlowLog` in struct `FlowLogsClientGetResponse`
+- New anonymous field `AutoApprovedPrivateLinkServicesResult` in struct `PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse`
+- New anonymous field `BgpConnection` in struct `VirtualHubBgpConnectionClientCreateOrUpdateResponse`
+- New anonymous field `ProfileListResult` in struct `ProfilesClientListResponse`
+- New anonymous field `VirtualApplianceSite` in struct `VirtualApplianceSitesClientGetResponse`
+- New field `ResumeToken` in struct `VirtualNetworkGatewaysClientBeginSetVpnclientIPSecParametersOptions`
+- New anonymous field `SecurityPartnerProvider` in struct `SecurityPartnerProvidersClientGetResponse`
+- New anonymous field `RouteFilterListResult` in struct `RouteFiltersClientListResponse`
+- New anonymous field `ExpressRouteCircuitAuthorization` in struct `ExpressRouteCircuitAuthorizationsClientGetResponse`
+- New field `ResumeToken` in struct `ExpressRouteCrossConnectionPeeringsClientBeginCreateOrUpdateOptions`
+- New anonymous field `PublicIPAddress` in struct `PublicIPAddressesClientGetResponse`
+- New anonymous field `WebApplicationFirewallPolicy` in struct `WebApplicationFirewallPoliciesClientCreateOrUpdateResponse`
+- New anonymous field `ServiceEndpointPolicy` in struct `ServiceEndpointPoliciesClientUpdateTagsResponse`
+- New anonymous field `IPAllocation` in struct `IPAllocationsClientUpdateTagsResponse`
+- New anonymous field `Route` in struct `RoutesClientGetResponse`
+- New anonymous field `ServiceTagInformationListResult` in struct `ServiceTagInformationClientListResponse`
+- New field `ResumeToken` in struct `ExpressRouteCircuitsClientBeginListRoutesTableOptions`
+- New field `ResumeToken` in struct `ConnectionMonitorsClientBeginDeleteOptions`
+- New anonymous field `LoadBalancer` in struct `LoadBalancersClientCreateOrUpdateResponse`
+- New anonymous field `ServiceTagsListResult` in struct `ServiceTagsClientListResponse`
+- New anonymous field `ExpressRouteCrossConnectionsRoutesTableSummaryListResult` in struct `ExpressRouteCrossConnectionsClientListRoutesTableSummaryResponse`
+- New field `ResumeToken` in struct `VirtualNetworkGatewaysClientBeginResetOptions`
+- New field `ResumeToken` in struct `SecurityPartnerProvidersClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `PrivateLinkServicesClientBeginCreateOrUpdateOptions`
+- New anonymous field `IPGroup` in struct `IPGroupsClientCreateOrUpdateResponse`
+- New anonymous field `InterfaceListResult` in struct `InterfacesClientListResponse`
+- New anonymous field `InterfaceTapConfigurationListResult` in struct `InterfaceTapConfigurationsClientListResponse`
+- New anonymous field `LoadBalancerListResult` in struct `LoadBalancersClientListResponse`
+- New anonymous field `ExpressRouteGateway` in struct `ExpressRouteGatewaysClientGetResponse`
+- New anonymous field `IPAllocation` in struct `IPAllocationsClientGetResponse`
+- New anonymous field `IPGroup` in struct `IPGroupsClientGetResponse`
+- New anonymous field `ListVPNGatewayNatRulesResult` in struct `NatRulesClientListByVPNGatewayResponse`
+- New field `ResumeToken` in struct `VPNGatewaysClientBeginStopPacketCaptureOptions`
+- New anonymous field `VirtualNetworkTap` in struct `VirtualNetworkTapsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `LocalNetworkGatewaysClientBeginDeleteOptions`
+- New anonymous field `ListVirtualWANsResult` in struct `VirtualWansClientListResponse`
+- New anonymous field `PrivateEndpointConnectionListResult` in struct `PrivateLinkServicesClientListPrivateEndpointConnectionsResponse`
+- New anonymous field `VirtualWanSecurityProviders` in struct `ManagementClientSupportedSecurityProvidersResponse`
+- New anonymous field `ListVirtualHubRouteTableV2SResult` in struct `VirtualHubRouteTableV2SClientListResponse`
+- New anonymous field `ConnectionSharedKey` in struct `VirtualNetworkGatewayConnectionsClientGetSharedKeyResponse`
+- New anonymous field `VirtualNetworkGatewayConnection` in struct `VirtualNetworkGatewayConnectionsClientUpdateTagsResponse`
+- New anonymous field `WatcherListResult` in struct `WatchersClientListResponse`
+- New field `ResumeToken` in struct `ExpressRouteGatewaysClientBeginUpdateTagsOptions`
+- New anonymous field `BastionHostListResult` in struct `BastionHostsClientListByResourceGroupResponse`
+- New anonymous field `RoutingIntent` in struct `RoutingIntentClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `RoutingIntentClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `VPNSitesClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `ApplicationSecurityGroupsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `VPNConnectionsClientBeginStartPacketCaptureOptions`
+- New field `Value` in struct `VPNLinkConnectionsClientGetIkeSasResponse`
+- New anonymous field `PublicIPAddress` in struct `PublicIPAddressesClientCreateOrUpdateResponse`
+- New anonymous field `InterfaceListResult` in struct `InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse`
+- New anonymous field `PeerExpressRouteCircuitConnection` in struct `PeerExpressRouteCircuitConnectionsClientGetResponse`
+- New anonymous field `SecurityGroupListResult` in struct `SecurityGroupsClientListAllResponse`
+- New anonymous field `IPAllocation` in struct `IPAllocationsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `RoutesClientBeginDeleteOptions`
+- New field `Value` in struct `VPNGatewaysClientStopPacketCaptureResponse`
+- New field `ResumeToken` in struct `LoadBalancerBackendAddressPoolsClientBeginCreateOrUpdateOptions`
+- New anonymous field `TroubleshootingResult` in struct `WatchersClientGetTroubleshootingResponse`
+- New anonymous field `PrivateDNSZoneGroup` in struct `PrivateDNSZoneGroupsClientCreateOrUpdateResponse`
+- New field `Value` in struct `VirtualNetworkGatewaysClientGenerateVPNProfileResponse`
+- New anonymous field `FirewallPolicy` in struct `FirewallPoliciesClientGetResponse`
+- New anonymous field `VPNConnection` in struct `VPNConnectionsClientGetResponse`
+- New field `ResumeToken` in struct `P2SVPNGatewaysClientBeginResetOptions`
+- New anonymous field `VirtualApplianceListResult` in struct `VirtualAppliancesClientListResponse`
+- New anonymous field `VirtualApplianceListResult` in struct `VirtualAppliancesClientListByResourceGroupResponse`
+- New anonymous field `LoadBalancerFrontendIPConfigurationListResult` in struct `LoadBalancerFrontendIPConfigurationsClientListResponse`
+- New anonymous field `PublicIPAddressListResult` in struct `PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse`
+- New field `ResumeToken` in struct `ExpressRouteCircuitsClientBeginCreateOrUpdateOptions`
+- New anonymous field `AzureFirewallFqdnTagListResult` in struct `AzureFirewallFqdnTagsClientListAllResponse`
+- New field `ResumeToken` in struct `HubRouteTablesClientBeginDeleteOptions`
+- New anonymous field `ApplicationGatewayBackendHealthOnDemand` in struct `ApplicationGatewaysClientBackendHealthOnDemandResponse`
+- New anonymous field `VPNServerConfiguration` in struct `VPNServerConfigurationsClientCreateOrUpdateResponse`
+- New anonymous field `Topology` in struct `WatchersClientGetTopologyResponse`
+- New field `ResumeToken` in struct `DdosProtectionPlansClientBeginCreateOrUpdateOptions`
+- New anonymous field `AvailableServiceAliasesResult` in struct `AvailableServiceAliasesClientListByResourceGroupResponse`
+- New anonymous field `ListHubVirtualNetworkConnectionsResult` in struct `HubVirtualNetworkConnectionsClientListResponse`
+- New anonymous field `ServiceEndpointPolicyDefinition` in struct `ServiceEndpointPolicyDefinitionsClientCreateOrUpdateResponse`
+- New anonymous field `ExpressRouteCrossConnection` in struct `ExpressRouteCrossConnectionsClientGetResponse`
+- New field `Value` in struct `VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse`
+- New field `ResumeToken` in struct `ApplicationGatewaysClientBeginStartOptions`
+- New anonymous field `VirtualNetworkTapListResult` in struct `VirtualNetworkTapsClientListByResourceGroupResponse`
+- New anonymous field `SecurityGroup` in struct `SecurityGroupsClientUpdateTagsResponse`
+- New anonymous field `SignatureOverridesFilterValuesResponse` in struct `FirewallPolicyIdpsSignaturesFilterValuesClientListResponse`
+- New field `ResumeToken` in struct `ApplicationGatewayPrivateEndpointConnectionsClientBeginDeleteOptions`
+- New field `Value` in struct `VirtualNetworkGatewayConnectionsClientStartPacketCaptureResponse`
+- New anonymous field `ApplicationSecurityGroup` in struct `ApplicationSecurityGroupsClientUpdateTagsResponse`
+- New anonymous field `SecurityGroup` in struct `SecurityGroupsClientGetResponse`
+- New field `ResumeToken` in struct `ExpressRouteCircuitsClientBeginListRoutesTableSummaryOptions`
+- New field `ResumeToken` in struct `VirtualNetworkGatewaysClientBeginUpdateTagsOptions`
+- New anonymous field `ListVPNConnectionsResult` in struct `VPNConnectionsClientListByVPNGatewayResponse`
+- New field `ResumeToken` in struct `ExpressRouteCrossConnectionsClientBeginListRoutesTableOptions`
+- New anonymous field `ApplicationGatewayListResult` in struct `ApplicationGatewaysClientListAllResponse`
+- New anonymous field `ExpressRouteCircuitsRoutesTableListResult` in struct `ExpressRouteCircuitsClientListRoutesTableResponse`
+- New anonymous field `PublicIPAddress` in struct `PublicIPAddressesClientGetCloudServicePublicIPAddressResponse`
+- New field `ResumeToken` in struct `VirtualWansClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `HubRouteTablesClientBeginCreateOrUpdateOptions`
+- New anonymous field `VirtualNetworkListUsageResult` in struct `VirtualNetworksClientListUsageResponse`
+- New anonymous field `DdosCustomPolicy` in struct `DdosCustomPoliciesClientGetResponse`
+- New anonymous field `FirewallPolicyListResult` in struct `FirewallPoliciesClientListResponse`
+- New anonymous field `RouteFilterListResult` in struct `RouteFiltersClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `DdosCustomPoliciesClientBeginCreateOrUpdateOptions`
+- New anonymous field `InterfaceListResult` in struct `InterfacesClientListCloudServiceNetworkInterfacesResponse`
+- New anonymous field `NatGateway` in struct `NatGatewaysClientCreateOrUpdateResponse`
+- New anonymous field `ExpressRoutePortListResult` in struct `ExpressRoutePortsClientListResponse`
+- New anonymous field `AzureReachabilityReport` in struct `WatchersClientGetAzureReachabilityReportResponse`
+- New anonymous field `PeerExpressRouteCircuitConnectionListResult` in struct `PeerExpressRouteCircuitConnectionsClientListResponse`
+- New anonymous field `PublicIPPrefixListResult` in struct `PublicIPPrefixesClientListResponse`
+- New field `ResumeToken` in struct `RouteTablesClientBeginDeleteOptions`
+- New anonymous field `PeerRouteList` in struct `VirtualHubBgpConnectionsClientListLearnedRoutesResponse`
+- New field `ResumeToken` in struct `VPNLinkConnectionsClientBeginGetIkeSasOptions`
+- New field `ResumeToken` in struct `SubnetsClientBeginPrepareNetworkPoliciesOptions`
+- New anonymous field `BgpConnection` in struct `VirtualHubBgpConnectionClientGetResponse`
+- New anonymous field `RouteTable` in struct `RouteTablesClientCreateOrUpdateResponse`
+- New anonymous field `PublicIPPrefixListResult` in struct `PublicIPPrefixesClientListAllResponse`
+- New field `ResumeToken` in struct `InboundSecurityRuleClientBeginCreateOrUpdateOptions`
+- New anonymous field `FlowLogListResult` in struct `FlowLogsClientListResponse`
+- New anonymous field `NatGatewayListResult` in struct `NatGatewaysClientListAllResponse`
+- New field `ResumeToken` in struct `VPNGatewaysClientBeginResetOptions`
+- New anonymous field `VPNClientIPsecParameters` in struct `VirtualNetworkGatewaysClientSetVpnclientIPSecParametersResponse`
+- New anonymous field `AvailablePrivateEndpointTypesResult` in struct `AvailablePrivateEndpointTypesClientListResponse`
+- New field `ResumeToken` in struct `VirtualNetworkGatewayConnectionsClientBeginResetConnectionOptions`
+- New anonymous field `VirtualHub` in struct `VirtualHubsClientGetResponse`
+- New anonymous field `SignaturesOverridesList` in struct `FirewallPolicyIdpsSignaturesOverridesClientListResponse`
+- New field `ResumeToken` in struct `ManagementClientBeginDeleteBastionShareableLinkOptions`
+- New anonymous field `EndpointServicesListResult` in struct `AvailableEndpointServicesClientListResponse`
+- New anonymous field `FirewallPolicyListResult` in struct `FirewallPoliciesClientListAllResponse`
+- New field `ResumeToken` in struct `ExpressRouteCrossConnectionsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `ExpressRouteConnectionsClientBeginCreateOrUpdateOptions`
+- New anonymous field `ExpressRouteCrossConnectionListResult` in struct `ExpressRouteCrossConnectionsClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `PrivateDNSZoneGroupsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `VirtualNetworkGatewaysClientBeginGetVPNProfilePackageURLOptions`
+- New field `ResumeToken` in struct `VirtualNetworksClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `PacketCapturesClientBeginCreateOptions`
+- New field `ResumeToken` in struct `ExpressRouteCircuitsClientBeginDeleteOptions`
+- New anonymous field `ConnectivityInformation` in struct `WatchersClientCheckConnectivityResponse`
+- New anonymous field `SecurityPartnerProvider` in struct `SecurityPartnerProvidersClientUpdateTagsResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `ExpressRouteCircuitPeeringListResult` in struct `ExpressRouteCircuitPeeringsClientListResponse`
+- New anonymous field `VirtualApplianceSite` in struct `VirtualApplianceSitesClientCreateOrUpdateResponse`
+- New anonymous field `DscpConfiguration` in struct `DscpConfigurationClientGetResponse`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

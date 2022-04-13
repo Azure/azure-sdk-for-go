@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type EntityQueriesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewEntityQueriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *EntityQueriesClient {
+func NewEntityQueriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EntityQueriesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &EntityQueriesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates the entity query.
@@ -96,7 +101,7 @@ func (client *EntityQueriesClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, entityQuery)
@@ -104,7 +109,7 @@ func (client *EntityQueriesClient) createOrUpdateCreateRequest(ctx context.Conte
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *EntityQueriesClient) createOrUpdateHandleResponse(resp *http.Response) (EntityQueriesClientCreateOrUpdateResponse, error) {
-	result := EntityQueriesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := EntityQueriesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return EntityQueriesClientCreateOrUpdateResponse{}, err
 	}
@@ -129,7 +134,7 @@ func (client *EntityQueriesClient) Delete(ctx context.Context, resourceGroupName
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return EntityQueriesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return EntityQueriesClientDeleteResponse{RawResponse: resp}, nil
+	return EntityQueriesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -156,7 +161,7 @@ func (client *EntityQueriesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -207,7 +212,7 @@ func (client *EntityQueriesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -215,7 +220,7 @@ func (client *EntityQueriesClient) getCreateRequest(ctx context.Context, resourc
 
 // getHandleResponse handles the Get response.
 func (client *EntityQueriesClient) getHandleResponse(resp *http.Response) (EntityQueriesClientGetResponse, error) {
-	result := EntityQueriesClientGetResponse{RawResponse: resp}
+	result := EntityQueriesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return EntityQueriesClientGetResponse{}, err
 	}
@@ -227,16 +232,32 @@ func (client *EntityQueriesClient) getHandleResponse(resp *http.Response) (Entit
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - EntityQueriesClientListOptions contains the optional parameters for the EntityQueriesClient.List method.
-func (client *EntityQueriesClient) List(resourceGroupName string, workspaceName string, options *EntityQueriesClientListOptions) *EntityQueriesClientListPager {
-	return &EntityQueriesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
+func (client *EntityQueriesClient) List(resourceGroupName string, workspaceName string, options *EntityQueriesClientListOptions) *runtime.Pager[EntityQueriesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[EntityQueriesClientListResponse]{
+		More: func(page EntityQueriesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp EntityQueriesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.EntityQueryList.NextLink)
+		Fetcher: func(ctx context.Context, page *EntityQueriesClientListResponse) (EntityQueriesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return EntityQueriesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return EntityQueriesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return EntityQueriesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -262,7 +283,7 @@ func (client *EntityQueriesClient) listCreateRequest(ctx context.Context, resour
 	if options != nil && options.Kind != nil {
 		reqQP.Set("kind", string(*options.Kind))
 	}
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -270,7 +291,7 @@ func (client *EntityQueriesClient) listCreateRequest(ctx context.Context, resour
 
 // listHandleResponse handles the List response.
 func (client *EntityQueriesClient) listHandleResponse(resp *http.Response) (EntityQueriesClientListResponse, error) {
-	result := EntityQueriesClientListResponse{RawResponse: resp}
+	result := EntityQueriesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EntityQueryList); err != nil {
 		return EntityQueriesClientListResponse{}, err
 	}

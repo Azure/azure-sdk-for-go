@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,22 +17,27 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage"
 )
 
-// x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/createOrUpdateConfigurationProfileVersion.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/createOrUpdateConfigurationProfileVersion.json
 func ExampleConfigurationProfilesVersionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armautomanage.NewConfigurationProfilesVersionsClient("<subscription-id>", cred, nil)
+	client, err := armautomanage.NewConfigurationProfilesVersionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<configuration-profile-name>",
 		"<version-name>",
 		"<resource-group-name>",
 		armautomanage.ConfigurationProfile{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Tags: map[string]*string{
-				"Organization": to.StringPtr("Administration"),
+				"Organization": to.Ptr("Administration"),
 			},
 			Properties: &armautomanage.ConfigurationProfileProperties{
 				Configuration: map[string]interface{}{
@@ -46,8 +51,8 @@ func ExampleConfigurationProfilesVersionsClient_CreateOrUpdate() {
 					"UpdateManagement/Enable":           true,
 					"VMInsights/Enable":                 true,
 				},
-				Overrides: []map[string]interface{}{
-					{
+				Overrides: []interface{}{
+					map[string]interface{}{
 						"if": map[string]interface{}{
 							"equals": "eastus",
 							"field":  "$.location",
@@ -59,7 +64,7 @@ func ExampleConfigurationProfilesVersionsClient_CreateOrUpdate() {
 							"LogAnalytics/Workspace":   "/subscriptions/abc/resourceGroups/xyz/providers/Microsoft.La/Workspaces/eastus",
 						},
 					},
-					{
+					map[string]interface{}{
 						"if": map[string]interface{}{
 							"equals": "centralcanada",
 							"field":  "$.location",
@@ -75,63 +80,83 @@ func ExampleConfigurationProfilesVersionsClient_CreateOrUpdate() {
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ConfigurationProfilesVersionsClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/getConfigurationProfileVersion.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/getConfigurationProfileVersion.json
 func ExampleConfigurationProfilesVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armautomanage.NewConfigurationProfilesVersionsClient("<subscription-id>", cred, nil)
+	client, err := armautomanage.NewConfigurationProfilesVersionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<configuration-profile-name>",
 		"<version-name>",
 		"<resource-group-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ConfigurationProfilesVersionsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/deleteConfigurationProfileVersion.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/deleteConfigurationProfileVersion.json
 func ExampleConfigurationProfilesVersionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armautomanage.NewConfigurationProfilesVersionsClient("<subscription-id>", cred, nil)
+	client, err := armautomanage.NewConfigurationProfilesVersionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<configuration-profile-name>",
 		"<version-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/updateConfigurationProfileVersion.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/updateConfigurationProfileVersion.json
 func ExampleConfigurationProfilesVersionsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armautomanage.NewConfigurationProfilesVersionsClient("<subscription-id>", cred, nil)
+	client, err := armautomanage.NewConfigurationProfilesVersionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Update(ctx,
 		"<configuration-profile-name>",
 		"<version-name>",
 		"<resource-group-name>",
 		armautomanage.ConfigurationProfileUpdate{
 			Tags: map[string]*string{
-				"Organization": to.StringPtr("Administration"),
+				"Organization": to.Ptr("Administration"),
 			},
 			Properties: &armautomanage.ConfigurationProfileProperties{
 				Configuration: map[string]interface{}{
@@ -149,25 +174,38 @@ func ExampleConfigurationProfilesVersionsClient_Update() {
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ConfigurationProfilesVersionsClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/listConfigurationProfileVersions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/listConfigurationProfileVersions.json
 func ExampleConfigurationProfilesVersionsClient_ListChildResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armautomanage.NewConfigurationProfilesVersionsClient("<subscription-id>", cred, nil)
-	res, err := client.ListChildResources(ctx,
-		"<configuration-profile-name>",
+	client, err := armautomanage.NewConfigurationProfilesVersionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	pager := client.ListChildResources("<configuration-profile-name>",
 		"<resource-group-name>",
 		nil)
-	if err != nil {
-		log.Fatal(err)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+			return
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
-	log.Printf("Response result: %#v\n", res.ConfigurationProfilesVersionsClientListChildResourcesResult)
 }

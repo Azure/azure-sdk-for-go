@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armcognitiveservices
 
 const (
 	moduleName    = "armcognitiveservices"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v0.5.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -25,11 +25,6 @@ func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
 	}
-}
-
-// ToPtr returns a *ActionType pointing to the current value.
-func (c ActionType) ToPtr() *ActionType {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -50,11 +45,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
 	}
-}
-
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
 }
 
 // DeploymentProvisioningState - Gets the status of the resource at the time the operation was called.
@@ -81,11 +71,6 @@ func PossibleDeploymentProvisioningStateValues() []DeploymentProvisioningState {
 	}
 }
 
-// ToPtr returns a *DeploymentProvisioningState pointing to the current value.
-func (c DeploymentProvisioningState) ToPtr() *DeploymentProvisioningState {
-	return &c
-}
-
 // DeploymentScaleType - Deployment scale type.
 type DeploymentScaleType string
 
@@ -98,11 +83,6 @@ func PossibleDeploymentScaleTypeValues() []DeploymentScaleType {
 	return []DeploymentScaleType{
 		DeploymentScaleTypeManual,
 	}
-}
-
-// ToPtr returns a *DeploymentScaleType pointing to the current value.
-func (c DeploymentScaleType) ToPtr() *DeploymentScaleType {
-	return &c
 }
 
 // HostingModel - Account hosting model.
@@ -123,11 +103,6 @@ func PossibleHostingModelValues() []HostingModel {
 	}
 }
 
-// ToPtr returns a *HostingModel pointing to the current value.
-func (c HostingModel) ToPtr() *HostingModel {
-	return &c
-}
-
 // KeyName - key name to generate (Key1|Key2)
 type KeyName string
 
@@ -144,11 +119,6 @@ func PossibleKeyNameValues() []KeyName {
 	}
 }
 
-// ToPtr returns a *KeyName pointing to the current value.
-func (c KeyName) ToPtr() *KeyName {
-	return &c
-}
-
 // KeySource - Enumerates the possible value of keySource for Encryption
 type KeySource string
 
@@ -163,11 +133,6 @@ func PossibleKeySourceValues() []KeySource {
 		KeySourceMicrosoftCognitiveServices,
 		KeySourceMicrosoftKeyVault,
 	}
-}
-
-// ToPtr returns a *KeySource pointing to the current value.
-func (c KeySource) ToPtr() *KeySource {
-	return &c
 }
 
 // NetworkRuleAction - The default action when no rule from ipRules and from virtualNetworkRules match. This is only used
@@ -187,11 +152,6 @@ func PossibleNetworkRuleActionValues() []NetworkRuleAction {
 	}
 }
 
-// ToPtr returns a *NetworkRuleAction pointing to the current value.
-func (c NetworkRuleAction) ToPtr() *NetworkRuleAction {
-	return &c
-}
-
 // Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 // value is "user,system"
 type Origin string
@@ -209,11 +169,6 @@ func PossibleOriginValues() []Origin {
 		OriginUser,
 		OriginUserSystem,
 	}
-}
-
-// ToPtr returns a *Origin pointing to the current value.
-func (c Origin) ToPtr() *Origin {
-	return &c
 }
 
 // PrivateEndpointConnectionProvisioningState - The current provisioning state.
@@ -236,11 +191,6 @@ func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpoin
 	}
 }
 
-// ToPtr returns a *PrivateEndpointConnectionProvisioningState pointing to the current value.
-func (c PrivateEndpointConnectionProvisioningState) ToPtr() *PrivateEndpointConnectionProvisioningState {
-	return &c
-}
-
 // PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
 type PrivateEndpointServiceConnectionStatus string
 
@@ -257,11 +207,6 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 		PrivateEndpointServiceConnectionStatusPending,
 		PrivateEndpointServiceConnectionStatusRejected,
 	}
-}
-
-// ToPtr returns a *PrivateEndpointServiceConnectionStatus pointing to the current value.
-func (c PrivateEndpointServiceConnectionStatus) ToPtr() *PrivateEndpointServiceConnectionStatus {
-	return &c
 }
 
 // ProvisioningState - Gets the status of the cognitive services account at the time the operation was called.
@@ -290,11 +235,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // PublicNetworkAccess - Whether or not public endpoint access is allowed for this account.
 type PublicNetworkAccess string
 
@@ -309,11 +249,6 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
 	}
-}
-
-// ToPtr returns a *PublicNetworkAccess pointing to the current value.
-func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
-	return &c
 }
 
 // QuotaUsageStatus - Cognitive Services account quota usage status.
@@ -336,11 +271,6 @@ func PossibleQuotaUsageStatusValues() []QuotaUsageStatus {
 	}
 }
 
-// ToPtr returns a *QuotaUsageStatus pointing to the current value.
-func (c QuotaUsageStatus) ToPtr() *QuotaUsageStatus {
-	return &c
-}
-
 // ResourceIdentityType - The identity type.
 type ResourceIdentityType string
 
@@ -361,11 +291,6 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	}
 }
 
-// ToPtr returns a *ResourceIdentityType pointing to the current value.
-func (c ResourceIdentityType) ToPtr() *ResourceIdentityType {
-	return &c
-}
-
 // ResourceSKURestrictionsReasonCode - The reason for restriction.
 type ResourceSKURestrictionsReasonCode string
 
@@ -382,11 +307,6 @@ func PossibleResourceSKURestrictionsReasonCodeValues() []ResourceSKURestrictions
 	}
 }
 
-// ToPtr returns a *ResourceSKURestrictionsReasonCode pointing to the current value.
-func (c ResourceSKURestrictionsReasonCode) ToPtr() *ResourceSKURestrictionsReasonCode {
-	return &c
-}
-
 // ResourceSKURestrictionsType - The type of restrictions.
 type ResourceSKURestrictionsType string
 
@@ -401,11 +321,6 @@ func PossibleResourceSKURestrictionsTypeValues() []ResourceSKURestrictionsType {
 		ResourceSKURestrictionsTypeLocation,
 		ResourceSKURestrictionsTypeZone,
 	}
-}
-
-// ToPtr returns a *ResourceSKURestrictionsType pointing to the current value.
-func (c ResourceSKURestrictionsType) ToPtr() *ResourceSKURestrictionsType {
-	return &c
 }
 
 // SKUTier - This field is required to be implemented by the Resource Provider if the service has more than one tier, but
@@ -429,11 +344,6 @@ func PossibleSKUTierValues() []SKUTier {
 		SKUTierPremium,
 		SKUTierStandard,
 	}
-}
-
-// ToPtr returns a *SKUTier pointing to the current value.
-func (c SKUTier) ToPtr() *SKUTier {
-	return &c
 }
 
 // UnitType - The unit of the metric.
@@ -460,9 +370,4 @@ func PossibleUnitTypeValues() []UnitType {
 		UnitTypePercent,
 		UnitTypeSeconds,
 	}
-}
-
-// ToPtr returns a *UnitType pointing to the current value.
-func (c UnitType) ToPtr() *UnitType {
-	return &c
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type BackendClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewBackendClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BackendClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewBackendClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackendClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &BackendClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or Updates a backend.
@@ -108,7 +113,7 @@ func (client *BackendClient) createOrUpdateCreateRequest(ctx context.Context, re
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *BackendClient) createOrUpdateHandleResponse(resp *http.Response) (BackendClientCreateOrUpdateResponse, error) {
-	result := BackendClientCreateOrUpdateResponse{RawResponse: resp}
+	result := BackendClientCreateOrUpdateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -138,7 +143,7 @@ func (client *BackendClient) Delete(ctx context.Context, resourceGroupName strin
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return BackendClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return BackendClientDeleteResponse{RawResponse: resp}, nil
+	return BackendClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -225,7 +230,7 @@ func (client *BackendClient) getCreateRequest(ctx context.Context, resourceGroup
 
 // getHandleResponse handles the Get response.
 func (client *BackendClient) getHandleResponse(resp *http.Response) (BackendClientGetResponse, error) {
-	result := BackendClientGetResponse{RawResponse: resp}
+	result := BackendClientGetResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -284,7 +289,7 @@ func (client *BackendClient) getEntityTagCreateRequest(ctx context.Context, reso
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *BackendClient) getEntityTagHandleResponse(resp *http.Response) (BackendClientGetEntityTagResponse, error) {
-	result := BackendClientGetEntityTagResponse{RawResponse: resp}
+	result := BackendClientGetEntityTagResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -299,16 +304,32 @@ func (client *BackendClient) getEntityTagHandleResponse(resp *http.Response) (Ba
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - BackendClientListByServiceOptions contains the optional parameters for the BackendClient.ListByService method.
-func (client *BackendClient) ListByService(resourceGroupName string, serviceName string, options *BackendClientListByServiceOptions) *BackendClientListByServicePager {
-	return &BackendClientListByServicePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+func (client *BackendClient) ListByService(resourceGroupName string, serviceName string, options *BackendClientListByServiceOptions) *runtime.Pager[BackendClientListByServiceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[BackendClientListByServiceResponse]{
+		More: func(page BackendClientListByServiceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp BackendClientListByServiceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.BackendCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *BackendClientListByServiceResponse) (BackendClientListByServiceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return BackendClientListByServiceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return BackendClientListByServiceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return BackendClientListByServiceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServiceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByServiceCreateRequest creates the ListByService request.
@@ -348,7 +369,7 @@ func (client *BackendClient) listByServiceCreateRequest(ctx context.Context, res
 
 // listByServiceHandleResponse handles the ListByService response.
 func (client *BackendClient) listByServiceHandleResponse(resp *http.Response) (BackendClientListByServiceResponse, error) {
-	result := BackendClientListByServiceResponse{RawResponse: resp}
+	result := BackendClientListByServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackendCollection); err != nil {
 		return BackendClientListByServiceResponse{}, err
 	}
@@ -374,7 +395,7 @@ func (client *BackendClient) Reconnect(ctx context.Context, resourceGroupName st
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
 		return BackendClientReconnectResponse{}, runtime.NewResponseError(resp)
 	}
-	return BackendClientReconnectResponse{RawResponse: resp}, nil
+	return BackendClientReconnectResponse{}, nil
 }
 
 // reconnectCreateRequest creates the Reconnect request.
@@ -467,7 +488,7 @@ func (client *BackendClient) updateCreateRequest(ctx context.Context, resourceGr
 
 // updateHandleResponse handles the Update response.
 func (client *BackendClient) updateHandleResponse(resp *http.Response) (BackendClientUpdateResponse, error) {
-	result := BackendClientUpdateResponse{RawResponse: resp}
+	result := BackendClientUpdateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}

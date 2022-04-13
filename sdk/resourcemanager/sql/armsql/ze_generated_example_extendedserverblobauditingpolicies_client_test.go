@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,84 +19,103 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 )
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ExtendedServerBlobAuditingGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ExtendedServerBlobAuditingGet.json
 func ExampleExtendedServerBlobAuditingPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewExtendedServerBlobAuditingPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewExtendedServerBlobAuditingPoliciesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<server-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ExtendedServerBlobAuditingPoliciesClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ExtendedServerBlobAuditingCreateMax.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ExtendedServerBlobAuditingCreateMax.json
 func ExampleExtendedServerBlobAuditingPoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewExtendedServerBlobAuditingPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewExtendedServerBlobAuditingPoliciesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<server-name>",
 		armsql.ExtendedServerBlobAuditingPolicy{
 			Properties: &armsql.ExtendedServerBlobAuditingPolicyProperties{
 				AuditActionsAndGroups: []*string{
-					to.StringPtr("SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP"),
-					to.StringPtr("FAILED_DATABASE_AUTHENTICATION_GROUP"),
-					to.StringPtr("BATCH_COMPLETED_GROUP")},
-				IsAzureMonitorTargetEnabled:  to.BoolPtr(true),
-				IsStorageSecondaryKeyInUse:   to.BoolPtr(false),
-				PredicateExpression:          to.StringPtr("<predicate-expression>"),
-				QueueDelayMs:                 to.Int32Ptr(4000),
-				RetentionDays:                to.Int32Ptr(6),
-				State:                        armsql.BlobAuditingPolicyStateEnabled.ToPtr(),
-				StorageAccountAccessKey:      to.StringPtr("<storage-account-access-key>"),
-				StorageAccountSubscriptionID: to.StringPtr("<storage-account-subscription-id>"),
-				StorageEndpoint:              to.StringPtr("<storage-endpoint>"),
+					to.Ptr("SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP"),
+					to.Ptr("FAILED_DATABASE_AUTHENTICATION_GROUP"),
+					to.Ptr("BATCH_COMPLETED_GROUP")},
+				IsAzureMonitorTargetEnabled:  to.Ptr(true),
+				IsStorageSecondaryKeyInUse:   to.Ptr(false),
+				PredicateExpression:          to.Ptr("<predicate-expression>"),
+				QueueDelayMs:                 to.Ptr[int32](4000),
+				RetentionDays:                to.Ptr[int32](6),
+				State:                        to.Ptr(armsql.BlobAuditingPolicyStateEnabled),
+				StorageAccountAccessKey:      to.Ptr("<storage-account-access-key>"),
+				StorageAccountSubscriptionID: to.Ptr("<storage-account-subscription-id>"),
+				StorageEndpoint:              to.Ptr("<storage-endpoint>"),
 			},
 		},
-		nil)
+		&armsql.ExtendedServerBlobAuditingPoliciesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ExtendedServerBlobAuditingPoliciesClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerExtendedAuditingSettingsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerExtendedAuditingSettingsList.json
 func ExampleExtendedServerBlobAuditingPoliciesClient_ListByServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewExtendedServerBlobAuditingPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewExtendedServerBlobAuditingPoliciesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByServer("<resource-group-name>",
 		"<server-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

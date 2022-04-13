@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type TaskRunsClient struct {
 // subscriptionID - The Microsoft Azure subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewTaskRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TaskRunsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewTaskRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TaskRunsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &TaskRunsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreate - Creates a task run for a container registry with the specified parameters.
@@ -56,22 +61,16 @@ func NewTaskRunsClient(subscriptionID string, credential azcore.TokenCredential,
 // taskRunName - The name of the task run.
 // taskRun - The parameters of a run that needs to scheduled.
 // options - TaskRunsClientBeginCreateOptions contains the optional parameters for the TaskRunsClient.BeginCreate method.
-func (client *TaskRunsClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, taskRun TaskRun, options *TaskRunsClientBeginCreateOptions) (TaskRunsClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, registryName, taskRunName, taskRun, options)
-	if err != nil {
-		return TaskRunsClientCreatePollerResponse{}, err
+func (client *TaskRunsClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, taskRun TaskRun, options *TaskRunsClientBeginCreateOptions) (*armruntime.Poller[TaskRunsClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, registryName, taskRunName, taskRun, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[TaskRunsClientCreateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[TaskRunsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := TaskRunsClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("TaskRunsClient.Create", "", resp, client.pl)
-	if err != nil {
-		return TaskRunsClientCreatePollerResponse{}, err
-	}
-	result.Poller = &TaskRunsClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Creates a task run for a container registry with the specified parameters.
@@ -127,22 +126,16 @@ func (client *TaskRunsClient) createCreateRequest(ctx context.Context, resourceG
 // registryName - The name of the container registry.
 // taskRunName - The name of the task run.
 // options - TaskRunsClientBeginDeleteOptions contains the optional parameters for the TaskRunsClient.BeginDelete method.
-func (client *TaskRunsClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, options *TaskRunsClientBeginDeleteOptions) (TaskRunsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, registryName, taskRunName, options)
-	if err != nil {
-		return TaskRunsClientDeletePollerResponse{}, err
+func (client *TaskRunsClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, options *TaskRunsClientBeginDeleteOptions) (*armruntime.Poller[TaskRunsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, registryName, taskRunName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[TaskRunsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[TaskRunsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := TaskRunsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("TaskRunsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return TaskRunsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &TaskRunsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a specified task run resource.
@@ -245,7 +238,7 @@ func (client *TaskRunsClient) getCreateRequest(ctx context.Context, resourceGrou
 
 // getHandleResponse handles the Get response.
 func (client *TaskRunsClient) getHandleResponse(resp *http.Response) (TaskRunsClientGetResponse, error) {
-	result := TaskRunsClientGetResponse{RawResponse: resp}
+	result := TaskRunsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TaskRun); err != nil {
 		return TaskRunsClientGetResponse{}, err
 	}
@@ -305,7 +298,7 @@ func (client *TaskRunsClient) getDetailsCreateRequest(ctx context.Context, resou
 
 // getDetailsHandleResponse handles the GetDetails response.
 func (client *TaskRunsClient) getDetailsHandleResponse(resp *http.Response) (TaskRunsClientGetDetailsResponse, error) {
-	result := TaskRunsClientGetDetailsResponse{RawResponse: resp}
+	result := TaskRunsClientGetDetailsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TaskRun); err != nil {
 		return TaskRunsClientGetDetailsResponse{}, err
 	}
@@ -317,16 +310,32 @@ func (client *TaskRunsClient) getDetailsHandleResponse(resp *http.Response) (Tas
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // options - TaskRunsClientListOptions contains the optional parameters for the TaskRunsClient.List method.
-func (client *TaskRunsClient) List(resourceGroupName string, registryName string, options *TaskRunsClientListOptions) *TaskRunsClientListPager {
-	return &TaskRunsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, registryName, options)
+func (client *TaskRunsClient) List(resourceGroupName string, registryName string, options *TaskRunsClientListOptions) *runtime.Pager[TaskRunsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[TaskRunsClientListResponse]{
+		More: func(page TaskRunsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp TaskRunsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.TaskRunListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *TaskRunsClientListResponse) (TaskRunsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, registryName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return TaskRunsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return TaskRunsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return TaskRunsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -357,7 +366,7 @@ func (client *TaskRunsClient) listCreateRequest(ctx context.Context, resourceGro
 
 // listHandleResponse handles the List response.
 func (client *TaskRunsClient) listHandleResponse(resp *http.Response) (TaskRunsClientListResponse, error) {
-	result := TaskRunsClientListResponse{RawResponse: resp}
+	result := TaskRunsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TaskRunListResult); err != nil {
 		return TaskRunsClientListResponse{}, err
 	}
@@ -371,22 +380,16 @@ func (client *TaskRunsClient) listHandleResponse(resp *http.Response) (TaskRunsC
 // taskRunName - The name of the task run.
 // updateParameters - The parameters for updating a task run.
 // options - TaskRunsClientBeginUpdateOptions contains the optional parameters for the TaskRunsClient.BeginUpdate method.
-func (client *TaskRunsClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, updateParameters TaskRunUpdateParameters, options *TaskRunsClientBeginUpdateOptions) (TaskRunsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, registryName, taskRunName, updateParameters, options)
-	if err != nil {
-		return TaskRunsClientUpdatePollerResponse{}, err
+func (client *TaskRunsClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, updateParameters TaskRunUpdateParameters, options *TaskRunsClientBeginUpdateOptions) (*armruntime.Poller[TaskRunsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, registryName, taskRunName, updateParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[TaskRunsClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[TaskRunsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := TaskRunsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("TaskRunsClient.Update", "", resp, client.pl)
-	if err != nil {
-		return TaskRunsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &TaskRunsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates a task run with the specified parameters.

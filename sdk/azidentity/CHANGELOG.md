@@ -7,6 +7,8 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* `AzureCLICredential` panics after receiving an unexpected error type
+  ([#17490](https://github.com/Azure/azure-sdk-for-go/issues/17490))
 
 ### Other Changes
 

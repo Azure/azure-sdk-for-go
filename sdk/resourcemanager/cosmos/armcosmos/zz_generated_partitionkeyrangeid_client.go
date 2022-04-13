@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type PartitionKeyRangeIDClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPartitionKeyRangeIDClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PartitionKeyRangeIDClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewPartitionKeyRangeIDClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PartitionKeyRangeIDClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PartitionKeyRangeIDClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // ListMetrics - Retrieves the metrics determined by the given filter for the given partition key range id.
@@ -61,19 +66,26 @@ func NewPartitionKeyRangeIDClient(subscriptionID string, credential azcore.Token
 // and timeGrain. The supported operator is eq.
 // options - PartitionKeyRangeIDClientListMetricsOptions contains the optional parameters for the PartitionKeyRangeIDClient.ListMetrics
 // method.
-func (client *PartitionKeyRangeIDClient) ListMetrics(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, collectionRid string, partitionKeyRangeID string, filter string, options *PartitionKeyRangeIDClientListMetricsOptions) (PartitionKeyRangeIDClientListMetricsResponse, error) {
-	req, err := client.listMetricsCreateRequest(ctx, resourceGroupName, accountName, databaseRid, collectionRid, partitionKeyRangeID, filter, options)
-	if err != nil {
-		return PartitionKeyRangeIDClientListMetricsResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return PartitionKeyRangeIDClientListMetricsResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PartitionKeyRangeIDClientListMetricsResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listMetricsHandleResponse(resp)
+func (client *PartitionKeyRangeIDClient) ListMetrics(resourceGroupName string, accountName string, databaseRid string, collectionRid string, partitionKeyRangeID string, filter string, options *PartitionKeyRangeIDClientListMetricsOptions) *runtime.Pager[PartitionKeyRangeIDClientListMetricsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PartitionKeyRangeIDClientListMetricsResponse]{
+		More: func(page PartitionKeyRangeIDClientListMetricsResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *PartitionKeyRangeIDClientListMetricsResponse) (PartitionKeyRangeIDClientListMetricsResponse, error) {
+			req, err := client.listMetricsCreateRequest(ctx, resourceGroupName, accountName, databaseRid, collectionRid, partitionKeyRangeID, filter, options)
+			if err != nil {
+				return PartitionKeyRangeIDClientListMetricsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PartitionKeyRangeIDClientListMetricsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PartitionKeyRangeIDClientListMetricsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listMetricsHandleResponse(resp)
+		},
+	})
 }
 
 // listMetricsCreateRequest creates the ListMetrics request.
@@ -108,7 +120,7 @@ func (client *PartitionKeyRangeIDClient) listMetricsCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	reqQP.Set("$filter", filter)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
@@ -117,7 +129,7 @@ func (client *PartitionKeyRangeIDClient) listMetricsCreateRequest(ctx context.Co
 
 // listMetricsHandleResponse handles the ListMetrics response.
 func (client *PartitionKeyRangeIDClient) listMetricsHandleResponse(resp *http.Response) (PartitionKeyRangeIDClientListMetricsResponse, error) {
-	result := PartitionKeyRangeIDClientListMetricsResponse{RawResponse: resp}
+	result := PartitionKeyRangeIDClientListMetricsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PartitionMetricListResult); err != nil {
 		return PartitionKeyRangeIDClientListMetricsResponse{}, err
 	}

@@ -1,5 +1,193 @@
 # Release History
 
+## 0.3.0 (2022-04-13)
+### Breaking Changes
+
+- Function `*ApplicationDefinitionsClient.ListByResourceGroup` return value(s) have been changed from `(*ApplicationDefinitionsClientListByResourceGroupPager)` to `(*runtime.Pager[ApplicationDefinitionsClientListByResourceGroupResponse])`
+- Function `NewApplicationClient` return value(s) have been changed from `(*ApplicationClient)` to `(*ApplicationClient, error)`
+- Function `*ApplicationDefinitionsClient.ListBySubscription` return value(s) have been changed from `(*ApplicationDefinitionsClientListBySubscriptionPager)` to `(*runtime.Pager[ApplicationDefinitionsClientListBySubscriptionResponse])`
+- Function `NewJitRequestsClient` return value(s) have been changed from `(*JitRequestsClient)` to `(*JitRequestsClient, error)`
+- Function `*ApplicationsClient.ListBySubscription` return value(s) have been changed from `(*ApplicationsClientListBySubscriptionPager)` to `(*runtime.Pager[ApplicationsClientListBySubscriptionResponse])`
+- Function `*ApplicationClient.ListOperations` return value(s) have been changed from `(*ApplicationClientListOperationsPager)` to `(*runtime.Pager[ApplicationClientListOperationsResponse])`
+- Function `*ApplicationsClient.ListByResourceGroup` return value(s) have been changed from `(*ApplicationsClientListByResourceGroupPager)` to `(*runtime.Pager[ApplicationsClientListByResourceGroupResponse])`
+- Function `NewApplicationsClient` return value(s) have been changed from `(*ApplicationsClient)` to `(*ApplicationsClient, error)`
+- Function `*ApplicationsClient.BeginDelete` return value(s) have been changed from `(ApplicationsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ApplicationsClientDeleteResponse], error)`
+- Function `*ApplicationsClient.BeginRefreshPermissions` return value(s) have been changed from `(ApplicationsClientRefreshPermissionsPollerResponse, error)` to `(*armruntime.Poller[ApplicationsClientRefreshPermissionsResponse], error)`
+- Function `*ApplicationDefinitionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ApplicationDefinitionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ApplicationDefinitionsClientCreateOrUpdateResponse], error)`
+- Function `*ApplicationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ApplicationsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ApplicationsClientCreateOrUpdateResponse], error)`
+- Function `*ApplicationDefinitionsClient.BeginDelete` return value(s) have been changed from `(ApplicationDefinitionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ApplicationDefinitionsClientDeleteResponse], error)`
+- Function `NewApplicationDefinitionsClient` return value(s) have been changed from `(*ApplicationDefinitionsClient)` to `(*ApplicationDefinitionsClient, error)`
+- Function `*JitRequestsClient.BeginCreateOrUpdate` return value(s) have been changed from `(JitRequestsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[JitRequestsClientCreateOrUpdateResponse], error)`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `ApplicationProperties.Parameters` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `ApplicationProperties.Outputs` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `ApplicationPropertiesPatchable.Outputs` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `ApplicationPropertiesPatchable.Parameters` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `ApplicationDefinitionProperties.CreateUIDefinition` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `ApplicationDefinitionProperties.MainTemplate` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*ApplicationsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*JitRequestsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ApplicationsClientCreateOrUpdatePoller.Done` has been removed
+- Function `ApplicationsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `Origin.ToPtr` has been removed
+- Function `*ApplicationsClientRefreshPermissionsPollerResponse.Resume` has been removed
+- Function `*ApplicationsClientDeletePoller.ResumeToken` has been removed
+- Function `ApplicationArtifactName.ToPtr` has been removed
+- Function `*ApplicationsClientListBySubscriptionPager.NextPage` has been removed
+- Function `ApplicationArtifactType.ToPtr` has been removed
+- Function `ApplicationLockLevel.ToPtr` has been removed
+- Function `*ApplicationsClientRefreshPermissionsPoller.FinalResponse` has been removed
+- Function `*ApplicationsClientDeletePoller.Done` has been removed
+- Function `ActionType.ToPtr` has been removed
+- Function `*ApplicationsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `DeploymentMode.ToPtr` has been removed
+- Function `ApplicationsClientRefreshPermissionsPollerResponse.PollUntilDone` has been removed
+- Function `ApplicationManagementMode.ToPtr` has been removed
+- Function `*ApplicationDefinitionsClientListBySubscriptionPager.NextPage` has been removed
+- Function `*ApplicationsClientListBySubscriptionPager.Err` has been removed
+- Function `*ApplicationsClientDeletePoller.FinalResponse` has been removed
+- Function `*ApplicationDefinitionsClientListByResourceGroupPager.NextPage` has been removed
+- Function `JitRequestState.ToPtr` has been removed
+- Function `JitApproverType.ToPtr` has been removed
+- Function `*ApplicationDefinitionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ApplicationsClientRefreshPermissionsPoller.ResumeToken` has been removed
+- Function `ResourceIdentityType.ToPtr` has been removed
+- Function `JitRequestsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ApplicationDefinitionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ApplicationsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*ApplicationsClientDeletePoller.Poll` has been removed
+- Function `*ApplicationDefinitionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `JitSchedulingType.ToPtr` has been removed
+- Function `*JitRequestsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ApplicationDefinitionsClientDeletePoller.Poll` has been removed
+- Function `*ApplicationDefinitionsClientListByResourceGroupPager.Err` has been removed
+- Function `*ApplicationsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ApplicationsClientListByResourceGroupPager.Err` has been removed
+- Function `*JitRequestsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ApplicationDefinitionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*JitRequestsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ApplicationsClientDeletePollerResponse.Resume` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*ApplicationDefinitionsClientDeletePoller.Done` has been removed
+- Function `*ApplicationDefinitionsClientDeletePoller.FinalResponse` has been removed
+- Function `*ApplicationDefinitionsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*ApplicationsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*ApplicationsClientRefreshPermissionsPoller.Poll` has been removed
+- Function `*ApplicationDefinitionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ApplicationClientListOperationsPager.PageResponse` has been removed
+- Function `ApplicationDefinitionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ApplicationDefinitionsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `ApplicationDefinitionArtifactName.ToPtr` has been removed
+- Function `*ApplicationsClientListByResourceGroupPager.NextPage` has been removed
+- Function `JitApprovalMode.ToPtr` has been removed
+- Function `*ApplicationDefinitionsClientDeletePollerResponse.Resume` has been removed
+- Function `ApplicationDefinitionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ApplicationClientListOperationsPager.NextPage` has been removed
+- Function `*JitRequestsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ApplicationDefinitionsClientDeletePoller.ResumeToken` has been removed
+- Function `*ApplicationsClientRefreshPermissionsPoller.Done` has been removed
+- Function `*ApplicationDefinitionsClientListBySubscriptionPager.Err` has been removed
+- Function `*ApplicationsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `ApplicationsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ApplicationClientListOperationsPager.Err` has been removed
+- Struct `ApplicationClientListOperationsPager` has been removed
+- Struct `ApplicationClientListOperationsResult` has been removed
+- Struct `ApplicationDefinitionsClientCreateOrUpdatePoller` has been removed
+- Struct `ApplicationDefinitionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ApplicationDefinitionsClientCreateOrUpdateResult` has been removed
+- Struct `ApplicationDefinitionsClientDeletePoller` has been removed
+- Struct `ApplicationDefinitionsClientDeletePollerResponse` has been removed
+- Struct `ApplicationDefinitionsClientGetResult` has been removed
+- Struct `ApplicationDefinitionsClientListByResourceGroupPager` has been removed
+- Struct `ApplicationDefinitionsClientListByResourceGroupResult` has been removed
+- Struct `ApplicationDefinitionsClientListBySubscriptionPager` has been removed
+- Struct `ApplicationDefinitionsClientListBySubscriptionResult` has been removed
+- Struct `ApplicationDefinitionsClientUpdateResult` has been removed
+- Struct `ApplicationsClientCreateOrUpdatePoller` has been removed
+- Struct `ApplicationsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ApplicationsClientCreateOrUpdateResult` has been removed
+- Struct `ApplicationsClientDeletePoller` has been removed
+- Struct `ApplicationsClientDeletePollerResponse` has been removed
+- Struct `ApplicationsClientGetResult` has been removed
+- Struct `ApplicationsClientListByResourceGroupPager` has been removed
+- Struct `ApplicationsClientListByResourceGroupResult` has been removed
+- Struct `ApplicationsClientListBySubscriptionPager` has been removed
+- Struct `ApplicationsClientListBySubscriptionResult` has been removed
+- Struct `ApplicationsClientRefreshPermissionsPoller` has been removed
+- Struct `ApplicationsClientRefreshPermissionsPollerResponse` has been removed
+- Struct `ApplicationsClientUpdateResult` has been removed
+- Struct `JitRequestsClientCreateOrUpdatePoller` has been removed
+- Struct `JitRequestsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `JitRequestsClientCreateOrUpdateResult` has been removed
+- Struct `JitRequestsClientGetResult` has been removed
+- Struct `JitRequestsClientListByResourceGroupResult` has been removed
+- Struct `JitRequestsClientListBySubscriptionResult` has been removed
+- Struct `JitRequestsClientUpdateResult` has been removed
+- Field `JitRequestsClientCreateOrUpdateResult` of struct `JitRequestsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `JitRequestsClientCreateOrUpdateResponse` has been removed
+- Field `ApplicationsClientCreateOrUpdateResult` of struct `ApplicationsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ApplicationsClientCreateOrUpdateResponse` has been removed
+- Field `ApplicationClientListOperationsResult` of struct `ApplicationClientListOperationsResponse` has been removed
+- Field `RawResponse` of struct `ApplicationClientListOperationsResponse` has been removed
+- Field `JitRequestsClientListBySubscriptionResult` of struct `JitRequestsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `JitRequestsClientListBySubscriptionResponse` has been removed
+- Field `ApplicationDefinitionsClientUpdateResult` of struct `ApplicationDefinitionsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ApplicationDefinitionsClientUpdateResponse` has been removed
+- Field `JitRequestsClientListByResourceGroupResult` of struct `JitRequestsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `JitRequestsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ApplicationsClientDeleteResponse` has been removed
+- Field `ApplicationsClientListBySubscriptionResult` of struct `ApplicationsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `ApplicationsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `ApplicationsClientListAllowedUpgradePlansResponse` has been removed
+- Field `ApplicationDefinitionsClientListByResourceGroupResult` of struct `ApplicationDefinitionsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ApplicationDefinitionsClientListByResourceGroupResponse` has been removed
+- Field `ApplicationsClientListByResourceGroupResult` of struct `ApplicationsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ApplicationsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `JitRequestsClientDeleteResponse` has been removed
+- Field `ApplicationsClientGetResult` of struct `ApplicationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ApplicationsClientGetResponse` has been removed
+- Field `ApplicationsClientUpdateResult` of struct `ApplicationsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ApplicationsClientUpdateResponse` has been removed
+- Field `ApplicationDefinitionsClientCreateOrUpdateResult` of struct `ApplicationDefinitionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ApplicationDefinitionsClientCreateOrUpdateResponse` has been removed
+- Field `ApplicationDefinitionsClientListBySubscriptionResult` of struct `ApplicationDefinitionsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `ApplicationDefinitionsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `ApplicationsClientRefreshPermissionsResponse` has been removed
+- Field `ApplicationDefinitionsClientGetResult` of struct `ApplicationDefinitionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ApplicationDefinitionsClientGetResponse` has been removed
+- Field `JitRequestsClientUpdateResult` of struct `JitRequestsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `JitRequestsClientUpdateResponse` has been removed
+- Field `JitRequestsClientGetResult` of struct `JitRequestsClientGetResponse` has been removed
+- Field `RawResponse` of struct `JitRequestsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ApplicationDefinitionsClientDeleteResponse` has been removed
+
+### Features Added
+
+- New anonymous field `JitRequestDefinition` in struct `JitRequestsClientCreateOrUpdateResponse`
+- New anonymous field `Application` in struct `ApplicationsClientUpdateResponse`
+- New anonymous field `ApplicationListResult` in struct `ApplicationsClientListBySubscriptionResponse`
+- New anonymous field `OperationListResult` in struct `ApplicationClientListOperationsResponse`
+- New anonymous field `ApplicationDefinition` in struct `ApplicationDefinitionsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `ApplicationsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `ApplicationDefinitionsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `JitRequestsClientBeginCreateOrUpdateOptions`
+- New anonymous field `ApplicationDefinition` in struct `ApplicationDefinitionsClientUpdateResponse`
+- New anonymous field `JitRequestDefinition` in struct `JitRequestsClientGetResponse`
+- New field `ResumeToken` in struct `ApplicationsClientBeginRefreshPermissionsOptions`
+- New anonymous field `JitRequestDefinition` in struct `JitRequestsClientUpdateResponse`
+- New anonymous field `ApplicationListResult` in struct `ApplicationsClientListByResourceGroupResponse`
+- New anonymous field `ApplicationDefinitionListResult` in struct `ApplicationDefinitionsClientListBySubscriptionResponse`
+- New field `ResumeToken` in struct `ApplicationsClientBeginCreateOrUpdateOptions`
+- New anonymous field `ApplicationDefinitionListResult` in struct `ApplicationDefinitionsClientListByResourceGroupResponse`
+- New anonymous field `Application` in struct `ApplicationsClientCreateOrUpdateResponse`
+- New anonymous field `JitRequestDefinitionListResult` in struct `JitRequestsClientListBySubscriptionResponse`
+- New anonymous field `Application` in struct `ApplicationsClientGetResponse`
+- New anonymous field `JitRequestDefinitionListResult` in struct `JitRequestsClientListByResourceGroupResponse`
+- New anonymous field `ApplicationDefinition` in struct `ApplicationDefinitionsClientGetResponse`
+- New field `ResumeToken` in struct `ApplicationDefinitionsClientBeginCreateOrUpdateOptions`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

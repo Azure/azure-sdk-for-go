@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,40 +17,49 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 )
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListJobTargetGroups.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListJobTargetGroups.json
 func ExampleJobTargetGroupsClient_ListByAgent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewJobTargetGroupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewJobTargetGroupsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByAgent("<resource-group-name>",
 		"<server-name>",
 		"<job-agent-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/GetJobTargetGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/GetJobTargetGroup.json
 func ExampleJobTargetGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewJobTargetGroupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewJobTargetGroupsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<server-name>",
@@ -58,19 +67,26 @@ func ExampleJobTargetGroupsClient_Get() {
 		"<target-group-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.JobTargetGroupsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/CreateOrUpdateJobTargetGroupMax.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/CreateOrUpdateJobTargetGroupMax.json
 func ExampleJobTargetGroupsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewJobTargetGroupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewJobTargetGroupsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<server-name>",
@@ -80,48 +96,55 @@ func ExampleJobTargetGroupsClient_CreateOrUpdate() {
 			Properties: &armsql.JobTargetGroupProperties{
 				Members: []*armsql.JobTarget{
 					{
-						Type:           armsql.JobTargetType("SqlDatabase").ToPtr(),
-						DatabaseName:   to.StringPtr("<database-name>"),
-						MembershipType: armsql.JobTargetGroupMembershipTypeExclude.ToPtr(),
-						ServerName:     to.StringPtr("<server-name>"),
+						Type:           to.Ptr(armsql.JobTargetTypeSQLDatabase),
+						DatabaseName:   to.Ptr("<database-name>"),
+						MembershipType: to.Ptr(armsql.JobTargetGroupMembershipTypeExclude),
+						ServerName:     to.Ptr("<server-name>"),
 					},
 					{
-						Type:              armsql.JobTargetType("SqlServer").ToPtr(),
-						MembershipType:    armsql.JobTargetGroupMembershipTypeInclude.ToPtr(),
-						RefreshCredential: to.StringPtr("<refresh-credential>"),
-						ServerName:        to.StringPtr("<server-name>"),
+						Type:              to.Ptr(armsql.JobTargetTypeSQLServer),
+						MembershipType:    to.Ptr(armsql.JobTargetGroupMembershipTypeInclude),
+						RefreshCredential: to.Ptr("<refresh-credential>"),
+						ServerName:        to.Ptr("<server-name>"),
 					},
 					{
-						Type:              armsql.JobTargetType("SqlElasticPool").ToPtr(),
-						ElasticPoolName:   to.StringPtr("<elastic-pool-name>"),
-						MembershipType:    armsql.JobTargetGroupMembershipTypeInclude.ToPtr(),
-						RefreshCredential: to.StringPtr("<refresh-credential>"),
-						ServerName:        to.StringPtr("<server-name>"),
+						Type:              to.Ptr(armsql.JobTargetTypeSQLElasticPool),
+						ElasticPoolName:   to.Ptr("<elastic-pool-name>"),
+						MembershipType:    to.Ptr(armsql.JobTargetGroupMembershipTypeInclude),
+						RefreshCredential: to.Ptr("<refresh-credential>"),
+						ServerName:        to.Ptr("<server-name>"),
 					},
 					{
-						Type:              armsql.JobTargetType("SqlShardMap").ToPtr(),
-						MembershipType:    armsql.JobTargetGroupMembershipTypeInclude.ToPtr(),
-						RefreshCredential: to.StringPtr("<refresh-credential>"),
-						ServerName:        to.StringPtr("<server-name>"),
-						ShardMapName:      to.StringPtr("<shard-map-name>"),
+						Type:              to.Ptr(armsql.JobTargetTypeSQLShardMap),
+						MembershipType:    to.Ptr(armsql.JobTargetGroupMembershipTypeInclude),
+						RefreshCredential: to.Ptr("<refresh-credential>"),
+						ServerName:        to.Ptr("<server-name>"),
+						ShardMapName:      to.Ptr("<shard-map-name>"),
 					}},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.JobTargetGroupsClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DeleteJobTargetGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DeleteJobTargetGroup.json
 func ExampleJobTargetGroupsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewJobTargetGroupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewJobTargetGroupsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<server-name>",
@@ -129,6 +152,7 @@ func ExampleJobTargetGroupsClient_Delete() {
 		"<target-group-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }

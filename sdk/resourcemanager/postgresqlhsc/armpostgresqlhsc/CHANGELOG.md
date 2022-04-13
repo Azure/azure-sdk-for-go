@@ -1,5 +1,247 @@
 # Release History
 
+## 0.3.0 (2022-04-12)
+### Breaking Changes
+
+- Function `NewConfigurationsClient` return value(s) have been changed from `(*ConfigurationsClient)` to `(*ConfigurationsClient, error)`
+- Function `*RolesClient.BeginCreate` return value(s) have been changed from `(RolesClientCreatePollerResponse, error)` to `(*armruntime.Poller[RolesClientCreateResponse], error)`
+- Function `NewServersClient` return value(s) have been changed from `(*ServersClient)` to `(*ServersClient, error)`
+- Function `*ServersClient.ListByServerGroup` parameter(s) have been changed from `(context.Context, string, string, *ServersClientListByServerGroupOptions)` to `(string, string, *ServersClientListByServerGroupOptions)`
+- Function `*ServersClient.ListByServerGroup` return value(s) have been changed from `(ServersClientListByServerGroupResponse, error)` to `(*runtime.Pager[ServersClientListByServerGroupResponse])`
+- Function `*ConfigurationsClient.ListByServer` return value(s) have been changed from `(*ConfigurationsClientListByServerPager)` to `(*runtime.Pager[ConfigurationsClientListByServerResponse])`
+- Function `*FirewallRulesClient.ListByServerGroup` parameter(s) have been changed from `(context.Context, string, string, *FirewallRulesClientListByServerGroupOptions)` to `(string, string, *FirewallRulesClientListByServerGroupOptions)`
+- Function `*FirewallRulesClient.ListByServerGroup` return value(s) have been changed from `(FirewallRulesClientListByServerGroupResponse, error)` to `(*runtime.Pager[FirewallRulesClientListByServerGroupResponse])`
+- Function `*ServerGroupsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ServerGroupsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ServerGroupsClientCreateOrUpdateResponse], error)`
+- Function `*FirewallRulesClient.BeginDelete` return value(s) have been changed from `(FirewallRulesClientDeletePollerResponse, error)` to `(*armruntime.Poller[FirewallRulesClientDeleteResponse], error)`
+- Function `NewRolesClient` return value(s) have been changed from `(*RolesClient)` to `(*RolesClient, error)`
+- Function `*ServerGroupsClient.BeginUpdate` return value(s) have been changed from `(ServerGroupsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[ServerGroupsClientUpdateResponse], error)`
+- Function `*ServerGroupsClient.BeginRestart` return value(s) have been changed from `(ServerGroupsClientRestartPollerResponse, error)` to `(*armruntime.Poller[ServerGroupsClientRestartResponse], error)`
+- Function `NewFirewallRulesClient` return value(s) have been changed from `(*FirewallRulesClient)` to `(*FirewallRulesClient, error)`
+- Function `*RolesClient.ListByServerGroup` parameter(s) have been changed from `(context.Context, string, string, *RolesClientListByServerGroupOptions)` to `(string, string, *RolesClientListByServerGroupOptions)`
+- Function `*RolesClient.ListByServerGroup` return value(s) have been changed from `(RolesClientListByServerGroupResponse, error)` to `(*runtime.Pager[RolesClientListByServerGroupResponse])`
+- Function `*FirewallRulesClient.BeginCreateOrUpdate` return value(s) have been changed from `(FirewallRulesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[FirewallRulesClientCreateOrUpdateResponse], error)`
+- Function `*ConfigurationsClient.BeginUpdate` return value(s) have been changed from `(ConfigurationsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[ConfigurationsClientUpdateResponse], error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*ServerGroupsClient.ListByResourceGroup` return value(s) have been changed from `(*ServerGroupsClientListByResourceGroupPager)` to `(*runtime.Pager[ServerGroupsClientListByResourceGroupResponse])`
+- Function `*ServerGroupsClient.BeginStart` return value(s) have been changed from `(ServerGroupsClientStartPollerResponse, error)` to `(*armruntime.Poller[ServerGroupsClientStartResponse], error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsClientListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsClientListResponse, error)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*RolesClient.BeginDelete` return value(s) have been changed from `(RolesClientDeletePollerResponse, error)` to `(*armruntime.Poller[RolesClientDeleteResponse], error)`
+- Function `NewServerGroupsClient` return value(s) have been changed from `(*ServerGroupsClient)` to `(*ServerGroupsClient, error)`
+- Function `*ServerGroupsClient.BeginStop` return value(s) have been changed from `(ServerGroupsClientStopPollerResponse, error)` to `(*armruntime.Poller[ServerGroupsClientStopResponse], error)`
+- Function `*ServerGroupsClient.List` return value(s) have been changed from `(*ServerGroupsClientListPager)` to `(*runtime.Pager[ServerGroupsClientListResponse])`
+- Function `*ServerGroupsClient.BeginDelete` return value(s) have been changed from `(ServerGroupsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ServerGroupsClientDeleteResponse], error)`
+- Function `*ConfigurationsClient.ListByServerGroup` return value(s) have been changed from `(*ConfigurationsClientListByServerGroupPager)` to `(*runtime.Pager[ConfigurationsClientListByServerGroupResponse])`
+- Type of `Operation.Properties` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Function `*ConfigurationsClientListByServerPager.PageResponse` has been removed
+- Function `*ConfigurationsClientUpdatePoller.FinalResponse` has been removed
+- Function `*ServerGroupsClientDeletePoller.Done` has been removed
+- Function `*RolesClientCreatePoller.ResumeToken` has been removed
+- Function `*ConfigurationsClientUpdatePoller.ResumeToken` has been removed
+- Function `OperationOrigin.ToPtr` has been removed
+- Function `*ServerGroupsClientDeletePoller.ResumeToken` has been removed
+- Function `*FirewallRulesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `CreateMode.ToPtr` has been removed
+- Function `*ConfigurationsClientListByServerPager.NextPage` has been removed
+- Function `*RolesClientDeletePollerResponse.Resume` has been removed
+- Function `*ServerGroupsClientRestartPoller.Poll` has been removed
+- Function `*FirewallRulesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ConfigurationsClientListByServerPager.Err` has been removed
+- Function `*ConfigurationsClientListByServerGroupPager.Err` has been removed
+- Function `*ServerGroupsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ServerGroupsClientRestartPoller.ResumeToken` has been removed
+- Function `*ServerGroupsClientStartPoller.ResumeToken` has been removed
+- Function `*FirewallRulesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ServerGroupsClientStartPoller.Poll` has been removed
+- Function `ServerHaState.ToPtr` has been removed
+- Function `ServerGroupsClientRestartPollerResponse.PollUntilDone` has been removed
+- Function `ServerGroupsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `ServerRole.ToPtr` has been removed
+- Function `*RolesClientCreatePoller.Poll` has been removed
+- Function `*ServerGroupsClientStopPoller.FinalResponse` has been removed
+- Function `ServerState.ToPtr` has been removed
+- Function `*ConfigurationsClientUpdatePoller.Poll` has been removed
+- Function `CitusVersion.ToPtr` has been removed
+- Function `*ServerGroupsClientStartPoller.FinalResponse` has been removed
+- Function `*FirewallRulesClientDeletePollerResponse.Resume` has been removed
+- Function `ConfigurationDataType.ToPtr` has been removed
+- Function `*ServerGroupsClientStopPoller.Poll` has been removed
+- Function `*ServerGroupsClientStopPollerResponse.Resume` has been removed
+- Function `ServerGroupsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*RolesClientDeletePoller.FinalResponse` has been removed
+- Function `*ServerGroupsClientDeletePollerResponse.Resume` has been removed
+- Function `*ServerGroupsClientUpdatePoller.FinalResponse` has been removed
+- Function `ServerGroupsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ServerGroupsClientStopPoller.Done` has been removed
+- Function `*ServerGroupsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ServerGroupsClientUpdatePollerResponse.Resume` has been removed
+- Function `*ServerGroupsClientDeletePoller.FinalResponse` has been removed
+- Function `*FirewallRulesClientDeletePoller.Poll` has been removed
+- Function `*RolesClientCreatePoller.FinalResponse` has been removed
+- Function `*ServerGroupsClientStartPoller.Done` has been removed
+- Function `*ServerGroupsClientUpdatePoller.ResumeToken` has been removed
+- Function `*ServerGroupsClientRestartPollerResponse.Resume` has been removed
+- Function `FirewallRulesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ServerGroupsClientStartPollerResponse.PollUntilDone` has been removed
+- Function `RolesClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `ServerEdition.ToPtr` has been removed
+- Function `*ServerGroupsClientStartPollerResponse.Resume` has been removed
+- Function `*ServerGroupsClientUpdatePoller.Poll` has been removed
+- Function `*ConfigurationsClientUpdatePollerResponse.Resume` has been removed
+- Function `*RolesClientCreatePoller.Done` has been removed
+- Function `*FirewallRulesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ConfigurationsClientListByServerGroupPager.PageResponse` has been removed
+- Function `*RolesClientDeletePoller.Poll` has been removed
+- Function `*ServerGroupsClientUpdatePoller.Done` has been removed
+- Function `*ConfigurationsClientListByServerGroupPager.NextPage` has been removed
+- Function `*FirewallRulesClientDeletePoller.Done` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*ServerGroupsClientListPager.NextPage` has been removed
+- Function `*ConfigurationsClientUpdatePoller.Done` has been removed
+- Function `*RolesClientDeletePoller.ResumeToken` has been removed
+- Function `*ServerGroupsClientDeletePoller.Poll` has been removed
+- Function `*ServerGroupsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*FirewallRulesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ServerGroupsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ServerGroupsClientListByResourceGroupPager.Err` has been removed
+- Function `*ServerGroupsClientStopPoller.ResumeToken` has been removed
+- Function `*ServerGroupsClientRestartPoller.Done` has been removed
+- Function `*FirewallRulesClientDeletePoller.FinalResponse` has been removed
+- Function `RolesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*RolesClientCreatePollerResponse.Resume` has been removed
+- Function `*ServerGroupsClientListPager.Err` has been removed
+- Function `*ServerGroupsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `ServerGroupsClientStopPollerResponse.PollUntilDone` has been removed
+- Function `ResourceProviderType.ToPtr` has been removed
+- Function `*ServerGroupsClientRestartPoller.FinalResponse` has been removed
+- Function `*RolesClientDeletePoller.Done` has been removed
+- Function `*FirewallRulesClientDeletePoller.ResumeToken` has been removed
+- Function `*ServerGroupsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `PostgreSQLVersion.ToPtr` has been removed
+- Function `FirewallRulesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `ConfigurationsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ServerGroupsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*ServerGroupsClientListPager.PageResponse` has been removed
+- Struct `ConfigurationsClientGetResult` has been removed
+- Struct `ConfigurationsClientListByServerGroupPager` has been removed
+- Struct `ConfigurationsClientListByServerGroupResult` has been removed
+- Struct `ConfigurationsClientListByServerPager` has been removed
+- Struct `ConfigurationsClientListByServerResult` has been removed
+- Struct `ConfigurationsClientUpdatePoller` has been removed
+- Struct `ConfigurationsClientUpdatePollerResponse` has been removed
+- Struct `ConfigurationsClientUpdateResult` has been removed
+- Struct `FirewallRulesClientCreateOrUpdatePoller` has been removed
+- Struct `FirewallRulesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `FirewallRulesClientCreateOrUpdateResult` has been removed
+- Struct `FirewallRulesClientDeletePoller` has been removed
+- Struct `FirewallRulesClientDeletePollerResponse` has been removed
+- Struct `FirewallRulesClientGetResult` has been removed
+- Struct `FirewallRulesClientListByServerGroupResult` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `RolesClientCreatePoller` has been removed
+- Struct `RolesClientCreatePollerResponse` has been removed
+- Struct `RolesClientCreateResult` has been removed
+- Struct `RolesClientDeletePoller` has been removed
+- Struct `RolesClientDeletePollerResponse` has been removed
+- Struct `RolesClientListByServerGroupResult` has been removed
+- Struct `ServerGroupsClientCheckNameAvailabilityResult` has been removed
+- Struct `ServerGroupsClientCreateOrUpdatePoller` has been removed
+- Struct `ServerGroupsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ServerGroupsClientCreateOrUpdateResult` has been removed
+- Struct `ServerGroupsClientDeletePoller` has been removed
+- Struct `ServerGroupsClientDeletePollerResponse` has been removed
+- Struct `ServerGroupsClientGetResult` has been removed
+- Struct `ServerGroupsClientListByResourceGroupPager` has been removed
+- Struct `ServerGroupsClientListByResourceGroupResult` has been removed
+- Struct `ServerGroupsClientListPager` has been removed
+- Struct `ServerGroupsClientListResult` has been removed
+- Struct `ServerGroupsClientRestartPoller` has been removed
+- Struct `ServerGroupsClientRestartPollerResponse` has been removed
+- Struct `ServerGroupsClientStartPoller` has been removed
+- Struct `ServerGroupsClientStartPollerResponse` has been removed
+- Struct `ServerGroupsClientStopPoller` has been removed
+- Struct `ServerGroupsClientStopPollerResponse` has been removed
+- Struct `ServerGroupsClientUpdatePoller` has been removed
+- Struct `ServerGroupsClientUpdatePollerResponse` has been removed
+- Struct `ServerGroupsClientUpdateResult` has been removed
+- Struct `ServersClientGetResult` has been removed
+- Struct `ServersClientListByServerGroupResult` has been removed
+- Field `FirewallRulesClientGetResult` of struct `FirewallRulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `FirewallRulesClientGetResponse` has been removed
+- Field `ServersClientGetResult` of struct `ServersClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServersClientGetResponse` has been removed
+- Field `ServerGroupsClientListResult` of struct `ServerGroupsClientListResponse` has been removed
+- Field `RawResponse` of struct `ServerGroupsClientListResponse` has been removed
+- Field `ServerGroupsClientCheckNameAvailabilityResult` of struct `ServerGroupsClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `ServerGroupsClientCheckNameAvailabilityResponse` has been removed
+- Field `ServersClientListByServerGroupResult` of struct `ServersClientListByServerGroupResponse` has been removed
+- Field `RawResponse` of struct `ServersClientListByServerGroupResponse` has been removed
+- Field `RawResponse` of struct `RolesClientDeleteResponse` has been removed
+- Field `ConfigurationsClientUpdateResult` of struct `ConfigurationsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ConfigurationsClientUpdateResponse` has been removed
+- Field `ServerGroupsClientGetResult` of struct `ServerGroupsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServerGroupsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServerGroupsClientStopResponse` has been removed
+- Field `RolesClientCreateResult` of struct `RolesClientCreateResponse` has been removed
+- Field `RawResponse` of struct `RolesClientCreateResponse` has been removed
+- Field `RolesClientListByServerGroupResult` of struct `RolesClientListByServerGroupResponse` has been removed
+- Field `RawResponse` of struct `RolesClientListByServerGroupResponse` has been removed
+- Field `FirewallRulesClientCreateOrUpdateResult` of struct `FirewallRulesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `FirewallRulesClientCreateOrUpdateResponse` has been removed
+- Field `ConfigurationsClientListByServerResult` of struct `ConfigurationsClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `ConfigurationsClientListByServerResponse` has been removed
+- Field `ConfigurationsClientGetResult` of struct `ConfigurationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ConfigurationsClientGetResponse` has been removed
+- Field `ConfigurationsClientListByServerGroupResult` of struct `ConfigurationsClientListByServerGroupResponse` has been removed
+- Field `RawResponse` of struct `ConfigurationsClientListByServerGroupResponse` has been removed
+- Field `RawResponse` of struct `ServerGroupsClientRestartResponse` has been removed
+- Field `FirewallRulesClientListByServerGroupResult` of struct `FirewallRulesClientListByServerGroupResponse` has been removed
+- Field `RawResponse` of struct `FirewallRulesClientListByServerGroupResponse` has been removed
+- Field `ServerGroupsClientCreateOrUpdateResult` of struct `ServerGroupsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServerGroupsClientCreateOrUpdateResponse` has been removed
+- Field `ServerGroupsClientListByResourceGroupResult` of struct `ServerGroupsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ServerGroupsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ServerGroupsClientDeleteResponse` has been removed
+- Field `ServerGroupsClientUpdateResult` of struct `ServerGroupsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServerGroupsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `FirewallRulesClientDeleteResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `ServerGroupsClientStartResponse` has been removed
+
+### Features Added
+
+- New anonymous field `ServerGroup` in struct `ServerGroupsClientCreateOrUpdateResponse`
+- New anonymous field `ServerGroupServerListResult` in struct `ServersClientListByServerGroupResponse`
+- New field `ResumeToken` in struct `ServerGroupsClientBeginCreateOrUpdateOptions`
+- New anonymous field `FirewallRule` in struct `FirewallRulesClientGetResponse`
+- New field `ResumeToken` in struct `RolesClientBeginDeleteOptions`
+- New anonymous field `RoleListResult` in struct `RolesClientListByServerGroupResponse`
+- New anonymous field `ServerGroupListResult` in struct `ServerGroupsClientListByResourceGroupResponse`
+- New anonymous field `ServerGroupListResult` in struct `ServerGroupsClientListResponse`
+- New field `ResumeToken` in struct `RolesClientBeginCreateOptions`
+- New anonymous field `ServerGroupConfigurationListResult` in struct `ConfigurationsClientListByServerGroupResponse`
+- New anonymous field `ServerGroupConfiguration` in struct `ConfigurationsClientUpdateResponse`
+- New field `ResumeToken` in struct `ServerGroupsClientBeginStopOptions`
+- New field `ResumeToken` in struct `ServerGroupsClientBeginDeleteOptions`
+- New anonymous field `NameAvailability` in struct `ServerGroupsClientCheckNameAvailabilityResponse`
+- New field `ResumeToken` in struct `ServerGroupsClientBeginRestartOptions`
+- New anonymous field `FirewallRule` in struct `FirewallRulesClientCreateOrUpdateResponse`
+- New anonymous field `ServerGroupServer` in struct `ServersClientGetResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `ServerConfigurationListResult` in struct `ConfigurationsClientListByServerResponse`
+- New field `ResumeToken` in struct `ConfigurationsClientBeginUpdateOptions`
+- New anonymous field `FirewallRuleListResult` in struct `FirewallRulesClientListByServerGroupResponse`
+- New field `ResumeToken` in struct `ServerGroupsClientBeginStartOptions`
+- New anonymous field `ServerGroup` in struct `ServerGroupsClientGetResponse`
+- New anonymous field `ServerGroupConfiguration` in struct `ConfigurationsClientGetResponse`
+- New field `ResumeToken` in struct `FirewallRulesClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `FirewallRulesClientBeginCreateOrUpdateOptions`
+- New anonymous field `ServerGroup` in struct `ServerGroupsClientUpdateResponse`
+- New anonymous field `Role` in struct `RolesClientCreateResponse`
+- New field `ResumeToken` in struct `ServerGroupsClientBeginUpdateOptions`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

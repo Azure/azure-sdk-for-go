@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type LogAnalyticsClient struct {
 // subscriptionID - Azure Subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewLogAnalyticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LogAnalyticsClient {
+func NewLogAnalyticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LogAnalyticsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &LogAnalyticsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // GetLogAnalyticsLocations - Get all available location names for AFD log analytics report.
@@ -101,7 +106,7 @@ func (client *LogAnalyticsClient) getLogAnalyticsLocationsCreateRequest(ctx cont
 
 // getLogAnalyticsLocationsHandleResponse handles the GetLogAnalyticsLocations response.
 func (client *LogAnalyticsClient) getLogAnalyticsLocationsHandleResponse(resp *http.Response) (LogAnalyticsClientGetLogAnalyticsLocationsResponse, error) {
-	result := LogAnalyticsClientGetLogAnalyticsLocationsResponse{RawResponse: resp}
+	result := LogAnalyticsClientGetLogAnalyticsLocationsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContinentsResponse); err != nil {
 		return LogAnalyticsClientGetLogAnalyticsLocationsResponse{}, err
 	}
@@ -185,7 +190,7 @@ func (client *LogAnalyticsClient) getLogAnalyticsMetricsCreateRequest(ctx contex
 
 // getLogAnalyticsMetricsHandleResponse handles the GetLogAnalyticsMetrics response.
 func (client *LogAnalyticsClient) getLogAnalyticsMetricsHandleResponse(resp *http.Response) (LogAnalyticsClientGetLogAnalyticsMetricsResponse, error) {
-	result := LogAnalyticsClientGetLogAnalyticsMetricsResponse{RawResponse: resp}
+	result := LogAnalyticsClientGetLogAnalyticsMetricsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricsResponse); err != nil {
 		return LogAnalyticsClientGetLogAnalyticsMetricsResponse{}, err
 	}
@@ -256,7 +261,7 @@ func (client *LogAnalyticsClient) getLogAnalyticsRankingsCreateRequest(ctx conte
 
 // getLogAnalyticsRankingsHandleResponse handles the GetLogAnalyticsRankings response.
 func (client *LogAnalyticsClient) getLogAnalyticsRankingsHandleResponse(resp *http.Response) (LogAnalyticsClientGetLogAnalyticsRankingsResponse, error) {
-	result := LogAnalyticsClientGetLogAnalyticsRankingsResponse{RawResponse: resp}
+	result := LogAnalyticsClientGetLogAnalyticsRankingsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RankingsResponse); err != nil {
 		return LogAnalyticsClientGetLogAnalyticsRankingsResponse{}, err
 	}
@@ -313,7 +318,7 @@ func (client *LogAnalyticsClient) getLogAnalyticsResourcesCreateRequest(ctx cont
 
 // getLogAnalyticsResourcesHandleResponse handles the GetLogAnalyticsResources response.
 func (client *LogAnalyticsClient) getLogAnalyticsResourcesHandleResponse(resp *http.Response) (LogAnalyticsClientGetLogAnalyticsResourcesResponse, error) {
-	result := LogAnalyticsClientGetLogAnalyticsResourcesResponse{RawResponse: resp}
+	result := LogAnalyticsClientGetLogAnalyticsResourcesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourcesResponse); err != nil {
 		return LogAnalyticsClientGetLogAnalyticsResourcesResponse{}, err
 	}
@@ -391,7 +396,7 @@ func (client *LogAnalyticsClient) getWafLogAnalyticsMetricsCreateRequest(ctx con
 
 // getWafLogAnalyticsMetricsHandleResponse handles the GetWafLogAnalyticsMetrics response.
 func (client *LogAnalyticsClient) getWafLogAnalyticsMetricsHandleResponse(resp *http.Response) (LogAnalyticsClientGetWafLogAnalyticsMetricsResponse, error) {
-	result := LogAnalyticsClientGetWafLogAnalyticsMetricsResponse{RawResponse: resp}
+	result := LogAnalyticsClientGetWafLogAnalyticsMetricsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WafMetricsResponse); err != nil {
 		return LogAnalyticsClientGetWafLogAnalyticsMetricsResponse{}, err
 	}
@@ -467,7 +472,7 @@ func (client *LogAnalyticsClient) getWafLogAnalyticsRankingsCreateRequest(ctx co
 
 // getWafLogAnalyticsRankingsHandleResponse handles the GetWafLogAnalyticsRankings response.
 func (client *LogAnalyticsClient) getWafLogAnalyticsRankingsHandleResponse(resp *http.Response) (LogAnalyticsClientGetWafLogAnalyticsRankingsResponse, error) {
-	result := LogAnalyticsClientGetWafLogAnalyticsRankingsResponse{RawResponse: resp}
+	result := LogAnalyticsClientGetWafLogAnalyticsRankingsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WafRankingsResponse); err != nil {
 		return LogAnalyticsClientGetWafLogAnalyticsRankingsResponse{}, err
 	}

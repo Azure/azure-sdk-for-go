@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type SecurityPartnerProvidersClient struct {
 // ID forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSecurityPartnerProvidersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SecurityPartnerProvidersClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewSecurityPartnerProvidersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SecurityPartnerProvidersClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SecurityPartnerProvidersClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates the specified Security Partner Provider.
@@ -57,22 +62,18 @@ func NewSecurityPartnerProvidersClient(subscriptionID string, credential azcore.
 // parameters - Parameters supplied to the create or update Security Partner Provider operation.
 // options - SecurityPartnerProvidersClientBeginCreateOrUpdateOptions contains the optional parameters for the SecurityPartnerProvidersClient.BeginCreateOrUpdate
 // method.
-func (client *SecurityPartnerProvidersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, securityPartnerProviderName string, parameters SecurityPartnerProvider, options *SecurityPartnerProvidersClientBeginCreateOrUpdateOptions) (SecurityPartnerProvidersClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, securityPartnerProviderName, parameters, options)
-	if err != nil {
-		return SecurityPartnerProvidersClientCreateOrUpdatePollerResponse{}, err
+func (client *SecurityPartnerProvidersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, securityPartnerProviderName string, parameters SecurityPartnerProvider, options *SecurityPartnerProvidersClientBeginCreateOrUpdateOptions) (*armruntime.Poller[SecurityPartnerProvidersClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, securityPartnerProviderName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SecurityPartnerProvidersClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[SecurityPartnerProvidersClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SecurityPartnerProvidersClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SecurityPartnerProvidersClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return SecurityPartnerProvidersClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &SecurityPartnerProvidersClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates the specified Security Partner Provider.
@@ -124,22 +125,18 @@ func (client *SecurityPartnerProvidersClient) createOrUpdateCreateRequest(ctx co
 // securityPartnerProviderName - The name of the Security Partner Provider.
 // options - SecurityPartnerProvidersClientBeginDeleteOptions contains the optional parameters for the SecurityPartnerProvidersClient.BeginDelete
 // method.
-func (client *SecurityPartnerProvidersClient) BeginDelete(ctx context.Context, resourceGroupName string, securityPartnerProviderName string, options *SecurityPartnerProvidersClientBeginDeleteOptions) (SecurityPartnerProvidersClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, securityPartnerProviderName, options)
-	if err != nil {
-		return SecurityPartnerProvidersClientDeletePollerResponse{}, err
+func (client *SecurityPartnerProvidersClient) BeginDelete(ctx context.Context, resourceGroupName string, securityPartnerProviderName string, options *SecurityPartnerProvidersClientBeginDeleteOptions) (*armruntime.Poller[SecurityPartnerProvidersClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, securityPartnerProviderName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SecurityPartnerProvidersClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[SecurityPartnerProvidersClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SecurityPartnerProvidersClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SecurityPartnerProvidersClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return SecurityPartnerProvidersClientDeletePollerResponse{}, err
-	}
-	result.Poller = &SecurityPartnerProvidersClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified Security Partner Provider.
@@ -234,7 +231,7 @@ func (client *SecurityPartnerProvidersClient) getCreateRequest(ctx context.Conte
 
 // getHandleResponse handles the Get response.
 func (client *SecurityPartnerProvidersClient) getHandleResponse(resp *http.Response) (SecurityPartnerProvidersClientGetResponse, error) {
-	result := SecurityPartnerProvidersClientGetResponse{RawResponse: resp}
+	result := SecurityPartnerProvidersClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityPartnerProvider); err != nil {
 		return SecurityPartnerProvidersClientGetResponse{}, err
 	}
@@ -245,16 +242,32 @@ func (client *SecurityPartnerProvidersClient) getHandleResponse(resp *http.Respo
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SecurityPartnerProvidersClientListOptions contains the optional parameters for the SecurityPartnerProvidersClient.List
 // method.
-func (client *SecurityPartnerProvidersClient) List(options *SecurityPartnerProvidersClientListOptions) *SecurityPartnerProvidersClientListPager {
-	return &SecurityPartnerProvidersClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *SecurityPartnerProvidersClient) List(options *SecurityPartnerProvidersClientListOptions) *runtime.Pager[SecurityPartnerProvidersClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SecurityPartnerProvidersClientListResponse]{
+		More: func(page SecurityPartnerProvidersClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SecurityPartnerProvidersClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SecurityPartnerProviderListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SecurityPartnerProvidersClientListResponse) (SecurityPartnerProvidersClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SecurityPartnerProvidersClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SecurityPartnerProvidersClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SecurityPartnerProvidersClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -277,7 +290,7 @@ func (client *SecurityPartnerProvidersClient) listCreateRequest(ctx context.Cont
 
 // listHandleResponse handles the List response.
 func (client *SecurityPartnerProvidersClient) listHandleResponse(resp *http.Response) (SecurityPartnerProvidersClientListResponse, error) {
-	result := SecurityPartnerProvidersClientListResponse{RawResponse: resp}
+	result := SecurityPartnerProvidersClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityPartnerProviderListResult); err != nil {
 		return SecurityPartnerProvidersClientListResponse{}, err
 	}
@@ -289,16 +302,32 @@ func (client *SecurityPartnerProvidersClient) listHandleResponse(resp *http.Resp
 // resourceGroupName - The name of the resource group.
 // options - SecurityPartnerProvidersClientListByResourceGroupOptions contains the optional parameters for the SecurityPartnerProvidersClient.ListByResourceGroup
 // method.
-func (client *SecurityPartnerProvidersClient) ListByResourceGroup(resourceGroupName string, options *SecurityPartnerProvidersClientListByResourceGroupOptions) *SecurityPartnerProvidersClientListByResourceGroupPager {
-	return &SecurityPartnerProvidersClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *SecurityPartnerProvidersClient) ListByResourceGroup(resourceGroupName string, options *SecurityPartnerProvidersClientListByResourceGroupOptions) *runtime.Pager[SecurityPartnerProvidersClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SecurityPartnerProvidersClientListByResourceGroupResponse]{
+		More: func(page SecurityPartnerProvidersClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SecurityPartnerProvidersClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SecurityPartnerProviderListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SecurityPartnerProvidersClientListByResourceGroupResponse) (SecurityPartnerProvidersClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SecurityPartnerProvidersClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SecurityPartnerProvidersClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SecurityPartnerProvidersClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -325,7 +354,7 @@ func (client *SecurityPartnerProvidersClient) listByResourceGroupCreateRequest(c
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *SecurityPartnerProvidersClient) listByResourceGroupHandleResponse(resp *http.Response) (SecurityPartnerProvidersClientListByResourceGroupResponse, error) {
-	result := SecurityPartnerProvidersClientListByResourceGroupResponse{RawResponse: resp}
+	result := SecurityPartnerProvidersClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityPartnerProviderListResult); err != nil {
 		return SecurityPartnerProvidersClientListByResourceGroupResponse{}, err
 	}
@@ -382,7 +411,7 @@ func (client *SecurityPartnerProvidersClient) updateTagsCreateRequest(ctx contex
 
 // updateTagsHandleResponse handles the UpdateTags response.
 func (client *SecurityPartnerProvidersClient) updateTagsHandleResponse(resp *http.Response) (SecurityPartnerProvidersClientUpdateTagsResponse, error) {
-	result := SecurityPartnerProvidersClientUpdateTagsResponse{RawResponse: resp}
+	result := SecurityPartnerProvidersClientUpdateTagsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityPartnerProvider); err != nil {
 		return SecurityPartnerProvidersClientUpdateTagsResponse{}, err
 	}

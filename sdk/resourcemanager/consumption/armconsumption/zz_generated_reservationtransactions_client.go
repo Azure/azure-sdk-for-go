@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,19 +32,23 @@ type ReservationTransactionsClient struct {
 // NewReservationTransactionsClient creates a new instance of ReservationTransactionsClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewReservationTransactionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ReservationTransactionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewReservationTransactionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ReservationTransactionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ReservationTransactionsClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - List of transactions for reserved instances on billing account scope
@@ -51,16 +56,32 @@ func NewReservationTransactionsClient(credential azcore.TokenCredential, options
 // billingAccountID - BillingAccount ID
 // options - ReservationTransactionsClientListOptions contains the optional parameters for the ReservationTransactionsClient.List
 // method.
-func (client *ReservationTransactionsClient) List(billingAccountID string, options *ReservationTransactionsClientListOptions) *ReservationTransactionsClientListPager {
-	return &ReservationTransactionsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, billingAccountID, options)
+func (client *ReservationTransactionsClient) List(billingAccountID string, options *ReservationTransactionsClientListOptions) *runtime.Pager[ReservationTransactionsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ReservationTransactionsClientListResponse]{
+		More: func(page ReservationTransactionsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ReservationTransactionsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReservationTransactionsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ReservationTransactionsClientListResponse) (ReservationTransactionsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, billingAccountID, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ReservationTransactionsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReservationTransactionsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReservationTransactionsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -86,7 +107,7 @@ func (client *ReservationTransactionsClient) listCreateRequest(ctx context.Conte
 
 // listHandleResponse handles the List response.
 func (client *ReservationTransactionsClient) listHandleResponse(resp *http.Response) (ReservationTransactionsClientListResponse, error) {
-	result := ReservationTransactionsClientListResponse{RawResponse: resp}
+	result := ReservationTransactionsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationTransactionsListResult); err != nil {
 		return ReservationTransactionsClientListResponse{}, err
 	}
@@ -99,16 +120,32 @@ func (client *ReservationTransactionsClient) listHandleResponse(resp *http.Respo
 // billingProfileID - Azure Billing Profile ID.
 // options - ReservationTransactionsClientListByBillingProfileOptions contains the optional parameters for the ReservationTransactionsClient.ListByBillingProfile
 // method.
-func (client *ReservationTransactionsClient) ListByBillingProfile(billingAccountID string, billingProfileID string, options *ReservationTransactionsClientListByBillingProfileOptions) *ReservationTransactionsClientListByBillingProfilePager {
-	return &ReservationTransactionsClientListByBillingProfilePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByBillingProfileCreateRequest(ctx, billingAccountID, billingProfileID, options)
+func (client *ReservationTransactionsClient) ListByBillingProfile(billingAccountID string, billingProfileID string, options *ReservationTransactionsClientListByBillingProfileOptions) *runtime.Pager[ReservationTransactionsClientListByBillingProfileResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ReservationTransactionsClientListByBillingProfileResponse]{
+		More: func(page ReservationTransactionsClientListByBillingProfileResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ReservationTransactionsClientListByBillingProfileResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ModernReservationTransactionsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ReservationTransactionsClientListByBillingProfileResponse) (ReservationTransactionsClientListByBillingProfileResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByBillingProfileCreateRequest(ctx, billingAccountID, billingProfileID, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ReservationTransactionsClientListByBillingProfileResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReservationTransactionsClientListByBillingProfileResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReservationTransactionsClientListByBillingProfileResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByBillingProfileHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByBillingProfileCreateRequest creates the ListByBillingProfile request.
@@ -138,7 +175,7 @@ func (client *ReservationTransactionsClient) listByBillingProfileCreateRequest(c
 
 // listByBillingProfileHandleResponse handles the ListByBillingProfile response.
 func (client *ReservationTransactionsClient) listByBillingProfileHandleResponse(resp *http.Response) (ReservationTransactionsClientListByBillingProfileResponse, error) {
-	result := ReservationTransactionsClientListByBillingProfileResponse{RawResponse: resp}
+	result := ReservationTransactionsClientListByBillingProfileResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ModernReservationTransactionsListResult); err != nil {
 		return ReservationTransactionsClientListByBillingProfileResponse{}, err
 	}

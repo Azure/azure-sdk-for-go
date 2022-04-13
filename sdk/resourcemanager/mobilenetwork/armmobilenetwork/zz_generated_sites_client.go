@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type SitesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSitesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SitesClient {
+func NewSitesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SitesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SitesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a mobile network site.
@@ -57,22 +62,18 @@ func NewSitesClient(subscriptionID string, credential azcore.TokenCredential, op
 // parameters - Parameters supplied to the create or update mobile network site operation.
 // options - SitesClientBeginCreateOrUpdateOptions contains the optional parameters for the SitesClient.BeginCreateOrUpdate
 // method.
-func (client *SitesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, mobileNetworkName string, siteName string, parameters Site, options *SitesClientBeginCreateOrUpdateOptions) (SitesClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, mobileNetworkName, siteName, parameters, options)
-	if err != nil {
-		return SitesClientCreateOrUpdatePollerResponse{}, err
+func (client *SitesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, mobileNetworkName string, siteName string, parameters Site, options *SitesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[SitesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, mobileNetworkName, siteName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SitesClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[SitesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SitesClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SitesClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return SitesClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &SitesClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a mobile network site.
@@ -128,22 +129,18 @@ func (client *SitesClient) createOrUpdateCreateRequest(ctx context.Context, reso
 // mobileNetworkName - The name of the mobile network.
 // siteName - The name of the mobile network site.
 // options - SitesClientBeginDeleteOptions contains the optional parameters for the SitesClient.BeginDelete method.
-func (client *SitesClient) BeginDelete(ctx context.Context, resourceGroupName string, mobileNetworkName string, siteName string, options *SitesClientBeginDeleteOptions) (SitesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, mobileNetworkName, siteName, options)
-	if err != nil {
-		return SitesClientDeletePollerResponse{}, err
+func (client *SitesClient) BeginDelete(ctx context.Context, resourceGroupName string, mobileNetworkName string, siteName string, options *SitesClientBeginDeleteOptions) (*armruntime.Poller[SitesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, mobileNetworkName, siteName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SitesClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[SitesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SitesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SitesClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return SitesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &SitesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified mobile network site.
@@ -246,7 +243,7 @@ func (client *SitesClient) getCreateRequest(ctx context.Context, resourceGroupNa
 
 // getHandleResponse handles the Get response.
 func (client *SitesClient) getHandleResponse(resp *http.Response) (SitesClientGetResponse, error) {
-	result := SitesClientGetResponse{RawResponse: resp}
+	result := SitesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Site); err != nil {
 		return SitesClientGetResponse{}, err
 	}
@@ -259,16 +256,32 @@ func (client *SitesClient) getHandleResponse(resp *http.Response) (SitesClientGe
 // mobileNetworkName - The name of the mobile network.
 // options - SitesClientListByMobileNetworkOptions contains the optional parameters for the SitesClient.ListByMobileNetwork
 // method.
-func (client *SitesClient) ListByMobileNetwork(resourceGroupName string, mobileNetworkName string, options *SitesClientListByMobileNetworkOptions) *SitesClientListByMobileNetworkPager {
-	return &SitesClientListByMobileNetworkPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByMobileNetworkCreateRequest(ctx, resourceGroupName, mobileNetworkName, options)
+func (client *SitesClient) ListByMobileNetwork(resourceGroupName string, mobileNetworkName string, options *SitesClientListByMobileNetworkOptions) *runtime.Pager[SitesClientListByMobileNetworkResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SitesClientListByMobileNetworkResponse]{
+		More: func(page SitesClientListByMobileNetworkResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SitesClientListByMobileNetworkResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SiteListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SitesClientListByMobileNetworkResponse) (SitesClientListByMobileNetworkResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByMobileNetworkCreateRequest(ctx, resourceGroupName, mobileNetworkName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SitesClientListByMobileNetworkResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SitesClientListByMobileNetworkResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SitesClientListByMobileNetworkResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByMobileNetworkHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByMobileNetworkCreateRequest creates the ListByMobileNetwork request.
@@ -299,7 +312,7 @@ func (client *SitesClient) listByMobileNetworkCreateRequest(ctx context.Context,
 
 // listByMobileNetworkHandleResponse handles the ListByMobileNetwork response.
 func (client *SitesClient) listByMobileNetworkHandleResponse(resp *http.Response) (SitesClientListByMobileNetworkResponse, error) {
-	result := SitesClientListByMobileNetworkResponse{RawResponse: resp}
+	result := SitesClientListByMobileNetworkResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteListResult); err != nil {
 		return SitesClientListByMobileNetworkResponse{}, err
 	}
@@ -360,7 +373,7 @@ func (client *SitesClient) updateTagsCreateRequest(ctx context.Context, resource
 
 // updateTagsHandleResponse handles the UpdateTags response.
 func (client *SitesClient) updateTagsHandleResponse(resp *http.Response) (SitesClientUpdateTagsResponse, error) {
-	result := SitesClientUpdateTagsResponse{RawResponse: resp}
+	result := SitesClientUpdateTagsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Site); err != nil {
 		return SitesClientUpdateTagsResponse{}, err
 	}

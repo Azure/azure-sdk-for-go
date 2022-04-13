@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type IotConnectorFhirDestinationClient struct {
 // subscriptionID - The subscription identifier.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewIotConnectorFhirDestinationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IotConnectorFhirDestinationClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewIotConnectorFhirDestinationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IotConnectorFhirDestinationClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &IotConnectorFhirDestinationClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates an IoT Connector FHIR destination resource with the specified parameters.
@@ -58,22 +63,16 @@ func NewIotConnectorFhirDestinationClient(subscriptionID string, credential azco
 // iotFhirDestination - The parameters for creating or updating an IoT Connector FHIR destination resource.
 // options - IotConnectorFhirDestinationClientBeginCreateOrUpdateOptions contains the optional parameters for the IotConnectorFhirDestinationClient.BeginCreateOrUpdate
 // method.
-func (client *IotConnectorFhirDestinationClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, fhirDestinationName string, iotFhirDestination IotFhirDestination, options *IotConnectorFhirDestinationClientBeginCreateOrUpdateOptions) (IotConnectorFhirDestinationClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, iotFhirDestination, options)
-	if err != nil {
-		return IotConnectorFhirDestinationClientCreateOrUpdatePollerResponse{}, err
+func (client *IotConnectorFhirDestinationClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, fhirDestinationName string, iotFhirDestination IotFhirDestination, options *IotConnectorFhirDestinationClientBeginCreateOrUpdateOptions) (*armruntime.Poller[IotConnectorFhirDestinationClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, iotFhirDestination, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[IotConnectorFhirDestinationClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[IotConnectorFhirDestinationClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := IotConnectorFhirDestinationClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("IotConnectorFhirDestinationClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return IotConnectorFhirDestinationClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &IotConnectorFhirDestinationClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates an IoT Connector FHIR destination resource with the specified parameters.
@@ -121,7 +120,7 @@ func (client *IotConnectorFhirDestinationClient) createOrUpdateCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, iotFhirDestination)
@@ -135,22 +134,16 @@ func (client *IotConnectorFhirDestinationClient) createOrUpdateCreateRequest(ctx
 // fhirDestinationName - The name of IoT Connector FHIR destination resource.
 // options - IotConnectorFhirDestinationClientBeginDeleteOptions contains the optional parameters for the IotConnectorFhirDestinationClient.BeginDelete
 // method.
-func (client *IotConnectorFhirDestinationClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, fhirDestinationName string, options *IotConnectorFhirDestinationClientBeginDeleteOptions) (IotConnectorFhirDestinationClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, options)
-	if err != nil {
-		return IotConnectorFhirDestinationClientDeletePollerResponse{}, err
+func (client *IotConnectorFhirDestinationClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, fhirDestinationName string, options *IotConnectorFhirDestinationClientBeginDeleteOptions) (*armruntime.Poller[IotConnectorFhirDestinationClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[IotConnectorFhirDestinationClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[IotConnectorFhirDestinationClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := IotConnectorFhirDestinationClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("IotConnectorFhirDestinationClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return IotConnectorFhirDestinationClientDeletePollerResponse{}, err
-	}
-	result.Poller = &IotConnectorFhirDestinationClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes an IoT Connector FHIR destination.
@@ -198,7 +191,7 @@ func (client *IotConnectorFhirDestinationClient) deleteCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -255,7 +248,7 @@ func (client *IotConnectorFhirDestinationClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -263,7 +256,7 @@ func (client *IotConnectorFhirDestinationClient) getCreateRequest(ctx context.Co
 
 // getHandleResponse handles the Get response.
 func (client *IotConnectorFhirDestinationClient) getHandleResponse(resp *http.Response) (IotConnectorFhirDestinationClientGetResponse, error) {
-	result := IotConnectorFhirDestinationClientGetResponse{RawResponse: resp}
+	result := IotConnectorFhirDestinationClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IotFhirDestination); err != nil {
 		return IotConnectorFhirDestinationClientGetResponse{}, err
 	}

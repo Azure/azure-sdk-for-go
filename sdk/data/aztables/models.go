@@ -315,8 +315,8 @@ const (
 	GeoReplicationStatusUnavailable GeoReplicationStatus = "unavailable"
 )
 
-// PossibleGeoReplicationStatusTypeValues returns the possible values for the GeoReplicationStatusType const type.
-func PossibleGeoReplicationStatusTypeValues() []GeoReplicationStatus {
+// PossibleGeoReplicationStatusValues returns the possible values for the GeoReplicationStatus const type.
+func PossibleGeoReplicationStatusValues() []GeoReplicationStatus {
 	return []GeoReplicationStatus{
 		GeoReplicationStatusBootstrap,
 		GeoReplicationStatusLive,

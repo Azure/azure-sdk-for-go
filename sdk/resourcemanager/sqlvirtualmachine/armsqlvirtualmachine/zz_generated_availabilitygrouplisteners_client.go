@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type AvailabilityGroupListenersClient struct {
 // subscriptionID - Subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAvailabilityGroupListenersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AvailabilityGroupListenersClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAvailabilityGroupListenersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AvailabilityGroupListenersClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AvailabilityGroupListenersClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates an availability group listener.
@@ -58,22 +63,16 @@ func NewAvailabilityGroupListenersClient(subscriptionID string, credential azcor
 // parameters - The availability group listener.
 // options - AvailabilityGroupListenersClientBeginCreateOrUpdateOptions contains the optional parameters for the AvailabilityGroupListenersClient.BeginCreateOrUpdate
 // method.
-func (client *AvailabilityGroupListenersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, availabilityGroupListenerName string, parameters AvailabilityGroupListener, options *AvailabilityGroupListenersClientBeginCreateOrUpdateOptions) (AvailabilityGroupListenersClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, parameters, options)
-	if err != nil {
-		return AvailabilityGroupListenersClientCreateOrUpdatePollerResponse{}, err
+func (client *AvailabilityGroupListenersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, availabilityGroupListenerName string, parameters AvailabilityGroupListener, options *AvailabilityGroupListenersClientBeginCreateOrUpdateOptions) (*armruntime.Poller[AvailabilityGroupListenersClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[AvailabilityGroupListenersClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[AvailabilityGroupListenersClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := AvailabilityGroupListenersClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("AvailabilityGroupListenersClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return AvailabilityGroupListenersClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &AvailabilityGroupListenersClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates an availability group listener.
@@ -117,7 +116,7 @@ func (client *AvailabilityGroupListenersClient) createOrUpdateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-03-01-preview")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -131,22 +130,16 @@ func (client *AvailabilityGroupListenersClient) createOrUpdateCreateRequest(ctx 
 // availabilityGroupListenerName - Name of the availability group listener.
 // options - AvailabilityGroupListenersClientBeginDeleteOptions contains the optional parameters for the AvailabilityGroupListenersClient.BeginDelete
 // method.
-func (client *AvailabilityGroupListenersClient) BeginDelete(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, availabilityGroupListenerName string, options *AvailabilityGroupListenersClientBeginDeleteOptions) (AvailabilityGroupListenersClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, options)
-	if err != nil {
-		return AvailabilityGroupListenersClientDeletePollerResponse{}, err
+func (client *AvailabilityGroupListenersClient) BeginDelete(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, availabilityGroupListenerName string, options *AvailabilityGroupListenersClientBeginDeleteOptions) (*armruntime.Poller[AvailabilityGroupListenersClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[AvailabilityGroupListenersClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[AvailabilityGroupListenersClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := AvailabilityGroupListenersClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("AvailabilityGroupListenersClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return AvailabilityGroupListenersClientDeletePollerResponse{}, err
-	}
-	result.Poller = &AvailabilityGroupListenersClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes an availability group listener.
@@ -190,7 +183,7 @@ func (client *AvailabilityGroupListenersClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-03-01-preview")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -242,7 +235,10 @@ func (client *AvailabilityGroupListenersClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-03-01-preview")
+	if options != nil && options.Expand != nil {
+		reqQP.Set("$expand", *options.Expand)
+	}
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -250,7 +246,7 @@ func (client *AvailabilityGroupListenersClient) getCreateRequest(ctx context.Con
 
 // getHandleResponse handles the Get response.
 func (client *AvailabilityGroupListenersClient) getHandleResponse(resp *http.Response) (AvailabilityGroupListenersClientGetResponse, error) {
-	result := AvailabilityGroupListenersClientGetResponse{RawResponse: resp}
+	result := AvailabilityGroupListenersClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilityGroupListener); err != nil {
 		return AvailabilityGroupListenersClientGetResponse{}, err
 	}
@@ -264,16 +260,32 @@ func (client *AvailabilityGroupListenersClient) getHandleResponse(resp *http.Res
 // sqlVirtualMachineGroupName - Name of the SQL virtual machine group.
 // options - AvailabilityGroupListenersClientListByGroupOptions contains the optional parameters for the AvailabilityGroupListenersClient.ListByGroup
 // method.
-func (client *AvailabilityGroupListenersClient) ListByGroup(resourceGroupName string, sqlVirtualMachineGroupName string, options *AvailabilityGroupListenersClientListByGroupOptions) *AvailabilityGroupListenersClientListByGroupPager {
-	return &AvailabilityGroupListenersClientListByGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByGroupCreateRequest(ctx, resourceGroupName, sqlVirtualMachineGroupName, options)
+func (client *AvailabilityGroupListenersClient) ListByGroup(resourceGroupName string, sqlVirtualMachineGroupName string, options *AvailabilityGroupListenersClientListByGroupOptions) *runtime.Pager[AvailabilityGroupListenersClientListByGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AvailabilityGroupListenersClientListByGroupResponse]{
+		More: func(page AvailabilityGroupListenersClientListByGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AvailabilityGroupListenersClientListByGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AvailabilityGroupListenerListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AvailabilityGroupListenersClientListByGroupResponse) (AvailabilityGroupListenersClientListByGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByGroupCreateRequest(ctx, resourceGroupName, sqlVirtualMachineGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AvailabilityGroupListenersClientListByGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AvailabilityGroupListenersClientListByGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AvailabilityGroupListenersClientListByGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByGroupCreateRequest creates the ListByGroup request.
@@ -296,7 +308,7 @@ func (client *AvailabilityGroupListenersClient) listByGroupCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-03-01-preview")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -304,7 +316,7 @@ func (client *AvailabilityGroupListenersClient) listByGroupCreateRequest(ctx con
 
 // listByGroupHandleResponse handles the ListByGroup response.
 func (client *AvailabilityGroupListenersClient) listByGroupHandleResponse(resp *http.Response) (AvailabilityGroupListenersClientListByGroupResponse, error) {
-	result := AvailabilityGroupListenersClientListByGroupResponse{RawResponse: resp}
+	result := AvailabilityGroupListenersClientListByGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilityGroupListenerListResult); err != nil {
 		return AvailabilityGroupListenersClientListByGroupResponse{}, err
 	}

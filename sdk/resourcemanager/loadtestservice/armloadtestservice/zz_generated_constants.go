@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armloadtestservice
 
 const (
 	moduleName    = "armloadtestservice"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -25,11 +25,6 @@ func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
 	}
-}
-
-// ToPtr returns a *ActionType pointing to the current value.
-func (c ActionType) ToPtr() *ActionType {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -52,9 +47,24 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
+// ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+type ManagedServiceIdentityType string
+
+const (
+	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = "None"
+	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = "SystemAssigned"
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
+	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = "UserAssigned"
+)
+
+// PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return []ManagedServiceIdentityType{
+		ManagedServiceIdentityTypeNone,
+		ManagedServiceIdentityTypeSystemAssigned,
+		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
+		ManagedServiceIdentityTypeUserAssigned,
+	}
 }
 
 // Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
@@ -74,11 +84,6 @@ func PossibleOriginValues() []Origin {
 		OriginUser,
 		OriginUserSystem,
 	}
-}
-
-// ToPtr returns a *Origin pointing to the current value.
-func (c Origin) ToPtr() *Origin {
-	return &c
 }
 
 // ResourceState - Load Test resources provisioning states.
@@ -101,28 +106,18 @@ func PossibleResourceStateValues() []ResourceState {
 	}
 }
 
-// ToPtr returns a *ResourceState pointing to the current value.
-func (c ResourceState) ToPtr() *ResourceState {
-	return &c
-}
-
-// SystemAssignedServiceIdentityType - Type of managed service identity (either system assigned, or none).
-type SystemAssignedServiceIdentityType string
+// Type - Managed identity type to use for accessing encryption key Url
+type Type string
 
 const (
-	SystemAssignedServiceIdentityTypeNone           SystemAssignedServiceIdentityType = "None"
-	SystemAssignedServiceIdentityTypeSystemAssigned SystemAssignedServiceIdentityType = "SystemAssigned"
+	TypeSystemAssigned Type = "SystemAssigned"
+	TypeUserAssigned   Type = "UserAssigned"
 )
 
-// PossibleSystemAssignedServiceIdentityTypeValues returns the possible values for the SystemAssignedServiceIdentityType const type.
-func PossibleSystemAssignedServiceIdentityTypeValues() []SystemAssignedServiceIdentityType {
-	return []SystemAssignedServiceIdentityType{
-		SystemAssignedServiceIdentityTypeNone,
-		SystemAssignedServiceIdentityTypeSystemAssigned,
+// PossibleTypeValues returns the possible values for the Type const type.
+func PossibleTypeValues() []Type {
+	return []Type{
+		TypeSystemAssigned,
+		TypeUserAssigned,
 	}
-}
-
-// ToPtr returns a *SystemAssignedServiceIdentityType pointing to the current value.
-func (c SystemAssignedServiceIdentityType) ToPtr() *SystemAssignedServiceIdentityType {
-	return &c
 }

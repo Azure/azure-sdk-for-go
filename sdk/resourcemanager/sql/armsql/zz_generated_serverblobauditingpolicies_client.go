@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ServerBlobAuditingPoliciesClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewServerBlobAuditingPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerBlobAuditingPoliciesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewServerBlobAuditingPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServerBlobAuditingPoliciesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ServerBlobAuditingPoliciesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a server's blob auditing policy.
@@ -57,22 +62,16 @@ func NewServerBlobAuditingPoliciesClient(subscriptionID string, credential azcor
 // parameters - Properties of blob auditing policy
 // options - ServerBlobAuditingPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerBlobAuditingPoliciesClient.BeginCreateOrUpdate
 // method.
-func (client *ServerBlobAuditingPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters ServerBlobAuditingPolicy, options *ServerBlobAuditingPoliciesClientBeginCreateOrUpdateOptions) (ServerBlobAuditingPoliciesClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, parameters, options)
-	if err != nil {
-		return ServerBlobAuditingPoliciesClientCreateOrUpdatePollerResponse{}, err
+func (client *ServerBlobAuditingPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters ServerBlobAuditingPolicy, options *ServerBlobAuditingPoliciesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ServerBlobAuditingPoliciesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ServerBlobAuditingPoliciesClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServerBlobAuditingPoliciesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServerBlobAuditingPoliciesClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServerBlobAuditingPoliciesClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return ServerBlobAuditingPoliciesClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ServerBlobAuditingPoliciesClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a server's blob auditing policy.
@@ -170,7 +169,7 @@ func (client *ServerBlobAuditingPoliciesClient) getCreateRequest(ctx context.Con
 
 // getHandleResponse handles the Get response.
 func (client *ServerBlobAuditingPoliciesClient) getHandleResponse(resp *http.Response) (ServerBlobAuditingPoliciesClientGetResponse, error) {
-	result := ServerBlobAuditingPoliciesClientGetResponse{RawResponse: resp}
+	result := ServerBlobAuditingPoliciesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerBlobAuditingPolicy); err != nil {
 		return ServerBlobAuditingPoliciesClientGetResponse{}, err
 	}
@@ -184,16 +183,32 @@ func (client *ServerBlobAuditingPoliciesClient) getHandleResponse(resp *http.Res
 // serverName - The name of the server.
 // options - ServerBlobAuditingPoliciesClientListByServerOptions contains the optional parameters for the ServerBlobAuditingPoliciesClient.ListByServer
 // method.
-func (client *ServerBlobAuditingPoliciesClient) ListByServer(resourceGroupName string, serverName string, options *ServerBlobAuditingPoliciesClientListByServerOptions) *ServerBlobAuditingPoliciesClientListByServerPager {
-	return &ServerBlobAuditingPoliciesClientListByServerPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+func (client *ServerBlobAuditingPoliciesClient) ListByServer(resourceGroupName string, serverName string, options *ServerBlobAuditingPoliciesClientListByServerOptions) *runtime.Pager[ServerBlobAuditingPoliciesClientListByServerResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ServerBlobAuditingPoliciesClientListByServerResponse]{
+		More: func(page ServerBlobAuditingPoliciesClientListByServerResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ServerBlobAuditingPoliciesClientListByServerResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServerBlobAuditingPolicyListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ServerBlobAuditingPoliciesClientListByServerResponse) (ServerBlobAuditingPoliciesClientListByServerResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ServerBlobAuditingPoliciesClientListByServerResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ServerBlobAuditingPoliciesClientListByServerResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ServerBlobAuditingPoliciesClientListByServerResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServerHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByServerCreateRequest creates the ListByServer request.
@@ -224,7 +239,7 @@ func (client *ServerBlobAuditingPoliciesClient) listByServerCreateRequest(ctx co
 
 // listByServerHandleResponse handles the ListByServer response.
 func (client *ServerBlobAuditingPoliciesClient) listByServerHandleResponse(resp *http.Response) (ServerBlobAuditingPoliciesClientListByServerResponse, error) {
-	result := ServerBlobAuditingPoliciesClientListByServerResponse{RawResponse: resp}
+	result := ServerBlobAuditingPoliciesClientListByServerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerBlobAuditingPolicyListResult); err != nil {
 		return ServerBlobAuditingPoliciesClientListByServerResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armappservice
 
 const (
 	moduleName    = "armappservice"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // ActiveRevisionsMode - ActiveRevisionsMode controls how active revisions are handled for the Container app:Multiple: multiple
@@ -31,11 +31,6 @@ func PossibleActiveRevisionsModeValues() []ActiveRevisionsMode {
 	}
 }
 
-// ToPtr returns a *ActiveRevisionsMode pointing to the current value.
-func (c ActiveRevisionsMode) ToPtr() *ActiveRevisionsMode {
-	return &c
-}
-
 type AppServiceCertificateOrderPatchResourcePropertiesAppServiceCertificateNotRenewableReasonsItem string
 
 const (
@@ -53,11 +48,6 @@ func PossibleAppServiceCertificateOrderPatchResourcePropertiesAppServiceCertific
 	}
 }
 
-// ToPtr returns a *AppServiceCertificateOrderPatchResourcePropertiesAppServiceCertificateNotRenewableReasonsItem pointing to the current value.
-func (c AppServiceCertificateOrderPatchResourcePropertiesAppServiceCertificateNotRenewableReasonsItem) ToPtr() *AppServiceCertificateOrderPatchResourcePropertiesAppServiceCertificateNotRenewableReasonsItem {
-	return &c
-}
-
 type AppServiceCertificateOrderPropertiesAppServiceCertificateNotRenewableReasonsItem string
 
 const (
@@ -73,11 +63,6 @@ func PossibleAppServiceCertificateOrderPropertiesAppServiceCertificateNotRenewab
 		AppServiceCertificateOrderPropertiesAppServiceCertificateNotRenewableReasonsItemRegistrationStatusNotSupportedForRenewal,
 		AppServiceCertificateOrderPropertiesAppServiceCertificateNotRenewableReasonsItemSubscriptionNotActive,
 	}
-}
-
-// ToPtr returns a *AppServiceCertificateOrderPropertiesAppServiceCertificateNotRenewableReasonsItem pointing to the current value.
-func (c AppServiceCertificateOrderPropertiesAppServiceCertificateNotRenewableReasonsItem) ToPtr() *AppServiceCertificateOrderPropertiesAppServiceCertificateNotRenewableReasonsItem {
-	return &c
 }
 
 // AppServicePlanRestrictions - App Service plans this offer is restricted to.
@@ -104,11 +89,6 @@ func PossibleAppServicePlanRestrictionsValues() []AppServicePlanRestrictions {
 	}
 }
 
-// ToPtr returns a *AppServicePlanRestrictions pointing to the current value.
-func (c AppServicePlanRestrictions) ToPtr() *AppServicePlanRestrictions {
-	return &c
-}
-
 // AutoHealActionType - Predefined action to be taken.
 type AutoHealActionType string
 
@@ -127,11 +107,6 @@ func PossibleAutoHealActionTypeValues() []AutoHealActionType {
 	}
 }
 
-// ToPtr returns a *AutoHealActionType pointing to the current value.
-func (c AutoHealActionType) ToPtr() *AutoHealActionType {
-	return &c
-}
-
 // AzureResourceType - Type of the Azure resource the hostname is assigned to.
 type AzureResourceType string
 
@@ -146,11 +121,6 @@ func PossibleAzureResourceTypeValues() []AzureResourceType {
 		AzureResourceTypeWebsite,
 		AzureResourceTypeTrafficManager,
 	}
-}
-
-// ToPtr returns a *AzureResourceType pointing to the current value.
-func (c AzureResourceType) ToPtr() *AzureResourceType {
-	return &c
 }
 
 // AzureStorageState - State of the storage account.
@@ -173,11 +143,6 @@ func PossibleAzureStorageStateValues() []AzureStorageState {
 	}
 }
 
-// ToPtr returns a *AzureStorageState pointing to the current value.
-func (c AzureStorageState) ToPtr() *AzureStorageState {
-	return &c
-}
-
 // AzureStorageType - Type of storage.
 type AzureStorageType string
 
@@ -192,11 +157,6 @@ func PossibleAzureStorageTypeValues() []AzureStorageType {
 		AzureStorageTypeAzureFiles,
 		AzureStorageTypeAzureBlob,
 	}
-}
-
-// ToPtr returns a *AzureStorageType pointing to the current value.
-func (c AzureStorageType) ToPtr() *AzureStorageType {
-	return &c
 }
 
 // BackupItemStatus - Backup status.
@@ -231,11 +191,6 @@ func PossibleBackupItemStatusValues() []BackupItemStatus {
 	}
 }
 
-// ToPtr returns a *BackupItemStatus pointing to the current value.
-func (c BackupItemStatus) ToPtr() *BackupItemStatus {
-	return &c
-}
-
 // BackupRestoreOperationType - Operation type.
 type BackupRestoreOperationType string
 
@@ -256,11 +211,6 @@ func PossibleBackupRestoreOperationTypeValues() []BackupRestoreOperationType {
 		BackupRestoreOperationTypeSnapshot,
 		BackupRestoreOperationTypeCloudFS,
 	}
-}
-
-// ToPtr returns a *BackupRestoreOperationType pointing to the current value.
-func (c BackupRestoreOperationType) ToPtr() *BackupRestoreOperationType {
-	return &c
 }
 
 // BuildStatus - The status of the static site build.
@@ -289,11 +239,6 @@ func PossibleBuildStatusValues() []BuildStatus {
 	}
 }
 
-// ToPtr returns a *BuildStatus pointing to the current value.
-func (c BuildStatus) ToPtr() *BuildStatus {
-	return &c
-}
-
 // BuiltInAuthenticationProvider - The default authentication provider to use when multiple providers are configured. This
 // setting is only needed if multiple providers are configured and the unauthenticated client action is set to
 // "RedirectToLoginPage".
@@ -318,11 +263,6 @@ func PossibleBuiltInAuthenticationProviderValues() []BuiltInAuthenticationProvid
 		BuiltInAuthenticationProviderTwitter,
 		BuiltInAuthenticationProviderGithub,
 	}
-}
-
-// ToPtr returns a *BuiltInAuthenticationProvider pointing to the current value.
-func (c BuiltInAuthenticationProvider) ToPtr() *BuiltInAuthenticationProvider {
-	return &c
 }
 
 // CertificateOrderActionType - Action type.
@@ -365,11 +305,6 @@ func PossibleCertificateOrderActionTypeValues() []CertificateOrderActionType {
 	}
 }
 
-// ToPtr returns a *CertificateOrderActionType pointing to the current value.
-func (c CertificateOrderActionType) ToPtr() *CertificateOrderActionType {
-	return &c
-}
-
 // CertificateOrderStatus - Current order status.
 type CertificateOrderStatus string
 
@@ -402,11 +337,6 @@ func PossibleCertificateOrderStatusValues() []CertificateOrderStatus {
 	}
 }
 
-// ToPtr returns a *CertificateOrderStatus pointing to the current value.
-func (c CertificateOrderStatus) ToPtr() *CertificateOrderStatus {
-	return &c
-}
-
 // CertificateProductType - Certificate product type.
 type CertificateProductType string
 
@@ -421,11 +351,6 @@ func PossibleCertificateProductTypeValues() []CertificateProductType {
 		CertificateProductTypeStandardDomainValidatedSSL,
 		CertificateProductTypeStandardDomainValidatedWildCardSSL,
 	}
-}
-
-// ToPtr returns a *CertificateProductType pointing to the current value.
-func (c CertificateProductType) ToPtr() *CertificateProductType {
-	return &c
 }
 
 // Channels - List of channels that this recommendation can apply.
@@ -448,11 +373,6 @@ func PossibleChannelsValues() []Channels {
 		ChannelsWebhook,
 		ChannelsAll,
 	}
-}
-
-// ToPtr returns a *Channels pointing to the current value.
-func (c Channels) ToPtr() *Channels {
-	return &c
 }
 
 // CheckNameResourceTypes - Resource type used for verification.
@@ -483,11 +403,6 @@ func PossibleCheckNameResourceTypesValues() []CheckNameResourceTypes {
 	}
 }
 
-// ToPtr returns a *CheckNameResourceTypes pointing to the current value.
-func (c CheckNameResourceTypes) ToPtr() *CheckNameResourceTypes {
-	return &c
-}
-
 // ClientCertMode - This composes with ClientCertEnabled setting.
 // * ClientCertEnabled: false means ClientCert is ignored.
 // * ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.
@@ -509,11 +424,6 @@ func PossibleClientCertModeValues() []ClientCertMode {
 	}
 }
 
-// ToPtr returns a *ClientCertMode pointing to the current value.
-func (c ClientCertMode) ToPtr() *ClientCertMode {
-	return &c
-}
-
 // CloneAbilityResult - Name of app.
 type CloneAbilityResult string
 
@@ -532,11 +442,6 @@ func PossibleCloneAbilityResultValues() []CloneAbilityResult {
 	}
 }
 
-// ToPtr returns a *CloneAbilityResult pointing to the current value.
-func (c CloneAbilityResult) ToPtr() *CloneAbilityResult {
-	return &c
-}
-
 // ComputeModeOptions - Shared/dedicated workers.
 type ComputeModeOptions string
 
@@ -553,11 +458,6 @@ func PossibleComputeModeOptionsValues() []ComputeModeOptions {
 		ComputeModeOptionsDedicated,
 		ComputeModeOptionsDynamic,
 	}
-}
-
-// ToPtr returns a *ComputeModeOptions pointing to the current value.
-func (c ComputeModeOptions) ToPtr() *ComputeModeOptions {
-	return &c
 }
 
 // ConnectionStringType - Type of database.
@@ -594,11 +494,6 @@ func PossibleConnectionStringTypeValues() []ConnectionStringType {
 	}
 }
 
-// ToPtr returns a *ConnectionStringType pointing to the current value.
-func (c ConnectionStringType) ToPtr() *ConnectionStringType {
-	return &c
-}
-
 // ContainerAppProvisioningState - Provisioning state of the Container App.
 type ContainerAppProvisioningState string
 
@@ -617,11 +512,6 @@ func PossibleContainerAppProvisioningStateValues() []ContainerAppProvisioningSta
 		ContainerAppProvisioningStateInProgress,
 		ContainerAppProvisioningStateSucceeded,
 	}
-}
-
-// ToPtr returns a *ContainerAppProvisioningState pointing to the current value.
-func (c ContainerAppProvisioningState) ToPtr() *ContainerAppProvisioningState {
-	return &c
 }
 
 // ContinuousWebJobStatus - Job status.
@@ -646,11 +536,6 @@ func PossibleContinuousWebJobStatusValues() []ContinuousWebJobStatus {
 	}
 }
 
-// ToPtr returns a *ContinuousWebJobStatus pointing to the current value.
-func (c ContinuousWebJobStatus) ToPtr() *ContinuousWebJobStatus {
-	return &c
-}
-
 // CookieExpirationConvention - The convention used when determining the session cookie's expiration.
 type CookieExpirationConvention string
 
@@ -665,11 +550,6 @@ func PossibleCookieExpirationConventionValues() []CookieExpirationConvention {
 		CookieExpirationConventionFixedTime,
 		CookieExpirationConventionIdentityProviderDerived,
 	}
-}
-
-// ToPtr returns a *CookieExpirationConvention pointing to the current value.
-func (c CookieExpirationConvention) ToPtr() *CookieExpirationConvention {
-	return &c
 }
 
 // CustomDomainStatus - The status of the custom domain
@@ -696,11 +576,6 @@ func PossibleCustomDomainStatusValues() []CustomDomainStatus {
 	}
 }
 
-// ToPtr returns a *CustomDomainStatus pointing to the current value.
-func (c CustomDomainStatus) ToPtr() *CustomDomainStatus {
-	return &c
-}
-
 // CustomHostNameDNSRecordType - Type of the DNS record.
 type CustomHostNameDNSRecordType string
 
@@ -715,11 +590,6 @@ func PossibleCustomHostNameDNSRecordTypeValues() []CustomHostNameDNSRecordType {
 		CustomHostNameDNSRecordTypeCName,
 		CustomHostNameDNSRecordTypeA,
 	}
-}
-
-// ToPtr returns a *CustomHostNameDNSRecordType pointing to the current value.
-func (c CustomHostNameDNSRecordType) ToPtr() *CustomHostNameDNSRecordType {
-	return &c
 }
 
 // DNSType - Current DNS type
@@ -738,11 +608,6 @@ func PossibleDNSTypeValues() []DNSType {
 	}
 }
 
-// ToPtr returns a *DNSType pointing to the current value.
-func (c DNSType) ToPtr() *DNSType {
-	return &c
-}
-
 // DNSVerificationTestResult - DNS verification test result.
 type DNSVerificationTestResult string
 
@@ -759,11 +624,6 @@ func PossibleDNSVerificationTestResultValues() []DNSVerificationTestResult {
 		DNSVerificationTestResultFailed,
 		DNSVerificationTestResultSkipped,
 	}
-}
-
-// ToPtr returns a *DNSVerificationTestResult pointing to the current value.
-func (c DNSVerificationTestResult) ToPtr() *DNSVerificationTestResult {
-	return &c
 }
 
 // DatabaseType - Database type (e.g. SqlAzure / MySql).
@@ -786,11 +646,6 @@ func PossibleDatabaseTypeValues() []DatabaseType {
 	}
 }
 
-// ToPtr returns a *DatabaseType pointing to the current value.
-func (c DatabaseType) ToPtr() *DatabaseType {
-	return &c
-}
-
 // DetectorType - Whether this detector is an Analysis Detector or not.
 type DetectorType string
 
@@ -807,11 +662,6 @@ func PossibleDetectorTypeValues() []DetectorType {
 		DetectorTypeAnalysis,
 		DetectorTypeCategoryOverview,
 	}
-}
-
-// ToPtr returns a *DetectorType pointing to the current value.
-func (c DetectorType) ToPtr() *DetectorType {
-	return &c
 }
 
 type DomainPatchResourcePropertiesDomainNotRenewableReasonsItem string
@@ -831,11 +681,6 @@ func PossibleDomainPatchResourcePropertiesDomainNotRenewableReasonsItemValues() 
 	}
 }
 
-// ToPtr returns a *DomainPatchResourcePropertiesDomainNotRenewableReasonsItem pointing to the current value.
-func (c DomainPatchResourcePropertiesDomainNotRenewableReasonsItem) ToPtr() *DomainPatchResourcePropertiesDomainNotRenewableReasonsItem {
-	return &c
-}
-
 type DomainPropertiesDomainNotRenewableReasonsItem string
 
 const (
@@ -851,11 +696,6 @@ func PossibleDomainPropertiesDomainNotRenewableReasonsItemValues() []DomainPrope
 		DomainPropertiesDomainNotRenewableReasonsItemRegistrationStatusNotSupportedForRenewal,
 		DomainPropertiesDomainNotRenewableReasonsItemSubscriptionNotActive,
 	}
-}
-
-// ToPtr returns a *DomainPropertiesDomainNotRenewableReasonsItem pointing to the current value.
-func (c DomainPropertiesDomainNotRenewableReasonsItem) ToPtr() *DomainPropertiesDomainNotRenewableReasonsItem {
-	return &c
 }
 
 // DomainStatus - Domain registration status.
@@ -912,11 +752,6 @@ func PossibleDomainStatusValues() []DomainStatus {
 	}
 }
 
-// ToPtr returns a *DomainStatus pointing to the current value.
-func (c DomainStatus) ToPtr() *DomainStatus {
-	return &c
-}
-
 // DomainType - Valid values are Regular domain: Azure will charge the full price of domain registration, SoftDeleted: Purchasing
 // this domain will simply restore it and this operation will not cost anything.
 type DomainType string
@@ -932,11 +767,6 @@ func PossibleDomainTypeValues() []DomainType {
 		DomainTypeRegular,
 		DomainTypeSoftDeleted,
 	}
-}
-
-// ToPtr returns a *DomainType pointing to the current value.
-func (c DomainType) ToPtr() *DomainType {
-	return &c
 }
 
 // EnterpriseGradeCdnStatus - State indicating the status of the enterprise grade CDN serving traffic to the static web app.
@@ -957,11 +787,6 @@ func PossibleEnterpriseGradeCdnStatusValues() []EnterpriseGradeCdnStatus {
 		EnterpriseGradeCdnStatusEnabled,
 		EnterpriseGradeCdnStatusEnabling,
 	}
-}
-
-// ToPtr returns a *EnterpriseGradeCdnStatus pointing to the current value.
-func (c EnterpriseGradeCdnStatus) ToPtr() *EnterpriseGradeCdnStatus {
-	return &c
 }
 
 type Enum15 string
@@ -985,11 +810,6 @@ func PossibleEnum15Values() []Enum15 {
 	}
 }
 
-// ToPtr returns a *Enum15 pointing to the current value.
-func (c Enum15) ToPtr() *Enum15 {
-	return &c
-}
-
 type Enum16 string
 
 const (
@@ -1005,11 +825,6 @@ func PossibleEnum16Values() []Enum16 {
 		Enum16Linux,
 		Enum16Windows,
 	}
-}
-
-// ToPtr returns a *Enum16 pointing to the current value.
-func (c Enum16) ToPtr() *Enum16 {
-	return &c
 }
 
 type Enum17 string
@@ -1029,11 +844,6 @@ func PossibleEnum17Values() []Enum17 {
 	}
 }
 
-// ToPtr returns a *Enum17 pointing to the current value.
-func (c Enum17) ToPtr() *Enum17 {
-	return &c
-}
-
 type Enum18 string
 
 const (
@@ -1051,11 +861,6 @@ func PossibleEnum18Values() []Enum18 {
 	}
 }
 
-// ToPtr returns a *Enum18 pointing to the current value.
-func (c Enum18) ToPtr() *Enum18 {
-	return &c
-}
-
 type Enum19 string
 
 const (
@@ -1071,11 +876,6 @@ func PossibleEnum19Values() []Enum19 {
 		Enum19Linux,
 		Enum19Windows,
 	}
-}
-
-// ToPtr returns a *Enum19 pointing to the current value.
-func (c Enum19) ToPtr() *Enum19 {
-	return &c
 }
 
 type Enum20 string
@@ -1099,11 +899,6 @@ func PossibleEnum20Values() []Enum20 {
 	}
 }
 
-// ToPtr returns a *Enum20 pointing to the current value.
-func (c Enum20) ToPtr() *Enum20 {
-	return &c
-}
-
 // ForwardProxyConvention - The convention used to determine the url of the request made.
 type ForwardProxyConvention string
 
@@ -1120,11 +915,6 @@ func PossibleForwardProxyConventionValues() []ForwardProxyConvention {
 		ForwardProxyConventionStandard,
 		ForwardProxyConventionCustom,
 	}
-}
-
-// ToPtr returns a *ForwardProxyConvention pointing to the current value.
-func (c ForwardProxyConvention) ToPtr() *ForwardProxyConvention {
-	return &c
 }
 
 // FrequencyUnit - The unit of time for how often the backup should be executed (e.g. for weekly backup, this should be set
@@ -1144,11 +934,6 @@ func PossibleFrequencyUnitValues() []FrequencyUnit {
 	}
 }
 
-// ToPtr returns a *FrequencyUnit pointing to the current value.
-func (c FrequencyUnit) ToPtr() *FrequencyUnit {
-	return &c
-}
-
 type FrontEndServiceType string
 
 const (
@@ -1162,11 +947,6 @@ func PossibleFrontEndServiceTypeValues() []FrontEndServiceType {
 		FrontEndServiceTypeNodePort,
 		FrontEndServiceTypeLoadBalancer,
 	}
-}
-
-// ToPtr returns a *FrontEndServiceType pointing to the current value.
-func (c FrontEndServiceType) ToPtr() *FrontEndServiceType {
-	return &c
 }
 
 // FtpsState - State of FTP / FTPS service
@@ -1187,11 +967,6 @@ func PossibleFtpsStateValues() []FtpsState {
 	}
 }
 
-// ToPtr returns a *FtpsState pointing to the current value.
-func (c FtpsState) ToPtr() *FtpsState {
-	return &c
-}
-
 // HostNameType - Type of the hostname.
 type HostNameType string
 
@@ -1208,11 +983,6 @@ func PossibleHostNameTypeValues() []HostNameType {
 	}
 }
 
-// ToPtr returns a *HostNameType pointing to the current value.
-func (c HostNameType) ToPtr() *HostNameType {
-	return &c
-}
-
 // HostType - Indicates whether the hostname is a standard or repository hostname.
 type HostType string
 
@@ -1227,11 +997,6 @@ func PossibleHostTypeValues() []HostType {
 		HostTypeStandard,
 		HostTypeRepository,
 	}
-}
-
-// ToPtr returns a *HostType pointing to the current value.
-func (c HostType) ToPtr() *HostType {
-	return &c
 }
 
 // HostingEnvironmentStatus - Current status of the App Service Environment.
@@ -1254,11 +1019,6 @@ func PossibleHostingEnvironmentStatusValues() []HostingEnvironmentStatus {
 	}
 }
 
-// ToPtr returns a *HostingEnvironmentStatus pointing to the current value.
-func (c HostingEnvironmentStatus) ToPtr() *HostingEnvironmentStatus {
-	return &c
-}
-
 // IPFilterTag - Defines what this IP filter will be used for. This is to support IP filtering on proxies.
 type IPFilterTag string
 
@@ -1275,11 +1035,6 @@ func PossibleIPFilterTagValues() []IPFilterTag {
 		IPFilterTagServiceTag,
 		IPFilterTagXffProxy,
 	}
-}
-
-// ToPtr returns a *IPFilterTag pointing to the current value.
-func (c IPFilterTag) ToPtr() *IPFilterTag {
-	return &c
 }
 
 // InAvailabilityReasonType - Invalid indicates the name provided does not match Azure App Service naming requirements. AlreadyExists
@@ -1299,11 +1054,6 @@ func PossibleInAvailabilityReasonTypeValues() []InAvailabilityReasonType {
 	}
 }
 
-// ToPtr returns a *InAvailabilityReasonType pointing to the current value.
-func (c InAvailabilityReasonType) ToPtr() *InAvailabilityReasonType {
-	return &c
-}
-
 // IngressTransportMethod - Ingress transport protocol
 type IngressTransportMethod string
 
@@ -1320,11 +1070,6 @@ func PossibleIngressTransportMethodValues() []IngressTransportMethod {
 		IngressTransportMethodHTTP,
 		IngressTransportMethodHTTP2,
 	}
-}
-
-// ToPtr returns a *IngressTransportMethod pointing to the current value.
-func (c IngressTransportMethod) ToPtr() *IngressTransportMethod {
-	return &c
 }
 
 // InsightStatus - Level of the most severe insight generated by the detector.
@@ -1347,11 +1092,6 @@ func PossibleInsightStatusValues() []InsightStatus {
 		InsightStatusSuccess,
 		InsightStatusNone,
 	}
-}
-
-// ToPtr returns a *InsightStatus pointing to the current value.
-func (c InsightStatus) ToPtr() *InsightStatus {
-	return &c
 }
 
 // IssueType - Represents the type of the Detector
@@ -1380,11 +1120,6 @@ func PossibleIssueTypeValues() []IssueType {
 		IssueTypePlatformIssue,
 		IssueTypeOther,
 	}
-}
-
-// ToPtr returns a *IssueType pointing to the current value.
-func (c IssueType) ToPtr() *IssueType {
-	return &c
 }
 
 // KeyVaultSecretStatus - Status of the Key Vault secret.
@@ -1421,11 +1156,6 @@ func PossibleKeyVaultSecretStatusValues() []KeyVaultSecretStatus {
 	}
 }
 
-// ToPtr returns a *KeyVaultSecretStatus pointing to the current value.
-func (c KeyVaultSecretStatus) ToPtr() *KeyVaultSecretStatus {
-	return &c
-}
-
 // KubeEnvironmentProvisioningState - Provisioning state of the Kubernetes Environment.
 type KubeEnvironmentProvisioningState string
 
@@ -1458,11 +1188,6 @@ func PossibleKubeEnvironmentProvisioningStateValues() []KubeEnvironmentProvision
 	}
 }
 
-// ToPtr returns a *KubeEnvironmentProvisioningState pointing to the current value.
-func (c KubeEnvironmentProvisioningState) ToPtr() *KubeEnvironmentProvisioningState {
-	return &c
-}
-
 // LoadBalancingMode - Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment.
 type LoadBalancingMode string
 
@@ -1481,11 +1206,6 @@ func PossibleLoadBalancingModeValues() []LoadBalancingMode {
 		LoadBalancingModeWeb,
 		LoadBalancingModeWebPublishing,
 	}
-}
-
-// ToPtr returns a *LoadBalancingMode pointing to the current value.
-func (c LoadBalancingMode) ToPtr() *LoadBalancingMode {
-	return &c
 }
 
 // LogLevel - Log level.
@@ -1510,11 +1230,6 @@ func PossibleLogLevelValues() []LogLevel {
 	}
 }
 
-// ToPtr returns a *LogLevel pointing to the current value.
-func (c LogLevel) ToPtr() *LogLevel {
-	return &c
-}
-
 // MSDeployLogEntryType - Log entry type
 type MSDeployLogEntryType string
 
@@ -1531,11 +1246,6 @@ func PossibleMSDeployLogEntryTypeValues() []MSDeployLogEntryType {
 		MSDeployLogEntryTypeWarning,
 		MSDeployLogEntryTypeError,
 	}
-}
-
-// ToPtr returns a *MSDeployLogEntryType pointing to the current value.
-func (c MSDeployLogEntryType) ToPtr() *MSDeployLogEntryType {
-	return &c
 }
 
 // MSDeployProvisioningState - Provisioning state
@@ -1560,11 +1270,6 @@ func PossibleMSDeployProvisioningStateValues() []MSDeployProvisioningState {
 	}
 }
 
-// ToPtr returns a *MSDeployProvisioningState pointing to the current value.
-func (c MSDeployProvisioningState) ToPtr() *MSDeployProvisioningState {
-	return &c
-}
-
 // ManagedPipelineMode - Managed pipeline mode.
 type ManagedPipelineMode string
 
@@ -1579,11 +1284,6 @@ func PossibleManagedPipelineModeValues() []ManagedPipelineMode {
 		ManagedPipelineModeIntegrated,
 		ManagedPipelineModeClassic,
 	}
-}
-
-// ToPtr returns a *ManagedPipelineMode pointing to the current value.
-func (c ManagedPipelineMode) ToPtr() *ManagedPipelineMode {
-	return &c
 }
 
 // ManagedServiceIdentityType - Type of managed service identity.
@@ -1606,11 +1306,6 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 	}
 }
 
-// ToPtr returns a *ManagedServiceIdentityType pointing to the current value.
-func (c ManagedServiceIdentityType) ToPtr() *ManagedServiceIdentityType {
-	return &c
-}
-
 // MySQLMigrationType - The type of migration operation to be done
 type MySQLMigrationType string
 
@@ -1625,11 +1320,6 @@ func PossibleMySQLMigrationTypeValues() []MySQLMigrationType {
 		MySQLMigrationTypeLocalToRemote,
 		MySQLMigrationTypeRemoteToLocal,
 	}
-}
-
-// ToPtr returns a *MySQLMigrationType pointing to the current value.
-func (c MySQLMigrationType) ToPtr() *MySQLMigrationType {
-	return &c
 }
 
 // NotificationLevel - Level indicating how critical this recommendation can impact.
@@ -1650,11 +1340,6 @@ func PossibleNotificationLevelValues() []NotificationLevel {
 		NotificationLevelInformation,
 		NotificationLevelNonUrgentSuggestion,
 	}
-}
-
-// ToPtr returns a *NotificationLevel pointing to the current value.
-func (c NotificationLevel) ToPtr() *NotificationLevel {
-	return &c
 }
 
 // OperationStatus - The current status of the operation.
@@ -1679,11 +1364,6 @@ func PossibleOperationStatusValues() []OperationStatus {
 	}
 }
 
-// ToPtr returns a *OperationStatus pointing to the current value.
-func (c OperationStatus) ToPtr() *OperationStatus {
-	return &c
-}
-
 // ProvisioningState - Status of certificate order.
 type ProvisioningState string
 
@@ -1706,11 +1386,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // PublicCertificateLocation - Public Certificate Location
 type PublicCertificateLocation string
 
@@ -1729,11 +1404,6 @@ func PossiblePublicCertificateLocationValues() []PublicCertificateLocation {
 	}
 }
 
-// ToPtr returns a *PublicCertificateLocation pointing to the current value.
-func (c PublicCertificateLocation) ToPtr() *PublicCertificateLocation {
-	return &c
-}
-
 // PublishingProfileFormat - Name of the format. Valid values are: FileZilla3 WebDeploy -- default Ftp
 type PublishingProfileFormat string
 
@@ -1750,11 +1420,6 @@ func PossiblePublishingProfileFormatValues() []PublishingProfileFormat {
 		PublishingProfileFormatFtp,
 		PublishingProfileFormatWebDeploy,
 	}
-}
-
-// ToPtr returns a *PublishingProfileFormat pointing to the current value.
-func (c PublishingProfileFormat) ToPtr() *PublishingProfileFormat {
-	return &c
 }
 
 // RedundancyMode - Site redundancy mode
@@ -1777,11 +1442,6 @@ func PossibleRedundancyModeValues() []RedundancyMode {
 		RedundancyModeActiveActive,
 		RedundancyModeGeoRedundant,
 	}
-}
-
-// ToPtr returns a *RedundancyMode pointing to the current value.
-func (c RedundancyMode) ToPtr() *RedundancyMode {
-	return &c
 }
 
 // RenderingType - Rendering Type
@@ -1846,11 +1506,6 @@ func PossibleRenderingTypeValues() []RenderingType {
 	}
 }
 
-// ToPtr returns a *RenderingType pointing to the current value.
-func (c RenderingType) ToPtr() *RenderingType {
-	return &c
-}
-
 type ResolveStatus string
 
 const (
@@ -1884,11 +1539,6 @@ func PossibleResolveStatusValues() []ResolveStatus {
 	}
 }
 
-// ToPtr returns a *ResolveStatus pointing to the current value.
-func (c ResolveStatus) ToPtr() *ResolveStatus {
-	return &c
-}
-
 // ResourceScopeType - Name of a resource type this recommendation applies, e.g. Subscription, ServerFarm, Site.
 type ResourceScopeType string
 
@@ -1907,11 +1557,6 @@ func PossibleResourceScopeTypeValues() []ResourceScopeType {
 	}
 }
 
-// ToPtr returns a *ResourceScopeType pointing to the current value.
-func (c ResourceScopeType) ToPtr() *ResourceScopeType {
-	return &c
-}
-
 // RevisionHealthState - Current health State of the revision
 type RevisionHealthState string
 
@@ -1928,11 +1573,6 @@ func PossibleRevisionHealthStateValues() []RevisionHealthState {
 		RevisionHealthStateNone,
 		RevisionHealthStateUnhealthy,
 	}
-}
-
-// ToPtr returns a *RevisionHealthState pointing to the current value.
-func (c RevisionHealthState) ToPtr() *RevisionHealthState {
-	return &c
 }
 
 // RevisionProvisioningState - Current provisioning State of the revision
@@ -1957,11 +1597,6 @@ func PossibleRevisionProvisioningStateValues() []RevisionProvisioningState {
 	}
 }
 
-// ToPtr returns a *RevisionProvisioningState pointing to the current value.
-func (c RevisionProvisioningState) ToPtr() *RevisionProvisioningState {
-	return &c
-}
-
 // RouteType - The type of route this is: DEFAULT - By default, every app has routes to the local address ranges specified
 // by RFC1918 INHERITED - Routes inherited from the real Virtual Network routes STATIC - Static
 // route set on the app only
@@ -1981,11 +1616,6 @@ func PossibleRouteTypeValues() []RouteType {
 		RouteTypeINHERITED,
 		RouteTypeSTATIC,
 	}
-}
-
-// ToPtr returns a *RouteType pointing to the current value.
-func (c RouteType) ToPtr() *RouteType {
-	return &c
 }
 
 type SKUName string
@@ -2025,11 +1655,6 @@ func PossibleSKUNameValues() []SKUName {
 	}
 }
 
-// ToPtr returns a *SKUName pointing to the current value.
-func (c SKUName) ToPtr() *SKUName {
-	return &c
-}
-
 // SSLState - SSL type
 type SSLState string
 
@@ -2046,11 +1671,6 @@ func PossibleSSLStateValues() []SSLState {
 		SSLStateSniEnabled,
 		SSLStateIPBasedEnabled,
 	}
-}
-
-// ToPtr returns a *SSLState pointing to the current value.
-func (c SSLState) ToPtr() *SSLState {
-	return &c
 }
 
 // ScmType - SCM type.
@@ -2093,11 +1713,6 @@ func PossibleScmTypeValues() []ScmType {
 	}
 }
 
-// ToPtr returns a *ScmType pointing to the current value.
-func (c ScmType) ToPtr() *ScmType {
-	return &c
-}
-
 // SiteAvailabilityState - Management information availability state for the app.
 type SiteAvailabilityState string
 
@@ -2116,11 +1731,6 @@ func PossibleSiteAvailabilityStateValues() []SiteAvailabilityState {
 	}
 }
 
-// ToPtr returns a *SiteAvailabilityState pointing to the current value.
-func (c SiteAvailabilityState) ToPtr() *SiteAvailabilityState {
-	return &c
-}
-
 // SiteExtensionType - Site extension type.
 type SiteExtensionType string
 
@@ -2135,11 +1745,6 @@ func PossibleSiteExtensionTypeValues() []SiteExtensionType {
 		SiteExtensionTypeGallery,
 		SiteExtensionTypeWebRoot,
 	}
-}
-
-// ToPtr returns a *SiteExtensionType pointing to the current value.
-func (c SiteExtensionType) ToPtr() *SiteExtensionType {
-	return &c
 }
 
 // SiteLoadBalancing - Site load balancing.
@@ -2166,11 +1771,6 @@ func PossibleSiteLoadBalancingValues() []SiteLoadBalancing {
 	}
 }
 
-// ToPtr returns a *SiteLoadBalancing pointing to the current value.
-func (c SiteLoadBalancing) ToPtr() *SiteLoadBalancing {
-	return &c
-}
-
 type SiteRuntimeState string
 
 const (
@@ -2186,11 +1786,6 @@ func PossibleSiteRuntimeStateValues() []SiteRuntimeState {
 		SiteRuntimeStateSTOPPED,
 		SiteRuntimeStateUNKNOWN,
 	}
-}
-
-// ToPtr returns a *SiteRuntimeState pointing to the current value.
-func (c SiteRuntimeState) ToPtr() *SiteRuntimeState {
-	return &c
 }
 
 // SolutionType - Type of Solution
@@ -2211,11 +1806,6 @@ func PossibleSolutionTypeValues() []SolutionType {
 	}
 }
 
-// ToPtr returns a *SolutionType pointing to the current value.
-func (c SolutionType) ToPtr() *SolutionType {
-	return &c
-}
-
 // StackPreferredOs - Function App stack preferred OS.
 type StackPreferredOs string
 
@@ -2232,11 +1822,6 @@ func PossibleStackPreferredOsValues() []StackPreferredOs {
 	}
 }
 
-// ToPtr returns a *StackPreferredOs pointing to the current value.
-func (c StackPreferredOs) ToPtr() *StackPreferredOs {
-	return &c
-}
-
 // StagingEnvironmentPolicy - State indicating whether staging environments are allowed or not allowed for a static web app.
 type StagingEnvironmentPolicy string
 
@@ -2251,11 +1836,6 @@ func PossibleStagingEnvironmentPolicyValues() []StagingEnvironmentPolicy {
 		StagingEnvironmentPolicyEnabled,
 		StagingEnvironmentPolicyDisabled,
 	}
-}
-
-// ToPtr returns a *StagingEnvironmentPolicy pointing to the current value.
-func (c StagingEnvironmentPolicy) ToPtr() *StagingEnvironmentPolicy {
-	return &c
 }
 
 // StatusOptions - App Service plan status.
@@ -2276,11 +1856,6 @@ func PossibleStatusOptionsValues() []StatusOptions {
 	}
 }
 
-// ToPtr returns a *StatusOptions pointing to the current value.
-func (c StatusOptions) ToPtr() *StatusOptions {
-	return &c
-}
-
 type StorageType string
 
 const (
@@ -2294,11 +1869,6 @@ func PossibleStorageTypeValues() []StorageType {
 		StorageTypeLocalNode,
 		StorageTypeNetworkFileSystem,
 	}
-}
-
-// ToPtr returns a *StorageType pointing to the current value.
-func (c StorageType) ToPtr() *StorageType {
-	return &c
 }
 
 // SupportedTLSVersions - MinTlsVersion: configures the minimum version of TLS required for SSL requests
@@ -2319,11 +1889,6 @@ func PossibleSupportedTLSVersionsValues() []SupportedTLSVersions {
 	}
 }
 
-// ToPtr returns a *SupportedTLSVersions pointing to the current value.
-func (c SupportedTLSVersions) ToPtr() *SupportedTLSVersions {
-	return &c
-}
-
 // TriggerTypes - The trigger type of the function
 type TriggerTypes string
 
@@ -2338,11 +1903,6 @@ func PossibleTriggerTypesValues() []TriggerTypes {
 		TriggerTypesHTTPTrigger,
 		TriggerTypesUnknown,
 	}
-}
-
-// ToPtr returns a *TriggerTypes pointing to the current value.
-func (c TriggerTypes) ToPtr() *TriggerTypes {
-	return &c
 }
 
 // TriggeredWebJobStatus - Job status.
@@ -2363,11 +1923,6 @@ func PossibleTriggeredWebJobStatusValues() []TriggeredWebJobStatus {
 	}
 }
 
-// ToPtr returns a *TriggeredWebJobStatus pointing to the current value.
-func (c TriggeredWebJobStatus) ToPtr() *TriggeredWebJobStatus {
-	return &c
-}
-
 // UnauthenticatedClientAction - The action to take when an unauthenticated client attempts to access the app.
 type UnauthenticatedClientAction string
 
@@ -2382,11 +1937,6 @@ func PossibleUnauthenticatedClientActionValues() []UnauthenticatedClientAction {
 		UnauthenticatedClientActionRedirectToLoginPage,
 		UnauthenticatedClientActionAllowAnonymous,
 	}
-}
-
-// ToPtr returns a *UnauthenticatedClientAction pointing to the current value.
-func (c UnauthenticatedClientAction) ToPtr() *UnauthenticatedClientAction {
-	return &c
 }
 
 // UnauthenticatedClientActionV2 - The action to take when an unauthenticated client attempts to access the app.
@@ -2409,11 +1959,6 @@ func PossibleUnauthenticatedClientActionV2Values() []UnauthenticatedClientAction
 	}
 }
 
-// ToPtr returns a *UnauthenticatedClientActionV2 pointing to the current value.
-func (c UnauthenticatedClientActionV2) ToPtr() *UnauthenticatedClientActionV2 {
-	return &c
-}
-
 // UsageState - State indicating whether the app has exceeded its quota usage. Read-only.
 type UsageState string
 
@@ -2428,11 +1973,6 @@ func PossibleUsageStateValues() []UsageState {
 		UsageStateNormal,
 		UsageStateExceeded,
 	}
-}
-
-// ToPtr returns a *UsageState pointing to the current value.
-func (c UsageState) ToPtr() *UsageState {
-	return &c
 }
 
 // ValidateResourceTypes - Resource type used for verification.
@@ -2453,11 +1993,6 @@ func PossibleValidateResourceTypesValues() []ValidateResourceTypes {
 	}
 }
 
-// ToPtr returns a *ValidateResourceTypes pointing to the current value.
-func (c ValidateResourceTypes) ToPtr() *ValidateResourceTypes {
-	return &c
-}
-
 // WebJobType - Job type.
 type WebJobType string
 
@@ -2472,11 +2007,6 @@ func PossibleWebJobTypeValues() []WebJobType {
 		WebJobTypeContinuous,
 		WebJobTypeTriggered,
 	}
-}
-
-// ToPtr returns a *WebJobType pointing to the current value.
-func (c WebJobType) ToPtr() *WebJobType {
-	return &c
 }
 
 // WorkerSizeOptions - Size of the machines.
@@ -2513,9 +2043,4 @@ func PossibleWorkerSizeOptionsValues() []WorkerSizeOptions {
 		WorkerSizeOptionsNestedSmallLinux,
 		WorkerSizeOptionsDefault,
 	}
-}
-
-// ToPtr returns a *WorkerSizeOptions pointing to the current value.
-func (c WorkerSizeOptions) ToPtr() *WorkerSizeOptions {
-	return &c
 }

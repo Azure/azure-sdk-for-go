@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armlabservices
 
 const (
 	moduleName    = "armlabservices"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -25,11 +25,6 @@ func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
 	}
-}
-
-// ToPtr returns a *ActionType pointing to the current value.
-func (c ActionType) ToPtr() *ActionType {
-	return &c
 }
 
 // ConnectionType - A connection type for access labs and VMs (Public, Private or None).
@@ -50,11 +45,6 @@ func PossibleConnectionTypeValues() []ConnectionType {
 	}
 }
 
-// ToPtr returns a *ConnectionType pointing to the current value.
-func (c ConnectionType) ToPtr() *ConnectionType {
-	return &c
-}
-
 // CreateOption - Indicates what lab virtual machines are created from.
 type CreateOption string
 
@@ -72,11 +62,6 @@ func PossibleCreateOptionValues() []CreateOption {
 		CreateOptionImage,
 		CreateOptionTemplateVM,
 	}
-}
-
-// ToPtr returns a *CreateOption pointing to the current value.
-func (c CreateOption) ToPtr() *CreateOption {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -99,11 +84,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // EnableState - Property enabled state.
 type EnableState string
 
@@ -118,11 +98,6 @@ func PossibleEnableStateValues() []EnableState {
 		EnableStateEnabled,
 		EnableStateDisabled,
 	}
-}
-
-// ToPtr returns a *EnableState pointing to the current value.
-func (c EnableState) ToPtr() *EnableState {
-	return &c
 }
 
 // InvitationState - The lab user invitation state.
@@ -149,11 +124,6 @@ func PossibleInvitationStateValues() []InvitationState {
 	}
 }
 
-// ToPtr returns a *InvitationState pointing to the current value.
-func (c InvitationState) ToPtr() *InvitationState {
-	return &c
-}
-
 // LabServicesSKUTier - The tier of the SKU.
 type LabServicesSKUTier string
 
@@ -168,11 +138,6 @@ func PossibleLabServicesSKUTierValues() []LabServicesSKUTier {
 		LabServicesSKUTierPremium,
 		LabServicesSKUTierStandard,
 	}
-}
-
-// ToPtr returns a *LabServicesSKUTier pointing to the current value.
-func (c LabServicesSKUTier) ToPtr() *LabServicesSKUTier {
-	return &c
 }
 
 // LabState - The state of a virtual machine.
@@ -202,11 +167,6 @@ func PossibleLabStateValues() []LabState {
 	}
 }
 
-// ToPtr returns a *LabState pointing to the current value.
-func (c LabState) ToPtr() *LabState {
-	return &c
-}
-
 // OperationStatus - The operation status
 type OperationStatus string
 
@@ -234,11 +194,6 @@ func PossibleOperationStatusValues() []OperationStatus {
 	}
 }
 
-// ToPtr returns a *OperationStatus pointing to the current value.
-func (c OperationStatus) ToPtr() *OperationStatus {
-	return &c
-}
-
 // Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 // value is "user,system"
 type Origin string
@@ -256,11 +211,6 @@ func PossibleOriginValues() []Origin {
 		OriginUser,
 		OriginUserSystem,
 	}
-}
-
-// ToPtr returns a *Origin pointing to the current value.
-func (c Origin) ToPtr() *Origin {
-	return &c
 }
 
 // OsState - The operating system state.
@@ -281,11 +231,6 @@ func PossibleOsStateValues() []OsState {
 	}
 }
 
-// ToPtr returns a *OsState pointing to the current value.
-func (c OsState) ToPtr() *OsState {
-	return &c
-}
-
 // OsType - The operating system type.
 type OsType string
 
@@ -300,11 +245,6 @@ func PossibleOsTypeValues() []OsType {
 		OsTypeWindows,
 		OsTypeLinux,
 	}
-}
-
-// ToPtr returns a *OsType pointing to the current value.
-func (c OsType) ToPtr() *OsType {
-	return &c
 }
 
 // ProvisioningState - Resource provisioning state.
@@ -338,11 +278,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // RecurrenceFrequency - Schedule recurrence frequencies.
 type RecurrenceFrequency string
 
@@ -359,11 +294,6 @@ func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
 		RecurrenceFrequencyDaily,
 		RecurrenceFrequencyWeekly,
 	}
-}
-
-// ToPtr returns a *RecurrenceFrequency pointing to the current value.
-func (c RecurrenceFrequency) ToPtr() *RecurrenceFrequency {
-	return &c
 }
 
 // RegistrationState - The user lab registration state.
@@ -384,11 +314,6 @@ func PossibleRegistrationStateValues() []RegistrationState {
 	}
 }
 
-// ToPtr returns a *RegistrationState pointing to the current value.
-func (c RegistrationState) ToPtr() *RegistrationState {
-	return &c
-}
-
 // RestrictionReasonCode - The reason for the restriction.
 type RestrictionReasonCode string
 
@@ -405,11 +330,6 @@ func PossibleRestrictionReasonCodeValues() []RestrictionReasonCode {
 	}
 }
 
-// ToPtr returns a *RestrictionReasonCode pointing to the current value.
-func (c RestrictionReasonCode) ToPtr() *RestrictionReasonCode {
-	return &c
-}
-
 // RestrictionType - The type of restriction.
 type RestrictionType string
 
@@ -422,11 +342,6 @@ func PossibleRestrictionTypeValues() []RestrictionType {
 	return []RestrictionType{
 		RestrictionTypeLocation,
 	}
-}
-
-// ToPtr returns a *RestrictionType pointing to the current value.
-func (c RestrictionType) ToPtr() *RestrictionType {
-	return &c
 }
 
 // SKUTier - This field is required to be implemented by the Resource Provider if the service has more than one tier, but
@@ -450,11 +365,6 @@ func PossibleSKUTierValues() []SKUTier {
 	}
 }
 
-// ToPtr returns a *SKUTier pointing to the current value.
-func (c SKUTier) ToPtr() *SKUTier {
-	return &c
-}
-
 // ScaleType - The localized name of the resource.
 type ScaleType string
 
@@ -474,11 +384,6 @@ func PossibleScaleTypeValues() []ScaleType {
 		ScaleTypeManual,
 		ScaleTypeNone,
 	}
-}
-
-// ToPtr returns a *ScaleType pointing to the current value.
-func (c ScaleType) ToPtr() *ScaleType {
-	return &c
 }
 
 // ShutdownOnIdleMode - Defines whether to shut down VM on idle and the criteria for idle detection.
@@ -503,11 +408,6 @@ func PossibleShutdownOnIdleModeValues() []ShutdownOnIdleMode {
 	}
 }
 
-// ToPtr returns a *ShutdownOnIdleMode pointing to the current value.
-func (c ShutdownOnIdleMode) ToPtr() *ShutdownOnIdleMode {
-	return &c
-}
-
 // UsageUnit - The unit details.
 type UsageUnit string
 
@@ -520,11 +420,6 @@ func PossibleUsageUnitValues() []UsageUnit {
 	return []UsageUnit{
 		UsageUnitCount,
 	}
-}
-
-// ToPtr returns a *UsageUnit pointing to the current value.
-func (c UsageUnit) ToPtr() *UsageUnit {
-	return &c
 }
 
 // VirtualMachineState - The state of a virtual machine.
@@ -560,11 +455,6 @@ func PossibleVirtualMachineStateValues() []VirtualMachineState {
 	}
 }
 
-// ToPtr returns a *VirtualMachineState pointing to the current value.
-func (c VirtualMachineState) ToPtr() *VirtualMachineState {
-	return &c
-}
-
 // VirtualMachineType - The type of the lab virtual machine.
 type VirtualMachineType string
 
@@ -581,11 +471,6 @@ func PossibleVirtualMachineTypeValues() []VirtualMachineType {
 		VirtualMachineTypeUser,
 		VirtualMachineTypeTemplate,
 	}
-}
-
-// ToPtr returns a *VirtualMachineType pointing to the current value.
-func (c VirtualMachineType) ToPtr() *VirtualMachineType {
-	return &c
 }
 
 // WeekDay - Days of the week.
@@ -619,9 +504,4 @@ func PossibleWeekDayValues() []WeekDay {
 		WeekDayFriday,
 		WeekDaySaturday,
 	}
-}
-
-// ToPtr returns a *WeekDay pointing to the current value.
-func (c WeekDay) ToPtr() *WeekDay {
-	return &c
 }

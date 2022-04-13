@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type StreamingPoliciesClient struct {
 // subscriptionID - The unique identifier for a Microsoft Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewStreamingPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *StreamingPoliciesClient {
+func NewStreamingPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StreamingPoliciesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &StreamingPoliciesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Create a Streaming Policy in the Media Services account
@@ -105,7 +110,7 @@ func (client *StreamingPoliciesClient) createCreateRequest(ctx context.Context, 
 
 // createHandleResponse handles the Create response.
 func (client *StreamingPoliciesClient) createHandleResponse(resp *http.Response) (StreamingPoliciesClientCreateResponse, error) {
-	result := StreamingPoliciesClientCreateResponse{RawResponse: resp}
+	result := StreamingPoliciesClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StreamingPolicy); err != nil {
 		return StreamingPoliciesClientCreateResponse{}, err
 	}
@@ -131,7 +136,7 @@ func (client *StreamingPoliciesClient) Delete(ctx context.Context, resourceGroup
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return StreamingPoliciesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return StreamingPoliciesClientDeleteResponse{RawResponse: resp}, nil
+	return StreamingPoliciesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -217,7 +222,7 @@ func (client *StreamingPoliciesClient) getCreateRequest(ctx context.Context, res
 
 // getHandleResponse handles the Get response.
 func (client *StreamingPoliciesClient) getHandleResponse(resp *http.Response) (StreamingPoliciesClientGetResponse, error) {
-	result := StreamingPoliciesClientGetResponse{RawResponse: resp}
+	result := StreamingPoliciesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StreamingPolicy); err != nil {
 		return StreamingPoliciesClientGetResponse{}, err
 	}
@@ -229,16 +234,32 @@ func (client *StreamingPoliciesClient) getHandleResponse(resp *http.Response) (S
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // options - StreamingPoliciesClientListOptions contains the optional parameters for the StreamingPoliciesClient.List method.
-func (client *StreamingPoliciesClient) List(resourceGroupName string, accountName string, options *StreamingPoliciesClientListOptions) *StreamingPoliciesClientListPager {
-	return &StreamingPoliciesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+func (client *StreamingPoliciesClient) List(resourceGroupName string, accountName string, options *StreamingPoliciesClientListOptions) *runtime.Pager[StreamingPoliciesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[StreamingPoliciesClientListResponse]{
+		More: func(page StreamingPoliciesClientListResponse) bool {
+			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp StreamingPoliciesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.StreamingPolicyCollection.ODataNextLink)
+		Fetcher: func(ctx context.Context, page *StreamingPoliciesClientListResponse) (StreamingPoliciesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.ODataNextLink)
+			}
+			if err != nil {
+				return StreamingPoliciesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return StreamingPoliciesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return StreamingPoliciesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -278,7 +299,7 @@ func (client *StreamingPoliciesClient) listCreateRequest(ctx context.Context, re
 
 // listHandleResponse handles the List response.
 func (client *StreamingPoliciesClient) listHandleResponse(resp *http.Response) (StreamingPoliciesClientListResponse, error) {
-	result := StreamingPoliciesClientListResponse{RawResponse: resp}
+	result := StreamingPoliciesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StreamingPolicyCollection); err != nil {
 		return StreamingPoliciesClientListResponse{}, err
 	}

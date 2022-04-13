@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,64 +17,82 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
 )
 
-// x-ms-original-file: specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/changeTenantPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/changeTenantPolicy.json
 func ExamplePolicyClient_AddUpdatePolicyForTenant() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsubscription.NewPolicyClient(cred, nil)
+	client, err := armsubscription.NewPolicyClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.AddUpdatePolicyForTenant(ctx,
 		armsubscription.PutTenantPolicyRequestProperties{
-			BlockSubscriptionsIntoTenant:    to.BoolPtr(true),
-			BlockSubscriptionsLeavingTenant: to.BoolPtr(true),
+			BlockSubscriptionsIntoTenant:    to.Ptr(true),
+			BlockSubscriptionsLeavingTenant: to.Ptr(true),
 			ExemptedPrincipals: []*string{
-				to.StringPtr("e879cf0f-2b4d-5431-109a-f72fc9868693"),
-				to.StringPtr("9792da87-c97b-410d-a97d-27021ba09ce6")},
+				to.Ptr("e879cf0f-2b4d-5431-109a-f72fc9868693"),
+				to.Ptr("9792da87-c97b-410d-a97d-27021ba09ce6")},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.PolicyClientAddUpdatePolicyForTenantResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/getTenantPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/getTenantPolicy.json
 func ExamplePolicyClient_GetPolicyForTenant() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsubscription.NewPolicyClient(cred, nil)
+	client, err := armsubscription.NewPolicyClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetPolicyForTenant(ctx,
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.PolicyClientGetPolicyForTenantResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/getTenantPolicyList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/getTenantPolicyList.json
 func ExamplePolicyClient_ListPolicyForTenant() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsubscription.NewPolicyClient(cred, nil)
+	client, err := armsubscription.NewPolicyClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListPolicyForTenant(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,19 +32,23 @@ type AssignmentOperationsClient struct {
 // NewAssignmentOperationsClient creates a new instance of AssignmentOperationsClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAssignmentOperationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *AssignmentOperationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAssignmentOperationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AssignmentOperationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AssignmentOperationsClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Get a blueprint assignment operation.
@@ -94,7 +99,7 @@ func (client *AssignmentOperationsClient) getCreateRequest(ctx context.Context, 
 
 // getHandleResponse handles the Get response.
 func (client *AssignmentOperationsClient) getHandleResponse(resp *http.Response) (AssignmentOperationsClientGetResponse, error) {
-	result := AssignmentOperationsClientGetResponse{RawResponse: resp}
+	result := AssignmentOperationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssignmentOperation); err != nil {
 		return AssignmentOperationsClientGetResponse{}, err
 	}
@@ -108,16 +113,32 @@ func (client *AssignmentOperationsClient) getHandleResponse(resp *http.Response)
 // assignmentName - Name of the blueprint assignment.
 // options - AssignmentOperationsClientListOptions contains the optional parameters for the AssignmentOperationsClient.List
 // method.
-func (client *AssignmentOperationsClient) List(resourceScope string, assignmentName string, options *AssignmentOperationsClientListOptions) *AssignmentOperationsClientListPager {
-	return &AssignmentOperationsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceScope, assignmentName, options)
+func (client *AssignmentOperationsClient) List(resourceScope string, assignmentName string, options *AssignmentOperationsClientListOptions) *runtime.Pager[AssignmentOperationsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AssignmentOperationsClientListResponse]{
+		More: func(page AssignmentOperationsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AssignmentOperationsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AssignmentOperationList.NextLink)
+		Fetcher: func(ctx context.Context, page *AssignmentOperationsClientListResponse) (AssignmentOperationsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceScope, assignmentName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AssignmentOperationsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AssignmentOperationsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AssignmentOperationsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -141,7 +162,7 @@ func (client *AssignmentOperationsClient) listCreateRequest(ctx context.Context,
 
 // listHandleResponse handles the List response.
 func (client *AssignmentOperationsClient) listHandleResponse(resp *http.Response) (AssignmentOperationsClientListResponse, error) {
-	result := AssignmentOperationsClientListResponse{RawResponse: resp}
+	result := AssignmentOperationsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssignmentOperationList); err != nil {
 		return AssignmentOperationsClientListResponse{}, err
 	}

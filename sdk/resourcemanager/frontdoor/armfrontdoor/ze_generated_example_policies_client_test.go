@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,56 +19,72 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor"
 )
 
-// x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-11-01/examples/WafListPolicies.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-11-01/examples/WafListPolicies.json
 func ExamplePoliciesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armfrontdoor.NewPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armfrontdoor.NewPoliciesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List("<resource-group-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-11-01/examples/WafPolicyGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-11-01/examples/WafPolicyGet.json
 func ExamplePoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armfrontdoor.NewPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armfrontdoor.NewPoliciesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<policy-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.PoliciesClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-11-01/examples/WafPolicyCreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-11-01/examples/WafPolicyCreateOrUpdate.json
 func ExamplePoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armfrontdoor.NewPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armfrontdoor.NewPoliciesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<policy-name>",
@@ -77,41 +93,41 @@ func ExamplePoliciesClient_BeginCreateOrUpdate() {
 				CustomRules: &armfrontdoor.CustomRuleList{
 					Rules: []*armfrontdoor.CustomRule{
 						{
-							Name:   to.StringPtr("<name>"),
-							Action: armfrontdoor.ActionType("Block").ToPtr(),
+							Name:   to.Ptr("<name>"),
+							Action: to.Ptr(armfrontdoor.ActionTypeBlock),
 							MatchConditions: []*armfrontdoor.MatchCondition{
 								{
 									MatchValue: []*string{
-										to.StringPtr("192.168.1.0/24"),
-										to.StringPtr("10.0.0.0/24")},
-									MatchVariable: armfrontdoor.MatchVariable("RemoteAddr").ToPtr(),
-									Operator:      armfrontdoor.Operator("IPMatch").ToPtr(),
+										to.Ptr("192.168.1.0/24"),
+										to.Ptr("10.0.0.0/24")},
+									MatchVariable: to.Ptr(armfrontdoor.MatchVariableRemoteAddr),
+									Operator:      to.Ptr(armfrontdoor.OperatorIPMatch),
 								}},
-							Priority:           to.Int32Ptr(1),
-							RateLimitThreshold: to.Int32Ptr(1000),
-							RuleType:           armfrontdoor.RuleType("RateLimitRule").ToPtr(),
+							Priority:           to.Ptr[int32](1),
+							RateLimitThreshold: to.Ptr[int32](1000),
+							RuleType:           to.Ptr(armfrontdoor.RuleTypeRateLimitRule),
 						},
 						{
-							Name:   to.StringPtr("<name>"),
-							Action: armfrontdoor.ActionType("Block").ToPtr(),
+							Name:   to.Ptr("<name>"),
+							Action: to.Ptr(armfrontdoor.ActionTypeBlock),
 							MatchConditions: []*armfrontdoor.MatchCondition{
 								{
 									MatchValue: []*string{
-										to.StringPtr("CH")},
-									MatchVariable: armfrontdoor.MatchVariable("RemoteAddr").ToPtr(),
-									Operator:      armfrontdoor.Operator("GeoMatch").ToPtr(),
+										to.Ptr("CH")},
+									MatchVariable: to.Ptr(armfrontdoor.MatchVariableRemoteAddr),
+									Operator:      to.Ptr(armfrontdoor.OperatorGeoMatch),
 								},
 								{
 									MatchValue: []*string{
-										to.StringPtr("windows")},
-									MatchVariable: armfrontdoor.MatchVariable("RequestHeader").ToPtr(),
-									Operator:      armfrontdoor.Operator("Contains").ToPtr(),
-									Selector:      to.StringPtr("<selector>"),
+										to.Ptr("windows")},
+									MatchVariable: to.Ptr(armfrontdoor.MatchVariableRequestHeader),
+									Operator:      to.Ptr(armfrontdoor.OperatorContains),
+									Selector:      to.Ptr("<selector>"),
 									Transforms: []*armfrontdoor.TransformType{
-										armfrontdoor.TransformType("Lowercase").ToPtr()},
+										to.Ptr(armfrontdoor.TransformTypeLowercase)},
 								}},
-							Priority: to.Int32Ptr(2),
-							RuleType: armfrontdoor.RuleType("MatchRule").ToPtr(),
+							Priority: to.Ptr[int32](2),
+							RuleType: to.Ptr(armfrontdoor.RuleTypeMatchRule),
 						}},
 				},
 				ManagedRules: &armfrontdoor.ManagedRuleSetList{
@@ -119,82 +135,92 @@ func ExamplePoliciesClient_BeginCreateOrUpdate() {
 						{
 							Exclusions: []*armfrontdoor.ManagedRuleExclusion{
 								{
-									MatchVariable:         armfrontdoor.ManagedRuleExclusionMatchVariable("RequestHeaderNames").ToPtr(),
-									Selector:              to.StringPtr("<selector>"),
-									SelectorMatchOperator: armfrontdoor.ManagedRuleExclusionSelectorMatchOperator("Equals").ToPtr(),
+									MatchVariable:         to.Ptr(armfrontdoor.ManagedRuleExclusionMatchVariableRequestHeaderNames),
+									Selector:              to.Ptr("<selector>"),
+									SelectorMatchOperator: to.Ptr(armfrontdoor.ManagedRuleExclusionSelectorMatchOperatorEquals),
 								}},
 							RuleGroupOverrides: []*armfrontdoor.ManagedRuleGroupOverride{
 								{
 									Exclusions: []*armfrontdoor.ManagedRuleExclusion{
 										{
-											MatchVariable:         armfrontdoor.ManagedRuleExclusionMatchVariable("RequestCookieNames").ToPtr(),
-											Selector:              to.StringPtr("<selector>"),
-											SelectorMatchOperator: armfrontdoor.ManagedRuleExclusionSelectorMatchOperator("StartsWith").ToPtr(),
+											MatchVariable:         to.Ptr(armfrontdoor.ManagedRuleExclusionMatchVariableRequestCookieNames),
+											Selector:              to.Ptr("<selector>"),
+											SelectorMatchOperator: to.Ptr(armfrontdoor.ManagedRuleExclusionSelectorMatchOperatorStartsWith),
 										}},
-									RuleGroupName: to.StringPtr("<rule-group-name>"),
+									RuleGroupName: to.Ptr("<rule-group-name>"),
 									Rules: []*armfrontdoor.ManagedRuleOverride{
 										{
-											Action:       armfrontdoor.ActionType("Redirect").ToPtr(),
-											EnabledState: armfrontdoor.ManagedRuleEnabledState("Enabled").ToPtr(),
+											Action:       to.Ptr(armfrontdoor.ActionTypeRedirect),
+											EnabledState: to.Ptr(armfrontdoor.ManagedRuleEnabledStateEnabled),
 											Exclusions: []*armfrontdoor.ManagedRuleExclusion{
 												{
-													MatchVariable:         armfrontdoor.ManagedRuleExclusionMatchVariable("QueryStringArgNames").ToPtr(),
-													Selector:              to.StringPtr("<selector>"),
-													SelectorMatchOperator: armfrontdoor.ManagedRuleExclusionSelectorMatchOperator("Equals").ToPtr(),
+													MatchVariable:         to.Ptr(armfrontdoor.ManagedRuleExclusionMatchVariableQueryStringArgNames),
+													Selector:              to.Ptr("<selector>"),
+													SelectorMatchOperator: to.Ptr(armfrontdoor.ManagedRuleExclusionSelectorMatchOperatorEquals),
 												}},
-											RuleID: to.StringPtr("<rule-id>"),
+											RuleID: to.Ptr("<rule-id>"),
 										},
 										{
-											EnabledState: armfrontdoor.ManagedRuleEnabledState("Disabled").ToPtr(),
-											RuleID:       to.StringPtr("<rule-id>"),
+											EnabledState: to.Ptr(armfrontdoor.ManagedRuleEnabledStateDisabled),
+											RuleID:       to.Ptr("<rule-id>"),
 										}},
 								}},
-							RuleSetAction:  armfrontdoor.ManagedRuleSetActionType("Block").ToPtr(),
-							RuleSetType:    to.StringPtr("<rule-set-type>"),
-							RuleSetVersion: to.StringPtr("<rule-set-version>"),
+							RuleSetAction:  to.Ptr(armfrontdoor.ManagedRuleSetActionTypeBlock),
+							RuleSetType:    to.Ptr("<rule-set-type>"),
+							RuleSetVersion: to.Ptr("<rule-set-version>"),
 						}},
 				},
 				PolicySettings: &armfrontdoor.PolicySettings{
-					CustomBlockResponseBody:       to.StringPtr("<custom-block-response-body>"),
-					CustomBlockResponseStatusCode: to.Int32Ptr(499),
-					EnabledState:                  armfrontdoor.PolicyEnabledState("Enabled").ToPtr(),
-					Mode:                          armfrontdoor.PolicyMode("Prevention").ToPtr(),
-					RedirectURL:                   to.StringPtr("<redirect-url>"),
-					RequestBodyCheck:              armfrontdoor.PolicyRequestBodyCheck("Disabled").ToPtr(),
+					CustomBlockResponseBody:       to.Ptr("<custom-block-response-body>"),
+					CustomBlockResponseStatusCode: to.Ptr[int32](499),
+					EnabledState:                  to.Ptr(armfrontdoor.PolicyEnabledStateEnabled),
+					Mode:                          to.Ptr(armfrontdoor.PolicyModePrevention),
+					RedirectURL:                   to.Ptr("<redirect-url>"),
+					RequestBodyCheck:              to.Ptr(armfrontdoor.PolicyRequestBodyCheckDisabled),
 				},
 			},
 			SKU: &armfrontdoor.SKU{
-				Name: armfrontdoor.SKUName("Classic_AzureFrontDoor").ToPtr(),
+				Name: to.Ptr(armfrontdoor.SKUNameClassicAzureFrontDoor),
 			},
 		},
-		nil)
+		&armfrontdoor.PoliciesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.PoliciesClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-11-01/examples/WafPolicyDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-11-01/examples/WafPolicyDelete.json
 func ExamplePoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armfrontdoor.NewPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armfrontdoor.NewPoliciesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<policy-name>",
-		nil)
+		&armfrontdoor.PoliciesClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }

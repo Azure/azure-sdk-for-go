@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type AgentPoolsClient struct {
 // subscriptionID - The Microsoft Azure subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAgentPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AgentPoolsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAgentPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AgentPoolsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AgentPoolsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreate - Creates an agent pool for a container registry with the specified parameters.
@@ -56,22 +61,16 @@ func NewAgentPoolsClient(subscriptionID string, credential azcore.TokenCredentia
 // agentPoolName - The name of the agent pool.
 // agentPool - The parameters of an agent pool that needs to scheduled.
 // options - AgentPoolsClientBeginCreateOptions contains the optional parameters for the AgentPoolsClient.BeginCreate method.
-func (client *AgentPoolsClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, agentPool AgentPool, options *AgentPoolsClientBeginCreateOptions) (AgentPoolsClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, registryName, agentPoolName, agentPool, options)
-	if err != nil {
-		return AgentPoolsClientCreatePollerResponse{}, err
+func (client *AgentPoolsClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, agentPool AgentPool, options *AgentPoolsClientBeginCreateOptions) (*armruntime.Poller[AgentPoolsClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, registryName, agentPoolName, agentPool, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[AgentPoolsClientCreateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[AgentPoolsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := AgentPoolsClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("AgentPoolsClient.Create", "", resp, client.pl)
-	if err != nil {
-		return AgentPoolsClientCreatePollerResponse{}, err
-	}
-	result.Poller = &AgentPoolsClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Creates an agent pool for a container registry with the specified parameters.
@@ -127,22 +126,16 @@ func (client *AgentPoolsClient) createCreateRequest(ctx context.Context, resourc
 // registryName - The name of the container registry.
 // agentPoolName - The name of the agent pool.
 // options - AgentPoolsClientBeginDeleteOptions contains the optional parameters for the AgentPoolsClient.BeginDelete method.
-func (client *AgentPoolsClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, options *AgentPoolsClientBeginDeleteOptions) (AgentPoolsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, registryName, agentPoolName, options)
-	if err != nil {
-		return AgentPoolsClientDeletePollerResponse{}, err
+func (client *AgentPoolsClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, options *AgentPoolsClientBeginDeleteOptions) (*armruntime.Poller[AgentPoolsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, registryName, agentPoolName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[AgentPoolsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[AgentPoolsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := AgentPoolsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("AgentPoolsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return AgentPoolsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &AgentPoolsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a specified agent pool resource.
@@ -245,7 +238,7 @@ func (client *AgentPoolsClient) getCreateRequest(ctx context.Context, resourceGr
 
 // getHandleResponse handles the Get response.
 func (client *AgentPoolsClient) getHandleResponse(resp *http.Response) (AgentPoolsClientGetResponse, error) {
-	result := AgentPoolsClientGetResponse{RawResponse: resp}
+	result := AgentPoolsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AgentPool); err != nil {
 		return AgentPoolsClientGetResponse{}, err
 	}
@@ -306,7 +299,7 @@ func (client *AgentPoolsClient) getQueueStatusCreateRequest(ctx context.Context,
 
 // getQueueStatusHandleResponse handles the GetQueueStatus response.
 func (client *AgentPoolsClient) getQueueStatusHandleResponse(resp *http.Response) (AgentPoolsClientGetQueueStatusResponse, error) {
-	result := AgentPoolsClientGetQueueStatusResponse{RawResponse: resp}
+	result := AgentPoolsClientGetQueueStatusResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AgentPoolQueueStatus); err != nil {
 		return AgentPoolsClientGetQueueStatusResponse{}, err
 	}
@@ -318,16 +311,32 @@ func (client *AgentPoolsClient) getQueueStatusHandleResponse(resp *http.Response
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // options - AgentPoolsClientListOptions contains the optional parameters for the AgentPoolsClient.List method.
-func (client *AgentPoolsClient) List(resourceGroupName string, registryName string, options *AgentPoolsClientListOptions) *AgentPoolsClientListPager {
-	return &AgentPoolsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, registryName, options)
+func (client *AgentPoolsClient) List(resourceGroupName string, registryName string, options *AgentPoolsClientListOptions) *runtime.Pager[AgentPoolsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AgentPoolsClientListResponse]{
+		More: func(page AgentPoolsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AgentPoolsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AgentPoolListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AgentPoolsClientListResponse) (AgentPoolsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, registryName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AgentPoolsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AgentPoolsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AgentPoolsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -358,7 +367,7 @@ func (client *AgentPoolsClient) listCreateRequest(ctx context.Context, resourceG
 
 // listHandleResponse handles the List response.
 func (client *AgentPoolsClient) listHandleResponse(resp *http.Response) (AgentPoolsClientListResponse, error) {
-	result := AgentPoolsClientListResponse{RawResponse: resp}
+	result := AgentPoolsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AgentPoolListResult); err != nil {
 		return AgentPoolsClientListResponse{}, err
 	}
@@ -372,22 +381,16 @@ func (client *AgentPoolsClient) listHandleResponse(resp *http.Response) (AgentPo
 // agentPoolName - The name of the agent pool.
 // updateParameters - The parameters for updating an agent pool.
 // options - AgentPoolsClientBeginUpdateOptions contains the optional parameters for the AgentPoolsClient.BeginUpdate method.
-func (client *AgentPoolsClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, updateParameters AgentPoolUpdateParameters, options *AgentPoolsClientBeginUpdateOptions) (AgentPoolsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, registryName, agentPoolName, updateParameters, options)
-	if err != nil {
-		return AgentPoolsClientUpdatePollerResponse{}, err
+func (client *AgentPoolsClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, updateParameters AgentPoolUpdateParameters, options *AgentPoolsClientBeginUpdateOptions) (*armruntime.Poller[AgentPoolsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, registryName, agentPoolName, updateParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[AgentPoolsClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[AgentPoolsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := AgentPoolsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("AgentPoolsClient.Update", "", resp, client.pl)
-	if err != nil {
-		return AgentPoolsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &AgentPoolsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates an agent pool with the specified parameters.

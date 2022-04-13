@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,211 +19,264 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 )
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ServerListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ServerListByResourceGroup.json
 func ExampleServersClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewServersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		&armsql.ServersClientListByResourceGroupOptions{Expand: nil})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ServerGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ServerGet.json
 func ExampleServersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewServersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<server-name>",
 		&armsql.ServersClientGetOptions{Expand: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ServersClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ServerCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ServerCreate.json
 func ExampleServersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewServersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<server-name>",
 		armsql.Server{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Properties: &armsql.ServerProperties{
-				AdministratorLogin:         to.StringPtr("<administrator-login>"),
-				AdministratorLoginPassword: to.StringPtr("<administrator-login-password>"),
+				AdministratorLogin:         to.Ptr("<administrator-login>"),
+				AdministratorLoginPassword: to.Ptr("<administrator-login-password>"),
 				Administrators: &armsql.ServerExternalAdministrator{
-					AzureADOnlyAuthentication: to.BoolPtr(true),
-					Login:                     to.StringPtr("<login>"),
-					PrincipalType:             armsql.PrincipalType("User").ToPtr(),
-					Sid:                       to.StringPtr("<sid>"),
-					TenantID:                  to.StringPtr("<tenant-id>"),
+					AzureADOnlyAuthentication: to.Ptr(true),
+					Login:                     to.Ptr("<login>"),
+					PrincipalType:             to.Ptr(armsql.PrincipalTypeUser),
+					Sid:                       to.Ptr("<sid>"),
+					TenantID:                  to.Ptr("<tenant-id>"),
 				},
-				PublicNetworkAccess:           armsql.ServerNetworkAccessFlag("Enabled").ToPtr(),
-				RestrictOutboundNetworkAccess: armsql.ServerNetworkAccessFlag("Enabled").ToPtr(),
+				PublicNetworkAccess:           to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
+				RestrictOutboundNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
 			},
 		},
-		nil)
+		&armsql.ServersClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ServersClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ServerDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ServerDelete.json
 func ExampleServersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewServersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<server-name>",
-		nil)
+		&armsql.ServersClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ServerUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ServerUpdate.json
 func ExampleServersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewServersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<server-name>",
 		armsql.ServerUpdate{
 			Properties: &armsql.ServerProperties{
-				AdministratorLogin:            to.StringPtr("<administrator-login>"),
-				AdministratorLoginPassword:    to.StringPtr("<administrator-login-password>"),
-				PublicNetworkAccess:           armsql.ServerNetworkAccessFlag("Disabled").ToPtr(),
-				RestrictOutboundNetworkAccess: armsql.ServerNetworkAccessFlag("Enabled").ToPtr(),
+				AdministratorLogin:            to.Ptr("<administrator-login>"),
+				AdministratorLoginPassword:    to.Ptr("<administrator-login-password>"),
+				PublicNetworkAccess:           to.Ptr(armsql.ServerNetworkAccessFlagDisabled),
+				RestrictOutboundNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
 			},
 		},
-		nil)
+		&armsql.ServersClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ServersClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ServerList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ServerList.json
 func ExampleServersClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewServersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List(&armsql.ServersClientListOptions{Expand: nil})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ImportNewDatabaseWithNetworkIsolation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ImportNewDatabaseWithNetworkIsolation.json
 func ExampleServersClient_BeginImportDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewServersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginImportDatabase(ctx,
 		"<resource-group-name>",
 		"<server-name>",
 		armsql.ImportNewDatabaseDefinition{
-			AdministratorLogin:         to.StringPtr("<administrator-login>"),
-			AdministratorLoginPassword: to.StringPtr("<administrator-login-password>"),
-			AuthenticationType:         to.StringPtr("<authentication-type>"),
-			DatabaseName:               to.StringPtr("<database-name>"),
+			AdministratorLogin:         to.Ptr("<administrator-login>"),
+			AdministratorLoginPassword: to.Ptr("<administrator-login-password>"),
+			AuthenticationType:         to.Ptr("<authentication-type>"),
+			DatabaseName:               to.Ptr("<database-name>"),
 			NetworkIsolation: &armsql.NetworkIsolationSettings{
-				SQLServerResourceID:      to.StringPtr("<sqlserver-resource-id>"),
-				StorageAccountResourceID: to.StringPtr("<storage-account-resource-id>"),
+				SQLServerResourceID:      to.Ptr("<sqlserver-resource-id>"),
+				StorageAccountResourceID: to.Ptr("<storage-account-resource-id>"),
 			},
-			StorageKey:     to.StringPtr("<storage-key>"),
-			StorageKeyType: armsql.StorageKeyType("StorageAccessKey").ToPtr(),
-			StorageURI:     to.StringPtr("<storage-uri>"),
+			StorageKey:     to.Ptr("<storage-key>"),
+			StorageKeyType: to.Ptr(armsql.StorageKeyTypeStorageAccessKey),
+			StorageURI:     to.Ptr("<storage-uri>"),
 		},
-		nil)
+		&armsql.ServersClientBeginImportDatabaseOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ServersClientImportDatabaseResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/CheckNameAvailabilityServerAlreadyExists.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/CheckNameAvailabilityServerAlreadyExists.json
 func ExampleServersClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewServersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CheckNameAvailability(ctx,
 		armsql.CheckNameAvailabilityRequest{
-			Name: to.StringPtr("<name>"),
-			Type: to.StringPtr("<type>"),
+			Name: to.Ptr("<name>"),
+			Type: to.Ptr("<type>"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ServersClientCheckNameAvailabilityResult)
+	// TODO: use response item
+	_ = res
 }

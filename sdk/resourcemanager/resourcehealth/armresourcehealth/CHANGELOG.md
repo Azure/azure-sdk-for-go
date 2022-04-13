@@ -1,5 +1,133 @@
 # Release History
 
+## 0.5.0 (2022-04-13)
+### Breaking Changes
+
+- Function `NewAvailabilityStatusesClient` return value(s) have been changed from `(*AvailabilityStatusesClient)` to `(*AvailabilityStatusesClient, error)`
+- Function `*AvailabilityStatusesClient.ListByResourceGroup` return value(s) have been changed from `(*AvailabilityStatusesClientListByResourceGroupPager)` to `(*runtime.Pager[AvailabilityStatusesClientListByResourceGroupResponse])`
+- Function `*AvailabilityStatusesClient.ListBySubscriptionID` return value(s) have been changed from `(*AvailabilityStatusesClientListBySubscriptionIDPager)` to `(*runtime.Pager[AvailabilityStatusesClientListBySubscriptionIDResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*AvailabilityStatusesClient.List` return value(s) have been changed from `(*AvailabilityStatusesClientListPager)` to `(*runtime.Pager[AvailabilityStatusesClientListResponse])`
+- Const `SeverityValuesWarning` has been removed
+- Const `StageValuesActive` has been removed
+- Const `StageValuesArchived` has been removed
+- Const `StageValuesResolve` has been removed
+- Const `SeverityValuesError` has been removed
+- Const `SeverityValuesInformation` has been removed
+- Function `*AvailabilityStatusesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*ChildAvailabilityStatusesClientListPager.PageResponse` has been removed
+- Function `NewChildResourcesClient` has been removed
+- Function `*AvailabilityStatusesClientListBySubscriptionIDPager.NextPage` has been removed
+- Function `*ChildResourcesClientListPager.NextPage` has been removed
+- Function `NewChildAvailabilityStatusesClient` has been removed
+- Function `*AvailabilityStatusesClientListBySubscriptionIDPager.PageResponse` has been removed
+- Function `*ChildAvailabilityStatusesClient.GetByResource` has been removed
+- Function `*AvailabilityStatusesClientListPager.NextPage` has been removed
+- Function `SeverityValues.ToPtr` has been removed
+- Function `PossibleStageValuesValues` has been removed
+- Function `*ChildResourcesClient.List` has been removed
+- Function `*EmergingIssuesClientListPager.NextPage` has been removed
+- Function `*AvailabilityStatusPropertiesRecentlyResolvedState.UnmarshalJSON` has been removed
+- Function `*ChildAvailabilityStatusesClient.List` has been removed
+- Function `*EmergingIssuesClient.Get` has been removed
+- Function `*AvailabilityStatusesClientListPager.PageResponse` has been removed
+- Function `*EmergingIssuesClient.List` has been removed
+- Function `EmergingIssueListResult.MarshalJSON` has been removed
+- Function `EmergingIssueImpact.MarshalJSON` has been removed
+- Function `*EmergingIssuesClientListPager.PageResponse` has been removed
+- Function `PossibleSeverityValuesValues` has been removed
+- Function `EmergingIssue.MarshalJSON` has been removed
+- Function `*AvailabilityStatusesClientListBySubscriptionIDPager.Err` has been removed
+- Function `AvailabilityStatusPropertiesRecentlyResolvedState.MarshalJSON` has been removed
+- Function `*ChildAvailabilityStatusesClientListPager.Err` has been removed
+- Function `*AvailabilityStatusesClientListPager.Err` has been removed
+- Function `AvailabilityStateValues.ToPtr` has been removed
+- Function `*EmergingIssuesClientListPager.Err` has been removed
+- Function `*AvailabilityStatusesClientListByResourceGroupPager.Err` has been removed
+- Function `StageValues.ToPtr` has been removed
+- Function `*ChildAvailabilityStatusesClientListPager.NextPage` has been removed
+- Function `*ChildResourcesClientListPager.Err` has been removed
+- Function `*EmergingIssue.UnmarshalJSON` has been removed
+- Function `NewEmergingIssuesClient` has been removed
+- Function `*ChildResourcesClientListPager.PageResponse` has been removed
+- Function `ReasonChronicityTypes.ToPtr` has been removed
+- Function `*StatusActiveEvent.UnmarshalJSON` has been removed
+- Function `StatusActiveEvent.MarshalJSON` has been removed
+- Function `*AvailabilityStatusesClientListByResourceGroupPager.NextPage` has been removed
+- Struct `AvailabilityStatusPropertiesRecentlyResolvedState` has been removed
+- Struct `AvailabilityStatusesClientGetByResourceResult` has been removed
+- Struct `AvailabilityStatusesClientListByResourceGroupPager` has been removed
+- Struct `AvailabilityStatusesClientListByResourceGroupResult` has been removed
+- Struct `AvailabilityStatusesClientListBySubscriptionIDPager` has been removed
+- Struct `AvailabilityStatusesClientListBySubscriptionIDResult` has been removed
+- Struct `AvailabilityStatusesClientListPager` has been removed
+- Struct `AvailabilityStatusesClientListResult` has been removed
+- Struct `ChildAvailabilityStatusesClient` has been removed
+- Struct `ChildAvailabilityStatusesClientGetByResourceOptions` has been removed
+- Struct `ChildAvailabilityStatusesClientGetByResourceResponse` has been removed
+- Struct `ChildAvailabilityStatusesClientGetByResourceResult` has been removed
+- Struct `ChildAvailabilityStatusesClientListOptions` has been removed
+- Struct `ChildAvailabilityStatusesClientListPager` has been removed
+- Struct `ChildAvailabilityStatusesClientListResponse` has been removed
+- Struct `ChildAvailabilityStatusesClientListResult` has been removed
+- Struct `ChildResourcesClient` has been removed
+- Struct `ChildResourcesClientListOptions` has been removed
+- Struct `ChildResourcesClientListPager` has been removed
+- Struct `ChildResourcesClientListResponse` has been removed
+- Struct `ChildResourcesClientListResult` has been removed
+- Struct `EmergingIssue` has been removed
+- Struct `EmergingIssueImpact` has been removed
+- Struct `EmergingIssueListResult` has been removed
+- Struct `EmergingIssuesClient` has been removed
+- Struct `EmergingIssuesClientGetOptions` has been removed
+- Struct `EmergingIssuesClientGetResponse` has been removed
+- Struct `EmergingIssuesClientGetResult` has been removed
+- Struct `EmergingIssuesClientListOptions` has been removed
+- Struct `EmergingIssuesClientListPager` has been removed
+- Struct `EmergingIssuesClientListResponse` has been removed
+- Struct `EmergingIssuesClientListResult` has been removed
+- Struct `EmergingIssuesGetResult` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `StatusActiveEvent` has been removed
+- Field `AvailabilityStatusesClientListBySubscriptionIDResult` of struct `AvailabilityStatusesClientListBySubscriptionIDResponse` has been removed
+- Field `RawResponse` of struct `AvailabilityStatusesClientListBySubscriptionIDResponse` has been removed
+- Field `RecentlyResolvedState` of struct `AvailabilityStatusProperties` has been removed
+- Field `OccuredTime` of struct `AvailabilityStatusProperties` has been removed
+- Field `AvailabilityStatusesClientListByResourceGroupResult` of struct `AvailabilityStatusesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `AvailabilityStatusesClientListByResourceGroupResponse` has been removed
+- Field `AvailabilityStatusesClientListResult` of struct `AvailabilityStatusesClientListResponse` has been removed
+- Field `RawResponse` of struct `AvailabilityStatusesClientListResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `AvailabilityStatusesClientGetByResourceResult` of struct `AvailabilityStatusesClientGetByResourceResponse` has been removed
+- Field `RawResponse` of struct `AvailabilityStatusesClientGetByResourceResponse` has been removed
+
+### Features Added
+
+- New const `ReasonTypeValuesUserInitiated`
+- New const `AvailabilityStateValuesDegraded`
+- New const `ReasonTypeValuesPlanned`
+- New const `ReasonTypeValuesUnplanned`
+- New function `PossibleReasonTypeValuesValues() []ReasonTypeValues`
+- New function `AvailabilityStatusPropertiesRecentlyResolved.MarshalJSON() ([]byte, error)`
+- New function `ImpactedResourceStatusProperties.MarshalJSON() ([]byte, error)`
+- New function `*AvailabilityStatusPropertiesRecentlyResolved.UnmarshalJSON([]byte) error`
+- New function `*ImpactedResourceStatusProperties.UnmarshalJSON([]byte) error`
+- New struct `AvailabilityStatusPropertiesRecentlyResolved`
+- New struct `ErrorResponse`
+- New struct `ErrorResponseError`
+- New struct `ImpactedResourceStatus`
+- New struct `ImpactedResourceStatusProperties`
+- New anonymous field `AvailabilityStatusListResult` in struct `AvailabilityStatusesClientListBySubscriptionIDResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `AvailabilityStatusListResult` in struct `AvailabilityStatusesClientListResponse`
+- New anonymous field `AvailabilityStatus` in struct `AvailabilityStatusesClientGetByResourceResponse`
+- New anonymous field `AvailabilityStatusListResult` in struct `AvailabilityStatusesClientListByResourceGroupResponse`
+- New field `Title` in struct `AvailabilityStatusProperties`
+- New field `RecentlyResolved` in struct `AvailabilityStatusProperties`
+- New field `OccurredTime` in struct `AvailabilityStatusProperties`
+
+
 ## 0.4.0 (2022-02-22)
 ### Breaking Changes
 

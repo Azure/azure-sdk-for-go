@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armrecoveryservicessiterecovery
 
 const (
 	moduleName    = "armrecoveryservicessiterecovery"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // A2ARecoveryAvailabilityType - The recovery availability type of the virtual machine.
@@ -29,11 +29,6 @@ func PossibleA2ARecoveryAvailabilityTypeValues() []A2ARecoveryAvailabilityType {
 		A2ARecoveryAvailabilityTypeAvailabilityZone,
 		A2ARecoveryAvailabilityTypeSingle,
 	}
-}
-
-// ToPtr returns a *A2ARecoveryAvailabilityType pointing to the current value.
-func (c A2ARecoveryAvailabilityType) ToPtr() *A2ARecoveryAvailabilityType {
-	return &c
 }
 
 // A2ARpRecoveryPointType - The recovery point type.
@@ -56,11 +51,6 @@ func PossibleA2ARpRecoveryPointTypeValues() []A2ARpRecoveryPointType {
 	}
 }
 
-// ToPtr returns a *A2ARpRecoveryPointType pointing to the current value.
-func (c A2ARpRecoveryPointType) ToPtr() *A2ARpRecoveryPointType {
-	return &c
-}
-
 // AgentAutoUpdateStatus - A value indicating whether the auto update is enabled.
 type AgentAutoUpdateStatus string
 
@@ -75,11 +65,6 @@ func PossibleAgentAutoUpdateStatusValues() []AgentAutoUpdateStatus {
 		AgentAutoUpdateStatusDisabled,
 		AgentAutoUpdateStatusEnabled,
 	}
-}
-
-// ToPtr returns a *AgentAutoUpdateStatus pointing to the current value.
-func (c AgentAutoUpdateStatus) ToPtr() *AgentAutoUpdateStatus {
-	return &c
 }
 
 type AgentUpgradeBlockedReason string
@@ -121,11 +106,6 @@ func PossibleAgentUpgradeBlockedReasonValues() []AgentUpgradeBlockedReason {
 	}
 }
 
-// ToPtr returns a *AgentUpgradeBlockedReason pointing to the current value.
-func (c AgentUpgradeBlockedReason) ToPtr() *AgentUpgradeBlockedReason {
-	return &c
-}
-
 // AgentVersionStatus - A value indicating whether security update required.
 type AgentVersionStatus string
 
@@ -148,11 +128,6 @@ func PossibleAgentVersionStatusValues() []AgentVersionStatus {
 	}
 }
 
-// ToPtr returns a *AgentVersionStatus pointing to the current value.
-func (c AgentVersionStatus) ToPtr() *AgentVersionStatus {
-	return &c
-}
-
 // AlternateLocationRecoveryOption - The ALR option.
 type AlternateLocationRecoveryOption string
 
@@ -167,11 +142,6 @@ func PossibleAlternateLocationRecoveryOptionValues() []AlternateLocationRecovery
 		AlternateLocationRecoveryOptionCreateVMIfNotFound,
 		AlternateLocationRecoveryOptionNoAction,
 	}
-}
-
-// ToPtr returns a *AlternateLocationRecoveryOption pointing to the current value.
-func (c AlternateLocationRecoveryOption) ToPtr() *AlternateLocationRecoveryOption {
-	return &c
 }
 
 // AutoProtectionOfDataDisk - A value indicating whether the auto protection is enabled.
@@ -190,11 +160,6 @@ func PossibleAutoProtectionOfDataDiskValues() []AutoProtectionOfDataDisk {
 	}
 }
 
-// ToPtr returns a *AutoProtectionOfDataDisk pointing to the current value.
-func (c AutoProtectionOfDataDisk) ToPtr() *AutoProtectionOfDataDisk {
-	return &c
-}
-
 // AutomationAccountAuthenticationType - A value indicating the type authentication to use for automation Account.
 type AutomationAccountAuthenticationType string
 
@@ -209,11 +174,6 @@ func PossibleAutomationAccountAuthenticationTypeValues() []AutomationAccountAuth
 		AutomationAccountAuthenticationTypeRunAsAccount,
 		AutomationAccountAuthenticationTypeSystemAssignedIdentity,
 	}
-}
-
-// ToPtr returns a *AutomationAccountAuthenticationType pointing to the current value.
-func (c AutomationAccountAuthenticationType) ToPtr() *AutomationAccountAuthenticationType {
-	return &c
 }
 
 // DataSyncStatus - The data sync option.
@@ -232,11 +192,6 @@ func PossibleDataSyncStatusValues() []DataSyncStatus {
 	}
 }
 
-// ToPtr returns a *DataSyncStatus pointing to the current value.
-func (c DataSyncStatus) ToPtr() *DataSyncStatus {
-	return &c
-}
-
 // DisableProtectionReason - Disable protection reason. It can have values NotSpecified/MigrationComplete.
 type DisableProtectionReason string
 
@@ -251,11 +206,6 @@ func PossibleDisableProtectionReasonValues() []DisableProtectionReason {
 		DisableProtectionReasonMigrationComplete,
 		DisableProtectionReasonNotSpecified,
 	}
-}
-
-// ToPtr returns a *DisableProtectionReason pointing to the current value.
-func (c DisableProtectionReason) ToPtr() *DisableProtectionReason {
-	return &c
 }
 
 // DiskAccountType - The DiskType.
@@ -274,11 +224,6 @@ func PossibleDiskAccountTypeValues() []DiskAccountType {
 		DiskAccountTypeStandardLRS,
 		DiskAccountTypeStandardSSDLRS,
 	}
-}
-
-// ToPtr returns a *DiskAccountType pointing to the current value.
-func (c DiskAccountType) ToPtr() *DiskAccountType {
-	return &c
 }
 
 // DiskReplicationProgressHealth - The progress health.
@@ -303,11 +248,6 @@ func PossibleDiskReplicationProgressHealthValues() []DiskReplicationProgressHeal
 	}
 }
 
-// ToPtr returns a *DiskReplicationProgressHealth pointing to the current value.
-func (c DiskReplicationProgressHealth) ToPtr() *DiskReplicationProgressHealth {
-	return &c
-}
-
 // EthernetAddressType - The source IP address type.
 type EthernetAddressType string
 
@@ -322,11 +262,6 @@ func PossibleEthernetAddressTypeValues() []EthernetAddressType {
 		EthernetAddressTypeDynamic,
 		EthernetAddressTypeStatic,
 	}
-}
-
-// ToPtr returns a *EthernetAddressType pointing to the current value.
-func (c EthernetAddressType) ToPtr() *EthernetAddressType {
-	return &c
 }
 
 // ExportJobOutputSerializationType - The output type of the jobs.
@@ -347,11 +282,6 @@ func PossibleExportJobOutputSerializationTypeValues() []ExportJobOutputSerializa
 	}
 }
 
-// ToPtr returns a *ExportJobOutputSerializationType pointing to the current value.
-func (c ExportJobOutputSerializationType) ToPtr() *ExportJobOutputSerializationType {
-	return &c
-}
-
 // ExtendedLocationType - The extended location type.
 type ExtendedLocationType string
 
@@ -364,11 +294,6 @@ func PossibleExtendedLocationTypeValues() []ExtendedLocationType {
 	return []ExtendedLocationType{
 		ExtendedLocationTypeEdgeZone,
 	}
-}
-
-// ToPtr returns a *ExtendedLocationType pointing to the current value.
-func (c ExtendedLocationType) ToPtr() *ExtendedLocationType {
-	return &c
 }
 
 // FailoverDeploymentModel - The failover deployment model.
@@ -387,11 +312,6 @@ func PossibleFailoverDeploymentModelValues() []FailoverDeploymentModel {
 		FailoverDeploymentModelNotApplicable,
 		FailoverDeploymentModelResourceManager,
 	}
-}
-
-// ToPtr returns a *FailoverDeploymentModel pointing to the current value.
-func (c FailoverDeploymentModel) ToPtr() *FailoverDeploymentModel {
-	return &c
 }
 
 // HealthErrorCategory - The category of the health error.
@@ -428,11 +348,6 @@ func PossibleHealthErrorCategoryValues() []HealthErrorCategory {
 	}
 }
 
-// ToPtr returns a *HealthErrorCategory pointing to the current value.
-func (c HealthErrorCategory) ToPtr() *HealthErrorCategory {
-	return &c
-}
-
 // HealthErrorCustomerResolvability - Value indicating whether the health error is customer resolvable.
 type HealthErrorCustomerResolvability string
 
@@ -447,11 +362,6 @@ func PossibleHealthErrorCustomerResolvabilityValues() []HealthErrorCustomerResol
 		HealthErrorCustomerResolvabilityAllowed,
 		HealthErrorCustomerResolvabilityNotAllowed,
 	}
-}
-
-// ToPtr returns a *HealthErrorCustomerResolvability pointing to the current value.
-func (c HealthErrorCustomerResolvability) ToPtr() *HealthErrorCustomerResolvability {
-	return &c
 }
 
 // HyperVReplicaAzureRpRecoveryPointType - The recovery point type.
@@ -472,11 +382,6 @@ func PossibleHyperVReplicaAzureRpRecoveryPointTypeValues() []HyperVReplicaAzureR
 	}
 }
 
-// ToPtr returns a *HyperVReplicaAzureRpRecoveryPointType pointing to the current value.
-func (c HyperVReplicaAzureRpRecoveryPointType) ToPtr() *HyperVReplicaAzureRpRecoveryPointType {
-	return &c
-}
-
 // InMageRcmFailbackRecoveryPointType - The recovery point type.
 type InMageRcmFailbackRecoveryPointType string
 
@@ -491,11 +396,6 @@ func PossibleInMageRcmFailbackRecoveryPointTypeValues() []InMageRcmFailbackRecov
 		InMageRcmFailbackRecoveryPointTypeApplicationConsistent,
 		InMageRcmFailbackRecoveryPointTypeCrashConsistent,
 	}
-}
-
-// ToPtr returns a *InMageRcmFailbackRecoveryPointType pointing to the current value.
-func (c InMageRcmFailbackRecoveryPointType) ToPtr() *InMageRcmFailbackRecoveryPointType {
-	return &c
 }
 
 // InMageV2RpRecoveryPointType - The recovery point type.
@@ -518,11 +418,6 @@ func PossibleInMageV2RpRecoveryPointTypeValues() []InMageV2RpRecoveryPointType {
 	}
 }
 
-// ToPtr returns a *InMageV2RpRecoveryPointType pointing to the current value.
-func (c InMageV2RpRecoveryPointType) ToPtr() *InMageV2RpRecoveryPointType {
-	return &c
-}
-
 // LicenseType - License type.
 type LicenseType string
 
@@ -539,11 +434,6 @@ func PossibleLicenseTypeValues() []LicenseType {
 		LicenseTypeNotSpecified,
 		LicenseTypeWindowsServer,
 	}
-}
-
-// ToPtr returns a *LicenseType pointing to the current value.
-func (c LicenseType) ToPtr() *LicenseType {
-	return &c
 }
 
 type MigrationItemOperation string
@@ -567,11 +457,6 @@ func PossibleMigrationItemOperationValues() []MigrationItemOperation {
 	}
 }
 
-// ToPtr returns a *MigrationItemOperation pointing to the current value.
-func (c MigrationItemOperation) ToPtr() *MigrationItemOperation {
-	return &c
-}
-
 // MigrationRecoveryPointType - The recovery point type.
 type MigrationRecoveryPointType string
 
@@ -588,11 +473,6 @@ func PossibleMigrationRecoveryPointTypeValues() []MigrationRecoveryPointType {
 		MigrationRecoveryPointTypeCrashConsistent,
 		MigrationRecoveryPointTypeNotSpecified,
 	}
-}
-
-// ToPtr returns a *MigrationRecoveryPointType pointing to the current value.
-func (c MigrationRecoveryPointType) ToPtr() *MigrationRecoveryPointType {
-	return &c
 }
 
 // MigrationState - The migration status.
@@ -629,11 +509,6 @@ func PossibleMigrationStateValues() []MigrationState {
 	}
 }
 
-// ToPtr returns a *MigrationState pointing to the current value.
-func (c MigrationState) ToPtr() *MigrationState {
-	return &c
-}
-
 // MobilityAgentUpgradeState - The agent auto upgrade state.
 type MobilityAgentUpgradeState string
 
@@ -654,11 +529,6 @@ func PossibleMobilityAgentUpgradeStateValues() []MobilityAgentUpgradeState {
 	}
 }
 
-// ToPtr returns a *MobilityAgentUpgradeState pointing to the current value.
-func (c MobilityAgentUpgradeState) ToPtr() *MobilityAgentUpgradeState {
-	return &c
-}
-
 // MultiVMGroupCreateOption - Whether Multi VM group is auto created or specified by user.
 type MultiVMGroupCreateOption string
 
@@ -675,11 +545,6 @@ func PossibleMultiVMGroupCreateOptionValues() []MultiVMGroupCreateOption {
 	}
 }
 
-// ToPtr returns a *MultiVMGroupCreateOption pointing to the current value.
-func (c MultiVMGroupCreateOption) ToPtr() *MultiVMGroupCreateOption {
-	return &c
-}
-
 // MultiVMSyncPointOption - A value indicating whether multi VM sync enabled VMs should use multi VM sync points for failover.
 type MultiVMSyncPointOption string
 
@@ -694,11 +559,6 @@ func PossibleMultiVMSyncPointOptionValues() []MultiVMSyncPointOption {
 		MultiVMSyncPointOptionUseMultiVMSyncRecoveryPoint,
 		MultiVMSyncPointOptionUsePerVMRecoveryPoint,
 	}
-}
-
-// ToPtr returns a *MultiVMSyncPointOption pointing to the current value.
-func (c MultiVMSyncPointOption) ToPtr() *MultiVMSyncPointOption {
-	return &c
 }
 
 // PlannedFailoverStatus - The last planned failover status.
@@ -721,11 +581,6 @@ func PossiblePlannedFailoverStatusValues() []PlannedFailoverStatus {
 	}
 }
 
-// ToPtr returns a *PlannedFailoverStatus pointing to the current value.
-func (c PlannedFailoverStatus) ToPtr() *PlannedFailoverStatus {
-	return &c
-}
-
 type PossibleOperationsDirections string
 
 const (
@@ -739,11 +594,6 @@ func PossiblePossibleOperationsDirectionsValues() []PossibleOperationsDirections
 		PossibleOperationsDirectionsPrimaryToRecovery,
 		PossibleOperationsDirectionsRecoveryToPrimary,
 	}
-}
-
-// ToPtr returns a *PossibleOperationsDirections pointing to the current value.
-func (c PossibleOperationsDirections) ToPtr() *PossibleOperationsDirections {
-	return &c
 }
 
 // PresenceStatus - A value indicating whether the VM has a physical disk attached. String value of SrsDataContract.PresenceStatus
@@ -763,11 +613,6 @@ func PossiblePresenceStatusValues() []PresenceStatus {
 		PresenceStatusPresent,
 		PresenceStatusUnknown,
 	}
-}
-
-// ToPtr returns a *PresenceStatus pointing to the current value.
-func (c PresenceStatus) ToPtr() *PresenceStatus {
-	return &c
 }
 
 // ProtectionHealth - The health.
@@ -790,11 +635,6 @@ func PossibleProtectionHealthValues() []ProtectionHealth {
 	}
 }
 
-// ToPtr returns a *ProtectionHealth pointing to the current value.
-func (c ProtectionHealth) ToPtr() *ProtectionHealth {
-	return &c
-}
-
 // RcmComponentStatus - The throughput status.
 type RcmComponentStatus string
 
@@ -815,11 +655,6 @@ func PossibleRcmComponentStatusValues() []RcmComponentStatus {
 	}
 }
 
-// ToPtr returns a *RcmComponentStatus pointing to the current value.
-func (c RcmComponentStatus) ToPtr() *RcmComponentStatus {
-	return &c
-}
-
 // RecoveryPlanActionLocation - The fabric location.
 type RecoveryPlanActionLocation string
 
@@ -834,11 +669,6 @@ func PossibleRecoveryPlanActionLocationValues() []RecoveryPlanActionLocation {
 		RecoveryPlanActionLocationPrimary,
 		RecoveryPlanActionLocationRecovery,
 	}
-}
-
-// ToPtr returns a *RecoveryPlanActionLocation pointing to the current value.
-func (c RecoveryPlanActionLocation) ToPtr() *RecoveryPlanActionLocation {
-	return &c
 }
 
 // RecoveryPlanGroupType - The group type.
@@ -857,11 +687,6 @@ func PossibleRecoveryPlanGroupTypeValues() []RecoveryPlanGroupType {
 		RecoveryPlanGroupTypeFailover,
 		RecoveryPlanGroupTypeShutdown,
 	}
-}
-
-// ToPtr returns a *RecoveryPlanGroupType pointing to the current value.
-func (c RecoveryPlanGroupType) ToPtr() *RecoveryPlanGroupType {
-	return &c
 }
 
 // RecoveryPlanPointType - The recovery point type.
@@ -884,11 +709,6 @@ func PossibleRecoveryPlanPointTypeValues() []RecoveryPlanPointType {
 	}
 }
 
-// ToPtr returns a *RecoveryPlanPointType pointing to the current value.
-func (c RecoveryPlanPointType) ToPtr() *RecoveryPlanPointType {
-	return &c
-}
-
 // RecoveryPointSyncType - A value indicating whether the recovery point is multi VM consistent.
 type RecoveryPointSyncType string
 
@@ -903,11 +723,6 @@ func PossibleRecoveryPointSyncTypeValues() []RecoveryPointSyncType {
 		RecoveryPointSyncTypeMultiVMSyncRecoveryPoint,
 		RecoveryPointSyncTypePerVMRecoveryPoint,
 	}
-}
-
-// ToPtr returns a *RecoveryPointSyncType pointing to the current value.
-func (c RecoveryPointSyncType) ToPtr() *RecoveryPointSyncType {
-	return &c
 }
 
 // RecoveryPointType - The recovery point type. Values from LatestTime, LatestTag or Custom. In the case of custom, the recovery
@@ -928,11 +743,6 @@ func PossibleRecoveryPointTypeValues() []RecoveryPointType {
 		RecoveryPointTypeLatestTag,
 		RecoveryPointTypeLatestTime,
 	}
-}
-
-// ToPtr returns a *RecoveryPointType pointing to the current value.
-func (c RecoveryPointType) ToPtr() *RecoveryPointType {
-	return &c
 }
 
 type ReplicationProtectedItemOperation string
@@ -974,11 +784,6 @@ func PossibleReplicationProtectedItemOperationValues() []ReplicationProtectedIte
 	}
 }
 
-// ToPtr returns a *ReplicationProtectedItemOperation pointing to the current value.
-func (c ReplicationProtectedItemOperation) ToPtr() *ReplicationProtectedItemOperation {
-	return &c
-}
-
 // ResyncState - The resync state.
 type ResyncState string
 
@@ -997,11 +802,6 @@ func PossibleResyncStateValues() []ResyncState {
 	}
 }
 
-// ToPtr returns a *ResyncState pointing to the current value.
-func (c ResyncState) ToPtr() *ResyncState {
-	return &c
-}
-
 // RpInMageRecoveryPointType - The recovery point type.
 type RpInMageRecoveryPointType string
 
@@ -1018,11 +818,6 @@ func PossibleRpInMageRecoveryPointTypeValues() []RpInMageRecoveryPointType {
 		RpInMageRecoveryPointTypeLatestTag,
 		RpInMageRecoveryPointTypeLatestTime,
 	}
-}
-
-// ToPtr returns a *RpInMageRecoveryPointType pointing to the current value.
-func (c RpInMageRecoveryPointType) ToPtr() *RpInMageRecoveryPointType {
-	return &c
 }
 
 // SQLServerLicenseType - The SQL Server license type.
@@ -1045,11 +840,6 @@ func PossibleSQLServerLicenseTypeValues() []SQLServerLicenseType {
 	}
 }
 
-// ToPtr returns a *SQLServerLicenseType pointing to the current value.
-func (c SQLServerLicenseType) ToPtr() *SQLServerLicenseType {
-	return &c
-}
-
 // SetMultiVMSyncStatus - A value indicating whether multi-VM sync has to be enabled. Value should be 'Enabled' or 'Disabled'.
 type SetMultiVMSyncStatus string
 
@@ -1064,11 +854,6 @@ func PossibleSetMultiVMSyncStatusValues() []SetMultiVMSyncStatus {
 		SetMultiVMSyncStatusDisable,
 		SetMultiVMSyncStatusEnable,
 	}
-}
-
-// ToPtr returns a *SetMultiVMSyncStatus pointing to the current value.
-func (c SetMultiVMSyncStatus) ToPtr() *SetMultiVMSyncStatus {
-	return &c
 }
 
 // Severity - Severity of error.
@@ -1091,11 +876,6 @@ func PossibleSeverityValues() []Severity {
 	}
 }
 
-// ToPtr returns a *Severity pointing to the current value.
-func (c Severity) ToPtr() *Severity {
-	return &c
-}
-
 // SourceSiteOperations - A value indicating whether source site operations are required.
 type SourceSiteOperations string
 
@@ -1110,11 +890,6 @@ func PossibleSourceSiteOperationsValues() []SourceSiteOperations {
 		SourceSiteOperationsNotRequired,
 		SourceSiteOperationsRequired,
 	}
-}
-
-// ToPtr returns a *SourceSiteOperations pointing to the current value.
-func (c SourceSiteOperations) ToPtr() *SourceSiteOperations {
-	return &c
 }
 
 // TestMigrationState - The test migrate state.
@@ -1139,11 +914,6 @@ func PossibleTestMigrationStateValues() []TestMigrationState {
 	}
 }
 
-// ToPtr returns a *TestMigrationState pointing to the current value.
-func (c TestMigrationState) ToPtr() *TestMigrationState {
-	return &c
-}
-
 // VMEncryptionType - The encryption type of the VM.
 type VMEncryptionType string
 
@@ -1160,11 +930,6 @@ func PossibleVMEncryptionTypeValues() []VMEncryptionType {
 		VMEncryptionTypeOnePassEncrypted,
 		VMEncryptionTypeTwoPassEncrypted,
 	}
-}
-
-// ToPtr returns a *VMEncryptionType pointing to the current value.
-func (c VMEncryptionType) ToPtr() *VMEncryptionType {
-	return &c
 }
 
 // VMReplicationProgressHealth - The initial replication progress health.
@@ -1185,9 +950,4 @@ func PossibleVMReplicationProgressHealthValues() []VMReplicationProgressHealth {
 		VMReplicationProgressHealthNone,
 		VMReplicationProgressHealthSlowProgress,
 	}
-}
-
-// ToPtr returns a *VMReplicationProgressHealth pointing to the current value.
-func (c VMReplicationProgressHealth) ToPtr() *VMReplicationProgressHealth {
-	return &c
 }

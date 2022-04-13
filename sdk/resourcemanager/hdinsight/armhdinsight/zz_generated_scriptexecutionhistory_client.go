@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type ScriptExecutionHistoryClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewScriptExecutionHistoryClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ScriptExecutionHistoryClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewScriptExecutionHistoryClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScriptExecutionHistoryClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ScriptExecutionHistoryClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // ListByCluster - Lists all scripts' execution history for the specified cluster.
@@ -56,16 +61,32 @@ func NewScriptExecutionHistoryClient(subscriptionID string, credential azcore.To
 // clusterName - The name of the cluster.
 // options - ScriptExecutionHistoryClientListByClusterOptions contains the optional parameters for the ScriptExecutionHistoryClient.ListByCluster
 // method.
-func (client *ScriptExecutionHistoryClient) ListByCluster(resourceGroupName string, clusterName string, options *ScriptExecutionHistoryClientListByClusterOptions) *ScriptExecutionHistoryClientListByClusterPager {
-	return &ScriptExecutionHistoryClientListByClusterPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByClusterCreateRequest(ctx, resourceGroupName, clusterName, options)
+func (client *ScriptExecutionHistoryClient) ListByCluster(resourceGroupName string, clusterName string, options *ScriptExecutionHistoryClientListByClusterOptions) *runtime.Pager[ScriptExecutionHistoryClientListByClusterResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ScriptExecutionHistoryClientListByClusterResponse]{
+		More: func(page ScriptExecutionHistoryClientListByClusterResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ScriptExecutionHistoryClientListByClusterResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ScriptActionExecutionHistoryList.NextLink)
+		Fetcher: func(ctx context.Context, page *ScriptExecutionHistoryClientListByClusterResponse) (ScriptExecutionHistoryClientListByClusterResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByClusterCreateRequest(ctx, resourceGroupName, clusterName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ScriptExecutionHistoryClientListByClusterResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ScriptExecutionHistoryClientListByClusterResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ScriptExecutionHistoryClientListByClusterResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByClusterHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByClusterCreateRequest creates the ListByCluster request.
@@ -96,7 +117,7 @@ func (client *ScriptExecutionHistoryClient) listByClusterCreateRequest(ctx conte
 
 // listByClusterHandleResponse handles the ListByCluster response.
 func (client *ScriptExecutionHistoryClient) listByClusterHandleResponse(resp *http.Response) (ScriptExecutionHistoryClientListByClusterResponse, error) {
-	result := ScriptExecutionHistoryClientListByClusterResponse{RawResponse: resp}
+	result := ScriptExecutionHistoryClientListByClusterResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScriptActionExecutionHistoryList); err != nil {
 		return ScriptExecutionHistoryClientListByClusterResponse{}, err
 	}
@@ -122,7 +143,7 @@ func (client *ScriptExecutionHistoryClient) Promote(ctx context.Context, resourc
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ScriptExecutionHistoryClientPromoteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ScriptExecutionHistoryClientPromoteResponse{RawResponse: resp}, nil
+	return ScriptExecutionHistoryClientPromoteResponse{}, nil
 }
 
 // promoteCreateRequest creates the Promote request.

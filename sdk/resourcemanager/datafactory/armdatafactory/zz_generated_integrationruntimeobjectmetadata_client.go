@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type IntegrationRuntimeObjectMetadataClient struct {
 // subscriptionID - The subscription identifier.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewIntegrationRuntimeObjectMetadataClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationRuntimeObjectMetadataClient {
+func NewIntegrationRuntimeObjectMetadataClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IntegrationRuntimeObjectMetadataClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &IntegrationRuntimeObjectMetadataClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
@@ -106,7 +111,7 @@ func (client *IntegrationRuntimeObjectMetadataClient) getCreateRequest(ctx conte
 
 // getHandleResponse handles the Get response.
 func (client *IntegrationRuntimeObjectMetadataClient) getHandleResponse(resp *http.Response) (IntegrationRuntimeObjectMetadataClientGetResponse, error) {
-	result := IntegrationRuntimeObjectMetadataClientGetResponse{RawResponse: resp}
+	result := IntegrationRuntimeObjectMetadataClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SsisObjectMetadataListResponse); err != nil {
 		return IntegrationRuntimeObjectMetadataClientGetResponse{}, err
 	}
@@ -120,22 +125,16 @@ func (client *IntegrationRuntimeObjectMetadataClient) getHandleResponse(resp *ht
 // integrationRuntimeName - The integration runtime name.
 // options - IntegrationRuntimeObjectMetadataClientBeginRefreshOptions contains the optional parameters for the IntegrationRuntimeObjectMetadataClient.BeginRefresh
 // method.
-func (client *IntegrationRuntimeObjectMetadataClient) BeginRefresh(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataClientBeginRefreshOptions) (IntegrationRuntimeObjectMetadataClientRefreshPollerResponse, error) {
-	resp, err := client.refresh(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
-	if err != nil {
-		return IntegrationRuntimeObjectMetadataClientRefreshPollerResponse{}, err
+func (client *IntegrationRuntimeObjectMetadataClient) BeginRefresh(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataClientBeginRefreshOptions) (*armruntime.Poller[IntegrationRuntimeObjectMetadataClientRefreshResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.refresh(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[IntegrationRuntimeObjectMetadataClientRefreshResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[IntegrationRuntimeObjectMetadataClientRefreshResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := IntegrationRuntimeObjectMetadataClientRefreshPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("IntegrationRuntimeObjectMetadataClient.Refresh", "", resp, client.pl)
-	if err != nil {
-		return IntegrationRuntimeObjectMetadataClientRefreshPollerResponse{}, err
-	}
-	result.Poller = &IntegrationRuntimeObjectMetadataClientRefreshPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Refresh - Refresh a SSIS integration runtime object metadata.

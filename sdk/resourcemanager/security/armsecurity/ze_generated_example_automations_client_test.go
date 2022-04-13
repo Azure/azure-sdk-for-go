@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,169 +17,202 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
 )
 
-// x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/Automations/GetAutomationsSubscription_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/Automations/GetAutomationsSubscription_example.json
 func ExampleAutomationsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurity.NewAutomationsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAutomationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/Automations/GetAutomationsResourceGroup_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/Automations/GetAutomationsResourceGroup_example.json
 func ExampleAutomationsClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurity.NewAutomationsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAutomationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/Automations/GetAutomationResourceGroup_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/Automations/GetAutomationResourceGroup_example.json
 func ExampleAutomationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurity.NewAutomationsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAutomationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<automation-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AutomationsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/Automations/PutAutomationAllAssessments_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/Automations/PutAutomationAllAssessments_example.json
 func ExampleAutomationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurity.NewAutomationsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAutomationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<automation-name>",
 		armsecurity.Automation{
-			Location: to.StringPtr("<location>"),
-			Etag:     to.StringPtr("<etag>"),
+			Location: to.Ptr("<location>"),
+			Etag:     to.Ptr("<etag>"),
 			Tags:     map[string]*string{},
 			Properties: &armsecurity.AutomationProperties{
-				Description: to.StringPtr("<description>"),
+				Description: to.Ptr("<description>"),
 				Actions: []armsecurity.AutomationActionClassification{
 					&armsecurity.AutomationActionLogicApp{
-						ActionType:         armsecurity.ActionType("LogicApp").ToPtr(),
-						LogicAppResourceID: to.StringPtr("<logic-app-resource-id>"),
-						URI:                to.StringPtr("<uri>"),
+						ActionType:         to.Ptr(armsecurity.ActionTypeLogicApp),
+						LogicAppResourceID: to.Ptr("<logic-app-resource-id>"),
+						URI:                to.Ptr("<uri>"),
 					}},
-				IsEnabled: to.BoolPtr(true),
+				IsEnabled: to.Ptr(true),
 				Scopes: []*armsecurity.AutomationScope{
 					{
-						Description: to.StringPtr("<description>"),
-						ScopePath:   to.StringPtr("<scope-path>"),
+						Description: to.Ptr("<description>"),
+						ScopePath:   to.Ptr("<scope-path>"),
 					}},
 				Sources: []*armsecurity.AutomationSource{
 					{
-						EventSource: armsecurity.EventSource("Assessments").ToPtr(),
+						EventSource: to.Ptr(armsecurity.EventSourceAssessments),
 					}},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AutomationsClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/Automations/DeleteAutomation_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/Automations/DeleteAutomation_example.json
 func ExampleAutomationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurity.NewAutomationsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAutomationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<automation-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/Automations/ValidateAutomation_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/Automations/ValidateAutomation_example.json
 func ExampleAutomationsClient_Validate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurity.NewAutomationsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAutomationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Validate(ctx,
 		"<resource-group-name>",
 		"<automation-name>",
 		armsecurity.Automation{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Tags:     map[string]*string{},
 			Properties: &armsecurity.AutomationProperties{
-				Description: to.StringPtr("<description>"),
+				Description: to.Ptr("<description>"),
 				Actions: []armsecurity.AutomationActionClassification{
 					&armsecurity.AutomationActionLogicApp{
-						ActionType:         armsecurity.ActionType("LogicApp").ToPtr(),
-						LogicAppResourceID: to.StringPtr("<logic-app-resource-id>"),
-						URI:                to.StringPtr("<uri>"),
+						ActionType:         to.Ptr(armsecurity.ActionTypeLogicApp),
+						LogicAppResourceID: to.Ptr("<logic-app-resource-id>"),
+						URI:                to.Ptr("<uri>"),
 					}},
-				IsEnabled: to.BoolPtr(true),
+				IsEnabled: to.Ptr(true),
 				Scopes: []*armsecurity.AutomationScope{
 					{
-						Description: to.StringPtr("<description>"),
-						ScopePath:   to.StringPtr("<scope-path>"),
+						Description: to.Ptr("<description>"),
+						ScopePath:   to.Ptr("<scope-path>"),
 					}},
 				Sources: []*armsecurity.AutomationSource{
 					{
-						EventSource: armsecurity.EventSource("Assessments").ToPtr(),
+						EventSource: to.Ptr(armsecurity.EventSourceAssessments),
 						RuleSets: []*armsecurity.AutomationRuleSet{
 							{
 								Rules: []*armsecurity.AutomationTriggeringRule{
 									{
-										ExpectedValue: to.StringPtr("<expected-value>"),
-										Operator:      armsecurity.Operator("Equals").ToPtr(),
-										PropertyJPath: to.StringPtr("<property-jpath>"),
-										PropertyType:  armsecurity.PropertyType("String").ToPtr(),
+										ExpectedValue: to.Ptr("<expected-value>"),
+										Operator:      to.Ptr(armsecurity.OperatorEquals),
+										PropertyJPath: to.Ptr("<property-jpath>"),
+										PropertyType:  to.Ptr(armsecurity.PropertyTypeString),
 									}},
 							}},
 					}},
@@ -187,7 +220,9 @@ func ExampleAutomationsClient_Validate() {
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AutomationsClientValidateResult)
+	// TODO: use response item
+	_ = res
 }

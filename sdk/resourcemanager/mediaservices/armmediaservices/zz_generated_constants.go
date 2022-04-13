@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armmediaservices
 
 const (
 	moduleName    = "armmediaservices"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v0.5.0"
 )
 
 // AacAudioProfile - The encoding profile to be used when encoding audio with AAC.
@@ -34,11 +34,6 @@ func PossibleAacAudioProfileValues() []AacAudioProfile {
 	}
 }
 
-// ToPtr returns a *AacAudioProfile pointing to the current value.
-func (c AacAudioProfile) ToPtr() *AacAudioProfile {
-	return &c
-}
-
 // AccountEncryptionKeyType - The type of key used to encrypt the Account Key.
 type AccountEncryptionKeyType string
 
@@ -57,11 +52,6 @@ func PossibleAccountEncryptionKeyTypeValues() []AccountEncryptionKeyType {
 	}
 }
 
-// ToPtr returns a *AccountEncryptionKeyType pointing to the current value.
-func (c AccountEncryptionKeyType) ToPtr() *AccountEncryptionKeyType {
-	return &c
-}
-
 // ActionType - Indicates the action type.
 type ActionType string
 
@@ -75,11 +65,6 @@ func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
 	}
-}
-
-// ToPtr returns a *ActionType pointing to the current value.
-func (c ActionType) ToPtr() *ActionType {
-	return &c
 }
 
 // AnalysisResolution - Specifies the maximum resolution at which your video is analyzed. The default behavior is "SourceResolution,"
@@ -105,11 +90,6 @@ func PossibleAnalysisResolutionValues() []AnalysisResolution {
 	}
 }
 
-// ToPtr returns a *AnalysisResolution pointing to the current value.
-func (c AnalysisResolution) ToPtr() *AnalysisResolution {
-	return &c
-}
-
 // AssetContainerPermission - The permissions to set on the SAS URL.
 type AssetContainerPermission string
 
@@ -131,11 +111,6 @@ func PossibleAssetContainerPermissionValues() []AssetContainerPermission {
 	}
 }
 
-// ToPtr returns a *AssetContainerPermission pointing to the current value.
-func (c AssetContainerPermission) ToPtr() *AssetContainerPermission {
-	return &c
-}
-
 // AssetStorageEncryptionFormat - The Asset encryption format. One of None or MediaStorageEncryption.
 type AssetStorageEncryptionFormat string
 
@@ -153,11 +128,6 @@ func PossibleAssetStorageEncryptionFormatValues() []AssetStorageEncryptionFormat
 		AssetStorageEncryptionFormatMediaStorageClientEncryption,
 		AssetStorageEncryptionFormatNone,
 	}
-}
-
-// ToPtr returns a *AssetStorageEncryptionFormat pointing to the current value.
-func (c AssetStorageEncryptionFormat) ToPtr() *AssetStorageEncryptionFormat {
-	return &c
 }
 
 // AttributeFilter - The type of AttributeFilter to apply to the TrackAttribute in order to select the tracks.
@@ -186,11 +156,6 @@ func PossibleAttributeFilterValues() []AttributeFilter {
 	}
 }
 
-// ToPtr returns a *AttributeFilter pointing to the current value.
-func (c AttributeFilter) ToPtr() *AttributeFilter {
-	return &c
-}
-
 // AudioAnalysisMode - Determines the set of audio analysis operations to be performed. If unspecified, the Standard AudioAnalysisMode
 // would be chosen.
 type AudioAnalysisMode string
@@ -211,11 +176,6 @@ func PossibleAudioAnalysisModeValues() []AudioAnalysisMode {
 		AudioAnalysisModeBasic,
 		AudioAnalysisModeStandard,
 	}
-}
-
-// ToPtr returns a *AudioAnalysisMode pointing to the current value.
-func (c AudioAnalysisMode) ToPtr() *AudioAnalysisMode {
-	return &c
 }
 
 // BlurType - Blur type
@@ -243,11 +203,6 @@ func PossibleBlurTypeValues() []BlurType {
 		BlurTypeLow,
 		BlurTypeMed,
 	}
-}
-
-// ToPtr returns a *BlurType pointing to the current value.
-func (c BlurType) ToPtr() *BlurType {
-	return &c
 }
 
 // ChannelMapping - Optional designation for single channel audio tracks. Can be used to combine the tracks into stereo or
@@ -287,11 +242,6 @@ func PossibleChannelMappingValues() []ChannelMapping {
 	}
 }
 
-// ToPtr returns a *ChannelMapping pointing to the current value.
-func (c ChannelMapping) ToPtr() *ChannelMapping {
-	return &c
-}
-
 // Complexity - Allows you to configure the encoder settings to control the balance between speed and quality. Example: set
 // Complexity as Speed for faster encoding but less compression efficiency.
 type Complexity string
@@ -314,11 +264,6 @@ func PossibleComplexityValues() []Complexity {
 		ComplexityQuality,
 		ComplexitySpeed,
 	}
-}
-
-// ToPtr returns a *Complexity pointing to the current value.
-func (c Complexity) ToPtr() *Complexity {
-	return &c
 }
 
 // ContentKeyPolicyFairPlayRentalAndLeaseKeyType - The rental and lease key type.
@@ -350,11 +295,6 @@ func PossibleContentKeyPolicyFairPlayRentalAndLeaseKeyTypeValues() []ContentKeyP
 	}
 }
 
-// ToPtr returns a *ContentKeyPolicyFairPlayRentalAndLeaseKeyType pointing to the current value.
-func (c ContentKeyPolicyFairPlayRentalAndLeaseKeyType) ToPtr() *ContentKeyPolicyFairPlayRentalAndLeaseKeyType {
-	return &c
-}
-
 // ContentKeyPolicyPlayReadyContentType - The PlayReady content type.
 type ContentKeyPolicyPlayReadyContentType string
 
@@ -380,11 +320,6 @@ func PossibleContentKeyPolicyPlayReadyContentTypeValues() []ContentKeyPolicyPlay
 	}
 }
 
-// ToPtr returns a *ContentKeyPolicyPlayReadyContentType pointing to the current value.
-func (c ContentKeyPolicyPlayReadyContentType) ToPtr() *ContentKeyPolicyPlayReadyContentType {
-	return &c
-}
-
 // ContentKeyPolicyPlayReadyLicenseType - The license type.
 type ContentKeyPolicyPlayReadyLicenseType string
 
@@ -405,11 +340,6 @@ func PossibleContentKeyPolicyPlayReadyLicenseTypeValues() []ContentKeyPolicyPlay
 		ContentKeyPolicyPlayReadyLicenseTypePersistent,
 		ContentKeyPolicyPlayReadyLicenseTypeUnknown,
 	}
-}
-
-// ToPtr returns a *ContentKeyPolicyPlayReadyLicenseType pointing to the current value.
-func (c ContentKeyPolicyPlayReadyLicenseType) ToPtr() *ContentKeyPolicyPlayReadyLicenseType {
-	return &c
 }
 
 // ContentKeyPolicyPlayReadyUnknownOutputPassingOption - Configures Unknown output handling settings of the license.
@@ -440,11 +370,6 @@ func PossibleContentKeyPolicyPlayReadyUnknownOutputPassingOptionValues() []Conte
 	}
 }
 
-// ToPtr returns a *ContentKeyPolicyPlayReadyUnknownOutputPassingOption pointing to the current value.
-func (c ContentKeyPolicyPlayReadyUnknownOutputPassingOption) ToPtr() *ContentKeyPolicyPlayReadyUnknownOutputPassingOption {
-	return &c
-}
-
 // ContentKeyPolicyRestrictionTokenType - The type of token.
 type ContentKeyPolicyRestrictionTokenType string
 
@@ -467,11 +392,6 @@ func PossibleContentKeyPolicyRestrictionTokenTypeValues() []ContentKeyPolicyRest
 	}
 }
 
-// ToPtr returns a *ContentKeyPolicyRestrictionTokenType pointing to the current value.
-func (c ContentKeyPolicyRestrictionTokenType) ToPtr() *ContentKeyPolicyRestrictionTokenType {
-	return &c
-}
-
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -492,11 +412,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // DefaultAction - The behavior for IP access control in Key Delivery.
 type DefaultAction string
 
@@ -515,11 +430,6 @@ func PossibleDefaultActionValues() []DefaultAction {
 	}
 }
 
-// ToPtr returns a *DefaultAction pointing to the current value.
-func (c DefaultAction) ToPtr() *DefaultAction {
-	return &c
-}
-
 // DeinterlaceMode - The deinterlacing mode. Defaults to AutoPixelAdaptive.
 type DeinterlaceMode string
 
@@ -536,11 +446,6 @@ func PossibleDeinterlaceModeValues() []DeinterlaceMode {
 		DeinterlaceModeAutoPixelAdaptive,
 		DeinterlaceModeOff,
 	}
-}
-
-// ToPtr returns a *DeinterlaceMode pointing to the current value.
-func (c DeinterlaceMode) ToPtr() *DeinterlaceMode {
-	return &c
 }
 
 // DeinterlaceParity - The field parity for de-interlacing, defaults to Auto.
@@ -562,11 +467,6 @@ func PossibleDeinterlaceParityValues() []DeinterlaceParity {
 		DeinterlaceParityBottomFieldFirst,
 		DeinterlaceParityTopFieldFirst,
 	}
-}
-
-// ToPtr returns a *DeinterlaceParity pointing to the current value.
-func (c DeinterlaceParity) ToPtr() *DeinterlaceParity {
-	return &c
 }
 
 // EncoderNamedPreset - The built-in preset to be used for encoding videos.
@@ -655,11 +555,6 @@ func PossibleEncoderNamedPresetValues() []EncoderNamedPreset {
 	}
 }
 
-// ToPtr returns a *EncoderNamedPreset pointing to the current value.
-func (c EncoderNamedPreset) ToPtr() *EncoderNamedPreset {
-	return &c
-}
-
 // EncryptionScheme - Encryption scheme
 type EncryptionScheme string
 
@@ -684,11 +579,6 @@ func PossibleEncryptionSchemeValues() []EncryptionScheme {
 	}
 }
 
-// ToPtr returns a *EncryptionScheme pointing to the current value.
-func (c EncryptionScheme) ToPtr() *EncryptionScheme {
-	return &c
-}
-
 // EntropyMode - The entropy mode to be used for this layer. If not specified, the encoder chooses the mode that is appropriate
 // for the profile and level.
 type EntropyMode string
@@ -706,11 +596,6 @@ func PossibleEntropyModeValues() []EntropyMode {
 		EntropyModeCabac,
 		EntropyModeCavlc,
 	}
-}
-
-// ToPtr returns a *EntropyMode pointing to the current value.
-func (c EntropyMode) ToPtr() *EntropyMode {
-	return &c
 }
 
 // FaceRedactorMode - This mode provides the ability to choose between the following settings: 1) Analyze - For detection
@@ -741,11 +626,6 @@ func PossibleFaceRedactorModeValues() []FaceRedactorMode {
 	}
 }
 
-// ToPtr returns a *FaceRedactorMode pointing to the current value.
-func (c FaceRedactorMode) ToPtr() *FaceRedactorMode {
-	return &c
-}
-
 // FilterTrackPropertyCompareOperation - The track property condition operation.
 type FilterTrackPropertyCompareOperation string
 
@@ -762,11 +642,6 @@ func PossibleFilterTrackPropertyCompareOperationValues() []FilterTrackPropertyCo
 		FilterTrackPropertyCompareOperationEqual,
 		FilterTrackPropertyCompareOperationNotEqual,
 	}
-}
-
-// ToPtr returns a *FilterTrackPropertyCompareOperation pointing to the current value.
-func (c FilterTrackPropertyCompareOperation) ToPtr() *FilterTrackPropertyCompareOperation {
-	return &c
 }
 
 // FilterTrackPropertyType - The track property type.
@@ -799,11 +674,6 @@ func PossibleFilterTrackPropertyTypeValues() []FilterTrackPropertyType {
 	}
 }
 
-// ToPtr returns a *FilterTrackPropertyType pointing to the current value.
-func (c FilterTrackPropertyType) ToPtr() *FilterTrackPropertyType {
-	return &c
-}
-
 // H264Complexity - Tells the encoder how to choose its encoding settings. The default value is Balanced.
 type H264Complexity string
 
@@ -827,11 +697,6 @@ func PossibleH264ComplexityValues() []H264Complexity {
 	}
 }
 
-// ToPtr returns a *H264Complexity pointing to the current value.
-func (c H264Complexity) ToPtr() *H264Complexity {
-	return &c
-}
-
 // H264RateControlMode - The video rate control mode
 type H264RateControlMode string
 
@@ -851,11 +716,6 @@ func PossibleH264RateControlModeValues() []H264RateControlMode {
 		H264RateControlModeCBR,
 		H264RateControlModeCRF,
 	}
-}
-
-// ToPtr returns a *H264RateControlMode pointing to the current value.
-func (c H264RateControlMode) ToPtr() *H264RateControlMode {
-	return &c
 }
 
 // H264VideoProfile - We currently support Baseline, Main, High, High422, High444. Default is Auto.
@@ -888,11 +748,6 @@ func PossibleH264VideoProfileValues() []H264VideoProfile {
 	}
 }
 
-// ToPtr returns a *H264VideoProfile pointing to the current value.
-func (c H264VideoProfile) ToPtr() *H264VideoProfile {
-	return &c
-}
-
 // H265Complexity - Tells the encoder how to choose its encoding settings. Quality will provide for a higher compression ratio
 // but at a higher cost and longer compute time. Speed will produce a relatively larger file but
 // is faster and more economical. The default value is Balanced.
@@ -918,11 +773,6 @@ func PossibleH265ComplexityValues() []H265Complexity {
 	}
 }
 
-// ToPtr returns a *H265Complexity pointing to the current value.
-func (c H265Complexity) ToPtr() *H265Complexity {
-	return &c
-}
-
 // H265VideoProfile - We currently support Main. Default is Auto.
 type H265VideoProfile string
 
@@ -942,11 +792,6 @@ func PossibleH265VideoProfileValues() []H265VideoProfile {
 		H265VideoProfileMain,
 		H265VideoProfileMain10,
 	}
-}
-
-// ToPtr returns a *H265VideoProfile pointing to the current value.
-func (c H265VideoProfile) ToPtr() *H265VideoProfile {
-	return &c
 }
 
 // InsightsType - Defines the type of insights that you want the service to generate. The allowed values are 'AudioInsightsOnly',
@@ -975,11 +820,6 @@ func PossibleInsightsTypeValues() []InsightsType {
 	}
 }
 
-// ToPtr returns a *InsightsType pointing to the current value.
-func (c InsightsType) ToPtr() *InsightsType {
-	return &c
-}
-
 // InterleaveOutput - Sets the interleave mode of the output to control how audio and video are stored in the container format.
 // Example: set InterleavedOutput as NonInterleavedOutput to produce audio-only and video-only
 // outputs in separate MP4 files.
@@ -998,11 +838,6 @@ func PossibleInterleaveOutputValues() []InterleaveOutput {
 		InterleaveOutputInterleavedOutput,
 		InterleaveOutputNonInterleavedOutput,
 	}
-}
-
-// ToPtr returns a *InterleaveOutput pointing to the current value.
-func (c InterleaveOutput) ToPtr() *InterleaveOutput {
-	return &c
 }
 
 // JobErrorCategory - Helps with categorization of errors.
@@ -1030,11 +865,6 @@ func PossibleJobErrorCategoryValues() []JobErrorCategory {
 		JobErrorCategoryService,
 		JobErrorCategoryUpload,
 	}
-}
-
-// ToPtr returns a *JobErrorCategory pointing to the current value.
-func (c JobErrorCategory) ToPtr() *JobErrorCategory {
-	return &c
 }
 
 // JobErrorCode - Error code describing the error.
@@ -1083,11 +913,6 @@ func PossibleJobErrorCodeValues() []JobErrorCode {
 	}
 }
 
-// ToPtr returns a *JobErrorCode pointing to the current value.
-func (c JobErrorCode) ToPtr() *JobErrorCode {
-	return &c
-}
-
 // JobRetry - Indicates that it may be possible to retry the Job. If retry is unsuccessful, please contact Azure support via
 // Azure Portal.
 type JobRetry string
@@ -1106,11 +931,6 @@ func PossibleJobRetryValues() []JobRetry {
 		JobRetryDoNotRetry,
 		JobRetryMayRetry,
 	}
-}
-
-// ToPtr returns a *JobRetry pointing to the current value.
-func (c JobRetry) ToPtr() *JobRetry {
-	return &c
 }
 
 // JobState - Describes the state of the JobOutput.
@@ -1145,11 +965,6 @@ func PossibleJobStateValues() []JobState {
 		JobStateQueued,
 		JobStateScheduled,
 	}
-}
-
-// ToPtr returns a *JobState pointing to the current value.
-func (c JobState) ToPtr() *JobState {
-	return &c
 }
 
 // LiveEventEncodingType - Live event type. When encodingType is set to PassthroughBasic or PassthroughStandard, the service
@@ -1190,11 +1005,6 @@ func PossibleLiveEventEncodingTypeValues() []LiveEventEncodingType {
 	}
 }
 
-// ToPtr returns a *LiveEventEncodingType pointing to the current value.
-func (c LiveEventEncodingType) ToPtr() *LiveEventEncodingType {
-	return &c
-}
-
 // LiveEventInputProtocol - The input protocol for the live event. This is specified at creation time and cannot be updated.
 type LiveEventInputProtocol string
 
@@ -1211,11 +1021,6 @@ func PossibleLiveEventInputProtocolValues() []LiveEventInputProtocol {
 		LiveEventInputProtocolFragmentedMP4,
 		LiveEventInputProtocolRTMP,
 	}
-}
-
-// ToPtr returns a *LiveEventInputProtocol pointing to the current value.
-func (c LiveEventInputProtocol) ToPtr() *LiveEventInputProtocol {
-	return &c
 }
 
 // LiveEventResourceState - The resource state of the live event. See https://go.microsoft.com/fwlink/?linkid=2139012 for
@@ -1261,11 +1066,6 @@ func PossibleLiveEventResourceStateValues() []LiveEventResourceState {
 	}
 }
 
-// ToPtr returns a *LiveEventResourceState pointing to the current value.
-func (c LiveEventResourceState) ToPtr() *LiveEventResourceState {
-	return &c
-}
-
 // LiveOutputResourceState - The resource state of the live output.
 type LiveOutputResourceState string
 
@@ -1290,11 +1090,6 @@ func PossibleLiveOutputResourceStateValues() []LiveOutputResourceState {
 	}
 }
 
-// ToPtr returns a *LiveOutputResourceState pointing to the current value.
-func (c LiveOutputResourceState) ToPtr() *LiveOutputResourceState {
-	return &c
-}
-
 // MetricAggregationType - The metric aggregation type
 type MetricAggregationType string
 
@@ -1316,11 +1111,6 @@ func PossibleMetricAggregationTypeValues() []MetricAggregationType {
 	}
 }
 
-// ToPtr returns a *MetricAggregationType pointing to the current value.
-func (c MetricAggregationType) ToPtr() *MetricAggregationType {
-	return &c
-}
-
 // MetricUnit - The metric unit
 type MetricUnit string
 
@@ -1340,11 +1130,6 @@ func PossibleMetricUnitValues() []MetricUnit {
 		MetricUnitCount,
 		MetricUnitMilliseconds,
 	}
-}
-
-// ToPtr returns a *MetricUnit pointing to the current value.
-func (c MetricUnit) ToPtr() *MetricUnit {
-	return &c
 }
 
 // OnErrorType - A Transform can define more than one outputs. This property defines what the service should do when one output
@@ -1369,11 +1154,6 @@ func PossibleOnErrorTypeValues() []OnErrorType {
 	}
 }
 
-// ToPtr returns a *OnErrorType pointing to the current value.
-func (c OnErrorType) ToPtr() *OnErrorType {
-	return &c
-}
-
 // Priority - Sets the relative priority of the TransformOutputs within a Transform. This sets the priority that the service
 // uses for processing TransformOutputs. The default priority is Normal.
 type Priority string
@@ -1396,11 +1176,6 @@ func PossiblePriorityValues() []Priority {
 	}
 }
 
-// ToPtr returns a *Priority pointing to the current value.
-func (c Priority) ToPtr() *Priority {
-	return &c
-}
-
 // PrivateEndpointConnectionProvisioningState - The current provisioning state.
 type PrivateEndpointConnectionProvisioningState string
 
@@ -1421,11 +1196,6 @@ func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpoin
 	}
 }
 
-// ToPtr returns a *PrivateEndpointConnectionProvisioningState pointing to the current value.
-func (c PrivateEndpointConnectionProvisioningState) ToPtr() *PrivateEndpointConnectionProvisioningState {
-	return &c
-}
-
 // PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
 type PrivateEndpointServiceConnectionStatus string
 
@@ -1442,11 +1212,6 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 		PrivateEndpointServiceConnectionStatusPending,
 		PrivateEndpointServiceConnectionStatusRejected,
 	}
-}
-
-// ToPtr returns a *PrivateEndpointServiceConnectionStatus pointing to the current value.
-func (c PrivateEndpointServiceConnectionStatus) ToPtr() *PrivateEndpointServiceConnectionStatus {
-	return &c
 }
 
 // ProvisioningState - Provisioning state of the asset track.
@@ -1470,11 +1235,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // PublicNetworkAccess - Whether or not public network access is allowed for resources under the Media Services account.
 type PublicNetworkAccess string
 
@@ -1491,11 +1251,6 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
 	}
-}
-
-// ToPtr returns a *PublicNetworkAccess pointing to the current value.
-func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
-	return &c
 }
 
 // Rotation - The rotation, if any, to be applied to the input video, before it is encoded. Default is Auto
@@ -1528,11 +1283,6 @@ func PossibleRotationValues() []Rotation {
 	}
 }
 
-// ToPtr returns a *Rotation pointing to the current value.
-func (c Rotation) ToPtr() *Rotation {
-	return &c
-}
-
 // StorageAccountType - The type of the storage account.
 type StorageAccountType string
 
@@ -1551,11 +1301,6 @@ func PossibleStorageAccountTypeValues() []StorageAccountType {
 	}
 }
 
-// ToPtr returns a *StorageAccountType pointing to the current value.
-func (c StorageAccountType) ToPtr() *StorageAccountType {
-	return &c
-}
-
 type StorageAuthentication string
 
 const (
@@ -1571,11 +1316,6 @@ func PossibleStorageAuthenticationValues() []StorageAuthentication {
 		StorageAuthenticationManagedIdentity,
 		StorageAuthenticationSystem,
 	}
-}
-
-// ToPtr returns a *StorageAuthentication pointing to the current value.
-func (c StorageAuthentication) ToPtr() *StorageAuthentication {
-	return &c
 }
 
 type StreamOptionsFlag string
@@ -1598,11 +1338,6 @@ func PossibleStreamOptionsFlagValues() []StreamOptionsFlag {
 		StreamOptionsFlagLowLatency,
 		StreamOptionsFlagLowLatencyV2,
 	}
-}
-
-// ToPtr returns a *StreamOptionsFlag pointing to the current value.
-func (c StreamOptionsFlag) ToPtr() *StreamOptionsFlag {
-	return &c
 }
 
 // StreamingEndpointResourceState - The resource state of the streaming endpoint.
@@ -1636,11 +1371,6 @@ func PossibleStreamingEndpointResourceStateValues() []StreamingEndpointResourceS
 	}
 }
 
-// ToPtr returns a *StreamingEndpointResourceState pointing to the current value.
-func (c StreamingEndpointResourceState) ToPtr() *StreamingEndpointResourceState {
-	return &c
-}
-
 // StreamingLocatorContentKeyType - Encryption type of Content Key
 type StreamingLocatorContentKeyType string
 
@@ -1660,11 +1390,6 @@ func PossibleStreamingLocatorContentKeyTypeValues() []StreamingLocatorContentKey
 		StreamingLocatorContentKeyTypeCommonEncryptionCenc,
 		StreamingLocatorContentKeyTypeEnvelopeEncryption,
 	}
-}
-
-// ToPtr returns a *StreamingLocatorContentKeyType pointing to the current value.
-func (c StreamingLocatorContentKeyType) ToPtr() *StreamingLocatorContentKeyType {
-	return &c
 }
 
 // StreamingPolicyStreamingProtocol - Streaming protocol
@@ -1689,11 +1414,6 @@ func PossibleStreamingPolicyStreamingProtocolValues() []StreamingPolicyStreaming
 		StreamingPolicyStreamingProtocolHls,
 		StreamingPolicyStreamingProtocolSmoothStreaming,
 	}
-}
-
-// ToPtr returns a *StreamingPolicyStreamingProtocol pointing to the current value.
-func (c StreamingPolicyStreamingProtocol) ToPtr() *StreamingPolicyStreamingProtocol {
-	return &c
 }
 
 // StretchMode - The resizing mode - how the input video will be resized to fit the desired output resolution(s). Default
@@ -1724,11 +1444,6 @@ func PossibleStretchModeValues() []StretchMode {
 	}
 }
 
-// ToPtr returns a *StretchMode pointing to the current value.
-func (c StretchMode) ToPtr() *StretchMode {
-	return &c
-}
-
 // TrackAttribute - The TrackAttribute to filter the tracks by.
 type TrackAttribute string
 
@@ -1745,11 +1460,6 @@ func PossibleTrackAttributeValues() []TrackAttribute {
 		TrackAttributeBitrate,
 		TrackAttributeLanguage,
 	}
-}
-
-// ToPtr returns a *TrackAttribute pointing to the current value.
-func (c TrackAttribute) ToPtr() *TrackAttribute {
-	return &c
 }
 
 // TrackPropertyCompareOperation - Track property condition operation
@@ -1770,11 +1480,6 @@ func PossibleTrackPropertyCompareOperationValues() []TrackPropertyCompareOperati
 	}
 }
 
-// ToPtr returns a *TrackPropertyCompareOperation pointing to the current value.
-func (c TrackPropertyCompareOperation) ToPtr() *TrackPropertyCompareOperation {
-	return &c
-}
-
 // TrackPropertyType - Track property type
 type TrackPropertyType string
 
@@ -1791,11 +1496,6 @@ func PossibleTrackPropertyTypeValues() []TrackPropertyType {
 		TrackPropertyTypeFourCC,
 		TrackPropertyTypeUnknown,
 	}
-}
-
-// ToPtr returns a *TrackPropertyType pointing to the current value.
-func (c TrackPropertyType) ToPtr() *TrackPropertyType {
-	return &c
 }
 
 // VideoSyncMode - The Video Sync Mode
@@ -1830,11 +1530,6 @@ func PossibleVideoSyncModeValues() []VideoSyncMode {
 	}
 }
 
-// ToPtr returns a *VideoSyncMode pointing to the current value.
-func (c VideoSyncMode) ToPtr() *VideoSyncMode {
-	return &c
-}
-
 // Visibility - When PlayerVisibility is set to "Visible", the text track will be present in the DASH manifest or HLS playlist
 // when requested by a client. When the PlayerVisibility is set to "Hidden", the text will
 // not be available to the client. The default value is "Visible".
@@ -1853,9 +1548,4 @@ func PossibleVisibilityValues() []Visibility {
 		VisibilityHidden,
 		VisibilityVisible,
 	}
-}
-
-// ToPtr returns a *Visibility pointing to the current value.
-func (c Visibility) ToPtr() *Visibility {
-	return &c
 }

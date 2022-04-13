@@ -1,5 +1,143 @@
 # Release History
 
+## 0.4.0 (2022-04-11)
+### Breaking Changes
+
+- Function `*SmartGroupsClient.GetAll` return value(s) have been changed from `(*SmartGroupsClientGetAllPager)` to `(*runtime.Pager[SmartGroupsClientGetAllResponse])`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `NewSmartGroupsClient` return value(s) have been changed from `(*SmartGroupsClient)` to `(*SmartGroupsClient, error)`
+- Function `*AlertsClient.GetAll` return value(s) have been changed from `(*AlertsClientGetAllPager)` to `(*runtime.Pager[AlertsClientGetAllResponse])`
+- Function `*AlertProcessingRulesClient.ListBySubscription` return value(s) have been changed from `(*AlertProcessingRulesClientListBySubscriptionPager)` to `(*runtime.Pager[AlertProcessingRulesClientListBySubscriptionResponse])`
+- Function `NewAlertProcessingRulesClient` return value(s) have been changed from `(*AlertProcessingRulesClient)` to `(*AlertProcessingRulesClient, error)`
+- Function `NewAlertsClient` return value(s) have been changed from `(*AlertsClient)` to `(*AlertsClient, error)`
+- Function `*AlertProcessingRulesClient.ListByResourceGroup` return value(s) have been changed from `(*AlertProcessingRulesClientListByResourceGroupPager)` to `(*runtime.Pager[AlertProcessingRulesClientListByResourceGroupResponse])`
+- Type of `AlertProperties.Context` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `AlertProperties.EgressConfig` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*AlertProcessingRulesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*AlertProcessingRulesClientListBySubscriptionPager.Err` has been removed
+- Function `*AlertsClientGetAllPager.PageResponse` has been removed
+- Function `*AlertProcessingRulesClientListBySubscriptionPager.PageResponse` has been removed
+- Function `AlertsSortByFields.ToPtr` has been removed
+- Function `*AlertProcessingRulesClientListByResourceGroupPager.NextPage` has been removed
+- Function `*SmartGroupsClientGetAllPager.Err` has been removed
+- Function `Severity.ToPtr` has been removed
+- Function `AlertModificationEvent.ToPtr` has been removed
+- Function `*AlertsClientGetAllPager.NextPage` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*AlertProcessingRulesClientListByResourceGroupPager.Err` has been removed
+- Function `SmartGroupsSortByFields.ToPtr` has been removed
+- Function `*AlertsClientGetAllPager.Err` has been removed
+- Function `*SmartGroupsClientGetAllPager.PageResponse` has been removed
+- Function `Operator.ToPtr` has been removed
+- Function `*AlertProcessingRulesClientListBySubscriptionPager.NextPage` has been removed
+- Function `MonitorCondition.ToPtr` has been removed
+- Function `SignalType.ToPtr` has been removed
+- Function `*SmartGroupsClientGetAllPager.NextPage` has been removed
+- Function `MetadataIdentifier.ToPtr` has been removed
+- Function `RecurrenceType.ToPtr` has been removed
+- Function `DaysOfWeek.ToPtr` has been removed
+- Function `AlertsSummaryGroupByFields.ToPtr` has been removed
+- Function `Identifier.ToPtr` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `ActionType.ToPtr` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `Field.ToPtr` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `State.ToPtr` has been removed
+- Function `AlertState.ToPtr` has been removed
+- Function `SmartGroupModificationEvent.ToPtr` has been removed
+- Function `TimeRange.ToPtr` has been removed
+- Function `SortOrder.ToPtr` has been removed
+- Function `MonitorService.ToPtr` has been removed
+- Struct `AlertProcessingRulesClientCreateOrUpdateResult` has been removed
+- Struct `AlertProcessingRulesClientDeleteResult` has been removed
+- Struct `AlertProcessingRulesClientGetByNameResult` has been removed
+- Struct `AlertProcessingRulesClientListByResourceGroupPager` has been removed
+- Struct `AlertProcessingRulesClientListByResourceGroupResult` has been removed
+- Struct `AlertProcessingRulesClientListBySubscriptionPager` has been removed
+- Struct `AlertProcessingRulesClientListBySubscriptionResult` has been removed
+- Struct `AlertProcessingRulesClientUpdateResult` has been removed
+- Struct `AlertsClientChangeStateResult` has been removed
+- Struct `AlertsClientGetAllPager` has been removed
+- Struct `AlertsClientGetAllResult` has been removed
+- Struct `AlertsClientGetByIDResult` has been removed
+- Struct `AlertsClientGetHistoryResult` has been removed
+- Struct `AlertsClientGetSummaryResult` has been removed
+- Struct `AlertsClientMetaDataResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `SmartGroupsClientChangeStateResult` has been removed
+- Struct `SmartGroupsClientGetAllPager` has been removed
+- Struct `SmartGroupsClientGetAllResult` has been removed
+- Struct `SmartGroupsClientGetByIDResult` has been removed
+- Struct `SmartGroupsClientGetHistoryResult` has been removed
+- Field `SmartGroupsClientChangeStateResult` of struct `SmartGroupsClientChangeStateResponse` has been removed
+- Field `RawResponse` of struct `SmartGroupsClientChangeStateResponse` has been removed
+- Field `AlertsClientGetSummaryResult` of struct `AlertsClientGetSummaryResponse` has been removed
+- Field `RawResponse` of struct `AlertsClientGetSummaryResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `AlertsClientChangeStateResult` of struct `AlertsClientChangeStateResponse` has been removed
+- Field `RawResponse` of struct `AlertsClientChangeStateResponse` has been removed
+- Field `SmartGroupsClientGetByIDResult` of struct `SmartGroupsClientGetByIDResponse` has been removed
+- Field `RawResponse` of struct `SmartGroupsClientGetByIDResponse` has been removed
+- Field `SmartGroupsClientGetHistoryResult` of struct `SmartGroupsClientGetHistoryResponse` has been removed
+- Field `RawResponse` of struct `SmartGroupsClientGetHistoryResponse` has been removed
+- Field `AlertProcessingRulesClientCreateOrUpdateResult` of struct `AlertProcessingRulesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `AlertProcessingRulesClientCreateOrUpdateResponse` has been removed
+- Field `AlertProcessingRulesClientUpdateResult` of struct `AlertProcessingRulesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `AlertProcessingRulesClientUpdateResponse` has been removed
+- Field `AlertsClientGetHistoryResult` of struct `AlertsClientGetHistoryResponse` has been removed
+- Field `RawResponse` of struct `AlertsClientGetHistoryResponse` has been removed
+- Field `AlertsClientMetaDataResult` of struct `AlertsClientMetaDataResponse` has been removed
+- Field `RawResponse` of struct `AlertsClientMetaDataResponse` has been removed
+- Field `AlertProcessingRulesClientListBySubscriptionResult` of struct `AlertProcessingRulesClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `AlertProcessingRulesClientListBySubscriptionResponse` has been removed
+- Field `AlertProcessingRulesClientDeleteResult` of struct `AlertProcessingRulesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `AlertProcessingRulesClientDeleteResponse` has been removed
+- Field `AlertProcessingRulesClientGetByNameResult` of struct `AlertProcessingRulesClientGetByNameResponse` has been removed
+- Field `RawResponse` of struct `AlertProcessingRulesClientGetByNameResponse` has been removed
+- Field `AlertProcessingRulesClientListByResourceGroupResult` of struct `AlertProcessingRulesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `AlertProcessingRulesClientListByResourceGroupResponse` has been removed
+- Field `SmartGroupsClientGetAllResult` of struct `SmartGroupsClientGetAllResponse` has been removed
+- Field `RawResponse` of struct `SmartGroupsClientGetAllResponse` has been removed
+- Field `AlertsClientGetByIDResult` of struct `AlertsClientGetByIDResponse` has been removed
+- Field `RawResponse` of struct `AlertsClientGetByIDResponse` has been removed
+- Field `AlertsClientGetAllResult` of struct `AlertsClientGetAllResponse` has been removed
+- Field `RawResponse` of struct `AlertsClientGetAllResponse` has been removed
+
+### Features Added
+
+- New struct `ActionStatus`
+- New anonymous field `AlertProcessingRule` in struct `AlertProcessingRulesClientCreateOrUpdateResponse`
+- New field `XMSRequestID` in struct `AlertProcessingRulesClientCreateOrUpdateResponse`
+- New field `XMSRequestID` in struct `AlertProcessingRulesClientDeleteResponse`
+- New anonymous field `AlertProcessingRulesList` in struct `AlertProcessingRulesClientListBySubscriptionResponse`
+- New field `XMSRequestID` in struct `AlertProcessingRulesClientListBySubscriptionResponse`
+- New anonymous field `Alert` in struct `AlertsClientGetByIDResponse`
+- New anonymous field `SmartGroupModification` in struct `SmartGroupsClientGetHistoryResponse`
+- New anonymous field `AlertsMetaData` in struct `AlertsClientMetaDataResponse`
+- New field `ActionStatus` in struct `Essentials`
+- New field `Description` in struct `Essentials`
+- New anonymous field `AlertProcessingRule` in struct `AlertProcessingRulesClientUpdateResponse`
+- New field `XMSRequestID` in struct `AlertProcessingRulesClientUpdateResponse`
+- New anonymous field `AlertModification` in struct `AlertsClientGetHistoryResponse`
+- New anonymous field `Alert` in struct `AlertsClientChangeStateResponse`
+- New anonymous field `SmartGroup` in struct `SmartGroupsClientChangeStateResponse`
+- New field `XMSRequestID` in struct `SmartGroupsClientChangeStateResponse`
+- New anonymous field `SmartGroup` in struct `SmartGroupsClientGetByIDResponse`
+- New field `XMSRequestID` in struct `SmartGroupsClientGetByIDResponse`
+- New anonymous field `SmartGroupsList` in struct `SmartGroupsClientGetAllResponse`
+- New anonymous field `AlertProcessingRule` in struct `AlertProcessingRulesClientGetByNameResponse`
+- New field `XMSRequestID` in struct `AlertProcessingRulesClientGetByNameResponse`
+- New anonymous field `AlertProcessingRulesList` in struct `AlertProcessingRulesClientListByResourceGroupResponse`
+- New field `XMSRequestID` in struct `AlertProcessingRulesClientListByResourceGroupResponse`
+- New anonymous field `OperationsList` in struct `OperationsClientListResponse`
+- New anonymous field `AlertsSummary` in struct `AlertsClientGetSummaryResponse`
+- New anonymous field `AlertsList` in struct `AlertsClientGetAllResponse`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

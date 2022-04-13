@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,94 +17,110 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
 )
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/dataConnectors/GetDataConnectors.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/dataConnectors/GetDataConnectors.json
 func ExampleDataConnectorsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewDataConnectorsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewDataConnectorsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List("<resource-group-name>",
 		"<workspace-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/dataConnectors/GetAPIPolling.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/dataConnectors/GetAPIPolling.json
 func ExampleDataConnectorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewDataConnectorsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewDataConnectorsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<data-connector-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.DataConnectorsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/dataConnectors/CreateAPIPolling.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/dataConnectors/CreateAPIPolling.json
 func ExampleDataConnectorsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewDataConnectorsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewDataConnectorsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<data-connector-id>",
 		&armsecurityinsights.CodelessAPIPollingDataConnector{
-			Kind: armsecurityinsights.DataConnectorKind("APIPolling").ToPtr(),
+			Kind: to.Ptr(armsecurityinsights.DataConnectorKindAPIPolling),
 			Properties: &armsecurityinsights.APIPollingParameters{
 				ConnectorUIConfig: &armsecurityinsights.CodelessUIConnectorConfigProperties{
 					Availability: &armsecurityinsights.Availability{
-						IsPreview: to.BoolPtr(true),
-						Status:    to.Int32Ptr(1),
+						IsPreview: to.Ptr(true),
+						Status:    to.Ptr[int32](1),
 					},
 					ConnectivityCriteria: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem{
 						{
-							Type:  armsecurityinsights.ConnectivityType("SentinelKindsV2").ToPtr(),
+							Type:  to.Ptr(armsecurityinsights.ConnectivityType("SentinelKindsV2")),
 							Value: []*string{},
 						}},
 					DataTypes: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesDataTypesItem{
 						{
-							Name:                  to.StringPtr("<name>"),
-							LastDataReceivedQuery: to.StringPtr("<last-data-received-query>"),
+							Name:                  to.Ptr("<name>"),
+							LastDataReceivedQuery: to.Ptr("<last-data-received-query>"),
 						}},
-					DescriptionMarkdown: to.StringPtr("<description-markdown>"),
+					DescriptionMarkdown: to.Ptr("<description-markdown>"),
 					GraphQueries: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesGraphQueriesItem{
 						{
-							BaseQuery:  to.StringPtr("<base-query>"),
-							Legend:     to.StringPtr("<legend>"),
-							MetricName: to.StringPtr("<metric-name>"),
+							BaseQuery:  to.Ptr("<base-query>"),
+							Legend:     to.Ptr("<legend>"),
+							MetricName: to.Ptr("<metric-name>"),
 						}},
-					GraphQueriesTableName: to.StringPtr("<graph-queries-table-name>"),
+					GraphQueriesTableName: to.Ptr("<graph-queries-table-name>"),
 					InstructionSteps: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesInstructionStepsItem{
 						{
-							Description: to.StringPtr("<description>"),
+							Description: to.Ptr("<description>"),
 							Instructions: []*armsecurityinsights.InstructionStepsInstructionsItem{
 								{
-									Type: armsecurityinsights.SettingType("APIKey").ToPtr(),
+									Type: to.Ptr(armsecurityinsights.SettingType("APIKey")),
 									Parameters: map[string]interface{}{
 										"enable": "true",
 										"userRequestPlaceHoldersInput": []interface{}{
@@ -117,108 +133,121 @@ func ExampleDataConnectorsClient_CreateOrUpdate() {
 										},
 									},
 								}},
-							Title: to.StringPtr("<title>"),
+							Title: to.Ptr("<title>"),
 						}},
 					Permissions: &armsecurityinsights.Permissions{
 						Customs: []*armsecurityinsights.PermissionsCustomsItem{
 							{
-								Name:        to.StringPtr("<name>"),
-								Description: to.StringPtr("<description>"),
+								Name:        to.Ptr("<name>"),
+								Description: to.Ptr("<description>"),
 							}},
 						ResourceProvider: []*armsecurityinsights.PermissionsResourceProviderItem{
 							{
-								PermissionsDisplayText: to.StringPtr("<permissions-display-text>"),
-								Provider:               armsecurityinsights.ProviderName("Microsoft.OperationalInsights/workspaces").ToPtr(),
-								ProviderDisplayName:    to.StringPtr("<provider-display-name>"),
+								PermissionsDisplayText: to.Ptr("<permissions-display-text>"),
+								Provider:               to.Ptr(armsecurityinsights.ProviderNameMicrosoftOperationalInsightsWorkspaces),
+								ProviderDisplayName:    to.Ptr("<provider-display-name>"),
 								RequiredPermissions: &armsecurityinsights.RequiredPermissions{
-									Delete: to.BoolPtr(true),
-									Read:   to.BoolPtr(true),
-									Write:  to.BoolPtr(true),
+									Delete: to.Ptr(true),
+									Read:   to.Ptr(true),
+									Write:  to.Ptr(true),
 								},
-								Scope: armsecurityinsights.PermissionProviderScope("Workspace").ToPtr(),
+								Scope: to.Ptr(armsecurityinsights.PermissionProviderScopeWorkspace),
 							}},
 					},
-					Publisher: to.StringPtr("<publisher>"),
+					Publisher: to.Ptr("<publisher>"),
 					SampleQueries: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesSampleQueriesItem{
 						{
-							Description: to.StringPtr("<description>"),
-							Query:       to.StringPtr("<query>"),
+							Description: to.Ptr("<description>"),
+							Query:       to.Ptr("<query>"),
 						}},
-					Title: to.StringPtr("<title>"),
+					Title: to.Ptr("<title>"),
 				},
 				PollingConfig: &armsecurityinsights.CodelessConnectorPollingConfigProperties{
 					Auth: &armsecurityinsights.CodelessConnectorPollingAuthProperties{
-						APIKeyIdentifier: to.StringPtr("<apikey-identifier>"),
-						APIKeyName:       to.StringPtr("<apikey-name>"),
-						AuthType:         to.StringPtr("<auth-type>"),
+						APIKeyIdentifier: to.Ptr("<apikey-identifier>"),
+						APIKeyName:       to.Ptr("<apikey-name>"),
+						AuthType:         to.Ptr("<auth-type>"),
 					},
 					Paging: &armsecurityinsights.CodelessConnectorPollingPagingProperties{
-						PageSizeParaName: to.StringPtr("<page-size-para-name>"),
-						PagingType:       to.StringPtr("<paging-type>"),
+						PageSizeParaName: to.Ptr("<page-size-para-name>"),
+						PagingType:       to.Ptr("<paging-type>"),
 					},
 					Response: &armsecurityinsights.CodelessConnectorPollingResponseProperties{
 						EventsJSONPaths: []*string{
-							to.StringPtr("$")},
+							to.Ptr("$")},
 					},
 					Request: &armsecurityinsights.CodelessConnectorPollingRequestProperties{
-						APIEndpoint: to.StringPtr("<apiendpoint>"),
+						APIEndpoint: to.Ptr("<apiendpoint>"),
 						Headers: map[string]interface{}{
 							"Accept":     "application/json",
 							"User-Agent": "Scuba",
 						},
-						HTTPMethod: to.StringPtr("<httpmethod>"),
+						HTTPMethod: to.Ptr("<httpmethod>"),
 						QueryParameters: map[string]interface{}{
 							"phrase": "created:{_QueryWindowStartTime}..{_QueryWindowEndTime}",
 						},
-						QueryTimeFormat:  to.StringPtr("<query-time-format>"),
-						QueryWindowInMin: to.Int32Ptr(15),
-						RateLimitQPS:     to.Int32Ptr(50),
-						RetryCount:       to.Int32Ptr(2),
-						TimeoutInSeconds: to.Int32Ptr(60),
+						QueryTimeFormat:  to.Ptr("<query-time-format>"),
+						QueryWindowInMin: to.Ptr[int32](15),
+						RateLimitQPS:     to.Ptr[int32](50),
+						RetryCount:       to.Ptr[int32](2),
+						TimeoutInSeconds: to.Ptr[int32](60),
 					},
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.DataConnectorsClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/dataConnectors/DeleteAPIPolling.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/dataConnectors/DeleteAPIPolling.json
 func ExampleDataConnectorsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewDataConnectorsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewDataConnectorsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<data-connector-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/dataConnectors/ConnectAPIPolling.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/dataConnectors/ConnectAPIPolling.json
 func ExampleDataConnectorsClient_Connect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewDataConnectorsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewDataConnectorsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Connect(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<data-connector-id>",
 		armsecurityinsights.DataConnectorConnectBody{
-			APIKey: to.StringPtr("<apikey>"),
-			Kind:   armsecurityinsights.ConnectAuthKind("APIKey").ToPtr(),
+			APIKey: to.Ptr("<apikey>"),
+			Kind:   to.Ptr(armsecurityinsights.ConnectAuthKindAPIKey),
 			RequestConfigUserInputValues: []interface{}{
 				map[string]interface{}{
 					"displayText":      "Organization Name",
@@ -229,24 +258,31 @@ func ExampleDataConnectorsClient_Connect() {
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/dataConnectors/DisconnectAPIPolling.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/dataConnectors/DisconnectAPIPolling.json
 func ExampleDataConnectorsClient_Disconnect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewDataConnectorsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewDataConnectorsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Disconnect(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<data-connector-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }

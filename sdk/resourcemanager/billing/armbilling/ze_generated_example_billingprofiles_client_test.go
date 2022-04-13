@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,89 +19,108 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
 )
 
-// x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingProfilesListByBillingAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingProfilesListByBillingAccount.json
 func ExampleProfilesClient_ListByBillingAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armbilling.NewProfilesClient(cred, nil)
+	client, err := armbilling.NewProfilesClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByBillingAccount("<billing-account-name>",
 		&armbilling.ProfilesClientListByBillingAccountOptions{Expand: nil})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingProfile.json
 func ExampleProfilesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armbilling.NewProfilesClient(cred, nil)
+	client, err := armbilling.NewProfilesClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<billing-account-name>",
 		"<billing-profile-name>",
 		&armbilling.ProfilesClientGetOptions{Expand: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ProfilesClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/PutBillingProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/PutBillingProfile.json
 func ExampleProfilesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armbilling.NewProfilesClient(cred, nil)
+	client, err := armbilling.NewProfilesClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<billing-account-name>",
 		"<billing-profile-name>",
 		armbilling.Profile{
 			Properties: &armbilling.ProfileProperties{
 				BillTo: &armbilling.AddressDetails{
-					AddressLine1: to.StringPtr("<address-line1>"),
-					City:         to.StringPtr("<city>"),
-					Country:      to.StringPtr("<country>"),
-					FirstName:    to.StringPtr("<first-name>"),
-					LastName:     to.StringPtr("<last-name>"),
-					PostalCode:   to.StringPtr("<postal-code>"),
-					Region:       to.StringPtr("<region>"),
+					AddressLine1: to.Ptr("<address-line1>"),
+					City:         to.Ptr("<city>"),
+					Country:      to.Ptr("<country>"),
+					FirstName:    to.Ptr("<first-name>"),
+					LastName:     to.Ptr("<last-name>"),
+					PostalCode:   to.Ptr("<postal-code>"),
+					Region:       to.Ptr("<region>"),
 				},
-				DisplayName: to.StringPtr("<display-name>"),
+				DisplayName: to.Ptr("<display-name>"),
 				EnabledAzurePlans: []*armbilling.AzurePlan{
 					{
-						SKUID: to.StringPtr("<skuid>"),
+						SKUID: to.Ptr("<skuid>"),
 					},
 					{
-						SKUID: to.StringPtr("<skuid>"),
+						SKUID: to.Ptr("<skuid>"),
 					}},
-				InvoiceEmailOptIn: to.BoolPtr(true),
-				PoNumber:          to.StringPtr("<po-number>"),
+				InvoiceEmailOptIn: to.Ptr(true),
+				PoNumber:          to.Ptr("<po-number>"),
 			},
 		},
-		nil)
+		&armbilling.ProfilesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ProfilesClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }

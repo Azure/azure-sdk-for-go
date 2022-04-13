@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type KustoPoolsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewKustoPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *KustoPoolsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewKustoPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*KustoPoolsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &KustoPoolsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginAddLanguageExtensions - Add a list of language extensions that can run within KQL queries.
@@ -57,22 +62,16 @@ func NewKustoPoolsClient(subscriptionID string, credential azcore.TokenCredentia
 // languageExtensionsToAdd - The language extensions to add.
 // options - KustoPoolsClientBeginAddLanguageExtensionsOptions contains the optional parameters for the KustoPoolsClient.BeginAddLanguageExtensions
 // method.
-func (client *KustoPoolsClient) BeginAddLanguageExtensions(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string, languageExtensionsToAdd LanguageExtensionsList, options *KustoPoolsClientBeginAddLanguageExtensionsOptions) (KustoPoolsClientAddLanguageExtensionsPollerResponse, error) {
-	resp, err := client.addLanguageExtensions(ctx, workspaceName, kustoPoolName, resourceGroupName, languageExtensionsToAdd, options)
-	if err != nil {
-		return KustoPoolsClientAddLanguageExtensionsPollerResponse{}, err
+func (client *KustoPoolsClient) BeginAddLanguageExtensions(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string, languageExtensionsToAdd LanguageExtensionsList, options *KustoPoolsClientBeginAddLanguageExtensionsOptions) (*armruntime.Poller[KustoPoolsClientAddLanguageExtensionsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.addLanguageExtensions(ctx, workspaceName, kustoPoolName, resourceGroupName, languageExtensionsToAdd, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[KustoPoolsClientAddLanguageExtensionsResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[KustoPoolsClientAddLanguageExtensionsResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := KustoPoolsClientAddLanguageExtensionsPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("KustoPoolsClient.AddLanguageExtensions", "", resp, client.pl)
-	if err != nil {
-		return KustoPoolsClientAddLanguageExtensionsPollerResponse{}, err
-	}
-	result.Poller = &KustoPoolsClientAddLanguageExtensionsPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // AddLanguageExtensions - Add a list of language extensions that can run within KQL queries.
@@ -167,7 +166,7 @@ func (client *KustoPoolsClient) checkNameAvailabilityCreateRequest(ctx context.C
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
 func (client *KustoPoolsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (KustoPoolsClientCheckNameAvailabilityResponse, error) {
-	result := KustoPoolsClientCheckNameAvailabilityResponse{RawResponse: resp}
+	result := KustoPoolsClientCheckNameAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameResult); err != nil {
 		return KustoPoolsClientCheckNameAvailabilityResponse{}, err
 	}
@@ -182,22 +181,16 @@ func (client *KustoPoolsClient) checkNameAvailabilityHandleResponse(resp *http.R
 // parameters - The Kusto pool parameters supplied to the CreateOrUpdate operation.
 // options - KustoPoolsClientBeginCreateOrUpdateOptions contains the optional parameters for the KustoPoolsClient.BeginCreateOrUpdate
 // method.
-func (client *KustoPoolsClient) BeginCreateOrUpdate(ctx context.Context, workspaceName string, resourceGroupName string, kustoPoolName string, parameters KustoPool, options *KustoPoolsClientBeginCreateOrUpdateOptions) (KustoPoolsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, workspaceName, resourceGroupName, kustoPoolName, parameters, options)
-	if err != nil {
-		return KustoPoolsClientCreateOrUpdatePollerResponse{}, err
+func (client *KustoPoolsClient) BeginCreateOrUpdate(ctx context.Context, workspaceName string, resourceGroupName string, kustoPoolName string, parameters KustoPool, options *KustoPoolsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[KustoPoolsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, workspaceName, resourceGroupName, kustoPoolName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[KustoPoolsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[KustoPoolsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := KustoPoolsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("KustoPoolsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return KustoPoolsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &KustoPoolsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update a Kusto pool.
@@ -259,22 +252,16 @@ func (client *KustoPoolsClient) createOrUpdateCreateRequest(ctx context.Context,
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // kustoPoolName - The name of the Kusto pool.
 // options - KustoPoolsClientBeginDeleteOptions contains the optional parameters for the KustoPoolsClient.BeginDelete method.
-func (client *KustoPoolsClient) BeginDelete(ctx context.Context, workspaceName string, resourceGroupName string, kustoPoolName string, options *KustoPoolsClientBeginDeleteOptions) (KustoPoolsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, workspaceName, resourceGroupName, kustoPoolName, options)
-	if err != nil {
-		return KustoPoolsClientDeletePollerResponse{}, err
+func (client *KustoPoolsClient) BeginDelete(ctx context.Context, workspaceName string, resourceGroupName string, kustoPoolName string, options *KustoPoolsClientBeginDeleteOptions) (*armruntime.Poller[KustoPoolsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, workspaceName, resourceGroupName, kustoPoolName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[KustoPoolsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[KustoPoolsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := KustoPoolsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("KustoPoolsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return KustoPoolsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &KustoPoolsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a Kusto pool.
@@ -332,22 +319,16 @@ func (client *KustoPoolsClient) deleteCreateRequest(ctx context.Context, workspa
 // followerDatabaseToRemove - The follower databases properties to remove.
 // options - KustoPoolsClientBeginDetachFollowerDatabasesOptions contains the optional parameters for the KustoPoolsClient.BeginDetachFollowerDatabases
 // method.
-func (client *KustoPoolsClient) BeginDetachFollowerDatabases(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string, followerDatabaseToRemove FollowerDatabaseDefinition, options *KustoPoolsClientBeginDetachFollowerDatabasesOptions) (KustoPoolsClientDetachFollowerDatabasesPollerResponse, error) {
-	resp, err := client.detachFollowerDatabases(ctx, workspaceName, kustoPoolName, resourceGroupName, followerDatabaseToRemove, options)
-	if err != nil {
-		return KustoPoolsClientDetachFollowerDatabasesPollerResponse{}, err
+func (client *KustoPoolsClient) BeginDetachFollowerDatabases(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string, followerDatabaseToRemove FollowerDatabaseDefinition, options *KustoPoolsClientBeginDetachFollowerDatabasesOptions) (*armruntime.Poller[KustoPoolsClientDetachFollowerDatabasesResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.detachFollowerDatabases(ctx, workspaceName, kustoPoolName, resourceGroupName, followerDatabaseToRemove, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[KustoPoolsClientDetachFollowerDatabasesResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[KustoPoolsClientDetachFollowerDatabasesResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := KustoPoolsClientDetachFollowerDatabasesPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("KustoPoolsClient.DetachFollowerDatabases", "", resp, client.pl)
-	if err != nil {
-		return KustoPoolsClientDetachFollowerDatabasesPollerResponse{}, err
-	}
-	result.Poller = &KustoPoolsClientDetachFollowerDatabasesPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DetachFollowerDatabases - Detaches all followers of a database owned by this Kusto Pool.
@@ -450,7 +431,7 @@ func (client *KustoPoolsClient) getCreateRequest(ctx context.Context, workspaceN
 
 // getHandleResponse handles the Get response.
 func (client *KustoPoolsClient) getHandleResponse(resp *http.Response) (KustoPoolsClientGetResponse, error) {
-	result := KustoPoolsClientGetResponse{RawResponse: resp}
+	result := KustoPoolsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KustoPool); err != nil {
 		return KustoPoolsClientGetResponse{}, err
 	}
@@ -506,7 +487,7 @@ func (client *KustoPoolsClient) listByWorkspaceCreateRequest(ctx context.Context
 
 // listByWorkspaceHandleResponse handles the ListByWorkspace response.
 func (client *KustoPoolsClient) listByWorkspaceHandleResponse(resp *http.Response) (KustoPoolsClientListByWorkspaceResponse, error) {
-	result := KustoPoolsClientListByWorkspaceResponse{RawResponse: resp}
+	result := KustoPoolsClientListByWorkspaceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KustoPoolListResult); err != nil {
 		return KustoPoolsClientListByWorkspaceResponse{}, err
 	}
@@ -521,19 +502,26 @@ func (client *KustoPoolsClient) listByWorkspaceHandleResponse(resp *http.Respons
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - KustoPoolsClientListFollowerDatabasesOptions contains the optional parameters for the KustoPoolsClient.ListFollowerDatabases
 // method.
-func (client *KustoPoolsClient) ListFollowerDatabases(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string, options *KustoPoolsClientListFollowerDatabasesOptions) (KustoPoolsClientListFollowerDatabasesResponse, error) {
-	req, err := client.listFollowerDatabasesCreateRequest(ctx, workspaceName, kustoPoolName, resourceGroupName, options)
-	if err != nil {
-		return KustoPoolsClientListFollowerDatabasesResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return KustoPoolsClientListFollowerDatabasesResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KustoPoolsClientListFollowerDatabasesResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listFollowerDatabasesHandleResponse(resp)
+func (client *KustoPoolsClient) ListFollowerDatabases(workspaceName string, kustoPoolName string, resourceGroupName string, options *KustoPoolsClientListFollowerDatabasesOptions) *runtime.Pager[KustoPoolsClientListFollowerDatabasesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[KustoPoolsClientListFollowerDatabasesResponse]{
+		More: func(page KustoPoolsClientListFollowerDatabasesResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *KustoPoolsClientListFollowerDatabasesResponse) (KustoPoolsClientListFollowerDatabasesResponse, error) {
+			req, err := client.listFollowerDatabasesCreateRequest(ctx, workspaceName, kustoPoolName, resourceGroupName, options)
+			if err != nil {
+				return KustoPoolsClientListFollowerDatabasesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return KustoPoolsClientListFollowerDatabasesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return KustoPoolsClientListFollowerDatabasesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listFollowerDatabasesHandleResponse(resp)
+		},
+	})
 }
 
 // listFollowerDatabasesCreateRequest creates the ListFollowerDatabases request.
@@ -568,7 +556,7 @@ func (client *KustoPoolsClient) listFollowerDatabasesCreateRequest(ctx context.C
 
 // listFollowerDatabasesHandleResponse handles the ListFollowerDatabases response.
 func (client *KustoPoolsClient) listFollowerDatabasesHandleResponse(resp *http.Response) (KustoPoolsClientListFollowerDatabasesResponse, error) {
-	result := KustoPoolsClientListFollowerDatabasesResponse{RawResponse: resp}
+	result := KustoPoolsClientListFollowerDatabasesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FollowerDatabaseListResult); err != nil {
 		return KustoPoolsClientListFollowerDatabasesResponse{}, err
 	}
@@ -582,19 +570,26 @@ func (client *KustoPoolsClient) listFollowerDatabasesHandleResponse(resp *http.R
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - KustoPoolsClientListLanguageExtensionsOptions contains the optional parameters for the KustoPoolsClient.ListLanguageExtensions
 // method.
-func (client *KustoPoolsClient) ListLanguageExtensions(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string, options *KustoPoolsClientListLanguageExtensionsOptions) (KustoPoolsClientListLanguageExtensionsResponse, error) {
-	req, err := client.listLanguageExtensionsCreateRequest(ctx, workspaceName, kustoPoolName, resourceGroupName, options)
-	if err != nil {
-		return KustoPoolsClientListLanguageExtensionsResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return KustoPoolsClientListLanguageExtensionsResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KustoPoolsClientListLanguageExtensionsResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listLanguageExtensionsHandleResponse(resp)
+func (client *KustoPoolsClient) ListLanguageExtensions(workspaceName string, kustoPoolName string, resourceGroupName string, options *KustoPoolsClientListLanguageExtensionsOptions) *runtime.Pager[KustoPoolsClientListLanguageExtensionsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[KustoPoolsClientListLanguageExtensionsResponse]{
+		More: func(page KustoPoolsClientListLanguageExtensionsResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *KustoPoolsClientListLanguageExtensionsResponse) (KustoPoolsClientListLanguageExtensionsResponse, error) {
+			req, err := client.listLanguageExtensionsCreateRequest(ctx, workspaceName, kustoPoolName, resourceGroupName, options)
+			if err != nil {
+				return KustoPoolsClientListLanguageExtensionsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return KustoPoolsClientListLanguageExtensionsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return KustoPoolsClientListLanguageExtensionsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listLanguageExtensionsHandleResponse(resp)
+		},
+	})
 }
 
 // listLanguageExtensionsCreateRequest creates the ListLanguageExtensions request.
@@ -629,7 +624,7 @@ func (client *KustoPoolsClient) listLanguageExtensionsCreateRequest(ctx context.
 
 // listLanguageExtensionsHandleResponse handles the ListLanguageExtensions response.
 func (client *KustoPoolsClient) listLanguageExtensionsHandleResponse(resp *http.Response) (KustoPoolsClientListLanguageExtensionsResponse, error) {
-	result := KustoPoolsClientListLanguageExtensionsResponse{RawResponse: resp}
+	result := KustoPoolsClientListLanguageExtensionsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LanguageExtensionsList); err != nil {
 		return KustoPoolsClientListLanguageExtensionsResponse{}, err
 	}
@@ -639,19 +634,26 @@ func (client *KustoPoolsClient) listLanguageExtensionsHandleResponse(resp *http.
 // ListSKUs - Lists eligible SKUs for Kusto Pool resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - KustoPoolsClientListSKUsOptions contains the optional parameters for the KustoPoolsClient.ListSKUs method.
-func (client *KustoPoolsClient) ListSKUs(ctx context.Context, options *KustoPoolsClientListSKUsOptions) (KustoPoolsClientListSKUsResponse, error) {
-	req, err := client.listSKUsCreateRequest(ctx, options)
-	if err != nil {
-		return KustoPoolsClientListSKUsResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return KustoPoolsClientListSKUsResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KustoPoolsClientListSKUsResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listSKUsHandleResponse(resp)
+func (client *KustoPoolsClient) ListSKUs(options *KustoPoolsClientListSKUsOptions) *runtime.Pager[KustoPoolsClientListSKUsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[KustoPoolsClientListSKUsResponse]{
+		More: func(page KustoPoolsClientListSKUsResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *KustoPoolsClientListSKUsResponse) (KustoPoolsClientListSKUsResponse, error) {
+			req, err := client.listSKUsCreateRequest(ctx, options)
+			if err != nil {
+				return KustoPoolsClientListSKUsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return KustoPoolsClientListSKUsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return KustoPoolsClientListSKUsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSKUsHandleResponse(resp)
+		},
+	})
 }
 
 // listSKUsCreateRequest creates the ListSKUs request.
@@ -674,7 +676,7 @@ func (client *KustoPoolsClient) listSKUsCreateRequest(ctx context.Context, optio
 
 // listSKUsHandleResponse handles the ListSKUs response.
 func (client *KustoPoolsClient) listSKUsHandleResponse(resp *http.Response) (KustoPoolsClientListSKUsResponse, error) {
-	result := KustoPoolsClientListSKUsResponse{RawResponse: resp}
+	result := KustoPoolsClientListSKUsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUDescriptionList); err != nil {
 		return KustoPoolsClientListSKUsResponse{}, err
 	}
@@ -688,19 +690,26 @@ func (client *KustoPoolsClient) listSKUsHandleResponse(resp *http.Response) (Kus
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - KustoPoolsClientListSKUsByResourceOptions contains the optional parameters for the KustoPoolsClient.ListSKUsByResource
 // method.
-func (client *KustoPoolsClient) ListSKUsByResource(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string, options *KustoPoolsClientListSKUsByResourceOptions) (KustoPoolsClientListSKUsByResourceResponse, error) {
-	req, err := client.listSKUsByResourceCreateRequest(ctx, workspaceName, kustoPoolName, resourceGroupName, options)
-	if err != nil {
-		return KustoPoolsClientListSKUsByResourceResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return KustoPoolsClientListSKUsByResourceResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KustoPoolsClientListSKUsByResourceResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listSKUsByResourceHandleResponse(resp)
+func (client *KustoPoolsClient) ListSKUsByResource(workspaceName string, kustoPoolName string, resourceGroupName string, options *KustoPoolsClientListSKUsByResourceOptions) *runtime.Pager[KustoPoolsClientListSKUsByResourceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[KustoPoolsClientListSKUsByResourceResponse]{
+		More: func(page KustoPoolsClientListSKUsByResourceResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *KustoPoolsClientListSKUsByResourceResponse) (KustoPoolsClientListSKUsByResourceResponse, error) {
+			req, err := client.listSKUsByResourceCreateRequest(ctx, workspaceName, kustoPoolName, resourceGroupName, options)
+			if err != nil {
+				return KustoPoolsClientListSKUsByResourceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return KustoPoolsClientListSKUsByResourceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return KustoPoolsClientListSKUsByResourceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSKUsByResourceHandleResponse(resp)
+		},
+	})
 }
 
 // listSKUsByResourceCreateRequest creates the ListSKUsByResource request.
@@ -735,7 +744,7 @@ func (client *KustoPoolsClient) listSKUsByResourceCreateRequest(ctx context.Cont
 
 // listSKUsByResourceHandleResponse handles the ListSKUsByResource response.
 func (client *KustoPoolsClient) listSKUsByResourceHandleResponse(resp *http.Response) (KustoPoolsClientListSKUsByResourceResponse, error) {
-	result := KustoPoolsClientListSKUsByResourceResponse{RawResponse: resp}
+	result := KustoPoolsClientListSKUsByResourceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListResourceSKUsResult); err != nil {
 		return KustoPoolsClientListSKUsByResourceResponse{}, err
 	}
@@ -750,22 +759,16 @@ func (client *KustoPoolsClient) listSKUsByResourceHandleResponse(resp *http.Resp
 // languageExtensionsToRemove - The language extensions to remove.
 // options - KustoPoolsClientBeginRemoveLanguageExtensionsOptions contains the optional parameters for the KustoPoolsClient.BeginRemoveLanguageExtensions
 // method.
-func (client *KustoPoolsClient) BeginRemoveLanguageExtensions(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string, languageExtensionsToRemove LanguageExtensionsList, options *KustoPoolsClientBeginRemoveLanguageExtensionsOptions) (KustoPoolsClientRemoveLanguageExtensionsPollerResponse, error) {
-	resp, err := client.removeLanguageExtensions(ctx, workspaceName, kustoPoolName, resourceGroupName, languageExtensionsToRemove, options)
-	if err != nil {
-		return KustoPoolsClientRemoveLanguageExtensionsPollerResponse{}, err
+func (client *KustoPoolsClient) BeginRemoveLanguageExtensions(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string, languageExtensionsToRemove LanguageExtensionsList, options *KustoPoolsClientBeginRemoveLanguageExtensionsOptions) (*armruntime.Poller[KustoPoolsClientRemoveLanguageExtensionsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.removeLanguageExtensions(ctx, workspaceName, kustoPoolName, resourceGroupName, languageExtensionsToRemove, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[KustoPoolsClientRemoveLanguageExtensionsResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[KustoPoolsClientRemoveLanguageExtensionsResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := KustoPoolsClientRemoveLanguageExtensionsPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("KustoPoolsClient.RemoveLanguageExtensions", "", resp, client.pl)
-	if err != nil {
-		return KustoPoolsClientRemoveLanguageExtensionsPollerResponse{}, err
-	}
-	result.Poller = &KustoPoolsClientRemoveLanguageExtensionsPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // RemoveLanguageExtensions - Remove a list of language extensions that can run within KQL queries.
@@ -821,22 +824,16 @@ func (client *KustoPoolsClient) removeLanguageExtensionsCreateRequest(ctx contex
 // kustoPoolName - The name of the Kusto pool.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - KustoPoolsClientBeginStartOptions contains the optional parameters for the KustoPoolsClient.BeginStart method.
-func (client *KustoPoolsClient) BeginStart(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string, options *KustoPoolsClientBeginStartOptions) (KustoPoolsClientStartPollerResponse, error) {
-	resp, err := client.start(ctx, workspaceName, kustoPoolName, resourceGroupName, options)
-	if err != nil {
-		return KustoPoolsClientStartPollerResponse{}, err
+func (client *KustoPoolsClient) BeginStart(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string, options *KustoPoolsClientBeginStartOptions) (*armruntime.Poller[KustoPoolsClientStartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.start(ctx, workspaceName, kustoPoolName, resourceGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[KustoPoolsClientStartResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[KustoPoolsClientStartResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := KustoPoolsClientStartPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("KustoPoolsClient.Start", "", resp, client.pl)
-	if err != nil {
-		return KustoPoolsClientStartPollerResponse{}, err
-	}
-	result.Poller = &KustoPoolsClientStartPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Start - Starts a Kusto pool.
@@ -892,22 +889,16 @@ func (client *KustoPoolsClient) startCreateRequest(ctx context.Context, workspac
 // kustoPoolName - The name of the Kusto pool.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - KustoPoolsClientBeginStopOptions contains the optional parameters for the KustoPoolsClient.BeginStop method.
-func (client *KustoPoolsClient) BeginStop(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string, options *KustoPoolsClientBeginStopOptions) (KustoPoolsClientStopPollerResponse, error) {
-	resp, err := client.stop(ctx, workspaceName, kustoPoolName, resourceGroupName, options)
-	if err != nil {
-		return KustoPoolsClientStopPollerResponse{}, err
+func (client *KustoPoolsClient) BeginStop(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string, options *KustoPoolsClientBeginStopOptions) (*armruntime.Poller[KustoPoolsClientStopResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.stop(ctx, workspaceName, kustoPoolName, resourceGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[KustoPoolsClientStopResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[KustoPoolsClientStopResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := KustoPoolsClientStopPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("KustoPoolsClient.Stop", "", resp, client.pl)
-	if err != nil {
-		return KustoPoolsClientStopPollerResponse{}, err
-	}
-	result.Poller = &KustoPoolsClientStopPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Stop - Stops a Kusto pool.
@@ -964,22 +955,16 @@ func (client *KustoPoolsClient) stopCreateRequest(ctx context.Context, workspace
 // kustoPoolName - The name of the Kusto pool.
 // parameters - The Kusto pool parameters supplied to the Update operation.
 // options - KustoPoolsClientBeginUpdateOptions contains the optional parameters for the KustoPoolsClient.BeginUpdate method.
-func (client *KustoPoolsClient) BeginUpdate(ctx context.Context, workspaceName string, resourceGroupName string, kustoPoolName string, parameters KustoPoolUpdate, options *KustoPoolsClientBeginUpdateOptions) (KustoPoolsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, workspaceName, resourceGroupName, kustoPoolName, parameters, options)
-	if err != nil {
-		return KustoPoolsClientUpdatePollerResponse{}, err
+func (client *KustoPoolsClient) BeginUpdate(ctx context.Context, workspaceName string, resourceGroupName string, kustoPoolName string, parameters KustoPoolUpdate, options *KustoPoolsClientBeginUpdateOptions) (*armruntime.Poller[KustoPoolsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, workspaceName, resourceGroupName, kustoPoolName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[KustoPoolsClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[KustoPoolsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := KustoPoolsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("KustoPoolsClient.Update", "", resp, client.pl)
-	if err != nil {
-		return KustoPoolsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &KustoPoolsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Update a Kusto Kusto Pool.

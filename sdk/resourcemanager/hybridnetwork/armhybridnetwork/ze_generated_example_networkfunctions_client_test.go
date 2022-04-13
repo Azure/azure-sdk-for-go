@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,61 +19,80 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork"
 )
 
-// x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/NetworkFunctionDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/NetworkFunctionDelete.json
 func ExampleNetworkFunctionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armhybridnetwork.NewNetworkFunctionsClient("<subscription-id>", cred, nil)
+	client, err := armhybridnetwork.NewNetworkFunctionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<network-function-name>",
-		nil)
+		&armhybridnetwork.NetworkFunctionsClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/NetworkFunctionGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/NetworkFunctionGet.json
 func ExampleNetworkFunctionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armhybridnetwork.NewNetworkFunctionsClient("<subscription-id>", cred, nil)
+	client, err := armhybridnetwork.NewNetworkFunctionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<network-function-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.NetworkFunctionsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/NetworkFunctionCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/NetworkFunctionCreate.json
 func ExampleNetworkFunctionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armhybridnetwork.NewNetworkFunctionsClient("<subscription-id>", cred, nil)
+	client, err := armhybridnetwork.NewNetworkFunctionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<network-function-name>",
 		armhybridnetwork.NetworkFunction{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Properties: &armhybridnetwork.NetworkFunctionPropertiesFormat{
 				Device: &armhybridnetwork.SubResource{
-					ID: to.StringPtr("<id>"),
+					ID: to.Ptr("<id>"),
 				},
 				ManagedApplicationParameters: map[string]interface{}{},
 				NetworkFunctionUserConfigurations: []*armhybridnetwork.NetworkFunctionUserConfiguration{
@@ -82,115 +101,170 @@ func ExampleNetworkFunctionsClient_BeginCreateOrUpdate() {
 							{
 								IPConfigurations: []*armhybridnetwork.NetworkInterfaceIPConfiguration{
 									{
-										Gateway:            to.StringPtr("<gateway>"),
-										IPAddress:          to.StringPtr("<ipaddress>"),
-										IPAllocationMethod: armhybridnetwork.IPAllocationMethod("Dynamic").ToPtr(),
-										IPVersion:          armhybridnetwork.IPVersion("IPv4").ToPtr(),
-										Subnet:             to.StringPtr("<subnet>"),
+										Gateway:            to.Ptr("<gateway>"),
+										IPAddress:          to.Ptr("<ipaddress>"),
+										IPAllocationMethod: to.Ptr(armhybridnetwork.IPAllocationMethodDynamic),
+										IPVersion:          to.Ptr(armhybridnetwork.IPVersionIPv4),
+										Subnet:             to.Ptr("<subnet>"),
 									}},
-								MacAddress:           to.StringPtr("<mac-address>"),
-								NetworkInterfaceName: to.StringPtr("<network-interface-name>"),
-								VMSwitchType:         armhybridnetwork.VMSwitchType("Management").ToPtr(),
+								MacAddress:           to.Ptr("<mac-address>"),
+								NetworkInterfaceName: to.Ptr("<network-interface-name>"),
+								VMSwitchType:         to.Ptr(armhybridnetwork.VMSwitchTypeManagement),
 							},
 							{
 								IPConfigurations: []*armhybridnetwork.NetworkInterfaceIPConfiguration{
 									{
-										Gateway:            to.StringPtr("<gateway>"),
-										IPAddress:          to.StringPtr("<ipaddress>"),
-										IPAllocationMethod: armhybridnetwork.IPAllocationMethod("Dynamic").ToPtr(),
-										IPVersion:          armhybridnetwork.IPVersion("IPv4").ToPtr(),
-										Subnet:             to.StringPtr("<subnet>"),
+										Gateway:            to.Ptr("<gateway>"),
+										IPAddress:          to.Ptr("<ipaddress>"),
+										IPAllocationMethod: to.Ptr(armhybridnetwork.IPAllocationMethodDynamic),
+										IPVersion:          to.Ptr(armhybridnetwork.IPVersionIPv4),
+										Subnet:             to.Ptr("<subnet>"),
 									}},
-								MacAddress:           to.StringPtr("<mac-address>"),
-								NetworkInterfaceName: to.StringPtr("<network-interface-name>"),
-								VMSwitchType:         armhybridnetwork.VMSwitchType("Wan").ToPtr(),
+								MacAddress:           to.Ptr("<mac-address>"),
+								NetworkInterfaceName: to.Ptr("<network-interface-name>"),
+								VMSwitchType:         to.Ptr(armhybridnetwork.VMSwitchTypeWan),
 							}},
-						RoleName:           to.StringPtr("<role-name>"),
+						RoleName:           to.Ptr("<role-name>"),
 						UserDataParameters: map[string]interface{}{},
 					}},
-				SKUName:    to.StringPtr("<skuname>"),
-				SKUType:    armhybridnetwork.SKUType("SDWAN").ToPtr(),
-				VendorName: to.StringPtr("<vendor-name>"),
+				SKUName:    to.Ptr("<skuname>"),
+				SKUType:    to.Ptr(armhybridnetwork.SKUTypeSDWAN),
+				VendorName: to.Ptr("<vendor-name>"),
 			},
 		},
-		nil)
+		&armhybridnetwork.NetworkFunctionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.NetworkFunctionsClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/NetworkFunctionUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/NetworkFunctionUpdateTags.json
 func ExampleNetworkFunctionsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armhybridnetwork.NewNetworkFunctionsClient("<subscription-id>", cred, nil)
+	client, err := armhybridnetwork.NewNetworkFunctionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.UpdateTags(ctx,
 		"<resource-group-name>",
 		"<network-function-name>",
 		armhybridnetwork.TagsObject{
 			Tags: map[string]*string{
-				"tag1": to.StringPtr("value1"),
-				"tag2": to.StringPtr("value2"),
+				"tag1": to.Ptr("value1"),
+				"tag2": to.Ptr("value2"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.NetworkFunctionsClientUpdateTagsResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/NetworkFunctionListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/NetworkFunctionListBySubscription.json
 func ExampleNetworkFunctionsClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armhybridnetwork.NewNetworkFunctionsClient("<subscription-id>", cred, nil)
+	client, err := armhybridnetwork.NewNetworkFunctionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListBySubscription(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/NetworkFunctionListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/NetworkFunctionListByResourceGroup.json
 func ExampleNetworkFunctionsClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armhybridnetwork.NewNetworkFunctionsClient("<subscription-id>", cred, nil)
+	client, err := armhybridnetwork.NewNetworkFunctionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
-		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/NetworkFunctionsExecuteRequest.json
+func ExampleNetworkFunctionsClient_BeginExecuteRequest() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+		return
+	}
+	ctx := context.Background()
+	client, err := armhybridnetwork.NewNetworkFunctionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	poller, err := client.BeginExecuteRequest(ctx,
+		"<resource-group-name>",
+		"<network-function-name>",
+		armhybridnetwork.ExecuteRequestParameters{
+			RequestMetadata: &armhybridnetwork.RequestMetadata{
+				APIVersion:     to.Ptr("<apiversion>"),
+				HTTPMethod:     to.Ptr(armhybridnetwork.HTTPMethodPost),
+				RelativePath:   to.Ptr("<relative-path>"),
+				SerializedBody: to.Ptr("<serialized-body>"),
+			},
+			ServiceEndpoint: to.Ptr("<service-endpoint>"),
+		},
+		&armhybridnetwork.NetworkFunctionsClientBeginExecuteRequestOptions{ResumeToken: ""})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+		return
+	}
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }

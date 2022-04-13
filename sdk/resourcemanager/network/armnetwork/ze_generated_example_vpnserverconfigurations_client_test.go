@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,181 +19,218 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 )
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnServerConfigurationGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnServerConfigurationGet.json
 func ExampleVPNServerConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewVPNServerConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewVPNServerConfigurationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<vpn-server-configuration-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.VPNServerConfigurationsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnServerConfigurationPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnServerConfigurationPut.json
 func ExampleVPNServerConfigurationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewVPNServerConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewVPNServerConfigurationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<vpn-server-configuration-name>",
 		armnetwork.VPNServerConfiguration{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Tags: map[string]*string{
-				"key1": to.StringPtr("value1"),
+				"key1": to.Ptr("value1"),
 			},
 			Properties: &armnetwork.VPNServerConfigurationProperties{
 				RadiusClientRootCertificates: []*armnetwork.VPNServerConfigRadiusClientRootCertificate{
 					{
-						Name:       to.StringPtr("<name>"),
-						Thumbprint: to.StringPtr("<thumbprint>"),
+						Name:       to.Ptr("<name>"),
+						Thumbprint: to.Ptr("<thumbprint>"),
 					}},
 				RadiusServerRootCertificates: []*armnetwork.VPNServerConfigRadiusServerRootCertificate{
 					{
-						Name:           to.StringPtr("<name>"),
-						PublicCertData: to.StringPtr("<public-cert-data>"),
+						Name:           to.Ptr("<name>"),
+						PublicCertData: to.Ptr("<public-cert-data>"),
 					}},
 				RadiusServers: []*armnetwork.RadiusServer{
 					{
-						RadiusServerAddress: to.StringPtr("<radius-server-address>"),
-						RadiusServerScore:   to.Int64Ptr(25),
-						RadiusServerSecret:  to.StringPtr("<radius-server-secret>"),
+						RadiusServerAddress: to.Ptr("<radius-server-address>"),
+						RadiusServerScore:   to.Ptr[int64](25),
+						RadiusServerSecret:  to.Ptr("<radius-server-secret>"),
 					}},
 				VPNClientIPSecPolicies: []*armnetwork.IPSecPolicy{
 					{
-						DhGroup:             armnetwork.DhGroup("DHGroup14").ToPtr(),
-						IkeEncryption:       armnetwork.IkeEncryption("AES256").ToPtr(),
-						IkeIntegrity:        armnetwork.IkeIntegrity("SHA384").ToPtr(),
-						IPSecEncryption:     armnetwork.IPSecEncryption("AES256").ToPtr(),
-						IPSecIntegrity:      armnetwork.IPSecIntegrity("SHA256").ToPtr(),
-						PfsGroup:            armnetwork.PfsGroup("PFS14").ToPtr(),
-						SaDataSizeKilobytes: to.Int32Ptr(429497),
-						SaLifeTimeSeconds:   to.Int32Ptr(86472),
+						DhGroup:             to.Ptr(armnetwork.DhGroupDHGroup14),
+						IkeEncryption:       to.Ptr(armnetwork.IkeEncryptionAES256),
+						IkeIntegrity:        to.Ptr(armnetwork.IkeIntegritySHA384),
+						IPSecEncryption:     to.Ptr(armnetwork.IPSecEncryptionAES256),
+						IPSecIntegrity:      to.Ptr(armnetwork.IPSecIntegritySHA256),
+						PfsGroup:            to.Ptr(armnetwork.PfsGroupPFS14),
+						SaDataSizeKilobytes: to.Ptr[int32](429497),
+						SaLifeTimeSeconds:   to.Ptr[int32](86472),
 					}},
 				VPNClientRevokedCertificates: []*armnetwork.VPNServerConfigVPNClientRevokedCertificate{
 					{
-						Name:       to.StringPtr("<name>"),
-						Thumbprint: to.StringPtr("<thumbprint>"),
+						Name:       to.Ptr("<name>"),
+						Thumbprint: to.Ptr("<thumbprint>"),
 					}},
 				VPNClientRootCertificates: []*armnetwork.VPNServerConfigVPNClientRootCertificate{
 					{
-						Name:           to.StringPtr("<name>"),
-						PublicCertData: to.StringPtr("<public-cert-data>"),
+						Name:           to.Ptr("<name>"),
+						PublicCertData: to.Ptr("<public-cert-data>"),
 					}},
 				VPNProtocols: []*armnetwork.VPNGatewayTunnelingProtocol{
-					armnetwork.VPNGatewayTunnelingProtocol("IkeV2").ToPtr()},
+					to.Ptr(armnetwork.VPNGatewayTunnelingProtocolIkeV2)},
 			},
 		},
-		nil)
+		&armnetwork.VPNServerConfigurationsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.VPNServerConfigurationsClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnServerConfigurationUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnServerConfigurationUpdateTags.json
 func ExampleVPNServerConfigurationsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewVPNServerConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewVPNServerConfigurationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.UpdateTags(ctx,
 		"<resource-group-name>",
 		"<vpn-server-configuration-name>",
 		armnetwork.TagsObject{
 			Tags: map[string]*string{
-				"key1": to.StringPtr("value1"),
-				"key2": to.StringPtr("value2"),
+				"key1": to.Ptr("value1"),
+				"key2": to.Ptr("value2"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.VPNServerConfigurationsClientUpdateTagsResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnServerConfigurationDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnServerConfigurationDelete.json
 func ExampleVPNServerConfigurationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewVPNServerConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewVPNServerConfigurationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<vpn-server-configuration-name>",
-		nil)
+		&armnetwork.VPNServerConfigurationsClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnServerConfigurationListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnServerConfigurationListByResourceGroup.json
 func ExampleVPNServerConfigurationsClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewVPNServerConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewVPNServerConfigurationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnServerConfigurationList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnServerConfigurationList.json
 func ExampleVPNServerConfigurationsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewVPNServerConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewVPNServerConfigurationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

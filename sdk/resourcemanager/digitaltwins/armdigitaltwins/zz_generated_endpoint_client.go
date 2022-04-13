@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type EndpointClient struct {
 // subscriptionID - The subscription identifier.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewEndpointClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *EndpointClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewEndpointClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EndpointClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &EndpointClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or update DigitalTwinsInstance endpoint.
@@ -57,22 +62,16 @@ func NewEndpointClient(subscriptionID string, credential azcore.TokenCredential,
 // endpointDescription - The DigitalTwinsInstance endpoint metadata and security metadata.
 // options - EndpointClientBeginCreateOrUpdateOptions contains the optional parameters for the EndpointClient.BeginCreateOrUpdate
 // method.
-func (client *EndpointClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, endpointName string, endpointDescription EndpointResource, options *EndpointClientBeginCreateOrUpdateOptions) (EndpointClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, endpointName, endpointDescription, options)
-	if err != nil {
-		return EndpointClientCreateOrUpdatePollerResponse{}, err
+func (client *EndpointClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, endpointName string, endpointDescription EndpointResource, options *EndpointClientBeginCreateOrUpdateOptions) (*armruntime.Poller[EndpointClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, endpointName, endpointDescription, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[EndpointClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[EndpointClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := EndpointClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("EndpointClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return EndpointClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &EndpointClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update DigitalTwinsInstance endpoint.
@@ -116,7 +115,7 @@ func (client *EndpointClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-06-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, endpointDescription)
@@ -128,22 +127,16 @@ func (client *EndpointClient) createOrUpdateCreateRequest(ctx context.Context, r
 // resourceName - The name of the DigitalTwinsInstance.
 // endpointName - Name of Endpoint Resource.
 // options - EndpointClientBeginDeleteOptions contains the optional parameters for the EndpointClient.BeginDelete method.
-func (client *EndpointClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, endpointName string, options *EndpointClientBeginDeleteOptions) (EndpointClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, endpointName, options)
-	if err != nil {
-		return EndpointClientDeletePollerResponse{}, err
+func (client *EndpointClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, endpointName string, options *EndpointClientBeginDeleteOptions) (*armruntime.Poller[EndpointClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, endpointName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[EndpointClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[EndpointClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := EndpointClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("EndpointClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return EndpointClientDeletePollerResponse{}, err
-	}
-	result.Poller = &EndpointClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete a DigitalTwinsInstance endpoint.
@@ -187,7 +180,7 @@ func (client *EndpointClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-06-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -238,7 +231,7 @@ func (client *EndpointClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-06-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -246,7 +239,7 @@ func (client *EndpointClient) getCreateRequest(ctx context.Context, resourceGrou
 
 // getHandleResponse handles the Get response.
 func (client *EndpointClient) getHandleResponse(resp *http.Response) (EndpointClientGetResponse, error) {
-	result := EndpointClientGetResponse{RawResponse: resp}
+	result := EndpointClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointResource); err != nil {
 		return EndpointClientGetResponse{}, err
 	}
@@ -258,16 +251,32 @@ func (client *EndpointClient) getHandleResponse(resp *http.Response) (EndpointCl
 // resourceGroupName - The name of the resource group that contains the DigitalTwinsInstance.
 // resourceName - The name of the DigitalTwinsInstance.
 // options - EndpointClientListOptions contains the optional parameters for the EndpointClient.List method.
-func (client *EndpointClient) List(resourceGroupName string, resourceName string, options *EndpointClientListOptions) *EndpointClientListPager {
-	return &EndpointClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
+func (client *EndpointClient) List(resourceGroupName string, resourceName string, options *EndpointClientListOptions) *runtime.Pager[EndpointClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[EndpointClientListResponse]{
+		More: func(page EndpointClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp EndpointClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.EndpointResourceListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *EndpointClientListResponse) (EndpointClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return EndpointClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return EndpointClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return EndpointClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -290,7 +299,7 @@ func (client *EndpointClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-06-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -298,7 +307,7 @@ func (client *EndpointClient) listCreateRequest(ctx context.Context, resourceGro
 
 // listHandleResponse handles the List response.
 func (client *EndpointClient) listHandleResponse(resp *http.Response) (EndpointClientListResponse, error) {
-	result := EndpointClientListResponse{RawResponse: resp}
+	result := EndpointClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointResourceListResult); err != nil {
 		return EndpointClientListResponse{}, err
 	}

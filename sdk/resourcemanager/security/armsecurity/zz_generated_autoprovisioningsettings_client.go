@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type AutoProvisioningSettingsClient struct {
 // subscriptionID - Azure subscription ID
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAutoProvisioningSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AutoProvisioningSettingsClient {
+func NewAutoProvisioningSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AutoProvisioningSettingsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AutoProvisioningSettingsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Details of a specific setting
@@ -94,7 +99,7 @@ func (client *AutoProvisioningSettingsClient) createCreateRequest(ctx context.Co
 
 // createHandleResponse handles the Create response.
 func (client *AutoProvisioningSettingsClient) createHandleResponse(resp *http.Response) (AutoProvisioningSettingsClientCreateResponse, error) {
-	result := AutoProvisioningSettingsClientCreateResponse{RawResponse: resp}
+	result := AutoProvisioningSettingsClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutoProvisioningSetting); err != nil {
 		return AutoProvisioningSettingsClientCreateResponse{}, err
 	}
@@ -145,7 +150,7 @@ func (client *AutoProvisioningSettingsClient) getCreateRequest(ctx context.Conte
 
 // getHandleResponse handles the Get response.
 func (client *AutoProvisioningSettingsClient) getHandleResponse(resp *http.Response) (AutoProvisioningSettingsClientGetResponse, error) {
-	result := AutoProvisioningSettingsClientGetResponse{RawResponse: resp}
+	result := AutoProvisioningSettingsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutoProvisioningSetting); err != nil {
 		return AutoProvisioningSettingsClientGetResponse{}, err
 	}
@@ -156,16 +161,32 @@ func (client *AutoProvisioningSettingsClient) getHandleResponse(resp *http.Respo
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AutoProvisioningSettingsClientListOptions contains the optional parameters for the AutoProvisioningSettingsClient.List
 // method.
-func (client *AutoProvisioningSettingsClient) List(options *AutoProvisioningSettingsClientListOptions) *AutoProvisioningSettingsClientListPager {
-	return &AutoProvisioningSettingsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *AutoProvisioningSettingsClient) List(options *AutoProvisioningSettingsClientListOptions) *runtime.Pager[AutoProvisioningSettingsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AutoProvisioningSettingsClientListResponse]{
+		More: func(page AutoProvisioningSettingsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AutoProvisioningSettingsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AutoProvisioningSettingList.NextLink)
+		Fetcher: func(ctx context.Context, page *AutoProvisioningSettingsClientListResponse) (AutoProvisioningSettingsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AutoProvisioningSettingsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AutoProvisioningSettingsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AutoProvisioningSettingsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -188,7 +209,7 @@ func (client *AutoProvisioningSettingsClient) listCreateRequest(ctx context.Cont
 
 // listHandleResponse handles the List response.
 func (client *AutoProvisioningSettingsClient) listHandleResponse(resp *http.Response) (AutoProvisioningSettingsClientListResponse, error) {
-	result := AutoProvisioningSettingsClientListResponse{RawResponse: resp}
+	result := AutoProvisioningSettingsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutoProvisioningSettingList); err != nil {
 		return AutoProvisioningSettingsClientListResponse{}, err
 	}

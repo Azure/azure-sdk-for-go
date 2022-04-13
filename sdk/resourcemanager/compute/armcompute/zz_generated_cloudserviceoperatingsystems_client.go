@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type CloudServiceOperatingSystemsClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewCloudServiceOperatingSystemsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CloudServiceOperatingSystemsClient {
+func NewCloudServiceOperatingSystemsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CloudServiceOperatingSystemsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &CloudServiceOperatingSystemsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // GetOSFamily - Gets properties of a guest operating system family that can be specified in the XML service configuration
@@ -100,7 +105,7 @@ func (client *CloudServiceOperatingSystemsClient) getOSFamilyCreateRequest(ctx c
 
 // getOSFamilyHandleResponse handles the GetOSFamily response.
 func (client *CloudServiceOperatingSystemsClient) getOSFamilyHandleResponse(resp *http.Response) (CloudServiceOperatingSystemsClientGetOSFamilyResponse, error) {
-	result := CloudServiceOperatingSystemsClientGetOSFamilyResponse{RawResponse: resp}
+	result := CloudServiceOperatingSystemsClientGetOSFamilyResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OSFamily); err != nil {
 		return CloudServiceOperatingSystemsClientGetOSFamilyResponse{}, err
 	}
@@ -157,7 +162,7 @@ func (client *CloudServiceOperatingSystemsClient) getOSVersionCreateRequest(ctx 
 
 // getOSVersionHandleResponse handles the GetOSVersion response.
 func (client *CloudServiceOperatingSystemsClient) getOSVersionHandleResponse(resp *http.Response) (CloudServiceOperatingSystemsClientGetOSVersionResponse, error) {
-	result := CloudServiceOperatingSystemsClientGetOSVersionResponse{RawResponse: resp}
+	result := CloudServiceOperatingSystemsClientGetOSVersionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OSVersion); err != nil {
 		return CloudServiceOperatingSystemsClientGetOSVersionResponse{}, err
 	}
@@ -171,16 +176,32 @@ func (client *CloudServiceOperatingSystemsClient) getOSVersionHandleResponse(res
 // location - Name of the location that the OS families pertain to.
 // options - CloudServiceOperatingSystemsClientListOSFamiliesOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.ListOSFamilies
 // method.
-func (client *CloudServiceOperatingSystemsClient) ListOSFamilies(location string, options *CloudServiceOperatingSystemsClientListOSFamiliesOptions) *CloudServiceOperatingSystemsClientListOSFamiliesPager {
-	return &CloudServiceOperatingSystemsClientListOSFamiliesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listOSFamiliesCreateRequest(ctx, location, options)
+func (client *CloudServiceOperatingSystemsClient) ListOSFamilies(location string, options *CloudServiceOperatingSystemsClientListOSFamiliesOptions) *runtime.Pager[CloudServiceOperatingSystemsClientListOSFamiliesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[CloudServiceOperatingSystemsClientListOSFamiliesResponse]{
+		More: func(page CloudServiceOperatingSystemsClientListOSFamiliesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp CloudServiceOperatingSystemsClientListOSFamiliesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.OSFamilyListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *CloudServiceOperatingSystemsClientListOSFamiliesResponse) (CloudServiceOperatingSystemsClientListOSFamiliesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listOSFamiliesCreateRequest(ctx, location, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CloudServiceOperatingSystemsClientListOSFamiliesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CloudServiceOperatingSystemsClientListOSFamiliesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CloudServiceOperatingSystemsClientListOSFamiliesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listOSFamiliesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listOSFamiliesCreateRequest creates the ListOSFamilies request.
@@ -207,7 +228,7 @@ func (client *CloudServiceOperatingSystemsClient) listOSFamiliesCreateRequest(ct
 
 // listOSFamiliesHandleResponse handles the ListOSFamilies response.
 func (client *CloudServiceOperatingSystemsClient) listOSFamiliesHandleResponse(resp *http.Response) (CloudServiceOperatingSystemsClientListOSFamiliesResponse, error) {
-	result := CloudServiceOperatingSystemsClientListOSFamiliesResponse{RawResponse: resp}
+	result := CloudServiceOperatingSystemsClientListOSFamiliesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OSFamilyListResult); err != nil {
 		return CloudServiceOperatingSystemsClientListOSFamiliesResponse{}, err
 	}
@@ -221,16 +242,32 @@ func (client *CloudServiceOperatingSystemsClient) listOSFamiliesHandleResponse(r
 // location - Name of the location that the OS versions pertain to.
 // options - CloudServiceOperatingSystemsClientListOSVersionsOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.ListOSVersions
 // method.
-func (client *CloudServiceOperatingSystemsClient) ListOSVersions(location string, options *CloudServiceOperatingSystemsClientListOSVersionsOptions) *CloudServiceOperatingSystemsClientListOSVersionsPager {
-	return &CloudServiceOperatingSystemsClientListOSVersionsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listOSVersionsCreateRequest(ctx, location, options)
+func (client *CloudServiceOperatingSystemsClient) ListOSVersions(location string, options *CloudServiceOperatingSystemsClientListOSVersionsOptions) *runtime.Pager[CloudServiceOperatingSystemsClientListOSVersionsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[CloudServiceOperatingSystemsClientListOSVersionsResponse]{
+		More: func(page CloudServiceOperatingSystemsClientListOSVersionsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp CloudServiceOperatingSystemsClientListOSVersionsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.OSVersionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *CloudServiceOperatingSystemsClientListOSVersionsResponse) (CloudServiceOperatingSystemsClientListOSVersionsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listOSVersionsCreateRequest(ctx, location, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CloudServiceOperatingSystemsClientListOSVersionsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CloudServiceOperatingSystemsClientListOSVersionsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CloudServiceOperatingSystemsClientListOSVersionsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listOSVersionsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listOSVersionsCreateRequest creates the ListOSVersions request.
@@ -257,7 +294,7 @@ func (client *CloudServiceOperatingSystemsClient) listOSVersionsCreateRequest(ct
 
 // listOSVersionsHandleResponse handles the ListOSVersions response.
 func (client *CloudServiceOperatingSystemsClient) listOSVersionsHandleResponse(resp *http.Response) (CloudServiceOperatingSystemsClientListOSVersionsResponse, error) {
-	result := CloudServiceOperatingSystemsClientListOSVersionsResponse{RawResponse: resp}
+	result := CloudServiceOperatingSystemsClientListOSVersionsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OSVersionListResult); err != nil {
 		return CloudServiceOperatingSystemsClientListOSVersionsResponse{}, err
 	}

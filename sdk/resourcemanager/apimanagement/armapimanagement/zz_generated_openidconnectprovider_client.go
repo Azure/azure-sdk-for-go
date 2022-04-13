@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type OpenIDConnectProviderClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewOpenIDConnectProviderClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OpenIDConnectProviderClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewOpenIDConnectProviderClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OpenIDConnectProviderClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &OpenIDConnectProviderClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates the OpenID Connect Provider.
@@ -109,7 +114,7 @@ func (client *OpenIDConnectProviderClient) createOrUpdateCreateRequest(ctx conte
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *OpenIDConnectProviderClient) createOrUpdateHandleResponse(resp *http.Response) (OpenIDConnectProviderClientCreateOrUpdateResponse, error) {
-	result := OpenIDConnectProviderClientCreateOrUpdateResponse{RawResponse: resp}
+	result := OpenIDConnectProviderClientCreateOrUpdateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -140,7 +145,7 @@ func (client *OpenIDConnectProviderClient) Delete(ctx context.Context, resourceG
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return OpenIDConnectProviderClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return OpenIDConnectProviderClientDeleteResponse{RawResponse: resp}, nil
+	return OpenIDConnectProviderClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -228,7 +233,7 @@ func (client *OpenIDConnectProviderClient) getCreateRequest(ctx context.Context,
 
 // getHandleResponse handles the Get response.
 func (client *OpenIDConnectProviderClient) getHandleResponse(resp *http.Response) (OpenIDConnectProviderClientGetResponse, error) {
-	result := OpenIDConnectProviderClientGetResponse{RawResponse: resp}
+	result := OpenIDConnectProviderClientGetResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -288,7 +293,7 @@ func (client *OpenIDConnectProviderClient) getEntityTagCreateRequest(ctx context
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *OpenIDConnectProviderClient) getEntityTagHandleResponse(resp *http.Response) (OpenIDConnectProviderClientGetEntityTagResponse, error) {
-	result := OpenIDConnectProviderClientGetEntityTagResponse{RawResponse: resp}
+	result := OpenIDConnectProviderClientGetEntityTagResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -304,16 +309,32 @@ func (client *OpenIDConnectProviderClient) getEntityTagHandleResponse(resp *http
 // serviceName - The name of the API Management service.
 // options - OpenIDConnectProviderClientListByServiceOptions contains the optional parameters for the OpenIDConnectProviderClient.ListByService
 // method.
-func (client *OpenIDConnectProviderClient) ListByService(resourceGroupName string, serviceName string, options *OpenIDConnectProviderClientListByServiceOptions) *OpenIDConnectProviderClientListByServicePager {
-	return &OpenIDConnectProviderClientListByServicePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+func (client *OpenIDConnectProviderClient) ListByService(resourceGroupName string, serviceName string, options *OpenIDConnectProviderClientListByServiceOptions) *runtime.Pager[OpenIDConnectProviderClientListByServiceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[OpenIDConnectProviderClientListByServiceResponse]{
+		More: func(page OpenIDConnectProviderClientListByServiceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp OpenIDConnectProviderClientListByServiceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.OpenIDConnectProviderCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *OpenIDConnectProviderClientListByServiceResponse) (OpenIDConnectProviderClientListByServiceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return OpenIDConnectProviderClientListByServiceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return OpenIDConnectProviderClientListByServiceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return OpenIDConnectProviderClientListByServiceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServiceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByServiceCreateRequest creates the ListByService request.
@@ -353,7 +374,7 @@ func (client *OpenIDConnectProviderClient) listByServiceCreateRequest(ctx contex
 
 // listByServiceHandleResponse handles the ListByService response.
 func (client *OpenIDConnectProviderClient) listByServiceHandleResponse(resp *http.Response) (OpenIDConnectProviderClientListByServiceResponse, error) {
-	result := OpenIDConnectProviderClientListByServiceResponse{RawResponse: resp}
+	result := OpenIDConnectProviderClientListByServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OpenIDConnectProviderCollection); err != nil {
 		return OpenIDConnectProviderClientListByServiceResponse{}, err
 	}
@@ -414,7 +435,7 @@ func (client *OpenIDConnectProviderClient) listSecretsCreateRequest(ctx context.
 
 // listSecretsHandleResponse handles the ListSecrets response.
 func (client *OpenIDConnectProviderClient) listSecretsHandleResponse(resp *http.Response) (OpenIDConnectProviderClientListSecretsResponse, error) {
-	result := OpenIDConnectProviderClientListSecretsResponse{RawResponse: resp}
+	result := OpenIDConnectProviderClientListSecretsResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -482,7 +503,7 @@ func (client *OpenIDConnectProviderClient) updateCreateRequest(ctx context.Conte
 
 // updateHandleResponse handles the Update response.
 func (client *OpenIDConnectProviderClient) updateHandleResponse(resp *http.Response) (OpenIDConnectProviderClientUpdateResponse, error) {
-	result := OpenIDConnectProviderClientUpdateResponse{RawResponse: resp}
+	result := OpenIDConnectProviderClientUpdateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}

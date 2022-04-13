@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type ImagesClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ImagesClient {
+func NewImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ImagesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ImagesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or update an image.
@@ -57,22 +62,16 @@ func NewImagesClient(subscriptionID string, credential azcore.TokenCredential, o
 // parameters - Parameters supplied to the Create Image operation.
 // options - ImagesClientBeginCreateOrUpdateOptions contains the optional parameters for the ImagesClient.BeginCreateOrUpdate
 // method.
-func (client *ImagesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters Image, options *ImagesClientBeginCreateOrUpdateOptions) (ImagesClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, imageName, parameters, options)
-	if err != nil {
-		return ImagesClientCreateOrUpdatePollerResponse{}, err
+func (client *ImagesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters Image, options *ImagesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ImagesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, imageName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ImagesClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ImagesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ImagesClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ImagesClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return ImagesClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ImagesClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update an image.
@@ -123,22 +122,16 @@ func (client *ImagesClient) createOrUpdateCreateRequest(ctx context.Context, res
 // resourceGroupName - The name of the resource group.
 // imageName - The name of the image.
 // options - ImagesClientBeginDeleteOptions contains the optional parameters for the ImagesClient.BeginDelete method.
-func (client *ImagesClient) BeginDelete(ctx context.Context, resourceGroupName string, imageName string, options *ImagesClientBeginDeleteOptions) (ImagesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, imageName, options)
-	if err != nil {
-		return ImagesClientDeletePollerResponse{}, err
+func (client *ImagesClient) BeginDelete(ctx context.Context, resourceGroupName string, imageName string, options *ImagesClientBeginDeleteOptions) (*armruntime.Poller[ImagesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, imageName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ImagesClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ImagesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ImagesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ImagesClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return ImagesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ImagesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes an Image.
@@ -235,7 +228,7 @@ func (client *ImagesClient) getCreateRequest(ctx context.Context, resourceGroupN
 
 // getHandleResponse handles the Get response.
 func (client *ImagesClient) getHandleResponse(resp *http.Response) (ImagesClientGetResponse, error) {
-	result := ImagesClientGetResponse{RawResponse: resp}
+	result := ImagesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Image); err != nil {
 		return ImagesClientGetResponse{}, err
 	}
@@ -246,16 +239,32 @@ func (client *ImagesClient) getHandleResponse(resp *http.Response) (ImagesClient
 // Do this till nextLink is null to fetch all the Images.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ImagesClientListOptions contains the optional parameters for the ImagesClient.List method.
-func (client *ImagesClient) List(options *ImagesClientListOptions) *ImagesClientListPager {
-	return &ImagesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *ImagesClient) List(options *ImagesClientListOptions) *runtime.Pager[ImagesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ImagesClientListResponse]{
+		More: func(page ImagesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ImagesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ImageListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ImagesClientListResponse) (ImagesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ImagesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ImagesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ImagesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -278,7 +287,7 @@ func (client *ImagesClient) listCreateRequest(ctx context.Context, options *Imag
 
 // listHandleResponse handles the List response.
 func (client *ImagesClient) listHandleResponse(resp *http.Response) (ImagesClientListResponse, error) {
-	result := ImagesClientListResponse{RawResponse: resp}
+	result := ImagesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImageListResult); err != nil {
 		return ImagesClientListResponse{}, err
 	}
@@ -290,16 +299,32 @@ func (client *ImagesClient) listHandleResponse(resp *http.Response) (ImagesClien
 // resourceGroupName - The name of the resource group.
 // options - ImagesClientListByResourceGroupOptions contains the optional parameters for the ImagesClient.ListByResourceGroup
 // method.
-func (client *ImagesClient) ListByResourceGroup(resourceGroupName string, options *ImagesClientListByResourceGroupOptions) *ImagesClientListByResourceGroupPager {
-	return &ImagesClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *ImagesClient) ListByResourceGroup(resourceGroupName string, options *ImagesClientListByResourceGroupOptions) *runtime.Pager[ImagesClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ImagesClientListByResourceGroupResponse]{
+		More: func(page ImagesClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ImagesClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ImageListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ImagesClientListByResourceGroupResponse) (ImagesClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ImagesClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ImagesClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ImagesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -326,7 +351,7 @@ func (client *ImagesClient) listByResourceGroupCreateRequest(ctx context.Context
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *ImagesClient) listByResourceGroupHandleResponse(resp *http.Response) (ImagesClientListByResourceGroupResponse, error) {
-	result := ImagesClientListByResourceGroupResponse{RawResponse: resp}
+	result := ImagesClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImageListResult); err != nil {
 		return ImagesClientListByResourceGroupResponse{}, err
 	}
@@ -339,22 +364,16 @@ func (client *ImagesClient) listByResourceGroupHandleResponse(resp *http.Respons
 // imageName - The name of the image.
 // parameters - Parameters supplied to the Update Image operation.
 // options - ImagesClientBeginUpdateOptions contains the optional parameters for the ImagesClient.BeginUpdate method.
-func (client *ImagesClient) BeginUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters ImageUpdate, options *ImagesClientBeginUpdateOptions) (ImagesClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, imageName, parameters, options)
-	if err != nil {
-		return ImagesClientUpdatePollerResponse{}, err
+func (client *ImagesClient) BeginUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters ImageUpdate, options *ImagesClientBeginUpdateOptions) (*armruntime.Poller[ImagesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, imageName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ImagesClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ImagesClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ImagesClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ImagesClient.Update", "", resp, client.pl)
-	if err != nil {
-		return ImagesClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &ImagesClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Update an image.

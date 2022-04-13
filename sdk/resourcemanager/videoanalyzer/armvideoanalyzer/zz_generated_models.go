@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armvideoanalyzer
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // AccessPoliciesClientCreateOrUpdateOptions contains the optional parameters for the AccessPoliciesClient.CreateOrUpdate
 // method.
@@ -61,17 +56,6 @@ type AccessPolicyEntity struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AccessPolicyEntity.
-func (a AccessPolicyEntity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
 // AccessPolicyEntityCollection - A collection of AccessPolicyEntity items.
 type AccessPolicyEntityCollection struct {
 	// A link to the next page of the collection (when the collection contains too many results to return in one response).
@@ -81,14 +65,6 @@ type AccessPolicyEntityCollection struct {
 	Value []*AccessPolicyEntity `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AccessPolicyEntityCollection.
-func (a AccessPolicyEntityCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "@nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
 // AccessPolicyProperties - Application level properties for the access policy resource.
 type AccessPolicyProperties struct {
 	// Authentication method to be used when validating client API access.
@@ -96,37 +72,6 @@ type AccessPolicyProperties struct {
 
 	// Defines the access level granted by this policy.
 	Role *AccessPolicyRole `json:"role,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AccessPolicyProperties.
-func (a AccessPolicyProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "authentication", a.Authentication)
-	populate(objectMap, "role", a.Role)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AccessPolicyProperties.
-func (a *AccessPolicyProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "authentication":
-			a.Authentication, err = unmarshalAuthenticationBaseClassification(val)
-			delete(rawMsg, key)
-		case "role":
-			err = unpopulate(val, &a.Role)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // AccountEncryption - Defines how the Video Analyzer account is (optionally) encrypted.
@@ -155,45 +100,6 @@ type AudioEncoderAac struct {
 	BitrateKbps *string `json:"bitrateKbps,omitempty"`
 }
 
-// GetAudioEncoderBase implements the AudioEncoderBaseClassification interface for type AudioEncoderAac.
-func (a *AudioEncoderAac) GetAudioEncoderBase() *AudioEncoderBase {
-	return &AudioEncoderBase{
-		Type:        a.Type,
-		BitrateKbps: a.BitrateKbps,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AudioEncoderAac.
-func (a AudioEncoderAac) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "bitrateKbps", a.BitrateKbps)
-	objectMap["@type"] = "#Microsoft.VideoAnalyzer.AudioEncoderAac"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AudioEncoderAac.
-func (a *AudioEncoderAac) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "bitrateKbps":
-			err = unpopulate(val, &a.BitrateKbps)
-			delete(rawMsg, key)
-		case "@type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // AudioEncoderBaseClassification provides polymorphic access to related types.
 // Call the interface's GetAudioEncoderBase() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -215,9 +121,6 @@ type AudioEncoderBase struct {
 	BitrateKbps *string `json:"bitrateKbps,omitempty"`
 }
 
-// GetAudioEncoderBase implements the AudioEncoderBaseClassification interface for type AudioEncoderBase.
-func (a *AudioEncoderBase) GetAudioEncoderBase() *AudioEncoderBase { return a }
-
 // AuthenticationBaseClassification provides polymorphic access to related types.
 // Call the interface's GetAuthenticationBase() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -233,9 +136,6 @@ type AuthenticationBase struct {
 	Type *string `json:"@type,omitempty"`
 }
 
-// GetAuthenticationBase implements the AuthenticationBaseClassification interface for type AuthenticationBase.
-func (a *AuthenticationBase) GetAuthenticationBase() *AuthenticationBase { return a }
-
 // CertificateSourceClassification provides polymorphic access to related types.
 // Call the interface's GetCertificateSource() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -250,9 +150,6 @@ type CertificateSource struct {
 	// REQUIRED; The discriminator for derived types.
 	Type *string `json:"@type,omitempty"`
 }
-
-// GetCertificateSource implements the CertificateSourceClassification interface for type CertificateSource.
-func (c *CertificateSource) GetCertificateSource() *CertificateSource { return c }
 
 // CheckNameAvailabilityRequest - The check availability request body.
 type CheckNameAvailabilityRequest struct {
@@ -281,13 +178,6 @@ type Collection struct {
 	Value []*VideoAnalyzer `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Collection.
-func (c Collection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
-}
-
 // CredentialsBaseClassification provides polymorphic access to related types.
 // Call the interface's GetCredentialsBase() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -302,9 +192,6 @@ type CredentialsBase struct {
 	// REQUIRED; The discriminator for derived types.
 	Type *string `json:"@type,omitempty"`
 }
-
-// GetCredentialsBase implements the CredentialsBaseClassification interface for type CredentialsBase.
-func (c *CredentialsBase) GetCredentialsBase() *CredentialsBase { return c }
 
 // EccTokenKey - Required validation properties for tokens generated with Elliptical Curve algorithm.
 type EccTokenKey struct {
@@ -322,57 +209,6 @@ type EccTokenKey struct {
 
 	// REQUIRED; Y coordinate.
 	Y *string `json:"y,omitempty"`
-}
-
-// GetTokenKey implements the TokenKeyClassification interface for type EccTokenKey.
-func (e *EccTokenKey) GetTokenKey() *TokenKey {
-	return &TokenKey{
-		Type: e.Type,
-		Kid:  e.Kid,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EccTokenKey.
-func (e EccTokenKey) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "alg", e.Alg)
-	populate(objectMap, "kid", e.Kid)
-	objectMap["@type"] = "#Microsoft.VideoAnalyzer.EccTokenKey"
-	populate(objectMap, "x", e.X)
-	populate(objectMap, "y", e.Y)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EccTokenKey.
-func (e *EccTokenKey) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "alg":
-			err = unpopulate(val, &e.Alg)
-			delete(rawMsg, key)
-		case "kid":
-			err = unpopulate(val, &e.Kid)
-			delete(rawMsg, key)
-		case "@type":
-			err = unpopulate(val, &e.Type)
-			delete(rawMsg, key)
-		case "x":
-			err = unpopulate(val, &e.X)
-			delete(rawMsg, key)
-		case "y":
-			err = unpopulate(val, &e.Y)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // EdgeModuleEntity - The representation of an edge module.
@@ -402,14 +238,6 @@ type EdgeModuleEntityCollection struct {
 	Value []*EdgeModuleEntity `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type EdgeModuleEntityCollection.
-func (e EdgeModuleEntityCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "@nextLink", e.NextLink)
-	populate(objectMap, "value", e.Value)
-	return json.Marshal(objectMap)
-}
-
 // EdgeModuleProperties - Application level properties for the edge module resource.
 type EdgeModuleProperties struct {
 	// READ-ONLY; Internal ID generated for the instance of the Video Analyzer edge module.
@@ -431,37 +259,6 @@ type EdgeModuleProvisioningToken struct {
 	// READ-ONLY; The token blob to be provided to the Azure Video Analyzer IoT edge module through the Azure IoT Edge module
 	// twin properties.
 	Token *string `json:"token,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EdgeModuleProvisioningToken.
-func (e EdgeModuleProvisioningToken) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "expirationDate", e.ExpirationDate)
-	populate(objectMap, "token", e.Token)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EdgeModuleProvisioningToken.
-func (e *EdgeModuleProvisioningToken) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "expirationDate":
-			err = unpopulateTimeRFC3339(val, &e.ExpirationDate)
-			delete(rawMsg, key)
-		case "token":
-			err = unpopulate(val, &e.Token)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // EdgeModulesClientCreateOrUpdateOptions contains the optional parameters for the EdgeModulesClient.CreateOrUpdate method.
@@ -504,48 +301,6 @@ type EncoderCustomPreset struct {
 	VideoEncoder VideoEncoderBaseClassification `json:"videoEncoder,omitempty"`
 }
 
-// GetEncoderPresetBase implements the EncoderPresetBaseClassification interface for type EncoderCustomPreset.
-func (e *EncoderCustomPreset) GetEncoderPresetBase() *EncoderPresetBase {
-	return &EncoderPresetBase{
-		Type: e.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EncoderCustomPreset.
-func (e EncoderCustomPreset) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "audioEncoder", e.AudioEncoder)
-	objectMap["@type"] = "#Microsoft.VideoAnalyzer.EncoderCustomPreset"
-	populate(objectMap, "videoEncoder", e.VideoEncoder)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EncoderCustomPreset.
-func (e *EncoderCustomPreset) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "audioEncoder":
-			e.AudioEncoder, err = unmarshalAudioEncoderBaseClassification(val)
-			delete(rawMsg, key)
-		case "@type":
-			err = unpopulate(val, &e.Type)
-			delete(rawMsg, key)
-		case "videoEncoder":
-			e.VideoEncoder, err = unmarshalVideoEncoderBaseClassification(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // EncoderPresetBaseClassification provides polymorphic access to related types.
 // Call the interface's GetEncoderPresetBase() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -561,9 +316,6 @@ type EncoderPresetBase struct {
 	// REQUIRED; The discriminator for derived types.
 	Type *string `json:"@type,omitempty"`
 }
-
-// GetEncoderPresetBase implements the EncoderPresetBaseClassification interface for type EncoderPresetBase.
-func (e *EncoderPresetBase) GetEncoderPresetBase() *EncoderPresetBase { return e }
 
 // EncoderProcessor - Encoder processor allows for encoding of the input content. For example, it can used to change the resolution
 // from 4K to 1280x720.
@@ -581,62 +333,6 @@ type EncoderProcessor struct {
 	Type *string `json:"@type,omitempty"`
 }
 
-// GetNodeBase implements the NodeBaseClassification interface for type EncoderProcessor.
-func (e *EncoderProcessor) GetNodeBase() *NodeBase {
-	return &NodeBase{
-		Type: e.Type,
-		Name: e.Name,
-	}
-}
-
-// GetProcessorNodeBase implements the ProcessorNodeBaseClassification interface for type EncoderProcessor.
-func (e *EncoderProcessor) GetProcessorNodeBase() *ProcessorNodeBase {
-	return &ProcessorNodeBase{
-		Inputs: e.Inputs,
-		Type:   e.Type,
-		Name:   e.Name,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EncoderProcessor.
-func (e EncoderProcessor) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "inputs", e.Inputs)
-	populate(objectMap, "name", e.Name)
-	populate(objectMap, "preset", e.Preset)
-	objectMap["@type"] = "#Microsoft.VideoAnalyzer.EncoderProcessor"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EncoderProcessor.
-func (e *EncoderProcessor) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "inputs":
-			err = unpopulate(val, &e.Inputs)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &e.Name)
-			delete(rawMsg, key)
-		case "preset":
-			e.Preset, err = unmarshalEncoderPresetBaseClassification(val)
-			delete(rawMsg, key)
-		case "@type":
-			err = unpopulate(val, &e.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // EncoderSystemPreset - Describes a built-in preset for encoding the input content using the encoder processor.
 type EncoderSystemPreset struct {
 	// REQUIRED; Name of the built-in encoding preset.
@@ -644,44 +340,6 @@ type EncoderSystemPreset struct {
 
 	// REQUIRED; The discriminator for derived types.
 	Type *string `json:"@type,omitempty"`
-}
-
-// GetEncoderPresetBase implements the EncoderPresetBaseClassification interface for type EncoderSystemPreset.
-func (e *EncoderSystemPreset) GetEncoderPresetBase() *EncoderPresetBase {
-	return &EncoderPresetBase{
-		Type: e.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EncoderSystemPreset.
-func (e EncoderSystemPreset) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "name", e.Name)
-	objectMap["@type"] = "#Microsoft.VideoAnalyzer.EncoderSystemPreset"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EncoderSystemPreset.
-func (e *EncoderSystemPreset) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "name":
-			err = unpopulate(val, &e.Name)
-			delete(rawMsg, key)
-		case "@type":
-			err = unpopulate(val, &e.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // Endpoint - The endpoint details.
@@ -718,48 +376,6 @@ type EndpointBase struct {
 	Tunnel TunnelBaseClassification `json:"tunnel,omitempty"`
 }
 
-// GetEndpointBase implements the EndpointBaseClassification interface for type EndpointBase.
-func (e *EndpointBase) GetEndpointBase() *EndpointBase { return e }
-
-// MarshalJSON implements the json.Marshaller interface for type EndpointBase.
-func (e EndpointBase) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "credentials", e.Credentials)
-	populate(objectMap, "tunnel", e.Tunnel)
-	objectMap["@type"] = e.Type
-	populate(objectMap, "url", e.URL)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EndpointBase.
-func (e *EndpointBase) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "credentials":
-			e.Credentials, err = unmarshalCredentialsBaseClassification(val)
-			delete(rawMsg, key)
-		case "tunnel":
-			e.Tunnel, err = unmarshalTunnelBaseClassification(val)
-			delete(rawMsg, key)
-		case "@type":
-			err = unpopulate(val, &e.Type)
-			delete(rawMsg, key)
-		case "url":
-			err = unpopulate(val, &e.URL)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
@@ -787,15 +403,11 @@ type ErrorDetail struct {
 	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ErrorDetail.
-func (e ErrorDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // GroupLevelAccessControl - Group level network access control.
@@ -811,14 +423,6 @@ type Identity struct {
 
 	// The User Assigned Managed Identities.
 	UserAssignedIdentities map[string]*UserAssignedManagedIdentity `json:"userAssignedIdentities,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Identity.
-func (i Identity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "type", i.Type)
-	populate(objectMap, "userAssignedIdentities", i.UserAssignedIdentities)
-	return json.Marshal(objectMap)
 }
 
 // IotHub - The IoT Hub details.
@@ -852,56 +456,6 @@ type JwtAuthentication struct {
 	Keys []TokenKeyClassification `json:"keys,omitempty"`
 }
 
-// GetAuthenticationBase implements the AuthenticationBaseClassification interface for type JwtAuthentication.
-func (j *JwtAuthentication) GetAuthenticationBase() *AuthenticationBase {
-	return &AuthenticationBase{
-		Type: j.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type JwtAuthentication.
-func (j JwtAuthentication) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "audiences", j.Audiences)
-	populate(objectMap, "claims", j.Claims)
-	populate(objectMap, "issuers", j.Issuers)
-	populate(objectMap, "keys", j.Keys)
-	objectMap["@type"] = "#Microsoft.VideoAnalyzer.JwtAuthentication"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type JwtAuthentication.
-func (j *JwtAuthentication) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "audiences":
-			err = unpopulate(val, &j.Audiences)
-			delete(rawMsg, key)
-		case "claims":
-			err = unpopulate(val, &j.Claims)
-			delete(rawMsg, key)
-		case "issuers":
-			err = unpopulate(val, &j.Issuers)
-			delete(rawMsg, key)
-		case "keys":
-			j.Keys, err = unmarshalTokenKeyClassificationArray(val)
-			delete(rawMsg, key)
-		case "@type":
-			err = unpopulate(val, &j.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // KeyVaultProperties - The details for accessing the encryption keys in Key Vault.
 type KeyVaultProperties struct {
 	// REQUIRED; The URL of the Key Vault key used to encrypt the account. The key may either be versioned (for example https://vault/keys/mykey/version1)
@@ -919,33 +473,6 @@ type ListProvisioningTokenInput struct {
 	// REQUIRED; The desired expiration date of the registration token. The Azure Video Analyzer IoT edge module must be initialized
 	// and connected to the Internet prior to the token expiration date.
 	ExpirationDate *time.Time `json:"expirationDate,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ListProvisioningTokenInput.
-func (l ListProvisioningTokenInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "expirationDate", l.ExpirationDate)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ListProvisioningTokenInput.
-func (l *ListProvisioningTokenInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "expirationDate":
-			err = unpopulateTimeRFC3339(val, &l.ExpirationDate)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // LivePipeline - Live pipeline represents a unique instance of a live topology, used for real-time ingestion, archiving and
@@ -974,14 +501,6 @@ type LivePipelineCollection struct {
 
 	// A collection of LivePipeline items.
 	Value []*LivePipeline `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type LivePipelineCollection.
-func (l LivePipelineCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "@nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
 }
 
 // LivePipelineOperationStatus - Used for tracking the status of an operation on the live pipeline.
@@ -1028,17 +547,6 @@ type LivePipelineProperties struct {
 	State *LivePipelineState `json:"state,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LivePipelineProperties.
-func (l LivePipelineProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "bitrateKbps", l.BitrateKbps)
-	populate(objectMap, "description", l.Description)
-	populate(objectMap, "parameters", l.Parameters)
-	populate(objectMap, "state", l.State)
-	populate(objectMap, "topologyName", l.TopologyName)
-	return json.Marshal(objectMap)
-}
-
 // LivePipelinePropertiesUpdate - Live pipeline properties.
 type LivePipelinePropertiesUpdate struct {
 	// Maximum bitrate capacity in Kbps reserved for the live pipeline. The allowed range is from 500 to 3000 Kbps in increments
@@ -1065,17 +573,6 @@ type LivePipelinePropertiesUpdate struct {
 	State *LivePipelineState `json:"state,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LivePipelinePropertiesUpdate.
-func (l LivePipelinePropertiesUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "bitrateKbps", l.BitrateKbps)
-	populate(objectMap, "description", l.Description)
-	populate(objectMap, "parameters", l.Parameters)
-	populate(objectMap, "state", l.State)
-	populate(objectMap, "topologyName", l.TopologyName)
-	return json.Marshal(objectMap)
-}
-
 // LivePipelineUpdate - Live pipeline represents a unique instance of a live topology, used for real-time ingestion, archiving
 // and publishing of content for a unique RTSP camera.
 type LivePipelineUpdate struct {
@@ -1095,26 +592,17 @@ type LivePipelineUpdate struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LivePipelineUpdate.
-func (l LivePipelineUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", l.ID)
-	populate(objectMap, "name", l.Name)
-	populate(objectMap, "properties", l.Properties)
-	populate(objectMap, "systemData", l.SystemData)
-	populate(objectMap, "type", l.Type)
-	return json.Marshal(objectMap)
-}
-
 // LivePipelinesClientBeginActivateOptions contains the optional parameters for the LivePipelinesClient.BeginActivate method.
 type LivePipelinesClientBeginActivateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // LivePipelinesClientBeginDeactivateOptions contains the optional parameters for the LivePipelinesClient.BeginDeactivate
 // method.
 type LivePipelinesClientBeginDeactivateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // LivePipelinesClientCreateOrUpdateOptions contains the optional parameters for the LivePipelinesClient.CreateOrUpdate method.
@@ -1221,24 +709,6 @@ type MetricSpecification struct {
 	Unit *MetricUnit `json:"unit,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MetricSpecification.
-func (m MetricSpecification) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "aggregationType", m.AggregationType)
-	populate(objectMap, "dimensions", m.Dimensions)
-	populate(objectMap, "displayDescription", m.DisplayDescription)
-	populate(objectMap, "displayName", m.DisplayName)
-	populate(objectMap, "enableRegionalMdmAccount", m.EnableRegionalMdmAccount)
-	populate(objectMap, "lockAggregationType", m.LockAggregationType)
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "sourceMdmAccount", m.SourceMdmAccount)
-	populate(objectMap, "sourceMdmNamespace", m.SourceMdmNamespace)
-	populate(objectMap, "supportedAggregationTypes", m.SupportedAggregationTypes)
-	populate(objectMap, "supportedTimeGrainTypes", m.SupportedTimeGrainTypes)
-	populate(objectMap, "unit", m.Unit)
-	return json.Marshal(objectMap)
-}
-
 // NetworkAccessControl - Network access control for video analyzer account.
 type NetworkAccessControl struct {
 	// Public network access for consumption group.
@@ -1268,9 +738,6 @@ type NodeBase struct {
 	// REQUIRED; The discriminator for derived types.
 	Type *string `json:"@type,omitempty"`
 }
-
-// GetNodeBase implements the NodeBaseClassification interface for type NodeBase.
-func (n *NodeBase) GetNodeBase() *NodeBase { return n }
 
 // NodeInput - Describes an input signal to be used on a pipeline node.
 type NodeInput struct {
@@ -1303,13 +770,6 @@ type Operation struct {
 type OperationCollection struct {
 	// A collection of Operation items.
 	Value []*Operation `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationCollection.
-func (o OperationCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 // OperationDisplay - Operation details.
@@ -1399,44 +859,6 @@ type PemCertificateList struct {
 	Type *string `json:"@type,omitempty"`
 }
 
-// GetCertificateSource implements the CertificateSourceClassification interface for type PemCertificateList.
-func (p *PemCertificateList) GetCertificateSource() *CertificateSource {
-	return &CertificateSource{
-		Type: p.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PemCertificateList.
-func (p PemCertificateList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "certificates", p.Certificates)
-	objectMap["@type"] = "#Microsoft.VideoAnalyzer.PemCertificateList"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PemCertificateList.
-func (p *PemCertificateList) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "certificates":
-			err = unpopulate(val, &p.Certificates)
-			delete(rawMsg, key)
-		case "@type":
-			err = unpopulate(val, &p.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // PipelineJob - Pipeline job represents a unique instance of a batch topology, used for offline processing of selected portions
 // of archived content.
 type PipelineJob struct {
@@ -1463,14 +885,6 @@ type PipelineJobCollection struct {
 
 	// A collection of PipelineJob items.
 	Value []*PipelineJob `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PipelineJobCollection.
-func (p PipelineJobCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "@nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // PipelineJobError - Details about the error for a failed pipeline job.
@@ -1525,53 +939,6 @@ type PipelineJobProperties struct {
 	State *PipelineJobState `json:"state,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PipelineJobProperties.
-func (p PipelineJobProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "description", p.Description)
-	populate(objectMap, "error", p.Error)
-	populateTimeRFC3339(objectMap, "expiration", p.Expiration)
-	populate(objectMap, "parameters", p.Parameters)
-	populate(objectMap, "state", p.State)
-	populate(objectMap, "topologyName", p.TopologyName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PipelineJobProperties.
-func (p *PipelineJobProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "description":
-			err = unpopulate(val, &p.Description)
-			delete(rawMsg, key)
-		case "error":
-			err = unpopulate(val, &p.Error)
-			delete(rawMsg, key)
-		case "expiration":
-			err = unpopulateTimeRFC3339(val, &p.Expiration)
-			delete(rawMsg, key)
-		case "parameters":
-			err = unpopulate(val, &p.Parameters)
-			delete(rawMsg, key)
-		case "state":
-			err = unpopulate(val, &p.State)
-			delete(rawMsg, key)
-		case "topologyName":
-			err = unpopulate(val, &p.TopologyName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // PipelineJobPropertiesUpdate - Pipeline job properties.
 type PipelineJobPropertiesUpdate struct {
 	// An optional description for the pipeline.
@@ -1597,53 +964,6 @@ type PipelineJobPropertiesUpdate struct {
 	State *PipelineJobState `json:"state,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PipelineJobPropertiesUpdate.
-func (p PipelineJobPropertiesUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "description", p.Description)
-	populate(objectMap, "error", p.Error)
-	populateTimeRFC3339(objectMap, "expiration", p.Expiration)
-	populate(objectMap, "parameters", p.Parameters)
-	populate(objectMap, "state", p.State)
-	populate(objectMap, "topologyName", p.TopologyName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PipelineJobPropertiesUpdate.
-func (p *PipelineJobPropertiesUpdate) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "description":
-			err = unpopulate(val, &p.Description)
-			delete(rawMsg, key)
-		case "error":
-			err = unpopulate(val, &p.Error)
-			delete(rawMsg, key)
-		case "expiration":
-			err = unpopulateTimeRFC3339(val, &p.Expiration)
-			delete(rawMsg, key)
-		case "parameters":
-			err = unpopulate(val, &p.Parameters)
-			delete(rawMsg, key)
-		case "state":
-			err = unpopulate(val, &p.State)
-			delete(rawMsg, key)
-		case "topologyName":
-			err = unpopulate(val, &p.TopologyName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // PipelineJobUpdate - Pipeline job represents a unique instance of a batch topology, used for offline processing of selected
 // portions of archived content.
 type PipelineJobUpdate struct {
@@ -1663,20 +983,10 @@ type PipelineJobUpdate struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PipelineJobUpdate.
-func (p PipelineJobUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", p.ID)
-	populate(objectMap, "name", p.Name)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "systemData", p.SystemData)
-	populate(objectMap, "type", p.Type)
-	return json.Marshal(objectMap)
-}
-
 // PipelineJobsClientBeginCancelOptions contains the optional parameters for the PipelineJobsClient.BeginCancel method.
 type PipelineJobsClientBeginCancelOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // PipelineJobsClientCreateOrUpdateOptions contains the optional parameters for the PipelineJobsClient.CreateOrUpdate method.
@@ -1783,14 +1093,6 @@ type PipelineTopologyCollection struct {
 	Value []*PipelineTopology `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PipelineTopologyCollection.
-func (p PipelineTopologyCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "@nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PipelineTopologyProperties - Describes the properties of a pipeline topology.
 type PipelineTopologyProperties struct {
 	// REQUIRED; List of the topology sink nodes. Sink nodes allow pipeline data to be stored or exported.
@@ -1812,49 +1114,6 @@ type PipelineTopologyProperties struct {
 	Processors []ProcessorNodeBaseClassification `json:"processors,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PipelineTopologyProperties.
-func (p PipelineTopologyProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "description", p.Description)
-	populate(objectMap, "parameters", p.Parameters)
-	populate(objectMap, "processors", p.Processors)
-	populate(objectMap, "sinks", p.Sinks)
-	populate(objectMap, "sources", p.Sources)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PipelineTopologyProperties.
-func (p *PipelineTopologyProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "description":
-			err = unpopulate(val, &p.Description)
-			delete(rawMsg, key)
-		case "parameters":
-			err = unpopulate(val, &p.Parameters)
-			delete(rawMsg, key)
-		case "processors":
-			p.Processors, err = unmarshalProcessorNodeBaseClassificationArray(val)
-			delete(rawMsg, key)
-		case "sinks":
-			p.Sinks, err = unmarshalSinkNodeBaseClassificationArray(val)
-			delete(rawMsg, key)
-		case "sources":
-			p.Sources, err = unmarshalSourceNodeBaseClassificationArray(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // PipelineTopologyPropertiesUpdate - Describes the properties of a pipeline topology.
 type PipelineTopologyPropertiesUpdate struct {
 	// An optional description of the pipeline topology. It is recommended that the expected use of the topology to be described
@@ -1874,49 +1133,6 @@ type PipelineTopologyPropertiesUpdate struct {
 
 	// List of the topology source nodes. Source nodes enable external data to be ingested by the pipeline.
 	Sources []SourceNodeBaseClassification `json:"sources,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PipelineTopologyPropertiesUpdate.
-func (p PipelineTopologyPropertiesUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "description", p.Description)
-	populate(objectMap, "parameters", p.Parameters)
-	populate(objectMap, "processors", p.Processors)
-	populate(objectMap, "sinks", p.Sinks)
-	populate(objectMap, "sources", p.Sources)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PipelineTopologyPropertiesUpdate.
-func (p *PipelineTopologyPropertiesUpdate) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "description":
-			err = unpopulate(val, &p.Description)
-			delete(rawMsg, key)
-		case "parameters":
-			err = unpopulate(val, &p.Parameters)
-			delete(rawMsg, key)
-		case "processors":
-			p.Processors, err = unmarshalProcessorNodeBaseClassificationArray(val)
-			delete(rawMsg, key)
-		case "sinks":
-			p.Sinks, err = unmarshalSinkNodeBaseClassificationArray(val)
-			delete(rawMsg, key)
-		case "sources":
-			p.Sources, err = unmarshalSourceNodeBaseClassificationArray(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // PipelineTopologyUpdate - Pipeline topology describes the processing steps to be applied when processing content for a particular
@@ -1955,19 +1171,6 @@ type PipelineTopologyUpdate struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PipelineTopologyUpdate.
-func (p PipelineTopologyUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", p.ID)
-	populate(objectMap, "kind", p.Kind)
-	populate(objectMap, "name", p.Name)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "sku", p.SKU)
-	populate(objectMap, "systemData", p.SystemData)
-	populate(objectMap, "type", p.Type)
-	return json.Marshal(objectMap)
-}
-
 // PrivateEndpoint - The Private Endpoint resource.
 type PrivateEndpoint struct {
 	// READ-ONLY; The ARM identifier for Private Endpoint
@@ -1996,13 +1199,6 @@ type PrivateEndpointConnection struct {
 type PrivateEndpointConnectionListResult struct {
 	// Array of private endpoint connections
 	Value []*PrivateEndpointConnection `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnectionListResult.
-func (p PrivateEndpointConnectionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // PrivateEndpointConnectionOperationStatus - Status of private endpoint connection operation.
@@ -2098,13 +1294,6 @@ type PrivateLinkResourceListResult struct {
 	Value []*PrivateLinkResource `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceListResult.
-func (p PrivateLinkResourceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PrivateLinkResourceProperties - Properties of a private link resource.
 type PrivateLinkResourceProperties struct {
 	// The private link resource Private link DNS zone name.
@@ -2115,15 +1304,6 @@ type PrivateLinkResourceProperties struct {
 
 	// READ-ONLY; The private link resource required member names.
 	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceProperties.
-func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "groupId", p.GroupID)
-	populate(objectMap, "requiredMembers", p.RequiredMembers)
-	populate(objectMap, "requiredZoneNames", p.RequiredZoneNames)
-	return json.Marshal(objectMap)
 }
 
 // PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
@@ -2171,52 +1351,6 @@ type ProcessorNodeBase struct {
 	Type *string `json:"@type,omitempty"`
 }
 
-// GetNodeBase implements the NodeBaseClassification interface for type ProcessorNodeBase.
-func (p *ProcessorNodeBase) GetNodeBase() *NodeBase {
-	return &NodeBase{
-		Type: p.Type,
-		Name: p.Name,
-	}
-}
-
-// GetProcessorNodeBase implements the ProcessorNodeBaseClassification interface for type ProcessorNodeBase.
-func (p *ProcessorNodeBase) GetProcessorNodeBase() *ProcessorNodeBase { return p }
-
-// MarshalJSON implements the json.Marshaller interface for type ProcessorNodeBase.
-func (p ProcessorNodeBase) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "inputs", p.Inputs)
-	populate(objectMap, "name", p.Name)
-	objectMap["@type"] = "#Microsoft.VideoAnalyzer.ProcessorNodeBase"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ProcessorNodeBase.
-func (p *ProcessorNodeBase) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "inputs":
-			err = unpopulate(val, &p.Inputs)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &p.Name)
-			delete(rawMsg, key)
-		case "@type":
-			err = unpopulate(val, &p.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // Properties - The properties of the Video Analyzer account.
 type Properties struct {
 	// REQUIRED; The storage accounts for this resource.
@@ -2244,20 +1378,6 @@ type Properties struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Properties.
-func (p Properties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "encryption", p.Encryption)
-	populate(objectMap, "endpoints", p.Endpoints)
-	populate(objectMap, "iotHubs", p.IotHubs)
-	populate(objectMap, "networkAccessControl", p.NetworkAccessControl)
-	populate(objectMap, "privateEndpointConnections", p.PrivateEndpointConnections)
-	populate(objectMap, "provisioningState", p.ProvisioningState)
-	populate(objectMap, "publicNetworkAccess", p.PublicNetworkAccess)
-	populate(objectMap, "storageAccounts", p.StorageAccounts)
-	return json.Marshal(objectMap)
-}
-
 // PropertiesUpdate - The properties of the Video Analyzer account.
 type PropertiesUpdate struct {
 	// The account encryption properties.
@@ -2283,20 +1403,6 @@ type PropertiesUpdate struct {
 
 	// READ-ONLY; Provisioning state of the Video Analyzer account.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PropertiesUpdate.
-func (p PropertiesUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "encryption", p.Encryption)
-	populate(objectMap, "endpoints", p.Endpoints)
-	populate(objectMap, "iotHubs", p.IotHubs)
-	populate(objectMap, "networkAccessControl", p.NetworkAccessControl)
-	populate(objectMap, "privateEndpointConnections", p.PrivateEndpointConnections)
-	populate(objectMap, "provisioningState", p.ProvisioningState)
-	populate(objectMap, "publicNetworkAccess", p.PublicNetworkAccess)
-	populate(objectMap, "storageAccounts", p.StorageAccounts)
-	return json.Marshal(objectMap)
 }
 
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
@@ -2354,57 +1460,6 @@ type RsaTokenKey struct {
 	Type *string `json:"@type,omitempty"`
 }
 
-// GetTokenKey implements the TokenKeyClassification interface for type RsaTokenKey.
-func (r *RsaTokenKey) GetTokenKey() *TokenKey {
-	return &TokenKey{
-		Type: r.Type,
-		Kid:  r.Kid,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RsaTokenKey.
-func (r RsaTokenKey) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "alg", r.Alg)
-	populate(objectMap, "e", r.E)
-	populate(objectMap, "kid", r.Kid)
-	populate(objectMap, "n", r.N)
-	objectMap["@type"] = "#Microsoft.VideoAnalyzer.RsaTokenKey"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RsaTokenKey.
-func (r *RsaTokenKey) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "alg":
-			err = unpopulate(val, &r.Alg)
-			delete(rawMsg, key)
-		case "e":
-			err = unpopulate(val, &r.E)
-			delete(rawMsg, key)
-		case "kid":
-			err = unpopulate(val, &r.Kid)
-			delete(rawMsg, key)
-		case "n":
-			err = unpopulate(val, &r.N)
-			delete(rawMsg, key)
-		case "@type":
-			err = unpopulate(val, &r.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // RtspSource - RTSP source allows for media from an RTSP camera or generic RTSP server to be ingested into a pipeline.
 type RtspSource struct {
 	// REQUIRED; RTSP endpoint information for Video Analyzer to connect to. This contains the required information for Video
@@ -2421,61 +1476,6 @@ type RtspSource struct {
 	// the TCP RTSP connection. When using HTTP, the RTSP messages are exchanged
 	// through long lived HTTP connections, and the RTP packages are interleaved in the HTTP connections alongside the RTSP messages.
 	Transport *RtspTransport `json:"transport,omitempty"`
-}
-
-// GetNodeBase implements the NodeBaseClassification interface for type RtspSource.
-func (r *RtspSource) GetNodeBase() *NodeBase {
-	return &NodeBase{
-		Type: r.Type,
-		Name: r.Name,
-	}
-}
-
-// GetSourceNodeBase implements the SourceNodeBaseClassification interface for type RtspSource.
-func (r *RtspSource) GetSourceNodeBase() *SourceNodeBase {
-	return &SourceNodeBase{
-		Type: r.Type,
-		Name: r.Name,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RtspSource.
-func (r RtspSource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "endpoint", r.Endpoint)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "transport", r.Transport)
-	objectMap["@type"] = "#Microsoft.VideoAnalyzer.RtspSource"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RtspSource.
-func (r *RtspSource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "endpoint":
-			r.Endpoint, err = unmarshalEndpointBaseClassification(val)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &r.Name)
-			delete(rawMsg, key)
-		case "transport":
-			err = unpopulate(val, &r.Transport)
-			delete(rawMsg, key)
-		case "@type":
-			err = unpopulate(val, &r.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // SKU - The SKU details.
@@ -2499,48 +1499,6 @@ type SecureIotDeviceRemoteTunnel struct {
 	Type *string `json:"@type,omitempty"`
 }
 
-// GetTunnelBase implements the TunnelBaseClassification interface for type SecureIotDeviceRemoteTunnel.
-func (s *SecureIotDeviceRemoteTunnel) GetTunnelBase() *TunnelBase {
-	return &TunnelBase{
-		Type: s.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SecureIotDeviceRemoteTunnel.
-func (s SecureIotDeviceRemoteTunnel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "deviceId", s.DeviceID)
-	populate(objectMap, "iotHubName", s.IotHubName)
-	objectMap["@type"] = "#Microsoft.VideoAnalyzer.SecureIotDeviceRemoteTunnel"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SecureIotDeviceRemoteTunnel.
-func (s *SecureIotDeviceRemoteTunnel) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "deviceId":
-			err = unpopulate(val, &s.DeviceID)
-			delete(rawMsg, key)
-		case "iotHubName":
-			err = unpopulate(val, &s.IotHubName)
-			delete(rawMsg, key)
-		case "@type":
-			err = unpopulate(val, &s.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ServiceSpecification - The service metric specifications.
 type ServiceSpecification struct {
 	// READ-ONLY; List of log specifications.
@@ -2548,14 +1506,6 @@ type ServiceSpecification struct {
 
 	// READ-ONLY; List of metric specifications.
 	MetricSpecifications []*MetricSpecification `json:"metricSpecifications,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServiceSpecification.
-func (s ServiceSpecification) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "logSpecifications", s.LogSpecifications)
-	populate(objectMap, "metricSpecifications", s.MetricSpecifications)
-	return json.Marshal(objectMap)
 }
 
 // SinkNodeBaseClassification provides polymorphic access to related types.
@@ -2580,52 +1530,6 @@ type SinkNodeBase struct {
 	Type *string `json:"@type,omitempty"`
 }
 
-// GetNodeBase implements the NodeBaseClassification interface for type SinkNodeBase.
-func (s *SinkNodeBase) GetNodeBase() *NodeBase {
-	return &NodeBase{
-		Type: s.Type,
-		Name: s.Name,
-	}
-}
-
-// GetSinkNodeBase implements the SinkNodeBaseClassification interface for type SinkNodeBase.
-func (s *SinkNodeBase) GetSinkNodeBase() *SinkNodeBase { return s }
-
-// MarshalJSON implements the json.Marshaller interface for type SinkNodeBase.
-func (s SinkNodeBase) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "inputs", s.Inputs)
-	populate(objectMap, "name", s.Name)
-	objectMap["@type"] = "#Microsoft.VideoAnalyzer.SinkNodeBase"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SinkNodeBase.
-func (s *SinkNodeBase) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "inputs":
-			err = unpopulate(val, &s.Inputs)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &s.Name)
-			delete(rawMsg, key)
-		case "@type":
-			err = unpopulate(val, &s.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // SourceNodeBaseClassification provides polymorphic access to related types.
 // Call the interface's GetSourceNodeBase() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -2643,48 +1547,6 @@ type SourceNodeBase struct {
 
 	// REQUIRED; The discriminator for derived types.
 	Type *string `json:"@type,omitempty"`
-}
-
-// GetNodeBase implements the NodeBaseClassification interface for type SourceNodeBase.
-func (s *SourceNodeBase) GetNodeBase() *NodeBase {
-	return &NodeBase{
-		Type: s.Type,
-		Name: s.Name,
-	}
-}
-
-// GetSourceNodeBase implements the SourceNodeBaseClassification interface for type SourceNodeBase.
-func (s *SourceNodeBase) GetSourceNodeBase() *SourceNodeBase { return s }
-
-// MarshalJSON implements the json.Marshaller interface for type SourceNodeBase.
-func (s SourceNodeBase) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "name", s.Name)
-	objectMap["@type"] = "#Microsoft.VideoAnalyzer.SourceNodeBase"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SourceNodeBase.
-func (s *SourceNodeBase) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "name":
-			err = unpopulate(val, &s.Name)
-			delete(rawMsg, key)
-		case "@type":
-			err = unpopulate(val, &s.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // StorageAccount - The details about the associated storage account.
@@ -2722,53 +1584,6 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TLSEndpoint - TLS endpoint describes an endpoint that the pipeline can connect to over TLS transport (data is encrypted
 // in transit).
 type TLSEndpoint struct {
@@ -2791,63 +1606,6 @@ type TLSEndpoint struct {
 
 	// Validation options to use when authenticating a TLS connection. By default, strict validation is used.
 	ValidationOptions *TLSValidationOptions `json:"validationOptions,omitempty"`
-}
-
-// GetEndpointBase implements the EndpointBaseClassification interface for type TLSEndpoint.
-func (t *TLSEndpoint) GetEndpointBase() *EndpointBase {
-	return &EndpointBase{
-		Type:        t.Type,
-		Credentials: t.Credentials,
-		URL:         t.URL,
-		Tunnel:      t.Tunnel,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TLSEndpoint.
-func (t TLSEndpoint) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "credentials", t.Credentials)
-	populate(objectMap, "trustedCertificates", t.TrustedCertificates)
-	populate(objectMap, "tunnel", t.Tunnel)
-	objectMap["@type"] = "#Microsoft.VideoAnalyzer.TlsEndpoint"
-	populate(objectMap, "url", t.URL)
-	populate(objectMap, "validationOptions", t.ValidationOptions)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TLSEndpoint.
-func (t *TLSEndpoint) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "credentials":
-			t.Credentials, err = unmarshalCredentialsBaseClassification(val)
-			delete(rawMsg, key)
-		case "trustedCertificates":
-			t.TrustedCertificates, err = unmarshalCertificateSourceClassification(val)
-			delete(rawMsg, key)
-		case "tunnel":
-			t.Tunnel, err = unmarshalTunnelBaseClassification(val)
-			delete(rawMsg, key)
-		case "@type":
-			err = unpopulate(val, &t.Type)
-			delete(rawMsg, key)
-		case "url":
-			err = unpopulate(val, &t.URL)
-			delete(rawMsg, key)
-		case "validationOptions":
-			err = unpopulate(val, &t.ValidationOptions)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // TLSValidationOptions - Options for controlling the validation of TLS endpoints.
@@ -2873,9 +1631,6 @@ type TimeSequenceBase struct {
 	// REQUIRED; The discriminator for derived types.
 	Type *string `json:"@type,omitempty"`
 }
-
-// GetTimeSequenceBase implements the TimeSequenceBaseClassification interface for type TimeSequenceBase.
-func (t *TimeSequenceBase) GetTimeSequenceBase() *TimeSequenceBase { return t }
 
 // TokenClaim - Properties for expected token claims.
 type TokenClaim struct {
@@ -2904,9 +1659,6 @@ type TokenKey struct {
 	Type *string `json:"@type,omitempty"`
 }
 
-// GetTokenKey implements the TokenKeyClassification interface for type TokenKey.
-func (t *TokenKey) GetTokenKey() *TokenKey { return t }
-
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
@@ -2929,18 +1681,6 @@ type TrackedResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
-func (t TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "systemData", t.SystemData)
-	populate(objectMap, "tags", t.Tags)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
 // TunnelBaseClassification provides polymorphic access to related types.
 // Call the interface's GetTunnelBase() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -2955,9 +1695,6 @@ type TunnelBase struct {
 	// REQUIRED; The discriminator for derived types.
 	Type *string `json:"@type,omitempty"`
 }
-
-// GetTunnelBase implements the TunnelBaseClassification interface for type TunnelBase.
-func (t *TunnelBase) GetTunnelBase() *TunnelBase { return t }
 
 // UnsecuredEndpoint - Unsecured endpoint describes an endpoint that the pipeline can connect to over clear transport (no
 // encryption in transit).
@@ -2976,55 +1713,6 @@ type UnsecuredEndpoint struct {
 	Tunnel TunnelBaseClassification `json:"tunnel,omitempty"`
 }
 
-// GetEndpointBase implements the EndpointBaseClassification interface for type UnsecuredEndpoint.
-func (u *UnsecuredEndpoint) GetEndpointBase() *EndpointBase {
-	return &EndpointBase{
-		Type:        u.Type,
-		Credentials: u.Credentials,
-		URL:         u.URL,
-		Tunnel:      u.Tunnel,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type UnsecuredEndpoint.
-func (u UnsecuredEndpoint) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "credentials", u.Credentials)
-	populate(objectMap, "tunnel", u.Tunnel)
-	objectMap["@type"] = "#Microsoft.VideoAnalyzer.UnsecuredEndpoint"
-	populate(objectMap, "url", u.URL)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type UnsecuredEndpoint.
-func (u *UnsecuredEndpoint) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "credentials":
-			u.Credentials, err = unmarshalCredentialsBaseClassification(val)
-			delete(rawMsg, key)
-		case "tunnel":
-			u.Tunnel, err = unmarshalTunnelBaseClassification(val)
-			delete(rawMsg, key)
-		case "@type":
-			err = unpopulate(val, &u.Type)
-			delete(rawMsg, key)
-		case "url":
-			err = unpopulate(val, &u.URL)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // Update - The update operation for a Video Analyzer account.
 type Update struct {
 	// The identities associated to the Video Analyzer resource.
@@ -3035,15 +1723,6 @@ type Update struct {
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Update.
-func (u Update) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "identity", u.Identity)
-	populate(objectMap, "properties", u.Properties)
-	populate(objectMap, "tags", u.Tags)
-	return json.Marshal(objectMap)
 }
 
 // UserAssignedManagedIdentity - The details of the user assigned managed identity used by the Video Analyzer resource.
@@ -3067,48 +1746,6 @@ type UsernamePasswordCredentials struct {
 
 	// REQUIRED; Username to be presented as part of the credentials.
 	Username *string `json:"username,omitempty"`
-}
-
-// GetCredentialsBase implements the CredentialsBaseClassification interface for type UsernamePasswordCredentials.
-func (u *UsernamePasswordCredentials) GetCredentialsBase() *CredentialsBase {
-	return &CredentialsBase{
-		Type: u.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type UsernamePasswordCredentials.
-func (u UsernamePasswordCredentials) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "password", u.Password)
-	objectMap["@type"] = "#Microsoft.VideoAnalyzer.UsernamePasswordCredentials"
-	populate(objectMap, "username", u.Username)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type UsernamePasswordCredentials.
-func (u *UsernamePasswordCredentials) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "password":
-			err = unpopulate(val, &u.Password)
-			delete(rawMsg, key)
-		case "@type":
-			err = unpopulate(val, &u.Type)
-			delete(rawMsg, key)
-		case "username":
-			err = unpopulate(val, &u.Username)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // VideoAnalyzer - The Video Analyzer account.
@@ -3138,29 +1775,17 @@ type VideoAnalyzer struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VideoAnalyzer.
-func (v VideoAnalyzer) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", v.ID)
-	populate(objectMap, "identity", v.Identity)
-	populate(objectMap, "location", v.Location)
-	populate(objectMap, "name", v.Name)
-	populate(objectMap, "properties", v.Properties)
-	populate(objectMap, "systemData", v.SystemData)
-	populate(objectMap, "tags", v.Tags)
-	populate(objectMap, "type", v.Type)
-	return json.Marshal(objectMap)
-}
-
 // VideoAnalyzersClientBeginCreateOrUpdateOptions contains the optional parameters for the VideoAnalyzersClient.BeginCreateOrUpdate
 // method.
 type VideoAnalyzersClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // VideoAnalyzersClientBeginUpdateOptions contains the optional parameters for the VideoAnalyzersClient.BeginUpdate method.
 type VideoAnalyzersClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // VideoAnalyzersClientDeleteOptions contains the optional parameters for the VideoAnalyzersClient.Delete method.
@@ -3202,37 +1827,6 @@ type VideoContentToken struct {
 	// READ-ONLY; The content token value to be added to the video content URL as the value for the "token" query string parameter.
 	// The token is specific to a single video.
 	Token *string `json:"token,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VideoContentToken.
-func (v VideoContentToken) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "expirationDate", v.ExpirationDate)
-	populate(objectMap, "token", v.Token)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VideoContentToken.
-func (v *VideoContentToken) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "expirationDate":
-			err = unpopulateTimeRFC3339(val, &v.ExpirationDate)
-			delete(rawMsg, key)
-		case "token":
-			err = unpopulate(val, &v.Token)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // VideoContentUrls - Set of URLs to the video content.
@@ -3316,9 +1910,6 @@ type VideoEncoderBase struct {
 	Scale *VideoScale `json:"scale,omitempty"`
 }
 
-// GetVideoEncoderBase implements the VideoEncoderBaseClassification interface for type VideoEncoderBase.
-func (v *VideoEncoderBase) GetVideoEncoderBase() *VideoEncoderBase { return v }
-
 // VideoEncoderH264 - A custom preset for encoding video with the H.264 (AVC) codec.
 type VideoEncoderH264 struct {
 	// REQUIRED; The discriminator for derived types.
@@ -3334,55 +1925,6 @@ type VideoEncoderH264 struct {
 
 	// Describes the resolution of the encoded video. If omitted, the encoder uses the resolution of the input video.
 	Scale *VideoScale `json:"scale,omitempty"`
-}
-
-// GetVideoEncoderBase implements the VideoEncoderBaseClassification interface for type VideoEncoderH264.
-func (v *VideoEncoderH264) GetVideoEncoderBase() *VideoEncoderBase {
-	return &VideoEncoderBase{
-		Type:        v.Type,
-		BitrateKbps: v.BitrateKbps,
-		FrameRate:   v.FrameRate,
-		Scale:       v.Scale,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VideoEncoderH264.
-func (v VideoEncoderH264) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "bitrateKbps", v.BitrateKbps)
-	populate(objectMap, "frameRate", v.FrameRate)
-	populate(objectMap, "scale", v.Scale)
-	objectMap["@type"] = "#Microsoft.VideoAnalyzer.VideoEncoderH264"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VideoEncoderH264.
-func (v *VideoEncoderH264) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "bitrateKbps":
-			err = unpopulate(val, &v.BitrateKbps)
-			delete(rawMsg, key)
-		case "frameRate":
-			err = unpopulate(val, &v.FrameRate)
-			delete(rawMsg, key)
-		case "scale":
-			err = unpopulate(val, &v.Scale)
-			delete(rawMsg, key)
-		case "@type":
-			err = unpopulate(val, &v.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // VideoEntity - Represents a video resource within Azure Video Analyzer. Videos can be ingested from RTSP cameras through
@@ -3406,17 +1948,6 @@ type VideoEntity struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VideoEntity.
-func (v VideoEntity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", v.ID)
-	populate(objectMap, "name", v.Name)
-	populate(objectMap, "properties", v.Properties)
-	populate(objectMap, "systemData", v.SystemData)
-	populate(objectMap, "type", v.Type)
-	return json.Marshal(objectMap)
-}
-
 // VideoEntityCollection - A collection of VideoEntity items.
 type VideoEntityCollection struct {
 	// A link to the next page of the collection (when the collection contains too many results to return in one response).
@@ -3424,14 +1955,6 @@ type VideoEntityCollection struct {
 
 	// A collection of VideoEntity items.
 	Value []*VideoEntity `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VideoEntityCollection.
-func (v VideoEntityCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "@nextLink", v.NextLink)
-	populate(objectMap, "value", v.Value)
-	return json.Marshal(objectMap)
 }
 
 // VideoFlags - Video flags contain information about the available video actions and its dynamic properties based on the
@@ -3538,44 +2061,6 @@ type VideoSequenceAbsoluteTimeMarkers struct {
 	Type *string `json:"@type,omitempty"`
 }
 
-// GetTimeSequenceBase implements the TimeSequenceBaseClassification interface for type VideoSequenceAbsoluteTimeMarkers.
-func (v *VideoSequenceAbsoluteTimeMarkers) GetTimeSequenceBase() *TimeSequenceBase {
-	return &TimeSequenceBase{
-		Type: v.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VideoSequenceAbsoluteTimeMarkers.
-func (v VideoSequenceAbsoluteTimeMarkers) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "ranges", v.Ranges)
-	objectMap["@type"] = "#Microsoft.VideoAnalyzer.VideoSequenceAbsoluteTimeMarkers"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VideoSequenceAbsoluteTimeMarkers.
-func (v *VideoSequenceAbsoluteTimeMarkers) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "ranges":
-			err = unpopulate(val, &v.Ranges)
-			delete(rawMsg, key)
-		case "@type":
-			err = unpopulate(val, &v.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // VideoSink - Video sink in a live topology allows for video and audio to be captured, optionally archived, and published
 // via a video resource. If archiving is enabled, this results in a video of type 'archive'. If
 // used in a batch topology, this allows for video and audio to be stored as a file, and published via a video resource of
@@ -3602,70 +2087,6 @@ type VideoSink struct {
 	VideoPublishingOptions *VideoPublishingOptions `json:"videoPublishingOptions,omitempty"`
 }
 
-// GetNodeBase implements the NodeBaseClassification interface for type VideoSink.
-func (v *VideoSink) GetNodeBase() *NodeBase {
-	return &NodeBase{
-		Type: v.Type,
-		Name: v.Name,
-	}
-}
-
-// GetSinkNodeBase implements the SinkNodeBaseClassification interface for type VideoSink.
-func (v *VideoSink) GetSinkNodeBase() *SinkNodeBase {
-	return &SinkNodeBase{
-		Inputs: v.Inputs,
-		Type:   v.Type,
-		Name:   v.Name,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VideoSink.
-func (v VideoSink) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "inputs", v.Inputs)
-	populate(objectMap, "name", v.Name)
-	objectMap["@type"] = "#Microsoft.VideoAnalyzer.VideoSink"
-	populate(objectMap, "videoCreationProperties", v.VideoCreationProperties)
-	populate(objectMap, "videoName", v.VideoName)
-	populate(objectMap, "videoPublishingOptions", v.VideoPublishingOptions)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VideoSink.
-func (v *VideoSink) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "inputs":
-			err = unpopulate(val, &v.Inputs)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &v.Name)
-			delete(rawMsg, key)
-		case "@type":
-			err = unpopulate(val, &v.Type)
-			delete(rawMsg, key)
-		case "videoCreationProperties":
-			err = unpopulate(val, &v.VideoCreationProperties)
-			delete(rawMsg, key)
-		case "videoName":
-			err = unpopulate(val, &v.VideoName)
-			delete(rawMsg, key)
-		case "videoPublishingOptions":
-			err = unpopulate(val, &v.VideoPublishingOptions)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // VideoSource - Video source allows for content from a Video Analyzer video resource to be ingested into a pipeline. Currently
 // supported only with batch pipelines.
 type VideoSource struct {
@@ -3680,61 +2101,6 @@ type VideoSource struct {
 
 	// REQUIRED; Name of the Video Analyzer video resource to be used as the source.
 	VideoName *string `json:"videoName,omitempty"`
-}
-
-// GetNodeBase implements the NodeBaseClassification interface for type VideoSource.
-func (v *VideoSource) GetNodeBase() *NodeBase {
-	return &NodeBase{
-		Type: v.Type,
-		Name: v.Name,
-	}
-}
-
-// GetSourceNodeBase implements the SourceNodeBaseClassification interface for type VideoSource.
-func (v *VideoSource) GetSourceNodeBase() *SourceNodeBase {
-	return &SourceNodeBase{
-		Type: v.Type,
-		Name: v.Name,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VideoSource.
-func (v VideoSource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "name", v.Name)
-	populate(objectMap, "timeSequences", v.TimeSequences)
-	objectMap["@type"] = "#Microsoft.VideoAnalyzer.VideoSource"
-	populate(objectMap, "videoName", v.VideoName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VideoSource.
-func (v *VideoSource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "name":
-			err = unpopulate(val, &v.Name)
-			delete(rawMsg, key)
-		case "timeSequences":
-			v.TimeSequences, err = unmarshalTimeSequenceBaseClassification(val)
-			delete(rawMsg, key)
-		case "@type":
-			err = unpopulate(val, &v.Type)
-			delete(rawMsg, key)
-		case "videoName":
-			err = unpopulate(val, &v.VideoName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // VideosClientCreateOrUpdateOptions contains the optional parameters for the VideosClient.CreateOrUpdate method.
@@ -3767,21 +2133,4 @@ type VideosClientListOptions struct {
 // VideosClientUpdateOptions contains the optional parameters for the VideosClient.Update method.
 type VideosClientUpdateOptions struct {
 	// placeholder for future optional parameters
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

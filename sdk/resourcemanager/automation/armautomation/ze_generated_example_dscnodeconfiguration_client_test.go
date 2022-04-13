@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,91 +19,116 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation"
 )
 
-// x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deleteDscNodeConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deleteDscNodeConfiguration.json
 func ExampleDscNodeConfigurationClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armautomation.NewDscNodeConfigurationClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewDscNodeConfigurationClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<automation-account-name>",
 		"<node-configuration-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getDscNodeConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getDscNodeConfiguration.json
 func ExampleDscNodeConfigurationClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armautomation.NewDscNodeConfigurationClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewDscNodeConfigurationClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<automation-account-name>",
 		"<node-configuration-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.DscNodeConfigurationClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createOrUpdateDscNodeConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createOrUpdateDscNodeConfiguration.json
 func ExampleDscNodeConfigurationClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armautomation.NewDscNodeConfigurationClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewDscNodeConfigurationClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<automation-account-name>",
 		"<node-configuration-name>",
 		armautomation.DscNodeConfigurationCreateOrUpdateParameters{
-			Name: to.StringPtr("<name>"),
+			Name: to.Ptr("<name>"),
 			Properties: &armautomation.DscNodeConfigurationCreateOrUpdateParametersProperties{
 				Configuration: &armautomation.DscConfigurationAssociationProperty{
-					Name: to.StringPtr("<name>"),
+					Name: to.Ptr("<name>"),
 				},
-				IncrementNodeConfigurationBuild: to.BoolPtr(true),
+				IncrementNodeConfigurationBuild: to.Ptr(true),
 				Source: &armautomation.ContentSource{
-					Type: armautomation.ContentSourceType("embeddedContent").ToPtr(),
+					Type: to.Ptr(armautomation.ContentSourceTypeEmbeddedContent),
 					Hash: &armautomation.ContentHash{
-						Algorithm: to.StringPtr("<algorithm>"),
-						Value:     to.StringPtr("<value>"),
+						Algorithm: to.Ptr("<algorithm>"),
+						Value:     to.Ptr("<value>"),
 					},
-					Value:   to.StringPtr("<value>"),
-					Version: to.StringPtr("<version>"),
+					Value:   to.Ptr("<value>"),
+					Version: to.Ptr("<version>"),
 				},
 			},
 		},
-		nil)
+		&armautomation.DscNodeConfigurationClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listDscNodeConfigurations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listDscNodeConfigurations.json
 func ExampleDscNodeConfigurationClient_ListByAutomationAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armautomation.NewDscNodeConfigurationClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewDscNodeConfigurationClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByAutomationAccount("<resource-group-name>",
 		"<automation-account-name>",
 		&armautomation.DscNodeConfigurationClientListByAutomationAccountOptions{Filter: nil,
@@ -111,16 +136,15 @@ func ExampleDscNodeConfigurationClient_ListByAutomationAccount() {
 			Top:         nil,
 			Inlinecount: nil,
 		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

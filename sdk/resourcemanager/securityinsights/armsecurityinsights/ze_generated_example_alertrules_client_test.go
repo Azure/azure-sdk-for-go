@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,318 +17,342 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
 )
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/alertRules/GetAllAlertRules.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/alertRules/GetAllAlertRules.json
 func ExampleAlertRulesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewAlertRulesClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewAlertRulesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List("<resource-group-name>",
 		"<workspace-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/alertRules/GetFusionAlertRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/alertRules/GetFusionAlertRule.json
 func ExampleAlertRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewAlertRulesClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewAlertRulesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<rule-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AlertRulesClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/alertRules/CreateFusionAlertRuleWithFusionScenarioExclusion.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/alertRules/CreateFusionAlertRuleWithFusionScenarioExclusion.json
 func ExampleAlertRulesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewAlertRulesClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewAlertRulesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<rule-id>",
 		&armsecurityinsights.FusionAlertRule{
-			Etag: to.StringPtr("<etag>"),
-			Kind: armsecurityinsights.AlertRuleKind("Fusion").ToPtr(),
+			Etag: to.Ptr("<etag>"),
+			Kind: to.Ptr(armsecurityinsights.AlertRuleKindFusion),
 			Properties: &armsecurityinsights.FusionAlertRuleProperties{
-				AlertRuleTemplateName: to.StringPtr("<alert-rule-template-name>"),
-				Enabled:               to.BoolPtr(true),
+				AlertRuleTemplateName: to.Ptr("<alert-rule-template-name>"),
+				Enabled:               to.Ptr(true),
 				SourceSettings: []*armsecurityinsights.FusionSourceSettings{
 					{
-						Enabled:    to.BoolPtr(true),
-						SourceName: to.StringPtr("<source-name>"),
+						Enabled:    to.Ptr(true),
+						SourceName: to.Ptr("<source-name>"),
 					},
 					{
-						Enabled:    to.BoolPtr(true),
-						SourceName: to.StringPtr("<source-name>"),
+						Enabled:    to.Ptr(true),
+						SourceName: to.Ptr("<source-name>"),
 						SourceSubTypes: []*armsecurityinsights.FusionSourceSubTypeSetting{
 							{
-								Enabled: to.BoolPtr(true),
+								Enabled: to.Ptr(true),
 								SeverityFilters: &armsecurityinsights.FusionSubTypeSeverityFilter{
 									Filters: []*armsecurityinsights.FusionSubTypeSeverityFiltersItem{
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("High").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityHigh),
 										},
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("Medium").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityMedium),
 										},
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("Low").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityLow),
 										},
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("Informational").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityInformational),
 										}},
 								},
-								SourceSubTypeName: to.StringPtr("<source-sub-type-name>"),
+								SourceSubTypeName: to.Ptr("<source-sub-type-name>"),
 							},
 							{
-								Enabled: to.BoolPtr(true),
+								Enabled: to.Ptr(true),
 								SeverityFilters: &armsecurityinsights.FusionSubTypeSeverityFilter{
 									Filters: []*armsecurityinsights.FusionSubTypeSeverityFiltersItem{
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("High").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityHigh),
 										},
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("Medium").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityMedium),
 										},
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("Low").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityLow),
 										},
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("Informational").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityInformational),
 										}},
 								},
-								SourceSubTypeName: to.StringPtr("<source-sub-type-name>"),
+								SourceSubTypeName: to.Ptr("<source-sub-type-name>"),
 							},
 							{
-								Enabled: to.BoolPtr(true),
+								Enabled: to.Ptr(true),
 								SeverityFilters: &armsecurityinsights.FusionSubTypeSeverityFilter{
 									Filters: []*armsecurityinsights.FusionSubTypeSeverityFiltersItem{
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("High").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityHigh),
 										},
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("Medium").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityMedium),
 										},
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("Low").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityLow),
 										},
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("Informational").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityInformational),
 										}},
 								},
-								SourceSubTypeName: to.StringPtr("<source-sub-type-name>"),
+								SourceSubTypeName: to.Ptr("<source-sub-type-name>"),
 							},
 							{
-								Enabled: to.BoolPtr(true),
+								Enabled: to.Ptr(true),
 								SeverityFilters: &armsecurityinsights.FusionSubTypeSeverityFilter{
 									Filters: []*armsecurityinsights.FusionSubTypeSeverityFiltersItem{
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("High").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityHigh),
 										},
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("Medium").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityMedium),
 										},
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("Low").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityLow),
 										},
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("Informational").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityInformational),
 										}},
 								},
-								SourceSubTypeName: to.StringPtr("<source-sub-type-name>"),
+								SourceSubTypeName: to.Ptr("<source-sub-type-name>"),
 							},
 							{
-								Enabled: to.BoolPtr(true),
+								Enabled: to.Ptr(true),
 								SeverityFilters: &armsecurityinsights.FusionSubTypeSeverityFilter{
 									Filters: []*armsecurityinsights.FusionSubTypeSeverityFiltersItem{
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("High").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityHigh),
 										},
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("Medium").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityMedium),
 										},
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("Low").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityLow),
 										},
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("Informational").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityInformational),
 										}},
 								},
-								SourceSubTypeName: to.StringPtr("<source-sub-type-name>"),
+								SourceSubTypeName: to.Ptr("<source-sub-type-name>"),
 							},
 							{
-								Enabled: to.BoolPtr(true),
+								Enabled: to.Ptr(true),
 								SeverityFilters: &armsecurityinsights.FusionSubTypeSeverityFilter{
 									Filters: []*armsecurityinsights.FusionSubTypeSeverityFiltersItem{
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("High").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityHigh),
 										},
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("Medium").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityMedium),
 										},
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("Low").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityLow),
 										},
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("Informational").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityInformational),
 										}},
 								},
-								SourceSubTypeName: to.StringPtr("<source-sub-type-name>"),
+								SourceSubTypeName: to.Ptr("<source-sub-type-name>"),
 							},
 							{
-								Enabled: to.BoolPtr(true),
+								Enabled: to.Ptr(true),
 								SeverityFilters: &armsecurityinsights.FusionSubTypeSeverityFilter{
 									Filters: []*armsecurityinsights.FusionSubTypeSeverityFiltersItem{
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("High").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityHigh),
 										},
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("Medium").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityMedium),
 										},
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("Low").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityLow),
 										},
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("Informational").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityInformational),
 										}},
 								},
-								SourceSubTypeName: to.StringPtr("<source-sub-type-name>"),
+								SourceSubTypeName: to.Ptr("<source-sub-type-name>"),
 							},
 							{
-								Enabled: to.BoolPtr(true),
+								Enabled: to.Ptr(true),
 								SeverityFilters: &armsecurityinsights.FusionSubTypeSeverityFilter{
 									Filters: []*armsecurityinsights.FusionSubTypeSeverityFiltersItem{
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("High").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityHigh),
 										},
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("Medium").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityMedium),
 										},
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("Low").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityLow),
 										},
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("Informational").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityInformational),
 										}},
 								},
-								SourceSubTypeName: to.StringPtr("<source-sub-type-name>"),
+								SourceSubTypeName: to.Ptr("<source-sub-type-name>"),
 							},
 							{
-								Enabled: to.BoolPtr(true),
+								Enabled: to.Ptr(true),
 								SeverityFilters: &armsecurityinsights.FusionSubTypeSeverityFilter{
 									Filters: []*armsecurityinsights.FusionSubTypeSeverityFiltersItem{
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("High").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityHigh),
 										},
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("Medium").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityMedium),
 										},
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("Low").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityLow),
 										},
 										{
-											Enabled:  to.BoolPtr(true),
-											Severity: armsecurityinsights.AlertSeverity("Informational").ToPtr(),
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityInformational),
 										}},
 								},
-								SourceSubTypeName: to.StringPtr("<source-sub-type-name>"),
+								SourceSubTypeName: to.Ptr("<source-sub-type-name>"),
 							}},
 					},
 					{
-						Enabled:    to.BoolPtr(true),
-						SourceName: to.StringPtr("<source-name>"),
+						Enabled:    to.Ptr(true),
+						SourceName: to.Ptr("<source-name>"),
 						SourceSubTypes: []*armsecurityinsights.FusionSourceSubTypeSetting{
 							{
-								Enabled:           to.BoolPtr(true),
+								Enabled:           to.Ptr(true),
 								SeverityFilters:   &armsecurityinsights.FusionSubTypeSeverityFilter{},
-								SourceSubTypeName: to.StringPtr("<source-sub-type-name>"),
+								SourceSubTypeName: to.Ptr("<source-sub-type-name>"),
 							}},
 					}},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AlertRulesClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/alertRules/DeleteAlertRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/alertRules/DeleteAlertRule.json
 func ExampleAlertRulesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewAlertRulesClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewAlertRulesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<rule-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }

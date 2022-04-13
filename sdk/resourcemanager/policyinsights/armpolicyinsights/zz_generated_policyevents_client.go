@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,41 +34,63 @@ type PolicyEventsClient struct {
 // NewPolicyEventsClient creates a new instance of PolicyEventsClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPolicyEventsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *PolicyEventsClient {
+func NewPolicyEventsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*PolicyEventsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PolicyEventsClient{
-		host: string(ep),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // ListQueryResultsForManagementGroup - Queries policy events for the resources under the management group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // policyEventsResource - The name of the virtual resource under PolicyEvents resource type; only "default" is allowed.
 // managementGroupName - Management group name.
-// options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyEventsClient) ListQueryResultsForManagementGroup(policyEventsResource PolicyEventsResourceType, managementGroupName string, options *QueryOptions) *PolicyEventsClientListQueryResultsForManagementGroupPager {
-	return &PolicyEventsClientListQueryResultsForManagementGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listQueryResultsForManagementGroupCreateRequest(ctx, policyEventsResource, managementGroupName, options)
+// options - PolicyEventsClientListQueryResultsForManagementGroupOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForManagementGroup
+// method.
+func (client *PolicyEventsClient) ListQueryResultsForManagementGroup(policyEventsResource PolicyEventsResourceType, managementGroupName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForManagementGroupOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForManagementGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PolicyEventsClientListQueryResultsForManagementGroupResponse]{
+		More: func(page PolicyEventsClientListQueryResultsForManagementGroupResponse) bool {
+			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PolicyEventsClientListQueryResultsForManagementGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PolicyEventsQueryResults.ODataNextLink)
+		Fetcher: func(ctx context.Context, page *PolicyEventsClientListQueryResultsForManagementGroupResponse) (PolicyEventsClientListQueryResultsForManagementGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listQueryResultsForManagementGroupCreateRequest(ctx, policyEventsResource, managementGroupName, queryOptions, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.ODataNextLink)
+			}
+			if err != nil {
+				return PolicyEventsClientListQueryResultsForManagementGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PolicyEventsClientListQueryResultsForManagementGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PolicyEventsClientListQueryResultsForManagementGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listQueryResultsForManagementGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listQueryResultsForManagementGroupCreateRequest creates the ListQueryResultsForManagementGroup request.
-func (client *PolicyEventsClient) listQueryResultsForManagementGroupCreateRequest(ctx context.Context, policyEventsResource PolicyEventsResourceType, managementGroupName string, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyEventsClient) listQueryResultsForManagementGroupCreateRequest(ctx context.Context, policyEventsResource PolicyEventsResourceType, managementGroupName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForManagementGroupOptions) (*policy.Request, error) {
 	urlPath := "/providers/{managementGroupsNamespace}/managementGroups/{managementGroupName}/providers/Microsoft.PolicyInsights/policyEvents/{policyEventsResource}/queryResults"
 	if policyEventsResource == "" {
 		return nil, errors.New("parameter policyEventsResource cannot be empty")
@@ -84,29 +107,29 @@ func (client *PolicyEventsClient) listQueryResultsForManagementGroupCreateReques
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-10-01")
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if queryOptions != nil && queryOptions.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*queryOptions.Top), 10))
 	}
-	if options != nil && options.OrderBy != nil {
-		reqQP.Set("$orderby", *options.OrderBy)
+	if queryOptions != nil && queryOptions.OrderBy != nil {
+		reqQP.Set("$orderby", *queryOptions.OrderBy)
 	}
-	if options != nil && options.Select != nil {
-		reqQP.Set("$select", *options.Select)
+	if queryOptions != nil && queryOptions.Select != nil {
+		reqQP.Set("$select", *queryOptions.Select)
 	}
-	if options != nil && options.From != nil {
-		reqQP.Set("$from", options.From.Format(time.RFC3339Nano))
+	if queryOptions != nil && queryOptions.From != nil {
+		reqQP.Set("$from", queryOptions.From.Format(time.RFC3339Nano))
 	}
-	if options != nil && options.To != nil {
-		reqQP.Set("$to", options.To.Format(time.RFC3339Nano))
+	if queryOptions != nil && queryOptions.To != nil {
+		reqQP.Set("$to", queryOptions.To.Format(time.RFC3339Nano))
 	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if queryOptions != nil && queryOptions.Filter != nil {
+		reqQP.Set("$filter", *queryOptions.Filter)
 	}
-	if options != nil && options.Apply != nil {
-		reqQP.Set("$apply", *options.Apply)
+	if queryOptions != nil && queryOptions.Apply != nil {
+		reqQP.Set("$apply", *queryOptions.Apply)
 	}
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skiptoken", *options.SkipToken)
+	if queryOptions != nil && queryOptions.SkipToken != nil {
+		reqQP.Set("$skiptoken", *queryOptions.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
@@ -115,7 +138,7 @@ func (client *PolicyEventsClient) listQueryResultsForManagementGroupCreateReques
 
 // listQueryResultsForManagementGroupHandleResponse handles the ListQueryResultsForManagementGroup response.
 func (client *PolicyEventsClient) listQueryResultsForManagementGroupHandleResponse(resp *http.Response) (PolicyEventsClientListQueryResultsForManagementGroupResponse, error) {
-	result := PolicyEventsClientListQueryResultsForManagementGroupResponse{RawResponse: resp}
+	result := PolicyEventsClientListQueryResultsForManagementGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyEventsQueryResults); err != nil {
 		return PolicyEventsClientListQueryResultsForManagementGroupResponse{}, err
 	}
@@ -127,22 +150,40 @@ func (client *PolicyEventsClient) listQueryResultsForManagementGroupHandleRespon
 // policyEventsResource - The name of the virtual resource under PolicyEvents resource type; only "default" is allowed.
 // subscriptionID - Microsoft Azure subscription ID.
 // policyDefinitionName - Policy definition name.
-// options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyEventsClient) ListQueryResultsForPolicyDefinition(policyEventsResource PolicyEventsResourceType, subscriptionID string, policyDefinitionName string, options *QueryOptions) *PolicyEventsClientListQueryResultsForPolicyDefinitionPager {
-	return &PolicyEventsClientListQueryResultsForPolicyDefinitionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listQueryResultsForPolicyDefinitionCreateRequest(ctx, policyEventsResource, subscriptionID, policyDefinitionName, options)
+// options - PolicyEventsClientListQueryResultsForPolicyDefinitionOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForPolicyDefinition
+// method.
+func (client *PolicyEventsClient) ListQueryResultsForPolicyDefinition(policyEventsResource PolicyEventsResourceType, subscriptionID string, policyDefinitionName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForPolicyDefinitionOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForPolicyDefinitionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PolicyEventsClientListQueryResultsForPolicyDefinitionResponse]{
+		More: func(page PolicyEventsClientListQueryResultsForPolicyDefinitionResponse) bool {
+			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PolicyEventsClientListQueryResultsForPolicyDefinitionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PolicyEventsQueryResults.ODataNextLink)
+		Fetcher: func(ctx context.Context, page *PolicyEventsClientListQueryResultsForPolicyDefinitionResponse) (PolicyEventsClientListQueryResultsForPolicyDefinitionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listQueryResultsForPolicyDefinitionCreateRequest(ctx, policyEventsResource, subscriptionID, policyDefinitionName, queryOptions, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.ODataNextLink)
+			}
+			if err != nil {
+				return PolicyEventsClientListQueryResultsForPolicyDefinitionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PolicyEventsClientListQueryResultsForPolicyDefinitionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PolicyEventsClientListQueryResultsForPolicyDefinitionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listQueryResultsForPolicyDefinitionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listQueryResultsForPolicyDefinitionCreateRequest creates the ListQueryResultsForPolicyDefinition request.
-func (client *PolicyEventsClient) listQueryResultsForPolicyDefinitionCreateRequest(ctx context.Context, policyEventsResource PolicyEventsResourceType, subscriptionID string, policyDefinitionName string, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyEventsClient) listQueryResultsForPolicyDefinitionCreateRequest(ctx context.Context, policyEventsResource PolicyEventsResourceType, subscriptionID string, policyDefinitionName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForPolicyDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{authorizationNamespace}/policyDefinitions/{policyDefinitionName}/providers/Microsoft.PolicyInsights/policyEvents/{policyEventsResource}/queryResults"
 	if policyEventsResource == "" {
 		return nil, errors.New("parameter policyEventsResource cannot be empty")
@@ -163,29 +204,29 @@ func (client *PolicyEventsClient) listQueryResultsForPolicyDefinitionCreateReque
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-10-01")
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if queryOptions != nil && queryOptions.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*queryOptions.Top), 10))
 	}
-	if options != nil && options.OrderBy != nil {
-		reqQP.Set("$orderby", *options.OrderBy)
+	if queryOptions != nil && queryOptions.OrderBy != nil {
+		reqQP.Set("$orderby", *queryOptions.OrderBy)
 	}
-	if options != nil && options.Select != nil {
-		reqQP.Set("$select", *options.Select)
+	if queryOptions != nil && queryOptions.Select != nil {
+		reqQP.Set("$select", *queryOptions.Select)
 	}
-	if options != nil && options.From != nil {
-		reqQP.Set("$from", options.From.Format(time.RFC3339Nano))
+	if queryOptions != nil && queryOptions.From != nil {
+		reqQP.Set("$from", queryOptions.From.Format(time.RFC3339Nano))
 	}
-	if options != nil && options.To != nil {
-		reqQP.Set("$to", options.To.Format(time.RFC3339Nano))
+	if queryOptions != nil && queryOptions.To != nil {
+		reqQP.Set("$to", queryOptions.To.Format(time.RFC3339Nano))
 	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if queryOptions != nil && queryOptions.Filter != nil {
+		reqQP.Set("$filter", *queryOptions.Filter)
 	}
-	if options != nil && options.Apply != nil {
-		reqQP.Set("$apply", *options.Apply)
+	if queryOptions != nil && queryOptions.Apply != nil {
+		reqQP.Set("$apply", *queryOptions.Apply)
 	}
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skiptoken", *options.SkipToken)
+	if queryOptions != nil && queryOptions.SkipToken != nil {
+		reqQP.Set("$skiptoken", *queryOptions.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
@@ -194,7 +235,7 @@ func (client *PolicyEventsClient) listQueryResultsForPolicyDefinitionCreateReque
 
 // listQueryResultsForPolicyDefinitionHandleResponse handles the ListQueryResultsForPolicyDefinition response.
 func (client *PolicyEventsClient) listQueryResultsForPolicyDefinitionHandleResponse(resp *http.Response) (PolicyEventsClientListQueryResultsForPolicyDefinitionResponse, error) {
-	result := PolicyEventsClientListQueryResultsForPolicyDefinitionResponse{RawResponse: resp}
+	result := PolicyEventsClientListQueryResultsForPolicyDefinitionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyEventsQueryResults); err != nil {
 		return PolicyEventsClientListQueryResultsForPolicyDefinitionResponse{}, err
 	}
@@ -206,22 +247,40 @@ func (client *PolicyEventsClient) listQueryResultsForPolicyDefinitionHandleRespo
 // policyEventsResource - The name of the virtual resource under PolicyEvents resource type; only "default" is allowed.
 // subscriptionID - Microsoft Azure subscription ID.
 // policySetDefinitionName - Policy set definition name.
-// options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyEventsClient) ListQueryResultsForPolicySetDefinition(policyEventsResource PolicyEventsResourceType, subscriptionID string, policySetDefinitionName string, options *QueryOptions) *PolicyEventsClientListQueryResultsForPolicySetDefinitionPager {
-	return &PolicyEventsClientListQueryResultsForPolicySetDefinitionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listQueryResultsForPolicySetDefinitionCreateRequest(ctx, policyEventsResource, subscriptionID, policySetDefinitionName, options)
+// options - PolicyEventsClientListQueryResultsForPolicySetDefinitionOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForPolicySetDefinition
+// method.
+func (client *PolicyEventsClient) ListQueryResultsForPolicySetDefinition(policyEventsResource PolicyEventsResourceType, subscriptionID string, policySetDefinitionName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForPolicySetDefinitionOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForPolicySetDefinitionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PolicyEventsClientListQueryResultsForPolicySetDefinitionResponse]{
+		More: func(page PolicyEventsClientListQueryResultsForPolicySetDefinitionResponse) bool {
+			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PolicyEventsClientListQueryResultsForPolicySetDefinitionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PolicyEventsQueryResults.ODataNextLink)
+		Fetcher: func(ctx context.Context, page *PolicyEventsClientListQueryResultsForPolicySetDefinitionResponse) (PolicyEventsClientListQueryResultsForPolicySetDefinitionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listQueryResultsForPolicySetDefinitionCreateRequest(ctx, policyEventsResource, subscriptionID, policySetDefinitionName, queryOptions, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.ODataNextLink)
+			}
+			if err != nil {
+				return PolicyEventsClientListQueryResultsForPolicySetDefinitionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PolicyEventsClientListQueryResultsForPolicySetDefinitionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PolicyEventsClientListQueryResultsForPolicySetDefinitionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listQueryResultsForPolicySetDefinitionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listQueryResultsForPolicySetDefinitionCreateRequest creates the ListQueryResultsForPolicySetDefinition request.
-func (client *PolicyEventsClient) listQueryResultsForPolicySetDefinitionCreateRequest(ctx context.Context, policyEventsResource PolicyEventsResourceType, subscriptionID string, policySetDefinitionName string, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyEventsClient) listQueryResultsForPolicySetDefinitionCreateRequest(ctx context.Context, policyEventsResource PolicyEventsResourceType, subscriptionID string, policySetDefinitionName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForPolicySetDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{authorizationNamespace}/policySetDefinitions/{policySetDefinitionName}/providers/Microsoft.PolicyInsights/policyEvents/{policyEventsResource}/queryResults"
 	if policyEventsResource == "" {
 		return nil, errors.New("parameter policyEventsResource cannot be empty")
@@ -242,29 +301,29 @@ func (client *PolicyEventsClient) listQueryResultsForPolicySetDefinitionCreateRe
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-10-01")
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if queryOptions != nil && queryOptions.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*queryOptions.Top), 10))
 	}
-	if options != nil && options.OrderBy != nil {
-		reqQP.Set("$orderby", *options.OrderBy)
+	if queryOptions != nil && queryOptions.OrderBy != nil {
+		reqQP.Set("$orderby", *queryOptions.OrderBy)
 	}
-	if options != nil && options.Select != nil {
-		reqQP.Set("$select", *options.Select)
+	if queryOptions != nil && queryOptions.Select != nil {
+		reqQP.Set("$select", *queryOptions.Select)
 	}
-	if options != nil && options.From != nil {
-		reqQP.Set("$from", options.From.Format(time.RFC3339Nano))
+	if queryOptions != nil && queryOptions.From != nil {
+		reqQP.Set("$from", queryOptions.From.Format(time.RFC3339Nano))
 	}
-	if options != nil && options.To != nil {
-		reqQP.Set("$to", options.To.Format(time.RFC3339Nano))
+	if queryOptions != nil && queryOptions.To != nil {
+		reqQP.Set("$to", queryOptions.To.Format(time.RFC3339Nano))
 	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if queryOptions != nil && queryOptions.Filter != nil {
+		reqQP.Set("$filter", *queryOptions.Filter)
 	}
-	if options != nil && options.Apply != nil {
-		reqQP.Set("$apply", *options.Apply)
+	if queryOptions != nil && queryOptions.Apply != nil {
+		reqQP.Set("$apply", *queryOptions.Apply)
 	}
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skiptoken", *options.SkipToken)
+	if queryOptions != nil && queryOptions.SkipToken != nil {
+		reqQP.Set("$skiptoken", *queryOptions.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
@@ -273,7 +332,7 @@ func (client *PolicyEventsClient) listQueryResultsForPolicySetDefinitionCreateRe
 
 // listQueryResultsForPolicySetDefinitionHandleResponse handles the ListQueryResultsForPolicySetDefinition response.
 func (client *PolicyEventsClient) listQueryResultsForPolicySetDefinitionHandleResponse(resp *http.Response) (PolicyEventsClientListQueryResultsForPolicySetDefinitionResponse, error) {
-	result := PolicyEventsClientListQueryResultsForPolicySetDefinitionResponse{RawResponse: resp}
+	result := PolicyEventsClientListQueryResultsForPolicySetDefinitionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyEventsQueryResults); err != nil {
 		return PolicyEventsClientListQueryResultsForPolicySetDefinitionResponse{}, err
 	}
@@ -284,22 +343,40 @@ func (client *PolicyEventsClient) listQueryResultsForPolicySetDefinitionHandleRe
 // If the operation fails it returns an *azcore.ResponseError type.
 // policyEventsResource - The name of the virtual resource under PolicyEvents resource type; only "default" is allowed.
 // resourceID - Resource ID.
-// options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyEventsClient) ListQueryResultsForResource(policyEventsResource PolicyEventsResourceType, resourceID string, options *QueryOptions) *PolicyEventsClientListQueryResultsForResourcePager {
-	return &PolicyEventsClientListQueryResultsForResourcePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listQueryResultsForResourceCreateRequest(ctx, policyEventsResource, resourceID, options)
+// options - PolicyEventsClientListQueryResultsForResourceOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForResource
+// method.
+func (client *PolicyEventsClient) ListQueryResultsForResource(policyEventsResource PolicyEventsResourceType, resourceID string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForResourceOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForResourceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PolicyEventsClientListQueryResultsForResourceResponse]{
+		More: func(page PolicyEventsClientListQueryResultsForResourceResponse) bool {
+			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PolicyEventsClientListQueryResultsForResourceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PolicyEventsQueryResults.ODataNextLink)
+		Fetcher: func(ctx context.Context, page *PolicyEventsClientListQueryResultsForResourceResponse) (PolicyEventsClientListQueryResultsForResourceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listQueryResultsForResourceCreateRequest(ctx, policyEventsResource, resourceID, queryOptions, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.ODataNextLink)
+			}
+			if err != nil {
+				return PolicyEventsClientListQueryResultsForResourceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PolicyEventsClientListQueryResultsForResourceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PolicyEventsClientListQueryResultsForResourceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listQueryResultsForResourceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listQueryResultsForResourceCreateRequest creates the ListQueryResultsForResource request.
-func (client *PolicyEventsClient) listQueryResultsForResourceCreateRequest(ctx context.Context, policyEventsResource PolicyEventsResourceType, resourceID string, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyEventsClient) listQueryResultsForResourceCreateRequest(ctx context.Context, policyEventsResource PolicyEventsResourceType, resourceID string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForResourceOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.PolicyInsights/policyEvents/{policyEventsResource}/queryResults"
 	if policyEventsResource == "" {
 		return nil, errors.New("parameter policyEventsResource cannot be empty")
@@ -312,32 +389,32 @@ func (client *PolicyEventsClient) listQueryResultsForResourceCreateRequest(ctx c
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-10-01")
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if queryOptions != nil && queryOptions.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*queryOptions.Top), 10))
 	}
-	if options != nil && options.OrderBy != nil {
-		reqQP.Set("$orderby", *options.OrderBy)
+	if queryOptions != nil && queryOptions.OrderBy != nil {
+		reqQP.Set("$orderby", *queryOptions.OrderBy)
 	}
-	if options != nil && options.Select != nil {
-		reqQP.Set("$select", *options.Select)
+	if queryOptions != nil && queryOptions.Select != nil {
+		reqQP.Set("$select", *queryOptions.Select)
 	}
-	if options != nil && options.From != nil {
-		reqQP.Set("$from", options.From.Format(time.RFC3339Nano))
+	if queryOptions != nil && queryOptions.From != nil {
+		reqQP.Set("$from", queryOptions.From.Format(time.RFC3339Nano))
 	}
-	if options != nil && options.To != nil {
-		reqQP.Set("$to", options.To.Format(time.RFC3339Nano))
+	if queryOptions != nil && queryOptions.To != nil {
+		reqQP.Set("$to", queryOptions.To.Format(time.RFC3339Nano))
 	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if queryOptions != nil && queryOptions.Filter != nil {
+		reqQP.Set("$filter", *queryOptions.Filter)
 	}
-	if options != nil && options.Apply != nil {
-		reqQP.Set("$apply", *options.Apply)
+	if queryOptions != nil && queryOptions.Apply != nil {
+		reqQP.Set("$apply", *queryOptions.Apply)
 	}
-	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", *options.Expand)
+	if queryOptions != nil && queryOptions.Expand != nil {
+		reqQP.Set("$expand", *queryOptions.Expand)
 	}
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skiptoken", *options.SkipToken)
+	if queryOptions != nil && queryOptions.SkipToken != nil {
+		reqQP.Set("$skiptoken", *queryOptions.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
@@ -346,7 +423,7 @@ func (client *PolicyEventsClient) listQueryResultsForResourceCreateRequest(ctx c
 
 // listQueryResultsForResourceHandleResponse handles the ListQueryResultsForResource response.
 func (client *PolicyEventsClient) listQueryResultsForResourceHandleResponse(resp *http.Response) (PolicyEventsClientListQueryResultsForResourceResponse, error) {
-	result := PolicyEventsClientListQueryResultsForResourceResponse{RawResponse: resp}
+	result := PolicyEventsClientListQueryResultsForResourceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyEventsQueryResults); err != nil {
 		return PolicyEventsClientListQueryResultsForResourceResponse{}, err
 	}
@@ -358,22 +435,40 @@ func (client *PolicyEventsClient) listQueryResultsForResourceHandleResponse(resp
 // policyEventsResource - The name of the virtual resource under PolicyEvents resource type; only "default" is allowed.
 // subscriptionID - Microsoft Azure subscription ID.
 // resourceGroupName - Resource group name.
-// options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyEventsClient) ListQueryResultsForResourceGroup(policyEventsResource PolicyEventsResourceType, subscriptionID string, resourceGroupName string, options *QueryOptions) *PolicyEventsClientListQueryResultsForResourceGroupPager {
-	return &PolicyEventsClientListQueryResultsForResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listQueryResultsForResourceGroupCreateRequest(ctx, policyEventsResource, subscriptionID, resourceGroupName, options)
+// options - PolicyEventsClientListQueryResultsForResourceGroupOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForResourceGroup
+// method.
+func (client *PolicyEventsClient) ListQueryResultsForResourceGroup(policyEventsResource PolicyEventsResourceType, subscriptionID string, resourceGroupName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForResourceGroupOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PolicyEventsClientListQueryResultsForResourceGroupResponse]{
+		More: func(page PolicyEventsClientListQueryResultsForResourceGroupResponse) bool {
+			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PolicyEventsClientListQueryResultsForResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PolicyEventsQueryResults.ODataNextLink)
+		Fetcher: func(ctx context.Context, page *PolicyEventsClientListQueryResultsForResourceGroupResponse) (PolicyEventsClientListQueryResultsForResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listQueryResultsForResourceGroupCreateRequest(ctx, policyEventsResource, subscriptionID, resourceGroupName, queryOptions, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.ODataNextLink)
+			}
+			if err != nil {
+				return PolicyEventsClientListQueryResultsForResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PolicyEventsClientListQueryResultsForResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PolicyEventsClientListQueryResultsForResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listQueryResultsForResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listQueryResultsForResourceGroupCreateRequest creates the ListQueryResultsForResourceGroup request.
-func (client *PolicyEventsClient) listQueryResultsForResourceGroupCreateRequest(ctx context.Context, policyEventsResource PolicyEventsResourceType, subscriptionID string, resourceGroupName string, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyEventsClient) listQueryResultsForResourceGroupCreateRequest(ctx context.Context, policyEventsResource PolicyEventsResourceType, subscriptionID string, resourceGroupName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PolicyInsights/policyEvents/{policyEventsResource}/queryResults"
 	if policyEventsResource == "" {
 		return nil, errors.New("parameter policyEventsResource cannot be empty")
@@ -393,29 +488,29 @@ func (client *PolicyEventsClient) listQueryResultsForResourceGroupCreateRequest(
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-10-01")
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if queryOptions != nil && queryOptions.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*queryOptions.Top), 10))
 	}
-	if options != nil && options.OrderBy != nil {
-		reqQP.Set("$orderby", *options.OrderBy)
+	if queryOptions != nil && queryOptions.OrderBy != nil {
+		reqQP.Set("$orderby", *queryOptions.OrderBy)
 	}
-	if options != nil && options.Select != nil {
-		reqQP.Set("$select", *options.Select)
+	if queryOptions != nil && queryOptions.Select != nil {
+		reqQP.Set("$select", *queryOptions.Select)
 	}
-	if options != nil && options.From != nil {
-		reqQP.Set("$from", options.From.Format(time.RFC3339Nano))
+	if queryOptions != nil && queryOptions.From != nil {
+		reqQP.Set("$from", queryOptions.From.Format(time.RFC3339Nano))
 	}
-	if options != nil && options.To != nil {
-		reqQP.Set("$to", options.To.Format(time.RFC3339Nano))
+	if queryOptions != nil && queryOptions.To != nil {
+		reqQP.Set("$to", queryOptions.To.Format(time.RFC3339Nano))
 	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if queryOptions != nil && queryOptions.Filter != nil {
+		reqQP.Set("$filter", *queryOptions.Filter)
 	}
-	if options != nil && options.Apply != nil {
-		reqQP.Set("$apply", *options.Apply)
+	if queryOptions != nil && queryOptions.Apply != nil {
+		reqQP.Set("$apply", *queryOptions.Apply)
 	}
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skiptoken", *options.SkipToken)
+	if queryOptions != nil && queryOptions.SkipToken != nil {
+		reqQP.Set("$skiptoken", *queryOptions.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
@@ -424,7 +519,7 @@ func (client *PolicyEventsClient) listQueryResultsForResourceGroupCreateRequest(
 
 // listQueryResultsForResourceGroupHandleResponse handles the ListQueryResultsForResourceGroup response.
 func (client *PolicyEventsClient) listQueryResultsForResourceGroupHandleResponse(resp *http.Response) (PolicyEventsClientListQueryResultsForResourceGroupResponse, error) {
-	result := PolicyEventsClientListQueryResultsForResourceGroupResponse{RawResponse: resp}
+	result := PolicyEventsClientListQueryResultsForResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyEventsQueryResults); err != nil {
 		return PolicyEventsClientListQueryResultsForResourceGroupResponse{}, err
 	}
@@ -437,22 +532,40 @@ func (client *PolicyEventsClient) listQueryResultsForResourceGroupHandleResponse
 // subscriptionID - Microsoft Azure subscription ID.
 // resourceGroupName - Resource group name.
 // policyAssignmentName - Policy assignment name.
-// options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyEventsClient) ListQueryResultsForResourceGroupLevelPolicyAssignment(policyEventsResource PolicyEventsResourceType, subscriptionID string, resourceGroupName string, policyAssignmentName string, options *QueryOptions) *PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentPager {
-	return &PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listQueryResultsForResourceGroupLevelPolicyAssignmentCreateRequest(ctx, policyEventsResource, subscriptionID, resourceGroupName, policyAssignmentName, options)
+// options - PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions contains the optional parameters
+// for the PolicyEventsClient.ListQueryResultsForResourceGroupLevelPolicyAssignment method.
+func (client *PolicyEventsClient) ListQueryResultsForResourceGroupLevelPolicyAssignment(policyEventsResource PolicyEventsResourceType, subscriptionID string, resourceGroupName string, policyAssignmentName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse]{
+		More: func(page PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse) bool {
+			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PolicyEventsQueryResults.ODataNextLink)
+		Fetcher: func(ctx context.Context, page *PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse) (PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listQueryResultsForResourceGroupLevelPolicyAssignmentCreateRequest(ctx, policyEventsResource, subscriptionID, resourceGroupName, policyAssignmentName, queryOptions, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.ODataNextLink)
+			}
+			if err != nil {
+				return PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listQueryResultsForResourceGroupLevelPolicyAssignmentHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listQueryResultsForResourceGroupLevelPolicyAssignmentCreateRequest creates the ListQueryResultsForResourceGroupLevelPolicyAssignment request.
-func (client *PolicyEventsClient) listQueryResultsForResourceGroupLevelPolicyAssignmentCreateRequest(ctx context.Context, policyEventsResource PolicyEventsResourceType, subscriptionID string, resourceGroupName string, policyAssignmentName string, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyEventsClient) listQueryResultsForResourceGroupLevelPolicyAssignmentCreateRequest(ctx context.Context, policyEventsResource PolicyEventsResourceType, subscriptionID string, resourceGroupName string, policyAssignmentName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{authorizationNamespace}/policyAssignments/{policyAssignmentName}/providers/Microsoft.PolicyInsights/policyEvents/{policyEventsResource}/queryResults"
 	if policyEventsResource == "" {
 		return nil, errors.New("parameter policyEventsResource cannot be empty")
@@ -477,29 +590,29 @@ func (client *PolicyEventsClient) listQueryResultsForResourceGroupLevelPolicyAss
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-10-01")
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if queryOptions != nil && queryOptions.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*queryOptions.Top), 10))
 	}
-	if options != nil && options.OrderBy != nil {
-		reqQP.Set("$orderby", *options.OrderBy)
+	if queryOptions != nil && queryOptions.OrderBy != nil {
+		reqQP.Set("$orderby", *queryOptions.OrderBy)
 	}
-	if options != nil && options.Select != nil {
-		reqQP.Set("$select", *options.Select)
+	if queryOptions != nil && queryOptions.Select != nil {
+		reqQP.Set("$select", *queryOptions.Select)
 	}
-	if options != nil && options.From != nil {
-		reqQP.Set("$from", options.From.Format(time.RFC3339Nano))
+	if queryOptions != nil && queryOptions.From != nil {
+		reqQP.Set("$from", queryOptions.From.Format(time.RFC3339Nano))
 	}
-	if options != nil && options.To != nil {
-		reqQP.Set("$to", options.To.Format(time.RFC3339Nano))
+	if queryOptions != nil && queryOptions.To != nil {
+		reqQP.Set("$to", queryOptions.To.Format(time.RFC3339Nano))
 	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if queryOptions != nil && queryOptions.Filter != nil {
+		reqQP.Set("$filter", *queryOptions.Filter)
 	}
-	if options != nil && options.Apply != nil {
-		reqQP.Set("$apply", *options.Apply)
+	if queryOptions != nil && queryOptions.Apply != nil {
+		reqQP.Set("$apply", *queryOptions.Apply)
 	}
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skiptoken", *options.SkipToken)
+	if queryOptions != nil && queryOptions.SkipToken != nil {
+		reqQP.Set("$skiptoken", *queryOptions.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
@@ -508,7 +621,7 @@ func (client *PolicyEventsClient) listQueryResultsForResourceGroupLevelPolicyAss
 
 // listQueryResultsForResourceGroupLevelPolicyAssignmentHandleResponse handles the ListQueryResultsForResourceGroupLevelPolicyAssignment response.
 func (client *PolicyEventsClient) listQueryResultsForResourceGroupLevelPolicyAssignmentHandleResponse(resp *http.Response) (PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse, error) {
-	result := PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse{RawResponse: resp}
+	result := PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyEventsQueryResults); err != nil {
 		return PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse{}, err
 	}
@@ -519,22 +632,40 @@ func (client *PolicyEventsClient) listQueryResultsForResourceGroupLevelPolicyAss
 // If the operation fails it returns an *azcore.ResponseError type.
 // policyEventsResource - The name of the virtual resource under PolicyEvents resource type; only "default" is allowed.
 // subscriptionID - Microsoft Azure subscription ID.
-// options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyEventsClient) ListQueryResultsForSubscription(policyEventsResource PolicyEventsResourceType, subscriptionID string, options *QueryOptions) *PolicyEventsClientListQueryResultsForSubscriptionPager {
-	return &PolicyEventsClientListQueryResultsForSubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listQueryResultsForSubscriptionCreateRequest(ctx, policyEventsResource, subscriptionID, options)
+// options - PolicyEventsClientListQueryResultsForSubscriptionOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForSubscription
+// method.
+func (client *PolicyEventsClient) ListQueryResultsForSubscription(policyEventsResource PolicyEventsResourceType, subscriptionID string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForSubscriptionOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForSubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PolicyEventsClientListQueryResultsForSubscriptionResponse]{
+		More: func(page PolicyEventsClientListQueryResultsForSubscriptionResponse) bool {
+			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PolicyEventsClientListQueryResultsForSubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PolicyEventsQueryResults.ODataNextLink)
+		Fetcher: func(ctx context.Context, page *PolicyEventsClientListQueryResultsForSubscriptionResponse) (PolicyEventsClientListQueryResultsForSubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listQueryResultsForSubscriptionCreateRequest(ctx, policyEventsResource, subscriptionID, queryOptions, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.ODataNextLink)
+			}
+			if err != nil {
+				return PolicyEventsClientListQueryResultsForSubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PolicyEventsClientListQueryResultsForSubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PolicyEventsClientListQueryResultsForSubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listQueryResultsForSubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listQueryResultsForSubscriptionCreateRequest creates the ListQueryResultsForSubscription request.
-func (client *PolicyEventsClient) listQueryResultsForSubscriptionCreateRequest(ctx context.Context, policyEventsResource PolicyEventsResourceType, subscriptionID string, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyEventsClient) listQueryResultsForSubscriptionCreateRequest(ctx context.Context, policyEventsResource PolicyEventsResourceType, subscriptionID string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.PolicyInsights/policyEvents/{policyEventsResource}/queryResults"
 	if policyEventsResource == "" {
 		return nil, errors.New("parameter policyEventsResource cannot be empty")
@@ -550,29 +681,29 @@ func (client *PolicyEventsClient) listQueryResultsForSubscriptionCreateRequest(c
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-10-01")
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if queryOptions != nil && queryOptions.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*queryOptions.Top), 10))
 	}
-	if options != nil && options.OrderBy != nil {
-		reqQP.Set("$orderby", *options.OrderBy)
+	if queryOptions != nil && queryOptions.OrderBy != nil {
+		reqQP.Set("$orderby", *queryOptions.OrderBy)
 	}
-	if options != nil && options.Select != nil {
-		reqQP.Set("$select", *options.Select)
+	if queryOptions != nil && queryOptions.Select != nil {
+		reqQP.Set("$select", *queryOptions.Select)
 	}
-	if options != nil && options.From != nil {
-		reqQP.Set("$from", options.From.Format(time.RFC3339Nano))
+	if queryOptions != nil && queryOptions.From != nil {
+		reqQP.Set("$from", queryOptions.From.Format(time.RFC3339Nano))
 	}
-	if options != nil && options.To != nil {
-		reqQP.Set("$to", options.To.Format(time.RFC3339Nano))
+	if queryOptions != nil && queryOptions.To != nil {
+		reqQP.Set("$to", queryOptions.To.Format(time.RFC3339Nano))
 	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if queryOptions != nil && queryOptions.Filter != nil {
+		reqQP.Set("$filter", *queryOptions.Filter)
 	}
-	if options != nil && options.Apply != nil {
-		reqQP.Set("$apply", *options.Apply)
+	if queryOptions != nil && queryOptions.Apply != nil {
+		reqQP.Set("$apply", *queryOptions.Apply)
 	}
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skiptoken", *options.SkipToken)
+	if queryOptions != nil && queryOptions.SkipToken != nil {
+		reqQP.Set("$skiptoken", *queryOptions.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
@@ -581,7 +712,7 @@ func (client *PolicyEventsClient) listQueryResultsForSubscriptionCreateRequest(c
 
 // listQueryResultsForSubscriptionHandleResponse handles the ListQueryResultsForSubscription response.
 func (client *PolicyEventsClient) listQueryResultsForSubscriptionHandleResponse(resp *http.Response) (PolicyEventsClientListQueryResultsForSubscriptionResponse, error) {
-	result := PolicyEventsClientListQueryResultsForSubscriptionResponse{RawResponse: resp}
+	result := PolicyEventsClientListQueryResultsForSubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyEventsQueryResults); err != nil {
 		return PolicyEventsClientListQueryResultsForSubscriptionResponse{}, err
 	}
@@ -593,22 +724,40 @@ func (client *PolicyEventsClient) listQueryResultsForSubscriptionHandleResponse(
 // policyEventsResource - The name of the virtual resource under PolicyEvents resource type; only "default" is allowed.
 // subscriptionID - Microsoft Azure subscription ID.
 // policyAssignmentName - Policy assignment name.
-// options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyEventsClient) ListQueryResultsForSubscriptionLevelPolicyAssignment(policyEventsResource PolicyEventsResourceType, subscriptionID string, policyAssignmentName string, options *QueryOptions) *PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentPager {
-	return &PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listQueryResultsForSubscriptionLevelPolicyAssignmentCreateRequest(ctx, policyEventsResource, subscriptionID, policyAssignmentName, options)
+// options - PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions contains the optional parameters
+// for the PolicyEventsClient.ListQueryResultsForSubscriptionLevelPolicyAssignment method.
+func (client *PolicyEventsClient) ListQueryResultsForSubscriptionLevelPolicyAssignment(policyEventsResource PolicyEventsResourceType, subscriptionID string, policyAssignmentName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse]{
+		More: func(page PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse) bool {
+			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PolicyEventsQueryResults.ODataNextLink)
+		Fetcher: func(ctx context.Context, page *PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse) (PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listQueryResultsForSubscriptionLevelPolicyAssignmentCreateRequest(ctx, policyEventsResource, subscriptionID, policyAssignmentName, queryOptions, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.ODataNextLink)
+			}
+			if err != nil {
+				return PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listQueryResultsForSubscriptionLevelPolicyAssignmentHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listQueryResultsForSubscriptionLevelPolicyAssignmentCreateRequest creates the ListQueryResultsForSubscriptionLevelPolicyAssignment request.
-func (client *PolicyEventsClient) listQueryResultsForSubscriptionLevelPolicyAssignmentCreateRequest(ctx context.Context, policyEventsResource PolicyEventsResourceType, subscriptionID string, policyAssignmentName string, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyEventsClient) listQueryResultsForSubscriptionLevelPolicyAssignmentCreateRequest(ctx context.Context, policyEventsResource PolicyEventsResourceType, subscriptionID string, policyAssignmentName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{authorizationNamespace}/policyAssignments/{policyAssignmentName}/providers/Microsoft.PolicyInsights/policyEvents/{policyEventsResource}/queryResults"
 	if policyEventsResource == "" {
 		return nil, errors.New("parameter policyEventsResource cannot be empty")
@@ -629,29 +778,29 @@ func (client *PolicyEventsClient) listQueryResultsForSubscriptionLevelPolicyAssi
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-10-01")
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if queryOptions != nil && queryOptions.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*queryOptions.Top), 10))
 	}
-	if options != nil && options.OrderBy != nil {
-		reqQP.Set("$orderby", *options.OrderBy)
+	if queryOptions != nil && queryOptions.OrderBy != nil {
+		reqQP.Set("$orderby", *queryOptions.OrderBy)
 	}
-	if options != nil && options.Select != nil {
-		reqQP.Set("$select", *options.Select)
+	if queryOptions != nil && queryOptions.Select != nil {
+		reqQP.Set("$select", *queryOptions.Select)
 	}
-	if options != nil && options.From != nil {
-		reqQP.Set("$from", options.From.Format(time.RFC3339Nano))
+	if queryOptions != nil && queryOptions.From != nil {
+		reqQP.Set("$from", queryOptions.From.Format(time.RFC3339Nano))
 	}
-	if options != nil && options.To != nil {
-		reqQP.Set("$to", options.To.Format(time.RFC3339Nano))
+	if queryOptions != nil && queryOptions.To != nil {
+		reqQP.Set("$to", queryOptions.To.Format(time.RFC3339Nano))
 	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if queryOptions != nil && queryOptions.Filter != nil {
+		reqQP.Set("$filter", *queryOptions.Filter)
 	}
-	if options != nil && options.Apply != nil {
-		reqQP.Set("$apply", *options.Apply)
+	if queryOptions != nil && queryOptions.Apply != nil {
+		reqQP.Set("$apply", *queryOptions.Apply)
 	}
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skiptoken", *options.SkipToken)
+	if queryOptions != nil && queryOptions.SkipToken != nil {
+		reqQP.Set("$skiptoken", *queryOptions.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
@@ -660,7 +809,7 @@ func (client *PolicyEventsClient) listQueryResultsForSubscriptionLevelPolicyAssi
 
 // listQueryResultsForSubscriptionLevelPolicyAssignmentHandleResponse handles the ListQueryResultsForSubscriptionLevelPolicyAssignment response.
 func (client *PolicyEventsClient) listQueryResultsForSubscriptionLevelPolicyAssignmentHandleResponse(resp *http.Response) (PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse, error) {
-	result := PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse{RawResponse: resp}
+	result := PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyEventsQueryResults); err != nil {
 		return PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse{}, err
 	}

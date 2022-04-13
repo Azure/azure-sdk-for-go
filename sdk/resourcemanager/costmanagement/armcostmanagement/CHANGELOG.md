@@ -1,5 +1,229 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `NewQueryClient` return value(s) have been changed from `(*QueryClient)` to `(*QueryClient, error)`
+- Function `NewExportsClient` return value(s) have been changed from `(*ExportsClient)` to `(*ExportsClient, error)`
+- Function `NewDimensionsClient` return value(s) have been changed from `(*DimensionsClient)` to `(*DimensionsClient, error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `NewGenerateDetailedCostReportClient` return value(s) have been changed from `(*GenerateDetailedCostReportClient)` to `(*GenerateDetailedCostReportClient, error)`
+- Function `*ViewsClient.ListByScope` return value(s) have been changed from `(*ViewsClientListByScopePager)` to `(*runtime.Pager[ViewsClientListByScopeResponse])`
+- Function `*ViewsClient.List` return value(s) have been changed from `(*ViewsClientListPager)` to `(*runtime.Pager[ViewsClientListResponse])`
+- Function `*GenerateDetailedCostReportClient.BeginCreateOperation` return value(s) have been changed from `(GenerateDetailedCostReportClientCreateOperationPollerResponse, error)` to `(*armruntime.Poller[GenerateDetailedCostReportClientCreateOperationResponse], error)`
+- Function `NewGenerateDetailedCostReportOperationResultsClient` return value(s) have been changed from `(*GenerateDetailedCostReportOperationResultsClient)` to `(*GenerateDetailedCostReportOperationResultsClient, error)`
+- Function `*DimensionsClient.List` parameter(s) have been changed from `(context.Context, string, *DimensionsClientListOptions)` to `(string, *DimensionsClientListOptions)`
+- Function `*DimensionsClient.List` return value(s) have been changed from `(DimensionsClientListResponse, error)` to `(*runtime.Pager[DimensionsClientListResponse])`
+- Function `NewGenerateDetailedCostReportOperationStatusClient` return value(s) have been changed from `(*GenerateDetailedCostReportOperationStatusClient)` to `(*GenerateDetailedCostReportOperationStatusClient, error)`
+- Function `NewForecastClient` return value(s) have been changed from `(*ForecastClient)` to `(*ForecastClient, error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewAlertsClient` return value(s) have been changed from `(*AlertsClient)` to `(*AlertsClient, error)`
+- Function `*DimensionsClient.ByExternalCloudProviderType` parameter(s) have been changed from `(context.Context, ExternalCloudProviderType, string, *DimensionsClientByExternalCloudProviderTypeOptions)` to `(ExternalCloudProviderType, string, *DimensionsClientByExternalCloudProviderTypeOptions)`
+- Function `*DimensionsClient.ByExternalCloudProviderType` return value(s) have been changed from `(DimensionsClientByExternalCloudProviderTypeResponse, error)` to `(*runtime.Pager[DimensionsClientByExternalCloudProviderTypeResponse])`
+- Function `NewViewsClient` return value(s) have been changed from `(*ViewsClient)` to `(*ViewsClient, error)`
+- Type of `Status.Status` has been changed from `*OperationStatusType` to `*ReportOperationStatusType`
+- Type of `AlertPropertiesDetails.TagFilter` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `ReportConfigSorting.Direction` has been changed from `*ReportConfigSortingDirection` to `*ReportConfigSortingType`
+- Const `OperationStatusTypeQueued` has been removed
+- Const `OperationStatusTypeNoDataFound` has been removed
+- Const `OperationStatusTypeReadyToDownload` has been removed
+- Const `ReportConfigSortingDirectionAscending` has been removed
+- Const `OperationStatusTypeInProgress` has been removed
+- Const `OperationStatusTypeTimedOut` has been removed
+- Const `ReportConfigSortingDirectionDescending` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `ReportConfigSortingDirection.ToPtr` has been removed
+- Function `*ViewsClientListPager.PageResponse` has been removed
+- Function `ExecutionStatus.ToPtr` has been removed
+- Function `AlertTimeGrainType.ToPtr` has been removed
+- Function `FunctionType.ToPtr` has been removed
+- Function `AccumulatedType.ToPtr` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `MetricType.ToPtr` has been removed
+- Function `*GenerateDetailedCostReportClientCreateOperationPoller.ResumeToken` has been removed
+- Function `AlertSource.ToPtr` has been removed
+- Function `StatusType.ToPtr` has been removed
+- Function `ReportType.ToPtr` has been removed
+- Function `GranularityType.ToPtr` has been removed
+- Function `*GenerateDetailedCostReportClientCreateOperationPoller.Done` has been removed
+- Function `ForecastType.ToPtr` has been removed
+- Function `*GenerateDetailedCostReportClientCreateOperationPoller.FinalResponse` has been removed
+- Function `*ViewsClientListByScopePager.NextPage` has been removed
+- Function `ExecutionType.ToPtr` has been removed
+- Function `RecurrenceType.ToPtr` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `KpiType.ToPtr` has been removed
+- Function `AlertType.ToPtr` has been removed
+- Function `OperatorType.ToPtr` has been removed
+- Function `TimeframeType.ToPtr` has been removed
+- Function `AlertCriteria.ToPtr` has been removed
+- Function `FormatType.ToPtr` has been removed
+- Function `*GenerateDetailedCostReportClientCreateOperationPollerResponse.Resume` has been removed
+- Function `ExternalCloudProviderType.ToPtr` has been removed
+- Function `PossibleReportConfigSortingDirectionValues` has been removed
+- Function `*ViewsClientListByScopePager.PageResponse` has been removed
+- Function `AlertCategory.ToPtr` has been removed
+- Function `GenerateDetailedCostReportMetricType.ToPtr` has been removed
+- Function `ExportType.ToPtr` has been removed
+- Function `GenerateDetailedCostReportClientCreateOperationPollerResponse.PollUntilDone` has been removed
+- Function `ReportConfigColumnType.ToPtr` has been removed
+- Function `PivotType.ToPtr` has been removed
+- Function `*GenerateDetailedCostReportClientCreateOperationPoller.Poll` has been removed
+- Function `QueryColumnType.ToPtr` has been removed
+- Function `OperationStatusType.ToPtr` has been removed
+- Function `*ViewsClientListPager.NextPage` has been removed
+- Function `ChartType.ToPtr` has been removed
+- Function `*ViewsClientListByScopePager.Err` has been removed
+- Function `AlertStatus.ToPtr` has been removed
+- Function `QueryOperatorType.ToPtr` has been removed
+- Function `AlertOperator.ToPtr` has been removed
+- Function `ReportTimeframeType.ToPtr` has been removed
+- Function `*ViewsClientListPager.Err` has been removed
+- Function `ForecastTimeframeType.ToPtr` has been removed
+- Function `ReportGranularityType.ToPtr` has been removed
+- Struct `AlertsClientDismissResult` has been removed
+- Struct `AlertsClientGetResult` has been removed
+- Struct `AlertsClientListExternalResult` has been removed
+- Struct `AlertsClientListResult` has been removed
+- Struct `DimensionsClientByExternalCloudProviderTypeResult` has been removed
+- Struct `DimensionsClientListResult` has been removed
+- Struct `ExportsClientCreateOrUpdateResult` has been removed
+- Struct `ExportsClientGetExecutionHistoryResult` has been removed
+- Struct `ExportsClientGetResult` has been removed
+- Struct `ExportsClientListResult` has been removed
+- Struct `ForecastClientExternalCloudProviderUsageResult` has been removed
+- Struct `ForecastClientUsageResult` has been removed
+- Struct `GenerateDetailedCostReportClientCreateOperationPoller` has been removed
+- Struct `GenerateDetailedCostReportClientCreateOperationPollerResponse` has been removed
+- Struct `GenerateDetailedCostReportClientCreateOperationResult` has been removed
+- Struct `GenerateDetailedCostReportOperationResultsClientGetResult` has been removed
+- Struct `GenerateDetailedCostReportOperationStatusClientGetResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `QueryClientUsageByExternalCloudProviderTypeResult` has been removed
+- Struct `QueryClientUsageResult` has been removed
+- Struct `ViewsClientCreateOrUpdateByScopeResult` has been removed
+- Struct `ViewsClientCreateOrUpdateResult` has been removed
+- Struct `ViewsClientGetByScopeResult` has been removed
+- Struct `ViewsClientGetResult` has been removed
+- Struct `ViewsClientListByScopePager` has been removed
+- Struct `ViewsClientListByScopeResult` has been removed
+- Struct `ViewsClientListPager` has been removed
+- Struct `ViewsClientListResult` has been removed
+- Field `ViewsClientListByScopeResult` of struct `ViewsClientListByScopeResponse` has been removed
+- Field `RawResponse` of struct `ViewsClientListByScopeResponse` has been removed
+- Field `Tag` of struct `QueryFilter` has been removed
+- Field `Dimension` of struct `QueryFilter` has been removed
+- Field `Not` of struct `QueryFilter` has been removed
+- Field `GenerateDetailedCostReportOperationResultsClientGetResult` of struct `GenerateDetailedCostReportOperationResultsClientGetResponse` has been removed
+- Field `RawResponse` of struct `GenerateDetailedCostReportOperationResultsClientGetResponse` has been removed
+- Field `ViewsClientListResult` of struct `ViewsClientListResponse` has been removed
+- Field `RawResponse` of struct `ViewsClientListResponse` has been removed
+- Field `ExportsClientListResult` of struct `ExportsClientListResponse` has been removed
+- Field `RawResponse` of struct `ExportsClientListResponse` has been removed
+- Field `ViewsClientGetResult` of struct `ViewsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ViewsClientGetResponse` has been removed
+- Field `ForecastClientExternalCloudProviderUsageResult` of struct `ForecastClientExternalCloudProviderUsageResponse` has been removed
+- Field `RawResponse` of struct `ForecastClientExternalCloudProviderUsageResponse` has been removed
+- Field `QueryClientUsageByExternalCloudProviderTypeResult` of struct `QueryClientUsageByExternalCloudProviderTypeResponse` has been removed
+- Field `RawResponse` of struct `QueryClientUsageByExternalCloudProviderTypeResponse` has been removed
+- Field `RawResponse` of struct `ViewsClientDeleteResponse` has been removed
+- Field `AlertsClientGetResult` of struct `AlertsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AlertsClientGetResponse` has been removed
+- Field `ViewsClientCreateOrUpdateByScopeResult` of struct `ViewsClientCreateOrUpdateByScopeResponse` has been removed
+- Field `RawResponse` of struct `ViewsClientCreateOrUpdateByScopeResponse` has been removed
+- Field `Not` of struct `ReportConfigFilter` has been removed
+- Field `ForecastClientUsageResult` of struct `ForecastClientUsageResponse` has been removed
+- Field `RawResponse` of struct `ForecastClientUsageResponse` has been removed
+- Field `AlertsClientDismissResult` of struct `AlertsClientDismissResponse` has been removed
+- Field `RawResponse` of struct `AlertsClientDismissResponse` has been removed
+- Field `GenerateDetailedCostReportOperationStatusClientGetResult` of struct `GenerateDetailedCostReportOperationStatusClientGetResponse` has been removed
+- Field `RawResponse` of struct `GenerateDetailedCostReportOperationStatusClientGetResponse` has been removed
+- Field `DimensionsClientByExternalCloudProviderTypeResult` of struct `DimensionsClientByExternalCloudProviderTypeResponse` has been removed
+- Field `RawResponse` of struct `DimensionsClientByExternalCloudProviderTypeResponse` has been removed
+- Field `QueryClientUsageResult` of struct `QueryClientUsageResponse` has been removed
+- Field `RawResponse` of struct `QueryClientUsageResponse` has been removed
+- Field `ViewsClientCreateOrUpdateResult` of struct `ViewsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ViewsClientCreateOrUpdateResponse` has been removed
+- Field `ExportsClientGetExecutionHistoryResult` of struct `ExportsClientGetExecutionHistoryResponse` has been removed
+- Field `RawResponse` of struct `ExportsClientGetExecutionHistoryResponse` has been removed
+- Field `GenerateDetailedCostReportClientCreateOperationResult` of struct `GenerateDetailedCostReportClientCreateOperationResponse` has been removed
+- Field `RawResponse` of struct `GenerateDetailedCostReportClientCreateOperationResponse` has been removed
+- Field `RawResponse` of struct `ViewsClientDeleteByScopeResponse` has been removed
+- Field `AlertsClientListExternalResult` of struct `AlertsClientListExternalResponse` has been removed
+- Field `RawResponse` of struct `AlertsClientListExternalResponse` has been removed
+- Field `AlertsClientListResult` of struct `AlertsClientListResponse` has been removed
+- Field `RawResponse` of struct `AlertsClientListResponse` has been removed
+- Field `RawResponse` of struct `ExportsClientExecuteResponse` has been removed
+- Field `ViewsClientGetByScopeResult` of struct `ViewsClientGetByScopeResponse` has been removed
+- Field `RawResponse` of struct `ViewsClientGetByScopeResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `ExportsClientGetResult` of struct `ExportsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ExportsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ExportsClientDeleteResponse` has been removed
+- Field `ExportsClientCreateOrUpdateResult` of struct `ExportsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ExportsClientCreateOrUpdateResponse` has been removed
+- Field `DimensionsClientListResult` of struct `DimensionsClientListResponse` has been removed
+- Field `RawResponse` of struct `DimensionsClientListResponse` has been removed
+
+### Features Added
+
+- New const `ReportOperationStatusTypeReadyToDownload`
+- New const `OperationStatusTypeRunning`
+- New const `ReportOperationStatusTypeInProgress`
+- New const `ReportOperationStatusTypeCompleted`
+- New const `ReportOperationStatusTypeNoDataFound`
+- New const `ReportOperationStatusTypeFailed`
+- New const `ReportOperationStatusTypeTimedOut`
+- New const `ReportConfigSortingTypeAscending`
+- New const `ReportOperationStatusTypeQueued`
+- New const `ReportConfigSortingTypeDescending`
+- New function `PossibleReportConfigSortingTypeValues() []ReportConfigSortingType`
+- New function `*GenerateReservationDetailsReportClient.BeginByBillingAccountID(context.Context, string, string, string, *GenerateReservationDetailsReportClientBeginByBillingAccountIDOptions) (*armruntime.Poller[GenerateReservationDetailsReportClientByBillingAccountIDResponse], error)`
+- New function `NewGenerateReservationDetailsReportClient(azcore.TokenCredential, *arm.ClientOptions) (*GenerateReservationDetailsReportClient, error)`
+- New function `*GenerateReservationDetailsReportClient.BeginByBillingProfileID(context.Context, string, string, string, string, *GenerateReservationDetailsReportClientBeginByBillingProfileIDOptions) (*armruntime.Poller[GenerateReservationDetailsReportClientByBillingProfileIDResponse], error)`
+- New function `ReportURL.MarshalJSON() ([]byte, error)`
+- New function `*ReportURL.UnmarshalJSON([]byte) error`
+- New function `PossibleReportOperationStatusTypeValues() []ReportOperationStatusType`
+- New struct `GenerateReservationDetailsReportClient`
+- New struct `GenerateReservationDetailsReportClientBeginByBillingAccountIDOptions`
+- New struct `GenerateReservationDetailsReportClientBeginByBillingProfileIDOptions`
+- New struct `GenerateReservationDetailsReportClientByBillingAccountIDResponse`
+- New struct `GenerateReservationDetailsReportClientByBillingProfileIDResponse`
+- New struct `OperationStatus`
+- New struct `ReportURL`
+- New anonymous field `View` in struct `ViewsClientCreateOrUpdateResponse`
+- New anonymous field `ExportListResult` in struct `ExportsClientListResponse`
+- New anonymous field `AlertsResult` in struct `AlertsClientListResponse`
+- New anonymous field `GenerateDetailedCostReportOperationResult` in struct `GenerateDetailedCostReportClientCreateOperationResponse`
+- New anonymous field `ViewListResult` in struct `ViewsClientListByScopeResponse`
+- New anonymous field `AlertsResult` in struct `AlertsClientListExternalResponse`
+- New anonymous field `Alert` in struct `AlertsClientGetResponse`
+- New anonymous field `ExportExecutionListResult` in struct `ExportsClientGetExecutionHistoryResponse`
+- New anonymous field `QueryResult` in struct `ForecastClientUsageResponse`
+- New anonymous field `Alert` in struct `AlertsClientDismissResponse`
+- New anonymous field `GenerateDetailedCostReportOperationResult` in struct `GenerateDetailedCostReportOperationResultsClientGetResponse`
+- New field `Dimensions` in struct `QueryFilter`
+- New field `Tags` in struct `QueryFilter`
+- New anonymous field `GenerateDetailedCostReportOperationStatuses` in struct `GenerateDetailedCostReportOperationStatusClientGetResponse`
+- New anonymous field `View` in struct `ViewsClientCreateOrUpdateByScopeResponse`
+- New anonymous field `Export` in struct `ExportsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `GenerateDetailedCostReportClientBeginCreateOperationOptions`
+- New anonymous field `QueryResult` in struct `ForecastClientExternalCloudProviderUsageResponse`
+- New anonymous field `DimensionsListResult` in struct `DimensionsClientListResponse`
+- New anonymous field `QueryResult` in struct `QueryClientUsageResponse`
+- New anonymous field `ViewListResult` in struct `ViewsClientListResponse`
+- New field `Description` in struct `OperationDisplay`
+- New anonymous field `DimensionsListResult` in struct `DimensionsClientByExternalCloudProviderTypeResponse`
+- New anonymous field `View` in struct `ViewsClientGetResponse`
+- New field `ID` in struct `Operation`
+- New anonymous field `Export` in struct `ExportsClientGetResponse`
+- New anonymous field `View` in struct `ViewsClientGetByScopeResponse`
+- New anonymous field `QueryResult` in struct `QueryClientUsageByExternalCloudProviderTypeResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

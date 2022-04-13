@@ -7,6 +7,7 @@
 
 ### Breaking Changes
 * Renamed `InsertEntityResponse/Options` to `UpsertEntityResponse/Options`
+* Renamed `PossibleGeoReplicationStatusTypeValues` to `PossibleGeoReplicationStatusValues`
 
 ### Bugs Fixed
 

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type WaitStatisticsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewWaitStatisticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WaitStatisticsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewWaitStatisticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WaitStatisticsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &WaitStatisticsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Retrieve wait statistics for specified identifier.
@@ -102,7 +107,7 @@ func (client *WaitStatisticsClient) getCreateRequest(ctx context.Context, resour
 
 // getHandleResponse handles the Get response.
 func (client *WaitStatisticsClient) getHandleResponse(resp *http.Response) (WaitStatisticsClientGetResponse, error) {
-	result := WaitStatisticsClientGetResponse{RawResponse: resp}
+	result := WaitStatisticsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WaitStatistic); err != nil {
 		return WaitStatisticsClientGetResponse{}, err
 	}
@@ -116,16 +121,32 @@ func (client *WaitStatisticsClient) getHandleResponse(resp *http.Response) (Wait
 // parameters - The required parameters for retrieving wait statistics.
 // options - WaitStatisticsClientListByServerOptions contains the optional parameters for the WaitStatisticsClient.ListByServer
 // method.
-func (client *WaitStatisticsClient) ListByServer(resourceGroupName string, serverName string, parameters WaitStatisticsInput, options *WaitStatisticsClientListByServerOptions) *WaitStatisticsClientListByServerPager {
-	return &WaitStatisticsClientListByServerPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, parameters, options)
+func (client *WaitStatisticsClient) ListByServer(resourceGroupName string, serverName string, parameters WaitStatisticsInput, options *WaitStatisticsClientListByServerOptions) *runtime.Pager[WaitStatisticsClientListByServerResponse] {
+	return runtime.NewPager(runtime.PageProcessor[WaitStatisticsClientListByServerResponse]{
+		More: func(page WaitStatisticsClientListByServerResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp WaitStatisticsClientListByServerResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.WaitStatisticsResultList.NextLink)
+		Fetcher: func(ctx context.Context, page *WaitStatisticsClientListByServerResponse) (WaitStatisticsClientListByServerResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServerCreateRequest(ctx, resourceGroupName, serverName, parameters, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return WaitStatisticsClientListByServerResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WaitStatisticsClientListByServerResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WaitStatisticsClientListByServerResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServerHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByServerCreateRequest creates the ListByServer request.
@@ -156,7 +177,7 @@ func (client *WaitStatisticsClient) listByServerCreateRequest(ctx context.Contex
 
 // listByServerHandleResponse handles the ListByServer response.
 func (client *WaitStatisticsClient) listByServerHandleResponse(resp *http.Response) (WaitStatisticsClientListByServerResponse, error) {
-	result := WaitStatisticsClientListByServerResponse{RawResponse: resp}
+	result := WaitStatisticsClientListByServerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WaitStatisticsResultList); err != nil {
 		return WaitStatisticsClientListByServerResponse{}, err
 	}

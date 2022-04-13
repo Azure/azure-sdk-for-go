@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type HybridRunbookWorkerGroupClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewHybridRunbookWorkerGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *HybridRunbookWorkerGroupClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewHybridRunbookWorkerGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HybridRunbookWorkerGroupClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &HybridRunbookWorkerGroupClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Create a hybrid runbook worker group.
@@ -105,7 +110,7 @@ func (client *HybridRunbookWorkerGroupClient) createCreateRequest(ctx context.Co
 
 // createHandleResponse handles the Create response.
 func (client *HybridRunbookWorkerGroupClient) createHandleResponse(resp *http.Response) (HybridRunbookWorkerGroupClientCreateResponse, error) {
-	result := HybridRunbookWorkerGroupClientCreateResponse{RawResponse: resp}
+	result := HybridRunbookWorkerGroupClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridRunbookWorkerGroup); err != nil {
 		return HybridRunbookWorkerGroupClientCreateResponse{}, err
 	}
@@ -131,7 +136,7 @@ func (client *HybridRunbookWorkerGroupClient) Delete(ctx context.Context, resour
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return HybridRunbookWorkerGroupClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return HybridRunbookWorkerGroupClientDeleteResponse{RawResponse: resp}, nil
+	return HybridRunbookWorkerGroupClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -218,7 +223,7 @@ func (client *HybridRunbookWorkerGroupClient) getCreateRequest(ctx context.Conte
 
 // getHandleResponse handles the Get response.
 func (client *HybridRunbookWorkerGroupClient) getHandleResponse(resp *http.Response) (HybridRunbookWorkerGroupClientGetResponse, error) {
-	result := HybridRunbookWorkerGroupClientGetResponse{RawResponse: resp}
+	result := HybridRunbookWorkerGroupClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridRunbookWorkerGroup); err != nil {
 		return HybridRunbookWorkerGroupClientGetResponse{}, err
 	}
@@ -231,16 +236,32 @@ func (client *HybridRunbookWorkerGroupClient) getHandleResponse(resp *http.Respo
 // automationAccountName - The name of the automation account.
 // options - HybridRunbookWorkerGroupClientListByAutomationAccountOptions contains the optional parameters for the HybridRunbookWorkerGroupClient.ListByAutomationAccount
 // method.
-func (client *HybridRunbookWorkerGroupClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *HybridRunbookWorkerGroupClientListByAutomationAccountOptions) *HybridRunbookWorkerGroupClientListByAutomationAccountPager {
-	return &HybridRunbookWorkerGroupClientListByAutomationAccountPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
+func (client *HybridRunbookWorkerGroupClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *HybridRunbookWorkerGroupClientListByAutomationAccountOptions) *runtime.Pager[HybridRunbookWorkerGroupClientListByAutomationAccountResponse] {
+	return runtime.NewPager(runtime.PageProcessor[HybridRunbookWorkerGroupClientListByAutomationAccountResponse]{
+		More: func(page HybridRunbookWorkerGroupClientListByAutomationAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp HybridRunbookWorkerGroupClientListByAutomationAccountResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.HybridRunbookWorkerGroupsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *HybridRunbookWorkerGroupClientListByAutomationAccountResponse) (HybridRunbookWorkerGroupClientListByAutomationAccountResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return HybridRunbookWorkerGroupClientListByAutomationAccountResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return HybridRunbookWorkerGroupClientListByAutomationAccountResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return HybridRunbookWorkerGroupClientListByAutomationAccountResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByAutomationAccountHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
@@ -274,7 +295,7 @@ func (client *HybridRunbookWorkerGroupClient) listByAutomationAccountCreateReque
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
 func (client *HybridRunbookWorkerGroupClient) listByAutomationAccountHandleResponse(resp *http.Response) (HybridRunbookWorkerGroupClientListByAutomationAccountResponse, error) {
-	result := HybridRunbookWorkerGroupClientListByAutomationAccountResponse{RawResponse: resp}
+	result := HybridRunbookWorkerGroupClientListByAutomationAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridRunbookWorkerGroupsListResult); err != nil {
 		return HybridRunbookWorkerGroupClientListByAutomationAccountResponse{}, err
 	}
@@ -336,7 +357,7 @@ func (client *HybridRunbookWorkerGroupClient) updateCreateRequest(ctx context.Co
 
 // updateHandleResponse handles the Update response.
 func (client *HybridRunbookWorkerGroupClient) updateHandleResponse(resp *http.Response) (HybridRunbookWorkerGroupClientUpdateResponse, error) {
-	result := HybridRunbookWorkerGroupClientUpdateResponse{RawResponse: resp}
+	result := HybridRunbookWorkerGroupClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridRunbookWorkerGroup); err != nil {
 		return HybridRunbookWorkerGroupClientUpdateResponse{}, err
 	}

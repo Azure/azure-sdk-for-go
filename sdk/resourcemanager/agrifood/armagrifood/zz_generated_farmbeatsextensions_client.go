@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -32,19 +33,23 @@ type FarmBeatsExtensionsClient struct {
 // NewFarmBeatsExtensionsClient creates a new instance of FarmBeatsExtensionsClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewFarmBeatsExtensionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *FarmBeatsExtensionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewFarmBeatsExtensionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*FarmBeatsExtensionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &FarmBeatsExtensionsClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Get farmBeats extension.
@@ -86,7 +91,7 @@ func (client *FarmBeatsExtensionsClient) getCreateRequest(ctx context.Context, f
 
 // getHandleResponse handles the Get response.
 func (client *FarmBeatsExtensionsClient) getHandleResponse(resp *http.Response) (FarmBeatsExtensionsClientGetResponse, error) {
-	result := FarmBeatsExtensionsClientGetResponse{RawResponse: resp}
+	result := FarmBeatsExtensionsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FarmBeatsExtension); err != nil {
 		return FarmBeatsExtensionsClientGetResponse{}, err
 	}
@@ -97,16 +102,32 @@ func (client *FarmBeatsExtensionsClient) getHandleResponse(resp *http.Response) 
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - FarmBeatsExtensionsClientListOptions contains the optional parameters for the FarmBeatsExtensionsClient.List
 // method.
-func (client *FarmBeatsExtensionsClient) List(options *FarmBeatsExtensionsClientListOptions) *FarmBeatsExtensionsClientListPager {
-	return &FarmBeatsExtensionsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *FarmBeatsExtensionsClient) List(options *FarmBeatsExtensionsClientListOptions) *runtime.Pager[FarmBeatsExtensionsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[FarmBeatsExtensionsClientListResponse]{
+		More: func(page FarmBeatsExtensionsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp FarmBeatsExtensionsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.FarmBeatsExtensionListResponse.NextLink)
+		Fetcher: func(ctx context.Context, page *FarmBeatsExtensionsClientListResponse) (FarmBeatsExtensionsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return FarmBeatsExtensionsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return FarmBeatsExtensionsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return FarmBeatsExtensionsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -148,7 +169,7 @@ func (client *FarmBeatsExtensionsClient) listCreateRequest(ctx context.Context, 
 
 // listHandleResponse handles the List response.
 func (client *FarmBeatsExtensionsClient) listHandleResponse(resp *http.Response) (FarmBeatsExtensionsClientListResponse, error) {
-	result := FarmBeatsExtensionsClientListResponse{RawResponse: resp}
+	result := FarmBeatsExtensionsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FarmBeatsExtensionListResponse); err != nil {
 		return FarmBeatsExtensionsClientListResponse{}, err
 	}

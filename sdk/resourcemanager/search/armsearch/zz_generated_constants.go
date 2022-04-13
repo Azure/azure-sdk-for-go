@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armsearch
 
 const (
 	moduleName    = "armsearch"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 type AdminKeyKind string
@@ -26,11 +26,6 @@ func PossibleAdminKeyKindValues() []AdminKeyKind {
 		AdminKeyKindPrimary,
 		AdminKeyKindSecondary,
 	}
-}
-
-// ToPtr returns a *AdminKeyKind pointing to the current value.
-func (c AdminKeyKind) ToPtr() *AdminKeyKind {
-	return &c
 }
 
 // HostingMode - Applicable only for the standard3 SKU. You can set this property to enable up to 3 high density partitions
@@ -52,11 +47,6 @@ func PossibleHostingModeValues() []HostingMode {
 	}
 }
 
-// ToPtr returns a *HostingMode pointing to the current value.
-func (c HostingMode) ToPtr() *HostingMode {
-	return &c
-}
-
 // IdentityType - The identity type.
 type IdentityType string
 
@@ -71,11 +61,6 @@ func PossibleIdentityTypeValues() []IdentityType {
 		IdentityTypeNone,
 		IdentityTypeSystemAssigned,
 	}
-}
-
-// ToPtr returns a *IdentityType pointing to the current value.
-func (c IdentityType) ToPtr() *IdentityType {
-	return &c
 }
 
 // PrivateLinkServiceConnectionStatus - Status of the the private link service connection. Can be Pending, Approved, Rejected,
@@ -97,11 +82,6 @@ func PossiblePrivateLinkServiceConnectionStatusValues() []PrivateLinkServiceConn
 		PrivateLinkServiceConnectionStatusRejected,
 		PrivateLinkServiceConnectionStatusDisconnected,
 	}
-}
-
-// ToPtr returns a *PrivateLinkServiceConnectionStatus pointing to the current value.
-func (c PrivateLinkServiceConnectionStatus) ToPtr() *PrivateLinkServiceConnectionStatus {
-	return &c
 }
 
 // ProvisioningState - The state of the last provisioning operation performed on the search service. Provisioning is an intermediate
@@ -128,11 +108,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // PublicNetworkAccess - This value can be set to 'enabled' to avoid breaking changes on existing customer resources and templates.
 // If set to 'disabled', traffic over public interface is not allowed, and private endpoint
 // connections would be the exclusive access method.
@@ -149,11 +124,6 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 		PublicNetworkAccessEnabled,
 		PublicNetworkAccessDisabled,
 	}
-}
-
-// ToPtr returns a *PublicNetworkAccess pointing to the current value.
-func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
-	return &c
 }
 
 // SKUName - The SKU of the search service. Valid values include: 'free': Shared service. 'basic': Dedicated service with
@@ -188,11 +158,6 @@ func PossibleSKUNameValues() []SKUName {
 	}
 }
 
-// ToPtr returns a *SKUName pointing to the current value.
-func (c SKUName) ToPtr() *SKUName {
-	return &c
-}
-
 // SearchServiceStatus - The status of the search service. Possible values include: 'running': The search service is running
 // and no provisioning operations are underway. 'provisioning': The search service is being provisioned
 // or scaled up or down. 'deleting': The search service is being deleted. 'degraded': The search service is degraded. This
@@ -225,11 +190,6 @@ func PossibleSearchServiceStatusValues() []SearchServiceStatus {
 	}
 }
 
-// ToPtr returns a *SearchServiceStatus pointing to the current value.
-func (c SearchServiceStatus) ToPtr() *SearchServiceStatus {
-	return &c
-}
-
 // SharedPrivateLinkResourceAsyncOperationResult - The current status of the long running asynchronous shared private link
 // resource operation.
 type SharedPrivateLinkResourceAsyncOperationResult string
@@ -247,11 +207,6 @@ func PossibleSharedPrivateLinkResourceAsyncOperationResultValues() []SharedPriva
 		SharedPrivateLinkResourceAsyncOperationResultRunning,
 		SharedPrivateLinkResourceAsyncOperationResultSucceeded,
 	}
-}
-
-// ToPtr returns a *SharedPrivateLinkResourceAsyncOperationResult pointing to the current value.
-func (c SharedPrivateLinkResourceAsyncOperationResult) ToPtr() *SharedPrivateLinkResourceAsyncOperationResult {
-	return &c
 }
 
 // SharedPrivateLinkResourceProvisioningState - The provisioning state of the shared private link resource. Can be Updating,
@@ -277,11 +232,6 @@ func PossibleSharedPrivateLinkResourceProvisioningStateValues() []SharedPrivateL
 	}
 }
 
-// ToPtr returns a *SharedPrivateLinkResourceProvisioningState pointing to the current value.
-func (c SharedPrivateLinkResourceProvisioningState) ToPtr() *SharedPrivateLinkResourceProvisioningState {
-	return &c
-}
-
 // SharedPrivateLinkResourceStatus - Status of the shared private link resource. Can be Pending, Approved, Rejected or Disconnected.
 type SharedPrivateLinkResourceStatus string
 
@@ -302,11 +252,6 @@ func PossibleSharedPrivateLinkResourceStatusValues() []SharedPrivateLinkResource
 	}
 }
 
-// ToPtr returns a *SharedPrivateLinkResourceStatus pointing to the current value.
-func (c SharedPrivateLinkResourceStatus) ToPtr() *SharedPrivateLinkResourceStatus {
-	return &c
-}
-
 // UnavailableNameReason - The reason why the name is not available. 'Invalid' indicates the name provided does not match
 // the naming requirements (incorrect length, unsupported characters, etc.). 'AlreadyExists' indicates that
 // the name is already in use and is therefore unavailable.
@@ -323,9 +268,4 @@ func PossibleUnavailableNameReasonValues() []UnavailableNameReason {
 		UnavailableNameReasonAlreadyExists,
 		UnavailableNameReasonInvalid,
 	}
-}
-
-// ToPtr returns a *UnavailableNameReason pointing to the current value.
-func (c UnavailableNameReason) ToPtr() *UnavailableNameReason {
-	return &c
 }

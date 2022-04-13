@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -37,22 +38,26 @@ type ReplicationProtectionIntentsClient struct {
 // subscriptionID - The subscription Id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewReplicationProtectionIntentsClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ReplicationProtectionIntentsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewReplicationProtectionIntentsClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationProtectionIntentsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ReplicationProtectionIntentsClient{
 		resourceName:      resourceName,
 		resourceGroupName: resourceGroupName,
 		subscriptionID:    subscriptionID,
-		host:              string(cp.Endpoint),
-		pl:                armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:              ep,
+		pl:                pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - The operation to create an ASR replication protection intent item.
@@ -100,7 +105,7 @@ func (client *ReplicationProtectionIntentsClient) createCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, input)
@@ -108,7 +113,7 @@ func (client *ReplicationProtectionIntentsClient) createCreateRequest(ctx contex
 
 // createHandleResponse handles the Create response.
 func (client *ReplicationProtectionIntentsClient) createHandleResponse(resp *http.Response) (ReplicationProtectionIntentsClientCreateResponse, error) {
-	result := ReplicationProtectionIntentsClientCreateResponse{RawResponse: resp}
+	result := ReplicationProtectionIntentsClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationProtectionIntent); err != nil {
 		return ReplicationProtectionIntentsClientCreateResponse{}, err
 	}
@@ -159,7 +164,7 @@ func (client *ReplicationProtectionIntentsClient) getCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -167,7 +172,7 @@ func (client *ReplicationProtectionIntentsClient) getCreateRequest(ctx context.C
 
 // getHandleResponse handles the Get response.
 func (client *ReplicationProtectionIntentsClient) getHandleResponse(resp *http.Response) (ReplicationProtectionIntentsClientGetResponse, error) {
-	result := ReplicationProtectionIntentsClientGetResponse{RawResponse: resp}
+	result := ReplicationProtectionIntentsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationProtectionIntent); err != nil {
 		return ReplicationProtectionIntentsClientGetResponse{}, err
 	}
@@ -178,16 +183,32 @@ func (client *ReplicationProtectionIntentsClient) getHandleResponse(resp *http.R
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ReplicationProtectionIntentsClientListOptions contains the optional parameters for the ReplicationProtectionIntentsClient.List
 // method.
-func (client *ReplicationProtectionIntentsClient) List(options *ReplicationProtectionIntentsClientListOptions) *ReplicationProtectionIntentsClientListPager {
-	return &ReplicationProtectionIntentsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *ReplicationProtectionIntentsClient) List(options *ReplicationProtectionIntentsClientListOptions) *runtime.Pager[ReplicationProtectionIntentsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ReplicationProtectionIntentsClientListResponse]{
+		More: func(page ReplicationProtectionIntentsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ReplicationProtectionIntentsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReplicationProtectionIntentCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *ReplicationProtectionIntentsClientListResponse) (ReplicationProtectionIntentsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ReplicationProtectionIntentsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReplicationProtectionIntentsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReplicationProtectionIntentsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -210,7 +231,7 @@ func (client *ReplicationProtectionIntentsClient) listCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("skipToken", *options.SkipToken)
 	}
@@ -224,7 +245,7 @@ func (client *ReplicationProtectionIntentsClient) listCreateRequest(ctx context.
 
 // listHandleResponse handles the List response.
 func (client *ReplicationProtectionIntentsClient) listHandleResponse(resp *http.Response) (ReplicationProtectionIntentsClientListResponse, error) {
-	result := ReplicationProtectionIntentsClientListResponse{RawResponse: resp}
+	result := ReplicationProtectionIntentsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationProtectionIntentCollection); err != nil {
 		return ReplicationProtectionIntentsClientListResponse{}, err
 	}

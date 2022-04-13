@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armdatadog
 
 const (
 	moduleName    = "armdatadog"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -33,11 +33,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 type LiftrResourceCategories string
 
 const (
@@ -51,11 +46,6 @@ func PossibleLiftrResourceCategoriesValues() []LiftrResourceCategories {
 		LiftrResourceCategoriesMonitorLogs,
 		LiftrResourceCategoriesUnknown,
 	}
-}
-
-// ToPtr returns a *LiftrResourceCategories pointing to the current value.
-func (c LiftrResourceCategories) ToPtr() *LiftrResourceCategories {
-	return &c
 }
 
 // ManagedIdentityTypes - Identity type
@@ -72,11 +62,6 @@ func PossibleManagedIdentityTypesValues() []ManagedIdentityTypes {
 		ManagedIdentityTypesSystemAssigned,
 		ManagedIdentityTypesUserAssigned,
 	}
-}
-
-// ToPtr returns a *ManagedIdentityTypes pointing to the current value.
-func (c ManagedIdentityTypes) ToPtr() *ManagedIdentityTypes {
-	return &c
 }
 
 // MarketplaceSubscriptionStatus - Flag specifying the Marketplace Subscription Status of the resource. If payment is not
@@ -100,11 +85,6 @@ func PossibleMarketplaceSubscriptionStatusValues() []MarketplaceSubscriptionStat
 	}
 }
 
-// ToPtr returns a *MarketplaceSubscriptionStatus pointing to the current value.
-func (c MarketplaceSubscriptionStatus) ToPtr() *MarketplaceSubscriptionStatus {
-	return &c
-}
-
 // MonitoringStatus - Flag specifying if the resource monitoring is enabled or disabled.
 type MonitoringStatus string
 
@@ -119,11 +99,6 @@ func PossibleMonitoringStatusValues() []MonitoringStatus {
 		MonitoringStatusDisabled,
 		MonitoringStatusEnabled,
 	}
-}
-
-// ToPtr returns a *MonitoringStatus pointing to the current value.
-func (c MonitoringStatus) ToPtr() *MonitoringStatus {
-	return &c
 }
 
 type ProvisioningState string
@@ -155,11 +130,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // SingleSignOnStates - Various states of the SSO resource
 type SingleSignOnStates string
 
@@ -180,11 +150,6 @@ func PossibleSingleSignOnStatesValues() []SingleSignOnStates {
 	}
 }
 
-// ToPtr returns a *SingleSignOnStates pointing to the current value.
-func (c SingleSignOnStates) ToPtr() *SingleSignOnStates {
-	return &c
-}
-
 // TagAction - Valid actions for a filtering tag. Exclusion takes priority over inclusion.
 type TagAction string
 
@@ -199,9 +164,4 @@ func PossibleTagActionValues() []TagAction {
 		TagActionExclude,
 		TagActionInclude,
 	}
-}
-
-// ToPtr returns a *TagAction pointing to the current value.
-func (c TagAction) ToPtr() *TagAction {
-	return &c
 }

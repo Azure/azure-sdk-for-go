@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type DataWarehouseUserActivitiesClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDataWarehouseUserActivitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DataWarehouseUserActivitiesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewDataWarehouseUserActivitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataWarehouseUserActivitiesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DataWarehouseUserActivitiesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets the user activities of a data warehouse which includes running and suspended queries
@@ -109,7 +114,7 @@ func (client *DataWarehouseUserActivitiesClient) getCreateRequest(ctx context.Co
 
 // getHandleResponse handles the Get response.
 func (client *DataWarehouseUserActivitiesClient) getHandleResponse(resp *http.Response) (DataWarehouseUserActivitiesClientGetResponse, error) {
-	result := DataWarehouseUserActivitiesClientGetResponse{RawResponse: resp}
+	result := DataWarehouseUserActivitiesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataWarehouseUserActivities); err != nil {
 		return DataWarehouseUserActivitiesClientGetResponse{}, err
 	}
@@ -124,16 +129,32 @@ func (client *DataWarehouseUserActivitiesClient) getHandleResponse(resp *http.Re
 // databaseName - The name of the database.
 // options - DataWarehouseUserActivitiesClientListByDatabaseOptions contains the optional parameters for the DataWarehouseUserActivitiesClient.ListByDatabase
 // method.
-func (client *DataWarehouseUserActivitiesClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *DataWarehouseUserActivitiesClientListByDatabaseOptions) *DataWarehouseUserActivitiesClientListByDatabasePager {
-	return &DataWarehouseUserActivitiesClientListByDatabasePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
+func (client *DataWarehouseUserActivitiesClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *DataWarehouseUserActivitiesClientListByDatabaseOptions) *runtime.Pager[DataWarehouseUserActivitiesClientListByDatabaseResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DataWarehouseUserActivitiesClientListByDatabaseResponse]{
+		More: func(page DataWarehouseUserActivitiesClientListByDatabaseResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DataWarehouseUserActivitiesClientListByDatabaseResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DataWarehouseUserActivitiesListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DataWarehouseUserActivitiesClientListByDatabaseResponse) (DataWarehouseUserActivitiesClientListByDatabaseResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DataWarehouseUserActivitiesClientListByDatabaseResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DataWarehouseUserActivitiesClientListByDatabaseResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DataWarehouseUserActivitiesClientListByDatabaseResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByDatabaseHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
@@ -168,7 +189,7 @@ func (client *DataWarehouseUserActivitiesClient) listByDatabaseCreateRequest(ctx
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
 func (client *DataWarehouseUserActivitiesClient) listByDatabaseHandleResponse(resp *http.Response) (DataWarehouseUserActivitiesClientListByDatabaseResponse, error) {
-	result := DataWarehouseUserActivitiesClientListByDatabaseResponse{RawResponse: resp}
+	result := DataWarehouseUserActivitiesClientListByDatabaseResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataWarehouseUserActivitiesListResult); err != nil {
 		return DataWarehouseUserActivitiesClientListByDatabaseResponse{}, err
 	}

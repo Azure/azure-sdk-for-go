@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,184 +19,226 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata"
 )
 
-// x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-11-01/examples/ListSubscriptionSqlManagedInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azurearcdata/resource-manager/Microsoft.AzureArcData/preview/2022-03-01-preview/examples/ListSubscriptionSqlManagedInstance.json
 func ExampleSQLManagedInstancesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armazurearcdata.NewSQLManagedInstancesClient("<subscription-id>", cred, nil)
+	client, err := armazurearcdata.NewSQLManagedInstancesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-11-01/examples/ListByResourceGroupSqlManagedInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azurearcdata/resource-manager/Microsoft.AzureArcData/preview/2022-03-01-preview/examples/ListByResourceGroupSqlManagedInstance.json
 func ExampleSQLManagedInstancesClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armazurearcdata.NewSQLManagedInstancesClient("<subscription-id>", cred, nil)
+	client, err := armazurearcdata.NewSQLManagedInstancesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-11-01/examples/GetSqlManagedInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azurearcdata/resource-manager/Microsoft.AzureArcData/preview/2022-03-01-preview/examples/GetSqlManagedInstance.json
 func ExampleSQLManagedInstancesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armazurearcdata.NewSQLManagedInstancesClient("<subscription-id>", cred, nil)
+	client, err := armazurearcdata.NewSQLManagedInstancesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<sql-managed-instance-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.SQLManagedInstancesClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-11-01/examples/CreateOrUpdateSqlManagedInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azurearcdata/resource-manager/Microsoft.AzureArcData/preview/2022-03-01-preview/examples/CreateOrUpdateSqlManagedInstance.json
 func ExampleSQLManagedInstancesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armazurearcdata.NewSQLManagedInstancesClient("<subscription-id>", cred, nil)
+	client, err := armazurearcdata.NewSQLManagedInstancesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreate(ctx,
 		"<resource-group-name>",
 		"<sql-managed-instance-name>",
 		armazurearcdata.SQLManagedInstance{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Tags: map[string]*string{
-				"mytag": to.StringPtr("myval"),
+				"mytag": to.Ptr("myval"),
 			},
 			ExtendedLocation: &armazurearcdata.ExtendedLocation{
-				Name: to.StringPtr("<name>"),
-				Type: armazurearcdata.ExtendedLocationTypes("CustomLocation").ToPtr(),
+				Name: to.Ptr("<name>"),
+				Type: to.Ptr(armazurearcdata.ExtendedLocationTypesCustomLocation),
 			},
 			Properties: &armazurearcdata.SQLManagedInstanceProperties{
-				Admin: to.StringPtr("<admin>"),
-				BasicLoginInformation: &armazurearcdata.BasicLoginInformation{
-					Password: to.StringPtr("<password>"),
-					Username: to.StringPtr("<username>"),
+				ActiveDirectoryInformation: &armazurearcdata.ActiveDirectoryInformation{
+					KeytabInformation: &armazurearcdata.KeytabInformation{
+						Keytab: to.Ptr("<keytab>"),
+					},
 				},
-				ClusterID:   to.StringPtr("<cluster-id>"),
-				EndTime:     to.StringPtr("<end-time>"),
-				ExtensionID: to.StringPtr("<extension-id>"),
+				Admin: to.Ptr("<admin>"),
+				BasicLoginInformation: &armazurearcdata.BasicLoginInformation{
+					Password: to.Ptr("<password>"),
+					Username: to.Ptr("<username>"),
+				},
+				ClusterID:   to.Ptr("<cluster-id>"),
+				EndTime:     to.Ptr("<end-time>"),
+				ExtensionID: to.Ptr("<extension-id>"),
 				K8SRaw: &armazurearcdata.SQLManagedInstanceK8SRaw{
-					AdditionalProperties: map[string]map[string]interface{}{
-						"additionalProperty": {},
+					AdditionalProperties: map[string]interface{}{
+						"additionalProperty": float64(1234),
 					},
 					Spec: &armazurearcdata.SQLManagedInstanceK8SSpec{
-						Replicas: to.Int32Ptr(1),
+						Replicas: to.Ptr[int32](1),
 						Scheduling: &armazurearcdata.K8SScheduling{
 							Default: &armazurearcdata.K8SSchedulingOptions{
 								Resources: &armazurearcdata.K8SResourceRequirements{
 									Limits: map[string]*string{
-										"additionalProperty": to.StringPtr("additionalValue"),
-										"cpu":                to.StringPtr("1"),
-										"memory":             to.StringPtr("8Gi"),
+										"additionalProperty": to.Ptr("additionalValue"),
+										"cpu":                to.Ptr("1"),
+										"memory":             to.Ptr("8Gi"),
 									},
 									Requests: map[string]*string{
-										"additionalProperty": to.StringPtr("additionalValue"),
-										"cpu":                to.StringPtr("1"),
-										"memory":             to.StringPtr("8Gi"),
+										"additionalProperty": to.Ptr("additionalValue"),
+										"cpu":                to.Ptr("1"),
+										"memory":             to.Ptr("8Gi"),
 									},
 								},
 							},
 						},
 					},
 				},
-				LicenseType: armazurearcdata.ArcSQLManagedInstanceLicenseType("LicenseIncluded").ToPtr(),
-				StartTime:   to.StringPtr("<start-time>"),
+				LicenseType: to.Ptr(armazurearcdata.ArcSQLManagedInstanceLicenseTypeLicenseIncluded),
+				StartTime:   to.Ptr("<start-time>"),
 			},
 			SKU: &armazurearcdata.SQLManagedInstanceSKU{
-				Name: armazurearcdata.SQLManagedInstanceSKUName("vCore").ToPtr(),
-				Dev:  to.BoolPtr(true),
-				Tier: armazurearcdata.SQLManagedInstanceSKUTierGeneralPurpose.ToPtr(),
+				Name: to.Ptr("<name>"),
+				Dev:  to.Ptr(true),
+				Tier: to.Ptr(armazurearcdata.SQLManagedInstanceSKUTierGeneralPurpose),
 			},
 		},
-		nil)
+		&armazurearcdata.SQLManagedInstancesClientBeginCreateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.SQLManagedInstancesClientCreateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-11-01/examples/DeleteSqlManagedInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azurearcdata/resource-manager/Microsoft.AzureArcData/preview/2022-03-01-preview/examples/DeleteSqlManagedInstance.json
 func ExampleSQLManagedInstancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armazurearcdata.NewSQLManagedInstancesClient("<subscription-id>", cred, nil)
+	client, err := armazurearcdata.NewSQLManagedInstancesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<sql-managed-instance-name>",
-		nil)
+		&armazurearcdata.SQLManagedInstancesClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-11-01/examples/UpdateSqlManagedInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azurearcdata/resource-manager/Microsoft.AzureArcData/preview/2022-03-01-preview/examples/UpdateSqlManagedInstance.json
 func ExampleSQLManagedInstancesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armazurearcdata.NewSQLManagedInstancesClient("<subscription-id>", cred, nil)
+	client, err := armazurearcdata.NewSQLManagedInstancesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<sql-managed-instance-name>",
 		armazurearcdata.SQLManagedInstanceUpdate{
 			Tags: map[string]*string{
-				"mytag": to.StringPtr("myval"),
+				"mytag": to.Ptr("myval"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.SQLManagedInstancesClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }

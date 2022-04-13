@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -28,6 +28,24 @@ func unmarshalEndpointResourcePropertiesClassification(rawMsg json.RawMessage) (
 		b = &ServiceBus{}
 	default:
 		b = &EndpointResourceProperties{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
+func unmarshalTimeSeriesDatabaseConnectionPropertiesClassification(rawMsg json.RawMessage) (TimeSeriesDatabaseConnectionPropertiesClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]interface{}
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b TimeSeriesDatabaseConnectionPropertiesClassification
+	switch m["connectionType"] {
+	case string(ConnectionTypeAzureDataExplorer):
+		b = &AzureDataExplorerConnectionProperties{}
+	default:
+		b = &TimeSeriesDatabaseConnectionProperties{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
 }

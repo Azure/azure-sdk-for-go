@@ -1,5 +1,3764 @@
 # Release History
 
+## 0.4.0 (2022-04-13)
+### Breaking Changes
+
+- Function `*ServerConnectionPoliciesClient.BeginCreateOrUpdate` return value(s) have been changed from `(ServerConnectionPoliciesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ServerConnectionPoliciesClientCreateOrUpdateResponse], error)`
+- Function `*SyncMembersClient.ListBySyncGroup` return value(s) have been changed from `(*SyncMembersClientListBySyncGroupPager)` to `(*runtime.Pager[SyncMembersClientListBySyncGroupResponse])`
+- Function `NewElasticPoolsClient` return value(s) have been changed from `(*ElasticPoolsClient)` to `(*ElasticPoolsClient, error)`
+- Function `*LongTermRetentionManagedInstanceBackupsClient.BeginDelete` return value(s) have been changed from `(LongTermRetentionManagedInstanceBackupsClientDeletePollerResponse, error)` to `(*armruntime.Poller[LongTermRetentionManagedInstanceBackupsClientDeleteResponse], error)`
+- Function `*ServerOperationsClient.ListByServer` return value(s) have been changed from `(*ServerOperationsClientListByServerPager)` to `(*runtime.Pager[ServerOperationsClientListByServerResponse])`
+- Function `*EncryptionProtectorsClient.BeginRevalidate` return value(s) have been changed from `(EncryptionProtectorsClientRevalidatePollerResponse, error)` to `(*armruntime.Poller[EncryptionProtectorsClientRevalidateResponse], error)`
+- Function `*SyncGroupsClient.BeginDelete` return value(s) have been changed from `(SyncGroupsClientDeletePollerResponse, error)` to `(*armruntime.Poller[SyncGroupsClientDeleteResponse], error)`
+- Function `NewManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient` return value(s) have been changed from `(*ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient)` to `(*ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient, error)`
+- Function `*ManagedDatabaseColumnsClient.ListByTable` return value(s) have been changed from `(*ManagedDatabaseColumnsClientListByTablePager)` to `(*runtime.Pager[ManagedDatabaseColumnsClientListByTableResponse])`
+- Function `NewServerAdvisorsClient` return value(s) have been changed from `(*ServerAdvisorsClient)` to `(*ServerAdvisorsClient, error)`
+- Function `*DatabasesClient.BeginImport` return value(s) have been changed from `(DatabasesClientImportPollerResponse, error)` to `(*armruntime.Poller[DatabasesClientImportResponse], error)`
+- Function `*ManagedInstanceEncryptionProtectorsClient.BeginRevalidate` return value(s) have been changed from `(ManagedInstanceEncryptionProtectorsClientRevalidatePollerResponse, error)` to `(*armruntime.Poller[ManagedInstanceEncryptionProtectorsClientRevalidateResponse], error)`
+- Function `*LedgerDigestUploadsClient.BeginCreateOrUpdate` return value(s) have been changed from `(LedgerDigestUploadsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[LedgerDigestUploadsClientCreateOrUpdateResponse], error)`
+- Function `*LongTermRetentionBackupsClient.BeginCopy` return value(s) have been changed from `(LongTermRetentionBackupsClientCopyPollerResponse, error)` to `(*armruntime.Poller[LongTermRetentionBackupsClientCopyResponse], error)`
+- Function `NewManagedServerSecurityAlertPoliciesClient` return value(s) have been changed from `(*ManagedServerSecurityAlertPoliciesClient)` to `(*ManagedServerSecurityAlertPoliciesClient, error)`
+- Function `*ManagedInstanceAdministratorsClient.ListByInstance` return value(s) have been changed from `(*ManagedInstanceAdministratorsClientListByInstancePager)` to `(*runtime.Pager[ManagedInstanceAdministratorsClientListByInstanceResponse])`
+- Function `NewOutboundFirewallRulesClient` return value(s) have been changed from `(*OutboundFirewallRulesClient)` to `(*OutboundFirewallRulesClient, error)`
+- Function `NewJobStepsClient` return value(s) have been changed from `(*JobStepsClient)` to `(*JobStepsClient, error)`
+- Function `*VirtualClustersClient.List` return value(s) have been changed from `(*VirtualClustersClientListPager)` to `(*runtime.Pager[VirtualClustersClientListResponse])`
+- Function `*WorkloadGroupsClient.BeginDelete` return value(s) have been changed from `(WorkloadGroupsClientDeletePollerResponse, error)` to `(*armruntime.Poller[WorkloadGroupsClientDeleteResponse], error)`
+- Function `*ServerTrustGroupsClient.BeginDelete` return value(s) have been changed from `(ServerTrustGroupsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ServerTrustGroupsClientDeleteResponse], error)`
+- Function `*ManagedDatabasesClient.ListByInstance` return value(s) have been changed from `(*ManagedDatabasesClientListByInstancePager)` to `(*runtime.Pager[ManagedDatabasesClientListByInstanceResponse])`
+- Function `NewEncryptionProtectorsClient` return value(s) have been changed from `(*EncryptionProtectorsClient)` to `(*EncryptionProtectorsClient, error)`
+- Function `*ServerTrustGroupsClient.ListByLocation` return value(s) have been changed from `(*ServerTrustGroupsClientListByLocationPager)` to `(*runtime.Pager[ServerTrustGroupsClientListByLocationResponse])`
+- Function `*BackupShortTermRetentionPoliciesClient.BeginCreateOrUpdate` return value(s) have been changed from `(BackupShortTermRetentionPoliciesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[BackupShortTermRetentionPoliciesClientCreateOrUpdateResponse], error)`
+- Function `*EncryptionProtectorsClient.ListByServer` return value(s) have been changed from `(*EncryptionProtectorsClientListByServerPager)` to `(*runtime.Pager[EncryptionProtectorsClientListByServerResponse])`
+- Function `*DeletedServersClient.List` return value(s) have been changed from `(*DeletedServersClientListPager)` to `(*runtime.Pager[DeletedServersClientListResponse])`
+- Function `*LongTermRetentionBackupsClient.BeginCopyByResourceGroup` return value(s) have been changed from `(LongTermRetentionBackupsClientCopyByResourceGroupPollerResponse, error)` to `(*armruntime.Poller[LongTermRetentionBackupsClientCopyByResourceGroupResponse], error)`
+- Function `*ElasticPoolDatabaseActivitiesClient.ListByElasticPool` parameter(s) have been changed from `(context.Context, string, string, string, *ElasticPoolDatabaseActivitiesClientListByElasticPoolOptions)` to `(string, string, string, *ElasticPoolDatabaseActivitiesClientListByElasticPoolOptions)`
+- Function `*ElasticPoolDatabaseActivitiesClient.ListByElasticPool` return value(s) have been changed from `(ElasticPoolDatabaseActivitiesClientListByElasticPoolResponse, error)` to `(*runtime.Pager[ElasticPoolDatabaseActivitiesClientListByElasticPoolResponse])`
+- Function `*RecoverableManagedDatabasesClient.ListByInstance` return value(s) have been changed from `(*RecoverableManagedDatabasesClientListByInstancePager)` to `(*runtime.Pager[RecoverableManagedDatabasesClientListByInstanceResponse])`
+- Function `NewManagedInstanceVulnerabilityAssessmentsClient` return value(s) have been changed from `(*ManagedInstanceVulnerabilityAssessmentsClient)` to `(*ManagedInstanceVulnerabilityAssessmentsClient, error)`
+- Function `*InstancePoolsClient.ListByResourceGroup` return value(s) have been changed from `(*InstancePoolsClientListByResourceGroupPager)` to `(*runtime.Pager[InstancePoolsClientListByResourceGroupResponse])`
+- Function `NewWorkloadGroupsClient` return value(s) have been changed from `(*WorkloadGroupsClient)` to `(*WorkloadGroupsClient, error)`
+- Function `NewDatabaseTablesClient` return value(s) have been changed from `(*DatabaseTablesClient)` to `(*DatabaseTablesClient, error)`
+- Function `*ServerDNSAliasesClient.ListByServer` return value(s) have been changed from `(*ServerDNSAliasesClientListByServerPager)` to `(*runtime.Pager[ServerDNSAliasesClientListByServerResponse])`
+- Function `*VirtualNetworkRulesClient.BeginDelete` return value(s) have been changed from `(VirtualNetworkRulesClientDeletePollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkRulesClientDeleteResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)`
+- Function `NewPrivateLinkResourcesClient` return value(s) have been changed from `(*PrivateLinkResourcesClient)` to `(*PrivateLinkResourcesClient, error)`
+- Function `*ManagedDatabaseSchemasClient.ListByDatabase` return value(s) have been changed from `(*ManagedDatabaseSchemasClientListByDatabasePager)` to `(*runtime.Pager[ManagedDatabaseSchemasClientListByDatabaseResponse])`
+- Function `*DatabaseVulnerabilityAssessmentScansClient.ListByDatabase` return value(s) have been changed from `(*DatabaseVulnerabilityAssessmentScansClientListByDatabasePager)` to `(*runtime.Pager[DatabaseVulnerabilityAssessmentScansClientListByDatabaseResponse])`
+- Function `NewRecoverableDatabasesClient` return value(s) have been changed from `(*RecoverableDatabasesClient)` to `(*RecoverableDatabasesClient, error)`
+- Function `NewJobVersionsClient` return value(s) have been changed from `(*JobVersionsClient)` to `(*JobVersionsClient, error)`
+- Function `*DatabaseSecurityAlertPoliciesClient.ListByDatabase` return value(s) have been changed from `(*DatabaseSecurityAlertPoliciesClientListByDatabasePager)` to `(*runtime.Pager[DatabaseSecurityAlertPoliciesClientListByDatabaseResponse])`
+- Function `*ManagedInstancesClient.BeginDelete` return value(s) have been changed from `(ManagedInstancesClientDeletePollerResponse, error)` to `(*armruntime.Poller[ManagedInstancesClientDeleteResponse], error)`
+- Function `NewDataMaskingRulesClient` return value(s) have been changed from `(*DataMaskingRulesClient)` to `(*DataMaskingRulesClient, error)`
+- Function `*SubscriptionUsagesClient.ListByLocation` return value(s) have been changed from `(*SubscriptionUsagesClientListByLocationPager)` to `(*runtime.Pager[SubscriptionUsagesClientListByLocationResponse])`
+- Function `*DatabasesClient.BeginDelete` return value(s) have been changed from `(DatabasesClientDeletePollerResponse, error)` to `(*armruntime.Poller[DatabasesClientDeleteResponse], error)`
+- Function `*ExtendedServerBlobAuditingPoliciesClient.ListByServer` return value(s) have been changed from `(*ExtendedServerBlobAuditingPoliciesClientListByServerPager)` to `(*runtime.Pager[ExtendedServerBlobAuditingPoliciesClientListByServerResponse])`
+- Function `NewVirtualNetworkRulesClient` return value(s) have been changed from `(*VirtualNetworkRulesClient)` to `(*VirtualNetworkRulesClient, error)`
+- Function `*ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient.ListByRestorableDroppedDatabase` return value(s) have been changed from `(*ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientListByRestorableDroppedDatabasePager)` to `(*runtime.Pager[ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientListByRestorableDroppedDatabaseResponse])`
+- Function `*ServerSecurityAlertPoliciesClient.ListByServer` return value(s) have been changed from `(*ServerSecurityAlertPoliciesClientListByServerPager)` to `(*runtime.Pager[ServerSecurityAlertPoliciesClientListByServerResponse])`
+- Function `NewDatabaseUsagesClient` return value(s) have been changed from `(*DatabaseUsagesClient)` to `(*DatabaseUsagesClient, error)`
+- Function `*SyncGroupsClient.ListSyncDatabaseIDs` return value(s) have been changed from `(*SyncGroupsClientListSyncDatabaseIDsPager)` to `(*runtime.Pager[SyncGroupsClientListSyncDatabaseIDsResponse])`
+- Function `*GeoBackupPoliciesClient.ListByDatabase` parameter(s) have been changed from `(context.Context, string, string, string, *GeoBackupPoliciesClientListByDatabaseOptions)` to `(string, string, string, *GeoBackupPoliciesClientListByDatabaseOptions)`
+- Function `*GeoBackupPoliciesClient.ListByDatabase` return value(s) have been changed from `(GeoBackupPoliciesClientListByDatabaseResponse, error)` to `(*runtime.Pager[GeoBackupPoliciesClientListByDatabaseResponse])`
+- Function `*ServerDNSAliasesClient.BeginDelete` return value(s) have been changed from `(ServerDNSAliasesClientDeletePollerResponse, error)` to `(*armruntime.Poller[ServerDNSAliasesClientDeleteResponse], error)`
+- Function `*DatabaseColumnsClient.ListByTable` return value(s) have been changed from `(*DatabaseColumnsClientListByTablePager)` to `(*runtime.Pager[DatabaseColumnsClientListByTableResponse])`
+- Function `*ManagedDatabaseSensitivityLabelsClient.ListCurrentByDatabase` return value(s) have been changed from `(*ManagedDatabaseSensitivityLabelsClientListCurrentByDatabasePager)` to `(*runtime.Pager[ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseResponse])`
+- Function `*ManagedInstanceAdministratorsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ManagedInstanceAdministratorsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ManagedInstanceAdministratorsClientCreateOrUpdateResponse], error)`
+- Function `NewManagedDatabaseTablesClient` return value(s) have been changed from `(*ManagedDatabaseTablesClient)` to `(*ManagedDatabaseTablesClient, error)`
+- Function `*JobAgentsClient.BeginDelete` return value(s) have been changed from `(JobAgentsClientDeletePollerResponse, error)` to `(*armruntime.Poller[JobAgentsClientDeleteResponse], error)`
+- Function `NewDatabasesClient` return value(s) have been changed from `(*DatabasesClient)` to `(*DatabasesClient, error)`
+- Function `*LongTermRetentionManagedInstanceBackupsClient.ListByResourceGroupLocation` return value(s) have been changed from `(*LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationPager)` to `(*runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse])`
+- Function `*FailoverGroupsClient.BeginForceFailoverAllowDataLoss` return value(s) have been changed from `(FailoverGroupsClientForceFailoverAllowDataLossPollerResponse, error)` to `(*armruntime.Poller[FailoverGroupsClientForceFailoverAllowDataLossResponse], error)`
+- Function `*ManagedInstanceKeysClient.ListByInstance` return value(s) have been changed from `(*ManagedInstanceKeysClientListByInstancePager)` to `(*runtime.Pager[ManagedInstanceKeysClientListByInstanceResponse])`
+- Function `*ExtendedDatabaseBlobAuditingPoliciesClient.ListByDatabase` return value(s) have been changed from `(*ExtendedDatabaseBlobAuditingPoliciesClientListByDatabasePager)` to `(*runtime.Pager[ExtendedDatabaseBlobAuditingPoliciesClientListByDatabaseResponse])`
+- Function `NewDatabaseBlobAuditingPoliciesClient` return value(s) have been changed from `(*DatabaseBlobAuditingPoliciesClient)` to `(*DatabaseBlobAuditingPoliciesClient, error)`
+- Function `*SyncMembersClient.BeginUpdate` return value(s) have been changed from `(SyncMembersClientUpdatePollerResponse, error)` to `(*armruntime.Poller[SyncMembersClientUpdateResponse], error)`
+- Function `*LongTermRetentionBackupsClient.BeginDelete` return value(s) have been changed from `(LongTermRetentionBackupsClientDeletePollerResponse, error)` to `(*armruntime.Poller[LongTermRetentionBackupsClientDeleteResponse], error)`
+- Function `NewLongTermRetentionManagedInstanceBackupsClient` return value(s) have been changed from `(*LongTermRetentionManagedInstanceBackupsClient)` to `(*LongTermRetentionManagedInstanceBackupsClient, error)`
+- Function `*DeletedServersClient.BeginRecover` return value(s) have been changed from `(DeletedServersClientRecoverPollerResponse, error)` to `(*armruntime.Poller[DeletedServersClientRecoverResponse], error)`
+- Function `*DatabasesClient.BeginUpdate` return value(s) have been changed from `(DatabasesClientUpdatePollerResponse, error)` to `(*armruntime.Poller[DatabasesClientUpdateResponse], error)`
+- Function `*JobExecutionsClient.BeginCreate` return value(s) have been changed from `(JobExecutionsClientCreatePollerResponse, error)` to `(*armruntime.Poller[JobExecutionsClientCreateResponse], error)`
+- Function `*InstancePoolsClient.BeginCreateOrUpdate` return value(s) have been changed from `(InstancePoolsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[InstancePoolsClientCreateOrUpdateResponse], error)`
+- Function `NewManagedDatabaseSchemasClient` return value(s) have been changed from `(*ManagedDatabaseSchemasClient)` to `(*ManagedDatabaseSchemasClient, error)`
+- Function `*SyncGroupsClient.ListByDatabase` return value(s) have been changed from `(*SyncGroupsClientListByDatabasePager)` to `(*runtime.Pager[SyncGroupsClientListByDatabaseResponse])`
+- Function `*ManagedDatabaseVulnerabilityAssessmentsClient.ListByDatabase` return value(s) have been changed from `(*ManagedDatabaseVulnerabilityAssessmentsClientListByDatabasePager)` to `(*runtime.Pager[ManagedDatabaseVulnerabilityAssessmentsClientListByDatabaseResponse])`
+- Function `NewManagedInstanceAdministratorsClient` return value(s) have been changed from `(*ManagedInstanceAdministratorsClient)` to `(*ManagedInstanceAdministratorsClient, error)`
+- Function `*JobsClient.ListByAgent` return value(s) have been changed from `(*JobsClientListByAgentPager)` to `(*runtime.Pager[JobsClientListByAgentResponse])`
+- Function `NewManagedDatabaseSensitivityLabelsClient` return value(s) have been changed from `(*ManagedDatabaseSensitivityLabelsClient)` to `(*ManagedDatabaseSensitivityLabelsClient, error)`
+- Function `*LongTermRetentionBackupsClient.ListByServer` return value(s) have been changed from `(*LongTermRetentionBackupsClientListByServerPager)` to `(*runtime.Pager[LongTermRetentionBackupsClientListByServerResponse])`
+- Function `*DatabasesClient.ListInaccessibleByServer` return value(s) have been changed from `(*DatabasesClientListInaccessibleByServerPager)` to `(*runtime.Pager[DatabasesClientListInaccessibleByServerResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*ElasticPoolsClient.ListByServer` return value(s) have been changed from `(*ElasticPoolsClientListByServerPager)` to `(*runtime.Pager[ElasticPoolsClientListByServerResponse])`
+- Function `*JobAgentsClient.BeginUpdate` return value(s) have been changed from `(JobAgentsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[JobAgentsClientUpdateResponse], error)`
+- Function `NewMaintenanceWindowOptionsClient` return value(s) have been changed from `(*MaintenanceWindowOptionsClient)` to `(*MaintenanceWindowOptionsClient, error)`
+- Function `*ElasticPoolsClient.BeginUpdate` return value(s) have been changed from `(ElasticPoolsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[ElasticPoolsClientUpdateResponse], error)`
+- Function `*DatabaseVulnerabilityAssessmentsClient.ListByDatabase` return value(s) have been changed from `(*DatabaseVulnerabilityAssessmentsClientListByDatabasePager)` to `(*runtime.Pager[DatabaseVulnerabilityAssessmentsClientListByDatabaseResponse])`
+- Function `NewManagedInstanceOperationsClient` return value(s) have been changed from `(*ManagedInstanceOperationsClient)` to `(*ManagedInstanceOperationsClient, error)`
+- Function `*InstanceFailoverGroupsClient.BeginFailover` return value(s) have been changed from `(InstanceFailoverGroupsClientFailoverPollerResponse, error)` to `(*armruntime.Poller[InstanceFailoverGroupsClientFailoverResponse], error)`
+- Function `*JobAgentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(JobAgentsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[JobAgentsClientCreateOrUpdateResponse], error)`
+- Function `NewDatabaseVulnerabilityAssessmentsClient` return value(s) have been changed from `(*DatabaseVulnerabilityAssessmentsClient)` to `(*DatabaseVulnerabilityAssessmentsClient, error)`
+- Function `NewDeletedServersClient` return value(s) have been changed from `(*DeletedServersClient)` to `(*DeletedServersClient, error)`
+- Function `*SyncGroupsClient.BeginCreateOrUpdate` return value(s) have been changed from `(SyncGroupsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[SyncGroupsClientCreateOrUpdateResponse], error)`
+- Function `*ElasticPoolsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ElasticPoolsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ElasticPoolsClientCreateOrUpdateResponse], error)`
+- Function `NewJobExecutionsClient` return value(s) have been changed from `(*JobExecutionsClient)` to `(*JobExecutionsClient, error)`
+- Function `*BackupShortTermRetentionPoliciesClient.ListByDatabase` return value(s) have been changed from `(*BackupShortTermRetentionPoliciesClientListByDatabasePager)` to `(*runtime.Pager[BackupShortTermRetentionPoliciesClientListByDatabaseResponse])`
+- Function `*JobVersionsClient.ListByJob` return value(s) have been changed from `(*JobVersionsClientListByJobPager)` to `(*runtime.Pager[JobVersionsClientListByJobResponse])`
+- Function `NewElasticPoolOperationsClient` return value(s) have been changed from `(*ElasticPoolOperationsClient)` to `(*ElasticPoolOperationsClient, error)`
+- Function `NewExtendedDatabaseBlobAuditingPoliciesClient` return value(s) have been changed from `(*ExtendedDatabaseBlobAuditingPoliciesClient)` to `(*ExtendedDatabaseBlobAuditingPoliciesClient, error)`
+- Function `NewSyncMembersClient` return value(s) have been changed from `(*SyncMembersClient)` to `(*SyncMembersClient, error)`
+- Function `NewDatabaseExtensionsClient` return value(s) have been changed from `(*DatabaseExtensionsClient)` to `(*DatabaseExtensionsClient, error)`
+- Function `*JobTargetExecutionsClient.ListByJobExecution` return value(s) have been changed from `(*JobTargetExecutionsClientListByJobExecutionPager)` to `(*runtime.Pager[JobTargetExecutionsClientListByJobExecutionResponse])`
+- Function `*ManagedInstanceAzureADOnlyAuthenticationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ManagedInstanceAzureADOnlyAuthenticationsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ManagedInstanceAzureADOnlyAuthenticationsClientCreateOrUpdateResponse], error)`
+- Function `NewElasticPoolDatabaseActivitiesClient` return value(s) have been changed from `(*ElasticPoolDatabaseActivitiesClient)` to `(*ElasticPoolDatabaseActivitiesClient, error)`
+- Function `*ServersClient.ListByResourceGroup` return value(s) have been changed from `(*ServersClientListByResourceGroupPager)` to `(*runtime.Pager[ServersClientListByResourceGroupResponse])`
+- Function `*JobExecutionsClient.ListByAgent` return value(s) have been changed from `(*JobExecutionsClientListByAgentPager)` to `(*runtime.Pager[JobExecutionsClientListByAgentResponse])`
+- Function `*LongTermRetentionBackupsClient.BeginDeleteByResourceGroup` return value(s) have been changed from `(LongTermRetentionBackupsClientDeleteByResourceGroupPollerResponse, error)` to `(*armruntime.Poller[LongTermRetentionBackupsClientDeleteByResourceGroupResponse], error)`
+- Function `*SyncGroupsClient.BeginRefreshHubSchema` return value(s) have been changed from `(SyncGroupsClientRefreshHubSchemaPollerResponse, error)` to `(*armruntime.Poller[SyncGroupsClientRefreshHubSchemaResponse], error)`
+- Function `NewReplicationLinksClient` return value(s) have been changed from `(*ReplicationLinksClient)` to `(*ReplicationLinksClient, error)`
+- Function `*DatabasesClient.ListMetrics` parameter(s) have been changed from `(context.Context, string, string, string, string, *DatabasesClientListMetricsOptions)` to `(string, string, string, string, *DatabasesClientListMetricsOptions)`
+- Function `*DatabasesClient.ListMetrics` return value(s) have been changed from `(DatabasesClientListMetricsResponse, error)` to `(*runtime.Pager[DatabasesClientListMetricsResponse])`
+- Function `NewRestorableDroppedManagedDatabasesClient` return value(s) have been changed from `(*RestorableDroppedManagedDatabasesClient)` to `(*RestorableDroppedManagedDatabasesClient, error)`
+- Function `NewDatabaseVulnerabilityAssessmentScansClient` return value(s) have been changed from `(*DatabaseVulnerabilityAssessmentScansClient)` to `(*DatabaseVulnerabilityAssessmentScansClient, error)`
+- Function `NewServerOperationsClient` return value(s) have been changed from `(*ServerOperationsClient)` to `(*ServerOperationsClient, error)`
+- Function `*ManagedDatabasesClient.BeginUpdate` return value(s) have been changed from `(ManagedDatabasesClientUpdatePollerResponse, error)` to `(*armruntime.Poller[ManagedDatabasesClientUpdateResponse], error)`
+- Function `*DatabasesClient.BeginResume` return value(s) have been changed from `(DatabasesClientResumePollerResponse, error)` to `(*armruntime.Poller[DatabasesClientResumeResponse], error)`
+- Function `*ServerCommunicationLinksClient.ListByServer` parameter(s) have been changed from `(context.Context, string, string, *ServerCommunicationLinksClientListByServerOptions)` to `(string, string, *ServerCommunicationLinksClientListByServerOptions)`
+- Function `*ServerCommunicationLinksClient.ListByServer` return value(s) have been changed from `(ServerCommunicationLinksClientListByServerResponse, error)` to `(*runtime.Pager[ServerCommunicationLinksClientListByServerResponse])`
+- Function `*InstanceFailoverGroupsClient.BeginCreateOrUpdate` return value(s) have been changed from `(InstanceFailoverGroupsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[InstanceFailoverGroupsClientCreateOrUpdateResponse], error)`
+- Function `*LongTermRetentionBackupsClient.BeginUpdate` return value(s) have been changed from `(LongTermRetentionBackupsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[LongTermRetentionBackupsClientUpdateResponse], error)`
+- Function `NewRecoverableManagedDatabasesClient` return value(s) have been changed from `(*RecoverableManagedDatabasesClient)` to `(*RecoverableManagedDatabasesClient, error)`
+- Function `*ManagedInstancePrivateEndpointConnectionsClient.ListByManagedInstance` return value(s) have been changed from `(*ManagedInstancePrivateEndpointConnectionsClientListByManagedInstancePager)` to `(*runtime.Pager[ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceResponse])`
+- Function `*FailoverGroupsClient.BeginFailover` return value(s) have been changed from `(FailoverGroupsClientFailoverPollerResponse, error)` to `(*armruntime.Poller[FailoverGroupsClientFailoverResponse], error)`
+- Function `*ManagedDatabaseSensitivityLabelsClient.ListRecommendedByDatabase` return value(s) have been changed from `(*ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabasePager)` to `(*runtime.Pager[ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseResponse])`
+- Function `*LongTermRetentionManagedInstanceBackupsClient.ListByInstance` return value(s) have been changed from `(*LongTermRetentionManagedInstanceBackupsClientListByInstancePager)` to `(*runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse])`
+- Function `*ServerKeysClient.BeginDelete` return value(s) have been changed from `(ServerKeysClientDeletePollerResponse, error)` to `(*armruntime.Poller[ServerKeysClientDeleteResponse], error)`
+- Function `*DatabasesClient.BeginExport` return value(s) have been changed from `(DatabasesClientExportPollerResponse, error)` to `(*armruntime.Poller[DatabasesClientExportResponse], error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*SyncMembersClient.BeginDelete` return value(s) have been changed from `(SyncMembersClientDeletePollerResponse, error)` to `(*armruntime.Poller[SyncMembersClientDeleteResponse], error)`
+- Function `NewTimeZonesClient` return value(s) have been changed from `(*TimeZonesClient)` to `(*TimeZonesClient, error)`
+- Function `*ServerVulnerabilityAssessmentsClient.ListByServer` return value(s) have been changed from `(*ServerVulnerabilityAssessmentsClientListByServerPager)` to `(*runtime.Pager[ServerVulnerabilityAssessmentsClientListByServerResponse])`
+- Function `NewDataWarehouseUserActivitiesClient` return value(s) have been changed from `(*DataWarehouseUserActivitiesClient)` to `(*DataWarehouseUserActivitiesClient, error)`
+- Function `*ServerBlobAuditingPoliciesClient.ListByServer` return value(s) have been changed from `(*ServerBlobAuditingPoliciesClientListByServerPager)` to `(*runtime.Pager[ServerBlobAuditingPoliciesClientListByServerResponse])`
+- Function `NewDatabaseColumnsClient` return value(s) have been changed from `(*DatabaseColumnsClient)` to `(*DatabaseColumnsClient, error)`
+- Function `*ElasticPoolsClient.ListMetricDefinitions` parameter(s) have been changed from `(context.Context, string, string, string, *ElasticPoolsClientListMetricDefinitionsOptions)` to `(string, string, string, *ElasticPoolsClientListMetricDefinitionsOptions)`
+- Function `*ElasticPoolsClient.ListMetricDefinitions` return value(s) have been changed from `(ElasticPoolsClientListMetricDefinitionsResponse, error)` to `(*runtime.Pager[ElasticPoolsClientListMetricDefinitionsResponse])`
+- Function `*JobStepExecutionsClient.ListByJobExecution` return value(s) have been changed from `(*JobStepExecutionsClientListByJobExecutionPager)` to `(*runtime.Pager[JobStepExecutionsClientListByJobExecutionResponse])`
+- Function `*LongTermRetentionBackupsClient.ListByDatabase` return value(s) have been changed from `(*LongTermRetentionBackupsClientListByDatabasePager)` to `(*runtime.Pager[LongTermRetentionBackupsClientListByDatabaseResponse])`
+- Function `*ServerAzureADOnlyAuthenticationsClient.BeginDelete` return value(s) have been changed from `(ServerAzureADOnlyAuthenticationsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ServerAzureADOnlyAuthenticationsClientDeleteResponse], error)`
+- Function `*ServerTrustGroupsClient.ListByInstance` return value(s) have been changed from `(*ServerTrustGroupsClientListByInstancePager)` to `(*runtime.Pager[ServerTrustGroupsClientListByInstanceResponse])`
+- Function `*InstanceFailoverGroupsClient.ListByLocation` return value(s) have been changed from `(*InstanceFailoverGroupsClientListByLocationPager)` to `(*runtime.Pager[InstanceFailoverGroupsClientListByLocationResponse])`
+- Function `NewJobAgentsClient` return value(s) have been changed from `(*JobAgentsClient)` to `(*JobAgentsClient, error)`
+- Function `*DatabaseColumnsClient.ListByDatabase` return value(s) have been changed from `(*DatabaseColumnsClientListByDatabasePager)` to `(*runtime.Pager[DatabaseColumnsClientListByDatabaseResponse])`
+- Function `NewLongTermRetentionPoliciesClient` return value(s) have been changed from `(*LongTermRetentionPoliciesClient)` to `(*LongTermRetentionPoliciesClient, error)`
+- Function `*ExtendedServerBlobAuditingPoliciesClient.BeginCreateOrUpdate` return value(s) have been changed from `(ExtendedServerBlobAuditingPoliciesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ExtendedServerBlobAuditingPoliciesClientCreateOrUpdateResponse], error)`
+- Function `*JobTargetGroupsClient.ListByAgent` return value(s) have been changed from `(*JobTargetGroupsClientListByAgentPager)` to `(*runtime.Pager[JobTargetGroupsClientListByAgentResponse])`
+- Function `NewServerSecurityAlertPoliciesClient` return value(s) have been changed from `(*ServerSecurityAlertPoliciesClient)` to `(*ServerSecurityAlertPoliciesClient, error)`
+- Function `*ManagedBackupShortTermRetentionPoliciesClient.BeginCreateOrUpdate` return value(s) have been changed from `(ManagedBackupShortTermRetentionPoliciesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ManagedBackupShortTermRetentionPoliciesClientCreateOrUpdateResponse], error)`
+- Function `*FailoverGroupsClient.ListByServer` return value(s) have been changed from `(*FailoverGroupsClientListByServerPager)` to `(*runtime.Pager[FailoverGroupsClientListByServerResponse])`
+- Function `*SyncAgentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(SyncAgentsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[SyncAgentsClientCreateOrUpdateResponse], error)`
+- Function `*DatabasesClient.ListByElasticPool` return value(s) have been changed from `(*DatabasesClientListByElasticPoolPager)` to `(*runtime.Pager[DatabasesClientListByElasticPoolResponse])`
+- Function `*ManagedDatabaseTransparentDataEncryptionClient.ListByDatabase` return value(s) have been changed from `(*ManagedDatabaseTransparentDataEncryptionClientListByDatabasePager)` to `(*runtime.Pager[ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse])`
+- Function `NewManagedInstanceTdeCertificatesClient` return value(s) have been changed from `(*ManagedInstanceTdeCertificatesClient)` to `(*ManagedInstanceTdeCertificatesClient, error)`
+- Function `*ServerDevOpsAuditSettingsClient.ListByServer` return value(s) have been changed from `(*ServerDevOpsAuditSettingsClientListByServerPager)` to `(*runtime.Pager[ServerDevOpsAuditSettingsClientListByServerResponse])`
+- Function `*ManagedDatabaseSecurityEventsClient.ListByDatabase` return value(s) have been changed from `(*ManagedDatabaseSecurityEventsClientListByDatabasePager)` to `(*runtime.Pager[ManagedDatabaseSecurityEventsClientListByDatabaseResponse])`
+- Function `NewDatabaseAdvisorsClient` return value(s) have been changed from `(*DatabaseAdvisorsClient)` to `(*DatabaseAdvisorsClient, error)`
+- Function `*LongTermRetentionManagedInstanceBackupsClient.ListByResourceGroupDatabase` return value(s) have been changed from `(*LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabasePager)` to `(*runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse])`
+- Function `*ManagedInstancePrivateLinkResourcesClient.ListByManagedInstance` return value(s) have been changed from `(*ManagedInstancePrivateLinkResourcesClientListByManagedInstancePager)` to `(*runtime.Pager[ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse])`
+- Function `*ElasticPoolOperationsClient.ListByElasticPool` return value(s) have been changed from `(*ElasticPoolOperationsClientListByElasticPoolPager)` to `(*runtime.Pager[ElasticPoolOperationsClientListByElasticPoolResponse])`
+- Function `*SyncGroupsClient.BeginUpdate` return value(s) have been changed from `(SyncGroupsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[SyncGroupsClientUpdateResponse], error)`
+- Function `NewManagedDatabaseRestoreDetailsClient` return value(s) have been changed from `(*ManagedDatabaseRestoreDetailsClient)` to `(*ManagedDatabaseRestoreDetailsClient, error)`
+- Function `NewRestorePointsClient` return value(s) have been changed from `(*RestorePointsClient)` to `(*RestorePointsClient, error)`
+- Function `*ManagedInstanceEncryptionProtectorsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ManagedInstanceEncryptionProtectorsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ManagedInstanceEncryptionProtectorsClientCreateOrUpdateResponse], error)`
+- Function `*ManagedInstanceOperationsClient.ListByManagedInstance` return value(s) have been changed from `(*ManagedInstanceOperationsClientListByManagedInstancePager)` to `(*runtime.Pager[ManagedInstanceOperationsClientListByManagedInstanceResponse])`
+- Function `*ManagedInstancesClient.ListByInstancePool` return value(s) have been changed from `(*ManagedInstancesClientListByInstancePoolPager)` to `(*runtime.Pager[ManagedInstancesClientListByInstancePoolResponse])`
+- Function `*ServiceObjectivesClient.ListByServer` parameter(s) have been changed from `(context.Context, string, string, *ServiceObjectivesClientListByServerOptions)` to `(string, string, *ServiceObjectivesClientListByServerOptions)`
+- Function `*ServiceObjectivesClient.ListByServer` return value(s) have been changed from `(ServiceObjectivesClientListByServerResponse, error)` to `(*runtime.Pager[ServiceObjectivesClientListByServerResponse])`
+- Function `NewDatabaseSecurityAlertPoliciesClient` return value(s) have been changed from `(*DatabaseSecurityAlertPoliciesClient)` to `(*DatabaseSecurityAlertPoliciesClient, error)`
+- Function `NewServerConnectionPoliciesClient` return value(s) have been changed from `(*ServerConnectionPoliciesClient)` to `(*ServerConnectionPoliciesClient, error)`
+- Function `*DatabaseVulnerabilityAssessmentScansClient.BeginInitiateScan` return value(s) have been changed from `(DatabaseVulnerabilityAssessmentScansClientInitiateScanPollerResponse, error)` to `(*armruntime.Poller[DatabaseVulnerabilityAssessmentScansClientInitiateScanResponse], error)`
+- Function `*LongTermRetentionBackupsClient.ListByResourceGroupServer` return value(s) have been changed from `(*LongTermRetentionBackupsClientListByResourceGroupServerPager)` to `(*runtime.Pager[LongTermRetentionBackupsClientListByResourceGroupServerResponse])`
+- Function `*ServerKeysClient.ListByServer` return value(s) have been changed from `(*ServerKeysClientListByServerPager)` to `(*runtime.Pager[ServerKeysClientListByServerResponse])`
+- Function `NewSensitivityLabelsClient` return value(s) have been changed from `(*SensitivityLabelsClient)` to `(*SensitivityLabelsClient, error)`
+- Function `*DatabaseExtensionsClient.ListByDatabase` return value(s) have been changed from `(*DatabaseExtensionsClientListByDatabasePager)` to `(*runtime.Pager[DatabaseExtensionsClientListByDatabaseResponse])`
+- Function `*JobExecutionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(JobExecutionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[JobExecutionsClientCreateOrUpdateResponse], error)`
+- Function `NewJobCredentialsClient` return value(s) have been changed from `(*JobCredentialsClient)` to `(*JobCredentialsClient, error)`
+- Function `*DatabaseUsagesClient.ListByDatabase` return value(s) have been changed from `(*DatabaseUsagesClientListByDatabasePager)` to `(*runtime.Pager[DatabaseUsagesClientListByDatabaseResponse])`
+- Function `NewManagedDatabaseVulnerabilityAssessmentsClient` return value(s) have been changed from `(*ManagedDatabaseVulnerabilityAssessmentsClient)` to `(*ManagedDatabaseVulnerabilityAssessmentsClient, error)`
+- Function `*ReplicationLinksClient.ListByServer` return value(s) have been changed from `(*ReplicationLinksClientListByServerPager)` to `(*runtime.Pager[ReplicationLinksClientListByServerResponse])`
+- Function `*DatabaseOperationsClient.ListByDatabase` return value(s) have been changed from `(*DatabaseOperationsClientListByDatabasePager)` to `(*runtime.Pager[DatabaseOperationsClientListByDatabaseResponse])`
+- Function `*ServerTrustGroupsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ServerTrustGroupsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ServerTrustGroupsClientCreateOrUpdateResponse], error)`
+- Function `*RestorableDroppedDatabasesClient.ListByServer` return value(s) have been changed from `(*RestorableDroppedDatabasesClientListByServerPager)` to `(*runtime.Pager[RestorableDroppedDatabasesClientListByServerResponse])`
+- Function `NewManagedDatabaseTransparentDataEncryptionClient` return value(s) have been changed from `(*ManagedDatabaseTransparentDataEncryptionClient)` to `(*ManagedDatabaseTransparentDataEncryptionClient, error)`
+- Function `*BackupShortTermRetentionPoliciesClient.BeginUpdate` return value(s) have been changed from `(BackupShortTermRetentionPoliciesClientUpdatePollerResponse, error)` to `(*armruntime.Poller[BackupShortTermRetentionPoliciesClientUpdateResponse], error)`
+- Function `NewServerUsagesClient` return value(s) have been changed from `(*ServerUsagesClient)` to `(*ServerUsagesClient, error)`
+- Function `*ServerAzureADAdministratorsClient.BeginDelete` return value(s) have been changed from `(ServerAzureADAdministratorsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ServerAzureADAdministratorsClientDeleteResponse], error)`
+- Function `*ManagedBackupShortTermRetentionPoliciesClient.ListByDatabase` return value(s) have been changed from `(*ManagedBackupShortTermRetentionPoliciesClientListByDatabasePager)` to `(*runtime.Pager[ManagedBackupShortTermRetentionPoliciesClientListByDatabaseResponse])`
+- Function `NewServersClient` return value(s) have been changed from `(*ServersClient)` to `(*ServersClient, error)`
+- Function `*LongTermRetentionPoliciesClient.BeginCreateOrUpdate` return value(s) have been changed from `(LongTermRetentionPoliciesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[LongTermRetentionPoliciesClientCreateOrUpdateResponse], error)`
+- Function `NewServerDevOpsAuditSettingsClient` return value(s) have been changed from `(*ServerDevOpsAuditSettingsClient)` to `(*ServerDevOpsAuditSettingsClient, error)`
+- Function `NewGeoBackupPoliciesClient` return value(s) have been changed from `(*GeoBackupPoliciesClient)` to `(*GeoBackupPoliciesClient, error)`
+- Function `*WorkloadClassifiersClient.BeginDelete` return value(s) have been changed from `(WorkloadClassifiersClientDeletePollerResponse, error)` to `(*armruntime.Poller[WorkloadClassifiersClientDeleteResponse], error)`
+- Function `*InstancePoolsClient.BeginUpdate` return value(s) have been changed from `(InstancePoolsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[InstancePoolsClientUpdateResponse], error)`
+- Function `NewTdeCertificatesClient` return value(s) have been changed from `(*TdeCertificatesClient)` to `(*TdeCertificatesClient, error)`
+- Function `NewManagedDatabaseVulnerabilityAssessmentScansClient` return value(s) have been changed from `(*ManagedDatabaseVulnerabilityAssessmentScansClient)` to `(*ManagedDatabaseVulnerabilityAssessmentScansClient, error)`
+- Function `*FailoverGroupsClient.BeginUpdate` return value(s) have been changed from `(FailoverGroupsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[FailoverGroupsClientUpdateResponse], error)`
+- Function `*ServerAzureADAdministratorsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ServerAzureADAdministratorsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ServerAzureADAdministratorsClientCreateOrUpdateResponse], error)`
+- Function `NewManagedDatabaseQueriesClient` return value(s) have been changed from `(*ManagedDatabaseQueriesClient)` to `(*ManagedDatabaseQueriesClient, error)`
+- Function `*ManagedInstancesClient.List` return value(s) have been changed from `(*ManagedInstancesClientListPager)` to `(*runtime.Pager[ManagedInstancesClientListResponse])`
+- Function `*ElasticPoolsClient.BeginDelete` return value(s) have been changed from `(ElasticPoolsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ElasticPoolsClientDeleteResponse], error)`
+- Function `NewCapabilitiesClient` return value(s) have been changed from `(*CapabilitiesClient)` to `(*CapabilitiesClient, error)`
+- Function `*InstancePoolsClient.BeginDelete` return value(s) have been changed from `(InstancePoolsClientDeletePollerResponse, error)` to `(*armruntime.Poller[InstancePoolsClientDeleteResponse], error)`
+- Function `*FirewallRulesClient.ListByServer` return value(s) have been changed from `(*FirewallRulesClientListByServerPager)` to `(*runtime.Pager[FirewallRulesClientListByServerResponse])`
+- Function `NewElasticPoolActivitiesClient` return value(s) have been changed from `(*ElasticPoolActivitiesClient)` to `(*ElasticPoolActivitiesClient, error)`
+- Function `*JobCredentialsClient.ListByAgent` return value(s) have been changed from `(*JobCredentialsClientListByAgentPager)` to `(*runtime.Pager[JobCredentialsClientListByAgentResponse])`
+- Function `*LongTermRetentionBackupsClient.ListByResourceGroupLocation` return value(s) have been changed from `(*LongTermRetentionBackupsClientListByResourceGroupLocationPager)` to `(*runtime.Pager[LongTermRetentionBackupsClientListByResourceGroupLocationResponse])`
+- Function `*SyncGroupsClient.ListLogs` return value(s) have been changed from `(*SyncGroupsClientListLogsPager)` to `(*runtime.Pager[SyncGroupsClientListLogsResponse])`
+- Function `*ManagedInstancesClient.ListByResourceGroup` return value(s) have been changed from `(*ManagedInstancesClientListByResourceGroupPager)` to `(*runtime.Pager[ManagedInstancesClientListByResourceGroupResponse])`
+- Function `*ServerKeysClient.BeginCreateOrUpdate` return value(s) have been changed from `(ServerKeysClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ServerKeysClientCreateOrUpdateResponse], error)`
+- Function `NewUsagesClient` return value(s) have been changed from `(*UsagesClient)` to `(*UsagesClient, error)`
+- Function `NewAgentClient` return value(s) have been changed from `(*AgentClient)` to `(*AgentClient, error)`
+- Function `NewServerKeysClient` return value(s) have been changed from `(*ServerKeysClient)` to `(*ServerKeysClient, error)`
+- Function `NewMaintenanceWindowsClient` return value(s) have been changed from `(*MaintenanceWindowsClient)` to `(*MaintenanceWindowsClient, error)`
+- Function `*ServerAzureADAdministratorsClient.ListByServer` return value(s) have been changed from `(*ServerAzureADAdministratorsClientListByServerPager)` to `(*runtime.Pager[ServerAzureADAdministratorsClientListByServerResponse])`
+- Function `*ManagedDatabaseQueriesClient.ListByQuery` return value(s) have been changed from `(*ManagedDatabaseQueriesClientListByQueryPager)` to `(*runtime.Pager[ManagedDatabaseQueriesClientListByQueryResponse])`
+- Function `*ManagedInstanceAdministratorsClient.BeginDelete` return value(s) have been changed from `(ManagedInstanceAdministratorsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ManagedInstanceAdministratorsClientDeleteResponse], error)`
+- Function `NewManagedInstanceAzureADOnlyAuthenticationsClient` return value(s) have been changed from `(*ManagedInstanceAzureADOnlyAuthenticationsClient)` to `(*ManagedInstanceAzureADOnlyAuthenticationsClient, error)`
+- Function `NewServiceObjectivesClient` return value(s) have been changed from `(*ServiceObjectivesClient)` to `(*ServiceObjectivesClient, error)`
+- Function `*ReplicationLinksClient.BeginFailover` return value(s) have been changed from `(ReplicationLinksClientFailoverPollerResponse, error)` to `(*armruntime.Poller[ReplicationLinksClientFailoverResponse], error)`
+- Function `*ManagedInstancesClient.ListByManagedInstance` return value(s) have been changed from `(*ManagedInstancesClientListByManagedInstancePager)` to `(*runtime.Pager[ManagedInstancesClientListByManagedInstanceResponse])`
+- Function `*RestorableDroppedManagedDatabasesClient.ListByInstance` return value(s) have been changed from `(*RestorableDroppedManagedDatabasesClientListByInstancePager)` to `(*runtime.Pager[RestorableDroppedManagedDatabasesClientListByInstanceResponse])`
+- Function `*DeletedServersClient.ListByLocation` return value(s) have been changed from `(*DeletedServersClientListByLocationPager)` to `(*runtime.Pager[DeletedServersClientListByLocationResponse])`
+- Function `NewDatabaseVulnerabilityAssessmentRuleBaselinesClient` return value(s) have been changed from `(*DatabaseVulnerabilityAssessmentRuleBaselinesClient)` to `(*DatabaseVulnerabilityAssessmentRuleBaselinesClient, error)`
+- Function `*JobStepsClient.ListByVersion` return value(s) have been changed from `(*JobStepsClientListByVersionPager)` to `(*runtime.Pager[JobStepsClientListByVersionResponse])`
+- Function `*SyncMembersClient.ListMemberSchemas` return value(s) have been changed from `(*SyncMembersClientListMemberSchemasPager)` to `(*runtime.Pager[SyncMembersClientListMemberSchemasResponse])`
+- Function `NewServerVulnerabilityAssessmentsClient` return value(s) have been changed from `(*ServerVulnerabilityAssessmentsClient)` to `(*ServerVulnerabilityAssessmentsClient, error)`
+- Function `NewServerCommunicationLinksClient` return value(s) have been changed from `(*ServerCommunicationLinksClient)` to `(*ServerCommunicationLinksClient, error)`
+- Function `*DatabasesClient.BeginFailover` return value(s) have been changed from `(DatabasesClientFailoverPollerResponse, error)` to `(*armruntime.Poller[DatabasesClientFailoverResponse], error)`
+- Function `*WorkloadClassifiersClient.ListByWorkloadGroup` return value(s) have been changed from `(*WorkloadClassifiersClientListByWorkloadGroupPager)` to `(*runtime.Pager[WorkloadClassifiersClientListByWorkloadGroupResponse])`
+- Function `*ServerSecurityAlertPoliciesClient.BeginCreateOrUpdate` return value(s) have been changed from `(ServerSecurityAlertPoliciesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ServerSecurityAlertPoliciesClientCreateOrUpdateResponse], error)`
+- Function `NewManagedInstanceKeysClient` return value(s) have been changed from `(*ManagedInstanceKeysClient)` to `(*ManagedInstanceKeysClient, error)`
+- Function `*SyncMembersClient.BeginCreateOrUpdate` return value(s) have been changed from `(SyncMembersClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[SyncMembersClientCreateOrUpdateResponse], error)`
+- Function `NewSyncGroupsClient` return value(s) have been changed from `(*SyncGroupsClient)` to `(*SyncGroupsClient, error)`
+- Function `NewLongTermRetentionBackupsClient` return value(s) have been changed from `(*LongTermRetentionBackupsClient)` to `(*LongTermRetentionBackupsClient, error)`
+- Function `NewDataMaskingPoliciesClient` return value(s) have been changed from `(*DataMaskingPoliciesClient)` to `(*DataMaskingPoliciesClient, error)`
+- Function `*ServerAzureADOnlyAuthenticationsClient.ListByServer` return value(s) have been changed from `(*ServerAzureADOnlyAuthenticationsClientListByServerPager)` to `(*runtime.Pager[ServerAzureADOnlyAuthenticationsClientListByServerResponse])`
+- Function `*ManagedInstanceEncryptionProtectorsClient.ListByInstance` return value(s) have been changed from `(*ManagedInstanceEncryptionProtectorsClientListByInstancePager)` to `(*runtime.Pager[ManagedInstanceEncryptionProtectorsClientListByInstanceResponse])`
+- Function `*FailoverGroupsClient.BeginDelete` return value(s) have been changed from `(FailoverGroupsClientDeletePollerResponse, error)` to `(*armruntime.Poller[FailoverGroupsClientDeleteResponse], error)`
+- Function `*LongTermRetentionBackupsClient.ListByLocation` return value(s) have been changed from `(*LongTermRetentionBackupsClientListByLocationPager)` to `(*runtime.Pager[LongTermRetentionBackupsClientListByLocationResponse])`
+- Function `NewDatabaseRecommendedActionsClient` return value(s) have been changed from `(*DatabaseRecommendedActionsClient)` to `(*DatabaseRecommendedActionsClient, error)`
+- Function `*RecoverableDatabasesClient.ListByServer` parameter(s) have been changed from `(context.Context, string, string, *RecoverableDatabasesClientListByServerOptions)` to `(string, string, *RecoverableDatabasesClientListByServerOptions)`
+- Function `*RecoverableDatabasesClient.ListByServer` return value(s) have been changed from `(RecoverableDatabasesClientListByServerResponse, error)` to `(*runtime.Pager[RecoverableDatabasesClientListByServerResponse])`
+- Function `*ServerConnectionPoliciesClient.ListByServer` return value(s) have been changed from `(*ServerConnectionPoliciesClientListByServerPager)` to `(*runtime.Pager[ServerConnectionPoliciesClientListByServerResponse])`
+- Function `*ManagedDatabaseSecurityAlertPoliciesClient.ListByDatabase` return value(s) have been changed from `(*ManagedDatabaseSecurityAlertPoliciesClientListByDatabasePager)` to `(*runtime.Pager[ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse])`
+- Function `*ManagedDatabaseTablesClient.ListBySchema` return value(s) have been changed from `(*ManagedDatabaseTablesClientListBySchemaPager)` to `(*runtime.Pager[ManagedDatabaseTablesClientListBySchemaResponse])`
+- Function `*SyncGroupsClient.ListHubSchemas` return value(s) have been changed from `(*SyncGroupsClientListHubSchemasPager)` to `(*runtime.Pager[SyncGroupsClientListHubSchemasResponse])`
+- Function `*DatabaseTablesClient.ListBySchema` return value(s) have been changed from `(*DatabaseTablesClientListBySchemaPager)` to `(*runtime.Pager[DatabaseTablesClientListBySchemaResponse])`
+- Function `*LongTermRetentionManagedInstanceBackupsClient.ListByDatabase` return value(s) have been changed from `(*LongTermRetentionManagedInstanceBackupsClientListByDatabasePager)` to `(*runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse])`
+- Function `NewDatabaseOperationsClient` return value(s) have been changed from `(*DatabaseOperationsClient)` to `(*DatabaseOperationsClient, error)`
+- Function `*SyncAgentsClient.BeginDelete` return value(s) have been changed from `(SyncAgentsClientDeletePollerResponse, error)` to `(*armruntime.Poller[SyncAgentsClientDeleteResponse], error)`
+- Function `*ManagedInstanceVulnerabilityAssessmentsClient.ListByInstance` return value(s) have been changed from `(*ManagedInstanceVulnerabilityAssessmentsClientListByInstancePager)` to `(*runtime.Pager[ManagedInstanceVulnerabilityAssessmentsClientListByInstanceResponse])`
+- Function `*InstancePoolsClient.List` return value(s) have been changed from `(*InstancePoolsClientListPager)` to `(*runtime.Pager[InstancePoolsClientListResponse])`
+- Function `NewServerAzureADAdministratorsClient` return value(s) have been changed from `(*ServerAzureADAdministratorsClient)` to `(*ServerAzureADAdministratorsClient, error)`
+- Function `*ManagedInstancesClient.BeginUpdate` return value(s) have been changed from `(ManagedInstancesClientUpdatePollerResponse, error)` to `(*armruntime.Poller[ManagedInstancesClientUpdateResponse], error)`
+- Function `*JobStepsClient.ListByJob` return value(s) have been changed from `(*JobStepsClientListByJobPager)` to `(*runtime.Pager[JobStepsClientListByJobResponse])`
+- Function `NewJobTargetGroupsClient` return value(s) have been changed from `(*JobTargetGroupsClient)` to `(*JobTargetGroupsClient, error)`
+- Function `*ReplicationLinksClient.ListByDatabase` return value(s) have been changed from `(*ReplicationLinksClientListByDatabasePager)` to `(*runtime.Pager[ReplicationLinksClientListByDatabaseResponse])`
+- Function `*VirtualClustersClient.BeginDelete` return value(s) have been changed from `(VirtualClustersClientDeletePollerResponse, error)` to `(*armruntime.Poller[VirtualClustersClientDeleteResponse], error)`
+- Function `*ManagedInstancesClient.BeginCreateOrUpdate` return value(s) have been changed from `(ManagedInstancesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ManagedInstancesClientCreateOrUpdateResponse], error)`
+- Function `*WorkloadClassifiersClient.BeginCreateOrUpdate` return value(s) have been changed from `(WorkloadClassifiersClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[WorkloadClassifiersClientCreateOrUpdateResponse], error)`
+- Function `*ServerCommunicationLinksClient.BeginCreateOrUpdate` return value(s) have been changed from `(ServerCommunicationLinksClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ServerCommunicationLinksClientCreateOrUpdateResponse], error)`
+- Function `*ManagedServerSecurityAlertPoliciesClient.BeginCreateOrUpdate` return value(s) have been changed from `(ManagedServerSecurityAlertPoliciesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ManagedServerSecurityAlertPoliciesClientCreateOrUpdateResponse], error)`
+- Function `*LedgerDigestUploadsClient.ListByDatabase` return value(s) have been changed from `(*LedgerDigestUploadsClientListByDatabasePager)` to `(*runtime.Pager[LedgerDigestUploadsClientListByDatabaseResponse])`
+- Function `NewDatabaseAutomaticTuningClient` return value(s) have been changed from `(*DatabaseAutomaticTuningClient)` to `(*DatabaseAutomaticTuningClient, error)`
+- Function `NewJobsClient` return value(s) have been changed from `(*JobsClient)` to `(*JobsClient, error)`
+- Function `NewManagedInstancePrivateEndpointConnectionsClient` return value(s) have been changed from `(*ManagedInstancePrivateEndpointConnectionsClient)` to `(*ManagedInstancePrivateEndpointConnectionsClient, error)`
+- Function `*DatabasesClient.ListByServer` return value(s) have been changed from `(*DatabasesClientListByServerPager)` to `(*runtime.Pager[DatabasesClientListByServerResponse])`
+- Function `*ServersClient.BeginUpdate` return value(s) have been changed from `(ServersClientUpdatePollerResponse, error)` to `(*armruntime.Poller[ServersClientUpdateResponse], error)`
+- Function `NewRecommendedSensitivityLabelsClient` return value(s) have been changed from `(*RecommendedSensitivityLabelsClient)` to `(*RecommendedSensitivityLabelsClient, error)`
+- Function `*ServersClient.BeginImportDatabase` return value(s) have been changed from `(ServersClientImportDatabasePollerResponse, error)` to `(*armruntime.Poller[ServersClientImportDatabaseResponse], error)`
+- Function `NewServerAutomaticTuningClient` return value(s) have been changed from `(*ServerAutomaticTuningClient)` to `(*ServerAutomaticTuningClient, error)`
+- Function `*PrivateLinkResourcesClient.ListByServer` return value(s) have been changed from `(*PrivateLinkResourcesClientListByServerPager)` to `(*runtime.Pager[PrivateLinkResourcesClientListByServerResponse])`
+- Function `*JobExecutionsClient.ListByJob` return value(s) have been changed from `(*JobExecutionsClientListByJobPager)` to `(*runtime.Pager[JobExecutionsClientListByJobResponse])`
+- Function `NewServerDNSAliasesClient` return value(s) have been changed from `(*ServerDNSAliasesClient)` to `(*ServerDNSAliasesClient, error)`
+- Function `NewBackupShortTermRetentionPoliciesClient` return value(s) have been changed from `(*BackupShortTermRetentionPoliciesClient)` to `(*BackupShortTermRetentionPoliciesClient, error)`
+- Function `*ManagedServerSecurityAlertPoliciesClient.ListByInstance` return value(s) have been changed from `(*ManagedServerSecurityAlertPoliciesClientListByInstancePager)` to `(*runtime.Pager[ManagedServerSecurityAlertPoliciesClientListByInstanceResponse])`
+- Function `NewManagedInstanceEncryptionProtectorsClient` return value(s) have been changed from `(*ManagedInstanceEncryptionProtectorsClient)` to `(*ManagedInstanceEncryptionProtectorsClient, error)`
+- Function `*VirtualNetworkRulesClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualNetworkRulesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualNetworkRulesClientCreateOrUpdateResponse], error)`
+- Function `*VirtualClustersClient.BeginUpdate` return value(s) have been changed from `(VirtualClustersClientUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualClustersClientUpdateResponse], error)`
+- Function `*ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient.BeginUpdate` return value(s) have been changed from `(ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientUpdatePollerResponse, error)` to `(*armruntime.Poller[ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientUpdateResponse], error)`
+- Function `*ManagedDatabaseVulnerabilityAssessmentScansClient.ListByDatabase` return value(s) have been changed from `(*ManagedDatabaseVulnerabilityAssessmentScansClientListByDatabasePager)` to `(*runtime.Pager[ManagedDatabaseVulnerabilityAssessmentScansClientListByDatabaseResponse])`
+- Function `*DatabaseBlobAuditingPoliciesClient.ListByDatabase` return value(s) have been changed from `(*DatabaseBlobAuditingPoliciesClientListByDatabasePager)` to `(*runtime.Pager[DatabaseBlobAuditingPoliciesClientListByDatabaseResponse])`
+- Function `*DatabasesClient.BeginCreateOrUpdate` return value(s) have been changed from `(DatabasesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[DatabasesClientCreateOrUpdateResponse], error)`
+- Function `NewRestorableDroppedDatabasesClient` return value(s) have been changed from `(*RestorableDroppedDatabasesClient)` to `(*RestorableDroppedDatabasesClient, error)`
+- Function `*InstanceFailoverGroupsClient.BeginForceFailoverAllowDataLoss` return value(s) have been changed from `(InstanceFailoverGroupsClientForceFailoverAllowDataLossPollerResponse, error)` to `(*armruntime.Poller[InstanceFailoverGroupsClientForceFailoverAllowDataLossResponse], error)`
+- Function `*ManagedInstancesClient.BeginFailover` return value(s) have been changed from `(ManagedInstancesClientFailoverPollerResponse, error)` to `(*armruntime.Poller[ManagedInstancesClientFailoverResponse], error)`
+- Function `NewManagedDatabaseColumnsClient` return value(s) have been changed from `(*ManagedDatabaseColumnsClient)` to `(*ManagedDatabaseColumnsClient, error)`
+- Function `*ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient.BeginCreateOrUpdate` return value(s) have been changed from `(ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientCreateOrUpdateResponse], error)`
+- Function `NewManagedDatabaseRecommendedSensitivityLabelsClient` return value(s) have been changed from `(*ManagedDatabaseRecommendedSensitivityLabelsClient)` to `(*ManagedDatabaseRecommendedSensitivityLabelsClient, error)`
+- Function `NewTransparentDataEncryptionsClient` return value(s) have been changed from `(*TransparentDataEncryptionsClient)` to `(*TransparentDataEncryptionsClient, error)`
+- Function `*ManagedDatabasesClient.BeginDelete` return value(s) have been changed from `(ManagedDatabasesClientDeletePollerResponse, error)` to `(*armruntime.Poller[ManagedDatabasesClientDeleteResponse], error)`
+- Function `*LongTermRetentionPoliciesClient.ListByDatabase` return value(s) have been changed from `(*LongTermRetentionPoliciesClientListByDatabasePager)` to `(*runtime.Pager[LongTermRetentionPoliciesClientListByDatabaseResponse])`
+- Function `*FailoverGroupsClient.BeginCreateOrUpdate` return value(s) have been changed from `(FailoverGroupsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[FailoverGroupsClientCreateOrUpdateResponse], error)`
+- Function `*ServersClient.List` return value(s) have been changed from `(*ServersClientListPager)` to `(*runtime.Pager[ServersClientListResponse])`
+- Function `NewServerAzureADOnlyAuthenticationsClient` return value(s) have been changed from `(*ServerAzureADOnlyAuthenticationsClient)` to `(*ServerAzureADOnlyAuthenticationsClient, error)`
+- Function `*VirtualNetworkRulesClient.ListByServer` return value(s) have been changed from `(*VirtualNetworkRulesClientListByServerPager)` to `(*runtime.Pager[VirtualNetworkRulesClientListByServerResponse])`
+- Function `NewSubscriptionUsagesClient` return value(s) have been changed from `(*SubscriptionUsagesClient)` to `(*SubscriptionUsagesClient, error)`
+- Function `*ManagedDatabasesClient.BeginCompleteRestore` return value(s) have been changed from `(ManagedDatabasesClientCompleteRestorePollerResponse, error)` to `(*armruntime.Poller[ManagedDatabasesClientCompleteRestoreResponse], error)`
+- Function `NewInstanceFailoverGroupsClient` return value(s) have been changed from `(*InstanceFailoverGroupsClient)` to `(*InstanceFailoverGroupsClient, error)`
+- Function `*WorkloadGroupsClient.ListByDatabase` return value(s) have been changed from `(*WorkloadGroupsClientListByDatabasePager)` to `(*runtime.Pager[WorkloadGroupsClientListByDatabaseResponse])`
+- Function `*PrivateEndpointConnectionsClient.ListByServer` return value(s) have been changed from `(*PrivateEndpointConnectionsClientListByServerPager)` to `(*runtime.Pager[PrivateEndpointConnectionsClientListByServerResponse])`
+- Function `*ManagedInstanceTdeCertificatesClient.BeginCreate` return value(s) have been changed from `(ManagedInstanceTdeCertificatesClientCreatePollerResponse, error)` to `(*armruntime.Poller[ManagedInstanceTdeCertificatesClientCreateResponse], error)`
+- Function `*ManagedDatabaseVulnerabilityAssessmentScansClient.BeginInitiateScan` return value(s) have been changed from `(ManagedDatabaseVulnerabilityAssessmentScansClientInitiateScanPollerResponse, error)` to `(*armruntime.Poller[ManagedDatabaseVulnerabilityAssessmentScansClientInitiateScanResponse], error)`
+- Function `*ServerDNSAliasesClient.BeginAcquire` return value(s) have been changed from `(ServerDNSAliasesClientAcquirePollerResponse, error)` to `(*armruntime.Poller[ServerDNSAliasesClientAcquireResponse], error)`
+- Function `*ServerDNSAliasesClient.BeginCreateOrUpdate` return value(s) have been changed from `(ServerDNSAliasesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ServerDNSAliasesClientCreateOrUpdateResponse], error)`
+- Function `NewLedgerDigestUploadsClient` return value(s) have been changed from `(*LedgerDigestUploadsClient)` to `(*LedgerDigestUploadsClient, error)`
+- Function `*LongTermRetentionManagedInstanceBackupsClient.ListByLocation` return value(s) have been changed from `(*LongTermRetentionManagedInstanceBackupsClientListByLocationPager)` to `(*runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByLocationResponse])`
+- Function `*TdeCertificatesClient.BeginCreate` return value(s) have been changed from `(TdeCertificatesClientCreatePollerResponse, error)` to `(*armruntime.Poller[TdeCertificatesClientCreateResponse], error)`
+- Function `*OutboundFirewallRulesClient.BeginDelete` return value(s) have been changed from `(OutboundFirewallRulesClientDeletePollerResponse, error)` to `(*armruntime.Poller[OutboundFirewallRulesClientDeleteResponse], error)`
+- Function `*TransparentDataEncryptionsClient.ListByDatabase` return value(s) have been changed from `(*TransparentDataEncryptionsClientListByDatabasePager)` to `(*runtime.Pager[TransparentDataEncryptionsClientListByDatabaseResponse])`
+- Function `*SyncAgentsClient.ListLinkedDatabases` return value(s) have been changed from `(*SyncAgentsClientListLinkedDatabasesPager)` to `(*runtime.Pager[SyncAgentsClientListLinkedDatabasesResponse])`
+- Function `*LedgerDigestUploadsClient.BeginDisable` return value(s) have been changed from `(LedgerDigestUploadsClientDisablePollerResponse, error)` to `(*armruntime.Poller[LedgerDigestUploadsClientDisableResponse], error)`
+- Function `*ManagedInstanceKeysClient.BeginDelete` return value(s) have been changed from `(ManagedInstanceKeysClientDeletePollerResponse, error)` to `(*armruntime.Poller[ManagedInstanceKeysClientDeleteResponse], error)`
+- Function `*DatabasesClient.BeginPause` return value(s) have been changed from `(DatabasesClientPausePollerResponse, error)` to `(*armruntime.Poller[DatabasesClientPauseResponse], error)`
+- Function `NewExtendedServerBlobAuditingPoliciesClient` return value(s) have been changed from `(*ExtendedServerBlobAuditingPoliciesClient)` to `(*ExtendedServerBlobAuditingPoliciesClient, error)`
+- Function `*VirtualClustersClient.ListByResourceGroup` return value(s) have been changed from `(*VirtualClustersClientListByResourceGroupPager)` to `(*runtime.Pager[VirtualClustersClientListByResourceGroupResponse])`
+- Function `*ManagedInstanceAzureADOnlyAuthenticationsClient.ListByInstance` return value(s) have been changed from `(*ManagedInstanceAzureADOnlyAuthenticationsClientListByInstancePager)` to `(*runtime.Pager[ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceResponse])`
+- Function `*LongTermRetentionManagedInstanceBackupsClient.ListByResourceGroupInstance` return value(s) have been changed from `(*LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstancePager)` to `(*runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse])`
+- Function `*ElasticPoolsClient.ListMetrics` parameter(s) have been changed from `(context.Context, string, string, string, string, *ElasticPoolsClientListMetricsOptions)` to `(string, string, string, string, *ElasticPoolsClientListMetricsOptions)`
+- Function `*ElasticPoolsClient.ListMetrics` return value(s) have been changed from `(ElasticPoolsClientListMetricsResponse, error)` to `(*runtime.Pager[ElasticPoolsClientListMetricsResponse])`
+- Function `*ReplicationLinksClient.BeginFailoverAllowDataLoss` return value(s) have been changed from `(ReplicationLinksClientFailoverAllowDataLossPollerResponse, error)` to `(*armruntime.Poller[ReplicationLinksClientFailoverAllowDataLossResponse], error)`
+- Function `*TimeZonesClient.ListByLocation` return value(s) have been changed from `(*TimeZonesClientListByLocationPager)` to `(*runtime.Pager[TimeZonesClientListByLocationResponse])`
+- Function `*ServerAzureADOnlyAuthenticationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ServerAzureADOnlyAuthenticationsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ServerAzureADOnlyAuthenticationsClientCreateOrUpdateResponse], error)`
+- Function `*DatabaseExtensionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(DatabaseExtensionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[DatabaseExtensionsClientCreateOrUpdateResponse], error)`
+- Function `*ManagedInstancePrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(ManagedInstancePrivateEndpointConnectionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ManagedInstancePrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*ManagedDatabaseColumnsClient.ListByDatabase` return value(s) have been changed from `(*ManagedDatabaseColumnsClientListByDatabasePager)` to `(*runtime.Pager[ManagedDatabaseColumnsClientListByDatabaseResponse])`
+- Function `*EncryptionProtectorsClient.BeginCreateOrUpdate` return value(s) have been changed from `(EncryptionProtectorsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[EncryptionProtectorsClientCreateOrUpdateResponse], error)`
+- Function `*RestorePointsClient.BeginCreate` return value(s) have been changed from `(RestorePointsClientCreatePollerResponse, error)` to `(*armruntime.Poller[RestorePointsClientCreateResponse], error)`
+- Function `*ServerBlobAuditingPoliciesClient.BeginCreateOrUpdate` return value(s) have been changed from `(ServerBlobAuditingPoliciesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ServerBlobAuditingPoliciesClientCreateOrUpdateResponse], error)`
+- Function `*LongTermRetentionManagedInstanceBackupsClient.BeginDeleteByResourceGroup` return value(s) have been changed from `(LongTermRetentionManagedInstanceBackupsClientDeleteByResourceGroupPollerResponse, error)` to `(*armruntime.Poller[LongTermRetentionManagedInstanceBackupsClientDeleteByResourceGroupResponse], error)`
+- Function `NewWorkloadClassifiersClient` return value(s) have been changed from `(*WorkloadClassifiersClient)` to `(*WorkloadClassifiersClient, error)`
+- Function `*OutboundFirewallRulesClient.ListByServer` return value(s) have been changed from `(*OutboundFirewallRulesClientListByServerPager)` to `(*runtime.Pager[OutboundFirewallRulesClientListByServerResponse])`
+- Function `NewManagedBackupShortTermRetentionPoliciesClient` return value(s) have been changed from `(*ManagedBackupShortTermRetentionPoliciesClient)` to `(*ManagedBackupShortTermRetentionPoliciesClient, error)`
+- Function `*ServersClient.BeginDelete` return value(s) have been changed from `(ServersClientDeletePollerResponse, error)` to `(*armruntime.Poller[ServersClientDeleteResponse], error)`
+- Function `NewManagedDatabaseSecurityAlertPoliciesClient` return value(s) have been changed from `(*ManagedDatabaseSecurityAlertPoliciesClient)` to `(*ManagedDatabaseSecurityAlertPoliciesClient, error)`
+- Function `*SyncAgentsClient.ListByServer` return value(s) have been changed from `(*SyncAgentsClientListByServerPager)` to `(*runtime.Pager[SyncAgentsClientListByServerResponse])`
+- Function `NewManagedDatabasesClient` return value(s) have been changed from `(*ManagedDatabasesClient)` to `(*ManagedDatabasesClient, error)`
+- Function `NewVirtualClustersClient` return value(s) have been changed from `(*VirtualClustersClient)` to `(*VirtualClustersClient, error)`
+- Function `*ManagedInstancePrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ManagedInstancePrivateEndpointConnectionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ManagedInstancePrivateEndpointConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*ElasticPoolsClient.BeginFailover` return value(s) have been changed from `(ElasticPoolsClientFailoverPollerResponse, error)` to `(*armruntime.Poller[ElasticPoolsClientFailoverResponse], error)`
+- Function `NewManagedDatabaseSecurityEventsClient` return value(s) have been changed from `(*ManagedDatabaseSecurityEventsClient)` to `(*ManagedDatabaseSecurityEventsClient, error)`
+- Function `NewManagedInstanceLongTermRetentionPoliciesClient` return value(s) have been changed from `(*ManagedInstanceLongTermRetentionPoliciesClient)` to `(*ManagedInstanceLongTermRetentionPoliciesClient, error)`
+- Function `NewServerTrustGroupsClient` return value(s) have been changed from `(*ServerTrustGroupsClient)` to `(*ServerTrustGroupsClient, error)`
+- Function `*SensitivityLabelsClient.ListCurrentByDatabase` return value(s) have been changed from `(*SensitivityLabelsClientListCurrentByDatabasePager)` to `(*runtime.Pager[SensitivityLabelsClientListCurrentByDatabaseResponse])`
+- Function `NewJobTargetExecutionsClient` return value(s) have been changed from `(*JobTargetExecutionsClient)` to `(*JobTargetExecutionsClient, error)`
+- Function `*ManagedBackupShortTermRetentionPoliciesClient.BeginUpdate` return value(s) have been changed from `(ManagedBackupShortTermRetentionPoliciesClientUpdatePollerResponse, error)` to `(*armruntime.Poller[ManagedBackupShortTermRetentionPoliciesClientUpdateResponse], error)`
+- Function `*ManagedInstanceKeysClient.BeginCreateOrUpdate` return value(s) have been changed from `(ManagedInstanceKeysClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ManagedInstanceKeysClientCreateOrUpdateResponse], error)`
+- Function `*ManagedInstanceLongTermRetentionPoliciesClient.BeginCreateOrUpdate` return value(s) have been changed from `(ManagedInstanceLongTermRetentionPoliciesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ManagedInstanceLongTermRetentionPoliciesClientCreateOrUpdateResponse], error)`
+- Function `*ServerUsagesClient.ListByServer` parameter(s) have been changed from `(context.Context, string, string, *ServerUsagesClientListByServerOptions)` to `(string, string, *ServerUsagesClientListByServerOptions)`
+- Function `*ServerUsagesClient.ListByServer` return value(s) have been changed from `(ServerUsagesClientListByServerResponse, error)` to `(*runtime.Pager[ServerUsagesClientListByServerResponse])`
+- Function `NewFailoverGroupsClient` return value(s) have been changed from `(*FailoverGroupsClient)` to `(*FailoverGroupsClient, error)`
+- Function `*UsagesClient.ListByInstancePool` return value(s) have been changed from `(*UsagesClientListByInstancePoolPager)` to `(*runtime.Pager[UsagesClientListByInstancePoolResponse])`
+- Function `*RestorePointsClient.ListByDatabase` return value(s) have been changed from `(*RestorePointsClientListByDatabasePager)` to `(*runtime.Pager[RestorePointsClientListByDatabaseResponse])`
+- Function `*DatabasesClient.BeginUpgradeDataWarehouse` return value(s) have been changed from `(DatabasesClientUpgradeDataWarehousePollerResponse, error)` to `(*armruntime.Poller[DatabasesClientUpgradeDataWarehouseResponse], error)`
+- Function `*ManagedInstanceAzureADOnlyAuthenticationsClient.BeginDelete` return value(s) have been changed from `(ManagedInstanceAzureADOnlyAuthenticationsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ManagedInstanceAzureADOnlyAuthenticationsClientDeleteResponse], error)`
+- Function `NewManagedDatabaseVulnerabilityAssessmentRuleBaselinesClient` return value(s) have been changed from `(*ManagedDatabaseVulnerabilityAssessmentRuleBaselinesClient)` to `(*ManagedDatabaseVulnerabilityAssessmentRuleBaselinesClient, error)`
+- Function `NewInstancePoolsClient` return value(s) have been changed from `(*InstancePoolsClient)` to `(*InstancePoolsClient, error)`
+- Function `*DatabasesClient.ListMetricDefinitions` parameter(s) have been changed from `(context.Context, string, string, string, *DatabasesClientListMetricDefinitionsOptions)` to `(string, string, string, *DatabasesClientListMetricDefinitionsOptions)`
+- Function `*DatabasesClient.ListMetricDefinitions` return value(s) have been changed from `(DatabasesClientListMetricDefinitionsResponse, error)` to `(*runtime.Pager[DatabasesClientListMetricDefinitionsResponse])`
+- Function `*LongTermRetentionBackupsClient.BeginUpdateByResourceGroup` return value(s) have been changed from `(LongTermRetentionBackupsClientUpdateByResourceGroupPollerResponse, error)` to `(*armruntime.Poller[LongTermRetentionBackupsClientUpdateByResourceGroupResponse], error)`
+- Function `NewJobStepExecutionsClient` return value(s) have been changed from `(*JobStepExecutionsClient)` to `(*JobStepExecutionsClient, error)`
+- Function `NewManagedInstancePrivateLinkResourcesClient` return value(s) have been changed from `(*ManagedInstancePrivateLinkResourcesClient)` to `(*ManagedInstancePrivateLinkResourcesClient, error)`
+- Function `NewServerBlobAuditingPoliciesClient` return value(s) have been changed from `(*ServerBlobAuditingPoliciesClient)` to `(*ServerBlobAuditingPoliciesClient, error)`
+- Function `*ServerDevOpsAuditSettingsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ServerDevOpsAuditSettingsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ServerDevOpsAuditSettingsClientCreateOrUpdateResponse], error)`
+- Function `*ElasticPoolActivitiesClient.ListByElasticPool` parameter(s) have been changed from `(context.Context, string, string, string, *ElasticPoolActivitiesClientListByElasticPoolOptions)` to `(string, string, string, *ElasticPoolActivitiesClientListByElasticPoolOptions)`
+- Function `*ElasticPoolActivitiesClient.ListByElasticPool` return value(s) have been changed from `(ElasticPoolActivitiesClientListByElasticPoolResponse, error)` to `(*runtime.Pager[ElasticPoolActivitiesClientListByElasticPoolResponse])`
+- Function `*DataMaskingRulesClient.ListByDatabase` parameter(s) have been changed from `(context.Context, string, string, string, *DataMaskingRulesClientListByDatabaseOptions)` to `(string, string, string, *DataMaskingRulesClientListByDatabaseOptions)`
+- Function `*DataMaskingRulesClient.ListByDatabase` return value(s) have been changed from `(DataMaskingRulesClientListByDatabaseResponse, error)` to `(*runtime.Pager[DataMaskingRulesClientListByDatabaseResponse])`
+- Function `*LongTermRetentionBackupsClient.ListByResourceGroupDatabase` return value(s) have been changed from `(*LongTermRetentionBackupsClientListByResourceGroupDatabasePager)` to `(*runtime.Pager[LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse])`
+- Function `*OutboundFirewallRulesClient.BeginCreateOrUpdate` return value(s) have been changed from `(OutboundFirewallRulesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[OutboundFirewallRulesClientCreateOrUpdateResponse], error)`
+- Function `NewDatabaseSchemasClient` return value(s) have been changed from `(*DatabaseSchemasClient)` to `(*DatabaseSchemasClient, error)`
+- Function `*ManagedDatabasesClient.BeginCreateOrUpdate` return value(s) have been changed from `(ManagedDatabasesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ManagedDatabasesClientCreateOrUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*ServersClient.BeginCreateOrUpdate` return value(s) have been changed from `(ServersClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ServersClientCreateOrUpdateResponse], error)`
+- Function `*SyncMembersClient.BeginRefreshMemberSchema` return value(s) have been changed from `(SyncMembersClientRefreshMemberSchemaPollerResponse, error)` to `(*armruntime.Poller[SyncMembersClientRefreshMemberSchemaResponse], error)`
+- Function `NewSyncAgentsClient` return value(s) have been changed from `(*SyncAgentsClient)` to `(*SyncAgentsClient, error)`
+- Function `*JobTargetExecutionsClient.ListByStep` return value(s) have been changed from `(*JobTargetExecutionsClientListByStepPager)` to `(*runtime.Pager[JobTargetExecutionsClientListByStepResponse])`
+- Function `NewPrivateEndpointConnectionsClient` return value(s) have been changed from `(*PrivateEndpointConnectionsClient)` to `(*PrivateEndpointConnectionsClient, error)`
+- Function `*ManagedDatabasesClient.ListInaccessibleByInstance` return value(s) have been changed from `(*ManagedDatabasesClientListInaccessibleByInstancePager)` to `(*runtime.Pager[ManagedDatabasesClientListInaccessibleByInstanceResponse])`
+- Function `NewManagedInstancesClient` return value(s) have been changed from `(*ManagedInstancesClient)` to `(*ManagedInstancesClient, error)`
+- Function `*WorkloadGroupsClient.BeginCreateOrUpdate` return value(s) have been changed from `(WorkloadGroupsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[WorkloadGroupsClientCreateOrUpdateResponse], error)`
+- Function `*SensitivityLabelsClient.ListRecommendedByDatabase` return value(s) have been changed from `(*SensitivityLabelsClientListRecommendedByDatabasePager)` to `(*runtime.Pager[SensitivityLabelsClientListRecommendedByDatabaseResponse])`
+- Function `*JobAgentsClient.ListByServer` return value(s) have been changed from `(*JobAgentsClientListByServerPager)` to `(*runtime.Pager[JobAgentsClientListByServerResponse])`
+- Function `*InstanceFailoverGroupsClient.BeginDelete` return value(s) have been changed from `(InstanceFailoverGroupsClientDeletePollerResponse, error)` to `(*armruntime.Poller[InstanceFailoverGroupsClientDeleteResponse], error)`
+- Function `*DataWarehouseUserActivitiesClient.ListByDatabase` return value(s) have been changed from `(*DataWarehouseUserActivitiesClientListByDatabasePager)` to `(*runtime.Pager[DataWarehouseUserActivitiesClientListByDatabaseResponse])`
+- Function `*DatabaseSchemasClient.ListByDatabase` return value(s) have been changed from `(*DatabaseSchemasClientListByDatabasePager)` to `(*runtime.Pager[DatabaseSchemasClientListByDatabaseResponse])`
+- Function `NewFirewallRulesClient` return value(s) have been changed from `(*FirewallRulesClient)` to `(*FirewallRulesClient, error)`
+- Function `*ManagedInstanceLongTermRetentionPoliciesClient.ListByDatabase` return value(s) have been changed from `(*ManagedInstanceLongTermRetentionPoliciesClientListByDatabasePager)` to `(*runtime.Pager[ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseResponse])`
+- Type of `DatabaseUpdate.Properties` has been changed from `*DatabaseProperties` to `*DatabaseUpdateProperties`
+- Type of `RecommendedActionProperties.Details` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `Operation.Properties` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `ElasticPoolsClientListByServerOptions.Skip` has been changed from `*int32` to `*int64`
+- Function `AutomaticTuningOptionModeDesired.ToPtr` has been removed
+- Function `*DatabasesClientExportPoller.ResumeToken` has been removed
+- Function `ManagedInstanceProxyOverride.ToPtr` has been removed
+- Function `*ServerKeysClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ManagedInstancesClientDeletePoller.Done` has been removed
+- Function `*ManagedDatabaseVulnerabilityAssessmentScansClientInitiateScanPollerResponse.Resume` has been removed
+- Function `*ServerKeysClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `SecurityAlertPolicyState.ToPtr` has been removed
+- Function `*LongTermRetentionBackupsClientDeleteByResourceGroupPoller.ResumeToken` has been removed
+- Function `*JobTargetExecutionsClientListByStepPager.PageResponse` has been removed
+- Function `*SensitivityLabelsClientListRecommendedByDatabasePager.NextPage` has been removed
+- Function `*ManagedDatabaseVulnerabilityAssessmentsClientListByDatabasePager.NextPage` has been removed
+- Function `*WorkloadClassifiersClientDeletePollerResponse.Resume` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClientDeletePoller.Done` has been removed
+- Function `VirtualNetworkRulesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*JobVersionsClientListByJobPager.Err` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClientDeletePoller.Poll` has been removed
+- Function `*DatabasesClientListInaccessibleByServerPager.NextPage` has been removed
+- Function `*ManagedInstanceAdministratorsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `TransparentDataEncryptionState.ToPtr` has been removed
+- Function `*ElasticPoolsClientFailoverPoller.ResumeToken` has been removed
+- Function `*ManagedInstancesClientListByResourceGroupPager.NextPage` has been removed
+- Function `*InstancePoolsClientDeletePoller.Poll` has been removed
+- Function `*LongTermRetentionBackupsClientUpdatePollerResponse.Resume` has been removed
+- Function `*FailoverGroupsClientFailoverPollerResponse.Resume` has been removed
+- Function `*TdeCertificatesClientCreatePoller.Poll` has been removed
+- Function `*SyncGroupsClientRefreshHubSchemaPoller.ResumeToken` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClientDeletePoller.ResumeToken` has been removed
+- Function `*ServerDNSAliasesClientDeletePoller.FinalResponse` has been removed
+- Function `*ManagedDatabaseVulnerabilityAssessmentScansClientListByDatabasePager.NextPage` has been removed
+- Function `*ServersClientListByResourceGroupPager.PageResponse` has been removed
+- Function `ImplementationMethod.ToPtr` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `ManagedInstancePrivateEndpointConnectionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualClustersClientUpdatePoller.ResumeToken` has been removed
+- Function `*ElasticPoolsClientUpdatePoller.ResumeToken` has been removed
+- Function `*JobAgentsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*LedgerDigestUploadsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ServerDNSAliasesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*LongTermRetentionBackupsClientListByServerPager.PageResponse` has been removed
+- Function `*ServerOperationsClientListByServerPager.Err` has been removed
+- Function `ManagedDatabaseStatus.ToPtr` has been removed
+- Function `*BackupShortTermRetentionPoliciesClientListByDatabasePager.NextPage` has been removed
+- Function `*ServerAzureADAdministratorsClientDeletePoller.Poll` has been removed
+- Function `*LongTermRetentionBackupsClientUpdateByResourceGroupPoller.FinalResponse` has been removed
+- Function `JobTargetGroupMembershipType.ToPtr` has been removed
+- Function `*WorkloadClassifiersClientCreateOrUpdatePoller.Done` has been removed
+- Function `*WorkloadGroupsClientListByDatabasePager.Err` has been removed
+- Function `*DatabasesClientExportPoller.Poll` has been removed
+- Function `*ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientUpdatePollerResponse.Resume` has been removed
+- Function `*SyncMembersClientListBySyncGroupPager.Err` has been removed
+- Function `VulnerabilityAssessmentScanState.ToPtr` has been removed
+- Function `*ManagedDatabaseVulnerabilityAssessmentScansClientInitiateScanPoller.FinalResponse` has been removed
+- Function `*ElasticPoolsClientDeletePoller.FinalResponse` has been removed
+- Function `*DatabasesClientResumePoller.ResumeToken` has been removed
+- Function `*LongTermRetentionBackupsClientListByResourceGroupLocationPager.Err` has been removed
+- Function `ElasticPoolsClientFailoverPollerResponse.PollUntilDone` has been removed
+- Function `*ServerDNSAliasesClientListByServerPager.Err` has been removed
+- Function `ServerAzureADOnlyAuthenticationsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DatabasesClientImportPoller.ResumeToken` has been removed
+- Function `*FailoverGroupsClientFailoverPoller.Done` has been removed
+- Function `*DatabasesClientExportPoller.FinalResponse` has been removed
+- Function `*ManagedInstancesClientFailoverPollerResponse.Resume` has been removed
+- Function `*SyncMembersClientCreateOrUpdatePoller.Done` has been removed
+- Function `RecommendedActionCurrentState.ToPtr` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*EncryptionProtectorsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ServersClientImportDatabasePoller.Done` has been removed
+- Function `*ManagedInstancesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*OutboundFirewallRulesClientDeletePoller.FinalResponse` has been removed
+- Function `*VirtualClustersClientUpdatePoller.Poll` has been removed
+- Function `*DatabasesClientFailoverPollerResponse.Resume` has been removed
+- Function `*ManagedInstanceAzureADOnlyAuthenticationsClientDeletePollerResponse.Resume` has been removed
+- Function `*ManagedInstanceEncryptionProtectorsClientRevalidatePoller.ResumeToken` has been removed
+- Function `InstancePoolsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ElasticPoolsClientDeletePoller.Done` has been removed
+- Function `*ManagedInstancesClientFailoverPoller.Done` has been removed
+- Function `*ManagedInstancesClientListByInstancePoolPager.PageResponse` has been removed
+- Function `*InstanceFailoverGroupsClientFailoverPoller.ResumeToken` has been removed
+- Function `*ServersClientListByResourceGroupPager.Err` has been removed
+- Function `*InstanceFailoverGroupsClientListByLocationPager.Err` has been removed
+- Function `ConnectionPolicyName.ToPtr` has been removed
+- Function `*VirtualNetworkRulesClientDeletePoller.Poll` has been removed
+- Function `ManagedDatabasesClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabasePager.PageResponse` has been removed
+- Function `*ServerAzureADAdministratorsClientListByServerPager.NextPage` has been removed
+- Function `OperationMode.ToPtr` has been removed
+- Function `*DatabaseSecurityAlertPoliciesClientListByDatabasePager.PageResponse` has been removed
+- Function `WorkloadGroupsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ExtendedServerBlobAuditingPoliciesClientListByServerPager.NextPage` has been removed
+- Function `InstanceFailoverGroupsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ManagedInstancesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ExtendedServerBlobAuditingPoliciesClientListByServerPager.PageResponse` has been removed
+- Function `*JobExecutionsClientListByJobPager.NextPage` has been removed
+- Function `*ManagedInstanceTdeCertificatesClientCreatePoller.ResumeToken` has been removed
+- Function `DatabasesClientExportPollerResponse.PollUntilDone` has been removed
+- Function `*ManagedBackupShortTermRetentionPoliciesClientUpdatePoller.ResumeToken` has been removed
+- Function `SyncGroupLogType.ToPtr` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClientDeleteByResourceGroupPoller.ResumeToken` has been removed
+- Function `*ExtendedServerBlobAuditingPoliciesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ServerTrustGroupsClientListByInstancePager.PageResponse` has been removed
+- Function `ReplicationLinksClientFailoverPollerResponse.PollUntilDone` has been removed
+- Function `*ManagedServerSecurityAlertPoliciesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ManagedInstancesClientListPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*JobExecutionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*LongTermRetentionBackupsClientDeletePoller.Done` has been removed
+- Function `SyncGroupsType.ToPtr` has been removed
+- Function `*DatabasesClientFailoverPoller.Done` has been removed
+- Function `CapabilityGroup.ToPtr` has been removed
+- Function `*ReplicationLinksClientUnlinkPoller.Poll` has been removed
+- Function `*JobAgentsClientListByServerPager.Err` has been removed
+- Function `AutomaticTuningDisabledReason.ToPtr` has been removed
+- Function `*ManagedInstancePrivateEndpointConnectionsClientDeletePoller.Poll` has been removed
+- Function `*ExtendedDatabaseBlobAuditingPoliciesClientListByDatabasePager.Err` has been removed
+- Function `*ServerAzureADOnlyAuthenticationsClientListByServerPager.PageResponse` has been removed
+- Function `*DatabasesClientUpgradeDataWarehousePoller.ResumeToken` has been removed
+- Function `ServerAzureADAdministratorsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `JobScheduleType.ToPtr` has been removed
+- Function `CreateMode.ToPtr` has been removed
+- Function `OperationOrigin.ToPtr` has been removed
+- Function `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `SyncGroupState.ToPtr` has been removed
+- Function `*ManagedBackupShortTermRetentionPoliciesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ElasticPoolsClientListByServerPager.PageResponse` has been removed
+- Function `*SensitivityLabelsClientListRecommendedByDatabasePager.PageResponse` has been removed
+- Function `PrivateEndpointProvisioningState.ToPtr` has been removed
+- Function `*RestorableDroppedManagedDatabasesClientListByInstancePager.NextPage` has been removed
+- Function `*JobVersionsClientListByJobPager.NextPage` has been removed
+- Function `ReplicationLinksClientFailoverAllowDataLossPollerResponse.PollUntilDone` has been removed
+- Function `*DatabasesClientListByElasticPoolPager.Err` has been removed
+- Function `*ServerAzureADAdministratorsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*FailoverGroupsClientForceFailoverAllowDataLossPoller.Done` has been removed
+- Function `*JobTargetGroupsClientListByAgentPager.Err` has been removed
+- Function `ElasticPoolState.ToPtr` has been removed
+- Function `JobExecutionLifecycle.ToPtr` has been removed
+- Function `JobStepActionType.ToPtr` has been removed
+- Function `*TimeZonesClientListByLocationPager.NextPage` has been removed
+- Function `DatabaseState.ToPtr` has been removed
+- Function `SyncGroupsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ManagedInstanceLongTermRetentionPoliciesClientListByDatabasePager.NextPage` has been removed
+- Function `*DatabasesClientListByElasticPoolPager.PageResponse` has been removed
+- Function `*FailoverGroupsClientForceFailoverAllowDataLossPoller.ResumeToken` has been removed
+- Function `RecommendedActionInitiatedBy.ToPtr` has been removed
+- Function `*SyncMembersClientListMemberSchemasPager.Err` has been removed
+- Function `*VirtualNetworkRulesClientListByServerPager.PageResponse` has been removed
+- Function `*LongTermRetentionBackupsClientDeletePoller.Poll` has been removed
+- Function `*ManagedDatabaseColumnsClientListByTablePager.PageResponse` has been removed
+- Function `*DatabaseUsagesClientListByDatabasePager.Err` has been removed
+- Function `*PrivateEndpointConnectionsClientListByServerPager.Err` has been removed
+- Function `*ServerAzureADAdministratorsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ReplicationLinksClientFailoverPoller.Done` has been removed
+- Function `*SyncGroupsClientListHubSchemasPager.NextPage` has been removed
+- Function `*SyncMembersClientRefreshMemberSchemaPoller.Done` has been removed
+- Function `*InstancePoolsClientDeletePollerResponse.Resume` has been removed
+- Function `*ServerDevOpsAuditSettingsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ManagedBackupShortTermRetentionPoliciesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ServerDevOpsAuditSettingsClientListByServerPager.PageResponse` has been removed
+- Function `*ExtendedServerBlobAuditingPoliciesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `DatabaseIdentityType.ToPtr` has been removed
+- Function `*JobAgentsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*SubscriptionUsagesClientListByLocationPager.NextPage` has been removed
+- Function `*InstanceFailoverGroupsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `FailoverGroupsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DatabasesClientExportPollerResponse.Resume` has been removed
+- Function `*ManagedBackupShortTermRetentionPoliciesClientListByDatabasePager.NextPage` has been removed
+- Function `*DatabasesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*SyncAgentsClientListByServerPager.Err` has been removed
+- Function `*ExtendedDatabaseBlobAuditingPoliciesClientListByDatabasePager.PageResponse` has been removed
+- Function `*InstancePoolsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `JobStepActionSource.ToPtr` has been removed
+- Function `*ManagedInstancePrivateEndpointConnectionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*DatabasesClientImportPoller.Poll` has been removed
+- Function `*ManagedInstancesClientDeletePoller.Poll` has been removed
+- Function `*BackupShortTermRetentionPoliciesClientUpdatePoller.ResumeToken` has been removed
+- Function `*ElasticPoolsClientCreateOrUpdatePoller.Done` has been removed
+- Function `SyncDirection.ToPtr` has been removed
+- Function `*ServersClientListPager.Err` has been removed
+- Function `TdeCertificatesClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*ManagedInstanceVulnerabilityAssessmentsClientListByInstancePager.PageResponse` has been removed
+- Function `*TimeZonesClientListByLocationPager.Err` has been removed
+- Function `*WorkloadClassifiersClientDeletePoller.Done` has been removed
+- Function `*ServerAzureADAdministratorsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ManagedInstancesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*DatabaseVulnerabilityAssessmentScansClientListByDatabasePager.Err` has been removed
+- Function `*InstancePoolsClientUpdatePoller.ResumeToken` has been removed
+- Function `*RestorePointsClientListByDatabasePager.Err` has been removed
+- Function `*ManagedDatabaseTransparentDataEncryptionClientListByDatabasePager.PageResponse` has been removed
+- Function `*ManagedInstanceAzureADOnlyAuthenticationsClientDeletePoller.Poll` has been removed
+- Function `*InstanceFailoverGroupsClientFailoverPoller.FinalResponse` has been removed
+- Function `*ManagedDatabasesClientCreateOrUpdatePoller.Done` has been removed
+- Function `LongTermRetentionPoliciesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DatabaseExtensionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*SyncGroupsClientListSyncDatabaseIDsPager.NextPage` has been removed
+- Function `*ExtendedServerBlobAuditingPoliciesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstancePager.PageResponse` has been removed
+- Function `*JobAgentsClientDeletePoller.FinalResponse` has been removed
+- Function `*EncryptionProtectorsClientRevalidatePollerResponse.Resume` has been removed
+- Function `*ManagedInstanceKeysClientDeletePollerResponse.Resume` has been removed
+- Function `*DatabaseBlobAuditingPoliciesClientListByDatabasePager.Err` has been removed
+- Function `*LongTermRetentionBackupsClientDeletePollerResponse.Resume` has been removed
+- Function `*ServerDNSAliasesClientAcquirePoller.FinalResponse` has been removed
+- Function `*EncryptionProtectorsClientListByServerPager.NextPage` has been removed
+- Function `*LongTermRetentionBackupsClientListByDatabasePager.NextPage` has been removed
+- Function `*ServerTrustGroupsClientListByLocationPager.PageResponse` has been removed
+- Function `*ServerKeysClientCreateOrUpdatePoller.Done` has been removed
+- Function `PerformanceLevelUnit.ToPtr` has been removed
+- Function `*PrivateLinkResourcesClientListByServerPager.PageResponse` has been removed
+- Function `*SyncAgentsClientListByServerPager.NextPage` has been removed
+- Function `*InstancePoolsClientListPager.Err` has been removed
+- Function `*DatabaseExtensionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*InstanceFailoverGroupsClientForceFailoverAllowDataLossPoller.ResumeToken` has been removed
+- Function `*LongTermRetentionBackupsClientListByResourceGroupServerPager.Err` has been removed
+- Function `*ExtendedServerBlobAuditingPoliciesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*TransparentDataEncryptionsClientListByDatabasePager.NextPage` has been removed
+- Function `*LedgerDigestUploadsClientListByDatabasePager.Err` has been removed
+- Function `*PrivateLinkResourcesClientListByServerPager.NextPage` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClientListByInstancePager.PageResponse` has been removed
+- Function `*JobAgentsClientUpdatePollerResponse.Resume` has been removed
+- Function `ElasticPoolLicenseType.ToPtr` has been removed
+- Function `*DatabasesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualClustersClientListPager.PageResponse` has been removed
+- Function `*ReplicationLinksClientFailoverPoller.Poll` has been removed
+- Function `*OutboundFirewallRulesClientDeletePoller.Poll` has been removed
+- Function `*ManagedDatabaseSensitivityLabelsClientListCurrentByDatabasePager.Err` has been removed
+- Function `*DatabasesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*FailoverGroupsClientUpdatePoller.ResumeToken` has been removed
+- Function `*InstanceFailoverGroupsClientListByLocationPager.PageResponse` has been removed
+- Function `WorkloadClassifiersClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ManagedInstanceLongTermRetentionPoliciesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ManagedInstanceEncryptionProtectorsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ManagedDatabaseSchemasClientListByDatabasePager.NextPage` has been removed
+- Function `*SyncGroupsClientRefreshHubSchemaPoller.Done` has been removed
+- Function `*DatabasesClientUpdatePoller.FinalResponse` has been removed
+- Function `*ElasticPoolOperationsClientListByElasticPoolPager.Err` has been removed
+- Function `SyncAgentsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*InstanceFailoverGroupsClientDeletePoller.Done` has been removed
+- Function `AutoExecuteStatusInheritedFrom.ToPtr` has been removed
+- Function `*DatabasesClientImportPoller.FinalResponse` has been removed
+- Function `*VirtualNetworkRulesClientDeletePoller.ResumeToken` has been removed
+- Function `*ServersClientDeletePollerResponse.Resume` has been removed
+- Function `*ManagedDatabasesClientListByInstancePager.Err` has been removed
+- Function `*FirewallRulesClientListByServerPager.Err` has been removed
+- Function `*DatabaseSchemasClientListByDatabasePager.Err` has been removed
+- Function `DatabasesClientImportPollerResponse.PollUntilDone` has been removed
+- Function `JobAgentsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*WorkloadClassifiersClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*RestorableDroppedDatabasesClientListByServerPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.ResumeToken` has been removed
+- Function `*LongTermRetentionBackupsClientListByResourceGroupDatabasePager.PageResponse` has been removed
+- Function `*DatabaseVulnerabilityAssessmentScansClientInitiateScanPoller.ResumeToken` has been removed
+- Function `*ManagedInstanceEncryptionProtectorsClientRevalidatePoller.FinalResponse` has been removed
+- Function `*JobExecutionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*DeletedServersClientListByLocationPager.NextPage` has been removed
+- Function `*TimeZonesClientListByLocationPager.PageResponse` has been removed
+- Function `*SyncMembersClientUpdatePoller.ResumeToken` has been removed
+- Function `AggregationFunctionType.ToPtr` has been removed
+- Function `ManagedInstancePrivateEndpointConnectionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*FailoverGroupsClientDeletePoller.Poll` has been removed
+- Function `*ManagedInstanceAzureADOnlyAuthenticationsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*SyncGroupsClientRefreshHubSchemaPollerResponse.Resume` has been removed
+- Function `*DatabaseOperationsClientListByDatabasePager.Err` has been removed
+- Function `*VirtualNetworkRulesClientListByServerPager.NextPage` has been removed
+- Function `*LedgerDigestUploadsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*SyncGroupsClientDeletePoller.Done` has been removed
+- Function `*ServerKeysClientDeletePoller.FinalResponse` has been removed
+- Function `*ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `LongTermRetentionManagedInstanceBackupsClientDeleteByResourceGroupPollerResponse.PollUntilDone` has been removed
+- Function `*InstanceFailoverGroupsClientDeletePollerResponse.Resume` has been removed
+- Function `*BackupShortTermRetentionPoliciesClientListByDatabasePager.PageResponse` has been removed
+- Function `LedgerDigestUploadsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationLinksClientListByDatabasePager.Err` has been removed
+- Function `*FailoverGroupsClientForceFailoverAllowDataLossPollerResponse.Resume` has been removed
+- Function `LedgerDigestUploadsName.ToPtr` has been removed
+- Function `*ManagedDatabasesClientUpdatePoller.Done` has been removed
+- Function `*ServerAzureADOnlyAuthenticationsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*FailoverGroupsClientUpdatePoller.FinalResponse` has been removed
+- Function `IsRetryable.ToPtr` has been removed
+- Function `*DatabasesClientUpdatePoller.Done` has been removed
+- Function `*DatabaseSchemasClientListByDatabasePager.PageResponse` has been removed
+- Function `*DatabasesClientDeletePoller.ResumeToken` has been removed
+- Function `*ServerAzureADAdministratorsClientDeletePoller.ResumeToken` has been removed
+- Function `*DatabasesClientImportPollerResponse.Resume` has been removed
+- Function `*DeletedServersClientRecoverPollerResponse.Resume` has been removed
+- Function `*ReplicationLinksClientListByDatabasePager.NextPage` has been removed
+- Function `ManagedInstanceAdministratorsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabasePager.PageResponse` has been removed
+- Function `*ManagedInstanceAdministratorsClientListByInstancePager.Err` has been removed
+- Function `*SyncGroupsClientDeletePoller.ResumeToken` has been removed
+- Function `*ManagedInstanceAdministratorsClientDeletePoller.Done` has been removed
+- Function `*ManagedDatabasesClientCompleteRestorePoller.ResumeToken` has been removed
+- Function `*ElasticPoolsClientUpdatePoller.Poll` has been removed
+- Function `FailoverGroupsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*InstancePoolsClientDeletePoller.ResumeToken` has been removed
+- Function `*TdeCertificatesClientCreatePollerResponse.Resume` has been removed
+- Function `*RestorableDroppedDatabasesClientListByServerPager.PageResponse` has been removed
+- Function `ReplicationState.ToPtr` has been removed
+- Function `ManagedDatabasesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*LongTermRetentionBackupsClientListByLocationPager.PageResponse` has been removed
+- Function `*ManagedDatabaseSecurityAlertPoliciesClientListByDatabasePager.Err` has been removed
+- Function `*ManagedServerSecurityAlertPoliciesClientListByInstancePager.Err` has been removed
+- Function `SecondaryType.ToPtr` has been removed
+- Function `*DatabasesClientPausePoller.Done` has been removed
+- Function `*JobStepExecutionsClientListByJobExecutionPager.Err` has been removed
+- Function `*ManagedDatabaseSensitivityLabelsClientListCurrentByDatabasePager.PageResponse` has been removed
+- Function `*VirtualNetworkRulesClientDeletePollerResponse.Resume` has been removed
+- Function `BlobAuditingPolicyState.ToPtr` has been removed
+- Function `*ManagedDatabaseTablesClientListBySchemaPager.PageResponse` has been removed
+- Function `*ManagedInstancePrivateLinkResourcesClientListByManagedInstancePager.NextPage` has been removed
+- Function `*ManagedInstanceKeysClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*SyncAgentsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ManagedInstancesClientFailoverPoller.Poll` has been removed
+- Function `DayOfWeek.ToPtr` has been removed
+- Function `*ServerAzureADOnlyAuthenticationsClientListByServerPager.Err` has been removed
+- Function `*DatabasesClientExportPoller.Done` has been removed
+- Function `*DataWarehouseUserActivitiesClientListByDatabasePager.Err` has been removed
+- Function `DatabasesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `ServerDNSAliasesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*BackupShortTermRetentionPoliciesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*LongTermRetentionBackupsClientCopyByResourceGroupPoller.Done` has been removed
+- Function `*JobCredentialsClientListByAgentPager.PageResponse` has been removed
+- Function `ManagedInstanceAzureADOnlyAuthenticationsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ServersClientCreateOrUpdatePoller.Poll` has been removed
+- Function `LongTermRetentionBackupsClientCopyByResourceGroupPollerResponse.PollUntilDone` has been removed
+- Function `*ManagedInstanceAdministratorsClientListByInstancePager.NextPage` has been removed
+- Function `*FailoverGroupsClientUpdatePollerResponse.Resume` has been removed
+- Function `*ManagedInstanceEncryptionProtectorsClientRevalidatePoller.Poll` has been removed
+- Function `*SyncGroupsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ServerDNSAliasesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*DatabaseTablesClientListBySchemaPager.PageResponse` has been removed
+- Function `*LongTermRetentionBackupsClientDeleteByResourceGroupPollerResponse.Resume` has been removed
+- Function `*ManagedInstancesClientUpdatePoller.Poll` has been removed
+- Function `*JobTargetExecutionsClientListByJobExecutionPager.NextPage` has been removed
+- Function `DatabaseReadScale.ToPtr` has been removed
+- Function `*VirtualClustersClientUpdatePoller.FinalResponse` has been removed
+- Function `*ManagedInstanceKeysClientListByInstancePager.NextPage` has been removed
+- Function `*TdeCertificatesClientCreatePoller.Done` has been removed
+- Function `*OutboundFirewallRulesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ManagedInstanceEncryptionProtectorsClientRevalidatePollerResponse.Resume` has been removed
+- Function `*DatabaseVulnerabilityAssessmentsClientListByDatabasePager.NextPage` has been removed
+- Function `*ManagedInstanceAdministratorsClientDeletePoller.FinalResponse` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationPager.NextPage` has been removed
+- Function `*WorkloadGroupsClientDeletePoller.FinalResponse` has been removed
+- Function `*ManagedInstanceLongTermRetentionPoliciesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*JobsClientListByAgentPager.PageResponse` has been removed
+- Function `*DatabasesClientListByServerPager.NextPage` has been removed
+- Function `VulnerabilityAssessmentScanTriggerType.ToPtr` has been removed
+- Function `*ManagedDatabasesClientListInaccessibleByInstancePager.PageResponse` has been removed
+- Function `*FailoverGroupsClientListByServerPager.NextPage` has been removed
+- Function `*LedgerDigestUploadsClientDisablePoller.ResumeToken` has been removed
+- Function `*JobExecutionsClientListByJobPager.PageResponse` has been removed
+- Function `*DatabasesClientUpgradeDataWarehousePoller.FinalResponse` has been removed
+- Function `*ServerTrustGroupsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*DatabasesClientListByServerPager.Err` has been removed
+- Function `JobStepOutputType.ToPtr` has been removed
+- Function `*SyncMembersClientDeletePoller.Poll` has been removed
+- Function `*DatabaseSchemasClientListByDatabasePager.NextPage` has been removed
+- Function `*ManagedInstanceAzureADOnlyAuthenticationsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ManagedInstanceOperationsClientListByManagedInstancePager.PageResponse` has been removed
+- Function `*SyncGroupsClientDeletePoller.Poll` has been removed
+- Function `*LongTermRetentionBackupsClientListByDatabasePager.Err` has been removed
+- Function `AuthenticationName.ToPtr` has been removed
+- Function `DatabaseStatus.ToPtr` has been removed
+- Function `*ServerConnectionPoliciesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ServerSecurityAlertPoliciesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ReplicationLinksClientListByDatabasePager.PageResponse` has been removed
+- Function `*BackupShortTermRetentionPoliciesClientUpdatePollerResponse.Resume` has been removed
+- Function `ServerConnectionType.ToPtr` has been removed
+- Function `*OutboundFirewallRulesClientListByServerPager.Err` has been removed
+- Function `*ManagedDatabasesClientDeletePollerResponse.Resume` has been removed
+- Function `*ReplicationLinksClientFailoverAllowDataLossPoller.Poll` has been removed
+- Function `*SyncGroupsClientDeletePollerResponse.Resume` has been removed
+- Function `*SyncMembersClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `SyncConflictResolutionPolicy.ToPtr` has been removed
+- Function `*SyncGroupsClientListByDatabasePager.NextPage` has been removed
+- Function `*ManagedInstancesClientDeletePoller.FinalResponse` has been removed
+- Function `DatabasesClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ManagedDatabasesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*TdeCertificatesClientCreatePoller.ResumeToken` has been removed
+- Function `*JobExecutionsClientCreatePoller.Done` has been removed
+- Function `GeoBackupPolicyName.ToPtr` has been removed
+- Function `ReadWriteEndpointFailoverPolicy.ToPtr` has been removed
+- Function `*DatabaseColumnsClientListByDatabasePager.PageResponse` has been removed
+- Function `FailoverGroupsClientForceFailoverAllowDataLossPollerResponse.PollUntilDone` has been removed
+- Function `*ManagedDatabaseTablesClientListBySchemaPager.Err` has been removed
+- Function `*BackupShortTermRetentionPoliciesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*DatabaseExtensionsClientListByDatabasePager.NextPage` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClientDeleteByResourceGroupPoller.FinalResponse` has been removed
+- Function `*ElasticPoolOperationsClientListByElasticPoolPager.PageResponse` has been removed
+- Function `LedgerDigestUploadsClientDisablePollerResponse.PollUntilDone` has been removed
+- Function `*ManagedDatabaseQueriesClientListByQueryPager.NextPage` has been removed
+- Function `*ServerBlobAuditingPoliciesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ManagedServerSecurityAlertPoliciesClientListByInstancePager.PageResponse` has been removed
+- Function `*FailoverGroupsClientForceFailoverAllowDataLossPoller.FinalResponse` has been removed
+- Function `*LongTermRetentionBackupsClientListByDatabasePager.PageResponse` has been removed
+- Function `*ManagedInstanceEncryptionProtectorsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `SyncMemberDbType.ToPtr` has been removed
+- Function `QueryMetricUnitType.ToPtr` has been removed
+- Function `*ManagedDatabaseTransparentDataEncryptionClientListByDatabasePager.Err` has been removed
+- Function `*TransparentDataEncryptionsClientListByDatabasePager.Err` has been removed
+- Function `*ServerConnectionPoliciesClientListByServerPager.Err` has been removed
+- Function `*FailoverGroupsClientFailoverPoller.ResumeToken` has been removed
+- Function `*ManagedInstancePrivateLinkResourcesClientListByManagedInstancePager.Err` has been removed
+- Function `*ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientListByRestorableDroppedDatabasePager.NextPage` has been removed
+- Function `*ManagedDatabaseSchemasClientListByDatabasePager.PageResponse` has been removed
+- Function `SyncAgentState.ToPtr` has been removed
+- Function `*ServerConnectionPoliciesClientListByServerPager.NextPage` has been removed
+- Function `*VirtualNetworkRulesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*LongTermRetentionBackupsClientUpdateByResourceGroupPoller.Done` has been removed
+- Function `*ManagedInstanceAzureADOnlyAuthenticationsClientListByInstancePager.PageResponse` has been removed
+- Function `*ManagedDatabaseColumnsClientListByDatabasePager.PageResponse` has been removed
+- Function `*LongTermRetentionBackupsClientCopyPoller.Done` has been removed
+- Function `*ServerSecurityAlertPoliciesClientListByServerPager.Err` has been removed
+- Function `AdvisorStatus.ToPtr` has been removed
+- Function `*EncryptionProtectorsClientRevalidatePoller.Poll` has been removed
+- Function `*InstancePoolsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*InstanceFailoverGroupsClientForceFailoverAllowDataLossPoller.Poll` has been removed
+- Function `*SensitivityLabelsClientListCurrentByDatabasePager.Err` has been removed
+- Function `*WorkloadClassifiersClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*RestorePointsClientListByDatabasePager.PageResponse` has been removed
+- Function `SensitivityLabelUpdateKind.ToPtr` has been removed
+- Function `*LongTermRetentionBackupsClientCopyByResourceGroupPoller.Poll` has been removed
+- Function `*ServerDNSAliasesClientListByServerPager.NextPage` has been removed
+- Function `*SyncGroupsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientListByRestorableDroppedDatabasePager.PageResponse` has been removed
+- Function `*SyncAgentsClientDeletePoller.Poll` has been removed
+- Function `*FirewallRulesClientListByServerPager.PageResponse` has been removed
+- Function `*ReplicationLinksClientFailoverAllowDataLossPoller.ResumeToken` has been removed
+- Function `*JobAgentsClientListByServerPager.NextPage` has been removed
+- Function `*ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*DatabaseOperationsClientListByDatabasePager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.Poll` has been removed
+- Function `*SyncGroupsClientUpdatePoller.Done` has been removed
+- Function `*LedgerDigestUploadsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ManagedBackupShortTermRetentionPoliciesClientListByDatabasePager.PageResponse` has been removed
+- Function `*ManagedDatabasesClientUpdatePoller.Poll` has been removed
+- Function `*ManagedInstanceKeysClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientUpdatePoller.FinalResponse` has been removed
+- Function `*SyncGroupsClientUpdatePoller.ResumeToken` has been removed
+- Function `*ManagedDatabaseTablesClientListBySchemaPager.NextPage` has been removed
+- Function `UpsertManagedServerOperationStepStatus.ToPtr` has been removed
+- Function `*ServerDNSAliasesClientAcquirePoller.Done` has been removed
+- Function `*ServerAzureADOnlyAuthenticationsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*UsagesClientListByInstancePoolPager.Err` has been removed
+- Function `*ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientListByRestorableDroppedDatabasePager.Err` has been removed
+- Function `*JobTargetExecutionsClientListByJobExecutionPager.Err` has been removed
+- Function `ServerCommunicationLinksClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ServerAzureADAdministratorsClientDeletePollerResponse.Resume` has been removed
+- Function `*ManagedInstanceAdministratorsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `MaxSizeUnit.ToPtr` has been removed
+- Function `*JobTargetGroupsClientListByAgentPager.NextPage` has been removed
+- Function `*VirtualClustersClientUpdatePollerResponse.Resume` has been removed
+- Function `*ManagedInstanceAdministratorsClientDeletePoller.ResumeToken` has been removed
+- Function `*DatabaseVulnerabilityAssessmentScansClientInitiateScanPollerResponse.Resume` has been removed
+- Function `*SyncAgentsClientDeletePoller.Done` has been removed
+- Function `RestorePointType.ToPtr` has been removed
+- Function `*LongTermRetentionBackupsClientListByLocationPager.NextPage` has been removed
+- Function `*FailoverGroupsClientListByServerPager.Err` has been removed
+- Function `MetricType.ToPtr` has been removed
+- Function `QueryTimeGrainType.ToPtr` has been removed
+- Function `*ServersClientUpdatePoller.Done` has been removed
+- Function `ServerAzureADAdministratorsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ManagedBackupShortTermRetentionPoliciesClientUpdatePoller.Done` has been removed
+- Function `*JobAgentsClientUpdatePoller.FinalResponse` has been removed
+- Function `*DeletedServersClientListPager.NextPage` has been removed
+- Function `ManagedInstancesClientFailoverPollerResponse.PollUntilDone` has been removed
+- Function `StorageKeyType.ToPtr` has been removed
+- Function `*RestorableDroppedManagedDatabasesClientListByInstancePager.PageResponse` has been removed
+- Function `*ServerAzureADOnlyAuthenticationsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `ManagedInstanceLongTermRetentionPolicyName.ToPtr` has been removed
+- Function `*ServerConnectionPoliciesClientListByServerPager.PageResponse` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClientListByLocationPager.Err` has been removed
+- Function `*VirtualClustersClientDeletePoller.Poll` has been removed
+- Function `*ManagedInstanceVulnerabilityAssessmentsClientListByInstancePager.NextPage` has been removed
+- Function `ElasticPoolsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*RestorePointsClientCreatePoller.Done` has been removed
+- Function `*InstanceFailoverGroupsClientForceFailoverAllowDataLossPollerResponse.Resume` has been removed
+- Function `*ServersClientUpdatePoller.Poll` has been removed
+- Function `*JobAgentsClientDeletePollerResponse.Resume` has been removed
+- Function `*VirtualNetworkRulesClientDeletePoller.FinalResponse` has been removed
+- Function `*InstancePoolsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ServersClientDeletePoller.FinalResponse` has been removed
+- Function `*ExtendedServerBlobAuditingPoliciesClientListByServerPager.Err` has been removed
+- Function `AutomaticTuningServerReason.ToPtr` has been removed
+- Function `*InstanceFailoverGroupsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ManagedServerSecurityAlertPoliciesClientListByInstancePager.NextPage` has been removed
+- Function `*ManagedInstancePrivateEndpointConnectionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*InstanceFailoverGroupsClientListByLocationPager.NextPage` has been removed
+- Function `*VirtualClustersClientDeletePoller.Done` has been removed
+- Function `*ServerConnectionPoliciesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `DataMaskingState.ToPtr` has been removed
+- Function `SecurityAlertPolicyName.ToPtr` has been removed
+- Function `*ManagedInstancePrivateEndpointConnectionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClientListByInstancePager.NextPage` has been removed
+- Function `ReplicationLinksClientUnlinkPollerResponse.PollUntilDone` has been removed
+- Function `*BackupShortTermRetentionPoliciesClientUpdatePoller.Poll` has been removed
+- Function `*ManagedInstancesClientUpdatePoller.Done` has been removed
+- Function `*WorkloadGroupsClientDeletePoller.Poll` has been removed
+- Function `*ManagedInstanceEncryptionProtectorsClientListByInstancePager.Err` has been removed
+- Function `*ServerDevOpsAuditSettingsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ManagedInstanceKeysClientListByInstancePager.PageResponse` has been removed
+- Function `*ManagedBackupShortTermRetentionPoliciesClientListByDatabasePager.Err` has been removed
+- Function `ExtendedServerBlobAuditingPoliciesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*LongTermRetentionBackupsClientUpdatePoller.ResumeToken` has been removed
+- Function `*ManagedDatabasesClientCompleteRestorePollerResponse.Resume` has been removed
+- Function `*JobAgentsClientUpdatePoller.Done` has been removed
+- Function `*ManagedServerSecurityAlertPoliciesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ManagedInstanceOperationsClientListByManagedInstancePager.Err` has been removed
+- Function `*ManagedInstancesClientDeletePollerResponse.Resume` has been removed
+- Function `*DatabasesClientListInaccessibleByServerPager.Err` has been removed
+- Function `*DatabaseVulnerabilityAssessmentScansClientListByDatabasePager.PageResponse` has been removed
+- Function `InstancePoolsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabasePager.Err` has been removed
+- Function `*DatabasesClientDeletePoller.Poll` has been removed
+- Function `AutomaticTuningOptionModeActual.ToPtr` has been removed
+- Function `*DatabasesClientPausePoller.Poll` has been removed
+- Function `*ServerAzureADOnlyAuthenticationsClientDeletePoller.FinalResponse` has been removed
+- Function `CheckNameAvailabilityReason.ToPtr` has been removed
+- Function `*ServerKeysClientDeletePollerResponse.Resume` has been removed
+- Function `PrivateLinkServiceConnectionStateActionsRequire.ToPtr` has been removed
+- Function `*ManagedDatabaseVulnerabilityAssessmentsClientListByDatabasePager.PageResponse` has been removed
+- Function `*ManagedInstancePrivateEndpointConnectionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ServerDNSAliasesClientListByServerPager.PageResponse` has been removed
+- Function `*ManagedInstanceLongTermRetentionPoliciesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ManagedInstancesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*LongTermRetentionBackupsClientCopyByResourceGroupPoller.FinalResponse` has been removed
+- Function `*ServerDevOpsAuditSettingsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ManagedInstancePrivateLinkResourcesClientListByManagedInstancePager.PageResponse` has been removed
+- Function `*DeletedServersClientRecoverPoller.Poll` has been removed
+- Function `DataMaskingRuleState.ToPtr` has been removed
+- Function `*ServerCommunicationLinksClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*DatabasesClientFailoverPoller.Poll` has been removed
+- Function `ServersClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateLinkResourcesClientListByServerPager.Err` has been removed
+- Function `ServerTrustGroupPropertiesTrustScopesItem.ToPtr` has been removed
+- Function `*LedgerDigestUploadsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*LongTermRetentionPoliciesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ManagedDatabaseSecurityEventsClientListByDatabasePager.PageResponse` has been removed
+- Function `*ServerAzureADAdministratorsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ManagedBackupShortTermRetentionPoliciesClientUpdatePollerResponse.Resume` has been removed
+- Function `*ServerCommunicationLinksClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*LongTermRetentionBackupsClientListByServerPager.NextPage` has been removed
+- Function `*InstancePoolsClientListByResourceGroupPager.Err` has been removed
+- Function `*LongTermRetentionBackupsClientDeleteByResourceGroupPoller.FinalResponse` has been removed
+- Function `*DatabaseUsagesClientListByDatabasePager.PageResponse` has been removed
+- Function `*EncryptionProtectorsClientRevalidatePoller.Done` has been removed
+- Function `*OutboundFirewallRulesClientListByServerPager.NextPage` has been removed
+- Function `VulnerabilityAssessmentPolicyBaselineName.ToPtr` has been removed
+- Function `*SyncAgentsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ManagedInstanceAzureADOnlyAuthenticationsClientDeletePoller.ResumeToken` has been removed
+- Function `*FailoverGroupsClientDeletePoller.ResumeToken` has been removed
+- Function `*OutboundFirewallRulesClientDeletePoller.ResumeToken` has been removed
+- Function `*DatabasesClientUpgradeDataWarehousePoller.Poll` has been removed
+- Function `*LedgerDigestUploadsClientDisablePoller.FinalResponse` has been removed
+- Function `*LedgerDigestUploadsClientListByDatabasePager.NextPage` has been removed
+- Function `RecommendedSensitivityLabelUpdateKind.ToPtr` has been removed
+- Function `*WorkloadGroupsClientDeletePollerResponse.Resume` has been removed
+- Function `*ManagedDatabaseColumnsClientListByDatabasePager.NextPage` has been removed
+- Function `*ServerSecurityAlertPoliciesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ServerCommunicationLinksClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ServerTrustGroupsClientDeletePoller.FinalResponse` has been removed
+- Function `*LongTermRetentionPoliciesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*LongTermRetentionPoliciesClientListByDatabasePager.Err` has been removed
+- Function `PrivateLinkServiceConnectionStateStatus.ToPtr` has been removed
+- Function `*VirtualClustersClientListByResourceGroupPager.NextPage` has been removed
+- Function `*LongTermRetentionBackupsClientUpdatePoller.Done` has been removed
+- Function `*UsagesClientListByInstancePoolPager.NextPage` has been removed
+- Function `*ElasticPoolsClientListByServerPager.NextPage` has been removed
+- Function `*DatabasesClientFailoverPoller.FinalResponse` has been removed
+- Function `*DatabaseExtensionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ManagedDatabaseSecurityAlertPoliciesClientListByDatabasePager.PageResponse` has been removed
+- Function `*ManagedInstancesClientUpdatePoller.ResumeToken` has been removed
+- Function `*DatabasesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*DatabaseSecurityAlertPoliciesClientListByDatabasePager.Err` has been removed
+- Function `SecurityAlertsPolicyState.ToPtr` has been removed
+- Function `*SyncMembersClientUpdatePoller.FinalResponse` has been removed
+- Function `ShortTermRetentionPolicyName.ToPtr` has been removed
+- Function `DiffBackupIntervalInHours.ToPtr` has been removed
+- Function `*WorkloadClassifiersClientListByWorkloadGroupPager.NextPage` has been removed
+- Function `*DeletedServersClientRecoverPoller.ResumeToken` has been removed
+- Function `*LongTermRetentionBackupsClientListByResourceGroupDatabasePager.NextPage` has been removed
+- Function `*ServersClientImportDatabasePollerResponse.Resume` has been removed
+- Function `*DatabaseVulnerabilityAssessmentScansClientInitiateScanPoller.FinalResponse` has been removed
+- Function `ServerDNSAliasesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SyncMembersClientRefreshMemberSchemaPoller.ResumeToken` has been removed
+- Function `SyncGroupsClientRefreshHubSchemaPollerResponse.PollUntilDone` has been removed
+- Function `ServiceObjectiveName.ToPtr` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClientDeletePollerResponse.Resume` has been removed
+- Function `*ServerBlobAuditingPoliciesClientListByServerPager.Err` has been removed
+- Function `*LongTermRetentionPoliciesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ManagedInstancePrivateEndpointConnectionsClientListByManagedInstancePager.PageResponse` has been removed
+- Function `*ManagedDatabaseSecurityEventsClientListByDatabasePager.NextPage` has been removed
+- Function `*ServersClientListByResourceGroupPager.NextPage` has been removed
+- Function `SensitivityLabelSource.ToPtr` has been removed
+- Function `ManagedBackupShortTermRetentionPoliciesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ElasticPoolsClientDeletePoller.ResumeToken` has been removed
+- Function `OutboundFirewallRulesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `UnitDefinitionType.ToPtr` has been removed
+- Function `*WorkloadGroupsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePollerResponse.Resume` has been removed
+- Function `PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ManagedInstanceAdministratorsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ManagedInstancesClientUpdatePoller.FinalResponse` has been removed
+- Function `*ServerAzureADOnlyAuthenticationsClientDeletePoller.Done` has been removed
+- Function `*ManagedInstancesClientListByManagedInstancePager.PageResponse` has been removed
+- Function `*FailoverGroupsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ServersClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*SyncAgentsClientDeletePollerResponse.Resume` has been removed
+- Function `*FailoverGroupsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `TransparentDataEncryptionName.ToPtr` has been removed
+- Function `*JobAgentsClientUpdatePoller.Poll` has been removed
+- Function `ManagedInstanceKeysClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ElasticPoolsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ManagedInstanceKeysClientDeletePoller.Poll` has been removed
+- Function `SyncMembersClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ServerAzureADOnlyAuthenticationsClientDeletePoller.Poll` has been removed
+- Function `*ServerKeysClientListByServerPager.NextPage` has been removed
+- Function `*DatabaseTablesClientListBySchemaPager.NextPage` has been removed
+- Function `*SyncMembersClientListBySyncGroupPager.PageResponse` has been removed
+- Function `*DatabasesClientImportPoller.Done` has been removed
+- Function `*ExtendedServerBlobAuditingPoliciesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*EncryptionProtectorsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `AutomaticTuningMode.ToPtr` has been removed
+- Function `*ManagedInstanceLongTermRetentionPoliciesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*OutboundFirewallRulesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*InstancePoolsClientUpdatePollerResponse.Resume` has been removed
+- Function `*ManagedDatabasesClientListByInstancePager.NextPage` has been removed
+- Function `*ManagedInstancesClientListPager.Err` has been removed
+- Function `*ServerKeysClientListByServerPager.PageResponse` has been removed
+- Function `*WorkloadClassifiersClientListByWorkloadGroupPager.Err` has been removed
+- Function `*ServersClientImportDatabasePoller.FinalResponse` has been removed
+- Function `*ManagedInstanceEncryptionProtectorsClientListByInstancePager.PageResponse` has been removed
+- Function `*DatabaseColumnsClientListByTablePager.PageResponse` has been removed
+- Function `*InstanceFailoverGroupsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*SyncAgentsClientListLinkedDatabasesPager.PageResponse` has been removed
+- Function `*DatabasesClientResumePollerResponse.Resume` has been removed
+- Function `ManagedDatabasesClientCompleteRestorePollerResponse.PollUntilDone` has been removed
+- Function `*ManagedBackupShortTermRetentionPoliciesClientUpdatePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsClientListByServerPager.NextPage` has been removed
+- Function `*ServerAzureADAdministratorsClientListByServerPager.Err` has been removed
+- Function `*VirtualNetworkRulesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*LongTermRetentionBackupsClientCopyPoller.Poll` has been removed
+- Function `*EncryptionProtectorsClientListByServerPager.PageResponse` has been removed
+- Function `*FailoverGroupsClientDeletePollerResponse.Resume` has been removed
+- Function `*ServerKeysClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ServerDNSAliasesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*RestorableDroppedDatabasesClientListByServerPager.Err` has been removed
+- Function `*FailoverGroupsClientUpdatePoller.Poll` has been removed
+- Function `PauseDelayTimeUnit.ToPtr` has been removed
+- Function `*ReplicationLinksClient.BeginUnlink` has been removed
+- Function `*JobStepsClientListByJobPager.NextPage` has been removed
+- Function `*ServerAzureADOnlyAuthenticationsClientDeletePoller.ResumeToken` has been removed
+- Function `*JobAgentsClientDeletePoller.ResumeToken` has been removed
+- Function `*DatabasesClientDeletePollerResponse.Resume` has been removed
+- Function `SyncMembersClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DatabaseTablesClientListBySchemaPager.Err` has been removed
+- Function `*SensitivityLabelsClientListRecommendedByDatabasePager.Err` has been removed
+- Function `*InstanceFailoverGroupsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `ManagedBackupShortTermRetentionPoliciesClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `JobExecutionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*WorkloadGroupsClientDeletePoller.Done` has been removed
+- Function `*ServerAzureADOnlyAuthenticationsClientListByServerPager.NextPage` has been removed
+- Function `*ServersClientDeletePoller.ResumeToken` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClientListByLocationPager.PageResponse` has been removed
+- Function `*ServerTrustGroupsClientListByInstancePager.Err` has been removed
+- Function `ServerNetworkAccessFlag.ToPtr` has been removed
+- Function `*ManagedInstancePrivateEndpointConnectionsClientListByManagedInstancePager.NextPage` has been removed
+- Function `*VirtualClustersClientListPager.Err` has been removed
+- Function `*ServersClientUpdatePoller.ResumeToken` has been removed
+- Function `PrincipalType.ToPtr` has been removed
+- Function `*InstanceFailoverGroupsClientDeletePoller.ResumeToken` has been removed
+- Function `*ServerBlobAuditingPoliciesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*LongTermRetentionBackupsClientCopyByResourceGroupPollerResponse.Resume` has been removed
+- Function `*ManagedInstancesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ManagedInstancesClientFailoverPoller.ResumeToken` has been removed
+- Function `JobAgentsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ManagedDatabasesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `SampleName.ToPtr` has been removed
+- Function `*ManagedDatabasesClientCompleteRestorePoller.Done` has been removed
+- Function `*WorkloadClassifiersClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*FailoverGroupsClientDeletePoller.Done` has been removed
+- Function `*LongTermRetentionBackupsClientListByResourceGroupLocationPager.PageResponse` has been removed
+- Function `*JobStepExecutionsClientListByJobExecutionPager.NextPage` has been removed
+- Function `*ManagedInstanceAdministratorsClientDeletePollerResponse.Resume` has been removed
+- Function `*ReplicationLinksClientListByServerPager.NextPage` has been removed
+- Function `*ManagedInstanceAzureADOnlyAuthenticationsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ManagedServerSecurityAlertPoliciesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*DatabasesClientUpdatePoller.Poll` has been removed
+- Function `*ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabasePager.Err` has been removed
+- Function `ManagedInstancesClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ManagedDatabaseVulnerabilityAssessmentsClientListByDatabasePager.Err` has been removed
+- Function `*ReplicationLinksClientFailoverAllowDataLossPollerResponse.Resume` has been removed
+- Function `*ManagedServerSecurityAlertPoliciesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*JobExecutionsClientCreatePollerResponse.Resume` has been removed
+- Function `*FailoverGroupsClientDeletePoller.FinalResponse` has been removed
+- Function `ManagedInstanceEncryptionProtectorsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClientListByDatabasePager.Err` has been removed
+- Function `ManagedInstancesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SyncMembersClientListMemberSchemasPager.PageResponse` has been removed
+- Function `*ManagedInstanceAzureADOnlyAuthenticationsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*BackupShortTermRetentionPoliciesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*DatabaseColumnsClientListByDatabasePager.Err` has been removed
+- Function `*SyncMembersClientDeletePoller.Done` has been removed
+- Function `*ManagedInstanceEncryptionProtectorsClientRevalidatePoller.Done` has been removed
+- Function `DatabasesClientResumePollerResponse.PollUntilDone` has been removed
+- Function `*ManagedInstancePrivateEndpointConnectionsClientDeletePollerResponse.Resume` has been removed
+- Function `AdministratorType.ToPtr` has been removed
+- Function `*ServerDevOpsAuditSettingsClientListByServerPager.Err` has been removed
+- Function `*ReplicationLinksClientUnlinkPoller.ResumeToken` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClientDeleteByResourceGroupPollerResponse.Resume` has been removed
+- Function `*SyncGroupsClientListByDatabasePager.PageResponse` has been removed
+- Function `ManagedInstanceKeysClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ManagedDatabasesClientUpdatePoller.ResumeToken` has been removed
+- Function `AutoExecuteStatus.ToPtr` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClientDeleteByResourceGroupPoller.Poll` has been removed
+- Function `*RestorePointsClientCreatePoller.FinalResponse` has been removed
+- Function `*SyncAgentsClientListByServerPager.PageResponse` has been removed
+- Function `*ManagedBackupShortTermRetentionPoliciesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ManagedInstanceOperationsClientListByManagedInstancePager.NextPage` has been removed
+- Function `ColumnDataType.ToPtr` has been removed
+- Function `*InstanceFailoverGroupsClientDeletePoller.FinalResponse` has been removed
+- Function `*ManagedInstanceEncryptionProtectorsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ServerSecurityAlertPoliciesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*JobExecutionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ServerBlobAuditingPoliciesClientListByServerPager.PageResponse` has been removed
+- Function `*ManagedDatabaseColumnsClientListByTablePager.Err` has been removed
+- Function `ElasticPoolsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ManagedDatabasesClientListByInstancePager.PageResponse` has been removed
+- Function `*ReplicationLinksClientListByServerPager.PageResponse` has been removed
+- Function `FailoverGroupsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ServicePrincipalType.ToPtr` has been removed
+- Function `FailoverGroupReplicationRole.ToPtr` has been removed
+- Function `*ElasticPoolsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ExtendedDatabaseBlobAuditingPoliciesClientListByDatabasePager.NextPage` has been removed
+- Function `*FailoverGroupsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*InstancePoolsClientListPager.NextPage` has been removed
+- Function `*DatabasesClientListByServerPager.PageResponse` has been removed
+- Function `*JobAgentsClientListByServerPager.PageResponse` has been removed
+- Function `*OutboundFirewallRulesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ServerTrustGroupsClientListByLocationPager.NextPage` has been removed
+- Function `*DatabasesClientResumePoller.FinalResponse` has been removed
+- Function `*ManagedInstancesClientListByInstancePoolPager.NextPage` has been removed
+- Function `*ManagedBackupShortTermRetentionPoliciesClientUpdatePoller.FinalResponse` has been removed
+- Function `*ManagedDatabaseVulnerabilityAssessmentScansClientInitiateScanPoller.Poll` has been removed
+- Function `*JobStepsClientListByJobPager.PageResponse` has been removed
+- Function `*ManagedDatabasesClientCompleteRestorePoller.Poll` has been removed
+- Function `*LongTermRetentionPoliciesClientListByDatabasePager.NextPage` has been removed
+- Function `SecurityEventType.ToPtr` has been removed
+- Function `*LongTermRetentionBackupsClientListByLocationPager.Err` has been removed
+- Function `*ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `ElasticPoolsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ManagedInstanceKeysClientDeletePoller.Done` has been removed
+- Function `*LongTermRetentionBackupsClientUpdateByResourceGroupPoller.Poll` has been removed
+- Function `*DatabaseColumnsClientListByTablePager.NextPage` has been removed
+- Function `*ManagedInstanceKeysClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ManagedInstanceAzureADOnlyAuthenticationsClientDeletePoller.FinalResponse` has been removed
+- Function `*EncryptionProtectorsClientRevalidatePoller.FinalResponse` has been removed
+- Function `*ServersClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ServerCommunicationLinksClientCreateOrUpdatePoller.Done` has been removed
+- Function `*JobStepsClientListByVersionPager.NextPage` has been removed
+- Function `*ManagedDatabaseVulnerabilityAssessmentScansClientInitiateScanPoller.Done` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstancePager.Err` has been removed
+- Function `SyncMemberState.ToPtr` has been removed
+- Function `JobExecutionsClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationPager.PageResponse` has been removed
+- Function `*ServerAzureADAdministratorsClientListByServerPager.PageResponse` has been removed
+- Function `*RestorePointsClientListByDatabasePager.NextPage` has been removed
+- Function `*DatabasesClientPausePoller.FinalResponse` has been removed
+- Function `*ManagedDatabaseSecurityAlertPoliciesClientListByDatabasePager.NextPage` has been removed
+- Function `*BackupShortTermRetentionPoliciesClientUpdatePoller.Done` has been removed
+- Function `*ManagedDatabaseQueriesClientListByQueryPager.PageResponse` has been removed
+- Function `*LedgerDigestUploadsClientDisablePoller.Poll` has been removed
+- Function `*LedgerDigestUploadsClientListByDatabasePager.PageResponse` has been removed
+- Function `*ElasticPoolsClientUpdatePollerResponse.Resume` has been removed
+- Function `InstancePoolLicenseType.ToPtr` has been removed
+- Function `*VirtualNetworkRulesClientListByServerPager.Err` has been removed
+- Function `*SyncMembersClientListMemberSchemasPager.NextPage` has been removed
+- Function `*ManagedInstanceAzureADOnlyAuthenticationsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `SyncAgentsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationLinksClientUnlinkPoller.Done` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*ManagedInstanceKeysClientDeletePoller.ResumeToken` has been removed
+- Function `EncryptionProtectorsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ManagedInstanceAdministratorType.ToPtr` has been removed
+- Function `*InstancePoolsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*DeletedServersClientListByLocationPager.PageResponse` has been removed
+- Function `*ManagedInstancePrivateEndpointConnectionsClientListByManagedInstancePager.Err` has been removed
+- Function `*JobAgentsClientDeletePoller.Poll` has been removed
+- Function `*ManagedInstanceLongTermRetentionPoliciesClientListByDatabasePager.Err` has been removed
+- Function `PrimaryAggregationType.ToPtr` has been removed
+- Function `LongTermRetentionBackupsClientDeleteByResourceGroupPollerResponse.PollUntilDone` has been removed
+- Function `*ManagedInstanceTdeCertificatesClientCreatePoller.Poll` has been removed
+- Function `*JobStepsClientListByVersionPager.PageResponse` has been removed
+- Function `*ManagedInstanceLongTermRetentionPoliciesClientListByDatabasePager.PageResponse` has been removed
+- Function `*ServerTrustGroupsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ManagedDatabasesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ServerVulnerabilityAssessmentsClientListByServerPager.NextPage` has been removed
+- Function `*ServersClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `StorageCapabilityStorageAccountType.ToPtr` has been removed
+- Function `*EncryptionProtectorsClientListByServerPager.Err` has been removed
+- Function `JobTargetType.ToPtr` has been removed
+- Function `*SyncAgentsClientDeletePoller.ResumeToken` has been removed
+- Function `*SyncGroupsClientListSyncDatabaseIDsPager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.Done` has been removed
+- Function `*SyncGroupsClientListHubSchemasPager.PageResponse` has been removed
+- Function `*SyncGroupsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ElasticPoolsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `ServerKeyType.ToPtr` has been removed
+- Function `*DatabasesClientListByElasticPoolPager.NextPage` has been removed
+- Function `VulnerabilityAssessmentName.ToPtr` has been removed
+- Function `*ManagedInstancesClientUpdatePollerResponse.Resume` has been removed
+- Function `ManagedDatabaseCreateMode.ToPtr` has been removed
+- Function `VirtualClustersClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualClustersClientUpdatePoller.Done` has been removed
+- Function `*ServerTrustGroupsClientListByLocationPager.Err` has been removed
+- Function `*InstancePoolsClientUpdatePoller.Poll` has been removed
+- Function `*ServersClientUpdatePoller.FinalResponse` has been removed
+- Function `ServersClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*InstancePoolsClientDeletePoller.Done` has been removed
+- Function `*ServersClientImportDatabasePoller.ResumeToken` has been removed
+- Function `*ServerBlobAuditingPoliciesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ManagedDatabaseVulnerabilityAssessmentScansClientInitiateScanPoller.ResumeToken` has been removed
+- Function `*SyncAgentsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ManagedDatabaseQueriesClientListByQueryPager.Err` has been removed
+- Function `*ManagedInstancesClientDeletePoller.ResumeToken` has been removed
+- Function `*DatabaseExtensionsClientListByDatabasePager.Err` has been removed
+- Function `*InstancePoolsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientUpdatePoller.Done` has been removed
+- Function `*ServerConnectionPoliciesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ManagedInstanceAzureADOnlyAuthenticationsClientDeletePoller.Done` has been removed
+- Function `*InstancePoolsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClientDeleteByResourceGroupPoller.Done` has been removed
+- Function `*ManagedDatabasesClientListInaccessibleByInstancePager.Err` has been removed
+- Function `TableTemporalType.ToPtr` has been removed
+- Function `*ManagedDatabasesClientDeletePoller.Done` has been removed
+- Function `WorkloadGroupsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*LongTermRetentionBackupsClientListByServerPager.Err` has been removed
+- Function `*ReplicationLinksClientUnlinkPollerResponse.Resume` has been removed
+- Function `InstanceFailoverGroupReplicationRole.ToPtr` has been removed
+- Function `FailoverGroupsClientFailoverPollerResponse.PollUntilDone` has been removed
+- Function `*ServerKeysClientDeletePoller.Done` has been removed
+- Function `*VirtualClustersClientListPager.NextPage` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClientListByDatabasePager.PageResponse` has been removed
+- Function `*TdeCertificatesClientCreatePoller.FinalResponse` has been removed
+- Function `*ServerOperationsClientListByServerPager.NextPage` has been removed
+- Function `*InstancePoolsClientUpdatePoller.FinalResponse` has been removed
+- Function `*ReplicationLinksClientFailoverPoller.FinalResponse` has been removed
+- Function `*ServersClientListPager.PageResponse` has been removed
+- Function `*JobExecutionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ServerAzureADAdministratorsClientDeletePoller.FinalResponse` has been removed
+- Function `*ServerTrustGroupsClientDeletePoller.Done` has been removed
+- Function `*ManagedInstanceKeysClientListByInstancePager.Err` has been removed
+- Function `*JobsClientListByAgentPager.NextPage` has been removed
+- Function `ServersClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*LongTermRetentionPoliciesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ServersClientUpdatePollerResponse.Resume` has been removed
+- Function `*LongTermRetentionBackupsClientCopyPoller.ResumeToken` has been removed
+- Function `*DatabaseBlobAuditingPoliciesClientListByDatabasePager.NextPage` has been removed
+- Function `*FailoverGroupsClientForceFailoverAllowDataLossPoller.Poll` has been removed
+- Function `*SyncGroupsClientRefreshHubSchemaPoller.Poll` has been removed
+- Function `*ElasticPoolsClientDeletePoller.Poll` has been removed
+- Function `*JobStepsClientListByJobPager.Err` has been removed
+- Function `*ElasticPoolsClientUpdatePoller.FinalResponse` has been removed
+- Function `*ManagedInstancesClientListByManagedInstancePager.NextPage` has been removed
+- Function `*ManagedInstancesClientListByManagedInstancePager.Err` has been removed
+- Function `*RestorePointsClientCreatePoller.Poll` has been removed
+- Function `*DataWarehouseUserActivitiesClientListByDatabasePager.NextPage` has been removed
+- Function `*JobTargetExecutionsClientListByStepPager.NextPage` has been removed
+- Function `*DatabaseVulnerabilityAssessmentsClientListByDatabasePager.PageResponse` has been removed
+- Function `*ManagedDatabasesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `RestoreDetailsName.ToPtr` has been removed
+- Function `LongTermRetentionBackupsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `SensitivityLabelRank.ToPtr` has been removed
+- Function `*ElasticPoolsClientFailoverPollerResponse.Resume` has been removed
+- Function `*SyncGroupsClientListSyncDatabaseIDsPager.Err` has been removed
+- Function `*DatabasesClientResumePoller.Poll` has been removed
+- Function `*ManagedInstanceLongTermRetentionPoliciesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ServerKeysClientListByServerPager.Err` has been removed
+- Function `*SyncGroupsClientListLogsPager.Err` has been removed
+- Function `*WorkloadGroupsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ManagedInstancePrivateEndpointConnectionsClientDeletePoller.Done` has been removed
+- Function `DatabaseVulnerabilityAssessmentScansClientInitiateScanPollerResponse.PollUntilDone` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*ServerTrustGroupsClientDeletePoller.ResumeToken` has been removed
+- Function `*ManagedInstancePrivateEndpointConnectionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*LongTermRetentionBackupsClientListByResourceGroupServerPager.PageResponse` has been removed
+- Function `*DatabasesClientFailoverPoller.ResumeToken` has been removed
+- Function `*DatabaseVulnerabilityAssessmentsClientListByDatabasePager.Err` has been removed
+- Function `*DatabaseExtensionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ManagedInstanceAzureADOnlyAuthenticationsClientListByInstancePager.Err` has been removed
+- Function `*DatabasesClientUpdatePollerResponse.Resume` has been removed
+- Function `*ElasticPoolsClientFailoverPoller.Poll` has been removed
+- Function `PrivateEndpointConnectionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ServerDNSAliasesClientDeletePollerResponse.Resume` has been removed
+- Function `*RestorableDroppedManagedDatabasesClientListByInstancePager.Err` has been removed
+- Function `WorkloadClassifiersClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `ServerSecurityAlertPoliciesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ServerAzureADOnlyAuthenticationsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*JobAgentsClientDeletePoller.Done` has been removed
+- Function `*ManagedInstanceAdministratorsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `EncryptionProtectorsClientRevalidatePollerResponse.PollUntilDone` has been removed
+- Function `LedgerDigestUploadsState.ToPtr` has been removed
+- Function `VirtualClustersClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*SyncGroupsClientDeletePoller.FinalResponse` has been removed
+- Function `*JobTargetExecutionsClientListByStepPager.Err` has been removed
+- Function `*FailoverGroupsClientFailoverPoller.FinalResponse` has been removed
+- Function `*DatabasesClientPausePollerResponse.Resume` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClientListByInstancePager.Err` has been removed
+- Function `*RecoverableManagedDatabasesClientListByInstancePager.Err` has been removed
+- Function `ManagedInstancesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ManagedInstanceAdministratorsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ManagedInstanceAdministratorsClientDeletePoller.Poll` has been removed
+- Function `*ServerTrustGroupsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualNetworkRulesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `VirtualNetworkRuleState.ToPtr` has been removed
+- Function `CatalogCollationType.ToPtr` has been removed
+- Function `*ManagedInstanceKeysClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ServerSecurityAlertPoliciesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ServerDNSAliasesClientDeletePoller.Done` has been removed
+- Function `RestorePointsClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `EncryptionProtectorName.ToPtr` has been removed
+- Function `ServerConnectionPoliciesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*WorkloadGroupsClientDeletePoller.ResumeToken` has been removed
+- Function `*LongTermRetentionBackupsClientDeleteByResourceGroupPoller.Done` has been removed
+- Function `*SyncMembersClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ServersClientDeletePoller.Done` has been removed
+- Function `*ElasticPoolsClientUpdatePoller.Done` has been removed
+- Function `InstanceFailoverGroupsClientForceFailoverAllowDataLossPollerResponse.PollUntilDone` has been removed
+- Function `*LongTermRetentionBackupsClientCopyPollerResponse.Resume` has been removed
+- Function `*SyncMembersClientUpdatePoller.Done` has been removed
+- Function `ReadOnlyEndpointFailoverPolicy.ToPtr` has been removed
+- Function `*ReplicationLinksClientUnlinkPoller.FinalResponse` has been removed
+- Function `*LongTermRetentionBackupsClientDeletePoller.FinalResponse` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClientListByLocationPager.NextPage` has been removed
+- Function `*ElasticPoolsClientFailoverPoller.FinalResponse` has been removed
+- Function `ServerDNSAliasesClientAcquirePollerResponse.PollUntilDone` has been removed
+- Function `*WorkloadGroupsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ServerDNSAliasesClientDeletePoller.ResumeToken` has been removed
+- Function `*VirtualClustersClientDeletePoller.ResumeToken` has been removed
+- Function `*SyncAgentsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*OutboundFirewallRulesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `ServerTrustGroupsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*JobExecutionsClientCreatePoller.Poll` has been removed
+- Function `*DatabasesClientResumePoller.Done` has been removed
+- Function `*ReplicationLinksClientFailoverPollerResponse.Resume` has been removed
+- Function `*VirtualClustersClientListByResourceGroupPager.Err` has been removed
+- Function `*JobTargetExecutionsClientListByJobExecutionPager.PageResponse` has been removed
+- Function `*ManagedInstanceAzureADOnlyAuthenticationsClientListByInstancePager.NextPage` has been removed
+- Function `*ElasticPoolsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ServerKeysClientDeletePoller.Poll` has been removed
+- Function `*ServerDNSAliasesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `ManagedInstanceTdeCertificatesClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*SyncMembersClientRefreshMemberSchemaPoller.FinalResponse` has been removed
+- Function `*ManagedInstanceTdeCertificatesClientCreatePoller.FinalResponse` has been removed
+- Function `*WorkloadGroupsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ServerDevOpsAuditSettingsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `InstancePoolsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*UsagesClientListByInstancePoolPager.PageResponse` has been removed
+- Function `*ManagedDatabaseVulnerabilityAssessmentScansClientListByDatabasePager.PageResponse` has been removed
+- Function `*JobTargetGroupsClientListByAgentPager.PageResponse` has been removed
+- Function `*SubscriptionUsagesClientListByLocationPager.PageResponse` has been removed
+- Function `*JobAgentsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*JobVersionsClientListByJobPager.PageResponse` has been removed
+- Function `*JobAgentsClientUpdatePoller.ResumeToken` has been removed
+- Function `ManagedInstanceAzureADOnlyAuthenticationsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `AutomaticTuningServerMode.ToPtr` has been removed
+- Function `JobAgentState.ToPtr` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationPager.Err` has been removed
+- Function `*DatabaseVulnerabilityAssessmentScansClientInitiateScanPoller.Poll` has been removed
+- Function `ReplicaType.ToPtr` has been removed
+- Function `*SyncMembersClientUpdatePoller.Poll` has been removed
+- Function `*DatabasesClientUpgradeDataWarehousePollerResponse.Resume` has been removed
+- Function `*ServerTrustGroupsClientListByInstancePager.NextPage` has been removed
+- Function `*DatabaseVulnerabilityAssessmentScansClientListByDatabasePager.NextPage` has been removed
+- Function `*ManagedInstancesClientListPager.PageResponse` has been removed
+- Function `*ManagedInstanceKeysClientDeletePoller.FinalResponse` has been removed
+- Function `*FailoverGroupsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*SensitivityLabelsClientListCurrentByDatabasePager.NextPage` has been removed
+- Function `*ManagedServerSecurityAlertPoliciesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*SyncGroupsClientUpdatePoller.FinalResponse` has been removed
+- Function `*SyncMembersClientDeletePollerResponse.Resume` has been removed
+- Function `*ManagedDatabasesClientDeletePoller.ResumeToken` has been removed
+- Function `*SyncAgentsClientListLinkedDatabasesPager.Err` has been removed
+- Function `*RecoverableManagedDatabasesClientListByInstancePager.NextPage` has been removed
+- Function `*ServerDevOpsAuditSettingsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `SyncMembersClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClientDeletePoller.FinalResponse` has been removed
+- Function `*EncryptionProtectorsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*EncryptionProtectorsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*WorkloadClassifiersClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ServerDevOpsAuditSettingsClientListByServerPager.NextPage` has been removed
+- Function `*SubscriptionUsagesClientListByLocationPager.Err` has been removed
+- Function `*ServerAzureADAdministratorsClientDeletePoller.Done` has been removed
+- Function `*JobAgentsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*LongTermRetentionBackupsClientCopyByResourceGroupPoller.ResumeToken` has been removed
+- Function `*InstanceFailoverGroupsClientDeletePoller.Poll` has been removed
+- Function `*InstanceFailoverGroupsClientForceFailoverAllowDataLossPoller.FinalResponse` has been removed
+- Function `*ManagedDatabasesClientUpdatePollerResponse.Resume` has been removed
+- Function `*ServerAzureADAdministratorsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*SyncGroupsClientListHubSchemasPager.Err` has been removed
+- Function `*ManagedInstancesClientListByInstancePoolPager.Err` has been removed
+- Function `*RecoverableManagedDatabasesClientListByInstancePager.PageResponse` has been removed
+- Function `*DatabasesClientPausePoller.ResumeToken` has been removed
+- Function `*JobExecutionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*DatabaseColumnsClientListByTablePager.Err` has been removed
+- Function `*SyncAgentsClientListLinkedDatabasesPager.NextPage` has been removed
+- Function `*ServerKeysClientDeletePoller.ResumeToken` has been removed
+- Function `*BackupShortTermRetentionPoliciesClientUpdatePoller.FinalResponse` has been removed
+- Function `ServerWorkspaceFeature.ToPtr` has been removed
+- Function `*SyncGroupsClientRefreshHubSchemaPoller.FinalResponse` has been removed
+- Function `*ServerDNSAliasesClientAcquirePoller.Poll` has been removed
+- Function `*SyncAgentsClientDeletePoller.FinalResponse` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `DatabasesClientUpgradeDataWarehousePollerResponse.PollUntilDone` has been removed
+- Function `*ManagedDatabaseSensitivityLabelsClientListCurrentByDatabasePager.NextPage` has been removed
+- Function `JobAgentsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*InstanceFailoverGroupsClientFailoverPollerResponse.Resume` has been removed
+- Function `OutboundFirewallRulesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ServerOperationsClientListByServerPager.PageResponse` has been removed
+- Function `*LongTermRetentionBackupsClientUpdateByResourceGroupPollerResponse.Resume` has been removed
+- Function `*ServerSecurityAlertPoliciesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ServerKeysClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ManagedInstanceTdeCertificatesClientCreatePoller.Done` has been removed
+- Function `InstanceFailoverGroupsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ServerTrustGroupsClientDeletePollerResponse.Resume` has been removed
+- Function `ManagedDatabaseVulnerabilityAssessmentScansClientInitiateScanPollerResponse.PollUntilDone` has been removed
+- Function `ReplicationLinkType.ToPtr` has been removed
+- Function `DeletedServersClientRecoverPollerResponse.PollUntilDone` has been removed
+- Function `*WorkloadClassifiersClientDeletePoller.ResumeToken` has been removed
+- Function `ServerDevOpsAuditSettingsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ManagedDatabasesClientDeletePoller.Poll` has been removed
+- Function `*BackupShortTermRetentionPoliciesClientListByDatabasePager.Err` has been removed
+- Function `*LongTermRetentionPoliciesClientListByDatabasePager.PageResponse` has been removed
+- Function `ManagedShortTermRetentionPolicyName.ToPtr` has been removed
+- Function `*SyncMembersClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ServerBlobAuditingPoliciesClientListByServerPager.NextPage` has been removed
+- Function `SyncGroupsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationLinksClientFailoverAllowDataLossPoller.FinalResponse` has been removed
+- Function `*LongTermRetentionBackupsClientDeletePoller.ResumeToken` has been removed
+- Function `ManagedServerCreateMode.ToPtr` has been removed
+- Function `*LongTermRetentionBackupsClientListByResourceGroupDatabasePager.Err` has been removed
+- Function `*DatabaseUsagesClientListByDatabasePager.NextPage` has been removed
+- Function `*SyncGroupsClientUpdatePollerResponse.Resume` has been removed
+- Function `SQLAgentConfigurationPropertiesState.ToPtr` has been removed
+- Function `GeoBackupPolicyState.ToPtr` has been removed
+- Function `DataMaskingFunction.ToPtr` has been removed
+- Function `*DeletedServersClientRecoverPoller.Done` has been removed
+- Function `*InstancePoolsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ServerConnectionPoliciesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*RestorePointsClientCreatePollerResponse.Resume` has been removed
+- Function `*ManagedInstanceEncryptionProtectorsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*OutboundFirewallRulesClientDeletePoller.Done` has been removed
+- Function `DatabasesClientPausePollerResponse.PollUntilDone` has been removed
+- Function `*JobExecutionsClientListByAgentPager.Err` has been removed
+- Function `LongTermRetentionBackupsClientCopyPollerResponse.PollUntilDone` has been removed
+- Function `UnitType.ToPtr` has been removed
+- Function `*ManagedInstanceAdministratorsClientListByInstancePager.PageResponse` has been removed
+- Function `BackupShortTermRetentionPoliciesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ServersClientImportDatabasePollerResponse.PollUntilDone` has been removed
+- Function `*SyncMembersClientRefreshMemberSchemaPollerResponse.Resume` has been removed
+- Function `ManagementOperationState.ToPtr` has been removed
+- Function `BackupShortTermRetentionPoliciesClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ServerDNSAliasesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstancePager.NextPage` has been removed
+- Function `*TransparentDataEncryptionsClientListByDatabasePager.PageResponse` has been removed
+- Function `*ServerSecurityAlertPoliciesClientListByServerPager.NextPage` has been removed
+- Function `LongTermRetentionPolicyName.ToPtr` has been removed
+- Function `*FirewallRulesClientListByServerPager.NextPage` has been removed
+- Function `*JobsClientListByAgentPager.Err` has been removed
+- Function `*JobExecutionsClientListByJobPager.Err` has been removed
+- Function `*DatabasesClientUpgradeDataWarehousePoller.Done` has been removed
+- Function `*LedgerDigestUploadsClientDisablePoller.Done` has been removed
+- Function `*ManagedDatabasesClientUpdatePoller.FinalResponse` has been removed
+- Function `*ManagedDatabaseSecurityEventsClientListByDatabasePager.Err` has been removed
+- Function `*LedgerDigestUploadsClientDisablePollerResponse.Resume` has been removed
+- Function `*SyncAgentsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*OutboundFirewallRulesClientDeletePollerResponse.Resume` has been removed
+- Function `DNSRefreshConfigurationPropertiesStatus.ToPtr` has been removed
+- Function `VirtualNetworkRulesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ServerBlobAuditingPoliciesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ManagedInstanceEncryptionProtectorsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*SyncGroupsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*SyncGroupsClientUpdatePoller.Poll` has been removed
+- Function `LongTermRetentionBackupsClientUpdateByResourceGroupPollerResponse.PollUntilDone` has been removed
+- Function `AdministratorName.ToPtr` has been removed
+- Function `*WorkloadGroupsClientListByDatabasePager.NextPage` has been removed
+- Function `*ServersClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*JobCredentialsClientListByAgentPager.Err` has been removed
+- Function `*ServerDNSAliasesClientDeletePoller.Poll` has been removed
+- Function `*DeletedServersClientListByLocationPager.Err` has been removed
+- Function `*ManagedDatabaseTransparentDataEncryptionClientListByDatabasePager.NextPage` has been removed
+- Function `ManagedInstanceLicenseType.ToPtr` has been removed
+- Function `DatabaseLicenseType.ToPtr` has been removed
+- Function `LogSizeUnit.ToPtr` has been removed
+- Function `*JobExecutionsClientCreatePoller.FinalResponse` has been removed
+- Function `*ManagedDatabasesClientListInaccessibleByInstancePager.NextPage` has been removed
+- Function `*WorkloadClassifiersClientListByWorkloadGroupPager.PageResponse` has been removed
+- Function `*SyncMembersClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*DatabaseSecurityAlertPoliciesClientListByDatabasePager.NextPage` has been removed
+- Function `ReplicationRole.ToPtr` has been removed
+- Function `*InstanceFailoverGroupsClientFailoverPoller.Done` has been removed
+- Function `*ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `SyncMembersClientRefreshMemberSchemaPollerResponse.PollUntilDone` has been removed
+- Function `*FailoverGroupsClientFailoverPoller.Poll` has been removed
+- Function `*ServersClientDeletePoller.Poll` has been removed
+- Function `*SyncMembersClientListBySyncGroupPager.NextPage` has been removed
+- Function `*ReplicationLinksClientFailoverAllowDataLossPoller.Done` has been removed
+- Function `BackupStorageRedundancy.ToPtr` has been removed
+- Function `*ManagedInstanceTdeCertificatesClientCreatePollerResponse.Resume` has been removed
+- Function `*LongTermRetentionBackupsClientUpdatePoller.FinalResponse` has been removed
+- Function `ServerKeysClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `ServerBlobAuditingPoliciesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `DatabasesClientFailoverPollerResponse.PollUntilDone` has been removed
+- Function `*WorkloadGroupsClientListByDatabasePager.PageResponse` has been removed
+- Function `*ServerDNSAliasesClientAcquirePollerResponse.Resume` has been removed
+- Function `*ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientUpdatePoller.Poll` has been removed
+- Function `*BackupShortTermRetentionPoliciesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualNetworkRulesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*InstanceFailoverGroupsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ManagedInstanceVulnerabilityAssessmentsClientListByInstancePager.Err` has been removed
+- Function `*DeletedServersClientRecoverPoller.FinalResponse` has been removed
+- Function `*ManagedInstancesClientListByResourceGroupPager.Err` has been removed
+- Function `*ManagedInstancesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*JobStepsClientListByVersionPager.Err` has been removed
+- Function `*SyncGroupsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*LongTermRetentionBackupsClientCopyPoller.FinalResponse` has been removed
+- Function `*LongTermRetentionBackupsClientUpdatePoller.Poll` has been removed
+- Function `*ManagedInstancesClientFailoverPoller.FinalResponse` has been removed
+- Function `*EncryptionProtectorsClientRevalidatePoller.ResumeToken` has been removed
+- Function `ManagedInstanceAdministratorsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabasePager.NextPage` has been removed
+- Function `*VirtualNetworkRulesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*DatabaseOperationsClientListByDatabasePager.NextPage` has been removed
+- Function `*ManagedInstancePrivateEndpointConnectionsClientDeletePoller.FinalResponse` has been removed
+- Function `ManagedInstanceLongTermRetentionPoliciesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*LongTermRetentionBackupsClientListByResourceGroupLocationPager.NextPage` has been removed
+- Function `*ManagedInstanceKeysClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*LongTermRetentionBackupsClientDeleteByResourceGroupPoller.Poll` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClientListByDatabasePager.NextPage` has been removed
+- Function `*ServerVulnerabilityAssessmentsClientListByServerPager.Err` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.FinalResponse` has been removed
+- Function `*ManagedDatabaseColumnsClientListByDatabasePager.Err` has been removed
+- Function `*ServersClientImportDatabasePoller.Poll` has been removed
+- Function `*ManagedDatabasesClientDeletePoller.FinalResponse` has been removed
+- Function `*SyncMembersClientDeletePoller.ResumeToken` has been removed
+- Function `*LongTermRetentionPoliciesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*DeletedServersClientListPager.PageResponse` has been removed
+- Function `*VirtualClustersClientDeletePollerResponse.Resume` has been removed
+- Function `*SyncGroupsClientListLogsPager.PageResponse` has been removed
+- Function `*DatabasesClientUpdatePoller.ResumeToken` has been removed
+- Function `*JobAgentsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*SyncGroupsClientListLogsPager.NextPage` has been removed
+- Function `*InstanceFailoverGroupsClientForceFailoverAllowDataLossPoller.Done` has been removed
+- Function `*ManagedDatabaseSchemasClientListByDatabasePager.Err` has been removed
+- Function `LongTermRetentionBackupsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualClustersClientDeletePoller.FinalResponse` has been removed
+- Function `*SyncMembersClientUpdatePollerResponse.Resume` has been removed
+- Function `*ServerAzureADOnlyAuthenticationsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualNetworkRulesClientDeletePoller.Done` has been removed
+- Function `ServerKeysClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `DatabaseExtensionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*LongTermRetentionBackupsClientUpdateByResourceGroupPoller.ResumeToken` has been removed
+- Function `*DatabaseExtensionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*SyncMembersClientRefreshMemberSchemaPoller.Poll` has been removed
+- Function `ManagedInstanceEncryptionProtectorsClientRevalidatePollerResponse.PollUntilDone` has been removed
+- Function `*FailoverGroupsClientUpdatePoller.Done` has been removed
+- Function `*VirtualClustersClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*ServerBlobAuditingPoliciesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `ManagedInstancePropertiesProvisioningState.ToPtr` has been removed
+- Function `*ReplicationLinksClientListByServerPager.Err` has been removed
+- Function `IdentityType.ToPtr` has been removed
+- Function `*ManagedDatabasesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ElasticPoolsClientListByServerPager.Err` has been removed
+- Function `SyncGroupsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*DatabasesClientDeletePoller.FinalResponse` has been removed
+- Function `*JobExecutionsClientListByAgentPager.NextPage` has been removed
+- Function `*ElasticPoolsClientDeletePollerResponse.Resume` has been removed
+- Function `*InstancePoolsClientListPager.PageResponse` has been removed
+- Function `*ManagedInstanceEncryptionProtectorsClientListByInstancePager.NextPage` has been removed
+- Function `*SyncGroupsClientListByDatabasePager.Err` has been removed
+- Function `ServerTrustGroupsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ElasticPoolsClientFailoverPoller.Done` has been removed
+- Function `*LongTermRetentionBackupsClientListByResourceGroupServerPager.NextPage` has been removed
+- Function `*DatabaseColumnsClientListByDatabasePager.NextPage` has been removed
+- Function `*JobExecutionsClientListByAgentPager.PageResponse` has been removed
+- Function `*OutboundFirewallRulesClientListByServerPager.PageResponse` has been removed
+- Function `*ServerAzureADOnlyAuthenticationsClientDeletePollerResponse.Resume` has been removed
+- Function `*DatabaseExtensionsClientListByDatabasePager.PageResponse` has been removed
+- Function `*DatabaseBlobAuditingPoliciesClientListByDatabasePager.PageResponse` has been removed
+- Function `DatabasesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DatabasesClientListInaccessibleByServerPager.PageResponse` has been removed
+- Function `*DatabaseVulnerabilityAssessmentScansClientInitiateScanPoller.Done` has been removed
+- Function `*JobCredentialsClientListByAgentPager.NextPage` has been removed
+- Function `*ManagedDatabasesClientCompleteRestorePoller.FinalResponse` has been removed
+- Function `*LedgerDigestUploadsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ManagedBackupShortTermRetentionPoliciesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ServerTrustGroupsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ServersClientListPager.NextPage` has been removed
+- Function `*FailoverGroupsClientListByServerPager.PageResponse` has been removed
+- Function `*ServerTrustGroupsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ServerAzureADOnlyAuthenticationsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ServerConnectionPoliciesClientCreateOrUpdatePoller.Done` has been removed
+- Function `ManagedServerSecurityAlertPoliciesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*JobStepExecutionsClientListByJobExecutionPager.PageResponse` has been removed
+- Function `*WorkloadGroupsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ServerCommunicationLinksClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabasePager.NextPage` has been removed
+- Function `*SyncMembersClientDeletePoller.FinalResponse` has been removed
+- Function `*DeletedServersClientListPager.Err` has been removed
+- Function `*ManagedDatabaseColumnsClientListByTablePager.NextPage` has been removed
+- Function `*BackupShortTermRetentionPoliciesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsClientListByServerPager.PageResponse` has been removed
+- Function `*ManagedDatabaseVulnerabilityAssessmentScansClientListByDatabasePager.Err` has been removed
+- Function `*ElasticPoolOperationsClientListByElasticPoolPager.NextPage` has been removed
+- Function `*ManagedInstancePrivateEndpointConnectionsClientDeletePoller.ResumeToken` has been removed
+- Function `*InstancePoolsClientUpdatePoller.Done` has been removed
+- Function `*ServerSecurityAlertPoliciesClientListByServerPager.PageResponse` has been removed
+- Function `*DatabasesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `LongTermRetentionManagedInstanceBackupsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ServerDNSAliasesClientAcquirePoller.ResumeToken` has been removed
+- Function `*WorkloadClassifiersClientDeletePoller.FinalResponse` has been removed
+- Function `*InstanceFailoverGroupsClientFailoverPoller.Poll` has been removed
+- Function `*RestorePointsClientCreatePoller.ResumeToken` has been removed
+- Function `*JobExecutionsClientCreatePoller.ResumeToken` has been removed
+- Function `*SensitivityLabelsClientListCurrentByDatabasePager.PageResponse` has been removed
+- Function `*InstancePoolsClientDeletePoller.FinalResponse` has been removed
+- Function `*DataWarehouseUserActivitiesClientListByDatabasePager.PageResponse` has been removed
+- Function `*FailoverGroupsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `DataWarehouseUserActivityName.ToPtr` has been removed
+- Function `CapabilityStatus.ToPtr` has been removed
+- Function `*ServerTrustGroupsClientDeletePoller.Poll` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `*OutboundFirewallRulesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*EncryptionProtectorsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ManagedBackupShortTermRetentionPoliciesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*WorkloadClassifiersClientDeletePoller.Poll` has been removed
+- Function `*DatabasesClientDeletePoller.Done` has been removed
+- Function `*ReplicationLinksClientFailoverPoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `InstanceFailoverGroupsClientFailoverPollerResponse.PollUntilDone` has been removed
+- Function `*ServerVulnerabilityAssessmentsClientListByServerPager.PageResponse` has been removed
+- Struct `AgentClientCreateOrUpdateResult` has been removed
+- Struct `AgentClientGetResult` has been removed
+- Struct `BackupShortTermRetentionPoliciesClientCreateOrUpdatePoller` has been removed
+- Struct `BackupShortTermRetentionPoliciesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `BackupShortTermRetentionPoliciesClientCreateOrUpdateResult` has been removed
+- Struct `BackupShortTermRetentionPoliciesClientGetResult` has been removed
+- Struct `BackupShortTermRetentionPoliciesClientListByDatabasePager` has been removed
+- Struct `BackupShortTermRetentionPoliciesClientListByDatabaseResult` has been removed
+- Struct `BackupShortTermRetentionPoliciesClientUpdatePoller` has been removed
+- Struct `BackupShortTermRetentionPoliciesClientUpdatePollerResponse` has been removed
+- Struct `BackupShortTermRetentionPoliciesClientUpdateResult` has been removed
+- Struct `CapabilitiesClientListByLocationResult` has been removed
+- Struct `DataMaskingPoliciesClientCreateOrUpdateResult` has been removed
+- Struct `DataMaskingPoliciesClientGetResult` has been removed
+- Struct `DataMaskingRulesClientCreateOrUpdateResult` has been removed
+- Struct `DataMaskingRulesClientListByDatabaseResult` has been removed
+- Struct `DataWarehouseUserActivitiesClientGetResult` has been removed
+- Struct `DataWarehouseUserActivitiesClientListByDatabasePager` has been removed
+- Struct `DataWarehouseUserActivitiesClientListByDatabaseResult` has been removed
+- Struct `DatabaseAdvisorsClientGetResult` has been removed
+- Struct `DatabaseAdvisorsClientListByDatabaseResult` has been removed
+- Struct `DatabaseAdvisorsClientUpdateResult` has been removed
+- Struct `DatabaseAutomaticTuningClientGetResult` has been removed
+- Struct `DatabaseAutomaticTuningClientUpdateResult` has been removed
+- Struct `DatabaseBlobAuditingPoliciesClientCreateOrUpdateResult` has been removed
+- Struct `DatabaseBlobAuditingPoliciesClientGetResult` has been removed
+- Struct `DatabaseBlobAuditingPoliciesClientListByDatabasePager` has been removed
+- Struct `DatabaseBlobAuditingPoliciesClientListByDatabaseResult` has been removed
+- Struct `DatabaseColumnsClientGetResult` has been removed
+- Struct `DatabaseColumnsClientListByDatabasePager` has been removed
+- Struct `DatabaseColumnsClientListByDatabaseResult` has been removed
+- Struct `DatabaseColumnsClientListByTablePager` has been removed
+- Struct `DatabaseColumnsClientListByTableResult` has been removed
+- Struct `DatabaseExtensionsClientCreateOrUpdatePoller` has been removed
+- Struct `DatabaseExtensionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `DatabaseExtensionsClientCreateOrUpdateResult` has been removed
+- Struct `DatabaseExtensionsClientListByDatabasePager` has been removed
+- Struct `DatabaseExtensionsClientListByDatabaseResult` has been removed
+- Struct `DatabaseOperationsClientListByDatabasePager` has been removed
+- Struct `DatabaseOperationsClientListByDatabaseResult` has been removed
+- Struct `DatabaseRecommendedActionsClientGetResult` has been removed
+- Struct `DatabaseRecommendedActionsClientListByDatabaseAdvisorResult` has been removed
+- Struct `DatabaseRecommendedActionsClientUpdateResult` has been removed
+- Struct `DatabaseSchemasClientGetResult` has been removed
+- Struct `DatabaseSchemasClientListByDatabasePager` has been removed
+- Struct `DatabaseSchemasClientListByDatabaseResult` has been removed
+- Struct `DatabaseSecurityAlertPoliciesClientCreateOrUpdateResult` has been removed
+- Struct `DatabaseSecurityAlertPoliciesClientGetResult` has been removed
+- Struct `DatabaseSecurityAlertPoliciesClientListByDatabasePager` has been removed
+- Struct `DatabaseSecurityAlertPoliciesClientListByDatabaseResult` has been removed
+- Struct `DatabaseTablesClientGetResult` has been removed
+- Struct `DatabaseTablesClientListBySchemaPager` has been removed
+- Struct `DatabaseTablesClientListBySchemaResult` has been removed
+- Struct `DatabaseUsagesClientListByDatabasePager` has been removed
+- Struct `DatabaseUsagesClientListByDatabaseResult` has been removed
+- Struct `DatabaseVulnerabilityAssessmentRuleBaselinesClientCreateOrUpdateResult` has been removed
+- Struct `DatabaseVulnerabilityAssessmentRuleBaselinesClientGetResult` has been removed
+- Struct `DatabaseVulnerabilityAssessmentScansClientExportResult` has been removed
+- Struct `DatabaseVulnerabilityAssessmentScansClientGetResult` has been removed
+- Struct `DatabaseVulnerabilityAssessmentScansClientInitiateScanPoller` has been removed
+- Struct `DatabaseVulnerabilityAssessmentScansClientInitiateScanPollerResponse` has been removed
+- Struct `DatabaseVulnerabilityAssessmentScansClientListByDatabasePager` has been removed
+- Struct `DatabaseVulnerabilityAssessmentScansClientListByDatabaseResult` has been removed
+- Struct `DatabaseVulnerabilityAssessmentsClientCreateOrUpdateResult` has been removed
+- Struct `DatabaseVulnerabilityAssessmentsClientGetResult` has been removed
+- Struct `DatabaseVulnerabilityAssessmentsClientListByDatabasePager` has been removed
+- Struct `DatabaseVulnerabilityAssessmentsClientListByDatabaseResult` has been removed
+- Struct `DatabasesClientCreateOrUpdatePoller` has been removed
+- Struct `DatabasesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `DatabasesClientCreateOrUpdateResult` has been removed
+- Struct `DatabasesClientDeletePoller` has been removed
+- Struct `DatabasesClientDeletePollerResponse` has been removed
+- Struct `DatabasesClientExportPoller` has been removed
+- Struct `DatabasesClientExportPollerResponse` has been removed
+- Struct `DatabasesClientExportResult` has been removed
+- Struct `DatabasesClientFailoverPoller` has been removed
+- Struct `DatabasesClientFailoverPollerResponse` has been removed
+- Struct `DatabasesClientGetResult` has been removed
+- Struct `DatabasesClientImportPoller` has been removed
+- Struct `DatabasesClientImportPollerResponse` has been removed
+- Struct `DatabasesClientImportResult` has been removed
+- Struct `DatabasesClientListByElasticPoolPager` has been removed
+- Struct `DatabasesClientListByElasticPoolResult` has been removed
+- Struct `DatabasesClientListByServerPager` has been removed
+- Struct `DatabasesClientListByServerResult` has been removed
+- Struct `DatabasesClientListInaccessibleByServerPager` has been removed
+- Struct `DatabasesClientListInaccessibleByServerResult` has been removed
+- Struct `DatabasesClientListMetricDefinitionsResult` has been removed
+- Struct `DatabasesClientListMetricsResult` has been removed
+- Struct `DatabasesClientPausePoller` has been removed
+- Struct `DatabasesClientPausePollerResponse` has been removed
+- Struct `DatabasesClientPauseResult` has been removed
+- Struct `DatabasesClientResumePoller` has been removed
+- Struct `DatabasesClientResumePollerResponse` has been removed
+- Struct `DatabasesClientResumeResult` has been removed
+- Struct `DatabasesClientUpdatePoller` has been removed
+- Struct `DatabasesClientUpdatePollerResponse` has been removed
+- Struct `DatabasesClientUpdateResult` has been removed
+- Struct `DatabasesClientUpgradeDataWarehousePoller` has been removed
+- Struct `DatabasesClientUpgradeDataWarehousePollerResponse` has been removed
+- Struct `Delegation` has been removed
+- Struct `DeletedServersClientGetResult` has been removed
+- Struct `DeletedServersClientListByLocationPager` has been removed
+- Struct `DeletedServersClientListByLocationResult` has been removed
+- Struct `DeletedServersClientListPager` has been removed
+- Struct `DeletedServersClientListResult` has been removed
+- Struct `DeletedServersClientRecoverPoller` has been removed
+- Struct `DeletedServersClientRecoverPollerResponse` has been removed
+- Struct `DeletedServersClientRecoverResult` has been removed
+- Struct `ElasticPoolActivitiesClientListByElasticPoolResult` has been removed
+- Struct `ElasticPoolDatabaseActivitiesClientListByElasticPoolResult` has been removed
+- Struct `ElasticPoolOperationsClientListByElasticPoolPager` has been removed
+- Struct `ElasticPoolOperationsClientListByElasticPoolResult` has been removed
+- Struct `ElasticPoolsClientCreateOrUpdatePoller` has been removed
+- Struct `ElasticPoolsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ElasticPoolsClientCreateOrUpdateResult` has been removed
+- Struct `ElasticPoolsClientDeletePoller` has been removed
+- Struct `ElasticPoolsClientDeletePollerResponse` has been removed
+- Struct `ElasticPoolsClientFailoverPoller` has been removed
+- Struct `ElasticPoolsClientFailoverPollerResponse` has been removed
+- Struct `ElasticPoolsClientGetResult` has been removed
+- Struct `ElasticPoolsClientListByServerPager` has been removed
+- Struct `ElasticPoolsClientListByServerResult` has been removed
+- Struct `ElasticPoolsClientListMetricDefinitionsResult` has been removed
+- Struct `ElasticPoolsClientListMetricsResult` has been removed
+- Struct `ElasticPoolsClientUpdatePoller` has been removed
+- Struct `ElasticPoolsClientUpdatePollerResponse` has been removed
+- Struct `ElasticPoolsClientUpdateResult` has been removed
+- Struct `EncryptionProtectorsClientCreateOrUpdatePoller` has been removed
+- Struct `EncryptionProtectorsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `EncryptionProtectorsClientCreateOrUpdateResult` has been removed
+- Struct `EncryptionProtectorsClientGetResult` has been removed
+- Struct `EncryptionProtectorsClientListByServerPager` has been removed
+- Struct `EncryptionProtectorsClientListByServerResult` has been removed
+- Struct `EncryptionProtectorsClientRevalidatePoller` has been removed
+- Struct `EncryptionProtectorsClientRevalidatePollerResponse` has been removed
+- Struct `ExtendedDatabaseBlobAuditingPoliciesClientCreateOrUpdateResult` has been removed
+- Struct `ExtendedDatabaseBlobAuditingPoliciesClientGetResult` has been removed
+- Struct `ExtendedDatabaseBlobAuditingPoliciesClientListByDatabasePager` has been removed
+- Struct `ExtendedDatabaseBlobAuditingPoliciesClientListByDatabaseResult` has been removed
+- Struct `ExtendedServerBlobAuditingPoliciesClientCreateOrUpdatePoller` has been removed
+- Struct `ExtendedServerBlobAuditingPoliciesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ExtendedServerBlobAuditingPoliciesClientCreateOrUpdateResult` has been removed
+- Struct `ExtendedServerBlobAuditingPoliciesClientGetResult` has been removed
+- Struct `ExtendedServerBlobAuditingPoliciesClientListByServerPager` has been removed
+- Struct `ExtendedServerBlobAuditingPoliciesClientListByServerResult` has been removed
+- Struct `FailoverGroupsClientCreateOrUpdatePoller` has been removed
+- Struct `FailoverGroupsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `FailoverGroupsClientCreateOrUpdateResult` has been removed
+- Struct `FailoverGroupsClientDeletePoller` has been removed
+- Struct `FailoverGroupsClientDeletePollerResponse` has been removed
+- Struct `FailoverGroupsClientFailoverPoller` has been removed
+- Struct `FailoverGroupsClientFailoverPollerResponse` has been removed
+- Struct `FailoverGroupsClientFailoverResult` has been removed
+- Struct `FailoverGroupsClientForceFailoverAllowDataLossPoller` has been removed
+- Struct `FailoverGroupsClientForceFailoverAllowDataLossPollerResponse` has been removed
+- Struct `FailoverGroupsClientForceFailoverAllowDataLossResult` has been removed
+- Struct `FailoverGroupsClientGetResult` has been removed
+- Struct `FailoverGroupsClientListByServerPager` has been removed
+- Struct `FailoverGroupsClientListByServerResult` has been removed
+- Struct `FailoverGroupsClientUpdatePoller` has been removed
+- Struct `FailoverGroupsClientUpdatePollerResponse` has been removed
+- Struct `FailoverGroupsClientUpdateResult` has been removed
+- Struct `FirewallRulesClientCreateOrUpdateResult` has been removed
+- Struct `FirewallRulesClientGetResult` has been removed
+- Struct `FirewallRulesClientListByServerPager` has been removed
+- Struct `FirewallRulesClientListByServerResult` has been removed
+- Struct `FirewallRulesClientReplaceResult` has been removed
+- Struct `GeoBackupPoliciesClientCreateOrUpdateResult` has been removed
+- Struct `GeoBackupPoliciesClientGetResult` has been removed
+- Struct `GeoBackupPoliciesClientListByDatabaseResult` has been removed
+- Struct `InstanceFailoverGroupsClientCreateOrUpdatePoller` has been removed
+- Struct `InstanceFailoverGroupsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `InstanceFailoverGroupsClientCreateOrUpdateResult` has been removed
+- Struct `InstanceFailoverGroupsClientDeletePoller` has been removed
+- Struct `InstanceFailoverGroupsClientDeletePollerResponse` has been removed
+- Struct `InstanceFailoverGroupsClientFailoverPoller` has been removed
+- Struct `InstanceFailoverGroupsClientFailoverPollerResponse` has been removed
+- Struct `InstanceFailoverGroupsClientFailoverResult` has been removed
+- Struct `InstanceFailoverGroupsClientForceFailoverAllowDataLossPoller` has been removed
+- Struct `InstanceFailoverGroupsClientForceFailoverAllowDataLossPollerResponse` has been removed
+- Struct `InstanceFailoverGroupsClientForceFailoverAllowDataLossResult` has been removed
+- Struct `InstanceFailoverGroupsClientGetResult` has been removed
+- Struct `InstanceFailoverGroupsClientListByLocationPager` has been removed
+- Struct `InstanceFailoverGroupsClientListByLocationResult` has been removed
+- Struct `InstancePoolsClientCreateOrUpdatePoller` has been removed
+- Struct `InstancePoolsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `InstancePoolsClientCreateOrUpdateResult` has been removed
+- Struct `InstancePoolsClientDeletePoller` has been removed
+- Struct `InstancePoolsClientDeletePollerResponse` has been removed
+- Struct `InstancePoolsClientGetResult` has been removed
+- Struct `InstancePoolsClientListByResourceGroupPager` has been removed
+- Struct `InstancePoolsClientListByResourceGroupResult` has been removed
+- Struct `InstancePoolsClientListPager` has been removed
+- Struct `InstancePoolsClientListResult` has been removed
+- Struct `InstancePoolsClientUpdatePoller` has been removed
+- Struct `InstancePoolsClientUpdatePollerResponse` has been removed
+- Struct `InstancePoolsClientUpdateResult` has been removed
+- Struct `JobAgentsClientCreateOrUpdatePoller` has been removed
+- Struct `JobAgentsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `JobAgentsClientCreateOrUpdateResult` has been removed
+- Struct `JobAgentsClientDeletePoller` has been removed
+- Struct `JobAgentsClientDeletePollerResponse` has been removed
+- Struct `JobAgentsClientGetResult` has been removed
+- Struct `JobAgentsClientListByServerPager` has been removed
+- Struct `JobAgentsClientListByServerResult` has been removed
+- Struct `JobAgentsClientUpdatePoller` has been removed
+- Struct `JobAgentsClientUpdatePollerResponse` has been removed
+- Struct `JobAgentsClientUpdateResult` has been removed
+- Struct `JobCredentialsClientCreateOrUpdateResult` has been removed
+- Struct `JobCredentialsClientGetResult` has been removed
+- Struct `JobCredentialsClientListByAgentPager` has been removed
+- Struct `JobCredentialsClientListByAgentResult` has been removed
+- Struct `JobExecutionsClientCreateOrUpdatePoller` has been removed
+- Struct `JobExecutionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `JobExecutionsClientCreateOrUpdateResult` has been removed
+- Struct `JobExecutionsClientCreatePoller` has been removed
+- Struct `JobExecutionsClientCreatePollerResponse` has been removed
+- Struct `JobExecutionsClientCreateResult` has been removed
+- Struct `JobExecutionsClientGetResult` has been removed
+- Struct `JobExecutionsClientListByAgentPager` has been removed
+- Struct `JobExecutionsClientListByAgentResult` has been removed
+- Struct `JobExecutionsClientListByJobPager` has been removed
+- Struct `JobExecutionsClientListByJobResult` has been removed
+- Struct `JobStepExecutionsClientGetResult` has been removed
+- Struct `JobStepExecutionsClientListByJobExecutionPager` has been removed
+- Struct `JobStepExecutionsClientListByJobExecutionResult` has been removed
+- Struct `JobStepsClientCreateOrUpdateResult` has been removed
+- Struct `JobStepsClientGetByVersionResult` has been removed
+- Struct `JobStepsClientGetResult` has been removed
+- Struct `JobStepsClientListByJobPager` has been removed
+- Struct `JobStepsClientListByJobResult` has been removed
+- Struct `JobStepsClientListByVersionPager` has been removed
+- Struct `JobStepsClientListByVersionResult` has been removed
+- Struct `JobTargetExecutionsClientGetResult` has been removed
+- Struct `JobTargetExecutionsClientListByJobExecutionPager` has been removed
+- Struct `JobTargetExecutionsClientListByJobExecutionResult` has been removed
+- Struct `JobTargetExecutionsClientListByStepPager` has been removed
+- Struct `JobTargetExecutionsClientListByStepResult` has been removed
+- Struct `JobTargetGroupsClientCreateOrUpdateResult` has been removed
+- Struct `JobTargetGroupsClientGetResult` has been removed
+- Struct `JobTargetGroupsClientListByAgentPager` has been removed
+- Struct `JobTargetGroupsClientListByAgentResult` has been removed
+- Struct `JobVersionsClientGetResult` has been removed
+- Struct `JobVersionsClientListByJobPager` has been removed
+- Struct `JobVersionsClientListByJobResult` has been removed
+- Struct `JobsClientCreateOrUpdateResult` has been removed
+- Struct `JobsClientGetResult` has been removed
+- Struct `JobsClientListByAgentPager` has been removed
+- Struct `JobsClientListByAgentResult` has been removed
+- Struct `LedgerDigestUploadsClientCreateOrUpdatePoller` has been removed
+- Struct `LedgerDigestUploadsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `LedgerDigestUploadsClientCreateOrUpdateResult` has been removed
+- Struct `LedgerDigestUploadsClientDisablePoller` has been removed
+- Struct `LedgerDigestUploadsClientDisablePollerResponse` has been removed
+- Struct `LedgerDigestUploadsClientDisableResult` has been removed
+- Struct `LedgerDigestUploadsClientGetResult` has been removed
+- Struct `LedgerDigestUploadsClientListByDatabasePager` has been removed
+- Struct `LedgerDigestUploadsClientListByDatabaseResult` has been removed
+- Struct `LongTermRetentionBackupsClientCopyByResourceGroupPoller` has been removed
+- Struct `LongTermRetentionBackupsClientCopyByResourceGroupPollerResponse` has been removed
+- Struct `LongTermRetentionBackupsClientCopyByResourceGroupResult` has been removed
+- Struct `LongTermRetentionBackupsClientCopyPoller` has been removed
+- Struct `LongTermRetentionBackupsClientCopyPollerResponse` has been removed
+- Struct `LongTermRetentionBackupsClientCopyResult` has been removed
+- Struct `LongTermRetentionBackupsClientDeleteByResourceGroupPoller` has been removed
+- Struct `LongTermRetentionBackupsClientDeleteByResourceGroupPollerResponse` has been removed
+- Struct `LongTermRetentionBackupsClientDeletePoller` has been removed
+- Struct `LongTermRetentionBackupsClientDeletePollerResponse` has been removed
+- Struct `LongTermRetentionBackupsClientGetByResourceGroupResult` has been removed
+- Struct `LongTermRetentionBackupsClientGetResult` has been removed
+- Struct `LongTermRetentionBackupsClientListByDatabasePager` has been removed
+- Struct `LongTermRetentionBackupsClientListByDatabaseResult` has been removed
+- Struct `LongTermRetentionBackupsClientListByLocationPager` has been removed
+- Struct `LongTermRetentionBackupsClientListByLocationResult` has been removed
+- Struct `LongTermRetentionBackupsClientListByResourceGroupDatabasePager` has been removed
+- Struct `LongTermRetentionBackupsClientListByResourceGroupDatabaseResult` has been removed
+- Struct `LongTermRetentionBackupsClientListByResourceGroupLocationPager` has been removed
+- Struct `LongTermRetentionBackupsClientListByResourceGroupLocationResult` has been removed
+- Struct `LongTermRetentionBackupsClientListByResourceGroupServerPager` has been removed
+- Struct `LongTermRetentionBackupsClientListByResourceGroupServerResult` has been removed
+- Struct `LongTermRetentionBackupsClientListByServerPager` has been removed
+- Struct `LongTermRetentionBackupsClientListByServerResult` has been removed
+- Struct `LongTermRetentionBackupsClientUpdateByResourceGroupPoller` has been removed
+- Struct `LongTermRetentionBackupsClientUpdateByResourceGroupPollerResponse` has been removed
+- Struct `LongTermRetentionBackupsClientUpdateByResourceGroupResult` has been removed
+- Struct `LongTermRetentionBackupsClientUpdatePoller` has been removed
+- Struct `LongTermRetentionBackupsClientUpdatePollerResponse` has been removed
+- Struct `LongTermRetentionBackupsClientUpdateResult` has been removed
+- Struct `LongTermRetentionManagedInstanceBackupsClientDeleteByResourceGroupPoller` has been removed
+- Struct `LongTermRetentionManagedInstanceBackupsClientDeleteByResourceGroupPollerResponse` has been removed
+- Struct `LongTermRetentionManagedInstanceBackupsClientDeletePoller` has been removed
+- Struct `LongTermRetentionManagedInstanceBackupsClientDeletePollerResponse` has been removed
+- Struct `LongTermRetentionManagedInstanceBackupsClientGetByResourceGroupResult` has been removed
+- Struct `LongTermRetentionManagedInstanceBackupsClientGetResult` has been removed
+- Struct `LongTermRetentionManagedInstanceBackupsClientListByDatabasePager` has been removed
+- Struct `LongTermRetentionManagedInstanceBackupsClientListByDatabaseResult` has been removed
+- Struct `LongTermRetentionManagedInstanceBackupsClientListByInstancePager` has been removed
+- Struct `LongTermRetentionManagedInstanceBackupsClientListByInstanceResult` has been removed
+- Struct `LongTermRetentionManagedInstanceBackupsClientListByLocationPager` has been removed
+- Struct `LongTermRetentionManagedInstanceBackupsClientListByLocationResult` has been removed
+- Struct `LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabasePager` has been removed
+- Struct `LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResult` has been removed
+- Struct `LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstancePager` has been removed
+- Struct `LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResult` has been removed
+- Struct `LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationPager` has been removed
+- Struct `LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResult` has been removed
+- Struct `LongTermRetentionPoliciesClientCreateOrUpdatePoller` has been removed
+- Struct `LongTermRetentionPoliciesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `LongTermRetentionPoliciesClientCreateOrUpdateResult` has been removed
+- Struct `LongTermRetentionPoliciesClientGetResult` has been removed
+- Struct `LongTermRetentionPoliciesClientListByDatabasePager` has been removed
+- Struct `LongTermRetentionPoliciesClientListByDatabaseResult` has been removed
+- Struct `MaintenanceWindowOptionsClientGetResult` has been removed
+- Struct `MaintenanceWindowsClientGetResult` has been removed
+- Struct `ManagedBackupShortTermRetentionPoliciesClientCreateOrUpdatePoller` has been removed
+- Struct `ManagedBackupShortTermRetentionPoliciesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ManagedBackupShortTermRetentionPoliciesClientCreateOrUpdateResult` has been removed
+- Struct `ManagedBackupShortTermRetentionPoliciesClientGetResult` has been removed
+- Struct `ManagedBackupShortTermRetentionPoliciesClientListByDatabasePager` has been removed
+- Struct `ManagedBackupShortTermRetentionPoliciesClientListByDatabaseResult` has been removed
+- Struct `ManagedBackupShortTermRetentionPoliciesClientUpdatePoller` has been removed
+- Struct `ManagedBackupShortTermRetentionPoliciesClientUpdatePollerResponse` has been removed
+- Struct `ManagedBackupShortTermRetentionPoliciesClientUpdateResult` has been removed
+- Struct `ManagedDatabaseColumnsClientGetResult` has been removed
+- Struct `ManagedDatabaseColumnsClientListByDatabasePager` has been removed
+- Struct `ManagedDatabaseColumnsClientListByDatabaseResult` has been removed
+- Struct `ManagedDatabaseColumnsClientListByTablePager` has been removed
+- Struct `ManagedDatabaseColumnsClientListByTableResult` has been removed
+- Struct `ManagedDatabaseQueriesClientGetResult` has been removed
+- Struct `ManagedDatabaseQueriesClientListByQueryPager` has been removed
+- Struct `ManagedDatabaseQueriesClientListByQueryResult` has been removed
+- Struct `ManagedDatabaseRestoreDetailsClientGetResult` has been removed
+- Struct `ManagedDatabaseSchemasClientGetResult` has been removed
+- Struct `ManagedDatabaseSchemasClientListByDatabasePager` has been removed
+- Struct `ManagedDatabaseSchemasClientListByDatabaseResult` has been removed
+- Struct `ManagedDatabaseSecurityAlertPoliciesClientCreateOrUpdateResult` has been removed
+- Struct `ManagedDatabaseSecurityAlertPoliciesClientGetResult` has been removed
+- Struct `ManagedDatabaseSecurityAlertPoliciesClientListByDatabasePager` has been removed
+- Struct `ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResult` has been removed
+- Struct `ManagedDatabaseSecurityEventsClientListByDatabasePager` has been removed
+- Struct `ManagedDatabaseSecurityEventsClientListByDatabaseResult` has been removed
+- Struct `ManagedDatabaseSensitivityLabelsClientCreateOrUpdateResult` has been removed
+- Struct `ManagedDatabaseSensitivityLabelsClientGetResult` has been removed
+- Struct `ManagedDatabaseSensitivityLabelsClientListCurrentByDatabasePager` has been removed
+- Struct `ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseResult` has been removed
+- Struct `ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabasePager` has been removed
+- Struct `ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseResult` has been removed
+- Struct `ManagedDatabaseTablesClientGetResult` has been removed
+- Struct `ManagedDatabaseTablesClientListBySchemaPager` has been removed
+- Struct `ManagedDatabaseTablesClientListBySchemaResult` has been removed
+- Struct `ManagedDatabaseTransparentDataEncryptionClientCreateOrUpdateResult` has been removed
+- Struct `ManagedDatabaseTransparentDataEncryptionClientGetResult` has been removed
+- Struct `ManagedDatabaseTransparentDataEncryptionClientListByDatabasePager` has been removed
+- Struct `ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResult` has been removed
+- Struct `ManagedDatabaseVulnerabilityAssessmentRuleBaselinesClientCreateOrUpdateResult` has been removed
+- Struct `ManagedDatabaseVulnerabilityAssessmentRuleBaselinesClientGetResult` has been removed
+- Struct `ManagedDatabaseVulnerabilityAssessmentScansClientExportResult` has been removed
+- Struct `ManagedDatabaseVulnerabilityAssessmentScansClientGetResult` has been removed
+- Struct `ManagedDatabaseVulnerabilityAssessmentScansClientInitiateScanPoller` has been removed
+- Struct `ManagedDatabaseVulnerabilityAssessmentScansClientInitiateScanPollerResponse` has been removed
+- Struct `ManagedDatabaseVulnerabilityAssessmentScansClientListByDatabasePager` has been removed
+- Struct `ManagedDatabaseVulnerabilityAssessmentScansClientListByDatabaseResult` has been removed
+- Struct `ManagedDatabaseVulnerabilityAssessmentsClientCreateOrUpdateResult` has been removed
+- Struct `ManagedDatabaseVulnerabilityAssessmentsClientGetResult` has been removed
+- Struct `ManagedDatabaseVulnerabilityAssessmentsClientListByDatabasePager` has been removed
+- Struct `ManagedDatabaseVulnerabilityAssessmentsClientListByDatabaseResult` has been removed
+- Struct `ManagedDatabasesClientCompleteRestorePoller` has been removed
+- Struct `ManagedDatabasesClientCompleteRestorePollerResponse` has been removed
+- Struct `ManagedDatabasesClientCreateOrUpdatePoller` has been removed
+- Struct `ManagedDatabasesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ManagedDatabasesClientCreateOrUpdateResult` has been removed
+- Struct `ManagedDatabasesClientDeletePoller` has been removed
+- Struct `ManagedDatabasesClientDeletePollerResponse` has been removed
+- Struct `ManagedDatabasesClientGetResult` has been removed
+- Struct `ManagedDatabasesClientListByInstancePager` has been removed
+- Struct `ManagedDatabasesClientListByInstanceResult` has been removed
+- Struct `ManagedDatabasesClientListInaccessibleByInstancePager` has been removed
+- Struct `ManagedDatabasesClientListInaccessibleByInstanceResult` has been removed
+- Struct `ManagedDatabasesClientUpdatePoller` has been removed
+- Struct `ManagedDatabasesClientUpdatePollerResponse` has been removed
+- Struct `ManagedDatabasesClientUpdateResult` has been removed
+- Struct `ManagedInstanceAdministratorsClientCreateOrUpdatePoller` has been removed
+- Struct `ManagedInstanceAdministratorsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ManagedInstanceAdministratorsClientCreateOrUpdateResult` has been removed
+- Struct `ManagedInstanceAdministratorsClientDeletePoller` has been removed
+- Struct `ManagedInstanceAdministratorsClientDeletePollerResponse` has been removed
+- Struct `ManagedInstanceAdministratorsClientGetResult` has been removed
+- Struct `ManagedInstanceAdministratorsClientListByInstancePager` has been removed
+- Struct `ManagedInstanceAdministratorsClientListByInstanceResult` has been removed
+- Struct `ManagedInstanceAzureADOnlyAuthenticationsClientCreateOrUpdatePoller` has been removed
+- Struct `ManagedInstanceAzureADOnlyAuthenticationsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ManagedInstanceAzureADOnlyAuthenticationsClientCreateOrUpdateResult` has been removed
+- Struct `ManagedInstanceAzureADOnlyAuthenticationsClientDeletePoller` has been removed
+- Struct `ManagedInstanceAzureADOnlyAuthenticationsClientDeletePollerResponse` has been removed
+- Struct `ManagedInstanceAzureADOnlyAuthenticationsClientGetResult` has been removed
+- Struct `ManagedInstanceAzureADOnlyAuthenticationsClientListByInstancePager` has been removed
+- Struct `ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceResult` has been removed
+- Struct `ManagedInstanceEncryptionProtectorsClientCreateOrUpdatePoller` has been removed
+- Struct `ManagedInstanceEncryptionProtectorsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ManagedInstanceEncryptionProtectorsClientCreateOrUpdateResult` has been removed
+- Struct `ManagedInstanceEncryptionProtectorsClientGetResult` has been removed
+- Struct `ManagedInstanceEncryptionProtectorsClientListByInstancePager` has been removed
+- Struct `ManagedInstanceEncryptionProtectorsClientListByInstanceResult` has been removed
+- Struct `ManagedInstanceEncryptionProtectorsClientRevalidatePoller` has been removed
+- Struct `ManagedInstanceEncryptionProtectorsClientRevalidatePollerResponse` has been removed
+- Struct `ManagedInstanceKeysClientCreateOrUpdatePoller` has been removed
+- Struct `ManagedInstanceKeysClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ManagedInstanceKeysClientCreateOrUpdateResult` has been removed
+- Struct `ManagedInstanceKeysClientDeletePoller` has been removed
+- Struct `ManagedInstanceKeysClientDeletePollerResponse` has been removed
+- Struct `ManagedInstanceKeysClientGetResult` has been removed
+- Struct `ManagedInstanceKeysClientListByInstancePager` has been removed
+- Struct `ManagedInstanceKeysClientListByInstanceResult` has been removed
+- Struct `ManagedInstanceLongTermRetentionPoliciesClientCreateOrUpdatePoller` has been removed
+- Struct `ManagedInstanceLongTermRetentionPoliciesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ManagedInstanceLongTermRetentionPoliciesClientCreateOrUpdateResult` has been removed
+- Struct `ManagedInstanceLongTermRetentionPoliciesClientGetResult` has been removed
+- Struct `ManagedInstanceLongTermRetentionPoliciesClientListByDatabasePager` has been removed
+- Struct `ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseResult` has been removed
+- Struct `ManagedInstanceOperationsClientGetResult` has been removed
+- Struct `ManagedInstanceOperationsClientListByManagedInstancePager` has been removed
+- Struct `ManagedInstanceOperationsClientListByManagedInstanceResult` has been removed
+- Struct `ManagedInstancePrivateEndpointConnectionsClientCreateOrUpdatePoller` has been removed
+- Struct `ManagedInstancePrivateEndpointConnectionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ManagedInstancePrivateEndpointConnectionsClientCreateOrUpdateResult` has been removed
+- Struct `ManagedInstancePrivateEndpointConnectionsClientDeletePoller` has been removed
+- Struct `ManagedInstancePrivateEndpointConnectionsClientDeletePollerResponse` has been removed
+- Struct `ManagedInstancePrivateEndpointConnectionsClientGetResult` has been removed
+- Struct `ManagedInstancePrivateEndpointConnectionsClientListByManagedInstancePager` has been removed
+- Struct `ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceResult` has been removed
+- Struct `ManagedInstancePrivateLinkResourcesClientGetResult` has been removed
+- Struct `ManagedInstancePrivateLinkResourcesClientListByManagedInstancePager` has been removed
+- Struct `ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResult` has been removed
+- Struct `ManagedInstanceTdeCertificatesClientCreatePoller` has been removed
+- Struct `ManagedInstanceTdeCertificatesClientCreatePollerResponse` has been removed
+- Struct `ManagedInstanceVulnerabilityAssessmentsClientCreateOrUpdateResult` has been removed
+- Struct `ManagedInstanceVulnerabilityAssessmentsClientGetResult` has been removed
+- Struct `ManagedInstanceVulnerabilityAssessmentsClientListByInstancePager` has been removed
+- Struct `ManagedInstanceVulnerabilityAssessmentsClientListByInstanceResult` has been removed
+- Struct `ManagedInstancesClientCreateOrUpdatePoller` has been removed
+- Struct `ManagedInstancesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ManagedInstancesClientCreateOrUpdateResult` has been removed
+- Struct `ManagedInstancesClientDeletePoller` has been removed
+- Struct `ManagedInstancesClientDeletePollerResponse` has been removed
+- Struct `ManagedInstancesClientFailoverPoller` has been removed
+- Struct `ManagedInstancesClientFailoverPollerResponse` has been removed
+- Struct `ManagedInstancesClientGetResult` has been removed
+- Struct `ManagedInstancesClientListByInstancePoolPager` has been removed
+- Struct `ManagedInstancesClientListByInstancePoolResult` has been removed
+- Struct `ManagedInstancesClientListByManagedInstancePager` has been removed
+- Struct `ManagedInstancesClientListByManagedInstanceResult` has been removed
+- Struct `ManagedInstancesClientListByResourceGroupPager` has been removed
+- Struct `ManagedInstancesClientListByResourceGroupResult` has been removed
+- Struct `ManagedInstancesClientListPager` has been removed
+- Struct `ManagedInstancesClientListResult` has been removed
+- Struct `ManagedInstancesClientUpdatePoller` has been removed
+- Struct `ManagedInstancesClientUpdatePollerResponse` has been removed
+- Struct `ManagedInstancesClientUpdateResult` has been removed
+- Struct `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientCreateOrUpdatePoller` has been removed
+- Struct `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientCreateOrUpdateResult` has been removed
+- Struct `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientGetResult` has been removed
+- Struct `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientListByRestorableDroppedDatabasePager` has been removed
+- Struct `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientListByRestorableDroppedDatabaseResult` has been removed
+- Struct `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientUpdatePoller` has been removed
+- Struct `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientUpdatePollerResponse` has been removed
+- Struct `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientUpdateResult` has been removed
+- Struct `ManagedServerSecurityAlertPoliciesClientCreateOrUpdatePoller` has been removed
+- Struct `ManagedServerSecurityAlertPoliciesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ManagedServerSecurityAlertPoliciesClientCreateOrUpdateResult` has been removed
+- Struct `ManagedServerSecurityAlertPoliciesClientGetResult` has been removed
+- Struct `ManagedServerSecurityAlertPoliciesClientListByInstancePager` has been removed
+- Struct `ManagedServerSecurityAlertPoliciesClientListByInstanceResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `OutboundFirewallRulesClientCreateOrUpdatePoller` has been removed
+- Struct `OutboundFirewallRulesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `OutboundFirewallRulesClientCreateOrUpdateResult` has been removed
+- Struct `OutboundFirewallRulesClientDeletePoller` has been removed
+- Struct `OutboundFirewallRulesClientDeletePollerResponse` has been removed
+- Struct `OutboundFirewallRulesClientGetResult` has been removed
+- Struct `OutboundFirewallRulesClientListByServerPager` has been removed
+- Struct `OutboundFirewallRulesClientListByServerResult` has been removed
+- Struct `PrivateEndpointConnectionsClientCreateOrUpdatePoller` has been removed
+- Struct `PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionsClientDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsClientDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientGetResult` has been removed
+- Struct `PrivateEndpointConnectionsClientListByServerPager` has been removed
+- Struct `PrivateEndpointConnectionsClientListByServerResult` has been removed
+- Struct `PrivateLinkResourcesClientGetResult` has been removed
+- Struct `PrivateLinkResourcesClientListByServerPager` has been removed
+- Struct `PrivateLinkResourcesClientListByServerResult` has been removed
+- Struct `RecoverableDatabasesClientGetResult` has been removed
+- Struct `RecoverableDatabasesClientListByServerResult` has been removed
+- Struct `RecoverableManagedDatabasesClientGetResult` has been removed
+- Struct `RecoverableManagedDatabasesClientListByInstancePager` has been removed
+- Struct `RecoverableManagedDatabasesClientListByInstanceResult` has been removed
+- Struct `ReplicationLinksClientBeginUnlinkOptions` has been removed
+- Struct `ReplicationLinksClientFailoverAllowDataLossPoller` has been removed
+- Struct `ReplicationLinksClientFailoverAllowDataLossPollerResponse` has been removed
+- Struct `ReplicationLinksClientFailoverPoller` has been removed
+- Struct `ReplicationLinksClientFailoverPollerResponse` has been removed
+- Struct `ReplicationLinksClientGetResult` has been removed
+- Struct `ReplicationLinksClientListByDatabasePager` has been removed
+- Struct `ReplicationLinksClientListByDatabaseResult` has been removed
+- Struct `ReplicationLinksClientListByServerPager` has been removed
+- Struct `ReplicationLinksClientListByServerResult` has been removed
+- Struct `ReplicationLinksClientUnlinkPoller` has been removed
+- Struct `ReplicationLinksClientUnlinkPollerResponse` has been removed
+- Struct `ReplicationLinksClientUnlinkResponse` has been removed
+- Struct `RestorableDroppedDatabasesClientGetResult` has been removed
+- Struct `RestorableDroppedDatabasesClientListByServerPager` has been removed
+- Struct `RestorableDroppedDatabasesClientListByServerResult` has been removed
+- Struct `RestorableDroppedManagedDatabasesClientGetResult` has been removed
+- Struct `RestorableDroppedManagedDatabasesClientListByInstancePager` has been removed
+- Struct `RestorableDroppedManagedDatabasesClientListByInstanceResult` has been removed
+- Struct `RestorePointsClientCreatePoller` has been removed
+- Struct `RestorePointsClientCreatePollerResponse` has been removed
+- Struct `RestorePointsClientCreateResult` has been removed
+- Struct `RestorePointsClientGetResult` has been removed
+- Struct `RestorePointsClientListByDatabasePager` has been removed
+- Struct `RestorePointsClientListByDatabaseResult` has been removed
+- Struct `SensitivityLabelsClientCreateOrUpdateResult` has been removed
+- Struct `SensitivityLabelsClientGetResult` has been removed
+- Struct `SensitivityLabelsClientListCurrentByDatabasePager` has been removed
+- Struct `SensitivityLabelsClientListCurrentByDatabaseResult` has been removed
+- Struct `SensitivityLabelsClientListRecommendedByDatabasePager` has been removed
+- Struct `SensitivityLabelsClientListRecommendedByDatabaseResult` has been removed
+- Struct `ServerAdvisorsClientGetResult` has been removed
+- Struct `ServerAdvisorsClientListByServerResult` has been removed
+- Struct `ServerAdvisorsClientUpdateResult` has been removed
+- Struct `ServerAutomaticTuningClientGetResult` has been removed
+- Struct `ServerAutomaticTuningClientUpdateResult` has been removed
+- Struct `ServerAzureADAdministratorsClientCreateOrUpdatePoller` has been removed
+- Struct `ServerAzureADAdministratorsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ServerAzureADAdministratorsClientCreateOrUpdateResult` has been removed
+- Struct `ServerAzureADAdministratorsClientDeletePoller` has been removed
+- Struct `ServerAzureADAdministratorsClientDeletePollerResponse` has been removed
+- Struct `ServerAzureADAdministratorsClientGetResult` has been removed
+- Struct `ServerAzureADAdministratorsClientListByServerPager` has been removed
+- Struct `ServerAzureADAdministratorsClientListByServerResult` has been removed
+- Struct `ServerAzureADOnlyAuthenticationsClientCreateOrUpdatePoller` has been removed
+- Struct `ServerAzureADOnlyAuthenticationsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ServerAzureADOnlyAuthenticationsClientCreateOrUpdateResult` has been removed
+- Struct `ServerAzureADOnlyAuthenticationsClientDeletePoller` has been removed
+- Struct `ServerAzureADOnlyAuthenticationsClientDeletePollerResponse` has been removed
+- Struct `ServerAzureADOnlyAuthenticationsClientGetResult` has been removed
+- Struct `ServerAzureADOnlyAuthenticationsClientListByServerPager` has been removed
+- Struct `ServerAzureADOnlyAuthenticationsClientListByServerResult` has been removed
+- Struct `ServerBlobAuditingPoliciesClientCreateOrUpdatePoller` has been removed
+- Struct `ServerBlobAuditingPoliciesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ServerBlobAuditingPoliciesClientCreateOrUpdateResult` has been removed
+- Struct `ServerBlobAuditingPoliciesClientGetResult` has been removed
+- Struct `ServerBlobAuditingPoliciesClientListByServerPager` has been removed
+- Struct `ServerBlobAuditingPoliciesClientListByServerResult` has been removed
+- Struct `ServerCommunicationLinksClientCreateOrUpdatePoller` has been removed
+- Struct `ServerCommunicationLinksClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ServerCommunicationLinksClientCreateOrUpdateResult` has been removed
+- Struct `ServerCommunicationLinksClientGetResult` has been removed
+- Struct `ServerCommunicationLinksClientListByServerResult` has been removed
+- Struct `ServerConnectionPoliciesClientCreateOrUpdatePoller` has been removed
+- Struct `ServerConnectionPoliciesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ServerConnectionPoliciesClientCreateOrUpdateResult` has been removed
+- Struct `ServerConnectionPoliciesClientGetResult` has been removed
+- Struct `ServerConnectionPoliciesClientListByServerPager` has been removed
+- Struct `ServerConnectionPoliciesClientListByServerResult` has been removed
+- Struct `ServerDNSAliasesClientAcquirePoller` has been removed
+- Struct `ServerDNSAliasesClientAcquirePollerResponse` has been removed
+- Struct `ServerDNSAliasesClientAcquireResult` has been removed
+- Struct `ServerDNSAliasesClientCreateOrUpdatePoller` has been removed
+- Struct `ServerDNSAliasesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ServerDNSAliasesClientCreateOrUpdateResult` has been removed
+- Struct `ServerDNSAliasesClientDeletePoller` has been removed
+- Struct `ServerDNSAliasesClientDeletePollerResponse` has been removed
+- Struct `ServerDNSAliasesClientGetResult` has been removed
+- Struct `ServerDNSAliasesClientListByServerPager` has been removed
+- Struct `ServerDNSAliasesClientListByServerResult` has been removed
+- Struct `ServerDevOpsAuditSettingsClientCreateOrUpdatePoller` has been removed
+- Struct `ServerDevOpsAuditSettingsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ServerDevOpsAuditSettingsClientCreateOrUpdateResult` has been removed
+- Struct `ServerDevOpsAuditSettingsClientGetResult` has been removed
+- Struct `ServerDevOpsAuditSettingsClientListByServerPager` has been removed
+- Struct `ServerDevOpsAuditSettingsClientListByServerResult` has been removed
+- Struct `ServerKeysClientCreateOrUpdatePoller` has been removed
+- Struct `ServerKeysClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ServerKeysClientCreateOrUpdateResult` has been removed
+- Struct `ServerKeysClientDeletePoller` has been removed
+- Struct `ServerKeysClientDeletePollerResponse` has been removed
+- Struct `ServerKeysClientGetResult` has been removed
+- Struct `ServerKeysClientListByServerPager` has been removed
+- Struct `ServerKeysClientListByServerResult` has been removed
+- Struct `ServerOperationsClientListByServerPager` has been removed
+- Struct `ServerOperationsClientListByServerResult` has been removed
+- Struct `ServerSecurityAlertPoliciesClientCreateOrUpdatePoller` has been removed
+- Struct `ServerSecurityAlertPoliciesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ServerSecurityAlertPoliciesClientCreateOrUpdateResult` has been removed
+- Struct `ServerSecurityAlertPoliciesClientGetResult` has been removed
+- Struct `ServerSecurityAlertPoliciesClientListByServerPager` has been removed
+- Struct `ServerSecurityAlertPoliciesClientListByServerResult` has been removed
+- Struct `ServerTrustGroupsClientCreateOrUpdatePoller` has been removed
+- Struct `ServerTrustGroupsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ServerTrustGroupsClientCreateOrUpdateResult` has been removed
+- Struct `ServerTrustGroupsClientDeletePoller` has been removed
+- Struct `ServerTrustGroupsClientDeletePollerResponse` has been removed
+- Struct `ServerTrustGroupsClientGetResult` has been removed
+- Struct `ServerTrustGroupsClientListByInstancePager` has been removed
+- Struct `ServerTrustGroupsClientListByInstanceResult` has been removed
+- Struct `ServerTrustGroupsClientListByLocationPager` has been removed
+- Struct `ServerTrustGroupsClientListByLocationResult` has been removed
+- Struct `ServerUsagesClientListByServerResult` has been removed
+- Struct `ServerVulnerabilityAssessmentsClientCreateOrUpdateResult` has been removed
+- Struct `ServerVulnerabilityAssessmentsClientGetResult` has been removed
+- Struct `ServerVulnerabilityAssessmentsClientListByServerPager` has been removed
+- Struct `ServerVulnerabilityAssessmentsClientListByServerResult` has been removed
+- Struct `ServersClientCheckNameAvailabilityResult` has been removed
+- Struct `ServersClientCreateOrUpdatePoller` has been removed
+- Struct `ServersClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ServersClientCreateOrUpdateResult` has been removed
+- Struct `ServersClientDeletePoller` has been removed
+- Struct `ServersClientDeletePollerResponse` has been removed
+- Struct `ServersClientGetResult` has been removed
+- Struct `ServersClientImportDatabasePoller` has been removed
+- Struct `ServersClientImportDatabasePollerResponse` has been removed
+- Struct `ServersClientImportDatabaseResult` has been removed
+- Struct `ServersClientListByResourceGroupPager` has been removed
+- Struct `ServersClientListByResourceGroupResult` has been removed
+- Struct `ServersClientListPager` has been removed
+- Struct `ServersClientListResult` has been removed
+- Struct `ServersClientUpdatePoller` has been removed
+- Struct `ServersClientUpdatePollerResponse` has been removed
+- Struct `ServersClientUpdateResult` has been removed
+- Struct `ServiceObjectivesClientGetResult` has been removed
+- Struct `ServiceObjectivesClientListByServerResult` has been removed
+- Struct `SubscriptionUsagesClientGetResult` has been removed
+- Struct `SubscriptionUsagesClientListByLocationPager` has been removed
+- Struct `SubscriptionUsagesClientListByLocationResult` has been removed
+- Struct `SyncAgentsClientCreateOrUpdatePoller` has been removed
+- Struct `SyncAgentsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `SyncAgentsClientCreateOrUpdateResult` has been removed
+- Struct `SyncAgentsClientDeletePoller` has been removed
+- Struct `SyncAgentsClientDeletePollerResponse` has been removed
+- Struct `SyncAgentsClientGenerateKeyResult` has been removed
+- Struct `SyncAgentsClientGetResult` has been removed
+- Struct `SyncAgentsClientListByServerPager` has been removed
+- Struct `SyncAgentsClientListByServerResult` has been removed
+- Struct `SyncAgentsClientListLinkedDatabasesPager` has been removed
+- Struct `SyncAgentsClientListLinkedDatabasesResult` has been removed
+- Struct `SyncGroupsClientCreateOrUpdatePoller` has been removed
+- Struct `SyncGroupsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `SyncGroupsClientCreateOrUpdateResult` has been removed
+- Struct `SyncGroupsClientDeletePoller` has been removed
+- Struct `SyncGroupsClientDeletePollerResponse` has been removed
+- Struct `SyncGroupsClientGetResult` has been removed
+- Struct `SyncGroupsClientListByDatabasePager` has been removed
+- Struct `SyncGroupsClientListByDatabaseResult` has been removed
+- Struct `SyncGroupsClientListHubSchemasPager` has been removed
+- Struct `SyncGroupsClientListHubSchemasResult` has been removed
+- Struct `SyncGroupsClientListLogsPager` has been removed
+- Struct `SyncGroupsClientListLogsResult` has been removed
+- Struct `SyncGroupsClientListSyncDatabaseIDsPager` has been removed
+- Struct `SyncGroupsClientListSyncDatabaseIDsResult` has been removed
+- Struct `SyncGroupsClientRefreshHubSchemaPoller` has been removed
+- Struct `SyncGroupsClientRefreshHubSchemaPollerResponse` has been removed
+- Struct `SyncGroupsClientUpdatePoller` has been removed
+- Struct `SyncGroupsClientUpdatePollerResponse` has been removed
+- Struct `SyncGroupsClientUpdateResult` has been removed
+- Struct `SyncMembersClientCreateOrUpdatePoller` has been removed
+- Struct `SyncMembersClientCreateOrUpdatePollerResponse` has been removed
+- Struct `SyncMembersClientCreateOrUpdateResult` has been removed
+- Struct `SyncMembersClientDeletePoller` has been removed
+- Struct `SyncMembersClientDeletePollerResponse` has been removed
+- Struct `SyncMembersClientGetResult` has been removed
+- Struct `SyncMembersClientListBySyncGroupPager` has been removed
+- Struct `SyncMembersClientListBySyncGroupResult` has been removed
+- Struct `SyncMembersClientListMemberSchemasPager` has been removed
+- Struct `SyncMembersClientListMemberSchemasResult` has been removed
+- Struct `SyncMembersClientRefreshMemberSchemaPoller` has been removed
+- Struct `SyncMembersClientRefreshMemberSchemaPollerResponse` has been removed
+- Struct `SyncMembersClientUpdatePoller` has been removed
+- Struct `SyncMembersClientUpdatePollerResponse` has been removed
+- Struct `SyncMembersClientUpdateResult` has been removed
+- Struct `TdeCertificatesClientCreatePoller` has been removed
+- Struct `TdeCertificatesClientCreatePollerResponse` has been removed
+- Struct `TimeZonesClientGetResult` has been removed
+- Struct `TimeZonesClientListByLocationPager` has been removed
+- Struct `TimeZonesClientListByLocationResult` has been removed
+- Struct `TransparentDataEncryptionsClientCreateOrUpdateResult` has been removed
+- Struct `TransparentDataEncryptionsClientGetResult` has been removed
+- Struct `TransparentDataEncryptionsClientListByDatabasePager` has been removed
+- Struct `TransparentDataEncryptionsClientListByDatabaseResult` has been removed
+- Struct `UnlinkParameters` has been removed
+- Struct `UsagesClientListByInstancePoolPager` has been removed
+- Struct `UsagesClientListByInstancePoolResult` has been removed
+- Struct `VirtualClustersClientDeletePoller` has been removed
+- Struct `VirtualClustersClientDeletePollerResponse` has been removed
+- Struct `VirtualClustersClientGetResult` has been removed
+- Struct `VirtualClustersClientListByResourceGroupPager` has been removed
+- Struct `VirtualClustersClientListByResourceGroupResult` has been removed
+- Struct `VirtualClustersClientListPager` has been removed
+- Struct `VirtualClustersClientListResult` has been removed
+- Struct `VirtualClustersClientUpdateDNSServersResult` has been removed
+- Struct `VirtualClustersClientUpdatePoller` has been removed
+- Struct `VirtualClustersClientUpdatePollerResponse` has been removed
+- Struct `VirtualClustersClientUpdateResult` has been removed
+- Struct `VirtualNetworkRulesClientCreateOrUpdatePoller` has been removed
+- Struct `VirtualNetworkRulesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualNetworkRulesClientCreateOrUpdateResult` has been removed
+- Struct `VirtualNetworkRulesClientDeletePoller` has been removed
+- Struct `VirtualNetworkRulesClientDeletePollerResponse` has been removed
+- Struct `VirtualNetworkRulesClientGetResult` has been removed
+- Struct `VirtualNetworkRulesClientListByServerPager` has been removed
+- Struct `VirtualNetworkRulesClientListByServerResult` has been removed
+- Struct `WorkloadClassifiersClientCreateOrUpdatePoller` has been removed
+- Struct `WorkloadClassifiersClientCreateOrUpdatePollerResponse` has been removed
+- Struct `WorkloadClassifiersClientCreateOrUpdateResult` has been removed
+- Struct `WorkloadClassifiersClientDeletePoller` has been removed
+- Struct `WorkloadClassifiersClientDeletePollerResponse` has been removed
+- Struct `WorkloadClassifiersClientGetResult` has been removed
+- Struct `WorkloadClassifiersClientListByWorkloadGroupPager` has been removed
+- Struct `WorkloadClassifiersClientListByWorkloadGroupResult` has been removed
+- Struct `WorkloadGroupsClientCreateOrUpdatePoller` has been removed
+- Struct `WorkloadGroupsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `WorkloadGroupsClientCreateOrUpdateResult` has been removed
+- Struct `WorkloadGroupsClientDeletePoller` has been removed
+- Struct `WorkloadGroupsClientDeletePollerResponse` has been removed
+- Struct `WorkloadGroupsClientGetResult` has been removed
+- Struct `WorkloadGroupsClientListByDatabasePager` has been removed
+- Struct `WorkloadGroupsClientListByDatabaseResult` has been removed
+- Field `DatabaseVulnerabilityAssessmentScansClientExportResult` of struct `DatabaseVulnerabilityAssessmentScansClientExportResponse` has been removed
+- Field `RawResponse` of struct `DatabaseVulnerabilityAssessmentScansClientExportResponse` has been removed
+- Field `AgentClientCreateOrUpdateResult` of struct `AgentClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `AgentClientCreateOrUpdateResponse` has been removed
+- Field `ServerDevOpsAuditSettingsClientGetResult` of struct `ServerDevOpsAuditSettingsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServerDevOpsAuditSettingsClientGetResponse` has been removed
+- Field `TransparentDataEncryptionsClientListByDatabaseResult` of struct `TransparentDataEncryptionsClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `TransparentDataEncryptionsClientListByDatabaseResponse` has been removed
+- Field `ServerCommunicationLinksClientGetResult` of struct `ServerCommunicationLinksClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServerCommunicationLinksClientGetResponse` has been removed
+- Field `ManagedDatabaseColumnsClientListByTableResult` of struct `ManagedDatabaseColumnsClientListByTableResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseColumnsClientListByTableResponse` has been removed
+- Field `RawResponse` of struct `ElasticPoolOperationsClientCancelResponse` has been removed
+- Field `JobExecutionsClientListByAgentResult` of struct `JobExecutionsClientListByAgentResponse` has been removed
+- Field `RawResponse` of struct `JobExecutionsClientListByAgentResponse` has been removed
+- Field `DatabaseSecurityAlertPoliciesClientGetResult` of struct `DatabaseSecurityAlertPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `DatabaseSecurityAlertPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServerCommunicationLinksClientDeleteResponse` has been removed
+- Field `ServerDNSAliasesClientListByServerResult` of struct `ServerDNSAliasesClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `ServerDNSAliasesClientListByServerResponse` has been removed
+- Field `ManagedInstancesClientListByResourceGroupResult` of struct `ManagedInstancesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstancesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ElasticPoolsClientDeleteResponse` has been removed
+- Field `JobTargetExecutionsClientListByStepResult` of struct `JobTargetExecutionsClientListByStepResponse` has been removed
+- Field `RawResponse` of struct `JobTargetExecutionsClientListByStepResponse` has been removed
+- Field `LongTermRetentionBackupsClientGetResult` of struct `LongTermRetentionBackupsClientGetResponse` has been removed
+- Field `RawResponse` of struct `LongTermRetentionBackupsClientGetResponse` has been removed
+- Field `RestorePointsClientListByDatabaseResult` of struct `RestorePointsClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `RestorePointsClientListByDatabaseResponse` has been removed
+- Field `ManagedDatabasesClientGetResult` of struct `ManagedDatabasesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabasesClientGetResponse` has been removed
+- Field `DatabasesClientImportResult` of struct `DatabasesClientImportResponse` has been removed
+- Field `RawResponse` of struct `DatabasesClientImportResponse` has been removed
+- Field `RawResponse` of struct `DatabaseOperationsClientCancelResponse` has been removed
+- Field `SyncGroupsClientListByDatabaseResult` of struct `SyncGroupsClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `SyncGroupsClientListByDatabaseResponse` has been removed
+- Field `ServerDevOpsAuditSettingsClientListByServerResult` of struct `ServerDevOpsAuditSettingsClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `ServerDevOpsAuditSettingsClientListByServerResponse` has been removed
+- Field `LongTermRetentionManagedInstanceBackupsClientListByLocationResult` of struct `LongTermRetentionManagedInstanceBackupsClientListByLocationResponse` has been removed
+- Field `RawResponse` of struct `LongTermRetentionManagedInstanceBackupsClientListByLocationResponse` has been removed
+- Field `DeletedServersClientRecoverResult` of struct `DeletedServersClientRecoverResponse` has been removed
+- Field `RawResponse` of struct `DeletedServersClientRecoverResponse` has been removed
+- Field `DatabaseAutomaticTuningClientUpdateResult` of struct `DatabaseAutomaticTuningClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `DatabaseAutomaticTuningClientUpdateResponse` has been removed
+- Field `DatabaseVulnerabilityAssessmentsClientGetResult` of struct `DatabaseVulnerabilityAssessmentsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DatabaseVulnerabilityAssessmentsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ReplicationLinksClientFailoverResponse` has been removed
+- Field `JobsClientCreateOrUpdateResult` of struct `JobsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `JobsClientCreateOrUpdateResponse` has been removed
+- Field `ServerKeysClientCreateOrUpdateResult` of struct `ServerKeysClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServerKeysClientCreateOrUpdateResponse` has been removed
+- Field `SyncAgentsClientGetResult` of struct `SyncAgentsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SyncAgentsClientGetResponse` has been removed
+- Field `SyncMembersClientListMemberSchemasResult` of struct `SyncMembersClientListMemberSchemasResponse` has been removed
+- Field `RawResponse` of struct `SyncMembersClientListMemberSchemasResponse` has been removed
+- Field `DeletedServersClientListResult` of struct `DeletedServersClientListResponse` has been removed
+- Field `RawResponse` of struct `DeletedServersClientListResponse` has been removed
+- Field `AgentClientGetResult` of struct `AgentClientGetResponse` has been removed
+- Field `RawResponse` of struct `AgentClientGetResponse` has been removed
+- Field `RawResponse` of struct `SyncMembersClientDeleteResponse` has been removed
+- Field `OutboundFirewallRulesClientCreateOrUpdateResult` of struct `OutboundFirewallRulesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `OutboundFirewallRulesClientCreateOrUpdateResponse` has been removed
+- Field `SyncMembersClientUpdateResult` of struct `SyncMembersClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `SyncMembersClientUpdateResponse` has been removed
+- Field `ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceResult` of struct `ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceResponse` has been removed
+- Field `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientUpdateResult` of struct `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientUpdateResponse` has been removed
+- Field `ServerDNSAliasesClientGetResult` of struct `ServerDNSAliasesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServerDNSAliasesClientGetResponse` has been removed
+- Field `RecoverableManagedDatabasesClientListByInstanceResult` of struct `RecoverableManagedDatabasesClientListByInstanceResponse` has been removed
+- Field `RawResponse` of struct `RecoverableManagedDatabasesClientListByInstanceResponse` has been removed
+- Field `ManagedInstancesClientListByManagedInstanceResult` of struct `ManagedInstancesClientListByManagedInstanceResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstancesClientListByManagedInstanceResponse` has been removed
+- Field `DatabaseSchemasClientGetResult` of struct `DatabaseSchemasClientGetResponse` has been removed
+- Field `RawResponse` of struct `DatabaseSchemasClientGetResponse` has been removed
+- Field `RawResponse` of struct `DatabaseVulnerabilityAssessmentRuleBaselinesClientDeleteResponse` has been removed
+- Field `MaintenanceWindowOptionsClientGetResult` of struct `MaintenanceWindowOptionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `MaintenanceWindowOptionsClientGetResponse` has been removed
+- Field `DatabasesClientListByElasticPoolResult` of struct `DatabasesClientListByElasticPoolResponse` has been removed
+- Field `RawResponse` of struct `DatabasesClientListByElasticPoolResponse` has been removed
+- Field `ExtendedDatabaseBlobAuditingPoliciesClientCreateOrUpdateResult` of struct `ExtendedDatabaseBlobAuditingPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ExtendedDatabaseBlobAuditingPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `ServerVulnerabilityAssessmentsClientCreateOrUpdateResult` of struct `ServerVulnerabilityAssessmentsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServerVulnerabilityAssessmentsClientCreateOrUpdateResponse` has been removed
+- Field `DataMaskingRulesClientListByDatabaseResult` of struct `DataMaskingRulesClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `DataMaskingRulesClientListByDatabaseResponse` has been removed
+- Field `JobAgentsClientGetResult` of struct `JobAgentsClientGetResponse` has been removed
+- Field `RawResponse` of struct `JobAgentsClientGetResponse` has been removed
+- Field `ManagedInstancePrivateLinkResourcesClientGetResult` of struct `ManagedInstancePrivateLinkResourcesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstancePrivateLinkResourcesClientGetResponse` has been removed
+- Field `LongTermRetentionBackupsClientCopyResult` of struct `LongTermRetentionBackupsClientCopyResponse` has been removed
+- Field `RawResponse` of struct `LongTermRetentionBackupsClientCopyResponse` has been removed
+- Field `ServerSecurityAlertPoliciesClientListByServerResult` of struct `ServerSecurityAlertPoliciesClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `ServerSecurityAlertPoliciesClientListByServerResponse` has been removed
+- Field `ManagedServerSecurityAlertPoliciesClientListByInstanceResult` of struct `ManagedServerSecurityAlertPoliciesClientListByInstanceResponse` has been removed
+- Field `RawResponse` of struct `ManagedServerSecurityAlertPoliciesClientListByInstanceResponse` has been removed
+- Field `JobsClientGetResult` of struct `JobsClientGetResponse` has been removed
+- Field `RawResponse` of struct `JobsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DatabasesClientDeleteResponse` has been removed
+- Field `FailoverGroupsClientUpdateResult` of struct `FailoverGroupsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `FailoverGroupsClientUpdateResponse` has been removed
+- Field `ManagedInstanceLongTermRetentionPoliciesClientCreateOrUpdateResult` of struct `ManagedInstanceLongTermRetentionPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstanceLongTermRetentionPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `ManagedInstancesClientListByInstancePoolResult` of struct `ManagedInstancesClientListByInstancePoolResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstancesClientListByInstancePoolResponse` has been removed
+- Field `LongTermRetentionBackupsClientListByResourceGroupLocationResult` of struct `LongTermRetentionBackupsClientListByResourceGroupLocationResponse` has been removed
+- Field `RawResponse` of struct `LongTermRetentionBackupsClientListByResourceGroupLocationResponse` has been removed
+- Field `RawResponse` of struct `JobAgentsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `ServerTrustGroupsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `WorkloadGroupsClientDeleteResponse` has been removed
+- Field `SubscriptionUsagesClientListByLocationResult` of struct `SubscriptionUsagesClientListByLocationResponse` has been removed
+- Field `RawResponse` of struct `SubscriptionUsagesClientListByLocationResponse` has been removed
+- Field `ElasticPoolsClientListMetricDefinitionsResult` of struct `ElasticPoolsClientListMetricDefinitionsResponse` has been removed
+- Field `RawResponse` of struct `ElasticPoolsClientListMetricDefinitionsResponse` has been removed
+- Field `RawResponse` of struct `SyncGroupsClientCancelSyncResponse` has been removed
+- Field `RawResponse` of struct `FirewallRulesClientDeleteResponse` has been removed
+- Field `SyncMembersClientCreateOrUpdateResult` of struct `SyncMembersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SyncMembersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServerKeysClientDeleteResponse` has been removed
+- Field `ServerConnectionPoliciesClientGetResult` of struct `ServerConnectionPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServerConnectionPoliciesClientGetResponse` has been removed
+- Field `LedgerDigestUploadsClientDisableResult` of struct `LedgerDigestUploadsClientDisableResponse` has been removed
+- Field `RawResponse` of struct `LedgerDigestUploadsClientDisableResponse` has been removed
+- Field `SensitivityLabelsClientCreateOrUpdateResult` of struct `SensitivityLabelsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SensitivityLabelsClientCreateOrUpdateResponse` has been removed
+- Field `ManagedDatabaseRestoreDetailsClientGetResult` of struct `ManagedDatabaseRestoreDetailsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseRestoreDetailsClientGetResponse` has been removed
+- Field `ServerUsagesClientListByServerResult` of struct `ServerUsagesClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `ServerUsagesClientListByServerResponse` has been removed
+- Field `ServerAdvisorsClientGetResult` of struct `ServerAdvisorsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServerAdvisorsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SensitivityLabelsClientUpdateResponse` has been removed
+- Field `ServerVulnerabilityAssessmentsClientGetResult` of struct `ServerVulnerabilityAssessmentsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServerVulnerabilityAssessmentsClientGetResponse` has been removed
+- Field `JobExecutionsClientListByJobResult` of struct `JobExecutionsClientListByJobResponse` has been removed
+- Field `RawResponse` of struct `JobExecutionsClientListByJobResponse` has been removed
+- Field `DeletedServersClientGetResult` of struct `DeletedServersClientGetResponse` has been removed
+- Field `RawResponse` of struct `DeletedServersClientGetResponse` has been removed
+- Field `ElasticPoolsClientListByServerResult` of struct `ElasticPoolsClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `ElasticPoolsClientListByServerResponse` has been removed
+- Field `LongTermRetentionPoliciesClientListByDatabaseResult` of struct `LongTermRetentionPoliciesClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `LongTermRetentionPoliciesClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabasesClientCompleteRestoreResponse` has been removed
+- Field `ManagedServerSecurityAlertPoliciesClientGetResult` of struct `ManagedServerSecurityAlertPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedServerSecurityAlertPoliciesClientGetResponse` has been removed
+- Field `FailoverGroupsClientForceFailoverAllowDataLossResult` of struct `FailoverGroupsClientForceFailoverAllowDataLossResponse` has been removed
+- Field `RawResponse` of struct `FailoverGroupsClientForceFailoverAllowDataLossResponse` has been removed
+- Field `PrimaryDelegatedIdentityClientID` of struct `DatabaseProperties` has been removed
+- Field `ServersClientCreateOrUpdateResult` of struct `ServersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServersClientCreateOrUpdateResponse` has been removed
+- Field `SensitivityLabelsClientListRecommendedByDatabaseResult` of struct `SensitivityLabelsClientListRecommendedByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `SensitivityLabelsClientListRecommendedByDatabaseResponse` has been removed
+- Field `PrivateEndpointConnectionsClientListByServerResult` of struct `PrivateEndpointConnectionsClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientListByServerResponse` has been removed
+- Field `LongTermRetentionPoliciesClientCreateOrUpdateResult` of struct `LongTermRetentionPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `LongTermRetentionPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `ManagedInstanceEncryptionProtectorsClientCreateOrUpdateResult` of struct `ManagedInstanceEncryptionProtectorsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstanceEncryptionProtectorsClientCreateOrUpdateResponse` has been removed
+- Field `InstanceFailoverGroupsClientCreateOrUpdateResult` of struct `InstanceFailoverGroupsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `InstanceFailoverGroupsClientCreateOrUpdateResponse` has been removed
+- Field `DatabasesClientListInaccessibleByServerResult` of struct `DatabasesClientListInaccessibleByServerResponse` has been removed
+- Field `RawResponse` of struct `DatabasesClientListInaccessibleByServerResponse` has been removed
+- Field `VirtualClustersClientListResult` of struct `VirtualClustersClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualClustersClientListResponse` has been removed
+- Field `FailoverGroupsClientCreateOrUpdateResult` of struct `FailoverGroupsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `FailoverGroupsClientCreateOrUpdateResponse` has been removed
+- Field `ManagedDatabasesClientListByInstanceResult` of struct `ManagedDatabasesClientListByInstanceResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabasesClientListByInstanceResponse` has been removed
+- Field `JobTargetGroupsClientListByAgentResult` of struct `JobTargetGroupsClientListByAgentResponse` has been removed
+- Field `RawResponse` of struct `JobTargetGroupsClientListByAgentResponse` has been removed
+- Field `LongTermRetentionManagedInstanceBackupsClientGetResult` of struct `LongTermRetentionManagedInstanceBackupsClientGetResponse` has been removed
+- Field `RawResponse` of struct `LongTermRetentionManagedInstanceBackupsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseVulnerabilityAssessmentScansClientInitiateScanResponse` has been removed
+- Field `ServerTrustGroupsClientGetResult` of struct `ServerTrustGroupsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServerTrustGroupsClientGetResponse` has been removed
+- Field `RecoverableDatabasesClientListByServerResult` of struct `RecoverableDatabasesClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `RecoverableDatabasesClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseSensitivityLabelsClientDeleteResponse` has been removed
+- Field `JobStepsClientCreateOrUpdateResult` of struct `JobStepsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `JobStepsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `LongTermRetentionManagedInstanceBackupsClientDeleteByResourceGroupResponse` has been removed
+- Field `OutboundFirewallRulesClientListByServerResult` of struct `OutboundFirewallRulesClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `OutboundFirewallRulesClientListByServerResponse` has been removed
+- Field `RestorableDroppedManagedDatabasesClientListByInstanceResult` of struct `RestorableDroppedManagedDatabasesClientListByInstanceResponse` has been removed
+- Field `RawResponse` of struct `RestorableDroppedManagedDatabasesClientListByInstanceResponse` has been removed
+- Field `DatabaseVulnerabilityAssessmentsClientListByDatabaseResult` of struct `DatabaseVulnerabilityAssessmentsClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `DatabaseVulnerabilityAssessmentsClientListByDatabaseResponse` has been removed
+- Field `LedgerDigestUploadsClientGetResult` of struct `LedgerDigestUploadsClientGetResponse` has been removed
+- Field `RawResponse` of struct `LedgerDigestUploadsClientGetResponse` has been removed
+- Field `ServerKeysClientGetResult` of struct `ServerKeysClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServerKeysClientGetResponse` has been removed
+- Field `PrivateLinkResourcesClientListByServerResult` of struct `PrivateLinkResourcesClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientListByServerResponse` has been removed
+- Field `LongTermRetentionBackupsClientListByResourceGroupServerResult` of struct `LongTermRetentionBackupsClientListByResourceGroupServerResponse` has been removed
+- Field `RawResponse` of struct `LongTermRetentionBackupsClientListByResourceGroupServerResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstanceTdeCertificatesClientCreateResponse` has been removed
+- Field `RawResponse` of struct `ReplicationLinksClientDeleteResponse` has been removed
+- Field `GeoBackupPoliciesClientCreateOrUpdateResult` of struct `GeoBackupPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `GeoBackupPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RestorableDroppedDatabasesClientListByServerResult` of struct `RestorableDroppedDatabasesClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `RestorableDroppedDatabasesClientListByServerResponse` has been removed
+- Field `InstancePoolsClientGetResult` of struct `InstancePoolsClientGetResponse` has been removed
+- Field `RawResponse` of struct `InstancePoolsClientGetResponse` has been removed
+- Field `ServerTrustGroupsClientListByLocationResult` of struct `ServerTrustGroupsClientListByLocationResponse` has been removed
+- Field `RawResponse` of struct `ServerTrustGroupsClientListByLocationResponse` has been removed
+- Field `ServerAzureADAdministratorsClientCreateOrUpdateResult` of struct `ServerAzureADAdministratorsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServerAzureADAdministratorsClientCreateOrUpdateResponse` has been removed
+- Field `SensitivityLabelsClientGetResult` of struct `SensitivityLabelsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SensitivityLabelsClientGetResponse` has been removed
+- Field `ServerVulnerabilityAssessmentsClientListByServerResult` of struct `ServerVulnerabilityAssessmentsClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `ServerVulnerabilityAssessmentsClientListByServerResponse` has been removed
+- Field `JobTargetGroupsClientGetResult` of struct `JobTargetGroupsClientGetResponse` has been removed
+- Field `RawResponse` of struct `JobTargetGroupsClientGetResponse` has been removed
+- Field `DatabaseColumnsClientGetResult` of struct `DatabaseColumnsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DatabaseColumnsClientGetResponse` has been removed
+- Field `ServerOperationsClientListByServerResult` of struct `ServerOperationsClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `ServerOperationsClientListByServerResponse` has been removed
+- Field `JobStepsClientGetByVersionResult` of struct `JobStepsClientGetByVersionResponse` has been removed
+- Field `RawResponse` of struct `JobStepsClientGetByVersionResponse` has been removed
+- Field `DatabasesClientUpdateResult` of struct `DatabasesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `DatabasesClientUpdateResponse` has been removed
+- Field `ReplicationLinksClientListByDatabaseResult` of struct `ReplicationLinksClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `ReplicationLinksClientListByDatabaseResponse` has been removed
+- Field `JobAgentsClientCreateOrUpdateResult` of struct `JobAgentsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `JobAgentsClientCreateOrUpdateResponse` has been removed
+- Field `ElasticPoolActivitiesClientListByElasticPoolResult` of struct `ElasticPoolActivitiesClientListByElasticPoolResponse` has been removed
+- Field `RawResponse` of struct `ElasticPoolActivitiesClientListByElasticPoolResponse` has been removed
+- Field `SyncGroupsClientListLogsResult` of struct `SyncGroupsClientListLogsResponse` has been removed
+- Field `RawResponse` of struct `SyncGroupsClientListLogsResponse` has been removed
+- Field `ServersClientUpdateResult` of struct `ServersClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServersClientUpdateResponse` has been removed
+- Field `ManagedDatabaseVulnerabilityAssessmentScansClientExportResult` of struct `ManagedDatabaseVulnerabilityAssessmentScansClientExportResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseVulnerabilityAssessmentScansClientExportResponse` has been removed
+- Field `RawResponse` of struct `ElasticPoolsClientFailoverResponse` has been removed
+- Field `SyncMembersClientGetResult` of struct `SyncMembersClientGetResponse` has been removed
+- Field `RawResponse` of struct `SyncMembersClientGetResponse` has been removed
+- Field `TransparentDataEncryptionsClientGetResult` of struct `TransparentDataEncryptionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `TransparentDataEncryptionsClientGetResponse` has been removed
+- Field `DatabaseSecurityAlertPoliciesClientCreateOrUpdateResult` of struct `DatabaseSecurityAlertPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DatabaseSecurityAlertPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `ManagedServerSecurityAlertPoliciesClientCreateOrUpdateResult` of struct `ManagedServerSecurityAlertPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagedServerSecurityAlertPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `SyncAgentsClientGenerateKeyResult` of struct `SyncAgentsClientGenerateKeyResponse` has been removed
+- Field `RawResponse` of struct `SyncAgentsClientGenerateKeyResponse` has been removed
+- Field `BackupShortTermRetentionPoliciesClientGetResult` of struct `BackupShortTermRetentionPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `BackupShortTermRetentionPoliciesClientGetResponse` has been removed
+- Field `DatabaseVulnerabilityAssessmentsClientCreateOrUpdateResult` of struct `DatabaseVulnerabilityAssessmentsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DatabaseVulnerabilityAssessmentsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `InstancePoolsClientDeleteResponse` has been removed
+- Field `DatabaseTablesClientGetResult` of struct `DatabaseTablesClientGetResponse` has been removed
+- Field `RawResponse` of struct `DatabaseTablesClientGetResponse` has been removed
+- Field `LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResult` of struct `LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse` has been removed
+- Field `RawResponse` of struct `LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse` has been removed
+- Field `SyncGroupsClientUpdateResult` of struct `SyncGroupsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `SyncGroupsClientUpdateResponse` has been removed
+- Field `JobCredentialsClientGetResult` of struct `JobCredentialsClientGetResponse` has been removed
+- Field `RawResponse` of struct `JobCredentialsClientGetResponse` has been removed
+- Field `JobExecutionsClientGetResult` of struct `JobExecutionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `JobExecutionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `OutboundFirewallRulesClientDeleteResponse` has been removed
+- Field `ServersClientListByResourceGroupResult` of struct `ServersClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ServersClientListByResourceGroupResponse` has been removed
+- Field `SyncGroupsClientListHubSchemasResult` of struct `SyncGroupsClientListHubSchemasResponse` has been removed
+- Field `RawResponse` of struct `SyncGroupsClientListHubSchemasResponse` has been removed
+- Field `JobsClientListByAgentResult` of struct `JobsClientListByAgentResponse` has been removed
+- Field `RawResponse` of struct `JobsClientListByAgentResponse` has been removed
+- Field `ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseResult` of struct `ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `SyncGroupsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `TdeCertificatesClientCreateResponse` has been removed
+- Field `EncryptionProtectorsClientGetResult` of struct `EncryptionProtectorsClientGetResponse` has been removed
+- Field `RawResponse` of struct `EncryptionProtectorsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DatabasesClientUpgradeDataWarehouseResponse` has been removed
+- Field `DatabaseAutomaticTuningClientGetResult` of struct `DatabaseAutomaticTuningClientGetResponse` has been removed
+- Field `RawResponse` of struct `DatabaseAutomaticTuningClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualClustersClientDeleteResponse` has been removed
+- Field `ManagedInstancePrivateEndpointConnectionsClientCreateOrUpdateResult` of struct `ManagedInstancePrivateEndpointConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstancePrivateEndpointConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstanceAzureADOnlyAuthenticationsClientDeleteResponse` has been removed
+- Field `TimeZonesClientListByLocationResult` of struct `TimeZonesClientListByLocationResponse` has been removed
+- Field `RawResponse` of struct `TimeZonesClientListByLocationResponse` has been removed
+- Field `DatabaseAdvisorsClientListByDatabaseResult` of struct `DatabaseAdvisorsClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `DatabaseAdvisorsClientListByDatabaseResponse` has been removed
+- Field `InstanceFailoverGroupsClientForceFailoverAllowDataLossResult` of struct `InstanceFailoverGroupsClientForceFailoverAllowDataLossResponse` has been removed
+- Field `RawResponse` of struct `InstanceFailoverGroupsClientForceFailoverAllowDataLossResponse` has been removed
+- Field `ServerKeysClientListByServerResult` of struct `ServerKeysClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `ServerKeysClientListByServerResponse` has been removed
+- Field `JobCredentialsClientListByAgentResult` of struct `JobCredentialsClientListByAgentResponse` has been removed
+- Field `RawResponse` of struct `JobCredentialsClientListByAgentResponse` has been removed
+- Field `ManagedInstanceAdministratorsClientCreateOrUpdateResult` of struct `ManagedInstanceAdministratorsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstanceAdministratorsClientCreateOrUpdateResponse` has been removed
+- Field `TransparentDataEncryptionsClientCreateOrUpdateResult` of struct `TransparentDataEncryptionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `TransparentDataEncryptionsClientCreateOrUpdateResponse` has been removed
+- Field `DatabaseBlobAuditingPoliciesClientListByDatabaseResult` of struct `DatabaseBlobAuditingPoliciesClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `DatabaseBlobAuditingPoliciesClientListByDatabaseResponse` has been removed
+- Field `ServerAzureADOnlyAuthenticationsClientListByServerResult` of struct `ServerAzureADOnlyAuthenticationsClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `ServerAzureADOnlyAuthenticationsClientListByServerResponse` has been removed
+- Field `ManagedDatabaseTablesClientGetResult` of struct `ManagedDatabaseTablesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseTablesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseRecommendedSensitivityLabelsClientUpdateResponse` has been removed
+- Field `ServerAdvisorsClientUpdateResult` of struct `ServerAdvisorsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServerAdvisorsClientUpdateResponse` has been removed
+- Field `ManagedInstancesClientCreateOrUpdateResult` of struct `ManagedInstancesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstancesClientCreateOrUpdateResponse` has been removed
+- Field `JobStepExecutionsClientListByJobExecutionResult` of struct `JobStepExecutionsClientListByJobExecutionResponse` has been removed
+- Field `RawResponse` of struct `JobStepExecutionsClientListByJobExecutionResponse` has been removed
+- Field `LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResult` of struct `LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse` has been removed
+- Field `RawResponse` of struct `LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse` has been removed
+- Field `RawResponse` of struct `JobCredentialsClientDeleteResponse` has been removed
+- Field `VirtualClustersClientUpdateDNSServersResult` of struct `VirtualClustersClientUpdateDNSServersResponse` has been removed
+- Field `RawResponse` of struct `VirtualClustersClientUpdateDNSServersResponse` has been removed
+- Field `PrivateEndpointConnectionsClientCreateOrUpdateResult` of struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `DatabaseExtensionsClientCreateOrUpdateResult` of struct `DatabaseExtensionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DatabaseExtensionsClientCreateOrUpdateResponse` has been removed
+- Field `DatabasesClientPauseResult` of struct `DatabasesClientPauseResponse` has been removed
+- Field `RawResponse` of struct `DatabasesClientPauseResponse` has been removed
+- Field `RawResponse` of struct `SyncAgentsClientDeleteResponse` has been removed
+- Field `ElasticPoolsClientGetResult` of struct `ElasticPoolsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ElasticPoolsClientGetResponse` has been removed
+- Field `ServerAzureADOnlyAuthenticationsClientCreateOrUpdateResult` of struct `ServerAzureADOnlyAuthenticationsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServerAzureADOnlyAuthenticationsClientCreateOrUpdateResponse` has been removed
+- Field `WorkloadClassifiersClientListByWorkloadGroupResult` of struct `WorkloadClassifiersClientListByWorkloadGroupResponse` has been removed
+- Field `RawResponse` of struct `WorkloadClassifiersClientListByWorkloadGroupResponse` has been removed
+- Field `RawResponse` of struct `FailoverGroupsClientDeleteResponse` has been removed
+- Field `DatabaseAdvisorsClientUpdateResult` of struct `DatabaseAdvisorsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `DatabaseAdvisorsClientUpdateResponse` has been removed
+- Field `ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResult` of struct `ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `MaintenanceWindowsClientCreateOrUpdateResponse` has been removed
+- Field `FirewallRulesClientReplaceResult` of struct `FirewallRulesClientReplaceResponse` has been removed
+- Field `RawResponse` of struct `FirewallRulesClientReplaceResponse` has been removed
+- Field `ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseResult` of struct `ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseResponse` has been removed
+- Field `ManagedInstanceVulnerabilityAssessmentsClientGetResult` of struct `ManagedInstanceVulnerabilityAssessmentsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstanceVulnerabilityAssessmentsClientGetResponse` has been removed
+- Field `SyncGroupsClientGetResult` of struct `SyncGroupsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SyncGroupsClientGetResponse` has been removed
+- Field `DataWarehouseUserActivitiesClientListByDatabaseResult` of struct `DataWarehouseUserActivitiesClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `DataWarehouseUserActivitiesClientListByDatabaseResponse` has been removed
+- Field `LedgerDigestUploadsClientListByDatabaseResult` of struct `LedgerDigestUploadsClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `LedgerDigestUploadsClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `RestorePointsClientDeleteResponse` has been removed
+- Field `ManagedInstancesClientListResult` of struct `ManagedInstancesClientListResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstancesClientListResponse` has been removed
+- Field `RawResponse` of struct `SyncGroupsClientTriggerSyncResponse` has been removed
+- Field `ManagedDatabaseVulnerabilityAssessmentRuleBaselinesClientGetResult` of struct `ManagedDatabaseVulnerabilityAssessmentRuleBaselinesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseVulnerabilityAssessmentRuleBaselinesClientGetResponse` has been removed
+- Field `DataMaskingPoliciesClientCreateOrUpdateResult` of struct `DataMaskingPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DataMaskingPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `JobExecutionsClientCreateResult` of struct `JobExecutionsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `JobExecutionsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `JobTargetGroupsClientDeleteResponse` has been removed
+- Field `ServerBlobAuditingPoliciesClientListByServerResult` of struct `ServerBlobAuditingPoliciesClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `ServerBlobAuditingPoliciesClientListByServerResponse` has been removed
+- Field `JobStepsClientGetResult` of struct `JobStepsClientGetResponse` has been removed
+- Field `RawResponse` of struct `JobStepsClientGetResponse` has been removed
+- Field `ManagedDatabaseTablesClientListBySchemaResult` of struct `ManagedDatabaseTablesClientListBySchemaResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseTablesClientListBySchemaResponse` has been removed
+- Field `DatabaseAdvisorsClientGetResult` of struct `DatabaseAdvisorsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DatabaseAdvisorsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SyncMembersClientRefreshMemberSchemaResponse` has been removed
+- Field `ManagedDatabaseVulnerabilityAssessmentRuleBaselinesClientCreateOrUpdateResult` of struct `ManagedDatabaseVulnerabilityAssessmentRuleBaselinesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseVulnerabilityAssessmentRuleBaselinesClientCreateOrUpdateResponse` has been removed
+- Field `ManagedInstanceAdministratorsClientListByInstanceResult` of struct `ManagedInstanceAdministratorsClientListByInstanceResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstanceAdministratorsClientListByInstanceResponse` has been removed
+- Field `DatabaseSchemasClientListByDatabaseResult` of struct `DatabaseSchemasClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `DatabaseSchemasClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseSensitivityLabelsClientDisableRecommendationResponse` has been removed
+- Field `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientCreateOrUpdateResult` of struct `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `ManagedDatabaseTransparentDataEncryptionClientCreateOrUpdateResult` of struct `ManagedDatabaseTransparentDataEncryptionClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseTransparentDataEncryptionClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseSensitivityLabelsClientEnableRecommendationResponse` has been removed
+- Field `SyncAgentsClientListByServerResult` of struct `SyncAgentsClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `SyncAgentsClientListByServerResponse` has been removed
+- Field `ServerBlobAuditingPoliciesClientGetResult` of struct `ServerBlobAuditingPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServerBlobAuditingPoliciesClientGetResponse` has been removed
+- Field `DatabaseColumnsClientListByDatabaseResult` of struct `DatabaseColumnsClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `DatabaseColumnsClientListByDatabaseResponse` has been removed
+- Field `ServerSecurityAlertPoliciesClientCreateOrUpdateResult` of struct `ServerSecurityAlertPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServerSecurityAlertPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `ServerAzureADOnlyAuthenticationsClientGetResult` of struct `ServerAzureADOnlyAuthenticationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServerAzureADOnlyAuthenticationsClientGetResponse` has been removed
+- Field `LongTermRetentionBackupsClientGetByResourceGroupResult` of struct `LongTermRetentionBackupsClientGetByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `LongTermRetentionBackupsClientGetByResourceGroupResponse` has been removed
+- Field `WorkloadGroupsClientCreateOrUpdateResult` of struct `WorkloadGroupsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `WorkloadGroupsClientCreateOrUpdateResponse` has been removed
+- Field `BackupShortTermRetentionPoliciesClientUpdateResult` of struct `BackupShortTermRetentionPoliciesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `BackupShortTermRetentionPoliciesClientUpdateResponse` has been removed
+- Field `SyncGroupsClientListSyncDatabaseIDsResult` of struct `SyncGroupsClientListSyncDatabaseIDsResponse` has been removed
+- Field `RawResponse` of struct `SyncGroupsClientListSyncDatabaseIDsResponse` has been removed
+- Field `DatabaseVulnerabilityAssessmentScansClientGetResult` of struct `DatabaseVulnerabilityAssessmentScansClientGetResponse` has been removed
+- Field `RawResponse` of struct `DatabaseVulnerabilityAssessmentScansClientGetResponse` has been removed
+- Field `ServerTrustGroupsClientCreateOrUpdateResult` of struct `ServerTrustGroupsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServerTrustGroupsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `JobsClientDeleteResponse` has been removed
+- Field `ManagedInstanceKeysClientCreateOrUpdateResult` of struct `ManagedInstanceKeysClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstanceKeysClientCreateOrUpdateResponse` has been removed
+- Field `ServerDNSAliasesClientAcquireResult` of struct `ServerDNSAliasesClientAcquireResponse` has been removed
+- Field `RawResponse` of struct `ServerDNSAliasesClientAcquireResponse` has been removed
+- Field `JobStepExecutionsClientGetResult` of struct `JobStepExecutionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `JobStepExecutionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `EncryptionProtectorsClientRevalidateResponse` has been removed
+- Field `DatabaseTablesClientListBySchemaResult` of struct `DatabaseTablesClientListBySchemaResponse` has been removed
+- Field `RawResponse` of struct `DatabaseTablesClientListBySchemaResponse` has been removed
+- Field `LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResult` of struct `LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse` has been removed
+- Field `RawResponse` of struct `LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse` has been removed
+- Field `ServerAdvisorsClientListByServerResult` of struct `ServerAdvisorsClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `ServerAdvisorsClientListByServerResponse` has been removed
+- Field `LongTermRetentionBackupsClientListByServerResult` of struct `LongTermRetentionBackupsClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `LongTermRetentionBackupsClientListByServerResponse` has been removed
+- Field `ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseResult` of struct `ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseResponse` has been removed
+- Field `SyncAgentsClientListLinkedDatabasesResult` of struct `SyncAgentsClientListLinkedDatabasesResponse` has been removed
+- Field `RawResponse` of struct `SyncAgentsClientListLinkedDatabasesResponse` has been removed
+- Field `ManagedDatabaseSensitivityLabelsClientCreateOrUpdateResult` of struct `ManagedDatabaseSensitivityLabelsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseSensitivityLabelsClientCreateOrUpdateResponse` has been removed
+- Field `EncryptionProtectorsClientCreateOrUpdateResult` of struct `EncryptionProtectorsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `EncryptionProtectorsClientCreateOrUpdateResponse` has been removed
+- Field `ExtendedDatabaseBlobAuditingPoliciesClientGetResult` of struct `ExtendedDatabaseBlobAuditingPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ExtendedDatabaseBlobAuditingPoliciesClientGetResponse` has been removed
+- Field `ManagedInstancePrivateEndpointConnectionsClientGetResult` of struct `ManagedInstancePrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstancePrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `WorkloadGroupsClientListByDatabaseResult` of struct `WorkloadGroupsClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `WorkloadGroupsClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseVulnerabilityAssessmentRuleBaselinesClientDeleteResponse` has been removed
+- Field `ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResult` of struct `ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse` has been removed
+- Field `DatabaseRecommendedActionsClientUpdateResult` of struct `DatabaseRecommendedActionsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `DatabaseRecommendedActionsClientUpdateResponse` has been removed
+- Field `RestorePointsClientGetResult` of struct `RestorePointsClientGetResponse` has been removed
+- Field `RawResponse` of struct `RestorePointsClientGetResponse` has been removed
+- Field `ManagedDatabaseColumnsClientGetResult` of struct `ManagedDatabaseColumnsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseColumnsClientGetResponse` has been removed
+- Field `ManagedInstanceLongTermRetentionPoliciesClientGetResult` of struct `ManagedInstanceLongTermRetentionPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstanceLongTermRetentionPoliciesClientGetResponse` has been removed
+- Field `LongTermRetentionBackupsClientListByLocationResult` of struct `LongTermRetentionBackupsClientListByLocationResponse` has been removed
+- Field `RawResponse` of struct `LongTermRetentionBackupsClientListByLocationResponse` has been removed
+- Field `DatabaseUsagesClientListByDatabaseResult` of struct `DatabaseUsagesClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `DatabaseUsagesClientListByDatabaseResponse` has been removed
+- Field `JobTargetExecutionsClientGetResult` of struct `JobTargetExecutionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `JobTargetExecutionsClientGetResponse` has been removed
+- Field `ManagedDatabaseSchemasClientListByDatabaseResult` of struct `ManagedDatabaseSchemasClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseSchemasClientListByDatabaseResponse` has been removed
+- Field `SyncMembersClientListBySyncGroupResult` of struct `SyncMembersClientListBySyncGroupResponse` has been removed
+- Field `RawResponse` of struct `SyncMembersClientListBySyncGroupResponse` has been removed
+- Field `LedgerDigestUploadsClientCreateOrUpdateResult` of struct `LedgerDigestUploadsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `LedgerDigestUploadsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `LongTermRetentionManagedInstanceBackupsClientDeleteResponse` has been removed
+- Field `DatabaseSecurityAlertPoliciesClientListByDatabaseResult` of struct `DatabaseSecurityAlertPoliciesClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `DatabaseSecurityAlertPoliciesClientListByDatabaseResponse` has been removed
+- Field `PrivateEndpointConnectionsClientGetResult` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SensitivityLabelsClientEnableRecommendationResponse` has been removed
+- Field `RawResponse` of struct `ServerDNSAliasesClientDeleteResponse` has been removed
+- Field `ElasticPoolsClientListMetricsResult` of struct `ElasticPoolsClientListMetricsResponse` has been removed
+- Field `RawResponse` of struct `ElasticPoolsClientListMetricsResponse` has been removed
+- Field `ServerConnectionPoliciesClientCreateOrUpdateResult` of struct `ServerConnectionPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServerConnectionPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `ManagedBackupShortTermRetentionPoliciesClientListByDatabaseResult` of struct `ManagedBackupShortTermRetentionPoliciesClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `ManagedBackupShortTermRetentionPoliciesClientListByDatabaseResponse` has been removed
+- Field `InstancePoolsClientUpdateResult` of struct `InstancePoolsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `InstancePoolsClientUpdateResponse` has been removed
+- Field `DatabaseRecommendedActionsClientListByDatabaseAdvisorResult` of struct `DatabaseRecommendedActionsClientListByDatabaseAdvisorResponse` has been removed
+- Field `RawResponse` of struct `DatabaseRecommendedActionsClientListByDatabaseAdvisorResponse` has been removed
+- Field `ServersClientCheckNameAvailabilityResult` of struct `ServersClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `ServersClientCheckNameAvailabilityResponse` has been removed
+- Field `VirtualClustersClientUpdateResult` of struct `VirtualClustersClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualClustersClientUpdateResponse` has been removed
+- Field `ManagedDatabaseVulnerabilityAssessmentsClientGetResult` of struct `ManagedDatabaseVulnerabilityAssessmentsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseVulnerabilityAssessmentsClientGetResponse` has been removed
+- Field `InstancePoolsClientListByResourceGroupResult` of struct `InstancePoolsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `InstancePoolsClientListByResourceGroupResponse` has been removed
+- Field `LongTermRetentionManagedInstanceBackupsClientListByDatabaseResult` of struct `LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstanceAdministratorsClientDeleteResponse` has been removed
+- Field `DatabasesClientExportResult` of struct `DatabasesClientExportResponse` has been removed
+- Field `RawResponse` of struct `DatabasesClientExportResponse` has been removed
+- Field `DatabaseVulnerabilityAssessmentRuleBaselinesClientCreateOrUpdateResult` of struct `DatabaseVulnerabilityAssessmentRuleBaselinesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DatabaseVulnerabilityAssessmentRuleBaselinesClientCreateOrUpdateResponse` has been removed
+- Field `ManagedDatabaseVulnerabilityAssessmentsClientListByDatabaseResult` of struct `ManagedDatabaseVulnerabilityAssessmentsClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseVulnerabilityAssessmentsClientListByDatabaseResponse` has been removed
+- Field `VirtualNetworkRulesClientCreateOrUpdateResult` of struct `VirtualNetworkRulesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkRulesClientCreateOrUpdateResponse` has been removed
+- Field `ServerConnectionPoliciesClientListByServerResult` of struct `ServerConnectionPoliciesClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `ServerConnectionPoliciesClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstanceOperationsClientCancelResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabasesClientDeleteResponse` has been removed
+- Field `ElasticPoolsClientCreateOrUpdateResult` of struct `ElasticPoolsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ElasticPoolsClientCreateOrUpdateResponse` has been removed
+- Field `ManagedInstancesClientUpdateResult` of struct `ManagedInstancesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstancesClientUpdateResponse` has been removed
+- Field `DelegatedResources` of struct `DatabaseIdentity` has been removed
+- Field `DatabasesClientResumeResult` of struct `DatabasesClientResumeResponse` has been removed
+- Field `RawResponse` of struct `DatabasesClientResumeResponse` has been removed
+- Field `ManagedBackupShortTermRetentionPoliciesClientUpdateResult` of struct `ManagedBackupShortTermRetentionPoliciesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagedBackupShortTermRetentionPoliciesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseVulnerabilityAssessmentsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstanceEncryptionProtectorsClientRevalidateResponse` has been removed
+- Field `ServiceObjectivesClientGetResult` of struct `ServiceObjectivesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServiceObjectivesClientGetResponse` has been removed
+- Field `DeletedServersClientListByLocationResult` of struct `DeletedServersClientListByLocationResponse` has been removed
+- Field `RawResponse` of struct `DeletedServersClientListByLocationResponse` has been removed
+- Field `DatabasesClientListByServerResult` of struct `DatabasesClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `DatabasesClientListByServerResponse` has been removed
+- Field `LongTermRetentionPoliciesClientGetResult` of struct `LongTermRetentionPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `LongTermRetentionPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseSensitivityLabelsClientUpdateResponse` has been removed
+- Field `InstanceFailoverGroupsClientFailoverResult` of struct `InstanceFailoverGroupsClientFailoverResponse` has been removed
+- Field `RawResponse` of struct `InstanceFailoverGroupsClientFailoverResponse` has been removed
+- Field `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientGetResult` of struct `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientGetResponse` has been removed
+- Field `DatabaseOperationsClientListByDatabaseResult` of struct `DatabaseOperationsClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `DatabaseOperationsClientListByDatabaseResponse` has been removed
+- Field `ManagedInstanceEncryptionProtectorsClientGetResult` of struct `ManagedInstanceEncryptionProtectorsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstanceEncryptionProtectorsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstanceKeysClientDeleteResponse` has been removed
+- Field `ManagedDatabaseSecurityAlertPoliciesClientCreateOrUpdateResult` of struct `ManagedDatabaseSecurityAlertPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseSecurityAlertPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `LongTermRetentionManagedInstanceBackupsClientGetByResourceGroupResult` of struct `LongTermRetentionManagedInstanceBackupsClientGetByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `LongTermRetentionManagedInstanceBackupsClientGetByResourceGroupResponse` has been removed
+- Field `ExtendedServerBlobAuditingPoliciesClientCreateOrUpdateResult` of struct `ExtendedServerBlobAuditingPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ExtendedServerBlobAuditingPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `DataMaskingRulesClientCreateOrUpdateResult` of struct `DataMaskingRulesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DataMaskingRulesClientCreateOrUpdateResponse` has been removed
+- Field `ManagedInstanceAzureADOnlyAuthenticationsClientGetResult` of struct `ManagedInstanceAzureADOnlyAuthenticationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstanceAzureADOnlyAuthenticationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DatabasesClientFailoverResponse` has been removed
+- Field `JobStepsClientListByJobResult` of struct `JobStepsClientListByJobResponse` has been removed
+- Field `RawResponse` of struct `JobStepsClientListByJobResponse` has been removed
+- Field `WorkloadGroupsClientGetResult` of struct `WorkloadGroupsClientGetResponse` has been removed
+- Field `RawResponse` of struct `WorkloadGroupsClientGetResponse` has been removed
+- Field `ManagedInstanceAzureADOnlyAuthenticationsClientCreateOrUpdateResult` of struct `ManagedInstanceAzureADOnlyAuthenticationsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstanceAzureADOnlyAuthenticationsClientCreateOrUpdateResponse` has been removed
+- Field `ServerCommunicationLinksClientCreateOrUpdateResult` of struct `ServerCommunicationLinksClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServerCommunicationLinksClientCreateOrUpdateResponse` has been removed
+- Field `ExtendedServerBlobAuditingPoliciesClientGetResult` of struct `ExtendedServerBlobAuditingPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ExtendedServerBlobAuditingPoliciesClientGetResponse` has been removed
+- Field `ReplicationLinksClientGetResult` of struct `ReplicationLinksClientGetResponse` has been removed
+- Field `RawResponse` of struct `ReplicationLinksClientGetResponse` has been removed
+- Field `FirewallRulesClientCreateOrUpdateResult` of struct `FirewallRulesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `FirewallRulesClientCreateOrUpdateResponse` has been removed
+- Field `JobExecutionsClientCreateOrUpdateResult` of struct `JobExecutionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `JobExecutionsClientCreateOrUpdateResponse` has been removed
+- Field `LongTermRetentionBackupsClientUpdateResult` of struct `LongTermRetentionBackupsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `LongTermRetentionBackupsClientUpdateResponse` has been removed
+- Field `RestorePointsClientCreateResult` of struct `RestorePointsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `RestorePointsClientCreateResponse` has been removed
+- Field `ServerAzureADAdministratorsClientListByServerResult` of struct `ServerAzureADAdministratorsClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `ServerAzureADAdministratorsClientListByServerResponse` has been removed
+- Field `DatabaseVulnerabilityAssessmentScansClientListByDatabaseResult` of struct `DatabaseVulnerabilityAssessmentScansClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `DatabaseVulnerabilityAssessmentScansClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstancesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `SensitivityLabelsClientDisableRecommendationResponse` has been removed
+- Field `ManagedDatabasesClientUpdateResult` of struct `ManagedDatabasesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabasesClientUpdateResponse` has been removed
+- Field `ServerDevOpsAuditSettingsClientCreateOrUpdateResult` of struct `ServerDevOpsAuditSettingsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServerDevOpsAuditSettingsClientCreateOrUpdateResponse` has been removed
+- Field `DatabaseVulnerabilityAssessmentRuleBaselinesClientGetResult` of struct `DatabaseVulnerabilityAssessmentRuleBaselinesClientGetResponse` has been removed
+- Field `RawResponse` of struct `DatabaseVulnerabilityAssessmentRuleBaselinesClientGetResponse` has been removed
+- Field `RestorableDroppedManagedDatabasesClientGetResult` of struct `RestorableDroppedManagedDatabasesClientGetResponse` has been removed
+- Field `RawResponse` of struct `RestorableDroppedManagedDatabasesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServerAzureADAdministratorsClientDeleteResponse` has been removed
+- Field `DatabasesClientListMetricsResult` of struct `DatabasesClientListMetricsResponse` has been removed
+- Field `RawResponse` of struct `DatabasesClientListMetricsResponse` has been removed
+- Field `ManagedBackupShortTermRetentionPoliciesClientCreateOrUpdateResult` of struct `ManagedBackupShortTermRetentionPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagedBackupShortTermRetentionPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `InstanceFailoverGroupsClientDeleteResponse` has been removed
+- Field `ManagedBackupShortTermRetentionPoliciesClientGetResult` of struct `ManagedBackupShortTermRetentionPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedBackupShortTermRetentionPoliciesClientGetResponse` has been removed
+- Field `WorkloadClassifiersClientGetResult` of struct `WorkloadClassifiersClientGetResponse` has been removed
+- Field `RawResponse` of struct `WorkloadClassifiersClientGetResponse` has been removed
+- Field `ServersClientGetResult` of struct `ServersClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServersClientGetResponse` has been removed
+- Field `JobTargetExecutionsClientListByJobExecutionResult` of struct `JobTargetExecutionsClientListByJobExecutionResponse` has been removed
+- Field `RawResponse` of struct `JobTargetExecutionsClientListByJobExecutionResponse` has been removed
+- Field `RawResponse` of struct `WorkloadClassifiersClientDeleteResponse` has been removed
+- Field `ServerAzureADAdministratorsClientGetResult` of struct `ServerAzureADAdministratorsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServerAzureADAdministratorsClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkRulesClientDeleteResponse` has been removed
+- Field `ManagedDatabaseSecurityEventsClientListByDatabaseResult` of struct `ManagedDatabaseSecurityEventsClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseSecurityEventsClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `RecommendedSensitivityLabelsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServerAzureADOnlyAuthenticationsClientDeleteResponse` has been removed
+- Field `ServerTrustGroupsClientListByInstanceResult` of struct `ServerTrustGroupsClientListByInstanceResponse` has been removed
+- Field `RawResponse` of struct `ServerTrustGroupsClientListByInstanceResponse` has been removed
+- Field `InstanceFailoverGroupsClientListByLocationResult` of struct `InstanceFailoverGroupsClientListByLocationResponse` has been removed
+- Field `RawResponse` of struct `InstanceFailoverGroupsClientListByLocationResponse` has been removed
+- Field `ServerAutomaticTuningClientGetResult` of struct `ServerAutomaticTuningClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServerAutomaticTuningClientGetResponse` has been removed
+- Field `RawResponse` of struct `LongTermRetentionBackupsClientDeleteResponse` has been removed
+- Field `InstancePoolsClientListResult` of struct `InstancePoolsClientListResponse` has been removed
+- Field `RawResponse` of struct `InstancePoolsClientListResponse` has been removed
+- Field `ServerCommunicationLinksClientListByServerResult` of struct `ServerCommunicationLinksClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `ServerCommunicationLinksClientListByServerResponse` has been removed
+- Field `DatabaseBlobAuditingPoliciesClientGetResult` of struct `DatabaseBlobAuditingPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `DatabaseBlobAuditingPoliciesClientGetResponse` has been removed
+- Field `DatabasesClientGetResult` of struct `DatabasesClientGetResponse` has been removed
+- Field `RawResponse` of struct `DatabasesClientGetResponse` has been removed
+- Field `RawResponse` of struct `DatabaseExtensionsClientGetResponse` has been removed
+- Field `DataMaskingPoliciesClientGetResult` of struct `DataMaskingPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `DataMaskingPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `SyncGroupsClientRefreshHubSchemaResponse` has been removed
+- Field `ElasticPoolsClientUpdateResult` of struct `ElasticPoolsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ElasticPoolsClientUpdateResponse` has been removed
+- Field `OutboundFirewallRulesClientGetResult` of struct `OutboundFirewallRulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `OutboundFirewallRulesClientGetResponse` has been removed
+- Field `ServerAutomaticTuningClientUpdateResult` of struct `ServerAutomaticTuningClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServerAutomaticTuningClientUpdateResponse` has been removed
+- Field `ManagedInstancesClientGetResult` of struct `ManagedInstancesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstancesClientGetResponse` has been removed
+- Field `JobTargetGroupsClientCreateOrUpdateResult` of struct `JobTargetGroupsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `JobTargetGroupsClientCreateOrUpdateResponse` has been removed
+- Field `ServiceObjectivesClientListByServerResult` of struct `ServiceObjectivesClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `ServiceObjectivesClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `DatabasesClientRenameResponse` has been removed
+- Field `RawResponse` of struct `DatabaseVulnerabilityAssessmentScansClientInitiateScanResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstancePrivateEndpointConnectionsClientDeleteResponse` has been removed
+- Field `RecoverableDatabasesClientGetResult` of struct `RecoverableDatabasesClientGetResponse` has been removed
+- Field `RawResponse` of struct `RecoverableDatabasesClientGetResponse` has been removed
+- Field `FirewallRulesClientListByServerResult` of struct `FirewallRulesClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `FirewallRulesClientListByServerResponse` has been removed
+- Field `BackupShortTermRetentionPoliciesClientCreateOrUpdateResult` of struct `BackupShortTermRetentionPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `BackupShortTermRetentionPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `ManagedInstanceKeysClientListByInstanceResult` of struct `ManagedInstanceKeysClientListByInstanceResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstanceKeysClientListByInstanceResponse` has been removed
+- Field `ManagedDatabasesClientCreateOrUpdateResult` of struct `ManagedDatabasesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabasesClientCreateOrUpdateResponse` has been removed
+- Field `JobStepsClientListByVersionResult` of struct `JobStepsClientListByVersionResponse` has been removed
+- Field `RawResponse` of struct `JobStepsClientListByVersionResponse` has been removed
+- Field `LongTermRetentionBackupsClientListByResourceGroupDatabaseResult` of struct `LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse` has been removed
+- Field `RawResponse` of struct `LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse` has been removed
+- Field `RawResponse` of struct `LongTermRetentionBackupsClientDeleteByResourceGroupResponse` has been removed
+- Field `JobAgentsClientListByServerResult` of struct `JobAgentsClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `JobAgentsClientListByServerResponse` has been removed
+- Field `ManagedInstanceOperationsClientListByManagedInstanceResult` of struct `ManagedInstanceOperationsClientListByManagedInstanceResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstanceOperationsClientListByManagedInstanceResponse` has been removed
+- Field `ManagedInstanceEncryptionProtectorsClientListByInstanceResult` of struct `ManagedInstanceEncryptionProtectorsClientListByInstanceResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstanceEncryptionProtectorsClientListByInstanceResponse` has been removed
+- Field `ElasticPoolOperationsClientListByElasticPoolResult` of struct `ElasticPoolOperationsClientListByElasticPoolResponse` has been removed
+- Field `RawResponse` of struct `ElasticPoolOperationsClientListByElasticPoolResponse` has been removed
+- Field `ManagedDatabaseVulnerabilityAssessmentScansClientListByDatabaseResult` of struct `ManagedDatabaseVulnerabilityAssessmentScansClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseVulnerabilityAssessmentScansClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `DatabaseVulnerabilityAssessmentsClientDeleteResponse` has been removed
+- Field `GeoBackupPoliciesClientListByDatabaseResult` of struct `GeoBackupPoliciesClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `GeoBackupPoliciesClientListByDatabaseResponse` has been removed
+- Field `ManagedDatabasesClientListInaccessibleByInstanceResult` of struct `ManagedDatabasesClientListInaccessibleByInstanceResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabasesClientListInaccessibleByInstanceResponse` has been removed
+- Field `ServersClientImportDatabaseResult` of struct `ServersClientImportDatabaseResponse` has been removed
+- Field `RawResponse` of struct `ServersClientImportDatabaseResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientDeleteResponse` has been removed
+- Field `CapabilitiesClientListByLocationResult` of struct `CapabilitiesClientListByLocationResponse` has been removed
+- Field `RawResponse` of struct `CapabilitiesClientListByLocationResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstancesClientFailoverResponse` has been removed
+- Field `ExtendedDatabaseBlobAuditingPoliciesClientListByDatabaseResult` of struct `ExtendedDatabaseBlobAuditingPoliciesClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `ExtendedDatabaseBlobAuditingPoliciesClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `ServersClientDeleteResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `ManagedInstanceOperationsClientGetResult` of struct `ManagedInstanceOperationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstanceOperationsClientGetResponse` has been removed
+- Field `LongTermRetentionBackupsClientUpdateByResourceGroupResult` of struct `LongTermRetentionBackupsClientUpdateByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `LongTermRetentionBackupsClientUpdateByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `SensitivityLabelsClientDeleteResponse` has been removed
+- Field `ManagedInstanceVulnerabilityAssessmentsClientListByInstanceResult` of struct `ManagedInstanceVulnerabilityAssessmentsClientListByInstanceResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstanceVulnerabilityAssessmentsClientListByInstanceResponse` has been removed
+- Field `JobAgentsClientUpdateResult` of struct `JobAgentsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `JobAgentsClientUpdateResponse` has been removed
+- Field `BackupShortTermRetentionPoliciesClientListByDatabaseResult` of struct `BackupShortTermRetentionPoliciesClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `BackupShortTermRetentionPoliciesClientListByDatabaseResponse` has been removed
+- Field `SyncAgentsClientCreateOrUpdateResult` of struct `SyncAgentsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SyncAgentsClientCreateOrUpdateResponse` has been removed
+- Field `GeoBackupPoliciesClientGetResult` of struct `GeoBackupPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `GeoBackupPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ReplicationLinksClientFailoverAllowDataLossResponse` has been removed
+- Field `UsagesClientListByInstancePoolResult` of struct `UsagesClientListByInstancePoolResponse` has been removed
+- Field `RawResponse` of struct `UsagesClientListByInstancePoolResponse` has been removed
+- Field `ManagedInstanceKeysClientGetResult` of struct `ManagedInstanceKeysClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstanceKeysClientGetResponse` has been removed
+- Field `MaintenanceWindowsClientGetResult` of struct `MaintenanceWindowsClientGetResponse` has been removed
+- Field `RawResponse` of struct `MaintenanceWindowsClientGetResponse` has been removed
+- Field `DatabaseExtensionsClientListByDatabaseResult` of struct `DatabaseExtensionsClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `DatabaseExtensionsClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `JobExecutionsClientCancelResponse` has been removed
+- Field `LongTermRetentionBackupsClientCopyByResourceGroupResult` of struct `LongTermRetentionBackupsClientCopyByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `LongTermRetentionBackupsClientCopyByResourceGroupResponse` has been removed
+- Field `ManagedDatabaseVulnerabilityAssessmentsClientCreateOrUpdateResult` of struct `ManagedDatabaseVulnerabilityAssessmentsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseVulnerabilityAssessmentsClientCreateOrUpdateResponse` has been removed
+- Field `InstanceFailoverGroupsClientGetResult` of struct `InstanceFailoverGroupsClientGetResponse` has been removed
+- Field `RawResponse` of struct `InstanceFailoverGroupsClientGetResponse` has been removed
+- Field `VirtualClustersClientGetResult` of struct `VirtualClustersClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualClustersClientGetResponse` has been removed
+- Field `FailoverGroupsClientFailoverResult` of struct `FailoverGroupsClientFailoverResponse` has been removed
+- Field `RawResponse` of struct `FailoverGroupsClientFailoverResponse` has been removed
+- Field `EncryptionProtectorsClientListByServerResult` of struct `EncryptionProtectorsClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `EncryptionProtectorsClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `JobStepsClientDeleteResponse` has been removed
+- Field `ManagedDatabaseQueriesClientListByQueryResult` of struct `ManagedDatabaseQueriesClientListByQueryResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseQueriesClientListByQueryResponse` has been removed
+- Field `ServerDNSAliasesClientCreateOrUpdateResult` of struct `ServerDNSAliasesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServerDNSAliasesClientCreateOrUpdateResponse` has been removed
+- Field `ReplicationLinksClientListByServerResult` of struct `ReplicationLinksClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `ReplicationLinksClientListByServerResponse` has been removed
+- Field `ManagedDatabaseSchemasClientGetResult` of struct `ManagedDatabaseSchemasClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseSchemasClientGetResponse` has been removed
+- Field `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientListByRestorableDroppedDatabaseResult` of struct `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientListByRestorableDroppedDatabaseResponse` has been removed
+- Field `RawResponse` of struct `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientListByRestorableDroppedDatabaseResponse` has been removed
+- Field `FirewallRulesClientGetResult` of struct `FirewallRulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `FirewallRulesClientGetResponse` has been removed
+- Field `ServerBlobAuditingPoliciesClientCreateOrUpdateResult` of struct `ServerBlobAuditingPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServerBlobAuditingPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `WorkloadClassifiersClientCreateOrUpdateResult` of struct `WorkloadClassifiersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `WorkloadClassifiersClientCreateOrUpdateResponse` has been removed
+- Field `ManagedDatabaseTransparentDataEncryptionClientGetResult` of struct `ManagedDatabaseTransparentDataEncryptionClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseTransparentDataEncryptionClientGetResponse` has been removed
+- Field `DataWarehouseUserActivitiesClientGetResult` of struct `DataWarehouseUserActivitiesClientGetResponse` has been removed
+- Field `RawResponse` of struct `DataWarehouseUserActivitiesClientGetResponse` has been removed
+- Field `JobVersionsClientGetResult` of struct `JobVersionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `JobVersionsClientGetResponse` has been removed
+- Field `ManagedInstanceVulnerabilityAssessmentsClientCreateOrUpdateResult` of struct `ManagedInstanceVulnerabilityAssessmentsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstanceVulnerabilityAssessmentsClientCreateOrUpdateResponse` has been removed
+- Field `TimeZonesClientGetResult` of struct `TimeZonesClientGetResponse` has been removed
+- Field `RawResponse` of struct `TimeZonesClientGetResponse` has been removed
+- Field `InstancePoolsClientCreateOrUpdateResult` of struct `InstancePoolsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `InstancePoolsClientCreateOrUpdateResponse` has been removed
+- Field `RecoverableManagedDatabasesClientGetResult` of struct `RecoverableManagedDatabasesClientGetResponse` has been removed
+- Field `RawResponse` of struct `RecoverableManagedDatabasesClientGetResponse` has been removed
+- Field `VirtualNetworkRulesClientGetResult` of struct `VirtualNetworkRulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkRulesClientGetResponse` has been removed
+- Field `DatabaseColumnsClientListByTableResult` of struct `DatabaseColumnsClientListByTableResponse` has been removed
+- Field `RawResponse` of struct `DatabaseColumnsClientListByTableResponse` has been removed
+- Field `VirtualClustersClientListByResourceGroupResult` of struct `VirtualClustersClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `VirtualClustersClientListByResourceGroupResponse` has been removed
+- Field `DatabaseBlobAuditingPoliciesClientCreateOrUpdateResult` of struct `DatabaseBlobAuditingPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DatabaseBlobAuditingPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `ManagedDatabaseSecurityAlertPoliciesClientGetResult` of struct `ManagedDatabaseSecurityAlertPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseSecurityAlertPoliciesClientGetResponse` has been removed
+- Field `SyncGroupsClientCreateOrUpdateResult` of struct `SyncGroupsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SyncGroupsClientCreateOrUpdateResponse` has been removed
+- Field `ManagedDatabaseQueriesClientGetResult` of struct `ManagedDatabaseQueriesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseQueriesClientGetResponse` has been removed
+- Field `FailoverGroupsClientGetResult` of struct `FailoverGroupsClientGetResponse` has been removed
+- Field `RawResponse` of struct `FailoverGroupsClientGetResponse` has been removed
+- Field `LongTermRetentionManagedInstanceBackupsClientListByInstanceResult` of struct `LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse` has been removed
+- Field `RawResponse` of struct `LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse` has been removed
+- Field `SubscriptionUsagesClientGetResult` of struct `SubscriptionUsagesClientGetResponse` has been removed
+- Field `RawResponse` of struct `SubscriptionUsagesClientGetResponse` has been removed
+- Field `ServersClientListResult` of struct `ServersClientListResponse` has been removed
+- Field `RawResponse` of struct `ServersClientListResponse` has been removed
+- Field `ManagedDatabaseVulnerabilityAssessmentScansClientGetResult` of struct `ManagedDatabaseVulnerabilityAssessmentScansClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseVulnerabilityAssessmentScansClientGetResponse` has been removed
+- Field `DatabasesClientCreateOrUpdateResult` of struct `DatabasesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DatabasesClientCreateOrUpdateResponse` has been removed
+- Field `FailoverGroupsClientListByServerResult` of struct `FailoverGroupsClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `FailoverGroupsClientListByServerResponse` has been removed
+- Field `VirtualNetworkRulesClientListByServerResult` of struct `VirtualNetworkRulesClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkRulesClientListByServerResponse` has been removed
+- Field `RestorableDroppedDatabasesClientGetResult` of struct `RestorableDroppedDatabasesClientGetResponse` has been removed
+- Field `RawResponse` of struct `RestorableDroppedDatabasesClientGetResponse` has been removed
+- Field `ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResult` of struct `ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `ServerVulnerabilityAssessmentsClientDeleteResponse` has been removed
+- Field `ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceResult` of struct `ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceResponse` has been removed
+- Field `ManagedInstanceAdministratorsClientGetResult` of struct `ManagedInstanceAdministratorsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstanceAdministratorsClientGetResponse` has been removed
+- Field `ManagedDatabaseColumnsClientListByDatabaseResult` of struct `ManagedDatabaseColumnsClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseColumnsClientListByDatabaseResponse` has been removed
+- Field `DatabasesClientListMetricDefinitionsResult` of struct `DatabasesClientListMetricDefinitionsResponse` has been removed
+- Field `RawResponse` of struct `DatabasesClientListMetricDefinitionsResponse` has been removed
+- Field `PrivateLinkResourcesClientGetResult` of struct `PrivateLinkResourcesClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientGetResponse` has been removed
+- Field `LongTermRetentionBackupsClientListByDatabaseResult` of struct `LongTermRetentionBackupsClientListByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `LongTermRetentionBackupsClientListByDatabaseResponse` has been removed
+- Field `JobVersionsClientListByJobResult` of struct `JobVersionsClientListByJobResponse` has been removed
+- Field `RawResponse` of struct `JobVersionsClientListByJobResponse` has been removed
+- Field `ElasticPoolDatabaseActivitiesClientListByElasticPoolResult` of struct `ElasticPoolDatabaseActivitiesClientListByElasticPoolResponse` has been removed
+- Field `RawResponse` of struct `ElasticPoolDatabaseActivitiesClientListByElasticPoolResponse` has been removed
+- Field `ExtendedServerBlobAuditingPoliciesClientListByServerResult` of struct `ExtendedServerBlobAuditingPoliciesClientListByServerResponse` has been removed
+- Field `RawResponse` of struct `ExtendedServerBlobAuditingPoliciesClientListByServerResponse` has been removed
+- Field `ServerSecurityAlertPoliciesClientGetResult` of struct `ServerSecurityAlertPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServerSecurityAlertPoliciesClientGetResponse` has been removed
+- Field `ManagedDatabaseSensitivityLabelsClientGetResult` of struct `ManagedDatabaseSensitivityLabelsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedDatabaseSensitivityLabelsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedInstanceVulnerabilityAssessmentsClientDeleteResponse` has been removed
+- Field `DatabaseRecommendedActionsClientGetResult` of struct `DatabaseRecommendedActionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DatabaseRecommendedActionsClientGetResponse` has been removed
+- Field `SensitivityLabelsClientListCurrentByDatabaseResult` of struct `SensitivityLabelsClientListCurrentByDatabaseResponse` has been removed
+- Field `RawResponse` of struct `SensitivityLabelsClientListCurrentByDatabaseResponse` has been removed
+- Field `JobCredentialsClientCreateOrUpdateResult` of struct `JobCredentialsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `JobCredentialsClientCreateOrUpdateResponse` has been removed
+
+### Features Added
+
+- New const `ReplicationModeSync`
+- New const `ReplicationModeAsync`
+- New function `*DistributedAvailabilityGroupsClient.BeginDelete(context.Context, string, string, string, *DistributedAvailabilityGroupsClientBeginDeleteOptions) (*armruntime.Poller[DistributedAvailabilityGroupsClientDeleteResponse], error)`
+- New function `NewEndpointCertificatesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*EndpointCertificatesClient, error)`
+- New function `DistributedAvailabilityGroup.MarshalJSON() ([]byte, error)`
+- New function `IPv6FirewallRuleListResult.MarshalJSON() ([]byte, error)`
+- New function `ManagedServerDNSAliasListResult.MarshalJSON() ([]byte, error)`
+- New function `*DistributedAvailabilityGroupsClient.BeginUpdate(context.Context, string, string, string, DistributedAvailabilityGroup, *DistributedAvailabilityGroupsClientBeginUpdateOptions) (*armruntime.Poller[DistributedAvailabilityGroupsClientUpdateResponse], error)`
+- New function `*ManagedServerDNSAliasesClient.BeginCreateOrUpdate(context.Context, string, string, string, ManagedServerDNSAliasCreation, *ManagedServerDNSAliasesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ManagedServerDNSAliasesClientCreateOrUpdateResponse], error)`
+- New function `*ManagedServerDNSAliasesClient.BeginDelete(context.Context, string, string, string, *ManagedServerDNSAliasesClientBeginDeleteOptions) (*armruntime.Poller[ManagedServerDNSAliasesClientDeleteResponse], error)`
+- New function `*ManagedServerDNSAliasesClient.BeginAcquire(context.Context, string, string, string, ManagedServerDNSAliasAcquisition, *ManagedServerDNSAliasesClientBeginAcquireOptions) (*armruntime.Poller[ManagedServerDNSAliasesClientAcquireResponse], error)`
+- New function `NewDistributedAvailabilityGroupsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*DistributedAvailabilityGroupsClient, error)`
+- New function `*DistributedAvailabilityGroupsClient.BeginCreateOrUpdate(context.Context, string, string, string, DistributedAvailabilityGroup, *DistributedAvailabilityGroupsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[DistributedAvailabilityGroupsClientCreateOrUpdateResponse], error)`
+- New function `NewServerTrustCertificatesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ServerTrustCertificatesClient, error)`
+- New function `*IPv6FirewallRulesClient.Delete(context.Context, string, string, string, *IPv6FirewallRulesClientDeleteOptions) (IPv6FirewallRulesClientDeleteResponse, error)`
+- New function `*ServerTrustCertificatesClient.BeginCreateOrUpdate(context.Context, string, string, string, ServerTrustCertificate, *ServerTrustCertificatesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ServerTrustCertificatesClientCreateOrUpdateResponse], error)`
+- New function `EndpointCertificateListResult.MarshalJSON() ([]byte, error)`
+- New function `PossibleReplicationModeValues() []ReplicationMode`
+- New function `*EndpointCertificatesClient.ListByInstance(string, string, *EndpointCertificatesClientListByInstanceOptions) *runtime.Pager[EndpointCertificatesClientListByInstanceResponse]`
+- New function `*ManagedServerDNSAliasesClient.Get(context.Context, string, string, string, *ManagedServerDNSAliasesClientGetOptions) (ManagedServerDNSAliasesClientGetResponse, error)`
+- New function `NewManagedServerDNSAliasesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ManagedServerDNSAliasesClient, error)`
+- New function `*DistributedAvailabilityGroupsClient.ListByInstance(string, string, *DistributedAvailabilityGroupsClientListByInstanceOptions) *runtime.Pager[DistributedAvailabilityGroupsClientListByInstanceResponse]`
+- New function `*IPv6FirewallRulesClient.Get(context.Context, string, string, string, *IPv6FirewallRulesClientGetOptions) (IPv6FirewallRulesClientGetResponse, error)`
+- New function `*ServerTrustCertificatesClient.Get(context.Context, string, string, string, *ServerTrustCertificatesClientGetOptions) (ServerTrustCertificatesClientGetResponse, error)`
+- New function `DistributedAvailabilityGroupsListResult.MarshalJSON() ([]byte, error)`
+- New function `*ServerTrustCertificatesClient.BeginDelete(context.Context, string, string, string, *ServerTrustCertificatesClientBeginDeleteOptions) (*armruntime.Poller[ServerTrustCertificatesClientDeleteResponse], error)`
+- New function `*IPv6FirewallRulesClient.CreateOrUpdate(context.Context, string, string, string, IPv6FirewallRule, *IPv6FirewallRulesClientCreateOrUpdateOptions) (IPv6FirewallRulesClientCreateOrUpdateResponse, error)`
+- New function `*DatabaseUpdateProperties.UnmarshalJSON([]byte) error`
+- New function `ServerTrustCertificatesListResult.MarshalJSON() ([]byte, error)`
+- New function `*ServerTrustCertificatesClient.ListByInstance(string, string, *ServerTrustCertificatesClientListByInstanceOptions) *runtime.Pager[ServerTrustCertificatesClientListByInstanceResponse]`
+- New function `*DistributedAvailabilityGroupsClient.Get(context.Context, string, string, string, *DistributedAvailabilityGroupsClientGetOptions) (DistributedAvailabilityGroupsClientGetResponse, error)`
+- New function `*ManagedDatabaseSensitivityLabelsClient.ListByDatabase(string, string, string, *ManagedDatabaseSensitivityLabelsClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseSensitivityLabelsClientListByDatabaseResponse]`
+- New function `DatabaseUpdateProperties.MarshalJSON() ([]byte, error)`
+- New function `*ManagedServerDNSAliasesClient.ListByManagedInstance(string, string, *ManagedServerDNSAliasesClientListByManagedInstanceOptions) *runtime.Pager[ManagedServerDNSAliasesClientListByManagedInstanceResponse]`
+- New function `*IPv6FirewallRulesClient.ListByServer(string, string, *IPv6FirewallRulesClientListByServerOptions) *runtime.Pager[IPv6FirewallRulesClientListByServerResponse]`
+- New function `*SensitivityLabelsClient.ListByDatabase(string, string, string, *SensitivityLabelsClientListByDatabaseOptions) *runtime.Pager[SensitivityLabelsClientListByDatabaseResponse]`
+- New function `*EndpointCertificatesClient.Get(context.Context, string, string, string, *EndpointCertificatesClientGetOptions) (EndpointCertificatesClientGetResponse, error)`
+- New function `NewIPv6FirewallRulesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*IPv6FirewallRulesClient, error)`
+- New struct `DatabaseUpdateProperties`
+- New struct `DistributedAvailabilityGroup`
+- New struct `DistributedAvailabilityGroupProperties`
+- New struct `DistributedAvailabilityGroupsClient`
+- New struct `DistributedAvailabilityGroupsClientBeginCreateOrUpdateOptions`
+- New struct `DistributedAvailabilityGroupsClientBeginDeleteOptions`
+- New struct `DistributedAvailabilityGroupsClientBeginUpdateOptions`
+- New struct `DistributedAvailabilityGroupsClientCreateOrUpdateResponse`
+- New struct `DistributedAvailabilityGroupsClientDeleteResponse`
+- New struct `DistributedAvailabilityGroupsClientGetOptions`
+- New struct `DistributedAvailabilityGroupsClientGetResponse`
+- New struct `DistributedAvailabilityGroupsClientListByInstanceOptions`
+- New struct `DistributedAvailabilityGroupsClientListByInstanceResponse`
+- New struct `DistributedAvailabilityGroupsClientUpdateResponse`
+- New struct `DistributedAvailabilityGroupsListResult`
+- New struct `EndpointCertificate`
+- New struct `EndpointCertificateListResult`
+- New struct `EndpointCertificateProperties`
+- New struct `EndpointCertificatesClient`
+- New struct `EndpointCertificatesClientGetOptions`
+- New struct `EndpointCertificatesClientGetResponse`
+- New struct `EndpointCertificatesClientListByInstanceOptions`
+- New struct `EndpointCertificatesClientListByInstanceResponse`
+- New struct `IPv6FirewallRule`
+- New struct `IPv6FirewallRuleListResult`
+- New struct `IPv6FirewallRulesClient`
+- New struct `IPv6FirewallRulesClientCreateOrUpdateOptions`
+- New struct `IPv6FirewallRulesClientCreateOrUpdateResponse`
+- New struct `IPv6FirewallRulesClientDeleteOptions`
+- New struct `IPv6FirewallRulesClientDeleteResponse`
+- New struct `IPv6FirewallRulesClientGetOptions`
+- New struct `IPv6FirewallRulesClientGetResponse`
+- New struct `IPv6FirewallRulesClientListByServerOptions`
+- New struct `IPv6FirewallRulesClientListByServerResponse`
+- New struct `IPv6ServerFirewallRuleProperties`
+- New struct `ManagedDatabaseSensitivityLabelsClientListByDatabaseOptions`
+- New struct `ManagedDatabaseSensitivityLabelsClientListByDatabaseResponse`
+- New struct `ManagedServerDNSAlias`
+- New struct `ManagedServerDNSAliasAcquisition`
+- New struct `ManagedServerDNSAliasCreation`
+- New struct `ManagedServerDNSAliasListResult`
+- New struct `ManagedServerDNSAliasProperties`
+- New struct `ManagedServerDNSAliasesClient`
+- New struct `ManagedServerDNSAliasesClientAcquireResponse`
+- New struct `ManagedServerDNSAliasesClientBeginAcquireOptions`
+- New struct `ManagedServerDNSAliasesClientBeginCreateOrUpdateOptions`
+- New struct `ManagedServerDNSAliasesClientBeginDeleteOptions`
+- New struct `ManagedServerDNSAliasesClientCreateOrUpdateResponse`
+- New struct `ManagedServerDNSAliasesClientDeleteResponse`
+- New struct `ManagedServerDNSAliasesClientGetOptions`
+- New struct `ManagedServerDNSAliasesClientGetResponse`
+- New struct `ManagedServerDNSAliasesClientListByManagedInstanceOptions`
+- New struct `ManagedServerDNSAliasesClientListByManagedInstanceResponse`
+- New struct `SensitivityLabelsClientListByDatabaseOptions`
+- New struct `SensitivityLabelsClientListByDatabaseResponse`
+- New struct `ServerTrustCertificate`
+- New struct `ServerTrustCertificateProperties`
+- New struct `ServerTrustCertificatesClient`
+- New struct `ServerTrustCertificatesClientBeginCreateOrUpdateOptions`
+- New struct `ServerTrustCertificatesClientBeginDeleteOptions`
+- New struct `ServerTrustCertificatesClientCreateOrUpdateResponse`
+- New struct `ServerTrustCertificatesClientDeleteResponse`
+- New struct `ServerTrustCertificatesClientGetOptions`
+- New struct `ServerTrustCertificatesClientGetResponse`
+- New struct `ServerTrustCertificatesClientListByInstanceOptions`
+- New struct `ServerTrustCertificatesClientListByInstanceResponse`
+- New struct `ServerTrustCertificatesListResult`
+- New anonymous field `JobVersionListResult` in struct `JobVersionsClientListByJobResponse`
+- New field `ResumeToken` in struct `ServerKeysClientBeginCreateOrUpdateOptions`
+- New anonymous field `JobTargetGroup` in struct `JobTargetGroupsClientGetResponse`
+- New anonymous field `JobStepListResult` in struct `JobStepsClientListByJobResponse`
+- New field `ResumeToken` in struct `ReplicationLinksClientBeginFailoverOptions`
+- New anonymous field `OutboundFirewallRuleListResult` in struct `OutboundFirewallRulesClientListByServerResponse`
+- New anonymous field `GeoBackupPolicy` in struct `GeoBackupPoliciesClientCreateOrUpdateResponse`
+- New anonymous field `FailoverGroup` in struct `FailoverGroupsClientFailoverResponse`
+- New anonymous field `FirewallRule` in struct `FirewallRulesClientGetResponse`
+- New field `ResumeToken` in struct `SyncGroupsClientBeginRefreshHubSchemaOptions`
+- New field `ResumeToken` in struct `LedgerDigestUploadsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `ServerAzureADOnlyAuthenticationsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `JobAgentsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `LongTermRetentionBackupsClientBeginCopyByResourceGroupOptions`
+- New anonymous field `DataMaskingPolicy` in struct `DataMaskingPoliciesClientGetResponse`
+- New anonymous field `ManagedDatabaseSecurityAlertPolicy` in struct `ManagedDatabaseSecurityAlertPoliciesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `EncryptionProtectorsClientBeginRevalidateOptions`
+- New anonymous field `ManagedInstancePrivateLinkListResult` in struct `ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse`
+- New anonymous field `BackupShortTermRetentionPolicy` in struct `BackupShortTermRetentionPoliciesClientCreateOrUpdateResponse`
+- New anonymous field `ManagedInstanceAzureADOnlyAuthentication` in struct `ManagedInstanceAzureADOnlyAuthenticationsClientGetResponse`
+- New anonymous field `ServerDNSAlias` in struct `ServerDNSAliasesClientGetResponse`
+- New field `ResumeToken` in struct `ManagedDatabaseVulnerabilityAssessmentScansClientBeginInitiateScanOptions`
+- New field `ResumeToken` in struct `ManagedInstancePrivateEndpointConnectionsClientBeginCreateOrUpdateOptions`
+- New anonymous field `GeoBackupPolicy` in struct `GeoBackupPoliciesClientGetResponse`
+- New anonymous field `SyncGroupLogListResult` in struct `SyncGroupsClientListLogsResponse`
+- New field `ResumeToken` in struct `SyncGroupsClientBeginCreateOrUpdateOptions`
+- New anonymous field `LongTermRetentionBackupListResult` in struct `LongTermRetentionBackupsClientListByServerResponse`
+- New anonymous field `DatabaseVulnerabilityAssessmentRuleBaseline` in struct `ManagedDatabaseVulnerabilityAssessmentRuleBaselinesClientGetResponse`
+- New anonymous field `ElasticPoolListResult` in struct `ElasticPoolsClientListByServerResponse`
+- New field `ResumeToken` in struct `VirtualClustersClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `DatabasesClientBeginPauseOptions`
+- New anonymous field `AgentConfiguration` in struct `AgentClientGetResponse`
+- New anonymous field `SensitivityLabelListResult` in struct `SensitivityLabelsClientListCurrentByDatabaseResponse`
+- New anonymous field `LongTermRetentionPolicyListResult` in struct `LongTermRetentionPoliciesClientListByDatabaseResponse`
+- New field `ResumeToken` in struct `ManagedInstancesClientBeginCreateOrUpdateOptions`
+- New anonymous field `DatabaseUsageListResult` in struct `DatabaseUsagesClientListByDatabaseResponse`
+- New anonymous field `InstanceFailoverGroup` in struct `InstanceFailoverGroupsClientFailoverResponse`
+- New anonymous field `JobExecutionListResult` in struct `JobStepExecutionsClientListByJobExecutionResponse`
+- New anonymous field `ManagedDatabaseRestoreDetailsResult` in struct `ManagedDatabaseRestoreDetailsClientGetResponse`
+- New field `ResumeToken` in struct `ManagedInstanceAzureADOnlyAuthenticationsClientBeginDeleteOptions`
+- New anonymous field `ManagedInstanceOperation` in struct `ManagedInstanceOperationsClientGetResponse`
+- New field `AdvisorArray` in struct `ServerAdvisorsClientListByServerResponse`
+- New anonymous field `AdministratorListResult` in struct `ServerAzureADAdministratorsClientListByServerResponse`
+- New anonymous field `DatabaseSchema` in struct `ManagedDatabaseSchemasClientGetResponse`
+- New anonymous field `InstancePoolListResult` in struct `InstancePoolsClientListResponse`
+- New anonymous field `DatabaseVulnerabilityAssessment` in struct `DatabaseVulnerabilityAssessmentsClientCreateOrUpdateResponse`
+- New anonymous field `DataMaskingRule` in struct `DataMaskingRulesClientCreateOrUpdateResponse`
+- New anonymous field `ExtendedServerBlobAuditingPolicyListResult` in struct `ExtendedServerBlobAuditingPoliciesClientListByServerResponse`
+- New anonymous field `VulnerabilityAssessmentScanRecordListResult` in struct `DatabaseVulnerabilityAssessmentScansClientListByDatabaseResponse`
+- New anonymous field `ServerDevOpsAuditingSettings` in struct `ServerDevOpsAuditSettingsClientCreateOrUpdateResponse`
+- New anonymous field `ManagedBackupShortTermRetentionPolicyListResult` in struct `ManagedBackupShortTermRetentionPoliciesClientListByDatabaseResponse`
+- New field `ResumeToken` in struct `ElasticPoolsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `SyncMembersClientBeginDeleteOptions`
+- New anonymous field `ManagedInstanceAzureADOnlyAuthentication` in struct `ManagedInstanceAzureADOnlyAuthenticationsClientCreateOrUpdateResponse`
+- New anonymous field `RestorePointListResult` in struct `RestorePointsClientListByDatabaseResponse`
+- New field `ResumeToken` in struct `BackupShortTermRetentionPoliciesClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `ServerCommunicationLinksClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `ManagedInstanceTdeCertificatesClientBeginCreateOptions`
+- New field `ResumeToken` in struct `FailoverGroupsClientBeginForceFailoverAllowDataLossOptions`
+- New field `ResumeToken` in struct `WorkloadClassifiersClientBeginCreateOrUpdateOptions`
+- New anonymous field `DeletedServer` in struct `DeletedServersClientRecoverResponse`
+- New anonymous field `ManagedBackupShortTermRetentionPolicyListResult` in struct `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientListByRestorableDroppedDatabaseResponse`
+- New anonymous field `ManagedTransparentDataEncryption` in struct `ManagedDatabaseTransparentDataEncryptionClientGetResponse`
+- New anonymous field `DatabaseTable` in struct `ManagedDatabaseTablesClientGetResponse`
+- New anonymous field `PrivateLinkResourceListResult` in struct `PrivateLinkResourcesClientListByServerResponse`
+- New anonymous field `ManagedDatabaseListResult` in struct `ManagedDatabasesClientListByInstanceResponse`
+- New anonymous field `DataWarehouseUserActivities` in struct `DataWarehouseUserActivitiesClientGetResponse`
+- New anonymous field `ServerTrustGroupListResult` in struct `ServerTrustGroupsClientListByInstanceResponse`
+- New anonymous field `ManagedServerSecurityAlertPolicy` in struct `ManagedServerSecurityAlertPoliciesClientGetResponse`
+- New field `ResumeToken` in struct `InstancePoolsClientBeginCreateOrUpdateOptions`
+- New anonymous field `ServerCommunicationLink` in struct `ServerCommunicationLinksClientGetResponse`
+- New anonymous field `ServerVulnerabilityAssessment` in struct `ServerVulnerabilityAssessmentsClientGetResponse`
+- New field `ResumeToken` in struct `InstanceFailoverGroupsClientBeginForceFailoverAllowDataLossOptions`
+- New anonymous field `ServerBlobAuditingPolicyListResult` in struct `ServerBlobAuditingPoliciesClientListByServerResponse`
+- New anonymous field `SyncGroup` in struct `SyncGroupsClientGetResponse`
+- New field `ResumeToken` in struct `FailoverGroupsClientBeginFailoverOptions`
+- New anonymous field `JobStep` in struct `JobStepsClientGetByVersionResponse`
+- New anonymous field `TimeZoneListResult` in struct `TimeZonesClientListByLocationResponse`
+- New anonymous field `ServerKey` in struct `ServerKeysClientGetResponse`
+- New anonymous field `ServerCommunicationLinkListResult` in struct `ServerCommunicationLinksClientListByServerResponse`
+- New anonymous field `SubscriptionUsage` in struct `SubscriptionUsagesClientGetResponse`
+- New anonymous field `JobVersion` in struct `JobVersionsClientGetResponse`
+- New anonymous field `ServerAutomaticTuning` in struct `ServerAutomaticTuningClientUpdateResponse`
+- New field `ResumeToken` in struct `SyncAgentsClientBeginCreateOrUpdateOptions`
+- New anonymous field `FailoverGroup` in struct `FailoverGroupsClientForceFailoverAllowDataLossResponse`
+- New anonymous field `ManagedInstanceLongTermRetentionBackupListResult` in struct `LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse`
+- New anonymous field `ServerOperationListResult` in struct `ServerOperationsClientListByServerResponse`
+- New anonymous field `VulnerabilityAssessmentScanRecord` in struct `ManagedDatabaseVulnerabilityAssessmentScansClientGetResponse`
+- New field `ResumeToken` in struct `ManagedBackupShortTermRetentionPoliciesClientBeginUpdateOptions`
+- New field `ResumeToken` in struct `LongTermRetentionManagedInstanceBackupsClientBeginDeleteByResourceGroupOptions`
+- New anonymous field `ManagedInstanceVulnerabilityAssessmentListResult` in struct `ManagedInstanceVulnerabilityAssessmentsClientListByInstanceResponse`
+- New anonymous field `DeletedServer` in struct `DeletedServersClientGetResponse`
+- New field `ResumeToken` in struct `ServerTrustGroupsClientBeginDeleteOptions`
+- New anonymous field `DatabaseColumnListResult` in struct `DatabaseColumnsClientListByDatabaseResponse`
+- New anonymous field `JobExecutionListResult` in struct `JobTargetExecutionsClientListByStepResponse`
+- New anonymous field `DatabaseBlobAuditingPolicyListResult` in struct `DatabaseBlobAuditingPoliciesClientListByDatabaseResponse`
+- New anonymous field `Database` in struct `DatabasesClientResumeResponse`
+- New anonymous field `WorkloadClassifier` in struct `WorkloadClassifiersClientGetResponse`
+- New anonymous field `Advisor` in struct `ServerAdvisorsClientUpdateResponse`
+- New anonymous field `DatabaseColumnListResult` in struct `ManagedDatabaseColumnsClientListByTableResponse`
+- New field `ResumeToken` in struct `VirtualNetworkRulesClientBeginDeleteOptions`
+- New anonymous field `ImportExportOperationResult` in struct `DatabasesClientImportResponse`
+- New anonymous field `DatabaseTable` in struct `DatabaseTablesClientGetResponse`
+- New anonymous field `FirewallRule` in struct `FirewallRulesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `ManagedInstanceKeysClientBeginCreateOrUpdateOptions`
+- New anonymous field `ManagedInstanceLongTermRetentionBackupListResult` in struct `LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse`
+- New anonymous field `ManagedInstanceLongTermRetentionBackup` in struct `LongTermRetentionManagedInstanceBackupsClientGetByResourceGroupResponse`
+- New anonymous field `JobStep` in struct `JobStepsClientGetResponse`
+- New anonymous field `DatabaseSecurityAlertPolicy` in struct `DatabaseSecurityAlertPoliciesClientGetResponse`
+- New field `ResumeToken` in struct `LongTermRetentionBackupsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `LongTermRetentionBackupsClientBeginCopyOptions`
+- New anonymous field `FailoverGroup` in struct `FailoverGroupsClientUpdateResponse`
+- New anonymous field `MetricListResult` in struct `DatabasesClientListMetricsResponse`
+- New anonymous field `SyncDatabaseIDListResult` in struct `SyncGroupsClientListSyncDatabaseIDsResponse`
+- New field `ResumeToken` in struct `ElasticPoolsClientBeginCreateOrUpdateOptions`
+- New anonymous field `DatabaseBlobAuditingPolicy` in struct `DatabaseBlobAuditingPoliciesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `WorkloadGroupsClientBeginCreateOrUpdateOptions`
+- New anonymous field `ManagedInstance` in struct `ManagedInstancesClientUpdateResponse`
+- New anonymous field `PrivateLinkResource` in struct `PrivateLinkResourcesClientGetResponse`
+- New anonymous field `ServerSecurityAlertPolicy` in struct `ServerSecurityAlertPoliciesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `ServerKeysClientBeginDeleteOptions`
+- New anonymous field `ServerDevOpsAuditingSettings` in struct `ServerDevOpsAuditSettingsClientGetResponse`
+- New field `ResumeToken` in struct `ServersClientBeginUpdateOptions`
+- New field `ResumeToken` in struct `ServersClientBeginImportDatabaseOptions`
+- New anonymous field `ServerBlobAuditingPolicy` in struct `ServerBlobAuditingPoliciesClientGetResponse`
+- New anonymous field `LongTermRetentionBackupOperationResult` in struct `LongTermRetentionBackupsClientCopyByResourceGroupResponse`
+- New anonymous field `ManagedInstanceLongTermRetentionPolicy` in struct `ManagedInstanceLongTermRetentionPoliciesClientCreateOrUpdateResponse`
+- New field `RecommendedActionArray` in struct `DatabaseRecommendedActionsClientListByDatabaseAdvisorResponse`
+- New field `ResumeToken` in struct `DatabasesClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `InstancePoolsClientBeginDeleteOptions`
+- New anonymous field `JobCredential` in struct `JobCredentialsClientGetResponse`
+- New field `ResumeToken` in struct `JobExecutionsClientBeginCreateOrUpdateOptions`
+- New anonymous field `DatabaseVulnerabilityAssessmentRuleBaseline` in struct `ManagedDatabaseVulnerabilityAssessmentRuleBaselinesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `InstancePoolsClientBeginUpdateOptions`
+- New anonymous field `LedgerDigestUploads` in struct `LedgerDigestUploadsClientDisableResponse`
+- New anonymous field `DatabaseSchema` in struct `DatabaseSchemasClientGetResponse`
+- New anonymous field `SubscriptionUsageListResult` in struct `SubscriptionUsagesClientListByLocationResponse`
+- New field `HighAvailabilityReplicaCount` in struct `ElasticPoolUpdateProperties`
+- New field `ResumeToken` in struct `DatabaseVulnerabilityAssessmentScansClientBeginInitiateScanOptions`
+- New anonymous field `ManagedInstanceKeyListResult` in struct `ManagedInstanceKeysClientListByInstanceResponse`
+- New anonymous field `ServerConnectionPolicy` in struct `ServerConnectionPoliciesClientGetResponse`
+- New anonymous field `LongTermRetentionBackup` in struct `LongTermRetentionBackupsClientGetByResourceGroupResponse`
+- New field `ResumeToken` in struct `DatabaseExtensionsClientBeginCreateOrUpdateOptions`
+- New anonymous field `FailoverGroup` in struct `FailoverGroupsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `EncryptionProtectorsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `VirtualClustersClientBeginUpdateOptions`
+- New anonymous field `DatabaseListResult` in struct `DatabasesClientListInaccessibleByServerResponse`
+- New anonymous field `ServerAutomaticTuning` in struct `ServerAutomaticTuningClientGetResponse`
+- New anonymous field `ManagedInstanceAzureADOnlyAuthListResult` in struct `ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceResponse`
+- New field `ResumeToken` in struct `LongTermRetentionPoliciesClientBeginCreateOrUpdateOptions`
+- New anonymous field `DatabaseSchemaListResult` in struct `DatabaseSchemasClientListByDatabaseResponse`
+- New field `AdvisorArray` in struct `DatabaseAdvisorsClientListByDatabaseResponse`
+- New anonymous field `ManagedInstanceVulnerabilityAssessment` in struct `ManagedInstanceVulnerabilityAssessmentsClientCreateOrUpdateResponse`
+- New anonymous field `ManagedDatabaseListResult` in struct `ManagedDatabasesClientListInaccessibleByInstanceResponse`
+- New anonymous field `EncryptionProtector` in struct `EncryptionProtectorsClientGetResponse`
+- New anonymous field `ServerDNSAliasListResult` in struct `ServerDNSAliasesClientListByServerResponse`
+- New anonymous field `EncryptionProtectorListResult` in struct `EncryptionProtectorsClientListByServerResponse`
+- New anonymous field `FirewallRuleListResult` in struct `FirewallRulesClientListByServerResponse`
+- New anonymous field `Server` in struct `ServersClientCreateOrUpdateResponse`
+- New anonymous field `DatabaseVulnerabilityAssessment` in struct `ManagedDatabaseVulnerabilityAssessmentsClientGetResponse`
+- New field `ResumeToken` in struct `DatabasesClientBeginUpgradeDataWarehouseOptions`
+- New anonymous field `ImportExportOperationResult` in struct `ServersClientImportDatabaseResponse`
+- New anonymous field `JobExecution` in struct `JobExecutionsClientCreateOrUpdateResponse`
+- New anonymous field `MaintenanceWindowOptions` in struct `MaintenanceWindowOptionsClientGetResponse`
+- New anonymous field `Advisor` in struct `DatabaseAdvisorsClientUpdateResponse`
+- New anonymous field `BackupShortTermRetentionPolicyListResult` in struct `BackupShortTermRetentionPoliciesClientListByDatabaseResponse`
+- New anonymous field `ExtendedDatabaseBlobAuditingPolicy` in struct `ExtendedDatabaseBlobAuditingPoliciesClientCreateOrUpdateResponse`
+- New anonymous field `RestorePoint` in struct `RestorePointsClientGetResponse`
+- New field `HighAvailabilityReplicaCount` in struct `ElasticPoolProperties`
+- New field `ResumeToken` in struct `ServerConnectionPoliciesClientBeginCreateOrUpdateOptions`
+- New anonymous field `ManagedBackupShortTermRetentionPolicy` in struct `ManagedBackupShortTermRetentionPoliciesClientCreateOrUpdateResponse`
+- New anonymous field `LongTermRetentionBackupListResult` in struct `LongTermRetentionBackupsClientListByResourceGroupLocationResponse`
+- New anonymous field `ManagedInstanceQueryStatistics` in struct `ManagedDatabaseQueriesClientListByQueryResponse`
+- New field `SourceResourceID` in struct `DatabaseProperties`
+- New anonymous field `DatabaseTableListResult` in struct `ManagedDatabaseTablesClientListBySchemaResponse`
+- New anonymous field `RecoverableManagedDatabase` in struct `RecoverableManagedDatabasesClientGetResponse`
+- New anonymous field `JobExecution` in struct `JobTargetExecutionsClientGetResponse`
+- New anonymous field `Server` in struct `ServersClientUpdateResponse`
+- New anonymous field `ManagedDatabase` in struct `ManagedDatabasesClientCreateOrUpdateResponse`
+- New anonymous field `ManagedInstanceLongTermRetentionBackup` in struct `LongTermRetentionManagedInstanceBackupsClientGetResponse`
+- New anonymous field `SyncMemberListResult` in struct `SyncMembersClientListBySyncGroupResponse`
+- New anonymous field `DatabaseVulnerabilityAssessmentRuleBaseline` in struct `DatabaseVulnerabilityAssessmentRuleBaselinesClientCreateOrUpdateResponse`
+- New anonymous field `RestorePoint` in struct `RestorePointsClientCreateResponse`
+- New anonymous field `ManagedInstanceListResult` in struct `ManagedInstancesClientListByInstancePoolResponse`
+- New anonymous field `JobTargetGroupListResult` in struct `JobTargetGroupsClientListByAgentResponse`
+- New field `ResumeToken` in struct `ServerDNSAliasesClientBeginAcquireOptions`
+- New anonymous field `SyncAgentListResult` in struct `SyncAgentsClientListByServerResponse`
+- New anonymous field `ServerAzureADAdministrator` in struct `ServerAzureADAdministratorsClientGetResponse`
+- New field `ResumeToken` in struct `ManagedInstancePrivateEndpointConnectionsClientBeginDeleteOptions`
+- New anonymous field `Database` in struct `DatabasesClientGetResponse`
+- New anonymous field `LongTermRetentionBackupOperationResult` in struct `LongTermRetentionBackupsClientCopyResponse`
+- New anonymous field `BackupShortTermRetentionPolicy` in struct `BackupShortTermRetentionPoliciesClientUpdateResponse`
+- New anonymous field `Advisor` in struct `DatabaseAdvisorsClientGetResponse`
+- New anonymous field `SensitivityLabelListResult` in struct `ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseResponse`
+- New anonymous field `ManagedTransparentDataEncryptionListResult` in struct `ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse`
+- New anonymous field `SensitivityLabel` in struct `SensitivityLabelsClientGetResponse`
+- New anonymous field `FailoverGroup` in struct `FailoverGroupsClientGetResponse`
+- New anonymous field `ManagedInstanceEncryptionProtector` in struct `ManagedInstanceEncryptionProtectorsClientCreateOrUpdateResponse`
+- New anonymous field `RecoverableDatabase` in struct `RecoverableDatabasesClientGetResponse`
+- New anonymous field `ServerConnectionPolicy` in struct `ServerConnectionPoliciesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `DatabasesClientBeginFailoverOptions`
+- New anonymous field `MaintenanceWindows` in struct `MaintenanceWindowsClientGetResponse`
+- New anonymous field `ServerKeyListResult` in struct `ServerKeysClientListByServerResponse`
+- New anonymous field `VirtualClusterListResult` in struct `VirtualClustersClientListByResourceGroupResponse`
+- New anonymous field `ManagedInstanceLongTermRetentionBackupListResult` in struct `LongTermRetentionManagedInstanceBackupsClientListByLocationResponse`
+- New anonymous field `SyncFullSchemaPropertiesListResult` in struct `SyncGroupsClientListHubSchemasResponse`
+- New field `ResumeToken` in struct `SyncMembersClientBeginUpdateOptions`
+- New field `ResumeToken` in struct `LedgerDigestUploadsClientBeginDisableOptions`
+- New anonymous field `AzureADOnlyAuthListResult` in struct `ServerAzureADOnlyAuthenticationsClientListByServerResponse`
+- New field `ResumeToken` in struct `WorkloadGroupsClientBeginDeleteOptions`
+- New anonymous field `ElasticPool` in struct `ElasticPoolsClientGetResponse`
+- New anonymous field `DataMaskingPolicy` in struct `DataMaskingPoliciesClientCreateOrUpdateResponse`
+- New anonymous field `ManagedBackupShortTermRetentionPolicy` in struct `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientGetResponse`
+- New anonymous field `ManagedTransparentDataEncryption` in struct `ManagedDatabaseTransparentDataEncryptionClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `ElasticPoolsClientBeginUpdateOptions`
+- New anonymous field `ImportExportOperationResult` in struct `DatabasesClientExportResponse`
+- New anonymous field `ManagedDatabaseSecurityAlertPolicyListResult` in struct `ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse`
+- New field `ResumeToken` in struct `ServersClientBeginDeleteOptions`
+- New anonymous field `ManagedInstanceLongTermRetentionBackupListResult` in struct `LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse`
+- New anonymous field `SyncAgent` in struct `SyncAgentsClientGetResponse`
+- New anonymous field `VirtualCluster` in struct `VirtualClustersClientGetResponse`
+- New field `ResumeToken` in struct `FailoverGroupsClientBeginUpdateOptions`
+- New field `ResumeToken` in struct `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `LongTermRetentionBackupsClientBeginUpdateOptions`
+- New anonymous field `ServerDNSAlias` in struct `ServerDNSAliasesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `ManagedInstanceAzureADOnlyAuthenticationsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `ServerDevOpsAuditSettingsClientBeginCreateOrUpdateOptions`
+- New anonymous field `Database` in struct `DatabasesClientUpdateResponse`
+- New anonymous field `ManagedInstanceLongTermRetentionPolicy` in struct `ManagedInstanceLongTermRetentionPoliciesClientGetResponse`
+- New anonymous field `RecoverableDatabaseListResult` in struct `RecoverableDatabasesClientListByServerResponse`
+- New anonymous field `ServerListResult` in struct `ServersClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `ManagedInstanceAdministratorsClientBeginDeleteOptions`
+- New anonymous field `ManagedBackupShortTermRetentionPolicy` in struct `ManagedBackupShortTermRetentionPoliciesClientUpdateResponse`
+- New anonymous field `DeletedServerListResult` in struct `DeletedServersClientListResponse`
+- New anonymous field `DataWarehouseUserActivitiesListResult` in struct `DataWarehouseUserActivitiesClientListByDatabaseResponse`
+- New field `ResumeToken` in struct `ManagedInstanceLongTermRetentionPoliciesClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `InstanceFailoverGroupsClientBeginDeleteOptions`
+- New anonymous field `ManagedServerSecurityAlertPolicyListResult` in struct `ManagedServerSecurityAlertPoliciesClientListByInstanceResponse`
+- New anonymous field `ManagedInstancePrivateEndpointConnectionListResult` in struct `ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceResponse`
+- New anonymous field `LongTermRetentionBackup` in struct `LongTermRetentionBackupsClientGetResponse`
+- New field `ResumeToken` in struct `ServerBlobAuditingPoliciesClientBeginCreateOrUpdateOptions`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `InstanceFailoverGroup` in struct `InstanceFailoverGroupsClientForceFailoverAllowDataLossResponse`
+- New anonymous field `LongTermRetentionBackupOperationResult` in struct `LongTermRetentionBackupsClientUpdateResponse`
+- New anonymous field `InstanceFailoverGroup` in struct `InstanceFailoverGroupsClientCreateOrUpdateResponse`
+- New anonymous field `DatabaseAutomaticTuning` in struct `DatabaseAutomaticTuningClientUpdateResponse`
+- New anonymous field `InstanceFailoverGroupListResult` in struct `InstanceFailoverGroupsClientListByLocationResponse`
+- New anonymous field `ManagedDatabase` in struct `ManagedDatabasesClientGetResponse`
+- New anonymous field `CheckNameAvailabilityResponse` in struct `ServersClientCheckNameAvailabilityResponse`
+- New field `ResumeToken` in struct `SyncGroupsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `InstanceFailoverGroupsClientBeginCreateOrUpdateOptions`
+- New anonymous field `ServerConnectionPolicyListResult` in struct `ServerConnectionPoliciesClientListByServerResponse`
+- New field `ResumeToken` in struct `ServerDNSAliasesClientBeginCreateOrUpdateOptions`
+- New anonymous field `RestorableDroppedManagedDatabaseListResult` in struct `RestorableDroppedManagedDatabasesClientListByInstanceResponse`
+- New anonymous field `JobTargetGroup` in struct `JobTargetGroupsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsClientBeginDeleteOptions`
+- New anonymous field `RecoverableManagedDatabaseListResult` in struct `RecoverableManagedDatabasesClientListByInstanceResponse`
+- New anonymous field `SyncAgent` in struct `SyncAgentsClientCreateOrUpdateResponse`
+- New anonymous field `DatabaseVulnerabilityAssessmentListResult` in struct `ManagedDatabaseVulnerabilityAssessmentsClientListByDatabaseResponse`
+- New anonymous field `Advisor` in struct `ServerAdvisorsClientGetResponse`
+- New anonymous field `JobListResult` in struct `JobsClientListByAgentResponse`
+- New field `ResumeToken` in struct `SyncGroupsClientBeginUpdateOptions`
+- New anonymous field `SyncAgentKeyProperties` in struct `SyncAgentsClientGenerateKeyResponse`
+- New field `ResumeToken` in struct `ManagedInstanceEncryptionProtectorsClientBeginRevalidateOptions`
+- New anonymous field `JobCredentialListResult` in struct `JobCredentialsClientListByAgentResponse`
+- New field `ResumeToken` in struct `ManagedBackupShortTermRetentionPoliciesClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `ManagedInstanceEncryptionProtectorsClientBeginCreateOrUpdateOptions`
+- New anonymous field `ManagedInstanceEncryptionProtectorListResult` in struct `ManagedInstanceEncryptionProtectorsClientListByInstanceResponse`
+- New anonymous field `ExtendedServerBlobAuditingPolicy` in struct `ExtendedServerBlobAuditingPoliciesClientCreateOrUpdateResponse`
+- New anonymous field `JobAgent` in struct `JobAgentsClientUpdateResponse`
+- New field `ResumeToken` in struct `ServerAzureADOnlyAuthenticationsClientBeginCreateOrUpdateOptions`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientGetResponse`
+- New field `ResumeToken` in struct `BackupShortTermRetentionPoliciesClientBeginUpdateOptions`
+- New anonymous field `WorkloadGroup` in struct `WorkloadGroupsClientGetResponse`
+- New anonymous field `DatabaseColumnListResult` in struct `ManagedDatabaseColumnsClientListByDatabaseResponse`
+- New anonymous field `DatabaseListResult` in struct `DatabasesClientListByElasticPoolResponse`
+- New field `ResumeToken` in struct `DatabasesClientBeginUpdateOptions`
+- New anonymous field `ServerDNSAlias` in struct `ServerDNSAliasesClientAcquireResponse`
+- New anonymous field `ServerKey` in struct `ServerKeysClientCreateOrUpdateResponse`
+- New anonymous field `AgentConfiguration` in struct `AgentClientCreateOrUpdateResponse`
+- New anonymous field `ServiceObjectiveListResult` in struct `ServiceObjectivesClientListByServerResponse`
+- New anonymous field `JobExecution` in struct `JobExecutionsClientCreateResponse`
+- New field `ResumeToken` in struct `ManagedInstancesClientBeginUpdateOptions`
+- New anonymous field `ManagedInstanceOperationListResult` in struct `ManagedInstanceOperationsClientListByManagedInstanceResponse`
+- New anonymous field `ServerListResult` in struct `ServersClientListResponse`
+- New anonymous field `InstancePool` in struct `InstancePoolsClientGetResponse`
+- New anonymous field `LongTermRetentionPolicy` in struct `LongTermRetentionPoliciesClientGetResponse`
+- New anonymous field `LongTermRetentionBackupListResult` in struct `LongTermRetentionBackupsClientListByResourceGroupServerResponse`
+- New anonymous field `ServerAzureADOnlyAuthentication` in struct `ServerAzureADOnlyAuthenticationsClientGetResponse`
+- New anonymous field `DatabaseVulnerabilityAssessmentScansExport` in struct `DatabaseVulnerabilityAssessmentScansClientExportResponse`
+- New anonymous field `WorkloadClassifier` in struct `WorkloadClassifiersClientCreateOrUpdateResponse`
+- New anonymous field `InstanceFailoverGroup` in struct `InstanceFailoverGroupsClientGetResponse`
+- New field `ResumeToken` in struct `ManagedDatabasesClientBeginUpdateOptions`
+- New anonymous field `ManagedBackupShortTermRetentionPolicy` in struct `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientCreateOrUpdateResponse`
+- New anonymous field `SensitivityLabel` in struct `ManagedDatabaseSensitivityLabelsClientGetResponse`
+- New anonymous field `RecommendedAction` in struct `DatabaseRecommendedActionsClientGetResponse`
+- New anonymous field `MetricDefinitionListResult` in struct `ElasticPoolsClientListMetricDefinitionsResponse`
+- New field `ResumeToken` in struct `LongTermRetentionManagedInstanceBackupsClientBeginDeleteOptions`
+- New anonymous field `ReplicationLink` in struct `ReplicationLinksClientFailoverResponse`
+- New field `ResumeToken` in struct `JobAgentsClientBeginUpdateOptions`
+- New anonymous field `Database` in struct `DatabasesClientCreateOrUpdateResponse`
+- New anonymous field `DatabaseAutomaticTuning` in struct `DatabaseAutomaticTuningClientGetResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `ManagedInstanceAdministratorsClientBeginCreateOrUpdateOptions`
+- New anonymous field `JobExecutionListResult` in struct `JobTargetExecutionsClientListByJobExecutionResponse`
+- New anonymous field `ReplicationLink` in struct `ReplicationLinksClientGetResponse`
+- New anonymous field `InstancePool` in struct `InstancePoolsClientUpdateResponse`
+- New anonymous field `UpdateManagedInstanceDNSServersOperation` in struct `VirtualClustersClientUpdateDNSServersResponse`
+- New anonymous field `ManagedInstanceAdministrator` in struct `ManagedInstanceAdministratorsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientBeginUpdateOptions`
+- New anonymous field `DatabaseSecurityAlertListResult` in struct `DatabaseSecurityAlertPoliciesClientListByDatabaseResponse`
+- New field `ResumeToken` in struct `TdeCertificatesClientBeginCreateOptions`
+- New anonymous field `ServerTrustGroupListResult` in struct `ServerTrustGroupsClientListByLocationResponse`
+- New anonymous field `ElasticPool` in struct `ElasticPoolsClientCreateOrUpdateResponse`
+- New anonymous field `FailoverGroupListResult` in struct `FailoverGroupsClientListByServerResponse`
+- New anonymous field `BackupShortTermRetentionPolicy` in struct `BackupShortTermRetentionPoliciesClientGetResponse`
+- New anonymous field `WorkloadClassifierListResult` in struct `WorkloadClassifiersClientListByWorkloadGroupResponse`
+- New anonymous field `ExtendedServerBlobAuditingPolicy` in struct `ExtendedServerBlobAuditingPoliciesClientGetResponse`
+- New anonymous field `InstancePoolListResult` in struct `InstancePoolsClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `SyncMembersClientBeginRefreshMemberSchemaOptions`
+- New anonymous field `ReplicationLink` in struct `ReplicationLinksClientFailoverAllowDataLossResponse`
+- New anonymous field `Server` in struct `ServersClientGetResponse`
+- New anonymous field `SensitivityLabel` in struct `ManagedDatabaseSensitivityLabelsClientCreateOrUpdateResponse`
+- New anonymous field `JobExecutionListResult` in struct `JobExecutionsClientListByAgentResponse`
+- New field `ResumeToken` in struct `DatabasesClientBeginImportOptions`
+- New field `ResumeToken` in struct `DatabasesClientBeginExportOptions`
+- New anonymous field `DatabaseTableListResult` in struct `DatabaseTablesClientListBySchemaResponse`
+- New anonymous field `SyncFullSchemaPropertiesListResult` in struct `SyncMembersClientListMemberSchemasResponse`
+- New field `ResumeToken` in struct `SyncAgentsClientBeginDeleteOptions`
+- New anonymous field `JobAgent` in struct `JobAgentsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `ServerAzureADAdministratorsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `FailoverGroupsClientBeginDeleteOptions`
+- New anonymous field `LocationCapabilities` in struct `CapabilitiesClientListByLocationResponse`
+- New anonymous field `ManagedInstanceAdministrator` in struct `ManagedInstanceAdministratorsClientGetResponse`
+- New anonymous field `DataMaskingRuleListResult` in struct `DataMaskingRulesClientListByDatabaseResponse`
+- New anonymous field `RestorableDroppedDatabase` in struct `RestorableDroppedDatabasesClientGetResponse`
+- New anonymous field `ImportExportExtensionsOperationResult` in struct `DatabaseExtensionsClientCreateOrUpdateResponse`
+- New anonymous field `LongTermRetentionBackupListResult` in struct `LongTermRetentionBackupsClientListByDatabaseResponse`
+- New anonymous field `DatabaseSchemaListResult` in struct `ManagedDatabaseSchemasClientListByDatabaseResponse`
+- New anonymous field `DatabaseOperationListResult` in struct `DatabaseOperationsClientListByDatabaseResponse`
+- New anonymous field `LongTermRetentionBackupOperationResult` in struct `LongTermRetentionBackupsClientUpdateByResourceGroupResponse`
+- New anonymous field `UsageListResult` in struct `UsagesClientListByInstancePoolResponse`
+- New anonymous field `SyncGroup` in struct `SyncGroupsClientUpdateResponse`
+- New field `ResumeToken` in struct `OutboundFirewallRulesClientBeginCreateOrUpdateOptions`
+- New anonymous field `ManagedInstanceLongTermRetentionBackupListResult` in struct `LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse`
+- New anonymous field `ManagedInstancePrivateEndpointConnection` in struct `ManagedInstancePrivateEndpointConnectionsClientCreateOrUpdateResponse`
+- New anonymous field `ImportExportExtensionsOperationListResult` in struct `DatabaseExtensionsClientListByDatabaseResponse`
+- New anonymous field `SyncGroupListResult` in struct `SyncGroupsClientListByDatabaseResponse`
+- New anonymous field `JobAgentListResult` in struct `JobAgentsClientListByServerResponse`
+- New anonymous field `FirewallRule` in struct `FirewallRulesClientReplaceResponse`
+- New anonymous field `ReplicationLinkListResult` in struct `ReplicationLinksClientListByServerResponse`
+- New anonymous field `VirtualCluster` in struct `VirtualClustersClientUpdateResponse`
+- New anonymous field `ServerAzureADAdministrator` in struct `ServerAzureADAdministratorsClientCreateOrUpdateResponse`
+- New anonymous field `DeletedServerListResult` in struct `DeletedServersClientListByLocationResponse`
+- New anonymous field `JobCredential` in struct `JobCredentialsClientCreateOrUpdateResponse`
+- New anonymous field `ManagedServerSecurityAlertPolicy` in struct `ManagedServerSecurityAlertPoliciesClientCreateOrUpdateResponse`
+- New anonymous field `Job` in struct `JobsClientCreateOrUpdateResponse`
+- New anonymous field `ManagedDatabaseSecurityAlertPolicy` in struct `ManagedDatabaseSecurityAlertPoliciesClientGetResponse`
+- New anonymous field `ServerBlobAuditingPolicy` in struct `ServerBlobAuditingPoliciesClientCreateOrUpdateResponse`
+- New anonymous field `SyncGroup` in struct `SyncGroupsClientCreateOrUpdateResponse`
+- New anonymous field `ServerSecurityAlertPolicy` in struct `ServerSecurityAlertPoliciesClientGetResponse`
+- New anonymous field `LongTermRetentionPolicy` in struct `LongTermRetentionPoliciesClientCreateOrUpdateResponse`
+- New anonymous field `DatabaseVulnerabilityAssessment` in struct `ManagedDatabaseVulnerabilityAssessmentsClientCreateOrUpdateResponse`
+- New anonymous field `DatabaseColumn` in struct `DatabaseColumnsClientGetResponse`
+- New anonymous field `MetricDefinitionListResult` in struct `DatabasesClientListMetricDefinitionsResponse`
+- New field `ResumeToken` in struct `ManagedInstancesClientBeginFailoverOptions`
+- New anonymous field `TopQueriesListResult` in struct `ManagedInstancesClientListByManagedInstanceResponse`
+- New anonymous field `Database` in struct `DatabasesClientPauseResponse`
+- New anonymous field `GeoBackupPolicyListResult` in struct `GeoBackupPoliciesClientListByDatabaseResponse`
+- New field `ResumeToken` in struct `ManagedInstanceKeysClientBeginDeleteOptions`
+- New anonymous field `RestorableDroppedManagedDatabase` in struct `RestorableDroppedManagedDatabasesClientGetResponse`
+- New anonymous field `ManagedInstance` in struct `ManagedInstancesClientCreateOrUpdateResponse`
+- New anonymous field `ManagedInstanceListResult` in struct `ManagedInstancesClientListByResourceGroupResponse`
+- New anonymous field `LogicalDatabaseTransparentDataEncryptionListResult` in struct `TransparentDataEncryptionsClientListByDatabaseResponse`
+- New field `ResumeToken` in struct `ManagedDatabasesClientBeginCompleteRestoreOptions`
+- New anonymous field `WorkloadGroupListResult` in struct `WorkloadGroupsClientListByDatabaseResponse`
+- New anonymous field `ElasticPool` in struct `ElasticPoolsClientUpdateResponse`
+- New anonymous field `DatabaseVulnerabilityAssessmentRuleBaseline` in struct `DatabaseVulnerabilityAssessmentRuleBaselinesClientGetResponse`
+- New anonymous field `ElasticPoolOperationListResult` in struct `ElasticPoolOperationsClientListByElasticPoolResponse`
+- New anonymous field `SensitivityLabelListResult` in struct `SensitivityLabelsClientListRecommendedByDatabaseResponse`
+- New anonymous field `SyncMember` in struct `SyncMembersClientCreateOrUpdateResponse`
+- New anonymous field `ElasticPoolDatabaseActivityListResult` in struct `ElasticPoolDatabaseActivitiesClientListByElasticPoolResponse`
+- New anonymous field `ServerAzureADOnlyAuthentication` in struct `ServerAzureADOnlyAuthenticationsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `LongTermRetentionBackupsClientBeginDeleteByResourceGroupOptions`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `WorkloadClassifiersClientBeginDeleteOptions`
+- New anonymous field `LongTermRetentionBackupListResult` in struct `LongTermRetentionBackupsClientListByLocationResponse`
+- New field `ResumeToken` in struct `DatabasesClientBeginDeleteOptions`
+- New anonymous field `DatabaseVulnerabilityAssessment` in struct `DatabaseVulnerabilityAssessmentsClientGetResponse`
+- New anonymous field `SensitivityLabelListResult` in struct `ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseResponse`
+- New anonymous field `DatabaseVulnerabilityAssessmentScansExport` in struct `ManagedDatabaseVulnerabilityAssessmentScansClientExportResponse`
+- New field `ResumeToken` in struct `OutboundFirewallRulesClientBeginDeleteOptions`
+- New anonymous field `JobExecution` in struct `JobStepExecutionsClientGetResponse`
+- New anonymous field `ManagedInstanceLongTermRetentionPolicyListResult` in struct `ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseResponse`
+- New anonymous field `RestorableDroppedDatabaseListResult` in struct `RestorableDroppedDatabasesClientListByServerResponse`
+- New anonymous field `TimeZone` in struct `TimeZonesClientGetResponse`
+- New field `ResumeToken` in struct `ServerAzureADAdministratorsClientBeginDeleteOptions`
+- New anonymous field `JobStepListResult` in struct `JobStepsClientListByVersionResponse`
+- New anonymous field `MetricListResult` in struct `ElasticPoolsClientListMetricsResponse`
+- New anonymous field `LogicalDatabaseTransparentDataEncryption` in struct `TransparentDataEncryptionsClientCreateOrUpdateResponse`
+- New anonymous field `ServerDevOpsAuditSettingsListResult` in struct `ServerDevOpsAuditSettingsClientListByServerResponse`
+- New field `ResumeToken` in struct `JobExecutionsClientBeginCreateOptions`
+- New anonymous field `VirtualClusterListResult` in struct `VirtualClustersClientListResponse`
+- New field `ResumeToken` in struct `JobAgentsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `ElasticPoolsClientBeginFailoverOptions`
+- New anonymous field `Job` in struct `JobsClientGetResponse`
+- New anonymous field `PrivateEndpointConnectionListResult` in struct `PrivateEndpointConnectionsClientListByServerResponse`
+- New anonymous field `VulnerabilityAssessmentScanRecordListResult` in struct `ManagedDatabaseVulnerabilityAssessmentScansClientListByDatabaseResponse`
+- New anonymous field `DatabaseColumn` in struct `ManagedDatabaseColumnsClientGetResponse`
+- New anonymous field `ManagedInstanceAdministratorListResult` in struct `ManagedInstanceAdministratorsClientListByInstanceResponse`
+- New anonymous field `LedgerDigestUploadsListResult` in struct `LedgerDigestUploadsClientListByDatabaseResponse`
+- New anonymous field `DatabaseSecurityAlertPolicy` in struct `DatabaseSecurityAlertPoliciesClientCreateOrUpdateResponse`
+- New anonymous field `JobExecutionListResult` in struct `JobExecutionsClientListByJobResponse`
+- New anonymous field `ServerVulnerabilityAssessmentListResult` in struct `ServerVulnerabilityAssessmentsClientListByServerResponse`
+- New field `ResumeToken` in struct `SyncMembersClientBeginCreateOrUpdateOptions`
+- New anonymous field `ManagedInstanceLongTermRetentionBackupListResult` in struct `LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse`
+- New anonymous field `ManagedInstancePrivateLink` in struct `ManagedInstancePrivateLinkResourcesClientGetResponse`
+- New anonymous field `ManagedDatabase` in struct `ManagedDatabasesClientUpdateResponse`
+- New anonymous field `OutboundFirewallRule` in struct `OutboundFirewallRulesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `LongTermRetentionBackupsClientBeginUpdateByResourceGroupOptions`
+- New anonymous field `DatabaseVulnerabilityAssessmentListResult` in struct `DatabaseVulnerabilityAssessmentsClientListByDatabaseResponse`
+- New anonymous field `ManagedInstanceVulnerabilityAssessment` in struct `ManagedInstanceVulnerabilityAssessmentsClientGetResponse`
+- New anonymous field `JobStep` in struct `JobStepsClientCreateOrUpdateResponse`
+- New anonymous field `WorkloadGroup` in struct `WorkloadGroupsClientCreateOrUpdateResponse`
+- New anonymous field `LedgerDigestUploads` in struct `LedgerDigestUploadsClientGetResponse`
+- New anonymous field `DatabaseBlobAuditingPolicy` in struct `DatabaseBlobAuditingPoliciesClientGetResponse`
+- New anonymous field `ServerUsageListResult` in struct `ServerUsagesClientListByServerResponse`
+- New anonymous field `RecommendedAction` in struct `DatabaseRecommendedActionsClientUpdateResponse`
+- New anonymous field `VirtualNetworkRuleListResult` in struct `VirtualNetworkRulesClientListByServerResponse`
+- New anonymous field `ReplicationLinkListResult` in struct `ReplicationLinksClientListByDatabaseResponse`
+- New anonymous field `ElasticPoolActivityListResult` in struct `ElasticPoolActivitiesClientListByElasticPoolResponse`
+- New anonymous field `ServerTrustGroup` in struct `ServerTrustGroupsClientGetResponse`
+- New anonymous field `VirtualNetworkRule` in struct `VirtualNetworkRulesClientGetResponse`
+- New field `ResumeToken` in struct `RestorePointsClientBeginCreateOptions`
+- New field `ResumeToken` in struct `DatabasesClientBeginResumeOptions`
+- New field `ResumeToken` in struct `ReplicationLinksClientBeginFailoverAllowDataLossOptions`
+- New anonymous field `ManagedInstance` in struct `ManagedInstancesClientGetResponse`
+- New anonymous field `InstancePool` in struct `InstancePoolsClientCreateOrUpdateResponse`
+- New anonymous field `ManagedBackupShortTermRetentionPolicy` in struct `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientUpdateResponse`
+- New field `ResumeToken` in struct `ManagedServerSecurityAlertPoliciesClientBeginCreateOrUpdateOptions`
+- New anonymous field `SyncMember` in struct `SyncMembersClientUpdateResponse`
+- New anonymous field `SyncAgentLinkedDatabaseListResult` in struct `SyncAgentsClientListLinkedDatabasesResponse`
+- New anonymous field `VirtualNetworkRule` in struct `VirtualNetworkRulesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `ServerDNSAliasesClientBeginDeleteOptions`
+- New anonymous field `ExtendedDatabaseBlobAuditingPolicyListResult` in struct `ExtendedDatabaseBlobAuditingPoliciesClientListByDatabaseResponse`
+- New anonymous field `OutboundFirewallRule` in struct `OutboundFirewallRulesClientGetResponse`
+- New anonymous field `ManagedInstanceQuery` in struct `ManagedDatabaseQueriesClientGetResponse`
+- New anonymous field `LedgerDigestUploads` in struct `LedgerDigestUploadsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `ManagedInstancesClientBeginDeleteOptions`
+- New anonymous field `DatabaseListResult` in struct `DatabasesClientListByServerResponse`
+- New anonymous field `VulnerabilityAssessmentScanRecord` in struct `DatabaseVulnerabilityAssessmentScansClientGetResponse`
+- New field `ResumeToken` in struct `ServerTrustGroupsClientBeginCreateOrUpdateOptions`
+- New anonymous field `ManagedInstanceListResult` in struct `ManagedInstancesClientListResponse`
+- New field `ResumeToken` in struct `ExtendedServerBlobAuditingPoliciesClientBeginCreateOrUpdateOptions`
+- New anonymous field `ServerVulnerabilityAssessment` in struct `ServerVulnerabilityAssessmentsClientCreateOrUpdateResponse`
+- New anonymous field `ManagedInstanceEncryptionProtector` in struct `ManagedInstanceEncryptionProtectorsClientGetResponse`
+- New field `ResumeToken` in struct `ManagedDatabasesClientBeginCreateOrUpdateOptions`
+- New anonymous field `ExtendedDatabaseBlobAuditingPolicy` in struct `ExtendedDatabaseBlobAuditingPoliciesClientGetResponse`
+- New field `ResumeToken` in struct `FailoverGroupsClientBeginCreateOrUpdateOptions`
+- New anonymous field `ServiceObjective` in struct `ServiceObjectivesClientGetResponse`
+- New anonymous field `ManagedBackupShortTermRetentionPolicy` in struct `ManagedBackupShortTermRetentionPoliciesClientGetResponse`
+- New anonymous field `LogicalDatabaseTransparentDataEncryption` in struct `TransparentDataEncryptionsClientGetResponse`
+- New anonymous field `ManagedInstanceKey` in struct `ManagedInstanceKeysClientCreateOrUpdateResponse`
+- New anonymous field `ManagedInstanceKey` in struct `ManagedInstanceKeysClientGetResponse`
+- New field `ResumeToken` in struct `ServersClientBeginCreateOrUpdateOptions`
+- New anonymous field `JobAgent` in struct `JobAgentsClientGetResponse`
+- New anonymous field `SensitivityLabel` in struct `SensitivityLabelsClientCreateOrUpdateResponse`
+- New anonymous field `ServerCommunicationLink` in struct `ServerCommunicationLinksClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `ServerSecurityAlertPoliciesClientBeginCreateOrUpdateOptions`
+- New anonymous field `LongTermRetentionBackupListResult` in struct `LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse`
+- New field `ResumeToken` in struct `VirtualNetworkRulesClientBeginCreateOrUpdateOptions`
+- New anonymous field `ServerTrustGroup` in struct `ServerTrustGroupsClientCreateOrUpdateResponse`
+- New anonymous field `ManagedInstancePrivateEndpointConnection` in struct `ManagedInstancePrivateEndpointConnectionsClientGetResponse`
+- New field `ResumeToken` in struct `ManagedDatabasesClientBeginDeleteOptions`
+- New anonymous field `SecurityEventCollection` in struct `ManagedDatabaseSecurityEventsClientListByDatabaseResponse`
+- New field `ResumeToken` in struct `InstanceFailoverGroupsClientBeginFailoverOptions`
+- New anonymous field `DatabaseColumnListResult` in struct `DatabaseColumnsClientListByTableResponse`
+- New anonymous field `SyncMember` in struct `SyncMembersClientGetResponse`
+- New anonymous field `JobExecution` in struct `JobExecutionsClientGetResponse`
+- New field `ResumeToken` in struct `DeletedServersClientBeginRecoverOptions`
+- New anonymous field `LogicalServerSecurityAlertPolicyListResult` in struct `ServerSecurityAlertPoliciesClientListByServerResponse`
+- New anonymous field `EncryptionProtector` in struct `EncryptionProtectorsClientCreateOrUpdateResponse`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

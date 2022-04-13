@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type VirtualHubBgpConnectionsClient struct {
 // ID forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewVirtualHubBgpConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualHubBgpConnectionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewVirtualHubBgpConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualHubBgpConnectionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &VirtualHubBgpConnectionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - Retrieves the details of all VirtualHubBgpConnections.
@@ -56,16 +61,32 @@ func NewVirtualHubBgpConnectionsClient(subscriptionID string, credential azcore.
 // virtualHubName - The name of the VirtualHub.
 // options - VirtualHubBgpConnectionsClientListOptions contains the optional parameters for the VirtualHubBgpConnectionsClient.List
 // method.
-func (client *VirtualHubBgpConnectionsClient) List(resourceGroupName string, virtualHubName string, options *VirtualHubBgpConnectionsClientListOptions) *VirtualHubBgpConnectionsClientListPager {
-	return &VirtualHubBgpConnectionsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, virtualHubName, options)
+func (client *VirtualHubBgpConnectionsClient) List(resourceGroupName string, virtualHubName string, options *VirtualHubBgpConnectionsClientListOptions) *runtime.Pager[VirtualHubBgpConnectionsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[VirtualHubBgpConnectionsClientListResponse]{
+		More: func(page VirtualHubBgpConnectionsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp VirtualHubBgpConnectionsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListVirtualHubBgpConnectionResults.NextLink)
+		Fetcher: func(ctx context.Context, page *VirtualHubBgpConnectionsClientListResponse) (VirtualHubBgpConnectionsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, virtualHubName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return VirtualHubBgpConnectionsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return VirtualHubBgpConnectionsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return VirtualHubBgpConnectionsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -96,7 +117,7 @@ func (client *VirtualHubBgpConnectionsClient) listCreateRequest(ctx context.Cont
 
 // listHandleResponse handles the List response.
 func (client *VirtualHubBgpConnectionsClient) listHandleResponse(resp *http.Response) (VirtualHubBgpConnectionsClientListResponse, error) {
-	result := VirtualHubBgpConnectionsClientListResponse{RawResponse: resp}
+	result := VirtualHubBgpConnectionsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListVirtualHubBgpConnectionResults); err != nil {
 		return VirtualHubBgpConnectionsClientListResponse{}, err
 	}
@@ -110,22 +131,18 @@ func (client *VirtualHubBgpConnectionsClient) listHandleResponse(resp *http.Resp
 // connectionName - The name of the virtual hub bgp connection.
 // options - VirtualHubBgpConnectionsClientBeginListAdvertisedRoutesOptions contains the optional parameters for the VirtualHubBgpConnectionsClient.BeginListAdvertisedRoutes
 // method.
-func (client *VirtualHubBgpConnectionsClient) BeginListAdvertisedRoutes(ctx context.Context, resourceGroupName string, hubName string, connectionName string, options *VirtualHubBgpConnectionsClientBeginListAdvertisedRoutesOptions) (VirtualHubBgpConnectionsClientListAdvertisedRoutesPollerResponse, error) {
-	resp, err := client.listAdvertisedRoutes(ctx, resourceGroupName, hubName, connectionName, options)
-	if err != nil {
-		return VirtualHubBgpConnectionsClientListAdvertisedRoutesPollerResponse{}, err
+func (client *VirtualHubBgpConnectionsClient) BeginListAdvertisedRoutes(ctx context.Context, resourceGroupName string, hubName string, connectionName string, options *VirtualHubBgpConnectionsClientBeginListAdvertisedRoutesOptions) (*armruntime.Poller[VirtualHubBgpConnectionsClientListAdvertisedRoutesResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.listAdvertisedRoutes(ctx, resourceGroupName, hubName, connectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualHubBgpConnectionsClientListAdvertisedRoutesResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[VirtualHubBgpConnectionsClientListAdvertisedRoutesResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VirtualHubBgpConnectionsClientListAdvertisedRoutesPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VirtualHubBgpConnectionsClient.ListAdvertisedRoutes", "location", resp, client.pl)
-	if err != nil {
-		return VirtualHubBgpConnectionsClientListAdvertisedRoutesPollerResponse{}, err
-	}
-	result.Poller = &VirtualHubBgpConnectionsClientListAdvertisedRoutesPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // ListAdvertisedRoutes - Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
@@ -182,22 +199,18 @@ func (client *VirtualHubBgpConnectionsClient) listAdvertisedRoutesCreateRequest(
 // connectionName - The name of the virtual hub bgp connection.
 // options - VirtualHubBgpConnectionsClientBeginListLearnedRoutesOptions contains the optional parameters for the VirtualHubBgpConnectionsClient.BeginListLearnedRoutes
 // method.
-func (client *VirtualHubBgpConnectionsClient) BeginListLearnedRoutes(ctx context.Context, resourceGroupName string, hubName string, connectionName string, options *VirtualHubBgpConnectionsClientBeginListLearnedRoutesOptions) (VirtualHubBgpConnectionsClientListLearnedRoutesPollerResponse, error) {
-	resp, err := client.listLearnedRoutes(ctx, resourceGroupName, hubName, connectionName, options)
-	if err != nil {
-		return VirtualHubBgpConnectionsClientListLearnedRoutesPollerResponse{}, err
+func (client *VirtualHubBgpConnectionsClient) BeginListLearnedRoutes(ctx context.Context, resourceGroupName string, hubName string, connectionName string, options *VirtualHubBgpConnectionsClientBeginListLearnedRoutesOptions) (*armruntime.Poller[VirtualHubBgpConnectionsClientListLearnedRoutesResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.listLearnedRoutes(ctx, resourceGroupName, hubName, connectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualHubBgpConnectionsClientListLearnedRoutesResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[VirtualHubBgpConnectionsClientListLearnedRoutesResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VirtualHubBgpConnectionsClientListLearnedRoutesPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VirtualHubBgpConnectionsClient.ListLearnedRoutes", "location", resp, client.pl)
-	if err != nil {
-		return VirtualHubBgpConnectionsClientListLearnedRoutesPollerResponse{}, err
-	}
-	result.Poller = &VirtualHubBgpConnectionsClientListLearnedRoutesPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // ListLearnedRoutes - Retrieves a list of routes the virtual hub bgp connection has learned.

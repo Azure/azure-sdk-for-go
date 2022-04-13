@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type PrivateLinkServicesForEDMUploadClient struct {
 // subscriptionID - The subscription identifier.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPrivateLinkServicesForEDMUploadClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateLinkServicesForEDMUploadClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewPrivateLinkServicesForEDMUploadClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkServicesForEDMUploadClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PrivateLinkServicesForEDMUploadClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or update the metadata of a privateLinkServicesForEDMUpload instance.
@@ -56,22 +61,18 @@ func NewPrivateLinkServicesForEDMUploadClient(subscriptionID string, credential 
 // privateLinkServicesForEDMUploadDescription - The service instance metadata.
 // options - PrivateLinkServicesForEDMUploadClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateLinkServicesForEDMUploadClient.BeginCreateOrUpdate
 // method.
-func (client *PrivateLinkServicesForEDMUploadClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateLinkServicesForEDMUploadDescription PrivateLinkServicesForEDMUploadDescription, options *PrivateLinkServicesForEDMUploadClientBeginCreateOrUpdateOptions) (PrivateLinkServicesForEDMUploadClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, privateLinkServicesForEDMUploadDescription, options)
-	if err != nil {
-		return PrivateLinkServicesForEDMUploadClientCreateOrUpdatePollerResponse{}, err
+func (client *PrivateLinkServicesForEDMUploadClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateLinkServicesForEDMUploadDescription PrivateLinkServicesForEDMUploadDescription, options *PrivateLinkServicesForEDMUploadClientBeginCreateOrUpdateOptions) (*armruntime.Poller[PrivateLinkServicesForEDMUploadClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, privateLinkServicesForEDMUploadDescription, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateLinkServicesForEDMUploadClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[PrivateLinkServicesForEDMUploadClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PrivateLinkServicesForEDMUploadClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PrivateLinkServicesForEDMUploadClient.CreateOrUpdate", "location", resp, client.pl)
-	if err != nil {
-		return PrivateLinkServicesForEDMUploadClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &PrivateLinkServicesForEDMUploadClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update the metadata of a privateLinkServicesForEDMUpload instance.
@@ -166,7 +167,7 @@ func (client *PrivateLinkServicesForEDMUploadClient) getCreateRequest(ctx contex
 
 // getHandleResponse handles the Get response.
 func (client *PrivateLinkServicesForEDMUploadClient) getHandleResponse(resp *http.Response) (PrivateLinkServicesForEDMUploadClientGetResponse, error) {
-	result := PrivateLinkServicesForEDMUploadClientGetResponse{RawResponse: resp}
+	result := PrivateLinkServicesForEDMUploadClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkServicesForEDMUploadDescription); err != nil {
 		return PrivateLinkServicesForEDMUploadClientGetResponse{}, err
 	}
@@ -177,16 +178,32 @@ func (client *PrivateLinkServicesForEDMUploadClient) getHandleResponse(resp *htt
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PrivateLinkServicesForEDMUploadClientListOptions contains the optional parameters for the PrivateLinkServicesForEDMUploadClient.List
 // method.
-func (client *PrivateLinkServicesForEDMUploadClient) List(options *PrivateLinkServicesForEDMUploadClientListOptions) *PrivateLinkServicesForEDMUploadClientListPager {
-	return &PrivateLinkServicesForEDMUploadClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *PrivateLinkServicesForEDMUploadClient) List(options *PrivateLinkServicesForEDMUploadClientListOptions) *runtime.Pager[PrivateLinkServicesForEDMUploadClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesForEDMUploadClientListResponse]{
+		More: func(page PrivateLinkServicesForEDMUploadClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PrivateLinkServicesForEDMUploadClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateLinkServicesForEDMUploadDescriptionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PrivateLinkServicesForEDMUploadClientListResponse) (PrivateLinkServicesForEDMUploadClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PrivateLinkServicesForEDMUploadClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PrivateLinkServicesForEDMUploadClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PrivateLinkServicesForEDMUploadClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -209,7 +226,7 @@ func (client *PrivateLinkServicesForEDMUploadClient) listCreateRequest(ctx conte
 
 // listHandleResponse handles the List response.
 func (client *PrivateLinkServicesForEDMUploadClient) listHandleResponse(resp *http.Response) (PrivateLinkServicesForEDMUploadClientListResponse, error) {
-	result := PrivateLinkServicesForEDMUploadClientListResponse{RawResponse: resp}
+	result := PrivateLinkServicesForEDMUploadClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkServicesForEDMUploadDescriptionListResult); err != nil {
 		return PrivateLinkServicesForEDMUploadClientListResponse{}, err
 	}
@@ -221,16 +238,32 @@ func (client *PrivateLinkServicesForEDMUploadClient) listHandleResponse(resp *ht
 // resourceGroupName - The name of the resource group that contains the service instance.
 // options - PrivateLinkServicesForEDMUploadClientListByResourceGroupOptions contains the optional parameters for the PrivateLinkServicesForEDMUploadClient.ListByResourceGroup
 // method.
-func (client *PrivateLinkServicesForEDMUploadClient) ListByResourceGroup(resourceGroupName string, options *PrivateLinkServicesForEDMUploadClientListByResourceGroupOptions) *PrivateLinkServicesForEDMUploadClientListByResourceGroupPager {
-	return &PrivateLinkServicesForEDMUploadClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *PrivateLinkServicesForEDMUploadClient) ListByResourceGroup(resourceGroupName string, options *PrivateLinkServicesForEDMUploadClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkServicesForEDMUploadClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesForEDMUploadClientListByResourceGroupResponse]{
+		More: func(page PrivateLinkServicesForEDMUploadClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PrivateLinkServicesForEDMUploadClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateLinkServicesForEDMUploadDescriptionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PrivateLinkServicesForEDMUploadClientListByResourceGroupResponse) (PrivateLinkServicesForEDMUploadClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PrivateLinkServicesForEDMUploadClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PrivateLinkServicesForEDMUploadClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PrivateLinkServicesForEDMUploadClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -257,7 +290,7 @@ func (client *PrivateLinkServicesForEDMUploadClient) listByResourceGroupCreateRe
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *PrivateLinkServicesForEDMUploadClient) listByResourceGroupHandleResponse(resp *http.Response) (PrivateLinkServicesForEDMUploadClientListByResourceGroupResponse, error) {
-	result := PrivateLinkServicesForEDMUploadClientListByResourceGroupResponse{RawResponse: resp}
+	result := PrivateLinkServicesForEDMUploadClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkServicesForEDMUploadDescriptionListResult); err != nil {
 		return PrivateLinkServicesForEDMUploadClientListByResourceGroupResponse{}, err
 	}
@@ -271,22 +304,18 @@ func (client *PrivateLinkServicesForEDMUploadClient) listByResourceGroupHandleRe
 // servicePatchDescription - The service instance metadata and security metadata.
 // options - PrivateLinkServicesForEDMUploadClientBeginUpdateOptions contains the optional parameters for the PrivateLinkServicesForEDMUploadClient.BeginUpdate
 // method.
-func (client *PrivateLinkServicesForEDMUploadClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription ServicesPatchDescription, options *PrivateLinkServicesForEDMUploadClientBeginUpdateOptions) (PrivateLinkServicesForEDMUploadClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, resourceName, servicePatchDescription, options)
-	if err != nil {
-		return PrivateLinkServicesForEDMUploadClientUpdatePollerResponse{}, err
+func (client *PrivateLinkServicesForEDMUploadClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription ServicesPatchDescription, options *PrivateLinkServicesForEDMUploadClientBeginUpdateOptions) (*armruntime.Poller[PrivateLinkServicesForEDMUploadClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, resourceName, servicePatchDescription, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateLinkServicesForEDMUploadClientUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[PrivateLinkServicesForEDMUploadClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PrivateLinkServicesForEDMUploadClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PrivateLinkServicesForEDMUploadClient.Update", "location", resp, client.pl)
-	if err != nil {
-		return PrivateLinkServicesForEDMUploadClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &PrivateLinkServicesForEDMUploadClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Update the metadata of a privateLinkServicesForEDMUpload instance.

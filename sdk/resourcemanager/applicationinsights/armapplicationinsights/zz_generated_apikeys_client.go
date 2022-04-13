@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type APIKeysClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAPIKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *APIKeysClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAPIKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIKeysClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &APIKeysClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Create an API Key of an Application Insights component.
@@ -98,7 +103,7 @@ func (client *APIKeysClient) createCreateRequest(ctx context.Context, resourceGr
 
 // createHandleResponse handles the Create response.
 func (client *APIKeysClient) createHandleResponse(resp *http.Response) (APIKeysClientCreateResponse, error) {
-	result := APIKeysClientCreateResponse{RawResponse: resp}
+	result := APIKeysClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentAPIKey); err != nil {
 		return APIKeysClientCreateResponse{}, err
 	}
@@ -158,7 +163,7 @@ func (client *APIKeysClient) deleteCreateRequest(ctx context.Context, resourceGr
 
 // deleteHandleResponse handles the Delete response.
 func (client *APIKeysClient) deleteHandleResponse(resp *http.Response) (APIKeysClientDeleteResponse, error) {
-	result := APIKeysClientDeleteResponse{RawResponse: resp}
+	result := APIKeysClientDeleteResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentAPIKey); err != nil {
 		return APIKeysClientDeleteResponse{}, err
 	}
@@ -218,7 +223,7 @@ func (client *APIKeysClient) getCreateRequest(ctx context.Context, resourceGroup
 
 // getHandleResponse handles the Get response.
 func (client *APIKeysClient) getHandleResponse(resp *http.Response) (APIKeysClientGetResponse, error) {
-	result := APIKeysClientGetResponse{RawResponse: resp}
+	result := APIKeysClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentAPIKey); err != nil {
 		return APIKeysClientGetResponse{}, err
 	}
@@ -230,19 +235,26 @@ func (client *APIKeysClient) getHandleResponse(resp *http.Response) (APIKeysClie
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // options - APIKeysClientListOptions contains the optional parameters for the APIKeysClient.List method.
-func (client *APIKeysClient) List(ctx context.Context, resourceGroupName string, resourceName string, options *APIKeysClientListOptions) (APIKeysClientListResponse, error) {
-	req, err := client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
-	if err != nil {
-		return APIKeysClientListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return APIKeysClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return APIKeysClientListResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listHandleResponse(resp)
+func (client *APIKeysClient) List(resourceGroupName string, resourceName string, options *APIKeysClientListOptions) *runtime.Pager[APIKeysClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[APIKeysClientListResponse]{
+		More: func(page APIKeysClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *APIKeysClientListResponse) (APIKeysClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
+			if err != nil {
+				return APIKeysClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return APIKeysClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return APIKeysClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -273,7 +285,7 @@ func (client *APIKeysClient) listCreateRequest(ctx context.Context, resourceGrou
 
 // listHandleResponse handles the List response.
 func (client *APIKeysClient) listHandleResponse(resp *http.Response) (APIKeysClientListResponse, error) {
-	result := APIKeysClientListResponse{RawResponse: resp}
+	result := APIKeysClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentAPIKeyListResult); err != nil {
 		return APIKeysClientListResponse{}, err
 	}

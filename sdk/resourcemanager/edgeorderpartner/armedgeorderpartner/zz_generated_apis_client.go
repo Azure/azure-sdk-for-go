@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,36 +34,56 @@ type APISClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAPISClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *APISClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAPISClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APISClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &APISClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // ListOperationsPartner - This method gets all the operations that are exposed for customer.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - APISClientListOperationsPartnerOptions contains the optional parameters for the APISClient.ListOperationsPartner
 // method.
-func (client *APISClient) ListOperationsPartner(options *APISClientListOperationsPartnerOptions) *APISClientListOperationsPartnerPager {
-	return &APISClientListOperationsPartnerPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listOperationsPartnerCreateRequest(ctx, options)
+func (client *APISClient) ListOperationsPartner(options *APISClientListOperationsPartnerOptions) *runtime.Pager[APISClientListOperationsPartnerResponse] {
+	return runtime.NewPager(runtime.PageProcessor[APISClientListOperationsPartnerResponse]{
+		More: func(page APISClientListOperationsPartnerResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp APISClientListOperationsPartnerResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.OperationListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *APISClientListOperationsPartnerResponse) (APISClientListOperationsPartnerResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listOperationsPartnerCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return APISClientListOperationsPartnerResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return APISClientListOperationsPartnerResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return APISClientListOperationsPartnerResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listOperationsPartnerHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listOperationsPartnerCreateRequest creates the ListOperationsPartner request.
@@ -81,7 +102,7 @@ func (client *APISClient) listOperationsPartnerCreateRequest(ctx context.Context
 
 // listOperationsPartnerHandleResponse handles the ListOperationsPartner response.
 func (client *APISClient) listOperationsPartnerHandleResponse(resp *http.Response) (APISClientListOperationsPartnerResponse, error) {
-	result := APISClientListOperationsPartnerResponse{RawResponse: resp}
+	result := APISClientListOperationsPartnerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationListResult); err != nil {
 		return APISClientListOperationsPartnerResponse{}, err
 	}
@@ -96,22 +117,16 @@ func (client *APISClient) listOperationsPartnerHandleResponse(resp *http.Respons
 // manageInventoryMetadataRequest - Updates inventory metadata and inventory configuration
 // options - APISClientBeginManageInventoryMetadataOptions contains the optional parameters for the APISClient.BeginManageInventoryMetadata
 // method.
-func (client *APISClient) BeginManageInventoryMetadata(ctx context.Context, familyIdentifier string, location string, serialNumber string, manageInventoryMetadataRequest ManageInventoryMetadataRequest, options *APISClientBeginManageInventoryMetadataOptions) (APISClientManageInventoryMetadataPollerResponse, error) {
-	resp, err := client.manageInventoryMetadata(ctx, familyIdentifier, location, serialNumber, manageInventoryMetadataRequest, options)
-	if err != nil {
-		return APISClientManageInventoryMetadataPollerResponse{}, err
+func (client *APISClient) BeginManageInventoryMetadata(ctx context.Context, familyIdentifier string, location string, serialNumber string, manageInventoryMetadataRequest ManageInventoryMetadataRequest, options *APISClientBeginManageInventoryMetadataOptions) (*armruntime.Poller[APISClientManageInventoryMetadataResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.manageInventoryMetadata(ctx, familyIdentifier, location, serialNumber, manageInventoryMetadataRequest, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[APISClientManageInventoryMetadataResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[APISClientManageInventoryMetadataResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := APISClientManageInventoryMetadataPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("APISClient.ManageInventoryMetadata", "", resp, client.pl)
-	if err != nil {
-		return APISClientManageInventoryMetadataPollerResponse{}, err
-	}
-	result.Poller = &APISClientManageInventoryMetadataPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // ManageInventoryMetadata - API for updating inventory metadata and inventory configuration
@@ -180,7 +195,7 @@ func (client *APISClient) ManageLink(ctx context.Context, familyIdentifier strin
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return APISClientManageLinkResponse{}, runtime.NewResponseError(resp)
 	}
-	return APISClientManageLinkResponse{RawResponse: resp}, nil
+	return APISClientManageLinkResponse{}, nil
 }
 
 // manageLinkCreateRequest creates the ManageLink request.
@@ -217,16 +232,32 @@ func (client *APISClient) manageLinkCreateRequest(ctx context.Context, familyIde
 // If the operation fails it returns an *azcore.ResponseError type.
 // searchInventoriesRequest - Searches inventories with the given filters and returns in the form of a list
 // options - APISClientSearchInventoriesOptions contains the optional parameters for the APISClient.SearchInventories method.
-func (client *APISClient) SearchInventories(searchInventoriesRequest SearchInventoriesRequest, options *APISClientSearchInventoriesOptions) *APISClientSearchInventoriesPager {
-	return &APISClientSearchInventoriesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.searchInventoriesCreateRequest(ctx, searchInventoriesRequest, options)
+func (client *APISClient) SearchInventories(searchInventoriesRequest SearchInventoriesRequest, options *APISClientSearchInventoriesOptions) *runtime.Pager[APISClientSearchInventoriesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[APISClientSearchInventoriesResponse]{
+		More: func(page APISClientSearchInventoriesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp APISClientSearchInventoriesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PartnerInventoryList.NextLink)
+		Fetcher: func(ctx context.Context, page *APISClientSearchInventoriesResponse) (APISClientSearchInventoriesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.searchInventoriesCreateRequest(ctx, searchInventoriesRequest, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return APISClientSearchInventoriesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return APISClientSearchInventoriesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return APISClientSearchInventoriesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.searchInventoriesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // searchInventoriesCreateRequest creates the SearchInventories request.
@@ -249,7 +280,7 @@ func (client *APISClient) searchInventoriesCreateRequest(ctx context.Context, se
 
 // searchInventoriesHandleResponse handles the SearchInventories response.
 func (client *APISClient) searchInventoriesHandleResponse(resp *http.Response) (APISClientSearchInventoriesResponse, error) {
-	result := APISClientSearchInventoriesResponse{RawResponse: resp}
+	result := APISClientSearchInventoriesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PartnerInventoryList); err != nil {
 		return APISClientSearchInventoriesResponse{}, err
 	}

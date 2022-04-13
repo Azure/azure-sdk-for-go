@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armconfluent
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // AgreementProperties - Terms properties for Marketplace and Confluent.
 type AgreementProperties struct {
@@ -40,61 +35,6 @@ type AgreementProperties struct {
 
 	// Terms signature.
 	Signature *string `json:"signature,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AgreementProperties.
-func (a AgreementProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "accepted", a.Accepted)
-	populate(objectMap, "licenseTextLink", a.LicenseTextLink)
-	populate(objectMap, "plan", a.Plan)
-	populate(objectMap, "privacyPolicyLink", a.PrivacyPolicyLink)
-	populate(objectMap, "product", a.Product)
-	populate(objectMap, "publisher", a.Publisher)
-	populateTimeRFC3339(objectMap, "retrieveDatetime", a.RetrieveDatetime)
-	populate(objectMap, "signature", a.Signature)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AgreementProperties.
-func (a *AgreementProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "accepted":
-			err = unpopulate(val, &a.Accepted)
-			delete(rawMsg, key)
-		case "licenseTextLink":
-			err = unpopulate(val, &a.LicenseTextLink)
-			delete(rawMsg, key)
-		case "plan":
-			err = unpopulate(val, &a.Plan)
-			delete(rawMsg, key)
-		case "privacyPolicyLink":
-			err = unpopulate(val, &a.PrivacyPolicyLink)
-			delete(rawMsg, key)
-		case "product":
-			err = unpopulate(val, &a.Product)
-			delete(rawMsg, key)
-		case "publisher":
-			err = unpopulate(val, &a.Publisher)
-			delete(rawMsg, key)
-		case "retrieveDatetime":
-			err = unpopulateTimeRFC3339(val, &a.RetrieveDatetime)
-			delete(rawMsg, key)
-		case "signature":
-			err = unpopulate(val, &a.Signature)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // AgreementResource - Agreement Terms definition
@@ -124,14 +64,6 @@ type AgreementResourceListResponse struct {
 	Value []*AgreementResource `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AgreementResourceListResponse.
-func (a AgreementResourceListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
 // ErrorResponseBody - Response body of Error
 type ErrorResponseBody struct {
 	// READ-ONLY; Error code
@@ -145,16 +77,6 @@ type ErrorResponseBody struct {
 
 	// READ-ONLY; Error target
 	Target *string `json:"target,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorResponseBody.
-func (e ErrorResponseBody) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
 }
 
 // MarketplaceAgreementsClientCreateOptions contains the optional parameters for the MarketplaceAgreementsClient.Create method.
@@ -213,14 +135,6 @@ type OperationListResult struct {
 	Value []*OperationResult `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationResult - An Confluent REST API operation.
 type OperationResult struct {
 	// The object that represents the operation.
@@ -237,11 +151,14 @@ type OperationResult struct {
 type OrganizationClientBeginCreateOptions struct {
 	// Organization resource model
 	Body *OrganizationResource
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // OrganizationClientBeginDeleteOptions contains the optional parameters for the OrganizationClient.BeginDelete method.
 type OrganizationClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // OrganizationClientGetOptions contains the optional parameters for the OrganizationClient.Get method.
@@ -296,19 +213,6 @@ type OrganizationResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OrganizationResource.
-func (o OrganizationResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", o.ID)
-	populate(objectMap, "location", o.Location)
-	populate(objectMap, "name", o.Name)
-	populate(objectMap, "properties", o.Properties)
-	populate(objectMap, "systemData", o.SystemData)
-	populate(objectMap, "tags", o.Tags)
-	populate(objectMap, "type", o.Type)
-	return json.Marshal(objectMap)
-}
-
 // OrganizationResourceListResult - The response of a list operation.
 type OrganizationResourceListResult struct {
 	// Link to the next set of results, if any.
@@ -316,14 +220,6 @@ type OrganizationResourceListResult struct {
 
 	// Result of a list operation.
 	Value []*OrganizationResource `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OrganizationResourceListResult.
-func (o OrganizationResourceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 // OrganizationResourceProperties - Organization resource property
@@ -347,64 +243,10 @@ type OrganizationResourceProperties struct {
 	SsoURL *string `json:"ssoUrl,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OrganizationResourceProperties.
-func (o OrganizationResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdTime", o.CreatedTime)
-	populate(objectMap, "offerDetail", o.OfferDetail)
-	populate(objectMap, "organizationId", o.OrganizationID)
-	populate(objectMap, "provisioningState", o.ProvisioningState)
-	populate(objectMap, "ssoUrl", o.SsoURL)
-	populate(objectMap, "userDetail", o.UserDetail)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type OrganizationResourceProperties.
-func (o *OrganizationResourceProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdTime":
-			err = unpopulateTimeRFC3339(val, &o.CreatedTime)
-			delete(rawMsg, key)
-		case "offerDetail":
-			err = unpopulate(val, &o.OfferDetail)
-			delete(rawMsg, key)
-		case "organizationId":
-			err = unpopulate(val, &o.OrganizationID)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &o.ProvisioningState)
-			delete(rawMsg, key)
-		case "ssoUrl":
-			err = unpopulate(val, &o.SsoURL)
-			delete(rawMsg, key)
-		case "userDetail":
-			err = unpopulate(val, &o.UserDetail)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // OrganizationResourceUpdate - Organization Resource update
 type OrganizationResourceUpdate struct {
 	// ARM resource tags
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OrganizationResourceUpdate.
-func (o OrganizationResourceUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tags", o.Tags)
-	return json.Marshal(objectMap)
 }
 
 // ResourceProviderDefaultErrorResponse - Default error response for resource provider
@@ -434,53 +276,6 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // UserDetail - Subscriber detail
 type UserDetail struct {
 	// REQUIRED; Email address
@@ -497,21 +292,4 @@ type UserDetail struct {
 // method.
 type ValidationsClientValidateOrganizationOptions struct {
 	// placeholder for future optional parameters
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

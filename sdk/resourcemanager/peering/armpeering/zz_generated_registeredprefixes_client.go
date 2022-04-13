@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type RegisteredPrefixesClient struct {
 // subscriptionID - The Azure subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewRegisteredPrefixesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RegisteredPrefixesClient {
+func NewRegisteredPrefixesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RegisteredPrefixesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &RegisteredPrefixesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates a new registered prefix with the specified name under the given subscription, resource group and
@@ -97,7 +102,7 @@ func (client *RegisteredPrefixesClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, registeredPrefix)
@@ -105,7 +110,7 @@ func (client *RegisteredPrefixesClient) createOrUpdateCreateRequest(ctx context.
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *RegisteredPrefixesClient) createOrUpdateHandleResponse(resp *http.Response) (RegisteredPrefixesClientCreateOrUpdateResponse, error) {
-	result := RegisteredPrefixesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := RegisteredPrefixesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegisteredPrefix); err != nil {
 		return RegisteredPrefixesClientCreateOrUpdateResponse{}, err
 	}
@@ -132,7 +137,7 @@ func (client *RegisteredPrefixesClient) Delete(ctx context.Context, resourceGrou
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return RegisteredPrefixesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return RegisteredPrefixesClientDeleteResponse{RawResponse: resp}, nil
+	return RegisteredPrefixesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -159,7 +164,7 @@ func (client *RegisteredPrefixesClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -210,7 +215,7 @@ func (client *RegisteredPrefixesClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -218,7 +223,7 @@ func (client *RegisteredPrefixesClient) getCreateRequest(ctx context.Context, re
 
 // getHandleResponse handles the Get response.
 func (client *RegisteredPrefixesClient) getHandleResponse(resp *http.Response) (RegisteredPrefixesClientGetResponse, error) {
-	result := RegisteredPrefixesClientGetResponse{RawResponse: resp}
+	result := RegisteredPrefixesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegisteredPrefix); err != nil {
 		return RegisteredPrefixesClientGetResponse{}, err
 	}
@@ -231,16 +236,32 @@ func (client *RegisteredPrefixesClient) getHandleResponse(resp *http.Response) (
 // peeringName - The name of the peering.
 // options - RegisteredPrefixesClientListByPeeringOptions contains the optional parameters for the RegisteredPrefixesClient.ListByPeering
 // method.
-func (client *RegisteredPrefixesClient) ListByPeering(resourceGroupName string, peeringName string, options *RegisteredPrefixesClientListByPeeringOptions) *RegisteredPrefixesClientListByPeeringPager {
-	return &RegisteredPrefixesClientListByPeeringPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByPeeringCreateRequest(ctx, resourceGroupName, peeringName, options)
+func (client *RegisteredPrefixesClient) ListByPeering(resourceGroupName string, peeringName string, options *RegisteredPrefixesClientListByPeeringOptions) *runtime.Pager[RegisteredPrefixesClientListByPeeringResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RegisteredPrefixesClientListByPeeringResponse]{
+		More: func(page RegisteredPrefixesClientListByPeeringResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RegisteredPrefixesClientListByPeeringResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RegisteredPrefixListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *RegisteredPrefixesClientListByPeeringResponse) (RegisteredPrefixesClientListByPeeringResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByPeeringCreateRequest(ctx, resourceGroupName, peeringName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RegisteredPrefixesClientListByPeeringResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RegisteredPrefixesClientListByPeeringResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RegisteredPrefixesClientListByPeeringResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByPeeringHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByPeeringCreateRequest creates the ListByPeering request.
@@ -263,7 +284,7 @@ func (client *RegisteredPrefixesClient) listByPeeringCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -271,7 +292,7 @@ func (client *RegisteredPrefixesClient) listByPeeringCreateRequest(ctx context.C
 
 // listByPeeringHandleResponse handles the ListByPeering response.
 func (client *RegisteredPrefixesClient) listByPeeringHandleResponse(resp *http.Response) (RegisteredPrefixesClientListByPeeringResponse, error) {
-	result := RegisteredPrefixesClientListByPeeringResponse{RawResponse: resp}
+	result := RegisteredPrefixesClientListByPeeringResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegisteredPrefixListResult); err != nil {
 		return RegisteredPrefixesClientListByPeeringResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -41,20 +42,24 @@ type VMIngestionClient struct {
 // subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewVMIngestionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VMIngestionClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewVMIngestionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VMIngestionClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &VMIngestionClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Details - List the vm ingestion details that will be monitored by the Elastic monitor resource.
@@ -105,7 +110,7 @@ func (client *VMIngestionClient) detailsCreateRequest(ctx context.Context, resou
 
 // detailsHandleResponse handles the Details response.
 func (client *VMIngestionClient) detailsHandleResponse(resp *http.Response) (VMIngestionClientDetailsResponse, error) {
-	result := VMIngestionClientDetailsResponse{RawResponse: resp}
+	result := VMIngestionClientDetailsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VMIngestionDetailsResponse); err != nil {
 		return VMIngestionClientDetailsResponse{}, err
 	}

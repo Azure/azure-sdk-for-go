@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type KustoPoolPrincipalAssignmentsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewKustoPoolPrincipalAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *KustoPoolPrincipalAssignmentsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewKustoPoolPrincipalAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*KustoPoolPrincipalAssignmentsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &KustoPoolPrincipalAssignmentsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CheckNameAvailability - Checks that the principal assignment name is valid and is not already in use.
@@ -104,7 +109,7 @@ func (client *KustoPoolPrincipalAssignmentsClient) checkNameAvailabilityCreateRe
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
 func (client *KustoPoolPrincipalAssignmentsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (KustoPoolPrincipalAssignmentsClientCheckNameAvailabilityResponse, error) {
-	result := KustoPoolPrincipalAssignmentsClientCheckNameAvailabilityResponse{RawResponse: resp}
+	result := KustoPoolPrincipalAssignmentsClientCheckNameAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameResult); err != nil {
 		return KustoPoolPrincipalAssignmentsClientCheckNameAvailabilityResponse{}, err
 	}
@@ -120,22 +125,16 @@ func (client *KustoPoolPrincipalAssignmentsClient) checkNameAvailabilityHandleRe
 // parameters - The Kusto pool principalAssignment's parameters supplied for the operation.
 // options - KustoPoolPrincipalAssignmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the KustoPoolPrincipalAssignmentsClient.BeginCreateOrUpdate
 // method.
-func (client *KustoPoolPrincipalAssignmentsClient) BeginCreateOrUpdate(ctx context.Context, workspaceName string, kustoPoolName string, principalAssignmentName string, resourceGroupName string, parameters ClusterPrincipalAssignment, options *KustoPoolPrincipalAssignmentsClientBeginCreateOrUpdateOptions) (KustoPoolPrincipalAssignmentsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, parameters, options)
-	if err != nil {
-		return KustoPoolPrincipalAssignmentsClientCreateOrUpdatePollerResponse{}, err
+func (client *KustoPoolPrincipalAssignmentsClient) BeginCreateOrUpdate(ctx context.Context, workspaceName string, kustoPoolName string, principalAssignmentName string, resourceGroupName string, parameters ClusterPrincipalAssignment, options *KustoPoolPrincipalAssignmentsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[KustoPoolPrincipalAssignmentsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[KustoPoolPrincipalAssignmentsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[KustoPoolPrincipalAssignmentsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := KustoPoolPrincipalAssignmentsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("KustoPoolPrincipalAssignmentsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return KustoPoolPrincipalAssignmentsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &KustoPoolPrincipalAssignmentsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create a Kusto pool principalAssignment.
@@ -197,22 +196,16 @@ func (client *KustoPoolPrincipalAssignmentsClient) createOrUpdateCreateRequest(c
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - KustoPoolPrincipalAssignmentsClientBeginDeleteOptions contains the optional parameters for the KustoPoolPrincipalAssignmentsClient.BeginDelete
 // method.
-func (client *KustoPoolPrincipalAssignmentsClient) BeginDelete(ctx context.Context, workspaceName string, kustoPoolName string, principalAssignmentName string, resourceGroupName string, options *KustoPoolPrincipalAssignmentsClientBeginDeleteOptions) (KustoPoolPrincipalAssignmentsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, options)
-	if err != nil {
-		return KustoPoolPrincipalAssignmentsClientDeletePollerResponse{}, err
+func (client *KustoPoolPrincipalAssignmentsClient) BeginDelete(ctx context.Context, workspaceName string, kustoPoolName string, principalAssignmentName string, resourceGroupName string, options *KustoPoolPrincipalAssignmentsClientBeginDeleteOptions) (*armruntime.Poller[KustoPoolPrincipalAssignmentsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[KustoPoolPrincipalAssignmentsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[KustoPoolPrincipalAssignmentsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := KustoPoolPrincipalAssignmentsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("KustoPoolPrincipalAssignmentsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return KustoPoolPrincipalAssignmentsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &KustoPoolPrincipalAssignmentsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a Kusto pool principalAssignment.
@@ -325,7 +318,7 @@ func (client *KustoPoolPrincipalAssignmentsClient) getCreateRequest(ctx context.
 
 // getHandleResponse handles the Get response.
 func (client *KustoPoolPrincipalAssignmentsClient) getHandleResponse(resp *http.Response) (KustoPoolPrincipalAssignmentsClientGetResponse, error) {
-	result := KustoPoolPrincipalAssignmentsClientGetResponse{RawResponse: resp}
+	result := KustoPoolPrincipalAssignmentsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterPrincipalAssignment); err != nil {
 		return KustoPoolPrincipalAssignmentsClientGetResponse{}, err
 	}
@@ -339,19 +332,26 @@ func (client *KustoPoolPrincipalAssignmentsClient) getHandleResponse(resp *http.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - KustoPoolPrincipalAssignmentsClientListOptions contains the optional parameters for the KustoPoolPrincipalAssignmentsClient.List
 // method.
-func (client *KustoPoolPrincipalAssignmentsClient) List(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string, options *KustoPoolPrincipalAssignmentsClientListOptions) (KustoPoolPrincipalAssignmentsClientListResponse, error) {
-	req, err := client.listCreateRequest(ctx, workspaceName, kustoPoolName, resourceGroupName, options)
-	if err != nil {
-		return KustoPoolPrincipalAssignmentsClientListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return KustoPoolPrincipalAssignmentsClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KustoPoolPrincipalAssignmentsClientListResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listHandleResponse(resp)
+func (client *KustoPoolPrincipalAssignmentsClient) List(workspaceName string, kustoPoolName string, resourceGroupName string, options *KustoPoolPrincipalAssignmentsClientListOptions) *runtime.Pager[KustoPoolPrincipalAssignmentsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[KustoPoolPrincipalAssignmentsClientListResponse]{
+		More: func(page KustoPoolPrincipalAssignmentsClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *KustoPoolPrincipalAssignmentsClientListResponse) (KustoPoolPrincipalAssignmentsClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, workspaceName, kustoPoolName, resourceGroupName, options)
+			if err != nil {
+				return KustoPoolPrincipalAssignmentsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return KustoPoolPrincipalAssignmentsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return KustoPoolPrincipalAssignmentsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -386,7 +386,7 @@ func (client *KustoPoolPrincipalAssignmentsClient) listCreateRequest(ctx context
 
 // listHandleResponse handles the List response.
 func (client *KustoPoolPrincipalAssignmentsClient) listHandleResponse(resp *http.Response) (KustoPoolPrincipalAssignmentsClientListResponse, error) {
-	result := KustoPoolPrincipalAssignmentsClientListResponse{RawResponse: resp}
+	result := KustoPoolPrincipalAssignmentsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterPrincipalAssignmentListResult); err != nil {
 		return KustoPoolPrincipalAssignmentsClientListResponse{}, err
 	}

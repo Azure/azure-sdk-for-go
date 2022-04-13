@@ -1,5 +1,656 @@
 # Release History
 
+## 0.4.0 (2022-04-12)
+### Breaking Changes
+
+- Function `NewWorkflowRunActionRepetitionsRequestHistoriesClient` return value(s) have been changed from `(*WorkflowRunActionRepetitionsRequestHistoriesClient)` to `(*WorkflowRunActionRepetitionsRequestHistoriesClient, error)`
+- Function `*IntegrationAccountMapsClient.List` return value(s) have been changed from `(*IntegrationAccountMapsClientListPager)` to `(*runtime.Pager[IntegrationAccountMapsClientListResponse])`
+- Function `*WorkflowRunActionsClient.List` return value(s) have been changed from `(*WorkflowRunActionsClientListPager)` to `(*runtime.Pager[WorkflowRunActionsClientListResponse])`
+- Function `NewIntegrationAccountSessionsClient` return value(s) have been changed from `(*IntegrationAccountSessionsClient)` to `(*IntegrationAccountSessionsClient, error)`
+- Function `*IntegrationServiceEnvironmentManagedApisClient.BeginDelete` return value(s) have been changed from `(IntegrationServiceEnvironmentManagedApisClientDeletePollerResponse, error)` to `(*armruntime.Poller[IntegrationServiceEnvironmentManagedApisClientDeleteResponse], error)`
+- Function `*WorkflowRunActionsClient.ListExpressionTraces` parameter(s) have been changed from `(context.Context, string, string, string, string, *WorkflowRunActionsClientListExpressionTracesOptions)` to `(string, string, string, string, *WorkflowRunActionsClientListExpressionTracesOptions)`
+- Function `*WorkflowRunActionsClient.ListExpressionTraces` return value(s) have been changed from `(WorkflowRunActionsClientListExpressionTracesResponse, error)` to `(*runtime.Pager[WorkflowRunActionsClientListExpressionTracesResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `NewIntegrationServiceEnvironmentManagedAPIOperationsClient` return value(s) have been changed from `(*IntegrationServiceEnvironmentManagedAPIOperationsClient)` to `(*IntegrationServiceEnvironmentManagedAPIOperationsClient, error)`
+- Function `NewIntegrationServiceEnvironmentNetworkHealthClient` return value(s) have been changed from `(*IntegrationServiceEnvironmentNetworkHealthClient)` to `(*IntegrationServiceEnvironmentNetworkHealthClient, error)`
+- Function `*IntegrationServiceEnvironmentsClient.ListByResourceGroup` return value(s) have been changed from `(*IntegrationServiceEnvironmentsClientListByResourceGroupPager)` to `(*runtime.Pager[IntegrationServiceEnvironmentsClientListByResourceGroupResponse])`
+- Function `*WorkflowsClient.ListBySubscription` return value(s) have been changed from `(*WorkflowsClientListBySubscriptionPager)` to `(*runtime.Pager[WorkflowsClientListBySubscriptionResponse])`
+- Function `*WorkflowRunActionScopeRepetitionsClient.List` parameter(s) have been changed from `(context.Context, string, string, string, string, *WorkflowRunActionScopeRepetitionsClientListOptions)` to `(string, string, string, string, *WorkflowRunActionScopeRepetitionsClientListOptions)`
+- Function `*WorkflowRunActionScopeRepetitionsClient.List` return value(s) have been changed from `(WorkflowRunActionScopeRepetitionsClientListResponse, error)` to `(*runtime.Pager[WorkflowRunActionScopeRepetitionsClientListResponse])`
+- Function `*IntegrationAccountSessionsClient.List` return value(s) have been changed from `(*IntegrationAccountSessionsClientListPager)` to `(*runtime.Pager[IntegrationAccountSessionsClientListResponse])`
+- Function `NewIntegrationAccountAssembliesClient` return value(s) have been changed from `(*IntegrationAccountAssembliesClient)` to `(*IntegrationAccountAssembliesClient, error)`
+- Function `*IntegrationAccountsClient.ListKeyVaultKeys` parameter(s) have been changed from `(context.Context, string, string, ListKeyVaultKeysDefinition, *IntegrationAccountsClientListKeyVaultKeysOptions)` to `(string, string, ListKeyVaultKeysDefinition, *IntegrationAccountsClientListKeyVaultKeysOptions)`
+- Function `*IntegrationAccountsClient.ListKeyVaultKeys` return value(s) have been changed from `(IntegrationAccountsClientListKeyVaultKeysResponse, error)` to `(*runtime.Pager[IntegrationAccountsClientListKeyVaultKeysResponse])`
+- Function `*IntegrationAccountAssembliesClient.List` parameter(s) have been changed from `(context.Context, string, string, *IntegrationAccountAssembliesClientListOptions)` to `(string, string, *IntegrationAccountAssembliesClientListOptions)`
+- Function `*IntegrationAccountAssembliesClient.List` return value(s) have been changed from `(IntegrationAccountAssembliesClientListResponse, error)` to `(*runtime.Pager[IntegrationAccountAssembliesClientListResponse])`
+- Function `*WorkflowRunActionRepetitionsRequestHistoriesClient.List` return value(s) have been changed from `(*WorkflowRunActionRepetitionsRequestHistoriesClientListPager)` to `(*runtime.Pager[WorkflowRunActionRepetitionsRequestHistoriesClientListResponse])`
+- Function `NewWorkflowsClient` return value(s) have been changed from `(*WorkflowsClient)` to `(*WorkflowsClient, error)`
+- Function `*WorkflowRunActionRepetitionsClient.ListExpressionTraces` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *WorkflowRunActionRepetitionsClientListExpressionTracesOptions)` to `(string, string, string, string, string, *WorkflowRunActionRepetitionsClientListExpressionTracesOptions)`
+- Function `*WorkflowRunActionRepetitionsClient.ListExpressionTraces` return value(s) have been changed from `(WorkflowRunActionRepetitionsClientListExpressionTracesResponse, error)` to `(*runtime.Pager[WorkflowRunActionRepetitionsClientListExpressionTracesResponse])`
+- Function `NewWorkflowRunsClient` return value(s) have been changed from `(*WorkflowRunsClient)` to `(*WorkflowRunsClient, error)`
+- Function `NewWorkflowRunActionRequestHistoriesClient` return value(s) have been changed from `(*WorkflowRunActionRequestHistoriesClient)` to `(*WorkflowRunActionRequestHistoriesClient, error)`
+- Function `*IntegrationServiceEnvironmentsClient.BeginUpdate` return value(s) have been changed from `(IntegrationServiceEnvironmentsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[IntegrationServiceEnvironmentsClientUpdateResponse], error)`
+- Function `*IntegrationAccountCertificatesClient.List` return value(s) have been changed from `(*IntegrationAccountCertificatesClientListPager)` to `(*runtime.Pager[IntegrationAccountCertificatesClientListResponse])`
+- Function `*IntegrationAccountAgreementsClient.List` return value(s) have been changed from `(*IntegrationAccountAgreementsClientListPager)` to `(*runtime.Pager[IntegrationAccountAgreementsClientListResponse])`
+- Function `*WorkflowTriggerHistoriesClient.List` return value(s) have been changed from `(*WorkflowTriggerHistoriesClientListPager)` to `(*runtime.Pager[WorkflowTriggerHistoriesClientListResponse])`
+- Function `NewWorkflowTriggersClient` return value(s) have been changed from `(*WorkflowTriggersClient)` to `(*WorkflowTriggersClient, error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewWorkflowTriggerHistoriesClient` return value(s) have been changed from `(*WorkflowTriggerHistoriesClient)` to `(*WorkflowTriggerHistoriesClient, error)`
+- Function `*IntegrationAccountsClient.ListByResourceGroup` return value(s) have been changed from `(*IntegrationAccountsClientListByResourceGroupPager)` to `(*runtime.Pager[IntegrationAccountsClientListByResourceGroupResponse])`
+- Function `*IntegrationAccountBatchConfigurationsClient.List` parameter(s) have been changed from `(context.Context, string, string, *IntegrationAccountBatchConfigurationsClientListOptions)` to `(string, string, *IntegrationAccountBatchConfigurationsClientListOptions)`
+- Function `*IntegrationAccountBatchConfigurationsClient.List` return value(s) have been changed from `(IntegrationAccountBatchConfigurationsClientListResponse, error)` to `(*runtime.Pager[IntegrationAccountBatchConfigurationsClientListResponse])`
+- Function `NewIntegrationAccountBatchConfigurationsClient` return value(s) have been changed from `(*IntegrationAccountBatchConfigurationsClient)` to `(*IntegrationAccountBatchConfigurationsClient, error)`
+- Function `*IntegrationServiceEnvironmentSKUsClient.List` return value(s) have been changed from `(*IntegrationServiceEnvironmentSKUsClientListPager)` to `(*runtime.Pager[IntegrationServiceEnvironmentSKUsClientListResponse])`
+- Function `NewWorkflowRunOperationsClient` return value(s) have been changed from `(*WorkflowRunOperationsClient)` to `(*WorkflowRunOperationsClient, error)`
+- Function `NewWorkflowRunActionsClient` return value(s) have been changed from `(*WorkflowRunActionsClient)` to `(*WorkflowRunActionsClient, error)`
+- Function `*WorkflowRunActionRequestHistoriesClient.List` return value(s) have been changed from `(*WorkflowRunActionRequestHistoriesClientListPager)` to `(*runtime.Pager[WorkflowRunActionRequestHistoriesClientListResponse])`
+- Function `*IntegrationServiceEnvironmentManagedApisClient.List` return value(s) have been changed from `(*IntegrationServiceEnvironmentManagedApisClientListPager)` to `(*runtime.Pager[IntegrationServiceEnvironmentManagedApisClientListResponse])`
+- Function `*IntegrationAccountsClient.ListBySubscription` return value(s) have been changed from `(*IntegrationAccountsClientListBySubscriptionPager)` to `(*runtime.Pager[IntegrationAccountsClientListBySubscriptionResponse])`
+- Function `*WorkflowsClient.BeginMove` return value(s) have been changed from `(WorkflowsClientMovePollerResponse, error)` to `(*armruntime.Poller[WorkflowsClientMoveResponse], error)`
+- Function `NewWorkflowRunActionScopeRepetitionsClient` return value(s) have been changed from `(*WorkflowRunActionScopeRepetitionsClient)` to `(*WorkflowRunActionScopeRepetitionsClient, error)`
+- Function `NewIntegrationAccountPartnersClient` return value(s) have been changed from `(*IntegrationAccountPartnersClient)` to `(*IntegrationAccountPartnersClient, error)`
+- Function `*IntegrationServiceEnvironmentManagedAPIOperationsClient.List` return value(s) have been changed from `(*IntegrationServiceEnvironmentManagedAPIOperationsClientListPager)` to `(*runtime.Pager[IntegrationServiceEnvironmentManagedAPIOperationsClientListResponse])`
+- Function `NewIntegrationServiceEnvironmentManagedApisClient` return value(s) have been changed from `(*IntegrationServiceEnvironmentManagedApisClient)` to `(*IntegrationServiceEnvironmentManagedApisClient, error)`
+- Function `NewIntegrationAccountCertificatesClient` return value(s) have been changed from `(*IntegrationAccountCertificatesClient)` to `(*IntegrationAccountCertificatesClient, error)`
+- Function `*WorkflowVersionsClient.List` return value(s) have been changed from `(*WorkflowVersionsClientListPager)` to `(*runtime.Pager[WorkflowVersionsClientListResponse])`
+- Function `*WorkflowRunActionRepetitionsClient.List` parameter(s) have been changed from `(context.Context, string, string, string, string, *WorkflowRunActionRepetitionsClientListOptions)` to `(string, string, string, string, *WorkflowRunActionRepetitionsClientListOptions)`
+- Function `*WorkflowRunActionRepetitionsClient.List` return value(s) have been changed from `(WorkflowRunActionRepetitionsClientListResponse, error)` to `(*runtime.Pager[WorkflowRunActionRepetitionsClientListResponse])`
+- Function `*IntegrationServiceEnvironmentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(IntegrationServiceEnvironmentsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[IntegrationServiceEnvironmentsClientCreateOrUpdateResponse], error)`
+- Function `NewIntegrationAccountsClient` return value(s) have been changed from `(*IntegrationAccountsClient)` to `(*IntegrationAccountsClient, error)`
+- Function `NewWorkflowVersionTriggersClient` return value(s) have been changed from `(*WorkflowVersionTriggersClient)` to `(*WorkflowVersionTriggersClient, error)`
+- Function `*IntegrationServiceEnvironmentsClient.ListBySubscription` return value(s) have been changed from `(*IntegrationServiceEnvironmentsClientListBySubscriptionPager)` to `(*runtime.Pager[IntegrationServiceEnvironmentsClientListBySubscriptionResponse])`
+- Function `*IntegrationAccountSchemasClient.List` return value(s) have been changed from `(*IntegrationAccountSchemasClientListPager)` to `(*runtime.Pager[IntegrationAccountSchemasClientListResponse])`
+- Function `*IntegrationAccountPartnersClient.List` return value(s) have been changed from `(*IntegrationAccountPartnersClientListPager)` to `(*runtime.Pager[IntegrationAccountPartnersClientListResponse])`
+- Function `NewIntegrationAccountAgreementsClient` return value(s) have been changed from `(*IntegrationAccountAgreementsClient)` to `(*IntegrationAccountAgreementsClient, error)`
+- Function `*WorkflowRunsClient.List` return value(s) have been changed from `(*WorkflowRunsClientListPager)` to `(*runtime.Pager[WorkflowRunsClientListResponse])`
+- Function `NewIntegrationServiceEnvironmentSKUsClient` return value(s) have been changed from `(*IntegrationServiceEnvironmentSKUsClient)` to `(*IntegrationServiceEnvironmentSKUsClient, error)`
+- Function `NewWorkflowVersionsClient` return value(s) have been changed from `(*WorkflowVersionsClient)` to `(*WorkflowVersionsClient, error)`
+- Function `NewIntegrationAccountSchemasClient` return value(s) have been changed from `(*IntegrationAccountSchemasClient)` to `(*IntegrationAccountSchemasClient, error)`
+- Function `NewIntegrationAccountMapsClient` return value(s) have been changed from `(*IntegrationAccountMapsClient)` to `(*IntegrationAccountMapsClient, error)`
+- Function `*IntegrationServiceEnvironmentManagedApisClient.BeginPut` return value(s) have been changed from `(IntegrationServiceEnvironmentManagedApisClientPutPollerResponse, error)` to `(*armruntime.Poller[IntegrationServiceEnvironmentManagedApisClientPutResponse], error)`
+- Function `*WorkflowsClient.ListByResourceGroup` return value(s) have been changed from `(*WorkflowsClientListByResourceGroupPager)` to `(*runtime.Pager[WorkflowsClientListByResourceGroupResponse])`
+- Function `NewIntegrationServiceEnvironmentsClient` return value(s) have been changed from `(*IntegrationServiceEnvironmentsClient)` to `(*IntegrationServiceEnvironmentsClient, error)`
+- Function `NewWorkflowRunActionRepetitionsClient` return value(s) have been changed from `(*WorkflowRunActionRepetitionsClient)` to `(*WorkflowRunActionRepetitionsClient, error)`
+- Function `*WorkflowTriggersClient.List` return value(s) have been changed from `(*WorkflowTriggersClientListPager)` to `(*runtime.Pager[WorkflowTriggersClientListResponse])`
+- Type of `IntegrationAccountMapProperties.Metadata` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `APIReference.Swagger` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `SwaggerCustomDynamicSchema.Parameters` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `SwaggerCustomDynamicTreeParameter.Value` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `WorkflowTriggerHistoryProperties.Error` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `Operation.Properties` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `IntegrationAccountAgreementProperties.Metadata` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `SwaggerExternalDocumentation.Extensions` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `WorkflowVersionProperties.Definition` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `IntegrationAccountPartnerProperties.Metadata` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `WorkflowParameter.Value` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `WorkflowParameter.Metadata` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `WorkflowOutputParameter.Metadata` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `WorkflowOutputParameter.Value` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `WorkflowOutputParameter.Error` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `SwaggerXML.Extensions` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `WorkflowRunActionRepetitionProperties.TrackedProperties` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `WorkflowRunActionRepetitionProperties.Outputs` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `WorkflowRunActionRepetitionProperties.Inputs` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `WorkflowRunProperties.Error` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `ExtendedErrorInfo.InnerError` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `IntegrationAccountSessionProperties.Content` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `OperationResult.Inputs` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `OperationResult.Outputs` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `OperationResult.TrackedProperties` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `SwaggerSchema.AdditionalProperties` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `SwaggerSchema.Example` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `WorkflowProperties.Definition` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `ContentLink.Metadata` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `WorkflowRunTrigger.Error` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `WorkflowRunTrigger.Inputs` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `WorkflowRunTrigger.Outputs` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `WorkflowRunTrigger.TrackedProperties` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `Response.Headers` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `IntegrationAccountCertificateProperties.Metadata` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `TrackingEvent.Record` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `APIResourceProperties.ConnectionParameters` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `Request.Headers` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `IntegrationAccountSchemaProperties.Metadata` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `WorkflowRunActionProperties.Error` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `WorkflowRunActionProperties.TrackedProperties` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `IntegrationServiceEnvironmentManagedAPIProperties.ConnectionParameters` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Function `*WorkflowsClientMovePoller.Poll` has been removed
+- Function `*WorkflowsClientListByResourceGroupPager.Err` has been removed
+- Function `RecurrenceFrequency.ToPtr` has been removed
+- Function `*IntegrationAccountsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*IntegrationAccountAgreementsClientListPager.PageResponse` has been removed
+- Function `*WorkflowRunActionRequestHistoriesClientListPager.NextPage` has been removed
+- Function `*IntegrationServiceEnvironmentManagedApisClientDeletePoller.Poll` has been removed
+- Function `SegmentTerminatorSuffix.ToPtr` has been removed
+- Function `*IntegrationServiceEnvironmentManagedApisClientDeletePoller.Done` has been removed
+- Function `TrailingSeparatorPolicy.ToPtr` has been removed
+- Function `*IntegrationAccountSessionsClientListPager.PageResponse` has been removed
+- Function `*IntegrationAccountSessionsClientListPager.NextPage` has been removed
+- Function `KeyType.ToPtr` has been removed
+- Function `*IntegrationAccountMapsClientListPager.PageResponse` has been removed
+- Function `APIType.ToPtr` has been removed
+- Function `APIDeploymentParameterVisibility.ToPtr` has been removed
+- Function `*IntegrationServiceEnvironmentManagedApisClientListPager.NextPage` has been removed
+- Function `IntegrationServiceEnvironmentManagedApisClientPutPollerResponse.PollUntilDone` has been removed
+- Function `*WorkflowRunActionRepetitionsRequestHistoriesClientListPager.PageResponse` has been removed
+- Function `WorkflowProvisioningState.ToPtr` has been removed
+- Function `EventLevel.ToPtr` has been removed
+- Function `X12DateFormat.ToPtr` has been removed
+- Function `*IntegrationServiceEnvironmentsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*WorkflowTriggersClientListPager.NextPage` has been removed
+- Function `*IntegrationAccountsClientListByResourceGroupPager.NextPage` has been removed
+- Function `X12TimeFormat.ToPtr` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*WorkflowVersionsClientListPager.Err` has been removed
+- Function `WorkflowsClientMovePollerResponse.PollUntilDone` has been removed
+- Function `StatusAnnotation.ToPtr` has been removed
+- Function `*WorkflowsClientMovePoller.ResumeToken` has been removed
+- Function `*IntegrationServiceEnvironmentsClientListBySubscriptionPager.NextPage` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `ParameterType.ToPtr` has been removed
+- Function `IntegrationServiceEnvironmentNetworkEndPointAccessibilityState.ToPtr` has been removed
+- Function `*WorkflowRunActionsClientListPager.Err` has been removed
+- Function `*IntegrationAccountsClientListBySubscriptionPager.Err` has been removed
+- Function `AgreementType.ToPtr` has been removed
+- Function `SwaggerSchemaType.ToPtr` has been removed
+- Function `WorkflowTriggerProvisioningState.ToPtr` has been removed
+- Function `MapType.ToPtr` has been removed
+- Function `IntegrationServiceEnvironmentSKUName.ToPtr` has been removed
+- Function `WorkflowState.ToPtr` has been removed
+- Function `*IntegrationServiceEnvironmentsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*IntegrationAccountsClientListByResourceGroupPager.Err` has been removed
+- Function `*IntegrationAccountSchemasClientListPager.NextPage` has been removed
+- Function `*IntegrationAccountMapsClientListPager.NextPage` has been removed
+- Function `DayOfWeek.ToPtr` has been removed
+- Function `*IntegrationAccountAgreementsClientListPager.Err` has been removed
+- Function `*IntegrationServiceEnvironmentManagedApisClientPutPoller.Done` has been removed
+- Function `*WorkflowRunActionsClientListPager.PageResponse` has been removed
+- Function `UsageIndicator.ToPtr` has been removed
+- Function `IntegrationServiceEnvironmentsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*IntegrationAccountSchemasClientListPager.PageResponse` has been removed
+- Function `EncryptionAlgorithm.ToPtr` has been removed
+- Function `WorkflowStatus.ToPtr` has been removed
+- Function `*IntegrationServiceEnvironmentSKUsClientListPager.PageResponse` has been removed
+- Function `*IntegrationAccountPartnersClientListPager.NextPage` has been removed
+- Function `SKUName.ToPtr` has been removed
+- Function `*IntegrationAccountsClientListBySubscriptionPager.NextPage` has been removed
+- Function `IntegrationServiceEnvironmentsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `IntegrationServiceEnvironmentSKUScaleType.ToPtr` has been removed
+- Function `IntegrationServiceEnvironmentNetworkDependencyHealthState.ToPtr` has been removed
+- Function `*WorkflowRunsClientListPager.NextPage` has been removed
+- Function `*IntegrationAccountSessionsClientListPager.Err` has been removed
+- Function `*IntegrationServiceEnvironmentManagedApisClientPutPollerResponse.Resume` has been removed
+- Function `*IntegrationServiceEnvironmentManagedAPIOperationsClientListPager.Err` has been removed
+- Function `SchemaType.ToPtr` has been removed
+- Function `*IntegrationServiceEnvironmentsClientUpdatePoller.Poll` has been removed
+- Function `*IntegrationServiceEnvironmentManagedApisClientPutPoller.Poll` has been removed
+- Function `*WorkflowsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `DaysOfWeek.ToPtr` has been removed
+- Function `*IntegrationServiceEnvironmentsClientUpdatePoller.ResumeToken` has been removed
+- Function `ErrorResponseCode.ToPtr` has been removed
+- Function `OpenAuthenticationProviderType.ToPtr` has been removed
+- Function `APITier.ToPtr` has been removed
+- Function `*IntegrationServiceEnvironmentManagedApisClientDeletePoller.ResumeToken` has been removed
+- Function `EdifactCharacterSet.ToPtr` has been removed
+- Function `*IntegrationAccountAgreementsClientListPager.NextPage` has been removed
+- Function `*WorkflowRunActionRepetitionsRequestHistoriesClientListPager.Err` has been removed
+- Function `*WorkflowRunActionRepetitionsRequestHistoriesClientListPager.NextPage` has been removed
+- Function `*WorkflowsClientMovePollerResponse.Resume` has been removed
+- Function `TrackingRecordType.ToPtr` has been removed
+- Function `*WorkflowsClientMovePoller.Done` has been removed
+- Function `*IntegrationAccountPartnersClientListPager.PageResponse` has been removed
+- Function `PartnerType.ToPtr` has been removed
+- Function `*WorkflowsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `IntegrationServiceEnvironmentAccessEndpointType.ToPtr` has been removed
+- Function `*IntegrationServiceEnvironmentManagedApisClientDeletePoller.FinalResponse` has been removed
+- Function `IntegrationServiceEnvironmentManagedApisClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*WorkflowVersionsClientListPager.PageResponse` has been removed
+- Function `*IntegrationServiceEnvironmentSKUsClientListPager.Err` has been removed
+- Function `*IntegrationAccountMapsClientListPager.Err` has been removed
+- Function `*IntegrationAccountCertificatesClientListPager.NextPage` has been removed
+- Function `*IntegrationServiceEnvironmentManagedApisClientListPager.PageResponse` has been removed
+- Function `*IntegrationServiceEnvironmentsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*IntegrationServiceEnvironmentsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*WorkflowsClientMovePoller.FinalResponse` has been removed
+- Function `*IntegrationAccountPartnersClientListPager.Err` has been removed
+- Function `TrackEventsOperationOptions.ToPtr` has been removed
+- Function `*IntegrationServiceEnvironmentManagedApisClientPutPoller.ResumeToken` has been removed
+- Function `*IntegrationServiceEnvironmentsClientUpdatePoller.FinalResponse` has been removed
+- Function `*WorkflowRunActionsClientListPager.NextPage` has been removed
+- Function `*WorkflowRunsClientListPager.Err` has been removed
+- Function `*IntegrationAccountSchemasClientListPager.Err` has been removed
+- Function `*IntegrationServiceEnvironmentManagedApisClientListPager.Err` has been removed
+- Function `MessageFilterType.ToPtr` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*WorkflowRunsClientListPager.PageResponse` has been removed
+- Function `*IntegrationAccountsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `AzureAsyncOperationState.ToPtr` has been removed
+- Function `*WorkflowsClientListBySubscriptionPager.Err` has been removed
+- Function `*IntegrationServiceEnvironmentsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*WorkflowsClientListBySubscriptionPager.NextPage` has been removed
+- Function `*IntegrationServiceEnvironmentSKUsClientListPager.NextPage` has been removed
+- Function `*WorkflowTriggersClientListPager.Err` has been removed
+- Function `*IntegrationAccountCertificatesClientListPager.PageResponse` has been removed
+- Function `*IntegrationServiceEnvironmentsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*IntegrationServiceEnvironmentManagedApisClientDeletePollerResponse.Resume` has been removed
+- Function `HashingAlgorithm.ToPtr` has been removed
+- Function `*WorkflowRunActionRequestHistoriesClientListPager.PageResponse` has been removed
+- Function `*WorkflowRunActionRequestHistoriesClientListPager.Err` has been removed
+- Function `*IntegrationServiceEnvironmentsClientListBySubscriptionPager.Err` has been removed
+- Function `IntegrationAccountSKUName.ToPtr` has been removed
+- Function `*WorkflowTriggerHistoriesClientListPager.NextPage` has been removed
+- Function `*WorkflowTriggerHistoriesClientListPager.PageResponse` has been removed
+- Function `*IntegrationServiceEnvironmentManagedAPIOperationsClientListPager.NextPage` has been removed
+- Function `*WorkflowsClientListByResourceGroupPager.NextPage` has been removed
+- Function `WsdlImportMethod.ToPtr` has been removed
+- Function `*IntegrationServiceEnvironmentManagedAPIOperationsClientListPager.PageResponse` has been removed
+- Function `*IntegrationServiceEnvironmentsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `ManagedServiceIdentityType.ToPtr` has been removed
+- Function `*IntegrationServiceEnvironmentsClientListByResourceGroupPager.Err` has been removed
+- Function `*IntegrationServiceEnvironmentsClientUpdatePoller.Done` has been removed
+- Function `X12CharacterSet.ToPtr` has been removed
+- Function `SigningAlgorithm.ToPtr` has been removed
+- Function `*IntegrationAccountCertificatesClientListPager.Err` has been removed
+- Function `*WorkflowTriggersClientListPager.PageResponse` has been removed
+- Function `*IntegrationServiceEnvironmentManagedApisClientPutPoller.FinalResponse` has been removed
+- Function `*WorkflowVersionsClientListPager.NextPage` has been removed
+- Function `*WorkflowTriggerHistoriesClientListPager.Err` has been removed
+- Function `*IntegrationServiceEnvironmentsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `EdifactDecimalIndicator.ToPtr` has been removed
+- Function `*IntegrationServiceEnvironmentsClientUpdatePollerResponse.Resume` has been removed
+- Function `IntegrationServiceEnvironmentNetworkDependencyCategoryType.ToPtr` has been removed
+- Struct `IntegrationAccountAgreementsClientCreateOrUpdateResult` has been removed
+- Struct `IntegrationAccountAgreementsClientGetResult` has been removed
+- Struct `IntegrationAccountAgreementsClientListContentCallbackURLResult` has been removed
+- Struct `IntegrationAccountAgreementsClientListPager` has been removed
+- Struct `IntegrationAccountAgreementsClientListResult` has been removed
+- Struct `IntegrationAccountAssembliesClientCreateOrUpdateResult` has been removed
+- Struct `IntegrationAccountAssembliesClientGetResult` has been removed
+- Struct `IntegrationAccountAssembliesClientListContentCallbackURLResult` has been removed
+- Struct `IntegrationAccountAssembliesClientListResult` has been removed
+- Struct `IntegrationAccountBatchConfigurationsClientCreateOrUpdateResult` has been removed
+- Struct `IntegrationAccountBatchConfigurationsClientGetResult` has been removed
+- Struct `IntegrationAccountBatchConfigurationsClientListResult` has been removed
+- Struct `IntegrationAccountCertificatesClientCreateOrUpdateResult` has been removed
+- Struct `IntegrationAccountCertificatesClientGetResult` has been removed
+- Struct `IntegrationAccountCertificatesClientListPager` has been removed
+- Struct `IntegrationAccountCertificatesClientListResult` has been removed
+- Struct `IntegrationAccountMapsClientCreateOrUpdateResult` has been removed
+- Struct `IntegrationAccountMapsClientGetResult` has been removed
+- Struct `IntegrationAccountMapsClientListContentCallbackURLResult` has been removed
+- Struct `IntegrationAccountMapsClientListPager` has been removed
+- Struct `IntegrationAccountMapsClientListResult` has been removed
+- Struct `IntegrationAccountPartnersClientCreateOrUpdateResult` has been removed
+- Struct `IntegrationAccountPartnersClientGetResult` has been removed
+- Struct `IntegrationAccountPartnersClientListContentCallbackURLResult` has been removed
+- Struct `IntegrationAccountPartnersClientListPager` has been removed
+- Struct `IntegrationAccountPartnersClientListResult` has been removed
+- Struct `IntegrationAccountSchemasClientCreateOrUpdateResult` has been removed
+- Struct `IntegrationAccountSchemasClientGetResult` has been removed
+- Struct `IntegrationAccountSchemasClientListContentCallbackURLResult` has been removed
+- Struct `IntegrationAccountSchemasClientListPager` has been removed
+- Struct `IntegrationAccountSchemasClientListResult` has been removed
+- Struct `IntegrationAccountSessionsClientCreateOrUpdateResult` has been removed
+- Struct `IntegrationAccountSessionsClientGetResult` has been removed
+- Struct `IntegrationAccountSessionsClientListPager` has been removed
+- Struct `IntegrationAccountSessionsClientListResult` has been removed
+- Struct `IntegrationAccountsClientCreateOrUpdateResult` has been removed
+- Struct `IntegrationAccountsClientGetResult` has been removed
+- Struct `IntegrationAccountsClientListByResourceGroupPager` has been removed
+- Struct `IntegrationAccountsClientListByResourceGroupResult` has been removed
+- Struct `IntegrationAccountsClientListBySubscriptionPager` has been removed
+- Struct `IntegrationAccountsClientListBySubscriptionResult` has been removed
+- Struct `IntegrationAccountsClientListCallbackURLResult` has been removed
+- Struct `IntegrationAccountsClientListKeyVaultKeysResult` has been removed
+- Struct `IntegrationAccountsClientRegenerateAccessKeyResult` has been removed
+- Struct `IntegrationAccountsClientUpdateResult` has been removed
+- Struct `IntegrationServiceEnvironmentManagedAPIOperationsClientListPager` has been removed
+- Struct `IntegrationServiceEnvironmentManagedAPIOperationsClientListResult` has been removed
+- Struct `IntegrationServiceEnvironmentManagedApisClientDeletePoller` has been removed
+- Struct `IntegrationServiceEnvironmentManagedApisClientDeletePollerResponse` has been removed
+- Struct `IntegrationServiceEnvironmentManagedApisClientGetResult` has been removed
+- Struct `IntegrationServiceEnvironmentManagedApisClientListPager` has been removed
+- Struct `IntegrationServiceEnvironmentManagedApisClientListResult` has been removed
+- Struct `IntegrationServiceEnvironmentManagedApisClientPutPoller` has been removed
+- Struct `IntegrationServiceEnvironmentManagedApisClientPutPollerResponse` has been removed
+- Struct `IntegrationServiceEnvironmentManagedApisClientPutResult` has been removed
+- Struct `IntegrationServiceEnvironmentNetworkHealthClientGetResult` has been removed
+- Struct `IntegrationServiceEnvironmentSKUsClientListPager` has been removed
+- Struct `IntegrationServiceEnvironmentSKUsClientListResult` has been removed
+- Struct `IntegrationServiceEnvironmentsClientCreateOrUpdatePoller` has been removed
+- Struct `IntegrationServiceEnvironmentsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `IntegrationServiceEnvironmentsClientCreateOrUpdateResult` has been removed
+- Struct `IntegrationServiceEnvironmentsClientGetResult` has been removed
+- Struct `IntegrationServiceEnvironmentsClientListByResourceGroupPager` has been removed
+- Struct `IntegrationServiceEnvironmentsClientListByResourceGroupResult` has been removed
+- Struct `IntegrationServiceEnvironmentsClientListBySubscriptionPager` has been removed
+- Struct `IntegrationServiceEnvironmentsClientListBySubscriptionResult` has been removed
+- Struct `IntegrationServiceEnvironmentsClientUpdatePoller` has been removed
+- Struct `IntegrationServiceEnvironmentsClientUpdatePollerResponse` has been removed
+- Struct `IntegrationServiceEnvironmentsClientUpdateResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `WorkflowRunActionRepetitionsClientGetResult` has been removed
+- Struct `WorkflowRunActionRepetitionsClientListExpressionTracesResult` has been removed
+- Struct `WorkflowRunActionRepetitionsClientListResult` has been removed
+- Struct `WorkflowRunActionRepetitionsRequestHistoriesClientGetResult` has been removed
+- Struct `WorkflowRunActionRepetitionsRequestHistoriesClientListPager` has been removed
+- Struct `WorkflowRunActionRepetitionsRequestHistoriesClientListResult` has been removed
+- Struct `WorkflowRunActionRequestHistoriesClientGetResult` has been removed
+- Struct `WorkflowRunActionRequestHistoriesClientListPager` has been removed
+- Struct `WorkflowRunActionRequestHistoriesClientListResult` has been removed
+- Struct `WorkflowRunActionScopeRepetitionsClientGetResult` has been removed
+- Struct `WorkflowRunActionScopeRepetitionsClientListResult` has been removed
+- Struct `WorkflowRunActionsClientGetResult` has been removed
+- Struct `WorkflowRunActionsClientListExpressionTracesResult` has been removed
+- Struct `WorkflowRunActionsClientListPager` has been removed
+- Struct `WorkflowRunActionsClientListResult` has been removed
+- Struct `WorkflowRunOperationsClientGetResult` has been removed
+- Struct `WorkflowRunsClientGetResult` has been removed
+- Struct `WorkflowRunsClientListPager` has been removed
+- Struct `WorkflowRunsClientListResult` has been removed
+- Struct `WorkflowTriggerHistoriesClientGetResult` has been removed
+- Struct `WorkflowTriggerHistoriesClientListPager` has been removed
+- Struct `WorkflowTriggerHistoriesClientListResult` has been removed
+- Struct `WorkflowTriggersClientGetResult` has been removed
+- Struct `WorkflowTriggersClientGetSchemaJSONResult` has been removed
+- Struct `WorkflowTriggersClientListCallbackURLResult` has been removed
+- Struct `WorkflowTriggersClientListPager` has been removed
+- Struct `WorkflowTriggersClientListResult` has been removed
+- Struct `WorkflowVersionTriggersClientListCallbackURLResult` has been removed
+- Struct `WorkflowVersionsClientGetResult` has been removed
+- Struct `WorkflowVersionsClientListPager` has been removed
+- Struct `WorkflowVersionsClientListResult` has been removed
+- Struct `WorkflowsClientCreateOrUpdateResult` has been removed
+- Struct `WorkflowsClientGenerateUpgradedDefinitionResult` has been removed
+- Struct `WorkflowsClientGetResult` has been removed
+- Struct `WorkflowsClientListByResourceGroupPager` has been removed
+- Struct `WorkflowsClientListByResourceGroupResult` has been removed
+- Struct `WorkflowsClientListBySubscriptionPager` has been removed
+- Struct `WorkflowsClientListBySubscriptionResult` has been removed
+- Struct `WorkflowsClientListCallbackURLResult` has been removed
+- Struct `WorkflowsClientListSwaggerResult` has been removed
+- Struct `WorkflowsClientMovePoller` has been removed
+- Struct `WorkflowsClientMovePollerResponse` has been removed
+- Struct `WorkflowsClientUpdateResult` has been removed
+- Field `RawResponse` of struct `IntegrationAccountSessionsClientDeleteResponse` has been removed
+- Field `WorkflowsClientListByResourceGroupResult` of struct `WorkflowsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `WorkflowsClientListByResourceGroupResponse` has been removed
+- Field `IntegrationAccountAssembliesClientGetResult` of struct `IntegrationAccountAssembliesClientGetResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountAssembliesClientGetResponse` has been removed
+- Field `IntegrationAccountAssembliesClientListResult` of struct `IntegrationAccountAssembliesClientListResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountAssembliesClientListResponse` has been removed
+- Field `IntegrationAccountsClientListCallbackURLResult` of struct `IntegrationAccountsClientListCallbackURLResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountsClientListCallbackURLResponse` has been removed
+- Field `RawResponse` of struct `WorkflowRunsClientCancelResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountMapsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountBatchConfigurationsClientDeleteResponse` has been removed
+- Field `WorkflowsClientListSwaggerResult` of struct `WorkflowsClientListSwaggerResponse` has been removed
+- Field `RawResponse` of struct `WorkflowsClientListSwaggerResponse` has been removed
+- Field `RawResponse` of struct `WorkflowsClientDeleteResponse` has been removed
+- Field `IntegrationAccountsClientCreateOrUpdateResult` of struct `IntegrationAccountsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountsClientCreateOrUpdateResponse` has been removed
+- Field `IntegrationAccountCertificatesClientGetResult` of struct `IntegrationAccountCertificatesClientGetResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountCertificatesClientGetResponse` has been removed
+- Field `RawResponse` of struct `WorkflowTriggerHistoriesClientResubmitResponse` has been removed
+- Field `IntegrationServiceEnvironmentSKUsClientListResult` of struct `IntegrationServiceEnvironmentSKUsClientListResponse` has been removed
+- Field `RawResponse` of struct `IntegrationServiceEnvironmentSKUsClientListResponse` has been removed
+- Field `IntegrationAccountMapsClientCreateOrUpdateResult` of struct `IntegrationAccountMapsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountMapsClientCreateOrUpdateResponse` has been removed
+- Field `WorkflowsClientListCallbackURLResult` of struct `WorkflowsClientListCallbackURLResponse` has been removed
+- Field `RawResponse` of struct `WorkflowsClientListCallbackURLResponse` has been removed
+- Field `IntegrationAccountMapsClientGetResult` of struct `IntegrationAccountMapsClientGetResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountMapsClientGetResponse` has been removed
+- Field `WorkflowRunActionsClientListExpressionTracesResult` of struct `WorkflowRunActionsClientListExpressionTracesResponse` has been removed
+- Field `RawResponse` of struct `WorkflowRunActionsClientListExpressionTracesResponse` has been removed
+- Field `WorkflowTriggerHistoriesClientListResult` of struct `WorkflowTriggerHistoriesClientListResponse` has been removed
+- Field `RawResponse` of struct `WorkflowTriggerHistoriesClientListResponse` has been removed
+- Field `RawResponse` of struct `WorkflowsClientEnableResponse` has been removed
+- Field `IntegrationServiceEnvironmentsClientCreateOrUpdateResult` of struct `IntegrationServiceEnvironmentsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `IntegrationServiceEnvironmentsClientCreateOrUpdateResponse` has been removed
+- Field `IntegrationServiceEnvironmentNetworkHealthClientGetResult` of struct `IntegrationServiceEnvironmentNetworkHealthClientGetResponse` has been removed
+- Field `RawResponse` of struct `IntegrationServiceEnvironmentNetworkHealthClientGetResponse` has been removed
+- Field `IntegrationAccountsClientUpdateResult` of struct `IntegrationAccountsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountsClientUpdateResponse` has been removed
+- Field `WorkflowsClientGetResult` of struct `WorkflowsClientGetResponse` has been removed
+- Field `RawResponse` of struct `WorkflowsClientGetResponse` has been removed
+- Field `IntegrationServiceEnvironmentManagedApisClientPutResult` of struct `IntegrationServiceEnvironmentManagedApisClientPutResponse` has been removed
+- Field `RawResponse` of struct `IntegrationServiceEnvironmentManagedApisClientPutResponse` has been removed
+- Field `IntegrationAccountAgreementsClientListResult` of struct `IntegrationAccountAgreementsClientListResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountAgreementsClientListResponse` has been removed
+- Field `IntegrationAccountsClientRegenerateAccessKeyResult` of struct `IntegrationAccountsClientRegenerateAccessKeyResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountsClientRegenerateAccessKeyResponse` has been removed
+- Field `WorkflowVersionsClientListResult` of struct `WorkflowVersionsClientListResponse` has been removed
+- Field `RawResponse` of struct `WorkflowVersionsClientListResponse` has been removed
+- Field `WorkflowRunsClientListResult` of struct `WorkflowRunsClientListResponse` has been removed
+- Field `RawResponse` of struct `WorkflowRunsClientListResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountAssembliesClientDeleteResponse` has been removed
+- Field `WorkflowVersionTriggersClientListCallbackURLResult` of struct `WorkflowVersionTriggersClientListCallbackURLResponse` has been removed
+- Field `RawResponse` of struct `WorkflowVersionTriggersClientListCallbackURLResponse` has been removed
+- Field `RawResponse` of struct `IntegrationServiceEnvironmentsClientRestartResponse` has been removed
+- Field `WorkflowTriggersClientListResult` of struct `WorkflowTriggersClientListResponse` has been removed
+- Field `RawResponse` of struct `WorkflowTriggersClientListResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountSchemasClientDeleteResponse` has been removed
+- Field `WorkflowRunActionRepetitionsClientGetResult` of struct `WorkflowRunActionRepetitionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `WorkflowRunActionRepetitionsClientGetResponse` has been removed
+- Field `IntegrationAccountSessionsClientListResult` of struct `IntegrationAccountSessionsClientListResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountSessionsClientListResponse` has been removed
+- Field `RawResponse` of struct `WorkflowsClientRegenerateAccessKeyResponse` has been removed
+- Field `IntegrationServiceEnvironmentsClientListBySubscriptionResult` of struct `IntegrationServiceEnvironmentsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `IntegrationServiceEnvironmentsClientListBySubscriptionResponse` has been removed
+- Field `IntegrationAccountPartnersClientGetResult` of struct `IntegrationAccountPartnersClientGetResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountPartnersClientGetResponse` has been removed
+- Field `WorkflowRunActionRequestHistoriesClientListResult` of struct `WorkflowRunActionRequestHistoriesClientListResponse` has been removed
+- Field `RawResponse` of struct `WorkflowRunActionRequestHistoriesClientListResponse` has been removed
+- Field `WorkflowRunActionRepetitionsRequestHistoriesClientListResult` of struct `WorkflowRunActionRepetitionsRequestHistoriesClientListResponse` has been removed
+- Field `RawResponse` of struct `WorkflowRunActionRepetitionsRequestHistoriesClientListResponse` has been removed
+- Field `IntegrationServiceEnvironmentsClientUpdateResult` of struct `IntegrationServiceEnvironmentsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `IntegrationServiceEnvironmentsClientUpdateResponse` has been removed
+- Field `IntegrationAccountSessionsClientCreateOrUpdateResult` of struct `IntegrationAccountSessionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountSessionsClientCreateOrUpdateResponse` has been removed
+- Field `WorkflowRunActionRepetitionsClientListResult` of struct `WorkflowRunActionRepetitionsClientListResponse` has been removed
+- Field `RawResponse` of struct `WorkflowRunActionRepetitionsClientListResponse` has been removed
+- Field `WorkflowRunActionsClientGetResult` of struct `WorkflowRunActionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `WorkflowRunActionsClientGetResponse` has been removed
+- Field `IntegrationAccountsClientListByResourceGroupResult` of struct `IntegrationAccountsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountsClientListByResourceGroupResponse` has been removed
+- Field `WorkflowRunActionsClientListResult` of struct `WorkflowRunActionsClientListResponse` has been removed
+- Field `RawResponse` of struct `WorkflowRunActionsClientListResponse` has been removed
+- Field `WorkflowRunsClientGetResult` of struct `WorkflowRunsClientGetResponse` has been removed
+- Field `RawResponse` of struct `WorkflowRunsClientGetResponse` has been removed
+- Field `IntegrationAccountCertificatesClientListResult` of struct `IntegrationAccountCertificatesClientListResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountCertificatesClientListResponse` has been removed
+- Field `IntegrationAccountBatchConfigurationsClientListResult` of struct `IntegrationAccountBatchConfigurationsClientListResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountBatchConfigurationsClientListResponse` has been removed
+- Field `IntegrationAccountsClientGetResult` of struct `IntegrationAccountsClientGetResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountsClientGetResponse` has been removed
+- Field `WorkflowRunActionRequestHistoriesClientGetResult` of struct `WorkflowRunActionRequestHistoriesClientGetResponse` has been removed
+- Field `RawResponse` of struct `WorkflowRunActionRequestHistoriesClientGetResponse` has been removed
+- Field `RawResponse` of struct `WorkflowTriggersClientResetResponse` has been removed
+- Field `RawResponse` of struct `WorkflowsClientValidateByLocationResponse` has been removed
+- Field `WorkflowVersionsClientGetResult` of struct `WorkflowVersionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `WorkflowVersionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `WorkflowTriggersClientRunResponse` has been removed
+- Field `WorkflowsClientListBySubscriptionResult` of struct `WorkflowsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `WorkflowsClientListBySubscriptionResponse` has been removed
+- Field `IntegrationAccountSchemasClientListContentCallbackURLResult` of struct `IntegrationAccountSchemasClientListContentCallbackURLResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountSchemasClientListContentCallbackURLResponse` has been removed
+- Field `RawResponse` of struct `WorkflowsClientValidateByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountAgreementsClientDeleteResponse` has been removed
+- Field `IntegrationAccountSchemasClientGetResult` of struct `IntegrationAccountSchemasClientGetResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountSchemasClientGetResponse` has been removed
+- Field `IntegrationAccountCertificatesClientCreateOrUpdateResult` of struct `IntegrationAccountCertificatesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountCertificatesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `WorkflowTriggersClientSetStateResponse` has been removed
+- Field `WorkflowsClientCreateOrUpdateResult` of struct `WorkflowsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `WorkflowsClientCreateOrUpdateResponse` has been removed
+- Field `IntegrationAccountPartnersClientListResult` of struct `IntegrationAccountPartnersClientListResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountPartnersClientListResponse` has been removed
+- Field `IntegrationAccountAgreementsClientListContentCallbackURLResult` of struct `IntegrationAccountAgreementsClientListContentCallbackURLResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountAgreementsClientListContentCallbackURLResponse` has been removed
+- Field `IntegrationAccountAssembliesClientCreateOrUpdateResult` of struct `IntegrationAccountAssembliesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountAssembliesClientCreateOrUpdateResponse` has been removed
+- Field `WorkflowRunActionScopeRepetitionsClientListResult` of struct `WorkflowRunActionScopeRepetitionsClientListResponse` has been removed
+- Field `RawResponse` of struct `WorkflowRunActionScopeRepetitionsClientListResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountCertificatesClientDeleteResponse` has been removed
+- Field `IntegrationServiceEnvironmentManagedApisClientListResult` of struct `IntegrationServiceEnvironmentManagedApisClientListResponse` has been removed
+- Field `RawResponse` of struct `IntegrationServiceEnvironmentManagedApisClientListResponse` has been removed
+- Field `WorkflowTriggersClientGetResult` of struct `WorkflowTriggersClientGetResponse` has been removed
+- Field `RawResponse` of struct `WorkflowTriggersClientGetResponse` has been removed
+- Field `IntegrationAccountSchemasClientCreateOrUpdateResult` of struct `IntegrationAccountSchemasClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountSchemasClientCreateOrUpdateResponse` has been removed
+- Field `IntegrationAccountAgreementsClientCreateOrUpdateResult` of struct `IntegrationAccountAgreementsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountAgreementsClientCreateOrUpdateResponse` has been removed
+- Field `WorkflowTriggersClientGetSchemaJSONResult` of struct `WorkflowTriggersClientGetSchemaJSONResponse` has been removed
+- Field `RawResponse` of struct `WorkflowTriggersClientGetSchemaJSONResponse` has been removed
+- Field `IntegrationServiceEnvironmentsClientListByResourceGroupResult` of struct `IntegrationServiceEnvironmentsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `IntegrationServiceEnvironmentsClientListByResourceGroupResponse` has been removed
+- Field `WorkflowRunActionRepetitionsRequestHistoriesClientGetResult` of struct `WorkflowRunActionRepetitionsRequestHistoriesClientGetResponse` has been removed
+- Field `RawResponse` of struct `WorkflowRunActionRepetitionsRequestHistoriesClientGetResponse` has been removed
+- Field `IntegrationServiceEnvironmentsClientGetResult` of struct `IntegrationServiceEnvironmentsClientGetResponse` has been removed
+- Field `RawResponse` of struct `IntegrationServiceEnvironmentsClientGetResponse` has been removed
+- Field `IntegrationAccountSchemasClientListResult` of struct `IntegrationAccountSchemasClientListResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountSchemasClientListResponse` has been removed
+- Field `IntegrationAccountAgreementsClientGetResult` of struct `IntegrationAccountAgreementsClientGetResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountAgreementsClientGetResponse` has been removed
+- Field `IntegrationAccountMapsClientListContentCallbackURLResult` of struct `IntegrationAccountMapsClientListContentCallbackURLResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountMapsClientListContentCallbackURLResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `IntegrationAccountMapsClientListResult` of struct `IntegrationAccountMapsClientListResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountMapsClientListResponse` has been removed
+- Field `RawResponse` of struct `WorkflowsClientDisableResponse` has been removed
+- Field `RawResponse` of struct `WorkflowsClientMoveResponse` has been removed
+- Field `WorkflowRunOperationsClientGetResult` of struct `WorkflowRunOperationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `WorkflowRunOperationsClientGetResponse` has been removed
+- Field `WorkflowsClientUpdateResult` of struct `WorkflowsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `WorkflowsClientUpdateResponse` has been removed
+- Field `IntegrationAccountsClientListKeyVaultKeysResult` of struct `IntegrationAccountsClientListKeyVaultKeysResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountsClientListKeyVaultKeysResponse` has been removed
+- Field `WorkflowRunActionScopeRepetitionsClientGetResult` of struct `WorkflowRunActionScopeRepetitionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `WorkflowRunActionScopeRepetitionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `IntegrationServiceEnvironmentsClientDeleteResponse` has been removed
+- Field `WorkflowTriggersClientListCallbackURLResult` of struct `WorkflowTriggersClientListCallbackURLResponse` has been removed
+- Field `RawResponse` of struct `WorkflowTriggersClientListCallbackURLResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountsClientLogTrackingEventsResponse` has been removed
+- Field `IntegrationAccountAssembliesClientListContentCallbackURLResult` of struct `IntegrationAccountAssembliesClientListContentCallbackURLResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountAssembliesClientListContentCallbackURLResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountsClientDeleteResponse` has been removed
+- Field `IntegrationAccountBatchConfigurationsClientCreateOrUpdateResult` of struct `IntegrationAccountBatchConfigurationsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountBatchConfigurationsClientCreateOrUpdateResponse` has been removed
+- Field `IntegrationAccountBatchConfigurationsClientGetResult` of struct `IntegrationAccountBatchConfigurationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountBatchConfigurationsClientGetResponse` has been removed
+- Field `IntegrationAccountsClientListBySubscriptionResult` of struct `IntegrationAccountsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountsClientListBySubscriptionResponse` has been removed
+- Field `WorkflowRunActionRepetitionsClientListExpressionTracesResult` of struct `WorkflowRunActionRepetitionsClientListExpressionTracesResponse` has been removed
+- Field `RawResponse` of struct `WorkflowRunActionRepetitionsClientListExpressionTracesResponse` has been removed
+- Field `IntegrationAccountPartnersClientCreateOrUpdateResult` of struct `IntegrationAccountPartnersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountPartnersClientCreateOrUpdateResponse` has been removed
+- Field `IntegrationAccountSessionsClientGetResult` of struct `IntegrationAccountSessionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountSessionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountPartnersClientDeleteResponse` has been removed
+- Field `IntegrationServiceEnvironmentManagedAPIOperationsClientListResult` of struct `IntegrationServiceEnvironmentManagedAPIOperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `IntegrationServiceEnvironmentManagedAPIOperationsClientListResponse` has been removed
+- Field `WorkflowsClientGenerateUpgradedDefinitionResult` of struct `WorkflowsClientGenerateUpgradedDefinitionResponse` has been removed
+- Field `RawResponse` of struct `WorkflowsClientGenerateUpgradedDefinitionResponse` has been removed
+- Field `RawResponse` of struct `IntegrationServiceEnvironmentManagedApisClientDeleteResponse` has been removed
+- Field `WorkflowTriggerHistoriesClientGetResult` of struct `WorkflowTriggerHistoriesClientGetResponse` has been removed
+- Field `RawResponse` of struct `WorkflowTriggerHistoriesClientGetResponse` has been removed
+- Field `IntegrationServiceEnvironmentManagedApisClientGetResult` of struct `IntegrationServiceEnvironmentManagedApisClientGetResponse` has been removed
+- Field `RawResponse` of struct `IntegrationServiceEnvironmentManagedApisClientGetResponse` has been removed
+- Field `IntegrationAccountPartnersClientListContentCallbackURLResult` of struct `IntegrationAccountPartnersClientListContentCallbackURLResponse` has been removed
+- Field `RawResponse` of struct `IntegrationAccountPartnersClientListContentCallbackURLResponse` has been removed
+
+### Features Added
+
+- New anonymous field `IntegrationAccountPartner` in struct `IntegrationAccountPartnersClientGetResponse`
+- New anonymous field `IntegrationServiceEnvironmentManagedAPI` in struct `IntegrationServiceEnvironmentManagedApisClientPutResponse`
+- New anonymous field `WorkflowRunActionRepetitionDefinition` in struct `WorkflowRunActionScopeRepetitionsClientGetResponse`
+- New field `Value` in struct `IntegrationServiceEnvironmentNetworkHealthClientGetResponse`
+- New anonymous field `WorkflowRunListResult` in struct `WorkflowRunsClientListResponse`
+- New field `Interface` in struct `WorkflowsClientGenerateUpgradedDefinitionResponse`
+- New anonymous field `WorkflowRunActionRepetitionDefinition` in struct `WorkflowRunActionRepetitionsClientGetResponse`
+- New anonymous field `IntegrationAccountMapListResult` in struct `IntegrationAccountMapsClientListResponse`
+- New anonymous field `WorkflowTriggerCallbackURL` in struct `WorkflowVersionTriggersClientListCallbackURLResponse`
+- New field `ResumeToken` in struct `WorkflowsClientBeginMoveOptions`
+- New anonymous field `AssemblyDefinition` in struct `IntegrationAccountAssembliesClientGetResponse`
+- New anonymous field `IntegrationAccountListResult` in struct `IntegrationAccountsClientListByResourceGroupResponse`
+- New anonymous field `WorkflowRunActionRepetitionDefinitionCollection` in struct `WorkflowRunActionRepetitionsClientListResponse`
+- New field `ResumeToken` in struct `IntegrationServiceEnvironmentManagedApisClientBeginDeleteOptions`
+- New anonymous field `Workflow` in struct `WorkflowsClientCreateOrUpdateResponse`
+- New anonymous field `WorkflowTriggerCallbackURL` in struct `IntegrationAccountAssembliesClientListContentCallbackURLResponse`
+- New anonymous field `KeyVaultKeyCollection` in struct `IntegrationAccountsClientListKeyVaultKeysResponse`
+- New anonymous field `IntegrationAccountSessionListResult` in struct `IntegrationAccountSessionsClientListResponse`
+- New anonymous field `RequestHistoryListResult` in struct `WorkflowRunActionRepetitionsRequestHistoriesClientListResponse`
+- New anonymous field `IntegrationAccount` in struct `IntegrationAccountsClientCreateOrUpdateResponse`
+- New anonymous field `IntegrationAccountAgreementListResult` in struct `IntegrationAccountAgreementsClientListResponse`
+- New anonymous field `IntegrationServiceEnvironmentManagedAPI` in struct `IntegrationServiceEnvironmentManagedApisClientGetResponse`
+- New anonymous field `IntegrationAccountMap` in struct `IntegrationAccountMapsClientCreateOrUpdateResponse`
+- New anonymous field `IntegrationAccount` in struct `IntegrationAccountsClientUpdateResponse`
+- New anonymous field `IntegrationServiceEnvironmentSKUList` in struct `IntegrationServiceEnvironmentSKUsClientListResponse`
+- New anonymous field `RequestHistory` in struct `WorkflowRunActionRepetitionsRequestHistoriesClientGetResponse`
+- New anonymous field `WorkflowRunActionRepetitionDefinitionCollection` in struct `WorkflowRunActionScopeRepetitionsClientListResponse`
+- New anonymous field `IntegrationServiceEnvironmentManagedAPIListResult` in struct `IntegrationServiceEnvironmentManagedApisClientListResponse`
+- New anonymous field `AssemblyDefinition` in struct `IntegrationAccountAssembliesClientCreateOrUpdateResponse`
+- New anonymous field `IntegrationServiceEnvironment` in struct `IntegrationServiceEnvironmentsClientCreateOrUpdateResponse`
+- New anonymous field `WorkflowTriggerHistoryListResult` in struct `WorkflowTriggerHistoriesClientListResponse`
+- New anonymous field `WorkflowTriggerCallbackURL` in struct `IntegrationAccountSchemasClientListContentCallbackURLResponse`
+- New anonymous field `IntegrationServiceEnvironmentListResult` in struct `IntegrationServiceEnvironmentsClientListBySubscriptionResponse`
+- New anonymous field `WorkflowListResult` in struct `WorkflowsClientListBySubscriptionResponse`
+- New anonymous field `WorkflowVersion` in struct `WorkflowVersionsClientGetResponse`
+- New anonymous field `APIOperationListResult` in struct `IntegrationServiceEnvironmentManagedAPIOperationsClientListResponse`
+- New anonymous field `IntegrationAccountSession` in struct `IntegrationAccountSessionsClientGetResponse`
+- New anonymous field `WorkflowTriggerHistory` in struct `WorkflowTriggerHistoriesClientGetResponse`
+- New anonymous field `WorkflowTrigger` in struct `WorkflowTriggersClientGetResponse`
+- New anonymous field `IntegrationAccountCertificate` in struct `IntegrationAccountCertificatesClientCreateOrUpdateResponse`
+- New anonymous field `IntegrationServiceEnvironment` in struct `IntegrationServiceEnvironmentsClientGetResponse`
+- New anonymous field `RequestHistoryListResult` in struct `WorkflowRunActionRequestHistoriesClientListResponse`
+- New anonymous field `ExpressionTraces` in struct `WorkflowRunActionRepetitionsClientListExpressionTracesResponse`
+- New anonymous field `WorkflowVersionListResult` in struct `WorkflowVersionsClientListResponse`
+- New anonymous field `ExpressionTraces` in struct `WorkflowRunActionsClientListExpressionTracesResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `Workflow` in struct `WorkflowsClientUpdateResponse`
+- New anonymous field `WorkflowTriggerCallbackURL` in struct `WorkflowsClientListCallbackURLResponse`
+- New field `ResumeToken` in struct `IntegrationServiceEnvironmentManagedApisClientBeginPutOptions`
+- New anonymous field `WorkflowTriggerCallbackURL` in struct `WorkflowTriggersClientListCallbackURLResponse`
+- New anonymous field `WorkflowTriggerCallbackURL` in struct `IntegrationAccountMapsClientListContentCallbackURLResponse`
+- New anonymous field `WorkflowRunAction` in struct `WorkflowRunActionsClientGetResponse`
+- New anonymous field `WorkflowRun` in struct `WorkflowRunsClientGetResponse`
+- New field `Interface` in struct `WorkflowsClientListSwaggerResponse`
+- New anonymous field `IntegrationAccountSchema` in struct `IntegrationAccountSchemasClientCreateOrUpdateResponse`
+- New anonymous field `IntegrationAccountSession` in struct `IntegrationAccountSessionsClientCreateOrUpdateResponse`
+- New anonymous field `WorkflowRunActionListResult` in struct `WorkflowRunActionsClientListResponse`
+- New anonymous field `IntegrationAccountSchema` in struct `IntegrationAccountSchemasClientGetResponse`
+- New anonymous field `IntegrationAccountSchemaListResult` in struct `IntegrationAccountSchemasClientListResponse`
+- New anonymous field `CallbackURL` in struct `IntegrationAccountsClientListCallbackURLResponse`
+- New anonymous field `IntegrationAccountAgreement` in struct `IntegrationAccountAgreementsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `IntegrationServiceEnvironmentsClientBeginUpdateOptions`
+- New anonymous field `IntegrationAccountPartner` in struct `IntegrationAccountPartnersClientCreateOrUpdateResponse`
+- New anonymous field `BatchConfiguration` in struct `IntegrationAccountBatchConfigurationsClientCreateOrUpdateResponse`
+- New anonymous field `IntegrationAccountPartnerListResult` in struct `IntegrationAccountPartnersClientListResponse`
+- New anonymous field `IntegrationAccount` in struct `IntegrationAccountsClientGetResponse`
+- New anonymous field `WorkflowListResult` in struct `WorkflowsClientListByResourceGroupResponse`
+- New anonymous field `IntegrationAccountListResult` in struct `IntegrationAccountsClientListBySubscriptionResponse`
+- New anonymous field `RequestHistory` in struct `WorkflowRunActionRequestHistoriesClientGetResponse`
+- New anonymous field `IntegrationAccountMap` in struct `IntegrationAccountMapsClientGetResponse`
+- New anonymous field `IntegrationServiceEnvironment` in struct `IntegrationServiceEnvironmentsClientUpdateResponse`
+- New anonymous field `AssemblyCollection` in struct `IntegrationAccountAssembliesClientListResponse`
+- New anonymous field `WorkflowTriggerCallbackURL` in struct `IntegrationAccountPartnersClientListContentCallbackURLResponse`
+- New field `ResumeToken` in struct `IntegrationServiceEnvironmentsClientBeginCreateOrUpdateOptions`
+- New anonymous field `IntegrationAccount` in struct `IntegrationAccountsClientRegenerateAccessKeyResponse`
+- New anonymous field `BatchConfiguration` in struct `IntegrationAccountBatchConfigurationsClientGetResponse`
+- New anonymous field `WorkflowTriggerCallbackURL` in struct `IntegrationAccountAgreementsClientListContentCallbackURLResponse`
+- New anonymous field `BatchConfigurationCollection` in struct `IntegrationAccountBatchConfigurationsClientListResponse`
+- New anonymous field `IntegrationAccountAgreement` in struct `IntegrationAccountAgreementsClientGetResponse`
+- New anonymous field `WorkflowTriggerListResult` in struct `WorkflowTriggersClientListResponse`
+- New anonymous field `Workflow` in struct `WorkflowsClientGetResponse`
+- New anonymous field `JSONSchema` in struct `WorkflowTriggersClientGetSchemaJSONResponse`
+- New anonymous field `IntegrationAccountCertificate` in struct `IntegrationAccountCertificatesClientGetResponse`
+- New anonymous field `IntegrationAccountCertificateListResult` in struct `IntegrationAccountCertificatesClientListResponse`
+- New anonymous field `IntegrationServiceEnvironmentListResult` in struct `IntegrationServiceEnvironmentsClientListByResourceGroupResponse`
+- New anonymous field `WorkflowRun` in struct `WorkflowRunOperationsClientGetResponse`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

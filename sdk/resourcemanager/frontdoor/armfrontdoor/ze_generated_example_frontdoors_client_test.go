@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,251 +19,288 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor"
 )
 
-// x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/FrontdoorListAll.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/FrontdoorListAll.json
 func ExampleFrontDoorsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armfrontdoor.NewFrontDoorsClient("<subscription-id>", cred, nil)
+	client, err := armfrontdoor.NewFrontDoorsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/FrontdoorList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/FrontdoorList.json
 func ExampleFrontDoorsClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armfrontdoor.NewFrontDoorsClient("<subscription-id>", cred, nil)
+	client, err := armfrontdoor.NewFrontDoorsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/FrontdoorGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/FrontdoorGet.json
 func ExampleFrontDoorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armfrontdoor.NewFrontDoorsClient("<subscription-id>", cred, nil)
+	client, err := armfrontdoor.NewFrontDoorsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<front-door-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.FrontDoorsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/FrontdoorCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/FrontdoorCreate.json
 func ExampleFrontDoorsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armfrontdoor.NewFrontDoorsClient("<subscription-id>", cred, nil)
+	client, err := armfrontdoor.NewFrontDoorsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<front-door-name>",
 		armfrontdoor.FrontDoor{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Tags: map[string]*string{
-				"tag1": to.StringPtr("value1"),
-				"tag2": to.StringPtr("value2"),
+				"tag1": to.Ptr("value1"),
+				"tag2": to.Ptr("value2"),
 			},
 			Properties: &armfrontdoor.Properties{
 				BackendPools: []*armfrontdoor.BackendPool{
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("<name>"),
 						Properties: &armfrontdoor.BackendPoolProperties{
 							Backends: []*armfrontdoor.Backend{
 								{
-									Address:   to.StringPtr("<address>"),
-									HTTPPort:  to.Int32Ptr(80),
-									HTTPSPort: to.Int32Ptr(443),
-									Priority:  to.Int32Ptr(2),
-									Weight:    to.Int32Ptr(1),
+									Address:   to.Ptr("<address>"),
+									HTTPPort:  to.Ptr[int32](80),
+									HTTPSPort: to.Ptr[int32](443),
+									Priority:  to.Ptr[int32](2),
+									Weight:    to.Ptr[int32](1),
 								},
 								{
-									Address:                    to.StringPtr("<address>"),
-									HTTPPort:                   to.Int32Ptr(80),
-									HTTPSPort:                  to.Int32Ptr(443),
-									Priority:                   to.Int32Ptr(1),
-									PrivateLinkApprovalMessage: to.StringPtr("<private-link-approval-message>"),
-									PrivateLinkLocation:        to.StringPtr("<private-link-location>"),
-									PrivateLinkResourceID:      to.StringPtr("<private-link-resource-id>"),
-									Weight:                     to.Int32Ptr(2),
+									Address:                    to.Ptr("<address>"),
+									HTTPPort:                   to.Ptr[int32](80),
+									HTTPSPort:                  to.Ptr[int32](443),
+									Priority:                   to.Ptr[int32](1),
+									PrivateLinkApprovalMessage: to.Ptr("<private-link-approval-message>"),
+									PrivateLinkLocation:        to.Ptr("<private-link-location>"),
+									PrivateLinkResourceID:      to.Ptr("<private-link-resource-id>"),
+									Weight:                     to.Ptr[int32](2),
 								},
 								{
-									Address:                    to.StringPtr("<address>"),
-									HTTPPort:                   to.Int32Ptr(80),
-									HTTPSPort:                  to.Int32Ptr(443),
-									Priority:                   to.Int32Ptr(1),
-									PrivateLinkAlias:           to.StringPtr("<private-link-alias>"),
-									PrivateLinkApprovalMessage: to.StringPtr("<private-link-approval-message>"),
-									Weight:                     to.Int32Ptr(1),
+									Address:                    to.Ptr("<address>"),
+									HTTPPort:                   to.Ptr[int32](80),
+									HTTPSPort:                  to.Ptr[int32](443),
+									Priority:                   to.Ptr[int32](1),
+									PrivateLinkAlias:           to.Ptr("<private-link-alias>"),
+									PrivateLinkApprovalMessage: to.Ptr("<private-link-approval-message>"),
+									Weight:                     to.Ptr[int32](1),
 								}},
 							HealthProbeSettings: &armfrontdoor.SubResource{
-								ID: to.StringPtr("<id>"),
+								ID: to.Ptr("<id>"),
 							},
 							LoadBalancingSettings: &armfrontdoor.SubResource{
-								ID: to.StringPtr("<id>"),
+								ID: to.Ptr("<id>"),
 							},
 						},
 					}},
 				BackendPoolsSettings: &armfrontdoor.BackendPoolsSettings{
-					EnforceCertificateNameCheck: armfrontdoor.EnforceCertificateNameCheckEnabledState("Enabled").ToPtr(),
-					SendRecvTimeoutSeconds:      to.Int32Ptr(60),
+					EnforceCertificateNameCheck: to.Ptr(armfrontdoor.EnforceCertificateNameCheckEnabledStateEnabled),
+					SendRecvTimeoutSeconds:      to.Ptr[int32](60),
 				},
-				EnabledState: armfrontdoor.FrontDoorEnabledState("Enabled").ToPtr(),
+				EnabledState: to.Ptr(armfrontdoor.FrontDoorEnabledStateEnabled),
 				FrontendEndpoints: []*armfrontdoor.FrontendEndpoint{
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("<name>"),
 						Properties: &armfrontdoor.FrontendEndpointProperties{
-							HostName:                    to.StringPtr("<host-name>"),
-							SessionAffinityEnabledState: armfrontdoor.SessionAffinityEnabledState("Enabled").ToPtr(),
-							SessionAffinityTTLSeconds:   to.Int32Ptr(60),
+							HostName:                    to.Ptr("<host-name>"),
+							SessionAffinityEnabledState: to.Ptr(armfrontdoor.SessionAffinityEnabledStateEnabled),
+							SessionAffinityTTLSeconds:   to.Ptr[int32](60),
 							WebApplicationFirewallPolicyLink: &armfrontdoor.FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink{
-								ID: to.StringPtr("<id>"),
+								ID: to.Ptr("<id>"),
 							},
 						},
 					},
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("<name>"),
 						Properties: &armfrontdoor.FrontendEndpointProperties{
-							HostName: to.StringPtr("<host-name>"),
+							HostName: to.Ptr("<host-name>"),
 						},
 					}},
 				HealthProbeSettings: []*armfrontdoor.HealthProbeSettingsModel{
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("<name>"),
 						Properties: &armfrontdoor.HealthProbeSettingsProperties{
-							Path:              to.StringPtr("<path>"),
-							EnabledState:      armfrontdoor.HealthProbeEnabled("Enabled").ToPtr(),
-							HealthProbeMethod: armfrontdoor.FrontDoorHealthProbeMethod("HEAD").ToPtr(),
-							IntervalInSeconds: to.Int32Ptr(120),
-							Protocol:          armfrontdoor.FrontDoorProtocol("Http").ToPtr(),
+							Path:              to.Ptr("<path>"),
+							EnabledState:      to.Ptr(armfrontdoor.HealthProbeEnabledEnabled),
+							HealthProbeMethod: to.Ptr(armfrontdoor.FrontDoorHealthProbeMethodHEAD),
+							IntervalInSeconds: to.Ptr[int32](120),
+							Protocol:          to.Ptr(armfrontdoor.FrontDoorProtocolHTTP),
 						},
 					}},
 				LoadBalancingSettings: []*armfrontdoor.LoadBalancingSettingsModel{
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("<name>"),
 						Properties: &armfrontdoor.LoadBalancingSettingsProperties{
-							SampleSize:                to.Int32Ptr(4),
-							SuccessfulSamplesRequired: to.Int32Ptr(2),
+							SampleSize:                to.Ptr[int32](4),
+							SuccessfulSamplesRequired: to.Ptr[int32](2),
 						},
 					}},
 				RoutingRules: []*armfrontdoor.RoutingRule{
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("<name>"),
 						Properties: &armfrontdoor.RoutingRuleProperties{
 							AcceptedProtocols: []*armfrontdoor.FrontDoorProtocol{
-								armfrontdoor.FrontDoorProtocol("Http").ToPtr()},
-							EnabledState: armfrontdoor.RoutingRuleEnabledState("Enabled").ToPtr(),
+								to.Ptr(armfrontdoor.FrontDoorProtocolHTTP)},
+							EnabledState: to.Ptr(armfrontdoor.RoutingRuleEnabledStateEnabled),
 							FrontendEndpoints: []*armfrontdoor.SubResource{
 								{
-									ID: to.StringPtr("<id>"),
+									ID: to.Ptr("<id>"),
 								},
 								{
-									ID: to.StringPtr("<id>"),
+									ID: to.Ptr("<id>"),
 								}},
 							PatternsToMatch: []*string{
-								to.StringPtr("/*")},
+								to.Ptr("/*")},
 							RouteConfiguration: &armfrontdoor.ForwardingConfiguration{
-								ODataType: to.StringPtr("<odata-type>"),
+								ODataType: to.Ptr("<odata-type>"),
 								BackendPool: &armfrontdoor.SubResource{
-									ID: to.StringPtr("<id>"),
+									ID: to.Ptr("<id>"),
 								},
 							},
 							RulesEngine: &armfrontdoor.SubResource{
-								ID: to.StringPtr("<id>"),
+								ID: to.Ptr("<id>"),
 							},
 							WebApplicationFirewallPolicyLink: &armfrontdoor.RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink{
-								ID: to.StringPtr("<id>"),
+								ID: to.Ptr("<id>"),
 							},
 						},
 					}},
 			},
 		},
-		nil)
+		&armfrontdoor.FrontDoorsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.FrontDoorsClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/FrontdoorDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/FrontdoorDelete.json
 func ExampleFrontDoorsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armfrontdoor.NewFrontDoorsClient("<subscription-id>", cred, nil)
+	client, err := armfrontdoor.NewFrontDoorsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<front-door-name>",
-		nil)
+		&armfrontdoor.FrontDoorsClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/FrontdoorValidateCustomDomain.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/FrontdoorValidateCustomDomain.json
 func ExampleFrontDoorsClient_ValidateCustomDomain() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armfrontdoor.NewFrontDoorsClient("<subscription-id>", cred, nil)
+	client, err := armfrontdoor.NewFrontDoorsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ValidateCustomDomain(ctx,
 		"<resource-group-name>",
 		"<front-door-name>",
 		armfrontdoor.ValidateCustomDomainInput{
-			HostName: to.StringPtr("<host-name>"),
+			HostName: to.Ptr("<host-name>"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.FrontDoorsClientValidateCustomDomainResult)
+	// TODO: use response item
+	_ = res
 }

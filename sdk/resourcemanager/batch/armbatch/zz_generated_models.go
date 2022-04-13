@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armbatch
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // Account - Contains information about an Azure Batch account.
 type Account struct {
@@ -39,26 +34,20 @@ type Account struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Account.
-func (a Account) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	populate(objectMap, "identity", a.Identity)
-	populate(objectMap, "location", a.Location)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "tags", a.Tags)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
 // AccountClientBeginCreateOptions contains the optional parameters for the AccountClient.BeginCreate method.
 type AccountClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // AccountClientBeginDeleteOptions contains the optional parameters for the AccountClient.BeginDelete method.
 type AccountClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AccountClientGetDetectorOptions contains the optional parameters for the AccountClient.GetDetector method.
+type AccountClientGetDetectorOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -74,6 +63,11 @@ type AccountClientGetOptions struct {
 
 // AccountClientListByResourceGroupOptions contains the optional parameters for the AccountClient.ListByResourceGroup method.
 type AccountClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccountClientListDetectorsOptions contains the optional parameters for the AccountClient.ListDetectors method.
+type AccountClientListDetectorsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -119,16 +113,6 @@ type AccountCreateParameters struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AccountCreateParameters.
-func (a AccountCreateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "identity", a.Identity)
-	populate(objectMap, "location", a.Location)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "tags", a.Tags)
-	return json.Marshal(objectMap)
-}
-
 // AccountCreateProperties - The properties of a Batch account.
 type AccountCreateProperties struct {
 	// List of allowed authentication modes for the Batch account that can be used to authenticate with the data plane. This does
@@ -155,18 +139,6 @@ type AccountCreateProperties struct {
 	PublicNetworkAccess *PublicNetworkAccessType `json:"publicNetworkAccess,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AccountCreateProperties.
-func (a AccountCreateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allowedAuthenticationModes", a.AllowedAuthenticationModes)
-	populate(objectMap, "autoStorage", a.AutoStorage)
-	populate(objectMap, "encryption", a.Encryption)
-	populate(objectMap, "keyVaultReference", a.KeyVaultReference)
-	populate(objectMap, "poolAllocationMode", a.PoolAllocationMode)
-	populate(objectMap, "publicNetworkAccess", a.PublicNetworkAccess)
-	return json.Marshal(objectMap)
-}
-
 // AccountIdentity - The identity of the Batch account, if configured. This is used when the user specifies 'Microsoft.KeyVault'
 // as their Batch account encryption configuration or when ManagedIdentity is selected as the
 // auto-storage authentication mode.
@@ -182,16 +154,6 @@ type AccountIdentity struct {
 
 	// READ-ONLY; The tenant id associated with the Batch account. This property will only be provided for a system assigned identity.
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AccountIdentity.
-func (a AccountIdentity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "principalId", a.PrincipalID)
-	populate(objectMap, "tenantId", a.TenantID)
-	populate(objectMap, "type", a.Type)
-	populate(objectMap, "userAssignedIdentities", a.UserAssignedIdentities)
-	return json.Marshal(objectMap)
 }
 
 // AccountKeys - A set of Azure Batch account keys.
@@ -213,14 +175,6 @@ type AccountListResult struct {
 
 	// The collection of Batch accounts returned by the listing operation.
 	Value []*Account `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AccountListResult.
-func (a AccountListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
 }
 
 // AccountProperties - Account specific properties.
@@ -283,27 +237,6 @@ type AccountProperties struct {
 	PublicNetworkAccess *PublicNetworkAccessType `json:"publicNetworkAccess,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AccountProperties.
-func (a AccountProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "accountEndpoint", a.AccountEndpoint)
-	populate(objectMap, "activeJobAndJobScheduleQuota", a.ActiveJobAndJobScheduleQuota)
-	populate(objectMap, "allowedAuthenticationModes", a.AllowedAuthenticationModes)
-	populate(objectMap, "autoStorage", a.AutoStorage)
-	populate(objectMap, "dedicatedCoreQuota", a.DedicatedCoreQuota)
-	populate(objectMap, "dedicatedCoreQuotaPerVMFamily", a.DedicatedCoreQuotaPerVMFamily)
-	populate(objectMap, "dedicatedCoreQuotaPerVMFamilyEnforced", a.DedicatedCoreQuotaPerVMFamilyEnforced)
-	populate(objectMap, "encryption", a.Encryption)
-	populate(objectMap, "keyVaultReference", a.KeyVaultReference)
-	populate(objectMap, "lowPriorityCoreQuota", a.LowPriorityCoreQuota)
-	populate(objectMap, "poolAllocationMode", a.PoolAllocationMode)
-	populate(objectMap, "poolQuota", a.PoolQuota)
-	populate(objectMap, "privateEndpointConnections", a.PrivateEndpointConnections)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	populate(objectMap, "publicNetworkAccess", a.PublicNetworkAccess)
-	return json.Marshal(objectMap)
-}
-
 // AccountRegenerateKeyParameters - Parameters supplied to the RegenerateKey operation.
 type AccountRegenerateKeyParameters struct {
 	// REQUIRED; The type of account key to regenerate.
@@ -322,15 +255,6 @@ type AccountUpdateParameters struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AccountUpdateParameters.
-func (a AccountUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "identity", a.Identity)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "tags", a.Tags)
-	return json.Marshal(objectMap)
-}
-
 // AccountUpdateProperties - The properties of a Batch account.
 type AccountUpdateProperties struct {
 	// List of allowed authentication modes for the Batch account that can be used to authenticate with the data plane. This does
@@ -344,15 +268,6 @@ type AccountUpdateProperties struct {
 	// managed key. For additional control, a customer-managed key can be used
 	// instead.
 	Encryption *EncryptionProperties `json:"encryption,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AccountUpdateProperties.
-func (a AccountUpdateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allowedAuthenticationModes", a.AllowedAuthenticationModes)
-	populate(objectMap, "autoStorage", a.AutoStorage)
-	populate(objectMap, "encryption", a.Encryption)
-	return json.Marshal(objectMap)
 }
 
 // ActivateApplicationPackageParameters - Parameters for an activating an application package.
@@ -377,17 +292,6 @@ type Application struct {
 
 	// READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Application.
-func (a Application) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", a.Etag)
-	populate(objectMap, "id", a.ID)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
 }
 
 // ApplicationClientCreateOptions contains the optional parameters for the ApplicationClient.Create method.
@@ -480,49 +384,6 @@ type ApplicationPackageProperties struct {
 	StorageURLExpiry *time.Time `json:"storageUrlExpiry,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationPackageProperties.
-func (a ApplicationPackageProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "format", a.Format)
-	populateTimeRFC3339(objectMap, "lastActivationTime", a.LastActivationTime)
-	populate(objectMap, "state", a.State)
-	populate(objectMap, "storageUrl", a.StorageURL)
-	populateTimeRFC3339(objectMap, "storageUrlExpiry", a.StorageURLExpiry)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ApplicationPackageProperties.
-func (a *ApplicationPackageProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "format":
-			err = unpopulate(val, &a.Format)
-			delete(rawMsg, key)
-		case "lastActivationTime":
-			err = unpopulateTimeRFC3339(val, &a.LastActivationTime)
-			delete(rawMsg, key)
-		case "state":
-			err = unpopulate(val, &a.State)
-			delete(rawMsg, key)
-		case "storageUrl":
-			err = unpopulate(val, &a.StorageURL)
-			delete(rawMsg, key)
-		case "storageUrlExpiry":
-			err = unpopulateTimeRFC3339(val, &a.StorageURLExpiry)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ApplicationPackageReference - Link to an application package inside the batch account
 type ApplicationPackageReference struct {
 	// REQUIRED; The ID of the application package to install. This must be inside the same batch account as the pool. This can
@@ -560,41 +421,6 @@ type AutoScaleRun struct {
 	Results *string `json:"results,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AutoScaleRun.
-func (a AutoScaleRun) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "error", a.Error)
-	populateTimeRFC3339(objectMap, "evaluationTime", a.EvaluationTime)
-	populate(objectMap, "results", a.Results)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AutoScaleRun.
-func (a *AutoScaleRun) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "error":
-			err = unpopulate(val, &a.Error)
-			delete(rawMsg, key)
-		case "evaluationTime":
-			err = unpopulateTimeRFC3339(val, &a.EvaluationTime)
-			delete(rawMsg, key)
-		case "results":
-			err = unpopulate(val, &a.Results)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // AutoScaleRunError - An error that occurred when autoscaling a pool.
 type AutoScaleRunError struct {
 	// REQUIRED; An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
@@ -605,15 +431,6 @@ type AutoScaleRunError struct {
 
 	// Additional details about the error.
 	Details []*AutoScaleRunError `json:"details,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AutoScaleRunError.
-func (a AutoScaleRunError) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", a.Code)
-	populate(objectMap, "details", a.Details)
-	populate(objectMap, "message", a.Message)
-	return json.Marshal(objectMap)
 }
 
 // AutoScaleSettings - AutoScale settings for the pool.
@@ -650,45 +467,6 @@ type AutoStorageProperties struct {
 
 	// The identity referenced here must be assigned to pools which have compute nodes that need access to auto-storage.
 	NodeIdentityReference *ComputeNodeIdentityReference `json:"nodeIdentityReference,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AutoStorageProperties.
-func (a AutoStorageProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "authenticationMode", a.AuthenticationMode)
-	populateTimeRFC3339(objectMap, "lastKeySync", a.LastKeySync)
-	populate(objectMap, "nodeIdentityReference", a.NodeIdentityReference)
-	populate(objectMap, "storageAccountId", a.StorageAccountID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AutoStorageProperties.
-func (a *AutoStorageProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "authenticationMode":
-			err = unpopulate(val, &a.AuthenticationMode)
-			delete(rawMsg, key)
-		case "lastKeySync":
-			err = unpopulateTimeRFC3339(val, &a.LastKeySync)
-			delete(rawMsg, key)
-		case "nodeIdentityReference":
-			err = unpopulate(val, &a.NodeIdentityReference)
-			delete(rawMsg, key)
-		case "storageAccountId":
-			err = unpopulate(val, &a.StorageAccountID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // AutoUserSpecification - Specifies the parameters for the auto user that runs a task on the Batch service.
@@ -798,7 +576,8 @@ type CertificateBaseProperties struct {
 
 // CertificateClientBeginDeleteOptions contains the optional parameters for the CertificateClient.BeginDelete method.
 type CertificateClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CertificateClientCancelDeletionOptions contains the optional parameters for the CertificateClient.CancelDeletion method.
@@ -860,17 +639,6 @@ type CertificateCreateOrUpdateParameters struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CertificateCreateOrUpdateParameters.
-func (c CertificateCreateOrUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", c.Etag)
-	populate(objectMap, "id", c.ID)
-	populate(objectMap, "name", c.Name)
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "type", c.Type)
-	return json.Marshal(objectMap)
-}
-
 // CertificateCreateOrUpdateProperties - Certificate properties for create operations
 type CertificateCreateOrUpdateProperties struct {
 	// REQUIRED; The maximum size is 10KB.
@@ -919,65 +687,6 @@ type CertificateProperties struct {
 	PublicData *string `json:"publicData,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CertificateProperties.
-func (c CertificateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "deleteCertificateError", c.DeleteCertificateError)
-	populate(objectMap, "format", c.Format)
-	populate(objectMap, "previousProvisioningState", c.PreviousProvisioningState)
-	populateTimeRFC3339(objectMap, "previousProvisioningStateTransitionTime", c.PreviousProvisioningStateTransitionTime)
-	populate(objectMap, "provisioningState", c.ProvisioningState)
-	populateTimeRFC3339(objectMap, "provisioningStateTransitionTime", c.ProvisioningStateTransitionTime)
-	populate(objectMap, "publicData", c.PublicData)
-	populate(objectMap, "thumbprint", c.Thumbprint)
-	populate(objectMap, "thumbprintAlgorithm", c.ThumbprintAlgorithm)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CertificateProperties.
-func (c *CertificateProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "deleteCertificateError":
-			err = unpopulate(val, &c.DeleteCertificateError)
-			delete(rawMsg, key)
-		case "format":
-			err = unpopulate(val, &c.Format)
-			delete(rawMsg, key)
-		case "previousProvisioningState":
-			err = unpopulate(val, &c.PreviousProvisioningState)
-			delete(rawMsg, key)
-		case "previousProvisioningStateTransitionTime":
-			err = unpopulateTimeRFC3339(val, &c.PreviousProvisioningStateTransitionTime)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &c.ProvisioningState)
-			delete(rawMsg, key)
-		case "provisioningStateTransitionTime":
-			err = unpopulateTimeRFC3339(val, &c.ProvisioningStateTransitionTime)
-			delete(rawMsg, key)
-		case "publicData":
-			err = unpopulate(val, &c.PublicData)
-			delete(rawMsg, key)
-		case "thumbprint":
-			err = unpopulate(val, &c.Thumbprint)
-			delete(rawMsg, key)
-		case "thumbprintAlgorithm":
-			err = unpopulate(val, &c.ThumbprintAlgorithm)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // CertificateReference - A reference to a certificate to be installed on compute nodes in a pool. This must exist inside
 // the same account as the pool.
 type CertificateReference struct {
@@ -1002,16 +711,6 @@ type CertificateReference struct {
 
 	// Which user accounts on the compute node should have access to the private data of the certificate.
 	Visibility []*CertificateVisibility `json:"visibility,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CertificateReference.
-func (c CertificateReference) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", c.ID)
-	populate(objectMap, "storeLocation", c.StoreLocation)
-	populate(objectMap, "storeName", c.StoreName)
-	populate(objectMap, "visibility", c.Visibility)
-	return json.Marshal(objectMap)
 }
 
 // CheckNameAvailabilityParameters - Parameters for a check name availability request.
@@ -1058,16 +757,6 @@ type CloudErrorBody struct {
 	Target *string `json:"target,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CloudErrorBody.
-func (c CloudErrorBody) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", c.Code)
-	populate(objectMap, "details", c.Details)
-	populate(objectMap, "message", c.Message)
-	populate(objectMap, "target", c.Target)
-	return json.Marshal(objectMap)
-}
-
 // CloudServiceConfiguration - The configuration for nodes in a pool based on the Azure Cloud Services platform.
 type CloudServiceConfiguration struct {
 	// REQUIRED; Possible values are: 2 - OS Family 2, equivalent to Windows Server 2008 R2 SP1. 3 - OS Family 3, equivalent to
@@ -1100,15 +789,6 @@ type ContainerConfiguration struct {
 	// If any images must be downloaded from a private registry which requires credentials, then those credentials must be provided
 	// here.
 	ContainerRegistries []*ContainerRegistry `json:"containerRegistries,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ContainerConfiguration.
-func (c ContainerConfiguration) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "containerImageNames", c.ContainerImageNames)
-	populate(objectMap, "containerRegistries", c.ContainerRegistries)
-	populate(objectMap, "type", c.Type)
-	return json.Marshal(objectMap)
 }
 
 // ContainerRegistry - A private container registry.
@@ -1163,16 +843,6 @@ type DeleteCertificateError struct {
 	Target *string `json:"target,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DeleteCertificateError.
-func (d DeleteCertificateError) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", d.Code)
-	populate(objectMap, "details", d.Details)
-	populate(objectMap, "message", d.Message)
-	populate(objectMap, "target", d.Target)
-	return json.Marshal(objectMap)
-}
-
 // DeploymentConfiguration - Deployment configuration properties.
 type DeploymentConfiguration struct {
 	// This property and virtualMachineConfiguration are mutually exclusive and one of the properties must be specified. This
@@ -1182,6 +852,39 @@ type DeploymentConfiguration struct {
 
 	// This property and cloudServiceConfiguration are mutually exclusive and one of the properties must be specified.
 	VirtualMachineConfiguration *VirtualMachineConfiguration `json:"virtualMachineConfiguration,omitempty"`
+}
+
+// DetectorListResult - Values returned by the List operation.
+type DetectorListResult struct {
+	// The URL to get the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The collection of Batch account detectors returned by the listing operation.
+	Value []*DetectorResponse `json:"value,omitempty"`
+}
+
+// DetectorResponse - Contains the information for a detector.
+type DetectorResponse struct {
+	// The properties associated with the detector.
+	Properties *DetectorResponseProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The ETag of the resource, used for concurrency statements.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// DetectorResponseProperties - Detector response properties.
+type DetectorResponseProperties struct {
+	// A base64 encoded string that represents the content of a detector.
+	Value *string `json:"value,omitempty"`
 }
 
 // DiffDiskSettings - Specifies the ephemeral Disk Settings for the operating system disk used by the virtual machine.
@@ -1199,13 +902,6 @@ type DiffDiskSettings struct {
 type DiskEncryptionConfiguration struct {
 	// On Linux pool, only "TemporaryDisk" is supported; on Windows pool, "OsDisk" and "TemporaryDisk" must be specified.
 	Targets []*DiskEncryptionTarget `json:"targets,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DiskEncryptionConfiguration.
-func (d DiskEncryptionConfiguration) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "targets", d.Targets)
-	return json.Marshal(objectMap)
 }
 
 // EncryptionProperties - Configures how customer data is encrypted inside the Batch account. By default, accounts are encrypted
@@ -1229,15 +925,6 @@ type EndpointDependency struct {
 
 	// READ-ONLY; The list of connection details for this endpoint.
 	EndpointDetails []*EndpointDetail `json:"endpointDetails,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EndpointDependency.
-func (e EndpointDependency) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "description", e.Description)
-	populate(objectMap, "domainName", e.DomainName)
-	populate(objectMap, "endpointDetails", e.EndpointDetails)
-	return json.Marshal(objectMap)
 }
 
 // EndpointDetail - Details about the connection between the Batch service and the endpoint.
@@ -1287,7 +974,7 @@ type ImageReference struct {
 	// For example, Canonical or MicrosoftWindowsServer.
 	Publisher *string `json:"publisher,omitempty"`
 
-	// For example, 18.04-LTS or 2019-Datacenter.
+	// For example, 18.04-LTS or 2022-datacenter.
 	SKU *string `json:"sku,omitempty"`
 
 	// A value of 'latest' can be specified to select the latest version of an image. If omitted, the default is 'latest'.
@@ -1324,18 +1011,6 @@ type InboundNatPool struct {
 	// access to the specified backendPort. If the maximum number of network security group rules is exceeded the request fails
 	// with HTTP status code 400.
 	NetworkSecurityGroupRules []*NetworkSecurityGroupRule `json:"networkSecurityGroupRules,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InboundNatPool.
-func (i InboundNatPool) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "backendPort", i.BackendPort)
-	populate(objectMap, "frontendPortRangeEnd", i.FrontendPortRangeEnd)
-	populate(objectMap, "frontendPortRangeStart", i.FrontendPortRangeStart)
-	populate(objectMap, "name", i.Name)
-	populate(objectMap, "networkSecurityGroupRules", i.NetworkSecurityGroupRules)
-	populate(objectMap, "protocol", i.Protocol)
-	return json.Marshal(objectMap)
 }
 
 // KeyVaultProperties - KeyVault configuration when using an encryption KeySource of Microsoft.KeyVault.
@@ -1383,14 +1058,6 @@ type ListApplicationPackagesResult struct {
 	Value []*ApplicationPackage `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ListApplicationPackagesResult.
-func (l ListApplicationPackagesResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
-}
-
 // ListApplicationsResult - The result of performing list applications.
 type ListApplicationsResult struct {
 	// The URL to get the next set of results.
@@ -1398,14 +1065,6 @@ type ListApplicationsResult struct {
 
 	// The list of applications.
 	Value []*Application `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ListApplicationsResult.
-func (l ListApplicationsResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
 }
 
 // ListCertificatesResult - Values returned by the List operation.
@@ -1417,14 +1076,6 @@ type ListCertificatesResult struct {
 	Value []*Certificate `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ListCertificatesResult.
-func (l ListCertificatesResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
-}
-
 // ListPoolsResult - Values returned by the List operation.
 type ListPoolsResult struct {
 	// The continuation token.
@@ -1432,14 +1083,6 @@ type ListPoolsResult struct {
 
 	// The collection of returned pools.
 	Value []*Pool `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ListPoolsResult.
-func (l ListPoolsResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
 }
 
 // ListPrivateEndpointConnectionsResult - Values returned by the List operation.
@@ -1451,14 +1094,6 @@ type ListPrivateEndpointConnectionsResult struct {
 	Value []*PrivateEndpointConnection `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ListPrivateEndpointConnectionsResult.
-func (l ListPrivateEndpointConnectionsResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
-}
-
 // ListPrivateLinkResourcesResult - Values returned by the List operation.
 type ListPrivateLinkResourcesResult struct {
 	// The continuation token.
@@ -1466,14 +1101,6 @@ type ListPrivateLinkResourcesResult struct {
 
 	// The collection of returned private link resources.
 	Value []*PrivateLinkResource `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ListPrivateLinkResourcesResult.
-func (l ListPrivateLinkResourcesResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
 }
 
 // LocationClientCheckNameAvailabilityOptions contains the optional parameters for the LocationClient.CheckNameAvailability
@@ -1550,6 +1177,9 @@ type NFSMountConfiguration struct {
 
 // NetworkConfiguration - The network configuration for a pool.
 type NetworkConfiguration struct {
+	// The scope of dynamic vnet assignment.
+	DynamicVNetAssignmentScope *DynamicVNetAssignmentScope `json:"dynamicVNetAssignmentScope,omitempty"`
+
 	// Pool endpoint configuration is only supported on pools with the virtualMachineConfiguration property.
 	EndpointConfiguration *PoolEndpointConfiguration `json:"endpointConfiguration,omitempty"`
 
@@ -1597,16 +1227,6 @@ type NetworkSecurityGroupRule struct {
 	SourcePortRanges []*string `json:"sourcePortRanges,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type NetworkSecurityGroupRule.
-func (n NetworkSecurityGroupRule) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "access", n.Access)
-	populate(objectMap, "priority", n.Priority)
-	populate(objectMap, "sourceAddressPrefix", n.SourceAddressPrefix)
-	populate(objectMap, "sourcePortRanges", n.SourcePortRanges)
-	return json.Marshal(objectMap)
-}
-
 // NodePlacementConfiguration - Allocation configuration used by Batch Service to provision the nodes.
 type NodePlacementConfiguration struct {
 	// Allocation policy used by Batch Service to provision the nodes. If not specified, Batch will use the regional policy.
@@ -1633,8 +1253,8 @@ type Operation struct {
 	// The intended executor of the operation.
 	Origin *string `json:"origin,omitempty"`
 
-	// Any object
-	Properties map[string]interface{} `json:"properties,omitempty"`
+	// Properties of the operation.
+	Properties interface{} `json:"properties,omitempty"`
 }
 
 // OperationDisplay - The object that describes the operation.
@@ -1662,14 +1282,6 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -1685,14 +1297,6 @@ type OutboundEnvironmentEndpoint struct {
 	Endpoints []*EndpointDependency `json:"endpoints,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OutboundEnvironmentEndpoint.
-func (o OutboundEnvironmentEndpoint) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "category", o.Category)
-	populate(objectMap, "endpoints", o.Endpoints)
-	return json.Marshal(objectMap)
-}
-
 // OutboundEnvironmentEndpointCollection - Values returned by the List operation.
 type OutboundEnvironmentEndpointCollection struct {
 	// The continuation token.
@@ -1700,14 +1304,6 @@ type OutboundEnvironmentEndpointCollection struct {
 
 	// READ-ONLY; The collection of outbound network dependency endpoints returned by the listing operation.
 	Value []*OutboundEnvironmentEndpoint `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OutboundEnvironmentEndpointCollection.
-func (o OutboundEnvironmentEndpointCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 // Pool - Contains information about a pool.
@@ -1731,21 +1327,10 @@ type Pool struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Pool.
-func (p Pool) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", p.Etag)
-	populate(objectMap, "id", p.ID)
-	populate(objectMap, "identity", p.Identity)
-	populate(objectMap, "name", p.Name)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "type", p.Type)
-	return json.Marshal(objectMap)
-}
-
 // PoolClientBeginDeleteOptions contains the optional parameters for the PoolClient.BeginDelete method.
 type PoolClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // PoolClientCreateOptions contains the optional parameters for the PoolClient.Create method.
@@ -1800,13 +1385,6 @@ type PoolEndpointConfiguration struct {
 	InboundNatPools []*InboundNatPool `json:"inboundNatPools,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PoolEndpointConfiguration.
-func (p PoolEndpointConfiguration) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "inboundNatPools", p.InboundNatPools)
-	return json.Marshal(objectMap)
-}
-
 // PoolIdentity - The identity of the Batch pool, if configured. If the pool identity is updated during update an existing
 // pool, only the new vms which are created after the pool shrinks to 0 will have the updated
 // identities
@@ -1816,14 +1394,6 @@ type PoolIdentity struct {
 
 	// The list of user identities associated with the Batch pool.
 	UserAssignedIdentities map[string]*UserAssignedIdentities `json:"userAssignedIdentities,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PoolIdentity.
-func (p PoolIdentity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "type", p.Type)
-	populate(objectMap, "userAssignedIdentities", p.UserAssignedIdentities)
-	return json.Marshal(objectMap)
 }
 
 // PoolProperties - Pool properties.
@@ -1909,7 +1479,7 @@ type PoolProperties struct {
 	// READ-ONLY; The number of compute nodes currently in the pool.
 	CurrentDedicatedNodes *int32 `json:"currentDedicatedNodes,omitempty" azure:"ro"`
 
-	// READ-ONLY; The number of low-priority compute nodes currently in the pool.
+	// READ-ONLY; The number of Spot/low-priority compute nodes currently in the pool.
 	CurrentLowPriorityNodes *int32 `json:"currentLowPriorityNodes,omitempty" azure:"ro"`
 
 	// READ-ONLY; This is the last time at which the pool level data, such as the targetDedicatedNodes or autoScaleSettings, changed.
@@ -1925,129 +1495,6 @@ type PoolProperties struct {
 	// READ-ONLY; Describes either the current operation (if the pool AllocationState is Resizing) or the previously completed
 	// operation (if the AllocationState is Steady).
 	ResizeOperationStatus *ResizeOperationStatus `json:"resizeOperationStatus,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PoolProperties.
-func (p PoolProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allocationState", p.AllocationState)
-	populateTimeRFC3339(objectMap, "allocationStateTransitionTime", p.AllocationStateTransitionTime)
-	populate(objectMap, "applicationLicenses", p.ApplicationLicenses)
-	populate(objectMap, "applicationPackages", p.ApplicationPackages)
-	populate(objectMap, "autoScaleRun", p.AutoScaleRun)
-	populate(objectMap, "certificates", p.Certificates)
-	populateTimeRFC3339(objectMap, "creationTime", p.CreationTime)
-	populate(objectMap, "currentDedicatedNodes", p.CurrentDedicatedNodes)
-	populate(objectMap, "currentLowPriorityNodes", p.CurrentLowPriorityNodes)
-	populate(objectMap, "deploymentConfiguration", p.DeploymentConfiguration)
-	populate(objectMap, "displayName", p.DisplayName)
-	populate(objectMap, "interNodeCommunication", p.InterNodeCommunication)
-	populateTimeRFC3339(objectMap, "lastModified", p.LastModified)
-	populate(objectMap, "metadata", p.Metadata)
-	populate(objectMap, "mountConfiguration", p.MountConfiguration)
-	populate(objectMap, "networkConfiguration", p.NetworkConfiguration)
-	populate(objectMap, "provisioningState", p.ProvisioningState)
-	populateTimeRFC3339(objectMap, "provisioningStateTransitionTime", p.ProvisioningStateTransitionTime)
-	populate(objectMap, "resizeOperationStatus", p.ResizeOperationStatus)
-	populate(objectMap, "scaleSettings", p.ScaleSettings)
-	populate(objectMap, "startTask", p.StartTask)
-	populate(objectMap, "taskSchedulingPolicy", p.TaskSchedulingPolicy)
-	populate(objectMap, "taskSlotsPerNode", p.TaskSlotsPerNode)
-	populate(objectMap, "userAccounts", p.UserAccounts)
-	populate(objectMap, "vmSize", p.VMSize)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PoolProperties.
-func (p *PoolProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "allocationState":
-			err = unpopulate(val, &p.AllocationState)
-			delete(rawMsg, key)
-		case "allocationStateTransitionTime":
-			err = unpopulateTimeRFC3339(val, &p.AllocationStateTransitionTime)
-			delete(rawMsg, key)
-		case "applicationLicenses":
-			err = unpopulate(val, &p.ApplicationLicenses)
-			delete(rawMsg, key)
-		case "applicationPackages":
-			err = unpopulate(val, &p.ApplicationPackages)
-			delete(rawMsg, key)
-		case "autoScaleRun":
-			err = unpopulate(val, &p.AutoScaleRun)
-			delete(rawMsg, key)
-		case "certificates":
-			err = unpopulate(val, &p.Certificates)
-			delete(rawMsg, key)
-		case "creationTime":
-			err = unpopulateTimeRFC3339(val, &p.CreationTime)
-			delete(rawMsg, key)
-		case "currentDedicatedNodes":
-			err = unpopulate(val, &p.CurrentDedicatedNodes)
-			delete(rawMsg, key)
-		case "currentLowPriorityNodes":
-			err = unpopulate(val, &p.CurrentLowPriorityNodes)
-			delete(rawMsg, key)
-		case "deploymentConfiguration":
-			err = unpopulate(val, &p.DeploymentConfiguration)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, &p.DisplayName)
-			delete(rawMsg, key)
-		case "interNodeCommunication":
-			err = unpopulate(val, &p.InterNodeCommunication)
-			delete(rawMsg, key)
-		case "lastModified":
-			err = unpopulateTimeRFC3339(val, &p.LastModified)
-			delete(rawMsg, key)
-		case "metadata":
-			err = unpopulate(val, &p.Metadata)
-			delete(rawMsg, key)
-		case "mountConfiguration":
-			err = unpopulate(val, &p.MountConfiguration)
-			delete(rawMsg, key)
-		case "networkConfiguration":
-			err = unpopulate(val, &p.NetworkConfiguration)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &p.ProvisioningState)
-			delete(rawMsg, key)
-		case "provisioningStateTransitionTime":
-			err = unpopulateTimeRFC3339(val, &p.ProvisioningStateTransitionTime)
-			delete(rawMsg, key)
-		case "resizeOperationStatus":
-			err = unpopulate(val, &p.ResizeOperationStatus)
-			delete(rawMsg, key)
-		case "scaleSettings":
-			err = unpopulate(val, &p.ScaleSettings)
-			delete(rawMsg, key)
-		case "startTask":
-			err = unpopulate(val, &p.StartTask)
-			delete(rawMsg, key)
-		case "taskSchedulingPolicy":
-			err = unpopulate(val, &p.TaskSchedulingPolicy)
-			delete(rawMsg, key)
-		case "taskSlotsPerNode":
-			err = unpopulate(val, &p.TaskSlotsPerNode)
-			delete(rawMsg, key)
-		case "userAccounts":
-			err = unpopulate(val, &p.UserAccounts)
-			delete(rawMsg, key)
-		case "vmSize":
-			err = unpopulate(val, &p.VMSize)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // PrivateEndpoint - The private endpoint of the private endpoint connection.
@@ -2074,23 +1521,14 @@ type PrivateEndpointConnection struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnection.
-func (p PrivateEndpointConnection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", p.Etag)
-	populate(objectMap, "id", p.ID)
-	populate(objectMap, "name", p.Name)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "type", p.Type)
-	return json.Marshal(objectMap)
-}
-
 // PrivateEndpointConnectionClientBeginUpdateOptions contains the optional parameters for the PrivateEndpointConnectionClient.BeginUpdate
 // method.
 type PrivateEndpointConnectionClientBeginUpdateOptions struct {
 	// The state (ETag) version of the private endpoint connection to update. This value can be omitted or set to "*" to apply
 	// the operation unconditionally.
 	IfMatch *string
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // PrivateEndpointConnectionClientGetOptions contains the optional parameters for the PrivateEndpointConnectionClient.Get
@@ -2160,15 +1598,6 @@ type PrivateLinkResourceProperties struct {
 	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceProperties.
-func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "groupId", p.GroupID)
-	populate(objectMap, "requiredMembers", p.RequiredMembers)
-	populate(objectMap, "requiredZoneNames", p.RequiredZoneNames)
-	return json.Marshal(objectMap)
-}
-
 // PrivateLinkServiceConnectionState - The private link service connection state of the private endpoint connection
 type PrivateLinkServiceConnectionState struct {
 	// REQUIRED; The status of the Batch private endpoint connection
@@ -2198,21 +1627,13 @@ type ProxyResource struct {
 
 // PublicIPAddressConfiguration - The public IP Address configuration of the networking configuration of a Pool.
 type PublicIPAddressConfiguration struct {
-	// The number of IPs specified here limits the maximum size of the Pool - 100 dedicated nodes or 100 low-priority nodes can
-	// be allocated for each public IP. For example, a pool needing 250 dedicated VMs
-	// would need at least 3 public IPs specified. Each element of this collection is of the form: /subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/publicIPAddresses/{ip}.
+	// The number of IPs specified here limits the maximum size of the Pool - 100 dedicated nodes or 100 Spot/low-priority nodes
+	// can be allocated for each public IP. For example, a pool needing 250 dedicated
+	// VMs would need at least 3 public IPs specified. Each element of this collection is of the form: /subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/publicIPAddresses/{ip}.
 	IPAddressIDs []*string `json:"ipAddressIds,omitempty"`
 
 	// The default value is BatchManaged
 	Provision *IPAddressProvisioningType `json:"provision,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PublicIPAddressConfiguration.
-func (p PublicIPAddressConfiguration) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "ipAddressIds", p.IPAddressIDs)
-	populate(objectMap, "provision", p.Provision)
-	return json.Marshal(objectMap)
 }
 
 // ResizeError - An error that occurred when resizing a pool.
@@ -2225,15 +1646,6 @@ type ResizeError struct {
 
 	// Additional details about the error.
 	Details []*ResizeError `json:"details,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResizeError.
-func (r ResizeError) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", r.Code)
-	populate(objectMap, "details", r.Details)
-	populate(objectMap, "message", r.Message)
-	return json.Marshal(objectMap)
 }
 
 // ResizeOperationStatus - Describes either the current operation (if the pool AllocationState is Resizing) or the previously
@@ -2256,55 +1668,8 @@ type ResizeOperationStatus struct {
 	// The desired number of dedicated compute nodes in the pool.
 	TargetDedicatedNodes *int32 `json:"targetDedicatedNodes,omitempty"`
 
-	// The desired number of low-priority compute nodes in the pool.
+	// The desired number of Spot/low-priority compute nodes in the pool.
 	TargetLowPriorityNodes *int32 `json:"targetLowPriorityNodes,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResizeOperationStatus.
-func (r ResizeOperationStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "errors", r.Errors)
-	populate(objectMap, "nodeDeallocationOption", r.NodeDeallocationOption)
-	populate(objectMap, "resizeTimeout", r.ResizeTimeout)
-	populateTimeRFC3339(objectMap, "startTime", r.StartTime)
-	populate(objectMap, "targetDedicatedNodes", r.TargetDedicatedNodes)
-	populate(objectMap, "targetLowPriorityNodes", r.TargetLowPriorityNodes)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ResizeOperationStatus.
-func (r *ResizeOperationStatus) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "errors":
-			err = unpopulate(val, &r.Errors)
-			delete(rawMsg, key)
-		case "nodeDeallocationOption":
-			err = unpopulate(val, &r.NodeDeallocationOption)
-			delete(rawMsg, key)
-		case "resizeTimeout":
-			err = unpopulate(val, &r.ResizeTimeout)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &r.StartTime)
-			delete(rawMsg, key)
-		case "targetDedicatedNodes":
-			err = unpopulate(val, &r.TargetDedicatedNodes)
-			delete(rawMsg, key)
-		case "targetLowPriorityNodes":
-			err = unpopulate(val, &r.TargetLowPriorityNodes)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // Resource - A definition of an Azure resource.
@@ -2323,17 +1688,6 @@ type Resource struct {
 
 	// READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "location", r.Location)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "tags", r.Tags)
-	populate(objectMap, "type", r.Type)
-	return json.Marshal(objectMap)
 }
 
 // ResourceFile - A single file or multiple files to be downloaded to a compute node.
@@ -2423,7 +1777,8 @@ type StartTask struct {
 	// retries. The Batch service will try the task once, and may then retry up to this
 	// limit. For example, if the maximum retry count is 3, Batch tries the task up to 4 times (one initial try and 3 retries).
 	// If the maximum retry count is 0, the Batch service does not retry the task. If
-	// the maximum retry count is -1, the Batch service retries the task without limit.
+	// the maximum retry count is -1, the Batch service retries the task without limit, however this is not recommended for a
+	// start task or any task. The default value is 0 (no retries).
 	MaxTaskRetryCount *int32 `json:"maxTaskRetryCount,omitempty"`
 
 	// A list of files that the Batch service will download to the compute node before running the command line.
@@ -2442,19 +1797,6 @@ type StartTask struct {
 	WaitForSuccess *bool `json:"waitForSuccess,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type StartTask.
-func (s StartTask) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "commandLine", s.CommandLine)
-	populate(objectMap, "containerSettings", s.ContainerSettings)
-	populate(objectMap, "environmentSettings", s.EnvironmentSettings)
-	populate(objectMap, "maxTaskRetryCount", s.MaxTaskRetryCount)
-	populate(objectMap, "resourceFiles", s.ResourceFiles)
-	populate(objectMap, "userIdentity", s.UserIdentity)
-	populate(objectMap, "waitForSuccess", s.WaitForSuccess)
-	return json.Marshal(objectMap)
-}
-
 // SupportedSKU - Describes a Batch supported SKU.
 type SupportedSKU struct {
 	// READ-ONLY; A collection of capabilities which this SKU supports.
@@ -2467,15 +1809,6 @@ type SupportedSKU struct {
 	Name *string `json:"name,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SupportedSKU.
-func (s SupportedSKU) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "capabilities", s.Capabilities)
-	populate(objectMap, "familyName", s.FamilyName)
-	populate(objectMap, "name", s.Name)
-	return json.Marshal(objectMap)
-}
-
 // SupportedSKUsResult - The Batch List supported SKUs operation response.
 type SupportedSKUsResult struct {
 	// REQUIRED; The list of SKUs available for the Batch service in the location.
@@ -2483,14 +1816,6 @@ type SupportedSKUsResult struct {
 
 	// READ-ONLY; The URL to use for getting the next set of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SupportedSKUsResult.
-func (s SupportedSKUsResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // TaskContainerSettings - The container settings for a task.
@@ -2572,30 +1897,16 @@ type VMExtension struct {
 	AutoUpgradeMinorVersion *bool `json:"autoUpgradeMinorVersion,omitempty"`
 
 	// The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all.
-	ProtectedSettings map[string]interface{} `json:"protectedSettings,omitempty"`
+	ProtectedSettings interface{} `json:"protectedSettings,omitempty"`
 
 	// Collection of extension names after which this extension needs to be provisioned.
 	ProvisionAfterExtensions []*string `json:"provisionAfterExtensions,omitempty"`
 
-	// Any object
-	Settings map[string]interface{} `json:"settings,omitempty"`
+	// JSON formatted public settings for the extension.
+	Settings interface{} `json:"settings,omitempty"`
 
 	// The version of script handler.
 	TypeHandlerVersion *string `json:"typeHandlerVersion,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VMExtension.
-func (v VMExtension) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "autoUpgradeMinorVersion", v.AutoUpgradeMinorVersion)
-	populate(objectMap, "name", v.Name)
-	populate(objectMap, "protectedSettings", v.ProtectedSettings)
-	populate(objectMap, "provisionAfterExtensions", v.ProvisionAfterExtensions)
-	populate(objectMap, "publisher", v.Publisher)
-	populate(objectMap, "settings", v.Settings)
-	populate(objectMap, "type", v.Type)
-	populate(objectMap, "typeHandlerVersion", v.TypeHandlerVersion)
-	return json.Marshal(objectMap)
 }
 
 // VirtualMachineConfiguration - The configuration for compute nodes in a pool based on the Azure Virtual Machines infrastructure.
@@ -2642,22 +1953,6 @@ type VirtualMachineConfiguration struct {
 	WindowsConfiguration *WindowsConfiguration `json:"windowsConfiguration,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VirtualMachineConfiguration.
-func (v VirtualMachineConfiguration) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "containerConfiguration", v.ContainerConfiguration)
-	populate(objectMap, "dataDisks", v.DataDisks)
-	populate(objectMap, "diskEncryptionConfiguration", v.DiskEncryptionConfiguration)
-	populate(objectMap, "extensions", v.Extensions)
-	populate(objectMap, "imageReference", v.ImageReference)
-	populate(objectMap, "licenseType", v.LicenseType)
-	populate(objectMap, "nodeAgentSkuId", v.NodeAgentSKUID)
-	populate(objectMap, "nodePlacementConfiguration", v.NodePlacementConfiguration)
-	populate(objectMap, "osDisk", v.OSDisk)
-	populate(objectMap, "windowsConfiguration", v.WindowsConfiguration)
-	return json.Marshal(objectMap)
-}
-
 // VirtualMachineFamilyCoreQuota - A VM Family and its associated core quota for the Batch account.
 type VirtualMachineFamilyCoreQuota struct {
 	// READ-ONLY; The core quota for the VM family for the Batch account.
@@ -2678,21 +1973,4 @@ type WindowsUserConfiguration struct {
 	// Specifies login mode for the user. The default value for VirtualMachineConfiguration pools is interactive mode and for
 	// CloudServiceConfiguration pools is batch mode.
 	LoginMode *LoginMode `json:"loginMode,omitempty"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

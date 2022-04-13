@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armpostgresqlhsc
 
 const (
 	moduleName    = "armpostgresqlhsc"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // CitusVersion - The Citus version.
@@ -39,11 +39,6 @@ func PossibleCitusVersionValues() []CitusVersion {
 	}
 }
 
-// ToPtr returns a *CitusVersion pointing to the current value.
-func (c CitusVersion) ToPtr() *CitusVersion {
-	return &c
-}
-
 // ConfigurationDataType - Data type of the configuration.
 type ConfigurationDataType string
 
@@ -64,11 +59,6 @@ func PossibleConfigurationDataTypeValues() []ConfigurationDataType {
 	}
 }
 
-// ToPtr returns a *ConfigurationDataType pointing to the current value.
-func (c ConfigurationDataType) ToPtr() *ConfigurationDataType {
-	return &c
-}
-
 // CreateMode - The mode to create a new server group.
 type CreateMode string
 
@@ -85,11 +75,6 @@ func PossibleCreateModeValues() []CreateMode {
 		CreateModePointInTimeRestore,
 		CreateModeReadReplica,
 	}
-}
-
-// ToPtr returns a *CreateMode pointing to the current value.
-func (c CreateMode) ToPtr() *CreateMode {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -112,11 +97,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // OperationOrigin - The intended executor of the operation.
 type OperationOrigin string
 
@@ -135,11 +115,6 @@ func PossibleOperationOriginValues() []OperationOrigin {
 	}
 }
 
-// ToPtr returns a *OperationOrigin pointing to the current value.
-func (c OperationOrigin) ToPtr() *OperationOrigin {
-	return &c
-}
-
 // PostgreSQLVersion - The PostgreSQL version.
 type PostgreSQLVersion string
 
@@ -154,11 +129,6 @@ func PossiblePostgreSQLVersionValues() []PostgreSQLVersion {
 		PostgreSQLVersionEleven,
 		PostgreSQLVersionTwelve,
 	}
-}
-
-// ToPtr returns a *PostgreSQLVersion pointing to the current value.
-func (c PostgreSQLVersion) ToPtr() *PostgreSQLVersion {
-	return &c
 }
 
 // ResourceProviderType - The resource provider type of server group.
@@ -177,11 +147,6 @@ func PossibleResourceProviderTypeValues() []ResourceProviderType {
 	}
 }
 
-// ToPtr returns a *ResourceProviderType pointing to the current value.
-func (c ResourceProviderType) ToPtr() *ResourceProviderType {
-	return &c
-}
-
 // ServerEdition - The edition of a server (default: GeneralPurpose).
 type ServerEdition string
 
@@ -196,11 +161,6 @@ func PossibleServerEditionValues() []ServerEdition {
 		ServerEditionGeneralPurpose,
 		ServerEditionMemoryOptimized,
 	}
-}
-
-// ToPtr returns a *ServerEdition pointing to the current value.
-func (c ServerEdition) ToPtr() *ServerEdition {
-	return &c
 }
 
 // ServerHaState - A state of a server role group/server that is visible to user for HA feature.
@@ -229,11 +189,6 @@ func PossibleServerHaStateValues() []ServerHaState {
 	}
 }
 
-// ToPtr returns a *ServerHaState pointing to the current value.
-func (c ServerHaState) ToPtr() *ServerHaState {
-	return &c
-}
-
 // ServerRole - The role of a server.
 type ServerRole string
 
@@ -248,11 +203,6 @@ func PossibleServerRoleValues() []ServerRole {
 		ServerRoleCoordinator,
 		ServerRoleWorker,
 	}
-}
-
-// ToPtr returns a *ServerRole pointing to the current value.
-func (c ServerRole) ToPtr() *ServerRole {
-	return &c
 }
 
 // ServerState - A state of a server group/server that is visible to user.
@@ -281,9 +231,4 @@ func PossibleServerStateValues() []ServerState {
 		ServerStateStopping,
 		ServerStateUpdating,
 	}
-}
-
-// ToPtr returns a *ServerState pointing to the current value.
-func (c ServerState) ToPtr() *ServerState {
-	return &c
 }

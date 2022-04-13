@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ElasticPoolOperationsClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewElasticPoolOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ElasticPoolOperationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewElasticPoolOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ElasticPoolOperationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ElasticPoolOperationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Cancel - Cancels the asynchronous operation on the elastic pool.
@@ -69,7 +74,7 @@ func (client *ElasticPoolOperationsClient) Cancel(ctx context.Context, resourceG
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ElasticPoolOperationsClientCancelResponse{}, runtime.NewResponseError(resp)
 	}
-	return ElasticPoolOperationsClientCancelResponse{RawResponse: resp}, nil
+	return ElasticPoolOperationsClientCancelResponse{}, nil
 }
 
 // cancelCreateRequest creates the Cancel request.
@@ -109,16 +114,32 @@ func (client *ElasticPoolOperationsClient) cancelCreateRequest(ctx context.Conte
 // serverName - The name of the server.
 // options - ElasticPoolOperationsClientListByElasticPoolOptions contains the optional parameters for the ElasticPoolOperationsClient.ListByElasticPool
 // method.
-func (client *ElasticPoolOperationsClient) ListByElasticPool(resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolOperationsClientListByElasticPoolOptions) *ElasticPoolOperationsClientListByElasticPoolPager {
-	return &ElasticPoolOperationsClientListByElasticPoolPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByElasticPoolCreateRequest(ctx, resourceGroupName, serverName, elasticPoolName, options)
+func (client *ElasticPoolOperationsClient) ListByElasticPool(resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolOperationsClientListByElasticPoolOptions) *runtime.Pager[ElasticPoolOperationsClientListByElasticPoolResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ElasticPoolOperationsClientListByElasticPoolResponse]{
+		More: func(page ElasticPoolOperationsClientListByElasticPoolResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ElasticPoolOperationsClientListByElasticPoolResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ElasticPoolOperationListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ElasticPoolOperationsClientListByElasticPoolResponse) (ElasticPoolOperationsClientListByElasticPoolResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByElasticPoolCreateRequest(ctx, resourceGroupName, serverName, elasticPoolName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ElasticPoolOperationsClientListByElasticPoolResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ElasticPoolOperationsClientListByElasticPoolResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ElasticPoolOperationsClientListByElasticPoolResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByElasticPoolHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByElasticPoolCreateRequest creates the ListByElasticPool request.
@@ -153,7 +174,7 @@ func (client *ElasticPoolOperationsClient) listByElasticPoolCreateRequest(ctx co
 
 // listByElasticPoolHandleResponse handles the ListByElasticPool response.
 func (client *ElasticPoolOperationsClient) listByElasticPoolHandleResponse(resp *http.Response) (ElasticPoolOperationsClientListByElasticPoolResponse, error) {
-	result := ElasticPoolOperationsClientListByElasticPoolResponse{RawResponse: resp}
+	result := ElasticPoolOperationsClientListByElasticPoolResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ElasticPoolOperationListResult); err != nil {
 		return ElasticPoolOperationsClientListByElasticPoolResponse{}, err
 	}

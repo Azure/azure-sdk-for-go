@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ObjectAnchorsAccountsClient struct {
 // subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewObjectAnchorsAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ObjectAnchorsAccountsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewObjectAnchorsAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ObjectAnchorsAccountsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ObjectAnchorsAccountsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Creating or Updating an object anchors Account.
@@ -99,7 +104,7 @@ func (client *ObjectAnchorsAccountsClient) createCreateRequest(ctx context.Conte
 
 // createHandleResponse handles the Create response.
 func (client *ObjectAnchorsAccountsClient) createHandleResponse(resp *http.Response) (ObjectAnchorsAccountsClientCreateResponse, error) {
-	result := ObjectAnchorsAccountsClientCreateResponse{RawResponse: resp}
+	result := ObjectAnchorsAccountsClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ObjectAnchorsAccount); err != nil {
 		return ObjectAnchorsAccountsClientCreateResponse{}, err
 	}
@@ -124,7 +129,7 @@ func (client *ObjectAnchorsAccountsClient) Delete(ctx context.Context, resourceG
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ObjectAnchorsAccountsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ObjectAnchorsAccountsClientDeleteResponse{RawResponse: resp}, nil
+	return ObjectAnchorsAccountsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -202,7 +207,7 @@ func (client *ObjectAnchorsAccountsClient) getCreateRequest(ctx context.Context,
 
 // getHandleResponse handles the Get response.
 func (client *ObjectAnchorsAccountsClient) getHandleResponse(resp *http.Response) (ObjectAnchorsAccountsClientGetResponse, error) {
-	result := ObjectAnchorsAccountsClientGetResponse{RawResponse: resp}
+	result := ObjectAnchorsAccountsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ObjectAnchorsAccount); err != nil {
 		return ObjectAnchorsAccountsClientGetResponse{}, err
 	}
@@ -214,16 +219,32 @@ func (client *ObjectAnchorsAccountsClient) getHandleResponse(resp *http.Response
 // resourceGroupName - Name of an Azure resource group.
 // options - ObjectAnchorsAccountsClientListByResourceGroupOptions contains the optional parameters for the ObjectAnchorsAccountsClient.ListByResourceGroup
 // method.
-func (client *ObjectAnchorsAccountsClient) ListByResourceGroup(resourceGroupName string, options *ObjectAnchorsAccountsClientListByResourceGroupOptions) *ObjectAnchorsAccountsClientListByResourceGroupPager {
-	return &ObjectAnchorsAccountsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *ObjectAnchorsAccountsClient) ListByResourceGroup(resourceGroupName string, options *ObjectAnchorsAccountsClientListByResourceGroupOptions) *runtime.Pager[ObjectAnchorsAccountsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ObjectAnchorsAccountsClientListByResourceGroupResponse]{
+		More: func(page ObjectAnchorsAccountsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ObjectAnchorsAccountsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ObjectAnchorsAccountPage.NextLink)
+		Fetcher: func(ctx context.Context, page *ObjectAnchorsAccountsClientListByResourceGroupResponse) (ObjectAnchorsAccountsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ObjectAnchorsAccountsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ObjectAnchorsAccountsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ObjectAnchorsAccountsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -250,7 +271,7 @@ func (client *ObjectAnchorsAccountsClient) listByResourceGroupCreateRequest(ctx 
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *ObjectAnchorsAccountsClient) listByResourceGroupHandleResponse(resp *http.Response) (ObjectAnchorsAccountsClientListByResourceGroupResponse, error) {
-	result := ObjectAnchorsAccountsClientListByResourceGroupResponse{RawResponse: resp}
+	result := ObjectAnchorsAccountsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ObjectAnchorsAccountPage); err != nil {
 		return ObjectAnchorsAccountsClientListByResourceGroupResponse{}, err
 	}
@@ -261,16 +282,32 @@ func (client *ObjectAnchorsAccountsClient) listByResourceGroupHandleResponse(res
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ObjectAnchorsAccountsClientListBySubscriptionOptions contains the optional parameters for the ObjectAnchorsAccountsClient.ListBySubscription
 // method.
-func (client *ObjectAnchorsAccountsClient) ListBySubscription(options *ObjectAnchorsAccountsClientListBySubscriptionOptions) *ObjectAnchorsAccountsClientListBySubscriptionPager {
-	return &ObjectAnchorsAccountsClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *ObjectAnchorsAccountsClient) ListBySubscription(options *ObjectAnchorsAccountsClientListBySubscriptionOptions) *runtime.Pager[ObjectAnchorsAccountsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ObjectAnchorsAccountsClientListBySubscriptionResponse]{
+		More: func(page ObjectAnchorsAccountsClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ObjectAnchorsAccountsClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ObjectAnchorsAccountPage.NextLink)
+		Fetcher: func(ctx context.Context, page *ObjectAnchorsAccountsClientListBySubscriptionResponse) (ObjectAnchorsAccountsClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ObjectAnchorsAccountsClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ObjectAnchorsAccountsClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ObjectAnchorsAccountsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -293,7 +330,7 @@ func (client *ObjectAnchorsAccountsClient) listBySubscriptionCreateRequest(ctx c
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *ObjectAnchorsAccountsClient) listBySubscriptionHandleResponse(resp *http.Response) (ObjectAnchorsAccountsClientListBySubscriptionResponse, error) {
-	result := ObjectAnchorsAccountsClientListBySubscriptionResponse{RawResponse: resp}
+	result := ObjectAnchorsAccountsClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ObjectAnchorsAccountPage); err != nil {
 		return ObjectAnchorsAccountsClientListBySubscriptionResponse{}, err
 	}
@@ -349,7 +386,7 @@ func (client *ObjectAnchorsAccountsClient) listKeysCreateRequest(ctx context.Con
 
 // listKeysHandleResponse handles the ListKeys response.
 func (client *ObjectAnchorsAccountsClient) listKeysHandleResponse(resp *http.Response) (ObjectAnchorsAccountsClientListKeysResponse, error) {
-	result := ObjectAnchorsAccountsClientListKeysResponse{RawResponse: resp}
+	result := ObjectAnchorsAccountsClientListKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountKeys); err != nil {
 		return ObjectAnchorsAccountsClientListKeysResponse{}, err
 	}
@@ -406,7 +443,7 @@ func (client *ObjectAnchorsAccountsClient) regenerateKeysCreateRequest(ctx conte
 
 // regenerateKeysHandleResponse handles the RegenerateKeys response.
 func (client *ObjectAnchorsAccountsClient) regenerateKeysHandleResponse(resp *http.Response) (ObjectAnchorsAccountsClientRegenerateKeysResponse, error) {
-	result := ObjectAnchorsAccountsClientRegenerateKeysResponse{RawResponse: resp}
+	result := ObjectAnchorsAccountsClientRegenerateKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountKeys); err != nil {
 		return ObjectAnchorsAccountsClientRegenerateKeysResponse{}, err
 	}
@@ -463,7 +500,7 @@ func (client *ObjectAnchorsAccountsClient) updateCreateRequest(ctx context.Conte
 
 // updateHandleResponse handles the Update response.
 func (client *ObjectAnchorsAccountsClient) updateHandleResponse(resp *http.Response) (ObjectAnchorsAccountsClientUpdateResponse, error) {
-	result := ObjectAnchorsAccountsClientUpdateResponse{RawResponse: resp}
+	result := ObjectAnchorsAccountsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ObjectAnchorsAccount); err != nil {
 		return ObjectAnchorsAccountsClientUpdateResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ProviderRegistrationsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewProviderRegistrationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ProviderRegistrationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewProviderRegistrationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProviderRegistrationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ProviderRegistrationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates the provider registration.
@@ -55,22 +60,18 @@ func NewProviderRegistrationsClient(subscriptionID string, credential azcore.Tok
 // properties - The provider registration properties supplied to the CreateOrUpdate operation.
 // options - ProviderRegistrationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ProviderRegistrationsClient.BeginCreateOrUpdate
 // method.
-func (client *ProviderRegistrationsClient) BeginCreateOrUpdate(ctx context.Context, providerNamespace string, properties ProviderRegistration, options *ProviderRegistrationsClientBeginCreateOrUpdateOptions) (ProviderRegistrationsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, providerNamespace, properties, options)
-	if err != nil {
-		return ProviderRegistrationsClientCreateOrUpdatePollerResponse{}, err
+func (client *ProviderRegistrationsClient) BeginCreateOrUpdate(ctx context.Context, providerNamespace string, properties ProviderRegistration, options *ProviderRegistrationsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ProviderRegistrationsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, providerNamespace, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ProviderRegistrationsClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ProviderRegistrationsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ProviderRegistrationsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ProviderRegistrationsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return ProviderRegistrationsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ProviderRegistrationsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates the provider registration.
@@ -129,7 +130,7 @@ func (client *ProviderRegistrationsClient) Delete(ctx context.Context, providerN
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ProviderRegistrationsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ProviderRegistrationsClientDeleteResponse{RawResponse: resp}, nil
+	return ProviderRegistrationsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -198,7 +199,7 @@ func (client *ProviderRegistrationsClient) generateOperationsCreateRequest(ctx c
 
 // generateOperationsHandleResponse handles the GenerateOperations response.
 func (client *ProviderRegistrationsClient) generateOperationsHandleResponse(resp *http.Response) (ProviderRegistrationsClientGenerateOperationsResponse, error) {
-	result := ProviderRegistrationsClientGenerateOperationsResponse{RawResponse: resp}
+	result := ProviderRegistrationsClientGenerateOperationsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationsDefinitionArray); err != nil {
 		return ProviderRegistrationsClientGenerateOperationsResponse{}, err
 	}
@@ -249,7 +250,7 @@ func (client *ProviderRegistrationsClient) getCreateRequest(ctx context.Context,
 
 // getHandleResponse handles the Get response.
 func (client *ProviderRegistrationsClient) getHandleResponse(resp *http.Response) (ProviderRegistrationsClientGetResponse, error) {
-	result := ProviderRegistrationsClientGetResponse{RawResponse: resp}
+	result := ProviderRegistrationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderRegistration); err != nil {
 		return ProviderRegistrationsClientGetResponse{}, err
 	}
@@ -260,16 +261,32 @@ func (client *ProviderRegistrationsClient) getHandleResponse(resp *http.Response
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ProviderRegistrationsClientListOptions contains the optional parameters for the ProviderRegistrationsClient.List
 // method.
-func (client *ProviderRegistrationsClient) List(options *ProviderRegistrationsClientListOptions) *ProviderRegistrationsClientListPager {
-	return &ProviderRegistrationsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *ProviderRegistrationsClient) List(options *ProviderRegistrationsClientListOptions) *runtime.Pager[ProviderRegistrationsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ProviderRegistrationsClientListResponse]{
+		More: func(page ProviderRegistrationsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ProviderRegistrationsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProviderRegistrationArrayResponseWithContinuation.NextLink)
+		Fetcher: func(ctx context.Context, page *ProviderRegistrationsClientListResponse) (ProviderRegistrationsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ProviderRegistrationsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ProviderRegistrationsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ProviderRegistrationsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -292,7 +309,7 @@ func (client *ProviderRegistrationsClient) listCreateRequest(ctx context.Context
 
 // listHandleResponse handles the List response.
 func (client *ProviderRegistrationsClient) listHandleResponse(resp *http.Response) (ProviderRegistrationsClientListResponse, error) {
-	result := ProviderRegistrationsClientListResponse{RawResponse: resp}
+	result := ProviderRegistrationsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderRegistrationArrayResponseWithContinuation); err != nil {
 		return ProviderRegistrationsClientListResponse{}, err
 	}

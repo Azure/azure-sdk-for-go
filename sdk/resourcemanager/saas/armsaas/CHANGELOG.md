@@ -1,5 +1,199 @@
 # Release History
 
+## 0.3.0 (2022-04-13)
+### Breaking Changes
+
+- Function `*SubscriptionLevelClient.BeginCreateOrUpdate` return value(s) have been changed from `(SubscriptionLevelClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[SubscriptionLevelClientCreateOrUpdateResponse], error)`
+- Function `*ResourcesClient.List` return value(s) have been changed from `(*ResourcesClientListPager)` to `(*runtime.Pager[ResourcesClientListResponse])`
+- Function `*SubscriptionLevelClient.BeginUpdateToUnsubscribed` return value(s) have been changed from `(SubscriptionLevelClientUpdateToUnsubscribedPollerResponse, error)` to `(*armruntime.Poller[SubscriptionLevelClientUpdateToUnsubscribedResponse], error)`
+- Function `NewApplicationsClient` return value(s) have been changed from `(*ApplicationsClient)` to `(*ApplicationsClient, error)`
+- Function `*SubscriptionLevelClient.BeginUpdate` return value(s) have been changed from `(SubscriptionLevelClientUpdatePollerResponse, error)` to `(*armruntime.Poller[SubscriptionLevelClientUpdateResponse], error)`
+- Function `*Client.BeginDelete` return value(s) have been changed from `(ClientDeletePollerResponse, error)` to `(*armruntime.Poller[ClientDeleteResponse], error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*OperationClient.BeginGet` return value(s) have been changed from `(OperationClientGetPollerResponse, error)` to `(*armruntime.Poller[OperationClientGetResponse], error)`
+- Function `*Client.BeginUpdateResource` return value(s) have been changed from `(ClientUpdateResourcePollerResponse, error)` to `(*armruntime.Poller[ClientUpdateResourceResponse], error)`
+- Function `*Client.BeginCreateResource` return value(s) have been changed from `(ClientCreateResourcePollerResponse, error)` to `(*armruntime.Poller[ClientCreateResourceResponse], error)`
+- Function `*SubscriptionLevelClient.ListByAzureSubscription` return value(s) have been changed from `(*SubscriptionLevelClientListByAzureSubscriptionPager)` to `(*runtime.Pager[SubscriptionLevelClientListByAzureSubscriptionResponse])`
+- Function `*SubscriptionLevelClient.ListByResourceGroup` return value(s) have been changed from `(*SubscriptionLevelClientListByResourceGroupPager)` to `(*runtime.Pager[SubscriptionLevelClientListByResourceGroupResponse])`
+- Function `*SubscriptionLevelClient.BeginDelete` return value(s) have been changed from `(SubscriptionLevelClientDeletePollerResponse, error)` to `(*armruntime.Poller[SubscriptionLevelClientDeleteResponse], error)`
+- Function `*SubscriptionLevelClient.BeginMoveResources` return value(s) have been changed from `(SubscriptionLevelClientMoveResourcesPollerResponse, error)` to `(*armruntime.Poller[SubscriptionLevelClientMoveResourcesResponse], error)`
+- Function `NewClient` return value(s) have been changed from `(*Client)` to `(*Client, error)`
+- Function `NewResourcesClient` return value(s) have been changed from `(*ResourcesClient)` to `(*ResourcesClient, error)`
+- Function `NewSubscriptionLevelClient` return value(s) have been changed from `(*SubscriptionLevelClient)` to `(*SubscriptionLevelClient, error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `NewOperationClient` return value(s) have been changed from `(*OperationClient)` to `(*OperationClient, error)`
+- Function `*ApplicationsClient.List` return value(s) have been changed from `(*ApplicationsClientListPager)` to `(*runtime.Pager[ApplicationsClientListResponse])`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*SubscriptionLevelClientMoveResourcesPoller.Poll` has been removed
+- Function `ClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ClientCreateResourcePoller.Poll` has been removed
+- Function `*SubscriptionLevelClientListByAzureSubscriptionPager.Err` has been removed
+- Function `*ApplicationsClientListPager.PageResponse` has been removed
+- Function `*SubscriptionLevelClientListByResourceGroupPager.Err` has been removed
+- Function `*SubscriptionLevelClientListByResourceGroupPager.NextPage` has been removed
+- Function `*ClientCreateResourcePoller.Done` has been removed
+- Function `*ResourcesClientListPager.Err` has been removed
+- Function `*OperationClientGetPollerResponse.Resume` has been removed
+- Function `*SubscriptionLevelClientUpdateToUnsubscribedPoller.Done` has been removed
+- Function `*ClientCreateResourcePoller.FinalResponse` has been removed
+- Function `*ClientUpdateResourcePollerResponse.Resume` has been removed
+- Function `*SubscriptionLevelClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*SubscriptionLevelClientMoveResourcesPoller.FinalResponse` has been removed
+- Function `*SubscriptionLevelClientUpdatePoller.Poll` has been removed
+- Function `*ResourcesClientListPager.PageResponse` has been removed
+- Function `*SubscriptionLevelClientDeletePoller.ResumeToken` has been removed
+- Function `*SubscriptionLevelClientUpdatePollerResponse.Resume` has been removed
+- Function `*SubscriptionLevelClientMoveResourcesPoller.ResumeToken` has been removed
+- Function `*SubscriptionLevelClientUpdateToUnsubscribedPoller.FinalResponse` has been removed
+- Function `*ClientCreateResourcePollerResponse.Resume` has been removed
+- Function `*ClientUpdateResourcePoller.Poll` has been removed
+- Function `SubscriptionLevelClientUpdateToUnsubscribedPollerResponse.PollUntilDone` has been removed
+- Function `ClientUpdateResourcePollerResponse.PollUntilDone` has been removed
+- Function `*OperationClientGetPoller.ResumeToken` has been removed
+- Function `*ClientUpdateResourcePoller.ResumeToken` has been removed
+- Function `*ClientCreateResourcePoller.ResumeToken` has been removed
+- Function `*ResourcesClientListPager.NextPage` has been removed
+- Function `SubscriptionLevelClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `SaasAppStatus.ToPtr` has been removed
+- Function `SubscriptionLevelClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SubscriptionLevelClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `PaymentChannelType.ToPtr` has been removed
+- Function `*SubscriptionLevelClientDeletePoller.FinalResponse` has been removed
+- Function `*ClientDeletePoller.ResumeToken` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `OperationClientGetPollerResponse.PollUntilDone` has been removed
+- Function `*SubscriptionLevelClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ApplicationsClientListPager.NextPage` has been removed
+- Function `*ClientDeletePollerResponse.Resume` has been removed
+- Function `*ClientDeletePoller.Done` has been removed
+- Function `*SubscriptionLevelClientUpdatePoller.Done` has been removed
+- Function `*SubscriptionLevelClientDeletePollerResponse.Resume` has been removed
+- Function `*OperationClientGetPoller.Done` has been removed
+- Function `*ClientDeletePoller.FinalResponse` has been removed
+- Function `*SubscriptionLevelClientUpdatePoller.FinalResponse` has been removed
+- Function `*SubscriptionLevelClientUpdateToUnsubscribedPoller.Poll` has been removed
+- Function `*SubscriptionLevelClientListByAzureSubscriptionPager.NextPage` has been removed
+- Function `SubscriptionLevelClientMoveResourcesPollerResponse.PollUntilDone` has been removed
+- Function `*ClientUpdateResourcePoller.FinalResponse` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*SubscriptionLevelClientMoveResourcesPoller.Done` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*SubscriptionLevelClientUpdateToUnsubscribedPollerResponse.Resume` has been removed
+- Function `*SubscriptionLevelClientUpdatePoller.ResumeToken` has been removed
+- Function `*SubscriptionLevelClientDeletePoller.Poll` has been removed
+- Function `*SubscriptionLevelClientDeletePoller.Done` has been removed
+- Function `*SubscriptionLevelClientUpdateToUnsubscribedPoller.ResumeToken` has been removed
+- Function `*OperationClientGetPoller.FinalResponse` has been removed
+- Function `*SubscriptionLevelClientListByAzureSubscriptionPager.PageResponse` has been removed
+- Function `*OperationClientGetPoller.Poll` has been removed
+- Function `SaasResourceStatus.ToPtr` has been removed
+- Function `*SubscriptionLevelClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*SubscriptionLevelClientListByResourceGroupPager.PageResponse` has been removed
+- Function `ClientCreateResourcePollerResponse.PollUntilDone` has been removed
+- Function `*ClientUpdateResourcePoller.Done` has been removed
+- Function `SubscriptionLevelClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ClientDeletePoller.Poll` has been removed
+- Function `*ApplicationsClientListPager.Err` has been removed
+- Function `*SubscriptionLevelClientCreateOrUpdatePoller.Done` has been removed
+- Function `*SubscriptionLevelClientMoveResourcesPollerResponse.Resume` has been removed
+- Struct `ApplicationsClientListPager` has been removed
+- Struct `ApplicationsClientListResult` has been removed
+- Struct `ClientCreateResourcePoller` has been removed
+- Struct `ClientCreateResourcePollerResponse` has been removed
+- Struct `ClientCreateResourceResult` has been removed
+- Struct `ClientDeletePoller` has been removed
+- Struct `ClientDeletePollerResponse` has been removed
+- Struct `ClientGetResourceResult` has been removed
+- Struct `ClientUpdateResourcePoller` has been removed
+- Struct `ClientUpdateResourcePollerResponse` has been removed
+- Struct `ClientUpdateResourceResult` has been removed
+- Struct `OperationClientGetPoller` has been removed
+- Struct `OperationClientGetPollerResponse` has been removed
+- Struct `OperationClientGetResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `ResourcesClientListAccessTokenResult` has been removed
+- Struct `ResourcesClientListPager` has been removed
+- Struct `ResourcesClientListResult` has been removed
+- Struct `SubscriptionLevelClientCreateOrUpdatePoller` has been removed
+- Struct `SubscriptionLevelClientCreateOrUpdatePollerResponse` has been removed
+- Struct `SubscriptionLevelClientCreateOrUpdateResult` has been removed
+- Struct `SubscriptionLevelClientDeletePoller` has been removed
+- Struct `SubscriptionLevelClientDeletePollerResponse` has been removed
+- Struct `SubscriptionLevelClientGetResult` has been removed
+- Struct `SubscriptionLevelClientListAccessTokenResult` has been removed
+- Struct `SubscriptionLevelClientListByAzureSubscriptionPager` has been removed
+- Struct `SubscriptionLevelClientListByAzureSubscriptionResult` has been removed
+- Struct `SubscriptionLevelClientListByResourceGroupPager` has been removed
+- Struct `SubscriptionLevelClientListByResourceGroupResult` has been removed
+- Struct `SubscriptionLevelClientMoveResourcesPoller` has been removed
+- Struct `SubscriptionLevelClientMoveResourcesPollerResponse` has been removed
+- Struct `SubscriptionLevelClientUpdatePoller` has been removed
+- Struct `SubscriptionLevelClientUpdatePollerResponse` has been removed
+- Struct `SubscriptionLevelClientUpdateResult` has been removed
+- Struct `SubscriptionLevelClientUpdateToUnsubscribedPoller` has been removed
+- Struct `SubscriptionLevelClientUpdateToUnsubscribedPollerResponse` has been removed
+- Field `ResourcesClientListResult` of struct `ResourcesClientListResponse` has been removed
+- Field `RawResponse` of struct `ResourcesClientListResponse` has been removed
+- Field `SubscriptionLevelClientListAccessTokenResult` of struct `SubscriptionLevelClientListAccessTokenResponse` has been removed
+- Field `RawResponse` of struct `SubscriptionLevelClientListAccessTokenResponse` has been removed
+- Field `ClientUpdateResourceResult` of struct `ClientUpdateResourceResponse` has been removed
+- Field `RawResponse` of struct `ClientUpdateResourceResponse` has been removed
+- Field `SubscriptionLevelClientListByAzureSubscriptionResult` of struct `SubscriptionLevelClientListByAzureSubscriptionResponse` has been removed
+- Field `RawResponse` of struct `SubscriptionLevelClientListByAzureSubscriptionResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `SubscriptionLevelClientValidateMoveResourcesResponse` has been removed
+- Field `SubscriptionLevelClientGetResult` of struct `SubscriptionLevelClientGetResponse` has been removed
+- Field `RawResponse` of struct `SubscriptionLevelClientGetResponse` has been removed
+- Field `ResourcesClientListAccessTokenResult` of struct `ResourcesClientListAccessTokenResponse` has been removed
+- Field `RawResponse` of struct `ResourcesClientListAccessTokenResponse` has been removed
+- Field `RawResponse` of struct `ClientDeleteResponse` has been removed
+- Field `SubscriptionLevelClientUpdateResult` of struct `SubscriptionLevelClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `SubscriptionLevelClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `SubscriptionLevelClientMoveResourcesResponse` has been removed
+- Field `RawResponse` of struct `SubscriptionLevelClientDeleteResponse` has been removed
+- Field `SubscriptionLevelClientListByResourceGroupResult` of struct `SubscriptionLevelClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `SubscriptionLevelClientListByResourceGroupResponse` has been removed
+- Field `ClientGetResourceResult` of struct `ClientGetResourceResponse` has been removed
+- Field `RawResponse` of struct `ClientGetResourceResponse` has been removed
+- Field `OperationClientGetResult` of struct `OperationClientGetResponse` has been removed
+- Field `RawResponse` of struct `OperationClientGetResponse` has been removed
+- Field `ApplicationsClientListResult` of struct `ApplicationsClientListResponse` has been removed
+- Field `RawResponse` of struct `ApplicationsClientListResponse` has been removed
+- Field `RawResponse` of struct `SubscriptionLevelClientUpdateToUnsubscribedResponse` has been removed
+- Field `ClientCreateResourceResult` of struct `ClientCreateResourceResponse` has been removed
+- Field `RawResponse` of struct `ClientCreateResourceResponse` has been removed
+- Field `SubscriptionLevelClientCreateOrUpdateResult` of struct `SubscriptionLevelClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SubscriptionLevelClientCreateOrUpdateResponse` has been removed
+
+### Features Added
+
+- New anonymous field `Resource` in struct `ClientCreateResourceResponse`
+- New field `ResumeToken` in struct `OperationClientBeginGetOptions`
+- New field `ResumeToken` in struct `ClientBeginCreateResourceOptions`
+- New anonymous field `Resource` in struct `SubscriptionLevelClientGetResponse`
+- New anonymous field `AccessTokenResult` in struct `ResourcesClientListAccessTokenResponse`
+- New anonymous field `Resource` in struct `ClientUpdateResourceResponse`
+- New field `ResumeToken` in struct `SubscriptionLevelClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `ClientBeginUpdateResourceOptions`
+- New field `ResumeToken` in struct `ClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `SubscriptionLevelClientBeginCreateOrUpdateOptions`
+- New anonymous field `AccessTokenResult` in struct `SubscriptionLevelClientListAccessTokenResponse`
+- New anonymous field `AppOperationsResponseWithContinuation` in struct `OperationsClientListResponse`
+- New field `ResumeToken` in struct `SubscriptionLevelClientBeginMoveResourcesOptions`
+- New anonymous field `ResourceResponseWithContinuation` in struct `SubscriptionLevelClientListByAzureSubscriptionResponse`
+- New anonymous field `Resource` in struct `OperationClientGetResponse`
+- New anonymous field `ResourceResponseWithContinuation` in struct `SubscriptionLevelClientListByResourceGroupResponse`
+- New anonymous field `Resource` in struct `ClientGetResourceResponse`
+- New anonymous field `AppResponseWithContinuation` in struct `ApplicationsClientListResponse`
+- New anonymous field `Resource` in struct `SubscriptionLevelClientUpdateResponse`
+- New field `ResumeToken` in struct `SubscriptionLevelClientBeginUpdateToUnsubscribedOptions`
+- New anonymous field `Resource` in struct `SubscriptionLevelClientCreateOrUpdateResponse`
+- New anonymous field `ResourceResponseWithContinuation` in struct `ResourcesClientListResponse`
+- New field `ResumeToken` in struct `SubscriptionLevelClientBeginUpdateOptions`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

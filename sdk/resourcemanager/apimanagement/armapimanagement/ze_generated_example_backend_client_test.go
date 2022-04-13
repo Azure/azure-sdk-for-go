@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,131 +17,160 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement"
 )
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListBackends.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListBackends.json
 func ExampleBackendClient_ListByService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewBackendClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewBackendClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByService("<resource-group-name>",
 		"<service-name>",
 		&armapimanagement.BackendClientListByServiceOptions{Filter: nil,
 			Top:  nil,
 			Skip: nil,
 		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementHeadBackend.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementHeadBackend.json
 func ExampleBackendClient_GetEntityTag() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewBackendClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewBackendClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.GetEntityTag(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		"<backend-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetBackend.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetBackend.json
 func ExampleBackendClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewBackendClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewBackendClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		"<backend-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BackendClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateBackendProxyBackend.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateBackendProxyBackend.json
 func ExampleBackendClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewBackendClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewBackendClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		"<backend-id>",
 		armapimanagement.BackendContract{
 			Properties: &armapimanagement.BackendContractProperties{
-				Description: to.StringPtr("<description>"),
+				Description: to.Ptr("<description>"),
 				Credentials: &armapimanagement.BackendCredentialsContract{
 					Authorization: &armapimanagement.BackendAuthorizationHeaderCredentials{
-						Parameter: to.StringPtr("<parameter>"),
-						Scheme:    to.StringPtr("<scheme>"),
+						Parameter: to.Ptr("<parameter>"),
+						Scheme:    to.Ptr("<scheme>"),
 					},
 					Header: map[string][]*string{
 						"x-my-1": {
-							to.StringPtr("val1"),
-							to.StringPtr("val2")},
+							to.Ptr("val1"),
+							to.Ptr("val2")},
 					},
 					Query: map[string][]*string{
 						"sv": {
-							to.StringPtr("xx"),
-							to.StringPtr("bb"),
-							to.StringPtr("cc")},
+							to.Ptr("xx"),
+							to.Ptr("bb"),
+							to.Ptr("cc")},
 					},
 				},
 				Proxy: &armapimanagement.BackendProxyContract{
-					Password: to.StringPtr("<password>"),
-					URL:      to.StringPtr("<url>"),
-					Username: to.StringPtr("<username>"),
+					Password: to.Ptr("<password>"),
+					URL:      to.Ptr("<url>"),
+					Username: to.Ptr("<username>"),
 				},
 				TLS: &armapimanagement.BackendTLSProperties{
-					ValidateCertificateChain: to.BoolPtr(true),
-					ValidateCertificateName:  to.BoolPtr(true),
+					ValidateCertificateChain: to.Ptr(true),
+					ValidateCertificateName:  to.Ptr(true),
 				},
-				URL:      to.StringPtr("<url>"),
-				Protocol: armapimanagement.BackendProtocol("http").ToPtr(),
+				URL:      to.Ptr("<url>"),
+				Protocol: to.Ptr(armapimanagement.BackendProtocolHTTP),
 			},
 		},
 		&armapimanagement.BackendClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BackendClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateBackend.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateBackend.json
 func ExampleBackendClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewBackendClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewBackendClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<service-name>",
@@ -149,28 +178,35 @@ func ExampleBackendClient_Update() {
 		"<if-match>",
 		armapimanagement.BackendUpdateParameters{
 			Properties: &armapimanagement.BackendUpdateParameterProperties{
-				Description: to.StringPtr("<description>"),
+				Description: to.Ptr("<description>"),
 				TLS: &armapimanagement.BackendTLSProperties{
-					ValidateCertificateChain: to.BoolPtr(false),
-					ValidateCertificateName:  to.BoolPtr(true),
+					ValidateCertificateChain: to.Ptr(false),
+					ValidateCertificateName:  to.Ptr(true),
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BackendClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementDeleteBackend.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementDeleteBackend.json
 func ExampleBackendClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewBackendClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewBackendClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<service-name>",
@@ -178,29 +214,36 @@ func ExampleBackendClient_Delete() {
 		"<if-match>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementBackendReconnect.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementBackendReconnect.json
 func ExampleBackendClient_Reconnect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewBackendClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewBackendClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Reconnect(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		"<backend-id>",
 		&armapimanagement.BackendClientReconnectOptions{Parameters: &armapimanagement.BackendReconnectContract{
 			Properties: &armapimanagement.BackendReconnectProperties{
-				After: to.StringPtr("<after>"),
+				After: to.Ptr("<after>"),
 			},
 		},
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }

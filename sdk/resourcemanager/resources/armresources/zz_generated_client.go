@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type Client struct {
 // subscriptionID - The Microsoft Azure subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *Client {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &Client{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CheckExistence - Checks whether a resource exists.
@@ -67,7 +72,7 @@ func (client *Client) CheckExistence(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return ClientCheckExistenceResponse{}, err
 	}
-	result := ClientCheckExistenceResponse{RawResponse: resp}
+	result := ClientCheckExistenceResponse{}
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		result.Success = true
 	}
@@ -120,7 +125,7 @@ func (client *Client) CheckExistenceByID(ctx context.Context, resourceID string,
 	if err != nil {
 		return ClientCheckExistenceByIDResponse{}, err
 	}
-	result := ClientCheckExistenceByIDResponse{RawResponse: resp}
+	result := ClientCheckExistenceByIDResponse{}
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		result.Success = true
 	}
@@ -152,22 +157,16 @@ func (client *Client) checkExistenceByIDCreateRequest(ctx context.Context, resou
 // apiVersion - The API version to use for the operation.
 // parameters - Parameters for creating or updating the resource.
 // options - ClientBeginCreateOrUpdateOptions contains the optional parameters for the Client.BeginCreateOrUpdate method.
-func (client *Client) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ClientBeginCreateOrUpdateOptions) (ClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters, options)
-	if err != nil {
-		return ClientCreateOrUpdatePollerResponse{}, err
+func (client *Client) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("Client.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return ClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates a resource.
@@ -227,22 +226,16 @@ func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceG
 // parameters - Create or update resource parameters.
 // options - ClientBeginCreateOrUpdateByIDOptions contains the optional parameters for the Client.BeginCreateOrUpdateByID
 // method.
-func (client *Client) BeginCreateOrUpdateByID(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ClientBeginCreateOrUpdateByIDOptions) (ClientCreateOrUpdateByIDPollerResponse, error) {
-	resp, err := client.createOrUpdateByID(ctx, resourceID, apiVersion, parameters, options)
-	if err != nil {
-		return ClientCreateOrUpdateByIDPollerResponse{}, err
+func (client *Client) BeginCreateOrUpdateByID(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ClientBeginCreateOrUpdateByIDOptions) (*armruntime.Poller[ClientCreateOrUpdateByIDResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdateByID(ctx, resourceID, apiVersion, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClientCreateOrUpdateByIDResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClientCreateOrUpdateByIDResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClientCreateOrUpdateByIDPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("Client.CreateOrUpdateByID", "", resp, client.pl)
-	if err != nil {
-		return ClientCreateOrUpdateByIDPollerResponse{}, err
-	}
-	result.Poller = &ClientCreateOrUpdateByIDPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdateByID - Create a resource by ID.
@@ -286,22 +279,16 @@ func (client *Client) createOrUpdateByIDCreateRequest(ctx context.Context, resou
 // resourceName - The name of the resource to delete.
 // apiVersion - The API version to use for the operation.
 // options - ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
-func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ClientBeginDeleteOptions) (ClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, options)
-	if err != nil {
-		return ClientDeletePollerResponse{}, err
+func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ClientBeginDeleteOptions) (*armruntime.Poller[ClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("Client.Delete", "", resp, client.pl)
-	if err != nil {
-		return ClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a resource.
@@ -359,22 +346,16 @@ func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName
 // /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
 // apiVersion - The API version to use for the operation.
 // options - ClientBeginDeleteByIDOptions contains the optional parameters for the Client.BeginDeleteByID method.
-func (client *Client) BeginDeleteByID(ctx context.Context, resourceID string, apiVersion string, options *ClientBeginDeleteByIDOptions) (ClientDeleteByIDPollerResponse, error) {
-	resp, err := client.deleteByID(ctx, resourceID, apiVersion, options)
-	if err != nil {
-		return ClientDeleteByIDPollerResponse{}, err
+func (client *Client) BeginDeleteByID(ctx context.Context, resourceID string, apiVersion string, options *ClientBeginDeleteByIDOptions) (*armruntime.Poller[ClientDeleteByIDResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteByID(ctx, resourceID, apiVersion, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClientDeleteByIDResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClientDeleteByIDResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClientDeleteByIDPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("Client.DeleteByID", "", resp, client.pl)
-	if err != nil {
-		return ClientDeleteByIDPollerResponse{}, err
-	}
-	result.Poller = &ClientDeleteByIDPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DeleteByID - Deletes a resource by ID.
@@ -467,7 +448,7 @@ func (client *Client) getCreateRequest(ctx context.Context, resourceGroupName st
 
 // getHandleResponse handles the Get response.
 func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse, error) {
-	result := ClientGetResponse{RawResponse: resp}
+	result := ClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GenericResource); err != nil {
 		return ClientGetResponse{}, err
 	}
@@ -512,7 +493,7 @@ func (client *Client) getByIDCreateRequest(ctx context.Context, resourceID strin
 
 // getByIDHandleResponse handles the GetByID response.
 func (client *Client) getByIDHandleResponse(resp *http.Response) (ClientGetByIDResponse, error) {
-	result := ClientGetByIDResponse{RawResponse: resp}
+	result := ClientGetByIDResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GenericResource); err != nil {
 		return ClientGetByIDResponse{}, err
 	}
@@ -522,16 +503,32 @@ func (client *Client) getByIDHandleResponse(resp *http.Response) (ClientGetByIDR
 // List - Get all the resources in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ClientListOptions contains the optional parameters for the Client.List method.
-func (client *Client) List(options *ClientListOptions) *ClientListPager {
-	return &ClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *Client) List(options *ClientListOptions) *runtime.Pager[ClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ClientListResponse]{
+		More: func(page ClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ResourceListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ClientListResponse) (ClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -563,7 +560,7 @@ func (client *Client) listCreateRequest(ctx context.Context, options *ClientList
 
 // listHandleResponse handles the List response.
 func (client *Client) listHandleResponse(resp *http.Response) (ClientListResponse, error) {
-	result := ClientListResponse{RawResponse: resp}
+	result := ClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceListResult); err != nil {
 		return ClientListResponse{}, err
 	}
@@ -574,16 +571,32 @@ func (client *Client) listHandleResponse(resp *http.Response) (ClientListRespons
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group with the resources to get.
 // options - ClientListByResourceGroupOptions contains the optional parameters for the Client.ListByResourceGroup method.
-func (client *Client) ListByResourceGroup(resourceGroupName string, options *ClientListByResourceGroupOptions) *ClientListByResourceGroupPager {
-	return &ClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *Client) ListByResourceGroup(resourceGroupName string, options *ClientListByResourceGroupOptions) *runtime.Pager[ClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ClientListByResourceGroupResponse]{
+		More: func(page ClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ResourceListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ClientListByResourceGroupResponse) (ClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -619,7 +632,7 @@ func (client *Client) listByResourceGroupCreateRequest(ctx context.Context, reso
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *Client) listByResourceGroupHandleResponse(resp *http.Response) (ClientListByResourceGroupResponse, error) {
-	result := ClientListByResourceGroupResponse{RawResponse: resp}
+	result := ClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceListResult); err != nil {
 		return ClientListByResourceGroupResponse{}, err
 	}
@@ -634,22 +647,16 @@ func (client *Client) listByResourceGroupHandleResponse(resp *http.Response) (Cl
 // sourceResourceGroupName - The name of the resource group from the source subscription containing the resources to be moved.
 // parameters - Parameters for moving resources.
 // options - ClientBeginMoveResourcesOptions contains the optional parameters for the Client.BeginMoveResources method.
-func (client *Client) BeginMoveResources(ctx context.Context, sourceResourceGroupName string, parameters MoveInfo, options *ClientBeginMoveResourcesOptions) (ClientMoveResourcesPollerResponse, error) {
-	resp, err := client.moveResources(ctx, sourceResourceGroupName, parameters, options)
-	if err != nil {
-		return ClientMoveResourcesPollerResponse{}, err
+func (client *Client) BeginMoveResources(ctx context.Context, sourceResourceGroupName string, parameters MoveInfo, options *ClientBeginMoveResourcesOptions) (*armruntime.Poller[ClientMoveResourcesResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.moveResources(ctx, sourceResourceGroupName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClientMoveResourcesResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClientMoveResourcesResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClientMoveResourcesPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("Client.MoveResources", "", resp, client.pl)
-	if err != nil {
-		return ClientMoveResourcesPollerResponse{}, err
-	}
-	result.Poller = &ClientMoveResourcesPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // MoveResources - The resources to be moved must be in the same source resource group in the source subscription being used.
@@ -704,22 +711,16 @@ func (client *Client) moveResourcesCreateRequest(ctx context.Context, sourceReso
 // apiVersion - The API version to use for the operation.
 // parameters - Parameters for updating the resource.
 // options - ClientBeginUpdateOptions contains the optional parameters for the Client.BeginUpdate method.
-func (client *Client) BeginUpdate(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ClientBeginUpdateOptions) (ClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters, options)
-	if err != nil {
-		return ClientUpdatePollerResponse{}, err
+func (client *Client) BeginUpdate(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ClientBeginUpdateOptions) (*armruntime.Poller[ClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("Client.Update", "", resp, client.pl)
-	if err != nil {
-		return ClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &ClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates a resource.
@@ -778,22 +779,16 @@ func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName
 // apiVersion - The API version to use for the operation.
 // parameters - Update resource parameters.
 // options - ClientBeginUpdateByIDOptions contains the optional parameters for the Client.BeginUpdateByID method.
-func (client *Client) BeginUpdateByID(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ClientBeginUpdateByIDOptions) (ClientUpdateByIDPollerResponse, error) {
-	resp, err := client.updateByID(ctx, resourceID, apiVersion, parameters, options)
-	if err != nil {
-		return ClientUpdateByIDPollerResponse{}, err
+func (client *Client) BeginUpdateByID(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ClientBeginUpdateByIDOptions) (*armruntime.Poller[ClientUpdateByIDResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateByID(ctx, resourceID, apiVersion, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClientUpdateByIDResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClientUpdateByIDResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClientUpdateByIDPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("Client.UpdateByID", "", resp, client.pl)
-	if err != nil {
-		return ClientUpdateByIDPollerResponse{}, err
-	}
-	result.Poller = &ClientUpdateByIDPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // UpdateByID - Updates a resource by ID.
@@ -839,22 +834,16 @@ func (client *Client) updateByIDCreateRequest(ctx context.Context, resourceID st
 // parameters - Parameters for moving resources.
 // options - ClientBeginValidateMoveResourcesOptions contains the optional parameters for the Client.BeginValidateMoveResources
 // method.
-func (client *Client) BeginValidateMoveResources(ctx context.Context, sourceResourceGroupName string, parameters MoveInfo, options *ClientBeginValidateMoveResourcesOptions) (ClientValidateMoveResourcesPollerResponse, error) {
-	resp, err := client.validateMoveResources(ctx, sourceResourceGroupName, parameters, options)
-	if err != nil {
-		return ClientValidateMoveResourcesPollerResponse{}, err
+func (client *Client) BeginValidateMoveResources(ctx context.Context, sourceResourceGroupName string, parameters MoveInfo, options *ClientBeginValidateMoveResourcesOptions) (*armruntime.Poller[ClientValidateMoveResourcesResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.validateMoveResources(ctx, sourceResourceGroupName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClientValidateMoveResourcesResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClientValidateMoveResourcesResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClientValidateMoveResourcesPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("Client.ValidateMoveResources", "", resp, client.pl)
-	if err != nil {
-		return ClientValidateMoveResourcesPollerResponse{}, err
-	}
-	result.Poller = &ClientValidateMoveResourcesPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // ValidateMoveResources - This operation checks whether the specified resources can be moved to the target. The resources

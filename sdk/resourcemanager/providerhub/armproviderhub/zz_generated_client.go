@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type Client struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *Client {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &Client{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CheckinManifest - Checkin the manifest.
@@ -93,7 +98,7 @@ func (client *Client) checkinManifestCreateRequest(ctx context.Context, provider
 
 // checkinManifestHandleResponse handles the CheckinManifest response.
 func (client *Client) checkinManifestHandleResponse(resp *http.Response) (ClientCheckinManifestResponse, error) {
-	result := ClientCheckinManifestResponse{RawResponse: resp}
+	result := ClientCheckinManifestResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckinManifestInfo); err != nil {
 		return ClientCheckinManifestResponse{}, err
 	}
@@ -143,7 +148,7 @@ func (client *Client) generateManifestCreateRequest(ctx context.Context, provide
 
 // generateManifestHandleResponse handles the GenerateManifest response.
 func (client *Client) generateManifestHandleResponse(resp *http.Response) (ClientGenerateManifestResponse, error) {
-	result := ClientGenerateManifestResponse{RawResponse: resp}
+	result := ClientGenerateManifestResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceProviderManifest); err != nil {
 		return ClientGenerateManifestResponse{}, err
 	}

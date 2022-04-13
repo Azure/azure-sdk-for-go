@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,73 @@ type PolicyRestrictionsClient struct {
 // subscriptionID - Microsoft Azure subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPolicyRestrictionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PolicyRestrictionsClient {
+func NewPolicyRestrictionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PolicyRestrictionsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PolicyRestrictionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
+}
+
+// CheckAtManagementGroupScope - Checks what restrictions Azure Policy will place on resources within a management group.
+// If the operation fails it returns an *azcore.ResponseError type.
+// managementGroupID - Management group ID.
+// parameters - The check policy restrictions parameters.
+// options - PolicyRestrictionsClientCheckAtManagementGroupScopeOptions contains the optional parameters for the PolicyRestrictionsClient.CheckAtManagementGroupScope
+// method.
+func (client *PolicyRestrictionsClient) CheckAtManagementGroupScope(ctx context.Context, managementGroupID string, parameters CheckManagementGroupRestrictionsRequest, options *PolicyRestrictionsClientCheckAtManagementGroupScopeOptions) (PolicyRestrictionsClientCheckAtManagementGroupScopeResponse, error) {
+	req, err := client.checkAtManagementGroupScopeCreateRequest(ctx, managementGroupID, parameters, options)
+	if err != nil {
+		return PolicyRestrictionsClientCheckAtManagementGroupScopeResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return PolicyRestrictionsClientCheckAtManagementGroupScopeResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return PolicyRestrictionsClientCheckAtManagementGroupScopeResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.checkAtManagementGroupScopeHandleResponse(resp)
+}
+
+// checkAtManagementGroupScopeCreateRequest creates the CheckAtManagementGroupScope request.
+func (client *PolicyRestrictionsClient) checkAtManagementGroupScopeCreateRequest(ctx context.Context, managementGroupID string, parameters CheckManagementGroupRestrictionsRequest, options *PolicyRestrictionsClientCheckAtManagementGroupScopeOptions) (*policy.Request, error) {
+	urlPath := "/providers/{managementGroupsNamespace}/managementGroups/{managementGroupId}/providers/Microsoft.PolicyInsights/checkPolicyRestrictions"
+	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape("Microsoft.Management"))
+	if managementGroupID == "" {
+		return nil, errors.New("parameter managementGroupID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-03-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
+}
+
+// checkAtManagementGroupScopeHandleResponse handles the CheckAtManagementGroupScope response.
+func (client *PolicyRestrictionsClient) checkAtManagementGroupScopeHandleResponse(resp *http.Response) (PolicyRestrictionsClientCheckAtManagementGroupScopeResponse, error) {
+	result := PolicyRestrictionsClientCheckAtManagementGroupScopeResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CheckRestrictionsResult); err != nil {
+		return PolicyRestrictionsClientCheckAtManagementGroupScopeResponse{}, err
+	}
+	return result, nil
 }
 
 // CheckAtResourceGroupScope - Checks what restrictions Azure Policy will place on a resource within a resource group. Use
@@ -87,7 +141,7 @@ func (client *PolicyRestrictionsClient) checkAtResourceGroupScopeCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -95,7 +149,7 @@ func (client *PolicyRestrictionsClient) checkAtResourceGroupScopeCreateRequest(c
 
 // checkAtResourceGroupScopeHandleResponse handles the CheckAtResourceGroupScope response.
 func (client *PolicyRestrictionsClient) checkAtResourceGroupScopeHandleResponse(resp *http.Response) (PolicyRestrictionsClientCheckAtResourceGroupScopeResponse, error) {
-	result := PolicyRestrictionsClientCheckAtResourceGroupScopeResponse{RawResponse: resp}
+	result := PolicyRestrictionsClientCheckAtResourceGroupScopeResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckRestrictionsResult); err != nil {
 		return PolicyRestrictionsClientCheckAtResourceGroupScopeResponse{}, err
 	}
@@ -134,7 +188,7 @@ func (client *PolicyRestrictionsClient) checkAtSubscriptionScopeCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -142,7 +196,7 @@ func (client *PolicyRestrictionsClient) checkAtSubscriptionScopeCreateRequest(ct
 
 // checkAtSubscriptionScopeHandleResponse handles the CheckAtSubscriptionScope response.
 func (client *PolicyRestrictionsClient) checkAtSubscriptionScopeHandleResponse(resp *http.Response) (PolicyRestrictionsClientCheckAtSubscriptionScopeResponse, error) {
-	result := PolicyRestrictionsClientCheckAtSubscriptionScopeResponse{RawResponse: resp}
+	result := PolicyRestrictionsClientCheckAtSubscriptionScopeResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckRestrictionsResult); err != nil {
 		return PolicyRestrictionsClientCheckAtSubscriptionScopeResponse{}, err
 	}

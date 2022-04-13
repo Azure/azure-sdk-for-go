@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type GroupUserClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewGroupUserClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *GroupUserClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewGroupUserClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GroupUserClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &GroupUserClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CheckEntityExists - Checks that user entity specified by identifier is associated with the group entity.
@@ -67,7 +72,7 @@ func (client *GroupUserClient) CheckEntityExists(ctx context.Context, resourceGr
 	if err != nil {
 		return GroupUserClientCheckEntityExistsResponse{}, err
 	}
-	result := GroupUserClientCheckEntityExistsResponse{RawResponse: resp}
+	result := GroupUserClientCheckEntityExistsResponse{}
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		result.Success = true
 	}
@@ -166,7 +171,7 @@ func (client *GroupUserClient) createCreateRequest(ctx context.Context, resource
 
 // createHandleResponse handles the Create response.
 func (client *GroupUserClient) createHandleResponse(resp *http.Response) (GroupUserClientCreateResponse, error) {
-	result := GroupUserClientCreateResponse{RawResponse: resp}
+	result := GroupUserClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserContract); err != nil {
 		return GroupUserClientCreateResponse{}, err
 	}
@@ -192,7 +197,7 @@ func (client *GroupUserClient) Delete(ctx context.Context, resourceGroupName str
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return GroupUserClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return GroupUserClientDeleteResponse{RawResponse: resp}, nil
+	return GroupUserClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -235,16 +240,32 @@ func (client *GroupUserClient) deleteCreateRequest(ctx context.Context, resource
 // serviceName - The name of the API Management service.
 // groupID - Group identifier. Must be unique in the current API Management service instance.
 // options - GroupUserClientListOptions contains the optional parameters for the GroupUserClient.List method.
-func (client *GroupUserClient) List(resourceGroupName string, serviceName string, groupID string, options *GroupUserClientListOptions) *GroupUserClientListPager {
-	return &GroupUserClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, serviceName, groupID, options)
+func (client *GroupUserClient) List(resourceGroupName string, serviceName string, groupID string, options *GroupUserClientListOptions) *runtime.Pager[GroupUserClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[GroupUserClientListResponse]{
+		More: func(page GroupUserClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp GroupUserClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.UserCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *GroupUserClientListResponse) (GroupUserClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, serviceName, groupID, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return GroupUserClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return GroupUserClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return GroupUserClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -288,7 +309,7 @@ func (client *GroupUserClient) listCreateRequest(ctx context.Context, resourceGr
 
 // listHandleResponse handles the List response.
 func (client *GroupUserClient) listHandleResponse(resp *http.Response) (GroupUserClientListResponse, error) {
-	result := GroupUserClientListResponse{RawResponse: resp}
+	result := GroupUserClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserCollection); err != nil {
 		return GroupUserClientListResponse{}, err
 	}

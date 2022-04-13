@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type WorkflowsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewWorkflowsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkflowsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewWorkflowsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkflowsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &WorkflowsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Abort - Abort the given workflow.
@@ -102,7 +107,7 @@ func (client *WorkflowsClient) abortCreateRequest(ctx context.Context, resourceG
 
 // abortHandleResponse handles the Abort response.
 func (client *WorkflowsClient) abortHandleResponse(resp *http.Response) (WorkflowsClientAbortResponse, error) {
-	result := WorkflowsClientAbortResponse{RawResponse: resp}
+	result := WorkflowsClientAbortResponse{}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.XMSRequestID = &val
 	}
@@ -165,7 +170,7 @@ func (client *WorkflowsClient) getCreateRequest(ctx context.Context, resourceGro
 
 // getHandleResponse handles the Get response.
 func (client *WorkflowsClient) getHandleResponse(resp *http.Response) (WorkflowsClientGetResponse, error) {
-	result := WorkflowsClientGetResponse{RawResponse: resp}
+	result := WorkflowsClientGetResponse{}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.XMSRequestID = &val
 	}
@@ -184,19 +189,26 @@ func (client *WorkflowsClient) getHandleResponse(resp *http.Response) (Workflows
 // storageSyncServiceName - Name of Storage Sync Service resource.
 // options - WorkflowsClientListByStorageSyncServiceOptions contains the optional parameters for the WorkflowsClient.ListByStorageSyncService
 // method.
-func (client *WorkflowsClient) ListByStorageSyncService(ctx context.Context, resourceGroupName string, storageSyncServiceName string, options *WorkflowsClientListByStorageSyncServiceOptions) (WorkflowsClientListByStorageSyncServiceResponse, error) {
-	req, err := client.listByStorageSyncServiceCreateRequest(ctx, resourceGroupName, storageSyncServiceName, options)
-	if err != nil {
-		return WorkflowsClientListByStorageSyncServiceResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return WorkflowsClientListByStorageSyncServiceResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkflowsClientListByStorageSyncServiceResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listByStorageSyncServiceHandleResponse(resp)
+func (client *WorkflowsClient) ListByStorageSyncService(resourceGroupName string, storageSyncServiceName string, options *WorkflowsClientListByStorageSyncServiceOptions) *runtime.Pager[WorkflowsClientListByStorageSyncServiceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[WorkflowsClientListByStorageSyncServiceResponse]{
+		More: func(page WorkflowsClientListByStorageSyncServiceResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *WorkflowsClientListByStorageSyncServiceResponse) (WorkflowsClientListByStorageSyncServiceResponse, error) {
+			req, err := client.listByStorageSyncServiceCreateRequest(ctx, resourceGroupName, storageSyncServiceName, options)
+			if err != nil {
+				return WorkflowsClientListByStorageSyncServiceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WorkflowsClientListByStorageSyncServiceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WorkflowsClientListByStorageSyncServiceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByStorageSyncServiceHandleResponse(resp)
+		},
+	})
 }
 
 // listByStorageSyncServiceCreateRequest creates the ListByStorageSyncService request.
@@ -227,7 +239,7 @@ func (client *WorkflowsClient) listByStorageSyncServiceCreateRequest(ctx context
 
 // listByStorageSyncServiceHandleResponse handles the ListByStorageSyncService response.
 func (client *WorkflowsClient) listByStorageSyncServiceHandleResponse(resp *http.Response) (WorkflowsClientListByStorageSyncServiceResponse, error) {
-	result := WorkflowsClientListByStorageSyncServiceResponse{RawResponse: resp}
+	result := WorkflowsClientListByStorageSyncServiceResponse{}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.XMSRequestID = &val
 	}

@@ -1,5 +1,140 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `*BestPracticesClient.ListByTenant` parameter(s) have been changed from `(context.Context, *BestPracticesClientListByTenantOptions)` to `(*BestPracticesClientListByTenantOptions)`
+- Function `*BestPracticesClient.ListByTenant` return value(s) have been changed from `(BestPracticesClientListByTenantResponse, error)` to `(*runtime.Pager[BestPracticesClientListByTenantResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `NewBestPracticesVersionsClient` return value(s) have been changed from `(*BestPracticesVersionsClient)` to `(*BestPracticesVersionsClient, error)`
+- Function `*ReportsClient.ListByConfigurationProfileAssignments` parameter(s) have been changed from `(context.Context, string, string, string, *ReportsClientListByConfigurationProfileAssignmentsOptions)` to `(string, string, string, *ReportsClientListByConfigurationProfileAssignmentsOptions)`
+- Function `*ReportsClient.ListByConfigurationProfileAssignments` return value(s) have been changed from `(ReportsClientListByConfigurationProfileAssignmentsResponse, error)` to `(*runtime.Pager[ReportsClientListByConfigurationProfileAssignmentsResponse])`
+- Function `*ConfigurationProfilesClient.ListByResourceGroup` parameter(s) have been changed from `(context.Context, string, *ConfigurationProfilesClientListByResourceGroupOptions)` to `(string, *ConfigurationProfilesClientListByResourceGroupOptions)`
+- Function `*ConfigurationProfilesClient.ListByResourceGroup` return value(s) have been changed from `(ConfigurationProfilesClientListByResourceGroupResponse, error)` to `(*runtime.Pager[ConfigurationProfilesClientListByResourceGroupResponse])`
+- Function `NewConfigurationProfilesVersionsClient` return value(s) have been changed from `(*ConfigurationProfilesVersionsClient)` to `(*ConfigurationProfilesVersionsClient, error)`
+- Function `*ConfigurationProfilesVersionsClient.ListChildResources` parameter(s) have been changed from `(context.Context, string, string, *ConfigurationProfilesVersionsClientListChildResourcesOptions)` to `(string, string, *ConfigurationProfilesVersionsClientListChildResourcesOptions)`
+- Function `*ConfigurationProfilesVersionsClient.ListChildResources` return value(s) have been changed from `(ConfigurationProfilesVersionsClientListChildResourcesResponse, error)` to `(*runtime.Pager[ConfigurationProfilesVersionsClientListChildResourcesResponse])`
+- Function `*ConfigurationProfilesClient.ListBySubscription` parameter(s) have been changed from `(context.Context, *ConfigurationProfilesClientListBySubscriptionOptions)` to `(*ConfigurationProfilesClientListBySubscriptionOptions)`
+- Function `*ConfigurationProfilesClient.ListBySubscription` return value(s) have been changed from `(ConfigurationProfilesClientListBySubscriptionResponse, error)` to `(*runtime.Pager[ConfigurationProfilesClientListBySubscriptionResponse])`
+- Function `*ConfigurationProfileAssignmentsClient.ListBySubscription` parameter(s) have been changed from `(context.Context, *ConfigurationProfileAssignmentsClientListBySubscriptionOptions)` to `(*ConfigurationProfileAssignmentsClientListBySubscriptionOptions)`
+- Function `*ConfigurationProfileAssignmentsClient.ListBySubscription` return value(s) have been changed from `(ConfigurationProfileAssignmentsClientListBySubscriptionResponse, error)` to `(*runtime.Pager[ConfigurationProfileAssignmentsClientListBySubscriptionResponse])`
+- Function `NewReportsClient` return value(s) have been changed from `(*ReportsClient)` to `(*ReportsClient, error)`
+- Function `NewConfigurationProfileAssignmentsClient` return value(s) have been changed from `(*ConfigurationProfileAssignmentsClient)` to `(*ConfigurationProfileAssignmentsClient, error)`
+- Function `*BestPracticesVersionsClient.ListByTenant` parameter(s) have been changed from `(context.Context, string, *BestPracticesVersionsClientListByTenantOptions)` to `(string, *BestPracticesVersionsClientListByTenantOptions)`
+- Function `*BestPracticesVersionsClient.ListByTenant` return value(s) have been changed from `(BestPracticesVersionsClientListByTenantResponse, error)` to `(*runtime.Pager[BestPracticesVersionsClientListByTenantResponse])`
+- Function `*ConfigurationProfileAssignmentsClient.List` parameter(s) have been changed from `(context.Context, string, *ConfigurationProfileAssignmentsClientListOptions)` to `(string, *ConfigurationProfileAssignmentsClientListOptions)`
+- Function `*ConfigurationProfileAssignmentsClient.List` return value(s) have been changed from `(ConfigurationProfileAssignmentsClientListResponse, error)` to `(*runtime.Pager[ConfigurationProfileAssignmentsClientListResponse])`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsClientListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsClientListResponse, error)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewBestPracticesClient` return value(s) have been changed from `(*BestPracticesClient)` to `(*BestPracticesClient, error)`
+- Function `NewConfigurationProfilesClient` return value(s) have been changed from `(*ConfigurationProfilesClient)` to `(*ConfigurationProfilesClient, error)`
+- Type of `ConfigurationProfileAssignmentProperties.ProfileOverrides` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `ConfigurationProfileProperties.Configuration` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `ConfigurationProfileProperties.Overrides` has been changed from `[]map[string]interface{}` to `[]interface{}`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Function `ActionType.ToPtr` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `Origin.ToPtr` has been removed
+- Struct `BestPracticesClientGetResult` has been removed
+- Struct `BestPracticesClientListByTenantResult` has been removed
+- Struct `BestPracticesVersionsClientGetResult` has been removed
+- Struct `BestPracticesVersionsClientListByTenantResult` has been removed
+- Struct `ConfigurationProfileAssignmentsClientCreateOrUpdateResult` has been removed
+- Struct `ConfigurationProfileAssignmentsClientGetResult` has been removed
+- Struct `ConfigurationProfileAssignmentsClientListBySubscriptionResult` has been removed
+- Struct `ConfigurationProfileAssignmentsClientListResult` has been removed
+- Struct `ConfigurationProfilesClientCreateOrUpdateResult` has been removed
+- Struct `ConfigurationProfilesClientGetResult` has been removed
+- Struct `ConfigurationProfilesClientListByResourceGroupResult` has been removed
+- Struct `ConfigurationProfilesClientListBySubscriptionResult` has been removed
+- Struct `ConfigurationProfilesClientUpdateResult` has been removed
+- Struct `ConfigurationProfilesVersionsClientCreateOrUpdateResult` has been removed
+- Struct `ConfigurationProfilesVersionsClientGetResult` has been removed
+- Struct `ConfigurationProfilesVersionsClientListChildResourcesResult` has been removed
+- Struct `ConfigurationProfilesVersionsClientUpdateResult` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `ReportsClientGetResult` has been removed
+- Struct `ReportsClientListByConfigurationProfileAssignmentsResult` has been removed
+- Field `BestPracticesClientGetResult` of struct `BestPracticesClientGetResponse` has been removed
+- Field `RawResponse` of struct `BestPracticesClientGetResponse` has been removed
+- Field `ReportsClientGetResult` of struct `ReportsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ReportsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ConfigurationProfileAssignmentsClientDeleteResponse` has been removed
+- Field `ConfigurationProfileAssignmentsClientListBySubscriptionResult` of struct `ConfigurationProfileAssignmentsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `ConfigurationProfileAssignmentsClientListBySubscriptionResponse` has been removed
+- Field `ConfigurationProfilesClientListBySubscriptionResult` of struct `ConfigurationProfilesClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `ConfigurationProfilesClientListBySubscriptionResponse` has been removed
+- Field `ConfigurationProfilesVersionsClientUpdateResult` of struct `ConfigurationProfilesVersionsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ConfigurationProfilesVersionsClientUpdateResponse` has been removed
+- Field `BestPracticesVersionsClientListByTenantResult` of struct `BestPracticesVersionsClientListByTenantResponse` has been removed
+- Field `RawResponse` of struct `BestPracticesVersionsClientListByTenantResponse` has been removed
+- Field `ConfigurationProfilesVersionsClientGetResult` of struct `ConfigurationProfilesVersionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ConfigurationProfilesVersionsClientGetResponse` has been removed
+- Field `ConfigurationProfilesVersionsClientCreateOrUpdateResult` of struct `ConfigurationProfilesVersionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ConfigurationProfilesVersionsClientCreateOrUpdateResponse` has been removed
+- Field `BestPracticesClientListByTenantResult` of struct `BestPracticesClientListByTenantResponse` has been removed
+- Field `RawResponse` of struct `BestPracticesClientListByTenantResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `ConfigurationProfileAssignmentsClientListResult` of struct `ConfigurationProfileAssignmentsClientListResponse` has been removed
+- Field `RawResponse` of struct `ConfigurationProfileAssignmentsClientListResponse` has been removed
+- Field `ConfigurationProfileAssignmentsClientCreateOrUpdateResult` of struct `ConfigurationProfileAssignmentsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ConfigurationProfileAssignmentsClientCreateOrUpdateResponse` has been removed
+- Field `ConfigurationProfilesClientGetResult` of struct `ConfigurationProfilesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ConfigurationProfilesClientGetResponse` has been removed
+- Field `ConfigurationProfileAssignmentsClientGetResult` of struct `ConfigurationProfileAssignmentsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ConfigurationProfileAssignmentsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ConfigurationProfilesClientDeleteResponse` has been removed
+- Field `ConfigurationProfilesClientUpdateResult` of struct `ConfigurationProfilesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ConfigurationProfilesClientUpdateResponse` has been removed
+- Field `ReportsClientListByConfigurationProfileAssignmentsResult` of struct `ReportsClientListByConfigurationProfileAssignmentsResponse` has been removed
+- Field `RawResponse` of struct `ReportsClientListByConfigurationProfileAssignmentsResponse` has been removed
+- Field `ConfigurationProfilesVersionsClientListChildResourcesResult` of struct `ConfigurationProfilesVersionsClientListChildResourcesResponse` has been removed
+- Field `RawResponse` of struct `ConfigurationProfilesVersionsClientListChildResourcesResponse` has been removed
+- Field `ConfigurationProfilesClientListByResourceGroupResult` of struct `ConfigurationProfilesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ConfigurationProfilesClientListByResourceGroupResponse` has been removed
+- Field `ConfigurationProfilesClientCreateOrUpdateResult` of struct `ConfigurationProfilesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ConfigurationProfilesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ConfigurationProfilesVersionsClientDeleteResponse` has been removed
+- Field `BestPracticesVersionsClientGetResult` of struct `BestPracticesVersionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `BestPracticesVersionsClientGetResponse` has been removed
+
+### Features Added
+
+- New function `*ServicePrincipalsClient.ListBySubscription(*ServicePrincipalsClientListBySubscriptionOptions) *runtime.Pager[ServicePrincipalsClientListBySubscriptionResponse]`
+- New function `*ServicePrincipalsClient.Get(context.Context, *ServicePrincipalsClientGetOptions) (ServicePrincipalsClientGetResponse, error)`
+- New function `NewServicePrincipalsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ServicePrincipalsClient, error)`
+- New function `ServicePrincipalListResult.MarshalJSON() ([]byte, error)`
+- New struct `ServicePrincipal`
+- New struct `ServicePrincipalListResult`
+- New struct `ServicePrincipalProperties`
+- New struct `ServicePrincipalsClient`
+- New struct `ServicePrincipalsClientGetOptions`
+- New struct `ServicePrincipalsClientGetResponse`
+- New struct `ServicePrincipalsClientListBySubscriptionOptions`
+- New struct `ServicePrincipalsClientListBySubscriptionResponse`
+- New anonymous field `ConfigurationProfile` in struct `ConfigurationProfilesVersionsClientCreateOrUpdateResponse`
+- New anonymous field `BestPractice` in struct `BestPracticesVersionsClientGetResponse`
+- New anonymous field `ConfigurationProfile` in struct `ConfigurationProfilesClientUpdateResponse`
+- New anonymous field `ConfigurationProfile` in struct `ConfigurationProfilesClientCreateOrUpdateResponse`
+- New anonymous field `BestPractice` in struct `BestPracticesClientGetResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `ConfigurationProfile` in struct `ConfigurationProfilesVersionsClientUpdateResponse`
+- New anonymous field `ConfigurationProfileAssignmentList` in struct `ConfigurationProfileAssignmentsClientListResponse`
+- New anonymous field `ConfigurationProfileAssignment` in struct `ConfigurationProfileAssignmentsClientGetResponse`
+- New anonymous field `BestPracticeList` in struct `BestPracticesVersionsClientListByTenantResponse`
+- New anonymous field `ConfigurationProfileList` in struct `ConfigurationProfilesClientListByResourceGroupResponse`
+- New anonymous field `ConfigurationProfile` in struct `ConfigurationProfilesClientGetResponse`
+- New anonymous field `ConfigurationProfile` in struct `ConfigurationProfilesVersionsClientGetResponse`
+- New anonymous field `Report` in struct `ReportsClientGetResponse`
+- New anonymous field `ConfigurationProfileList` in struct `ConfigurationProfilesVersionsClientListChildResourcesResponse`
+- New anonymous field `ReportList` in struct `ReportsClientListByConfigurationProfileAssignmentsResponse`
+- New anonymous field `ConfigurationProfileList` in struct `ConfigurationProfilesClientListBySubscriptionResponse`
+- New anonymous field `BestPracticeList` in struct `BestPracticesClientListByTenantResponse`
+- New anonymous field `ConfigurationProfileAssignment` in struct `ConfigurationProfileAssignmentsClientCreateOrUpdateResponse`
+- New anonymous field `ConfigurationProfileAssignmentList` in struct `ConfigurationProfileAssignmentsClientListBySubscriptionResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

@@ -1,5 +1,43 @@
 # Release History
 
+## 0.3.0 (2022-04-12)
+### Breaking Changes
+
+- Function `*OperationClient.List` return value(s) have been changed from `(*OperationClientListPager)` to `(*runtime.Pager[OperationClientListResponse])`
+- Function `NewPartnersClient` return value(s) have been changed from `(*PartnersClient)` to `(*PartnersClient, error)`
+- Function `NewPartnerClient` return value(s) have been changed from `(*PartnerClient)` to `(*PartnerClient, error)`
+- Function `NewOperationClient` return value(s) have been changed from `(*OperationClient)` to `(*OperationClient, error)`
+- Function `*OperationClientListPager.Err` has been removed
+- Function `*OperationClientListPager.NextPage` has been removed
+- Function `ManagementPartnerState.ToPtr` has been removed
+- Function `*OperationClientListPager.PageResponse` has been removed
+- Struct `OperationClientListPager` has been removed
+- Struct `OperationClientListResult` has been removed
+- Struct `PartnerClientCreateResult` has been removed
+- Struct `PartnerClientGetResult` has been removed
+- Struct `PartnerClientUpdateResult` has been removed
+- Struct `PartnersClientGetResult` has been removed
+- Field `PartnerClientCreateResult` of struct `PartnerClientCreateResponse` has been removed
+- Field `RawResponse` of struct `PartnerClientCreateResponse` has been removed
+- Field `PartnersClientGetResult` of struct `PartnersClientGetResponse` has been removed
+- Field `RawResponse` of struct `PartnersClientGetResponse` has been removed
+- Field `PartnerClientGetResult` of struct `PartnerClientGetResponse` has been removed
+- Field `RawResponse` of struct `PartnerClientGetResponse` has been removed
+- Field `RawResponse` of struct `PartnerClientDeleteResponse` has been removed
+- Field `PartnerClientUpdateResult` of struct `PartnerClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `PartnerClientUpdateResponse` has been removed
+- Field `OperationClientListResult` of struct `OperationClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationClientListResponse` has been removed
+
+### Features Added
+
+- New anonymous field `OperationList` in struct `OperationClientListResponse`
+- New anonymous field `PartnerResponse` in struct `PartnerClientUpdateResponse`
+- New anonymous field `PartnerResponse` in struct `PartnersClientGetResponse`
+- New anonymous field `PartnerResponse` in struct `PartnerClientCreateResponse`
+- New anonymous field `PartnerResponse` in struct `PartnerClientGetResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

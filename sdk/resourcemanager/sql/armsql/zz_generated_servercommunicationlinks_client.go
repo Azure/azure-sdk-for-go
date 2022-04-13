@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ServerCommunicationLinksClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewServerCommunicationLinksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerCommunicationLinksClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewServerCommunicationLinksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServerCommunicationLinksClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ServerCommunicationLinksClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates a server communication link.
@@ -58,22 +63,16 @@ func NewServerCommunicationLinksClient(subscriptionID string, credential azcore.
 // parameters - The required parameters for creating a server communication link.
 // options - ServerCommunicationLinksClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerCommunicationLinksClient.BeginCreateOrUpdate
 // method.
-func (client *ServerCommunicationLinksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, communicationLinkName string, parameters ServerCommunicationLink, options *ServerCommunicationLinksClientBeginCreateOrUpdateOptions) (ServerCommunicationLinksClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, communicationLinkName, parameters, options)
-	if err != nil {
-		return ServerCommunicationLinksClientCreateOrUpdatePollerResponse{}, err
+func (client *ServerCommunicationLinksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, communicationLinkName string, parameters ServerCommunicationLink, options *ServerCommunicationLinksClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ServerCommunicationLinksClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, communicationLinkName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ServerCommunicationLinksClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServerCommunicationLinksClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServerCommunicationLinksClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServerCommunicationLinksClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return ServerCommunicationLinksClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ServerCommunicationLinksClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates a server communication link.
@@ -143,7 +142,7 @@ func (client *ServerCommunicationLinksClient) Delete(ctx context.Context, resour
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ServerCommunicationLinksClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ServerCommunicationLinksClientDeleteResponse{RawResponse: resp}, nil
+	return ServerCommunicationLinksClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -230,7 +229,7 @@ func (client *ServerCommunicationLinksClient) getCreateRequest(ctx context.Conte
 
 // getHandleResponse handles the Get response.
 func (client *ServerCommunicationLinksClient) getHandleResponse(resp *http.Response) (ServerCommunicationLinksClientGetResponse, error) {
-	result := ServerCommunicationLinksClientGetResponse{RawResponse: resp}
+	result := ServerCommunicationLinksClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerCommunicationLink); err != nil {
 		return ServerCommunicationLinksClientGetResponse{}, err
 	}
@@ -244,19 +243,26 @@ func (client *ServerCommunicationLinksClient) getHandleResponse(resp *http.Respo
 // serverName - The name of the server.
 // options - ServerCommunicationLinksClientListByServerOptions contains the optional parameters for the ServerCommunicationLinksClient.ListByServer
 // method.
-func (client *ServerCommunicationLinksClient) ListByServer(ctx context.Context, resourceGroupName string, serverName string, options *ServerCommunicationLinksClientListByServerOptions) (ServerCommunicationLinksClientListByServerResponse, error) {
-	req, err := client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
-	if err != nil {
-		return ServerCommunicationLinksClientListByServerResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ServerCommunicationLinksClientListByServerResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServerCommunicationLinksClientListByServerResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listByServerHandleResponse(resp)
+func (client *ServerCommunicationLinksClient) ListByServer(resourceGroupName string, serverName string, options *ServerCommunicationLinksClientListByServerOptions) *runtime.Pager[ServerCommunicationLinksClientListByServerResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ServerCommunicationLinksClientListByServerResponse]{
+		More: func(page ServerCommunicationLinksClientListByServerResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ServerCommunicationLinksClientListByServerResponse) (ServerCommunicationLinksClientListByServerResponse, error) {
+			req, err := client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+			if err != nil {
+				return ServerCommunicationLinksClientListByServerResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ServerCommunicationLinksClientListByServerResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ServerCommunicationLinksClientListByServerResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServerHandleResponse(resp)
+		},
+	})
 }
 
 // listByServerCreateRequest creates the ListByServer request.
@@ -287,7 +293,7 @@ func (client *ServerCommunicationLinksClient) listByServerCreateRequest(ctx cont
 
 // listByServerHandleResponse handles the ListByServer response.
 func (client *ServerCommunicationLinksClient) listByServerHandleResponse(resp *http.Response) (ServerCommunicationLinksClientListByServerResponse, error) {
-	result := ServerCommunicationLinksClientListByServerResponse{RawResponse: resp}
+	result := ServerCommunicationLinksClientListByServerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerCommunicationLinkListResult); err != nil {
 		return ServerCommunicationLinksClientListByServerResponse{}, err
 	}

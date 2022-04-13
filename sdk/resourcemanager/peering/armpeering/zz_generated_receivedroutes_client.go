@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ReceivedRoutesClient struct {
 // subscriptionID - The Azure subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewReceivedRoutesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ReceivedRoutesClient {
+func NewReceivedRoutesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReceivedRoutesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ReceivedRoutesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // ListByPeering - Lists the prefixes received over the specified peering under the given subscription and resource group.
@@ -55,16 +60,32 @@ func NewReceivedRoutesClient(subscriptionID string, credential azcore.TokenCrede
 // peeringName - The name of the peering.
 // options - ReceivedRoutesClientListByPeeringOptions contains the optional parameters for the ReceivedRoutesClient.ListByPeering
 // method.
-func (client *ReceivedRoutesClient) ListByPeering(resourceGroupName string, peeringName string, options *ReceivedRoutesClientListByPeeringOptions) *ReceivedRoutesClientListByPeeringPager {
-	return &ReceivedRoutesClientListByPeeringPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByPeeringCreateRequest(ctx, resourceGroupName, peeringName, options)
+func (client *ReceivedRoutesClient) ListByPeering(resourceGroupName string, peeringName string, options *ReceivedRoutesClientListByPeeringOptions) *runtime.Pager[ReceivedRoutesClientListByPeeringResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ReceivedRoutesClientListByPeeringResponse]{
+		More: func(page ReceivedRoutesClientListByPeeringResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ReceivedRoutesClientListByPeeringResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReceivedRouteListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ReceivedRoutesClientListByPeeringResponse) (ReceivedRoutesClientListByPeeringResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByPeeringCreateRequest(ctx, resourceGroupName, peeringName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ReceivedRoutesClientListByPeeringResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReceivedRoutesClientListByPeeringResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReceivedRoutesClientListByPeeringResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByPeeringHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByPeeringCreateRequest creates the ListByPeering request.
@@ -102,7 +123,7 @@ func (client *ReceivedRoutesClient) listByPeeringCreateRequest(ctx context.Conte
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -110,7 +131,7 @@ func (client *ReceivedRoutesClient) listByPeeringCreateRequest(ctx context.Conte
 
 // listByPeeringHandleResponse handles the ListByPeering response.
 func (client *ReceivedRoutesClient) listByPeeringHandleResponse(resp *http.Response) (ReceivedRoutesClientListByPeeringResponse, error) {
-	result := ReceivedRoutesClientListByPeeringResponse{RawResponse: resp}
+	result := ReceivedRoutesClientListByPeeringResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReceivedRouteListResult); err != nil {
 		return ReceivedRoutesClientListByPeeringResponse{}, err
 	}

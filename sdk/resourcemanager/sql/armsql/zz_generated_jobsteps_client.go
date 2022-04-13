@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type JobStepsClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewJobStepsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *JobStepsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewJobStepsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobStepsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &JobStepsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a job step. This will implicitly create a new job version.
@@ -115,7 +120,7 @@ func (client *JobStepsClient) createOrUpdateCreateRequest(ctx context.Context, r
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *JobStepsClient) createOrUpdateHandleResponse(resp *http.Response) (JobStepsClientCreateOrUpdateResponse, error) {
-	result := JobStepsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := JobStepsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobStep); err != nil {
 		return JobStepsClientCreateOrUpdateResponse{}, err
 	}
@@ -143,7 +148,7 @@ func (client *JobStepsClient) Delete(ctx context.Context, resourceGroupName stri
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return JobStepsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return JobStepsClientDeleteResponse{RawResponse: resp}, nil
+	return JobStepsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -247,7 +252,7 @@ func (client *JobStepsClient) getCreateRequest(ctx context.Context, resourceGrou
 
 // getHandleResponse handles the Get response.
 func (client *JobStepsClient) getHandleResponse(resp *http.Response) (JobStepsClientGetResponse, error) {
-	result := JobStepsClientGetResponse{RawResponse: resp}
+	result := JobStepsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobStep); err != nil {
 		return JobStepsClientGetResponse{}, err
 	}
@@ -320,7 +325,7 @@ func (client *JobStepsClient) getByVersionCreateRequest(ctx context.Context, res
 
 // getByVersionHandleResponse handles the GetByVersion response.
 func (client *JobStepsClient) getByVersionHandleResponse(resp *http.Response) (JobStepsClientGetByVersionResponse, error) {
-	result := JobStepsClientGetByVersionResponse{RawResponse: resp}
+	result := JobStepsClientGetByVersionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobStep); err != nil {
 		return JobStepsClientGetByVersionResponse{}, err
 	}
@@ -335,16 +340,32 @@ func (client *JobStepsClient) getByVersionHandleResponse(resp *http.Response) (J
 // jobAgentName - The name of the job agent.
 // jobName - The name of the job to get.
 // options - JobStepsClientListByJobOptions contains the optional parameters for the JobStepsClient.ListByJob method.
-func (client *JobStepsClient) ListByJob(resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobStepsClientListByJobOptions) *JobStepsClientListByJobPager {
-	return &JobStepsClientListByJobPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByJobCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, options)
+func (client *JobStepsClient) ListByJob(resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobStepsClientListByJobOptions) *runtime.Pager[JobStepsClientListByJobResponse] {
+	return runtime.NewPager(runtime.PageProcessor[JobStepsClientListByJobResponse]{
+		More: func(page JobStepsClientListByJobResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp JobStepsClientListByJobResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobStepListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *JobStepsClientListByJobResponse) (JobStepsClientListByJobResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByJobCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return JobStepsClientListByJobResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return JobStepsClientListByJobResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return JobStepsClientListByJobResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByJobHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByJobCreateRequest creates the ListByJob request.
@@ -383,7 +404,7 @@ func (client *JobStepsClient) listByJobCreateRequest(ctx context.Context, resour
 
 // listByJobHandleResponse handles the ListByJob response.
 func (client *JobStepsClient) listByJobHandleResponse(resp *http.Response) (JobStepsClientListByJobResponse, error) {
-	result := JobStepsClientListByJobResponse{RawResponse: resp}
+	result := JobStepsClientListByJobResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobStepListResult); err != nil {
 		return JobStepsClientListByJobResponse{}, err
 	}
@@ -399,16 +420,32 @@ func (client *JobStepsClient) listByJobHandleResponse(resp *http.Response) (JobS
 // jobName - The name of the job to get.
 // jobVersion - The version of the job to get.
 // options - JobStepsClientListByVersionOptions contains the optional parameters for the JobStepsClient.ListByVersion method.
-func (client *JobStepsClient) ListByVersion(resourceGroupName string, serverName string, jobAgentName string, jobName string, jobVersion int32, options *JobStepsClientListByVersionOptions) *JobStepsClientListByVersionPager {
-	return &JobStepsClientListByVersionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByVersionCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobVersion, options)
+func (client *JobStepsClient) ListByVersion(resourceGroupName string, serverName string, jobAgentName string, jobName string, jobVersion int32, options *JobStepsClientListByVersionOptions) *runtime.Pager[JobStepsClientListByVersionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[JobStepsClientListByVersionResponse]{
+		More: func(page JobStepsClientListByVersionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp JobStepsClientListByVersionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobStepListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *JobStepsClientListByVersionResponse) (JobStepsClientListByVersionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByVersionCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobVersion, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return JobStepsClientListByVersionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return JobStepsClientListByVersionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return JobStepsClientListByVersionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByVersionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByVersionCreateRequest creates the ListByVersion request.
@@ -448,7 +485,7 @@ func (client *JobStepsClient) listByVersionCreateRequest(ctx context.Context, re
 
 // listByVersionHandleResponse handles the ListByVersion response.
 func (client *JobStepsClient) listByVersionHandleResponse(resp *http.Response) (JobStepsClientListByVersionResponse, error) {
-	result := JobStepsClientListByVersionResponse{RawResponse: resp}
+	result := JobStepsClientListByVersionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobStepListResult); err != nil {
 		return JobStepsClientListByVersionResponse{}, err
 	}

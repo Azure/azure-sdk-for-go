@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type SlicesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSlicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SlicesClient {
+func NewSlicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SlicesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SlicesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a mobile network slice.
@@ -57,22 +62,18 @@ func NewSlicesClient(subscriptionID string, credential azcore.TokenCredential, o
 // parameters - Parameters supplied to the create or update mobile network slice operation.
 // options - SlicesClientBeginCreateOrUpdateOptions contains the optional parameters for the SlicesClient.BeginCreateOrUpdate
 // method.
-func (client *SlicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, mobileNetworkName string, sliceName string, parameters Slice, options *SlicesClientBeginCreateOrUpdateOptions) (SlicesClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, mobileNetworkName, sliceName, parameters, options)
-	if err != nil {
-		return SlicesClientCreateOrUpdatePollerResponse{}, err
+func (client *SlicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, mobileNetworkName string, sliceName string, parameters Slice, options *SlicesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[SlicesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, mobileNetworkName, sliceName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SlicesClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[SlicesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SlicesClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SlicesClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return SlicesClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &SlicesClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a mobile network slice.
@@ -128,22 +129,18 @@ func (client *SlicesClient) createOrUpdateCreateRequest(ctx context.Context, res
 // mobileNetworkName - The name of the mobile network.
 // sliceName - The name of the mobile network slice.
 // options - SlicesClientBeginDeleteOptions contains the optional parameters for the SlicesClient.BeginDelete method.
-func (client *SlicesClient) BeginDelete(ctx context.Context, resourceGroupName string, mobileNetworkName string, sliceName string, options *SlicesClientBeginDeleteOptions) (SlicesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, mobileNetworkName, sliceName, options)
-	if err != nil {
-		return SlicesClientDeletePollerResponse{}, err
+func (client *SlicesClient) BeginDelete(ctx context.Context, resourceGroupName string, mobileNetworkName string, sliceName string, options *SlicesClientBeginDeleteOptions) (*armruntime.Poller[SlicesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, mobileNetworkName, sliceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SlicesClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[SlicesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SlicesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SlicesClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return SlicesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &SlicesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified mobile network slice.
@@ -246,7 +243,7 @@ func (client *SlicesClient) getCreateRequest(ctx context.Context, resourceGroupN
 
 // getHandleResponse handles the Get response.
 func (client *SlicesClient) getHandleResponse(resp *http.Response) (SlicesClientGetResponse, error) {
-	result := SlicesClientGetResponse{RawResponse: resp}
+	result := SlicesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Slice); err != nil {
 		return SlicesClientGetResponse{}, err
 	}
@@ -259,16 +256,32 @@ func (client *SlicesClient) getHandleResponse(resp *http.Response) (SlicesClient
 // mobileNetworkName - The name of the mobile network.
 // options - SlicesClientListByMobileNetworkOptions contains the optional parameters for the SlicesClient.ListByMobileNetwork
 // method.
-func (client *SlicesClient) ListByMobileNetwork(resourceGroupName string, mobileNetworkName string, options *SlicesClientListByMobileNetworkOptions) *SlicesClientListByMobileNetworkPager {
-	return &SlicesClientListByMobileNetworkPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByMobileNetworkCreateRequest(ctx, resourceGroupName, mobileNetworkName, options)
+func (client *SlicesClient) ListByMobileNetwork(resourceGroupName string, mobileNetworkName string, options *SlicesClientListByMobileNetworkOptions) *runtime.Pager[SlicesClientListByMobileNetworkResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SlicesClientListByMobileNetworkResponse]{
+		More: func(page SlicesClientListByMobileNetworkResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SlicesClientListByMobileNetworkResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SliceListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SlicesClientListByMobileNetworkResponse) (SlicesClientListByMobileNetworkResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByMobileNetworkCreateRequest(ctx, resourceGroupName, mobileNetworkName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SlicesClientListByMobileNetworkResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SlicesClientListByMobileNetworkResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SlicesClientListByMobileNetworkResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByMobileNetworkHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByMobileNetworkCreateRequest creates the ListByMobileNetwork request.
@@ -299,7 +312,7 @@ func (client *SlicesClient) listByMobileNetworkCreateRequest(ctx context.Context
 
 // listByMobileNetworkHandleResponse handles the ListByMobileNetwork response.
 func (client *SlicesClient) listByMobileNetworkHandleResponse(resp *http.Response) (SlicesClientListByMobileNetworkResponse, error) {
-	result := SlicesClientListByMobileNetworkResponse{RawResponse: resp}
+	result := SlicesClientListByMobileNetworkResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SliceListResult); err != nil {
 		return SlicesClientListByMobileNetworkResponse{}, err
 	}
@@ -360,7 +373,7 @@ func (client *SlicesClient) updateTagsCreateRequest(ctx context.Context, resourc
 
 // updateTagsHandleResponse handles the UpdateTags response.
 func (client *SlicesClient) updateTagsHandleResponse(resp *http.Response) (SlicesClientUpdateTagsResponse, error) {
-	result := SlicesClientUpdateTagsResponse{RawResponse: resp}
+	result := SlicesClientUpdateTagsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Slice); err != nil {
 		return SlicesClientUpdateTagsResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armtrafficmanager
 
 const (
 	moduleName    = "armtrafficmanager"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // AllowedEndpointRecordType - The allowed type DNS record types for this profile.
@@ -31,11 +31,6 @@ func PossibleAllowedEndpointRecordTypeValues() []AllowedEndpointRecordType {
 		AllowedEndpointRecordTypeIPv4Address,
 		AllowedEndpointRecordTypeIPv6Address,
 	}
-}
-
-// ToPtr returns a *AllowedEndpointRecordType pointing to the current value.
-func (c AllowedEndpointRecordType) ToPtr() *AllowedEndpointRecordType {
-	return &c
 }
 
 // EndpointMonitorStatus - The monitoring status of the endpoint.
@@ -62,11 +57,6 @@ func PossibleEndpointMonitorStatusValues() []EndpointMonitorStatus {
 	}
 }
 
-// ToPtr returns a *EndpointMonitorStatus pointing to the current value.
-func (c EndpointMonitorStatus) ToPtr() *EndpointMonitorStatus {
-	return &c
-}
-
 // EndpointStatus - The status of the endpoint. If the endpoint is Enabled, it is probed for endpoint health and is included
 // in the traffic routing method.
 type EndpointStatus string
@@ -84,27 +74,21 @@ func PossibleEndpointStatusValues() []EndpointStatus {
 	}
 }
 
-// ToPtr returns a *EndpointStatus pointing to the current value.
-func (c EndpointStatus) ToPtr() *EndpointStatus {
-	return &c
-}
-
-type Enum8 string
+type EndpointType string
 
 const (
-	Enum8Default Enum8 = "default"
+	EndpointTypeAzureEndpoints    EndpointType = "AzureEndpoints"
+	EndpointTypeExternalEndpoints EndpointType = "ExternalEndpoints"
+	EndpointTypeNestedEndpoints   EndpointType = "NestedEndpoints"
 )
 
-// PossibleEnum8Values returns the possible values for the Enum8 const type.
-func PossibleEnum8Values() []Enum8 {
-	return []Enum8{
-		Enum8Default,
+// PossibleEndpointTypeValues returns the possible values for the EndpointType const type.
+func PossibleEndpointTypeValues() []EndpointType {
+	return []EndpointType{
+		EndpointTypeAzureEndpoints,
+		EndpointTypeExternalEndpoints,
+		EndpointTypeNestedEndpoints,
 	}
-}
-
-// ToPtr returns a *Enum8 pointing to the current value.
-func (c Enum8) ToPtr() *Enum8 {
-	return &c
 }
 
 // MonitorProtocol - The protocol (HTTP, HTTPS or TCP) used to probe for endpoint health.
@@ -123,11 +107,6 @@ func PossibleMonitorProtocolValues() []MonitorProtocol {
 		MonitorProtocolHTTPS,
 		MonitorProtocolTCP,
 	}
-}
-
-// ToPtr returns a *MonitorProtocol pointing to the current value.
-func (c MonitorProtocol) ToPtr() *MonitorProtocol {
-	return &c
 }
 
 // ProfileMonitorStatus - The profile-level monitoring status of the Traffic Manager profile.
@@ -152,11 +131,6 @@ func PossibleProfileMonitorStatusValues() []ProfileMonitorStatus {
 	}
 }
 
-// ToPtr returns a *ProfileMonitorStatus pointing to the current value.
-func (c ProfileMonitorStatus) ToPtr() *ProfileMonitorStatus {
-	return &c
-}
-
 // ProfileStatus - The status of the Traffic Manager profile.
 type ProfileStatus string
 
@@ -171,11 +145,6 @@ func PossibleProfileStatusValues() []ProfileStatus {
 		ProfileStatusDisabled,
 		ProfileStatusEnabled,
 	}
-}
-
-// ToPtr returns a *ProfileStatus pointing to the current value.
-func (c ProfileStatus) ToPtr() *ProfileStatus {
-	return &c
 }
 
 // TrafficRoutingMethod - The traffic routing method of the Traffic Manager profile.
@@ -202,11 +171,6 @@ func PossibleTrafficRoutingMethodValues() []TrafficRoutingMethod {
 	}
 }
 
-// ToPtr returns a *TrafficRoutingMethod pointing to the current value.
-func (c TrafficRoutingMethod) ToPtr() *TrafficRoutingMethod {
-	return &c
-}
-
 // TrafficViewEnrollmentStatus - Indicates whether Traffic View is 'Enabled' or 'Disabled' for the Traffic Manager profile.
 // Null, indicates 'Disabled'. Enabling this feature will increase the cost of the Traffic Manage profile.
 type TrafficViewEnrollmentStatus string
@@ -222,9 +186,4 @@ func PossibleTrafficViewEnrollmentStatusValues() []TrafficViewEnrollmentStatus {
 		TrafficViewEnrollmentStatusDisabled,
 		TrafficViewEnrollmentStatusEnabled,
 	}
-}
-
-// ToPtr returns a *TrafficViewEnrollmentStatus pointing to the current value.
-func (c TrafficViewEnrollmentStatus) ToPtr() *TrafficViewEnrollmentStatus {
-	return &c
 }

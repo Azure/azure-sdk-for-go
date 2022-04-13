@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,47 +19,55 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement"
 )
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementPerformConnectivityCheckHttpConnect.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementPerformConnectivityCheckHttpConnect.json
 func ExampleClient_BeginPerformConnectivityCheckAsync() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginPerformConnectivityCheckAsync(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		armapimanagement.ConnectivityCheckRequest{
 			Destination: &armapimanagement.ConnectivityCheckRequestDestination{
-				Address: to.StringPtr("<address>"),
-				Port:    to.Int64Ptr(3306),
+				Address: to.Ptr("<address>"),
+				Port:    to.Ptr[int64](3306),
 			},
 			ProtocolConfiguration: &armapimanagement.ConnectivityCheckRequestProtocolConfiguration{
 				HTTPConfiguration: &armapimanagement.ConnectivityCheckRequestProtocolConfigurationHTTPConfiguration{
-					Method: armapimanagement.Method("GET").ToPtr(),
+					Method: to.Ptr(armapimanagement.MethodGET),
 					Headers: []*armapimanagement.HTTPHeader{
 						{
-							Name:  to.StringPtr("<name>"),
-							Value: to.StringPtr("<value>"),
+							Name:  to.Ptr("<name>"),
+							Value: to.Ptr("<value>"),
 						}},
 					ValidStatusCodes: []*int64{
-						to.Int64Ptr(200),
-						to.Int64Ptr(204)},
+						to.Ptr[int64](200),
+						to.Ptr[int64](204)},
 				},
 			},
 			Source: &armapimanagement.ConnectivityCheckRequestSource{
-				Region: to.StringPtr("<region>"),
+				Region: to.Ptr("<region>"),
 			},
-			Protocol: armapimanagement.ConnectivityCheckProtocol("HTTPS").ToPtr(),
+			Protocol: to.Ptr(armapimanagement.ConnectivityCheckProtocolHTTPS),
 		},
-		nil)
+		&armapimanagement.ClientBeginPerformConnectivityCheckAsyncOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ClientPerformConnectivityCheckAsyncResult)
+	// TODO: use response item
+	_ = res
 }

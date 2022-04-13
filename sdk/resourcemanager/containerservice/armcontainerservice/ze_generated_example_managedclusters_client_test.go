@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,492 +19,631 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice"
 )
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ContainerServiceGetOSOptions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-02-01/examples/ContainerServiceGetOSOptions.json
 func ExampleManagedClustersClient_GetOSOptions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	client, err := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetOSOptions(ctx,
 		"<location>",
 		&armcontainerservice.ManagedClustersClientGetOSOptionsOptions{ResourceType: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ManagedClustersClientGetOSOptionsResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-02-01/examples/ManagedClustersList.json
 func ExampleManagedClustersClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	client, err := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-02-01/examples/ManagedClustersListByResourceGroup.json
 func ExampleManagedClustersClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	client, err := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersGetUpgradeProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-02-01/examples/ManagedClustersGetUpgradeProfile.json
 func ExampleManagedClustersClient_GetUpgradeProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	client, err := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetUpgradeProfile(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ManagedClustersClientGetUpgradeProfileResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersGetAccessProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-02-01/examples/ManagedClustersGetAccessProfile.json
 func ExampleManagedClustersClient_GetAccessProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	client, err := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetAccessProfile(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		"<role-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ManagedClustersClientGetAccessProfileResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersListClusterCredentialResult.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-02-01/examples/ManagedClustersListClusterCredentialResult.json
 func ExampleManagedClustersClient_ListClusterAdminCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	client, err := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ListClusterAdminCredentials(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		&armcontainerservice.ManagedClustersClientListClusterAdminCredentialsOptions{ServerFqdn: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ManagedClustersClientListClusterAdminCredentialsResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersListClusterCredentialResult.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-02-01/examples/ManagedClustersListClusterCredentialResult.json
 func ExampleManagedClustersClient_ListClusterUserCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	client, err := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ListClusterUserCredentials(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		&armcontainerservice.ManagedClustersClientListClusterUserCredentialsOptions{ServerFqdn: nil})
+		&armcontainerservice.ManagedClustersClientListClusterUserCredentialsOptions{ServerFqdn: nil,
+			Format: nil,
+		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ManagedClustersClientListClusterUserCredentialsResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersListClusterCredentialResult.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-02-01/examples/ManagedClustersListClusterCredentialResult.json
 func ExampleManagedClustersClient_ListClusterMonitoringUserCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	client, err := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ListClusterMonitoringUserCredentials(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		&armcontainerservice.ManagedClustersClientListClusterMonitoringUserCredentialsOptions{ServerFqdn: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ManagedClustersClientListClusterMonitoringUserCredentialsResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-02-01/examples/ManagedClustersGet.json
 func ExampleManagedClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	client, err := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ManagedClustersClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersAssociate_CRG.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-02-01/examples/ManagedClustersCreate_Snapshot.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	client, err := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		armcontainerservice.ManagedCluster{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Tags: map[string]*string{
-				"archv2": to.StringPtr(""),
-				"tier":   to.StringPtr("production"),
+				"archv2": to.Ptr(""),
+				"tier":   to.Ptr("production"),
 			},
 			Properties: &armcontainerservice.ManagedClusterProperties{
 				AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
 				AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
 					{
-						Type:                       armcontainerservice.AgentPoolType("VirtualMachineScaleSets").ToPtr(),
-						CapacityReservationGroupID: to.StringPtr("<capacity-reservation-group-id>"),
-						Count:                      to.Int32Ptr(3),
-						EnableNodePublicIP:         to.BoolPtr(true),
-						Mode:                       armcontainerservice.AgentPoolMode("System").ToPtr(),
-						OSType:                     armcontainerservice.OSType("Linux").ToPtr(),
-						VMSize:                     to.StringPtr("<vmsize>"),
-						Name:                       to.StringPtr("<name>"),
+						Type:  to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+						Count: to.Ptr[int32](3),
+						CreationData: &armcontainerservice.CreationData{
+							SourceResourceID: to.Ptr("<source-resource-id>"),
+						},
+						EnableFIPS:         to.Ptr(true),
+						EnableNodePublicIP: to.Ptr(true),
+						Mode:               to.Ptr(armcontainerservice.AgentPoolModeSystem),
+						OSType:             to.Ptr(armcontainerservice.OSTypeLinux),
+						VMSize:             to.Ptr("<vmsize>"),
+						Name:               to.Ptr("<name>"),
 					}},
 				AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
-					ScaleDownDelayAfterAdd: to.StringPtr("<scale-down-delay-after-add>"),
-					ScanInterval:           to.StringPtr("<scan-interval>"),
+					ScaleDownDelayAfterAdd: to.Ptr("<scale-down-delay-after-add>"),
+					ScanInterval:           to.Ptr("<scan-interval>"),
 				},
-				DiskEncryptionSetID:     to.StringPtr("<disk-encryption-set-id>"),
-				DNSPrefix:               to.StringPtr("<dnsprefix>"),
-				EnablePodSecurityPolicy: to.BoolPtr(true),
-				EnableRBAC:              to.BoolPtr(true),
-				KubernetesVersion:       to.StringPtr("<kubernetes-version>"),
+				DiskEncryptionSetID:     to.Ptr("<disk-encryption-set-id>"),
+				DNSPrefix:               to.Ptr("<dnsprefix>"),
+				EnablePodSecurityPolicy: to.Ptr(false),
+				EnableRBAC:              to.Ptr(true),
+				KubernetesVersion:       to.Ptr("<kubernetes-version>"),
 				LinuxProfile: &armcontainerservice.LinuxProfile{
-					AdminUsername: to.StringPtr("<admin-username>"),
+					AdminUsername: to.Ptr("<admin-username>"),
 					SSH: &armcontainerservice.SSHConfiguration{
 						PublicKeys: []*armcontainerservice.SSHPublicKey{
 							{
-								KeyData: to.StringPtr("<key-data>"),
+								KeyData: to.Ptr("<key-data>"),
 							}},
 					},
 				},
 				NetworkProfile: &armcontainerservice.NetworkProfile{
 					LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
 						ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
-							Count: to.Int32Ptr(2),
+							Count: to.Ptr[int32](2),
 						},
 					},
-					LoadBalancerSKU: armcontainerservice.LoadBalancerSKU("standard").ToPtr(),
-					OutboundType:    armcontainerservice.OutboundType("loadBalancer").ToPtr(),
+					LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+					OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
 				},
 				ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
-					ClientID: to.StringPtr("<client-id>"),
-					Secret:   to.StringPtr("<secret>"),
+					ClientID: to.Ptr("<client-id>"),
+					Secret:   to.Ptr("<secret>"),
 				},
 				WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
-					AdminPassword: to.StringPtr("<admin-password>"),
-					AdminUsername: to.StringPtr("<admin-username>"),
+					AdminPassword: to.Ptr("<admin-password>"),
+					AdminUsername: to.Ptr("<admin-username>"),
 				},
 			},
 			SKU: &armcontainerservice.ManagedClusterSKU{
-				Name: armcontainerservice.ManagedClusterSKUName("Basic").ToPtr(),
-				Tier: armcontainerservice.ManagedClusterSKUTier("Free").ToPtr(),
+				Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+				Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
 			},
 		},
-		nil)
+		&armcontainerservice.ManagedClustersClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ManagedClustersClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-02-01/examples/ManagedClustersUpdateTags.json
 func ExampleManagedClustersClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	client, err := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdateTags(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		armcontainerservice.TagsObject{
 			Tags: map[string]*string{
-				"archv3": to.StringPtr(""),
-				"tier":   to.StringPtr("testing"),
+				"archv3": to.Ptr(""),
+				"tier":   to.Ptr("testing"),
 			},
 		},
-		nil)
+		&armcontainerservice.ManagedClustersClientBeginUpdateTagsOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ManagedClustersClientUpdateTagsResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-02-01/examples/ManagedClustersDelete.json
 func ExampleManagedClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	client, err := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		nil)
+		&armcontainerservice.ManagedClustersClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersResetServicePrincipalProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-02-01/examples/ManagedClustersResetServicePrincipalProfile.json
 func ExampleManagedClustersClient_BeginResetServicePrincipalProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	client, err := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginResetServicePrincipalProfile(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		armcontainerservice.ManagedClusterServicePrincipalProfile{
-			ClientID: to.StringPtr("<client-id>"),
-			Secret:   to.StringPtr("<secret>"),
+			ClientID: to.Ptr("<client-id>"),
+			Secret:   to.Ptr("<secret>"),
 		},
-		nil)
+		&armcontainerservice.ManagedClustersClientBeginResetServicePrincipalProfileOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersResetAADProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-02-01/examples/ManagedClustersResetAADProfile.json
 func ExampleManagedClustersClient_BeginResetAADProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	client, err := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginResetAADProfile(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		armcontainerservice.ManagedClusterAADProfile{
-			ClientAppID:     to.StringPtr("<client-app-id>"),
-			ServerAppID:     to.StringPtr("<server-app-id>"),
-			ServerAppSecret: to.StringPtr("<server-app-secret>"),
-			TenantID:        to.StringPtr("<tenant-id>"),
+			ClientAppID:     to.Ptr("<client-app-id>"),
+			ServerAppID:     to.Ptr("<server-app-id>"),
+			ServerAppSecret: to.Ptr("<server-app-secret>"),
+			TenantID:        to.Ptr("<tenant-id>"),
 		},
-		nil)
+		&armcontainerservice.ManagedClustersClientBeginResetAADProfileOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersRotateClusterCertificates.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-02-01/examples/ManagedClustersRotateClusterCertificates.json
 func ExampleManagedClustersClient_BeginRotateClusterCertificates() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	client, err := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginRotateClusterCertificates(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		nil)
+		&armcontainerservice.ManagedClustersClientBeginRotateClusterCertificatesOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersStop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-02-01/examples/ManagedClustersStop.json
 func ExampleManagedClustersClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	client, err := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginStop(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		nil)
+		&armcontainerservice.ManagedClustersClientBeginStopOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersStart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-02-01/examples/ManagedClustersStart.json
 func ExampleManagedClustersClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	client, err := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginStart(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		nil)
+		&armcontainerservice.ManagedClustersClientBeginStartOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/RunCommandRequest.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-02-01/examples/RunCommandRequest.json
 func ExampleManagedClustersClient_BeginRunCommand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	client, err := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginRunCommand(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		armcontainerservice.RunCommandRequest{
-			ClusterToken: to.StringPtr("<cluster-token>"),
-			Command:      to.StringPtr("<command>"),
-			Context:      to.StringPtr("<context>"),
+			ClusterToken: to.Ptr("<cluster-token>"),
+			Command:      to.Ptr("<command>"),
+			Context:      to.Ptr("<context>"),
 		},
-		nil)
+		&armcontainerservice.ManagedClustersClientBeginRunCommandOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ManagedClustersClientRunCommandResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/RunCommandResultFailed.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-02-01/examples/RunCommandResultFailed.json
 func ExampleManagedClustersClient_GetCommandResult() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	client, err := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetCommandResult(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		"<command-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ManagedClustersClientGetCommandResultResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/OutboundNetworkDependenciesEndpointsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-02-01/examples/OutboundNetworkDependenciesEndpointsList.json
 func ExampleManagedClustersClient_ListOutboundNetworkDependenciesEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	client, err := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListOutboundNetworkDependenciesEndpoints("<resource-group-name>",
 		"<resource-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -30,29 +31,32 @@ type SnapshotsClient struct {
 }
 
 // NewSnapshotsClient creates a new instance of SnapshotsClient with the specified values.
-// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
+// subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSnapshotsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SnapshotsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewSnapshotsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SnapshotsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SnapshotsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
-// resourceGroupName - The name of the resource group.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the managed cluster resource.
 // parameters - The snapshot to create or update.
 // options - SnapshotsClientCreateOrUpdateOptions contains the optional parameters for the SnapshotsClient.CreateOrUpdate
@@ -92,7 +96,7 @@ func (client *SnapshotsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -100,7 +104,7 @@ func (client *SnapshotsClient) createOrUpdateCreateRequest(ctx context.Context, 
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *SnapshotsClient) createOrUpdateHandleResponse(resp *http.Response) (SnapshotsClientCreateOrUpdateResponse, error) {
-	result := SnapshotsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := SnapshotsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Snapshot); err != nil {
 		return SnapshotsClientCreateOrUpdateResponse{}, err
 	}
@@ -109,7 +113,7 @@ func (client *SnapshotsClient) createOrUpdateHandleResponse(resp *http.Response)
 
 // Delete - Deletes a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
-// resourceGroupName - The name of the resource group.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the managed cluster resource.
 // options - SnapshotsClientDeleteOptions contains the optional parameters for the SnapshotsClient.Delete method.
 func (client *SnapshotsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, options *SnapshotsClientDeleteOptions) (SnapshotsClientDeleteResponse, error) {
@@ -124,7 +128,7 @@ func (client *SnapshotsClient) Delete(ctx context.Context, resourceGroupName str
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return SnapshotsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SnapshotsClientDeleteResponse{RawResponse: resp}, nil
+	return SnapshotsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -147,7 +151,7 @@ func (client *SnapshotsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -155,7 +159,7 @@ func (client *SnapshotsClient) deleteCreateRequest(ctx context.Context, resource
 
 // Get - Gets a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
-// resourceGroupName - The name of the resource group.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the managed cluster resource.
 // options - SnapshotsClientGetOptions contains the optional parameters for the SnapshotsClient.Get method.
 func (client *SnapshotsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *SnapshotsClientGetOptions) (SnapshotsClientGetResponse, error) {
@@ -193,7 +197,7 @@ func (client *SnapshotsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -201,7 +205,7 @@ func (client *SnapshotsClient) getCreateRequest(ctx context.Context, resourceGro
 
 // getHandleResponse handles the Get response.
 func (client *SnapshotsClient) getHandleResponse(resp *http.Response) (SnapshotsClientGetResponse, error) {
-	result := SnapshotsClientGetResponse{RawResponse: resp}
+	result := SnapshotsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Snapshot); err != nil {
 		return SnapshotsClientGetResponse{}, err
 	}
@@ -211,16 +215,32 @@ func (client *SnapshotsClient) getHandleResponse(resp *http.Response) (Snapshots
 // List - Gets a list of snapshots in the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SnapshotsClientListOptions contains the optional parameters for the SnapshotsClient.List method.
-func (client *SnapshotsClient) List(options *SnapshotsClientListOptions) *SnapshotsClientListPager {
-	return &SnapshotsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *SnapshotsClient) List(options *SnapshotsClientListOptions) *runtime.Pager[SnapshotsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SnapshotsClientListResponse]{
+		More: func(page SnapshotsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SnapshotsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SnapshotListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SnapshotsClientListResponse) (SnapshotsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SnapshotsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SnapshotsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SnapshotsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -235,7 +255,7 @@ func (client *SnapshotsClient) listCreateRequest(ctx context.Context, options *S
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -243,7 +263,7 @@ func (client *SnapshotsClient) listCreateRequest(ctx context.Context, options *S
 
 // listHandleResponse handles the List response.
 func (client *SnapshotsClient) listHandleResponse(resp *http.Response) (SnapshotsClientListResponse, error) {
-	result := SnapshotsClientListResponse{RawResponse: resp}
+	result := SnapshotsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SnapshotListResult); err != nil {
 		return SnapshotsClientListResponse{}, err
 	}
@@ -252,19 +272,35 @@ func (client *SnapshotsClient) listHandleResponse(resp *http.Response) (Snapshot
 
 // ListByResourceGroup - Lists snapshots in the specified subscription and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// resourceGroupName - The name of the resource group.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - SnapshotsClientListByResourceGroupOptions contains the optional parameters for the SnapshotsClient.ListByResourceGroup
 // method.
-func (client *SnapshotsClient) ListByResourceGroup(resourceGroupName string, options *SnapshotsClientListByResourceGroupOptions) *SnapshotsClientListByResourceGroupPager {
-	return &SnapshotsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *SnapshotsClient) ListByResourceGroup(resourceGroupName string, options *SnapshotsClientListByResourceGroupOptions) *runtime.Pager[SnapshotsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SnapshotsClientListByResourceGroupResponse]{
+		More: func(page SnapshotsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SnapshotsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SnapshotListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SnapshotsClientListByResourceGroupResponse) (SnapshotsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SnapshotsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SnapshotsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SnapshotsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -283,7 +319,7 @@ func (client *SnapshotsClient) listByResourceGroupCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -291,7 +327,7 @@ func (client *SnapshotsClient) listByResourceGroupCreateRequest(ctx context.Cont
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *SnapshotsClient) listByResourceGroupHandleResponse(resp *http.Response) (SnapshotsClientListByResourceGroupResponse, error) {
-	result := SnapshotsClientListByResourceGroupResponse{RawResponse: resp}
+	result := SnapshotsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SnapshotListResult); err != nil {
 		return SnapshotsClientListByResourceGroupResponse{}, err
 	}
@@ -300,7 +336,7 @@ func (client *SnapshotsClient) listByResourceGroupHandleResponse(resp *http.Resp
 
 // UpdateTags - Updates tags on a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
-// resourceGroupName - The name of the resource group.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the managed cluster resource.
 // parameters - Parameters supplied to the Update snapshot Tags operation.
 // options - SnapshotsClientUpdateTagsOptions contains the optional parameters for the SnapshotsClient.UpdateTags method.
@@ -339,7 +375,7 @@ func (client *SnapshotsClient) updateTagsCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -347,7 +383,7 @@ func (client *SnapshotsClient) updateTagsCreateRequest(ctx context.Context, reso
 
 // updateTagsHandleResponse handles the UpdateTags response.
 func (client *SnapshotsClient) updateTagsHandleResponse(resp *http.Response) (SnapshotsClientUpdateTagsResponse, error) {
-	result := SnapshotsClientUpdateTagsResponse{RawResponse: resp}
+	result := SnapshotsClientUpdateTagsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Snapshot); err != nil {
 		return SnapshotsClientUpdateTagsResponse{}, err
 	}

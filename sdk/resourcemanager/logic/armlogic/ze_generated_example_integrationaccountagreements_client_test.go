@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,241 +17,265 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic"
 )
 
-// x-ms-original-file: specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/IntegrationAccountAgreements_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/IntegrationAccountAgreements_List.json
 func ExampleIntegrationAccountAgreementsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armlogic.NewIntegrationAccountAgreementsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationAccountAgreementsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List("<resource-group-name>",
 		"<integration-account-name>",
 		&armlogic.IntegrationAccountAgreementsClientListOptions{Top: nil,
 			Filter: nil,
 		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/IntegrationAccountAgreements_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/IntegrationAccountAgreements_Get.json
 func ExampleIntegrationAccountAgreementsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armlogic.NewIntegrationAccountAgreementsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationAccountAgreementsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<integration-account-name>",
 		"<agreement-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.IntegrationAccountAgreementsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/IntegrationAccountAgreements_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/IntegrationAccountAgreements_CreateOrUpdate.json
 func ExampleIntegrationAccountAgreementsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armlogic.NewIntegrationAccountAgreementsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationAccountAgreementsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<integration-account-name>",
 		"<agreement-name>",
 		armlogic.IntegrationAccountAgreement{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Tags: map[string]*string{
-				"IntegrationAccountAgreement": to.StringPtr("<IntegrationAccountAgreementName>"),
+				"IntegrationAccountAgreement": to.Ptr("<IntegrationAccountAgreementName>"),
 			},
 			Properties: &armlogic.IntegrationAccountAgreementProperties{
-				AgreementType: armlogic.AgreementTypeAS2.ToPtr(),
+				AgreementType: to.Ptr(armlogic.AgreementTypeAS2),
 				Content: &armlogic.AgreementContent{
 					AS2: &armlogic.AS2AgreementContent{
 						ReceiveAgreement: &armlogic.AS2OneWayAgreement{
 							ProtocolSettings: &armlogic.AS2ProtocolSettings{
 								AcknowledgementConnectionSettings: &armlogic.AS2AcknowledgementConnectionSettings{
-									IgnoreCertificateNameMismatch: to.BoolPtr(true),
-									KeepHTTPConnectionAlive:       to.BoolPtr(true),
-									SupportHTTPStatusCodeContinue: to.BoolPtr(true),
-									UnfoldHTTPHeaders:             to.BoolPtr(true),
+									IgnoreCertificateNameMismatch: to.Ptr(true),
+									KeepHTTPConnectionAlive:       to.Ptr(true),
+									SupportHTTPStatusCodeContinue: to.Ptr(true),
+									UnfoldHTTPHeaders:             to.Ptr(true),
 								},
 								EnvelopeSettings: &armlogic.AS2EnvelopeSettings{
-									AutogenerateFileName:                    to.BoolPtr(true),
-									FileNameTemplate:                        to.StringPtr("<file-name-template>"),
-									MessageContentType:                      to.StringPtr("<message-content-type>"),
-									SuspendMessageOnFileNameGenerationError: to.BoolPtr(true),
-									TransmitFileNameInMimeHeader:            to.BoolPtr(true),
+									AutogenerateFileName:                    to.Ptr(true),
+									FileNameTemplate:                        to.Ptr("<file-name-template>"),
+									MessageContentType:                      to.Ptr("<message-content-type>"),
+									SuspendMessageOnFileNameGenerationError: to.Ptr(true),
+									TransmitFileNameInMimeHeader:            to.Ptr(true),
 								},
 								ErrorSettings: &armlogic.AS2ErrorSettings{
-									ResendIfMDNNotReceived:  to.BoolPtr(true),
-									SuspendDuplicateMessage: to.BoolPtr(true),
+									ResendIfMDNNotReceived:  to.Ptr(true),
+									SuspendDuplicateMessage: to.Ptr(true),
 								},
 								MdnSettings: &armlogic.AS2MdnSettings{
-									DispositionNotificationTo:  to.StringPtr("<disposition-notification-to>"),
-									MdnText:                    to.StringPtr("<mdn-text>"),
-									MicHashingAlgorithm:        armlogic.HashingAlgorithm("SHA1").ToPtr(),
-									NeedMDN:                    to.BoolPtr(true),
-									ReceiptDeliveryURL:         to.StringPtr("<receipt-delivery-url>"),
-									SendInboundMDNToMessageBox: to.BoolPtr(true),
-									SendMDNAsynchronously:      to.BoolPtr(true),
-									SignMDN:                    to.BoolPtr(true),
-									SignOutboundMDNIfOptional:  to.BoolPtr(true),
+									DispositionNotificationTo:  to.Ptr("<disposition-notification-to>"),
+									MdnText:                    to.Ptr("<mdn-text>"),
+									MicHashingAlgorithm:        to.Ptr(armlogic.HashingAlgorithmSHA1),
+									NeedMDN:                    to.Ptr(true),
+									ReceiptDeliveryURL:         to.Ptr("<receipt-delivery-url>"),
+									SendInboundMDNToMessageBox: to.Ptr(true),
+									SendMDNAsynchronously:      to.Ptr(true),
+									SignMDN:                    to.Ptr(true),
+									SignOutboundMDNIfOptional:  to.Ptr(true),
 								},
 								MessageConnectionSettings: &armlogic.AS2MessageConnectionSettings{
-									IgnoreCertificateNameMismatch: to.BoolPtr(true),
-									KeepHTTPConnectionAlive:       to.BoolPtr(true),
-									SupportHTTPStatusCodeContinue: to.BoolPtr(true),
-									UnfoldHTTPHeaders:             to.BoolPtr(true),
+									IgnoreCertificateNameMismatch: to.Ptr(true),
+									KeepHTTPConnectionAlive:       to.Ptr(true),
+									SupportHTTPStatusCodeContinue: to.Ptr(true),
+									UnfoldHTTPHeaders:             to.Ptr(true),
 								},
 								SecuritySettings: &armlogic.AS2SecuritySettings{
-									EnableNRRForInboundDecodedMessages:  to.BoolPtr(true),
-									EnableNRRForInboundEncodedMessages:  to.BoolPtr(true),
-									EnableNRRForInboundMDN:              to.BoolPtr(true),
-									EnableNRRForOutboundDecodedMessages: to.BoolPtr(true),
-									EnableNRRForOutboundEncodedMessages: to.BoolPtr(true),
-									EnableNRRForOutboundMDN:             to.BoolPtr(true),
-									OverrideGroupSigningCertificate:     to.BoolPtr(false),
+									EnableNRRForInboundDecodedMessages:  to.Ptr(true),
+									EnableNRRForInboundEncodedMessages:  to.Ptr(true),
+									EnableNRRForInboundMDN:              to.Ptr(true),
+									EnableNRRForOutboundDecodedMessages: to.Ptr(true),
+									EnableNRRForOutboundEncodedMessages: to.Ptr(true),
+									EnableNRRForOutboundMDN:             to.Ptr(true),
+									OverrideGroupSigningCertificate:     to.Ptr(false),
 								},
 								ValidationSettings: &armlogic.AS2ValidationSettings{
-									CheckCertificateRevocationListOnReceive: to.BoolPtr(true),
-									CheckCertificateRevocationListOnSend:    to.BoolPtr(true),
-									CheckDuplicateMessage:                   to.BoolPtr(true),
-									CompressMessage:                         to.BoolPtr(true),
-									EncryptMessage:                          to.BoolPtr(false),
-									EncryptionAlgorithm:                     armlogic.EncryptionAlgorithm("AES128").ToPtr(),
-									InterchangeDuplicatesValidityDays:       to.Int32Ptr(100),
-									OverrideMessageProperties:               to.BoolPtr(true),
-									SignMessage:                             to.BoolPtr(false),
+									CheckCertificateRevocationListOnReceive: to.Ptr(true),
+									CheckCertificateRevocationListOnSend:    to.Ptr(true),
+									CheckDuplicateMessage:                   to.Ptr(true),
+									CompressMessage:                         to.Ptr(true),
+									EncryptMessage:                          to.Ptr(false),
+									EncryptionAlgorithm:                     to.Ptr(armlogic.EncryptionAlgorithmAES128),
+									InterchangeDuplicatesValidityDays:       to.Ptr[int32](100),
+									OverrideMessageProperties:               to.Ptr(true),
+									SignMessage:                             to.Ptr(false),
 								},
 							},
 							ReceiverBusinessIdentity: &armlogic.BusinessIdentity{
-								Qualifier: to.StringPtr("<qualifier>"),
-								Value:     to.StringPtr("<value>"),
+								Qualifier: to.Ptr("<qualifier>"),
+								Value:     to.Ptr("<value>"),
 							},
 							SenderBusinessIdentity: &armlogic.BusinessIdentity{
-								Qualifier: to.StringPtr("<qualifier>"),
-								Value:     to.StringPtr("<value>"),
+								Qualifier: to.Ptr("<qualifier>"),
+								Value:     to.Ptr("<value>"),
 							},
 						},
 						SendAgreement: &armlogic.AS2OneWayAgreement{
 							ProtocolSettings: &armlogic.AS2ProtocolSettings{
 								AcknowledgementConnectionSettings: &armlogic.AS2AcknowledgementConnectionSettings{
-									IgnoreCertificateNameMismatch: to.BoolPtr(true),
-									KeepHTTPConnectionAlive:       to.BoolPtr(true),
-									SupportHTTPStatusCodeContinue: to.BoolPtr(true),
-									UnfoldHTTPHeaders:             to.BoolPtr(true),
+									IgnoreCertificateNameMismatch: to.Ptr(true),
+									KeepHTTPConnectionAlive:       to.Ptr(true),
+									SupportHTTPStatusCodeContinue: to.Ptr(true),
+									UnfoldHTTPHeaders:             to.Ptr(true),
 								},
 								EnvelopeSettings: &armlogic.AS2EnvelopeSettings{
-									AutogenerateFileName:                    to.BoolPtr(true),
-									FileNameTemplate:                        to.StringPtr("<file-name-template>"),
-									MessageContentType:                      to.StringPtr("<message-content-type>"),
-									SuspendMessageOnFileNameGenerationError: to.BoolPtr(true),
-									TransmitFileNameInMimeHeader:            to.BoolPtr(true),
+									AutogenerateFileName:                    to.Ptr(true),
+									FileNameTemplate:                        to.Ptr("<file-name-template>"),
+									MessageContentType:                      to.Ptr("<message-content-type>"),
+									SuspendMessageOnFileNameGenerationError: to.Ptr(true),
+									TransmitFileNameInMimeHeader:            to.Ptr(true),
 								},
 								ErrorSettings: &armlogic.AS2ErrorSettings{
-									ResendIfMDNNotReceived:  to.BoolPtr(true),
-									SuspendDuplicateMessage: to.BoolPtr(true),
+									ResendIfMDNNotReceived:  to.Ptr(true),
+									SuspendDuplicateMessage: to.Ptr(true),
 								},
 								MdnSettings: &armlogic.AS2MdnSettings{
-									DispositionNotificationTo:  to.StringPtr("<disposition-notification-to>"),
-									MdnText:                    to.StringPtr("<mdn-text>"),
-									MicHashingAlgorithm:        armlogic.HashingAlgorithm("SHA1").ToPtr(),
-									NeedMDN:                    to.BoolPtr(true),
-									ReceiptDeliveryURL:         to.StringPtr("<receipt-delivery-url>"),
-									SendInboundMDNToMessageBox: to.BoolPtr(true),
-									SendMDNAsynchronously:      to.BoolPtr(true),
-									SignMDN:                    to.BoolPtr(true),
-									SignOutboundMDNIfOptional:  to.BoolPtr(true),
+									DispositionNotificationTo:  to.Ptr("<disposition-notification-to>"),
+									MdnText:                    to.Ptr("<mdn-text>"),
+									MicHashingAlgorithm:        to.Ptr(armlogic.HashingAlgorithmSHA1),
+									NeedMDN:                    to.Ptr(true),
+									ReceiptDeliveryURL:         to.Ptr("<receipt-delivery-url>"),
+									SendInboundMDNToMessageBox: to.Ptr(true),
+									SendMDNAsynchronously:      to.Ptr(true),
+									SignMDN:                    to.Ptr(true),
+									SignOutboundMDNIfOptional:  to.Ptr(true),
 								},
 								MessageConnectionSettings: &armlogic.AS2MessageConnectionSettings{
-									IgnoreCertificateNameMismatch: to.BoolPtr(true),
-									KeepHTTPConnectionAlive:       to.BoolPtr(true),
-									SupportHTTPStatusCodeContinue: to.BoolPtr(true),
-									UnfoldHTTPHeaders:             to.BoolPtr(true),
+									IgnoreCertificateNameMismatch: to.Ptr(true),
+									KeepHTTPConnectionAlive:       to.Ptr(true),
+									SupportHTTPStatusCodeContinue: to.Ptr(true),
+									UnfoldHTTPHeaders:             to.Ptr(true),
 								},
 								SecuritySettings: &armlogic.AS2SecuritySettings{
-									EnableNRRForInboundDecodedMessages:  to.BoolPtr(true),
-									EnableNRRForInboundEncodedMessages:  to.BoolPtr(true),
-									EnableNRRForInboundMDN:              to.BoolPtr(true),
-									EnableNRRForOutboundDecodedMessages: to.BoolPtr(true),
-									EnableNRRForOutboundEncodedMessages: to.BoolPtr(true),
-									EnableNRRForOutboundMDN:             to.BoolPtr(true),
-									OverrideGroupSigningCertificate:     to.BoolPtr(false),
+									EnableNRRForInboundDecodedMessages:  to.Ptr(true),
+									EnableNRRForInboundEncodedMessages:  to.Ptr(true),
+									EnableNRRForInboundMDN:              to.Ptr(true),
+									EnableNRRForOutboundDecodedMessages: to.Ptr(true),
+									EnableNRRForOutboundEncodedMessages: to.Ptr(true),
+									EnableNRRForOutboundMDN:             to.Ptr(true),
+									OverrideGroupSigningCertificate:     to.Ptr(false),
 								},
 								ValidationSettings: &armlogic.AS2ValidationSettings{
-									CheckCertificateRevocationListOnReceive: to.BoolPtr(true),
-									CheckCertificateRevocationListOnSend:    to.BoolPtr(true),
-									CheckDuplicateMessage:                   to.BoolPtr(true),
-									CompressMessage:                         to.BoolPtr(true),
-									EncryptMessage:                          to.BoolPtr(false),
-									EncryptionAlgorithm:                     armlogic.EncryptionAlgorithm("AES128").ToPtr(),
-									InterchangeDuplicatesValidityDays:       to.Int32Ptr(100),
-									OverrideMessageProperties:               to.BoolPtr(true),
-									SignMessage:                             to.BoolPtr(false),
+									CheckCertificateRevocationListOnReceive: to.Ptr(true),
+									CheckCertificateRevocationListOnSend:    to.Ptr(true),
+									CheckDuplicateMessage:                   to.Ptr(true),
+									CompressMessage:                         to.Ptr(true),
+									EncryptMessage:                          to.Ptr(false),
+									EncryptionAlgorithm:                     to.Ptr(armlogic.EncryptionAlgorithmAES128),
+									InterchangeDuplicatesValidityDays:       to.Ptr[int32](100),
+									OverrideMessageProperties:               to.Ptr(true),
+									SignMessage:                             to.Ptr(false),
 								},
 							},
 							ReceiverBusinessIdentity: &armlogic.BusinessIdentity{
-								Qualifier: to.StringPtr("<qualifier>"),
-								Value:     to.StringPtr("<value>"),
+								Qualifier: to.Ptr("<qualifier>"),
+								Value:     to.Ptr("<value>"),
 							},
 							SenderBusinessIdentity: &armlogic.BusinessIdentity{
-								Qualifier: to.StringPtr("<qualifier>"),
-								Value:     to.StringPtr("<value>"),
+								Qualifier: to.Ptr("<qualifier>"),
+								Value:     to.Ptr("<value>"),
 							},
 						},
 					},
 				},
 				GuestIdentity: &armlogic.BusinessIdentity{
-					Qualifier: to.StringPtr("<qualifier>"),
-					Value:     to.StringPtr("<value>"),
+					Qualifier: to.Ptr("<qualifier>"),
+					Value:     to.Ptr("<value>"),
 				},
-				GuestPartner: to.StringPtr("<guest-partner>"),
+				GuestPartner: to.Ptr("<guest-partner>"),
 				HostIdentity: &armlogic.BusinessIdentity{
-					Qualifier: to.StringPtr("<qualifier>"),
-					Value:     to.StringPtr("<value>"),
+					Qualifier: to.Ptr("<qualifier>"),
+					Value:     to.Ptr("<value>"),
 				},
-				HostPartner: to.StringPtr("<host-partner>"),
+				HostPartner: to.Ptr("<host-partner>"),
 				Metadata:    map[string]interface{}{},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.IntegrationAccountAgreementsClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/IntegrationAccountAgreements_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/IntegrationAccountAgreements_Delete.json
 func ExampleIntegrationAccountAgreementsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armlogic.NewIntegrationAccountAgreementsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationAccountAgreementsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<integration-account-name>",
 		"<agreement-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }

@@ -1,5 +1,166 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*MembersClient.List` return value(s) have been changed from `(*MembersClientListPager)` to `(*runtime.Pager[MembersClientListResponse])`
+- Function `NewMemberOperationResultsClient` return value(s) have been changed from `(*MemberOperationResultsClient)` to `(*MemberOperationResultsClient, error)`
+- Function `NewLocationsClient` return value(s) have been changed from `(*LocationsClient)` to `(*LocationsClient, error)`
+- Function `*MembersClient.ListConsortiumMembers` return value(s) have been changed from `(*MembersClientListConsortiumMembersPager)` to `(*runtime.Pager[MembersClientListConsortiumMembersResponse])`
+- Function `*MembersClient.ListAll` return value(s) have been changed from `(*MembersClientListAllPager)` to `(*runtime.Pager[MembersClientListAllResponse])`
+- Function `*MembersClient.BeginCreate` return value(s) have been changed from `(MembersClientCreatePollerResponse, error)` to `(*armruntime.Poller[MembersClientCreateResponse], error)`
+- Function `*MembersClient.BeginDelete` return value(s) have been changed from `(MembersClientDeletePollerResponse, error)` to `(*armruntime.Poller[MembersClientDeleteResponse], error)`
+- Function `NewMembersClient` return value(s) have been changed from `(*MembersClient)` to `(*MembersClient, error)`
+- Function `*TransactionNodesClient.BeginCreate` return value(s) have been changed from `(TransactionNodesClientCreatePollerResponse, error)` to `(*armruntime.Poller[TransactionNodesClientCreateResponse], error)`
+- Function `NewSKUsClient` return value(s) have been changed from `(*SKUsClient)` to `(*SKUsClient, error)`
+- Function `*TransactionNodesClient.BeginDelete` return value(s) have been changed from `(TransactionNodesClientDeletePollerResponse, error)` to `(*armruntime.Poller[TransactionNodesClientDeleteResponse], error)`
+- Function `NewTransactionNodesClient` return value(s) have been changed from `(*TransactionNodesClient)` to `(*TransactionNodesClient, error)`
+- Function `*TransactionNodesClient.List` return value(s) have been changed from `(*TransactionNodesClientListPager)` to `(*runtime.Pager[TransactionNodesClientListResponse])`
+- Function `*MembersClientListConsortiumMembersPager.PageResponse` has been removed
+- Function `*MembersClientCreatePoller.FinalResponse` has been removed
+- Function `*MembersClientCreatePoller.Poll` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `BlockchainProtocol.ToPtr` has been removed
+- Function `TransactionNodesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*MembersClientCreatePoller.Done` has been removed
+- Function `*TransactionNodesClientCreatePoller.ResumeToken` has been removed
+- Function `NameAvailabilityReason.ToPtr` has been removed
+- Function `*MembersClientListPager.Err` has been removed
+- Function `*MembersClientListAllPager.PageResponse` has been removed
+- Function `*TransactionNodesClientCreatePoller.Done` has been removed
+- Function `*TransactionNodesClientDeletePollerResponse.Resume` has been removed
+- Function `NodeProvisioningState.ToPtr` has been removed
+- Function `MembersClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*MembersClientListConsortiumMembersPager.NextPage` has been removed
+- Function `*TransactionNodesClientCreatePoller.FinalResponse` has been removed
+- Function `*MembersClientListAllPager.NextPage` has been removed
+- Function `*MembersClientCreatePoller.ResumeToken` has been removed
+- Function `*TransactionNodesClientCreatePollerResponse.Resume` has been removed
+- Function `*MembersClientListPager.PageResponse` has been removed
+- Function `*TransactionNodesClientListPager.NextPage` has been removed
+- Function `TransactionNodesClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `MembersClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*TransactionNodesClientDeletePoller.FinalResponse` has been removed
+- Function `*MembersClientListConsortiumMembersPager.Err` has been removed
+- Function `*TransactionNodesClientDeletePoller.Poll` has been removed
+- Function `*MembersClientDeletePoller.Done` has been removed
+- Function `*MembersClientDeletePoller.ResumeToken` has been removed
+- Function `*MembersClientCreatePollerResponse.Resume` has been removed
+- Function `*TransactionNodesClientListPager.Err` has been removed
+- Function `*MembersClientDeletePollerResponse.Resume` has been removed
+- Function `*TransactionNodesClientCreatePoller.Poll` has been removed
+- Function `*MembersClientListPager.NextPage` has been removed
+- Function `*TransactionNodesClientDeletePoller.ResumeToken` has been removed
+- Function `*TransactionNodesClientDeletePoller.Done` has been removed
+- Function `*TransactionNodesClientListPager.PageResponse` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*MembersClientDeletePoller.Poll` has been removed
+- Function `BlockchainMemberProvisioningState.ToPtr` has been removed
+- Function `*MembersClientListAllPager.Err` has been removed
+- Function `*MembersClientDeletePoller.FinalResponse` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Struct `LocationsClientCheckNameAvailabilityResult` has been removed
+- Struct `LocationsClientListConsortiumsResult` has been removed
+- Struct `MemberOperationResultsClientGetResult` has been removed
+- Struct `MembersClientCreatePoller` has been removed
+- Struct `MembersClientCreatePollerResponse` has been removed
+- Struct `MembersClientCreateResult` has been removed
+- Struct `MembersClientDeletePoller` has been removed
+- Struct `MembersClientDeletePollerResponse` has been removed
+- Struct `MembersClientGetResult` has been removed
+- Struct `MembersClientListAPIKeysResult` has been removed
+- Struct `MembersClientListAllPager` has been removed
+- Struct `MembersClientListAllResult` has been removed
+- Struct `MembersClientListConsortiumMembersPager` has been removed
+- Struct `MembersClientListConsortiumMembersResult` has been removed
+- Struct `MembersClientListPager` has been removed
+- Struct `MembersClientListRegenerateAPIKeysResult` has been removed
+- Struct `MembersClientListResult` has been removed
+- Struct `MembersClientUpdateResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `SKUsClientListResult` has been removed
+- Struct `TransactionNodesClientCreatePoller` has been removed
+- Struct `TransactionNodesClientCreatePollerResponse` has been removed
+- Struct `TransactionNodesClientCreateResult` has been removed
+- Struct `TransactionNodesClientDeletePoller` has been removed
+- Struct `TransactionNodesClientDeletePollerResponse` has been removed
+- Struct `TransactionNodesClientGetResult` has been removed
+- Struct `TransactionNodesClientListAPIKeysResult` has been removed
+- Struct `TransactionNodesClientListPager` has been removed
+- Struct `TransactionNodesClientListRegenerateAPIKeysResult` has been removed
+- Struct `TransactionNodesClientListResult` has been removed
+- Struct `TransactionNodesClientUpdateResult` has been removed
+- Field `RawResponse` of struct `TransactionNodesClientDeleteResponse` has been removed
+- Field `LocationsClientListConsortiumsResult` of struct `LocationsClientListConsortiumsResponse` has been removed
+- Field `RawResponse` of struct `LocationsClientListConsortiumsResponse` has been removed
+- Field `TransactionNodesClientUpdateResult` of struct `TransactionNodesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `TransactionNodesClientUpdateResponse` has been removed
+- Field `TransactionNodesClientListResult` of struct `TransactionNodesClientListResponse` has been removed
+- Field `RawResponse` of struct `TransactionNodesClientListResponse` has been removed
+- Field `SKUsClientListResult` of struct `SKUsClientListResponse` has been removed
+- Field `RawResponse` of struct `SKUsClientListResponse` has been removed
+- Field `MembersClientListResult` of struct `MembersClientListResponse` has been removed
+- Field `RawResponse` of struct `MembersClientListResponse` has been removed
+- Field `TransactionNodesClientCreateResult` of struct `TransactionNodesClientCreateResponse` has been removed
+- Field `RawResponse` of struct `TransactionNodesClientCreateResponse` has been removed
+- Field `MembersClientListAllResult` of struct `MembersClientListAllResponse` has been removed
+- Field `RawResponse` of struct `MembersClientListAllResponse` has been removed
+- Field `MembersClientListConsortiumMembersResult` of struct `MembersClientListConsortiumMembersResponse` has been removed
+- Field `RawResponse` of struct `MembersClientListConsortiumMembersResponse` has been removed
+- Field `MembersClientUpdateResult` of struct `MembersClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `MembersClientUpdateResponse` has been removed
+- Field `MembersClientListAPIKeysResult` of struct `MembersClientListAPIKeysResponse` has been removed
+- Field `RawResponse` of struct `MembersClientListAPIKeysResponse` has been removed
+- Field `MembersClientGetResult` of struct `MembersClientGetResponse` has been removed
+- Field `RawResponse` of struct `MembersClientGetResponse` has been removed
+- Field `MembersClientListRegenerateAPIKeysResult` of struct `MembersClientListRegenerateAPIKeysResponse` has been removed
+- Field `RawResponse` of struct `MembersClientListRegenerateAPIKeysResponse` has been removed
+- Field `TransactionNodesClientListAPIKeysResult` of struct `TransactionNodesClientListAPIKeysResponse` has been removed
+- Field `RawResponse` of struct `TransactionNodesClientListAPIKeysResponse` has been removed
+- Field `TransactionNodesClientListRegenerateAPIKeysResult` of struct `TransactionNodesClientListRegenerateAPIKeysResponse` has been removed
+- Field `RawResponse` of struct `TransactionNodesClientListRegenerateAPIKeysResponse` has been removed
+- Field `RawResponse` of struct `MembersClientDeleteResponse` has been removed
+- Field `MemberOperationResultsClientGetResult` of struct `MemberOperationResultsClientGetResponse` has been removed
+- Field `RawResponse` of struct `MemberOperationResultsClientGetResponse` has been removed
+- Field `MembersClientCreateResult` of struct `MembersClientCreateResponse` has been removed
+- Field `RawResponse` of struct `MembersClientCreateResponse` has been removed
+- Field `LocationsClientCheckNameAvailabilityResult` of struct `LocationsClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `LocationsClientCheckNameAvailabilityResponse` has been removed
+- Field `TransactionNodesClientGetResult` of struct `TransactionNodesClientGetResponse` has been removed
+- Field `RawResponse` of struct `TransactionNodesClientGetResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+
+### Features Added
+
+- New anonymous field `TransactionNode` in struct `TransactionNodesClientCreateResponse`
+- New anonymous field `OperationResult` in struct `MemberOperationResultsClientGetResponse`
+- New anonymous field `Member` in struct `MembersClientUpdateResponse`
+- New field `ResumeToken` in struct `TransactionNodesClientBeginDeleteOptions`
+- New anonymous field `MemberCollection` in struct `MembersClientListAllResponse`
+- New anonymous field `ResourceProviderOperationCollection` in struct `OperationsClientListResponse`
+- New anonymous field `MemberCollection` in struct `MembersClientListResponse`
+- New anonymous field `APIKeyCollection` in struct `MembersClientListAPIKeysResponse`
+- New anonymous field `APIKeyCollection` in struct `MembersClientListRegenerateAPIKeysResponse`
+- New anonymous field `APIKeyCollection` in struct `TransactionNodesClientListRegenerateAPIKeysResponse`
+- New anonymous field `Member` in struct `MembersClientCreateResponse`
+- New field `ResumeToken` in struct `TransactionNodesClientBeginCreateOptions`
+- New field `ResumeToken` in struct `MembersClientBeginDeleteOptions`
+- New anonymous field `TransactionNode` in struct `TransactionNodesClientGetResponse`
+- New anonymous field `TransactionNodeCollection` in struct `TransactionNodesClientListResponse`
+- New anonymous field `ConsortiumMemberCollection` in struct `MembersClientListConsortiumMembersResponse`
+- New field `ResumeToken` in struct `MembersClientBeginCreateOptions`
+- New anonymous field `ConsortiumCollection` in struct `LocationsClientListConsortiumsResponse`
+- New anonymous field `Member` in struct `MembersClientGetResponse`
+- New anonymous field `NameAvailability` in struct `LocationsClientCheckNameAvailabilityResponse`
+- New anonymous field `ResourceTypeSKUCollection` in struct `SKUsClientListResponse`
+- New anonymous field `APIKeyCollection` in struct `TransactionNodesClientListAPIKeysResponse`
+- New anonymous field `TransactionNode` in struct `TransactionNodesClientUpdateResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

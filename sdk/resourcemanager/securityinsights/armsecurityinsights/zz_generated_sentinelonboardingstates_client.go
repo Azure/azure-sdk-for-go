@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type SentinelOnboardingStatesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSentinelOnboardingStatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SentinelOnboardingStatesClient {
+func NewSentinelOnboardingStatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SentinelOnboardingStatesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SentinelOnboardingStatesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Create Sentinel onboarding state
@@ -95,7 +100,7 @@ func (client *SentinelOnboardingStatesClient) createCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.SentinelOnboardingStateParameter != nil {
@@ -106,7 +111,7 @@ func (client *SentinelOnboardingStatesClient) createCreateRequest(ctx context.Co
 
 // createHandleResponse handles the Create response.
 func (client *SentinelOnboardingStatesClient) createHandleResponse(resp *http.Response) (SentinelOnboardingStatesClientCreateResponse, error) {
-	result := SentinelOnboardingStatesClientCreateResponse{RawResponse: resp}
+	result := SentinelOnboardingStatesClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SentinelOnboardingState); err != nil {
 		return SentinelOnboardingStatesClientCreateResponse{}, err
 	}
@@ -132,7 +137,7 @@ func (client *SentinelOnboardingStatesClient) Delete(ctx context.Context, resour
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return SentinelOnboardingStatesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SentinelOnboardingStatesClientDeleteResponse{RawResponse: resp}, nil
+	return SentinelOnboardingStatesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -159,7 +164,7 @@ func (client *SentinelOnboardingStatesClient) deleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -211,7 +216,7 @@ func (client *SentinelOnboardingStatesClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -219,7 +224,7 @@ func (client *SentinelOnboardingStatesClient) getCreateRequest(ctx context.Conte
 
 // getHandleResponse handles the Get response.
 func (client *SentinelOnboardingStatesClient) getHandleResponse(resp *http.Response) (SentinelOnboardingStatesClientGetResponse, error) {
-	result := SentinelOnboardingStatesClientGetResponse{RawResponse: resp}
+	result := SentinelOnboardingStatesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SentinelOnboardingState); err != nil {
 		return SentinelOnboardingStatesClientGetResponse{}, err
 	}
@@ -267,7 +272,7 @@ func (client *SentinelOnboardingStatesClient) listCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -275,7 +280,7 @@ func (client *SentinelOnboardingStatesClient) listCreateRequest(ctx context.Cont
 
 // listHandleResponse handles the List response.
 func (client *SentinelOnboardingStatesClient) listHandleResponse(resp *http.Response) (SentinelOnboardingStatesClientListResponse, error) {
-	result := SentinelOnboardingStatesClientListResponse{RawResponse: resp}
+	result := SentinelOnboardingStatesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SentinelOnboardingStatesList); err != nil {
 		return SentinelOnboardingStatesClientListResponse{}, err
 	}

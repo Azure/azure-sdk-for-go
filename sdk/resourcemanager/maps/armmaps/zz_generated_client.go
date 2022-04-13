@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,35 +34,55 @@ type Client struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *Client {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &Client{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // ListOperations - List operations available for the Maps Resource Provider
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ClientListOperationsOptions contains the optional parameters for the Client.ListOperations method.
-func (client *Client) ListOperations(options *ClientListOperationsOptions) *ClientListOperationsPager {
-	return &ClientListOperationsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listOperationsCreateRequest(ctx, options)
+func (client *Client) ListOperations(options *ClientListOperationsOptions) *runtime.Pager[ClientListOperationsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ClientListOperationsResponse]{
+		More: func(page ClientListOperationsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ClientListOperationsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.Operations.NextLink)
+		Fetcher: func(ctx context.Context, page *ClientListOperationsResponse) (ClientListOperationsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listOperationsCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ClientListOperationsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClientListOperationsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClientListOperationsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listOperationsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listOperationsCreateRequest creates the ListOperations request.
@@ -80,7 +101,7 @@ func (client *Client) listOperationsCreateRequest(ctx context.Context, options *
 
 // listOperationsHandleResponse handles the ListOperations response.
 func (client *Client) listOperationsHandleResponse(resp *http.Response) (ClientListOperationsResponse, error) {
-	result := ClientListOperationsResponse{RawResponse: resp}
+	result := ClientListOperationsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Operations); err != nil {
 		return ClientListOperationsResponse{}, err
 	}
@@ -91,16 +112,32 @@ func (client *Client) listOperationsHandleResponse(resp *http.Response) (ClientL
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ClientListSubscriptionOperationsOptions contains the optional parameters for the Client.ListSubscriptionOperations
 // method.
-func (client *Client) ListSubscriptionOperations(options *ClientListSubscriptionOperationsOptions) *ClientListSubscriptionOperationsPager {
-	return &ClientListSubscriptionOperationsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listSubscriptionOperationsCreateRequest(ctx, options)
+func (client *Client) ListSubscriptionOperations(options *ClientListSubscriptionOperationsOptions) *runtime.Pager[ClientListSubscriptionOperationsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ClientListSubscriptionOperationsResponse]{
+		More: func(page ClientListSubscriptionOperationsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ClientListSubscriptionOperationsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.Operations.NextLink)
+		Fetcher: func(ctx context.Context, page *ClientListSubscriptionOperationsResponse) (ClientListSubscriptionOperationsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listSubscriptionOperationsCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ClientListSubscriptionOperationsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClientListSubscriptionOperationsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClientListSubscriptionOperationsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSubscriptionOperationsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listSubscriptionOperationsCreateRequest creates the ListSubscriptionOperations request.
@@ -123,7 +160,7 @@ func (client *Client) listSubscriptionOperationsCreateRequest(ctx context.Contex
 
 // listSubscriptionOperationsHandleResponse handles the ListSubscriptionOperations response.
 func (client *Client) listSubscriptionOperationsHandleResponse(resp *http.Response) (ClientListSubscriptionOperationsResponse, error) {
-	result := ClientListSubscriptionOperationsResponse{RawResponse: resp}
+	result := ClientListSubscriptionOperationsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Operations); err != nil {
 		return ClientListSubscriptionOperationsResponse{}, err
 	}

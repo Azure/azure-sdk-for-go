@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type StoragesClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewStoragesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *StoragesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewStoragesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StoragesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &StoragesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or update storage resource.
@@ -59,22 +64,18 @@ func NewStoragesClient(subscriptionID string, credential azcore.TokenCredential,
 // storageResource - Parameters for the create or update operation
 // options - StoragesClientBeginCreateOrUpdateOptions contains the optional parameters for the StoragesClient.BeginCreateOrUpdate
 // method.
-func (client *StoragesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, storageName string, storageResource StorageResource, options *StoragesClientBeginCreateOrUpdateOptions) (StoragesClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, storageName, storageResource, options)
-	if err != nil {
-		return StoragesClientCreateOrUpdatePollerResponse{}, err
+func (client *StoragesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, storageName string, storageResource StorageResource, options *StoragesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[StoragesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, storageName, storageResource, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[StoragesClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[StoragesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := StoragesClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("StoragesClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return StoragesClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &StoragesClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update storage resource.
@@ -118,7 +119,7 @@ func (client *StoragesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, storageResource)
@@ -131,22 +132,18 @@ func (client *StoragesClient) createOrUpdateCreateRequest(ctx context.Context, r
 // serviceName - The name of the Service resource.
 // storageName - The name of the storage resource.
 // options - StoragesClientBeginDeleteOptions contains the optional parameters for the StoragesClient.BeginDelete method.
-func (client *StoragesClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, storageName string, options *StoragesClientBeginDeleteOptions) (StoragesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, storageName, options)
-	if err != nil {
-		return StoragesClientDeletePollerResponse{}, err
+func (client *StoragesClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, storageName string, options *StoragesClientBeginDeleteOptions) (*armruntime.Poller[StoragesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, storageName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[StoragesClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[StoragesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := StoragesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("StoragesClient.Delete", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return StoragesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &StoragesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete the storage resource.
@@ -190,7 +187,7 @@ func (client *StoragesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -242,7 +239,7 @@ func (client *StoragesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -250,7 +247,7 @@ func (client *StoragesClient) getCreateRequest(ctx context.Context, resourceGrou
 
 // getHandleResponse handles the Get response.
 func (client *StoragesClient) getHandleResponse(resp *http.Response) (StoragesClientGetResponse, error) {
-	result := StoragesClientGetResponse{RawResponse: resp}
+	result := StoragesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageResource); err != nil {
 		return StoragesClientGetResponse{}, err
 	}
@@ -263,16 +260,32 @@ func (client *StoragesClient) getHandleResponse(resp *http.Response) (StoragesCl
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
 // options - StoragesClientListOptions contains the optional parameters for the StoragesClient.List method.
-func (client *StoragesClient) List(resourceGroupName string, serviceName string, options *StoragesClientListOptions) *StoragesClientListPager {
-	return &StoragesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, serviceName, options)
+func (client *StoragesClient) List(resourceGroupName string, serviceName string, options *StoragesClientListOptions) *runtime.Pager[StoragesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[StoragesClientListResponse]{
+		More: func(page StoragesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp StoragesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.StorageResourceCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *StoragesClientListResponse) (StoragesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, serviceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return StoragesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return StoragesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return StoragesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -295,7 +308,7 @@ func (client *StoragesClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -303,7 +316,7 @@ func (client *StoragesClient) listCreateRequest(ctx context.Context, resourceGro
 
 // listHandleResponse handles the List response.
 func (client *StoragesClient) listHandleResponse(resp *http.Response) (StoragesClientListResponse, error) {
-	result := StoragesClientListResponse{RawResponse: resp}
+	result := StoragesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageResourceCollection); err != nil {
 		return StoragesClientListResponse{}, err
 	}

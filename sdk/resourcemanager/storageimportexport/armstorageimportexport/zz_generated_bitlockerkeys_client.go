@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,21 +36,25 @@ type BitLockerKeysClient struct {
 // acceptLanguage - Specifies the preferred language for the response.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewBitLockerKeysClient(subscriptionID string, acceptLanguage *string, credential azcore.TokenCredential, options *arm.ClientOptions) *BitLockerKeysClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewBitLockerKeysClient(subscriptionID string, acceptLanguage *string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BitLockerKeysClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &BitLockerKeysClient{
 		subscriptionID: subscriptionID,
 		acceptLanguage: acceptLanguage,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - Returns the BitLocker Keys for all drives in the specified job.
@@ -57,19 +62,26 @@ func NewBitLockerKeysClient(subscriptionID string, acceptLanguage *string, crede
 // jobName - The name of the import/export job.
 // resourceGroupName - The resource group name uniquely identifies the resource group within the user subscription.
 // options - BitLockerKeysClientListOptions contains the optional parameters for the BitLockerKeysClient.List method.
-func (client *BitLockerKeysClient) List(ctx context.Context, jobName string, resourceGroupName string, options *BitLockerKeysClientListOptions) (BitLockerKeysClientListResponse, error) {
-	req, err := client.listCreateRequest(ctx, jobName, resourceGroupName, options)
-	if err != nil {
-		return BitLockerKeysClientListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return BitLockerKeysClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BitLockerKeysClientListResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listHandleResponse(resp)
+func (client *BitLockerKeysClient) List(jobName string, resourceGroupName string, options *BitLockerKeysClientListOptions) *runtime.Pager[BitLockerKeysClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[BitLockerKeysClientListResponse]{
+		More: func(page BitLockerKeysClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *BitLockerKeysClientListResponse) (BitLockerKeysClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, jobName, resourceGroupName, options)
+			if err != nil {
+				return BitLockerKeysClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return BitLockerKeysClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return BitLockerKeysClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -103,7 +115,7 @@ func (client *BitLockerKeysClient) listCreateRequest(ctx context.Context, jobNam
 
 // listHandleResponse handles the List response.
 func (client *BitLockerKeysClient) listHandleResponse(resp *http.Response) (BitLockerKeysClientListResponse, error) {
-	result := BitLockerKeysClientListResponse{RawResponse: resp}
+	result := BitLockerKeysClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GetBitLockerKeysResponse); err != nil {
 		return BitLockerKeysClientListResponse{}, err
 	}

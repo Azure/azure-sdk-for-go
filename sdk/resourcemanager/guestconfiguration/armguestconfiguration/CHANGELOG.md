@@ -1,5 +1,91 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `NewAssignmentReportsClient` return value(s) have been changed from `(*AssignmentReportsClient)` to `(*AssignmentReportsClient, error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `NewAssignmentsClient` return value(s) have been changed from `(*AssignmentsClient)` to `(*AssignmentsClient, error)`
+- Function `*AssignmentsClient.List` parameter(s) have been changed from `(context.Context, string, string, *AssignmentsClientListOptions)` to `(string, string, *AssignmentsClientListOptions)`
+- Function `*AssignmentsClient.List` return value(s) have been changed from `(AssignmentsClientListResponse, error)` to `(*runtime.Pager[AssignmentsClientListResponse])`
+- Function `NewHCRPAssignmentReportsClient` return value(s) have been changed from `(*HCRPAssignmentReportsClient)` to `(*HCRPAssignmentReportsClient, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsClientListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsClientListResponse, error)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*HCRPAssignmentsClient.List` parameter(s) have been changed from `(context.Context, string, string, *HCRPAssignmentsClientListOptions)` to `(string, string, *HCRPAssignmentsClientListOptions)`
+- Function `*HCRPAssignmentsClient.List` return value(s) have been changed from `(HCRPAssignmentsClientListResponse, error)` to `(*runtime.Pager[HCRPAssignmentsClientListResponse])`
+- Function `*AssignmentsClient.RGList` parameter(s) have been changed from `(context.Context, string, *AssignmentsClientRGListOptions)` to `(string, *AssignmentsClientRGListOptions)`
+- Function `*AssignmentsClient.RGList` return value(s) have been changed from `(AssignmentsClientRGListResponse, error)` to `(*runtime.Pager[AssignmentsClientRGListResponse])`
+- Function `*AssignmentsClient.SubscriptionList` parameter(s) have been changed from `(context.Context, *AssignmentsClientSubscriptionListOptions)` to `(*AssignmentsClientSubscriptionListOptions)`
+- Function `*AssignmentsClient.SubscriptionList` return value(s) have been changed from `(AssignmentsClientSubscriptionListResponse, error)` to `(*runtime.Pager[AssignmentsClientSubscriptionListResponse])`
+- Function `NewHCRPAssignmentsClient` return value(s) have been changed from `(*HCRPAssignmentsClient)` to `(*HCRPAssignmentsClient, error)`
+- Function `ComplianceStatus.ToPtr` has been removed
+- Function `ActionAfterReboot.ToPtr` has been removed
+- Function `Type.ToPtr` has been removed
+- Function `Kind.ToPtr` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `ConfigurationMode.ToPtr` has been removed
+- Function `AssignmentType.ToPtr` has been removed
+- Struct `AssignmentReportsClientGetResult` has been removed
+- Struct `AssignmentReportsClientListResult` has been removed
+- Struct `AssignmentsClientCreateOrUpdateResult` has been removed
+- Struct `AssignmentsClientGetResult` has been removed
+- Struct `AssignmentsClientListResult` has been removed
+- Struct `AssignmentsClientRGListResult` has been removed
+- Struct `AssignmentsClientSubscriptionListResult` has been removed
+- Struct `HCRPAssignmentReportsClientGetResult` has been removed
+- Struct `HCRPAssignmentReportsClientListResult` has been removed
+- Struct `HCRPAssignmentsClientCreateOrUpdateResult` has been removed
+- Struct `HCRPAssignmentsClientGetResult` has been removed
+- Struct `HCRPAssignmentsClientListResult` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Field `AssignmentsClientGetResult` of struct `AssignmentsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AssignmentsClientGetResponse` has been removed
+- Field `AssignmentReportsClientListResult` of struct `AssignmentReportsClientListResponse` has been removed
+- Field `RawResponse` of struct `AssignmentReportsClientListResponse` has been removed
+- Field `AssignmentReportsClientGetResult` of struct `AssignmentReportsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AssignmentReportsClientGetResponse` has been removed
+- Field `HCRPAssignmentsClientCreateOrUpdateResult` of struct `HCRPAssignmentsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `HCRPAssignmentsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `AssignmentsClientDeleteResponse` has been removed
+- Field `AssignmentsClientCreateOrUpdateResult` of struct `AssignmentsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `AssignmentsClientCreateOrUpdateResponse` has been removed
+- Field `AssignmentsClientListResult` of struct `AssignmentsClientListResponse` has been removed
+- Field `RawResponse` of struct `AssignmentsClientListResponse` has been removed
+- Field `HCRPAssignmentReportsClientListResult` of struct `HCRPAssignmentReportsClientListResponse` has been removed
+- Field `RawResponse` of struct `HCRPAssignmentReportsClientListResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `HCRPAssignmentsClientDeleteResponse` has been removed
+- Field `HCRPAssignmentsClientListResult` of struct `HCRPAssignmentsClientListResponse` has been removed
+- Field `RawResponse` of struct `HCRPAssignmentsClientListResponse` has been removed
+- Field `AssignmentsClientSubscriptionListResult` of struct `AssignmentsClientSubscriptionListResponse` has been removed
+- Field `RawResponse` of struct `AssignmentsClientSubscriptionListResponse` has been removed
+- Field `HCRPAssignmentsClientGetResult` of struct `HCRPAssignmentsClientGetResponse` has been removed
+- Field `RawResponse` of struct `HCRPAssignmentsClientGetResponse` has been removed
+- Field `AssignmentsClientRGListResult` of struct `AssignmentsClientRGListResponse` has been removed
+- Field `RawResponse` of struct `AssignmentsClientRGListResponse` has been removed
+- Field `HCRPAssignmentReportsClientGetResult` of struct `HCRPAssignmentReportsClientGetResponse` has been removed
+- Field `RawResponse` of struct `HCRPAssignmentReportsClientGetResponse` has been removed
+
+### Features Added
+
+- New struct `ErrorResponse`
+- New struct `ErrorResponseError`
+- New anonymous field `AssignmentList` in struct `AssignmentsClientListResponse`
+- New anonymous field `Assignment` in struct `AssignmentsClientGetResponse`
+- New anonymous field `AssignmentReportList` in struct `HCRPAssignmentReportsClientListResponse`
+- New anonymous field `AssignmentList` in struct `AssignmentsClientRGListResponse`
+- New anonymous field `AssignmentReport` in struct `AssignmentReportsClientGetResponse`
+- New anonymous field `AssignmentList` in struct `AssignmentsClientSubscriptionListResponse`
+- New anonymous field `Assignment` in struct `HCRPAssignmentsClientGetResponse`
+- New anonymous field `AssignmentReport` in struct `HCRPAssignmentReportsClientGetResponse`
+- New anonymous field `Assignment` in struct `AssignmentsClientCreateOrUpdateResponse`
+- New anonymous field `AssignmentList` in struct `HCRPAssignmentsClientListResponse`
+- New anonymous field `AssignmentReportList` in struct `AssignmentReportsClientListResponse`
+- New anonymous field `Assignment` in struct `HCRPAssignmentsClientCreateOrUpdateResponse`
+- New anonymous field `OperationList` in struct `OperationsClientListResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

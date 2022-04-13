@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type VirtualMachinesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewVirtualMachinesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualMachinesClient {
+func NewVirtualMachinesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualMachinesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &VirtualMachinesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Returns the properties for a lab virtual machine.
@@ -103,7 +108,7 @@ func (client *VirtualMachinesClient) getCreateRequest(ctx context.Context, resou
 
 // getHandleResponse handles the Get response.
 func (client *VirtualMachinesClient) getHandleResponse(resp *http.Response) (VirtualMachinesClientGetResponse, error) {
-	result := VirtualMachinesClientGetResponse{RawResponse: resp}
+	result := VirtualMachinesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachine); err != nil {
 		return VirtualMachinesClientGetResponse{}, err
 	}
@@ -116,16 +121,32 @@ func (client *VirtualMachinesClient) getHandleResponse(resp *http.Response) (Vir
 // labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
 // options - VirtualMachinesClientListByLabOptions contains the optional parameters for the VirtualMachinesClient.ListByLab
 // method.
-func (client *VirtualMachinesClient) ListByLab(resourceGroupName string, labName string, options *VirtualMachinesClientListByLabOptions) *VirtualMachinesClientListByLabPager {
-	return &VirtualMachinesClientListByLabPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByLabCreateRequest(ctx, resourceGroupName, labName, options)
+func (client *VirtualMachinesClient) ListByLab(resourceGroupName string, labName string, options *VirtualMachinesClientListByLabOptions) *runtime.Pager[VirtualMachinesClientListByLabResponse] {
+	return runtime.NewPager(runtime.PageProcessor[VirtualMachinesClientListByLabResponse]{
+		More: func(page VirtualMachinesClientListByLabResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp VirtualMachinesClientListByLabResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PagedVirtualMachines.NextLink)
+		Fetcher: func(ctx context.Context, page *VirtualMachinesClientListByLabResponse) (VirtualMachinesClientListByLabResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByLabCreateRequest(ctx, resourceGroupName, labName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return VirtualMachinesClientListByLabResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return VirtualMachinesClientListByLabResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return VirtualMachinesClientListByLabResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByLabHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByLabCreateRequest creates the ListByLab request.
@@ -159,7 +180,7 @@ func (client *VirtualMachinesClient) listByLabCreateRequest(ctx context.Context,
 
 // listByLabHandleResponse handles the ListByLab response.
 func (client *VirtualMachinesClient) listByLabHandleResponse(resp *http.Response) (VirtualMachinesClientListByLabResponse, error) {
-	result := VirtualMachinesClientListByLabResponse{RawResponse: resp}
+	result := VirtualMachinesClientListByLabResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PagedVirtualMachines); err != nil {
 		return VirtualMachinesClientListByLabResponse{}, err
 	}
@@ -174,22 +195,18 @@ func (client *VirtualMachinesClient) listByLabHandleResponse(resp *http.Response
 // URIs.
 // options - VirtualMachinesClientBeginRedeployOptions contains the optional parameters for the VirtualMachinesClient.BeginRedeploy
 // method.
-func (client *VirtualMachinesClient) BeginRedeploy(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginRedeployOptions) (VirtualMachinesClientRedeployPollerResponse, error) {
-	resp, err := client.redeploy(ctx, resourceGroupName, labName, virtualMachineName, options)
-	if err != nil {
-		return VirtualMachinesClientRedeployPollerResponse{}, err
+func (client *VirtualMachinesClient) BeginRedeploy(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginRedeployOptions) (*armruntime.Poller[VirtualMachinesClientRedeployResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.redeploy(ctx, resourceGroupName, labName, virtualMachineName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualMachinesClientRedeployResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[VirtualMachinesClientRedeployResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VirtualMachinesClientRedeployPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VirtualMachinesClient.Redeploy", "location", resp, client.pl)
-	if err != nil {
-		return VirtualMachinesClientRedeployPollerResponse{}, err
-	}
-	result.Poller = &VirtualMachinesClientRedeployPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Redeploy - Action to redeploy a lab virtual machine to a different compute node. For troubleshooting connectivity.
@@ -248,22 +265,18 @@ func (client *VirtualMachinesClient) redeployCreateRequest(ctx context.Context, 
 // URIs.
 // options - VirtualMachinesClientBeginReimageOptions contains the optional parameters for the VirtualMachinesClient.BeginReimage
 // method.
-func (client *VirtualMachinesClient) BeginReimage(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginReimageOptions) (VirtualMachinesClientReimagePollerResponse, error) {
-	resp, err := client.reimage(ctx, resourceGroupName, labName, virtualMachineName, options)
-	if err != nil {
-		return VirtualMachinesClientReimagePollerResponse{}, err
+func (client *VirtualMachinesClient) BeginReimage(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginReimageOptions) (*armruntime.Poller[VirtualMachinesClientReimageResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.reimage(ctx, resourceGroupName, labName, virtualMachineName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualMachinesClientReimageResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[VirtualMachinesClientReimageResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VirtualMachinesClientReimagePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VirtualMachinesClient.Reimage", "location", resp, client.pl)
-	if err != nil {
-		return VirtualMachinesClientReimagePollerResponse{}, err
-	}
-	result.Poller = &VirtualMachinesClientReimagePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Reimage - Re-image a lab virtual machine. The virtual machine will be deleted and recreated using the latest published
@@ -323,22 +336,18 @@ func (client *VirtualMachinesClient) reimageCreateRequest(ctx context.Context, r
 // body - The request body.
 // options - VirtualMachinesClientBeginResetPasswordOptions contains the optional parameters for the VirtualMachinesClient.BeginResetPassword
 // method.
-func (client *VirtualMachinesClient) BeginResetPassword(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, body ResetPasswordBody, options *VirtualMachinesClientBeginResetPasswordOptions) (VirtualMachinesClientResetPasswordPollerResponse, error) {
-	resp, err := client.resetPassword(ctx, resourceGroupName, labName, virtualMachineName, body, options)
-	if err != nil {
-		return VirtualMachinesClientResetPasswordPollerResponse{}, err
+func (client *VirtualMachinesClient) BeginResetPassword(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, body ResetPasswordBody, options *VirtualMachinesClientBeginResetPasswordOptions) (*armruntime.Poller[VirtualMachinesClientResetPasswordResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resetPassword(ctx, resourceGroupName, labName, virtualMachineName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualMachinesClientResetPasswordResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[VirtualMachinesClientResetPasswordResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VirtualMachinesClientResetPasswordPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VirtualMachinesClient.ResetPassword", "location", resp, client.pl)
-	if err != nil {
-		return VirtualMachinesClientResetPasswordPollerResponse{}, err
-	}
-	result.Poller = &VirtualMachinesClientResetPasswordPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // ResetPassword - Resets a lab virtual machine password.
@@ -396,22 +405,18 @@ func (client *VirtualMachinesClient) resetPasswordCreateRequest(ctx context.Cont
 // URIs.
 // options - VirtualMachinesClientBeginStartOptions contains the optional parameters for the VirtualMachinesClient.BeginStart
 // method.
-func (client *VirtualMachinesClient) BeginStart(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginStartOptions) (VirtualMachinesClientStartPollerResponse, error) {
-	resp, err := client.start(ctx, resourceGroupName, labName, virtualMachineName, options)
-	if err != nil {
-		return VirtualMachinesClientStartPollerResponse{}, err
+func (client *VirtualMachinesClient) BeginStart(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginStartOptions) (*armruntime.Poller[VirtualMachinesClientStartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.start(ctx, resourceGroupName, labName, virtualMachineName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualMachinesClientStartResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[VirtualMachinesClientStartResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VirtualMachinesClientStartPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VirtualMachinesClient.Start", "location", resp, client.pl)
-	if err != nil {
-		return VirtualMachinesClientStartPollerResponse{}, err
-	}
-	result.Poller = &VirtualMachinesClientStartPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Start - Action to start a lab virtual machine.
@@ -469,22 +474,18 @@ func (client *VirtualMachinesClient) startCreateRequest(ctx context.Context, res
 // URIs.
 // options - VirtualMachinesClientBeginStopOptions contains the optional parameters for the VirtualMachinesClient.BeginStop
 // method.
-func (client *VirtualMachinesClient) BeginStop(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginStopOptions) (VirtualMachinesClientStopPollerResponse, error) {
-	resp, err := client.stop(ctx, resourceGroupName, labName, virtualMachineName, options)
-	if err != nil {
-		return VirtualMachinesClientStopPollerResponse{}, err
+func (client *VirtualMachinesClient) BeginStop(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginStopOptions) (*armruntime.Poller[VirtualMachinesClientStopResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.stop(ctx, resourceGroupName, labName, virtualMachineName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualMachinesClientStopResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[VirtualMachinesClientStopResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VirtualMachinesClientStopPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VirtualMachinesClient.Stop", "location", resp, client.pl)
-	if err != nil {
-		return VirtualMachinesClientStopPollerResponse{}, err
-	}
-	result.Poller = &VirtualMachinesClientStopPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Stop - Action to stop a lab virtual machine.

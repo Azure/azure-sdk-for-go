@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type DataCollectionRulesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDataCollectionRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DataCollectionRulesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewDataCollectionRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataCollectionRulesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DataCollectionRulesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Creates or updates a data collection rule.
@@ -90,7 +95,7 @@ func (client *DataCollectionRulesClient) createCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.Body != nil {
@@ -101,7 +106,7 @@ func (client *DataCollectionRulesClient) createCreateRequest(ctx context.Context
 
 // createHandleResponse handles the Create response.
 func (client *DataCollectionRulesClient) createHandleResponse(resp *http.Response) (DataCollectionRulesClientCreateResponse, error) {
-	result := DataCollectionRulesClientCreateResponse{RawResponse: resp}
+	result := DataCollectionRulesClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionRuleResource); err != nil {
 		return DataCollectionRulesClientCreateResponse{}, err
 	}
@@ -126,7 +131,7 @@ func (client *DataCollectionRulesClient) Delete(ctx context.Context, resourceGro
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return DataCollectionRulesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return DataCollectionRulesClientDeleteResponse{RawResponse: resp}, nil
+	return DataCollectionRulesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -149,7 +154,7 @@ func (client *DataCollectionRulesClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -195,7 +200,7 @@ func (client *DataCollectionRulesClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -203,7 +208,7 @@ func (client *DataCollectionRulesClient) getCreateRequest(ctx context.Context, r
 
 // getHandleResponse handles the Get response.
 func (client *DataCollectionRulesClient) getHandleResponse(resp *http.Response) (DataCollectionRulesClientGetResponse, error) {
-	result := DataCollectionRulesClientGetResponse{RawResponse: resp}
+	result := DataCollectionRulesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionRuleResource); err != nil {
 		return DataCollectionRulesClientGetResponse{}, err
 	}
@@ -215,16 +220,32 @@ func (client *DataCollectionRulesClient) getHandleResponse(resp *http.Response) 
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - DataCollectionRulesClientListByResourceGroupOptions contains the optional parameters for the DataCollectionRulesClient.ListByResourceGroup
 // method.
-func (client *DataCollectionRulesClient) ListByResourceGroup(resourceGroupName string, options *DataCollectionRulesClientListByResourceGroupOptions) *DataCollectionRulesClientListByResourceGroupPager {
-	return &DataCollectionRulesClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *DataCollectionRulesClient) ListByResourceGroup(resourceGroupName string, options *DataCollectionRulesClientListByResourceGroupOptions) *runtime.Pager[DataCollectionRulesClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DataCollectionRulesClientListByResourceGroupResponse]{
+		More: func(page DataCollectionRulesClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DataCollectionRulesClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DataCollectionRuleResourceListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DataCollectionRulesClientListByResourceGroupResponse) (DataCollectionRulesClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DataCollectionRulesClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DataCollectionRulesClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DataCollectionRulesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -243,7 +264,7 @@ func (client *DataCollectionRulesClient) listByResourceGroupCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -251,7 +272,7 @@ func (client *DataCollectionRulesClient) listByResourceGroupCreateRequest(ctx co
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *DataCollectionRulesClient) listByResourceGroupHandleResponse(resp *http.Response) (DataCollectionRulesClientListByResourceGroupResponse, error) {
-	result := DataCollectionRulesClientListByResourceGroupResponse{RawResponse: resp}
+	result := DataCollectionRulesClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionRuleResourceListResult); err != nil {
 		return DataCollectionRulesClientListByResourceGroupResponse{}, err
 	}
@@ -262,16 +283,32 @@ func (client *DataCollectionRulesClient) listByResourceGroupHandleResponse(resp 
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DataCollectionRulesClientListBySubscriptionOptions contains the optional parameters for the DataCollectionRulesClient.ListBySubscription
 // method.
-func (client *DataCollectionRulesClient) ListBySubscription(options *DataCollectionRulesClientListBySubscriptionOptions) *DataCollectionRulesClientListBySubscriptionPager {
-	return &DataCollectionRulesClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *DataCollectionRulesClient) ListBySubscription(options *DataCollectionRulesClientListBySubscriptionOptions) *runtime.Pager[DataCollectionRulesClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DataCollectionRulesClientListBySubscriptionResponse]{
+		More: func(page DataCollectionRulesClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DataCollectionRulesClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DataCollectionRuleResourceListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DataCollectionRulesClientListBySubscriptionResponse) (DataCollectionRulesClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DataCollectionRulesClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DataCollectionRulesClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DataCollectionRulesClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -286,7 +323,7 @@ func (client *DataCollectionRulesClient) listBySubscriptionCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -294,7 +331,7 @@ func (client *DataCollectionRulesClient) listBySubscriptionCreateRequest(ctx con
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *DataCollectionRulesClient) listBySubscriptionHandleResponse(resp *http.Response) (DataCollectionRulesClientListBySubscriptionResponse, error) {
-	result := DataCollectionRulesClientListBySubscriptionResponse{RawResponse: resp}
+	result := DataCollectionRulesClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionRuleResourceListResult); err != nil {
 		return DataCollectionRulesClientListBySubscriptionResponse{}, err
 	}
@@ -342,7 +379,7 @@ func (client *DataCollectionRulesClient) updateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.Body != nil {
@@ -353,7 +390,7 @@ func (client *DataCollectionRulesClient) updateCreateRequest(ctx context.Context
 
 // updateHandleResponse handles the Update response.
 func (client *DataCollectionRulesClient) updateHandleResponse(resp *http.Response) (DataCollectionRulesClientUpdateResponse, error) {
-	result := DataCollectionRulesClientUpdateResponse{RawResponse: resp}
+	result := DataCollectionRulesClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionRuleResource); err != nil {
 		return DataCollectionRulesClientUpdateResponse{}, err
 	}

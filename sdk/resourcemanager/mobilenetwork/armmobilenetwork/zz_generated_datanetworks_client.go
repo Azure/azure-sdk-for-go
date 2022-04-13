@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type DataNetworksClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDataNetworksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DataNetworksClient {
+func NewDataNetworksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataNetworksClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DataNetworksClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a mobile network dataNetwork.
@@ -57,22 +62,18 @@ func NewDataNetworksClient(subscriptionID string, credential azcore.TokenCredent
 // parameters - Parameters supplied to the create or update mobile network dataNetwork operation.
 // options - DataNetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the DataNetworksClient.BeginCreateOrUpdate
 // method.
-func (client *DataNetworksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, mobileNetworkName string, dataNetworkName string, parameters DataNetwork, options *DataNetworksClientBeginCreateOrUpdateOptions) (DataNetworksClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, mobileNetworkName, dataNetworkName, parameters, options)
-	if err != nil {
-		return DataNetworksClientCreateOrUpdatePollerResponse{}, err
+func (client *DataNetworksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, mobileNetworkName string, dataNetworkName string, parameters DataNetwork, options *DataNetworksClientBeginCreateOrUpdateOptions) (*armruntime.Poller[DataNetworksClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, mobileNetworkName, dataNetworkName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[DataNetworksClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[DataNetworksClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DataNetworksClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DataNetworksClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return DataNetworksClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &DataNetworksClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a mobile network dataNetwork.
@@ -129,22 +130,18 @@ func (client *DataNetworksClient) createOrUpdateCreateRequest(ctx context.Contex
 // dataNetworkName - The name of the mobile network dataNetwork.
 // options - DataNetworksClientBeginDeleteOptions contains the optional parameters for the DataNetworksClient.BeginDelete
 // method.
-func (client *DataNetworksClient) BeginDelete(ctx context.Context, resourceGroupName string, mobileNetworkName string, dataNetworkName string, options *DataNetworksClientBeginDeleteOptions) (DataNetworksClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, mobileNetworkName, dataNetworkName, options)
-	if err != nil {
-		return DataNetworksClientDeletePollerResponse{}, err
+func (client *DataNetworksClient) BeginDelete(ctx context.Context, resourceGroupName string, mobileNetworkName string, dataNetworkName string, options *DataNetworksClientBeginDeleteOptions) (*armruntime.Poller[DataNetworksClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, mobileNetworkName, dataNetworkName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[DataNetworksClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[DataNetworksClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DataNetworksClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DataNetworksClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return DataNetworksClientDeletePollerResponse{}, err
-	}
-	result.Poller = &DataNetworksClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified mobile network dataNetwork.
@@ -247,7 +244,7 @@ func (client *DataNetworksClient) getCreateRequest(ctx context.Context, resource
 
 // getHandleResponse handles the Get response.
 func (client *DataNetworksClient) getHandleResponse(resp *http.Response) (DataNetworksClientGetResponse, error) {
-	result := DataNetworksClientGetResponse{RawResponse: resp}
+	result := DataNetworksClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataNetwork); err != nil {
 		return DataNetworksClientGetResponse{}, err
 	}
@@ -260,16 +257,32 @@ func (client *DataNetworksClient) getHandleResponse(resp *http.Response) (DataNe
 // mobileNetworkName - The name of the mobile network.
 // options - DataNetworksClientListByMobileNetworkOptions contains the optional parameters for the DataNetworksClient.ListByMobileNetwork
 // method.
-func (client *DataNetworksClient) ListByMobileNetwork(resourceGroupName string, mobileNetworkName string, options *DataNetworksClientListByMobileNetworkOptions) *DataNetworksClientListByMobileNetworkPager {
-	return &DataNetworksClientListByMobileNetworkPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByMobileNetworkCreateRequest(ctx, resourceGroupName, mobileNetworkName, options)
+func (client *DataNetworksClient) ListByMobileNetwork(resourceGroupName string, mobileNetworkName string, options *DataNetworksClientListByMobileNetworkOptions) *runtime.Pager[DataNetworksClientListByMobileNetworkResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DataNetworksClientListByMobileNetworkResponse]{
+		More: func(page DataNetworksClientListByMobileNetworkResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DataNetworksClientListByMobileNetworkResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DataNetworkListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DataNetworksClientListByMobileNetworkResponse) (DataNetworksClientListByMobileNetworkResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByMobileNetworkCreateRequest(ctx, resourceGroupName, mobileNetworkName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DataNetworksClientListByMobileNetworkResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DataNetworksClientListByMobileNetworkResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DataNetworksClientListByMobileNetworkResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByMobileNetworkHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByMobileNetworkCreateRequest creates the ListByMobileNetwork request.
@@ -300,7 +313,7 @@ func (client *DataNetworksClient) listByMobileNetworkCreateRequest(ctx context.C
 
 // listByMobileNetworkHandleResponse handles the ListByMobileNetwork response.
 func (client *DataNetworksClient) listByMobileNetworkHandleResponse(resp *http.Response) (DataNetworksClientListByMobileNetworkResponse, error) {
-	result := DataNetworksClientListByMobileNetworkResponse{RawResponse: resp}
+	result := DataNetworksClientListByMobileNetworkResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataNetworkListResult); err != nil {
 		return DataNetworksClientListByMobileNetworkResponse{}, err
 	}
@@ -361,7 +374,7 @@ func (client *DataNetworksClient) updateTagsCreateRequest(ctx context.Context, r
 
 // updateTagsHandleResponse handles the UpdateTags response.
 func (client *DataNetworksClient) updateTagsHandleResponse(resp *http.Response) (DataNetworksClientUpdateTagsResponse, error) {
-	result := DataNetworksClientUpdateTagsResponse{RawResponse: resp}
+	result := DataNetworksClientUpdateTagsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataNetwork); err != nil {
 		return DataNetworksClientUpdateTagsResponse{}, err
 	}

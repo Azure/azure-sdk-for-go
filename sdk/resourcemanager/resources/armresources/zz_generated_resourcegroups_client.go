@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type ResourceGroupsClient struct {
 // subscriptionID - The Microsoft Azure subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewResourceGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ResourceGroupsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewResourceGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceGroupsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ResourceGroupsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CheckExistence - Checks whether a resource group exists.
@@ -63,7 +68,7 @@ func (client *ResourceGroupsClient) CheckExistence(ctx context.Context, resource
 	if err != nil {
 		return ResourceGroupsClientCheckExistenceResponse{}, err
 	}
-	result := ResourceGroupsClientCheckExistenceResponse{RawResponse: resp}
+	result := ResourceGroupsClientCheckExistenceResponse{}
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		result.Success = true
 	}
@@ -138,7 +143,7 @@ func (client *ResourceGroupsClient) createOrUpdateCreateRequest(ctx context.Cont
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ResourceGroupsClient) createOrUpdateHandleResponse(resp *http.Response) (ResourceGroupsClientCreateOrUpdateResponse, error) {
-	result := ResourceGroupsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := ResourceGroupsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceGroup); err != nil {
 		return ResourceGroupsClientCreateOrUpdateResponse{}, err
 	}
@@ -151,22 +156,16 @@ func (client *ResourceGroupsClient) createOrUpdateHandleResponse(resp *http.Resp
 // resourceGroupName - The name of the resource group to delete. The name is case insensitive.
 // options - ResourceGroupsClientBeginDeleteOptions contains the optional parameters for the ResourceGroupsClient.BeginDelete
 // method.
-func (client *ResourceGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, options *ResourceGroupsClientBeginDeleteOptions) (ResourceGroupsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, options)
-	if err != nil {
-		return ResourceGroupsClientDeletePollerResponse{}, err
+func (client *ResourceGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, options *ResourceGroupsClientBeginDeleteOptions) (*armruntime.Poller[ResourceGroupsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ResourceGroupsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ResourceGroupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ResourceGroupsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ResourceGroupsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return ResourceGroupsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ResourceGroupsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all
@@ -218,22 +217,18 @@ func (client *ResourceGroupsClient) deleteCreateRequest(ctx context.Context, res
 // parameters - Parameters for exporting the template.
 // options - ResourceGroupsClientBeginExportTemplateOptions contains the optional parameters for the ResourceGroupsClient.BeginExportTemplate
 // method.
-func (client *ResourceGroupsClient) BeginExportTemplate(ctx context.Context, resourceGroupName string, parameters ExportTemplateRequest, options *ResourceGroupsClientBeginExportTemplateOptions) (ResourceGroupsClientExportTemplatePollerResponse, error) {
-	resp, err := client.exportTemplate(ctx, resourceGroupName, parameters, options)
-	if err != nil {
-		return ResourceGroupsClientExportTemplatePollerResponse{}, err
+func (client *ResourceGroupsClient) BeginExportTemplate(ctx context.Context, resourceGroupName string, parameters ExportTemplateRequest, options *ResourceGroupsClientBeginExportTemplateOptions) (*armruntime.Poller[ResourceGroupsClientExportTemplateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.exportTemplate(ctx, resourceGroupName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ResourceGroupsClientExportTemplateResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ResourceGroupsClientExportTemplateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ResourceGroupsClientExportTemplatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ResourceGroupsClient.ExportTemplate", "location", resp, client.pl)
-	if err != nil {
-		return ResourceGroupsClientExportTemplatePollerResponse{}, err
-	}
-	result.Poller = &ResourceGroupsClientExportTemplatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // ExportTemplate - Captures the specified resource group as a template.
@@ -318,7 +313,7 @@ func (client *ResourceGroupsClient) getCreateRequest(ctx context.Context, resour
 
 // getHandleResponse handles the Get response.
 func (client *ResourceGroupsClient) getHandleResponse(resp *http.Response) (ResourceGroupsClientGetResponse, error) {
-	result := ResourceGroupsClientGetResponse{RawResponse: resp}
+	result := ResourceGroupsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceGroup); err != nil {
 		return ResourceGroupsClientGetResponse{}, err
 	}
@@ -328,16 +323,32 @@ func (client *ResourceGroupsClient) getHandleResponse(resp *http.Response) (Reso
 // List - Gets all the resource groups for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ResourceGroupsClientListOptions contains the optional parameters for the ResourceGroupsClient.List method.
-func (client *ResourceGroupsClient) List(options *ResourceGroupsClientListOptions) *ResourceGroupsClientListPager {
-	return &ResourceGroupsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *ResourceGroupsClient) List(options *ResourceGroupsClientListOptions) *runtime.Pager[ResourceGroupsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ResourceGroupsClientListResponse]{
+		More: func(page ResourceGroupsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ResourceGroupsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ResourceGroupListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ResourceGroupsClientListResponse) (ResourceGroupsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ResourceGroupsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ResourceGroupsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ResourceGroupsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -366,7 +377,7 @@ func (client *ResourceGroupsClient) listCreateRequest(ctx context.Context, optio
 
 // listHandleResponse handles the List response.
 func (client *ResourceGroupsClient) listHandleResponse(resp *http.Response) (ResourceGroupsClientListResponse, error) {
-	result := ResourceGroupsClientListResponse{RawResponse: resp}
+	result := ResourceGroupsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceGroupListResult); err != nil {
 		return ResourceGroupsClientListResponse{}, err
 	}
@@ -419,7 +430,7 @@ func (client *ResourceGroupsClient) updateCreateRequest(ctx context.Context, res
 
 // updateHandleResponse handles the Update response.
 func (client *ResourceGroupsClient) updateHandleResponse(resp *http.Response) (ResourceGroupsClientUpdateResponse, error) {
-	result := ResourceGroupsClientUpdateResponse{RawResponse: resp}
+	result := ResourceGroupsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceGroup); err != nil {
 		return ResourceGroupsClientUpdateResponse{}, err
 	}

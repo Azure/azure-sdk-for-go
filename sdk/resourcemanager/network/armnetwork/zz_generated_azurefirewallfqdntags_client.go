@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,36 +35,56 @@ type AzureFirewallFqdnTagsClient struct {
 // ID forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAzureFirewallFqdnTagsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AzureFirewallFqdnTagsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAzureFirewallFqdnTagsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AzureFirewallFqdnTagsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AzureFirewallFqdnTagsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // ListAll - Gets all the Azure Firewall FQDN Tags in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AzureFirewallFqdnTagsClientListAllOptions contains the optional parameters for the AzureFirewallFqdnTagsClient.ListAll
 // method.
-func (client *AzureFirewallFqdnTagsClient) ListAll(options *AzureFirewallFqdnTagsClientListAllOptions) *AzureFirewallFqdnTagsClientListAllPager {
-	return &AzureFirewallFqdnTagsClientListAllPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listAllCreateRequest(ctx, options)
+func (client *AzureFirewallFqdnTagsClient) ListAll(options *AzureFirewallFqdnTagsClientListAllOptions) *runtime.Pager[AzureFirewallFqdnTagsClientListAllResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AzureFirewallFqdnTagsClientListAllResponse]{
+		More: func(page AzureFirewallFqdnTagsClientListAllResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AzureFirewallFqdnTagsClientListAllResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AzureFirewallFqdnTagListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AzureFirewallFqdnTagsClientListAllResponse) (AzureFirewallFqdnTagsClientListAllResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAllCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AzureFirewallFqdnTagsClientListAllResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AzureFirewallFqdnTagsClientListAllResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AzureFirewallFqdnTagsClientListAllResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAllHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listAllCreateRequest creates the ListAll request.
@@ -86,7 +107,7 @@ func (client *AzureFirewallFqdnTagsClient) listAllCreateRequest(ctx context.Cont
 
 // listAllHandleResponse handles the ListAll response.
 func (client *AzureFirewallFqdnTagsClient) listAllHandleResponse(resp *http.Response) (AzureFirewallFqdnTagsClientListAllResponse, error) {
-	result := AzureFirewallFqdnTagsClientListAllResponse{RawResponse: resp}
+	result := AzureFirewallFqdnTagsClientListAllResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureFirewallFqdnTagListResult); err != nil {
 		return AzureFirewallFqdnTagsClientListAllResponse{}, err
 	}

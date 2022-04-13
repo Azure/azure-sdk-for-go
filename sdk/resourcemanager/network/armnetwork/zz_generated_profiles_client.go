@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type ProfilesClient struct {
 // ID forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewProfilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ProfilesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewProfilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProfilesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ProfilesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a network profile.
@@ -99,7 +104,7 @@ func (client *ProfilesClient) createOrUpdateCreateRequest(ctx context.Context, r
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ProfilesClient) createOrUpdateHandleResponse(resp *http.Response) (ProfilesClientCreateOrUpdateResponse, error) {
-	result := ProfilesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := ProfilesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Profile); err != nil {
 		return ProfilesClientCreateOrUpdateResponse{}, err
 	}
@@ -111,22 +116,18 @@ func (client *ProfilesClient) createOrUpdateHandleResponse(resp *http.Response) 
 // resourceGroupName - The name of the resource group.
 // networkProfileName - The name of the NetworkProfile.
 // options - ProfilesClientBeginDeleteOptions contains the optional parameters for the ProfilesClient.BeginDelete method.
-func (client *ProfilesClient) BeginDelete(ctx context.Context, resourceGroupName string, networkProfileName string, options *ProfilesClientBeginDeleteOptions) (ProfilesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, networkProfileName, options)
-	if err != nil {
-		return ProfilesClientDeletePollerResponse{}, err
+func (client *ProfilesClient) BeginDelete(ctx context.Context, resourceGroupName string, networkProfileName string, options *ProfilesClientBeginDeleteOptions) (*armruntime.Poller[ProfilesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkProfileName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ProfilesClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ProfilesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ProfilesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ProfilesClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return ProfilesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ProfilesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified network profile.
@@ -223,7 +224,7 @@ func (client *ProfilesClient) getCreateRequest(ctx context.Context, resourceGrou
 
 // getHandleResponse handles the Get response.
 func (client *ProfilesClient) getHandleResponse(resp *http.Response) (ProfilesClientGetResponse, error) {
-	result := ProfilesClientGetResponse{RawResponse: resp}
+	result := ProfilesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Profile); err != nil {
 		return ProfilesClientGetResponse{}, err
 	}
@@ -234,16 +235,32 @@ func (client *ProfilesClient) getHandleResponse(resp *http.Response) (ProfilesCl
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - ProfilesClientListOptions contains the optional parameters for the ProfilesClient.List method.
-func (client *ProfilesClient) List(resourceGroupName string, options *ProfilesClientListOptions) *ProfilesClientListPager {
-	return &ProfilesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, options)
+func (client *ProfilesClient) List(resourceGroupName string, options *ProfilesClientListOptions) *runtime.Pager[ProfilesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ProfilesClientListResponse]{
+		More: func(page ProfilesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ProfilesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProfileListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ProfilesClientListResponse) (ProfilesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ProfilesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ProfilesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ProfilesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -270,7 +287,7 @@ func (client *ProfilesClient) listCreateRequest(ctx context.Context, resourceGro
 
 // listHandleResponse handles the List response.
 func (client *ProfilesClient) listHandleResponse(resp *http.Response) (ProfilesClientListResponse, error) {
-	result := ProfilesClientListResponse{RawResponse: resp}
+	result := ProfilesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProfileListResult); err != nil {
 		return ProfilesClientListResponse{}, err
 	}
@@ -280,16 +297,32 @@ func (client *ProfilesClient) listHandleResponse(resp *http.Response) (ProfilesC
 // ListAll - Gets all the network profiles in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ProfilesClientListAllOptions contains the optional parameters for the ProfilesClient.ListAll method.
-func (client *ProfilesClient) ListAll(options *ProfilesClientListAllOptions) *ProfilesClientListAllPager {
-	return &ProfilesClientListAllPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listAllCreateRequest(ctx, options)
+func (client *ProfilesClient) ListAll(options *ProfilesClientListAllOptions) *runtime.Pager[ProfilesClientListAllResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ProfilesClientListAllResponse]{
+		More: func(page ProfilesClientListAllResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ProfilesClientListAllResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProfileListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ProfilesClientListAllResponse) (ProfilesClientListAllResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAllCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ProfilesClientListAllResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ProfilesClientListAllResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ProfilesClientListAllResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAllHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listAllCreateRequest creates the ListAll request.
@@ -312,7 +345,7 @@ func (client *ProfilesClient) listAllCreateRequest(ctx context.Context, options 
 
 // listAllHandleResponse handles the ListAll response.
 func (client *ProfilesClient) listAllHandleResponse(resp *http.Response) (ProfilesClientListAllResponse, error) {
-	result := ProfilesClientListAllResponse{RawResponse: resp}
+	result := ProfilesClientListAllResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProfileListResult); err != nil {
 		return ProfilesClientListAllResponse{}, err
 	}
@@ -368,7 +401,7 @@ func (client *ProfilesClient) updateTagsCreateRequest(ctx context.Context, resou
 
 // updateTagsHandleResponse handles the UpdateTags response.
 func (client *ProfilesClient) updateTagsHandleResponse(resp *http.Response) (ProfilesClientUpdateTagsResponse, error) {
-	result := ProfilesClientUpdateTagsResponse{RawResponse: resp}
+	result := ProfilesClientUpdateTagsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Profile); err != nil {
 		return ProfilesClientUpdateTagsResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ApplicationClient struct {
 // subscriptionID - The customer subscription identifier
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewApplicationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ApplicationClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewApplicationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ApplicationClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Creates an application resource with the specified name, description and properties. If an application resource
@@ -97,7 +102,7 @@ func (client *ApplicationClient) createCreateRequest(ctx context.Context, resour
 
 // createHandleResponse handles the Create response.
 func (client *ApplicationClient) createHandleResponse(resp *http.Response) (ApplicationClientCreateResponse, error) {
-	result := ApplicationClientCreateResponse{RawResponse: resp}
+	result := ApplicationClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationResourceDescription); err != nil {
 		return ApplicationClientCreateResponse{}, err
 	}
@@ -121,7 +126,7 @@ func (client *ApplicationClient) Delete(ctx context.Context, resourceGroupName s
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return ApplicationClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ApplicationClientDeleteResponse{RawResponse: resp}, nil
+	return ApplicationClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -193,7 +198,7 @@ func (client *ApplicationClient) getCreateRequest(ctx context.Context, resourceG
 
 // getHandleResponse handles the Get response.
 func (client *ApplicationClient) getHandleResponse(resp *http.Response) (ApplicationClientGetResponse, error) {
-	result := ApplicationClientGetResponse{RawResponse: resp}
+	result := ApplicationClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationResourceDescription); err != nil {
 		return ApplicationClientGetResponse{}, err
 	}
@@ -206,16 +211,32 @@ func (client *ApplicationClient) getHandleResponse(resp *http.Response) (Applica
 // resourceGroupName - Azure resource group name
 // options - ApplicationClientListByResourceGroupOptions contains the optional parameters for the ApplicationClient.ListByResourceGroup
 // method.
-func (client *ApplicationClient) ListByResourceGroup(resourceGroupName string, options *ApplicationClientListByResourceGroupOptions) *ApplicationClientListByResourceGroupPager {
-	return &ApplicationClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *ApplicationClient) ListByResourceGroup(resourceGroupName string, options *ApplicationClientListByResourceGroupOptions) *runtime.Pager[ApplicationClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ApplicationClientListByResourceGroupResponse]{
+		More: func(page ApplicationClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ApplicationClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ApplicationResourceDescriptionList.NextLink)
+		Fetcher: func(ctx context.Context, page *ApplicationClientListByResourceGroupResponse) (ApplicationClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ApplicationClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ApplicationClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ApplicationClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -242,7 +263,7 @@ func (client *ApplicationClient) listByResourceGroupCreateRequest(ctx context.Co
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *ApplicationClient) listByResourceGroupHandleResponse(resp *http.Response) (ApplicationClientListByResourceGroupResponse, error) {
-	result := ApplicationClientListByResourceGroupResponse{RawResponse: resp}
+	result := ApplicationClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationResourceDescriptionList); err != nil {
 		return ApplicationClientListByResourceGroupResponse{}, err
 	}
@@ -254,16 +275,32 @@ func (client *ApplicationClient) listByResourceGroupHandleResponse(resp *http.Re
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ApplicationClientListBySubscriptionOptions contains the optional parameters for the ApplicationClient.ListBySubscription
 // method.
-func (client *ApplicationClient) ListBySubscription(options *ApplicationClientListBySubscriptionOptions) *ApplicationClientListBySubscriptionPager {
-	return &ApplicationClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *ApplicationClient) ListBySubscription(options *ApplicationClientListBySubscriptionOptions) *runtime.Pager[ApplicationClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ApplicationClientListBySubscriptionResponse]{
+		More: func(page ApplicationClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ApplicationClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ApplicationResourceDescriptionList.NextLink)
+		Fetcher: func(ctx context.Context, page *ApplicationClientListBySubscriptionResponse) (ApplicationClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ApplicationClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ApplicationClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ApplicationClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -286,7 +323,7 @@ func (client *ApplicationClient) listBySubscriptionCreateRequest(ctx context.Con
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *ApplicationClient) listBySubscriptionHandleResponse(resp *http.Response) (ApplicationClientListBySubscriptionResponse, error) {
-	result := ApplicationClientListBySubscriptionResponse{RawResponse: resp}
+	result := ApplicationClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationResourceDescriptionList); err != nil {
 		return ApplicationClientListBySubscriptionResponse{}, err
 	}

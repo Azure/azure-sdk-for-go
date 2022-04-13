@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type PublicIPAddressesClient struct {
 // ID forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPublicIPAddressesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PublicIPAddressesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewPublicIPAddressesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PublicIPAddressesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PublicIPAddressesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a static or dynamic public IP address.
@@ -57,22 +62,18 @@ func NewPublicIPAddressesClient(subscriptionID string, credential azcore.TokenCr
 // parameters - Parameters supplied to the create or update public IP address operation.
 // options - PublicIPAddressesClientBeginCreateOrUpdateOptions contains the optional parameters for the PublicIPAddressesClient.BeginCreateOrUpdate
 // method.
-func (client *PublicIPAddressesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, publicIPAddressName string, parameters PublicIPAddress, options *PublicIPAddressesClientBeginCreateOrUpdateOptions) (PublicIPAddressesClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, publicIPAddressName, parameters, options)
-	if err != nil {
-		return PublicIPAddressesClientCreateOrUpdatePollerResponse{}, err
+func (client *PublicIPAddressesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, publicIPAddressName string, parameters PublicIPAddress, options *PublicIPAddressesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[PublicIPAddressesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, publicIPAddressName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PublicIPAddressesClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[PublicIPAddressesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PublicIPAddressesClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PublicIPAddressesClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return PublicIPAddressesClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &PublicIPAddressesClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a static or dynamic public IP address.
@@ -124,22 +125,18 @@ func (client *PublicIPAddressesClient) createOrUpdateCreateRequest(ctx context.C
 // publicIPAddressName - The name of the public IP address.
 // options - PublicIPAddressesClientBeginDeleteOptions contains the optional parameters for the PublicIPAddressesClient.BeginDelete
 // method.
-func (client *PublicIPAddressesClient) BeginDelete(ctx context.Context, resourceGroupName string, publicIPAddressName string, options *PublicIPAddressesClientBeginDeleteOptions) (PublicIPAddressesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, publicIPAddressName, options)
-	if err != nil {
-		return PublicIPAddressesClientDeletePollerResponse{}, err
+func (client *PublicIPAddressesClient) BeginDelete(ctx context.Context, resourceGroupName string, publicIPAddressName string, options *PublicIPAddressesClientBeginDeleteOptions) (*armruntime.Poller[PublicIPAddressesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, publicIPAddressName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PublicIPAddressesClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[PublicIPAddressesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PublicIPAddressesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PublicIPAddressesClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return PublicIPAddressesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &PublicIPAddressesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified public IP address.
@@ -236,7 +233,7 @@ func (client *PublicIPAddressesClient) getCreateRequest(ctx context.Context, res
 
 // getHandleResponse handles the Get response.
 func (client *PublicIPAddressesClient) getHandleResponse(resp *http.Response) (PublicIPAddressesClientGetResponse, error) {
-	result := PublicIPAddressesClientGetResponse{RawResponse: resp}
+	result := PublicIPAddressesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicIPAddress); err != nil {
 		return PublicIPAddressesClientGetResponse{}, err
 	}
@@ -315,7 +312,7 @@ func (client *PublicIPAddressesClient) getCloudServicePublicIPAddressCreateReque
 
 // getCloudServicePublicIPAddressHandleResponse handles the GetCloudServicePublicIPAddress response.
 func (client *PublicIPAddressesClient) getCloudServicePublicIPAddressHandleResponse(resp *http.Response) (PublicIPAddressesClientGetCloudServicePublicIPAddressResponse, error) {
-	result := PublicIPAddressesClientGetCloudServicePublicIPAddressResponse{RawResponse: resp}
+	result := PublicIPAddressesClientGetCloudServicePublicIPAddressResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicIPAddress); err != nil {
 		return PublicIPAddressesClientGetCloudServicePublicIPAddressResponse{}, err
 	}
@@ -394,7 +391,7 @@ func (client *PublicIPAddressesClient) getVirtualMachineScaleSetPublicIPAddressC
 
 // getVirtualMachineScaleSetPublicIPAddressHandleResponse handles the GetVirtualMachineScaleSetPublicIPAddress response.
 func (client *PublicIPAddressesClient) getVirtualMachineScaleSetPublicIPAddressHandleResponse(resp *http.Response) (PublicIPAddressesClientGetVirtualMachineScaleSetPublicIPAddressResponse, error) {
-	result := PublicIPAddressesClientGetVirtualMachineScaleSetPublicIPAddressResponse{RawResponse: resp}
+	result := PublicIPAddressesClientGetVirtualMachineScaleSetPublicIPAddressResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicIPAddress); err != nil {
 		return PublicIPAddressesClientGetVirtualMachineScaleSetPublicIPAddressResponse{}, err
 	}
@@ -405,16 +402,32 @@ func (client *PublicIPAddressesClient) getVirtualMachineScaleSetPublicIPAddressH
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - PublicIPAddressesClientListOptions contains the optional parameters for the PublicIPAddressesClient.List method.
-func (client *PublicIPAddressesClient) List(resourceGroupName string, options *PublicIPAddressesClientListOptions) *PublicIPAddressesClientListPager {
-	return &PublicIPAddressesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, options)
+func (client *PublicIPAddressesClient) List(resourceGroupName string, options *PublicIPAddressesClientListOptions) *runtime.Pager[PublicIPAddressesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PublicIPAddressesClientListResponse]{
+		More: func(page PublicIPAddressesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PublicIPAddressesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PublicIPAddressListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PublicIPAddressesClientListResponse) (PublicIPAddressesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PublicIPAddressesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PublicIPAddressesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PublicIPAddressesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -441,7 +454,7 @@ func (client *PublicIPAddressesClient) listCreateRequest(ctx context.Context, re
 
 // listHandleResponse handles the List response.
 func (client *PublicIPAddressesClient) listHandleResponse(resp *http.Response) (PublicIPAddressesClientListResponse, error) {
-	result := PublicIPAddressesClientListResponse{RawResponse: resp}
+	result := PublicIPAddressesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicIPAddressListResult); err != nil {
 		return PublicIPAddressesClientListResponse{}, err
 	}
@@ -452,16 +465,32 @@ func (client *PublicIPAddressesClient) listHandleResponse(resp *http.Response) (
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PublicIPAddressesClientListAllOptions contains the optional parameters for the PublicIPAddressesClient.ListAll
 // method.
-func (client *PublicIPAddressesClient) ListAll(options *PublicIPAddressesClientListAllOptions) *PublicIPAddressesClientListAllPager {
-	return &PublicIPAddressesClientListAllPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listAllCreateRequest(ctx, options)
+func (client *PublicIPAddressesClient) ListAll(options *PublicIPAddressesClientListAllOptions) *runtime.Pager[PublicIPAddressesClientListAllResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PublicIPAddressesClientListAllResponse]{
+		More: func(page PublicIPAddressesClientListAllResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PublicIPAddressesClientListAllResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PublicIPAddressListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PublicIPAddressesClientListAllResponse) (PublicIPAddressesClientListAllResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAllCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PublicIPAddressesClientListAllResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PublicIPAddressesClientListAllResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PublicIPAddressesClientListAllResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAllHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listAllCreateRequest creates the ListAll request.
@@ -484,7 +513,7 @@ func (client *PublicIPAddressesClient) listAllCreateRequest(ctx context.Context,
 
 // listAllHandleResponse handles the ListAll response.
 func (client *PublicIPAddressesClient) listAllHandleResponse(resp *http.Response) (PublicIPAddressesClientListAllResponse, error) {
-	result := PublicIPAddressesClientListAllResponse{RawResponse: resp}
+	result := PublicIPAddressesClientListAllResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicIPAddressListResult); err != nil {
 		return PublicIPAddressesClientListAllResponse{}, err
 	}
@@ -497,16 +526,32 @@ func (client *PublicIPAddressesClient) listAllHandleResponse(resp *http.Response
 // cloudServiceName - The name of the cloud service.
 // options - PublicIPAddressesClientListCloudServicePublicIPAddressesOptions contains the optional parameters for the PublicIPAddressesClient.ListCloudServicePublicIPAddresses
 // method.
-func (client *PublicIPAddressesClient) ListCloudServicePublicIPAddresses(resourceGroupName string, cloudServiceName string, options *PublicIPAddressesClientListCloudServicePublicIPAddressesOptions) *PublicIPAddressesClientListCloudServicePublicIPAddressesPager {
-	return &PublicIPAddressesClientListCloudServicePublicIPAddressesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCloudServicePublicIPAddressesCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
+func (client *PublicIPAddressesClient) ListCloudServicePublicIPAddresses(resourceGroupName string, cloudServiceName string, options *PublicIPAddressesClientListCloudServicePublicIPAddressesOptions) *runtime.Pager[PublicIPAddressesClientListCloudServicePublicIPAddressesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PublicIPAddressesClientListCloudServicePublicIPAddressesResponse]{
+		More: func(page PublicIPAddressesClientListCloudServicePublicIPAddressesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PublicIPAddressesClientListCloudServicePublicIPAddressesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PublicIPAddressListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PublicIPAddressesClientListCloudServicePublicIPAddressesResponse) (PublicIPAddressesClientListCloudServicePublicIPAddressesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCloudServicePublicIPAddressesCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PublicIPAddressesClientListCloudServicePublicIPAddressesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PublicIPAddressesClientListCloudServicePublicIPAddressesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PublicIPAddressesClientListCloudServicePublicIPAddressesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listCloudServicePublicIPAddressesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCloudServicePublicIPAddressesCreateRequest creates the ListCloudServicePublicIPAddresses request.
@@ -537,7 +582,7 @@ func (client *PublicIPAddressesClient) listCloudServicePublicIPAddressesCreateRe
 
 // listCloudServicePublicIPAddressesHandleResponse handles the ListCloudServicePublicIPAddresses response.
 func (client *PublicIPAddressesClient) listCloudServicePublicIPAddressesHandleResponse(resp *http.Response) (PublicIPAddressesClientListCloudServicePublicIPAddressesResponse, error) {
-	result := PublicIPAddressesClientListCloudServicePublicIPAddressesResponse{RawResponse: resp}
+	result := PublicIPAddressesClientListCloudServicePublicIPAddressesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicIPAddressListResult); err != nil {
 		return PublicIPAddressesClientListCloudServicePublicIPAddressesResponse{}, err
 	}
@@ -554,16 +599,32 @@ func (client *PublicIPAddressesClient) listCloudServicePublicIPAddressesHandleRe
 // ipConfigurationName - The IP configuration name.
 // options - PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesOptions contains the optional parameters
 // for the PublicIPAddressesClient.ListCloudServiceRoleInstancePublicIPAddresses method.
-func (client *PublicIPAddressesClient) ListCloudServiceRoleInstancePublicIPAddresses(resourceGroupName string, cloudServiceName string, roleInstanceName string, networkInterfaceName string, ipConfigurationName string, options *PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesOptions) *PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesPager {
-	return &PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCloudServiceRoleInstancePublicIPAddressesCreateRequest(ctx, resourceGroupName, cloudServiceName, roleInstanceName, networkInterfaceName, ipConfigurationName, options)
+func (client *PublicIPAddressesClient) ListCloudServiceRoleInstancePublicIPAddresses(resourceGroupName string, cloudServiceName string, roleInstanceName string, networkInterfaceName string, ipConfigurationName string, options *PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesOptions) *runtime.Pager[PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse]{
+		More: func(page PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PublicIPAddressListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse) (PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCloudServiceRoleInstancePublicIPAddressesCreateRequest(ctx, resourceGroupName, cloudServiceName, roleInstanceName, networkInterfaceName, ipConfigurationName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listCloudServiceRoleInstancePublicIPAddressesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCloudServiceRoleInstancePublicIPAddressesCreateRequest creates the ListCloudServiceRoleInstancePublicIPAddresses request.
@@ -606,7 +667,7 @@ func (client *PublicIPAddressesClient) listCloudServiceRoleInstancePublicIPAddre
 
 // listCloudServiceRoleInstancePublicIPAddressesHandleResponse handles the ListCloudServiceRoleInstancePublicIPAddresses response.
 func (client *PublicIPAddressesClient) listCloudServiceRoleInstancePublicIPAddressesHandleResponse(resp *http.Response) (PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse, error) {
-	result := PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse{RawResponse: resp}
+	result := PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicIPAddressListResult); err != nil {
 		return PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse{}, err
 	}
@@ -620,16 +681,32 @@ func (client *PublicIPAddressesClient) listCloudServiceRoleInstancePublicIPAddre
 // virtualMachineScaleSetName - The name of the virtual machine scale set.
 // options - PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesOptions contains the optional parameters for
 // the PublicIPAddressesClient.ListVirtualMachineScaleSetPublicIPAddresses method.
-func (client *PublicIPAddressesClient) ListVirtualMachineScaleSetPublicIPAddresses(resourceGroupName string, virtualMachineScaleSetName string, options *PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesOptions) *PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesPager {
-	return &PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listVirtualMachineScaleSetPublicIPAddressesCreateRequest(ctx, resourceGroupName, virtualMachineScaleSetName, options)
+func (client *PublicIPAddressesClient) ListVirtualMachineScaleSetPublicIPAddresses(resourceGroupName string, virtualMachineScaleSetName string, options *PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesOptions) *runtime.Pager[PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse]{
+		More: func(page PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PublicIPAddressListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse) (PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listVirtualMachineScaleSetPublicIPAddressesCreateRequest(ctx, resourceGroupName, virtualMachineScaleSetName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listVirtualMachineScaleSetPublicIPAddressesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listVirtualMachineScaleSetPublicIPAddressesCreateRequest creates the ListVirtualMachineScaleSetPublicIPAddresses request.
@@ -660,7 +737,7 @@ func (client *PublicIPAddressesClient) listVirtualMachineScaleSetPublicIPAddress
 
 // listVirtualMachineScaleSetPublicIPAddressesHandleResponse handles the ListVirtualMachineScaleSetPublicIPAddresses response.
 func (client *PublicIPAddressesClient) listVirtualMachineScaleSetPublicIPAddressesHandleResponse(resp *http.Response) (PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse, error) {
-	result := PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse{RawResponse: resp}
+	result := PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicIPAddressListResult); err != nil {
 		return PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse{}, err
 	}
@@ -677,16 +754,32 @@ func (client *PublicIPAddressesClient) listVirtualMachineScaleSetPublicIPAddress
 // ipConfigurationName - The IP configuration name.
 // options - PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesOptions contains the optional parameters
 // for the PublicIPAddressesClient.ListVirtualMachineScaleSetVMPublicIPAddresses method.
-func (client *PublicIPAddressesClient) ListVirtualMachineScaleSetVMPublicIPAddresses(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, ipConfigurationName string, options *PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesOptions) *PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesPager {
-	return &PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listVirtualMachineScaleSetVMPublicIPAddressesCreateRequest(ctx, resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, ipConfigurationName, options)
+func (client *PublicIPAddressesClient) ListVirtualMachineScaleSetVMPublicIPAddresses(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, ipConfigurationName string, options *PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesOptions) *runtime.Pager[PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse]{
+		More: func(page PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PublicIPAddressListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse) (PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listVirtualMachineScaleSetVMPublicIPAddressesCreateRequest(ctx, resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, ipConfigurationName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listVirtualMachineScaleSetVMPublicIPAddressesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listVirtualMachineScaleSetVMPublicIPAddressesCreateRequest creates the ListVirtualMachineScaleSetVMPublicIPAddresses request.
@@ -729,7 +822,7 @@ func (client *PublicIPAddressesClient) listVirtualMachineScaleSetVMPublicIPAddre
 
 // listVirtualMachineScaleSetVMPublicIPAddressesHandleResponse handles the ListVirtualMachineScaleSetVMPublicIPAddresses response.
 func (client *PublicIPAddressesClient) listVirtualMachineScaleSetVMPublicIPAddressesHandleResponse(resp *http.Response) (PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse, error) {
-	result := PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse{RawResponse: resp}
+	result := PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicIPAddressListResult); err != nil {
 		return PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse{}, err
 	}
@@ -786,7 +879,7 @@ func (client *PublicIPAddressesClient) updateTagsCreateRequest(ctx context.Conte
 
 // updateTagsHandleResponse handles the UpdateTags response.
 func (client *PublicIPAddressesClient) updateTagsHandleResponse(resp *http.Response) (PublicIPAddressesClientUpdateTagsResponse, error) {
-	result := PublicIPAddressesClientUpdateTagsResponse{RawResponse: resp}
+	result := PublicIPAddressesClientUpdateTagsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicIPAddress); err != nil {
 		return PublicIPAddressesClientUpdateTagsResponse{}, err
 	}

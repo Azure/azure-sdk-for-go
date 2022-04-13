@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,36 +34,56 @@ type QuotasClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewQuotasClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *QuotasClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewQuotasClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*QuotasClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &QuotasClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - Gets the currently assigned Workspace Quotas based on VMFamily.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - The location for which resource usage is queried.
 // options - QuotasClientListOptions contains the optional parameters for the QuotasClient.List method.
-func (client *QuotasClient) List(location string, options *QuotasClientListOptions) *QuotasClientListPager {
-	return &QuotasClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, location, options)
+func (client *QuotasClient) List(location string, options *QuotasClientListOptions) *runtime.Pager[QuotasClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[QuotasClientListResponse]{
+		More: func(page QuotasClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp QuotasClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListWorkspaceQuotas.NextLink)
+		Fetcher: func(ctx context.Context, page *QuotasClientListResponse) (QuotasClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, location, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return QuotasClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return QuotasClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return QuotasClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -89,7 +110,7 @@ func (client *QuotasClient) listCreateRequest(ctx context.Context, location stri
 
 // listHandleResponse handles the List response.
 func (client *QuotasClient) listHandleResponse(resp *http.Response) (QuotasClientListResponse, error) {
-	result := QuotasClientListResponse{RawResponse: resp}
+	result := QuotasClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListWorkspaceQuotas); err != nil {
 		return QuotasClientListResponse{}, err
 	}
@@ -140,7 +161,7 @@ func (client *QuotasClient) updateCreateRequest(ctx context.Context, location st
 
 // updateHandleResponse handles the Update response.
 func (client *QuotasClient) updateHandleResponse(resp *http.Response) (QuotasClientUpdateResponse, error) {
-	result := QuotasClientUpdateResponse{RawResponse: resp}
+	result := QuotasClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UpdateWorkspaceQuotasResult); err != nil {
 		return QuotasClientUpdateResponse{}, err
 	}

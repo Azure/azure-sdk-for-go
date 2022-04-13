@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type BigDataPoolsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewBigDataPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BigDataPoolsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewBigDataPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BigDataPoolsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &BigDataPoolsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create a new Big Data pool.
@@ -58,22 +63,18 @@ func NewBigDataPoolsClient(subscriptionID string, credential azcore.TokenCredent
 // bigDataPoolInfo - The Big Data pool to create.
 // options - BigDataPoolsClientBeginCreateOrUpdateOptions contains the optional parameters for the BigDataPoolsClient.BeginCreateOrUpdate
 // method.
-func (client *BigDataPoolsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, bigDataPoolName string, bigDataPoolInfo BigDataPoolResourceInfo, options *BigDataPoolsClientBeginCreateOrUpdateOptions) (BigDataPoolsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, bigDataPoolName, bigDataPoolInfo, options)
-	if err != nil {
-		return BigDataPoolsClientCreateOrUpdatePollerResponse{}, err
+func (client *BigDataPoolsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, bigDataPoolName string, bigDataPoolInfo BigDataPoolResourceInfo, options *BigDataPoolsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[BigDataPoolsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, bigDataPoolName, bigDataPoolInfo, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[BigDataPoolsClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[BigDataPoolsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := BigDataPoolsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("BigDataPoolsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return BigDataPoolsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &BigDataPoolsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create a new Big Data pool.
@@ -133,22 +134,18 @@ func (client *BigDataPoolsClient) createOrUpdateCreateRequest(ctx context.Contex
 // bigDataPoolName - Big Data pool name
 // options - BigDataPoolsClientBeginDeleteOptions contains the optional parameters for the BigDataPoolsClient.BeginDelete
 // method.
-func (client *BigDataPoolsClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, bigDataPoolName string, options *BigDataPoolsClientBeginDeleteOptions) (BigDataPoolsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, bigDataPoolName, options)
-	if err != nil {
-		return BigDataPoolsClientDeletePollerResponse{}, err
+func (client *BigDataPoolsClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, bigDataPoolName string, options *BigDataPoolsClientBeginDeleteOptions) (*armruntime.Poller[BigDataPoolsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, bigDataPoolName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[BigDataPoolsClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[BigDataPoolsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := BigDataPoolsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("BigDataPoolsClient.Delete", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return BigDataPoolsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &BigDataPoolsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete a Big Data pool from the workspace.
@@ -251,7 +248,7 @@ func (client *BigDataPoolsClient) getCreateRequest(ctx context.Context, resource
 
 // getHandleResponse handles the Get response.
 func (client *BigDataPoolsClient) getHandleResponse(resp *http.Response) (BigDataPoolsClientGetResponse, error) {
-	result := BigDataPoolsClientGetResponse{RawResponse: resp}
+	result := BigDataPoolsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BigDataPoolResourceInfo); err != nil {
 		return BigDataPoolsClientGetResponse{}, err
 	}
@@ -264,16 +261,32 @@ func (client *BigDataPoolsClient) getHandleResponse(resp *http.Response) (BigDat
 // workspaceName - The name of the workspace.
 // options - BigDataPoolsClientListByWorkspaceOptions contains the optional parameters for the BigDataPoolsClient.ListByWorkspace
 // method.
-func (client *BigDataPoolsClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *BigDataPoolsClientListByWorkspaceOptions) *BigDataPoolsClientListByWorkspacePager {
-	return &BigDataPoolsClientListByWorkspacePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
+func (client *BigDataPoolsClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *BigDataPoolsClientListByWorkspaceOptions) *runtime.Pager[BigDataPoolsClientListByWorkspaceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[BigDataPoolsClientListByWorkspaceResponse]{
+		More: func(page BigDataPoolsClientListByWorkspaceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp BigDataPoolsClientListByWorkspaceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.BigDataPoolResourceInfoListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *BigDataPoolsClientListByWorkspaceResponse) (BigDataPoolsClientListByWorkspaceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return BigDataPoolsClientListByWorkspaceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return BigDataPoolsClientListByWorkspaceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return BigDataPoolsClientListByWorkspaceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByWorkspaceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
@@ -304,7 +317,7 @@ func (client *BigDataPoolsClient) listByWorkspaceCreateRequest(ctx context.Conte
 
 // listByWorkspaceHandleResponse handles the ListByWorkspace response.
 func (client *BigDataPoolsClient) listByWorkspaceHandleResponse(resp *http.Response) (BigDataPoolsClientListByWorkspaceResponse, error) {
-	result := BigDataPoolsClientListByWorkspaceResponse{RawResponse: resp}
+	result := BigDataPoolsClientListByWorkspaceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BigDataPoolResourceInfoListResult); err != nil {
 		return BigDataPoolsClientListByWorkspaceResponse{}, err
 	}
@@ -365,7 +378,7 @@ func (client *BigDataPoolsClient) updateCreateRequest(ctx context.Context, resou
 
 // updateHandleResponse handles the Update response.
 func (client *BigDataPoolsClient) updateHandleResponse(resp *http.Response) (BigDataPoolsClientUpdateResponse, error) {
-	result := BigDataPoolsClientUpdateResponse{RawResponse: resp}
+	result := BigDataPoolsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BigDataPoolResourceInfo); err != nil {
 		return BigDataPoolsClientUpdateResponse{}, err
 	}

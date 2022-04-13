@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,168 +17,203 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storageimportexport/armstorageimportexport"
 )
 
-// x-ms-original-file: specification/storageimportexport/resource-manager/Microsoft.ImportExport/preview/2021-01-01/examples/ListJobsInSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storageimportexport/resource-manager/Microsoft.ImportExport/preview/2021-01-01/examples/ListJobsInSubscription.json
 func ExampleJobsClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorageimportexport.NewJobsClient("<subscription-id>",
+	client, err := armstorageimportexport.NewJobsClient("<subscription-id>",
 		nil, cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListBySubscription(&armstorageimportexport.JobsClientListBySubscriptionOptions{Top: nil,
 		Filter: nil,
 	})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/storageimportexport/resource-manager/Microsoft.ImportExport/preview/2021-01-01/examples/ListJobsInResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storageimportexport/resource-manager/Microsoft.ImportExport/preview/2021-01-01/examples/ListJobsInResourceGroup.json
 func ExampleJobsClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorageimportexport.NewJobsClient("<subscription-id>",
+	client, err := armstorageimportexport.NewJobsClient("<subscription-id>",
 		nil, cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		&armstorageimportexport.JobsClientListByResourceGroupOptions{Top: nil,
 			Filter: nil,
 		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/storageimportexport/resource-manager/Microsoft.ImportExport/preview/2021-01-01/examples/GetExportJob.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storageimportexport/resource-manager/Microsoft.ImportExport/preview/2021-01-01/examples/GetExportJob.json
 func ExampleJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorageimportexport.NewJobsClient("<subscription-id>",
+	client, err := armstorageimportexport.NewJobsClient("<subscription-id>",
 		nil, cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<job-name>",
 		"<resource-group-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.JobsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storageimportexport/resource-manager/Microsoft.ImportExport/preview/2021-01-01/examples/UpdateExportJob.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storageimportexport/resource-manager/Microsoft.ImportExport/preview/2021-01-01/examples/UpdateExportJob.json
 func ExampleJobsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorageimportexport.NewJobsClient("<subscription-id>",
+	client, err := armstorageimportexport.NewJobsClient("<subscription-id>",
 		nil, cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Update(ctx,
 		"<job-name>",
 		"<resource-group-name>",
 		armstorageimportexport.UpdateJobParameters{
 			Properties: &armstorageimportexport.UpdateJobParametersProperties{
-				BackupDriveManifest: to.BoolPtr(true),
-				LogLevel:            to.StringPtr("<log-level>"),
-				State:               to.StringPtr("<state>"),
+				BackupDriveManifest: to.Ptr(true),
+				LogLevel:            to.Ptr("<log-level>"),
+				State:               to.Ptr("<state>"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.JobsClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storageimportexport/resource-manager/Microsoft.ImportExport/preview/2021-01-01/examples/CreateExportJob.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storageimportexport/resource-manager/Microsoft.ImportExport/preview/2021-01-01/examples/CreateExportJob.json
 func ExampleJobsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorageimportexport.NewJobsClient("<subscription-id>",
+	client, err := armstorageimportexport.NewJobsClient("<subscription-id>",
 		nil, cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Create(ctx,
 		"<job-name>",
 		"<resource-group-name>",
 		armstorageimportexport.PutJobParameters{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Properties: &armstorageimportexport.JobDetails{
-				BackupDriveManifest: to.BoolPtr(true),
-				DiagnosticsPath:     to.StringPtr("<diagnostics-path>"),
+				BackupDriveManifest: to.Ptr(true),
+				DiagnosticsPath:     to.Ptr("<diagnostics-path>"),
 				Export: &armstorageimportexport.Export{
 					BlobList: &armstorageimportexport.ExportBlobList{
 						BlobPathPrefix: []*string{
-							to.StringPtr("/")},
+							to.Ptr("/")},
 					},
 				},
-				JobType:  to.StringPtr("<job-type>"),
-				LogLevel: to.StringPtr("<log-level>"),
+				JobType:  to.Ptr("<job-type>"),
+				LogLevel: to.Ptr("<log-level>"),
 				ReturnAddress: &armstorageimportexport.ReturnAddress{
-					City:            to.StringPtr("<city>"),
-					CountryOrRegion: to.StringPtr("<country-or-region>"),
-					Email:           to.StringPtr("<email>"),
-					Phone:           to.StringPtr("<phone>"),
-					PostalCode:      to.StringPtr("<postal-code>"),
-					RecipientName:   to.StringPtr("<recipient-name>"),
-					StateOrProvince: to.StringPtr("<state-or-province>"),
-					StreetAddress1:  to.StringPtr("<street-address1>"),
-					StreetAddress2:  to.StringPtr("<street-address2>"),
+					City:            to.Ptr("<city>"),
+					CountryOrRegion: to.Ptr("<country-or-region>"),
+					Email:           to.Ptr("<email>"),
+					Phone:           to.Ptr("<phone>"),
+					PostalCode:      to.Ptr("<postal-code>"),
+					RecipientName:   to.Ptr("<recipient-name>"),
+					StateOrProvince: to.Ptr("<state-or-province>"),
+					StreetAddress1:  to.Ptr("<street-address1>"),
+					StreetAddress2:  to.Ptr("<street-address2>"),
 				},
 				ReturnShipping: &armstorageimportexport.ReturnShipping{
-					CarrierAccountNumber: to.StringPtr("<carrier-account-number>"),
-					CarrierName:          to.StringPtr("<carrier-name>"),
+					CarrierAccountNumber: to.Ptr("<carrier-account-number>"),
+					CarrierName:          to.Ptr("<carrier-name>"),
 				},
-				StorageAccountID: to.StringPtr("<storage-account-id>"),
+				StorageAccountID: to.Ptr("<storage-account-id>"),
 			},
 		},
 		&armstorageimportexport.JobsClientCreateOptions{ClientTenantID: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.JobsClientCreateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storageimportexport/resource-manager/Microsoft.ImportExport/preview/2021-01-01/examples/DeleteJob.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storageimportexport/resource-manager/Microsoft.ImportExport/preview/2021-01-01/examples/DeleteJob.json
 func ExampleJobsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorageimportexport.NewJobsClient("<subscription-id>",
+	client, err := armstorageimportexport.NewJobsClient("<subscription-id>",
 		nil, cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<job-name>",
 		"<resource-group-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }

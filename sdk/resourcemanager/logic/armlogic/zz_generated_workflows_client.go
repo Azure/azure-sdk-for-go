@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type WorkflowsClient struct {
 // subscriptionID - The subscription id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewWorkflowsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkflowsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewWorkflowsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkflowsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &WorkflowsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a workflow.
@@ -100,7 +105,7 @@ func (client *WorkflowsClient) createOrUpdateCreateRequest(ctx context.Context, 
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *WorkflowsClient) createOrUpdateHandleResponse(resp *http.Response) (WorkflowsClientCreateOrUpdateResponse, error) {
-	result := WorkflowsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := WorkflowsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Workflow); err != nil {
 		return WorkflowsClientCreateOrUpdateResponse{}, err
 	}
@@ -124,7 +129,7 @@ func (client *WorkflowsClient) Delete(ctx context.Context, resourceGroupName str
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return WorkflowsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return WorkflowsClientDeleteResponse{RawResponse: resp}, nil
+	return WorkflowsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -170,7 +175,7 @@ func (client *WorkflowsClient) Disable(ctx context.Context, resourceGroupName st
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return WorkflowsClientDisableResponse{}, runtime.NewResponseError(resp)
 	}
-	return WorkflowsClientDisableResponse{RawResponse: resp}, nil
+	return WorkflowsClientDisableResponse{}, nil
 }
 
 // disableCreateRequest creates the Disable request.
@@ -216,7 +221,7 @@ func (client *WorkflowsClient) Enable(ctx context.Context, resourceGroupName str
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return WorkflowsClientEnableResponse{}, runtime.NewResponseError(resp)
 	}
-	return WorkflowsClientEnableResponse{RawResponse: resp}, nil
+	return WorkflowsClientEnableResponse{}, nil
 }
 
 // enableCreateRequest creates the Enable request.
@@ -295,8 +300,8 @@ func (client *WorkflowsClient) generateUpgradedDefinitionCreateRequest(ctx conte
 
 // generateUpgradedDefinitionHandleResponse handles the GenerateUpgradedDefinition response.
 func (client *WorkflowsClient) generateUpgradedDefinitionHandleResponse(resp *http.Response) (WorkflowsClientGenerateUpgradedDefinitionResponse, error) {
-	result := WorkflowsClientGenerateUpgradedDefinitionResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Object); err != nil {
+	result := WorkflowsClientGenerateUpgradedDefinitionResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Interface); err != nil {
 		return WorkflowsClientGenerateUpgradedDefinitionResponse{}, err
 	}
 	return result, nil
@@ -350,7 +355,7 @@ func (client *WorkflowsClient) getCreateRequest(ctx context.Context, resourceGro
 
 // getHandleResponse handles the Get response.
 func (client *WorkflowsClient) getHandleResponse(resp *http.Response) (WorkflowsClientGetResponse, error) {
-	result := WorkflowsClientGetResponse{RawResponse: resp}
+	result := WorkflowsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Workflow); err != nil {
 		return WorkflowsClientGetResponse{}, err
 	}
@@ -362,16 +367,32 @@ func (client *WorkflowsClient) getHandleResponse(resp *http.Response) (Workflows
 // resourceGroupName - The resource group name.
 // options - WorkflowsClientListByResourceGroupOptions contains the optional parameters for the WorkflowsClient.ListByResourceGroup
 // method.
-func (client *WorkflowsClient) ListByResourceGroup(resourceGroupName string, options *WorkflowsClientListByResourceGroupOptions) *WorkflowsClientListByResourceGroupPager {
-	return &WorkflowsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *WorkflowsClient) ListByResourceGroup(resourceGroupName string, options *WorkflowsClientListByResourceGroupOptions) *runtime.Pager[WorkflowsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[WorkflowsClientListByResourceGroupResponse]{
+		More: func(page WorkflowsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp WorkflowsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.WorkflowListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *WorkflowsClientListByResourceGroupResponse) (WorkflowsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return WorkflowsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WorkflowsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WorkflowsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -404,7 +425,7 @@ func (client *WorkflowsClient) listByResourceGroupCreateRequest(ctx context.Cont
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *WorkflowsClient) listByResourceGroupHandleResponse(resp *http.Response) (WorkflowsClientListByResourceGroupResponse, error) {
-	result := WorkflowsClientListByResourceGroupResponse{RawResponse: resp}
+	result := WorkflowsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowListResult); err != nil {
 		return WorkflowsClientListByResourceGroupResponse{}, err
 	}
@@ -415,16 +436,32 @@ func (client *WorkflowsClient) listByResourceGroupHandleResponse(resp *http.Resp
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - WorkflowsClientListBySubscriptionOptions contains the optional parameters for the WorkflowsClient.ListBySubscription
 // method.
-func (client *WorkflowsClient) ListBySubscription(options *WorkflowsClientListBySubscriptionOptions) *WorkflowsClientListBySubscriptionPager {
-	return &WorkflowsClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *WorkflowsClient) ListBySubscription(options *WorkflowsClientListBySubscriptionOptions) *runtime.Pager[WorkflowsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[WorkflowsClientListBySubscriptionResponse]{
+		More: func(page WorkflowsClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp WorkflowsClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.WorkflowListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *WorkflowsClientListBySubscriptionResponse) (WorkflowsClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return WorkflowsClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WorkflowsClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WorkflowsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -453,7 +490,7 @@ func (client *WorkflowsClient) listBySubscriptionCreateRequest(ctx context.Conte
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *WorkflowsClient) listBySubscriptionHandleResponse(resp *http.Response) (WorkflowsClientListBySubscriptionResponse, error) {
-	result := WorkflowsClientListBySubscriptionResponse{RawResponse: resp}
+	result := WorkflowsClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowListResult); err != nil {
 		return WorkflowsClientListBySubscriptionResponse{}, err
 	}
@@ -510,7 +547,7 @@ func (client *WorkflowsClient) listCallbackURLCreateRequest(ctx context.Context,
 
 // listCallbackURLHandleResponse handles the ListCallbackURL response.
 func (client *WorkflowsClient) listCallbackURLHandleResponse(resp *http.Response) (WorkflowsClientListCallbackURLResponse, error) {
-	result := WorkflowsClientListCallbackURLResponse{RawResponse: resp}
+	result := WorkflowsClientListCallbackURLResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowTriggerCallbackURL); err != nil {
 		return WorkflowsClientListCallbackURLResponse{}, err
 	}
@@ -565,8 +602,8 @@ func (client *WorkflowsClient) listSwaggerCreateRequest(ctx context.Context, res
 
 // listSwaggerHandleResponse handles the ListSwagger response.
 func (client *WorkflowsClient) listSwaggerHandleResponse(resp *http.Response) (WorkflowsClientListSwaggerResponse, error) {
-	result := WorkflowsClientListSwaggerResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Object); err != nil {
+	result := WorkflowsClientListSwaggerResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Interface); err != nil {
 		return WorkflowsClientListSwaggerResponse{}, err
 	}
 	return result, nil
@@ -578,22 +615,16 @@ func (client *WorkflowsClient) listSwaggerHandleResponse(resp *http.Response) (W
 // workflowName - The workflow name.
 // move - The workflow to move.
 // options - WorkflowsClientBeginMoveOptions contains the optional parameters for the WorkflowsClient.BeginMove method.
-func (client *WorkflowsClient) BeginMove(ctx context.Context, resourceGroupName string, workflowName string, move WorkflowReference, options *WorkflowsClientBeginMoveOptions) (WorkflowsClientMovePollerResponse, error) {
-	resp, err := client.move(ctx, resourceGroupName, workflowName, move, options)
-	if err != nil {
-		return WorkflowsClientMovePollerResponse{}, err
+func (client *WorkflowsClient) BeginMove(ctx context.Context, resourceGroupName string, workflowName string, move WorkflowReference, options *WorkflowsClientBeginMoveOptions) (*armruntime.Poller[WorkflowsClientMoveResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.move(ctx, resourceGroupName, workflowName, move, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[WorkflowsClientMoveResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[WorkflowsClientMoveResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := WorkflowsClientMovePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("WorkflowsClient.Move", "", resp, client.pl)
-	if err != nil {
-		return WorkflowsClientMovePollerResponse{}, err
-	}
-	result.Poller = &WorkflowsClientMovePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Move - Moves an existing workflow.
@@ -658,7 +689,7 @@ func (client *WorkflowsClient) RegenerateAccessKey(ctx context.Context, resource
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return WorkflowsClientRegenerateAccessKeyResponse{}, runtime.NewResponseError(resp)
 	}
-	return WorkflowsClientRegenerateAccessKeyResponse{RawResponse: resp}, nil
+	return WorkflowsClientRegenerateAccessKeyResponse{}, nil
 }
 
 // regenerateAccessKeyCreateRequest creates the RegenerateAccessKey request.
@@ -735,7 +766,7 @@ func (client *WorkflowsClient) updateCreateRequest(ctx context.Context, resource
 
 // updateHandleResponse handles the Update response.
 func (client *WorkflowsClient) updateHandleResponse(resp *http.Response) (WorkflowsClientUpdateResponse, error) {
-	result := WorkflowsClientUpdateResponse{RawResponse: resp}
+	result := WorkflowsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Workflow); err != nil {
 		return WorkflowsClientUpdateResponse{}, err
 	}
@@ -762,7 +793,7 @@ func (client *WorkflowsClient) ValidateByLocation(ctx context.Context, resourceG
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return WorkflowsClientValidateByLocationResponse{}, runtime.NewResponseError(resp)
 	}
-	return WorkflowsClientValidateByLocationResponse{RawResponse: resp}, nil
+	return WorkflowsClientValidateByLocationResponse{}, nil
 }
 
 // validateByLocationCreateRequest creates the ValidateByLocation request.
@@ -814,7 +845,7 @@ func (client *WorkflowsClient) ValidateByResourceGroup(ctx context.Context, reso
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return WorkflowsClientValidateByResourceGroupResponse{}, runtime.NewResponseError(resp)
 	}
-	return WorkflowsClientValidateByResourceGroupResponse{RawResponse: resp}, nil
+	return WorkflowsClientValidateByResourceGroupResponse{}, nil
 }
 
 // validateByResourceGroupCreateRequest creates the ValidateByResourceGroup request.

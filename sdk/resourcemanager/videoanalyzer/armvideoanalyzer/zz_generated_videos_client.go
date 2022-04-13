@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type VideosClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewVideosClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VideosClient {
+func NewVideosClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VideosClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &VideosClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates a new video resource or updates an existing video resource with the given name.
@@ -104,7 +109,7 @@ func (client *VideosClient) createOrUpdateCreateRequest(ctx context.Context, res
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *VideosClient) createOrUpdateHandleResponse(resp *http.Response) (VideosClientCreateOrUpdateResponse, error) {
-	result := VideosClientCreateOrUpdateResponse{RawResponse: resp}
+	result := VideosClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VideoEntity); err != nil {
 		return VideosClientCreateOrUpdateResponse{}, err
 	}
@@ -129,7 +134,7 @@ func (client *VideosClient) Delete(ctx context.Context, resourceGroupName string
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return VideosClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return VideosClientDeleteResponse{RawResponse: resp}, nil
+	return VideosClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -215,7 +220,7 @@ func (client *VideosClient) getCreateRequest(ctx context.Context, resourceGroupN
 
 // getHandleResponse handles the Get response.
 func (client *VideosClient) getHandleResponse(resp *http.Response) (VideosClientGetResponse, error) {
-	result := VideosClientGetResponse{RawResponse: resp}
+	result := VideosClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VideoEntity); err != nil {
 		return VideosClientGetResponse{}, err
 	}
@@ -227,16 +232,32 @@ func (client *VideosClient) getHandleResponse(resp *http.Response) (VideosClient
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // options - VideosClientListOptions contains the optional parameters for the VideosClient.List method.
-func (client *VideosClient) List(resourceGroupName string, accountName string, options *VideosClientListOptions) *VideosClientListPager {
-	return &VideosClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+func (client *VideosClient) List(resourceGroupName string, accountName string, options *VideosClientListOptions) *runtime.Pager[VideosClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[VideosClientListResponse]{
+		More: func(page VideosClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp VideosClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.VideoEntityCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *VideosClientListResponse) (VideosClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return VideosClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return VideosClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return VideosClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -270,7 +291,7 @@ func (client *VideosClient) listCreateRequest(ctx context.Context, resourceGroup
 
 // listHandleResponse handles the List response.
 func (client *VideosClient) listHandleResponse(resp *http.Response) (VideosClientListResponse, error) {
-	result := VideosClientListResponse{RawResponse: resp}
+	result := VideosClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VideoEntityCollection); err != nil {
 		return VideosClientListResponse{}, err
 	}
@@ -331,7 +352,7 @@ func (client *VideosClient) listContentTokenCreateRequest(ctx context.Context, r
 
 // listContentTokenHandleResponse handles the ListContentToken response.
 func (client *VideosClient) listContentTokenHandleResponse(resp *http.Response) (VideosClientListContentTokenResponse, error) {
-	result := VideosClientListContentTokenResponse{RawResponse: resp}
+	result := VideosClientListContentTokenResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VideoContentToken); err != nil {
 		return VideosClientListContentTokenResponse{}, err
 	}
@@ -392,7 +413,7 @@ func (client *VideosClient) updateCreateRequest(ctx context.Context, resourceGro
 
 // updateHandleResponse handles the Update response.
 func (client *VideosClient) updateHandleResponse(resp *http.Response) (VideosClientUpdateResponse, error) {
-	result := VideosClientUpdateResponse{RawResponse: resp}
+	result := VideosClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VideoEntity); err != nil {
 		return VideosClientUpdateResponse{}, err
 	}

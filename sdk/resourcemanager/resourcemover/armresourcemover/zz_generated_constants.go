@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armresourcemover
 
 const (
 	moduleName    = "armresourcemover"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -33,11 +33,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 type DependencyLevel string
 
 const (
@@ -51,11 +46,6 @@ func PossibleDependencyLevelValues() []DependencyLevel {
 		DependencyLevelDescendant,
 		DependencyLevelDirect,
 	}
-}
-
-// ToPtr returns a *DependencyLevel pointing to the current value.
-func (c DependencyLevel) ToPtr() *DependencyLevel {
-	return &c
 }
 
 // DependencyType - Defines the dependency type.
@@ -74,11 +64,6 @@ func PossibleDependencyTypeValues() []DependencyType {
 	}
 }
 
-// ToPtr returns a *DependencyType pointing to the current value.
-func (c DependencyType) ToPtr() *DependencyType {
-	return &c
-}
-
 // JobName - Defines the job name.
 type JobName string
 
@@ -91,11 +76,6 @@ func PossibleJobNameValues() []JobName {
 	return []JobName{
 		JobNameInitialSync,
 	}
-}
-
-// ToPtr returns a *JobName pointing to the current value.
-func (c JobName) ToPtr() *JobName {
-	return &c
 }
 
 // MoveResourceInputType - Defines the move resource input type.
@@ -112,11 +92,6 @@ func PossibleMoveResourceInputTypeValues() []MoveResourceInputType {
 		MoveResourceInputTypeMoveResourceID,
 		MoveResourceInputTypeMoveResourceSourceID,
 	}
-}
-
-// ToPtr returns a *MoveResourceInputType pointing to the current value.
-func (c MoveResourceInputType) ToPtr() *MoveResourceInputType {
-	return &c
 }
 
 // MoveState - Defines the MoveResource states.
@@ -161,11 +136,6 @@ func PossibleMoveStateValues() []MoveState {
 	}
 }
 
-// ToPtr returns a *MoveState pointing to the current value.
-func (c MoveState) ToPtr() *MoveState {
-	return &c
-}
-
 // ProvisioningState - Defines the provisioning states.
 type ProvisioningState string
 
@@ -186,11 +156,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // ResolutionType - Defines the resolution type.
 type ResolutionType string
 
@@ -205,11 +170,6 @@ func PossibleResolutionTypeValues() []ResolutionType {
 		ResolutionTypeAutomatic,
 		ResolutionTypeManual,
 	}
-}
-
-// ToPtr returns a *ResolutionType pointing to the current value.
-func (c ResolutionType) ToPtr() *ResolutionType {
-	return &c
 }
 
 // ResourceIdentityType - The type of identity used for the resource mover service.
@@ -228,11 +188,6 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 		ResourceIdentityTypeSystemAssigned,
 		ResourceIdentityTypeUserAssigned,
 	}
-}
-
-// ToPtr returns a *ResourceIdentityType pointing to the current value.
-func (c ResourceIdentityType) ToPtr() *ResourceIdentityType {
-	return &c
 }
 
 // TargetAvailabilityZone - Gets or sets the target availability zone.
@@ -255,11 +210,6 @@ func PossibleTargetAvailabilityZoneValues() []TargetAvailabilityZone {
 	}
 }
 
-// ToPtr returns a *TargetAvailabilityZone pointing to the current value.
-func (c TargetAvailabilityZone) ToPtr() *TargetAvailabilityZone {
-	return &c
-}
-
 // ZoneRedundant - Defines the zone redundant resource setting.
 type ZoneRedundant string
 
@@ -274,9 +224,4 @@ func PossibleZoneRedundantValues() []ZoneRedundant {
 		ZoneRedundantDisable,
 		ZoneRedundantEnable,
 	}
-}
-
-// ToPtr returns a *ZoneRedundant pointing to the current value.
-func (c ZoneRedundant) ToPtr() *ZoneRedundant {
-	return &c
 }

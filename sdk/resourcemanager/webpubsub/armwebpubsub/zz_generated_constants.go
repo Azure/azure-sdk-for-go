@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armwebpubsub
 
 const (
 	moduleName    = "armwebpubsub"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // ACLAction - Azure Networking ACL Action.
@@ -27,11 +27,6 @@ func PossibleACLActionValues() []ACLAction {
 		ACLActionAllow,
 		ACLActionDeny,
 	}
-}
-
-// ToPtr returns a *ACLAction pointing to the current value.
-func (c ACLAction) ToPtr() *ACLAction {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -54,11 +49,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // KeyType - The type of access key.
 type KeyType string
 
@@ -77,11 +67,6 @@ func PossibleKeyTypeValues() []KeyType {
 	}
 }
 
-// ToPtr returns a *KeyType pointing to the current value.
-func (c KeyType) ToPtr() *KeyType {
-	return &c
-}
-
 // ManagedIdentityType - Represents the identity type: systemAssigned, userAssigned, None
 type ManagedIdentityType string
 
@@ -98,11 +83,6 @@ func PossibleManagedIdentityTypeValues() []ManagedIdentityType {
 		ManagedIdentityTypeSystemAssigned,
 		ManagedIdentityTypeUserAssigned,
 	}
-}
-
-// ToPtr returns a *ManagedIdentityType pointing to the current value.
-func (c ManagedIdentityType) ToPtr() *ManagedIdentityType {
-	return &c
 }
 
 // PrivateLinkServiceConnectionStatus - Indicates whether the connection has been Approved/Rejected/Removed by the owner of
@@ -124,11 +104,6 @@ func PossiblePrivateLinkServiceConnectionStatusValues() []PrivateLinkServiceConn
 		PrivateLinkServiceConnectionStatusPending,
 		PrivateLinkServiceConnectionStatusRejected,
 	}
-}
-
-// ToPtr returns a *PrivateLinkServiceConnectionStatus pointing to the current value.
-func (c PrivateLinkServiceConnectionStatus) ToPtr() *PrivateLinkServiceConnectionStatus {
-	return &c
 }
 
 // ProvisioningState - Provisioning state of the resource.
@@ -161,11 +136,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // ScaleType - The scale type applicable to the sku.
 type ScaleType string
 
@@ -182,11 +152,6 @@ func PossibleScaleTypeValues() []ScaleType {
 		ScaleTypeManual,
 		ScaleTypeNone,
 	}
-}
-
-// ToPtr returns a *ScaleType pointing to the current value.
-func (c ScaleType) ToPtr() *ScaleType {
-	return &c
 }
 
 // SharedPrivateLinkResourceStatus - Status of the shared private link resource
@@ -211,11 +176,6 @@ func PossibleSharedPrivateLinkResourceStatusValues() []SharedPrivateLinkResource
 	}
 }
 
-// ToPtr returns a *SharedPrivateLinkResourceStatus pointing to the current value.
-func (c SharedPrivateLinkResourceStatus) ToPtr() *SharedPrivateLinkResourceStatus {
-	return &c
-}
-
 // UpstreamAuthType - Upstream auth type enum.
 type UpstreamAuthType string
 
@@ -230,11 +190,6 @@ func PossibleUpstreamAuthTypeValues() []UpstreamAuthType {
 		UpstreamAuthTypeManagedIdentity,
 		UpstreamAuthTypeNone,
 	}
-}
-
-// ToPtr returns a *UpstreamAuthType pointing to the current value.
-func (c UpstreamAuthType) ToPtr() *UpstreamAuthType {
-	return &c
 }
 
 // WebPubSubRequestType - The incoming request type to the service
@@ -257,11 +212,6 @@ func PossibleWebPubSubRequestTypeValues() []WebPubSubRequestType {
 	}
 }
 
-// ToPtr returns a *WebPubSubRequestType pointing to the current value.
-func (c WebPubSubRequestType) ToPtr() *WebPubSubRequestType {
-	return &c
-}
-
 // WebPubSubSKUTier - Optional tier of this particular SKU. 'Standard' or 'Free'.
 // Basic is deprecated, use Standard instead.
 type WebPubSubSKUTier string
@@ -281,9 +231,4 @@ func PossibleWebPubSubSKUTierValues() []WebPubSubSKUTier {
 		WebPubSubSKUTierPremium,
 		WebPubSubSKUTierStandard,
 	}
-}
-
-// ToPtr returns a *WebPubSubSKUTier pointing to the current value.
-func (c WebPubSubSKUTier) ToPtr() *WebPubSubSKUTier {
-	return &c
 }

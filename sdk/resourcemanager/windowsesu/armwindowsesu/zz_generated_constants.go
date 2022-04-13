@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armwindowsesu
 
 const (
 	moduleName    = "armwindowsesu"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // OsType - Type of OS for which the key is requested.
@@ -29,11 +29,6 @@ func PossibleOsTypeValues() []OsType {
 		OsTypeWindowsServer2008,
 		OsTypeWindowsServer2008R2,
 	}
-}
-
-// ToPtr returns a *OsType pointing to the current value.
-func (c OsType) ToPtr() *OsType {
-	return &c
 }
 
 type ProvisioningState string
@@ -57,11 +52,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // SupportType - Type of support
 type SupportType string
 
@@ -76,9 +66,4 @@ func PossibleSupportTypeValues() []SupportType {
 		SupportTypePremiumAssurance,
 		SupportTypeSupplementalServicing,
 	}
-}
-
-// ToPtr returns a *SupportType pointing to the current value.
-func (c SupportType) ToPtr() *SupportType {
-	return &c
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,130 +17,161 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation"
 )
 
-// x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControl/createOrUpdateSourceControl.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControl/createOrUpdateSourceControl.json
 func ExampleSourceControlClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armautomation.NewSourceControlClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewSourceControlClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<automation-account-name>",
 		"<source-control-name>",
 		armautomation.SourceControlCreateOrUpdateParameters{
 			Properties: &armautomation.SourceControlCreateOrUpdateProperties{
-				Description:    to.StringPtr("<description>"),
-				AutoSync:       to.BoolPtr(true),
-				Branch:         to.StringPtr("<branch>"),
-				FolderPath:     to.StringPtr("<folder-path>"),
-				PublishRunbook: to.BoolPtr(true),
-				RepoURL:        to.StringPtr("<repo-url>"),
+				Description:    to.Ptr("<description>"),
+				AutoSync:       to.Ptr(true),
+				Branch:         to.Ptr("<branch>"),
+				FolderPath:     to.Ptr("<folder-path>"),
+				PublishRunbook: to.Ptr(true),
+				RepoURL:        to.Ptr("<repo-url>"),
 				SecurityToken: &armautomation.SourceControlSecurityTokenProperties{
-					AccessToken: to.StringPtr("<access-token>"),
-					TokenType:   armautomation.TokenType("PersonalAccessToken").ToPtr(),
+					AccessToken: to.Ptr("<access-token>"),
+					TokenType:   to.Ptr(armautomation.TokenTypePersonalAccessToken),
 				},
-				SourceType: armautomation.SourceType("VsoGit").ToPtr(),
+				SourceType: to.Ptr(armautomation.SourceTypeVsoGit),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.SourceControlClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControl/updateSourceControl_patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControl/updateSourceControl_patch.json
 func ExampleSourceControlClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armautomation.NewSourceControlClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewSourceControlClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<automation-account-name>",
 		"<source-control-name>",
 		armautomation.SourceControlUpdateParameters{
 			Properties: &armautomation.SourceControlUpdateProperties{
-				Description:    to.StringPtr("<description>"),
-				AutoSync:       to.BoolPtr(true),
-				Branch:         to.StringPtr("<branch>"),
-				FolderPath:     to.StringPtr("<folder-path>"),
-				PublishRunbook: to.BoolPtr(true),
+				Description:    to.Ptr("<description>"),
+				AutoSync:       to.Ptr(true),
+				Branch:         to.Ptr("<branch>"),
+				FolderPath:     to.Ptr("<folder-path>"),
+				PublishRunbook: to.Ptr(true),
 				SecurityToken: &armautomation.SourceControlSecurityTokenProperties{
-					AccessToken: to.StringPtr("<access-token>"),
-					TokenType:   armautomation.TokenType("PersonalAccessToken").ToPtr(),
+					AccessToken: to.Ptr("<access-token>"),
+					TokenType:   to.Ptr(armautomation.TokenTypePersonalAccessToken),
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.SourceControlClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControl/deleteSourceControl.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControl/deleteSourceControl.json
 func ExampleSourceControlClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armautomation.NewSourceControlClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewSourceControlClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<automation-account-name>",
 		"<source-control-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControl/getSourceControl.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControl/getSourceControl.json
 func ExampleSourceControlClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armautomation.NewSourceControlClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewSourceControlClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<automation-account-name>",
 		"<source-control-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.SourceControlClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControl/getAllSourceControls.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControl/getAllSourceControls.json
 func ExampleSourceControlClient_ListByAutomationAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armautomation.NewSourceControlClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewSourceControlClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByAutomationAccount("<resource-group-name>",
 		"<automation-account-name>",
 		&armautomation.SourceControlClientListByAutomationAccountOptions{Filter: nil})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

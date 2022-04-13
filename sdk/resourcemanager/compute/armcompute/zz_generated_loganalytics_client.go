@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type LogAnalyticsClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewLogAnalyticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LogAnalyticsClient {
+func NewLogAnalyticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LogAnalyticsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &LogAnalyticsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginExportRequestRateByInterval - Export logs that show Api requests made by this subscription in the given time window
@@ -57,22 +62,18 @@ func NewLogAnalyticsClient(subscriptionID string, credential azcore.TokenCredent
 // parameters - Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
 // options - LogAnalyticsClientBeginExportRequestRateByIntervalOptions contains the optional parameters for the LogAnalyticsClient.BeginExportRequestRateByInterval
 // method.
-func (client *LogAnalyticsClient) BeginExportRequestRateByInterval(ctx context.Context, location string, parameters RequestRateByIntervalInput, options *LogAnalyticsClientBeginExportRequestRateByIntervalOptions) (LogAnalyticsClientExportRequestRateByIntervalPollerResponse, error) {
-	resp, err := client.exportRequestRateByInterval(ctx, location, parameters, options)
-	if err != nil {
-		return LogAnalyticsClientExportRequestRateByIntervalPollerResponse{}, err
+func (client *LogAnalyticsClient) BeginExportRequestRateByInterval(ctx context.Context, location string, parameters RequestRateByIntervalInput, options *LogAnalyticsClientBeginExportRequestRateByIntervalOptions) (*armruntime.Poller[LogAnalyticsClientExportRequestRateByIntervalResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.exportRequestRateByInterval(ctx, location, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[LogAnalyticsClientExportRequestRateByIntervalResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[LogAnalyticsClientExportRequestRateByIntervalResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := LogAnalyticsClientExportRequestRateByIntervalPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("LogAnalyticsClient.ExportRequestRateByInterval", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return LogAnalyticsClientExportRequestRateByIntervalPollerResponse{}, err
-	}
-	result.Poller = &LogAnalyticsClientExportRequestRateByIntervalPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // ExportRequestRateByInterval - Export logs that show Api requests made by this subscription in the given time window to
@@ -122,22 +123,18 @@ func (client *LogAnalyticsClient) exportRequestRateByIntervalCreateRequest(ctx c
 // parameters - Parameters supplied to the LogAnalytics getThrottledRequests Api.
 // options - LogAnalyticsClientBeginExportThrottledRequestsOptions contains the optional parameters for the LogAnalyticsClient.BeginExportThrottledRequests
 // method.
-func (client *LogAnalyticsClient) BeginExportThrottledRequests(ctx context.Context, location string, parameters ThrottledRequestsInput, options *LogAnalyticsClientBeginExportThrottledRequestsOptions) (LogAnalyticsClientExportThrottledRequestsPollerResponse, error) {
-	resp, err := client.exportThrottledRequests(ctx, location, parameters, options)
-	if err != nil {
-		return LogAnalyticsClientExportThrottledRequestsPollerResponse{}, err
+func (client *LogAnalyticsClient) BeginExportThrottledRequests(ctx context.Context, location string, parameters ThrottledRequestsInput, options *LogAnalyticsClientBeginExportThrottledRequestsOptions) (*armruntime.Poller[LogAnalyticsClientExportThrottledRequestsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.exportThrottledRequests(ctx, location, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[LogAnalyticsClientExportThrottledRequestsResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[LogAnalyticsClientExportThrottledRequestsResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := LogAnalyticsClientExportThrottledRequestsPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("LogAnalyticsClient.ExportThrottledRequests", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return LogAnalyticsClientExportThrottledRequestsPollerResponse{}, err
-	}
-	result.Poller = &LogAnalyticsClientExportThrottledRequestsPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // ExportThrottledRequests - Export logs that show total throttled Api requests for this subscription in the given time window.

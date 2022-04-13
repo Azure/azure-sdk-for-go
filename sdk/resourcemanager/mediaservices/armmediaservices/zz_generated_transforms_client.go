@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type TransformsClient struct {
 // subscriptionID - The unique identifier for a Microsoft Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewTransformsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TransformsClient {
+func NewTransformsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TransformsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &TransformsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a new Transform.
@@ -104,7 +109,7 @@ func (client *TransformsClient) createOrUpdateCreateRequest(ctx context.Context,
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *TransformsClient) createOrUpdateHandleResponse(resp *http.Response) (TransformsClientCreateOrUpdateResponse, error) {
-	result := TransformsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := TransformsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Transform); err != nil {
 		return TransformsClientCreateOrUpdateResponse{}, err
 	}
@@ -129,7 +134,7 @@ func (client *TransformsClient) Delete(ctx context.Context, resourceGroupName st
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return TransformsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return TransformsClientDeleteResponse{RawResponse: resp}, nil
+	return TransformsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -215,7 +220,7 @@ func (client *TransformsClient) getCreateRequest(ctx context.Context, resourceGr
 
 // getHandleResponse handles the Get response.
 func (client *TransformsClient) getHandleResponse(resp *http.Response) (TransformsClientGetResponse, error) {
-	result := TransformsClientGetResponse{RawResponse: resp}
+	result := TransformsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Transform); err != nil {
 		return TransformsClientGetResponse{}, err
 	}
@@ -227,16 +232,32 @@ func (client *TransformsClient) getHandleResponse(resp *http.Response) (Transfor
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // options - TransformsClientListOptions contains the optional parameters for the TransformsClient.List method.
-func (client *TransformsClient) List(resourceGroupName string, accountName string, options *TransformsClientListOptions) *TransformsClientListPager {
-	return &TransformsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+func (client *TransformsClient) List(resourceGroupName string, accountName string, options *TransformsClientListOptions) *runtime.Pager[TransformsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[TransformsClientListResponse]{
+		More: func(page TransformsClientListResponse) bool {
+			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp TransformsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.TransformCollection.ODataNextLink)
+		Fetcher: func(ctx context.Context, page *TransformsClientListResponse) (TransformsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.ODataNextLink)
+			}
+			if err != nil {
+				return TransformsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return TransformsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return TransformsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -273,7 +294,7 @@ func (client *TransformsClient) listCreateRequest(ctx context.Context, resourceG
 
 // listHandleResponse handles the List response.
 func (client *TransformsClient) listHandleResponse(resp *http.Response) (TransformsClientListResponse, error) {
-	result := TransformsClientListResponse{RawResponse: resp}
+	result := TransformsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TransformCollection); err != nil {
 		return TransformsClientListResponse{}, err
 	}
@@ -334,7 +355,7 @@ func (client *TransformsClient) updateCreateRequest(ctx context.Context, resourc
 
 // updateHandleResponse handles the Update response.
 func (client *TransformsClient) updateHandleResponse(resp *http.Response) (TransformsClientUpdateResponse, error) {
-	result := TransformsClientUpdateResponse{RawResponse: resp}
+	result := TransformsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Transform); err != nil {
 		return TransformsClientUpdateResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type DNSResolversClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDNSResolversClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DNSResolversClient {
+func NewDNSResolversClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DNSResolversClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DNSResolversClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a DNS resolver.
@@ -57,22 +62,16 @@ func NewDNSResolversClient(subscriptionID string, credential azcore.TokenCredent
 // parameters - Parameters supplied to the CreateOrUpdate operation.
 // options - DNSResolversClientBeginCreateOrUpdateOptions contains the optional parameters for the DNSResolversClient.BeginCreateOrUpdate
 // method.
-func (client *DNSResolversClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, dnsResolverName string, parameters DNSResolver, options *DNSResolversClientBeginCreateOrUpdateOptions) (DNSResolversClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, dnsResolverName, parameters, options)
-	if err != nil {
-		return DNSResolversClientCreateOrUpdatePollerResponse{}, err
+func (client *DNSResolversClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, dnsResolverName string, parameters DNSResolver, options *DNSResolversClientBeginCreateOrUpdateOptions) (*armruntime.Poller[DNSResolversClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, dnsResolverName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DNSResolversClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DNSResolversClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DNSResolversClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DNSResolversClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return DNSResolversClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &DNSResolversClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a DNS resolver.
@@ -130,22 +129,16 @@ func (client *DNSResolversClient) createOrUpdateCreateRequest(ctx context.Contex
 // dnsResolverName - The name of the DNS resolver.
 // options - DNSResolversClientBeginDeleteOptions contains the optional parameters for the DNSResolversClient.BeginDelete
 // method.
-func (client *DNSResolversClient) BeginDelete(ctx context.Context, resourceGroupName string, dnsResolverName string, options *DNSResolversClientBeginDeleteOptions) (DNSResolversClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, dnsResolverName, options)
-	if err != nil {
-		return DNSResolversClientDeletePollerResponse{}, err
+func (client *DNSResolversClient) BeginDelete(ctx context.Context, resourceGroupName string, dnsResolverName string, options *DNSResolversClientBeginDeleteOptions) (*armruntime.Poller[DNSResolversClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, dnsResolverName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DNSResolversClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DNSResolversClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DNSResolversClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DNSResolversClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return DNSResolversClientDeletePollerResponse{}, err
-	}
-	result.Poller = &DNSResolversClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a DNS resolver. WARNING: This operation cannot be undone.
@@ -242,7 +235,7 @@ func (client *DNSResolversClient) getCreateRequest(ctx context.Context, resource
 
 // getHandleResponse handles the Get response.
 func (client *DNSResolversClient) getHandleResponse(resp *http.Response) (DNSResolversClientGetResponse, error) {
-	result := DNSResolversClientGetResponse{RawResponse: resp}
+	result := DNSResolversClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DNSResolver); err != nil {
 		return DNSResolversClientGetResponse{}, err
 	}
@@ -252,16 +245,32 @@ func (client *DNSResolversClient) getHandleResponse(resp *http.Response) (DNSRes
 // List - Lists DNS resolvers in all resource groups of a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DNSResolversClientListOptions contains the optional parameters for the DNSResolversClient.List method.
-func (client *DNSResolversClient) List(options *DNSResolversClientListOptions) *DNSResolversClientListPager {
-	return &DNSResolversClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *DNSResolversClient) List(options *DNSResolversClientListOptions) *runtime.Pager[DNSResolversClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DNSResolversClientListResponse]{
+		More: func(page DNSResolversClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DNSResolversClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DNSResolversClientListResponse) (DNSResolversClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DNSResolversClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DNSResolversClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DNSResolversClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -287,7 +296,7 @@ func (client *DNSResolversClient) listCreateRequest(ctx context.Context, options
 
 // listHandleResponse handles the List response.
 func (client *DNSResolversClient) listHandleResponse(resp *http.Response) (DNSResolversClientListResponse, error) {
-	result := DNSResolversClientListResponse{RawResponse: resp}
+	result := DNSResolversClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
 		return DNSResolversClientListResponse{}, err
 	}
@@ -299,16 +308,32 @@ func (client *DNSResolversClient) listHandleResponse(resp *http.Response) (DNSRe
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - DNSResolversClientListByResourceGroupOptions contains the optional parameters for the DNSResolversClient.ListByResourceGroup
 // method.
-func (client *DNSResolversClient) ListByResourceGroup(resourceGroupName string, options *DNSResolversClientListByResourceGroupOptions) *DNSResolversClientListByResourceGroupPager {
-	return &DNSResolversClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *DNSResolversClient) ListByResourceGroup(resourceGroupName string, options *DNSResolversClientListByResourceGroupOptions) *runtime.Pager[DNSResolversClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DNSResolversClientListByResourceGroupResponse]{
+		More: func(page DNSResolversClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DNSResolversClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DNSResolversClientListByResourceGroupResponse) (DNSResolversClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DNSResolversClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DNSResolversClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DNSResolversClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -338,7 +363,7 @@ func (client *DNSResolversClient) listByResourceGroupCreateRequest(ctx context.C
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *DNSResolversClient) listByResourceGroupHandleResponse(resp *http.Response) (DNSResolversClientListByResourceGroupResponse, error) {
-	result := DNSResolversClientListByResourceGroupResponse{RawResponse: resp}
+	result := DNSResolversClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
 		return DNSResolversClientListByResourceGroupResponse{}, err
 	}
@@ -351,16 +376,32 @@ func (client *DNSResolversClient) listByResourceGroupHandleResponse(resp *http.R
 // virtualNetworkName - The name of the virtual network.
 // options - DNSResolversClientListByVirtualNetworkOptions contains the optional parameters for the DNSResolversClient.ListByVirtualNetwork
 // method.
-func (client *DNSResolversClient) ListByVirtualNetwork(resourceGroupName string, virtualNetworkName string, options *DNSResolversClientListByVirtualNetworkOptions) *DNSResolversClientListByVirtualNetworkPager {
-	return &DNSResolversClientListByVirtualNetworkPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByVirtualNetworkCreateRequest(ctx, resourceGroupName, virtualNetworkName, options)
+func (client *DNSResolversClient) ListByVirtualNetwork(resourceGroupName string, virtualNetworkName string, options *DNSResolversClientListByVirtualNetworkOptions) *runtime.Pager[DNSResolversClientListByVirtualNetworkResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DNSResolversClientListByVirtualNetworkResponse]{
+		More: func(page DNSResolversClientListByVirtualNetworkResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DNSResolversClientListByVirtualNetworkResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SubResourceListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DNSResolversClientListByVirtualNetworkResponse) (DNSResolversClientListByVirtualNetworkResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByVirtualNetworkCreateRequest(ctx, resourceGroupName, virtualNetworkName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DNSResolversClientListByVirtualNetworkResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DNSResolversClientListByVirtualNetworkResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DNSResolversClientListByVirtualNetworkResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByVirtualNetworkHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByVirtualNetworkCreateRequest creates the ListByVirtualNetwork request.
@@ -394,7 +435,7 @@ func (client *DNSResolversClient) listByVirtualNetworkCreateRequest(ctx context.
 
 // listByVirtualNetworkHandleResponse handles the ListByVirtualNetwork response.
 func (client *DNSResolversClient) listByVirtualNetworkHandleResponse(resp *http.Response) (DNSResolversClientListByVirtualNetworkResponse, error) {
-	result := DNSResolversClientListByVirtualNetworkResponse{RawResponse: resp}
+	result := DNSResolversClientListByVirtualNetworkResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubResourceListResult); err != nil {
 		return DNSResolversClientListByVirtualNetworkResponse{}, err
 	}
@@ -408,22 +449,16 @@ func (client *DNSResolversClient) listByVirtualNetworkHandleResponse(resp *http.
 // parameters - Parameters supplied to the Update operation.
 // options - DNSResolversClientBeginUpdateOptions contains the optional parameters for the DNSResolversClient.BeginUpdate
 // method.
-func (client *DNSResolversClient) BeginUpdate(ctx context.Context, resourceGroupName string, dnsResolverName string, parameters Patch, options *DNSResolversClientBeginUpdateOptions) (DNSResolversClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, dnsResolverName, parameters, options)
-	if err != nil {
-		return DNSResolversClientUpdatePollerResponse{}, err
+func (client *DNSResolversClient) BeginUpdate(ctx context.Context, resourceGroupName string, dnsResolverName string, parameters Patch, options *DNSResolversClientBeginUpdateOptions) (*armruntime.Poller[DNSResolversClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, dnsResolverName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DNSResolversClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DNSResolversClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DNSResolversClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DNSResolversClient.Update", "", resp, client.pl)
-	if err != nil {
-		return DNSResolversClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &DNSResolversClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates a DNS resolver.

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,14 +17,19 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datashare/armdatashare"
 )
 
-// x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/DataSetMappings_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/DataSetMappings_Get.json
 func ExampleDataSetMappingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdatashare.NewDataSetMappingsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewDataSetMappingsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<account-name>",
@@ -32,50 +37,64 @@ func ExampleDataSetMappingsClient_Get() {
 		"<data-set-mapping-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.DataSetMappingsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/DataSetMappings_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/DataSetMappings_Create.json
 func ExampleDataSetMappingsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdatashare.NewDataSetMappingsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewDataSetMappingsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Create(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<share-subscription-name>",
 		"<data-set-mapping-name>",
 		&armdatashare.BlobDataSetMapping{
-			Kind: armdatashare.DataSetMappingKind("Blob").ToPtr(),
+			Kind: to.Ptr(armdatashare.DataSetMappingKindBlob),
 			Properties: &armdatashare.BlobMappingProperties{
-				ContainerName:      to.StringPtr("<container-name>"),
-				DataSetID:          to.StringPtr("<data-set-id>"),
-				FilePath:           to.StringPtr("<file-path>"),
-				ResourceGroup:      to.StringPtr("<resource-group>"),
-				StorageAccountName: to.StringPtr("<storage-account-name>"),
-				SubscriptionID:     to.StringPtr("<subscription-id>"),
+				ContainerName:      to.Ptr("<container-name>"),
+				DataSetID:          to.Ptr("<data-set-id>"),
+				FilePath:           to.Ptr("<file-path>"),
+				ResourceGroup:      to.Ptr("<resource-group>"),
+				StorageAccountName: to.Ptr("<storage-account-name>"),
+				SubscriptionID:     to.Ptr("<subscription-id>"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.DataSetMappingsClientCreateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/DataSetMappings_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/DataSetMappings_Delete.json
 func ExampleDataSetMappingsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdatashare.NewDataSetMappingsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewDataSetMappingsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<account-name>",
@@ -83,18 +102,24 @@ func ExampleDataSetMappingsClient_Delete() {
 		"<data-set-mapping-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/DataSetMappings_ListByShareSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/DataSetMappings_ListByShareSubscription.json
 func ExampleDataSetMappingsClient_ListByShareSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdatashare.NewDataSetMappingsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewDataSetMappingsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByShareSubscription("<resource-group-name>",
 		"<account-name>",
 		"<share-subscription-name>",
@@ -102,16 +127,15 @@ func ExampleDataSetMappingsClient_ListByShareSubscription() {
 			Filter:  nil,
 			Orderby: nil,
 		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

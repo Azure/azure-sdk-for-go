@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,128 +19,170 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplaceordering/armmarketplaceordering"
 )
 
-// x-ms-original-file: specification/marketplaceordering/resource-manager/Microsoft.MarketplaceOrdering/stable/2021-01-01/examples/GetMarketplaceTerms.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/marketplaceordering/resource-manager/Microsoft.MarketplaceOrdering/stable/2021-01-01/examples/GetMarketplaceTerms.json
 func ExampleMarketplaceAgreementsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmarketplaceordering.NewMarketplaceAgreementsClient("<subscription-id>", cred, nil)
+	client, err := armmarketplaceordering.NewMarketplaceAgreementsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
-		armmarketplaceordering.OfferType("virtualmachine"),
+		armmarketplaceordering.OfferTypeVirtualmachine,
 		"<publisher-id>",
 		"<offer-id>",
 		"<plan-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.MarketplaceAgreementsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/marketplaceordering/resource-manager/Microsoft.MarketplaceOrdering/stable/2021-01-01/examples/SetMarketplaceTerms.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/marketplaceordering/resource-manager/Microsoft.MarketplaceOrdering/stable/2021-01-01/examples/SetMarketplaceTerms.json
 func ExampleMarketplaceAgreementsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmarketplaceordering.NewMarketplaceAgreementsClient("<subscription-id>", cred, nil)
+	client, err := armmarketplaceordering.NewMarketplaceAgreementsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Create(ctx,
-		armmarketplaceordering.OfferType("virtualmachine"),
+		armmarketplaceordering.OfferTypeVirtualmachine,
 		"<publisher-id>",
 		"<offer-id>",
 		"<plan-id>",
 		armmarketplaceordering.AgreementTerms{
 			Properties: &armmarketplaceordering.AgreementProperties{
-				Accepted:             to.BoolPtr(false),
-				LicenseTextLink:      to.StringPtr("<license-text-link>"),
-				MarketplaceTermsLink: to.StringPtr("<marketplace-terms-link>"),
-				Plan:                 to.StringPtr("<plan>"),
-				PrivacyPolicyLink:    to.StringPtr("<privacy-policy-link>"),
-				Product:              to.StringPtr("<product>"),
-				Publisher:            to.StringPtr("<publisher>"),
-				RetrieveDatetime:     to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T11:33:07.12132Z"); return t }()),
-				Signature:            to.StringPtr("<signature>"),
+				Accepted:             to.Ptr(false),
+				LicenseTextLink:      to.Ptr("<license-text-link>"),
+				MarketplaceTermsLink: to.Ptr("<marketplace-terms-link>"),
+				Plan:                 to.Ptr("<plan>"),
+				PrivacyPolicyLink:    to.Ptr("<privacy-policy-link>"),
+				Product:              to.Ptr("<product>"),
+				Publisher:            to.Ptr("<publisher>"),
+				RetrieveDatetime:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T11:33:07.12132Z"); return t }()),
+				Signature:            to.Ptr("<signature>"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.MarketplaceAgreementsClientCreateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/marketplaceordering/resource-manager/Microsoft.MarketplaceOrdering/stable/2021-01-01/examples/SignMarketplaceTerms.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/marketplaceordering/resource-manager/Microsoft.MarketplaceOrdering/stable/2021-01-01/examples/SignMarketplaceTerms.json
 func ExampleMarketplaceAgreementsClient_Sign() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmarketplaceordering.NewMarketplaceAgreementsClient("<subscription-id>", cred, nil)
+	client, err := armmarketplaceordering.NewMarketplaceAgreementsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Sign(ctx,
 		"<publisher-id>",
 		"<offer-id>",
 		"<plan-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.MarketplaceAgreementsClientSignResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/marketplaceordering/resource-manager/Microsoft.MarketplaceOrdering/stable/2021-01-01/examples/CancelMarketplaceTerms.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/marketplaceordering/resource-manager/Microsoft.MarketplaceOrdering/stable/2021-01-01/examples/CancelMarketplaceTerms.json
 func ExampleMarketplaceAgreementsClient_Cancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmarketplaceordering.NewMarketplaceAgreementsClient("<subscription-id>", cred, nil)
+	client, err := armmarketplaceordering.NewMarketplaceAgreementsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Cancel(ctx,
 		"<publisher-id>",
 		"<offer-id>",
 		"<plan-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.MarketplaceAgreementsClientCancelResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/marketplaceordering/resource-manager/Microsoft.MarketplaceOrdering/stable/2021-01-01/examples/GetAgreementMarketplaceTerms.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/marketplaceordering/resource-manager/Microsoft.MarketplaceOrdering/stable/2021-01-01/examples/GetAgreementMarketplaceTerms.json
 func ExampleMarketplaceAgreementsClient_GetAgreement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmarketplaceordering.NewMarketplaceAgreementsClient("<subscription-id>", cred, nil)
+	client, err := armmarketplaceordering.NewMarketplaceAgreementsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetAgreement(ctx,
 		"<publisher-id>",
 		"<offer-id>",
 		"<plan-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.MarketplaceAgreementsClientGetAgreementResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/marketplaceordering/resource-manager/Microsoft.MarketplaceOrdering/stable/2021-01-01/examples/ListMarketplaceTerms.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/marketplaceordering/resource-manager/Microsoft.MarketplaceOrdering/stable/2021-01-01/examples/ListMarketplaceTerms.json
 func ExampleMarketplaceAgreementsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmarketplaceordering.NewMarketplaceAgreementsClient("<subscription-id>", cred, nil)
+	client, err := armmarketplaceordering.NewMarketplaceAgreementsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.List(ctx,
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.MarketplaceAgreementsClientListResult)
+	// TODO: use response item
+	_ = res
 }

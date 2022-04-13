@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type TestTypesClient struct {
 // subscriptionID - The Azure subscription ID. This is a GUID-formatted string.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewTestTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TestTypesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewTestTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TestTypesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &TestTypesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets a test type of a Test Base Account.
@@ -102,7 +107,7 @@ func (client *TestTypesClient) getCreateRequest(ctx context.Context, resourceGro
 
 // getHandleResponse handles the Get response.
 func (client *TestTypesClient) getHandleResponse(resp *http.Response) (TestTypesClientGetResponse, error) {
-	result := TestTypesClientGetResponse{RawResponse: resp}
+	result := TestTypesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TestTypeResource); err != nil {
 		return TestTypesClientGetResponse{}, err
 	}
@@ -114,16 +119,32 @@ func (client *TestTypesClient) getHandleResponse(resp *http.Response) (TestTypes
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // options - TestTypesClientListOptions contains the optional parameters for the TestTypesClient.List method.
-func (client *TestTypesClient) List(resourceGroupName string, testBaseAccountName string, options *TestTypesClientListOptions) *TestTypesClientListPager {
-	return &TestTypesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, testBaseAccountName, options)
+func (client *TestTypesClient) List(resourceGroupName string, testBaseAccountName string, options *TestTypesClientListOptions) *runtime.Pager[TestTypesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[TestTypesClientListResponse]{
+		More: func(page TestTypesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp TestTypesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.TestTypeListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *TestTypesClientListResponse) (TestTypesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, testBaseAccountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return TestTypesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return TestTypesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return TestTypesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -154,7 +175,7 @@ func (client *TestTypesClient) listCreateRequest(ctx context.Context, resourceGr
 
 // listHandleResponse handles the List response.
 func (client *TestTypesClient) listHandleResponse(resp *http.Response) (TestTypesClientListResponse, error) {
-	result := TestTypesClientListResponse{RawResponse: resp}
+	result := TestTypesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TestTypeListResult); err != nil {
 		return TestTypesClientListResponse{}, err
 	}

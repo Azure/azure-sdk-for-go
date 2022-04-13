@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type DatabaseTablesClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDatabaseTablesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DatabaseTablesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewDatabaseTablesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabaseTablesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DatabaseTablesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Get database table
@@ -113,7 +118,7 @@ func (client *DatabaseTablesClient) getCreateRequest(ctx context.Context, resour
 
 // getHandleResponse handles the Get response.
 func (client *DatabaseTablesClient) getHandleResponse(resp *http.Response) (DatabaseTablesClientGetResponse, error) {
-	result := DatabaseTablesClientGetResponse{RawResponse: resp}
+	result := DatabaseTablesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseTable); err != nil {
 		return DatabaseTablesClientGetResponse{}, err
 	}
@@ -129,16 +134,32 @@ func (client *DatabaseTablesClient) getHandleResponse(resp *http.Response) (Data
 // schemaName - The name of the schema.
 // options - DatabaseTablesClientListBySchemaOptions contains the optional parameters for the DatabaseTablesClient.ListBySchema
 // method.
-func (client *DatabaseTablesClient) ListBySchema(resourceGroupName string, serverName string, databaseName string, schemaName string, options *DatabaseTablesClientListBySchemaOptions) *DatabaseTablesClientListBySchemaPager {
-	return &DatabaseTablesClientListBySchemaPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySchemaCreateRequest(ctx, resourceGroupName, serverName, databaseName, schemaName, options)
+func (client *DatabaseTablesClient) ListBySchema(resourceGroupName string, serverName string, databaseName string, schemaName string, options *DatabaseTablesClientListBySchemaOptions) *runtime.Pager[DatabaseTablesClientListBySchemaResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DatabaseTablesClientListBySchemaResponse]{
+		More: func(page DatabaseTablesClientListBySchemaResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DatabaseTablesClientListBySchemaResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DatabaseTableListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DatabaseTablesClientListBySchemaResponse) (DatabaseTablesClientListBySchemaResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySchemaCreateRequest(ctx, resourceGroupName, serverName, databaseName, schemaName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DatabaseTablesClientListBySchemaResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DatabaseTablesClientListBySchemaResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DatabaseTablesClientListBySchemaResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySchemaHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySchemaCreateRequest creates the ListBySchema request.
@@ -180,7 +201,7 @@ func (client *DatabaseTablesClient) listBySchemaCreateRequest(ctx context.Contex
 
 // listBySchemaHandleResponse handles the ListBySchema response.
 func (client *DatabaseTablesClient) listBySchemaHandleResponse(resp *http.Response) (DatabaseTablesClientListBySchemaResponse, error) {
-	result := DatabaseTablesClientListBySchemaResponse{RawResponse: resp}
+	result := DatabaseTablesClientListBySchemaResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseTableListResult); err != nil {
 		return DatabaseTablesClientListBySchemaResponse{}, err
 	}

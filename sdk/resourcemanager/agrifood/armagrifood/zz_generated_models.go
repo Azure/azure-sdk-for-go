@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armagrifood
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // CheckNameAvailabilityRequest - The check availability request body.
 type CheckNameAvailabilityRequest struct {
@@ -54,21 +49,10 @@ type DetailedInformation struct {
 	UnitsSupported *UnitSystemsInfo `json:"unitsSupported,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DetailedInformation.
-func (d DetailedInformation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "apiInputParameters", d.APIInputParameters)
-	populate(objectMap, "apiName", d.APIName)
-	populate(objectMap, "customParameters", d.CustomParameters)
-	populate(objectMap, "platformParameters", d.PlatformParameters)
-	populate(objectMap, "unitsSupported", d.UnitsSupported)
-	return json.Marshal(objectMap)
-}
-
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
+	Info interface{} `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -90,17 +74,6 @@ type ErrorDetail struct {
 
 	// READ-ONLY; The error target.
 	Target *string `json:"target,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorDetail.
-func (e ErrorDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
@@ -138,14 +111,6 @@ type ExtensionListResponse struct {
 
 	// READ-ONLY; Continuation link (absolute URI) to the next page of results in the list.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ExtensionListResponse.
-func (e ExtensionListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", e.NextLink)
-	populate(objectMap, "value", e.Value)
-	return json.Marshal(objectMap)
 }
 
 // ExtensionProperties - Extension resource properties.
@@ -222,19 +187,6 @@ type FarmBeats struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type FarmBeats.
-func (f FarmBeats) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", f.ID)
-	populate(objectMap, "location", f.Location)
-	populate(objectMap, "name", f.Name)
-	populate(objectMap, "properties", f.Properties)
-	populate(objectMap, "systemData", f.SystemData)
-	populate(objectMap, "tags", f.Tags)
-	populate(objectMap, "type", f.Type)
-	return json.Marshal(objectMap)
-}
-
 // FarmBeatsExtension - FarmBeats extension resource.
 type FarmBeatsExtension struct {
 	// FarmBeatsExtension properties.
@@ -261,14 +213,6 @@ type FarmBeatsExtensionListResponse struct {
 
 	// READ-ONLY; Continuation link (absolute URI) to the next page of results in the list.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FarmBeatsExtensionListResponse.
-func (f FarmBeatsExtensionListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", f.NextLink)
-	populate(objectMap, "value", f.Value)
-	return json.Marshal(objectMap)
 }
 
 // FarmBeatsExtensionProperties - FarmBeatsExtension properties.
@@ -306,22 +250,6 @@ type FarmBeatsExtensionProperties struct {
 	TargetResourceType *string `json:"targetResourceType,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type FarmBeatsExtensionProperties.
-func (f FarmBeatsExtensionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "description", f.Description)
-	populate(objectMap, "detailedInformation", f.DetailedInformation)
-	populate(objectMap, "extensionApiDocsLink", f.ExtensionAPIDocsLink)
-	populate(objectMap, "extensionAuthLink", f.ExtensionAuthLink)
-	populate(objectMap, "extensionCategory", f.ExtensionCategory)
-	populate(objectMap, "farmBeatsExtensionId", f.FarmBeatsExtensionID)
-	populate(objectMap, "farmBeatsExtensionName", f.FarmBeatsExtensionName)
-	populate(objectMap, "farmBeatsExtensionVersion", f.FarmBeatsExtensionVersion)
-	populate(objectMap, "publisherId", f.PublisherID)
-	populate(objectMap, "targetResourceType", f.TargetResourceType)
-	return json.Marshal(objectMap)
-}
-
 // FarmBeatsExtensionsClientGetOptions contains the optional parameters for the FarmBeatsExtensionsClient.Get method.
 type FarmBeatsExtensionsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -348,14 +276,6 @@ type FarmBeatsListResponse struct {
 
 	// READ-ONLY; Continuation link (absolute URI) to the next page of results in the list.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FarmBeatsListResponse.
-func (f FarmBeatsListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", f.NextLink)
-	populate(objectMap, "value", f.Value)
-	return json.Marshal(objectMap)
 }
 
 // FarmBeatsModelsClientCreateOrUpdateOptions contains the optional parameters for the FarmBeatsModelsClient.CreateOrUpdate
@@ -415,14 +335,6 @@ type FarmBeatsUpdateRequestModel struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type FarmBeatsUpdateRequestModel.
-func (f FarmBeatsUpdateRequestModel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "location", f.Location)
-	populate(objectMap, "tags", f.Tags)
-	return json.Marshal(objectMap)
-}
-
 // LocationsClientCheckNameAvailabilityOptions contains the optional parameters for the LocationsClient.CheckNameAvailability
 // method.
 type LocationsClientCheckNameAvailabilityOptions struct {
@@ -478,14 +390,6 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -537,53 +441,6 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
@@ -603,17 +460,6 @@ type TrackedResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
-func (t TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "tags", t.Tags)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
 // UnitSystemsInfo - Unit systems info for the data provider.
 type UnitSystemsInfo struct {
 	// REQUIRED; UnitSystem key sent as part of ProviderInput.
@@ -621,29 +467,4 @@ type UnitSystemsInfo struct {
 
 	// REQUIRED; List of unit systems supported by this data provider.
 	Values []*string `json:"values,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type UnitSystemsInfo.
-func (u UnitSystemsInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "key", u.Key)
-	populate(objectMap, "values", u.Values)
-	return json.Marshal(objectMap)
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

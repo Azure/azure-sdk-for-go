@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -30,19 +31,23 @@ type AdvancedThreatProtectionClient struct {
 // NewAdvancedThreatProtectionClient creates a new instance of AdvancedThreatProtectionClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAdvancedThreatProtectionClient(credential azcore.TokenCredential, options *arm.ClientOptions) *AdvancedThreatProtectionClient {
+func NewAdvancedThreatProtectionClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AdvancedThreatProtectionClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AdvancedThreatProtectionClient{
-		host: string(ep),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Creates or updates the Advanced Threat Protection settings on a specified resource.
@@ -84,7 +89,7 @@ func (client *AdvancedThreatProtectionClient) createCreateRequest(ctx context.Co
 
 // createHandleResponse handles the Create response.
 func (client *AdvancedThreatProtectionClient) createHandleResponse(resp *http.Response) (AdvancedThreatProtectionClientCreateResponse, error) {
-	result := AdvancedThreatProtectionClientCreateResponse{RawResponse: resp}
+	result := AdvancedThreatProtectionClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdvancedThreatProtectionSetting); err != nil {
 		return AdvancedThreatProtectionClientCreateResponse{}, err
 	}
@@ -129,7 +134,7 @@ func (client *AdvancedThreatProtectionClient) getCreateRequest(ctx context.Conte
 
 // getHandleResponse handles the Get response.
 func (client *AdvancedThreatProtectionClient) getHandleResponse(resp *http.Response) (AdvancedThreatProtectionClientGetResponse, error) {
-	result := AdvancedThreatProtectionClientGetResponse{RawResponse: resp}
+	result := AdvancedThreatProtectionClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdvancedThreatProtectionSetting); err != nil {
 		return AdvancedThreatProtectionClientGetResponse{}, err
 	}

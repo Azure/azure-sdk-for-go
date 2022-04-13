@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type ContentTypeClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewContentTypeClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ContentTypeClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewContentTypeClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContentTypeClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ContentTypeClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates the developer portal's content type. Content types describe content items' properties,
@@ -109,7 +114,7 @@ func (client *ContentTypeClient) createOrUpdateCreateRequest(ctx context.Context
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ContentTypeClient) createOrUpdateHandleResponse(resp *http.Response) (ContentTypeClientCreateOrUpdateResponse, error) {
-	result := ContentTypeClientCreateOrUpdateResponse{RawResponse: resp}
+	result := ContentTypeClientCreateOrUpdateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -141,7 +146,7 @@ func (client *ContentTypeClient) Delete(ctx context.Context, resourceGroupName s
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ContentTypeClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ContentTypeClientDeleteResponse{RawResponse: resp}, nil
+	return ContentTypeClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -229,7 +234,7 @@ func (client *ContentTypeClient) getCreateRequest(ctx context.Context, resourceG
 
 // getHandleResponse handles the Get response.
 func (client *ContentTypeClient) getHandleResponse(resp *http.Response) (ContentTypeClientGetResponse, error) {
-	result := ContentTypeClientGetResponse{RawResponse: resp}
+	result := ContentTypeClientGetResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -246,16 +251,32 @@ func (client *ContentTypeClient) getHandleResponse(resp *http.Response) (Content
 // serviceName - The name of the API Management service.
 // options - ContentTypeClientListByServiceOptions contains the optional parameters for the ContentTypeClient.ListByService
 // method.
-func (client *ContentTypeClient) ListByService(resourceGroupName string, serviceName string, options *ContentTypeClientListByServiceOptions) *ContentTypeClientListByServicePager {
-	return &ContentTypeClientListByServicePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+func (client *ContentTypeClient) ListByService(resourceGroupName string, serviceName string, options *ContentTypeClientListByServiceOptions) *runtime.Pager[ContentTypeClientListByServiceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ContentTypeClientListByServiceResponse]{
+		More: func(page ContentTypeClientListByServiceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ContentTypeClientListByServiceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ContentTypeCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *ContentTypeClientListByServiceResponse) (ContentTypeClientListByServiceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ContentTypeClientListByServiceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ContentTypeClientListByServiceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ContentTypeClientListByServiceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServiceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByServiceCreateRequest creates the ListByService request.
@@ -286,7 +307,7 @@ func (client *ContentTypeClient) listByServiceCreateRequest(ctx context.Context,
 
 // listByServiceHandleResponse handles the ListByService response.
 func (client *ContentTypeClient) listByServiceHandleResponse(resp *http.Response) (ContentTypeClientListByServiceResponse, error) {
-	result := ContentTypeClientListByServiceResponse{RawResponse: resp}
+	result := ContentTypeClientListByServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContentTypeCollection); err != nil {
 		return ContentTypeClientListByServiceResponse{}, err
 	}

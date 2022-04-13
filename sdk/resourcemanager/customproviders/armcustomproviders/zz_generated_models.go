@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -7,12 +7,6 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package armcustomproviders
-
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-)
 
 // Association - The resource definition of this association.
 type Association struct {
@@ -41,12 +35,14 @@ type AssociationProperties struct {
 // AssociationsClientBeginCreateOrUpdateOptions contains the optional parameters for the AssociationsClient.BeginCreateOrUpdate
 // method.
 type AssociationsClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // AssociationsClientBeginDeleteOptions contains the optional parameters for the AssociationsClient.BeginDelete method.
 type AssociationsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // AssociationsClientGetOptions contains the optional parameters for the AssociationsClient.Get method.
@@ -66,14 +62,6 @@ type AssociationsList struct {
 
 	// The array of associations.
 	Value []*Association `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AssociationsList.
-func (a AssociationsList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
 }
 
 // CustomRPActionRouteDefinition - The route definition for an action implemented by the custom resource provider.
@@ -112,18 +100,6 @@ type CustomRPManifest struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CustomRPManifest.
-func (c CustomRPManifest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", c.ID)
-	populate(objectMap, "location", c.Location)
-	populate(objectMap, "name", c.Name)
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "tags", c.Tags)
-	populate(objectMap, "type", c.Type)
-	return json.Marshal(objectMap)
-}
-
 // CustomRPManifestProperties - The manifest for the custom resource provider
 type CustomRPManifestProperties struct {
 	// A list of actions that the custom resource provider implements.
@@ -137,16 +113,6 @@ type CustomRPManifestProperties struct {
 
 	// READ-ONLY; The provisioning state of the resource provider.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CustomRPManifestProperties.
-func (c CustomRPManifestProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "actions", c.Actions)
-	populate(objectMap, "provisioningState", c.ProvisioningState)
-	populate(objectMap, "resourceTypes", c.ResourceTypes)
-	populate(objectMap, "validations", c.Validations)
-	return json.Marshal(objectMap)
 }
 
 // CustomRPResourceTypeRouteDefinition - The route definition for a resource implemented by the custom resource provider.
@@ -189,13 +155,15 @@ type CustomRPValidations struct {
 // CustomResourceProviderClientBeginCreateOrUpdateOptions contains the optional parameters for the CustomResourceProviderClient.BeginCreateOrUpdate
 // method.
 type CustomResourceProviderClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CustomResourceProviderClientBeginDeleteOptions contains the optional parameters for the CustomResourceProviderClient.BeginDelete
 // method.
 type CustomResourceProviderClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CustomResourceProviderClientGetOptions contains the optional parameters for the CustomResourceProviderClient.Get method.
@@ -233,15 +201,6 @@ type ErrorDefinition struct {
 	Message *string `json:"message,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ErrorDefinition.
-func (e ErrorDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	return json.Marshal(objectMap)
-}
-
 // ErrorResponse - Error response.
 type ErrorResponse struct {
 	// The error details.
@@ -255,14 +214,6 @@ type ListByCustomRPManifest struct {
 
 	// The array of custom resource provider manifests.
 	Value []*CustomRPManifest `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ListByCustomRPManifest.
-func (l ListByCustomRPManifest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
@@ -286,17 +237,6 @@ type Resource struct {
 
 	// READ-ONLY; Resource type
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "location", r.Location)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "tags", r.Tags)
-	populate(objectMap, "type", r.Type)
-	return json.Marshal(objectMap)
 }
 
 // ResourceProviderOperation - Supported operations of this resource provider.
@@ -332,33 +272,8 @@ type ResourceProviderOperationList struct {
 	Value []*ResourceProviderOperation `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ResourceProviderOperationList.
-func (r ResourceProviderOperationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
 // ResourceProvidersUpdate - custom resource provider update information.
 type ResourceProvidersUpdate struct {
 	// Resource tags
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourceProvidersUpdate.
-func (r ResourceProvidersUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tags", r.Tags)
-	return json.Marshal(objectMap)
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
 }

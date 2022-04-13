@@ -1,5 +1,50 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewRequestsClient` return value(s) have been changed from `(*RequestsClient)` to `(*RequestsClient, error)`
+- Function `NewGetClient` return value(s) have been changed from `(*GetClient)` to `(*GetClient, error)`
+- Function `NewPostClient` return value(s) have been changed from `(*PostClient)` to `(*PostClient, error)`
+- Function `*RequestsClient.List` return value(s) have been changed from `(*RequestsClientListPager)` to `(*runtime.Pager[RequestsClientListResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `Status.ToPtr` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*RequestsClientListPager.Err` has been removed
+- Function `*RequestsClientListPager.PageResponse` has been removed
+- Function `*RequestsClientListPager.NextPage` has been removed
+- Struct `GetClientTenantOptedInResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `RequestsClientGetResult` has been removed
+- Struct `RequestsClientListPager` has been removed
+- Struct `RequestsClientListResult` has been removed
+- Struct `RequestsClientUpdateStatusResult` has been removed
+- Field `GetClientTenantOptedInResult` of struct `GetClientTenantOptedInResponse` has been removed
+- Field `RawResponse` of struct `GetClientTenantOptedInResponse` has been removed
+- Field `RawResponse` of struct `PostClientDisableLockboxResponse` has been removed
+- Field `RawResponse` of struct `PostClientEnableLockboxResponse` has been removed
+- Field `RequestsClientListResult` of struct `RequestsClientListResponse` has been removed
+- Field `RawResponse` of struct `RequestsClientListResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `RequestsClientUpdateStatusResult` of struct `RequestsClientUpdateStatusResponse` has been removed
+- Field `RawResponse` of struct `RequestsClientUpdateStatusResponse` has been removed
+- Field `RequestsClientGetResult` of struct `RequestsClientGetResponse` has been removed
+- Field `RawResponse` of struct `RequestsClientGetResponse` has been removed
+
+### Features Added
+
+- New anonymous field `LockboxRequestResponse` in struct `RequestsClientGetResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `Approval` in struct `RequestsClientUpdateStatusResponse`
+- New anonymous field `RequestListResult` in struct `RequestsClientListResponse`
+- New anonymous field `TenantOptInResponse` in struct `GetClientTenantOptedInResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

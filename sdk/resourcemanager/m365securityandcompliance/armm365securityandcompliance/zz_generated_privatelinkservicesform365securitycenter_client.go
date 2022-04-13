@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type PrivateLinkServicesForM365SecurityCenterClient struct {
 // subscriptionID - The subscription identifier.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPrivateLinkServicesForM365SecurityCenterClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateLinkServicesForM365SecurityCenterClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewPrivateLinkServicesForM365SecurityCenterClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkServicesForM365SecurityCenterClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PrivateLinkServicesForM365SecurityCenterClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or update the metadata of a privateLinkServicesForM365SecurityCenter instance.
@@ -56,22 +61,18 @@ func NewPrivateLinkServicesForM365SecurityCenterClient(subscriptionID string, cr
 // privateLinkServicesForM365SecurityCenterDescription - The service instance metadata.
 // options - PrivateLinkServicesForM365SecurityCenterClientBeginCreateOrUpdateOptions contains the optional parameters for
 // the PrivateLinkServicesForM365SecurityCenterClient.BeginCreateOrUpdate method.
-func (client *PrivateLinkServicesForM365SecurityCenterClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateLinkServicesForM365SecurityCenterDescription PrivateLinkServicesForM365SecurityCenterDescription, options *PrivateLinkServicesForM365SecurityCenterClientBeginCreateOrUpdateOptions) (PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, privateLinkServicesForM365SecurityCenterDescription, options)
-	if err != nil {
-		return PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdatePollerResponse{}, err
+func (client *PrivateLinkServicesForM365SecurityCenterClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateLinkServicesForM365SecurityCenterDescription PrivateLinkServicesForM365SecurityCenterDescription, options *PrivateLinkServicesForM365SecurityCenterClientBeginCreateOrUpdateOptions) (*armruntime.Poller[PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, privateLinkServicesForM365SecurityCenterDescription, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PrivateLinkServicesForM365SecurityCenterClient.CreateOrUpdate", "location", resp, client.pl)
-	if err != nil {
-		return PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update the metadata of a privateLinkServicesForM365SecurityCenter instance.
@@ -123,22 +124,18 @@ func (client *PrivateLinkServicesForM365SecurityCenterClient) createOrUpdateCrea
 // resourceName - The name of the service instance.
 // options - PrivateLinkServicesForM365SecurityCenterClientBeginDeleteOptions contains the optional parameters for the PrivateLinkServicesForM365SecurityCenterClient.BeginDelete
 // method.
-func (client *PrivateLinkServicesForM365SecurityCenterClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkServicesForM365SecurityCenterClientBeginDeleteOptions) (PrivateLinkServicesForM365SecurityCenterClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, options)
-	if err != nil {
-		return PrivateLinkServicesForM365SecurityCenterClientDeletePollerResponse{}, err
+func (client *PrivateLinkServicesForM365SecurityCenterClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkServicesForM365SecurityCenterClientBeginDeleteOptions) (*armruntime.Poller[PrivateLinkServicesForM365SecurityCenterClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateLinkServicesForM365SecurityCenterClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[PrivateLinkServicesForM365SecurityCenterClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PrivateLinkServicesForM365SecurityCenterClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PrivateLinkServicesForM365SecurityCenterClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return PrivateLinkServicesForM365SecurityCenterClientDeletePollerResponse{}, err
-	}
-	result.Poller = &PrivateLinkServicesForM365SecurityCenterClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete a service instance.
@@ -233,7 +230,7 @@ func (client *PrivateLinkServicesForM365SecurityCenterClient) getCreateRequest(c
 
 // getHandleResponse handles the Get response.
 func (client *PrivateLinkServicesForM365SecurityCenterClient) getHandleResponse(resp *http.Response) (PrivateLinkServicesForM365SecurityCenterClientGetResponse, error) {
-	result := PrivateLinkServicesForM365SecurityCenterClientGetResponse{RawResponse: resp}
+	result := PrivateLinkServicesForM365SecurityCenterClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkServicesForM365SecurityCenterDescription); err != nil {
 		return PrivateLinkServicesForM365SecurityCenterClientGetResponse{}, err
 	}
@@ -244,16 +241,32 @@ func (client *PrivateLinkServicesForM365SecurityCenterClient) getHandleResponse(
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PrivateLinkServicesForM365SecurityCenterClientListOptions contains the optional parameters for the PrivateLinkServicesForM365SecurityCenterClient.List
 // method.
-func (client *PrivateLinkServicesForM365SecurityCenterClient) List(options *PrivateLinkServicesForM365SecurityCenterClientListOptions) *PrivateLinkServicesForM365SecurityCenterClientListPager {
-	return &PrivateLinkServicesForM365SecurityCenterClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *PrivateLinkServicesForM365SecurityCenterClient) List(options *PrivateLinkServicesForM365SecurityCenterClientListOptions) *runtime.Pager[PrivateLinkServicesForM365SecurityCenterClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesForM365SecurityCenterClientListResponse]{
+		More: func(page PrivateLinkServicesForM365SecurityCenterClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PrivateLinkServicesForM365SecurityCenterClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateLinkServicesForM365SecurityCenterDescriptionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PrivateLinkServicesForM365SecurityCenterClientListResponse) (PrivateLinkServicesForM365SecurityCenterClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PrivateLinkServicesForM365SecurityCenterClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PrivateLinkServicesForM365SecurityCenterClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PrivateLinkServicesForM365SecurityCenterClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -276,7 +289,7 @@ func (client *PrivateLinkServicesForM365SecurityCenterClient) listCreateRequest(
 
 // listHandleResponse handles the List response.
 func (client *PrivateLinkServicesForM365SecurityCenterClient) listHandleResponse(resp *http.Response) (PrivateLinkServicesForM365SecurityCenterClientListResponse, error) {
-	result := PrivateLinkServicesForM365SecurityCenterClientListResponse{RawResponse: resp}
+	result := PrivateLinkServicesForM365SecurityCenterClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkServicesForM365SecurityCenterDescriptionListResult); err != nil {
 		return PrivateLinkServicesForM365SecurityCenterClientListResponse{}, err
 	}
@@ -288,16 +301,32 @@ func (client *PrivateLinkServicesForM365SecurityCenterClient) listHandleResponse
 // resourceGroupName - The name of the resource group that contains the service instance.
 // options - PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupOptions contains the optional parameters for
 // the PrivateLinkServicesForM365SecurityCenterClient.ListByResourceGroup method.
-func (client *PrivateLinkServicesForM365SecurityCenterClient) ListByResourceGroup(resourceGroupName string, options *PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupOptions) *PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupPager {
-	return &PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *PrivateLinkServicesForM365SecurityCenterClient) ListByResourceGroup(resourceGroupName string, options *PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupResponse]{
+		More: func(page PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateLinkServicesForM365SecurityCenterDescriptionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupResponse) (PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -324,7 +353,7 @@ func (client *PrivateLinkServicesForM365SecurityCenterClient) listByResourceGrou
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *PrivateLinkServicesForM365SecurityCenterClient) listByResourceGroupHandleResponse(resp *http.Response) (PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupResponse, error) {
-	result := PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupResponse{RawResponse: resp}
+	result := PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkServicesForM365SecurityCenterDescriptionListResult); err != nil {
 		return PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupResponse{}, err
 	}
@@ -338,22 +367,18 @@ func (client *PrivateLinkServicesForM365SecurityCenterClient) listByResourceGrou
 // servicePatchDescription - The service instance metadata and security metadata.
 // options - PrivateLinkServicesForM365SecurityCenterClientBeginUpdateOptions contains the optional parameters for the PrivateLinkServicesForM365SecurityCenterClient.BeginUpdate
 // method.
-func (client *PrivateLinkServicesForM365SecurityCenterClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription ServicesPatchDescription, options *PrivateLinkServicesForM365SecurityCenterClientBeginUpdateOptions) (PrivateLinkServicesForM365SecurityCenterClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, resourceName, servicePatchDescription, options)
-	if err != nil {
-		return PrivateLinkServicesForM365SecurityCenterClientUpdatePollerResponse{}, err
+func (client *PrivateLinkServicesForM365SecurityCenterClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription ServicesPatchDescription, options *PrivateLinkServicesForM365SecurityCenterClientBeginUpdateOptions) (*armruntime.Poller[PrivateLinkServicesForM365SecurityCenterClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, resourceName, servicePatchDescription, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateLinkServicesForM365SecurityCenterClientUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[PrivateLinkServicesForM365SecurityCenterClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PrivateLinkServicesForM365SecurityCenterClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PrivateLinkServicesForM365SecurityCenterClient.Update", "location", resp, client.pl)
-	if err != nil {
-		return PrivateLinkServicesForM365SecurityCenterClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &PrivateLinkServicesForM365SecurityCenterClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Update the metadata of a privateLinkServicesForM365SecurityCenter instance.

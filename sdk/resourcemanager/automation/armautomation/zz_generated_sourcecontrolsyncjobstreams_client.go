@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type SourceControlSyncJobStreamsClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSourceControlSyncJobStreamsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SourceControlSyncJobStreamsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewSourceControlSyncJobStreamsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SourceControlSyncJobStreamsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SourceControlSyncJobStreamsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Retrieve a sync job stream identified by stream id.
@@ -111,7 +116,7 @@ func (client *SourceControlSyncJobStreamsClient) getCreateRequest(ctx context.Co
 
 // getHandleResponse handles the Get response.
 func (client *SourceControlSyncJobStreamsClient) getHandleResponse(resp *http.Response) (SourceControlSyncJobStreamsClientGetResponse, error) {
-	result := SourceControlSyncJobStreamsClientGetResponse{RawResponse: resp}
+	result := SourceControlSyncJobStreamsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControlSyncJobStreamByID); err != nil {
 		return SourceControlSyncJobStreamsClientGetResponse{}, err
 	}
@@ -126,16 +131,32 @@ func (client *SourceControlSyncJobStreamsClient) getHandleResponse(resp *http.Re
 // sourceControlSyncJobID - The source control sync job id.
 // options - SourceControlSyncJobStreamsClientListBySyncJobOptions contains the optional parameters for the SourceControlSyncJobStreamsClient.ListBySyncJob
 // method.
-func (client *SourceControlSyncJobStreamsClient) ListBySyncJob(resourceGroupName string, automationAccountName string, sourceControlName string, sourceControlSyncJobID string, options *SourceControlSyncJobStreamsClientListBySyncJobOptions) *SourceControlSyncJobStreamsClientListBySyncJobPager {
-	return &SourceControlSyncJobStreamsClientListBySyncJobPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySyncJobCreateRequest(ctx, resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobID, options)
+func (client *SourceControlSyncJobStreamsClient) ListBySyncJob(resourceGroupName string, automationAccountName string, sourceControlName string, sourceControlSyncJobID string, options *SourceControlSyncJobStreamsClientListBySyncJobOptions) *runtime.Pager[SourceControlSyncJobStreamsClientListBySyncJobResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SourceControlSyncJobStreamsClientListBySyncJobResponse]{
+		More: func(page SourceControlSyncJobStreamsClientListBySyncJobResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SourceControlSyncJobStreamsClientListBySyncJobResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SourceControlSyncJobStreamsListBySyncJob.NextLink)
+		Fetcher: func(ctx context.Context, page *SourceControlSyncJobStreamsClientListBySyncJobResponse) (SourceControlSyncJobStreamsClientListBySyncJobResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySyncJobCreateRequest(ctx, resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobID, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SourceControlSyncJobStreamsClientListBySyncJobResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SourceControlSyncJobStreamsClientListBySyncJobResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SourceControlSyncJobStreamsClientListBySyncJobResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySyncJobHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySyncJobCreateRequest creates the ListBySyncJob request.
@@ -174,7 +195,7 @@ func (client *SourceControlSyncJobStreamsClient) listBySyncJobCreateRequest(ctx 
 
 // listBySyncJobHandleResponse handles the ListBySyncJob response.
 func (client *SourceControlSyncJobStreamsClient) listBySyncJobHandleResponse(resp *http.Response) (SourceControlSyncJobStreamsClientListBySyncJobResponse, error) {
-	result := SourceControlSyncJobStreamsClientListBySyncJobResponse{RawResponse: resp}
+	result := SourceControlSyncJobStreamsClientListBySyncJobResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControlSyncJobStreamsListBySyncJob); err != nil {
 		return SourceControlSyncJobStreamsClientListBySyncJobResponse{}, err
 	}

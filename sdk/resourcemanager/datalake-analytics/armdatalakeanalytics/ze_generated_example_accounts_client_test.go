@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,163 +19,191 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-analytics/armdatalakeanalytics"
 )
 
-// x-ms-original-file: specification/datalake-analytics/resource-manager/Microsoft.DataLakeAnalytics/preview/2019-11-01-preview/examples/Accounts_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datalake-analytics/resource-manager/Microsoft.DataLakeAnalytics/preview/2019-11-01-preview/examples/Accounts_List.json
 func ExampleAccountsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdatalakeanalytics.NewAccountsClient("<subscription-id>", cred, nil)
-	pager := client.List(&armdatalakeanalytics.AccountsClientListOptions{Filter: to.StringPtr("<filter>"),
-		Top:     to.Int32Ptr(1),
-		Skip:    to.Int32Ptr(1),
-		Select:  to.StringPtr("<select>"),
-		Orderby: to.StringPtr("<orderby>"),
-		Count:   to.BoolPtr(false),
+	client, err := armdatalakeanalytics.NewAccountsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	pager := client.List(&armdatalakeanalytics.AccountsClientListOptions{Filter: to.Ptr("<filter>"),
+		Top:     to.Ptr[int32](1),
+		Skip:    to.Ptr[int32](1),
+		Select:  to.Ptr("<select>"),
+		Orderby: to.Ptr("<orderby>"),
+		Count:   to.Ptr(false),
 	})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/datalake-analytics/resource-manager/Microsoft.DataLakeAnalytics/preview/2019-11-01-preview/examples/Accounts_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datalake-analytics/resource-manager/Microsoft.DataLakeAnalytics/preview/2019-11-01-preview/examples/Accounts_ListByResourceGroup.json
 func ExampleAccountsClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdatalakeanalytics.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armdatalakeanalytics.NewAccountsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByResourceGroup("<resource-group-name>",
-		&armdatalakeanalytics.AccountsClientListByResourceGroupOptions{Filter: to.StringPtr("<filter>"),
-			Top:     to.Int32Ptr(1),
-			Skip:    to.Int32Ptr(1),
-			Select:  to.StringPtr("<select>"),
-			Orderby: to.StringPtr("<orderby>"),
-			Count:   to.BoolPtr(false),
+		&armdatalakeanalytics.AccountsClientListByResourceGroupOptions{Filter: to.Ptr("<filter>"),
+			Top:     to.Ptr[int32](1),
+			Skip:    to.Ptr[int32](1),
+			Select:  to.Ptr("<select>"),
+			Orderby: to.Ptr("<orderby>"),
+			Count:   to.Ptr(false),
 		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/datalake-analytics/resource-manager/Microsoft.DataLakeAnalytics/preview/2019-11-01-preview/examples/Accounts_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datalake-analytics/resource-manager/Microsoft.DataLakeAnalytics/preview/2019-11-01-preview/examples/Accounts_Create.json
 func ExampleAccountsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdatalakeanalytics.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armdatalakeanalytics.NewAccountsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreate(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		armdatalakeanalytics.CreateDataLakeAnalyticsAccountParameters{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Properties: &armdatalakeanalytics.CreateDataLakeAnalyticsAccountProperties{
 				ComputePolicies: []*armdatalakeanalytics.CreateComputePolicyWithAccountParameters{
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("<name>"),
 						Properties: &armdatalakeanalytics.CreateOrUpdateComputePolicyProperties{
-							MaxDegreeOfParallelismPerJob: to.Int32Ptr(1),
-							MinPriorityPerJob:            to.Int32Ptr(1),
-							ObjectID:                     to.StringPtr("<object-id>"),
-							ObjectType:                   armdatalakeanalytics.AADObjectType("User").ToPtr(),
+							MaxDegreeOfParallelismPerJob: to.Ptr[int32](1),
+							MinPriorityPerJob:            to.Ptr[int32](1),
+							ObjectID:                     to.Ptr("<object-id>"),
+							ObjectType:                   to.Ptr(armdatalakeanalytics.AADObjectTypeUser),
 						},
 					}},
 				DataLakeStoreAccounts: []*armdatalakeanalytics.AddDataLakeStoreWithAccountParameters{
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("<name>"),
 						Properties: &armdatalakeanalytics.AddDataLakeStoreProperties{
-							Suffix: to.StringPtr("<suffix>"),
+							Suffix: to.Ptr("<suffix>"),
 						},
 					}},
-				DefaultDataLakeStoreAccount: to.StringPtr("<default-data-lake-store-account>"),
-				FirewallAllowAzureIPs:       armdatalakeanalytics.FirewallAllowAzureIPsStateEnabled.ToPtr(),
+				DefaultDataLakeStoreAccount: to.Ptr("<default-data-lake-store-account>"),
+				FirewallAllowAzureIPs:       to.Ptr(armdatalakeanalytics.FirewallAllowAzureIPsStateEnabled),
 				FirewallRules: []*armdatalakeanalytics.CreateFirewallRuleWithAccountParameters{
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("<name>"),
 						Properties: &armdatalakeanalytics.CreateOrUpdateFirewallRuleProperties{
-							EndIPAddress:   to.StringPtr("<end-ipaddress>"),
-							StartIPAddress: to.StringPtr("<start-ipaddress>"),
+							EndIPAddress:   to.Ptr("<end-ipaddress>"),
+							StartIPAddress: to.Ptr("<start-ipaddress>"),
 						},
 					}},
-				FirewallState:                armdatalakeanalytics.FirewallStateEnabled.ToPtr(),
-				MaxDegreeOfParallelism:       to.Int32Ptr(30),
-				MaxDegreeOfParallelismPerJob: to.Int32Ptr(1),
-				MaxJobCount:                  to.Int32Ptr(3),
-				MinPriorityPerJob:            to.Int32Ptr(1),
-				NewTier:                      armdatalakeanalytics.TierTypeConsumption.ToPtr(),
-				QueryStoreRetention:          to.Int32Ptr(30),
+				FirewallState:                to.Ptr(armdatalakeanalytics.FirewallStateEnabled),
+				MaxDegreeOfParallelism:       to.Ptr[int32](30),
+				MaxDegreeOfParallelismPerJob: to.Ptr[int32](1),
+				MaxJobCount:                  to.Ptr[int32](3),
+				MinPriorityPerJob:            to.Ptr[int32](1),
+				NewTier:                      to.Ptr(armdatalakeanalytics.TierTypeConsumption),
+				QueryStoreRetention:          to.Ptr[int32](30),
 				StorageAccounts: []*armdatalakeanalytics.AddStorageAccountWithAccountParameters{
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("<name>"),
 						Properties: &armdatalakeanalytics.AddStorageAccountProperties{
-							AccessKey: to.StringPtr("<access-key>"),
-							Suffix:    to.StringPtr("<suffix>"),
+							AccessKey: to.Ptr("<access-key>"),
+							Suffix:    to.Ptr("<suffix>"),
 						},
 					}},
 			},
 			Tags: map[string]*string{
-				"test_key": to.StringPtr("test_value"),
+				"test_key": to.Ptr("test_value"),
 			},
 		},
-		nil)
+		&armdatalakeanalytics.AccountsClientBeginCreateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AccountsClientCreateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/datalake-analytics/resource-manager/Microsoft.DataLakeAnalytics/preview/2019-11-01-preview/examples/Accounts_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datalake-analytics/resource-manager/Microsoft.DataLakeAnalytics/preview/2019-11-01-preview/examples/Accounts_Get.json
 func ExampleAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdatalakeanalytics.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armdatalakeanalytics.NewAccountsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AccountsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/datalake-analytics/resource-manager/Microsoft.DataLakeAnalytics/preview/2019-11-01-preview/examples/Accounts_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datalake-analytics/resource-manager/Microsoft.DataLakeAnalytics/preview/2019-11-01-preview/examples/Accounts_Update.json
 func ExampleAccountsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdatalakeanalytics.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armdatalakeanalytics.NewAccountsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<account-name>",
@@ -183,84 +211,102 @@ func ExampleAccountsClient_BeginUpdate() {
 			Properties: &armdatalakeanalytics.UpdateDataLakeAnalyticsAccountProperties{
 				ComputePolicies: []*armdatalakeanalytics.UpdateComputePolicyWithAccountParameters{
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("<name>"),
 						Properties: &armdatalakeanalytics.UpdateComputePolicyProperties{
-							MaxDegreeOfParallelismPerJob: to.Int32Ptr(1),
-							MinPriorityPerJob:            to.Int32Ptr(1),
-							ObjectID:                     to.StringPtr("<object-id>"),
-							ObjectType:                   armdatalakeanalytics.AADObjectType("User").ToPtr(),
+							MaxDegreeOfParallelismPerJob: to.Ptr[int32](1),
+							MinPriorityPerJob:            to.Ptr[int32](1),
+							ObjectID:                     to.Ptr("<object-id>"),
+							ObjectType:                   to.Ptr(armdatalakeanalytics.AADObjectTypeUser),
 						},
 					}},
-				FirewallAllowAzureIPs: armdatalakeanalytics.FirewallAllowAzureIPsStateEnabled.ToPtr(),
+				FirewallAllowAzureIPs: to.Ptr(armdatalakeanalytics.FirewallAllowAzureIPsStateEnabled),
 				FirewallRules: []*armdatalakeanalytics.UpdateFirewallRuleWithAccountParameters{
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("<name>"),
 						Properties: &armdatalakeanalytics.UpdateFirewallRuleProperties{
-							EndIPAddress:   to.StringPtr("<end-ipaddress>"),
-							StartIPAddress: to.StringPtr("<start-ipaddress>"),
+							EndIPAddress:   to.Ptr("<end-ipaddress>"),
+							StartIPAddress: to.Ptr("<start-ipaddress>"),
 						},
 					}},
-				FirewallState:                armdatalakeanalytics.FirewallStateEnabled.ToPtr(),
-				MaxDegreeOfParallelism:       to.Int32Ptr(1),
-				MaxDegreeOfParallelismPerJob: to.Int32Ptr(1),
-				MaxJobCount:                  to.Int32Ptr(1),
-				MinPriorityPerJob:            to.Int32Ptr(1),
-				NewTier:                      armdatalakeanalytics.TierTypeConsumption.ToPtr(),
-				QueryStoreRetention:          to.Int32Ptr(1),
+				FirewallState:                to.Ptr(armdatalakeanalytics.FirewallStateEnabled),
+				MaxDegreeOfParallelism:       to.Ptr[int32](1),
+				MaxDegreeOfParallelismPerJob: to.Ptr[int32](1),
+				MaxJobCount:                  to.Ptr[int32](1),
+				MinPriorityPerJob:            to.Ptr[int32](1),
+				NewTier:                      to.Ptr(armdatalakeanalytics.TierTypeConsumption),
+				QueryStoreRetention:          to.Ptr[int32](1),
 			},
 			Tags: map[string]*string{
-				"test_key": to.StringPtr("test_value"),
+				"test_key": to.Ptr("test_value"),
 			},
 		},
+			ResumeToken: "",
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AccountsClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/datalake-analytics/resource-manager/Microsoft.DataLakeAnalytics/preview/2019-11-01-preview/examples/Accounts_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datalake-analytics/resource-manager/Microsoft.DataLakeAnalytics/preview/2019-11-01-preview/examples/Accounts_Delete.json
 func ExampleAccountsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdatalakeanalytics.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armdatalakeanalytics.NewAccountsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<account-name>",
-		nil)
+		&armdatalakeanalytics.AccountsClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/datalake-analytics/resource-manager/Microsoft.DataLakeAnalytics/preview/2019-11-01-preview/examples/Accounts_CheckNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datalake-analytics/resource-manager/Microsoft.DataLakeAnalytics/preview/2019-11-01-preview/examples/Accounts_CheckNameAvailability.json
 func ExampleAccountsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdatalakeanalytics.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armdatalakeanalytics.NewAccountsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CheckNameAvailability(ctx,
 		"<location>",
 		armdatalakeanalytics.CheckNameAvailabilityParameters{
-			Name: to.StringPtr("<name>"),
-			Type: armdatalakeanalytics.CheckNameAvailabilityParametersType("Microsoft.DataLakeAnalytics/accounts").ToPtr(),
+			Name: to.Ptr("<name>"),
+			Type: to.Ptr(armdatalakeanalytics.CheckNameAvailabilityParametersTypeMicrosoftDataLakeAnalyticsAccounts),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AccountsClientCheckNameAvailabilityResult)
+	// TODO: use response item
+	_ = res
 }

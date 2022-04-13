@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type DiagnosticsClient struct {
 // subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDiagnosticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DiagnosticsClient {
+func NewDiagnosticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DiagnosticsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DiagnosticsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // ExecuteSiteAnalysis - Description for Execute Analysis
@@ -118,7 +123,7 @@ func (client *DiagnosticsClient) executeSiteAnalysisCreateRequest(ctx context.Co
 
 // executeSiteAnalysisHandleResponse handles the ExecuteSiteAnalysis response.
 func (client *DiagnosticsClient) executeSiteAnalysisHandleResponse(resp *http.Response) (DiagnosticsClientExecuteSiteAnalysisResponse, error) {
-	result := DiagnosticsClientExecuteSiteAnalysisResponse{RawResponse: resp}
+	result := DiagnosticsClientExecuteSiteAnalysisResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticAnalysis); err != nil {
 		return DiagnosticsClientExecuteSiteAnalysisResponse{}, err
 	}
@@ -198,7 +203,7 @@ func (client *DiagnosticsClient) executeSiteAnalysisSlotCreateRequest(ctx contex
 
 // executeSiteAnalysisSlotHandleResponse handles the ExecuteSiteAnalysisSlot response.
 func (client *DiagnosticsClient) executeSiteAnalysisSlotHandleResponse(resp *http.Response) (DiagnosticsClientExecuteSiteAnalysisSlotResponse, error) {
-	result := DiagnosticsClientExecuteSiteAnalysisSlotResponse{RawResponse: resp}
+	result := DiagnosticsClientExecuteSiteAnalysisSlotResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticAnalysis); err != nil {
 		return DiagnosticsClientExecuteSiteAnalysisSlotResponse{}, err
 	}
@@ -273,7 +278,7 @@ func (client *DiagnosticsClient) executeSiteDetectorCreateRequest(ctx context.Co
 
 // executeSiteDetectorHandleResponse handles the ExecuteSiteDetector response.
 func (client *DiagnosticsClient) executeSiteDetectorHandleResponse(resp *http.Response) (DiagnosticsClientExecuteSiteDetectorResponse, error) {
-	result := DiagnosticsClientExecuteSiteDetectorResponse{RawResponse: resp}
+	result := DiagnosticsClientExecuteSiteDetectorResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticDetectorResponse); err != nil {
 		return DiagnosticsClientExecuteSiteDetectorResponse{}, err
 	}
@@ -353,7 +358,7 @@ func (client *DiagnosticsClient) executeSiteDetectorSlotCreateRequest(ctx contex
 
 // executeSiteDetectorSlotHandleResponse handles the ExecuteSiteDetectorSlot response.
 func (client *DiagnosticsClient) executeSiteDetectorSlotHandleResponse(resp *http.Response) (DiagnosticsClientExecuteSiteDetectorSlotResponse, error) {
-	result := DiagnosticsClientExecuteSiteDetectorSlotResponse{RawResponse: resp}
+	result := DiagnosticsClientExecuteSiteDetectorSlotResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticDetectorResponse); err != nil {
 		return DiagnosticsClientExecuteSiteDetectorSlotResponse{}, err
 	}
@@ -423,7 +428,7 @@ func (client *DiagnosticsClient) getHostingEnvironmentDetectorResponseCreateRequ
 
 // getHostingEnvironmentDetectorResponseHandleResponse handles the GetHostingEnvironmentDetectorResponse response.
 func (client *DiagnosticsClient) getHostingEnvironmentDetectorResponseHandleResponse(resp *http.Response) (DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse, error) {
-	result := DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse{RawResponse: resp}
+	result := DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponse); err != nil {
 		return DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse{}, err
 	}
@@ -489,7 +494,7 @@ func (client *DiagnosticsClient) getSiteAnalysisCreateRequest(ctx context.Contex
 
 // getSiteAnalysisHandleResponse handles the GetSiteAnalysis response.
 func (client *DiagnosticsClient) getSiteAnalysisHandleResponse(resp *http.Response) (DiagnosticsClientGetSiteAnalysisResponse, error) {
-	result := DiagnosticsClientGetSiteAnalysisResponse{RawResponse: resp}
+	result := DiagnosticsClientGetSiteAnalysisResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AnalysisDefinition); err != nil {
 		return DiagnosticsClientGetSiteAnalysisResponse{}, err
 	}
@@ -560,7 +565,7 @@ func (client *DiagnosticsClient) getSiteAnalysisSlotCreateRequest(ctx context.Co
 
 // getSiteAnalysisSlotHandleResponse handles the GetSiteAnalysisSlot response.
 func (client *DiagnosticsClient) getSiteAnalysisSlotHandleResponse(resp *http.Response) (DiagnosticsClientGetSiteAnalysisSlotResponse, error) {
-	result := DiagnosticsClientGetSiteAnalysisSlotResponse{RawResponse: resp}
+	result := DiagnosticsClientGetSiteAnalysisSlotResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AnalysisDefinition); err != nil {
 		return DiagnosticsClientGetSiteAnalysisSlotResponse{}, err
 	}
@@ -626,7 +631,7 @@ func (client *DiagnosticsClient) getSiteDetectorCreateRequest(ctx context.Contex
 
 // getSiteDetectorHandleResponse handles the GetSiteDetector response.
 func (client *DiagnosticsClient) getSiteDetectorHandleResponse(resp *http.Response) (DiagnosticsClientGetSiteDetectorResponse, error) {
-	result := DiagnosticsClientGetSiteDetectorResponse{RawResponse: resp}
+	result := DiagnosticsClientGetSiteDetectorResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorDefinitionResource); err != nil {
 		return DiagnosticsClientGetSiteDetectorResponse{}, err
 	}
@@ -696,7 +701,7 @@ func (client *DiagnosticsClient) getSiteDetectorResponseCreateRequest(ctx contex
 
 // getSiteDetectorResponseHandleResponse handles the GetSiteDetectorResponse response.
 func (client *DiagnosticsClient) getSiteDetectorResponseHandleResponse(resp *http.Response) (DiagnosticsClientGetSiteDetectorResponseResponse, error) {
-	result := DiagnosticsClientGetSiteDetectorResponseResponse{RawResponse: resp}
+	result := DiagnosticsClientGetSiteDetectorResponseResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponse); err != nil {
 		return DiagnosticsClientGetSiteDetectorResponseResponse{}, err
 	}
@@ -771,7 +776,7 @@ func (client *DiagnosticsClient) getSiteDetectorResponseSlotCreateRequest(ctx co
 
 // getSiteDetectorResponseSlotHandleResponse handles the GetSiteDetectorResponseSlot response.
 func (client *DiagnosticsClient) getSiteDetectorResponseSlotHandleResponse(resp *http.Response) (DiagnosticsClientGetSiteDetectorResponseSlotResponse, error) {
-	result := DiagnosticsClientGetSiteDetectorResponseSlotResponse{RawResponse: resp}
+	result := DiagnosticsClientGetSiteDetectorResponseSlotResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponse); err != nil {
 		return DiagnosticsClientGetSiteDetectorResponseSlotResponse{}, err
 	}
@@ -842,7 +847,7 @@ func (client *DiagnosticsClient) getSiteDetectorSlotCreateRequest(ctx context.Co
 
 // getSiteDetectorSlotHandleResponse handles the GetSiteDetectorSlot response.
 func (client *DiagnosticsClient) getSiteDetectorSlotHandleResponse(resp *http.Response) (DiagnosticsClientGetSiteDetectorSlotResponse, error) {
-	result := DiagnosticsClientGetSiteDetectorSlotResponse{RawResponse: resp}
+	result := DiagnosticsClientGetSiteDetectorSlotResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorDefinitionResource); err != nil {
 		return DiagnosticsClientGetSiteDetectorSlotResponse{}, err
 	}
@@ -903,7 +908,7 @@ func (client *DiagnosticsClient) getSiteDiagnosticCategoryCreateRequest(ctx cont
 
 // getSiteDiagnosticCategoryHandleResponse handles the GetSiteDiagnosticCategory response.
 func (client *DiagnosticsClient) getSiteDiagnosticCategoryHandleResponse(resp *http.Response) (DiagnosticsClientGetSiteDiagnosticCategoryResponse, error) {
-	result := DiagnosticsClientGetSiteDiagnosticCategoryResponse{RawResponse: resp}
+	result := DiagnosticsClientGetSiteDiagnosticCategoryResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticCategory); err != nil {
 		return DiagnosticsClientGetSiteDiagnosticCategoryResponse{}, err
 	}
@@ -969,7 +974,7 @@ func (client *DiagnosticsClient) getSiteDiagnosticCategorySlotCreateRequest(ctx 
 
 // getSiteDiagnosticCategorySlotHandleResponse handles the GetSiteDiagnosticCategorySlot response.
 func (client *DiagnosticsClient) getSiteDiagnosticCategorySlotHandleResponse(resp *http.Response) (DiagnosticsClientGetSiteDiagnosticCategorySlotResponse, error) {
-	result := DiagnosticsClientGetSiteDiagnosticCategorySlotResponse{RawResponse: resp}
+	result := DiagnosticsClientGetSiteDiagnosticCategorySlotResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticCategory); err != nil {
 		return DiagnosticsClientGetSiteDiagnosticCategorySlotResponse{}, err
 	}
@@ -982,16 +987,32 @@ func (client *DiagnosticsClient) getSiteDiagnosticCategorySlotHandleResponse(res
 // name - Site Name
 // options - DiagnosticsClientListHostingEnvironmentDetectorResponsesOptions contains the optional parameters for the DiagnosticsClient.ListHostingEnvironmentDetectorResponses
 // method.
-func (client *DiagnosticsClient) ListHostingEnvironmentDetectorResponses(resourceGroupName string, name string, options *DiagnosticsClientListHostingEnvironmentDetectorResponsesOptions) *DiagnosticsClientListHostingEnvironmentDetectorResponsesPager {
-	return &DiagnosticsClientListHostingEnvironmentDetectorResponsesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listHostingEnvironmentDetectorResponsesCreateRequest(ctx, resourceGroupName, name, options)
+func (client *DiagnosticsClient) ListHostingEnvironmentDetectorResponses(resourceGroupName string, name string, options *DiagnosticsClientListHostingEnvironmentDetectorResponsesOptions) *runtime.Pager[DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse]{
+		More: func(page DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DetectorResponseCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse) (DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listHostingEnvironmentDetectorResponsesCreateRequest(ctx, resourceGroupName, name, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHostingEnvironmentDetectorResponsesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listHostingEnvironmentDetectorResponsesCreateRequest creates the ListHostingEnvironmentDetectorResponses request.
@@ -1022,7 +1043,7 @@ func (client *DiagnosticsClient) listHostingEnvironmentDetectorResponsesCreateRe
 
 // listHostingEnvironmentDetectorResponsesHandleResponse handles the ListHostingEnvironmentDetectorResponses response.
 func (client *DiagnosticsClient) listHostingEnvironmentDetectorResponsesHandleResponse(resp *http.Response) (DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse, error) {
-	result := DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse{RawResponse: resp}
+	result := DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponseCollection); err != nil {
 		return DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse{}, err
 	}
@@ -1036,16 +1057,32 @@ func (client *DiagnosticsClient) listHostingEnvironmentDetectorResponsesHandleRe
 // diagnosticCategory - Diagnostic Category
 // options - DiagnosticsClientListSiteAnalysesOptions contains the optional parameters for the DiagnosticsClient.ListSiteAnalyses
 // method.
-func (client *DiagnosticsClient) ListSiteAnalyses(resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsClientListSiteAnalysesOptions) *DiagnosticsClientListSiteAnalysesPager {
-	return &DiagnosticsClientListSiteAnalysesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listSiteAnalysesCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, options)
+func (client *DiagnosticsClient) ListSiteAnalyses(resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsClientListSiteAnalysesOptions) *runtime.Pager[DiagnosticsClientListSiteAnalysesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DiagnosticsClientListSiteAnalysesResponse]{
+		More: func(page DiagnosticsClientListSiteAnalysesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DiagnosticsClientListSiteAnalysesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DiagnosticAnalysisCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *DiagnosticsClientListSiteAnalysesResponse) (DiagnosticsClientListSiteAnalysesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listSiteAnalysesCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DiagnosticsClientListSiteAnalysesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DiagnosticsClientListSiteAnalysesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DiagnosticsClientListSiteAnalysesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSiteAnalysesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listSiteAnalysesCreateRequest creates the ListSiteAnalyses request.
@@ -1080,7 +1117,7 @@ func (client *DiagnosticsClient) listSiteAnalysesCreateRequest(ctx context.Conte
 
 // listSiteAnalysesHandleResponse handles the ListSiteAnalyses response.
 func (client *DiagnosticsClient) listSiteAnalysesHandleResponse(resp *http.Response) (DiagnosticsClientListSiteAnalysesResponse, error) {
-	result := DiagnosticsClientListSiteAnalysesResponse{RawResponse: resp}
+	result := DiagnosticsClientListSiteAnalysesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticAnalysisCollection); err != nil {
 		return DiagnosticsClientListSiteAnalysesResponse{}, err
 	}
@@ -1095,16 +1132,32 @@ func (client *DiagnosticsClient) listSiteAnalysesHandleResponse(resp *http.Respo
 // slot - Slot Name
 // options - DiagnosticsClientListSiteAnalysesSlotOptions contains the optional parameters for the DiagnosticsClient.ListSiteAnalysesSlot
 // method.
-func (client *DiagnosticsClient) ListSiteAnalysesSlot(resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsClientListSiteAnalysesSlotOptions) *DiagnosticsClientListSiteAnalysesSlotPager {
-	return &DiagnosticsClientListSiteAnalysesSlotPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listSiteAnalysesSlotCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, slot, options)
+func (client *DiagnosticsClient) ListSiteAnalysesSlot(resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsClientListSiteAnalysesSlotOptions) *runtime.Pager[DiagnosticsClientListSiteAnalysesSlotResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DiagnosticsClientListSiteAnalysesSlotResponse]{
+		More: func(page DiagnosticsClientListSiteAnalysesSlotResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DiagnosticsClientListSiteAnalysesSlotResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DiagnosticAnalysisCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *DiagnosticsClientListSiteAnalysesSlotResponse) (DiagnosticsClientListSiteAnalysesSlotResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listSiteAnalysesSlotCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, slot, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DiagnosticsClientListSiteAnalysesSlotResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DiagnosticsClientListSiteAnalysesSlotResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DiagnosticsClientListSiteAnalysesSlotResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSiteAnalysesSlotHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listSiteAnalysesSlotCreateRequest creates the ListSiteAnalysesSlot request.
@@ -1143,7 +1196,7 @@ func (client *DiagnosticsClient) listSiteAnalysesSlotCreateRequest(ctx context.C
 
 // listSiteAnalysesSlotHandleResponse handles the ListSiteAnalysesSlot response.
 func (client *DiagnosticsClient) listSiteAnalysesSlotHandleResponse(resp *http.Response) (DiagnosticsClientListSiteAnalysesSlotResponse, error) {
-	result := DiagnosticsClientListSiteAnalysesSlotResponse{RawResponse: resp}
+	result := DiagnosticsClientListSiteAnalysesSlotResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticAnalysisCollection); err != nil {
 		return DiagnosticsClientListSiteAnalysesSlotResponse{}, err
 	}
@@ -1156,16 +1209,32 @@ func (client *DiagnosticsClient) listSiteAnalysesSlotHandleResponse(resp *http.R
 // siteName - Site Name
 // options - DiagnosticsClientListSiteDetectorResponsesOptions contains the optional parameters for the DiagnosticsClient.ListSiteDetectorResponses
 // method.
-func (client *DiagnosticsClient) ListSiteDetectorResponses(resourceGroupName string, siteName string, options *DiagnosticsClientListSiteDetectorResponsesOptions) *DiagnosticsClientListSiteDetectorResponsesPager {
-	return &DiagnosticsClientListSiteDetectorResponsesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listSiteDetectorResponsesCreateRequest(ctx, resourceGroupName, siteName, options)
+func (client *DiagnosticsClient) ListSiteDetectorResponses(resourceGroupName string, siteName string, options *DiagnosticsClientListSiteDetectorResponsesOptions) *runtime.Pager[DiagnosticsClientListSiteDetectorResponsesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DiagnosticsClientListSiteDetectorResponsesResponse]{
+		More: func(page DiagnosticsClientListSiteDetectorResponsesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DiagnosticsClientListSiteDetectorResponsesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DetectorResponseCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *DiagnosticsClientListSiteDetectorResponsesResponse) (DiagnosticsClientListSiteDetectorResponsesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listSiteDetectorResponsesCreateRequest(ctx, resourceGroupName, siteName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DiagnosticsClientListSiteDetectorResponsesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DiagnosticsClientListSiteDetectorResponsesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DiagnosticsClientListSiteDetectorResponsesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSiteDetectorResponsesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listSiteDetectorResponsesCreateRequest creates the ListSiteDetectorResponses request.
@@ -1196,7 +1265,7 @@ func (client *DiagnosticsClient) listSiteDetectorResponsesCreateRequest(ctx cont
 
 // listSiteDetectorResponsesHandleResponse handles the ListSiteDetectorResponses response.
 func (client *DiagnosticsClient) listSiteDetectorResponsesHandleResponse(resp *http.Response) (DiagnosticsClientListSiteDetectorResponsesResponse, error) {
-	result := DiagnosticsClientListSiteDetectorResponsesResponse{RawResponse: resp}
+	result := DiagnosticsClientListSiteDetectorResponsesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponseCollection); err != nil {
 		return DiagnosticsClientListSiteDetectorResponsesResponse{}, err
 	}
@@ -1210,16 +1279,32 @@ func (client *DiagnosticsClient) listSiteDetectorResponsesHandleResponse(resp *h
 // slot - Slot Name
 // options - DiagnosticsClientListSiteDetectorResponsesSlotOptions contains the optional parameters for the DiagnosticsClient.ListSiteDetectorResponsesSlot
 // method.
-func (client *DiagnosticsClient) ListSiteDetectorResponsesSlot(resourceGroupName string, siteName string, slot string, options *DiagnosticsClientListSiteDetectorResponsesSlotOptions) *DiagnosticsClientListSiteDetectorResponsesSlotPager {
-	return &DiagnosticsClientListSiteDetectorResponsesSlotPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listSiteDetectorResponsesSlotCreateRequest(ctx, resourceGroupName, siteName, slot, options)
+func (client *DiagnosticsClient) ListSiteDetectorResponsesSlot(resourceGroupName string, siteName string, slot string, options *DiagnosticsClientListSiteDetectorResponsesSlotOptions) *runtime.Pager[DiagnosticsClientListSiteDetectorResponsesSlotResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DiagnosticsClientListSiteDetectorResponsesSlotResponse]{
+		More: func(page DiagnosticsClientListSiteDetectorResponsesSlotResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DiagnosticsClientListSiteDetectorResponsesSlotResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DetectorResponseCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *DiagnosticsClientListSiteDetectorResponsesSlotResponse) (DiagnosticsClientListSiteDetectorResponsesSlotResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listSiteDetectorResponsesSlotCreateRequest(ctx, resourceGroupName, siteName, slot, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DiagnosticsClientListSiteDetectorResponsesSlotResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DiagnosticsClientListSiteDetectorResponsesSlotResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DiagnosticsClientListSiteDetectorResponsesSlotResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSiteDetectorResponsesSlotHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listSiteDetectorResponsesSlotCreateRequest creates the ListSiteDetectorResponsesSlot request.
@@ -1254,7 +1339,7 @@ func (client *DiagnosticsClient) listSiteDetectorResponsesSlotCreateRequest(ctx 
 
 // listSiteDetectorResponsesSlotHandleResponse handles the ListSiteDetectorResponsesSlot response.
 func (client *DiagnosticsClient) listSiteDetectorResponsesSlotHandleResponse(resp *http.Response) (DiagnosticsClientListSiteDetectorResponsesSlotResponse, error) {
-	result := DiagnosticsClientListSiteDetectorResponsesSlotResponse{RawResponse: resp}
+	result := DiagnosticsClientListSiteDetectorResponsesSlotResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponseCollection); err != nil {
 		return DiagnosticsClientListSiteDetectorResponsesSlotResponse{}, err
 	}
@@ -1268,16 +1353,32 @@ func (client *DiagnosticsClient) listSiteDetectorResponsesSlotHandleResponse(res
 // diagnosticCategory - Diagnostic Category
 // options - DiagnosticsClientListSiteDetectorsOptions contains the optional parameters for the DiagnosticsClient.ListSiteDetectors
 // method.
-func (client *DiagnosticsClient) ListSiteDetectors(resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsClientListSiteDetectorsOptions) *DiagnosticsClientListSiteDetectorsPager {
-	return &DiagnosticsClientListSiteDetectorsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listSiteDetectorsCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, options)
+func (client *DiagnosticsClient) ListSiteDetectors(resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsClientListSiteDetectorsOptions) *runtime.Pager[DiagnosticsClientListSiteDetectorsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DiagnosticsClientListSiteDetectorsResponse]{
+		More: func(page DiagnosticsClientListSiteDetectorsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DiagnosticsClientListSiteDetectorsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DiagnosticDetectorCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *DiagnosticsClientListSiteDetectorsResponse) (DiagnosticsClientListSiteDetectorsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listSiteDetectorsCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DiagnosticsClientListSiteDetectorsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DiagnosticsClientListSiteDetectorsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DiagnosticsClientListSiteDetectorsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSiteDetectorsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listSiteDetectorsCreateRequest creates the ListSiteDetectors request.
@@ -1312,7 +1413,7 @@ func (client *DiagnosticsClient) listSiteDetectorsCreateRequest(ctx context.Cont
 
 // listSiteDetectorsHandleResponse handles the ListSiteDetectors response.
 func (client *DiagnosticsClient) listSiteDetectorsHandleResponse(resp *http.Response) (DiagnosticsClientListSiteDetectorsResponse, error) {
-	result := DiagnosticsClientListSiteDetectorsResponse{RawResponse: resp}
+	result := DiagnosticsClientListSiteDetectorsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticDetectorCollection); err != nil {
 		return DiagnosticsClientListSiteDetectorsResponse{}, err
 	}
@@ -1327,16 +1428,32 @@ func (client *DiagnosticsClient) listSiteDetectorsHandleResponse(resp *http.Resp
 // slot - Slot Name
 // options - DiagnosticsClientListSiteDetectorsSlotOptions contains the optional parameters for the DiagnosticsClient.ListSiteDetectorsSlot
 // method.
-func (client *DiagnosticsClient) ListSiteDetectorsSlot(resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsClientListSiteDetectorsSlotOptions) *DiagnosticsClientListSiteDetectorsSlotPager {
-	return &DiagnosticsClientListSiteDetectorsSlotPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listSiteDetectorsSlotCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, slot, options)
+func (client *DiagnosticsClient) ListSiteDetectorsSlot(resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsClientListSiteDetectorsSlotOptions) *runtime.Pager[DiagnosticsClientListSiteDetectorsSlotResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DiagnosticsClientListSiteDetectorsSlotResponse]{
+		More: func(page DiagnosticsClientListSiteDetectorsSlotResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DiagnosticsClientListSiteDetectorsSlotResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DiagnosticDetectorCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *DiagnosticsClientListSiteDetectorsSlotResponse) (DiagnosticsClientListSiteDetectorsSlotResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listSiteDetectorsSlotCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, slot, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DiagnosticsClientListSiteDetectorsSlotResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DiagnosticsClientListSiteDetectorsSlotResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DiagnosticsClientListSiteDetectorsSlotResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSiteDetectorsSlotHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listSiteDetectorsSlotCreateRequest creates the ListSiteDetectorsSlot request.
@@ -1375,7 +1492,7 @@ func (client *DiagnosticsClient) listSiteDetectorsSlotCreateRequest(ctx context.
 
 // listSiteDetectorsSlotHandleResponse handles the ListSiteDetectorsSlot response.
 func (client *DiagnosticsClient) listSiteDetectorsSlotHandleResponse(resp *http.Response) (DiagnosticsClientListSiteDetectorsSlotResponse, error) {
-	result := DiagnosticsClientListSiteDetectorsSlotResponse{RawResponse: resp}
+	result := DiagnosticsClientListSiteDetectorsSlotResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticDetectorCollection); err != nil {
 		return DiagnosticsClientListSiteDetectorsSlotResponse{}, err
 	}
@@ -1388,16 +1505,32 @@ func (client *DiagnosticsClient) listSiteDetectorsSlotHandleResponse(resp *http.
 // siteName - Site Name
 // options - DiagnosticsClientListSiteDiagnosticCategoriesOptions contains the optional parameters for the DiagnosticsClient.ListSiteDiagnosticCategories
 // method.
-func (client *DiagnosticsClient) ListSiteDiagnosticCategories(resourceGroupName string, siteName string, options *DiagnosticsClientListSiteDiagnosticCategoriesOptions) *DiagnosticsClientListSiteDiagnosticCategoriesPager {
-	return &DiagnosticsClientListSiteDiagnosticCategoriesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listSiteDiagnosticCategoriesCreateRequest(ctx, resourceGroupName, siteName, options)
+func (client *DiagnosticsClient) ListSiteDiagnosticCategories(resourceGroupName string, siteName string, options *DiagnosticsClientListSiteDiagnosticCategoriesOptions) *runtime.Pager[DiagnosticsClientListSiteDiagnosticCategoriesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DiagnosticsClientListSiteDiagnosticCategoriesResponse]{
+		More: func(page DiagnosticsClientListSiteDiagnosticCategoriesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DiagnosticsClientListSiteDiagnosticCategoriesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DiagnosticCategoryCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *DiagnosticsClientListSiteDiagnosticCategoriesResponse) (DiagnosticsClientListSiteDiagnosticCategoriesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listSiteDiagnosticCategoriesCreateRequest(ctx, resourceGroupName, siteName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DiagnosticsClientListSiteDiagnosticCategoriesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DiagnosticsClientListSiteDiagnosticCategoriesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DiagnosticsClientListSiteDiagnosticCategoriesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSiteDiagnosticCategoriesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listSiteDiagnosticCategoriesCreateRequest creates the ListSiteDiagnosticCategories request.
@@ -1428,7 +1561,7 @@ func (client *DiagnosticsClient) listSiteDiagnosticCategoriesCreateRequest(ctx c
 
 // listSiteDiagnosticCategoriesHandleResponse handles the ListSiteDiagnosticCategories response.
 func (client *DiagnosticsClient) listSiteDiagnosticCategoriesHandleResponse(resp *http.Response) (DiagnosticsClientListSiteDiagnosticCategoriesResponse, error) {
-	result := DiagnosticsClientListSiteDiagnosticCategoriesResponse{RawResponse: resp}
+	result := DiagnosticsClientListSiteDiagnosticCategoriesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticCategoryCollection); err != nil {
 		return DiagnosticsClientListSiteDiagnosticCategoriesResponse{}, err
 	}
@@ -1442,16 +1575,32 @@ func (client *DiagnosticsClient) listSiteDiagnosticCategoriesHandleResponse(resp
 // slot - Slot Name
 // options - DiagnosticsClientListSiteDiagnosticCategoriesSlotOptions contains the optional parameters for the DiagnosticsClient.ListSiteDiagnosticCategoriesSlot
 // method.
-func (client *DiagnosticsClient) ListSiteDiagnosticCategoriesSlot(resourceGroupName string, siteName string, slot string, options *DiagnosticsClientListSiteDiagnosticCategoriesSlotOptions) *DiagnosticsClientListSiteDiagnosticCategoriesSlotPager {
-	return &DiagnosticsClientListSiteDiagnosticCategoriesSlotPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listSiteDiagnosticCategoriesSlotCreateRequest(ctx, resourceGroupName, siteName, slot, options)
+func (client *DiagnosticsClient) ListSiteDiagnosticCategoriesSlot(resourceGroupName string, siteName string, slot string, options *DiagnosticsClientListSiteDiagnosticCategoriesSlotOptions) *runtime.Pager[DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse]{
+		More: func(page DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DiagnosticCategoryCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse) (DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listSiteDiagnosticCategoriesSlotCreateRequest(ctx, resourceGroupName, siteName, slot, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSiteDiagnosticCategoriesSlotHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listSiteDiagnosticCategoriesSlotCreateRequest creates the ListSiteDiagnosticCategoriesSlot request.
@@ -1486,7 +1635,7 @@ func (client *DiagnosticsClient) listSiteDiagnosticCategoriesSlotCreateRequest(c
 
 // listSiteDiagnosticCategoriesSlotHandleResponse handles the ListSiteDiagnosticCategoriesSlot response.
 func (client *DiagnosticsClient) listSiteDiagnosticCategoriesSlotHandleResponse(resp *http.Response) (DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse, error) {
-	result := DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse{RawResponse: resp}
+	result := DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticCategoryCollection); err != nil {
 		return DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse{}, err
 	}

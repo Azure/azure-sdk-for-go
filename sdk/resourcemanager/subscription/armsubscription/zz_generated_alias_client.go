@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,19 +32,23 @@ type AliasClient struct {
 // NewAliasClient creates a new instance of AliasClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAliasClient(credential azcore.TokenCredential, options *arm.ClientOptions) *AliasClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAliasClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AliasClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AliasClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreate - Create Alias Subscription.
@@ -52,22 +57,16 @@ func NewAliasClient(credential azcore.TokenCredential, options *arm.ClientOption
 // name and this doesn’t have any other lifecycle need beyond the request for subscription
 // creation.
 // options - AliasClientBeginCreateOptions contains the optional parameters for the AliasClient.BeginCreate method.
-func (client *AliasClient) BeginCreate(ctx context.Context, aliasName string, body PutAliasRequest, options *AliasClientBeginCreateOptions) (AliasClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, aliasName, body, options)
-	if err != nil {
-		return AliasClientCreatePollerResponse{}, err
+func (client *AliasClient) BeginCreate(ctx context.Context, aliasName string, body PutAliasRequest, options *AliasClientBeginCreateOptions) (*armruntime.Poller[AliasClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, aliasName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[AliasClientCreateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[AliasClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := AliasClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("AliasClient.Create", "", resp, client.pl)
-	if err != nil {
-		return AliasClientCreatePollerResponse{}, err
-	}
-	result.Poller = &AliasClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Create Alias Subscription.
@@ -123,7 +122,7 @@ func (client *AliasClient) Delete(ctx context.Context, aliasName string, options
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return AliasClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return AliasClientDeleteResponse{RawResponse: resp}, nil
+	return AliasClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -185,7 +184,7 @@ func (client *AliasClient) getCreateRequest(ctx context.Context, aliasName strin
 
 // getHandleResponse handles the Get response.
 func (client *AliasClient) getHandleResponse(resp *http.Response) (AliasClientGetResponse, error) {
-	result := AliasClientGetResponse{RawResponse: resp}
+	result := AliasClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AliasResponse); err != nil {
 		return AliasClientGetResponse{}, err
 	}
@@ -226,7 +225,7 @@ func (client *AliasClient) listCreateRequest(ctx context.Context, options *Alias
 
 // listHandleResponse handles the List response.
 func (client *AliasClient) listHandleResponse(resp *http.Response) (AliasClientListResponse, error) {
-	result := AliasClientListResponse{RawResponse: resp}
+	result := AliasClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AliasListResult); err != nil {
 		return AliasClientListResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type IntegrationAccountBatchConfigurationsClient struct {
 // subscriptionID - The subscription id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewIntegrationAccountBatchConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationAccountBatchConfigurationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewIntegrationAccountBatchConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IntegrationAccountBatchConfigurationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &IntegrationAccountBatchConfigurationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create or update a batch configuration for an integration account.
@@ -104,7 +109,7 @@ func (client *IntegrationAccountBatchConfigurationsClient) createOrUpdateCreateR
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *IntegrationAccountBatchConfigurationsClient) createOrUpdateHandleResponse(resp *http.Response) (IntegrationAccountBatchConfigurationsClientCreateOrUpdateResponse, error) {
-	result := IntegrationAccountBatchConfigurationsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := IntegrationAccountBatchConfigurationsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BatchConfiguration); err != nil {
 		return IntegrationAccountBatchConfigurationsClientCreateOrUpdateResponse{}, err
 	}
@@ -130,7 +135,7 @@ func (client *IntegrationAccountBatchConfigurationsClient) Delete(ctx context.Co
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return IntegrationAccountBatchConfigurationsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return IntegrationAccountBatchConfigurationsClientDeleteResponse{RawResponse: resp}, nil
+	return IntegrationAccountBatchConfigurationsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -217,7 +222,7 @@ func (client *IntegrationAccountBatchConfigurationsClient) getCreateRequest(ctx 
 
 // getHandleResponse handles the Get response.
 func (client *IntegrationAccountBatchConfigurationsClient) getHandleResponse(resp *http.Response) (IntegrationAccountBatchConfigurationsClientGetResponse, error) {
-	result := IntegrationAccountBatchConfigurationsClientGetResponse{RawResponse: resp}
+	result := IntegrationAccountBatchConfigurationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BatchConfiguration); err != nil {
 		return IntegrationAccountBatchConfigurationsClientGetResponse{}, err
 	}
@@ -230,19 +235,26 @@ func (client *IntegrationAccountBatchConfigurationsClient) getHandleResponse(res
 // integrationAccountName - The integration account name.
 // options - IntegrationAccountBatchConfigurationsClientListOptions contains the optional parameters for the IntegrationAccountBatchConfigurationsClient.List
 // method.
-func (client *IntegrationAccountBatchConfigurationsClient) List(ctx context.Context, resourceGroupName string, integrationAccountName string, options *IntegrationAccountBatchConfigurationsClientListOptions) (IntegrationAccountBatchConfigurationsClientListResponse, error) {
-	req, err := client.listCreateRequest(ctx, resourceGroupName, integrationAccountName, options)
-	if err != nil {
-		return IntegrationAccountBatchConfigurationsClientListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return IntegrationAccountBatchConfigurationsClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationAccountBatchConfigurationsClientListResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listHandleResponse(resp)
+func (client *IntegrationAccountBatchConfigurationsClient) List(resourceGroupName string, integrationAccountName string, options *IntegrationAccountBatchConfigurationsClientListOptions) *runtime.Pager[IntegrationAccountBatchConfigurationsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[IntegrationAccountBatchConfigurationsClientListResponse]{
+		More: func(page IntegrationAccountBatchConfigurationsClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *IntegrationAccountBatchConfigurationsClientListResponse) (IntegrationAccountBatchConfigurationsClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, resourceGroupName, integrationAccountName, options)
+			if err != nil {
+				return IntegrationAccountBatchConfigurationsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return IntegrationAccountBatchConfigurationsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return IntegrationAccountBatchConfigurationsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -273,7 +285,7 @@ func (client *IntegrationAccountBatchConfigurationsClient) listCreateRequest(ctx
 
 // listHandleResponse handles the List response.
 func (client *IntegrationAccountBatchConfigurationsClient) listHandleResponse(resp *http.Response) (IntegrationAccountBatchConfigurationsClientListResponse, error) {
-	result := IntegrationAccountBatchConfigurationsClientListResponse{RawResponse: resp}
+	result := IntegrationAccountBatchConfigurationsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BatchConfigurationCollection); err != nil {
 		return IntegrationAccountBatchConfigurationsClientListResponse{}, err
 	}

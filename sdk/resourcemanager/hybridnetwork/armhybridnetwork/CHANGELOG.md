@@ -1,5 +1,410 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `NewVendorsClient` return value(s) have been changed from `(*VendorsClient)` to `(*VendorsClient, error)`
+- Function `*VendorSKUPreviewClient.List` return value(s) have been changed from `(*VendorSKUPreviewClientListPager)` to `(*runtime.Pager[VendorSKUPreviewClientListResponse])`
+- Function `NewVendorNetworkFunctionsClient` return value(s) have been changed from `(*VendorNetworkFunctionsClient)` to `(*VendorNetworkFunctionsClient, error)`
+- Function `*DevicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(DevicesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[DevicesClientCreateOrUpdateResponse], error)`
+- Function `*VendorSKUPreviewClient.BeginDelete` return value(s) have been changed from `(VendorSKUPreviewClientDeletePollerResponse, error)` to `(*armruntime.Poller[VendorSKUPreviewClientDeleteResponse], error)`
+- Function `NewNetworkFunctionVendorsClient` return value(s) have been changed from `(*NetworkFunctionVendorsClient)` to `(*NetworkFunctionVendorsClient, error)`
+- Function `*VendorsClient.ListBySubscription` return value(s) have been changed from `(*VendorsClientListBySubscriptionPager)` to `(*runtime.Pager[VendorsClientListBySubscriptionResponse])`
+- Function `*DevicesClient.BeginDelete` return value(s) have been changed from `(DevicesClientDeletePollerResponse, error)` to `(*armruntime.Poller[DevicesClientDeleteResponse], error)`
+- Function `*NetworkFunctionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(NetworkFunctionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[NetworkFunctionsClientCreateOrUpdateResponse], error)`
+- Function `*VendorSKUsClient.List` return value(s) have been changed from `(*VendorSKUsClientListPager)` to `(*runtime.Pager[VendorSKUsClientListResponse])`
+- Function `*RoleInstancesClient.BeginStop` return value(s) have been changed from `(RoleInstancesClientStopPollerResponse, error)` to `(*armruntime.Poller[RoleInstancesClientStopResponse], error)`
+- Function `*NetworkFunctionVendorsClient.List` return value(s) have been changed from `(*NetworkFunctionVendorsClientListPager)` to `(*runtime.Pager[NetworkFunctionVendorsClientListResponse])`
+- Function `NewNetworkFunctionsClient` return value(s) have been changed from `(*NetworkFunctionsClient)` to `(*NetworkFunctionsClient, error)`
+- Function `NewNetworkFunctionVendorSKUsClient` return value(s) have been changed from `(*NetworkFunctionVendorSKUsClient)` to `(*NetworkFunctionVendorSKUsClient, error)`
+- Function `*VendorSKUsClient.BeginCreateOrUpdate` return value(s) have been changed from `(VendorSKUsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VendorSKUsClientCreateOrUpdateResponse], error)`
+- Function `NewVendorSKUPreviewClient` return value(s) have been changed from `(*VendorSKUPreviewClient)` to `(*VendorSKUPreviewClient, error)`
+- Function `NewDevicesClient` return value(s) have been changed from `(*DevicesClient)` to `(*DevicesClient, error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*VendorsClient.BeginDelete` return value(s) have been changed from `(VendorsClientDeletePollerResponse, error)` to `(*armruntime.Poller[VendorsClientDeleteResponse], error)`
+- Function `*NetworkFunctionVendorSKUsClient.ListByVendor` return value(s) have been changed from `(*NetworkFunctionVendorSKUsClientListByVendorPager)` to `(*runtime.Pager[NetworkFunctionVendorSKUsClientListByVendorResponse])`
+- Function `*NetworkFunctionsClient.BeginDelete` return value(s) have been changed from `(NetworkFunctionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[NetworkFunctionsClientDeleteResponse], error)`
+- Function `*RoleInstancesClient.BeginStart` return value(s) have been changed from `(RoleInstancesClientStartPollerResponse, error)` to `(*armruntime.Poller[RoleInstancesClientStartResponse], error)`
+- Function `*VendorNetworkFunctionsClient.List` return value(s) have been changed from `(*VendorNetworkFunctionsClientListPager)` to `(*runtime.Pager[VendorNetworkFunctionsClientListResponse])`
+- Function `*NetworkFunctionVendorSKUsClient.ListBySKU` return value(s) have been changed from `(*NetworkFunctionVendorSKUsClientListBySKUPager)` to `(*runtime.Pager[NetworkFunctionVendorSKUsClientListBySKUResponse])`
+- Function `NewRoleInstancesClient` return value(s) have been changed from `(*RoleInstancesClient)` to `(*RoleInstancesClient, error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*RoleInstancesClient.BeginRestart` return value(s) have been changed from `(RoleInstancesClientRestartPollerResponse, error)` to `(*armruntime.Poller[RoleInstancesClientRestartResponse], error)`
+- Function `*DevicesClient.ListBySubscription` return value(s) have been changed from `(*DevicesClientListBySubscriptionPager)` to `(*runtime.Pager[DevicesClientListBySubscriptionResponse])`
+- Function `*NetworkFunctionsClient.ListBySubscription` return value(s) have been changed from `(*NetworkFunctionsClientListBySubscriptionPager)` to `(*runtime.Pager[NetworkFunctionsClientListBySubscriptionResponse])`
+- Function `*DevicesClient.ListByResourceGroup` return value(s) have been changed from `(*DevicesClientListByResourceGroupPager)` to `(*runtime.Pager[DevicesClientListByResourceGroupResponse])`
+- Function `*VendorSKUsClient.BeginDelete` return value(s) have been changed from `(VendorSKUsClientDeletePollerResponse, error)` to `(*armruntime.Poller[VendorSKUsClientDeleteResponse], error)`
+- Function `*NetworkFunctionsClient.ListByResourceGroup` return value(s) have been changed from `(*NetworkFunctionsClientListByResourceGroupPager)` to `(*runtime.Pager[NetworkFunctionsClientListByResourceGroupResponse])`
+- Function `NewVendorSKUsClient` return value(s) have been changed from `(*VendorSKUsClient)` to `(*VendorSKUsClient, error)`
+- Function `*RoleInstancesClient.List` return value(s) have been changed from `(*RoleInstancesClientListPager)` to `(*runtime.Pager[RoleInstancesClientListResponse])`
+- Function `*VendorsClient.BeginCreateOrUpdate` return value(s) have been changed from `(VendorsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VendorsClientCreateOrUpdateResponse], error)`
+- Function `*VendorSKUPreviewClient.BeginCreateOrUpdate` return value(s) have been changed from `(VendorSKUPreviewClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VendorSKUPreviewClientCreateOrUpdateResponse], error)`
+- Function `*VendorNetworkFunctionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(VendorNetworkFunctionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VendorNetworkFunctionsClientCreateOrUpdateResponse], error)`
+- Type of `VendorSKUPropertiesFormat.ManagedApplicationParameters` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `VendorSKUPropertiesFormat.ManagedApplicationTemplate` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `NetworkFunctionPropertiesFormat.NetworkFunctionContainerConfigurations` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `NetworkFunctionPropertiesFormat.ManagedApplicationParameters` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `NetworkFunctionSKURoleDetails.UserDataParameters` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `NetworkFunctionSKURoleDetails.UserDataTemplate` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `NetworkFunctionRoleConfiguration.UserDataParameters` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `NetworkFunctionRoleConfiguration.UserDataTemplate` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `NetworkFunctionUserConfiguration.UserDataParameters` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `NetworkFunctionVendorConfiguration.UserDataParameters` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*RoleInstancesClientRestartPoller.Done` has been removed
+- Function `*NetworkFunctionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VendorSKUsClientDeletePoller.ResumeToken` has been removed
+- Function `*NetworkFunctionsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*NetworkFunctionsClientListByResourceGroupPager.Err` has been removed
+- Function `*NetworkFunctionVendorsClientListPager.NextPage` has been removed
+- Function `*VendorsClientDeletePoller.FinalResponse` has been removed
+- Function `*RoleInstancesClientListPager.Err` has been removed
+- Function `Status.ToPtr` has been removed
+- Function `*VendorSKUsClientListPager.Err` has been removed
+- Function `*VendorSKUsClientDeletePoller.Done` has been removed
+- Function `*DevicesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*NetworkFunctionsClientListBySubscriptionPager.Err` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*DevicesClientListBySubscriptionPager.Err` has been removed
+- Function `*VendorsClientListBySubscriptionPager.NextPage` has been removed
+- Function `RoleInstancesClientStopPollerResponse.PollUntilDone` has been removed
+- Function `*RoleInstancesClientStopPoller.Poll` has been removed
+- Function `*DevicesClientDeletePoller.FinalResponse` has been removed
+- Function `*NetworkFunctionsClientDeletePoller.Poll` has been removed
+- Function `*RoleInstancesClientStartPollerResponse.Resume` has been removed
+- Function `*RoleInstancesClientListPager.PageResponse` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `VendorSKUsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `DevicesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*DevicesClientCreateOrUpdatePoller.Done` has been removed
+- Function `NetworkFunctionType.ToPtr` has been removed
+- Function `*VendorSKUsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*NetworkFunctionsClientDeletePollerResponse.Resume` has been removed
+- Function `*VendorNetworkFunctionsClientListPager.NextPage` has been removed
+- Function `VendorSKUPreviewClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*NetworkFunctionsClientListBySubscriptionPager.NextPage` has been removed
+- Function `*VendorsClientListBySubscriptionPager.Err` has been removed
+- Function `*VendorSKUsClientListPager.PageResponse` has been removed
+- Function `*VendorSKUsClientDeletePoller.FinalResponse` has been removed
+- Function `*NetworkFunctionsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*DevicesClientDeletePollerResponse.Resume` has been removed
+- Function `*VendorsClientDeletePoller.Done` has been removed
+- Function `*NetworkFunctionsClientDeletePoller.ResumeToken` has been removed
+- Function `*VendorSKUsClientListPager.NextPage` has been removed
+- Function `*RoleInstancesClientRestartPoller.ResumeToken` has been removed
+- Function `*VendorSKUPreviewClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VendorSKUsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `VendorSKUsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*RoleInstancesClientListPager.NextPage` has been removed
+- Function `*VendorSKUPreviewClientDeletePoller.ResumeToken` has been removed
+- Function `VendorNetworkFunctionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DevicesClientDeletePoller.Done` has been removed
+- Function `*VendorNetworkFunctionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*NetworkFunctionsClientDeletePoller.Done` has been removed
+- Function `*VendorSKUsClientDeletePollerResponse.Resume` has been removed
+- Function `*VendorSKUsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*NetworkFunctionVendorSKUsClientListByVendorPager.NextPage` has been removed
+- Function `RoleInstancesClientStartPollerResponse.PollUntilDone` has been removed
+- Function `*VendorsClientDeletePoller.ResumeToken` has been removed
+- Function `*VendorSKUPreviewClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*DevicesClientListByResourceGroupPager.Err` has been removed
+- Function `*DevicesClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*VendorSKUPreviewClientDeletePoller.FinalResponse` has been removed
+- Function `*DevicesClientDeletePoller.ResumeToken` has been removed
+- Function `*NetworkFunctionVendorsClientListPager.PageResponse` has been removed
+- Function `*NetworkFunctionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VendorsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*DevicesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `DevicesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VendorsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*DevicesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `OperatingSystemTypes.ToPtr` has been removed
+- Function `VendorsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*NetworkFunctionsClientDeletePoller.FinalResponse` has been removed
+- Function `*RoleInstancesClientStopPoller.FinalResponse` has been removed
+- Function `*VendorsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*DevicesClientListBySubscriptionPager.NextPage` has been removed
+- Function `*VendorSKUsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VendorSKUPreviewClientListPager.Err` has been removed
+- Function `NetworkFunctionRoleConfigurationType.ToPtr` has been removed
+- Function `*VendorSKUPreviewClientListPager.NextPage` has been removed
+- Function `VendorsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*RoleInstancesClientStartPoller.ResumeToken` has been removed
+- Function `*RoleInstancesClientStopPollerResponse.Resume` has been removed
+- Function `*NetworkFunctionVendorSKUsClientListByVendorPager.Err` has been removed
+- Function `*NetworkFunctionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*NetworkFunctionsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*DevicesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `OperationalState.ToPtr` has been removed
+- Function `*VendorSKUPreviewClientListPager.PageResponse` has been removed
+- Function `*RoleInstancesClientStopPoller.Done` has been removed
+- Function `*NetworkFunctionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VendorSKUPreviewClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*DevicesClientDeletePoller.Poll` has been removed
+- Function `*VendorsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VendorSKUPreviewClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `DiskCreateOptionTypes.ToPtr` has been removed
+- Function `OperationList.MarshalJSON` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*NetworkFunctionVendorSKUsClientListByVendorPager.PageResponse` has been removed
+- Function `*VendorsClientDeletePoller.Poll` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `VirtualMachineSizeTypes.ToPtr` has been removed
+- Function `*NetworkFunctionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VendorSKUPreviewClientDeletePoller.Poll` has been removed
+- Function `*RoleInstancesClientRestartPoller.FinalResponse` has been removed
+- Function `SKUType.ToPtr` has been removed
+- Function `*DevicesClientListByResourceGroupPager.NextPage` has been removed
+- Function `VMSwitchType.ToPtr` has been removed
+- Function `*RoleInstancesClientStartPoller.Poll` has been removed
+- Function `IPVersion.ToPtr` has been removed
+- Function `*RoleInstancesClientRestartPoller.Poll` has been removed
+- Function `SKUDeploymentMode.ToPtr` has been removed
+- Function `VendorSKUPreviewClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VendorNetworkFunctionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VendorsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `NetworkFunctionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*RoleInstancesClientStartPoller.Done` has been removed
+- Function `DeviceType.ToPtr` has been removed
+- Function `*NetworkFunctionVendorSKUsClientListBySKUPager.NextPage` has been removed
+- Function `IPAllocationMethod.ToPtr` has been removed
+- Function `*VendorNetworkFunctionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `RoleInstancesClientRestartPollerResponse.PollUntilDone` has been removed
+- Function `*VendorNetworkFunctionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*DevicesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VendorSKUPreviewClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VendorsClientDeletePollerResponse.Resume` has been removed
+- Function `*VendorNetworkFunctionsClientListPager.Err` has been removed
+- Function `*VendorNetworkFunctionsClientListPager.PageResponse` has been removed
+- Function `*VendorNetworkFunctionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VendorsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*NetworkFunctionVendorsClientListPager.Err` has been removed
+- Function `*RoleInstancesClientStartPoller.FinalResponse` has been removed
+- Function `*VendorSKUsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `NetworkFunctionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*RoleInstancesClientRestartPollerResponse.Resume` has been removed
+- Function `*NetworkFunctionVendorSKUsClientListBySKUPager.Err` has been removed
+- Function `*NetworkFunctionVendorSKUsClientListBySKUPager.PageResponse` has been removed
+- Function `VendorProvisioningState.ToPtr` has been removed
+- Function `*VendorSKUPreviewClientDeletePoller.Done` has been removed
+- Function `*VendorSKUPreviewClientDeletePollerResponse.Resume` has been removed
+- Function `*RoleInstancesClientStopPoller.ResumeToken` has been removed
+- Function `*VendorSKUsClientDeletePoller.Poll` has been removed
+- Struct `DevicesClientCreateOrUpdatePoller` has been removed
+- Struct `DevicesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `DevicesClientCreateOrUpdateResult` has been removed
+- Struct `DevicesClientDeletePoller` has been removed
+- Struct `DevicesClientDeletePollerResponse` has been removed
+- Struct `DevicesClientGetResult` has been removed
+- Struct `DevicesClientListByResourceGroupPager` has been removed
+- Struct `DevicesClientListByResourceGroupResult` has been removed
+- Struct `DevicesClientListBySubscriptionPager` has been removed
+- Struct `DevicesClientListBySubscriptionResult` has been removed
+- Struct `DevicesClientListRegistrationKeyResult` has been removed
+- Struct `DevicesClientUpdateTagsResult` has been removed
+- Struct `NetworkFunctionVendorSKUsClientListBySKUPager` has been removed
+- Struct `NetworkFunctionVendorSKUsClientListBySKUResult` has been removed
+- Struct `NetworkFunctionVendorSKUsClientListByVendorPager` has been removed
+- Struct `NetworkFunctionVendorSKUsClientListByVendorResult` has been removed
+- Struct `NetworkFunctionVendorsClientListPager` has been removed
+- Struct `NetworkFunctionVendorsClientListResult` has been removed
+- Struct `NetworkFunctionsClientCreateOrUpdatePoller` has been removed
+- Struct `NetworkFunctionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `NetworkFunctionsClientCreateOrUpdateResult` has been removed
+- Struct `NetworkFunctionsClientDeletePoller` has been removed
+- Struct `NetworkFunctionsClientDeletePollerResponse` has been removed
+- Struct `NetworkFunctionsClientGetResult` has been removed
+- Struct `NetworkFunctionsClientListByResourceGroupPager` has been removed
+- Struct `NetworkFunctionsClientListByResourceGroupResult` has been removed
+- Struct `NetworkFunctionsClientListBySubscriptionPager` has been removed
+- Struct `NetworkFunctionsClientListBySubscriptionResult` has been removed
+- Struct `NetworkFunctionsClientUpdateTagsResult` has been removed
+- Struct `OperationList` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `RoleInstancesClientGetResult` has been removed
+- Struct `RoleInstancesClientListPager` has been removed
+- Struct `RoleInstancesClientListResult` has been removed
+- Struct `RoleInstancesClientRestartPoller` has been removed
+- Struct `RoleInstancesClientRestartPollerResponse` has been removed
+- Struct `RoleInstancesClientStartPoller` has been removed
+- Struct `RoleInstancesClientStartPollerResponse` has been removed
+- Struct `RoleInstancesClientStopPoller` has been removed
+- Struct `RoleInstancesClientStopPollerResponse` has been removed
+- Struct `VendorNetworkFunctionsClientCreateOrUpdatePoller` has been removed
+- Struct `VendorNetworkFunctionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VendorNetworkFunctionsClientCreateOrUpdateResult` has been removed
+- Struct `VendorNetworkFunctionsClientGetResult` has been removed
+- Struct `VendorNetworkFunctionsClientListPager` has been removed
+- Struct `VendorNetworkFunctionsClientListResult` has been removed
+- Struct `VendorSKUPreviewClientCreateOrUpdatePoller` has been removed
+- Struct `VendorSKUPreviewClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VendorSKUPreviewClientCreateOrUpdateResult` has been removed
+- Struct `VendorSKUPreviewClientDeletePoller` has been removed
+- Struct `VendorSKUPreviewClientDeletePollerResponse` has been removed
+- Struct `VendorSKUPreviewClientGetResult` has been removed
+- Struct `VendorSKUPreviewClientListPager` has been removed
+- Struct `VendorSKUPreviewClientListResult` has been removed
+- Struct `VendorSKUsClientCreateOrUpdatePoller` has been removed
+- Struct `VendorSKUsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VendorSKUsClientCreateOrUpdateResult` has been removed
+- Struct `VendorSKUsClientDeletePoller` has been removed
+- Struct `VendorSKUsClientDeletePollerResponse` has been removed
+- Struct `VendorSKUsClientGetResult` has been removed
+- Struct `VendorSKUsClientListPager` has been removed
+- Struct `VendorSKUsClientListResult` has been removed
+- Struct `VendorsClientCreateOrUpdatePoller` has been removed
+- Struct `VendorsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VendorsClientCreateOrUpdateResult` has been removed
+- Struct `VendorsClientDeletePoller` has been removed
+- Struct `VendorsClientDeletePollerResponse` has been removed
+- Struct `VendorsClientGetResult` has been removed
+- Struct `VendorsClientListBySubscriptionPager` has been removed
+- Struct `VendorsClientListBySubscriptionResult` has been removed
+- Field `NetworkFunctionVendorSKUsClientListByVendorResult` of struct `NetworkFunctionVendorSKUsClientListByVendorResponse` has been removed
+- Field `RawResponse` of struct `NetworkFunctionVendorSKUsClientListByVendorResponse` has been removed
+- Field `VendorsClientListBySubscriptionResult` of struct `VendorsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `VendorsClientListBySubscriptionResponse` has been removed
+- Field `RoleInstancesClientGetResult` of struct `RoleInstancesClientGetResponse` has been removed
+- Field `RawResponse` of struct `RoleInstancesClientGetResponse` has been removed
+- Field `VendorsClientGetResult` of struct `VendorsClientGetResponse` has been removed
+- Field `RawResponse` of struct `VendorsClientGetResponse` has been removed
+- Field `RawResponse` of struct `NetworkFunctionsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `DevicesClientDeleteResponse` has been removed
+- Field `NetworkFunctionsClientUpdateTagsResult` of struct `NetworkFunctionsClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `NetworkFunctionsClientUpdateTagsResponse` has been removed
+- Field `VendorSKUPreviewClientGetResult` of struct `VendorSKUPreviewClientGetResponse` has been removed
+- Field `RawResponse` of struct `VendorSKUPreviewClientGetResponse` has been removed
+- Field `DevicesClientCreateOrUpdateResult` of struct `DevicesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DevicesClientCreateOrUpdateResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `RoleInstancesClientStartResponse` has been removed
+- Field `RawResponse` of struct `VendorSKUPreviewClientDeleteResponse` has been removed
+- Field `VendorNetworkFunctionsClientGetResult` of struct `VendorNetworkFunctionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `VendorNetworkFunctionsClientGetResponse` has been removed
+- Field `VendorSKUsClientListResult` of struct `VendorSKUsClientListResponse` has been removed
+- Field `RawResponse` of struct `VendorSKUsClientListResponse` has been removed
+- Field `NetworkFunctionsClientListBySubscriptionResult` of struct `NetworkFunctionsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `NetworkFunctionsClientListBySubscriptionResponse` has been removed
+- Field `NetworkFunctionsClientListByResourceGroupResult` of struct `NetworkFunctionsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `NetworkFunctionsClientListByResourceGroupResponse` has been removed
+- Field `VendorSKUsClientGetResult` of struct `VendorSKUsClientGetResponse` has been removed
+- Field `RawResponse` of struct `VendorSKUsClientGetResponse` has been removed
+- Field `RawResponse` of struct `VendorSKUsClientDeleteResponse` has been removed
+- Field `VendorSKUPreviewClientListResult` of struct `VendorSKUPreviewClientListResponse` has been removed
+- Field `RawResponse` of struct `VendorSKUPreviewClientListResponse` has been removed
+- Field `RoleInstancesClientListResult` of struct `RoleInstancesClientListResponse` has been removed
+- Field `RawResponse` of struct `RoleInstancesClientListResponse` has been removed
+- Field `VendorSKUsClientCreateOrUpdateResult` of struct `VendorSKUsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VendorSKUsClientCreateOrUpdateResponse` has been removed
+- Field `DevicesClientListByResourceGroupResult` of struct `DevicesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `DevicesClientListByResourceGroupResponse` has been removed
+- Field `VendorNetworkFunctionsClientListResult` of struct `VendorNetworkFunctionsClientListResponse` has been removed
+- Field `RawResponse` of struct `VendorNetworkFunctionsClientListResponse` has been removed
+- Field `VendorSKUPreviewClientCreateOrUpdateResult` of struct `VendorSKUPreviewClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VendorSKUPreviewClientCreateOrUpdateResponse` has been removed
+- Field `NetworkFunctionsClientGetResult` of struct `NetworkFunctionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `NetworkFunctionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `RoleInstancesClientRestartResponse` has been removed
+- Field `DevicesClientListBySubscriptionResult` of struct `DevicesClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `DevicesClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `VendorsClientDeleteResponse` has been removed
+- Field `NetworkFunctionsClientCreateOrUpdateResult` of struct `NetworkFunctionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `NetworkFunctionsClientCreateOrUpdateResponse` has been removed
+- Field `DevicesClientUpdateTagsResult` of struct `DevicesClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `DevicesClientUpdateTagsResponse` has been removed
+- Field `DevicesClientListRegistrationKeyResult` of struct `DevicesClientListRegistrationKeyResponse` has been removed
+- Field `RawResponse` of struct `DevicesClientListRegistrationKeyResponse` has been removed
+- Field `VendorNetworkFunctionsClientCreateOrUpdateResult` of struct `VendorNetworkFunctionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VendorNetworkFunctionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `RoleInstancesClientStopResponse` has been removed
+- Field `NetworkFunctionVendorSKUsClientListBySKUResult` of struct `NetworkFunctionVendorSKUsClientListBySKUResponse` has been removed
+- Field `RawResponse` of struct `NetworkFunctionVendorSKUsClientListBySKUResponse` has been removed
+- Field `DevicesClientGetResult` of struct `DevicesClientGetResponse` has been removed
+- Field `RawResponse` of struct `DevicesClientGetResponse` has been removed
+- Field `VendorsClientCreateOrUpdateResult` of struct `VendorsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VendorsClientCreateOrUpdateResponse` has been removed
+- Field `NetworkFunctionVendorsClientListResult` of struct `NetworkFunctionVendorsClientListResponse` has been removed
+- Field `RawResponse` of struct `NetworkFunctionVendorsClientListResponse` has been removed
+
+### Features Added
+
+- New const `HTTPMethodPost`
+- New const `HTTPMethodUnknown`
+- New const `HTTPMethodPut`
+- New const `HTTPMethodPatch`
+- New const `OriginUserSystem`
+- New const `HTTPMethodGet`
+- New const `OriginUser`
+- New const `ActionTypeInternal`
+- New const `HTTPMethodDelete`
+- New const `OriginSystem`
+- New function `*SKUCredential.UnmarshalJSON([]byte) error`
+- New function `OperationListResult.MarshalJSON() ([]byte, error)`
+- New function `*VendorSKUsClient.ListCredential(context.Context, string, string, *VendorSKUsClientListCredentialOptions) (VendorSKUsClientListCredentialResponse, error)`
+- New function `SKUCredential.MarshalJSON() ([]byte, error)`
+- New function `PossibleHTTPMethodValues() []HTTPMethod`
+- New function `*NetworkFunctionsClient.BeginExecuteRequest(context.Context, string, string, ExecuteRequestParameters, *NetworkFunctionsClientBeginExecuteRequestOptions) (*armruntime.Poller[NetworkFunctionsClientExecuteRequestResponse], error)`
+- New function `PossibleActionTypeValues() []ActionType`
+- New function `PossibleOriginValues() []Origin`
+- New struct `ExecuteRequestParameters`
+- New struct `NetworkFunctionsClientBeginExecuteRequestOptions`
+- New struct `NetworkFunctionsClientExecuteRequestResponse`
+- New struct `OperationListResult`
+- New struct `RequestMetadata`
+- New struct `SKUCredential`
+- New struct `VendorSKUsClientListCredentialOptions`
+- New struct `VendorSKUsClientListCredentialResponse`
+- New field `ResumeToken` in struct `VendorSKUsClientBeginDeleteOptions`
+- New anonymous field `VendorListResult` in struct `VendorsClientListBySubscriptionResponse`
+- New anonymous field `Device` in struct `DevicesClientGetResponse`
+- New anonymous field `Device` in struct `DevicesClientCreateOrUpdateResponse`
+- New anonymous field `RoleInstance` in struct `RoleInstancesClientGetResponse`
+- New field `ResumeToken` in struct `VendorSKUPreviewClientBeginCreateOrUpdateOptions`
+- New field `IsDataAction` in struct `Operation`
+- New field `Origin` in struct `Operation`
+- New field `ActionType` in struct `Operation`
+- New anonymous field `VendorNetworkFunction` in struct `VendorNetworkFunctionsClientGetResponse`
+- New field `ResumeToken` in struct `NetworkFunctionsClientBeginDeleteOptions`
+- New anonymous field `VendorSKU` in struct `VendorSKUsClientCreateOrUpdateResponse`
+- New anonymous field `PreviewSubscription` in struct `VendorSKUPreviewClientCreateOrUpdateResponse`
+- New anonymous field `NetworkFunctionVendorListResult` in struct `NetworkFunctionVendorsClientListResponse`
+- New anonymous field `Device` in struct `DevicesClientUpdateTagsResponse`
+- New anonymous field `NetworkFunction` in struct `NetworkFunctionsClientGetResponse`
+- New field `ResumeToken` in struct `RoleInstancesClientBeginRestartOptions`
+- New field `ResumeToken` in struct `DevicesClientBeginDeleteOptions`
+- New anonymous field `PreviewSubscription` in struct `VendorSKUPreviewClientGetResponse`
+- New anonymous field `PreviewSubscriptionsList` in struct `VendorSKUPreviewClientListResponse`
+- New field `ResumeToken` in struct `VendorSKUsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `NetworkFunctionsClientBeginCreateOrUpdateOptions`
+- New anonymous field `DeviceRegistrationKey` in struct `DevicesClientListRegistrationKeyResponse`
+- New anonymous field `VendorSKUListResult` in struct `VendorSKUsClientListResponse`
+- New field `ResumeToken` in struct `VendorSKUPreviewClientBeginDeleteOptions`
+- New anonymous field `NetworkFunctionListResult` in struct `NetworkFunctionsClientListByResourceGroupResponse`
+- New anonymous field `VendorNetworkFunction` in struct `VendorNetworkFunctionsClientCreateOrUpdateResponse`
+- New anonymous field `NetworkFunction` in struct `NetworkFunctionsClientUpdateTagsResponse`
+- New field `ResumeToken` in struct `VendorNetworkFunctionsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `RoleInstancesClientBeginStopOptions`
+- New anonymous field `NetworkFunctionListResult` in struct `NetworkFunctionsClientListBySubscriptionResponse`
+- New anonymous field `NetworkFunctionRoleInstanceListResult` in struct `RoleInstancesClientListResponse`
+- New field `ResumeToken` in struct `DevicesClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `VendorsClientBeginCreateOrUpdateOptions`
+- New anonymous field `NetworkFunctionSKUListResult` in struct `NetworkFunctionVendorSKUsClientListByVendorResponse`
+- New anonymous field `VendorSKU` in struct `VendorSKUsClientGetResponse`
+- New field `ResumeToken` in struct `VendorsClientBeginDeleteOptions`
+- New anonymous field `DeviceListResult` in struct `DevicesClientListBySubscriptionResponse`
+- New anonymous field `Vendor` in struct `VendorsClientCreateOrUpdateResponse`
+- New anonymous field `NetworkFunctionSKUDetails` in struct `NetworkFunctionVendorSKUsClientListBySKUResponse`
+- New anonymous field `Vendor` in struct `VendorsClientGetResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New field `ResumeToken` in struct `RoleInstancesClientBeginStartOptions`
+- New anonymous field `DeviceListResult` in struct `DevicesClientListByResourceGroupResponse`
+- New anonymous field `VendorNetworkFunctionListResult` in struct `VendorNetworkFunctionsClientListResponse`
+- New anonymous field `NetworkFunction` in struct `NetworkFunctionsClientCreateOrUpdateResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

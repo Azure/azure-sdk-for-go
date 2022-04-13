@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armdatabox
 
 const (
 	moduleName    = "armdatabox"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 type AccessProtocol string
@@ -28,11 +28,6 @@ func PossibleAccessProtocolValues() []AccessProtocol {
 		AccessProtocolSMB,
 		AccessProtocolNFS,
 	}
-}
-
-// ToPtr returns a *AccessProtocol pointing to the current value.
-func (c AccessProtocol) ToPtr() *AccessProtocol {
-	return &c
 }
 
 // AddressType - Type of address.
@@ -56,11 +51,6 @@ func PossibleAddressTypeValues() []AddressType {
 	}
 }
 
-// ToPtr returns a *AddressType pointing to the current value.
-func (c AddressType) ToPtr() *AddressType {
-	return &c
-}
-
 // AddressValidationStatus - The address validation status.
 type AddressValidationStatus string
 
@@ -80,11 +70,6 @@ func PossibleAddressValidationStatusValues() []AddressValidationStatus {
 		AddressValidationStatusInvalid,
 		AddressValidationStatusAmbiguous,
 	}
-}
-
-// ToPtr returns a *AddressValidationStatus pointing to the current value.
-func (c AddressValidationStatus) ToPtr() *AddressValidationStatus {
-	return &c
 }
 
 // ClassDiscriminator - Indicates the type of job details.
@@ -109,11 +94,6 @@ func PossibleClassDiscriminatorValues() []ClassDiscriminator {
 		ClassDiscriminatorDataBoxHeavy,
 		ClassDiscriminatorDataBoxCustomerDisk,
 	}
-}
-
-// ToPtr returns a *ClassDiscriminator pointing to the current value.
-func (c ClassDiscriminator) ToPtr() *ClassDiscriminator {
-	return &c
 }
 
 // CopyStatus - The Status of the copy
@@ -182,11 +162,6 @@ func PossibleCopyStatusValues() []CopyStatus {
 	}
 }
 
-// ToPtr returns a *CopyStatus pointing to the current value.
-func (c CopyStatus) ToPtr() *CopyStatus {
-	return &c
-}
-
 // CustomerResolutionCode - Resolution code provided by customer
 type CustomerResolutionCode string
 
@@ -197,6 +172,10 @@ const (
 	CustomerResolutionCodeMoveToCleanUpDevice CustomerResolutionCode = "MoveToCleanUpDevice"
 	// CustomerResolutionCodeResume - Resume the job to same stage
 	CustomerResolutionCodeResume CustomerResolutionCode = "Resume"
+	// CustomerResolutionCodeRestart - Restart whole action.
+	CustomerResolutionCodeRestart CustomerResolutionCode = "Restart"
+	// CustomerResolutionCodeReachOutToOperation - Reach out to operation for further action.
+	CustomerResolutionCodeReachOutToOperation CustomerResolutionCode = "ReachOutToOperation"
 )
 
 // PossibleCustomerResolutionCodeValues returns the possible values for the CustomerResolutionCode const type.
@@ -205,12 +184,9 @@ func PossibleCustomerResolutionCodeValues() []CustomerResolutionCode {
 		CustomerResolutionCodeNone,
 		CustomerResolutionCodeMoveToCleanUpDevice,
 		CustomerResolutionCodeResume,
+		CustomerResolutionCodeRestart,
+		CustomerResolutionCodeReachOutToOperation,
 	}
-}
-
-// ToPtr returns a *CustomerResolutionCode pointing to the current value.
-func (c CustomerResolutionCode) ToPtr() *CustomerResolutionCode {
-	return &c
 }
 
 // DataAccountType - Type of the account.
@@ -231,11 +207,6 @@ func PossibleDataAccountTypeValues() []DataAccountType {
 	}
 }
 
-// ToPtr returns a *DataAccountType pointing to the current value.
-func (c DataAccountType) ToPtr() *DataAccountType {
-	return &c
-}
-
 // DataCenterCode - DataCenter code.
 type DataCenterCode string
 
@@ -246,9 +217,11 @@ const (
 	DataCenterCodeAUH20   DataCenterCode = "AUH20"
 	DataCenterCodeAdHoc   DataCenterCode = "AdHoc"
 	DataCenterCodeBJB     DataCenterCode = "BJB"
+	DataCenterCodeBJS20   DataCenterCode = "BJS20"
 	DataCenterCodeBL20    DataCenterCode = "BL20"
 	DataCenterCodeBL7     DataCenterCode = "BL7"
 	DataCenterCodeBN1     DataCenterCode = "BN1"
+	DataCenterCodeBN7     DataCenterCode = "BN7"
 	DataCenterCodeBOM01   DataCenterCode = "BOM01"
 	DataCenterCodeBY1     DataCenterCode = "BY1"
 	DataCenterCodeBY2     DataCenterCode = "BY2"
@@ -261,6 +234,7 @@ const (
 	DataCenterCodeCWL20   DataCenterCode = "CWL20"
 	DataCenterCodeCYS04   DataCenterCode = "CYS04"
 	DataCenterCodeDSM05   DataCenterCode = "DSM05"
+	DataCenterCodeDUB07   DataCenterCode = "DUB07"
 	DataCenterCodeFRA22   DataCenterCode = "FRA22"
 	DataCenterCodeHKG20   DataCenterCode = "HKG20"
 	DataCenterCodeInvalid DataCenterCode = "Invalid"
@@ -272,7 +246,11 @@ const (
 	DataCenterCodeMNZ21   DataCenterCode = "MNZ21"
 	DataCenterCodeMWH01   DataCenterCode = "MWH01"
 	DataCenterCodeORK70   DataCenterCode = "ORK70"
+	DataCenterCodeOSA02   DataCenterCode = "OSA02"
 	DataCenterCodeOSA20   DataCenterCode = "OSA20"
+	DataCenterCodeOSA22   DataCenterCode = "OSA22"
+	DataCenterCodePAR22   DataCenterCode = "PAR22"
+	DataCenterCodePNQ01   DataCenterCode = "PNQ01"
 	DataCenterCodePUS20   DataCenterCode = "PUS20"
 	DataCenterCodeSEL20   DataCenterCode = "SEL20"
 	DataCenterCodeSEL21   DataCenterCode = "SEL21"
@@ -280,8 +258,10 @@ const (
 	DataCenterCodeSHA03   DataCenterCode = "SHA03"
 	DataCenterCodeSIN20   DataCenterCode = "SIN20"
 	DataCenterCodeSN5     DataCenterCode = "SN5"
+	DataCenterCodeSN6     DataCenterCode = "SN6"
 	DataCenterCodeSN8     DataCenterCode = "SN8"
 	DataCenterCodeSSE90   DataCenterCode = "SSE90"
+	DataCenterCodeSVG20   DataCenterCode = "SVG20"
 	DataCenterCodeSYD03   DataCenterCode = "SYD03"
 	DataCenterCodeSYD23   DataCenterCode = "SYD23"
 	DataCenterCodeTYO01   DataCenterCode = "TYO01"
@@ -301,9 +281,11 @@ func PossibleDataCenterCodeValues() []DataCenterCode {
 		DataCenterCodeAUH20,
 		DataCenterCodeAdHoc,
 		DataCenterCodeBJB,
+		DataCenterCodeBJS20,
 		DataCenterCodeBL20,
 		DataCenterCodeBL7,
 		DataCenterCodeBN1,
+		DataCenterCodeBN7,
 		DataCenterCodeBOM01,
 		DataCenterCodeBY1,
 		DataCenterCodeBY2,
@@ -316,6 +298,7 @@ func PossibleDataCenterCodeValues() []DataCenterCode {
 		DataCenterCodeCWL20,
 		DataCenterCodeCYS04,
 		DataCenterCodeDSM05,
+		DataCenterCodeDUB07,
 		DataCenterCodeFRA22,
 		DataCenterCodeHKG20,
 		DataCenterCodeInvalid,
@@ -327,7 +310,11 @@ func PossibleDataCenterCodeValues() []DataCenterCode {
 		DataCenterCodeMNZ21,
 		DataCenterCodeMWH01,
 		DataCenterCodeORK70,
+		DataCenterCodeOSA02,
 		DataCenterCodeOSA20,
+		DataCenterCodeOSA22,
+		DataCenterCodePAR22,
+		DataCenterCodePNQ01,
 		DataCenterCodePUS20,
 		DataCenterCodeSEL20,
 		DataCenterCodeSEL21,
@@ -335,8 +322,10 @@ func PossibleDataCenterCodeValues() []DataCenterCode {
 		DataCenterCodeSHA03,
 		DataCenterCodeSIN20,
 		DataCenterCodeSN5,
+		DataCenterCodeSN6,
 		DataCenterCodeSN8,
 		DataCenterCodeSSE90,
+		DataCenterCodeSVG20,
 		DataCenterCodeSYD03,
 		DataCenterCodeSYD23,
 		DataCenterCodeTYO01,
@@ -346,11 +335,6 @@ func PossibleDataCenterCodeValues() []DataCenterCode {
 		DataCenterCodeYTO21,
 		DataCenterCodeZRH20,
 	}
-}
-
-// ToPtr returns a *DataCenterCode pointing to the current value.
-func (c DataCenterCode) ToPtr() *DataCenterCode {
-	return &c
 }
 
 // DatacenterAddressType - Data center address type
@@ -371,11 +355,6 @@ func PossibleDatacenterAddressTypeValues() []DatacenterAddressType {
 	}
 }
 
-// ToPtr returns a *DatacenterAddressType pointing to the current value.
-func (c DatacenterAddressType) ToPtr() *DatacenterAddressType {
-	return &c
-}
-
 // DoubleEncryption - Defines secondary layer of software-based encryption enablement.
 type DoubleEncryption string
 
@@ -392,11 +371,6 @@ func PossibleDoubleEncryptionValues() []DoubleEncryption {
 		DoubleEncryptionEnabled,
 		DoubleEncryptionDisabled,
 	}
-}
-
-// ToPtr returns a *DoubleEncryption pointing to the current value.
-func (c DoubleEncryption) ToPtr() *DoubleEncryption {
-	return &c
 }
 
 // FilterFileType - Type of the filter file.
@@ -417,11 +391,6 @@ func PossibleFilterFileTypeValues() []FilterFileType {
 	}
 }
 
-// ToPtr returns a *FilterFileType pointing to the current value.
-func (c FilterFileType) ToPtr() *FilterFileType {
-	return &c
-}
-
 // JobDeliveryType - Delivery type of Job.
 type JobDeliveryType string
 
@@ -438,11 +407,6 @@ func PossibleJobDeliveryTypeValues() []JobDeliveryType {
 		JobDeliveryTypeNonScheduled,
 		JobDeliveryTypeScheduled,
 	}
-}
-
-// ToPtr returns a *JobDeliveryType pointing to the current value.
-func (c JobDeliveryType) ToPtr() *JobDeliveryType {
-	return &c
 }
 
 // KekType - Type of encryption key used for key encryption.
@@ -463,11 +427,6 @@ func PossibleKekTypeValues() []KekType {
 	}
 }
 
-// ToPtr returns a *KekType pointing to the current value.
-func (c KekType) ToPtr() *KekType {
-	return &c
-}
-
 // LogCollectionLevel - Level of the logs to be collected.
 type LogCollectionLevel string
 
@@ -484,11 +443,6 @@ func PossibleLogCollectionLevelValues() []LogCollectionLevel {
 		LogCollectionLevelError,
 		LogCollectionLevelVerbose,
 	}
-}
-
-// ToPtr returns a *LogCollectionLevel pointing to the current value.
-func (c LogCollectionLevel) ToPtr() *LogCollectionLevel {
-	return &c
 }
 
 // NotificationStageName - Name of the stage.
@@ -527,11 +481,6 @@ func PossibleNotificationStageNameValues() []NotificationStageName {
 	}
 }
 
-// ToPtr returns a *NotificationStageName pointing to the current value.
-func (c NotificationStageName) ToPtr() *NotificationStageName {
-	return &c
-}
-
 // OverallValidationStatus - Overall validation status.
 type OverallValidationStatus string
 
@@ -551,11 +500,6 @@ func PossibleOverallValidationStatusValues() []OverallValidationStatus {
 		OverallValidationStatusInputsRevisitRequired,
 		OverallValidationStatusCertainInputValidationsSkipped,
 	}
-}
-
-// ToPtr returns a *OverallValidationStatus pointing to the current value.
-func (c OverallValidationStatus) ToPtr() *OverallValidationStatus {
-	return &c
 }
 
 // SKUDisabledReason - Reason why the Sku is disabled.
@@ -589,11 +533,6 @@ func PossibleSKUDisabledReasonValues() []SKUDisabledReason {
 	}
 }
 
-// ToPtr returns a *SKUDisabledReason pointing to the current value.
-func (c SKUDisabledReason) ToPtr() *SKUDisabledReason {
-	return &c
-}
-
 type SKUName string
 
 const (
@@ -615,11 +554,6 @@ func PossibleSKUNameValues() []SKUName {
 		SKUNameDataBoxHeavy,
 		SKUNameDataBoxCustomerDisk,
 	}
-}
-
-// ToPtr returns a *SKUName pointing to the current value.
-func (c SKUName) ToPtr() *SKUName {
-	return &c
 }
 
 // ShareDestinationFormatType - Type of the share.
@@ -650,11 +584,6 @@ func PossibleShareDestinationFormatTypeValues() []ShareDestinationFormatType {
 		ShareDestinationFormatTypeAzureFile,
 		ShareDestinationFormatTypeManagedDisk,
 	}
-}
-
-// ToPtr returns a *ShareDestinationFormatType pointing to the current value.
-func (c ShareDestinationFormatType) ToPtr() *ShareDestinationFormatType {
-	return &c
 }
 
 // StageName - Name of the stage which is in progress.
@@ -732,11 +661,6 @@ func PossibleStageNameValues() []StageName {
 	}
 }
 
-// ToPtr returns a *StageName pointing to the current value.
-func (c StageName) ToPtr() *StageName {
-	return &c
-}
-
 // StageStatus - Status of the job stage.
 type StageStatus string
 
@@ -765,6 +689,8 @@ const (
 	StageStatusWaitingForCustomerActionForCleanUp StageStatus = "WaitingForCustomerActionForCleanUp"
 	// StageStatusCustomerActionPerformedForCleanUp - Stage has performed customer action for clean up.
 	StageStatusCustomerActionPerformedForCleanUp StageStatus = "CustomerActionPerformedForCleanUp"
+	// StageStatusCustomerActionPerformed - Stage has performed customer action.
+	StageStatusCustomerActionPerformed StageStatus = "CustomerActionPerformed"
 )
 
 // PossibleStageStatusValues returns the possible values for the StageStatus const type.
@@ -782,12 +708,8 @@ func PossibleStageStatusValues() []StageStatus {
 		StageStatusWaitingForCustomerActionForKek,
 		StageStatusWaitingForCustomerActionForCleanUp,
 		StageStatusCustomerActionPerformedForCleanUp,
+		StageStatusCustomerActionPerformed,
 	}
-}
-
-// ToPtr returns a *StageStatus pointing to the current value.
-func (c StageStatus) ToPtr() *StageStatus {
-	return &c
 }
 
 // TransferConfigurationType - Type of the configuration for transfer.
@@ -808,11 +730,6 @@ func PossibleTransferConfigurationTypeValues() []TransferConfigurationType {
 	}
 }
 
-// ToPtr returns a *TransferConfigurationType pointing to the current value.
-func (c TransferConfigurationType) ToPtr() *TransferConfigurationType {
-	return &c
-}
-
 // TransferType - Type of the transfer.
 type TransferType string
 
@@ -831,11 +748,6 @@ func PossibleTransferTypeValues() []TransferType {
 	}
 }
 
-// ToPtr returns a *TransferType pointing to the current value.
-func (c TransferType) ToPtr() *TransferType {
-	return &c
-}
-
 // TransportShipmentTypes - Transport Shipment Type supported for given region.
 type TransportShipmentTypes string
 
@@ -852,11 +764,6 @@ func PossibleTransportShipmentTypesValues() []TransportShipmentTypes {
 		TransportShipmentTypesCustomerManaged,
 		TransportShipmentTypesMicrosoftManaged,
 	}
-}
-
-// ToPtr returns a *TransportShipmentTypes pointing to the current value.
-func (c TransportShipmentTypes) ToPtr() *TransportShipmentTypes {
-	return &c
 }
 
 // ValidationInputDiscriminator - Identifies the type of validation request.
@@ -891,11 +798,6 @@ func PossibleValidationInputDiscriminatorValues() []ValidationInputDiscriminator
 	}
 }
 
-// ToPtr returns a *ValidationInputDiscriminator pointing to the current value.
-func (c ValidationInputDiscriminator) ToPtr() *ValidationInputDiscriminator {
-	return &c
-}
-
 // ValidationStatus - Create order limit validation status.
 type ValidationStatus string
 
@@ -915,9 +817,4 @@ func PossibleValidationStatusValues() []ValidationStatus {
 		ValidationStatusInvalid,
 		ValidationStatusSkipped,
 	}
-}
-
-// ToPtr returns a *ValidationStatus pointing to the current value.
-func (c ValidationStatus) ToPtr() *ValidationStatus {
-	return &c
 }

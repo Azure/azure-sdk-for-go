@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,39 +27,41 @@ import (
 type AllowedConnectionsClient struct {
 	host           string
 	subscriptionID string
-	ascLocation    string
 	pl             runtime.Pipeline
 }
 
 // NewAllowedConnectionsClient creates a new instance of AllowedConnectionsClient with the specified values.
 // subscriptionID - Azure subscription ID
-// ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAllowedConnectionsClient(subscriptionID string, ascLocation string, credential azcore.TokenCredential, options *arm.ClientOptions) *AllowedConnectionsClient {
+func NewAllowedConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AllowedConnectionsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AllowedConnectionsClient{
 		subscriptionID: subscriptionID,
-		ascLocation:    ascLocation,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets the list of all possible traffic between resources for the subscription and location, based on connection type.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // connectionType - The type of allowed connections (Internal, External)
 // options - AllowedConnectionsClientGetOptions contains the optional parameters for the AllowedConnectionsClient.Get method.
-func (client *AllowedConnectionsClient) Get(ctx context.Context, resourceGroupName string, connectionType ConnectionType, options *AllowedConnectionsClientGetOptions) (AllowedConnectionsClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, resourceGroupName, connectionType, options)
+func (client *AllowedConnectionsClient) Get(ctx context.Context, resourceGroupName string, ascLocation string, connectionType ConnectionType, options *AllowedConnectionsClientGetOptions) (AllowedConnectionsClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, ascLocation, connectionType, options)
 	if err != nil {
 		return AllowedConnectionsClientGetResponse{}, err
 	}
@@ -73,7 +76,7 @@ func (client *AllowedConnectionsClient) Get(ctx context.Context, resourceGroupNa
 }
 
 // getCreateRequest creates the Get request.
-func (client *AllowedConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, connectionType ConnectionType, options *AllowedConnectionsClientGetOptions) (*policy.Request, error) {
+func (client *AllowedConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, connectionType ConnectionType, options *AllowedConnectionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/allowedConnections/{connectionType}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -83,10 +86,10 @@ func (client *AllowedConnectionsClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if client.ascLocation == "" {
-		return nil, errors.New("parameter client.ascLocation cannot be empty")
+	if ascLocation == "" {
+		return nil, errors.New("parameter ascLocation cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(client.ascLocation))
+	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
 	if connectionType == "" {
 		return nil, errors.New("parameter connectionType cannot be empty")
 	}
@@ -104,7 +107,7 @@ func (client *AllowedConnectionsClient) getCreateRequest(ctx context.Context, re
 
 // getHandleResponse handles the Get response.
 func (client *AllowedConnectionsClient) getHandleResponse(resp *http.Response) (AllowedConnectionsClientGetResponse, error) {
-	result := AllowedConnectionsClientGetResponse{RawResponse: resp}
+	result := AllowedConnectionsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AllowedConnectionsResource); err != nil {
 		return AllowedConnectionsClientGetResponse{}, err
 	}
@@ -114,16 +117,32 @@ func (client *AllowedConnectionsClient) getHandleResponse(resp *http.Response) (
 // List - Gets the list of all possible traffic between resources for the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AllowedConnectionsClientListOptions contains the optional parameters for the AllowedConnectionsClient.List method.
-func (client *AllowedConnectionsClient) List(options *AllowedConnectionsClientListOptions) *AllowedConnectionsClientListPager {
-	return &AllowedConnectionsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *AllowedConnectionsClient) List(options *AllowedConnectionsClientListOptions) *runtime.Pager[AllowedConnectionsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AllowedConnectionsClientListResponse]{
+		More: func(page AllowedConnectionsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AllowedConnectionsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AllowedConnectionsList.NextLink)
+		Fetcher: func(ctx context.Context, page *AllowedConnectionsClientListResponse) (AllowedConnectionsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AllowedConnectionsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AllowedConnectionsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AllowedConnectionsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -146,7 +165,7 @@ func (client *AllowedConnectionsClient) listCreateRequest(ctx context.Context, o
 
 // listHandleResponse handles the List response.
 func (client *AllowedConnectionsClient) listHandleResponse(resp *http.Response) (AllowedConnectionsClientListResponse, error) {
-	result := AllowedConnectionsClientListResponse{RawResponse: resp}
+	result := AllowedConnectionsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AllowedConnectionsList); err != nil {
 		return AllowedConnectionsClientListResponse{}, err
 	}
@@ -155,31 +174,48 @@ func (client *AllowedConnectionsClient) listHandleResponse(resp *http.Response) 
 
 // ListByHomeRegion - Gets the list of all possible traffic between resources for the subscription and location.
 // If the operation fails it returns an *azcore.ResponseError type.
+// ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // options - AllowedConnectionsClientListByHomeRegionOptions contains the optional parameters for the AllowedConnectionsClient.ListByHomeRegion
 // method.
-func (client *AllowedConnectionsClient) ListByHomeRegion(options *AllowedConnectionsClientListByHomeRegionOptions) *AllowedConnectionsClientListByHomeRegionPager {
-	return &AllowedConnectionsClientListByHomeRegionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByHomeRegionCreateRequest(ctx, options)
+func (client *AllowedConnectionsClient) ListByHomeRegion(ascLocation string, options *AllowedConnectionsClientListByHomeRegionOptions) *runtime.Pager[AllowedConnectionsClientListByHomeRegionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AllowedConnectionsClientListByHomeRegionResponse]{
+		More: func(page AllowedConnectionsClientListByHomeRegionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AllowedConnectionsClientListByHomeRegionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AllowedConnectionsList.NextLink)
+		Fetcher: func(ctx context.Context, page *AllowedConnectionsClientListByHomeRegionResponse) (AllowedConnectionsClientListByHomeRegionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByHomeRegionCreateRequest(ctx, ascLocation, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AllowedConnectionsClientListByHomeRegionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AllowedConnectionsClientListByHomeRegionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AllowedConnectionsClientListByHomeRegionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByHomeRegionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByHomeRegionCreateRequest creates the ListByHomeRegion request.
-func (client *AllowedConnectionsClient) listByHomeRegionCreateRequest(ctx context.Context, options *AllowedConnectionsClientListByHomeRegionOptions) (*policy.Request, error) {
+func (client *AllowedConnectionsClient) listByHomeRegionCreateRequest(ctx context.Context, ascLocation string, options *AllowedConnectionsClientListByHomeRegionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/allowedConnections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if client.ascLocation == "" {
-		return nil, errors.New("parameter client.ascLocation cannot be empty")
+	if ascLocation == "" {
+		return nil, errors.New("parameter ascLocation cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(client.ascLocation))
+	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -193,7 +229,7 @@ func (client *AllowedConnectionsClient) listByHomeRegionCreateRequest(ctx contex
 
 // listByHomeRegionHandleResponse handles the ListByHomeRegion response.
 func (client *AllowedConnectionsClient) listByHomeRegionHandleResponse(resp *http.Response) (AllowedConnectionsClientListByHomeRegionResponse, error) {
-	result := AllowedConnectionsClientListByHomeRegionResponse{RawResponse: resp}
+	result := AllowedConnectionsClientListByHomeRegionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AllowedConnectionsList); err != nil {
 		return AllowedConnectionsClientListByHomeRegionResponse{}, err
 	}

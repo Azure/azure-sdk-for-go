@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,113 +17,137 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armblueprint"
 )
 
-// x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/Blueprint_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/Blueprint_Create.json
 func ExampleBlueprintsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armblueprint.NewBlueprintsClient(cred, nil)
+	client, err := armblueprint.NewBlueprintsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.CreateOrUpdate(ctx,
 		"<resource-scope>",
 		"<blueprint-name>",
 		armblueprint.Blueprint{
 			Properties: &armblueprint.Properties{
-				Description: to.StringPtr("<description>"),
+				Description: to.Ptr("<description>"),
 				Parameters: map[string]*armblueprint.ParameterDefinition{
 					"costCenter": {
-						Type: armblueprint.TemplateParameterType("string").ToPtr(),
+						Type: to.Ptr(armblueprint.TemplateParameterTypeString),
 						Metadata: &armblueprint.ParameterDefinitionMetadata{
-							DisplayName: to.StringPtr("<display-name>"),
+							DisplayName: to.Ptr("<display-name>"),
 						},
 					},
 					"owners": {
-						Type: armblueprint.TemplateParameterType("array").ToPtr(),
+						Type: to.Ptr(armblueprint.TemplateParameterTypeArray),
 						Metadata: &armblueprint.ParameterDefinitionMetadata{
-							DisplayName: to.StringPtr("<display-name>"),
+							DisplayName: to.Ptr("<display-name>"),
 						},
 					},
 					"storageAccountType": {
-						Type: armblueprint.TemplateParameterType("string").ToPtr(),
+						Type: to.Ptr(armblueprint.TemplateParameterTypeString),
 						Metadata: &armblueprint.ParameterDefinitionMetadata{
-							DisplayName: to.StringPtr("<display-name>"),
+							DisplayName: to.Ptr("<display-name>"),
 						},
 					},
 				},
 				ResourceGroups: map[string]*armblueprint.ResourceGroupDefinition{
 					"storageRG": {
 						Metadata: &armblueprint.ParameterDefinitionMetadata{
-							Description: to.StringPtr("<description>"),
-							DisplayName: to.StringPtr("<display-name>"),
+							Description: to.Ptr("<description>"),
+							DisplayName: to.Ptr("<display-name>"),
 						},
 					},
 				},
-				TargetScope: armblueprint.BlueprintTargetScope("subscription").ToPtr(),
+				TargetScope: to.Ptr(armblueprint.BlueprintTargetScopeSubscription),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/Blueprint_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/Blueprint_Get.json
 func ExampleBlueprintsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armblueprint.NewBlueprintsClient(cred, nil)
+	client, err := armblueprint.NewBlueprintsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-scope>",
 		"<blueprint-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BlueprintsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/Blueprint_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/Blueprint_Delete.json
 func ExampleBlueprintsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armblueprint.NewBlueprintsClient(cred, nil)
+	client, err := armblueprint.NewBlueprintsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Delete(ctx,
 		"<resource-scope>",
 		"<blueprint-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BlueprintsClientDeleteResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/Blueprint_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/Blueprint_List.json
 func ExampleBlueprintsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armblueprint.NewBlueprintsClient(cred, nil)
+	client, err := armblueprint.NewBlueprintsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List("<resource-scope>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type FormulasClient struct {
 // subscriptionID - The subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewFormulasClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FormulasClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewFormulasClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FormulasClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &FormulasClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or replace an existing formula. This operation can take a while to complete.
@@ -58,22 +63,16 @@ func NewFormulasClient(subscriptionID string, credential azcore.TokenCredential,
 // formula - A formula for creating a VM, specifying an image base and other parameters
 // options - FormulasClientBeginCreateOrUpdateOptions contains the optional parameters for the FormulasClient.BeginCreateOrUpdate
 // method.
-func (client *FormulasClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, name string, formula Formula, options *FormulasClientBeginCreateOrUpdateOptions) (FormulasClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, labName, name, formula, options)
-	if err != nil {
-		return FormulasClientCreateOrUpdatePollerResponse{}, err
+func (client *FormulasClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, name string, formula Formula, options *FormulasClientBeginCreateOrUpdateOptions) (*armruntime.Poller[FormulasClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, labName, name, formula, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[FormulasClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[FormulasClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := FormulasClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("FormulasClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return FormulasClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &FormulasClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or replace an existing formula. This operation can take a while to complete.
@@ -141,7 +140,7 @@ func (client *FormulasClient) Delete(ctx context.Context, resourceGroupName stri
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return FormulasClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return FormulasClientDeleteResponse{RawResponse: resp}, nil
+	return FormulasClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -230,7 +229,7 @@ func (client *FormulasClient) getCreateRequest(ctx context.Context, resourceGrou
 
 // getHandleResponse handles the Get response.
 func (client *FormulasClient) getHandleResponse(resp *http.Response) (FormulasClientGetResponse, error) {
-	result := FormulasClientGetResponse{RawResponse: resp}
+	result := FormulasClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Formula); err != nil {
 		return FormulasClientGetResponse{}, err
 	}
@@ -242,16 +241,32 @@ func (client *FormulasClient) getHandleResponse(resp *http.Response) (FormulasCl
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // options - FormulasClientListOptions contains the optional parameters for the FormulasClient.List method.
-func (client *FormulasClient) List(resourceGroupName string, labName string, options *FormulasClientListOptions) *FormulasClientListPager {
-	return &FormulasClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, labName, options)
+func (client *FormulasClient) List(resourceGroupName string, labName string, options *FormulasClientListOptions) *runtime.Pager[FormulasClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[FormulasClientListResponse]{
+		More: func(page FormulasClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp FormulasClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.FormulaList.NextLink)
+		Fetcher: func(ctx context.Context, page *FormulasClientListResponse) (FormulasClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, labName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return FormulasClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return FormulasClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return FormulasClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -294,7 +309,7 @@ func (client *FormulasClient) listCreateRequest(ctx context.Context, resourceGro
 
 // listHandleResponse handles the List response.
 func (client *FormulasClient) listHandleResponse(resp *http.Response) (FormulasClientListResponse, error) {
-	result := FormulasClientListResponse{RawResponse: resp}
+	result := FormulasClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FormulaList); err != nil {
 		return FormulasClientListResponse{}, err
 	}
@@ -355,7 +370,7 @@ func (client *FormulasClient) updateCreateRequest(ctx context.Context, resourceG
 
 // updateHandleResponse handles the Update response.
 func (client *FormulasClient) updateHandleResponse(resp *http.Response) (FormulasClientUpdateResponse, error) {
-	result := FormulasClientUpdateResponse{RawResponse: resp}
+	result := FormulasClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Formula); err != nil {
 		return FormulasClientUpdateResponse{}, err
 	}

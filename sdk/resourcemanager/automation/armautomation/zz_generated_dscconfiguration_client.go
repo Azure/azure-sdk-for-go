@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
@@ -36,20 +37,24 @@ type DscConfigurationClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDscConfigurationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DscConfigurationClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewDscConfigurationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DscConfigurationClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DscConfigurationClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdateWithJSON - Create the configuration identified by configuration name.
@@ -107,7 +112,7 @@ func (client *DscConfigurationClient) createOrUpdateWithJSONCreateRequest(ctx co
 
 // createOrUpdateWithJSONHandleResponse handles the CreateOrUpdateWithJSON response.
 func (client *DscConfigurationClient) createOrUpdateWithJSONHandleResponse(resp *http.Response) (DscConfigurationClientCreateOrUpdateWithJSONResponse, error) {
-	result := DscConfigurationClientCreateOrUpdateWithJSONResponse{RawResponse: resp}
+	result := DscConfigurationClientCreateOrUpdateWithJSONResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscConfiguration); err != nil {
 		return DscConfigurationClientCreateOrUpdateWithJSONResponse{}, err
 	}
@@ -170,7 +175,7 @@ func (client *DscConfigurationClient) createOrUpdateWithTextCreateRequest(ctx co
 
 // createOrUpdateWithTextHandleResponse handles the CreateOrUpdateWithText response.
 func (client *DscConfigurationClient) createOrUpdateWithTextHandleResponse(resp *http.Response) (DscConfigurationClientCreateOrUpdateWithTextResponse, error) {
-	result := DscConfigurationClientCreateOrUpdateWithTextResponse{RawResponse: resp}
+	result := DscConfigurationClientCreateOrUpdateWithTextResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscConfiguration); err != nil {
 		return DscConfigurationClientCreateOrUpdateWithTextResponse{}, err
 	}
@@ -195,7 +200,7 @@ func (client *DscConfigurationClient) Delete(ctx context.Context, resourceGroupN
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return DscConfigurationClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return DscConfigurationClientDeleteResponse{RawResponse: resp}, nil
+	return DscConfigurationClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -281,7 +286,7 @@ func (client *DscConfigurationClient) getCreateRequest(ctx context.Context, reso
 
 // getHandleResponse handles the Get response.
 func (client *DscConfigurationClient) getHandleResponse(resp *http.Response) (DscConfigurationClientGetResponse, error) {
-	result := DscConfigurationClientGetResponse{RawResponse: resp}
+	result := DscConfigurationClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscConfiguration); err != nil {
 		return DscConfigurationClientGetResponse{}, err
 	}
@@ -342,7 +347,7 @@ func (client *DscConfigurationClient) getContentCreateRequest(ctx context.Contex
 
 // getContentHandleResponse handles the GetContent response.
 func (client *DscConfigurationClient) getContentHandleResponse(resp *http.Response) (DscConfigurationClientGetContentResponse, error) {
-	result := DscConfigurationClientGetContentResponse{RawResponse: resp}
+	result := DscConfigurationClientGetContentResponse{}
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return DscConfigurationClientGetContentResponse{}, err
@@ -358,16 +363,32 @@ func (client *DscConfigurationClient) getContentHandleResponse(resp *http.Respon
 // automationAccountName - The name of the automation account.
 // options - DscConfigurationClientListByAutomationAccountOptions contains the optional parameters for the DscConfigurationClient.ListByAutomationAccount
 // method.
-func (client *DscConfigurationClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *DscConfigurationClientListByAutomationAccountOptions) *DscConfigurationClientListByAutomationAccountPager {
-	return &DscConfigurationClientListByAutomationAccountPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
+func (client *DscConfigurationClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *DscConfigurationClientListByAutomationAccountOptions) *runtime.Pager[DscConfigurationClientListByAutomationAccountResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DscConfigurationClientListByAutomationAccountResponse]{
+		More: func(page DscConfigurationClientListByAutomationAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DscConfigurationClientListByAutomationAccountResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DscConfigurationListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DscConfigurationClientListByAutomationAccountResponse) (DscConfigurationClientListByAutomationAccountResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DscConfigurationClientListByAutomationAccountResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DscConfigurationClientListByAutomationAccountResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DscConfigurationClientListByAutomationAccountResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByAutomationAccountHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
@@ -410,7 +431,7 @@ func (client *DscConfigurationClient) listByAutomationAccountCreateRequest(ctx c
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
 func (client *DscConfigurationClient) listByAutomationAccountHandleResponse(resp *http.Response) (DscConfigurationClientListByAutomationAccountResponse, error) {
-	result := DscConfigurationClientListByAutomationAccountResponse{RawResponse: resp}
+	result := DscConfigurationClientListByAutomationAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscConfigurationListResult); err != nil {
 		return DscConfigurationClientListByAutomationAccountResponse{}, err
 	}
@@ -474,7 +495,7 @@ func (client *DscConfigurationClient) updateWithJSONCreateRequest(ctx context.Co
 
 // updateWithJSONHandleResponse handles the UpdateWithJSON response.
 func (client *DscConfigurationClient) updateWithJSONHandleResponse(resp *http.Response) (DscConfigurationClientUpdateWithJSONResponse, error) {
-	result := DscConfigurationClientUpdateWithJSONResponse{RawResponse: resp}
+	result := DscConfigurationClientUpdateWithJSONResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscConfiguration); err != nil {
 		return DscConfigurationClientUpdateWithJSONResponse{}, err
 	}
@@ -539,7 +560,7 @@ func (client *DscConfigurationClient) updateWithTextCreateRequest(ctx context.Co
 
 // updateWithTextHandleResponse handles the UpdateWithText response.
 func (client *DscConfigurationClient) updateWithTextHandleResponse(resp *http.Response) (DscConfigurationClientUpdateWithTextResponse, error) {
-	result := DscConfigurationClientUpdateWithTextResponse{RawResponse: resp}
+	result := DscConfigurationClientUpdateWithTextResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscConfiguration); err != nil {
 		return DscConfigurationClientUpdateWithTextResponse{}, err
 	}

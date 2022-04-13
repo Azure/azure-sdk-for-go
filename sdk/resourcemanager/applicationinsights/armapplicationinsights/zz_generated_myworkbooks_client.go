@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type MyWorkbooksClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewMyWorkbooksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MyWorkbooksClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewMyWorkbooksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MyWorkbooksClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &MyWorkbooksClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create a new private workbook.
@@ -103,7 +108,7 @@ func (client *MyWorkbooksClient) createOrUpdateCreateRequest(ctx context.Context
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *MyWorkbooksClient) createOrUpdateHandleResponse(resp *http.Response) (MyWorkbooksClientCreateOrUpdateResponse, error) {
-	result := MyWorkbooksClientCreateOrUpdateResponse{RawResponse: resp}
+	result := MyWorkbooksClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MyWorkbook); err != nil {
 		return MyWorkbooksClientCreateOrUpdateResponse{}, err
 	}
@@ -127,7 +132,7 @@ func (client *MyWorkbooksClient) Delete(ctx context.Context, resourceGroupName s
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return MyWorkbooksClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return MyWorkbooksClientDeleteResponse{RawResponse: resp}, nil
+	return MyWorkbooksClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -204,7 +209,7 @@ func (client *MyWorkbooksClient) getCreateRequest(ctx context.Context, resourceG
 
 // getHandleResponse handles the Get response.
 func (client *MyWorkbooksClient) getHandleResponse(resp *http.Response) (MyWorkbooksClientGetResponse, error) {
-	result := MyWorkbooksClientGetResponse{RawResponse: resp}
+	result := MyWorkbooksClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MyWorkbook); err != nil {
 		return MyWorkbooksClientGetResponse{}, err
 	}
@@ -217,16 +222,32 @@ func (client *MyWorkbooksClient) getHandleResponse(resp *http.Response) (MyWorkb
 // category - Category of workbook to return.
 // options - MyWorkbooksClientListByResourceGroupOptions contains the optional parameters for the MyWorkbooksClient.ListByResourceGroup
 // method.
-func (client *MyWorkbooksClient) ListByResourceGroup(resourceGroupName string, category CategoryType, options *MyWorkbooksClientListByResourceGroupOptions) *MyWorkbooksClientListByResourceGroupPager {
-	return &MyWorkbooksClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, category, options)
+func (client *MyWorkbooksClient) ListByResourceGroup(resourceGroupName string, category CategoryType, options *MyWorkbooksClientListByResourceGroupOptions) *runtime.Pager[MyWorkbooksClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[MyWorkbooksClientListByResourceGroupResponse]{
+		More: func(page MyWorkbooksClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp MyWorkbooksClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.MyWorkbooksListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *MyWorkbooksClientListByResourceGroupResponse) (MyWorkbooksClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, category, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return MyWorkbooksClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return MyWorkbooksClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return MyWorkbooksClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -263,7 +284,7 @@ func (client *MyWorkbooksClient) listByResourceGroupCreateRequest(ctx context.Co
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *MyWorkbooksClient) listByResourceGroupHandleResponse(resp *http.Response) (MyWorkbooksClientListByResourceGroupResponse, error) {
-	result := MyWorkbooksClientListByResourceGroupResponse{RawResponse: resp}
+	result := MyWorkbooksClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MyWorkbooksListResult); err != nil {
 		return MyWorkbooksClientListByResourceGroupResponse{}, err
 	}
@@ -275,16 +296,32 @@ func (client *MyWorkbooksClient) listByResourceGroupHandleResponse(resp *http.Re
 // category - Category of workbook to return.
 // options - MyWorkbooksClientListBySubscriptionOptions contains the optional parameters for the MyWorkbooksClient.ListBySubscription
 // method.
-func (client *MyWorkbooksClient) ListBySubscription(category CategoryType, options *MyWorkbooksClientListBySubscriptionOptions) *MyWorkbooksClientListBySubscriptionPager {
-	return &MyWorkbooksClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, category, options)
+func (client *MyWorkbooksClient) ListBySubscription(category CategoryType, options *MyWorkbooksClientListBySubscriptionOptions) *runtime.Pager[MyWorkbooksClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[MyWorkbooksClientListBySubscriptionResponse]{
+		More: func(page MyWorkbooksClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp MyWorkbooksClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.MyWorkbooksListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *MyWorkbooksClientListBySubscriptionResponse) (MyWorkbooksClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, category, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return MyWorkbooksClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return MyWorkbooksClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return MyWorkbooksClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -314,7 +351,7 @@ func (client *MyWorkbooksClient) listBySubscriptionCreateRequest(ctx context.Con
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *MyWorkbooksClient) listBySubscriptionHandleResponse(resp *http.Response) (MyWorkbooksClientListBySubscriptionResponse, error) {
-	result := MyWorkbooksClientListBySubscriptionResponse{RawResponse: resp}
+	result := MyWorkbooksClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MyWorkbooksListResult); err != nil {
 		return MyWorkbooksClientListBySubscriptionResponse{}, err
 	}
@@ -373,7 +410,7 @@ func (client *MyWorkbooksClient) updateCreateRequest(ctx context.Context, resour
 
 // updateHandleResponse handles the Update response.
 func (client *MyWorkbooksClient) updateHandleResponse(resp *http.Response) (MyWorkbooksClientUpdateResponse, error) {
-	result := MyWorkbooksClientUpdateResponse{RawResponse: resp}
+	result := MyWorkbooksClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MyWorkbook); err != nil {
 		return MyWorkbooksClientUpdateResponse{}, err
 	}

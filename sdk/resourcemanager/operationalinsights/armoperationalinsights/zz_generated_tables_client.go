@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type TablesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewTablesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TablesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewTablesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TablesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &TablesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Update or Create a Log Analytics workspace table.
@@ -57,22 +62,18 @@ func NewTablesClient(subscriptionID string, credential azcore.TokenCredential, o
 // parameters - The parameters required to update table properties.
 // options - TablesClientBeginCreateOrUpdateOptions contains the optional parameters for the TablesClient.BeginCreateOrUpdate
 // method.
-func (client *TablesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, parameters Table, options *TablesClientBeginCreateOrUpdateOptions) (TablesClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, tableName, parameters, options)
-	if err != nil {
-		return TablesClientCreateOrUpdatePollerResponse{}, err
+func (client *TablesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, parameters Table, options *TablesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[TablesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, tableName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[TablesClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[TablesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := TablesClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("TablesClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return TablesClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &TablesClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Update or Create a Log Analytics workspace table.
@@ -128,22 +129,18 @@ func (client *TablesClient) createOrUpdateCreateRequest(ctx context.Context, res
 // workspaceName - The name of the workspace.
 // tableName - The name of the table.
 // options - TablesClientBeginDeleteOptions contains the optional parameters for the TablesClient.BeginDelete method.
-func (client *TablesClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, options *TablesClientBeginDeleteOptions) (TablesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, tableName, options)
-	if err != nil {
-		return TablesClientDeletePollerResponse{}, err
+func (client *TablesClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, options *TablesClientBeginDeleteOptions) (*armruntime.Poller[TablesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, tableName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[TablesClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[TablesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := TablesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("TablesClient.Delete", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return TablesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &TablesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete a Log Analytics workspace table.
@@ -246,7 +243,7 @@ func (client *TablesClient) getCreateRequest(ctx context.Context, resourceGroupN
 
 // getHandleResponse handles the Get response.
 func (client *TablesClient) getHandleResponse(resp *http.Response) (TablesClientGetResponse, error) {
-	result := TablesClientGetResponse{RawResponse: resp}
+	result := TablesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Table); err != nil {
 		return TablesClientGetResponse{}, err
 	}
@@ -258,19 +255,26 @@ func (client *TablesClient) getHandleResponse(resp *http.Response) (TablesClient
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - TablesClientListByWorkspaceOptions contains the optional parameters for the TablesClient.ListByWorkspace method.
-func (client *TablesClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string, options *TablesClientListByWorkspaceOptions) (TablesClientListByWorkspaceResponse, error) {
-	req, err := client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
-	if err != nil {
-		return TablesClientListByWorkspaceResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return TablesClientListByWorkspaceResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TablesClientListByWorkspaceResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listByWorkspaceHandleResponse(resp)
+func (client *TablesClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *TablesClientListByWorkspaceOptions) *runtime.Pager[TablesClientListByWorkspaceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[TablesClientListByWorkspaceResponse]{
+		More: func(page TablesClientListByWorkspaceResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *TablesClientListByWorkspaceResponse) (TablesClientListByWorkspaceResponse, error) {
+			req, err := client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
+			if err != nil {
+				return TablesClientListByWorkspaceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return TablesClientListByWorkspaceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return TablesClientListByWorkspaceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByWorkspaceHandleResponse(resp)
+		},
+	})
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
@@ -301,11 +305,63 @@ func (client *TablesClient) listByWorkspaceCreateRequest(ctx context.Context, re
 
 // listByWorkspaceHandleResponse handles the ListByWorkspace response.
 func (client *TablesClient) listByWorkspaceHandleResponse(resp *http.Response) (TablesClientListByWorkspaceResponse, error) {
-	result := TablesClientListByWorkspaceResponse{RawResponse: resp}
+	result := TablesClientListByWorkspaceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TablesListResult); err != nil {
 		return TablesClientListByWorkspaceResponse{}, err
 	}
 	return result, nil
+}
+
+// Migrate - Migrate a Log Analytics table from support of the Data Collector API and Custom Fields features to support of
+// Data Collection Rule-based Custom Logs.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// tableName - The name of the table.
+// options - TablesClientMigrateOptions contains the optional parameters for the TablesClient.Migrate method.
+func (client *TablesClient) Migrate(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, options *TablesClientMigrateOptions) (TablesClientMigrateResponse, error) {
+	req, err := client.migrateCreateRequest(ctx, resourceGroupName, workspaceName, tableName, options)
+	if err != nil {
+		return TablesClientMigrateResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return TablesClientMigrateResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return TablesClientMigrateResponse{}, runtime.NewResponseError(resp)
+	}
+	return TablesClientMigrateResponse{}, nil
+}
+
+// migrateCreateRequest creates the Migrate request.
+func (client *TablesClient) migrateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, options *TablesClientMigrateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/tables/{tableName}/migrate"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if tableName == "" {
+		return nil, errors.New("parameter tableName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{tableName}", url.PathEscape(tableName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-12-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, nil
 }
 
 // BeginUpdate - Update a Log Analytics workspace table.
@@ -315,22 +371,18 @@ func (client *TablesClient) listByWorkspaceHandleResponse(resp *http.Response) (
 // tableName - The name of the table.
 // parameters - The parameters required to update table properties.
 // options - TablesClientBeginUpdateOptions contains the optional parameters for the TablesClient.BeginUpdate method.
-func (client *TablesClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, parameters Table, options *TablesClientBeginUpdateOptions) (TablesClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, workspaceName, tableName, parameters, options)
-	if err != nil {
-		return TablesClientUpdatePollerResponse{}, err
+func (client *TablesClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, parameters Table, options *TablesClientBeginUpdateOptions) (*armruntime.Poller[TablesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, workspaceName, tableName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[TablesClientUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[TablesClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := TablesClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("TablesClient.Update", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return TablesClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &TablesClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Update a Log Analytics workspace table.

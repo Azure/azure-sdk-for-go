@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armstreamanalytics
 
 const (
 	moduleName    = "armstreamanalytics"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 // AuthenticationMode - Authentication Mode. Valid modes are ConnectionString, Msi and 'UserToken'.
@@ -29,11 +29,6 @@ func PossibleAuthenticationModeValues() []AuthenticationMode {
 		AuthenticationModeMsi,
 		AuthenticationModeUserToken,
 	}
-}
-
-// ToPtr returns a *AuthenticationMode pointing to the current value.
-func (c AuthenticationMode) ToPtr() *AuthenticationMode {
-	return &c
 }
 
 // ClusterProvisioningState - The status of the cluster provisioning. The three terminal states are: Succeeded, Failed and
@@ -61,11 +56,6 @@ func PossibleClusterProvisioningStateValues() []ClusterProvisioningState {
 	}
 }
 
-// ToPtr returns a *ClusterProvisioningState pointing to the current value.
-func (c ClusterProvisioningState) ToPtr() *ClusterProvisioningState {
-	return &c
-}
-
 // ClusterSKUName - Specifies the SKU name of the cluster. Required on PUT (CreateOrUpdate) requests.
 type ClusterSKUName string
 
@@ -79,11 +69,6 @@ func PossibleClusterSKUNameValues() []ClusterSKUName {
 	return []ClusterSKUName{
 		ClusterSKUNameDefault,
 	}
-}
-
-// ToPtr returns a *ClusterSKUName pointing to the current value.
-func (c ClusterSKUName) ToPtr() *ClusterSKUName {
-	return &c
 }
 
 // CompatibilityLevel - Controls certain runtime behaviors of the streaming job.
@@ -100,11 +85,6 @@ func PossibleCompatibilityLevelValues() []CompatibilityLevel {
 		CompatibilityLevelOne0,
 		CompatibilityLevelOne2,
 	}
-}
-
-// ToPtr returns a *CompatibilityLevel pointing to the current value.
-func (c CompatibilityLevel) ToPtr() *CompatibilityLevel {
-	return &c
 }
 
 // CompressionType - Indicates the type of compression that the input uses. Required on PUT (CreateOrReplace) requests.
@@ -125,11 +105,6 @@ func PossibleCompressionTypeValues() []CompressionType {
 	}
 }
 
-// ToPtr returns a *CompressionType pointing to the current value.
-func (c CompressionType) ToPtr() *CompressionType {
-	return &c
-}
-
 // ContentStoragePolicy - Valid values are JobStorageAccount and SystemAccount. If set to JobStorageAccount, this requires
 // the user to also specify jobStorageAccount property. .
 type ContentStoragePolicy string
@@ -147,11 +122,6 @@ func PossibleContentStoragePolicyValues() []ContentStoragePolicy {
 	}
 }
 
-// ToPtr returns a *ContentStoragePolicy pointing to the current value.
-func (c ContentStoragePolicy) ToPtr() *ContentStoragePolicy {
-	return &c
-}
-
 // Encoding - Specifies the encoding of the incoming data in the case of input and the encoding of outgoing data in the case
 // of output.
 type Encoding string
@@ -165,11 +135,6 @@ func PossibleEncodingValues() []Encoding {
 	return []Encoding{
 		EncodingUTF8,
 	}
-}
-
-// ToPtr returns a *Encoding pointing to the current value.
-func (c Encoding) ToPtr() *Encoding {
-	return &c
 }
 
 // EventSerializationType - Indicates the type of serialization that the input or output uses. Required on PUT (CreateOrReplace)
@@ -193,11 +158,6 @@ func PossibleEventSerializationTypeValues() []EventSerializationType {
 	}
 }
 
-// ToPtr returns a *EventSerializationType pointing to the current value.
-func (c EventSerializationType) ToPtr() *EventSerializationType {
-	return &c
-}
-
 // EventsOutOfOrderPolicy - Indicates the policy to apply to events that arrive out of order in the input event stream.
 type EventsOutOfOrderPolicy string
 
@@ -212,11 +172,6 @@ func PossibleEventsOutOfOrderPolicyValues() []EventsOutOfOrderPolicy {
 		EventsOutOfOrderPolicyAdjust,
 		EventsOutOfOrderPolicyDrop,
 	}
-}
-
-// ToPtr returns a *EventsOutOfOrderPolicy pointing to the current value.
-func (c EventsOutOfOrderPolicy) ToPtr() *EventsOutOfOrderPolicy {
-	return &c
 }
 
 // JSONOutputSerializationFormat - Specifies the format of the JSON the output will be written in. The currently supported
@@ -235,11 +190,6 @@ func PossibleJSONOutputSerializationFormatValues() []JSONOutputSerializationForm
 		JSONOutputSerializationFormatArray,
 		JSONOutputSerializationFormatLineSeparated,
 	}
-}
-
-// ToPtr returns a *JSONOutputSerializationFormat pointing to the current value.
-func (c JSONOutputSerializationFormat) ToPtr() *JSONOutputSerializationFormat {
-	return &c
 }
 
 // JobState - The current execution state of the streaming job.
@@ -284,11 +234,6 @@ func PossibleJobStateValues() []JobState {
 	}
 }
 
-// ToPtr returns a *JobState pointing to the current value.
-func (c JobState) ToPtr() *JobState {
-	return &c
-}
-
 // JobType - Describes the type of the job. Valid modes are Cloud and 'Edge'.
 type JobType string
 
@@ -303,11 +248,6 @@ func PossibleJobTypeValues() []JobType {
 		JobTypeCloud,
 		JobTypeEdge,
 	}
-}
-
-// ToPtr returns a *JobType pointing to the current value.
-func (c JobType) ToPtr() *JobType {
-	return &c
 }
 
 // OutputErrorPolicy - Indicates the policy to apply to events that arrive at the output and cannot be written to the external
@@ -325,11 +265,6 @@ func PossibleOutputErrorPolicyValues() []OutputErrorPolicy {
 		OutputErrorPolicyDrop,
 		OutputErrorPolicyStop,
 	}
-}
-
-// ToPtr returns a *OutputErrorPolicy pointing to the current value.
-func (c OutputErrorPolicy) ToPtr() *OutputErrorPolicy {
-	return &c
 }
 
 // OutputStartMode - Value may be JobStartTime, CustomTime, or LastOutputEventTime to indicate whether the starting point
@@ -352,11 +287,6 @@ func PossibleOutputStartModeValues() []OutputStartMode {
 	}
 }
 
-// ToPtr returns a *OutputStartMode pointing to the current value.
-func (c OutputStartMode) ToPtr() *OutputStartMode {
-	return &c
-}
-
 // RefreshType - Indicates the type of data refresh option.
 type RefreshType string
 
@@ -375,11 +305,6 @@ func PossibleRefreshTypeValues() []RefreshType {
 	}
 }
 
-// ToPtr returns a *RefreshType pointing to the current value.
-func (c RefreshType) ToPtr() *RefreshType {
-	return &c
-}
-
 // SKUName - The name of the SKU. Required on PUT (CreateOrReplace) requests.
 type SKUName string
 
@@ -392,9 +317,4 @@ func PossibleSKUNameValues() []SKUName {
 	return []SKUName{
 		SKUNameStandard,
 	}
-}
-
-// ToPtr returns a *SKUName pointing to the current value.
-func (c SKUName) ToPtr() *SKUName {
-	return &c
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armdeviceprovisioningservices
 
 const (
 	moduleName    = "armdeviceprovisioningservices"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // AccessRightsDescription - Rights that this key has.
@@ -37,11 +37,6 @@ func PossibleAccessRightsDescriptionValues() []AccessRightsDescription {
 	}
 }
 
-// ToPtr returns a *AccessRightsDescription pointing to the current value.
-func (c AccessRightsDescription) ToPtr() *AccessRightsDescription {
-	return &c
-}
-
 // AllocationPolicy - Allocation policy to be used by this provisioning service.
 type AllocationPolicy string
 
@@ -60,11 +55,6 @@ func PossibleAllocationPolicyValues() []AllocationPolicy {
 	}
 }
 
-// ToPtr returns a *AllocationPolicy pointing to the current value.
-func (c AllocationPolicy) ToPtr() *AllocationPolicy {
-	return &c
-}
-
 type CertificatePurpose string
 
 const (
@@ -80,9 +70,24 @@ func PossibleCertificatePurposeValues() []CertificatePurpose {
 	}
 }
 
-// ToPtr returns a *CertificatePurpose pointing to the current value.
-func (c CertificatePurpose) ToPtr() *CertificatePurpose {
-	return &c
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
+	}
 }
 
 // IPFilterActionType - The desired action for requests captured by this rule.
@@ -99,11 +104,6 @@ func PossibleIPFilterActionTypeValues() []IPFilterActionType {
 		IPFilterActionTypeAccept,
 		IPFilterActionTypeReject,
 	}
-}
-
-// ToPtr returns a *IPFilterActionType pointing to the current value.
-func (c IPFilterActionType) ToPtr() *IPFilterActionType {
-	return &c
 }
 
 // IPFilterTargetType - Target for requests captured by this rule.
@@ -124,11 +124,6 @@ func PossibleIPFilterTargetTypeValues() []IPFilterTargetType {
 	}
 }
 
-// ToPtr returns a *IPFilterTargetType pointing to the current value.
-func (c IPFilterTargetType) ToPtr() *IPFilterTargetType {
-	return &c
-}
-
 // IotDpsSKU - Sku name.
 type IotDpsSKU string
 
@@ -141,11 +136,6 @@ func PossibleIotDpsSKUValues() []IotDpsSKU {
 	return []IotDpsSKU{
 		IotDpsSKUS1,
 	}
-}
-
-// ToPtr returns a *IotDpsSKU pointing to the current value.
-func (c IotDpsSKU) ToPtr() *IotDpsSKU {
-	return &c
 }
 
 // NameUnavailabilityReason - specifies the reason a name is unavailable
@@ -162,11 +152,6 @@ func PossibleNameUnavailabilityReasonValues() []NameUnavailabilityReason {
 		NameUnavailabilityReasonAlreadyExists,
 		NameUnavailabilityReasonInvalid,
 	}
-}
-
-// ToPtr returns a *NameUnavailabilityReason pointing to the current value.
-func (c NameUnavailabilityReason) ToPtr() *NameUnavailabilityReason {
-	return &c
 }
 
 // PrivateLinkServiceConnectionStatus - The status of a private endpoint connection
@@ -189,11 +174,6 @@ func PossiblePrivateLinkServiceConnectionStatusValues() []PrivateLinkServiceConn
 	}
 }
 
-// ToPtr returns a *PrivateLinkServiceConnectionStatus pointing to the current value.
-func (c PrivateLinkServiceConnectionStatus) ToPtr() *PrivateLinkServiceConnectionStatus {
-	return &c
-}
-
 // PublicNetworkAccess - Whether requests from Public Network are allowed
 type PublicNetworkAccess string
 
@@ -208,11 +188,6 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
 	}
-}
-
-// ToPtr returns a *PublicNetworkAccess pointing to the current value.
-func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
-	return &c
 }
 
 // State - Current state of the provisioning service.
@@ -249,9 +224,4 @@ func PossibleStateValues() []State {
 		StateSuspending,
 		StateTransitioning,
 	}
-}
-
-// ToPtr returns a *State pointing to the current value.
-func (c State) ToPtr() *State {
-	return &c
 }

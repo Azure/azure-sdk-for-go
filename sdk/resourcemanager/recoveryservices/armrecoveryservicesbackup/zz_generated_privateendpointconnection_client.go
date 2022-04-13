@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type PrivateEndpointConnectionClient struct {
 // subscriptionID - The subscription Id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPrivateEndpointConnectionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateEndpointConnectionClient {
+func NewPrivateEndpointConnectionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateEndpointConnectionClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PrivateEndpointConnectionClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginDelete - Delete Private Endpoint requests. This call is made by Backup Admin.
@@ -56,22 +61,16 @@ func NewPrivateEndpointConnectionClient(subscriptionID string, credential azcore
 // privateEndpointConnectionName - The name of the private endpoint connection.
 // options - PrivateEndpointConnectionClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionClient.BeginDelete
 // method.
-func (client *PrivateEndpointConnectionClient) BeginDelete(ctx context.Context, vaultName string, resourceGroupName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionClientBeginDeleteOptions) (PrivateEndpointConnectionClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, vaultName, resourceGroupName, privateEndpointConnectionName, options)
-	if err != nil {
-		return PrivateEndpointConnectionClientDeletePollerResponse{}, err
+func (client *PrivateEndpointConnectionClient) BeginDelete(ctx context.Context, vaultName string, resourceGroupName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionClientBeginDeleteOptions) (*armruntime.Poller[PrivateEndpointConnectionClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, vaultName, resourceGroupName, privateEndpointConnectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[PrivateEndpointConnectionClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[PrivateEndpointConnectionClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PrivateEndpointConnectionClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PrivateEndpointConnectionClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return PrivateEndpointConnectionClientDeletePollerResponse{}, err
-	}
-	result.Poller = &PrivateEndpointConnectionClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete Private Endpoint requests. This call is made by Backup Admin.
@@ -175,7 +174,7 @@ func (client *PrivateEndpointConnectionClient) getCreateRequest(ctx context.Cont
 
 // getHandleResponse handles the Get response.
 func (client *PrivateEndpointConnectionClient) getHandleResponse(resp *http.Response) (PrivateEndpointConnectionClientGetResponse, error) {
-	result := PrivateEndpointConnectionClientGetResponse{RawResponse: resp}
+	result := PrivateEndpointConnectionClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionResource); err != nil {
 		return PrivateEndpointConnectionClientGetResponse{}, err
 	}
@@ -190,22 +189,16 @@ func (client *PrivateEndpointConnectionClient) getHandleResponse(resp *http.Resp
 // parameters - Request body for operation
 // options - PrivateEndpointConnectionClientBeginPutOptions contains the optional parameters for the PrivateEndpointConnectionClient.BeginPut
 // method.
-func (client *PrivateEndpointConnectionClient) BeginPut(ctx context.Context, vaultName string, resourceGroupName string, privateEndpointConnectionName string, parameters PrivateEndpointConnectionResource, options *PrivateEndpointConnectionClientBeginPutOptions) (PrivateEndpointConnectionClientPutPollerResponse, error) {
-	resp, err := client.put(ctx, vaultName, resourceGroupName, privateEndpointConnectionName, parameters, options)
-	if err != nil {
-		return PrivateEndpointConnectionClientPutPollerResponse{}, err
+func (client *PrivateEndpointConnectionClient) BeginPut(ctx context.Context, vaultName string, resourceGroupName string, privateEndpointConnectionName string, parameters PrivateEndpointConnectionResource, options *PrivateEndpointConnectionClientBeginPutOptions) (*armruntime.Poller[PrivateEndpointConnectionClientPutResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.put(ctx, vaultName, resourceGroupName, privateEndpointConnectionName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[PrivateEndpointConnectionClientPutResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[PrivateEndpointConnectionClientPutResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PrivateEndpointConnectionClientPutPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PrivateEndpointConnectionClient.Put", "", resp, client.pl)
-	if err != nil {
-		return PrivateEndpointConnectionClientPutPollerResponse{}, err
-	}
-	result.Poller = &PrivateEndpointConnectionClientPutPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Put - Approve or Reject Private Endpoint requests. This call is made by Backup Admin.

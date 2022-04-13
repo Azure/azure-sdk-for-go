@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type AlertsSuppressionRulesClient struct {
 // subscriptionID - Azure subscription ID
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAlertsSuppressionRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AlertsSuppressionRulesClient {
+func NewAlertsSuppressionRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertsSuppressionRulesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AlertsSuppressionRulesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Delete - Delete dismiss alert rule for this subscription.
@@ -66,7 +71,7 @@ func (client *AlertsSuppressionRulesClient) Delete(ctx context.Context, alertsSu
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return AlertsSuppressionRulesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return AlertsSuppressionRulesClientDeleteResponse{RawResponse: resp}, nil
+	return AlertsSuppressionRulesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -135,7 +140,7 @@ func (client *AlertsSuppressionRulesClient) getCreateRequest(ctx context.Context
 
 // getHandleResponse handles the Get response.
 func (client *AlertsSuppressionRulesClient) getHandleResponse(resp *http.Response) (AlertsSuppressionRulesClientGetResponse, error) {
-	result := AlertsSuppressionRulesClientGetResponse{RawResponse: resp}
+	result := AlertsSuppressionRulesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertsSuppressionRule); err != nil {
 		return AlertsSuppressionRulesClientGetResponse{}, err
 	}
@@ -146,16 +151,32 @@ func (client *AlertsSuppressionRulesClient) getHandleResponse(resp *http.Respons
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AlertsSuppressionRulesClientListOptions contains the optional parameters for the AlertsSuppressionRulesClient.List
 // method.
-func (client *AlertsSuppressionRulesClient) List(options *AlertsSuppressionRulesClientListOptions) *AlertsSuppressionRulesClientListPager {
-	return &AlertsSuppressionRulesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *AlertsSuppressionRulesClient) List(options *AlertsSuppressionRulesClientListOptions) *runtime.Pager[AlertsSuppressionRulesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AlertsSuppressionRulesClientListResponse]{
+		More: func(page AlertsSuppressionRulesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AlertsSuppressionRulesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AlertsSuppressionRulesList.NextLink)
+		Fetcher: func(ctx context.Context, page *AlertsSuppressionRulesClientListResponse) (AlertsSuppressionRulesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AlertsSuppressionRulesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AlertsSuppressionRulesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AlertsSuppressionRulesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -181,7 +202,7 @@ func (client *AlertsSuppressionRulesClient) listCreateRequest(ctx context.Contex
 
 // listHandleResponse handles the List response.
 func (client *AlertsSuppressionRulesClient) listHandleResponse(resp *http.Response) (AlertsSuppressionRulesClientListResponse, error) {
-	result := AlertsSuppressionRulesClientListResponse{RawResponse: resp}
+	result := AlertsSuppressionRulesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertsSuppressionRulesList); err != nil {
 		return AlertsSuppressionRulesClientListResponse{}, err
 	}
@@ -233,7 +254,7 @@ func (client *AlertsSuppressionRulesClient) updateCreateRequest(ctx context.Cont
 
 // updateHandleResponse handles the Update response.
 func (client *AlertsSuppressionRulesClient) updateHandleResponse(resp *http.Response) (AlertsSuppressionRulesClientUpdateResponse, error) {
-	result := AlertsSuppressionRulesClientUpdateResponse{RawResponse: resp}
+	result := AlertsSuppressionRulesClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertsSuppressionRule); err != nil {
 		return AlertsSuppressionRulesClientUpdateResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armvirtualmachineimagebuilder
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // CloudError - An error response from the Azure VM Image Builder service.
 type CloudError struct {
@@ -34,16 +29,6 @@ type CloudErrorBody struct {
 
 	// The target of the particular error. For example, the name of the property in error.
 	Target *string `json:"target,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CloudErrorBody.
-func (c CloudErrorBody) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", c.Code)
-	populate(objectMap, "details", c.Details)
-	populate(objectMap, "message", c.Message)
-	populate(objectMap, "target", c.Target)
-	return json.Marshal(objectMap)
 }
 
 type ComponentsVrq145SchemasImagetemplateidentityPropertiesUserassignedidentitiesAdditionalproperties struct {
@@ -81,20 +66,6 @@ type ImageTemplate struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ImageTemplate.
-func (i ImageTemplate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", i.ID)
-	populate(objectMap, "identity", i.Identity)
-	populate(objectMap, "location", i.Location)
-	populate(objectMap, "name", i.Name)
-	populate(objectMap, "properties", i.Properties)
-	populate(objectMap, "systemData", i.SystemData)
-	populate(objectMap, "tags", i.Tags)
-	populate(objectMap, "type", i.Type)
-	return json.Marshal(objectMap)
-}
-
 // ImageTemplateCustomizerClassification provides polymorphic access to related types.
 // Call the interface's GetImageTemplateCustomizer() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -113,9 +84,6 @@ type ImageTemplateCustomizer struct {
 	// Friendly Name to provide context on what this customization step does
 	Name *string `json:"name,omitempty"`
 }
-
-// GetImageTemplateCustomizer implements the ImageTemplateCustomizerClassification interface for type ImageTemplateCustomizer.
-func (i *ImageTemplateCustomizer) GetImageTemplateCustomizer() *ImageTemplateCustomizer { return i }
 
 // ImageTemplateDistributorClassification provides polymorphic access to related types.
 // Call the interface's GetImageTemplateDistributor() method to access the common type.
@@ -138,18 +106,6 @@ type ImageTemplateDistributor struct {
 	ArtifactTags map[string]*string `json:"artifactTags,omitempty"`
 }
 
-// GetImageTemplateDistributor implements the ImageTemplateDistributorClassification interface for type ImageTemplateDistributor.
-func (i *ImageTemplateDistributor) GetImageTemplateDistributor() *ImageTemplateDistributor { return i }
-
-// MarshalJSON implements the json.Marshaller interface for type ImageTemplateDistributor.
-func (i ImageTemplateDistributor) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "artifactTags", i.ArtifactTags)
-	populate(objectMap, "runOutputName", i.RunOutputName)
-	objectMap["type"] = i.Type
-	return json.Marshal(objectMap)
-}
-
 // ImageTemplateFileCustomizer - Uploads files to VMs (Linux, Windows). Corresponds to Packer file provisioner
 type ImageTemplateFileCustomizer struct {
 	// REQUIRED; The type of customization tool you want to use on the Image. For example, "Shell" can be shell customizer
@@ -169,57 +125,6 @@ type ImageTemplateFileCustomizer struct {
 	SourceURI *string `json:"sourceUri,omitempty"`
 }
 
-// GetImageTemplateCustomizer implements the ImageTemplateCustomizerClassification interface for type ImageTemplateFileCustomizer.
-func (i *ImageTemplateFileCustomizer) GetImageTemplateCustomizer() *ImageTemplateCustomizer {
-	return &ImageTemplateCustomizer{
-		Type: i.Type,
-		Name: i.Name,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ImageTemplateFileCustomizer.
-func (i ImageTemplateFileCustomizer) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "destination", i.Destination)
-	populate(objectMap, "name", i.Name)
-	populate(objectMap, "sha256Checksum", i.SHA256Checksum)
-	populate(objectMap, "sourceUri", i.SourceURI)
-	objectMap["type"] = "File"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ImageTemplateFileCustomizer.
-func (i *ImageTemplateFileCustomizer) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "destination":
-			err = unpopulate(val, &i.Destination)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &i.Name)
-			delete(rawMsg, key)
-		case "sha256Checksum":
-			err = unpopulate(val, &i.SHA256Checksum)
-			delete(rawMsg, key)
-		case "sourceUri":
-			err = unpopulate(val, &i.SourceURI)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &i.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ImageTemplateIdentity - Identity for the image template.
 type ImageTemplateIdentity struct {
 	// The type of identity used for the image template. The type 'None' will remove any identities from the image template.
@@ -229,14 +134,6 @@ type ImageTemplateIdentity struct {
 	// resource ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*ComponentsVrq145SchemasImagetemplateidentityPropertiesUserassignedidentitiesAdditionalproperties `json:"userAssignedIdentities,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ImageTemplateIdentity.
-func (i ImageTemplateIdentity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "type", i.Type)
-	populate(objectMap, "userAssignedIdentities", i.UserAssignedIdentities)
-	return json.Marshal(objectMap)
 }
 
 // ImageTemplateLastRunStatus - Describes the latest status of running an image template
@@ -257,49 +154,6 @@ type ImageTemplateLastRunStatus struct {
 	StartTime *time.Time `json:"startTime,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ImageTemplateLastRunStatus.
-func (i ImageTemplateLastRunStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "endTime", i.EndTime)
-	populate(objectMap, "message", i.Message)
-	populate(objectMap, "runState", i.RunState)
-	populate(objectMap, "runSubState", i.RunSubState)
-	populateTimeRFC3339(objectMap, "startTime", i.StartTime)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ImageTemplateLastRunStatus.
-func (i *ImageTemplateLastRunStatus) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &i.EndTime)
-			delete(rawMsg, key)
-		case "message":
-			err = unpopulate(val, &i.Message)
-			delete(rawMsg, key)
-		case "runState":
-			err = unpopulate(val, &i.RunState)
-			delete(rawMsg, key)
-		case "runSubState":
-			err = unpopulate(val, &i.RunSubState)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &i.StartTime)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ImageTemplateListResult - The result of List image templates operation
 type ImageTemplateListResult struct {
 	// The continuation token.
@@ -307,14 +161,6 @@ type ImageTemplateListResult struct {
 
 	// An array of image templates
 	Value []*ImageTemplate `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ImageTemplateListResult.
-func (i ImageTemplateListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", i.NextLink)
-	populate(objectMap, "value", i.Value)
-	return json.Marshal(objectMap)
 }
 
 // ImageTemplateManagedImageDistributor - Distribute as a Managed Disk Image.
@@ -335,58 +181,6 @@ type ImageTemplateManagedImageDistributor struct {
 	ArtifactTags map[string]*string `json:"artifactTags,omitempty"`
 }
 
-// GetImageTemplateDistributor implements the ImageTemplateDistributorClassification interface for type ImageTemplateManagedImageDistributor.
-func (i *ImageTemplateManagedImageDistributor) GetImageTemplateDistributor() *ImageTemplateDistributor {
-	return &ImageTemplateDistributor{
-		Type:          i.Type,
-		RunOutputName: i.RunOutputName,
-		ArtifactTags:  i.ArtifactTags,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ImageTemplateManagedImageDistributor.
-func (i ImageTemplateManagedImageDistributor) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "artifactTags", i.ArtifactTags)
-	populate(objectMap, "imageId", i.ImageID)
-	populate(objectMap, "location", i.Location)
-	populate(objectMap, "runOutputName", i.RunOutputName)
-	objectMap["type"] = "ManagedImage"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ImageTemplateManagedImageDistributor.
-func (i *ImageTemplateManagedImageDistributor) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "artifactTags":
-			err = unpopulate(val, &i.ArtifactTags)
-			delete(rawMsg, key)
-		case "imageId":
-			err = unpopulate(val, &i.ImageID)
-			delete(rawMsg, key)
-		case "location":
-			err = unpopulate(val, &i.Location)
-			delete(rawMsg, key)
-		case "runOutputName":
-			err = unpopulate(val, &i.RunOutputName)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &i.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ImageTemplateManagedImageSource - Describes an image source that is a managed image in customer subscription.
 type ImageTemplateManagedImageSource struct {
 	// REQUIRED; ARM resource id of the managed image in customer subscription
@@ -394,44 +188,6 @@ type ImageTemplateManagedImageSource struct {
 
 	// REQUIRED; Specifies the type of source image you want to start with.
 	Type *string `json:"type,omitempty"`
-}
-
-// GetImageTemplateSource implements the ImageTemplateSourceClassification interface for type ImageTemplateManagedImageSource.
-func (i *ImageTemplateManagedImageSource) GetImageTemplateSource() *ImageTemplateSource {
-	return &ImageTemplateSource{
-		Type: i.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ImageTemplateManagedImageSource.
-func (i ImageTemplateManagedImageSource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "imageId", i.ImageID)
-	objectMap["type"] = "ManagedImage"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ImageTemplateManagedImageSource.
-func (i *ImageTemplateManagedImageSource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "imageId":
-			err = unpopulate(val, &i.ImageID)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &i.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ImageTemplatePlatformImageSource - Describes an image source from Azure Gallery Images [https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages].
@@ -460,64 +216,6 @@ type ImageTemplatePlatformImageSource struct {
 	// This readonly field differs from 'version', only if the value specified in
 	// 'version' field is 'latest'.
 	ExactVersion *string `json:"exactVersion,omitempty" azure:"ro"`
-}
-
-// GetImageTemplateSource implements the ImageTemplateSourceClassification interface for type ImageTemplatePlatformImageSource.
-func (i *ImageTemplatePlatformImageSource) GetImageTemplateSource() *ImageTemplateSource {
-	return &ImageTemplateSource{
-		Type: i.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ImageTemplatePlatformImageSource.
-func (i ImageTemplatePlatformImageSource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "exactVersion", i.ExactVersion)
-	populate(objectMap, "offer", i.Offer)
-	populate(objectMap, "planInfo", i.PlanInfo)
-	populate(objectMap, "publisher", i.Publisher)
-	populate(objectMap, "sku", i.SKU)
-	objectMap["type"] = "PlatformImage"
-	populate(objectMap, "version", i.Version)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ImageTemplatePlatformImageSource.
-func (i *ImageTemplatePlatformImageSource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "exactVersion":
-			err = unpopulate(val, &i.ExactVersion)
-			delete(rawMsg, key)
-		case "offer":
-			err = unpopulate(val, &i.Offer)
-			delete(rawMsg, key)
-		case "planInfo":
-			err = unpopulate(val, &i.PlanInfo)
-			delete(rawMsg, key)
-		case "publisher":
-			err = unpopulate(val, &i.Publisher)
-			delete(rawMsg, key)
-		case "sku":
-			err = unpopulate(val, &i.SKU)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &i.Type)
-			delete(rawMsg, key)
-		case "version":
-			err = unpopulate(val, &i.Version)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ImageTemplatePowerShellCustomizer - Runs the specified PowerShell on the VM (Windows). Corresponds to Packer powershell
@@ -549,69 +247,6 @@ type ImageTemplatePowerShellCustomizer struct {
 	ValidExitCodes []*int32 `json:"validExitCodes,omitempty"`
 }
 
-// GetImageTemplateCustomizer implements the ImageTemplateCustomizerClassification interface for type ImageTemplatePowerShellCustomizer.
-func (i *ImageTemplatePowerShellCustomizer) GetImageTemplateCustomizer() *ImageTemplateCustomizer {
-	return &ImageTemplateCustomizer{
-		Type: i.Type,
-		Name: i.Name,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ImageTemplatePowerShellCustomizer.
-func (i ImageTemplatePowerShellCustomizer) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "inline", i.Inline)
-	populate(objectMap, "name", i.Name)
-	populate(objectMap, "runAsSystem", i.RunAsSystem)
-	populate(objectMap, "runElevated", i.RunElevated)
-	populate(objectMap, "sha256Checksum", i.SHA256Checksum)
-	populate(objectMap, "scriptUri", i.ScriptURI)
-	objectMap["type"] = "PowerShell"
-	populate(objectMap, "validExitCodes", i.ValidExitCodes)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ImageTemplatePowerShellCustomizer.
-func (i *ImageTemplatePowerShellCustomizer) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "inline":
-			err = unpopulate(val, &i.Inline)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &i.Name)
-			delete(rawMsg, key)
-		case "runAsSystem":
-			err = unpopulate(val, &i.RunAsSystem)
-			delete(rawMsg, key)
-		case "runElevated":
-			err = unpopulate(val, &i.RunElevated)
-			delete(rawMsg, key)
-		case "sha256Checksum":
-			err = unpopulate(val, &i.SHA256Checksum)
-			delete(rawMsg, key)
-		case "scriptUri":
-			err = unpopulate(val, &i.ScriptURI)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &i.Type)
-			delete(rawMsg, key)
-		case "validExitCodes":
-			err = unpopulate(val, &i.ValidExitCodes)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ImageTemplateProperties - Describes the properties of an image template
 type ImageTemplateProperties struct {
 	// REQUIRED; The distribution targets where the image output needs to go to.
@@ -639,61 +274,6 @@ type ImageTemplateProperties struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ImageTemplateProperties.
-func (i ImageTemplateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "buildTimeoutInMinutes", i.BuildTimeoutInMinutes)
-	populate(objectMap, "customize", i.Customize)
-	populate(objectMap, "distribute", i.Distribute)
-	populate(objectMap, "lastRunStatus", i.LastRunStatus)
-	populate(objectMap, "provisioningError", i.ProvisioningError)
-	populate(objectMap, "provisioningState", i.ProvisioningState)
-	populate(objectMap, "source", i.Source)
-	populate(objectMap, "vmProfile", i.VMProfile)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ImageTemplateProperties.
-func (i *ImageTemplateProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "buildTimeoutInMinutes":
-			err = unpopulate(val, &i.BuildTimeoutInMinutes)
-			delete(rawMsg, key)
-		case "customize":
-			i.Customize, err = unmarshalImageTemplateCustomizerClassificationArray(val)
-			delete(rawMsg, key)
-		case "distribute":
-			i.Distribute, err = unmarshalImageTemplateDistributorClassificationArray(val)
-			delete(rawMsg, key)
-		case "lastRunStatus":
-			err = unpopulate(val, &i.LastRunStatus)
-			delete(rawMsg, key)
-		case "provisioningError":
-			err = unpopulate(val, &i.ProvisioningError)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &i.ProvisioningState)
-			delete(rawMsg, key)
-		case "source":
-			i.Source, err = unmarshalImageTemplateSourceClassification(val)
-			delete(rawMsg, key)
-		case "vmProfile":
-			err = unpopulate(val, &i.VMProfile)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ImageTemplateRestartCustomizer - Reboots a VM and waits for it to come back online (Windows). Corresponds to Packer windows-restart
 // provisioner
 type ImageTemplateRestartCustomizer struct {
@@ -711,57 +291,6 @@ type ImageTemplateRestartCustomizer struct {
 
 	// Restart timeout specified as a string of magnitude and unit, e.g. '5m' (5 minutes) or '2h' (2 hours) [Default: '5m']
 	RestartTimeout *string `json:"restartTimeout,omitempty"`
-}
-
-// GetImageTemplateCustomizer implements the ImageTemplateCustomizerClassification interface for type ImageTemplateRestartCustomizer.
-func (i *ImageTemplateRestartCustomizer) GetImageTemplateCustomizer() *ImageTemplateCustomizer {
-	return &ImageTemplateCustomizer{
-		Type: i.Type,
-		Name: i.Name,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ImageTemplateRestartCustomizer.
-func (i ImageTemplateRestartCustomizer) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "name", i.Name)
-	populate(objectMap, "restartCheckCommand", i.RestartCheckCommand)
-	populate(objectMap, "restartCommand", i.RestartCommand)
-	populate(objectMap, "restartTimeout", i.RestartTimeout)
-	objectMap["type"] = "WindowsRestart"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ImageTemplateRestartCustomizer.
-func (i *ImageTemplateRestartCustomizer) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "name":
-			err = unpopulate(val, &i.Name)
-			delete(rawMsg, key)
-		case "restartCheckCommand":
-			err = unpopulate(val, &i.RestartCheckCommand)
-			delete(rawMsg, key)
-		case "restartCommand":
-			err = unpopulate(val, &i.RestartCommand)
-			delete(rawMsg, key)
-		case "restartTimeout":
-			err = unpopulate(val, &i.RestartTimeout)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &i.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ImageTemplateSharedImageDistributor - Distribute via Shared Image Gallery.
@@ -788,66 +317,6 @@ type ImageTemplateSharedImageDistributor struct {
 	StorageAccountType *SharedImageStorageAccountType `json:"storageAccountType,omitempty"`
 }
 
-// GetImageTemplateDistributor implements the ImageTemplateDistributorClassification interface for type ImageTemplateSharedImageDistributor.
-func (i *ImageTemplateSharedImageDistributor) GetImageTemplateDistributor() *ImageTemplateDistributor {
-	return &ImageTemplateDistributor{
-		Type:          i.Type,
-		RunOutputName: i.RunOutputName,
-		ArtifactTags:  i.ArtifactTags,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ImageTemplateSharedImageDistributor.
-func (i ImageTemplateSharedImageDistributor) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "artifactTags", i.ArtifactTags)
-	populate(objectMap, "excludeFromLatest", i.ExcludeFromLatest)
-	populate(objectMap, "galleryImageId", i.GalleryImageID)
-	populate(objectMap, "replicationRegions", i.ReplicationRegions)
-	populate(objectMap, "runOutputName", i.RunOutputName)
-	populate(objectMap, "storageAccountType", i.StorageAccountType)
-	objectMap["type"] = "SharedImage"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ImageTemplateSharedImageDistributor.
-func (i *ImageTemplateSharedImageDistributor) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "artifactTags":
-			err = unpopulate(val, &i.ArtifactTags)
-			delete(rawMsg, key)
-		case "excludeFromLatest":
-			err = unpopulate(val, &i.ExcludeFromLatest)
-			delete(rawMsg, key)
-		case "galleryImageId":
-			err = unpopulate(val, &i.GalleryImageID)
-			delete(rawMsg, key)
-		case "replicationRegions":
-			err = unpopulate(val, &i.ReplicationRegions)
-			delete(rawMsg, key)
-		case "runOutputName":
-			err = unpopulate(val, &i.RunOutputName)
-			delete(rawMsg, key)
-		case "storageAccountType":
-			err = unpopulate(val, &i.StorageAccountType)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &i.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ImageTemplateSharedImageVersionSource - Describes an image source that is an image version in a shared image gallery.
 type ImageTemplateSharedImageVersionSource struct {
 	// REQUIRED; ARM resource id of the image version in the shared image gallery
@@ -855,44 +324,6 @@ type ImageTemplateSharedImageVersionSource struct {
 
 	// REQUIRED; Specifies the type of source image you want to start with.
 	Type *string `json:"type,omitempty"`
-}
-
-// GetImageTemplateSource implements the ImageTemplateSourceClassification interface for type ImageTemplateSharedImageVersionSource.
-func (i *ImageTemplateSharedImageVersionSource) GetImageTemplateSource() *ImageTemplateSource {
-	return &ImageTemplateSource{
-		Type: i.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ImageTemplateSharedImageVersionSource.
-func (i ImageTemplateSharedImageVersionSource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "imageVersionId", i.ImageVersionID)
-	objectMap["type"] = "SharedImageVersion"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ImageTemplateSharedImageVersionSource.
-func (i *ImageTemplateSharedImageVersionSource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "imageVersionId":
-			err = unpopulate(val, &i.ImageVersionID)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &i.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ImageTemplateShellCustomizer - Runs a shell script during the customization phase (Linux). Corresponds to Packer shell
@@ -914,57 +345,6 @@ type ImageTemplateShellCustomizer struct {
 	ScriptURI *string `json:"scriptUri,omitempty"`
 }
 
-// GetImageTemplateCustomizer implements the ImageTemplateCustomizerClassification interface for type ImageTemplateShellCustomizer.
-func (i *ImageTemplateShellCustomizer) GetImageTemplateCustomizer() *ImageTemplateCustomizer {
-	return &ImageTemplateCustomizer{
-		Type: i.Type,
-		Name: i.Name,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ImageTemplateShellCustomizer.
-func (i ImageTemplateShellCustomizer) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "inline", i.Inline)
-	populate(objectMap, "name", i.Name)
-	populate(objectMap, "sha256Checksum", i.SHA256Checksum)
-	populate(objectMap, "scriptUri", i.ScriptURI)
-	objectMap["type"] = "Shell"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ImageTemplateShellCustomizer.
-func (i *ImageTemplateShellCustomizer) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "inline":
-			err = unpopulate(val, &i.Inline)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &i.Name)
-			delete(rawMsg, key)
-		case "sha256Checksum":
-			err = unpopulate(val, &i.SHA256Checksum)
-			delete(rawMsg, key)
-		case "scriptUri":
-			err = unpopulate(val, &i.ScriptURI)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &i.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ImageTemplateSourceClassification provides polymorphic access to related types.
 // Call the interface's GetImageTemplateSource() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -980,9 +360,6 @@ type ImageTemplateSource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// GetImageTemplateSource implements the ImageTemplateSourceClassification interface for type ImageTemplateSource.
-func (i *ImageTemplateSource) GetImageTemplateSource() *ImageTemplateSource { return i }
-
 // ImageTemplateUpdateParameters - Parameters for updating an image template.
 type ImageTemplateUpdateParameters struct {
 	// The identity of the image template, if configured.
@@ -990,14 +367,6 @@ type ImageTemplateUpdateParameters struct {
 
 	// The user-specified tags associated with the image template.
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ImageTemplateUpdateParameters.
-func (i ImageTemplateUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "identity", i.Identity)
-	populate(objectMap, "tags", i.Tags)
-	return json.Marshal(objectMap)
 }
 
 // ImageTemplateVMProfile - Describes the virtual machine used to build, customize and capture images
@@ -1018,16 +387,6 @@ type ImageTemplateVMProfile struct {
 	VnetConfig *VirtualNetworkConfig `json:"vnetConfig,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ImageTemplateVMProfile.
-func (i ImageTemplateVMProfile) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "osDiskSizeGB", i.OSDiskSizeGB)
-	populate(objectMap, "userAssignedIdentities", i.UserAssignedIdentities)
-	populate(objectMap, "vmSize", i.VMSize)
-	populate(objectMap, "vnetConfig", i.VnetConfig)
-	return json.Marshal(objectMap)
-}
-
 // ImageTemplateVhdDistributor - Distribute via VHD in a storage account.
 type ImageTemplateVhdDistributor struct {
 	// REQUIRED; The name to be used for the associated RunOutput.
@@ -1038,50 +397,6 @@ type ImageTemplateVhdDistributor struct {
 
 	// Tags that will be applied to the artifact once it has been created/updated by the distributor.
 	ArtifactTags map[string]*string `json:"artifactTags,omitempty"`
-}
-
-// GetImageTemplateDistributor implements the ImageTemplateDistributorClassification interface for type ImageTemplateVhdDistributor.
-func (i *ImageTemplateVhdDistributor) GetImageTemplateDistributor() *ImageTemplateDistributor {
-	return &ImageTemplateDistributor{
-		Type:          i.Type,
-		RunOutputName: i.RunOutputName,
-		ArtifactTags:  i.ArtifactTags,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ImageTemplateVhdDistributor.
-func (i ImageTemplateVhdDistributor) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "artifactTags", i.ArtifactTags)
-	populate(objectMap, "runOutputName", i.RunOutputName)
-	objectMap["type"] = "VHD"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ImageTemplateVhdDistributor.
-func (i *ImageTemplateVhdDistributor) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "artifactTags":
-			err = unpopulate(val, &i.ArtifactTags)
-			delete(rawMsg, key)
-		case "runOutputName":
-			err = unpopulate(val, &i.RunOutputName)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &i.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ImageTemplateWindowsUpdateCustomizer - Installs Windows Updates. Corresponds to Packer Windows Update Provisioner (https://github.com/rgl/packer-provisioner-windows-update)
@@ -1104,57 +419,6 @@ type ImageTemplateWindowsUpdateCustomizer struct {
 	UpdateLimit *int32 `json:"updateLimit,omitempty"`
 }
 
-// GetImageTemplateCustomizer implements the ImageTemplateCustomizerClassification interface for type ImageTemplateWindowsUpdateCustomizer.
-func (i *ImageTemplateWindowsUpdateCustomizer) GetImageTemplateCustomizer() *ImageTemplateCustomizer {
-	return &ImageTemplateCustomizer{
-		Type: i.Type,
-		Name: i.Name,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ImageTemplateWindowsUpdateCustomizer.
-func (i ImageTemplateWindowsUpdateCustomizer) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "filters", i.Filters)
-	populate(objectMap, "name", i.Name)
-	populate(objectMap, "searchCriteria", i.SearchCriteria)
-	objectMap["type"] = "WindowsUpdate"
-	populate(objectMap, "updateLimit", i.UpdateLimit)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ImageTemplateWindowsUpdateCustomizer.
-func (i *ImageTemplateWindowsUpdateCustomizer) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "filters":
-			err = unpopulate(val, &i.Filters)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &i.Name)
-			delete(rawMsg, key)
-		case "searchCriteria":
-			err = unpopulate(val, &i.SearchCriteria)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &i.Type)
-			delete(rawMsg, key)
-		case "updateLimit":
-			err = unpopulate(val, &i.UpdateLimit)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // Operation - A REST API operation
 type Operation struct {
 	// The object that describes the operation.
@@ -1169,8 +433,8 @@ type Operation struct {
 	// The intended executor of the operation.
 	Origin *string `json:"origin,omitempty"`
 
-	// Any object
-	Properties map[string]interface{} `json:"properties,omitempty"`
+	// Properties of the operation.
+	Properties interface{} `json:"properties,omitempty"`
 }
 
 // OperationDisplay - The object that describes the operation.
@@ -1196,14 +460,6 @@ type OperationListResult struct {
 
 	// The list of operations supported by the resource provider.
 	Value []*Operation `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
@@ -1268,14 +524,6 @@ type RunOutputCollection struct {
 	Value []*RunOutput `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RunOutputCollection.
-func (r RunOutputCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
 // RunOutputProperties - Describes the properties of a run output
 type RunOutputProperties struct {
 	// The resource id of the artifact.
@@ -1321,53 +569,6 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
@@ -1387,45 +588,39 @@ type TrackedResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
-func (t TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "tags", t.Tags)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
 // VirtualMachineImageTemplatesClientBeginCancelOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.BeginCancel
 // method.
 type VirtualMachineImageTemplatesClientBeginCancelOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // VirtualMachineImageTemplatesClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.BeginCreateOrUpdate
 // method.
 type VirtualMachineImageTemplatesClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // VirtualMachineImageTemplatesClientBeginDeleteOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.BeginDelete
 // method.
 type VirtualMachineImageTemplatesClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // VirtualMachineImageTemplatesClientBeginRunOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.BeginRun
 // method.
 type VirtualMachineImageTemplatesClientBeginRunOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // VirtualMachineImageTemplatesClientBeginUpdateOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.BeginUpdate
 // method.
 type VirtualMachineImageTemplatesClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // VirtualMachineImageTemplatesClientGetOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.Get
@@ -1466,21 +661,4 @@ type VirtualNetworkConfig struct {
 
 	// Resource id of a pre-existing subnet.
 	SubnetID *string `json:"subnetId,omitempty"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

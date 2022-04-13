@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armdatabricks
 
 const (
 	moduleName    = "armdatabricks"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -33,11 +33,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // CustomParameterType - Provisioning status of the workspace.
 type CustomParameterType string
 
@@ -56,11 +51,6 @@ func PossibleCustomParameterTypeValues() []CustomParameterType {
 	}
 }
 
-// ToPtr returns a *CustomParameterType pointing to the current value.
-func (c CustomParameterType) ToPtr() *CustomParameterType {
-	return &c
-}
-
 // EncryptionKeySource - The encryption keySource (provider). Possible values (case-insensitive): Microsoft.Keyvault
 type EncryptionKeySource string
 
@@ -73,11 +63,6 @@ func PossibleEncryptionKeySourceValues() []EncryptionKeySource {
 	return []EncryptionKeySource{
 		EncryptionKeySourceMicrosoftKeyvault,
 	}
-}
-
-// ToPtr returns a *EncryptionKeySource pointing to the current value.
-func (c EncryptionKeySource) ToPtr() *EncryptionKeySource {
-	return &c
 }
 
 // KeySource - The encryption keySource (provider). Possible values (case-insensitive): Default, Microsoft.Keyvault
@@ -94,11 +79,6 @@ func PossibleKeySourceValues() []KeySource {
 		KeySourceDefault,
 		KeySourceMicrosoftKeyvault,
 	}
-}
-
-// ToPtr returns a *KeySource pointing to the current value.
-func (c KeySource) ToPtr() *KeySource {
-	return &c
 }
 
 // PeeringProvisioningState - The current provisioning state.
@@ -121,11 +101,6 @@ func PossiblePeeringProvisioningStateValues() []PeeringProvisioningState {
 	}
 }
 
-// ToPtr returns a *PeeringProvisioningState pointing to the current value.
-func (c PeeringProvisioningState) ToPtr() *PeeringProvisioningState {
-	return &c
-}
-
 // PeeringState - The status of the virtual network peering.
 type PeeringState string
 
@@ -142,11 +117,6 @@ func PossiblePeeringStateValues() []PeeringState {
 		PeeringStateDisconnected,
 		PeeringStateInitiated,
 	}
-}
-
-// ToPtr returns a *PeeringState pointing to the current value.
-func (c PeeringState) ToPtr() *PeeringState {
-	return &c
 }
 
 // PrivateEndpointConnectionProvisioningState - The current provisioning state.
@@ -171,11 +141,6 @@ func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpoin
 	}
 }
 
-// ToPtr returns a *PrivateEndpointConnectionProvisioningState pointing to the current value.
-func (c PrivateEndpointConnectionProvisioningState) ToPtr() *PrivateEndpointConnectionProvisioningState {
-	return &c
-}
-
 // PrivateLinkServiceConnectionStatus - The status of a private endpoint connection
 type PrivateLinkServiceConnectionStatus string
 
@@ -194,11 +159,6 @@ func PossiblePrivateLinkServiceConnectionStatusValues() []PrivateLinkServiceConn
 		PrivateLinkServiceConnectionStatusPending,
 		PrivateLinkServiceConnectionStatusRejected,
 	}
-}
-
-// ToPtr returns a *PrivateLinkServiceConnectionStatus pointing to the current value.
-func (c PrivateLinkServiceConnectionStatus) ToPtr() *PrivateLinkServiceConnectionStatus {
-	return &c
 }
 
 // ProvisioningState - Provisioning status of the workspace.
@@ -235,11 +195,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // PublicNetworkAccess - The network access type for accessing workspace. Set value to disabled to access workspace only via
 // private link.
 type PublicNetworkAccess string
@@ -255,11 +210,6 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
 	}
-}
-
-// ToPtr returns a *PublicNetworkAccess pointing to the current value.
-func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
-	return &c
 }
 
 // RequiredNsgRules - Gets or sets a value indicating whether data plane (clusters) to control plane communication happen
@@ -280,9 +230,4 @@ func PossibleRequiredNsgRulesValues() []RequiredNsgRules {
 		RequiredNsgRulesNoAzureDatabricksRules,
 		RequiredNsgRulesNoAzureServiceRules,
 	}
-}
-
-// ToPtr returns a *RequiredNsgRules pointing to the current value.
-func (c RequiredNsgRules) ToPtr() *RequiredNsgRules {
-	return &c
 }

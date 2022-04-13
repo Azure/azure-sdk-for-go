@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,19 +32,23 @@ type CustomersClient struct {
 // NewCustomersClient creates a new instance of CustomersClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewCustomersClient(credential azcore.TokenCredential, options *arm.ClientOptions) *CustomersClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewCustomersClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*CustomersClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &CustomersClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets a customer by its ID. The operation is supported only for billing accounts with agreement type Microsoft Partner
@@ -94,7 +99,7 @@ func (client *CustomersClient) getCreateRequest(ctx context.Context, billingAcco
 
 // getHandleResponse handles the Get response.
 func (client *CustomersClient) getHandleResponse(resp *http.Response) (CustomersClientGetResponse, error) {
-	result := CustomersClientGetResponse{RawResponse: resp}
+	result := CustomersClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Customer); err != nil {
 		return CustomersClientGetResponse{}, err
 	}
@@ -107,16 +112,32 @@ func (client *CustomersClient) getHandleResponse(resp *http.Response) (Customers
 // billingAccountName - The ID that uniquely identifies a billing account.
 // options - CustomersClientListByBillingAccountOptions contains the optional parameters for the CustomersClient.ListByBillingAccount
 // method.
-func (client *CustomersClient) ListByBillingAccount(billingAccountName string, options *CustomersClientListByBillingAccountOptions) *CustomersClientListByBillingAccountPager {
-	return &CustomersClientListByBillingAccountPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByBillingAccountCreateRequest(ctx, billingAccountName, options)
+func (client *CustomersClient) ListByBillingAccount(billingAccountName string, options *CustomersClientListByBillingAccountOptions) *runtime.Pager[CustomersClientListByBillingAccountResponse] {
+	return runtime.NewPager(runtime.PageProcessor[CustomersClientListByBillingAccountResponse]{
+		More: func(page CustomersClientListByBillingAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp CustomersClientListByBillingAccountResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CustomerListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *CustomersClientListByBillingAccountResponse) (CustomersClientListByBillingAccountResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByBillingAccountCreateRequest(ctx, billingAccountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CustomersClientListByBillingAccountResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CustomersClientListByBillingAccountResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CustomersClientListByBillingAccountResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByBillingAccountHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByBillingAccountCreateRequest creates the ListByBillingAccount request.
@@ -145,7 +166,7 @@ func (client *CustomersClient) listByBillingAccountCreateRequest(ctx context.Con
 
 // listByBillingAccountHandleResponse handles the ListByBillingAccount response.
 func (client *CustomersClient) listByBillingAccountHandleResponse(resp *http.Response) (CustomersClientListByBillingAccountResponse, error) {
-	result := CustomersClientListByBillingAccountResponse{RawResponse: resp}
+	result := CustomersClientListByBillingAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomerListResult); err != nil {
 		return CustomersClientListByBillingAccountResponse{}, err
 	}
@@ -159,16 +180,32 @@ func (client *CustomersClient) listByBillingAccountHandleResponse(resp *http.Res
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // options - CustomersClientListByBillingProfileOptions contains the optional parameters for the CustomersClient.ListByBillingProfile
 // method.
-func (client *CustomersClient) ListByBillingProfile(billingAccountName string, billingProfileName string, options *CustomersClientListByBillingProfileOptions) *CustomersClientListByBillingProfilePager {
-	return &CustomersClientListByBillingProfilePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByBillingProfileCreateRequest(ctx, billingAccountName, billingProfileName, options)
+func (client *CustomersClient) ListByBillingProfile(billingAccountName string, billingProfileName string, options *CustomersClientListByBillingProfileOptions) *runtime.Pager[CustomersClientListByBillingProfileResponse] {
+	return runtime.NewPager(runtime.PageProcessor[CustomersClientListByBillingProfileResponse]{
+		More: func(page CustomersClientListByBillingProfileResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp CustomersClientListByBillingProfileResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CustomerListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *CustomersClientListByBillingProfileResponse) (CustomersClientListByBillingProfileResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByBillingProfileCreateRequest(ctx, billingAccountName, billingProfileName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CustomersClientListByBillingProfileResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CustomersClientListByBillingProfileResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CustomersClientListByBillingProfileResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByBillingProfileHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByBillingProfileCreateRequest creates the ListByBillingProfile request.
@@ -201,7 +238,7 @@ func (client *CustomersClient) listByBillingProfileCreateRequest(ctx context.Con
 
 // listByBillingProfileHandleResponse handles the ListByBillingProfile response.
 func (client *CustomersClient) listByBillingProfileHandleResponse(resp *http.Response) (CustomersClientListByBillingProfileResponse, error) {
-	result := CustomersClientListByBillingProfileResponse{RawResponse: resp}
+	result := CustomersClientListByBillingProfileResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomerListResult); err != nil {
 		return CustomersClientListByBillingProfileResponse{}, err
 	}

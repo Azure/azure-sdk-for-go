@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armmarketplaceordering
 
 const (
 	moduleName    = "armmarketplaceordering"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -33,11 +33,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 type OfferType string
 
 const (
@@ -49,9 +44,4 @@ func PossibleOfferTypeValues() []OfferType {
 	return []OfferType{
 		OfferTypeVirtualmachine,
 	}
-}
-
-// ToPtr returns a *OfferType pointing to the current value.
-func (c OfferType) ToPtr() *OfferType {
-	return &c
 }

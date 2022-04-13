@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armnetapp
 
 const (
 	moduleName    = "armnetapp"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // ActiveDirectoryStatus - Status of the Active Directory
@@ -40,11 +40,6 @@ func PossibleActiveDirectoryStatusValues() []ActiveDirectoryStatus {
 	}
 }
 
-// ToPtr returns a *ActiveDirectoryStatus pointing to the current value.
-func (c ActiveDirectoryStatus) ToPtr() *ActiveDirectoryStatus {
-	return &c
-}
-
 // ApplicationType - Application Type
 type ApplicationType string
 
@@ -57,11 +52,6 @@ func PossibleApplicationTypeValues() []ApplicationType {
 	return []ApplicationType{
 		ApplicationTypeSAPHANA,
 	}
-}
-
-// ToPtr returns a *ApplicationType pointing to the current value.
-func (c ApplicationType) ToPtr() *ApplicationType {
-	return &c
 }
 
 // AvsDataStore - Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose
@@ -82,11 +72,6 @@ func PossibleAvsDataStoreValues() []AvsDataStore {
 	}
 }
 
-// ToPtr returns a *AvsDataStore pointing to the current value.
-func (c AvsDataStore) ToPtr() *AvsDataStore {
-	return &c
-}
-
 // BackupType - Type of backup Manual or Scheduled
 type BackupType string
 
@@ -103,11 +88,6 @@ func PossibleBackupTypeValues() []BackupType {
 		BackupTypeManual,
 		BackupTypeScheduled,
 	}
-}
-
-// ToPtr returns a *BackupType pointing to the current value.
-func (c BackupType) ToPtr() *BackupType {
-	return &c
 }
 
 // CheckNameResourceTypes - Resource type used for verification.
@@ -130,11 +110,6 @@ func PossibleCheckNameResourceTypesValues() []CheckNameResourceTypes {
 	}
 }
 
-// ToPtr returns a *CheckNameResourceTypes pointing to the current value.
-func (c CheckNameResourceTypes) ToPtr() *CheckNameResourceTypes {
-	return &c
-}
-
 // CheckQuotaNameResourceTypes - Resource type used for verification.
 type CheckQuotaNameResourceTypes string
 
@@ -155,11 +130,6 @@ func PossibleCheckQuotaNameResourceTypesValues() []CheckQuotaNameResourceTypes {
 	}
 }
 
-// ToPtr returns a *CheckQuotaNameResourceTypes pointing to the current value.
-func (c CheckQuotaNameResourceTypes) ToPtr() *CheckQuotaNameResourceTypes {
-	return &c
-}
-
 // ChownMode - This parameter specifies who is authorized to change the ownership of a file. restricted - Only root user can
 // change the ownership of the file. unrestricted - Non-root users can change ownership of
 // files that they own.
@@ -176,11 +146,6 @@ func PossibleChownModeValues() []ChownMode {
 		ChownModeRestricted,
 		ChownModeUnrestricted,
 	}
-}
-
-// ToPtr returns a *ChownMode pointing to the current value.
-func (c ChownMode) ToPtr() *ChownMode {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -203,9 +168,22 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
+// EnableSubvolumes - Flag indicating whether subvolume operations are enabled on the volume
+type EnableSubvolumes string
+
+const (
+	// EnableSubvolumesDisabled - subvolumes are not enabled
+	EnableSubvolumesDisabled EnableSubvolumes = "Disabled"
+	// EnableSubvolumesEnabled - subvolumes are enabled
+	EnableSubvolumesEnabled EnableSubvolumes = "Enabled"
+)
+
+// PossibleEnableSubvolumesValues returns the possible values for the EnableSubvolumes const type.
+func PossibleEnableSubvolumesValues() []EnableSubvolumes {
+	return []EnableSubvolumes{
+		EnableSubvolumesDisabled,
+		EnableSubvolumesEnabled,
+	}
 }
 
 // EncryptionType - Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes
@@ -227,11 +205,6 @@ func PossibleEncryptionTypeValues() []EncryptionType {
 	}
 }
 
-// ToPtr returns a *EncryptionType pointing to the current value.
-func (c EncryptionType) ToPtr() *EncryptionType {
-	return &c
-}
-
 // EndpointType - Indicates whether the local volume is the source or destination for the Volume Replication
 type EndpointType string
 
@@ -246,11 +219,6 @@ func PossibleEndpointTypeValues() []EndpointType {
 		EndpointTypeDst,
 		EndpointTypeSrc,
 	}
-}
-
-// ToPtr returns a *EndpointType pointing to the current value.
-func (c EndpointType) ToPtr() *EndpointType {
-	return &c
 }
 
 // InAvailabilityReasonType - Invalid indicates the name provided does not match Azure App Service naming requirements. AlreadyExists
@@ -270,11 +238,6 @@ func PossibleInAvailabilityReasonTypeValues() []InAvailabilityReasonType {
 	}
 }
 
-// ToPtr returns a *InAvailabilityReasonType pointing to the current value.
-func (c InAvailabilityReasonType) ToPtr() *InAvailabilityReasonType {
-	return &c
-}
-
 type MetricAggregationType string
 
 const (
@@ -286,11 +249,6 @@ func PossibleMetricAggregationTypeValues() []MetricAggregationType {
 	return []MetricAggregationType{
 		MetricAggregationTypeAverage,
 	}
-}
-
-// ToPtr returns a *MetricAggregationType pointing to the current value.
-func (c MetricAggregationType) ToPtr() *MetricAggregationType {
-	return &c
 }
 
 // MirrorState - The status of the replication
@@ -311,11 +269,6 @@ func PossibleMirrorStateValues() []MirrorState {
 	}
 }
 
-// ToPtr returns a *MirrorState pointing to the current value.
-func (c MirrorState) ToPtr() *MirrorState {
-	return &c
-}
-
 // NetworkFeatures - Basic network, or Standard features available to the volume.
 type NetworkFeatures string
 
@@ -332,11 +285,6 @@ func PossibleNetworkFeaturesValues() []NetworkFeatures {
 		NetworkFeaturesBasic,
 		NetworkFeaturesStandard,
 	}
-}
-
-// ToPtr returns a *NetworkFeatures pointing to the current value.
-func (c NetworkFeatures) ToPtr() *NetworkFeatures {
-	return &c
 }
 
 // QosType - The qos type of the pool
@@ -357,11 +305,6 @@ func PossibleQosTypeValues() []QosType {
 	}
 }
 
-// ToPtr returns a *QosType pointing to the current value.
-func (c QosType) ToPtr() *QosType {
-	return &c
-}
-
 // RelationshipStatus - Status of the mirror relationship
 type RelationshipStatus string
 
@@ -376,11 +319,6 @@ func PossibleRelationshipStatusValues() []RelationshipStatus {
 		RelationshipStatusIdle,
 		RelationshipStatusTransferring,
 	}
-}
-
-// ToPtr returns a *RelationshipStatus pointing to the current value.
-func (c RelationshipStatus) ToPtr() *RelationshipStatus {
-	return &c
 }
 
 // ReplicationSchedule - Schedule
@@ -401,11 +339,6 @@ func PossibleReplicationScheduleValues() []ReplicationSchedule {
 	}
 }
 
-// ToPtr returns a *ReplicationSchedule pointing to the current value.
-func (c ReplicationSchedule) ToPtr() *ReplicationSchedule {
-	return &c
-}
-
 // SecurityStyle - The security style of volume, default unix, defaults to ntfs for dual protocol or CIFS protocol
 type SecurityStyle string
 
@@ -420,11 +353,6 @@ func PossibleSecurityStyleValues() []SecurityStyle {
 		SecurityStyleNtfs,
 		SecurityStyleUnix,
 	}
-}
-
-// ToPtr returns a *SecurityStyle pointing to the current value.
-func (c SecurityStyle) ToPtr() *SecurityStyle {
-	return &c
 }
 
 // ServiceLevel - The service level of the file system
@@ -451,11 +379,6 @@ func PossibleServiceLevelValues() []ServiceLevel {
 	}
 }
 
-// ToPtr returns a *ServiceLevel pointing to the current value.
-func (c ServiceLevel) ToPtr() *ServiceLevel {
-	return &c
-}
-
 // VolumeStorageToNetworkProximity - Provides storage to network proximity information for the volume.
 type VolumeStorageToNetworkProximity string
 
@@ -475,9 +398,4 @@ func PossibleVolumeStorageToNetworkProximityValues() []VolumeStorageToNetworkPro
 		VolumeStorageToNetworkProximityT1,
 		VolumeStorageToNetworkProximityT2,
 	}
-}
-
-// ToPtr returns a *VolumeStorageToNetworkProximity pointing to the current value.
-func (c VolumeStorageToNetworkProximity) ToPtr() *VolumeStorageToNetworkProximity {
-	return &c
 }

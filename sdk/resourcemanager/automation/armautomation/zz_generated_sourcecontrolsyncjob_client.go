@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type SourceControlSyncJobClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSourceControlSyncJobClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SourceControlSyncJobClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewSourceControlSyncJobClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SourceControlSyncJobClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SourceControlSyncJobClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Creates the sync job for a source control.
@@ -107,7 +112,7 @@ func (client *SourceControlSyncJobClient) createCreateRequest(ctx context.Contex
 
 // createHandleResponse handles the Create response.
 func (client *SourceControlSyncJobClient) createHandleResponse(resp *http.Response) (SourceControlSyncJobClientCreateResponse, error) {
-	result := SourceControlSyncJobClientCreateResponse{RawResponse: resp}
+	result := SourceControlSyncJobClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControlSyncJob); err != nil {
 		return SourceControlSyncJobClientCreateResponse{}, err
 	}
@@ -170,7 +175,7 @@ func (client *SourceControlSyncJobClient) getCreateRequest(ctx context.Context, 
 
 // getHandleResponse handles the Get response.
 func (client *SourceControlSyncJobClient) getHandleResponse(resp *http.Response) (SourceControlSyncJobClientGetResponse, error) {
-	result := SourceControlSyncJobClientGetResponse{RawResponse: resp}
+	result := SourceControlSyncJobClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControlSyncJobByID); err != nil {
 		return SourceControlSyncJobClientGetResponse{}, err
 	}
@@ -184,16 +189,32 @@ func (client *SourceControlSyncJobClient) getHandleResponse(resp *http.Response)
 // sourceControlName - The source control name.
 // options - SourceControlSyncJobClientListByAutomationAccountOptions contains the optional parameters for the SourceControlSyncJobClient.ListByAutomationAccount
 // method.
-func (client *SourceControlSyncJobClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, sourceControlName string, options *SourceControlSyncJobClientListByAutomationAccountOptions) *SourceControlSyncJobClientListByAutomationAccountPager {
-	return &SourceControlSyncJobClientListByAutomationAccountPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, sourceControlName, options)
+func (client *SourceControlSyncJobClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, sourceControlName string, options *SourceControlSyncJobClientListByAutomationAccountOptions) *runtime.Pager[SourceControlSyncJobClientListByAutomationAccountResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SourceControlSyncJobClientListByAutomationAccountResponse]{
+		More: func(page SourceControlSyncJobClientListByAutomationAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SourceControlSyncJobClientListByAutomationAccountResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SourceControlSyncJobListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SourceControlSyncJobClientListByAutomationAccountResponse) (SourceControlSyncJobClientListByAutomationAccountResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, sourceControlName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SourceControlSyncJobClientListByAutomationAccountResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SourceControlSyncJobClientListByAutomationAccountResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SourceControlSyncJobClientListByAutomationAccountResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByAutomationAccountHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
@@ -231,7 +252,7 @@ func (client *SourceControlSyncJobClient) listByAutomationAccountCreateRequest(c
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
 func (client *SourceControlSyncJobClient) listByAutomationAccountHandleResponse(resp *http.Response) (SourceControlSyncJobClientListByAutomationAccountResponse, error) {
-	result := SourceControlSyncJobClientListByAutomationAccountResponse{RawResponse: resp}
+	result := SourceControlSyncJobClientListByAutomationAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControlSyncJobListResult); err != nil {
 		return SourceControlSyncJobClientListByAutomationAccountResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ActionsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewActionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ActionsClient {
+func NewActionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ActionsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ActionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates the action of alert rule.
@@ -100,7 +105,7 @@ func (client *ActionsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, action)
@@ -108,7 +113,7 @@ func (client *ActionsClient) createOrUpdateCreateRequest(ctx context.Context, re
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ActionsClient) createOrUpdateHandleResponse(resp *http.Response) (ActionsClientCreateOrUpdateResponse, error) {
-	result := ActionsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := ActionsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActionResponse); err != nil {
 		return ActionsClientCreateOrUpdateResponse{}, err
 	}
@@ -134,7 +139,7 @@ func (client *ActionsClient) Delete(ctx context.Context, resourceGroupName strin
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ActionsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ActionsClientDeleteResponse{RawResponse: resp}, nil
+	return ActionsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -165,7 +170,7 @@ func (client *ActionsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -221,7 +226,7 @@ func (client *ActionsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -229,7 +234,7 @@ func (client *ActionsClient) getCreateRequest(ctx context.Context, resourceGroup
 
 // getHandleResponse handles the Get response.
 func (client *ActionsClient) getHandleResponse(resp *http.Response) (ActionsClientGetResponse, error) {
-	result := ActionsClientGetResponse{RawResponse: resp}
+	result := ActionsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActionResponse); err != nil {
 		return ActionsClientGetResponse{}, err
 	}
@@ -242,16 +247,32 @@ func (client *ActionsClient) getHandleResponse(resp *http.Response) (ActionsClie
 // workspaceName - The name of the workspace.
 // ruleID - Alert rule ID
 // options - ActionsClientListByAlertRuleOptions contains the optional parameters for the ActionsClient.ListByAlertRule method.
-func (client *ActionsClient) ListByAlertRule(resourceGroupName string, workspaceName string, ruleID string, options *ActionsClientListByAlertRuleOptions) *ActionsClientListByAlertRulePager {
-	return &ActionsClientListByAlertRulePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByAlertRuleCreateRequest(ctx, resourceGroupName, workspaceName, ruleID, options)
+func (client *ActionsClient) ListByAlertRule(resourceGroupName string, workspaceName string, ruleID string, options *ActionsClientListByAlertRuleOptions) *runtime.Pager[ActionsClientListByAlertRuleResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ActionsClientListByAlertRuleResponse]{
+		More: func(page ActionsClientListByAlertRuleResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ActionsClientListByAlertRuleResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ActionsList.NextLink)
+		Fetcher: func(ctx context.Context, page *ActionsClientListByAlertRuleResponse) (ActionsClientListByAlertRuleResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByAlertRuleCreateRequest(ctx, resourceGroupName, workspaceName, ruleID, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ActionsClientListByAlertRuleResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ActionsClientListByAlertRuleResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ActionsClientListByAlertRuleResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByAlertRuleHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByAlertRuleCreateRequest creates the ListByAlertRule request.
@@ -278,7 +299,7 @@ func (client *ActionsClient) listByAlertRuleCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -286,7 +307,7 @@ func (client *ActionsClient) listByAlertRuleCreateRequest(ctx context.Context, r
 
 // listByAlertRuleHandleResponse handles the ListByAlertRule response.
 func (client *ActionsClient) listByAlertRuleHandleResponse(resp *http.Response) (ActionsClientListByAlertRuleResponse, error) {
-	result := ActionsClientListByAlertRuleResponse{RawResponse: resp}
+	result := ActionsClientListByAlertRuleResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActionsList); err != nil {
 		return ActionsClientListByAlertRuleResponse{}, err
 	}

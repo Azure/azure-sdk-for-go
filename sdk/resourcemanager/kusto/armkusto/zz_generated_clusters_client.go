@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type ClustersClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ClustersClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClustersClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ClustersClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginAddLanguageExtensions - Add a list of language extensions that can run within KQL queries.
@@ -57,22 +62,16 @@ func NewClustersClient(subscriptionID string, credential azcore.TokenCredential,
 // languageExtensionsToAdd - The language extensions to add.
 // options - ClustersClientBeginAddLanguageExtensionsOptions contains the optional parameters for the ClustersClient.BeginAddLanguageExtensions
 // method.
-func (client *ClustersClient) BeginAddLanguageExtensions(ctx context.Context, resourceGroupName string, clusterName string, languageExtensionsToAdd LanguageExtensionsList, options *ClustersClientBeginAddLanguageExtensionsOptions) (ClustersClientAddLanguageExtensionsPollerResponse, error) {
-	resp, err := client.addLanguageExtensions(ctx, resourceGroupName, clusterName, languageExtensionsToAdd, options)
-	if err != nil {
-		return ClustersClientAddLanguageExtensionsPollerResponse{}, err
+func (client *ClustersClient) BeginAddLanguageExtensions(ctx context.Context, resourceGroupName string, clusterName string, languageExtensionsToAdd LanguageExtensionsList, options *ClustersClientBeginAddLanguageExtensionsOptions) (*armruntime.Poller[ClustersClientAddLanguageExtensionsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.addLanguageExtensions(ctx, resourceGroupName, clusterName, languageExtensionsToAdd, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClustersClientAddLanguageExtensionsResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClustersClientAddLanguageExtensionsResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClustersClientAddLanguageExtensionsPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ClustersClient.AddLanguageExtensions", "", resp, client.pl)
-	if err != nil {
-		return ClustersClientAddLanguageExtensionsPollerResponse{}, err
-	}
-	result.Poller = &ClustersClientAddLanguageExtensionsPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // AddLanguageExtensions - Add a list of language extensions that can run within KQL queries.
@@ -112,7 +111,7 @@ func (client *ClustersClient) addLanguageExtensionsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, languageExtensionsToAdd)
@@ -155,7 +154,7 @@ func (client *ClustersClient) checkNameAvailabilityCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, clusterName)
@@ -163,7 +162,7 @@ func (client *ClustersClient) checkNameAvailabilityCreateRequest(ctx context.Con
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
 func (client *ClustersClient) checkNameAvailabilityHandleResponse(resp *http.Response) (ClustersClientCheckNameAvailabilityResponse, error) {
-	result := ClustersClientCheckNameAvailabilityResponse{RawResponse: resp}
+	result := ClustersClientCheckNameAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameResult); err != nil {
 		return ClustersClientCheckNameAvailabilityResponse{}, err
 	}
@@ -177,22 +176,16 @@ func (client *ClustersClient) checkNameAvailabilityHandleResponse(resp *http.Res
 // parameters - The Kusto cluster parameters supplied to the CreateOrUpdate operation.
 // options - ClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the ClustersClient.BeginCreateOrUpdate
 // method.
-func (client *ClustersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, parameters Cluster, options *ClustersClientBeginCreateOrUpdateOptions) (ClustersClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, clusterName, parameters, options)
-	if err != nil {
-		return ClustersClientCreateOrUpdatePollerResponse{}, err
+func (client *ClustersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, parameters Cluster, options *ClustersClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ClustersClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, clusterName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClustersClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClustersClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClustersClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ClustersClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return ClustersClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ClustersClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update a Kusto cluster.
@@ -232,7 +225,7 @@ func (client *ClustersClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header.Set("If-Match", *options.IfMatch)
@@ -249,22 +242,16 @@ func (client *ClustersClient) createOrUpdateCreateRequest(ctx context.Context, r
 // resourceGroupName - The name of the resource group containing the Kusto cluster.
 // clusterName - The name of the Kusto cluster.
 // options - ClustersClientBeginDeleteOptions contains the optional parameters for the ClustersClient.BeginDelete method.
-func (client *ClustersClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginDeleteOptions) (ClustersClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, options)
-	if err != nil {
-		return ClustersClientDeletePollerResponse{}, err
+func (client *ClustersClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginDeleteOptions) (*armruntime.Poller[ClustersClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClustersClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClustersClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClustersClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ClustersClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return ClustersClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ClustersClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a Kusto cluster.
@@ -304,7 +291,7 @@ func (client *ClustersClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -317,22 +304,16 @@ func (client *ClustersClient) deleteCreateRequest(ctx context.Context, resourceG
 // followerDatabaseToRemove - The follower databases properties to remove.
 // options - ClustersClientBeginDetachFollowerDatabasesOptions contains the optional parameters for the ClustersClient.BeginDetachFollowerDatabases
 // method.
-func (client *ClustersClient) BeginDetachFollowerDatabases(ctx context.Context, resourceGroupName string, clusterName string, followerDatabaseToRemove FollowerDatabaseDefinition, options *ClustersClientBeginDetachFollowerDatabasesOptions) (ClustersClientDetachFollowerDatabasesPollerResponse, error) {
-	resp, err := client.detachFollowerDatabases(ctx, resourceGroupName, clusterName, followerDatabaseToRemove, options)
-	if err != nil {
-		return ClustersClientDetachFollowerDatabasesPollerResponse{}, err
+func (client *ClustersClient) BeginDetachFollowerDatabases(ctx context.Context, resourceGroupName string, clusterName string, followerDatabaseToRemove FollowerDatabaseDefinition, options *ClustersClientBeginDetachFollowerDatabasesOptions) (*armruntime.Poller[ClustersClientDetachFollowerDatabasesResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.detachFollowerDatabases(ctx, resourceGroupName, clusterName, followerDatabaseToRemove, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClustersClientDetachFollowerDatabasesResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClustersClientDetachFollowerDatabasesResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClustersClientDetachFollowerDatabasesPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ClustersClient.DetachFollowerDatabases", "", resp, client.pl)
-	if err != nil {
-		return ClustersClientDetachFollowerDatabasesPollerResponse{}, err
-	}
-	result.Poller = &ClustersClientDetachFollowerDatabasesPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DetachFollowerDatabases - Detaches all followers of a database owned by this cluster.
@@ -372,7 +353,7 @@ func (client *ClustersClient) detachFollowerDatabasesCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, followerDatabaseToRemove)
@@ -385,22 +366,18 @@ func (client *ClustersClient) detachFollowerDatabasesCreateRequest(ctx context.C
 // clusterName - The name of the Kusto cluster.
 // options - ClustersClientBeginDiagnoseVirtualNetworkOptions contains the optional parameters for the ClustersClient.BeginDiagnoseVirtualNetwork
 // method.
-func (client *ClustersClient) BeginDiagnoseVirtualNetwork(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginDiagnoseVirtualNetworkOptions) (ClustersClientDiagnoseVirtualNetworkPollerResponse, error) {
-	resp, err := client.diagnoseVirtualNetwork(ctx, resourceGroupName, clusterName, options)
-	if err != nil {
-		return ClustersClientDiagnoseVirtualNetworkPollerResponse{}, err
+func (client *ClustersClient) BeginDiagnoseVirtualNetwork(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginDiagnoseVirtualNetworkOptions) (*armruntime.Poller[ClustersClientDiagnoseVirtualNetworkResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.diagnoseVirtualNetwork(ctx, resourceGroupName, clusterName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ClustersClientDiagnoseVirtualNetworkResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClustersClientDiagnoseVirtualNetworkResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClustersClientDiagnoseVirtualNetworkPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ClustersClient.DiagnoseVirtualNetwork", "location", resp, client.pl)
-	if err != nil {
-		return ClustersClientDiagnoseVirtualNetworkPollerResponse{}, err
-	}
-	result.Poller = &ClustersClientDiagnoseVirtualNetworkPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DiagnoseVirtualNetwork - Diagnoses network connectivity status for external resources on which the service is dependent
@@ -441,7 +418,7 @@ func (client *ClustersClient) diagnoseVirtualNetworkCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -487,7 +464,7 @@ func (client *ClustersClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -495,7 +472,7 @@ func (client *ClustersClient) getCreateRequest(ctx context.Context, resourceGrou
 
 // getHandleResponse handles the Get response.
 func (client *ClustersClient) getHandleResponse(resp *http.Response) (ClustersClientGetResponse, error) {
-	result := ClustersClientGetResponse{RawResponse: resp}
+	result := ClustersClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Cluster); err != nil {
 		return ClustersClientGetResponse{}, err
 	}
@@ -505,19 +482,26 @@ func (client *ClustersClient) getHandleResponse(resp *http.Response) (ClustersCl
 // List - Lists all Kusto clusters within a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ClustersClientListOptions contains the optional parameters for the ClustersClient.List method.
-func (client *ClustersClient) List(ctx context.Context, options *ClustersClientListOptions) (ClustersClientListResponse, error) {
-	req, err := client.listCreateRequest(ctx, options)
-	if err != nil {
-		return ClustersClientListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ClustersClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClustersClientListResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listHandleResponse(resp)
+func (client *ClustersClient) List(options *ClustersClientListOptions) *runtime.Pager[ClustersClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ClustersClientListResponse]{
+		More: func(page ClustersClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ClustersClientListResponse) (ClustersClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, options)
+			if err != nil {
+				return ClustersClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClustersClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClustersClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -532,7 +516,7 @@ func (client *ClustersClient) listCreateRequest(ctx context.Context, options *Cl
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -540,7 +524,7 @@ func (client *ClustersClient) listCreateRequest(ctx context.Context, options *Cl
 
 // listHandleResponse handles the List response.
 func (client *ClustersClient) listHandleResponse(resp *http.Response) (ClustersClientListResponse, error) {
-	result := ClustersClientListResponse{RawResponse: resp}
+	result := ClustersClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterListResult); err != nil {
 		return ClustersClientListResponse{}, err
 	}
@@ -552,19 +536,26 @@ func (client *ClustersClient) listHandleResponse(resp *http.Response) (ClustersC
 // resourceGroupName - The name of the resource group containing the Kusto cluster.
 // options - ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.ListByResourceGroup
 // method.
-func (client *ClustersClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *ClustersClientListByResourceGroupOptions) (ClustersClientListByResourceGroupResponse, error) {
-	req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-	if err != nil {
-		return ClustersClientListByResourceGroupResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ClustersClientListByResourceGroupResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClustersClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listByResourceGroupHandleResponse(resp)
+func (client *ClustersClient) ListByResourceGroup(resourceGroupName string, options *ClustersClientListByResourceGroupOptions) *runtime.Pager[ClustersClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ClustersClientListByResourceGroupResponse]{
+		More: func(page ClustersClientListByResourceGroupResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ClustersClientListByResourceGroupResponse) (ClustersClientListByResourceGroupResponse, error) {
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			if err != nil {
+				return ClustersClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClustersClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClustersClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
+		},
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -583,7 +574,7 @@ func (client *ClustersClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -591,7 +582,7 @@ func (client *ClustersClient) listByResourceGroupCreateRequest(ctx context.Conte
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *ClustersClient) listByResourceGroupHandleResponse(resp *http.Response) (ClustersClientListByResourceGroupResponse, error) {
-	result := ClustersClientListByResourceGroupResponse{RawResponse: resp}
+	result := ClustersClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterListResult); err != nil {
 		return ClustersClientListByResourceGroupResponse{}, err
 	}
@@ -604,19 +595,26 @@ func (client *ClustersClient) listByResourceGroupHandleResponse(resp *http.Respo
 // clusterName - The name of the Kusto cluster.
 // options - ClustersClientListFollowerDatabasesOptions contains the optional parameters for the ClustersClient.ListFollowerDatabases
 // method.
-func (client *ClustersClient) ListFollowerDatabases(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientListFollowerDatabasesOptions) (ClustersClientListFollowerDatabasesResponse, error) {
-	req, err := client.listFollowerDatabasesCreateRequest(ctx, resourceGroupName, clusterName, options)
-	if err != nil {
-		return ClustersClientListFollowerDatabasesResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ClustersClientListFollowerDatabasesResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClustersClientListFollowerDatabasesResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listFollowerDatabasesHandleResponse(resp)
+func (client *ClustersClient) ListFollowerDatabases(resourceGroupName string, clusterName string, options *ClustersClientListFollowerDatabasesOptions) *runtime.Pager[ClustersClientListFollowerDatabasesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ClustersClientListFollowerDatabasesResponse]{
+		More: func(page ClustersClientListFollowerDatabasesResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ClustersClientListFollowerDatabasesResponse) (ClustersClientListFollowerDatabasesResponse, error) {
+			req, err := client.listFollowerDatabasesCreateRequest(ctx, resourceGroupName, clusterName, options)
+			if err != nil {
+				return ClustersClientListFollowerDatabasesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClustersClientListFollowerDatabasesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClustersClientListFollowerDatabasesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listFollowerDatabasesHandleResponse(resp)
+		},
+	})
 }
 
 // listFollowerDatabasesCreateRequest creates the ListFollowerDatabases request.
@@ -639,7 +637,7 @@ func (client *ClustersClient) listFollowerDatabasesCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -647,7 +645,7 @@ func (client *ClustersClient) listFollowerDatabasesCreateRequest(ctx context.Con
 
 // listFollowerDatabasesHandleResponse handles the ListFollowerDatabases response.
 func (client *ClustersClient) listFollowerDatabasesHandleResponse(resp *http.Response) (ClustersClientListFollowerDatabasesResponse, error) {
-	result := ClustersClientListFollowerDatabasesResponse{RawResponse: resp}
+	result := ClustersClientListFollowerDatabasesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FollowerDatabaseListResult); err != nil {
 		return ClustersClientListFollowerDatabasesResponse{}, err
 	}
@@ -660,19 +658,26 @@ func (client *ClustersClient) listFollowerDatabasesHandleResponse(resp *http.Res
 // clusterName - The name of the Kusto cluster.
 // options - ClustersClientListLanguageExtensionsOptions contains the optional parameters for the ClustersClient.ListLanguageExtensions
 // method.
-func (client *ClustersClient) ListLanguageExtensions(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientListLanguageExtensionsOptions) (ClustersClientListLanguageExtensionsResponse, error) {
-	req, err := client.listLanguageExtensionsCreateRequest(ctx, resourceGroupName, clusterName, options)
-	if err != nil {
-		return ClustersClientListLanguageExtensionsResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ClustersClientListLanguageExtensionsResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClustersClientListLanguageExtensionsResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listLanguageExtensionsHandleResponse(resp)
+func (client *ClustersClient) ListLanguageExtensions(resourceGroupName string, clusterName string, options *ClustersClientListLanguageExtensionsOptions) *runtime.Pager[ClustersClientListLanguageExtensionsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ClustersClientListLanguageExtensionsResponse]{
+		More: func(page ClustersClientListLanguageExtensionsResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ClustersClientListLanguageExtensionsResponse) (ClustersClientListLanguageExtensionsResponse, error) {
+			req, err := client.listLanguageExtensionsCreateRequest(ctx, resourceGroupName, clusterName, options)
+			if err != nil {
+				return ClustersClientListLanguageExtensionsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClustersClientListLanguageExtensionsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClustersClientListLanguageExtensionsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listLanguageExtensionsHandleResponse(resp)
+		},
+	})
 }
 
 // listLanguageExtensionsCreateRequest creates the ListLanguageExtensions request.
@@ -695,7 +700,7 @@ func (client *ClustersClient) listLanguageExtensionsCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -703,7 +708,7 @@ func (client *ClustersClient) listLanguageExtensionsCreateRequest(ctx context.Co
 
 // listLanguageExtensionsHandleResponse handles the ListLanguageExtensions response.
 func (client *ClustersClient) listLanguageExtensionsHandleResponse(resp *http.Response) (ClustersClientListLanguageExtensionsResponse, error) {
-	result := ClustersClientListLanguageExtensionsResponse{RawResponse: resp}
+	result := ClustersClientListLanguageExtensionsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LanguageExtensionsList); err != nil {
 		return ClustersClientListLanguageExtensionsResponse{}, err
 	}
@@ -716,16 +721,32 @@ func (client *ClustersClient) listLanguageExtensionsHandleResponse(resp *http.Re
 // clusterName - The name of the Kusto cluster.
 // options - ClustersClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the ClustersClient.ListOutboundNetworkDependenciesEndpoints
 // method.
-func (client *ClustersClient) ListOutboundNetworkDependenciesEndpoints(resourceGroupName string, clusterName string, options *ClustersClientListOutboundNetworkDependenciesEndpointsOptions) *ClustersClientListOutboundNetworkDependenciesEndpointsPager {
-	return &ClustersClientListOutboundNetworkDependenciesEndpointsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listOutboundNetworkDependenciesEndpointsCreateRequest(ctx, resourceGroupName, clusterName, options)
+func (client *ClustersClient) ListOutboundNetworkDependenciesEndpoints(resourceGroupName string, clusterName string, options *ClustersClientListOutboundNetworkDependenciesEndpointsOptions) *runtime.Pager[ClustersClientListOutboundNetworkDependenciesEndpointsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ClustersClientListOutboundNetworkDependenciesEndpointsResponse]{
+		More: func(page ClustersClientListOutboundNetworkDependenciesEndpointsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ClustersClientListOutboundNetworkDependenciesEndpointsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.OutboundNetworkDependenciesEndpointListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ClustersClientListOutboundNetworkDependenciesEndpointsResponse) (ClustersClientListOutboundNetworkDependenciesEndpointsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listOutboundNetworkDependenciesEndpointsCreateRequest(ctx, resourceGroupName, clusterName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ClustersClientListOutboundNetworkDependenciesEndpointsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClustersClientListOutboundNetworkDependenciesEndpointsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClustersClientListOutboundNetworkDependenciesEndpointsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listOutboundNetworkDependenciesEndpointsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listOutboundNetworkDependenciesEndpointsCreateRequest creates the ListOutboundNetworkDependenciesEndpoints request.
@@ -748,7 +769,7 @@ func (client *ClustersClient) listOutboundNetworkDependenciesEndpointsCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -756,7 +777,7 @@ func (client *ClustersClient) listOutboundNetworkDependenciesEndpointsCreateRequ
 
 // listOutboundNetworkDependenciesEndpointsHandleResponse handles the ListOutboundNetworkDependenciesEndpoints response.
 func (client *ClustersClient) listOutboundNetworkDependenciesEndpointsHandleResponse(resp *http.Response) (ClustersClientListOutboundNetworkDependenciesEndpointsResponse, error) {
-	result := ClustersClientListOutboundNetworkDependenciesEndpointsResponse{RawResponse: resp}
+	result := ClustersClientListOutboundNetworkDependenciesEndpointsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OutboundNetworkDependenciesEndpointListResult); err != nil {
 		return ClustersClientListOutboundNetworkDependenciesEndpointsResponse{}, err
 	}
@@ -766,19 +787,26 @@ func (client *ClustersClient) listOutboundNetworkDependenciesEndpointsHandleResp
 // ListSKUs - Lists eligible SKUs for Kusto resource provider.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ClustersClientListSKUsOptions contains the optional parameters for the ClustersClient.ListSKUs method.
-func (client *ClustersClient) ListSKUs(ctx context.Context, options *ClustersClientListSKUsOptions) (ClustersClientListSKUsResponse, error) {
-	req, err := client.listSKUsCreateRequest(ctx, options)
-	if err != nil {
-		return ClustersClientListSKUsResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ClustersClientListSKUsResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClustersClientListSKUsResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listSKUsHandleResponse(resp)
+func (client *ClustersClient) ListSKUs(options *ClustersClientListSKUsOptions) *runtime.Pager[ClustersClientListSKUsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ClustersClientListSKUsResponse]{
+		More: func(page ClustersClientListSKUsResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ClustersClientListSKUsResponse) (ClustersClientListSKUsResponse, error) {
+			req, err := client.listSKUsCreateRequest(ctx, options)
+			if err != nil {
+				return ClustersClientListSKUsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClustersClientListSKUsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClustersClientListSKUsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSKUsHandleResponse(resp)
+		},
+	})
 }
 
 // listSKUsCreateRequest creates the ListSKUs request.
@@ -793,7 +821,7 @@ func (client *ClustersClient) listSKUsCreateRequest(ctx context.Context, options
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -801,7 +829,7 @@ func (client *ClustersClient) listSKUsCreateRequest(ctx context.Context, options
 
 // listSKUsHandleResponse handles the ListSKUs response.
 func (client *ClustersClient) listSKUsHandleResponse(resp *http.Response) (ClustersClientListSKUsResponse, error) {
-	result := ClustersClientListSKUsResponse{RawResponse: resp}
+	result := ClustersClientListSKUsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUDescriptionList); err != nil {
 		return ClustersClientListSKUsResponse{}, err
 	}
@@ -814,19 +842,26 @@ func (client *ClustersClient) listSKUsHandleResponse(resp *http.Response) (Clust
 // clusterName - The name of the Kusto cluster.
 // options - ClustersClientListSKUsByResourceOptions contains the optional parameters for the ClustersClient.ListSKUsByResource
 // method.
-func (client *ClustersClient) ListSKUsByResource(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientListSKUsByResourceOptions) (ClustersClientListSKUsByResourceResponse, error) {
-	req, err := client.listSKUsByResourceCreateRequest(ctx, resourceGroupName, clusterName, options)
-	if err != nil {
-		return ClustersClientListSKUsByResourceResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ClustersClientListSKUsByResourceResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClustersClientListSKUsByResourceResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listSKUsByResourceHandleResponse(resp)
+func (client *ClustersClient) ListSKUsByResource(resourceGroupName string, clusterName string, options *ClustersClientListSKUsByResourceOptions) *runtime.Pager[ClustersClientListSKUsByResourceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ClustersClientListSKUsByResourceResponse]{
+		More: func(page ClustersClientListSKUsByResourceResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ClustersClientListSKUsByResourceResponse) (ClustersClientListSKUsByResourceResponse, error) {
+			req, err := client.listSKUsByResourceCreateRequest(ctx, resourceGroupName, clusterName, options)
+			if err != nil {
+				return ClustersClientListSKUsByResourceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClustersClientListSKUsByResourceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClustersClientListSKUsByResourceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSKUsByResourceHandleResponse(resp)
+		},
+	})
 }
 
 // listSKUsByResourceCreateRequest creates the ListSKUsByResource request.
@@ -849,7 +884,7 @@ func (client *ClustersClient) listSKUsByResourceCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -857,7 +892,7 @@ func (client *ClustersClient) listSKUsByResourceCreateRequest(ctx context.Contex
 
 // listSKUsByResourceHandleResponse handles the ListSKUsByResource response.
 func (client *ClustersClient) listSKUsByResourceHandleResponse(resp *http.Response) (ClustersClientListSKUsByResourceResponse, error) {
-	result := ClustersClientListSKUsByResourceResponse{RawResponse: resp}
+	result := ClustersClientListSKUsByResourceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListResourceSKUsResult); err != nil {
 		return ClustersClientListSKUsByResourceResponse{}, err
 	}
@@ -871,22 +906,16 @@ func (client *ClustersClient) listSKUsByResourceHandleResponse(resp *http.Respon
 // languageExtensionsToRemove - The language extensions to remove.
 // options - ClustersClientBeginRemoveLanguageExtensionsOptions contains the optional parameters for the ClustersClient.BeginRemoveLanguageExtensions
 // method.
-func (client *ClustersClient) BeginRemoveLanguageExtensions(ctx context.Context, resourceGroupName string, clusterName string, languageExtensionsToRemove LanguageExtensionsList, options *ClustersClientBeginRemoveLanguageExtensionsOptions) (ClustersClientRemoveLanguageExtensionsPollerResponse, error) {
-	resp, err := client.removeLanguageExtensions(ctx, resourceGroupName, clusterName, languageExtensionsToRemove, options)
-	if err != nil {
-		return ClustersClientRemoveLanguageExtensionsPollerResponse{}, err
+func (client *ClustersClient) BeginRemoveLanguageExtensions(ctx context.Context, resourceGroupName string, clusterName string, languageExtensionsToRemove LanguageExtensionsList, options *ClustersClientBeginRemoveLanguageExtensionsOptions) (*armruntime.Poller[ClustersClientRemoveLanguageExtensionsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.removeLanguageExtensions(ctx, resourceGroupName, clusterName, languageExtensionsToRemove, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClustersClientRemoveLanguageExtensionsResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClustersClientRemoveLanguageExtensionsResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClustersClientRemoveLanguageExtensionsPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ClustersClient.RemoveLanguageExtensions", "", resp, client.pl)
-	if err != nil {
-		return ClustersClientRemoveLanguageExtensionsPollerResponse{}, err
-	}
-	result.Poller = &ClustersClientRemoveLanguageExtensionsPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // RemoveLanguageExtensions - Remove a list of language extensions that can run within KQL queries.
@@ -926,7 +955,7 @@ func (client *ClustersClient) removeLanguageExtensionsCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, languageExtensionsToRemove)
@@ -937,22 +966,16 @@ func (client *ClustersClient) removeLanguageExtensionsCreateRequest(ctx context.
 // resourceGroupName - The name of the resource group containing the Kusto cluster.
 // clusterName - The name of the Kusto cluster.
 // options - ClustersClientBeginStartOptions contains the optional parameters for the ClustersClient.BeginStart method.
-func (client *ClustersClient) BeginStart(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginStartOptions) (ClustersClientStartPollerResponse, error) {
-	resp, err := client.start(ctx, resourceGroupName, clusterName, options)
-	if err != nil {
-		return ClustersClientStartPollerResponse{}, err
+func (client *ClustersClient) BeginStart(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginStartOptions) (*armruntime.Poller[ClustersClientStartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.start(ctx, resourceGroupName, clusterName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClustersClientStartResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClustersClientStartResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClustersClientStartPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ClustersClient.Start", "", resp, client.pl)
-	if err != nil {
-		return ClustersClientStartPollerResponse{}, err
-	}
-	result.Poller = &ClustersClientStartPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Start - Starts a Kusto cluster.
@@ -992,7 +1015,7 @@ func (client *ClustersClient) startCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1003,22 +1026,16 @@ func (client *ClustersClient) startCreateRequest(ctx context.Context, resourceGr
 // resourceGroupName - The name of the resource group containing the Kusto cluster.
 // clusterName - The name of the Kusto cluster.
 // options - ClustersClientBeginStopOptions contains the optional parameters for the ClustersClient.BeginStop method.
-func (client *ClustersClient) BeginStop(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginStopOptions) (ClustersClientStopPollerResponse, error) {
-	resp, err := client.stop(ctx, resourceGroupName, clusterName, options)
-	if err != nil {
-		return ClustersClientStopPollerResponse{}, err
+func (client *ClustersClient) BeginStop(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginStopOptions) (*armruntime.Poller[ClustersClientStopResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.stop(ctx, resourceGroupName, clusterName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClustersClientStopResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClustersClientStopResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClustersClientStopPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ClustersClient.Stop", "", resp, client.pl)
-	if err != nil {
-		return ClustersClientStopPollerResponse{}, err
-	}
-	result.Poller = &ClustersClientStopPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Stop - Stops a Kusto cluster.
@@ -1058,7 +1075,7 @@ func (client *ClustersClient) stopCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1070,22 +1087,16 @@ func (client *ClustersClient) stopCreateRequest(ctx context.Context, resourceGro
 // clusterName - The name of the Kusto cluster.
 // parameters - The Kusto cluster parameters supplied to the Update operation.
 // options - ClustersClientBeginUpdateOptions contains the optional parameters for the ClustersClient.BeginUpdate method.
-func (client *ClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterUpdate, options *ClustersClientBeginUpdateOptions) (ClustersClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, clusterName, parameters, options)
-	if err != nil {
-		return ClustersClientUpdatePollerResponse{}, err
+func (client *ClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterUpdate, options *ClustersClientBeginUpdateOptions) (*armruntime.Poller[ClustersClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, clusterName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClustersClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClustersClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClustersClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ClustersClient.Update", "", resp, client.pl)
-	if err != nil {
-		return ClustersClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &ClustersClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Update a Kusto cluster.
@@ -1125,7 +1136,7 @@ func (client *ClustersClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header.Set("If-Match", *options.IfMatch)

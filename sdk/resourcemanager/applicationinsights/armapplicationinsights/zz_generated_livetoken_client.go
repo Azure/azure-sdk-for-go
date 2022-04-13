@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -29,19 +30,23 @@ type LiveTokenClient struct {
 // NewLiveTokenClient creates a new instance of LiveTokenClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewLiveTokenClient(credential azcore.TokenCredential, options *arm.ClientOptions) *LiveTokenClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewLiveTokenClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*LiveTokenClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &LiveTokenClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets an access token for live metrics stream data.
@@ -65,14 +70,14 @@ func (client *LiveTokenClient) Get(ctx context.Context, resourceURI string, opti
 
 // getCreateRequest creates the Get request.
 func (client *LiveTokenClient) getCreateRequest(ctx context.Context, resourceURI string, options *LiveTokenClientGetOptions) (*policy.Request, error) {
-	urlPath := "/{resourceUri}/providers/microsoft.insights/generatelivetoken"
+	urlPath := "/{resourceUri}/providers/Microsoft.Insights/generatelivetoken"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-06-02-preview")
+	reqQP.Set("api-version", "2021-10-14")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -80,7 +85,7 @@ func (client *LiveTokenClient) getCreateRequest(ctx context.Context, resourceURI
 
 // getHandleResponse handles the Get response.
 func (client *LiveTokenClient) getHandleResponse(resp *http.Response) (LiveTokenClientGetResponse, error) {
-	result := LiveTokenClientGetResponse{RawResponse: resp}
+	result := LiveTokenClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LiveTokenResponse); err != nil {
 		return LiveTokenClientGetResponse{}, err
 	}

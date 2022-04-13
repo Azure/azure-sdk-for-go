@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type VaultsClient struct {
 // subscriptionID - The subscription Id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewVaultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VaultsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewVaultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VaultsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &VaultsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a Recovery Services vault.
@@ -56,22 +61,16 @@ func NewVaultsClient(subscriptionID string, credential azcore.TokenCredential, o
 // vault - Recovery Services Vault to be created.
 // options - VaultsClientBeginCreateOrUpdateOptions contains the optional parameters for the VaultsClient.BeginCreateOrUpdate
 // method.
-func (client *VaultsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, vault Vault, options *VaultsClientBeginCreateOrUpdateOptions) (VaultsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, vaultName, vault, options)
-	if err != nil {
-		return VaultsClientCreateOrUpdatePollerResponse{}, err
+func (client *VaultsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, vault Vault, options *VaultsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[VaultsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, vaultName, vault, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[VaultsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[VaultsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VaultsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VaultsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return VaultsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &VaultsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a Recovery Services vault.
@@ -111,7 +110,7 @@ func (client *VaultsClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, vault)
@@ -134,7 +133,7 @@ func (client *VaultsClient) Delete(ctx context.Context, resourceGroupName string
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return VaultsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return VaultsClientDeleteResponse{RawResponse: resp}, nil
+	return VaultsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -157,7 +156,7 @@ func (client *VaultsClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -203,7 +202,7 @@ func (client *VaultsClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -211,7 +210,7 @@ func (client *VaultsClient) getCreateRequest(ctx context.Context, resourceGroupN
 
 // getHandleResponse handles the Get response.
 func (client *VaultsClient) getHandleResponse(resp *http.Response) (VaultsClientGetResponse, error) {
-	result := VaultsClientGetResponse{RawResponse: resp}
+	result := VaultsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Vault); err != nil {
 		return VaultsClientGetResponse{}, err
 	}
@@ -223,16 +222,32 @@ func (client *VaultsClient) getHandleResponse(resp *http.Response) (VaultsClient
 // resourceGroupName - The name of the resource group where the recovery services vault is present.
 // options - VaultsClientListByResourceGroupOptions contains the optional parameters for the VaultsClient.ListByResourceGroup
 // method.
-func (client *VaultsClient) ListByResourceGroup(resourceGroupName string, options *VaultsClientListByResourceGroupOptions) *VaultsClientListByResourceGroupPager {
-	return &VaultsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *VaultsClient) ListByResourceGroup(resourceGroupName string, options *VaultsClientListByResourceGroupOptions) *runtime.Pager[VaultsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[VaultsClientListByResourceGroupResponse]{
+		More: func(page VaultsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp VaultsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.VaultList.NextLink)
+		Fetcher: func(ctx context.Context, page *VaultsClientListByResourceGroupResponse) (VaultsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return VaultsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return VaultsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return VaultsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -251,7 +266,7 @@ func (client *VaultsClient) listByResourceGroupCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -259,7 +274,7 @@ func (client *VaultsClient) listByResourceGroupCreateRequest(ctx context.Context
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *VaultsClient) listByResourceGroupHandleResponse(resp *http.Response) (VaultsClientListByResourceGroupResponse, error) {
-	result := VaultsClientListByResourceGroupResponse{RawResponse: resp}
+	result := VaultsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VaultList); err != nil {
 		return VaultsClientListByResourceGroupResponse{}, err
 	}
@@ -270,16 +285,32 @@ func (client *VaultsClient) listByResourceGroupHandleResponse(resp *http.Respons
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - VaultsClientListBySubscriptionIDOptions contains the optional parameters for the VaultsClient.ListBySubscriptionID
 // method.
-func (client *VaultsClient) ListBySubscriptionID(options *VaultsClientListBySubscriptionIDOptions) *VaultsClientListBySubscriptionIDPager {
-	return &VaultsClientListBySubscriptionIDPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionIDCreateRequest(ctx, options)
+func (client *VaultsClient) ListBySubscriptionID(options *VaultsClientListBySubscriptionIDOptions) *runtime.Pager[VaultsClientListBySubscriptionIDResponse] {
+	return runtime.NewPager(runtime.PageProcessor[VaultsClientListBySubscriptionIDResponse]{
+		More: func(page VaultsClientListBySubscriptionIDResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp VaultsClientListBySubscriptionIDResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.VaultList.NextLink)
+		Fetcher: func(ctx context.Context, page *VaultsClientListBySubscriptionIDResponse) (VaultsClientListBySubscriptionIDResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionIDCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return VaultsClientListBySubscriptionIDResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return VaultsClientListBySubscriptionIDResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return VaultsClientListBySubscriptionIDResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionIDHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionIDCreateRequest creates the ListBySubscriptionID request.
@@ -294,7 +325,7 @@ func (client *VaultsClient) listBySubscriptionIDCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -302,7 +333,7 @@ func (client *VaultsClient) listBySubscriptionIDCreateRequest(ctx context.Contex
 
 // listBySubscriptionIDHandleResponse handles the ListBySubscriptionID response.
 func (client *VaultsClient) listBySubscriptionIDHandleResponse(resp *http.Response) (VaultsClientListBySubscriptionIDResponse, error) {
-	result := VaultsClientListBySubscriptionIDResponse{RawResponse: resp}
+	result := VaultsClientListBySubscriptionIDResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VaultList); err != nil {
 		return VaultsClientListBySubscriptionIDResponse{}, err
 	}
@@ -315,22 +346,16 @@ func (client *VaultsClient) listBySubscriptionIDHandleResponse(resp *http.Respon
 // vaultName - The name of the recovery services vault.
 // vault - Recovery Services Vault to be created.
 // options - VaultsClientBeginUpdateOptions contains the optional parameters for the VaultsClient.BeginUpdate method.
-func (client *VaultsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vaultName string, vault PatchVault, options *VaultsClientBeginUpdateOptions) (VaultsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, vaultName, vault, options)
-	if err != nil {
-		return VaultsClientUpdatePollerResponse{}, err
+func (client *VaultsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vaultName string, vault PatchVault, options *VaultsClientBeginUpdateOptions) (*armruntime.Poller[VaultsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, vaultName, vault, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[VaultsClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[VaultsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VaultsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VaultsClient.Update", "", resp, client.pl)
-	if err != nil {
-		return VaultsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &VaultsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates the vault.
@@ -370,7 +395,7 @@ func (client *VaultsClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, vault)

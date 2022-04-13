@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,461 +19,606 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 )
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherCreate.json
 func ExampleWatchersClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<network-watcher-name>",
 		armnetwork.Watcher{
-			Location:   to.StringPtr("<location>"),
+			Location:   to.Ptr("<location>"),
 			Properties: &armnetwork.WatcherPropertiesFormat{},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WatchersClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherGet.json
 func ExampleWatchersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<network-watcher-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WatchersClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherDelete.json
 func ExampleWatchersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<network-watcher-name>",
-		nil)
+		&armnetwork.WatchersClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherUpdateTags.json
 func ExampleWatchersClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.UpdateTags(ctx,
 		"<resource-group-name>",
 		"<network-watcher-name>",
 		armnetwork.TagsObject{
 			Tags: map[string]*string{
-				"tag1": to.StringPtr("value1"),
-				"tag2": to.StringPtr("value2"),
+				"tag1": to.Ptr("value1"),
+				"tag2": to.Ptr("value2"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WatchersClientUpdateTagsResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherList.json
 func ExampleWatchersClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
-	res, err := client.List(ctx,
-		"<resource-group-name>",
-		nil)
+	client, err := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WatchersClientListResult)
+	pager := client.List("<resource-group-name>",
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+			return
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherListAll.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherListAll.json
 func ExampleWatchersClient_ListAll() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
-	res, err := client.ListAll(ctx,
-		nil)
+	client, err := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WatchersClientListAllResult)
+	pager := client.ListAll(nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+			return
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherTopologyGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherTopologyGet.json
 func ExampleWatchersClient_GetTopology() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetTopology(ctx,
 		"<resource-group-name>",
 		"<network-watcher-name>",
 		armnetwork.TopologyParameters{
-			TargetResourceGroupName: to.StringPtr("<target-resource-group-name>"),
+			TargetResourceGroupName: to.Ptr("<target-resource-group-name>"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WatchersClientGetTopologyResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherIpFlowVerify.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherIpFlowVerify.json
 func ExampleWatchersClient_BeginVerifyIPFlow() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginVerifyIPFlow(ctx,
 		"<resource-group-name>",
 		"<network-watcher-name>",
 		armnetwork.VerificationIPFlowParameters{
-			Direction:        armnetwork.Direction("Outbound").ToPtr(),
-			LocalIPAddress:   to.StringPtr("<local-ipaddress>"),
-			LocalPort:        to.StringPtr("<local-port>"),
-			RemoteIPAddress:  to.StringPtr("<remote-ipaddress>"),
-			RemotePort:       to.StringPtr("<remote-port>"),
-			TargetResourceID: to.StringPtr("<target-resource-id>"),
-			Protocol:         armnetwork.IPFlowProtocol("TCP").ToPtr(),
+			Direction:        to.Ptr(armnetwork.DirectionOutbound),
+			LocalIPAddress:   to.Ptr("<local-ipaddress>"),
+			LocalPort:        to.Ptr("<local-port>"),
+			RemoteIPAddress:  to.Ptr("<remote-ipaddress>"),
+			RemotePort:       to.Ptr("<remote-port>"),
+			TargetResourceID: to.Ptr("<target-resource-id>"),
+			Protocol:         to.Ptr(armnetwork.IPFlowProtocolTCP),
 		},
-		nil)
+		&armnetwork.WatchersClientBeginVerifyIPFlowOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WatchersClientVerifyIPFlowResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherNextHopGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherNextHopGet.json
 func ExampleWatchersClient_BeginGetNextHop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginGetNextHop(ctx,
 		"<resource-group-name>",
 		"<network-watcher-name>",
 		armnetwork.NextHopParameters{
-			DestinationIPAddress: to.StringPtr("<destination-ipaddress>"),
-			SourceIPAddress:      to.StringPtr("<source-ipaddress>"),
-			TargetNicResourceID:  to.StringPtr("<target-nic-resource-id>"),
-			TargetResourceID:     to.StringPtr("<target-resource-id>"),
+			DestinationIPAddress: to.Ptr("<destination-ipaddress>"),
+			SourceIPAddress:      to.Ptr("<source-ipaddress>"),
+			TargetNicResourceID:  to.Ptr("<target-nic-resource-id>"),
+			TargetResourceID:     to.Ptr("<target-resource-id>"),
 		},
-		nil)
+		&armnetwork.WatchersClientBeginGetNextHopOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WatchersClientGetNextHopResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherSecurityGroupViewGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherSecurityGroupViewGet.json
 func ExampleWatchersClient_BeginGetVMSecurityRules() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginGetVMSecurityRules(ctx,
 		"<resource-group-name>",
 		"<network-watcher-name>",
 		armnetwork.SecurityGroupViewParameters{
-			TargetResourceID: to.StringPtr("<target-resource-id>"),
+			TargetResourceID: to.Ptr("<target-resource-id>"),
 		},
-		nil)
+		&armnetwork.WatchersClientBeginGetVMSecurityRulesOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WatchersClientGetVMSecurityRulesResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherTroubleshootGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherTroubleshootGet.json
 func ExampleWatchersClient_BeginGetTroubleshooting() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginGetTroubleshooting(ctx,
 		"<resource-group-name>",
 		"<network-watcher-name>",
 		armnetwork.TroubleshootingParameters{
 			Properties: &armnetwork.TroubleshootingProperties{
-				StorageID:   to.StringPtr("<storage-id>"),
-				StoragePath: to.StringPtr("<storage-path>"),
+				StorageID:   to.Ptr("<storage-id>"),
+				StoragePath: to.Ptr("<storage-path>"),
 			},
-			TargetResourceID: to.StringPtr("<target-resource-id>"),
+			TargetResourceID: to.Ptr("<target-resource-id>"),
 		},
-		nil)
+		&armnetwork.WatchersClientBeginGetTroubleshootingOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WatchersClientGetTroubleshootingResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherTroubleshootResultQuery.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherTroubleshootResultQuery.json
 func ExampleWatchersClient_BeginGetTroubleshootingResult() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginGetTroubleshootingResult(ctx,
 		"<resource-group-name>",
 		"<network-watcher-name>",
 		armnetwork.QueryTroubleshootingParameters{
-			TargetResourceID: to.StringPtr("<target-resource-id>"),
+			TargetResourceID: to.Ptr("<target-resource-id>"),
 		},
-		nil)
+		&armnetwork.WatchersClientBeginGetTroubleshootingResultOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WatchersClientGetTroubleshootingResultResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherFlowLogConfigure.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherFlowLogConfigure.json
 func ExampleWatchersClient_BeginSetFlowLogConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginSetFlowLogConfiguration(ctx,
 		"<resource-group-name>",
 		"<network-watcher-name>",
 		armnetwork.FlowLogInformation{
 			Properties: &armnetwork.FlowLogProperties{
-				Enabled:   to.BoolPtr(true),
-				StorageID: to.StringPtr("<storage-id>"),
+				Enabled:   to.Ptr(true),
+				StorageID: to.Ptr("<storage-id>"),
 			},
-			TargetResourceID: to.StringPtr("<target-resource-id>"),
+			TargetResourceID: to.Ptr("<target-resource-id>"),
 		},
-		nil)
+		&armnetwork.WatchersClientBeginSetFlowLogConfigurationOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WatchersClientSetFlowLogConfigurationResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherFlowLogStatusQuery.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherFlowLogStatusQuery.json
 func ExampleWatchersClient_BeginGetFlowLogStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginGetFlowLogStatus(ctx,
 		"<resource-group-name>",
 		"<network-watcher-name>",
 		armnetwork.FlowLogStatusParameters{
-			TargetResourceID: to.StringPtr("<target-resource-id>"),
+			TargetResourceID: to.Ptr("<target-resource-id>"),
 		},
-		nil)
+		&armnetwork.WatchersClientBeginGetFlowLogStatusOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WatchersClientGetFlowLogStatusResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherConnectivityCheck.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherConnectivityCheck.json
 func ExampleWatchersClient_BeginCheckConnectivity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCheckConnectivity(ctx,
 		"<resource-group-name>",
 		"<network-watcher-name>",
 		armnetwork.ConnectivityParameters{
 			Destination: &armnetwork.ConnectivityDestination{
-				Address: to.StringPtr("<address>"),
-				Port:    to.Int32Ptr(3389),
+				Address: to.Ptr("<address>"),
+				Port:    to.Ptr[int32](3389),
 			},
-			PreferredIPVersion: armnetwork.IPVersion("IPv4").ToPtr(),
+			PreferredIPVersion: to.Ptr(armnetwork.IPVersionIPv4),
 			Source: &armnetwork.ConnectivitySource{
-				ResourceID: to.StringPtr("<resource-id>"),
+				ResourceID: to.Ptr("<resource-id>"),
 			},
 		},
-		nil)
+		&armnetwork.WatchersClientBeginCheckConnectivityOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WatchersClientCheckConnectivityResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherAzureReachabilityReportGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherAzureReachabilityReportGet.json
 func ExampleWatchersClient_BeginGetAzureReachabilityReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginGetAzureReachabilityReport(ctx,
 		"<resource-group-name>",
 		"<network-watcher-name>",
 		armnetwork.AzureReachabilityReportParameters{
 			AzureLocations: []*string{
-				to.StringPtr("West US")},
-			EndTime: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-10T00:00:00Z"); return t }()),
+				to.Ptr("West US")},
+			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-10T00:00:00Z"); return t }()),
 			ProviderLocation: &armnetwork.AzureReachabilityReportLocation{
-				Country: to.StringPtr("<country>"),
-				State:   to.StringPtr("<state>"),
+				Country: to.Ptr("<country>"),
+				State:   to.Ptr("<state>"),
 			},
 			Providers: []*string{
-				to.StringPtr("Frontier Communications of America, Inc. - ASN 5650")},
-			StartTime: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-07T00:00:00Z"); return t }()),
+				to.Ptr("Frontier Communications of America, Inc. - ASN 5650")},
+			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-07T00:00:00Z"); return t }()),
 		},
-		nil)
+		&armnetwork.WatchersClientBeginGetAzureReachabilityReportOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WatchersClientGetAzureReachabilityReportResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherAvailableProvidersListGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherAvailableProvidersListGet.json
 func ExampleWatchersClient_BeginListAvailableProviders() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginListAvailableProviders(ctx,
 		"<resource-group-name>",
 		"<network-watcher-name>",
 		armnetwork.AvailableProvidersListParameters{
 			AzureLocations: []*string{
-				to.StringPtr("West US")},
-			City:    to.StringPtr("<city>"),
-			Country: to.StringPtr("<country>"),
-			State:   to.StringPtr("<state>"),
+				to.Ptr("West US")},
+			City:    to.Ptr("<city>"),
+			Country: to.Ptr("<country>"),
+			State:   to.Ptr("<state>"),
 		},
-		nil)
+		&armnetwork.WatchersClientBeginListAvailableProvidersOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WatchersClientListAvailableProvidersResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherNetworkConfigurationDiagnostic.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherNetworkConfigurationDiagnostic.json
 func ExampleWatchersClient_BeginGetNetworkConfigurationDiagnostic() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewWatchersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginGetNetworkConfigurationDiagnostic(ctx,
 		"<resource-group-name>",
 		"<network-watcher-name>",
 		armnetwork.ConfigurationDiagnosticParameters{
 			Profiles: []*armnetwork.ConfigurationDiagnosticProfile{
 				{
-					Destination:     to.StringPtr("<destination>"),
-					DestinationPort: to.StringPtr("<destination-port>"),
-					Direction:       armnetwork.Direction("Inbound").ToPtr(),
-					Source:          to.StringPtr("<source>"),
-					Protocol:        to.StringPtr("<protocol>"),
+					Destination:     to.Ptr("<destination>"),
+					DestinationPort: to.Ptr("<destination-port>"),
+					Direction:       to.Ptr(armnetwork.DirectionInbound),
+					Source:          to.Ptr("<source>"),
+					Protocol:        to.Ptr("<protocol>"),
 				}},
-			TargetResourceID: to.StringPtr("<target-resource-id>"),
+			TargetResourceID: to.Ptr("<target-resource-id>"),
 		},
-		nil)
+		&armnetwork.WatchersClientBeginGetNetworkConfigurationDiagnosticOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WatchersClientGetNetworkConfigurationDiagnosticResult)
+	// TODO: use response item
+	_ = res
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,85 +19,104 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse"
 )
 
-// x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetWorkspaceManagedSqlExtendedServerBlobAuditingSettings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetWorkspaceManagedSqlExtendedServerBlobAuditingSettings.json
 func ExampleWorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsynapse.NewWorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewWorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
-		armsynapse.BlobAuditingPolicyName("default"),
+		armsynapse.BlobAuditingPolicyNameDefault,
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateWorkspaceManagedSqlServerExtendedBlobAuditingSettingsWithAllParameters.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateWorkspaceManagedSqlServerExtendedBlobAuditingSettingsWithAllParameters.json
 func ExampleWorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsynapse.NewWorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewWorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
-		armsynapse.BlobAuditingPolicyName("default"),
+		armsynapse.BlobAuditingPolicyNameDefault,
 		armsynapse.ExtendedServerBlobAuditingPolicy{
 			Properties: &armsynapse.ExtendedServerBlobAuditingPolicyProperties{
 				AuditActionsAndGroups: []*string{
-					to.StringPtr("SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP"),
-					to.StringPtr("FAILED_DATABASE_AUTHENTICATION_GROUP"),
-					to.StringPtr("BATCH_COMPLETED_GROUP")},
-				IsAzureMonitorTargetEnabled:  to.BoolPtr(true),
-				IsStorageSecondaryKeyInUse:   to.BoolPtr(false),
-				PredicateExpression:          to.StringPtr("<predicate-expression>"),
-				RetentionDays:                to.Int32Ptr(6),
-				State:                        armsynapse.BlobAuditingPolicyStateEnabled.ToPtr(),
-				StorageAccountAccessKey:      to.StringPtr("<storage-account-access-key>"),
-				StorageAccountSubscriptionID: to.StringPtr("<storage-account-subscription-id>"),
-				StorageEndpoint:              to.StringPtr("<storage-endpoint>"),
+					to.Ptr("SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP"),
+					to.Ptr("FAILED_DATABASE_AUTHENTICATION_GROUP"),
+					to.Ptr("BATCH_COMPLETED_GROUP")},
+				IsAzureMonitorTargetEnabled:  to.Ptr(true),
+				IsStorageSecondaryKeyInUse:   to.Ptr(false),
+				PredicateExpression:          to.Ptr("<predicate-expression>"),
+				RetentionDays:                to.Ptr[int32](6),
+				State:                        to.Ptr(armsynapse.BlobAuditingPolicyStateEnabled),
+				StorageAccountAccessKey:      to.Ptr("<storage-account-access-key>"),
+				StorageAccountSubscriptionID: to.Ptr("<storage-account-subscription-id>"),
+				StorageEndpoint:              to.Ptr("<storage-endpoint>"),
 			},
 		},
-		nil)
+		&armsynapse.WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListWorkspaceManagedSqlServerExtendedBlobAuditingSettings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListWorkspaceManagedSqlServerExtendedBlobAuditingSettings.json
 func ExampleWorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient_ListByWorkspace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsynapse.NewWorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewWorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByWorkspace("<resource-group-name>",
 		"<workspace-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

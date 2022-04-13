@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armchangeanalysis
 
 const (
 	moduleName    = "armchangeanalysis"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // ChangeCategory - The change category.
@@ -27,11 +27,6 @@ func PossibleChangeCategoryValues() []ChangeCategory {
 		ChangeCategoryUser,
 		ChangeCategorySystem,
 	}
-}
-
-// ToPtr returns a *ChangeCategory pointing to the current value.
-func (c ChangeCategory) ToPtr() *ChangeCategory {
-	return &c
 }
 
 // ChangeType - The type of the change.
@@ -52,11 +47,6 @@ func PossibleChangeTypeValues() []ChangeType {
 	}
 }
 
-// ToPtr returns a *ChangeType pointing to the current value.
-func (c ChangeType) ToPtr() *ChangeType {
-	return &c
-}
-
 type Level string
 
 const (
@@ -72,9 +62,4 @@ func PossibleLevelValues() []Level {
 		LevelNoisy,
 		LevelNormal,
 	}
-}
-
-// ToPtr returns a *Level pointing to the current value.
-func (c Level) ToPtr() *Level {
-	return &c
 }

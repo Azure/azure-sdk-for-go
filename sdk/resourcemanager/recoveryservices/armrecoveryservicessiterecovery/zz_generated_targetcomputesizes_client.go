@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -37,22 +38,26 @@ type TargetComputeSizesClient struct {
 // subscriptionID - The subscription Id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewTargetComputeSizesClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TargetComputeSizesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewTargetComputeSizesClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TargetComputeSizesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &TargetComputeSizesClient{
 		resourceName:      resourceName,
 		resourceGroupName: resourceGroupName,
 		subscriptionID:    subscriptionID,
-		host:              string(cp.Endpoint),
-		pl:                armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:              ep,
+		pl:                pl,
 	}
-	return client
+	return client, nil
 }
 
 // ListByReplicationProtectedItems - Lists the available target compute sizes for a replication protected item.
@@ -62,16 +67,32 @@ func NewTargetComputeSizesClient(resourceName string, resourceGroupName string, 
 // replicatedProtectedItemName - Replication protected item name.
 // options - TargetComputeSizesClientListByReplicationProtectedItemsOptions contains the optional parameters for the TargetComputeSizesClient.ListByReplicationProtectedItems
 // method.
-func (client *TargetComputeSizesClient) ListByReplicationProtectedItems(fabricName string, protectionContainerName string, replicatedProtectedItemName string, options *TargetComputeSizesClientListByReplicationProtectedItemsOptions) *TargetComputeSizesClientListByReplicationProtectedItemsPager {
-	return &TargetComputeSizesClientListByReplicationProtectedItemsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByReplicationProtectedItemsCreateRequest(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, options)
+func (client *TargetComputeSizesClient) ListByReplicationProtectedItems(fabricName string, protectionContainerName string, replicatedProtectedItemName string, options *TargetComputeSizesClientListByReplicationProtectedItemsOptions) *runtime.Pager[TargetComputeSizesClientListByReplicationProtectedItemsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[TargetComputeSizesClientListByReplicationProtectedItemsResponse]{
+		More: func(page TargetComputeSizesClientListByReplicationProtectedItemsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp TargetComputeSizesClientListByReplicationProtectedItemsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.TargetComputeSizeCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *TargetComputeSizesClientListByReplicationProtectedItemsResponse) (TargetComputeSizesClientListByReplicationProtectedItemsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByReplicationProtectedItemsCreateRequest(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return TargetComputeSizesClientListByReplicationProtectedItemsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return TargetComputeSizesClientListByReplicationProtectedItemsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return TargetComputeSizesClientListByReplicationProtectedItemsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByReplicationProtectedItemsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByReplicationProtectedItemsCreateRequest creates the ListByReplicationProtectedItems request.
@@ -106,7 +127,7 @@ func (client *TargetComputeSizesClient) listByReplicationProtectedItemsCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -114,7 +135,7 @@ func (client *TargetComputeSizesClient) listByReplicationProtectedItemsCreateReq
 
 // listByReplicationProtectedItemsHandleResponse handles the ListByReplicationProtectedItems response.
 func (client *TargetComputeSizesClient) listByReplicationProtectedItemsHandleResponse(resp *http.Response) (TargetComputeSizesClientListByReplicationProtectedItemsResponse, error) {
-	result := TargetComputeSizesClientListByReplicationProtectedItemsResponse{RawResponse: resp}
+	result := TargetComputeSizesClientListByReplicationProtectedItemsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TargetComputeSizeCollection); err != nil {
 		return TargetComputeSizesClientListByReplicationProtectedItemsResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type SmartGroupsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSmartGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SmartGroupsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewSmartGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SmartGroupsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SmartGroupsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // ChangeState - Change the state of a Smart Group.
@@ -95,7 +100,7 @@ func (client *SmartGroupsClient) changeStateCreateRequest(ctx context.Context, s
 
 // changeStateHandleResponse handles the ChangeState response.
 func (client *SmartGroupsClient) changeStateHandleResponse(resp *http.Response) (SmartGroupsClientChangeStateResponse, error) {
-	result := SmartGroupsClientChangeStateResponse{RawResponse: resp}
+	result := SmartGroupsClientChangeStateResponse{}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.XMSRequestID = &val
 	}
@@ -108,16 +113,32 @@ func (client *SmartGroupsClient) changeStateHandleResponse(resp *http.Response) 
 // GetAll - List all the Smart Groups within a specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SmartGroupsClientGetAllOptions contains the optional parameters for the SmartGroupsClient.GetAll method.
-func (client *SmartGroupsClient) GetAll(options *SmartGroupsClientGetAllOptions) *SmartGroupsClientGetAllPager {
-	return &SmartGroupsClientGetAllPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.getAllCreateRequest(ctx, options)
+func (client *SmartGroupsClient) GetAll(options *SmartGroupsClientGetAllOptions) *runtime.Pager[SmartGroupsClientGetAllResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SmartGroupsClientGetAllResponse]{
+		More: func(page SmartGroupsClientGetAllResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SmartGroupsClientGetAllResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SmartGroupsList.NextLink)
+		Fetcher: func(ctx context.Context, page *SmartGroupsClientGetAllResponse) (SmartGroupsClientGetAllResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.getAllCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SmartGroupsClientGetAllResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SmartGroupsClientGetAllResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SmartGroupsClientGetAllResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.getAllHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // getAllCreateRequest creates the GetAll request.
@@ -173,7 +194,7 @@ func (client *SmartGroupsClient) getAllCreateRequest(ctx context.Context, option
 
 // getAllHandleResponse handles the GetAll response.
 func (client *SmartGroupsClient) getAllHandleResponse(resp *http.Response) (SmartGroupsClientGetAllResponse, error) {
-	result := SmartGroupsClientGetAllResponse{RawResponse: resp}
+	result := SmartGroupsClientGetAllResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SmartGroupsList); err != nil {
 		return SmartGroupsClientGetAllResponse{}, err
 	}
@@ -223,7 +244,7 @@ func (client *SmartGroupsClient) getByIDCreateRequest(ctx context.Context, smart
 
 // getByIDHandleResponse handles the GetByID response.
 func (client *SmartGroupsClient) getByIDHandleResponse(resp *http.Response) (SmartGroupsClientGetByIDResponse, error) {
-	result := SmartGroupsClientGetByIDResponse{RawResponse: resp}
+	result := SmartGroupsClientGetByIDResponse{}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.XMSRequestID = &val
 	}
@@ -276,7 +297,7 @@ func (client *SmartGroupsClient) getHistoryCreateRequest(ctx context.Context, sm
 
 // getHistoryHandleResponse handles the GetHistory response.
 func (client *SmartGroupsClient) getHistoryHandleResponse(resp *http.Response) (SmartGroupsClientGetHistoryResponse, error) {
-	result := SmartGroupsClientGetHistoryResponse{RawResponse: resp}
+	result := SmartGroupsClientGetHistoryResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SmartGroupModification); err != nil {
 		return SmartGroupsClientGetHistoryResponse{}, err
 	}

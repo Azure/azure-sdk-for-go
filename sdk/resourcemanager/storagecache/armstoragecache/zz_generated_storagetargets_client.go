@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type StorageTargetsClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewStorageTargetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *StorageTargetsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewStorageTargetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StorageTargetsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &StorageTargetsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or update a Storage Target. This operation is allowed at any time, but if the Cache is down
@@ -59,22 +64,16 @@ func NewStorageTargetsClient(subscriptionID string, credential azcore.TokenCrede
 // storageTargetName - Name of Storage Target.
 // options - StorageTargetsClientBeginCreateOrUpdateOptions contains the optional parameters for the StorageTargetsClient.BeginCreateOrUpdate
 // method.
-func (client *StorageTargetsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginCreateOrUpdateOptions) (StorageTargetsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, cacheName, storageTargetName, options)
-	if err != nil {
-		return StorageTargetsClientCreateOrUpdatePollerResponse{}, err
+func (client *StorageTargetsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[StorageTargetsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, cacheName, storageTargetName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[StorageTargetsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[StorageTargetsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := StorageTargetsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("StorageTargetsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return StorageTargetsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &StorageTargetsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update a Storage Target. This operation is allowed at any time, but if the Cache is down or
@@ -120,7 +119,7 @@ func (client *StorageTargetsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.Storagetarget != nil {
@@ -136,22 +135,18 @@ func (client *StorageTargetsClient) createOrUpdateCreateRequest(ctx context.Cont
 // storageTargetName - Name of Storage Target.
 // options - StorageTargetsClientBeginDNSRefreshOptions contains the optional parameters for the StorageTargetsClient.BeginDNSRefresh
 // method.
-func (client *StorageTargetsClient) BeginDNSRefresh(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginDNSRefreshOptions) (StorageTargetsClientDNSRefreshPollerResponse, error) {
-	resp, err := client.dNSRefresh(ctx, resourceGroupName, cacheName, storageTargetName, options)
-	if err != nil {
-		return StorageTargetsClientDNSRefreshPollerResponse{}, err
+func (client *StorageTargetsClient) BeginDNSRefresh(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginDNSRefreshOptions) (*armruntime.Poller[StorageTargetsClientDNSRefreshResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.dNSRefresh(ctx, resourceGroupName, cacheName, storageTargetName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[StorageTargetsClientDNSRefreshResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[StorageTargetsClientDNSRefreshResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := StorageTargetsClientDNSRefreshPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("StorageTargetsClient.DNSRefresh", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return StorageTargetsClientDNSRefreshPollerResponse{}, err
-	}
-	result.Poller = &StorageTargetsClientDNSRefreshPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DNSRefresh - Tells a storage target to refresh its DNS information.
@@ -195,7 +190,7 @@ func (client *StorageTargetsClient) dnsRefreshCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -211,22 +206,16 @@ func (client *StorageTargetsClient) dnsRefreshCreateRequest(ctx context.Context,
 // storageTargetName - Name of Storage Target.
 // options - StorageTargetsClientBeginDeleteOptions contains the optional parameters for the StorageTargetsClient.BeginDelete
 // method.
-func (client *StorageTargetsClient) BeginDelete(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginDeleteOptions) (StorageTargetsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, cacheName, storageTargetName, options)
-	if err != nil {
-		return StorageTargetsClientDeletePollerResponse{}, err
+func (client *StorageTargetsClient) BeginDelete(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginDeleteOptions) (*armruntime.Poller[StorageTargetsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, cacheName, storageTargetName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[StorageTargetsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[StorageTargetsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := StorageTargetsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("StorageTargetsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return StorageTargetsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &StorageTargetsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Removes a Storage Target from a Cache. This operation is allowed at any time, but if the Cache is down or unhealthy,
@@ -273,7 +262,7 @@ func (client *StorageTargetsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2022-01-01")
 	if options != nil && options.Force != nil {
 		reqQP.Set("force", *options.Force)
 	}
@@ -327,7 +316,7 @@ func (client *StorageTargetsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -335,7 +324,7 @@ func (client *StorageTargetsClient) getCreateRequest(ctx context.Context, resour
 
 // getHandleResponse handles the Get response.
 func (client *StorageTargetsClient) getHandleResponse(resp *http.Response) (StorageTargetsClientGetResponse, error) {
-	result := StorageTargetsClientGetResponse{RawResponse: resp}
+	result := StorageTargetsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageTarget); err != nil {
 		return StorageTargetsClientGetResponse{}, err
 	}
@@ -348,16 +337,32 @@ func (client *StorageTargetsClient) getHandleResponse(resp *http.Response) (Stor
 // cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 // options - StorageTargetsClientListByCacheOptions contains the optional parameters for the StorageTargetsClient.ListByCache
 // method.
-func (client *StorageTargetsClient) ListByCache(resourceGroupName string, cacheName string, options *StorageTargetsClientListByCacheOptions) *StorageTargetsClientListByCachePager {
-	return &StorageTargetsClientListByCachePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByCacheCreateRequest(ctx, resourceGroupName, cacheName, options)
+func (client *StorageTargetsClient) ListByCache(resourceGroupName string, cacheName string, options *StorageTargetsClientListByCacheOptions) *runtime.Pager[StorageTargetsClientListByCacheResponse] {
+	return runtime.NewPager(runtime.PageProcessor[StorageTargetsClientListByCacheResponse]{
+		More: func(page StorageTargetsClientListByCacheResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp StorageTargetsClientListByCacheResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.StorageTargetsResult.NextLink)
+		Fetcher: func(ctx context.Context, page *StorageTargetsClientListByCacheResponse) (StorageTargetsClientListByCacheResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByCacheCreateRequest(ctx, resourceGroupName, cacheName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return StorageTargetsClientListByCacheResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return StorageTargetsClientListByCacheResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return StorageTargetsClientListByCacheResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByCacheHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByCacheCreateRequest creates the ListByCache request.
@@ -380,7 +385,7 @@ func (client *StorageTargetsClient) listByCacheCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -388,7 +393,7 @@ func (client *StorageTargetsClient) listByCacheCreateRequest(ctx context.Context
 
 // listByCacheHandleResponse handles the ListByCache response.
 func (client *StorageTargetsClient) listByCacheHandleResponse(resp *http.Response) (StorageTargetsClientListByCacheResponse, error) {
-	result := StorageTargetsClientListByCacheResponse{RawResponse: resp}
+	result := StorageTargetsClientListByCacheResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageTargetsResult); err != nil {
 		return StorageTargetsClientListByCacheResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,254 +17,302 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement"
 )
 
-// x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/PrivateViewList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/PrivateViewList.json
 func ExampleViewsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcostmanagement.NewViewsClient(cred, nil)
+	client, err := armcostmanagement.NewViewsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ViewListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ViewListByResourceGroup.json
 func ExampleViewsClient_ListByScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcostmanagement.NewViewsClient(cred, nil)
+	client, err := armcostmanagement.NewViewsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByScope("<scope>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/PrivateView.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/PrivateView.json
 func ExampleViewsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcostmanagement.NewViewsClient(cred, nil)
+	client, err := armcostmanagement.NewViewsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<view-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ViewsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/PrivateViewCreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/PrivateViewCreateOrUpdate.json
 func ExampleViewsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcostmanagement.NewViewsClient(cred, nil)
+	client, err := armcostmanagement.NewViewsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<view-name>",
 		armcostmanagement.View{
-			ETag: to.StringPtr("<etag>"),
+			ETag: to.Ptr("<etag>"),
 			Properties: &armcostmanagement.ViewProperties{
-				Accumulated: armcostmanagement.AccumulatedType("true").ToPtr(),
-				Chart:       armcostmanagement.ChartType("Table").ToPtr(),
-				DisplayName: to.StringPtr("<display-name>"),
+				Accumulated: to.Ptr(armcostmanagement.AccumulatedTypeTrue),
+				Chart:       to.Ptr(armcostmanagement.ChartTypeTable),
+				DisplayName: to.Ptr("<display-name>"),
 				Kpis: []*armcostmanagement.KpiProperties{
 					{
-						Type:    armcostmanagement.KpiType("Forecast").ToPtr(),
-						Enabled: to.BoolPtr(true),
+						Type:    to.Ptr(armcostmanagement.KpiTypeForecast),
+						Enabled: to.Ptr(true),
 					},
 					{
-						Type:    armcostmanagement.KpiType("Budget").ToPtr(),
-						Enabled: to.BoolPtr(true),
-						ID:      to.StringPtr("<id>"),
+						Type:    to.Ptr(armcostmanagement.KpiTypeBudget),
+						Enabled: to.Ptr(true),
+						ID:      to.Ptr("<id>"),
 					}},
-				Metric: armcostmanagement.MetricType("ActualCost").ToPtr(),
+				Metric: to.Ptr(armcostmanagement.MetricTypeActualCost),
 				Pivots: []*armcostmanagement.PivotProperties{
 					{
-						Name: to.StringPtr("<name>"),
-						Type: armcostmanagement.PivotType("Dimension").ToPtr(),
+						Name: to.Ptr("<name>"),
+						Type: to.Ptr(armcostmanagement.PivotTypeDimension),
 					},
 					{
-						Name: to.StringPtr("<name>"),
-						Type: armcostmanagement.PivotType("Dimension").ToPtr(),
+						Name: to.Ptr("<name>"),
+						Type: to.Ptr(armcostmanagement.PivotTypeDimension),
 					},
 					{
-						Name: to.StringPtr("<name>"),
-						Type: armcostmanagement.PivotType("TagKey").ToPtr(),
+						Name: to.Ptr("<name>"),
+						Type: to.Ptr(armcostmanagement.PivotTypeTagKey),
 					}},
 				Query: &armcostmanagement.ReportConfigDefinition{
-					Type: armcostmanagement.ReportType("Usage").ToPtr(),
+					Type: to.Ptr(armcostmanagement.ReportTypeUsage),
 					DataSet: &armcostmanagement.ReportConfigDataset{
 						Aggregation: map[string]*armcostmanagement.ReportConfigAggregation{
 							"totalCost": {
-								Name:     to.StringPtr("<name>"),
-								Function: armcostmanagement.FunctionType("Sum").ToPtr(),
+								Name:     to.Ptr("<name>"),
+								Function: to.Ptr(armcostmanagement.FunctionTypeSum),
 							},
 						},
-						Granularity: armcostmanagement.ReportGranularityType("Daily").ToPtr(),
+						Granularity: to.Ptr(armcostmanagement.ReportGranularityTypeDaily),
 						Grouping:    []*armcostmanagement.ReportConfigGrouping{},
 						Sorting: []*armcostmanagement.ReportConfigSorting{
 							{
-								Name:      to.StringPtr("<name>"),
-								Direction: armcostmanagement.ReportConfigSortingDirection("Ascending").ToPtr(),
+								Name:      to.Ptr("<name>"),
+								Direction: to.Ptr(armcostmanagement.ReportConfigSortingTypeAscending),
 							}},
 					},
-					Timeframe: armcostmanagement.ReportTimeframeType("MonthToDate").ToPtr(),
+					Timeframe: to.Ptr(armcostmanagement.ReportTimeframeTypeMonthToDate),
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ViewsClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/PrivateViewDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/PrivateViewDelete.json
 func ExampleViewsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcostmanagement.NewViewsClient(cred, nil)
+	client, err := armcostmanagement.NewViewsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<view-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ViewByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ViewByResourceGroup.json
 func ExampleViewsClient_GetByScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcostmanagement.NewViewsClient(cred, nil)
+	client, err := armcostmanagement.NewViewsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetByScope(ctx,
 		"<scope>",
 		"<view-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ViewsClientGetByScopeResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ViewCreateOrUpdateByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ViewCreateOrUpdateByResourceGroup.json
 func ExampleViewsClient_CreateOrUpdateByScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcostmanagement.NewViewsClient(cred, nil)
+	client, err := armcostmanagement.NewViewsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdateByScope(ctx,
 		"<scope>",
 		"<view-name>",
 		armcostmanagement.View{
-			ETag: to.StringPtr("<etag>"),
+			ETag: to.Ptr("<etag>"),
 			Properties: &armcostmanagement.ViewProperties{
-				Accumulated: armcostmanagement.AccumulatedType("true").ToPtr(),
-				Chart:       armcostmanagement.ChartType("Table").ToPtr(),
-				DisplayName: to.StringPtr("<display-name>"),
+				Accumulated: to.Ptr(armcostmanagement.AccumulatedTypeTrue),
+				Chart:       to.Ptr(armcostmanagement.ChartTypeTable),
+				DisplayName: to.Ptr("<display-name>"),
 				Kpis: []*armcostmanagement.KpiProperties{
 					{
-						Type:    armcostmanagement.KpiType("Forecast").ToPtr(),
-						Enabled: to.BoolPtr(true),
+						Type:    to.Ptr(armcostmanagement.KpiTypeForecast),
+						Enabled: to.Ptr(true),
 					},
 					{
-						Type:    armcostmanagement.KpiType("Budget").ToPtr(),
-						Enabled: to.BoolPtr(true),
-						ID:      to.StringPtr("<id>"),
+						Type:    to.Ptr(armcostmanagement.KpiTypeBudget),
+						Enabled: to.Ptr(true),
+						ID:      to.Ptr("<id>"),
 					}},
-				Metric: armcostmanagement.MetricType("ActualCost").ToPtr(),
+				Metric: to.Ptr(armcostmanagement.MetricTypeActualCost),
 				Pivots: []*armcostmanagement.PivotProperties{
 					{
-						Name: to.StringPtr("<name>"),
-						Type: armcostmanagement.PivotType("Dimension").ToPtr(),
+						Name: to.Ptr("<name>"),
+						Type: to.Ptr(armcostmanagement.PivotTypeDimension),
 					},
 					{
-						Name: to.StringPtr("<name>"),
-						Type: armcostmanagement.PivotType("Dimension").ToPtr(),
+						Name: to.Ptr("<name>"),
+						Type: to.Ptr(armcostmanagement.PivotTypeDimension),
 					},
 					{
-						Name: to.StringPtr("<name>"),
-						Type: armcostmanagement.PivotType("TagKey").ToPtr(),
+						Name: to.Ptr("<name>"),
+						Type: to.Ptr(armcostmanagement.PivotTypeTagKey),
 					}},
 				Query: &armcostmanagement.ReportConfigDefinition{
-					Type: armcostmanagement.ReportType("Usage").ToPtr(),
+					Type: to.Ptr(armcostmanagement.ReportTypeUsage),
 					DataSet: &armcostmanagement.ReportConfigDataset{
 						Aggregation: map[string]*armcostmanagement.ReportConfigAggregation{
 							"totalCost": {
-								Name:     to.StringPtr("<name>"),
-								Function: armcostmanagement.FunctionType("Sum").ToPtr(),
+								Name:     to.Ptr("<name>"),
+								Function: to.Ptr(armcostmanagement.FunctionTypeSum),
 							},
 						},
-						Granularity: armcostmanagement.ReportGranularityType("Daily").ToPtr(),
+						Granularity: to.Ptr(armcostmanagement.ReportGranularityTypeDaily),
 						Grouping:    []*armcostmanagement.ReportConfigGrouping{},
 						Sorting: []*armcostmanagement.ReportConfigSorting{
 							{
-								Name:      to.StringPtr("<name>"),
-								Direction: armcostmanagement.ReportConfigSortingDirection("Ascending").ToPtr(),
+								Name:      to.Ptr("<name>"),
+								Direction: to.Ptr(armcostmanagement.ReportConfigSortingTypeAscending),
 							}},
 					},
-					Timeframe: armcostmanagement.ReportTimeframeType("MonthToDate").ToPtr(),
+					Timeframe: to.Ptr(armcostmanagement.ReportTimeframeTypeMonthToDate),
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ViewsClientCreateOrUpdateByScopeResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ViewDeleteByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ViewDeleteByResourceGroup.json
 func ExampleViewsClient_DeleteByScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcostmanagement.NewViewsClient(cred, nil)
+	client, err := armcostmanagement.NewViewsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.DeleteByScope(ctx,
 		"<scope>",
 		"<view-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }

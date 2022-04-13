@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,167 +8,29 @@
 
 package armaad
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-)
-
-// DiagnosticSettings - The diagnostic settings.
-type DiagnosticSettings struct {
-	// The resource Id for the event hub authorization rule.
-	EventHubAuthorizationRuleID *string `json:"eventHubAuthorizationRuleId,omitempty"`
-
-	// The name of the event hub. If none is specified, the default event hub will be selected.
-	EventHubName *string `json:"eventHubName,omitempty"`
-
-	// The list of logs settings.
-	Logs []*LogSettings `json:"logs,omitempty"`
-
-	// The service bus rule Id of the diagnostic setting. This is here to maintain backwards compatibility.
-	ServiceBusRuleID *string `json:"serviceBusRuleId,omitempty"`
-
-	// The resource ID of the storage account to which you would like to send Diagnostic Logs.
-	StorageAccountID *string `json:"storageAccountId,omitempty"`
-
-	// The workspace ID (resource ID of a Log Analytics workspace) for a Log Analytics workspace to which you would like to send
-	// Diagnostic Logs. Example:
-	// /subscriptions/4b9e8510-67ab-4e9a-95a9-e2f1e570ea9c/resourceGroups/insights-integration/providers/Microsoft.OperationalInsights/workspaces/viruela2
-	WorkspaceID *string `json:"workspaceId,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DiagnosticSettings.
-func (d DiagnosticSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "eventHubAuthorizationRuleId", d.EventHubAuthorizationRuleID)
-	populate(objectMap, "eventHubName", d.EventHubName)
-	populate(objectMap, "logs", d.Logs)
-	populate(objectMap, "serviceBusRuleId", d.ServiceBusRuleID)
-	populate(objectMap, "storageAccountId", d.StorageAccountID)
-	populate(objectMap, "workspaceId", d.WorkspaceID)
-	return json.Marshal(objectMap)
-}
-
-// DiagnosticSettingsCategory - The diagnostic settings Category.
-type DiagnosticSettingsCategory struct {
-	// The type of the diagnostic settings category.
-	CategoryType *CategoryType `json:"categoryType,omitempty"`
-}
-
-// DiagnosticSettingsCategoryClientListOptions contains the optional parameters for the DiagnosticSettingsCategoryClient.List
-// method.
-type DiagnosticSettingsCategoryClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DiagnosticSettingsCategoryResource - The diagnostic settings category resource.
-type DiagnosticSettingsCategoryResource struct {
-	// The properties of a Diagnostic Settings Category.
-	Properties *DiagnosticSettingsCategory `json:"properties,omitempty"`
-
-	// READ-ONLY; Azure resource Id
+// ARMProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required
+// location and tags
+type ARMProxyResource struct {
+	// READ-ONLY; The unique resource identifier of the Azure AD PrivateLink Policy.
 	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// READ-ONLY; Azure resource name
+	// READ-ONLY; The name of the Azure AD PrivateLink Policy.
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Azure resource type
+	// READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// DiagnosticSettingsCategoryResourceCollection - Represents a collection of diagnostic setting category resources.
-type DiagnosticSettingsCategoryResourceCollection struct {
-	// The collection of diagnostic settings category resources.
-	Value []*DiagnosticSettingsCategoryResource `json:"value,omitempty"`
-}
+// AzureResourceBase - Common properties for all Azure resources.
+type AzureResourceBase struct {
+	// Name of this resource.
+	Name *string `json:"name,omitempty"`
 
-// MarshalJSON implements the json.Marshaller interface for type DiagnosticSettingsCategoryResourceCollection.
-func (d DiagnosticSettingsCategoryResourceCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
-}
-
-// DiagnosticSettingsClientCreateOrUpdateOptions contains the optional parameters for the DiagnosticSettingsClient.CreateOrUpdate
-// method.
-type DiagnosticSettingsClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DiagnosticSettingsClientDeleteOptions contains the optional parameters for the DiagnosticSettingsClient.Delete method.
-type DiagnosticSettingsClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DiagnosticSettingsClientGetOptions contains the optional parameters for the DiagnosticSettingsClient.Get method.
-type DiagnosticSettingsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DiagnosticSettingsClientListOptions contains the optional parameters for the DiagnosticSettingsClient.List method.
-type DiagnosticSettingsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DiagnosticSettingsResource - The diagnostic setting resource.
-type DiagnosticSettingsResource struct {
-	// Properties of a Diagnostic Settings Resource.
-	Properties *DiagnosticSettings `json:"properties,omitempty"`
-
-	// READ-ONLY; Azure resource Id
+	// READ-ONLY; String Id used to locate any resource on Azure.
 	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure resource type
+	// READ-ONLY; Type of this resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// DiagnosticSettingsResourceCollection - Represents a collection of alert rule resources.
-type DiagnosticSettingsResourceCollection struct {
-	// The collection of diagnostic settings resources.
-	Value []*DiagnosticSettingsResource `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DiagnosticSettingsResourceCollection.
-func (d DiagnosticSettingsResourceCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
-}
-
-// Display - Contains the localized display information for this particular operation / action. These value will be used by
-// several clients for (1) custom role definitions for RBAC; (2) complex query filters for
-// the event service; and (3) audit history / records for management operations.
-type Display struct {
-	// The description. The localized friendly description for the operation, as it should be shown to the user. It should be
-	// thorough, yet concise – it will be used in tool tips and detailed views.
-	// Prescriptive guidance for namespaces: Read any 'display.provider' resource Create or Update any 'display.provider' resource
-	// Delete any 'display.provider' resource Perform any other action on any
-	// 'display.provider' resource Prescriptive guidance for namespaces: Read any 'display.resource' Create or Update any 'display.resource'
-	// Delete any 'display.resource' 'ActionName' any 'display.resources'
-	Description *string `json:"description,omitempty"`
-
-	// The operation. The localized friendly name for the operation, as it should be shown to the user. It should be concise (to
-	// fit in drop downs) but clear (i.e. self-documenting). It should use Title
-	// Casing. Prescriptive guidance: Read Create or Update Delete 'ActionName'
-	Operation *string `json:"operation,omitempty"`
-
-	// The provider. The localized friendly form of the resource provider name – it is expected to also include the publisher/company
-	// responsible. It should use Title Casing and begin with "Microsoft" for
-	// 1st party services. e.g. "Microsoft Monitoring Insights" or "Microsoft Compute."
-	Provider *string `json:"provider,omitempty"`
-
-	// The publisher. The localized friendly form of the resource publisher name.
-	Publisher *string `json:"publisher,omitempty"`
-
-	// The resource. The localized friendly form of the resource related to this action/operation – it should match the public
-	// documentation for the resource provider. It should use Title Casing. This value
-	// should be unique for a particular URL type (e.g. nested types should not reuse their parent’s display.resource field).
-	// e.g. "Virtual Machines" or "Scheduler Job Collections", or "Virtual Machine VM
-	// Sizes" or "Scheduler Jobs"
-	Resource *string `json:"resource,omitempty"`
 }
 
 // ErrorDefinition - Error definition.
@@ -183,107 +45,249 @@ type ErrorDefinition struct {
 	Message *string `json:"message,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ErrorDefinition.
-func (e ErrorDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	return json.Marshal(objectMap)
-}
-
 // ErrorResponse - Error response.
 type ErrorResponse struct {
 	// The error details.
 	Error *ErrorDefinition `json:"error,omitempty"`
 }
 
-// LogSettings - Part of MultiTenantDiagnosticSettings. Specifies the settings for a particular log.
-type LogSettings struct {
-	// REQUIRED; A value indicating whether this log is enabled.
-	Enabled *bool `json:"enabled,omitempty"`
-
-	// Name of a Diagnostic Log category for a resource type this setting is applied to. To obtain the list of Diagnostic Log
-	// categories for a resource, first perform a GET diagnostic settings operation.
-	Category *Category `json:"category,omitempty"`
-
-	// The retention policy for this log.
-	RetentionPolicy *RetentionPolicy `json:"retentionPolicy,omitempty"`
+// PrivateEndpoint - Private endpoint object properties.
+type PrivateEndpoint struct {
+	// Full identifier of the private endpoint resource.
+	ID *string `json:"id,omitempty"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
-type OperationsClientListOptions struct {
-	// placeholder for future optional parameters
-}
+// PrivateEndpointConnection - Private endpoint connection resource.
+type PrivateEndpointConnection struct {
+	// Resource properties.
+	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
 
-// OperationsDiscovery - Operations discovery class.
-type OperationsDiscovery struct {
-	// Object type
-	Display *Display `json:"display,omitempty"`
-
-	// Indicates whether the operation applies to data-plane. Set the value to true for data-plane operations and false for ARM/control-plane
-	// operations.
-	IsDataAction *bool `json:"isDataAction,omitempty"`
-
-	// Name of the API. The name of the operation being performed on this particular object. It should match the action name that
-	// appears in RBAC / the event service. Examples of operations include: *
-	// Microsoft.Compute/virtualMachine/capture/action * Microsoft.Compute/virtualMachine/restart/action * Microsoft.Compute/virtualMachine/write
-	// * Microsoft.Compute/virtualMachine/read *
-	// Microsoft.Compute/virtualMachine/delete Each action should include, in order: (1) Resource Provider Namespace (2) Type
-	// hierarchy for which the action applies (e.g. server/databases for a SQL Azure
-	// database) (3) Read, Write, Action or Delete indicating which type applies. If it is a PUT/PATCH on a collection or named
-	// value, Write should be used. If it is a GET, Read should be used. If it is a
-	// DELETE, Delete should be used. If it is a POST, Action should be used.
-	Name *string `json:"name,omitempty"`
-
-	// Origin. The intended executor of the operation; governs the display of the operation in the RBAC UX and the audit logs
-	// UX. Default value is "user,system"
-	Origin *string `json:"origin,omitempty"`
-
-	// Properties. Reserved for future use.
-	Properties map[string]interface{} `json:"properties,omitempty"`
-}
-
-// OperationsDiscoveryCollection - Collection of ClientDiscovery details.
-type OperationsDiscoveryCollection struct {
-	// The ClientDiscovery details.
-	Value []*OperationsDiscovery `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationsDiscoveryCollection.
-func (o OperationsDiscoveryCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
-// ProxyOnlyResource - A proxy only azure resource object.
-type ProxyOnlyResource struct {
-	// READ-ONLY; Azure resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// READ-ONLY; Azure resource name
+	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Azure resource type
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// RetentionPolicy - Specifies the retention policy for the log.
-type RetentionPolicy struct {
-	// REQUIRED; The number of days for the retention in days. A value of 0 will retain the events indefinitely.
-	Days *int32 `json:"days,omitempty"`
+// PrivateEndpointConnectionListResult - A list of private link resources
+type PrivateEndpointConnectionListResult struct {
+	// URL to next page of results
+	NextLink *string `json:"nextLink,omitempty"`
 
-	// REQUIRED; A value indicating whether the retention policy is enabled.
-	Enabled *bool `json:"enabled,omitempty"`
+	// Array of private link resources
+	Value []*PrivateEndpointConnection `json:"value,omitempty"`
 }
 
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
+// PrivateEndpointConnectionProperties - Properties of the private endpoint connection resource.
+type PrivateEndpointConnectionProperties struct {
+	// Properties of the private endpoint object.
+	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+
+	// Updated tag information to set into the PrivateLinkConnection instance.
+	PrivateLinkConnectionTags *TagsResource `json:"privateLinkConnectionTags,omitempty"`
+
+	// Approval state of the private link connection.
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+
+	// READ-ONLY; Provisioning state of the private endpoint connection.
+	ProvisioningState *PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// PrivateEndpointConnectionsClientBeginCreateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreate
+// method.
+type PrivateEndpointConnectionsClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
+// method.
+type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
+// method.
+type PrivateEndpointConnectionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientListByPolicyNameOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByPolicyName
+// method.
+type PrivateEndpointConnectionsClientListByPolicyNameOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkForAzureAdClientBeginCreateOptions contains the optional parameters for the PrivateLinkForAzureAdClient.BeginCreate
+// method.
+type PrivateLinkForAzureAdClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PrivateLinkForAzureAdClientDeleteOptions contains the optional parameters for the PrivateLinkForAzureAdClient.Delete method.
+type PrivateLinkForAzureAdClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkForAzureAdClientGetOptions contains the optional parameters for the PrivateLinkForAzureAdClient.Get method.
+type PrivateLinkForAzureAdClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkForAzureAdClientListBySubscriptionOptions contains the optional parameters for the PrivateLinkForAzureAdClient.ListBySubscription
+// method.
+type PrivateLinkForAzureAdClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkForAzureAdClientListOptions contains the optional parameters for the PrivateLinkForAzureAdClient.List method.
+type PrivateLinkForAzureAdClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkForAzureAdClientUpdateOptions contains the optional parameters for the PrivateLinkForAzureAdClient.Update method.
+type PrivateLinkForAzureAdClientUpdateOptions struct {
+	// Private Link Policy resource with the tags to be updated.
+	PrivateLinkPolicy *PrivateLinkPolicyUpdateParameter
+}
+
+// PrivateLinkPolicy - PrivateLink Policy configuration object.
+type PrivateLinkPolicy struct {
+	// Flag indicating whether all tenants are allowed
+	AllTenants *bool `json:"allTenants,omitempty"`
+
+	// Name of this resource.
+	Name *string `json:"name,omitempty"`
+
+	// Guid of the owner tenant
+	OwnerTenantID *string `json:"ownerTenantId,omitempty"`
+
+	// Name of the resource group
+	ResourceGroup *string `json:"resourceGroup,omitempty"`
+
+	// Name of the private link policy resource
+	ResourceName *string `json:"resourceName,omitempty"`
+
+	// Subscription Identifier
+	SubscriptionID *string `json:"subscriptionId,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// The list of tenantIds.
+	Tenants []*string `json:"tenants,omitempty"`
+
+	// READ-ONLY; String Id used to locate any resource on Azure.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of this resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// PrivateLinkPolicyListResult - A list of private link policies
+type PrivateLinkPolicyListResult struct {
+	// The link used to get the next page of operations.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Array of private link policies
+	Value []*PrivateLinkPolicy `json:"value,omitempty"`
+}
+
+// PrivateLinkPolicyUpdateParameter - private Link policy parameters to be updated.
+type PrivateLinkPolicyUpdateParameter struct {
+	// Resource tags to be updated.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// PrivateLinkResource - A private link resource
+type PrivateLinkResource struct {
+	// Resource properties.
+	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The unique resource identifier of the Azure AD PrivateLink Policy.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the Azure AD PrivateLink Policy.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of Azure resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// PrivateLinkResourceListResult - A list of private link resources
+type PrivateLinkResourceListResult struct {
+	// The link used to get the next page of operations.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Array of private link resources
+	Value []*PrivateLinkResource `json:"value,omitempty"`
+}
+
+// PrivateLinkResourceProperties - Properties of a private link resource.
+type PrivateLinkResourceProperties struct {
+	// READ-ONLY; The private link resource group id.
+	GroupID *string `json:"groupId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The private link resource required member names.
+	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
+}
+
+// PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
+type PrivateLinkResourcesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkResourcesClientListByPrivateLinkPolicyOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByPrivateLinkPolicy
+// method.
+type PrivateLinkResourcesClientListByPrivateLinkPolicyOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkServiceConnectionState - An object that represents the approval state of the private link connection.
+type PrivateLinkServiceConnectionState struct {
+	// A message indicating if changes on the service provider require any updates on the consumer.
+	ActionsRequired *string `json:"actionsRequired,omitempty"`
+
+	// The reason for approval or rejection.
+	Description *string `json:"description,omitempty"`
+
+	// Indicates whether the connection has been approved, rejected or removed by the given policy owner.
+	Status *PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
+}
+
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
+type ProxyResource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
+type Resource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// TagsResource - A container holding only the Tags for a resource, allowing the user to update the tags on a PrivateLinkConnection
+// instance.
+type TagsResource struct {
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
 }

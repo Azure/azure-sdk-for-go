@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,175 +17,157 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armblueprint"
 )
 
-// x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPAssignment/BlueprintAssignment_Create_SystemAssignedMSI.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPAssignment/BlueprintAssignment_Create_SystemAssignedMSI.json
 func ExampleAssignmentsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armblueprint.NewAssignmentsClient(cred, nil)
+	client, err := armblueprint.NewAssignmentsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.CreateOrUpdate(ctx,
 		"<resource-scope>",
 		"<assignment-name>",
 		armblueprint.Assignment{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Identity: &armblueprint.ManagedServiceIdentity{
-				Type: armblueprint.ManagedServiceIdentityType("SystemAssigned").ToPtr(),
+				Type: to.Ptr(armblueprint.ManagedServiceIdentityTypeSystemAssigned),
 			},
 			Properties: &armblueprint.AssignmentProperties{
-				Description: to.StringPtr("<description>"),
-				BlueprintID: to.StringPtr("<blueprint-id>"),
+				Description: to.Ptr("<description>"),
+				BlueprintID: to.Ptr("<blueprint-id>"),
 				Parameters: map[string]*armblueprint.ParameterValue{
 					"costCenter": {
-						Value: map[string]interface{}{
-							"0":  "C",
-							"1":  "o",
-							"2":  "n",
-							"3":  "t",
-							"4":  "o",
-							"5":  "s",
-							"6":  "o",
-							"7":  "/",
-							"8":  "O",
-							"9":  "n",
-							"10": "l",
-							"11": "i",
-							"12": "n",
-							"13": "e",
-							"14": "/",
-							"15": "S",
-							"16": "h",
-							"17": "o",
-							"18": "p",
-							"19": "p",
-							"20": "i",
-							"21": "n",
-							"22": "g",
-							"23": "/",
-							"24": "P",
-							"25": "r",
-							"26": "o",
-							"27": "d",
-							"28": "u",
-							"29": "c",
-							"30": "t",
-							"31": "i",
-							"32": "o",
-							"33": "n",
-						},
+						Value: "Contoso/Online/Shopping/Production",
 					},
 					"owners": {
-						Value: map[string]interface{}{
-							"0": "johnDoe@contoso.com",
-							"1": "johnsteam@contoso.com",
+						Value: []interface{}{
+							"johnDoe@contoso.com",
+							"johnsteam@contoso.com",
 						},
 					},
 					"storageAccountType": {
-						Value: map[string]interface{}{
-							"0":  "S",
-							"1":  "t",
-							"2":  "a",
-							"3":  "n",
-							"4":  "d",
-							"5":  "a",
-							"6":  "r",
-							"7":  "d",
-							"8":  "_",
-							"9":  "L",
-							"10": "R",
-							"11": "S",
-						},
+						Value: "Standard_LRS",
 					},
 				},
 				ResourceGroups: map[string]*armblueprint.ResourceGroupValue{
 					"storageRG": {
-						Name:     to.StringPtr("<name>"),
-						Location: to.StringPtr("<location>"),
+						Name:     to.Ptr("<name>"),
+						Location: to.Ptr("<location>"),
 					},
 				},
-				Scope: to.StringPtr("<scope>"),
+				Scope: to.Ptr("<scope>"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPAssignment/BlueprintAssignment_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPAssignment/BlueprintAssignment_Get.json
 func ExampleAssignmentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armblueprint.NewAssignmentsClient(cred, nil)
+	client, err := armblueprint.NewAssignmentsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-scope>",
 		"<assignment-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AssignmentsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPAssignment/BlueprintAssignment_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPAssignment/BlueprintAssignment_Delete.json
 func ExampleAssignmentsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armblueprint.NewAssignmentsClient(cred, nil)
+	client, err := armblueprint.NewAssignmentsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-scope>",
 		"<assignment-name>",
 		&armblueprint.AssignmentsClientDeleteOptions{DeleteBehavior: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPAssignment/WhoIsBlueprint_Action.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPAssignment/WhoIsBlueprint_Action.json
 func ExampleAssignmentsClient_WhoIsBlueprint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armblueprint.NewAssignmentsClient(cred, nil)
+	client, err := armblueprint.NewAssignmentsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.WhoIsBlueprint(ctx,
 		"<resource-scope>",
 		"<assignment-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AssignmentsClientWhoIsBlueprintResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPAssignment/BlueprintAssignment_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPAssignment/BlueprintAssignment_List.json
 func ExampleAssignmentsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armblueprint.NewAssignmentsClient(cred, nil)
+	client, err := armblueprint.NewAssignmentsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List("<resource-scope>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

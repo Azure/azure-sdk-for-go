@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type BindingsClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewBindingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BindingsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewBindingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BindingsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &BindingsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create a new Binding or update an exiting Binding.
@@ -60,22 +65,18 @@ func NewBindingsClient(subscriptionID string, credential azcore.TokenCredential,
 // bindingResource - Parameters for the create or update operation
 // options - BindingsClientBeginCreateOrUpdateOptions contains the optional parameters for the BindingsClient.BeginCreateOrUpdate
 // method.
-func (client *BindingsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, bindingName string, bindingResource BindingResource, options *BindingsClientBeginCreateOrUpdateOptions) (BindingsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, appName, bindingName, bindingResource, options)
-	if err != nil {
-		return BindingsClientCreateOrUpdatePollerResponse{}, err
+func (client *BindingsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, bindingName string, bindingResource BindingResource, options *BindingsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[BindingsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, appName, bindingName, bindingResource, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[BindingsClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[BindingsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := BindingsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("BindingsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return BindingsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &BindingsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create a new Binding or update an exiting Binding.
@@ -123,7 +124,7 @@ func (client *BindingsClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, bindingResource)
@@ -137,22 +138,18 @@ func (client *BindingsClient) createOrUpdateCreateRequest(ctx context.Context, r
 // appName - The name of the App resource.
 // bindingName - The name of the Binding resource.
 // options - BindingsClientBeginDeleteOptions contains the optional parameters for the BindingsClient.BeginDelete method.
-func (client *BindingsClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, appName string, bindingName string, options *BindingsClientBeginDeleteOptions) (BindingsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, appName, bindingName, options)
-	if err != nil {
-		return BindingsClientDeletePollerResponse{}, err
+func (client *BindingsClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, appName string, bindingName string, options *BindingsClientBeginDeleteOptions) (*armruntime.Poller[BindingsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, appName, bindingName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[BindingsClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[BindingsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := BindingsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("BindingsClient.Delete", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return BindingsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &BindingsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Operation to delete a Binding.
@@ -200,7 +197,7 @@ func (client *BindingsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -257,7 +254,7 @@ func (client *BindingsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -265,7 +262,7 @@ func (client *BindingsClient) getCreateRequest(ctx context.Context, resourceGrou
 
 // getHandleResponse handles the Get response.
 func (client *BindingsClient) getHandleResponse(resp *http.Response) (BindingsClientGetResponse, error) {
-	result := BindingsClientGetResponse{RawResponse: resp}
+	result := BindingsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BindingResource); err != nil {
 		return BindingsClientGetResponse{}, err
 	}
@@ -279,16 +276,32 @@ func (client *BindingsClient) getHandleResponse(resp *http.Response) (BindingsCl
 // serviceName - The name of the Service resource.
 // appName - The name of the App resource.
 // options - BindingsClientListOptions contains the optional parameters for the BindingsClient.List method.
-func (client *BindingsClient) List(resourceGroupName string, serviceName string, appName string, options *BindingsClientListOptions) *BindingsClientListPager {
-	return &BindingsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, serviceName, appName, options)
+func (client *BindingsClient) List(resourceGroupName string, serviceName string, appName string, options *BindingsClientListOptions) *runtime.Pager[BindingsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[BindingsClientListResponse]{
+		More: func(page BindingsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp BindingsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.BindingResourceCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *BindingsClientListResponse) (BindingsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, serviceName, appName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return BindingsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return BindingsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return BindingsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -315,7 +328,7 @@ func (client *BindingsClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -323,7 +336,7 @@ func (client *BindingsClient) listCreateRequest(ctx context.Context, resourceGro
 
 // listHandleResponse handles the List response.
 func (client *BindingsClient) listHandleResponse(resp *http.Response) (BindingsClientListResponse, error) {
-	result := BindingsClientListResponse{RawResponse: resp}
+	result := BindingsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BindingResourceCollection); err != nil {
 		return BindingsClientListResponse{}, err
 	}
@@ -339,22 +352,18 @@ func (client *BindingsClient) listHandleResponse(resp *http.Response) (BindingsC
 // bindingName - The name of the Binding resource.
 // bindingResource - Parameters for the update operation
 // options - BindingsClientBeginUpdateOptions contains the optional parameters for the BindingsClient.BeginUpdate method.
-func (client *BindingsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, bindingName string, bindingResource BindingResource, options *BindingsClientBeginUpdateOptions) (BindingsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, serviceName, appName, bindingName, bindingResource, options)
-	if err != nil {
-		return BindingsClientUpdatePollerResponse{}, err
+func (client *BindingsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, bindingName string, bindingResource BindingResource, options *BindingsClientBeginUpdateOptions) (*armruntime.Poller[BindingsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, serviceName, appName, bindingName, bindingResource, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[BindingsClientUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[BindingsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := BindingsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("BindingsClient.Update", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return BindingsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &BindingsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Operation to update an exiting Binding.
@@ -402,7 +411,7 @@ func (client *BindingsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, bindingResource)

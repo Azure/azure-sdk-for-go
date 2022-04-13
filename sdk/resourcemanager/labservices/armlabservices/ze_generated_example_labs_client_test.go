@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,230 +19,282 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlabservices"
 )
 
-// x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Labs/listLabs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Labs/listLabs.json
 func ExampleLabsClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armlabservices.NewLabsClient("<subscription-id>", cred, nil)
+	client, err := armlabservices.NewLabsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListBySubscription(&armlabservices.LabsClientListBySubscriptionOptions{Filter: nil})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Labs/listResourceGroupLabs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Labs/listResourceGroupLabs.json
 func ExampleLabsClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armlabservices.NewLabsClient("<subscription-id>", cred, nil)
+	client, err := armlabservices.NewLabsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Labs/getLab.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Labs/getLab.json
 func ExampleLabsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armlabservices.NewLabsClient("<subscription-id>", cred, nil)
+	client, err := armlabservices.NewLabsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<lab-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.LabsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Labs/putLab.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Labs/putLab.json
 func ExampleLabsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armlabservices.NewLabsClient("<subscription-id>", cred, nil)
+	client, err := armlabservices.NewLabsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<lab-name>",
 		armlabservices.Lab{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Properties: &armlabservices.LabProperties{
-				Description: to.StringPtr("<description>"),
+				Description: to.Ptr("<description>"),
 				AutoShutdownProfile: &armlabservices.AutoShutdownProfile{
-					DisconnectDelay:          to.StringPtr("<disconnect-delay>"),
-					IdleDelay:                to.StringPtr("<idle-delay>"),
-					NoConnectDelay:           to.StringPtr("<no-connect-delay>"),
-					ShutdownOnDisconnect:     armlabservices.EnableStateEnabled.ToPtr(),
-					ShutdownOnIdle:           armlabservices.ShutdownOnIdleModeUserAbsence.ToPtr(),
-					ShutdownWhenNotConnected: armlabservices.EnableStateEnabled.ToPtr(),
+					DisconnectDelay:          to.Ptr("<disconnect-delay>"),
+					IdleDelay:                to.Ptr("<idle-delay>"),
+					NoConnectDelay:           to.Ptr("<no-connect-delay>"),
+					ShutdownOnDisconnect:     to.Ptr(armlabservices.EnableStateEnabled),
+					ShutdownOnIdle:           to.Ptr(armlabservices.ShutdownOnIdleModeUserAbsence),
+					ShutdownWhenNotConnected: to.Ptr(armlabservices.EnableStateEnabled),
 				},
 				ConnectionProfile: &armlabservices.ConnectionProfile{
-					ClientRdpAccess: armlabservices.ConnectionTypePublic.ToPtr(),
-					ClientSSHAccess: armlabservices.ConnectionTypePublic.ToPtr(),
-					WebRdpAccess:    armlabservices.ConnectionTypeNone.ToPtr(),
-					WebSSHAccess:    armlabservices.ConnectionTypeNone.ToPtr(),
+					ClientRdpAccess: to.Ptr(armlabservices.ConnectionTypePublic),
+					ClientSSHAccess: to.Ptr(armlabservices.ConnectionTypePublic),
+					WebRdpAccess:    to.Ptr(armlabservices.ConnectionTypeNone),
+					WebSSHAccess:    to.Ptr(armlabservices.ConnectionTypeNone),
 				},
-				LabPlanID: to.StringPtr("<lab-plan-id>"),
+				LabPlanID: to.Ptr("<lab-plan-id>"),
 				SecurityProfile: &armlabservices.SecurityProfile{
-					OpenAccess: armlabservices.EnableStateDisabled.ToPtr(),
+					OpenAccess: to.Ptr(armlabservices.EnableStateDisabled),
 				},
-				Title: to.StringPtr("<title>"),
+				Title: to.Ptr("<title>"),
 				VirtualMachineProfile: &armlabservices.VirtualMachineProfile{
 					AdditionalCapabilities: &armlabservices.VirtualMachineAdditionalCapabilities{
-						InstallGpuDrivers: armlabservices.EnableStateDisabled.ToPtr(),
+						InstallGpuDrivers: to.Ptr(armlabservices.EnableStateDisabled),
 					},
 					AdminUser: &armlabservices.Credentials{
-						Username: to.StringPtr("<username>"),
+						Username: to.Ptr("<username>"),
 					},
-					CreateOption: armlabservices.CreateOptionTemplateVM.ToPtr(),
+					CreateOption: to.Ptr(armlabservices.CreateOptionTemplateVM),
 					ImageReference: &armlabservices.ImageReference{
-						Offer:     to.StringPtr("<offer>"),
-						Publisher: to.StringPtr("<publisher>"),
-						SKU:       to.StringPtr("<sku>"),
-						Version:   to.StringPtr("<version>"),
+						Offer:     to.Ptr("<offer>"),
+						Publisher: to.Ptr("<publisher>"),
+						SKU:       to.Ptr("<sku>"),
+						Version:   to.Ptr("<version>"),
 					},
 					SKU: &armlabservices.SKU{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("<name>"),
 					},
-					UsageQuota:        to.StringPtr("<usage-quota>"),
-					UseSharedPassword: armlabservices.EnableStateDisabled.ToPtr(),
+					UsageQuota:        to.Ptr("<usage-quota>"),
+					UseSharedPassword: to.Ptr(armlabservices.EnableStateDisabled),
 				},
 				NetworkProfile: &armlabservices.LabNetworkProfile{
-					SubnetID: to.StringPtr("<subnet-id>"),
+					SubnetID: to.Ptr("<subnet-id>"),
 				},
-				State: armlabservices.LabStateDraft.ToPtr(),
+				State: to.Ptr(armlabservices.LabStateDraft),
 			},
 		},
-		nil)
+		&armlabservices.LabsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.LabsClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Labs/patchLab.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Labs/patchLab.json
 func ExampleLabsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armlabservices.NewLabsClient("<subscription-id>", cred, nil)
+	client, err := armlabservices.NewLabsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<lab-name>",
 		armlabservices.LabUpdate{
 			Properties: &armlabservices.LabUpdateProperties{
 				SecurityProfile: &armlabservices.SecurityProfile{
-					OpenAccess: armlabservices.EnableStateEnabled.ToPtr(),
+					OpenAccess: to.Ptr(armlabservices.EnableStateEnabled),
 				},
 			},
 		},
-		nil)
+		&armlabservices.LabsClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.LabsClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Labs/deleteLab.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Labs/deleteLab.json
 func ExampleLabsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armlabservices.NewLabsClient("<subscription-id>", cred, nil)
+	client, err := armlabservices.NewLabsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<lab-name>",
-		nil)
+		&armlabservices.LabsClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Labs/publishLab.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Labs/publishLab.json
 func ExampleLabsClient_BeginPublish() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armlabservices.NewLabsClient("<subscription-id>", cred, nil)
+	client, err := armlabservices.NewLabsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginPublish(ctx,
 		"<resource-group-name>",
 		"<lab-name>",
-		nil)
+		&armlabservices.LabsClientBeginPublishOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Labs/syncLab.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Labs/syncLab.json
 func ExampleLabsClient_BeginSyncGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armlabservices.NewLabsClient("<subscription-id>", cred, nil)
+	client, err := armlabservices.NewLabsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginSyncGroup(ctx,
 		"<resource-group-name>",
 		"<lab-name>",
-		nil)
+		&armlabservices.LabsClientBeginSyncGroupOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type JobsClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *JobsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &JobsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a job.
@@ -109,7 +114,7 @@ func (client *JobsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *JobsClient) createOrUpdateHandleResponse(resp *http.Response) (JobsClientCreateOrUpdateResponse, error) {
-	result := JobsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := JobsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Job); err != nil {
 		return JobsClientCreateOrUpdateResponse{}, err
 	}
@@ -136,7 +141,7 @@ func (client *JobsClient) Delete(ctx context.Context, resourceGroupName string, 
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return JobsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return JobsClientDeleteResponse{RawResponse: resp}, nil
+	return JobsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -231,7 +236,7 @@ func (client *JobsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 
 // getHandleResponse handles the Get response.
 func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsClientGetResponse, error) {
-	result := JobsClientGetResponse{RawResponse: resp}
+	result := JobsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Job); err != nil {
 		return JobsClientGetResponse{}, err
 	}
@@ -245,16 +250,32 @@ func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsClientGetR
 // serverName - The name of the server.
 // jobAgentName - The name of the job agent.
 // options - JobsClientListByAgentOptions contains the optional parameters for the JobsClient.ListByAgent method.
-func (client *JobsClient) ListByAgent(resourceGroupName string, serverName string, jobAgentName string, options *JobsClientListByAgentOptions) *JobsClientListByAgentPager {
-	return &JobsClientListByAgentPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByAgentCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, options)
+func (client *JobsClient) ListByAgent(resourceGroupName string, serverName string, jobAgentName string, options *JobsClientListByAgentOptions) *runtime.Pager[JobsClientListByAgentResponse] {
+	return runtime.NewPager(runtime.PageProcessor[JobsClientListByAgentResponse]{
+		More: func(page JobsClientListByAgentResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp JobsClientListByAgentResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *JobsClientListByAgentResponse) (JobsClientListByAgentResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByAgentCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return JobsClientListByAgentResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return JobsClientListByAgentResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return JobsClientListByAgentResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByAgentHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByAgentCreateRequest creates the ListByAgent request.
@@ -289,7 +310,7 @@ func (client *JobsClient) listByAgentCreateRequest(ctx context.Context, resource
 
 // listByAgentHandleResponse handles the ListByAgent response.
 func (client *JobsClient) listByAgentHandleResponse(resp *http.Response) (JobsClientListByAgentResponse, error) {
-	result := JobsClientListByAgentResponse{RawResponse: resp}
+	result := JobsClientListByAgentResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobListResult); err != nil {
 		return JobsClientListByAgentResponse{}, err
 	}

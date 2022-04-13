@@ -1,5 +1,1166 @@
 # Release History
 
+## 0.5.0 (2022-04-13)
+### Breaking Changes
+
+- Function `NewAdaptiveApplicationControlsClient` parameter(s) have been changed from `(string, string, azcore.TokenCredential, *arm.ClientOptions)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
+- Function `NewAdaptiveApplicationControlsClient` return value(s) have been changed from `(*AdaptiveApplicationControlsClient)` to `(*AdaptiveApplicationControlsClient, error)`
+- Function `NewRegulatoryComplianceAssessmentsClient` return value(s) have been changed from `(*RegulatoryComplianceAssessmentsClient)` to `(*RegulatoryComplianceAssessmentsClient, error)`
+- Function `*SoftwareInventoriesClient.ListBySubscription` return value(s) have been changed from `(*SoftwareInventoriesClientListBySubscriptionPager)` to `(*runtime.Pager[SoftwareInventoriesClientListBySubscriptionResponse])`
+- Function `*AlertsClient.UpdateSubscriptionLevelStateToActivate` parameter(s) have been changed from `(context.Context, string, *AlertsClientUpdateSubscriptionLevelStateToActivateOptions)` to `(context.Context, string, string, *AlertsClientUpdateSubscriptionLevelStateToActivateOptions)`
+- Function `NewAutomationsClient` return value(s) have been changed from `(*AutomationsClient)` to `(*AutomationsClient, error)`
+- Function `*AdaptiveApplicationControlsClient.Put` parameter(s) have been changed from `(context.Context, string, AdaptiveApplicationControlGroup, *AdaptiveApplicationControlsClientPutOptions)` to `(context.Context, string, string, AdaptiveApplicationControlGroup, *AdaptiveApplicationControlsClientPutOptions)`
+- Function `*TasksClient.UpdateResourceGroupLevelTaskState` parameter(s) have been changed from `(context.Context, string, string, TaskUpdateActionType, *TasksClientUpdateResourceGroupLevelTaskStateOptions)` to `(context.Context, string, string, string, TaskUpdateActionType, *TasksClientUpdateResourceGroupLevelTaskStateOptions)`
+- Function `NewAdvancedThreatProtectionClient` return value(s) have been changed from `(*AdvancedThreatProtectionClient)` to `(*AdvancedThreatProtectionClient, error)`
+- Function `*SecureScoreControlsClient.List` return value(s) have been changed from `(*SecureScoreControlsClientListPager)` to `(*runtime.Pager[SecureScoreControlsClientListResponse])`
+- Function `*AutomationsClient.ListByResourceGroup` return value(s) have been changed from `(*AutomationsClientListByResourceGroupPager)` to `(*runtime.Pager[AutomationsClientListByResourceGroupResponse])`
+- Function `*AlertsSuppressionRulesClient.List` return value(s) have been changed from `(*AlertsSuppressionRulesClientListPager)` to `(*runtime.Pager[AlertsSuppressionRulesClientListResponse])`
+- Function `NewIotSecuritySolutionsAnalyticsAggregatedAlertClient` return value(s) have been changed from `(*IotSecuritySolutionsAnalyticsAggregatedAlertClient)` to `(*IotSecuritySolutionsAnalyticsAggregatedAlertClient, error)`
+- Function `*AllowedConnectionsClient.ListByHomeRegion` parameter(s) have been changed from `(*AllowedConnectionsClientListByHomeRegionOptions)` to `(string, *AllowedConnectionsClientListByHomeRegionOptions)`
+- Function `*AllowedConnectionsClient.ListByHomeRegion` return value(s) have been changed from `(*AllowedConnectionsClientListByHomeRegionPager)` to `(*runtime.Pager[AllowedConnectionsClientListByHomeRegionResponse])`
+- Function `*ServerVulnerabilityAssessmentClient.BeginDelete` return value(s) have been changed from `(ServerVulnerabilityAssessmentClientDeletePollerResponse, error)` to `(*armruntime.Poller[ServerVulnerabilityAssessmentClientDeleteResponse], error)`
+- Function `NewAdaptiveNetworkHardeningsClient` return value(s) have been changed from `(*AdaptiveNetworkHardeningsClient)` to `(*AdaptiveNetworkHardeningsClient, error)`
+- Function `NewAssessmentsClient` return value(s) have been changed from `(*AssessmentsClient)` to `(*AssessmentsClient, error)`
+- Function `NewSQLVulnerabilityAssessmentScansClient` return value(s) have been changed from `(*SQLVulnerabilityAssessmentScansClient)` to `(*SQLVulnerabilityAssessmentScansClient, error)`
+- Function `*SolutionsReferenceDataClient.ListByHomeRegion` parameter(s) have been changed from `(context.Context, *SolutionsReferenceDataClientListByHomeRegionOptions)` to `(context.Context, string, *SolutionsReferenceDataClientListByHomeRegionOptions)`
+- Function `*CustomEntityStoreAssignmentsClient.ListBySubscription` return value(s) have been changed from `(*CustomEntityStoreAssignmentsClientListBySubscriptionPager)` to `(*runtime.Pager[CustomEntityStoreAssignmentsClientListBySubscriptionResponse])`
+- Function `NewMdeOnboardingsClient` return value(s) have been changed from `(*MdeOnboardingsClient)` to `(*MdeOnboardingsClient, error)`
+- Function `*AdaptiveNetworkHardeningsClient.BeginEnforce` return value(s) have been changed from `(AdaptiveNetworkHardeningsClientEnforcePollerResponse, error)` to `(*armruntime.Poller[AdaptiveNetworkHardeningsClientEnforceResponse], error)`
+- Function `NewSoftwareInventoriesClient` return value(s) have been changed from `(*SoftwareInventoriesClient)` to `(*SoftwareInventoriesClient, error)`
+- Function `*CustomAssessmentAutomationsClient.ListBySubscription` return value(s) have been changed from `(*CustomAssessmentAutomationsClientListBySubscriptionPager)` to `(*runtime.Pager[CustomAssessmentAutomationsClientListBySubscriptionResponse])`
+- Function `NewCustomAssessmentAutomationsClient` return value(s) have been changed from `(*CustomAssessmentAutomationsClient)` to `(*CustomAssessmentAutomationsClient, error)`
+- Function `NewSQLVulnerabilityAssessmentBaselineRulesClient` return value(s) have been changed from `(*SQLVulnerabilityAssessmentBaselineRulesClient)` to `(*SQLVulnerabilityAssessmentBaselineRulesClient, error)`
+- Function `*AdaptiveNetworkHardeningsClient.ListByExtendedResource` return value(s) have been changed from `(*AdaptiveNetworkHardeningsClientListByExtendedResourcePager)` to `(*runtime.Pager[AdaptiveNetworkHardeningsClientListByExtendedResourceResponse])`
+- Function `*AlertsClient.UpdateResourceGroupLevelStateToResolve` parameter(s) have been changed from `(context.Context, string, string, *AlertsClientUpdateResourceGroupLevelStateToResolveOptions)` to `(context.Context, string, string, string, *AlertsClientUpdateResourceGroupLevelStateToResolveOptions)`
+- Function `NewAccountConnectorsClient` return value(s) have been changed from `(*AccountConnectorsClient)` to `(*AccountConnectorsClient, error)`
+- Function `*SubAssessmentsClient.ListAll` return value(s) have been changed from `(*SubAssessmentsClientListAllPager)` to `(*runtime.Pager[SubAssessmentsClientListAllResponse])`
+- Function `NewLocationsClient` parameter(s) have been changed from `(string, string, azcore.TokenCredential, *arm.ClientOptions)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
+- Function `NewLocationsClient` return value(s) have been changed from `(*LocationsClient)` to `(*LocationsClient, error)`
+- Function `*SolutionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *SolutionsClientGetOptions)` to `(context.Context, string, string, string, *SolutionsClientGetOptions)`
+- Function `*JitNetworkAccessPoliciesClient.ListByRegion` parameter(s) have been changed from `(*JitNetworkAccessPoliciesClientListByRegionOptions)` to `(string, *JitNetworkAccessPoliciesClientListByRegionOptions)`
+- Function `*JitNetworkAccessPoliciesClient.ListByRegion` return value(s) have been changed from `(*JitNetworkAccessPoliciesClientListByRegionPager)` to `(*runtime.Pager[JitNetworkAccessPoliciesClientListByRegionResponse])`
+- Function `*TasksClient.UpdateSubscriptionLevelTaskState` parameter(s) have been changed from `(context.Context, string, TaskUpdateActionType, *TasksClientUpdateSubscriptionLevelTaskStateOptions)` to `(context.Context, string, string, TaskUpdateActionType, *TasksClientUpdateSubscriptionLevelTaskStateOptions)`
+- Function `NewSolutionsClient` parameter(s) have been changed from `(string, string, azcore.TokenCredential, *arm.ClientOptions)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
+- Function `NewSolutionsClient` return value(s) have been changed from `(*SolutionsClient)` to `(*SolutionsClient, error)`
+- Function `*IotSecuritySolutionsAnalyticsAggregatedAlertClient.List` return value(s) have been changed from `(*IotSecuritySolutionsAnalyticsAggregatedAlertClientListPager)` to `(*runtime.Pager[IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse])`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*AdaptiveApplicationControlsClient.Get` parameter(s) have been changed from `(context.Context, string, *AdaptiveApplicationControlsClientGetOptions)` to `(context.Context, string, string, *AdaptiveApplicationControlsClientGetOptions)`
+- Function `*SecureScoreControlDefinitionsClient.List` return value(s) have been changed from `(*SecureScoreControlDefinitionsClientListPager)` to `(*runtime.Pager[SecureScoreControlDefinitionsClientListResponse])`
+- Function `*DiscoveredSecuritySolutionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *DiscoveredSecuritySolutionsClientGetOptions)` to `(context.Context, string, string, string, *DiscoveredSecuritySolutionsClientGetOptions)`
+- Function `NewWorkspaceSettingsClient` return value(s) have been changed from `(*WorkspaceSettingsClient)` to `(*WorkspaceSettingsClient, error)`
+- Function `*AlertsClient.ListResourceGroupLevelByRegion` parameter(s) have been changed from `(string, *AlertsClientListResourceGroupLevelByRegionOptions)` to `(string, string, *AlertsClientListResourceGroupLevelByRegionOptions)`
+- Function `*AlertsClient.ListResourceGroupLevelByRegion` return value(s) have been changed from `(*AlertsClientListResourceGroupLevelByRegionPager)` to `(*runtime.Pager[AlertsClientListResourceGroupLevelByRegionResponse])`
+- Function `*ExternalSecuritySolutionsClient.ListByHomeRegion` parameter(s) have been changed from `(*ExternalSecuritySolutionsClientListByHomeRegionOptions)` to `(string, *ExternalSecuritySolutionsClientListByHomeRegionOptions)`
+- Function `*ExternalSecuritySolutionsClient.ListByHomeRegion` return value(s) have been changed from `(*ExternalSecuritySolutionsClientListByHomeRegionPager)` to `(*runtime.Pager[ExternalSecuritySolutionsClientListByHomeRegionResponse])`
+- Function `NewExternalSecuritySolutionsClient` parameter(s) have been changed from `(string, string, azcore.TokenCredential, *arm.ClientOptions)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
+- Function `NewExternalSecuritySolutionsClient` return value(s) have been changed from `(*ExternalSecuritySolutionsClient)` to `(*ExternalSecuritySolutionsClient, error)`
+- Function `*SubAssessmentsClient.List` return value(s) have been changed from `(*SubAssessmentsClientListPager)` to `(*runtime.Pager[SubAssessmentsClientListResponse])`
+- Function `*TopologyClient.List` return value(s) have been changed from `(*TopologyClientListPager)` to `(*runtime.Pager[TopologyClientListResponse])`
+- Function `*IotSecuritySolutionClient.ListByResourceGroup` return value(s) have been changed from `(*IotSecuritySolutionClientListByResourceGroupPager)` to `(*runtime.Pager[IotSecuritySolutionClientListByResourceGroupResponse])`
+- Function `*CustomAssessmentAutomationsClient.ListByResourceGroup` return value(s) have been changed from `(*CustomAssessmentAutomationsClientListByResourceGroupPager)` to `(*runtime.Pager[CustomAssessmentAutomationsClientListByResourceGroupResponse])`
+- Function `NewIotSecuritySolutionAnalyticsClient` return value(s) have been changed from `(*IotSecuritySolutionAnalyticsClient)` to `(*IotSecuritySolutionAnalyticsClient, error)`
+- Function `*CustomEntityStoreAssignmentsClient.ListByResourceGroup` return value(s) have been changed from `(*CustomEntityStoreAssignmentsClientListByResourceGroupPager)` to `(*runtime.Pager[CustomEntityStoreAssignmentsClientListByResourceGroupResponse])`
+- Function `*TopologyClient.Get` parameter(s) have been changed from `(context.Context, string, string, *TopologyClientGetOptions)` to `(context.Context, string, string, string, *TopologyClientGetOptions)`
+- Function `*AutoProvisioningSettingsClient.List` return value(s) have been changed from `(*AutoProvisioningSettingsClientListPager)` to `(*runtime.Pager[AutoProvisioningSettingsClientListResponse])`
+- Function `NewAssessmentsMetadataClient` return value(s) have been changed from `(*AssessmentsMetadataClient)` to `(*AssessmentsMetadataClient, error)`
+- Function `NewAlertsClient` parameter(s) have been changed from `(string, string, azcore.TokenCredential, *arm.ClientOptions)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
+- Function `NewAlertsClient` return value(s) have been changed from `(*AlertsClient)` to `(*AlertsClient, error)`
+- Function `NewSecureScoreControlsClient` return value(s) have been changed from `(*SecureScoreControlsClient)` to `(*SecureScoreControlsClient, error)`
+- Function `*RegulatoryComplianceAssessmentsClient.List` return value(s) have been changed from `(*RegulatoryComplianceAssessmentsClientListPager)` to `(*runtime.Pager[RegulatoryComplianceAssessmentsClientListResponse])`
+- Function `NewIotSecuritySolutionClient` return value(s) have been changed from `(*IotSecuritySolutionClient)` to `(*IotSecuritySolutionClient, error)`
+- Function `*AlertsClient.GetResourceGroupLevel` parameter(s) have been changed from `(context.Context, string, string, *AlertsClientGetResourceGroupLevelOptions)` to `(context.Context, string, string, string, *AlertsClientGetResourceGroupLevelOptions)`
+- Function `*InformationProtectionPoliciesClient.List` return value(s) have been changed from `(*InformationProtectionPoliciesClientListPager)` to `(*runtime.Pager[InformationProtectionPoliciesClientListResponse])`
+- Function `*ConnectorsClient.List` return value(s) have been changed from `(*ConnectorsClientListPager)` to `(*runtime.Pager[ConnectorsClientListResponse])`
+- Function `*AlertsClient.ListSubscriptionLevelByRegion` parameter(s) have been changed from `(*AlertsClientListSubscriptionLevelByRegionOptions)` to `(string, *AlertsClientListSubscriptionLevelByRegionOptions)`
+- Function `*AlertsClient.ListSubscriptionLevelByRegion` return value(s) have been changed from `(*AlertsClientListSubscriptionLevelByRegionPager)` to `(*runtime.Pager[AlertsClientListSubscriptionLevelByRegionResponse])`
+- Function `NewConnectorsClient` return value(s) have been changed from `(*ConnectorsClient)` to `(*ConnectorsClient, error)`
+- Function `*AdaptiveApplicationControlsClient.Delete` parameter(s) have been changed from `(context.Context, string, *AdaptiveApplicationControlsClientDeleteOptions)` to `(context.Context, string, string, *AdaptiveApplicationControlsClientDeleteOptions)`
+- Function `NewCustomEntityStoreAssignmentsClient` return value(s) have been changed from `(*CustomEntityStoreAssignmentsClient)` to `(*CustomEntityStoreAssignmentsClient, error)`
+- Function `NewRegulatoryComplianceStandardsClient` return value(s) have been changed from `(*RegulatoryComplianceStandardsClient)` to `(*RegulatoryComplianceStandardsClient, error)`
+- Function `*LocationsClient.List` return value(s) have been changed from `(*LocationsClientListPager)` to `(*runtime.Pager[LocationsClientListResponse])`
+- Function `*ComplianceResultsClient.List` return value(s) have been changed from `(*ComplianceResultsClientListPager)` to `(*runtime.Pager[ComplianceResultsClientListResponse])`
+- Function `*DeviceSecurityGroupsClient.List` return value(s) have been changed from `(*DeviceSecurityGroupsClientListPager)` to `(*runtime.Pager[DeviceSecurityGroupsClientListResponse])`
+- Function `*DiscoveredSecuritySolutionsClient.ListByHomeRegion` parameter(s) have been changed from `(*DiscoveredSecuritySolutionsClientListByHomeRegionOptions)` to `(string, *DiscoveredSecuritySolutionsClientListByHomeRegionOptions)`
+- Function `*DiscoveredSecuritySolutionsClient.ListByHomeRegion` return value(s) have been changed from `(*DiscoveredSecuritySolutionsClientListByHomeRegionPager)` to `(*runtime.Pager[DiscoveredSecuritySolutionsClientListByHomeRegionResponse])`
+- Function `*AlertsClient.GetSubscriptionLevel` parameter(s) have been changed from `(context.Context, string, *AlertsClientGetSubscriptionLevelOptions)` to `(context.Context, string, string, *AlertsClientGetSubscriptionLevelOptions)`
+- Function `NewContactsClient` return value(s) have been changed from `(*ContactsClient)` to `(*ContactsClient, error)`
+- Function `NewSecureScoresClient` return value(s) have been changed from `(*SecureScoresClient)` to `(*SecureScoresClient, error)`
+- Function `*RegulatoryComplianceStandardsClient.List` return value(s) have been changed from `(*RegulatoryComplianceStandardsClientListPager)` to `(*runtime.Pager[RegulatoryComplianceStandardsClientListResponse])`
+- Function `NewSettingsClient` return value(s) have been changed from `(*SettingsClient)` to `(*SettingsClient, error)`
+- Function `*JitNetworkAccessPoliciesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *JitNetworkAccessPoliciesClientDeleteOptions)` to `(context.Context, string, string, string, *JitNetworkAccessPoliciesClientDeleteOptions)`
+- Function `*JitNetworkAccessPoliciesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *JitNetworkAccessPoliciesClientGetOptions)` to `(context.Context, string, string, string, *JitNetworkAccessPoliciesClientGetOptions)`
+- Function `NewTasksClient` parameter(s) have been changed from `(string, string, azcore.TokenCredential, *arm.ClientOptions)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
+- Function `NewTasksClient` return value(s) have been changed from `(*TasksClient)` to `(*TasksClient, error)`
+- Function `*SecureScoreControlsClient.ListBySecureScore` return value(s) have been changed from `(*SecureScoreControlsClientListBySecureScorePager)` to `(*runtime.Pager[SecureScoreControlsClientListBySecureScoreResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*JitNetworkAccessPoliciesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, JitNetworkAccessPolicy, *JitNetworkAccessPoliciesClientCreateOrUpdateOptions)` to `(context.Context, string, string, string, JitNetworkAccessPolicy, *JitNetworkAccessPoliciesClientCreateOrUpdateOptions)`
+- Function `NewIngestionSettingsClient` return value(s) have been changed from `(*IngestionSettingsClient)` to `(*IngestionSettingsClient, error)`
+- Function `*CompliancesClient.List` return value(s) have been changed from `(*CompliancesClientListPager)` to `(*runtime.Pager[CompliancesClientListResponse])`
+- Function `*LocationsClient.Get` parameter(s) have been changed from `(context.Context, *LocationsClientGetOptions)` to `(context.Context, string, *LocationsClientGetOptions)`
+- Function `*SecureScoreControlDefinitionsClient.ListBySubscription` return value(s) have been changed from `(*SecureScoreControlDefinitionsClientListBySubscriptionPager)` to `(*runtime.Pager[SecureScoreControlDefinitionsClientListBySubscriptionResponse])`
+- Function `*JitNetworkAccessPoliciesClient.ListByResourceGroup` return value(s) have been changed from `(*JitNetworkAccessPoliciesClientListByResourceGroupPager)` to `(*runtime.Pager[JitNetworkAccessPoliciesClientListByResourceGroupResponse])`
+- Function `NewSolutionsReferenceDataClient` parameter(s) have been changed from `(string, string, azcore.TokenCredential, *arm.ClientOptions)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
+- Function `NewSolutionsReferenceDataClient` return value(s) have been changed from `(*SolutionsReferenceDataClient)` to `(*SolutionsReferenceDataClient, error)`
+- Function `NewSecureScoreControlDefinitionsClient` return value(s) have been changed from `(*SecureScoreControlDefinitionsClient)` to `(*SecureScoreControlDefinitionsClient, error)`
+- Function `*ExternalSecuritySolutionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ExternalSecuritySolutionsClientGetOptions)` to `(context.Context, string, string, string, *ExternalSecuritySolutionsClientGetOptions)`
+- Function `*TasksClient.GetResourceGroupLevelTask` parameter(s) have been changed from `(context.Context, string, string, *TasksClientGetResourceGroupLevelTaskOptions)` to `(context.Context, string, string, string, *TasksClientGetResourceGroupLevelTaskOptions)`
+- Function `*TasksClient.List` return value(s) have been changed from `(*TasksClientListPager)` to `(*runtime.Pager[TasksClientListResponse])`
+- Function `NewAllowedConnectionsClient` parameter(s) have been changed from `(string, string, azcore.TokenCredential, *arm.ClientOptions)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
+- Function `NewAllowedConnectionsClient` return value(s) have been changed from `(*AllowedConnectionsClient)` to `(*AllowedConnectionsClient, error)`
+- Function `*AlertsClient.List` return value(s) have been changed from `(*AlertsClientListPager)` to `(*runtime.Pager[AlertsClientListResponse])`
+- Function `NewCompliancesClient` return value(s) have been changed from `(*CompliancesClient)` to `(*CompliancesClient, error)`
+- Function `*JitNetworkAccessPoliciesClient.List` return value(s) have been changed from `(*JitNetworkAccessPoliciesClientListPager)` to `(*runtime.Pager[JitNetworkAccessPoliciesClientListResponse])`
+- Function `*AlertsClient.UpdateSubscriptionLevelStateToResolve` parameter(s) have been changed from `(context.Context, string, *AlertsClientUpdateSubscriptionLevelStateToResolveOptions)` to `(context.Context, string, string, *AlertsClientUpdateSubscriptionLevelStateToResolveOptions)`
+- Function `NewAutoProvisioningSettingsClient` return value(s) have been changed from `(*AutoProvisioningSettingsClient)` to `(*AutoProvisioningSettingsClient, error)`
+- Function `NewDeviceSecurityGroupsClient` return value(s) have been changed from `(*DeviceSecurityGroupsClient)` to `(*DeviceSecurityGroupsClient, error)`
+- Function `*TasksClient.ListByHomeRegion` parameter(s) have been changed from `(*TasksClientListByHomeRegionOptions)` to `(string, *TasksClientListByHomeRegionOptions)`
+- Function `*TasksClient.ListByHomeRegion` return value(s) have been changed from `(*TasksClientListByHomeRegionPager)` to `(*runtime.Pager[TasksClientListByHomeRegionResponse])`
+- Function `*JitNetworkAccessPoliciesClient.Initiate` parameter(s) have been changed from `(context.Context, string, string, JitNetworkAccessPolicyInitiateRequest, *JitNetworkAccessPoliciesClientInitiateOptions)` to `(context.Context, string, string, string, JitNetworkAccessPolicyInitiateRequest, *JitNetworkAccessPoliciesClientInitiateOptions)`
+- Function `NewIotSecuritySolutionsAnalyticsRecommendationClient` return value(s) have been changed from `(*IotSecuritySolutionsAnalyticsRecommendationClient)` to `(*IotSecuritySolutionsAnalyticsRecommendationClient, error)`
+- Function `*AlertsClient.UpdateSubscriptionLevelStateToDismiss` parameter(s) have been changed from `(context.Context, string, *AlertsClientUpdateSubscriptionLevelStateToDismissOptions)` to `(context.Context, string, string, *AlertsClientUpdateSubscriptionLevelStateToDismissOptions)`
+- Function `*AlertsClient.ListByResourceGroup` return value(s) have been changed from `(*AlertsClientListByResourceGroupPager)` to `(*runtime.Pager[AlertsClientListByResourceGroupResponse])`
+- Function `NewRegulatoryComplianceControlsClient` return value(s) have been changed from `(*RegulatoryComplianceControlsClient)` to `(*RegulatoryComplianceControlsClient, error)`
+- Function `*WorkspaceSettingsClient.List` return value(s) have been changed from `(*WorkspaceSettingsClientListPager)` to `(*runtime.Pager[WorkspaceSettingsClientListResponse])`
+- Function `NewJitNetworkAccessPoliciesClient` parameter(s) have been changed from `(string, string, azcore.TokenCredential, *arm.ClientOptions)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
+- Function `NewJitNetworkAccessPoliciesClient` return value(s) have been changed from `(*JitNetworkAccessPoliciesClient)` to `(*JitNetworkAccessPoliciesClient, error)`
+- Function `NewPricingsClient` return value(s) have been changed from `(*PricingsClient)` to `(*PricingsClient, error)`
+- Function `NewTopologyClient` parameter(s) have been changed from `(string, string, azcore.TokenCredential, *arm.ClientOptions)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
+- Function `NewTopologyClient` return value(s) have been changed from `(*TopologyClient)` to `(*TopologyClient, error)`
+- Function `*TasksClient.GetSubscriptionLevelTask` parameter(s) have been changed from `(context.Context, string, *TasksClientGetSubscriptionLevelTaskOptions)` to `(context.Context, string, string, *TasksClientGetSubscriptionLevelTaskOptions)`
+- Function `*SoftwareInventoriesClient.ListByExtendedResource` return value(s) have been changed from `(*SoftwareInventoriesClientListByExtendedResourcePager)` to `(*runtime.Pager[SoftwareInventoriesClientListByExtendedResourceResponse])`
+- Function `*IotSecuritySolutionClient.ListBySubscription` return value(s) have been changed from `(*IotSecuritySolutionClientListBySubscriptionPager)` to `(*runtime.Pager[IotSecuritySolutionClientListBySubscriptionResponse])`
+- Function `*AccountConnectorsClient.List` return value(s) have been changed from `(*AccountConnectorsClientListPager)` to `(*runtime.Pager[AccountConnectorsClientListResponse])`
+- Function `*AlertsClient.UpdateResourceGroupLevelStateToDismiss` parameter(s) have been changed from `(context.Context, string, string, *AlertsClientUpdateResourceGroupLevelStateToDismissOptions)` to `(context.Context, string, string, string, *AlertsClientUpdateResourceGroupLevelStateToDismissOptions)`
+- Function `*SolutionsClient.List` return value(s) have been changed from `(*SolutionsClientListPager)` to `(*runtime.Pager[SolutionsClientListResponse])`
+- Function `NewServerVulnerabilityAssessmentClient` return value(s) have been changed from `(*ServerVulnerabilityAssessmentClient)` to `(*ServerVulnerabilityAssessmentClient, error)`
+- Function `*RegulatoryComplianceControlsClient.List` return value(s) have been changed from `(*RegulatoryComplianceControlsClientListPager)` to `(*runtime.Pager[RegulatoryComplianceControlsClientListResponse])`
+- Function `*AutomationsClient.List` return value(s) have been changed from `(*AutomationsClientListPager)` to `(*runtime.Pager[AutomationsClientListResponse])`
+- Function `*AllowedConnectionsClient.Get` parameter(s) have been changed from `(context.Context, string, ConnectionType, *AllowedConnectionsClientGetOptions)` to `(context.Context, string, string, ConnectionType, *AllowedConnectionsClientGetOptions)`
+- Function `*DiscoveredSecuritySolutionsClient.List` return value(s) have been changed from `(*DiscoveredSecuritySolutionsClientListPager)` to `(*runtime.Pager[DiscoveredSecuritySolutionsClientListResponse])`
+- Function `NewSQLVulnerabilityAssessmentScanResultsClient` return value(s) have been changed from `(*SQLVulnerabilityAssessmentScanResultsClient)` to `(*SQLVulnerabilityAssessmentScanResultsClient, error)`
+- Function `*ConnectorsClient.ListByResourceGroup` return value(s) have been changed from `(*ConnectorsClientListByResourceGroupPager)` to `(*runtime.Pager[ConnectorsClientListByResourceGroupResponse])`
+- Function `*AssessmentsClient.List` return value(s) have been changed from `(*AssessmentsClientListPager)` to `(*runtime.Pager[AssessmentsClientListResponse])`
+- Function `*IngestionSettingsClient.List` return value(s) have been changed from `(*IngestionSettingsClientListPager)` to `(*runtime.Pager[IngestionSettingsClientListResponse])`
+- Function `NewAlertsSuppressionRulesClient` return value(s) have been changed from `(*AlertsSuppressionRulesClient)` to `(*AlertsSuppressionRulesClient, error)`
+- Function `*AlertsClient.UpdateResourceGroupLevelStateToActivate` parameter(s) have been changed from `(context.Context, string, string, *AlertsClientUpdateResourceGroupLevelStateToActivateOptions)` to `(context.Context, string, string, string, *AlertsClientUpdateResourceGroupLevelStateToActivateOptions)`
+- Function `*AssessmentsMetadataClient.List` return value(s) have been changed from `(*AssessmentsMetadataClientListPager)` to `(*runtime.Pager[AssessmentsMetadataClientListResponse])`
+- Function `*AssessmentsMetadataClient.ListBySubscription` return value(s) have been changed from `(*AssessmentsMetadataClientListBySubscriptionPager)` to `(*runtime.Pager[AssessmentsMetadataClientListBySubscriptionResponse])`
+- Function `*SettingsClient.List` return value(s) have been changed from `(*SettingsClientListPager)` to `(*runtime.Pager[SettingsClientListResponse])`
+- Function `NewDiscoveredSecuritySolutionsClient` parameter(s) have been changed from `(string, string, azcore.TokenCredential, *arm.ClientOptions)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
+- Function `NewDiscoveredSecuritySolutionsClient` return value(s) have been changed from `(*DiscoveredSecuritySolutionsClient)` to `(*DiscoveredSecuritySolutionsClient, error)`
+- Function `*SecureScoresClient.List` return value(s) have been changed from `(*SecureScoresClientListPager)` to `(*runtime.Pager[SecureScoresClientListResponse])`
+- Function `*TasksClient.ListByResourceGroup` parameter(s) have been changed from `(string, *TasksClientListByResourceGroupOptions)` to `(string, string, *TasksClientListByResourceGroupOptions)`
+- Function `*TasksClient.ListByResourceGroup` return value(s) have been changed from `(*TasksClientListByResourceGroupPager)` to `(*runtime.Pager[TasksClientListByResourceGroupResponse])`
+- Function `*TopologyClient.ListByHomeRegion` parameter(s) have been changed from `(*TopologyClientListByHomeRegionOptions)` to `(string, *TopologyClientListByHomeRegionOptions)`
+- Function `*TopologyClient.ListByHomeRegion` return value(s) have been changed from `(*TopologyClientListByHomeRegionPager)` to `(*runtime.Pager[TopologyClientListByHomeRegionResponse])`
+- Function `NewInformationProtectionPoliciesClient` return value(s) have been changed from `(*InformationProtectionPoliciesClient)` to `(*InformationProtectionPoliciesClient, error)`
+- Function `*IotSecuritySolutionsAnalyticsRecommendationClient.List` return value(s) have been changed from `(*IotSecuritySolutionsAnalyticsRecommendationClientListPager)` to `(*runtime.Pager[IotSecuritySolutionsAnalyticsRecommendationClientListResponse])`
+- Function `NewComplianceResultsClient` return value(s) have been changed from `(*ComplianceResultsClient)` to `(*ComplianceResultsClient, error)`
+- Function `*ExternalSecuritySolutionsClient.List` return value(s) have been changed from `(*ExternalSecuritySolutionsClientListPager)` to `(*runtime.Pager[ExternalSecuritySolutionsClientListResponse])`
+- Function `NewSubAssessmentsClient` return value(s) have been changed from `(*SubAssessmentsClient)` to `(*SubAssessmentsClient, error)`
+- Function `*AllowedConnectionsClient.List` return value(s) have been changed from `(*AllowedConnectionsClientListPager)` to `(*runtime.Pager[AllowedConnectionsClientListResponse])`
+- Function `*JitNetworkAccessPoliciesClient.ListByResourceGroupAndRegion` parameter(s) have been changed from `(string, *JitNetworkAccessPoliciesClientListByResourceGroupAndRegionOptions)` to `(string, string, *JitNetworkAccessPoliciesClientListByResourceGroupAndRegionOptions)`
+- Function `*JitNetworkAccessPoliciesClient.ListByResourceGroupAndRegion` return value(s) have been changed from `(*JitNetworkAccessPoliciesClientListByResourceGroupAndRegionPager)` to `(*runtime.Pager[JitNetworkAccessPoliciesClientListByResourceGroupAndRegionResponse])`
+- Function `*ContactsClient.List` return value(s) have been changed from `(*ContactsClientListPager)` to `(*runtime.Pager[ContactsClientListResponse])`
+- Function `*ContactsClientListPager.Err` has been removed
+- Function `HybridComputeProvisioningState.ToPtr` has been removed
+- Function `*AlertsSuppressionRulesClientListPager.Err` has been removed
+- Function `*DiscoveredSecuritySolutionsClientListByHomeRegionPager.Err` has been removed
+- Function `*ContactsClientListPager.PageResponse` has been removed
+- Function `*SecureScoreControlDefinitionsClientListPager.PageResponse` has been removed
+- Function `*CompliancesClientListPager.NextPage` has been removed
+- Function `SettingName.ToPtr` has been removed
+- Function `Severity.ToPtr` has been removed
+- Function `RecommendationStatus.ToPtr` has been removed
+- Function `ServerVulnerabilityAssessmentPropertiesProvisioningState.ToPtr` has been removed
+- Function `*ContactsClientListPager.NextPage` has been removed
+- Function `PermissionProperty.ToPtr` has been removed
+- Function `*AssessmentsClientListPager.Err` has been removed
+- Function `*AdaptiveNetworkHardeningsClientEnforcePoller.Done` has been removed
+- Function `*SubAssessmentsClientListPager.NextPage` has been removed
+- Function `*SoftwareInventoriesClientListBySubscriptionPager.NextPage` has been removed
+- Function `*TopologyClientListPager.NextPage` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*AlertsClientSimulatePollerResponse.Resume` has been removed
+- Function `*DiscoveredSecuritySolutionsClientListPager.NextPage` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*JitNetworkAccessPoliciesClientListPager.NextPage` has been removed
+- Function `*WorkspaceSettingsClientListPager.PageResponse` has been removed
+- Function `*AssessmentsMetadataClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*AccountConnectorsClientListPager.NextPage` has been removed
+- Function `*TasksClientListByResourceGroupPager.NextPage` has been removed
+- Function `*AlertsClientListPager.PageResponse` has been removed
+- Function `*SoftwareInventoriesClientListBySubscriptionPager.Err` has been removed
+- Function `*SecureScoreControlDefinitionsClientListBySubscriptionPager.NextPage` has been removed
+- Function `ResourceStatus.ToPtr` has been removed
+- Function `*AdaptiveNetworkHardeningsClientListByExtendedResourcePager.Err` has been removed
+- Function `*IotSecuritySolutionsAnalyticsRecommendationClientListPager.Err` has been removed
+- Function `EnforcementSupport.ToPtr` has been removed
+- Function `RecommendationAction.ToPtr` has been removed
+- Function `*TasksClientListPager.Err` has been removed
+- Function `*AlertsClient.BeginSimulate` has been removed
+- Function `Source.ToPtr` has been removed
+- Function `*TopologyClientListByHomeRegionPager.Err` has been removed
+- Function `*AutomationsClientListByResourceGroupPager.Err` has been removed
+- Function `*SoftwareInventoriesClientListByExtendedResourcePager.PageResponse` has been removed
+- Function `ServerVulnerabilityAssessmentClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*DiscoveredSecuritySolutionsClientListByHomeRegionPager.PageResponse` has been removed
+- Function `RecommendationType.ToPtr` has been removed
+- Function `*ExternalSecuritySolutionsClientListPager.NextPage` has been removed
+- Function `*ExternalSecuritySolutionsClientListByHomeRegionPager.Err` has been removed
+- Function `OfferingType.ToPtr` has been removed
+- Function `*SubAssessmentsClientListAllPager.NextPage` has been removed
+- Function `*InformationProtectionPoliciesClientListPager.Err` has been removed
+- Function `*AlertsClientListSubscriptionLevelByRegionPager.PageResponse` has been removed
+- Function `AdditionalWorkspaceType.ToPtr` has been removed
+- Function `*TasksClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*JitNetworkAccessPoliciesClientListByRegionPager.PageResponse` has been removed
+- Function `*LocationsClientListPager.PageResponse` has been removed
+- Function `*JitNetworkAccessPoliciesClientListByResourceGroupPager.NextPage` has been removed
+- Function `*AutomationsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*AllowedConnectionsClientListPager.PageResponse` has been removed
+- Function `*IotSecuritySolutionsAnalyticsAggregatedAlertClientListPager.NextPage` has been removed
+- Function `AlertSeverity.ToPtr` has been removed
+- Function `*TopologyClientListPager.PageResponse` has been removed
+- Function `*RegulatoryComplianceControlsClientListPager.Err` has been removed
+- Function `*CustomEntityStoreAssignmentsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `CloudName.ToPtr` has been removed
+- Function `*LocationsClientListPager.NextPage` has been removed
+- Function `*RegulatoryComplianceStandardsClientListPager.PageResponse` has been removed
+- Function `ImplementationEffort.ToPtr` has been removed
+- Function `*DeviceSecurityGroupsClientListPager.Err` has been removed
+- Function `*ConnectorsClientListPager.Err` has been removed
+- Function `*AdaptiveNetworkHardeningsClientEnforcePoller.FinalResponse` has been removed
+- Function `EndOfSupportStatus.ToPtr` has been removed
+- Function `*AutomationsClientListPager.NextPage` has been removed
+- Function `ConnectionType.ToPtr` has been removed
+- Function `*ConnectorsClientListPager.NextPage` has been removed
+- Function `*AccountConnectorsClientListPager.Err` has been removed
+- Function `SecuritySolutionStatus.ToPtr` has been removed
+- Function `*IotSecuritySolutionsAnalyticsAggregatedAlertClientListPager.Err` has been removed
+- Function `*CompliancesClientListPager.PageResponse` has been removed
+- Function `*AllowedConnectionsClientListByHomeRegionPager.NextPage` has been removed
+- Function `Rank.ToPtr` has been removed
+- Function `*RegulatoryComplianceAssessmentsClientListPager.PageResponse` has been removed
+- Function `*AlertsClientListResourceGroupLevelByRegionPager.PageResponse` has been removed
+- Function `PropertyType.ToPtr` has been removed
+- Function `*AllowedConnectionsClientListPager.Err` has been removed
+- Function `*RegulatoryComplianceControlsClientListPager.PageResponse` has been removed
+- Function `*AutomationsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `ActionType.ToPtr` has been removed
+- Function `*SubAssessmentsClientListAllPager.PageResponse` has been removed
+- Function `*IotSecuritySolutionClientListBySubscriptionPager.Err` has been removed
+- Function `*AlertsClientListResourceGroupLevelByRegionPager.NextPage` has been removed
+- Function `*IotSecuritySolutionClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*AdaptiveNetworkHardeningsClientListByExtendedResourcePager.NextPage` has been removed
+- Function `*AlertsClientListPager.Err` has been removed
+- Function `*IotSecuritySolutionClientListBySubscriptionPager.PageResponse` has been removed
+- Function `UnmaskedIPLoggingStatus.ToPtr` has been removed
+- Function `*IotSecuritySolutionClientListByResourceGroupPager.Err` has been removed
+- Function `*SolutionsClientListPager.NextPage` has been removed
+- Function `Tactics.ToPtr` has been removed
+- Function `*CustomAssessmentAutomationsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*AssessmentsMetadataClientListPager.NextPage` has been removed
+- Function `*AssessmentsMetadataClientListPager.Err` has been removed
+- Function `*RegulatoryComplianceAssessmentsClientListPager.Err` has been removed
+- Function `*WorkspaceSettingsClientListPager.Err` has been removed
+- Function `Kind.ToPtr` has been removed
+- Function `*ConnectorsClientListByResourceGroupPager.Err` has been removed
+- Function `*AlertsClientListSubscriptionLevelByRegionPager.Err` has been removed
+- Function `ExternalSecuritySolutionKind.ToPtr` has been removed
+- Function `*ExternalSecuritySolutionsClientListByHomeRegionPager.NextPage` has been removed
+- Function `AdaptiveApplicationControlIssue.ToPtr` has been removed
+- Function `*SettingsClientUpdateResult.UnmarshalJSON` has been removed
+- Function `*WorkspaceSettingsClientListPager.NextPage` has been removed
+- Function `OrganizationMembershipType.ToPtr` has been removed
+- Function `*CustomAssessmentAutomationsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `PricingTier.ToPtr` has been removed
+- Function `*JitNetworkAccessPoliciesClientListByResourceGroupAndRegionPager.NextPage` has been removed
+- Function `*AssessmentsMetadataClientListBySubscriptionPager.NextPage` has been removed
+- Function `*ComplianceResultsClientListPager.PageResponse` has been removed
+- Function `*SubAssessmentsClientListPager.Err` has been removed
+- Function `RecommendationConfigStatus.ToPtr` has been removed
+- Function `*ComplianceResultsClientListPager.Err` has been removed
+- Function `*SettingsClientGetResult.UnmarshalJSON` has been removed
+- Function `*AllowedConnectionsClientListByHomeRegionPager.Err` has been removed
+- Function `*AutoProvisioningSettingsClientListPager.PageResponse` has been removed
+- Function `*SubAssessmentsClientListAllPager.Err` has been removed
+- Function `AlertsToAdmins.ToPtr` has been removed
+- Function `*TopologyClientListByHomeRegionPager.PageResponse` has been removed
+- Function `*AlertsClientListSubscriptionLevelByRegionPager.NextPage` has been removed
+- Function `*JitNetworkAccessPoliciesClientListByResourceGroupAndRegionPager.PageResponse` has been removed
+- Function `*SecureScoreControlDefinitionsClientListBySubscriptionPager.Err` has been removed
+- Function `*ExternalSecuritySolutionsClientListByHomeRegionPager.PageResponse` has been removed
+- Function `ExportData.ToPtr` has been removed
+- Function `Status.ToPtr` has been removed
+- Function `SourceSystem.ToPtr` has been removed
+- Function `*AssessmentsClientListPager.PageResponse` has been removed
+- Function `ScanTriggerType.ToPtr` has been removed
+- Function `Techniques.ToPtr` has been removed
+- Function `*AlertsClientSimulatePoller.Done` has been removed
+- Function `*AssessmentsClientListPager.NextPage` has been removed
+- Function `*RegulatoryComplianceAssessmentsClientListPager.NextPage` has been removed
+- Function `*ConnectorsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `TransportProtocol.ToPtr` has been removed
+- Function `InformationProtectionPolicyName.ToPtr` has been removed
+- Function `*CustomEntityStoreAssignmentsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `Operator.ToPtr` has been removed
+- Function `*RegulatoryComplianceControlsClientListPager.NextPage` has been removed
+- Function `*JitNetworkAccessPoliciesClientListByResourceGroupPager.Err` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `*InformationProtectionPoliciesClientListPager.NextPage` has been removed
+- Function `*AdaptiveNetworkHardeningsClientEnforcePoller.ResumeToken` has been removed
+- Function `*ComplianceResultsClientListPager.NextPage` has been removed
+- Function `*DeviceSecurityGroupsClientListPager.NextPage` has been removed
+- Function `BundleType.ToPtr` has been removed
+- Function `AlertStatus.ToPtr` has been removed
+- Function `*DiscoveredSecuritySolutionsClientListPager.Err` has been removed
+- Function `*LocationsClientListPager.Err` has been removed
+- Function `TaskUpdateActionType.ToPtr` has been removed
+- Function `*IotSecuritySolutionsAnalyticsRecommendationClientListPager.PageResponse` has been removed
+- Function `*ServerVulnerabilityAssessmentClientDeletePoller.FinalResponse` has been removed
+- Function `*SettingsClientListPager.NextPage` has been removed
+- Function `AutoProvision.ToPtr` has been removed
+- Function `*SoftwareInventoriesClientListByExtendedResourcePager.NextPage` has been removed
+- Function `ConfigurationStatus.ToPtr` has been removed
+- Function `ValueType.ToPtr` has been removed
+- Function `*JitNetworkAccessPoliciesClientListPager.PageResponse` has been removed
+- Function `*ServerVulnerabilityAssessmentClientDeletePollerResponse.Resume` has been removed
+- Function `*JitNetworkAccessPoliciesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*SoftwareInventoriesClientListByExtendedResourcePager.Err` has been removed
+- Function `ResourceIdentifierType.ToPtr` has been removed
+- Function `*AccountConnectorsClientListPager.PageResponse` has been removed
+- Function `EventSource.ToPtr` has been removed
+- Function `RuleState.ToPtr` has been removed
+- Function `*AlertsClientSimulatePoller.ResumeToken` has been removed
+- Function `AlertNotifications.ToPtr` has been removed
+- Function `FileType.ToPtr` has been removed
+- Function `*ServerVulnerabilityAssessmentClientDeletePoller.Poll` has been removed
+- Function `UserImpact.ToPtr` has been removed
+- Function `*ConnectorsClientListPager.PageResponse` has been removed
+- Function `*AdaptiveNetworkHardeningsClientEnforcePoller.Poll` has been removed
+- Function `*CustomEntityStoreAssignmentsClientListBySubscriptionPager.NextPage` has been removed
+- Function `*TopologyClientListPager.Err` has been removed
+- Function `*ServerVulnerabilityAssessmentClientDeletePoller.ResumeToken` has been removed
+- Function `*TasksClientListByHomeRegionPager.PageResponse` has been removed
+- Function `SecurityFamily.ToPtr` has been removed
+- Function `*CustomAssessmentAutomationsClientListByResourceGroupPager.NextPage` has been removed
+- Function `AdditionalWorkspaceDataType.ToPtr` has been removed
+- Function `AdaptiveNetworkHardeningsClientEnforcePollerResponse.PollUntilDone` has been removed
+- Function `*AllowedConnectionsClientListByHomeRegionPager.PageResponse` has been removed
+- Function `ExpandEnum.ToPtr` has been removed
+- Function `*DiscoveredSecuritySolutionsClientListPager.PageResponse` has been removed
+- Function `ReportedSeverity.ToPtr` has been removed
+- Function `*CustomEntityStoreAssignmentsClientListByResourceGroupPager.NextPage` has been removed
+- Function `State.ToPtr` has been removed
+- Function `*SoftwareInventoriesClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*AdaptiveNetworkHardeningsClientListByExtendedResourcePager.PageResponse` has been removed
+- Function `*JitNetworkAccessPoliciesClientListByResourceGroupAndRegionPager.Err` has been removed
+- Function `AssessmentType.ToPtr` has been removed
+- Function `*RegulatoryComplianceStandardsClientListPager.Err` has been removed
+- Function `AssessmentStatusCode.ToPtr` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `SeverityEnum.ToPtr` has been removed
+- Function `ControlType.ToPtr` has been removed
+- Function `*AutoProvisioningSettingsClientListPager.NextPage` has been removed
+- Function `*SecureScoreControlDefinitionsClientListPager.NextPage` has been removed
+- Function `*SubAssessmentsClientListPager.PageResponse` has been removed
+- Function `*AutomationsClientListPager.Err` has been removed
+- Function `*IotSecuritySolutionsAnalyticsAggregatedAlertClientListPager.PageResponse` has been removed
+- Function `RuleType.ToPtr` has been removed
+- Function `*SecureScoreControlsClientListPager.PageResponse` has been removed
+- Function `ExpandControlsEnum.ToPtr` has been removed
+- Function `SupportedCloudEnum.ToPtr` has been removed
+- Function `*AlertsClientListPager.NextPage` has been removed
+- Function `*SecureScoreControlsClientListPager.Err` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*SecureScoreControlDefinitionsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*SecureScoreControlDefinitionsClientListPager.Err` has been removed
+- Function `*AllowedConnectionsClientListPager.NextPage` has been removed
+- Function `*DeviceSecurityGroupsClientListPager.PageResponse` has been removed
+- Function `AuthenticationProvisioningState.ToPtr` has been removed
+- Function `*JitNetworkAccessPoliciesClientListByRegionPager.NextPage` has been removed
+- Function `Categories.ToPtr` has been removed
+- Function `*AlertsClientListByResourceGroupPager.Err` has been removed
+- Function `*IotSecuritySolutionClientListByResourceGroupPager.NextPage` has been removed
+- Function `*ExternalSecuritySolutionsClientListPager.PageResponse` has been removed
+- Function `*TasksClientListPager.NextPage` has been removed
+- Function `*SecureScoreControlsClientListBySecureScorePager.NextPage` has been removed
+- Function `*TasksClientListByHomeRegionPager.Err` has been removed
+- Function `*CustomEntityStoreAssignmentsClientListBySubscriptionPager.Err` has been removed
+- Function `ScanState.ToPtr` has been removed
+- Function `StatusReason.ToPtr` has been removed
+- Function `*IngestionSettingsClientListPager.PageResponse` has been removed
+- Function `*JitNetworkAccessPoliciesClientListPager.Err` has been removed
+- Function `*AlertsSuppressionRulesClientListPager.PageResponse` has been removed
+- Function `*SecureScoresClientListPager.NextPage` has been removed
+- Function `*CustomEntityStoreAssignmentsClientListByResourceGroupPager.Err` has been removed
+- Function `*SettingsClientListPager.PageResponse` has been removed
+- Function `*SecureScoreControlsClientListBySecureScorePager.Err` has been removed
+- Function `RuleStatus.ToPtr` has been removed
+- Function `*ExternalSecuritySolutionsClientListPager.Err` has been removed
+- Function `*AlertsClientListResourceGroupLevelByRegionPager.Err` has been removed
+- Function `*TasksClientListByHomeRegionPager.NextPage` has been removed
+- Function `EnforcementMode.ToPtr` has been removed
+- Function `Intent.ToPtr` has been removed
+- Function `*TopologyClientListByHomeRegionPager.NextPage` has been removed
+- Function `*CompliancesClientListPager.Err` has been removed
+- Function `*TasksClientListByResourceGroupPager.Err` has been removed
+- Function `*RegulatoryComplianceStandardsClientListPager.NextPage` has been removed
+- Function `*IotSecuritySolutionClientListBySubscriptionPager.NextPage` has been removed
+- Function `*CustomAssessmentAutomationsClientListBySubscriptionPager.Err` has been removed
+- Function `AADConnectivityState.ToPtr` has been removed
+- Function `*SecureScoreControlsClientListPager.NextPage` has been removed
+- Function `*SettingsClientListPager.Err` has been removed
+- Function `*SecureScoresClientListPager.Err` has been removed
+- Function `*SolutionsClientListPager.Err` has been removed
+- Function `*AlertsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*SolutionsClientListPager.PageResponse` has been removed
+- Function `*CustomAssessmentAutomationsClientListByResourceGroupPager.Err` has been removed
+- Function `*AssessmentsMetadataClientListBySubscriptionPager.Err` has been removed
+- Function `*IngestionSettingsClientListPager.Err` has been removed
+- Function `*ConnectorsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*AdaptiveNetworkHardeningsClientEnforcePollerResponse.Resume` has been removed
+- Function `*AlertsClientSimulatePoller.FinalResponse` has been removed
+- Function `RuleSeverity.ToPtr` has been removed
+- Function `*IotSecuritySolutionsAnalyticsRecommendationClientListPager.NextPage` has been removed
+- Function `*TasksClientListPager.PageResponse` has been removed
+- Function `*JitNetworkAccessPoliciesClientListByRegionPager.Err` has been removed
+- Function `*SecureScoresClientListPager.PageResponse` has been removed
+- Function `Protocol.ToPtr` has been removed
+- Function `AssessedResourceType.ToPtr` has been removed
+- Function `AuthenticationType.ToPtr` has been removed
+- Function `*InformationProtectionPoliciesClientListPager.PageResponse` has been removed
+- Function `*AssessmentsMetadataClientListPager.PageResponse` has been removed
+- Function `*IngestionSettingsClientListPager.NextPage` has been removed
+- Function `AlertsClientSimulatePollerResponse.PollUntilDone` has been removed
+- Function `SubAssessmentStatusCode.ToPtr` has been removed
+- Function `Threats.ToPtr` has been removed
+- Function `*AlertsSuppressionRulesClientListPager.NextPage` has been removed
+- Function `SettingKind.ToPtr` has been removed
+- Function `*DiscoveredSecuritySolutionsClientListByHomeRegionPager.NextPage` has been removed
+- Function `*AlertsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*ServerVulnerabilityAssessmentClientDeletePoller.Done` has been removed
+- Function `*AutomationsClientListPager.PageResponse` has been removed
+- Function `*SecureScoreControlsClientListBySecureScorePager.PageResponse` has been removed
+- Function `*AutoProvisioningSettingsClientListPager.Err` has been removed
+- Function `*AlertsClientSimulatePoller.Poll` has been removed
+- Function `DataSource.ToPtr` has been removed
+- Function `Direction.ToPtr` has been removed
+- Function `*CustomAssessmentAutomationsClientListBySubscriptionPager.NextPage` has been removed
+- Struct `AccountConnectorsClientCreateOrUpdateResult` has been removed
+- Struct `AccountConnectorsClientGetResult` has been removed
+- Struct `AccountConnectorsClientListPager` has been removed
+- Struct `AccountConnectorsClientListResult` has been removed
+- Struct `AdaptiveApplicationControlsClientGetResult` has been removed
+- Struct `AdaptiveApplicationControlsClientListResult` has been removed
+- Struct `AdaptiveApplicationControlsClientPutResult` has been removed
+- Struct `AdaptiveNetworkHardeningsClientEnforcePoller` has been removed
+- Struct `AdaptiveNetworkHardeningsClientEnforcePollerResponse` has been removed
+- Struct `AdaptiveNetworkHardeningsClientGetResult` has been removed
+- Struct `AdaptiveNetworkHardeningsClientListByExtendedResourcePager` has been removed
+- Struct `AdaptiveNetworkHardeningsClientListByExtendedResourceResult` has been removed
+- Struct `AdvancedThreatProtectionClientCreateResult` has been removed
+- Struct `AdvancedThreatProtectionClientGetResult` has been removed
+- Struct `AlertsClientBeginSimulateOptions` has been removed
+- Struct `AlertsClientGetResourceGroupLevelResult` has been removed
+- Struct `AlertsClientGetSubscriptionLevelResult` has been removed
+- Struct `AlertsClientListByResourceGroupPager` has been removed
+- Struct `AlertsClientListByResourceGroupResult` has been removed
+- Struct `AlertsClientListPager` has been removed
+- Struct `AlertsClientListResourceGroupLevelByRegionPager` has been removed
+- Struct `AlertsClientListResourceGroupLevelByRegionResult` has been removed
+- Struct `AlertsClientListResult` has been removed
+- Struct `AlertsClientListSubscriptionLevelByRegionPager` has been removed
+- Struct `AlertsClientListSubscriptionLevelByRegionResult` has been removed
+- Struct `AlertsClientSimulatePoller` has been removed
+- Struct `AlertsClientSimulatePollerResponse` has been removed
+- Struct `AlertsSuppressionRulesClientGetResult` has been removed
+- Struct `AlertsSuppressionRulesClientListPager` has been removed
+- Struct `AlertsSuppressionRulesClientListResult` has been removed
+- Struct `AlertsSuppressionRulesClientUpdateResult` has been removed
+- Struct `AllowedConnectionsClientGetResult` has been removed
+- Struct `AllowedConnectionsClientListByHomeRegionPager` has been removed
+- Struct `AllowedConnectionsClientListByHomeRegionResult` has been removed
+- Struct `AllowedConnectionsClientListPager` has been removed
+- Struct `AllowedConnectionsClientListResult` has been removed
+- Struct `AssessmentsClientCreateOrUpdateResult` has been removed
+- Struct `AssessmentsClientGetResult` has been removed
+- Struct `AssessmentsClientListPager` has been removed
+- Struct `AssessmentsClientListResult` has been removed
+- Struct `AssessmentsMetadataClientCreateInSubscriptionResult` has been removed
+- Struct `AssessmentsMetadataClientGetInSubscriptionResult` has been removed
+- Struct `AssessmentsMetadataClientGetResult` has been removed
+- Struct `AssessmentsMetadataClientListBySubscriptionPager` has been removed
+- Struct `AssessmentsMetadataClientListBySubscriptionResult` has been removed
+- Struct `AssessmentsMetadataClientListPager` has been removed
+- Struct `AssessmentsMetadataClientListResult` has been removed
+- Struct `AutoProvisioningSettingsClientCreateResult` has been removed
+- Struct `AutoProvisioningSettingsClientGetResult` has been removed
+- Struct `AutoProvisioningSettingsClientListPager` has been removed
+- Struct `AutoProvisioningSettingsClientListResult` has been removed
+- Struct `AutomationsClientCreateOrUpdateResult` has been removed
+- Struct `AutomationsClientGetResult` has been removed
+- Struct `AutomationsClientListByResourceGroupPager` has been removed
+- Struct `AutomationsClientListByResourceGroupResult` has been removed
+- Struct `AutomationsClientListPager` has been removed
+- Struct `AutomationsClientListResult` has been removed
+- Struct `AutomationsClientValidateResult` has been removed
+- Struct `ComplianceResultsClientGetResult` has been removed
+- Struct `ComplianceResultsClientListPager` has been removed
+- Struct `ComplianceResultsClientListResult` has been removed
+- Struct `CompliancesClientGetResult` has been removed
+- Struct `CompliancesClientListPager` has been removed
+- Struct `CompliancesClientListResult` has been removed
+- Struct `ConnectorsClientCreateOrUpdateResult` has been removed
+- Struct `ConnectorsClientGetResult` has been removed
+- Struct `ConnectorsClientListByResourceGroupPager` has been removed
+- Struct `ConnectorsClientListByResourceGroupResult` has been removed
+- Struct `ConnectorsClientListPager` has been removed
+- Struct `ConnectorsClientListResult` has been removed
+- Struct `ConnectorsClientUpdateResult` has been removed
+- Struct `ContactsClientCreateResult` has been removed
+- Struct `ContactsClientGetResult` has been removed
+- Struct `ContactsClientListPager` has been removed
+- Struct `ContactsClientListResult` has been removed
+- Struct `ContactsClientUpdateResult` has been removed
+- Struct `CustomAssessmentAutomationsClientCreateResult` has been removed
+- Struct `CustomAssessmentAutomationsClientGetResult` has been removed
+- Struct `CustomAssessmentAutomationsClientListByResourceGroupPager` has been removed
+- Struct `CustomAssessmentAutomationsClientListByResourceGroupResult` has been removed
+- Struct `CustomAssessmentAutomationsClientListBySubscriptionPager` has been removed
+- Struct `CustomAssessmentAutomationsClientListBySubscriptionResult` has been removed
+- Struct `CustomEntityStoreAssignmentsClientCreateResult` has been removed
+- Struct `CustomEntityStoreAssignmentsClientGetResult` has been removed
+- Struct `CustomEntityStoreAssignmentsClientListByResourceGroupPager` has been removed
+- Struct `CustomEntityStoreAssignmentsClientListByResourceGroupResult` has been removed
+- Struct `CustomEntityStoreAssignmentsClientListBySubscriptionPager` has been removed
+- Struct `CustomEntityStoreAssignmentsClientListBySubscriptionResult` has been removed
+- Struct `DeviceSecurityGroupsClientCreateOrUpdateResult` has been removed
+- Struct `DeviceSecurityGroupsClientGetResult` has been removed
+- Struct `DeviceSecurityGroupsClientListPager` has been removed
+- Struct `DeviceSecurityGroupsClientListResult` has been removed
+- Struct `DiscoveredSecuritySolutionsClientGetResult` has been removed
+- Struct `DiscoveredSecuritySolutionsClientListByHomeRegionPager` has been removed
+- Struct `DiscoveredSecuritySolutionsClientListByHomeRegionResult` has been removed
+- Struct `DiscoveredSecuritySolutionsClientListPager` has been removed
+- Struct `DiscoveredSecuritySolutionsClientListResult` has been removed
+- Struct `ExternalSecuritySolutionsClientGetResult` has been removed
+- Struct `ExternalSecuritySolutionsClientListByHomeRegionPager` has been removed
+- Struct `ExternalSecuritySolutionsClientListByHomeRegionResult` has been removed
+- Struct `ExternalSecuritySolutionsClientListPager` has been removed
+- Struct `ExternalSecuritySolutionsClientListResult` has been removed
+- Struct `InformationProtectionPoliciesClientCreateOrUpdateResult` has been removed
+- Struct `InformationProtectionPoliciesClientGetResult` has been removed
+- Struct `InformationProtectionPoliciesClientListPager` has been removed
+- Struct `InformationProtectionPoliciesClientListResult` has been removed
+- Struct `IngestionSettingsClientCreateResult` has been removed
+- Struct `IngestionSettingsClientGetResult` has been removed
+- Struct `IngestionSettingsClientListConnectionStringsResult` has been removed
+- Struct `IngestionSettingsClientListPager` has been removed
+- Struct `IngestionSettingsClientListResult` has been removed
+- Struct `IngestionSettingsClientListTokensResult` has been removed
+- Struct `IotSecuritySolutionAnalyticsClientGetResult` has been removed
+- Struct `IotSecuritySolutionAnalyticsClientListResult` has been removed
+- Struct `IotSecuritySolutionClientCreateOrUpdateResult` has been removed
+- Struct `IotSecuritySolutionClientGetResult` has been removed
+- Struct `IotSecuritySolutionClientListByResourceGroupPager` has been removed
+- Struct `IotSecuritySolutionClientListByResourceGroupResult` has been removed
+- Struct `IotSecuritySolutionClientListBySubscriptionPager` has been removed
+- Struct `IotSecuritySolutionClientListBySubscriptionResult` has been removed
+- Struct `IotSecuritySolutionClientUpdateResult` has been removed
+- Struct `IotSecuritySolutionsAnalyticsAggregatedAlertClientGetResult` has been removed
+- Struct `IotSecuritySolutionsAnalyticsAggregatedAlertClientListPager` has been removed
+- Struct `IotSecuritySolutionsAnalyticsAggregatedAlertClientListResult` has been removed
+- Struct `IotSecuritySolutionsAnalyticsRecommendationClientGetResult` has been removed
+- Struct `IotSecuritySolutionsAnalyticsRecommendationClientListPager` has been removed
+- Struct `IotSecuritySolutionsAnalyticsRecommendationClientListResult` has been removed
+- Struct `JitNetworkAccessPoliciesClientCreateOrUpdateResult` has been removed
+- Struct `JitNetworkAccessPoliciesClientGetResult` has been removed
+- Struct `JitNetworkAccessPoliciesClientInitiateResult` has been removed
+- Struct `JitNetworkAccessPoliciesClientListByRegionPager` has been removed
+- Struct `JitNetworkAccessPoliciesClientListByRegionResult` has been removed
+- Struct `JitNetworkAccessPoliciesClientListByResourceGroupAndRegionPager` has been removed
+- Struct `JitNetworkAccessPoliciesClientListByResourceGroupAndRegionResult` has been removed
+- Struct `JitNetworkAccessPoliciesClientListByResourceGroupPager` has been removed
+- Struct `JitNetworkAccessPoliciesClientListByResourceGroupResult` has been removed
+- Struct `JitNetworkAccessPoliciesClientListPager` has been removed
+- Struct `JitNetworkAccessPoliciesClientListResult` has been removed
+- Struct `LocationsClientGetResult` has been removed
+- Struct `LocationsClientListPager` has been removed
+- Struct `LocationsClientListResult` has been removed
+- Struct `MdeOnboardingsClientGetResult` has been removed
+- Struct `MdeOnboardingsClientListResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `PricingsClientGetResult` has been removed
+- Struct `PricingsClientListResult` has been removed
+- Struct `PricingsClientUpdateResult` has been removed
+- Struct `RegulatoryComplianceAssessmentsClientGetResult` has been removed
+- Struct `RegulatoryComplianceAssessmentsClientListPager` has been removed
+- Struct `RegulatoryComplianceAssessmentsClientListResult` has been removed
+- Struct `RegulatoryComplianceControlsClientGetResult` has been removed
+- Struct `RegulatoryComplianceControlsClientListPager` has been removed
+- Struct `RegulatoryComplianceControlsClientListResult` has been removed
+- Struct `RegulatoryComplianceStandardsClientGetResult` has been removed
+- Struct `RegulatoryComplianceStandardsClientListPager` has been removed
+- Struct `RegulatoryComplianceStandardsClientListResult` has been removed
+- Struct `SQLVulnerabilityAssessmentBaselineRulesClientAddResult` has been removed
+- Struct `SQLVulnerabilityAssessmentBaselineRulesClientCreateOrUpdateResult` has been removed
+- Struct `SQLVulnerabilityAssessmentBaselineRulesClientGetResult` has been removed
+- Struct `SQLVulnerabilityAssessmentBaselineRulesClientListResult` has been removed
+- Struct `SQLVulnerabilityAssessmentScanResultsClientGetResult` has been removed
+- Struct `SQLVulnerabilityAssessmentScanResultsClientListResult` has been removed
+- Struct `SQLVulnerabilityAssessmentScansClientGetResult` has been removed
+- Struct `SQLVulnerabilityAssessmentScansClientListResult` has been removed
+- Struct `SecureScoreControlDefinitionsClientListBySubscriptionPager` has been removed
+- Struct `SecureScoreControlDefinitionsClientListBySubscriptionResult` has been removed
+- Struct `SecureScoreControlDefinitionsClientListPager` has been removed
+- Struct `SecureScoreControlDefinitionsClientListResult` has been removed
+- Struct `SecureScoreControlsClientListBySecureScorePager` has been removed
+- Struct `SecureScoreControlsClientListBySecureScoreResult` has been removed
+- Struct `SecureScoreControlsClientListPager` has been removed
+- Struct `SecureScoreControlsClientListResult` has been removed
+- Struct `SecureScoresClientGetResult` has been removed
+- Struct `SecureScoresClientListPager` has been removed
+- Struct `SecureScoresClientListResult` has been removed
+- Struct `ServerVulnerabilityAssessmentClientCreateOrUpdateResult` has been removed
+- Struct `ServerVulnerabilityAssessmentClientDeletePoller` has been removed
+- Struct `ServerVulnerabilityAssessmentClientDeletePollerResponse` has been removed
+- Struct `ServerVulnerabilityAssessmentClientGetResult` has been removed
+- Struct `ServerVulnerabilityAssessmentClientListByExtendedResourceResult` has been removed
+- Struct `SettingsClientGetResult` has been removed
+- Struct `SettingsClientListPager` has been removed
+- Struct `SettingsClientListResult` has been removed
+- Struct `SettingsClientUpdateResult` has been removed
+- Struct `SoftwareInventoriesClientGetResult` has been removed
+- Struct `SoftwareInventoriesClientListByExtendedResourcePager` has been removed
+- Struct `SoftwareInventoriesClientListByExtendedResourceResult` has been removed
+- Struct `SoftwareInventoriesClientListBySubscriptionPager` has been removed
+- Struct `SoftwareInventoriesClientListBySubscriptionResult` has been removed
+- Struct `SolutionsClientGetResult` has been removed
+- Struct `SolutionsClientListPager` has been removed
+- Struct `SolutionsClientListResult` has been removed
+- Struct `SolutionsReferenceDataClientListByHomeRegionResult` has been removed
+- Struct `SolutionsReferenceDataClientListResult` has been removed
+- Struct `SubAssessmentsClientGetResult` has been removed
+- Struct `SubAssessmentsClientListAllPager` has been removed
+- Struct `SubAssessmentsClientListAllResult` has been removed
+- Struct `SubAssessmentsClientListPager` has been removed
+- Struct `SubAssessmentsClientListResult` has been removed
+- Struct `TasksClientGetResourceGroupLevelTaskResult` has been removed
+- Struct `TasksClientGetSubscriptionLevelTaskResult` has been removed
+- Struct `TasksClientListByHomeRegionPager` has been removed
+- Struct `TasksClientListByHomeRegionResult` has been removed
+- Struct `TasksClientListByResourceGroupPager` has been removed
+- Struct `TasksClientListByResourceGroupResult` has been removed
+- Struct `TasksClientListPager` has been removed
+- Struct `TasksClientListResult` has been removed
+- Struct `TopologyClientGetResult` has been removed
+- Struct `TopologyClientListByHomeRegionPager` has been removed
+- Struct `TopologyClientListByHomeRegionResult` has been removed
+- Struct `TopologyClientListPager` has been removed
+- Struct `TopologyClientListResult` has been removed
+- Struct `WorkspaceSettingsClientCreateResult` has been removed
+- Struct `WorkspaceSettingsClientGetResult` has been removed
+- Struct `WorkspaceSettingsClientListPager` has been removed
+- Struct `WorkspaceSettingsClientListResult` has been removed
+- Struct `WorkspaceSettingsClientUpdateResult` has been removed
+- Field `ServerVulnerabilityAssessmentClientCreateOrUpdateResult` of struct `ServerVulnerabilityAssessmentClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServerVulnerabilityAssessmentClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ContactsClientDeleteResponse` has been removed
+- Field `AssessmentsMetadataClientGetInSubscriptionResult` of struct `AssessmentsMetadataClientGetInSubscriptionResponse` has been removed
+- Field `RawResponse` of struct `AssessmentsMetadataClientGetInSubscriptionResponse` has been removed
+- Field `RawResponse` of struct `AlertsClientSimulateResponse` has been removed
+- Field `AutomationsClientGetResult` of struct `AutomationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AutomationsClientGetResponse` has been removed
+- Field `SubAssessmentsClientGetResult` of struct `SubAssessmentsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SubAssessmentsClientGetResponse` has been removed
+- Field `ConnectorsClientGetResult` of struct `ConnectorsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ConnectorsClientGetResponse` has been removed
+- Field `AutomationsClientListByResourceGroupResult` of struct `AutomationsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `AutomationsClientListByResourceGroupResponse` has been removed
+- Field `SQLVulnerabilityAssessmentBaselineRulesClientListResult` of struct `SQLVulnerabilityAssessmentBaselineRulesClientListResponse` has been removed
+- Field `RawResponse` of struct `SQLVulnerabilityAssessmentBaselineRulesClientListResponse` has been removed
+- Field `TasksClientListResult` of struct `TasksClientListResponse` has been removed
+- Field `RawResponse` of struct `TasksClientListResponse` has been removed
+- Field `DeviceSecurityGroupsClientListResult` of struct `DeviceSecurityGroupsClientListResponse` has been removed
+- Field `RawResponse` of struct `DeviceSecurityGroupsClientListResponse` has been removed
+- Field `AdaptiveApplicationControlsClientListResult` of struct `AdaptiveApplicationControlsClientListResponse` has been removed
+- Field `RawResponse` of struct `AdaptiveApplicationControlsClientListResponse` has been removed
+- Field `PricingsClientGetResult` of struct `PricingsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PricingsClientGetResponse` has been removed
+- Field `CustomAssessmentAutomationsClientGetResult` of struct `CustomAssessmentAutomationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `CustomAssessmentAutomationsClientGetResponse` has been removed
+- Field `SoftwareInventoriesClientGetResult` of struct `SoftwareInventoriesClientGetResponse` has been removed
+- Field `RawResponse` of struct `SoftwareInventoriesClientGetResponse` has been removed
+- Field `ContactsClientUpdateResult` of struct `ContactsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ContactsClientUpdateResponse` has been removed
+- Field `SolutionsReferenceDataClientListResult` of struct `SolutionsReferenceDataClientListResponse` has been removed
+- Field `RawResponse` of struct `SolutionsReferenceDataClientListResponse` has been removed
+- Field `JitNetworkAccessPoliciesClientCreateOrUpdateResult` of struct `JitNetworkAccessPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `JitNetworkAccessPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `AutomationsClientDeleteResponse` has been removed
+- Field `LocationsClientGetResult` of struct `LocationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `LocationsClientGetResponse` has been removed
+- Field `TopologyClientListByHomeRegionResult` of struct `TopologyClientListByHomeRegionResponse` has been removed
+- Field `RawResponse` of struct `TopologyClientListByHomeRegionResponse` has been removed
+- Field `ComplianceResultsClientGetResult` of struct `ComplianceResultsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ComplianceResultsClientGetResponse` has been removed
+- Field `TopologyClientGetResult` of struct `TopologyClientGetResponse` has been removed
+- Field `RawResponse` of struct `TopologyClientGetResponse` has been removed
+- Field `JitNetworkAccessPoliciesClientInitiateResult` of struct `JitNetworkAccessPoliciesClientInitiateResponse` has been removed
+- Field `RawResponse` of struct `JitNetworkAccessPoliciesClientInitiateResponse` has been removed
+- Field `SQLVulnerabilityAssessmentBaselineRulesClientAddResult` of struct `SQLVulnerabilityAssessmentBaselineRulesClientAddResponse` has been removed
+- Field `RawResponse` of struct `SQLVulnerabilityAssessmentBaselineRulesClientAddResponse` has been removed
+- Field `SolutionsClientListResult` of struct `SolutionsClientListResponse` has been removed
+- Field `RawResponse` of struct `SolutionsClientListResponse` has been removed
+- Field `ConnectorsClientCreateOrUpdateResult` of struct `ConnectorsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ConnectorsClientCreateOrUpdateResponse` has been removed
+- Field `CustomAssessmentAutomationsClientListByResourceGroupResult` of struct `CustomAssessmentAutomationsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `CustomAssessmentAutomationsClientListByResourceGroupResponse` has been removed
+- Field `AlertsClientListResult` of struct `AlertsClientListResponse` has been removed
+- Field `RawResponse` of struct `AlertsClientListResponse` has been removed
+- Field `RawResponse` of struct `DeviceSecurityGroupsClientDeleteResponse` has been removed
+- Field `SQLVulnerabilityAssessmentScansClientGetResult` of struct `SQLVulnerabilityAssessmentScansClientGetResponse` has been removed
+- Field `RawResponse` of struct `SQLVulnerabilityAssessmentScansClientGetResponse` has been removed
+- Field `TasksClientGetResourceGroupLevelTaskResult` of struct `TasksClientGetResourceGroupLevelTaskResponse` has been removed
+- Field `RawResponse` of struct `TasksClientGetResourceGroupLevelTaskResponse` has been removed
+- Field `AlertsClientListResourceGroupLevelByRegionResult` of struct `AlertsClientListResourceGroupLevelByRegionResponse` has been removed
+- Field `RawResponse` of struct `AlertsClientListResourceGroupLevelByRegionResponse` has been removed
+- Field `ServerVulnerabilityAssessmentClientListByExtendedResourceResult` of struct `ServerVulnerabilityAssessmentClientListByExtendedResourceResponse` has been removed
+- Field `RawResponse` of struct `ServerVulnerabilityAssessmentClientListByExtendedResourceResponse` has been removed
+- Field `RawResponse` of struct `AlertsClientUpdateResourceGroupLevelStateToActivateResponse` has been removed
+- Field `RawResponse` of struct `CustomEntityStoreAssignmentsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `IngestionSettingsClientDeleteResponse` has been removed
+- Field `RegulatoryComplianceStandardsClientGetResult` of struct `RegulatoryComplianceStandardsClientGetResponse` has been removed
+- Field `RawResponse` of struct `RegulatoryComplianceStandardsClientGetResponse` has been removed
+- Field `MdeOnboardingsClientListResult` of struct `MdeOnboardingsClientListResponse` has been removed
+- Field `RawResponse` of struct `MdeOnboardingsClientListResponse` has been removed
+- Field `MdeOnboardingsClientGetResult` of struct `MdeOnboardingsClientGetResponse` has been removed
+- Field `RawResponse` of struct `MdeOnboardingsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AlertsClientUpdateResourceGroupLevelStateToResolveResponse` has been removed
+- Field `DiscoveredSecuritySolutionsClientListByHomeRegionResult` of struct `DiscoveredSecuritySolutionsClientListByHomeRegionResponse` has been removed
+- Field `RawResponse` of struct `DiscoveredSecuritySolutionsClientListByHomeRegionResponse` has been removed
+- Field `IotSecuritySolutionsAnalyticsAggregatedAlertClientGetResult` of struct `IotSecuritySolutionsAnalyticsAggregatedAlertClientGetResponse` has been removed
+- Field `RawResponse` of struct `IotSecuritySolutionsAnalyticsAggregatedAlertClientGetResponse` has been removed
+- Field `RawResponse` of struct `IotSecuritySolutionClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `JitNetworkAccessPoliciesClientDeleteResponse` has been removed
+- Field `IngestionSettingsClientListResult` of struct `IngestionSettingsClientListResponse` has been removed
+- Field `RawResponse` of struct `IngestionSettingsClientListResponse` has been removed
+- Field `AdaptiveApplicationControlsClientGetResult` of struct `AdaptiveApplicationControlsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AdaptiveApplicationControlsClientGetResponse` has been removed
+- Field `JitNetworkAccessPoliciesClientListByResourceGroupResult` of struct `JitNetworkAccessPoliciesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `JitNetworkAccessPoliciesClientListByResourceGroupResponse` has been removed
+- Field `ExternalSecuritySolutionsClientListByHomeRegionResult` of struct `ExternalSecuritySolutionsClientListByHomeRegionResponse` has been removed
+- Field `RawResponse` of struct `ExternalSecuritySolutionsClientListByHomeRegionResponse` has been removed
+- Field `JitNetworkAccessPoliciesClientListByResourceGroupAndRegionResult` of struct `JitNetworkAccessPoliciesClientListByResourceGroupAndRegionResponse` has been removed
+- Field `RawResponse` of struct `JitNetworkAccessPoliciesClientListByResourceGroupAndRegionResponse` has been removed
+- Field `SolutionsReferenceDataClientListByHomeRegionResult` of struct `SolutionsReferenceDataClientListByHomeRegionResponse` has been removed
+- Field `RawResponse` of struct `SolutionsReferenceDataClientListByHomeRegionResponse` has been removed
+- Field `AssessmentsClientListResult` of struct `AssessmentsClientListResponse` has been removed
+- Field `RawResponse` of struct `AssessmentsClientListResponse` has been removed
+- Field `SQLVulnerabilityAssessmentScansClientListResult` of struct `SQLVulnerabilityAssessmentScansClientListResponse` has been removed
+- Field `RawResponse` of struct `SQLVulnerabilityAssessmentScansClientListResponse` has been removed
+- Field `IotSecuritySolutionClientListBySubscriptionResult` of struct `IotSecuritySolutionClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `IotSecuritySolutionClientListBySubscriptionResponse` has been removed
+- Field `WorkspaceSettingsClientGetResult` of struct `WorkspaceSettingsClientGetResponse` has been removed
+- Field `RawResponse` of struct `WorkspaceSettingsClientGetResponse` has been removed
+- Field `SoftwareInventoriesClientListBySubscriptionResult` of struct `SoftwareInventoriesClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `SoftwareInventoriesClientListBySubscriptionResponse` has been removed
+- Field `AssessmentsClientGetResult` of struct `AssessmentsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AssessmentsClientGetResponse` has been removed
+- Field `RawResponse` of struct `IotSecuritySolutionsAnalyticsAggregatedAlertClientDismissResponse` has been removed
+- Field `ContactsClientGetResult` of struct `ContactsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ContactsClientGetResponse` has been removed
+- Field `RegulatoryComplianceControlsClientGetResult` of struct `RegulatoryComplianceControlsClientGetResponse` has been removed
+- Field `RawResponse` of struct `RegulatoryComplianceControlsClientGetResponse` has been removed
+- Field `SettingsClientListResult` of struct `SettingsClientListResponse` has been removed
+- Field `RawResponse` of struct `SettingsClientListResponse` has been removed
+- Field `CustomEntityStoreAssignmentsClientGetResult` of struct `CustomEntityStoreAssignmentsClientGetResponse` has been removed
+- Field `RawResponse` of struct `CustomEntityStoreAssignmentsClientGetResponse` has been removed
+- Field `AllowedConnectionsClientListResult` of struct `AllowedConnectionsClientListResponse` has been removed
+- Field `RawResponse` of struct `AllowedConnectionsClientListResponse` has been removed
+- Field `AssessmentsMetadataClientGetResult` of struct `AssessmentsMetadataClientGetResponse` has been removed
+- Field `RawResponse` of struct `AssessmentsMetadataClientGetResponse` has been removed
+- Field `DeviceSecurityGroupsClientCreateOrUpdateResult` of struct `DeviceSecurityGroupsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DeviceSecurityGroupsClientCreateOrUpdateResponse` has been removed
+- Field `SecureScoreControlsClientListBySecureScoreResult` of struct `SecureScoreControlsClientListBySecureScoreResponse` has been removed
+- Field `RawResponse` of struct `SecureScoreControlsClientListBySecureScoreResponse` has been removed
+- Field `AlertsClientListSubscriptionLevelByRegionResult` of struct `AlertsClientListSubscriptionLevelByRegionResponse` has been removed
+- Field `RawResponse` of struct `AlertsClientListSubscriptionLevelByRegionResponse` has been removed
+- Field `DeviceSecurityGroupsClientGetResult` of struct `DeviceSecurityGroupsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DeviceSecurityGroupsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AlertsClientUpdateSubscriptionLevelStateToDismissResponse` has been removed
+- Field `ContactsClientCreateResult` of struct `ContactsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `ContactsClientCreateResponse` has been removed
+- Field `AutomationsClientCreateOrUpdateResult` of struct `AutomationsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `AutomationsClientCreateOrUpdateResponse` has been removed
+- Field `SecureScoreControlsClientListResult` of struct `SecureScoreControlsClientListResponse` has been removed
+- Field `RawResponse` of struct `SecureScoreControlsClientListResponse` has been removed
+- Field `WorkspaceSettingsClientListResult` of struct `WorkspaceSettingsClientListResponse` has been removed
+- Field `RawResponse` of struct `WorkspaceSettingsClientListResponse` has been removed
+- Field `AlertsClientGetSubscriptionLevelResult` of struct `AlertsClientGetSubscriptionLevelResponse` has been removed
+- Field `RawResponse` of struct `AlertsClientGetSubscriptionLevelResponse` has been removed
+- Field `IngestionSettingsClientCreateResult` of struct `IngestionSettingsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `IngestionSettingsClientCreateResponse` has been removed
+- Field `IngestionSettingsClientListTokensResult` of struct `IngestionSettingsClientListTokensResponse` has been removed
+- Field `RawResponse` of struct `IngestionSettingsClientListTokensResponse` has been removed
+- Field `CustomEntityStoreAssignmentsClientListByResourceGroupResult` of struct `CustomEntityStoreAssignmentsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `CustomEntityStoreAssignmentsClientListByResourceGroupResponse` has been removed
+- Field `IotSecuritySolutionAnalyticsClientGetResult` of struct `IotSecuritySolutionAnalyticsClientGetResponse` has been removed
+- Field `RawResponse` of struct `IotSecuritySolutionAnalyticsClientGetResponse` has been removed
+- Field `AlertsSuppressionRulesClientGetResult` of struct `AlertsSuppressionRulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `AlertsSuppressionRulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServerVulnerabilityAssessmentClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `ConnectorsClientDeleteResponse` has been removed
+- Field `AdvancedThreatProtectionClientCreateResult` of struct `AdvancedThreatProtectionClientCreateResponse` has been removed
+- Field `RawResponse` of struct `AdvancedThreatProtectionClientCreateResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `AssessmentsMetadataClientListResult` of struct `AssessmentsMetadataClientListResponse` has been removed
+- Field `RawResponse` of struct `AssessmentsMetadataClientListResponse` has been removed
+- Field `AdaptiveApplicationControlsClientPutResult` of struct `AdaptiveApplicationControlsClientPutResponse` has been removed
+- Field `RawResponse` of struct `AdaptiveApplicationControlsClientPutResponse` has been removed
+- Field `ExternalSecuritySolutionsClientListResult` of struct `ExternalSecuritySolutionsClientListResponse` has been removed
+- Field `RawResponse` of struct `ExternalSecuritySolutionsClientListResponse` has been removed
+- Field `TasksClientGetSubscriptionLevelTaskResult` of struct `TasksClientGetSubscriptionLevelTaskResponse` has been removed
+- Field `RawResponse` of struct `TasksClientGetSubscriptionLevelTaskResponse` has been removed
+- Field `SecureScoreControlDefinitionsClientListResult` of struct `SecureScoreControlDefinitionsClientListResponse` has been removed
+- Field `RawResponse` of struct `SecureScoreControlDefinitionsClientListResponse` has been removed
+- Field `IotSecuritySolutionAnalyticsClientListResult` of struct `IotSecuritySolutionAnalyticsClientListResponse` has been removed
+- Field `RawResponse` of struct `IotSecuritySolutionAnalyticsClientListResponse` has been removed
+- Field `ConnectorsClientListResult` of struct `ConnectorsClientListResponse` has been removed
+- Field `RawResponse` of struct `ConnectorsClientListResponse` has been removed
+- Field `RawResponse` of struct `AccountConnectorsClientDeleteResponse` has been removed
+- Field `AssessmentsMetadataClientCreateInSubscriptionResult` of struct `AssessmentsMetadataClientCreateInSubscriptionResponse` has been removed
+- Field `RawResponse` of struct `AssessmentsMetadataClientCreateInSubscriptionResponse` has been removed
+- Field `JitNetworkAccessPoliciesClientGetResult` of struct `JitNetworkAccessPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `JitNetworkAccessPoliciesClientGetResponse` has been removed
+- Field `CompliancesClientListResult` of struct `CompliancesClientListResponse` has been removed
+- Field `RawResponse` of struct `CompliancesClientListResponse` has been removed
+- Field `TasksClientListByResourceGroupResult` of struct `TasksClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `TasksClientListByResourceGroupResponse` has been removed
+- Field `JitNetworkAccessPoliciesClientListByRegionResult` of struct `JitNetworkAccessPoliciesClientListByRegionResponse` has been removed
+- Field `RawResponse` of struct `JitNetworkAccessPoliciesClientListByRegionResponse` has been removed
+- Field `AdaptiveNetworkHardeningsClientGetResult` of struct `AdaptiveNetworkHardeningsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AdaptiveNetworkHardeningsClientGetResponse` has been removed
+- Field `CustomEntityStoreAssignmentsClientCreateResult` of struct `CustomEntityStoreAssignmentsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `CustomEntityStoreAssignmentsClientCreateResponse` has been removed
+- Field `ServerVulnerabilityAssessmentClientGetResult` of struct `ServerVulnerabilityAssessmentClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServerVulnerabilityAssessmentClientGetResponse` has been removed
+- Field `RegulatoryComplianceAssessmentsClientGetResult` of struct `RegulatoryComplianceAssessmentsClientGetResponse` has been removed
+- Field `RawResponse` of struct `RegulatoryComplianceAssessmentsClientGetResponse` has been removed
+- Field `DiscoveredSecuritySolutionsClientListResult` of struct `DiscoveredSecuritySolutionsClientListResponse` has been removed
+- Field `RawResponse` of struct `DiscoveredSecuritySolutionsClientListResponse` has been removed
+- Field `AccountConnectorsClientGetResult` of struct `AccountConnectorsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AccountConnectorsClientGetResponse` has been removed
+- Field `CustomEntityStoreAssignmentsClientListBySubscriptionResult` of struct `CustomEntityStoreAssignmentsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `CustomEntityStoreAssignmentsClientListBySubscriptionResponse` has been removed
+- Field `PricingsClientListResult` of struct `PricingsClientListResponse` has been removed
+- Field `RawResponse` of struct `PricingsClientListResponse` has been removed
+- Field `CustomAssessmentAutomationsClientCreateResult` of struct `CustomAssessmentAutomationsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `CustomAssessmentAutomationsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `AlertsClientUpdateSubscriptionLevelStateToResolveResponse` has been removed
+- Field `SettingsClientGetResult` of struct `SettingsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SettingsClientGetResponse` has been removed
+- Field `PricingsClientUpdateResult` of struct `PricingsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `PricingsClientUpdateResponse` has been removed
+- Field `SoftwareInventoriesClientListByExtendedResourceResult` of struct `SoftwareInventoriesClientListByExtendedResourceResponse` has been removed
+- Field `RawResponse` of struct `SoftwareInventoriesClientListByExtendedResourceResponse` has been removed
+- Field `SettingsClientUpdateResult` of struct `SettingsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `SettingsClientUpdateResponse` has been removed
+- Field `AssessmentsClientCreateOrUpdateResult` of struct `AssessmentsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `AssessmentsClientCreateOrUpdateResponse` has been removed
+- Field `CompliancesClientGetResult` of struct `CompliancesClientGetResponse` has been removed
+- Field `RawResponse` of struct `CompliancesClientGetResponse` has been removed
+- Field `DiscoveredSecuritySolutionsClientGetResult` of struct `DiscoveredSecuritySolutionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DiscoveredSecuritySolutionsClientGetResponse` has been removed
+- Field `JitNetworkAccessPoliciesClientListResult` of struct `JitNetworkAccessPoliciesClientListResponse` has been removed
+- Field `RawResponse` of struct `JitNetworkAccessPoliciesClientListResponse` has been removed
+- Field `RawResponse` of struct `SQLVulnerabilityAssessmentBaselineRulesClientDeleteResponse` has been removed
+- Field `IotSecuritySolutionClientUpdateResult` of struct `IotSecuritySolutionClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `IotSecuritySolutionClientUpdateResponse` has been removed
+- Field `AlertsClientGetResourceGroupLevelResult` of struct `AlertsClientGetResourceGroupLevelResponse` has been removed
+- Field `RawResponse` of struct `AlertsClientGetResourceGroupLevelResponse` has been removed
+- Field `SecureScoresClientListResult` of struct `SecureScoresClientListResponse` has been removed
+- Field `RawResponse` of struct `SecureScoresClientListResponse` has been removed
+- Field `RawResponse` of struct `AlertsClientUpdateResourceGroupLevelStateToDismissResponse` has been removed
+- Field `SecureScoreControlDefinitionsClientListBySubscriptionResult` of struct `SecureScoreControlDefinitionsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `SecureScoreControlDefinitionsClientListBySubscriptionResponse` has been removed
+- Field `SQLVulnerabilityAssessmentBaselineRulesClientCreateOrUpdateResult` of struct `SQLVulnerabilityAssessmentBaselineRulesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SQLVulnerabilityAssessmentBaselineRulesClientCreateOrUpdateResponse` has been removed
+- Field `WorkspaceSettingsClientUpdateResult` of struct `WorkspaceSettingsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `WorkspaceSettingsClientUpdateResponse` has been removed
+- Field `AccountConnectorsClientCreateOrUpdateResult` of struct `AccountConnectorsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `AccountConnectorsClientCreateOrUpdateResponse` has been removed
+- Field `ComplianceResultsClientListResult` of struct `ComplianceResultsClientListResponse` has been removed
+- Field `RawResponse` of struct `ComplianceResultsClientListResponse` has been removed
+- Field `RawResponse` of struct `TasksClientUpdateResourceGroupLevelTaskStateResponse` has been removed
+- Field `TasksClientListByHomeRegionResult` of struct `TasksClientListByHomeRegionResponse` has been removed
+- Field `RawResponse` of struct `TasksClientListByHomeRegionResponse` has been removed
+- Field `InformationProtectionPoliciesClientCreateOrUpdateResult` of struct `InformationProtectionPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `InformationProtectionPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `SubAssessmentsClientListResult` of struct `SubAssessmentsClientListResponse` has been removed
+- Field `RawResponse` of struct `SubAssessmentsClientListResponse` has been removed
+- Field `AutoProvisioningSettingsClientCreateResult` of struct `AutoProvisioningSettingsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `AutoProvisioningSettingsClientCreateResponse` has been removed
+- Field `SubAssessmentsClientListAllResult` of struct `SubAssessmentsClientListAllResponse` has been removed
+- Field `RawResponse` of struct `SubAssessmentsClientListAllResponse` has been removed
+- Field `SQLVulnerabilityAssessmentScanResultsClientListResult` of struct `SQLVulnerabilityAssessmentScanResultsClientListResponse` has been removed
+- Field `RawResponse` of struct `SQLVulnerabilityAssessmentScanResultsClientListResponse` has been removed
+- Field `IotSecuritySolutionsAnalyticsAggregatedAlertClientListResult` of struct `IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse` has been removed
+- Field `RawResponse` of struct `IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse` has been removed
+- Field `AdvancedThreatProtectionClientGetResult` of struct `AdvancedThreatProtectionClientGetResponse` has been removed
+- Field `RawResponse` of struct `AdvancedThreatProtectionClientGetResponse` has been removed
+- Field `IngestionSettingsClientGetResult` of struct `IngestionSettingsClientGetResponse` has been removed
+- Field `RawResponse` of struct `IngestionSettingsClientGetResponse` has been removed
+- Field `AutomationsClientListResult` of struct `AutomationsClientListResponse` has been removed
+- Field `RawResponse` of struct `AutomationsClientListResponse` has been removed
+- Field `AutomationsClientValidateResult` of struct `AutomationsClientValidateResponse` has been removed
+- Field `RawResponse` of struct `AutomationsClientValidateResponse` has been removed
+- Field `LocationsClientListResult` of struct `LocationsClientListResponse` has been removed
+- Field `RawResponse` of struct `LocationsClientListResponse` has been removed
+- Field `SecureScoresClientGetResult` of struct `SecureScoresClientGetResponse` has been removed
+- Field `RawResponse` of struct `SecureScoresClientGetResponse` has been removed
+- Field `AutoProvisioningSettingsClientGetResult` of struct `AutoProvisioningSettingsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AutoProvisioningSettingsClientGetResponse` has been removed
+- Field `SQLVulnerabilityAssessmentScanResultsClientGetResult` of struct `SQLVulnerabilityAssessmentScanResultsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SQLVulnerabilityAssessmentScanResultsClientGetResponse` has been removed
+- Field `SQLVulnerabilityAssessmentBaselineRulesClientGetResult` of struct `SQLVulnerabilityAssessmentBaselineRulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `SQLVulnerabilityAssessmentBaselineRulesClientGetResponse` has been removed
+- Field `AccountConnectorsClientListResult` of struct `AccountConnectorsClientListResponse` has been removed
+- Field `RawResponse` of struct `AccountConnectorsClientListResponse` has been removed
+- Field `InformationProtectionPoliciesClientGetResult` of struct `InformationProtectionPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `InformationProtectionPoliciesClientGetResponse` has been removed
+- Field `TopologyClientListResult` of struct `TopologyClientListResponse` has been removed
+- Field `RawResponse` of struct `TopologyClientListResponse` has been removed
+- Field `RawResponse` of struct `AssessmentsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `WorkspaceSettingsClientDeleteResponse` has been removed
+- Field `RegulatoryComplianceAssessmentsClientListResult` of struct `RegulatoryComplianceAssessmentsClientListResponse` has been removed
+- Field `RawResponse` of struct `RegulatoryComplianceAssessmentsClientListResponse` has been removed
+- Field `IotSecuritySolutionsAnalyticsRecommendationClientGetResult` of struct `IotSecuritySolutionsAnalyticsRecommendationClientGetResponse` has been removed
+- Field `RawResponse` of struct `IotSecuritySolutionsAnalyticsRecommendationClientGetResponse` has been removed
+- Field `RawResponse` of struct `AlertsClientUpdateSubscriptionLevelStateToActivateResponse` has been removed
+- Field `AllowedConnectionsClientListByHomeRegionResult` of struct `AllowedConnectionsClientListByHomeRegionResponse` has been removed
+- Field `RawResponse` of struct `AllowedConnectionsClientListByHomeRegionResponse` has been removed
+- Field `ConnectorsClientUpdateResult` of struct `ConnectorsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ConnectorsClientUpdateResponse` has been removed
+- Field `IngestionSettingsClientListConnectionStringsResult` of struct `IngestionSettingsClientListConnectionStringsResponse` has been removed
+- Field `RawResponse` of struct `IngestionSettingsClientListConnectionStringsResponse` has been removed
+- Field `AssessmentsMetadataClientListBySubscriptionResult` of struct `AssessmentsMetadataClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `AssessmentsMetadataClientListBySubscriptionResponse` has been removed
+- Field `AlertsSuppressionRulesClientListResult` of struct `AlertsSuppressionRulesClientListResponse` has been removed
+- Field `RawResponse` of struct `AlertsSuppressionRulesClientListResponse` has been removed
+- Field `ConnectorsClientListByResourceGroupResult` of struct `ConnectorsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ConnectorsClientListByResourceGroupResponse` has been removed
+- Field `AutoProvisioningSettingsClientListResult` of struct `AutoProvisioningSettingsClientListResponse` has been removed
+- Field `RawResponse` of struct `AutoProvisioningSettingsClientListResponse` has been removed
+- Field `RawResponse` of struct `AdaptiveNetworkHardeningsClientEnforceResponse` has been removed
+- Field `ExternalSecuritySolutionsClientGetResult` of struct `ExternalSecuritySolutionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ExternalSecuritySolutionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AssessmentsMetadataClientDeleteInSubscriptionResponse` has been removed
+- Field `AdaptiveNetworkHardeningsClientListByExtendedResourceResult` of struct `AdaptiveNetworkHardeningsClientListByExtendedResourceResponse` has been removed
+- Field `RawResponse` of struct `AdaptiveNetworkHardeningsClientListByExtendedResourceResponse` has been removed
+- Field `ContactsClientListResult` of struct `ContactsClientListResponse` has been removed
+- Field `RawResponse` of struct `ContactsClientListResponse` has been removed
+- Field `IotSecuritySolutionClientGetResult` of struct `IotSecuritySolutionClientGetResponse` has been removed
+- Field `RawResponse` of struct `IotSecuritySolutionClientGetResponse` has been removed
+- Field `IotSecuritySolutionClientListByResourceGroupResult` of struct `IotSecuritySolutionClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `IotSecuritySolutionClientListByResourceGroupResponse` has been removed
+- Field `RegulatoryComplianceControlsClientListResult` of struct `RegulatoryComplianceControlsClientListResponse` has been removed
+- Field `RawResponse` of struct `RegulatoryComplianceControlsClientListResponse` has been removed
+- Field `RawResponse` of struct `CustomAssessmentAutomationsClientDeleteResponse` has been removed
+- Field `AlertsSuppressionRulesClientUpdateResult` of struct `AlertsSuppressionRulesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `AlertsSuppressionRulesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `AdaptiveApplicationControlsClientDeleteResponse` has been removed
+- Field `AlertsClientListByResourceGroupResult` of struct `AlertsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `AlertsClientListByResourceGroupResponse` has been removed
+- Field `IotSecuritySolutionsAnalyticsRecommendationClientListResult` of struct `IotSecuritySolutionsAnalyticsRecommendationClientListResponse` has been removed
+- Field `RawResponse` of struct `IotSecuritySolutionsAnalyticsRecommendationClientListResponse` has been removed
+- Field `IotSecuritySolutionClientCreateOrUpdateResult` of struct `IotSecuritySolutionClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `IotSecuritySolutionClientCreateOrUpdateResponse` has been removed
+- Field `AllowedConnectionsClientGetResult` of struct `AllowedConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AllowedConnectionsClientGetResponse` has been removed
+- Field `InformationProtectionPoliciesClientListResult` of struct `InformationProtectionPoliciesClientListResponse` has been removed
+- Field `RawResponse` of struct `InformationProtectionPoliciesClientListResponse` has been removed
+- Field `RawResponse` of struct `AlertsSuppressionRulesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `TasksClientUpdateSubscriptionLevelTaskStateResponse` has been removed
+- Field `CustomAssessmentAutomationsClientListBySubscriptionResult` of struct `CustomAssessmentAutomationsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `CustomAssessmentAutomationsClientListBySubscriptionResponse` has been removed
+- Field `WorkspaceSettingsClientCreateResult` of struct `WorkspaceSettingsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `WorkspaceSettingsClientCreateResponse` has been removed
+- Field `SolutionsClientGetResult` of struct `SolutionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SolutionsClientGetResponse` has been removed
+- Field `RegulatoryComplianceStandardsClientListResult` of struct `RegulatoryComplianceStandardsClientListResponse` has been removed
+- Field `RawResponse` of struct `RegulatoryComplianceStandardsClientListResponse` has been removed
+
+### Features Added
+
+- New function `CloudErrorBody.MarshalJSON() ([]byte, error)`
+- New function `*SettingsClientGetResponse.UnmarshalJSON([]byte) error`
+- New function `*AlertsClient.Simulate(context.Context, string, AlertSimulatorRequestBody, *AlertsClientSimulateOptions) (AlertsClientSimulateResponse, error)`
+- New function `*SettingsClientUpdateResponse.UnmarshalJSON([]byte) error`
+- New struct `AlertsClientSimulateOptions`
+- New struct `CloudError`
+- New struct `CloudErrorBody`
+- New struct `ErrorAdditionalInfo`
+- New struct `SecureScoreControlScore`
+- New anonymous field `SolutionList` in struct `SolutionsClientListResponse`
+- New field `SubPlan` in struct `PricingProperties`
+- New anonymous field `Compliance` in struct `CompliancesClientGetResponse`
+- New anonymous field `IoTSecuritySolutionAnalyticsModelList` in struct `IotSecuritySolutionAnalyticsClientListResponse`
+- New anonymous field `AssessmentResponse` in struct `AssessmentsClientGetResponse`
+- New anonymous field `AutoProvisioningSetting` in struct `AutoProvisioningSettingsClientCreateResponse`
+- New anonymous field `DiscoveredSecuritySolution` in struct `DiscoveredSecuritySolutionsClientGetResponse`
+- New anonymous field `AssessmentList` in struct `AssessmentsClientListResponse`
+- New anonymous field `AlertsSuppressionRule` in struct `AlertsSuppressionRulesClientGetResponse`
+- New anonymous field `ConnectorsList` in struct `ConnectorsClientListByResourceGroupResponse`
+- New anonymous field `Solution` in struct `SolutionsClientGetResponse`
+- New anonymous field `AlertsSuppressionRulesList` in struct `AlertsSuppressionRulesClientListResponse`
+- New anonymous field `CustomEntityStoreAssignmentsListResult` in struct `CustomEntityStoreAssignmentsClientListByResourceGroupResponse`
+- New anonymous field `AutoProvisioningSettingList` in struct `AutoProvisioningSettingsClientListResponse`
+- New anonymous field `AdvancedThreatProtectionSetting` in struct `AdvancedThreatProtectionClientCreateResponse`
+- New anonymous field `Scans` in struct `SQLVulnerabilityAssessmentScansClientListResponse`
+- New anonymous field `ConnectionStrings` in struct `IngestionSettingsClientListConnectionStringsResponse`
+- New anonymous field `SecureScoreControlDefinitionList` in struct `SecureScoreControlDefinitionsClientListResponse`
+- New anonymous field `MdeOnboardingDataList` in struct `MdeOnboardingsClientListResponse`
+- New anonymous field `CustomAssessmentAutomation` in struct `CustomAssessmentAutomationsClientGetResponse`
+- New anonymous field `ExternalSecuritySolutionList` in struct `ExternalSecuritySolutionsClientListResponse`
+- New anonymous field `RuleResults` in struct `SQLVulnerabilityAssessmentBaselineRulesClientCreateOrUpdateResponse`
+- New anonymous field `PricingList` in struct `PricingsClientListResponse`
+- New anonymous field `Contact` in struct `ContactsClientUpdateResponse`
+- New anonymous field `IoTSecuritySolutionModel` in struct `IotSecuritySolutionClientUpdateResponse`
+- New anonymous field `AscLocation` in struct `LocationsClientGetResponse`
+- New field `ResumeToken` in struct `AdaptiveNetworkHardeningsClientBeginEnforceOptions`
+- New anonymous field `ConnectorSetting` in struct `AccountConnectorsClientCreateOrUpdateResponse`
+- New anonymous field `ScanResults` in struct `SQLVulnerabilityAssessmentScanResultsClientListResponse`
+- New anonymous field `JitNetworkAccessRequest` in struct `JitNetworkAccessPoliciesClientInitiateResponse`
+- New anonymous field `SettingClassification` in struct `SettingsClientUpdateResponse`
+- New anonymous field `Pricing` in struct `PricingsClientUpdateResponse`
+- New anonymous field `Automation` in struct `AutomationsClientGetResponse`
+- New anonymous field `SecureScoreControlList` in struct `SecureScoreControlsClientListBySecureScoreResponse`
+- New anonymous field `CustomEntityStoreAssignmentsListResult` in struct `CustomEntityStoreAssignmentsClientListBySubscriptionResponse`
+- New anonymous field `IoTSecurityAggregatedAlert` in struct `IotSecuritySolutionsAnalyticsAggregatedAlertClientGetResponse`
+- New anonymous field `RuleResults` in struct `SQLVulnerabilityAssessmentBaselineRulesClientGetResponse`
+- New anonymous field `CustomAssessmentAutomationsListResult` in struct `CustomAssessmentAutomationsClientListBySubscriptionResponse`
+- New anonymous field `RegulatoryComplianceControl` in struct `RegulatoryComplianceControlsClientGetResponse`
+- New anonymous field `AllowedConnectionsResource` in struct `AllowedConnectionsClientGetResponse`
+- New anonymous field `AssessmentMetadataResponse` in struct `AssessmentsMetadataClientGetResponse`
+- New anonymous field `JitNetworkAccessPoliciesList` in struct `JitNetworkAccessPoliciesClientListByRegionResponse`
+- New anonymous field `Contact` in struct `ContactsClientCreateResponse`
+- New anonymous field `AdaptiveNetworkHardening` in struct `AdaptiveNetworkHardeningsClientGetResponse`
+- New anonymous field `IoTSecurityAggregatedRecommendation` in struct `IotSecuritySolutionsAnalyticsRecommendationClientGetResponse`
+- New anonymous field `SecureScoreItem` in struct `SecureScoresClientGetResponse`
+- New anonymous field `DiscoveredSecuritySolutionList` in struct `DiscoveredSecuritySolutionsClientListByHomeRegionResponse`
+- New anonymous field `IoTSecurityAggregatedRecommendationList` in struct `IotSecuritySolutionsAnalyticsRecommendationClientListResponse`
+- New anonymous field `OperationList` in struct `OperationsClientListResponse`
+- New anonymous field `AlertList` in struct `AlertsClientListResponse`
+- New anonymous field `Task` in struct `TasksClientGetResourceGroupLevelTaskResponse`
+- New anonymous field `IoTSecuritySolutionModel` in struct `IotSecuritySolutionClientCreateOrUpdateResponse`
+- New anonymous field `Automation` in struct `AutomationsClientCreateOrUpdateResponse`
+- New anonymous field `RegulatoryComplianceAssessment` in struct `RegulatoryComplianceAssessmentsClientGetResponse`
+- New anonymous field `WorkspaceSetting` in struct `WorkspaceSettingsClientCreateResponse`
+- New anonymous field `AdaptiveApplicationControlGroup` in struct `AdaptiveApplicationControlsClientGetResponse`
+- New anonymous field `Alert` in struct `AlertsClientGetResourceGroupLevelResponse`
+- New anonymous field `Pricing` in struct `PricingsClientGetResponse`
+- New anonymous field `ConnectorsList` in struct `ConnectorsClientListResponse`
+- New anonymous field `AlertList` in struct `AlertsClientListResourceGroupLevelByRegionResponse`
+- New anonymous field `WorkspaceSetting` in struct `WorkspaceSettingsClientUpdateResponse`
+- New anonymous field `JitNetworkAccessPolicy` in struct `JitNetworkAccessPoliciesClientCreateOrUpdateResponse`
+- New anonymous field `AssessmentMetadataResponseList` in struct `AssessmentsMetadataClientListResponse`
+- New anonymous field `CustomAssessmentAutomation` in struct `CustomAssessmentAutomationsClientCreateResponse`
+- New anonymous field `TopologyList` in struct `TopologyClientListResponse`
+- New anonymous field `RegulatoryComplianceAssessmentList` in struct `RegulatoryComplianceAssessmentsClientListResponse`
+- New field `ResumeToken` in struct `ServerVulnerabilityAssessmentClientBeginDeleteOptions`
+- New anonymous field `AssessmentMetadataResponse` in struct `AssessmentsMetadataClientGetInSubscriptionResponse`
+- New anonymous field `Connector` in struct `ConnectorsClientGetResponse`
+- New anonymous field `AdaptiveApplicationControlGroups` in struct `AdaptiveApplicationControlsClientListResponse`
+- New anonymous field `RulesResults` in struct `SQLVulnerabilityAssessmentBaselineRulesClientAddResponse`
+- New anonymous field `TopologyList` in struct `TopologyClientListByHomeRegionResponse`
+- New anonymous field `SubAssessmentList` in struct `SubAssessmentsClientListAllResponse`
+- New anonymous field `JitNetworkAccessPoliciesList` in struct `JitNetworkAccessPoliciesClientListByResourceGroupResponse`
+- New anonymous field `DeviceSecurityGroup` in struct `DeviceSecurityGroupsClientCreateOrUpdateResponse`
+- New anonymous field `ConnectorSetting` in struct `AccountConnectorsClientGetResponse`
+- New anonymous field `ServerVulnerabilityAssessment` in struct `ServerVulnerabilityAssessmentClientCreateOrUpdateResponse`
+- New anonymous field `Alert` in struct `AlertsClientGetSubscriptionLevelResponse`
+- New anonymous field `IoTSecuritySolutionsList` in struct `IotSecuritySolutionClientListBySubscriptionResponse`
+- New anonymous field `ContactList` in struct `ContactsClientListResponse`
+- New anonymous field `SolutionsReferenceDataList` in struct `SolutionsReferenceDataClientListResponse`
+- New anonymous field `SecureScoreControlDefinitionList` in struct `SecureScoreControlDefinitionsClientListBySubscriptionResponse`
+- New anonymous field `CustomAssessmentAutomationsListResult` in struct `CustomAssessmentAutomationsClientListByResourceGroupResponse`
+- New anonymous field `AllowedConnectionsList` in struct `AllowedConnectionsClientListByHomeRegionResponse`
+- New anonymous field `SettingClassification` in struct `SettingsClientGetResponse`
+- New anonymous field `AlertList` in struct `AlertsClientListByResourceGroupResponse`
+- New anonymous field `AdaptiveNetworkHardeningsList` in struct `AdaptiveNetworkHardeningsClientListByExtendedResourceResponse`
+- New anonymous field `IngestionSetting` in struct `IngestionSettingsClientGetResponse`
+- New anonymous field `ExternalSecuritySolution` in struct `ExternalSecuritySolutionsClientGetResponse`
+- New anonymous field `RulesResults` in struct `SQLVulnerabilityAssessmentBaselineRulesClientListResponse`
+- New anonymous field `AutomationList` in struct `AutomationsClientListByResourceGroupResponse`
+- New anonymous field `ComplianceResult` in struct `ComplianceResultsClientGetResponse`
+- New anonymous field `WorkspaceSettingList` in struct `WorkspaceSettingsClientListResponse`
+- New anonymous field `AssessmentMetadataResponseList` in struct `AssessmentsMetadataClientListBySubscriptionResponse`
+- New anonymous field `CustomEntityStoreAssignment` in struct `CustomEntityStoreAssignmentsClientGetResponse`
+- New anonymous field `WorkspaceSetting` in struct `WorkspaceSettingsClientGetResponse`
+- New anonymous field `CustomEntityStoreAssignment` in struct `CustomEntityStoreAssignmentsClientCreateResponse`
+- New anonymous field `AutoProvisioningSetting` in struct `AutoProvisioningSettingsClientGetResponse`
+- New anonymous field `IngestionSettingToken` in struct `IngestionSettingsClientListTokensResponse`
+- New anonymous field `MdeOnboardingData` in struct `MdeOnboardingsClientGetResponse`
+- New anonymous field `Task` in struct `TasksClientGetSubscriptionLevelTaskResponse`
+- New anonymous field `SecureScoresList` in struct `SecureScoresClientListResponse`
+- New anonymous field `SolutionsReferenceDataList` in struct `SolutionsReferenceDataClientListByHomeRegionResponse`
+- New anonymous field `AlertsSuppressionRule` in struct `AlertsSuppressionRulesClientUpdateResponse`
+- New anonymous field `IoTSecurityAggregatedAlertList` in struct `IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse`
+- New anonymous field `AutomationValidationStatus` in struct `AutomationsClientValidateResponse`
+- New anonymous field `DiscoveredSecuritySolutionList` in struct `DiscoveredSecuritySolutionsClientListResponse`
+- New anonymous field `AllowedConnectionsList` in struct `AllowedConnectionsClientListResponse`
+- New anonymous field `TaskList` in struct `TasksClientListByResourceGroupResponse`
+- New anonymous field `Software` in struct `SoftwareInventoriesClientGetResponse`
+- New anonymous field `InformationProtectionPolicyList` in struct `InformationProtectionPoliciesClientListResponse`
+- New anonymous field `ConnectorSettingList` in struct `AccountConnectorsClientListResponse`
+- New anonymous field `AdaptiveApplicationControlGroup` in struct `AdaptiveApplicationControlsClientPutResponse`
+- New anonymous field `RegulatoryComplianceStandard` in struct `RegulatoryComplianceStandardsClientGetResponse`
+- New anonymous field `TaskList` in struct `TasksClientListResponse`
+- New anonymous field `AutomationList` in struct `AutomationsClientListResponse`
+- New anonymous field `InformationProtectionPolicy` in struct `InformationProtectionPoliciesClientGetResponse`
+- New anonymous field `IngestionSetting` in struct `IngestionSettingsClientCreateResponse`
+- New anonymous field `SecureScoreControlList` in struct `SecureScoreControlsClientListResponse`
+- New anonymous field `IoTSecuritySolutionAnalyticsModel` in struct `IotSecuritySolutionAnalyticsClientGetResponse`
+- New anonymous field `IoTSecuritySolutionsList` in struct `IotSecuritySolutionClientListByResourceGroupResponse`
+- New anonymous field `ServerVulnerabilityAssessmentsList` in struct `ServerVulnerabilityAssessmentClientListByExtendedResourceResponse`
+- New anonymous field `SoftwaresList` in struct `SoftwareInventoriesClientListByExtendedResourceResponse`
+- New anonymous field `RegulatoryComplianceStandardList` in struct `RegulatoryComplianceStandardsClientListResponse`
+- New anonymous field `ScanResult` in struct `SQLVulnerabilityAssessmentScanResultsClientGetResponse`
+- New anonymous field `DeviceSecurityGroupList` in struct `DeviceSecurityGroupsClientListResponse`
+- New anonymous field `AdvancedThreatProtectionSetting` in struct `AdvancedThreatProtectionClientGetResponse`
+- New anonymous field `ExternalSecuritySolutionList` in struct `ExternalSecuritySolutionsClientListByHomeRegionResponse`
+- New anonymous field `JitNetworkAccessPoliciesList` in struct `JitNetworkAccessPoliciesClientListResponse`
+- New anonymous field `RegulatoryComplianceControlList` in struct `RegulatoryComplianceControlsClientListResponse`
+- New anonymous field `ComplianceList` in struct `CompliancesClientListResponse`
+- New anonymous field `Connector` in struct `ConnectorsClientUpdateResponse`
+- New anonymous field `SubAssessment` in struct `SubAssessmentsClientGetResponse`
+- New anonymous field `SubAssessmentList` in struct `SubAssessmentsClientListResponse`
+- New anonymous field `ServerVulnerabilityAssessment` in struct `ServerVulnerabilityAssessmentClientGetResponse`
+- New anonymous field `TopologyResource` in struct `TopologyClientGetResponse`
+- New anonymous field `Connector` in struct `ConnectorsClientCreateOrUpdateResponse`
+- New anonymous field `Contact` in struct `ContactsClientGetResponse`
+- New anonymous field `AlertList` in struct `AlertsClientListSubscriptionLevelByRegionResponse`
+- New anonymous field `Scan` in struct `SQLVulnerabilityAssessmentScansClientGetResponse`
+- New anonymous field `ComplianceResultList` in struct `ComplianceResultsClientListResponse`
+- New anonymous field `TaskList` in struct `TasksClientListByHomeRegionResponse`
+- New anonymous field `SettingsList` in struct `SettingsClientListResponse`
+- New anonymous field `SoftwaresList` in struct `SoftwareInventoriesClientListBySubscriptionResponse`
+- New anonymous field `IoTSecuritySolutionModel` in struct `IotSecuritySolutionClientGetResponse`
+- New anonymous field `JitNetworkAccessPoliciesList` in struct `JitNetworkAccessPoliciesClientListByResourceGroupAndRegionResponse`
+- New anonymous field `AssessmentMetadataResponse` in struct `AssessmentsMetadataClientCreateInSubscriptionResponse`
+- New anonymous field `AscLocationList` in struct `LocationsClientListResponse`
+- New anonymous field `JitNetworkAccessPolicy` in struct `JitNetworkAccessPoliciesClientGetResponse`
+- New anonymous field `InformationProtectionPolicy` in struct `InformationProtectionPoliciesClientCreateOrUpdateResponse`
+- New anonymous field `AssessmentResponse` in struct `AssessmentsClientCreateOrUpdateResponse`
+- New anonymous field `IngestionSettingList` in struct `IngestionSettingsClientListResponse`
+- New anonymous field `DeviceSecurityGroup` in struct `DeviceSecurityGroupsClientGetResponse`
+
+
 ## 0.4.0 (2022-02-23)
 ### Breaking Changes
 

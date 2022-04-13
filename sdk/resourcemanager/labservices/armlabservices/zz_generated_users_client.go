@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type UsersClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewUsersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *UsersClient {
+func NewUsersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UsersClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &UsersClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Operation to create or update a lab user.
@@ -57,22 +62,18 @@ func NewUsersClient(subscriptionID string, credential azcore.TokenCredential, op
 // body - The request body.
 // options - UsersClientBeginCreateOrUpdateOptions contains the optional parameters for the UsersClient.BeginCreateOrUpdate
 // method.
-func (client *UsersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, body User, options *UsersClientBeginCreateOrUpdateOptions) (UsersClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, labName, userName, body, options)
-	if err != nil {
-		return UsersClientCreateOrUpdatePollerResponse{}, err
+func (client *UsersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, body User, options *UsersClientBeginCreateOrUpdateOptions) (*armruntime.Poller[UsersClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, labName, userName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[UsersClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaOriginalURI,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[UsersClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := UsersClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("UsersClient.CreateOrUpdate", "original-uri", resp, client.pl)
-	if err != nil {
-		return UsersClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &UsersClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Operation to create or update a lab user.
@@ -128,22 +129,18 @@ func (client *UsersClient) createOrUpdateCreateRequest(ctx context.Context, reso
 // labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
 // userName - The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
 // options - UsersClientBeginDeleteOptions contains the optional parameters for the UsersClient.BeginDelete method.
-func (client *UsersClient) BeginDelete(ctx context.Context, resourceGroupName string, labName string, userName string, options *UsersClientBeginDeleteOptions) (UsersClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, labName, userName, options)
-	if err != nil {
-		return UsersClientDeletePollerResponse{}, err
+func (client *UsersClient) BeginDelete(ctx context.Context, resourceGroupName string, labName string, userName string, options *UsersClientBeginDeleteOptions) (*armruntime.Poller[UsersClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, labName, userName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[UsersClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[UsersClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := UsersClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("UsersClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return UsersClientDeletePollerResponse{}, err
-	}
-	result.Poller = &UsersClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Operation to delete a user resource.
@@ -246,7 +243,7 @@ func (client *UsersClient) getCreateRequest(ctx context.Context, resourceGroupNa
 
 // getHandleResponse handles the Get response.
 func (client *UsersClient) getHandleResponse(resp *http.Response) (UsersClientGetResponse, error) {
-	result := UsersClientGetResponse{RawResponse: resp}
+	result := UsersClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.User); err != nil {
 		return UsersClientGetResponse{}, err
 	}
@@ -260,22 +257,18 @@ func (client *UsersClient) getHandleResponse(resp *http.Response) (UsersClientGe
 // userName - The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
 // body - The request body.
 // options - UsersClientBeginInviteOptions contains the optional parameters for the UsersClient.BeginInvite method.
-func (client *UsersClient) BeginInvite(ctx context.Context, resourceGroupName string, labName string, userName string, body InviteBody, options *UsersClientBeginInviteOptions) (UsersClientInvitePollerResponse, error) {
-	resp, err := client.invite(ctx, resourceGroupName, labName, userName, body, options)
-	if err != nil {
-		return UsersClientInvitePollerResponse{}, err
+func (client *UsersClient) BeginInvite(ctx context.Context, resourceGroupName string, labName string, userName string, body InviteBody, options *UsersClientBeginInviteOptions) (*armruntime.Poller[UsersClientInviteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.invite(ctx, resourceGroupName, labName, userName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[UsersClientInviteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[UsersClientInviteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := UsersClientInvitePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("UsersClient.Invite", "location", resp, client.pl)
-	if err != nil {
-		return UsersClientInvitePollerResponse{}, err
-	}
-	result.Poller = &UsersClientInvitePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Invite - Operation to invite a user to a lab.
@@ -330,16 +323,32 @@ func (client *UsersClient) inviteCreateRequest(ctx context.Context, resourceGrou
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
 // options - UsersClientListByLabOptions contains the optional parameters for the UsersClient.ListByLab method.
-func (client *UsersClient) ListByLab(resourceGroupName string, labName string, options *UsersClientListByLabOptions) *UsersClientListByLabPager {
-	return &UsersClientListByLabPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByLabCreateRequest(ctx, resourceGroupName, labName, options)
+func (client *UsersClient) ListByLab(resourceGroupName string, labName string, options *UsersClientListByLabOptions) *runtime.Pager[UsersClientListByLabResponse] {
+	return runtime.NewPager(runtime.PageProcessor[UsersClientListByLabResponse]{
+		More: func(page UsersClientListByLabResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp UsersClientListByLabResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PagedUsers.NextLink)
+		Fetcher: func(ctx context.Context, page *UsersClientListByLabResponse) (UsersClientListByLabResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByLabCreateRequest(ctx, resourceGroupName, labName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return UsersClientListByLabResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return UsersClientListByLabResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return UsersClientListByLabResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByLabHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByLabCreateRequest creates the ListByLab request.
@@ -373,7 +382,7 @@ func (client *UsersClient) listByLabCreateRequest(ctx context.Context, resourceG
 
 // listByLabHandleResponse handles the ListByLab response.
 func (client *UsersClient) listByLabHandleResponse(resp *http.Response) (UsersClientListByLabResponse, error) {
-	result := UsersClientListByLabResponse{RawResponse: resp}
+	result := UsersClientListByLabResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PagedUsers); err != nil {
 		return UsersClientListByLabResponse{}, err
 	}
@@ -387,22 +396,18 @@ func (client *UsersClient) listByLabHandleResponse(resp *http.Response) (UsersCl
 // userName - The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
 // body - The request body.
 // options - UsersClientBeginUpdateOptions contains the optional parameters for the UsersClient.BeginUpdate method.
-func (client *UsersClient) BeginUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, body UserUpdate, options *UsersClientBeginUpdateOptions) (UsersClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, labName, userName, body, options)
-	if err != nil {
-		return UsersClientUpdatePollerResponse{}, err
+func (client *UsersClient) BeginUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, body UserUpdate, options *UsersClientBeginUpdateOptions) (*armruntime.Poller[UsersClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, labName, userName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[UsersClientUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[UsersClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := UsersClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("UsersClient.Update", "location", resp, client.pl)
-	if err != nil {
-		return UsersClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &UsersClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Operation to update a lab user.

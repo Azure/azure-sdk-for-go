@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armstoragepool
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // ACL - Access Control List (ACL) for an iSCSI Target; defines LUN masking policy
 type ACL struct {
@@ -22,14 +17,6 @@ type ACL struct {
 
 	// REQUIRED; List of LUN names mapped to the ACL.
 	MappedLuns []*string `json:"mappedLuns,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ACL.
-func (a ACL) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "initiatorIqn", a.InitiatorIqn)
-	populate(objectMap, "mappedLuns", a.MappedLuns)
-	return json.Marshal(objectMap)
 }
 
 // Disk - Azure Managed Disk to attach to the Disk Pool.
@@ -71,22 +58,6 @@ type DiskPool struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DiskPool.
-func (d DiskPool) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", d.ID)
-	populate(objectMap, "location", d.Location)
-	populate(objectMap, "managedBy", d.ManagedBy)
-	populate(objectMap, "managedByExtended", d.ManagedByExtended)
-	populate(objectMap, "name", d.Name)
-	populate(objectMap, "properties", d.Properties)
-	populate(objectMap, "sku", d.SKU)
-	populate(objectMap, "systemData", d.SystemData)
-	populate(objectMap, "tags", d.Tags)
-	populate(objectMap, "type", d.Type)
-	return json.Marshal(objectMap)
-}
-
 // DiskPoolCreate - Request payload for create or update Disk Pool request.
 type DiskPoolCreate struct {
 	// REQUIRED; The geo-location where the resource lives.
@@ -117,21 +88,6 @@ type DiskPoolCreate struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DiskPoolCreate.
-func (d DiskPoolCreate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", d.ID)
-	populate(objectMap, "location", d.Location)
-	populate(objectMap, "managedBy", d.ManagedBy)
-	populate(objectMap, "managedByExtended", d.ManagedByExtended)
-	populate(objectMap, "name", d.Name)
-	populate(objectMap, "properties", d.Properties)
-	populate(objectMap, "sku", d.SKU)
-	populate(objectMap, "tags", d.Tags)
-	populate(objectMap, "type", d.Type)
-	return json.Marshal(objectMap)
-}
-
 // DiskPoolCreateProperties - Properties for Disk Pool create or update request.
 type DiskPoolCreateProperties struct {
 	// REQUIRED; Azure Resource ID of a Subnet for the Disk Pool.
@@ -147,16 +103,6 @@ type DiskPoolCreateProperties struct {
 	Disks []*Disk `json:"disks,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DiskPoolCreateProperties.
-func (d DiskPoolCreateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalCapabilities", d.AdditionalCapabilities)
-	populate(objectMap, "availabilityZones", d.AvailabilityZones)
-	populate(objectMap, "disks", d.Disks)
-	populate(objectMap, "subnetId", d.SubnetID)
-	return json.Marshal(objectMap)
-}
-
 // DiskPoolListResult - List of Disk Pools
 type DiskPoolListResult struct {
 	// REQUIRED; An array of Disk pool objects.
@@ -164,14 +110,6 @@ type DiskPoolListResult struct {
 
 	// READ-ONLY; URI to fetch the next section of the paginated response.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DiskPoolListResult.
-func (d DiskPoolListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
 }
 
 // DiskPoolProperties - Disk Pool response properties.
@@ -195,18 +133,6 @@ type DiskPoolProperties struct {
 	Disks []*Disk `json:"disks,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DiskPoolProperties.
-func (d DiskPoolProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalCapabilities", d.AdditionalCapabilities)
-	populate(objectMap, "availabilityZones", d.AvailabilityZones)
-	populate(objectMap, "disks", d.Disks)
-	populate(objectMap, "provisioningState", d.ProvisioningState)
-	populate(objectMap, "status", d.Status)
-	populate(objectMap, "subnetId", d.SubnetID)
-	return json.Marshal(objectMap)
-}
-
 // DiskPoolUpdate - Request payload for Update Disk Pool request.
 type DiskPoolUpdate struct {
 	// REQUIRED; Properties for Disk Pool update request.
@@ -225,28 +151,10 @@ type DiskPoolUpdate struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DiskPoolUpdate.
-func (d DiskPoolUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "managedBy", d.ManagedBy)
-	populate(objectMap, "managedByExtended", d.ManagedByExtended)
-	populate(objectMap, "properties", d.Properties)
-	populate(objectMap, "sku", d.SKU)
-	populate(objectMap, "tags", d.Tags)
-	return json.Marshal(objectMap)
-}
-
 // DiskPoolUpdateProperties - Properties for Disk Pool update request.
 type DiskPoolUpdateProperties struct {
 	// List of Azure Managed Disks to attach to a Disk Pool.
 	Disks []*Disk `json:"disks,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DiskPoolUpdateProperties.
-func (d DiskPoolUpdateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "disks", d.Disks)
-	return json.Marshal(objectMap)
 }
 
 // DiskPoolZoneInfo - Disk Pool SKU Details
@@ -261,15 +169,6 @@ type DiskPoolZoneInfo struct {
 	SKU *SKU `json:"sku,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DiskPoolZoneInfo.
-func (d DiskPoolZoneInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalCapabilities", d.AdditionalCapabilities)
-	populate(objectMap, "availabilityZones", d.AvailabilityZones)
-	populate(objectMap, "sku", d.SKU)
-	return json.Marshal(objectMap)
-}
-
 // DiskPoolZoneListResult - List Disk Pool skus operation response.
 type DiskPoolZoneListResult struct {
 	// READ-ONLY; URI to fetch the next section of the paginated response.
@@ -277,14 +176,6 @@ type DiskPoolZoneListResult struct {
 
 	// READ-ONLY; The list of Disk Pool Skus.
 	Value []*DiskPoolZoneInfo `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DiskPoolZoneListResult.
-func (d DiskPoolZoneListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
 }
 
 // DiskPoolZonesClientListOptions contains the optional parameters for the DiskPoolZonesClient.List method.
@@ -295,32 +186,38 @@ type DiskPoolZonesClientListOptions struct {
 // DiskPoolsClientBeginCreateOrUpdateOptions contains the optional parameters for the DiskPoolsClient.BeginCreateOrUpdate
 // method.
 type DiskPoolsClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DiskPoolsClientBeginDeallocateOptions contains the optional parameters for the DiskPoolsClient.BeginDeallocate method.
 type DiskPoolsClientBeginDeallocateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DiskPoolsClientBeginDeleteOptions contains the optional parameters for the DiskPoolsClient.BeginDelete method.
 type DiskPoolsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DiskPoolsClientBeginStartOptions contains the optional parameters for the DiskPoolsClient.BeginStart method.
 type DiskPoolsClientBeginStartOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DiskPoolsClientBeginUpdateOptions contains the optional parameters for the DiskPoolsClient.BeginUpdate method.
 type DiskPoolsClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DiskPoolsClientBeginUpgradeOptions contains the optional parameters for the DiskPoolsClient.BeginUpgrade method.
 type DiskPoolsClientBeginUpgradeOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DiskPoolsClientGetOptions contains the optional parameters for the DiskPoolsClient.Get method.
@@ -354,14 +251,6 @@ type EndpointDependency struct {
 	EndpointDetails []*EndpointDetail `json:"endpointDetails,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type EndpointDependency.
-func (e EndpointDependency) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "domainName", e.DomainName)
-	populate(objectMap, "endpointDetails", e.EndpointDetails)
-	return json.Marshal(objectMap)
-}
-
 // EndpointDetail - Current TCP connectivity information from the App Service Environment to a single endpoint.
 type EndpointDetail struct {
 	// An IP Address that Domain Name currently resolves to.
@@ -387,7 +276,7 @@ type Error struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
+	Info interface{} `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -409,17 +298,6 @@ type ErrorResponse struct {
 
 	// READ-ONLY; The error target.
 	Target *string `json:"target,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorResponse.
-func (e ErrorResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
 }
 
 // IscsiLun - LUN to expose the Azure Managed Disk.
@@ -458,19 +336,6 @@ type IscsiTarget struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IscsiTarget.
-func (i IscsiTarget) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", i.ID)
-	populate(objectMap, "managedBy", i.ManagedBy)
-	populate(objectMap, "managedByExtended", i.ManagedByExtended)
-	populate(objectMap, "name", i.Name)
-	populate(objectMap, "properties", i.Properties)
-	populate(objectMap, "systemData", i.SystemData)
-	populate(objectMap, "type", i.Type)
-	return json.Marshal(objectMap)
-}
-
 // IscsiTargetCreate - Payload for iSCSI Target create or update requests.
 type IscsiTargetCreate struct {
 	// REQUIRED; Properties for iSCSI Target create request.
@@ -492,18 +357,6 @@ type IscsiTargetCreate struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IscsiTargetCreate.
-func (i IscsiTargetCreate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", i.ID)
-	populate(objectMap, "managedBy", i.ManagedBy)
-	populate(objectMap, "managedByExtended", i.ManagedByExtended)
-	populate(objectMap, "name", i.Name)
-	populate(objectMap, "properties", i.Properties)
-	populate(objectMap, "type", i.Type)
-	return json.Marshal(objectMap)
-}
-
 // IscsiTargetCreateProperties - Properties for iSCSI Target create or update request.
 type IscsiTargetCreateProperties struct {
 	// REQUIRED; Mode for Target connectivity.
@@ -519,16 +372,6 @@ type IscsiTargetCreateProperties struct {
 	TargetIqn *string `json:"targetIqn,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IscsiTargetCreateProperties.
-func (i IscsiTargetCreateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "aclMode", i.ACLMode)
-	populate(objectMap, "luns", i.Luns)
-	populate(objectMap, "staticAcls", i.StaticACLs)
-	populate(objectMap, "targetIqn", i.TargetIqn)
-	return json.Marshal(objectMap)
-}
-
 // IscsiTargetList - List of iSCSI Targets.
 type IscsiTargetList struct {
 	// REQUIRED; An array of iSCSI Targets in a Disk Pool.
@@ -536,14 +379,6 @@ type IscsiTargetList struct {
 
 	// READ-ONLY; URI to fetch the next section of the paginated response.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type IscsiTargetList.
-func (i IscsiTargetList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", i.NextLink)
-	populate(objectMap, "value", i.Value)
-	return json.Marshal(objectMap)
 }
 
 // IscsiTargetProperties - Response properties for iSCSI Target operations.
@@ -576,21 +411,6 @@ type IscsiTargetProperties struct {
 	Sessions []*string `json:"sessions,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IscsiTargetProperties.
-func (i IscsiTargetProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "aclMode", i.ACLMode)
-	populate(objectMap, "endpoints", i.Endpoints)
-	populate(objectMap, "luns", i.Luns)
-	populate(objectMap, "port", i.Port)
-	populate(objectMap, "provisioningState", i.ProvisioningState)
-	populate(objectMap, "sessions", i.Sessions)
-	populate(objectMap, "staticAcls", i.StaticACLs)
-	populate(objectMap, "status", i.Status)
-	populate(objectMap, "targetIqn", i.TargetIqn)
-	return json.Marshal(objectMap)
-}
-
 // IscsiTargetUpdate - Payload for iSCSI Target update requests.
 type IscsiTargetUpdate struct {
 	// REQUIRED; Properties for iSCSI Target update request.
@@ -612,18 +432,6 @@ type IscsiTargetUpdate struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IscsiTargetUpdate.
-func (i IscsiTargetUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", i.ID)
-	populate(objectMap, "managedBy", i.ManagedBy)
-	populate(objectMap, "managedByExtended", i.ManagedByExtended)
-	populate(objectMap, "name", i.Name)
-	populate(objectMap, "properties", i.Properties)
-	populate(objectMap, "type", i.Type)
-	return json.Marshal(objectMap)
-}
-
 // IscsiTargetUpdateProperties - Properties for iSCSI Target update request.
 type IscsiTargetUpdateProperties struct {
 	// List of LUNs to be exposed through iSCSI Target.
@@ -633,28 +441,23 @@ type IscsiTargetUpdateProperties struct {
 	StaticACLs []*ACL `json:"staticAcls,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IscsiTargetUpdateProperties.
-func (i IscsiTargetUpdateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "luns", i.Luns)
-	populate(objectMap, "staticAcls", i.StaticACLs)
-	return json.Marshal(objectMap)
-}
-
 // IscsiTargetsClientBeginCreateOrUpdateOptions contains the optional parameters for the IscsiTargetsClient.BeginCreateOrUpdate
 // method.
 type IscsiTargetsClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // IscsiTargetsClientBeginDeleteOptions contains the optional parameters for the IscsiTargetsClient.BeginDelete method.
 type IscsiTargetsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // IscsiTargetsClientBeginUpdateOptions contains the optional parameters for the IscsiTargetsClient.BeginUpdate method.
 type IscsiTargetsClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // IscsiTargetsClientGetOptions contains the optional parameters for the IscsiTargetsClient.Get method.
@@ -691,14 +494,6 @@ type OperationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -715,14 +510,6 @@ type OutboundEnvironmentEndpoint struct {
 	Endpoints []*EndpointDependency `json:"endpoints,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OutboundEnvironmentEndpoint.
-func (o OutboundEnvironmentEndpoint) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "category", o.Category)
-	populate(objectMap, "endpoints", o.Endpoints)
-	return json.Marshal(objectMap)
-}
-
 // OutboundEnvironmentEndpointList - Collection of Outbound Environment Endpoints
 type OutboundEnvironmentEndpointList struct {
 	// REQUIRED; Collection of resources.
@@ -730,14 +517,6 @@ type OutboundEnvironmentEndpointList struct {
 
 	// READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OutboundEnvironmentEndpointList.
-func (o OutboundEnvironmentEndpointList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 // ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location
@@ -816,19 +595,6 @@ type ResourceSKUInfo struct {
 	Tier *string `json:"tier,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ResourceSKUInfo.
-func (r ResourceSKUInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "apiVersion", r.APIVersion)
-	populate(objectMap, "capabilities", r.Capabilities)
-	populate(objectMap, "locationInfo", r.LocationInfo)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "resourceType", r.ResourceType)
-	populate(objectMap, "restrictions", r.Restrictions)
-	populate(objectMap, "tier", r.Tier)
-	return json.Marshal(objectMap)
-}
-
 // ResourceSKUListResult - List Disk Pool skus operation response.
 type ResourceSKUListResult struct {
 	// URI to fetch the next section of the paginated response.
@@ -836,14 +602,6 @@ type ResourceSKUListResult struct {
 
 	// The list of StoragePool resource skus.
 	Value []*ResourceSKUInfo `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourceSKUListResult.
-func (r ResourceSKUListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // ResourceSKULocationInfo - Zone and capability info for resource sku
@@ -858,15 +616,6 @@ type ResourceSKULocationInfo struct {
 	Zones []*string `json:"zones,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ResourceSKULocationInfo.
-func (r ResourceSKULocationInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "location", r.Location)
-	populate(objectMap, "zoneDetails", r.ZoneDetails)
-	populate(objectMap, "zones", r.Zones)
-	return json.Marshal(objectMap)
-}
-
 // ResourceSKURestrictionInfo - Describes an available Compute SKU Restriction Information.
 type ResourceSKURestrictionInfo struct {
 	// READ-ONLY; Locations where the SKU is restricted
@@ -874,14 +623,6 @@ type ResourceSKURestrictionInfo struct {
 
 	// READ-ONLY; List of availability zones where the SKU is restricted.
 	Zones []*string `json:"zones,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourceSKURestrictionInfo.
-func (r ResourceSKURestrictionInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "locations", r.Locations)
-	populate(objectMap, "zones", r.Zones)
-	return json.Marshal(objectMap)
 }
 
 // ResourceSKURestrictions - Describes scaling information of a SKU.
@@ -900,16 +641,6 @@ type ResourceSKURestrictions struct {
 	Values []*string `json:"values,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ResourceSKURestrictions.
-func (r ResourceSKURestrictions) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "reasonCode", r.ReasonCode)
-	populate(objectMap, "restrictionInfo", r.RestrictionInfo)
-	populate(objectMap, "type", r.Type)
-	populate(objectMap, "values", r.Values)
-	return json.Marshal(objectMap)
-}
-
 // ResourceSKUZoneDetails - Describes The zonal capabilities of a SKU.
 type ResourceSKUZoneDetails struct {
 	// READ-ONLY; A list of capabilities that are available for the SKU in the specified list of zones.
@@ -917,14 +648,6 @@ type ResourceSKUZoneDetails struct {
 
 	// READ-ONLY; The set of zones that the SKU is available in with the specified capabilities.
 	Name []*string `json:"name,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourceSKUZoneDetails.
-func (r ResourceSKUZoneDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "capabilities", r.Capabilities)
-	populate(objectMap, "name", r.Name)
-	return json.Marshal(objectMap)
 }
 
 // ResourceSKUsClientListOptions contains the optional parameters for the ResourceSKUsClient.List method.
@@ -962,53 +685,6 @@ type SystemMetadata struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemMetadata.
-func (s SystemMetadata) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemMetadata.
-func (s *SystemMetadata) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TrackedResource - The resource model definition for a ARM tracked top level resource.
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives.
@@ -1025,32 +701,4 @@ type TrackedResource struct {
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
-func (t TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "tags", t.Tags)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type HybridConnectionsClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewHybridConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *HybridConnectionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewHybridConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HybridConnectionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &HybridConnectionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a service hybrid connection. This operation is idempotent.
@@ -105,7 +110,7 @@ func (client *HybridConnectionsClient) createOrUpdateCreateRequest(ctx context.C
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *HybridConnectionsClient) createOrUpdateHandleResponse(resp *http.Response) (HybridConnectionsClientCreateOrUpdateResponse, error) {
-	result := HybridConnectionsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := HybridConnectionsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnection); err != nil {
 		return HybridConnectionsClientCreateOrUpdateResponse{}, err
 	}
@@ -172,7 +177,7 @@ func (client *HybridConnectionsClient) createOrUpdateAuthorizationRuleCreateRequ
 
 // createOrUpdateAuthorizationRuleHandleResponse handles the CreateOrUpdateAuthorizationRule response.
 func (client *HybridConnectionsClient) createOrUpdateAuthorizationRuleHandleResponse(resp *http.Response) (HybridConnectionsClientCreateOrUpdateAuthorizationRuleResponse, error) {
-	result := HybridConnectionsClientCreateOrUpdateAuthorizationRuleResponse{RawResponse: resp}
+	result := HybridConnectionsClientCreateOrUpdateAuthorizationRuleResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRule); err != nil {
 		return HybridConnectionsClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
@@ -198,7 +203,7 @@ func (client *HybridConnectionsClient) Delete(ctx context.Context, resourceGroup
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return HybridConnectionsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return HybridConnectionsClientDeleteResponse{RawResponse: resp}, nil
+	return HybridConnectionsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -251,7 +256,7 @@ func (client *HybridConnectionsClient) DeleteAuthorizationRule(ctx context.Conte
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return HybridConnectionsClientDeleteAuthorizationRuleResponse{}, runtime.NewResponseError(resp)
 	}
-	return HybridConnectionsClientDeleteAuthorizationRuleResponse{RawResponse: resp}, nil
+	return HybridConnectionsClientDeleteAuthorizationRuleResponse{}, nil
 }
 
 // deleteAuthorizationRuleCreateRequest creates the DeleteAuthorizationRule request.
@@ -341,7 +346,7 @@ func (client *HybridConnectionsClient) getCreateRequest(ctx context.Context, res
 
 // getHandleResponse handles the Get response.
 func (client *HybridConnectionsClient) getHandleResponse(resp *http.Response) (HybridConnectionsClientGetResponse, error) {
-	result := HybridConnectionsClientGetResponse{RawResponse: resp}
+	result := HybridConnectionsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnection); err != nil {
 		return HybridConnectionsClientGetResponse{}, err
 	}
@@ -407,7 +412,7 @@ func (client *HybridConnectionsClient) getAuthorizationRuleCreateRequest(ctx con
 
 // getAuthorizationRuleHandleResponse handles the GetAuthorizationRule response.
 func (client *HybridConnectionsClient) getAuthorizationRuleHandleResponse(resp *http.Response) (HybridConnectionsClientGetAuthorizationRuleResponse, error) {
-	result := HybridConnectionsClientGetAuthorizationRuleResponse{RawResponse: resp}
+	result := HybridConnectionsClientGetAuthorizationRuleResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRule); err != nil {
 		return HybridConnectionsClientGetAuthorizationRuleResponse{}, err
 	}
@@ -421,16 +426,32 @@ func (client *HybridConnectionsClient) getAuthorizationRuleHandleResponse(resp *
 // hybridConnectionName - The hybrid connection name.
 // options - HybridConnectionsClientListAuthorizationRulesOptions contains the optional parameters for the HybridConnectionsClient.ListAuthorizationRules
 // method.
-func (client *HybridConnectionsClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, hybridConnectionName string, options *HybridConnectionsClientListAuthorizationRulesOptions) *HybridConnectionsClientListAuthorizationRulesPager {
-	return &HybridConnectionsClientListAuthorizationRulesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, hybridConnectionName, options)
+func (client *HybridConnectionsClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, hybridConnectionName string, options *HybridConnectionsClientListAuthorizationRulesOptions) *runtime.Pager[HybridConnectionsClientListAuthorizationRulesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[HybridConnectionsClientListAuthorizationRulesResponse]{
+		More: func(page HybridConnectionsClientListAuthorizationRulesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp HybridConnectionsClientListAuthorizationRulesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AuthorizationRuleListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *HybridConnectionsClientListAuthorizationRulesResponse) (HybridConnectionsClientListAuthorizationRulesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, hybridConnectionName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return HybridConnectionsClientListAuthorizationRulesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return HybridConnectionsClientListAuthorizationRulesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return HybridConnectionsClientListAuthorizationRulesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAuthorizationRulesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listAuthorizationRulesCreateRequest creates the ListAuthorizationRules request.
@@ -465,7 +486,7 @@ func (client *HybridConnectionsClient) listAuthorizationRulesCreateRequest(ctx c
 
 // listAuthorizationRulesHandleResponse handles the ListAuthorizationRules response.
 func (client *HybridConnectionsClient) listAuthorizationRulesHandleResponse(resp *http.Response) (HybridConnectionsClientListAuthorizationRulesResponse, error) {
-	result := HybridConnectionsClientListAuthorizationRulesResponse{RawResponse: resp}
+	result := HybridConnectionsClientListAuthorizationRulesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRuleListResult); err != nil {
 		return HybridConnectionsClientListAuthorizationRulesResponse{}, err
 	}
@@ -478,16 +499,32 @@ func (client *HybridConnectionsClient) listAuthorizationRulesHandleResponse(resp
 // namespaceName - The namespace name
 // options - HybridConnectionsClientListByNamespaceOptions contains the optional parameters for the HybridConnectionsClient.ListByNamespace
 // method.
-func (client *HybridConnectionsClient) ListByNamespace(resourceGroupName string, namespaceName string, options *HybridConnectionsClientListByNamespaceOptions) *HybridConnectionsClientListByNamespacePager {
-	return &HybridConnectionsClientListByNamespacePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByNamespaceCreateRequest(ctx, resourceGroupName, namespaceName, options)
+func (client *HybridConnectionsClient) ListByNamespace(resourceGroupName string, namespaceName string, options *HybridConnectionsClientListByNamespaceOptions) *runtime.Pager[HybridConnectionsClientListByNamespaceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[HybridConnectionsClientListByNamespaceResponse]{
+		More: func(page HybridConnectionsClientListByNamespaceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp HybridConnectionsClientListByNamespaceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.HybridConnectionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *HybridConnectionsClientListByNamespaceResponse) (HybridConnectionsClientListByNamespaceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByNamespaceCreateRequest(ctx, resourceGroupName, namespaceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return HybridConnectionsClientListByNamespaceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return HybridConnectionsClientListByNamespaceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return HybridConnectionsClientListByNamespaceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByNamespaceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByNamespaceCreateRequest creates the ListByNamespace request.
@@ -518,7 +555,7 @@ func (client *HybridConnectionsClient) listByNamespaceCreateRequest(ctx context.
 
 // listByNamespaceHandleResponse handles the ListByNamespace response.
 func (client *HybridConnectionsClient) listByNamespaceHandleResponse(resp *http.Response) (HybridConnectionsClientListByNamespaceResponse, error) {
-	result := HybridConnectionsClientListByNamespaceResponse{RawResponse: resp}
+	result := HybridConnectionsClientListByNamespaceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnectionListResult); err != nil {
 		return HybridConnectionsClientListByNamespaceResponse{}, err
 	}
@@ -584,7 +621,7 @@ func (client *HybridConnectionsClient) listKeysCreateRequest(ctx context.Context
 
 // listKeysHandleResponse handles the ListKeys response.
 func (client *HybridConnectionsClient) listKeysHandleResponse(resp *http.Response) (HybridConnectionsClientListKeysResponse, error) {
-	result := HybridConnectionsClientListKeysResponse{RawResponse: resp}
+	result := HybridConnectionsClientListKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
 		return HybridConnectionsClientListKeysResponse{}, err
 	}
@@ -651,7 +688,7 @@ func (client *HybridConnectionsClient) regenerateKeysCreateRequest(ctx context.C
 
 // regenerateKeysHandleResponse handles the RegenerateKeys response.
 func (client *HybridConnectionsClient) regenerateKeysHandleResponse(resp *http.Response) (HybridConnectionsClientRegenerateKeysResponse, error) {
-	result := HybridConnectionsClientRegenerateKeysResponse{RawResponse: resp}
+	result := HybridConnectionsClientRegenerateKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
 		return HybridConnectionsClientRegenerateKeysResponse{}, err
 	}

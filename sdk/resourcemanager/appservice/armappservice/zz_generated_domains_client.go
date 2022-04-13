@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type DomainsClient struct {
 // subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDomainsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DomainsClient {
+func NewDomainsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DomainsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DomainsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CheckAvailability - Description for Check if a domain is available for registration.
@@ -90,7 +95,7 @@ func (client *DomainsClient) checkAvailabilityCreateRequest(ctx context.Context,
 
 // checkAvailabilityHandleResponse handles the CheckAvailability response.
 func (client *DomainsClient) checkAvailabilityHandleResponse(resp *http.Response) (DomainsClientCheckAvailabilityResponse, error) {
-	result := DomainsClientCheckAvailabilityResponse{RawResponse: resp}
+	result := DomainsClientCheckAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DomainAvailabilityCheckResult); err != nil {
 		return DomainsClientCheckAvailabilityResponse{}, err
 	}
@@ -104,22 +109,16 @@ func (client *DomainsClient) checkAvailabilityHandleResponse(resp *http.Response
 // domain - Domain registration information.
 // options - DomainsClientBeginCreateOrUpdateOptions contains the optional parameters for the DomainsClient.BeginCreateOrUpdate
 // method.
-func (client *DomainsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, domainName string, domain Domain, options *DomainsClientBeginCreateOrUpdateOptions) (DomainsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, domainName, domain, options)
-	if err != nil {
-		return DomainsClientCreateOrUpdatePollerResponse{}, err
+func (client *DomainsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, domainName string, domain Domain, options *DomainsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[DomainsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, domainName, domain, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DomainsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DomainsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DomainsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DomainsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return DomainsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &DomainsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Description for Creates or updates a domain.
@@ -221,7 +220,7 @@ func (client *DomainsClient) createOrUpdateOwnershipIdentifierCreateRequest(ctx 
 
 // createOrUpdateOwnershipIdentifierHandleResponse handles the CreateOrUpdateOwnershipIdentifier response.
 func (client *DomainsClient) createOrUpdateOwnershipIdentifierHandleResponse(resp *http.Response) (DomainsClientCreateOrUpdateOwnershipIdentifierResponse, error) {
-	result := DomainsClientCreateOrUpdateOwnershipIdentifierResponse{RawResponse: resp}
+	result := DomainsClientCreateOrUpdateOwnershipIdentifierResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DomainOwnershipIdentifier); err != nil {
 		return DomainsClientCreateOrUpdateOwnershipIdentifierResponse{}, err
 	}
@@ -245,7 +244,7 @@ func (client *DomainsClient) Delete(ctx context.Context, resourceGroupName strin
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return DomainsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return DomainsClientDeleteResponse{RawResponse: resp}, nil
+	return DomainsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -296,7 +295,7 @@ func (client *DomainsClient) DeleteOwnershipIdentifier(ctx context.Context, reso
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return DomainsClientDeleteOwnershipIdentifierResponse{}, runtime.NewResponseError(resp)
 	}
-	return DomainsClientDeleteOwnershipIdentifierResponse{RawResponse: resp}, nil
+	return DomainsClientDeleteOwnershipIdentifierResponse{}, nil
 }
 
 // deleteOwnershipIdentifierCreateRequest creates the DeleteOwnershipIdentifier request.
@@ -377,7 +376,7 @@ func (client *DomainsClient) getCreateRequest(ctx context.Context, resourceGroup
 
 // getHandleResponse handles the Get response.
 func (client *DomainsClient) getHandleResponse(resp *http.Response) (DomainsClientGetResponse, error) {
-	result := DomainsClientGetResponse{RawResponse: resp}
+	result := DomainsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Domain); err != nil {
 		return DomainsClientGetResponse{}, err
 	}
@@ -423,7 +422,7 @@ func (client *DomainsClient) getControlCenterSsoRequestCreateRequest(ctx context
 
 // getControlCenterSsoRequestHandleResponse handles the GetControlCenterSsoRequest response.
 func (client *DomainsClient) getControlCenterSsoRequestHandleResponse(resp *http.Response) (DomainsClientGetControlCenterSsoRequestResponse, error) {
-	result := DomainsClientGetControlCenterSsoRequestResponse{RawResponse: resp}
+	result := DomainsClientGetControlCenterSsoRequestResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DomainControlCenterSsoRequest); err != nil {
 		return DomainsClientGetControlCenterSsoRequestResponse{}, err
 	}
@@ -484,7 +483,7 @@ func (client *DomainsClient) getOwnershipIdentifierCreateRequest(ctx context.Con
 
 // getOwnershipIdentifierHandleResponse handles the GetOwnershipIdentifier response.
 func (client *DomainsClient) getOwnershipIdentifierHandleResponse(resp *http.Response) (DomainsClientGetOwnershipIdentifierResponse, error) {
-	result := DomainsClientGetOwnershipIdentifierResponse{RawResponse: resp}
+	result := DomainsClientGetOwnershipIdentifierResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DomainOwnershipIdentifier); err != nil {
 		return DomainsClientGetOwnershipIdentifierResponse{}, err
 	}
@@ -494,16 +493,32 @@ func (client *DomainsClient) getOwnershipIdentifierHandleResponse(resp *http.Res
 // List - Description for Get all domains in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DomainsClientListOptions contains the optional parameters for the DomainsClient.List method.
-func (client *DomainsClient) List(options *DomainsClientListOptions) *DomainsClientListPager {
-	return &DomainsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *DomainsClient) List(options *DomainsClientListOptions) *runtime.Pager[DomainsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DomainsClientListResponse]{
+		More: func(page DomainsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DomainsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DomainCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *DomainsClientListResponse) (DomainsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DomainsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DomainsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DomainsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -526,7 +541,7 @@ func (client *DomainsClient) listCreateRequest(ctx context.Context, options *Dom
 
 // listHandleResponse handles the List response.
 func (client *DomainsClient) listHandleResponse(resp *http.Response) (DomainsClientListResponse, error) {
-	result := DomainsClientListResponse{RawResponse: resp}
+	result := DomainsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DomainCollection); err != nil {
 		return DomainsClientListResponse{}, err
 	}
@@ -538,16 +553,32 @@ func (client *DomainsClient) listHandleResponse(resp *http.Response) (DomainsCli
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // options - DomainsClientListByResourceGroupOptions contains the optional parameters for the DomainsClient.ListByResourceGroup
 // method.
-func (client *DomainsClient) ListByResourceGroup(resourceGroupName string, options *DomainsClientListByResourceGroupOptions) *DomainsClientListByResourceGroupPager {
-	return &DomainsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *DomainsClient) ListByResourceGroup(resourceGroupName string, options *DomainsClientListByResourceGroupOptions) *runtime.Pager[DomainsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DomainsClientListByResourceGroupResponse]{
+		More: func(page DomainsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DomainsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DomainCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *DomainsClientListByResourceGroupResponse) (DomainsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DomainsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DomainsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DomainsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -574,7 +605,7 @@ func (client *DomainsClient) listByResourceGroupCreateRequest(ctx context.Contex
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *DomainsClient) listByResourceGroupHandleResponse(resp *http.Response) (DomainsClientListByResourceGroupResponse, error) {
-	result := DomainsClientListByResourceGroupResponse{RawResponse: resp}
+	result := DomainsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DomainCollection); err != nil {
 		return DomainsClientListByResourceGroupResponse{}, err
 	}
@@ -587,16 +618,32 @@ func (client *DomainsClient) listByResourceGroupHandleResponse(resp *http.Respon
 // domainName - Name of domain.
 // options - DomainsClientListOwnershipIdentifiersOptions contains the optional parameters for the DomainsClient.ListOwnershipIdentifiers
 // method.
-func (client *DomainsClient) ListOwnershipIdentifiers(resourceGroupName string, domainName string, options *DomainsClientListOwnershipIdentifiersOptions) *DomainsClientListOwnershipIdentifiersPager {
-	return &DomainsClientListOwnershipIdentifiersPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listOwnershipIdentifiersCreateRequest(ctx, resourceGroupName, domainName, options)
+func (client *DomainsClient) ListOwnershipIdentifiers(resourceGroupName string, domainName string, options *DomainsClientListOwnershipIdentifiersOptions) *runtime.Pager[DomainsClientListOwnershipIdentifiersResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DomainsClientListOwnershipIdentifiersResponse]{
+		More: func(page DomainsClientListOwnershipIdentifiersResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DomainsClientListOwnershipIdentifiersResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DomainOwnershipIdentifierCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *DomainsClientListOwnershipIdentifiersResponse) (DomainsClientListOwnershipIdentifiersResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listOwnershipIdentifiersCreateRequest(ctx, resourceGroupName, domainName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DomainsClientListOwnershipIdentifiersResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DomainsClientListOwnershipIdentifiersResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DomainsClientListOwnershipIdentifiersResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listOwnershipIdentifiersHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listOwnershipIdentifiersCreateRequest creates the ListOwnershipIdentifiers request.
@@ -627,7 +674,7 @@ func (client *DomainsClient) listOwnershipIdentifiersCreateRequest(ctx context.C
 
 // listOwnershipIdentifiersHandleResponse handles the ListOwnershipIdentifiers response.
 func (client *DomainsClient) listOwnershipIdentifiersHandleResponse(resp *http.Response) (DomainsClientListOwnershipIdentifiersResponse, error) {
-	result := DomainsClientListOwnershipIdentifiersResponse{RawResponse: resp}
+	result := DomainsClientListOwnershipIdentifiersResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DomainOwnershipIdentifierCollection); err != nil {
 		return DomainsClientListOwnershipIdentifiersResponse{}, err
 	}
@@ -639,16 +686,32 @@ func (client *DomainsClient) listOwnershipIdentifiersHandleResponse(resp *http.R
 // parameters - Search parameters for domain name recommendations.
 // options - DomainsClientListRecommendationsOptions contains the optional parameters for the DomainsClient.ListRecommendations
 // method.
-func (client *DomainsClient) ListRecommendations(parameters DomainRecommendationSearchParameters, options *DomainsClientListRecommendationsOptions) *DomainsClientListRecommendationsPager {
-	return &DomainsClientListRecommendationsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listRecommendationsCreateRequest(ctx, parameters, options)
+func (client *DomainsClient) ListRecommendations(parameters DomainRecommendationSearchParameters, options *DomainsClientListRecommendationsOptions) *runtime.Pager[DomainsClientListRecommendationsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DomainsClientListRecommendationsResponse]{
+		More: func(page DomainsClientListRecommendationsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DomainsClientListRecommendationsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.NameIdentifierCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *DomainsClientListRecommendationsResponse) (DomainsClientListRecommendationsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listRecommendationsCreateRequest(ctx, parameters, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DomainsClientListRecommendationsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DomainsClientListRecommendationsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DomainsClientListRecommendationsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listRecommendationsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listRecommendationsCreateRequest creates the ListRecommendations request.
@@ -671,7 +734,7 @@ func (client *DomainsClient) listRecommendationsCreateRequest(ctx context.Contex
 
 // listRecommendationsHandleResponse handles the ListRecommendations response.
 func (client *DomainsClient) listRecommendationsHandleResponse(resp *http.Response) (DomainsClientListRecommendationsResponse, error) {
-	result := DomainsClientListRecommendationsResponse{RawResponse: resp}
+	result := DomainsClientListRecommendationsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NameIdentifierCollection); err != nil {
 		return DomainsClientListRecommendationsResponse{}, err
 	}
@@ -695,7 +758,7 @@ func (client *DomainsClient) Renew(ctx context.Context, resourceGroupName string
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return DomainsClientRenewResponse{}, runtime.NewResponseError(resp)
 	}
-	return DomainsClientRenewResponse{RawResponse: resp}, nil
+	return DomainsClientRenewResponse{}, nil
 }
 
 // renewCreateRequest creates the Renew request.
@@ -772,7 +835,7 @@ func (client *DomainsClient) transferOutCreateRequest(ctx context.Context, resou
 
 // transferOutHandleResponse handles the TransferOut response.
 func (client *DomainsClient) transferOutHandleResponse(resp *http.Response) (DomainsClientTransferOutResponse, error) {
-	result := DomainsClientTransferOutResponse{RawResponse: resp}
+	result := DomainsClientTransferOutResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Domain); err != nil {
 		return DomainsClientTransferOutResponse{}, err
 	}
@@ -828,7 +891,7 @@ func (client *DomainsClient) updateCreateRequest(ctx context.Context, resourceGr
 
 // updateHandleResponse handles the Update response.
 func (client *DomainsClient) updateHandleResponse(resp *http.Response) (DomainsClientUpdateResponse, error) {
-	result := DomainsClientUpdateResponse{RawResponse: resp}
+	result := DomainsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Domain); err != nil {
 		return DomainsClientUpdateResponse{}, err
 	}
@@ -891,7 +954,7 @@ func (client *DomainsClient) updateOwnershipIdentifierCreateRequest(ctx context.
 
 // updateOwnershipIdentifierHandleResponse handles the UpdateOwnershipIdentifier response.
 func (client *DomainsClient) updateOwnershipIdentifierHandleResponse(resp *http.Response) (DomainsClientUpdateOwnershipIdentifierResponse, error) {
-	result := DomainsClientUpdateOwnershipIdentifierResponse{RawResponse: resp}
+	result := DomainsClientUpdateOwnershipIdentifierResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DomainOwnershipIdentifier); err != nil {
 		return DomainsClientUpdateOwnershipIdentifierResponse{}, err
 	}

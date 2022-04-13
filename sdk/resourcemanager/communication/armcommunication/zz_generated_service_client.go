@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ServiceClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewServiceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServiceClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewServiceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServiceClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ServiceClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CheckNameAvailability - Checks that the CommunicationService name is valid and is not already in use.
@@ -91,7 +96,7 @@ func (client *ServiceClient) checkNameAvailabilityCreateRequest(ctx context.Cont
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
 func (client *ServiceClient) checkNameAvailabilityHandleResponse(resp *http.Response) (ServiceClientCheckNameAvailabilityResponse, error) {
-	result := ServiceClientCheckNameAvailabilityResponse{RawResponse: resp}
+	result := ServiceClientCheckNameAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NameAvailability); err != nil {
 		return ServiceClientCheckNameAvailabilityResponse{}, err
 	}
@@ -104,22 +109,18 @@ func (client *ServiceClient) checkNameAvailabilityHandleResponse(resp *http.Resp
 // communicationServiceName - The name of the CommunicationService resource.
 // options - ServiceClientBeginCreateOrUpdateOptions contains the optional parameters for the ServiceClient.BeginCreateOrUpdate
 // method.
-func (client *ServiceClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, communicationServiceName string, options *ServiceClientBeginCreateOrUpdateOptions) (ServiceClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, communicationServiceName, options)
-	if err != nil {
-		return ServiceClientCreateOrUpdatePollerResponse{}, err
+func (client *ServiceClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, communicationServiceName string, options *ServiceClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ServiceClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, communicationServiceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ServiceClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServiceClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServiceClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServiceClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return ServiceClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ServiceClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create a new CommunicationService or update an existing CommunicationService.
@@ -173,22 +174,18 @@ func (client *ServiceClient) createOrUpdateCreateRequest(ctx context.Context, re
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // communicationServiceName - The name of the CommunicationService resource.
 // options - ServiceClientBeginDeleteOptions contains the optional parameters for the ServiceClient.BeginDelete method.
-func (client *ServiceClient) BeginDelete(ctx context.Context, resourceGroupName string, communicationServiceName string, options *ServiceClientBeginDeleteOptions) (ServiceClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, communicationServiceName, options)
-	if err != nil {
-		return ServiceClientDeletePollerResponse{}, err
+func (client *ServiceClient) BeginDelete(ctx context.Context, resourceGroupName string, communicationServiceName string, options *ServiceClientBeginDeleteOptions) (*armruntime.Poller[ServiceClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, communicationServiceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ServiceClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServiceClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServiceClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServiceClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return ServiceClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ServiceClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Operation to delete a CommunicationService.
@@ -282,7 +279,7 @@ func (client *ServiceClient) getCreateRequest(ctx context.Context, resourceGroup
 
 // getHandleResponse handles the Get response.
 func (client *ServiceClient) getHandleResponse(resp *http.Response) (ServiceClientGetResponse, error) {
-	result := ServiceClientGetResponse{RawResponse: resp}
+	result := ServiceClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceResource); err != nil {
 		return ServiceClientGetResponse{}, err
 	}
@@ -341,7 +338,7 @@ func (client *ServiceClient) linkNotificationHubCreateRequest(ctx context.Contex
 
 // linkNotificationHubHandleResponse handles the LinkNotificationHub response.
 func (client *ServiceClient) linkNotificationHubHandleResponse(resp *http.Response) (ServiceClientLinkNotificationHubResponse, error) {
-	result := ServiceClientLinkNotificationHubResponse{RawResponse: resp}
+	result := ServiceClientLinkNotificationHubResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LinkedNotificationHub); err != nil {
 		return ServiceClientLinkNotificationHubResponse{}, err
 	}
@@ -353,16 +350,32 @@ func (client *ServiceClient) linkNotificationHubHandleResponse(resp *http.Respon
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ServiceClientListByResourceGroupOptions contains the optional parameters for the ServiceClient.ListByResourceGroup
 // method.
-func (client *ServiceClient) ListByResourceGroup(resourceGroupName string, options *ServiceClientListByResourceGroupOptions) *ServiceClientListByResourceGroupPager {
-	return &ServiceClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *ServiceClient) ListByResourceGroup(resourceGroupName string, options *ServiceClientListByResourceGroupOptions) *runtime.Pager[ServiceClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ServiceClientListByResourceGroupResponse]{
+		More: func(page ServiceClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ServiceClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServiceResourceList.NextLink)
+		Fetcher: func(ctx context.Context, page *ServiceClientListByResourceGroupResponse) (ServiceClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ServiceClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ServiceClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ServiceClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -389,7 +402,7 @@ func (client *ServiceClient) listByResourceGroupCreateRequest(ctx context.Contex
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *ServiceClient) listByResourceGroupHandleResponse(resp *http.Response) (ServiceClientListByResourceGroupResponse, error) {
-	result := ServiceClientListByResourceGroupResponse{RawResponse: resp}
+	result := ServiceClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceResourceList); err != nil {
 		return ServiceClientListByResourceGroupResponse{}, err
 	}
@@ -400,16 +413,32 @@ func (client *ServiceClient) listByResourceGroupHandleResponse(resp *http.Respon
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ServiceClientListBySubscriptionOptions contains the optional parameters for the ServiceClient.ListBySubscription
 // method.
-func (client *ServiceClient) ListBySubscription(options *ServiceClientListBySubscriptionOptions) *ServiceClientListBySubscriptionPager {
-	return &ServiceClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *ServiceClient) ListBySubscription(options *ServiceClientListBySubscriptionOptions) *runtime.Pager[ServiceClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ServiceClientListBySubscriptionResponse]{
+		More: func(page ServiceClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ServiceClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServiceResourceList.NextLink)
+		Fetcher: func(ctx context.Context, page *ServiceClientListBySubscriptionResponse) (ServiceClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ServiceClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ServiceClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ServiceClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -432,7 +461,7 @@ func (client *ServiceClient) listBySubscriptionCreateRequest(ctx context.Context
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *ServiceClient) listBySubscriptionHandleResponse(resp *http.Response) (ServiceClientListBySubscriptionResponse, error) {
-	result := ServiceClientListBySubscriptionResponse{RawResponse: resp}
+	result := ServiceClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceResourceList); err != nil {
 		return ServiceClientListBySubscriptionResponse{}, err
 	}
@@ -487,7 +516,7 @@ func (client *ServiceClient) listKeysCreateRequest(ctx context.Context, resource
 
 // listKeysHandleResponse handles the ListKeys response.
 func (client *ServiceClient) listKeysHandleResponse(resp *http.Response) (ServiceClientListKeysResponse, error) {
-	result := ServiceClientListKeysResponse{RawResponse: resp}
+	result := ServiceClientListKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceKeys); err != nil {
 		return ServiceClientListKeysResponse{}, err
 	}
@@ -544,7 +573,7 @@ func (client *ServiceClient) regenerateKeyCreateRequest(ctx context.Context, res
 
 // regenerateKeyHandleResponse handles the RegenerateKey response.
 func (client *ServiceClient) regenerateKeyHandleResponse(resp *http.Response) (ServiceClientRegenerateKeyResponse, error) {
-	result := ServiceClientRegenerateKeyResponse{RawResponse: resp}
+	result := ServiceClientRegenerateKeyResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceKeys); err != nil {
 		return ServiceClientRegenerateKeyResponse{}, err
 	}
@@ -602,7 +631,7 @@ func (client *ServiceClient) updateCreateRequest(ctx context.Context, resourceGr
 
 // updateHandleResponse handles the Update response.
 func (client *ServiceClient) updateHandleResponse(resp *http.Response) (ServiceClientUpdateResponse, error) {
-	result := ServiceClientUpdateResponse{RawResponse: resp}
+	result := ServiceClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceResource); err != nil {
 		return ServiceClientUpdateResponse{}, err
 	}

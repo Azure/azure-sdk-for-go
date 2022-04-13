@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,19 +32,23 @@ type RecommendationMetadataClient struct {
 // NewRecommendationMetadataClient creates a new instance of RecommendationMetadataClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewRecommendationMetadataClient(credential azcore.TokenCredential, options *arm.ClientOptions) *RecommendationMetadataClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewRecommendationMetadataClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*RecommendationMetadataClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &RecommendationMetadataClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets the metadata entity.
@@ -86,7 +91,7 @@ func (client *RecommendationMetadataClient) getCreateRequest(ctx context.Context
 
 // getHandleResponse handles the Get response.
 func (client *RecommendationMetadataClient) getHandleResponse(resp *http.Response) (RecommendationMetadataClientGetResponse, error) {
-	result := RecommendationMetadataClientGetResponse{RawResponse: resp}
+	result := RecommendationMetadataClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetadataEntity); err != nil {
 		return RecommendationMetadataClientGetResponse{}, err
 	}
@@ -97,16 +102,32 @@ func (client *RecommendationMetadataClient) getHandleResponse(resp *http.Respons
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - RecommendationMetadataClientListOptions contains the optional parameters for the RecommendationMetadataClient.List
 // method.
-func (client *RecommendationMetadataClient) List(options *RecommendationMetadataClientListOptions) *RecommendationMetadataClientListPager {
-	return &RecommendationMetadataClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *RecommendationMetadataClient) List(options *RecommendationMetadataClientListOptions) *runtime.Pager[RecommendationMetadataClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RecommendationMetadataClientListResponse]{
+		More: func(page RecommendationMetadataClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RecommendationMetadataClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.MetadataEntityListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *RecommendationMetadataClientListResponse) (RecommendationMetadataClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RecommendationMetadataClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RecommendationMetadataClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RecommendationMetadataClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -125,7 +146,7 @@ func (client *RecommendationMetadataClient) listCreateRequest(ctx context.Contex
 
 // listHandleResponse handles the List response.
 func (client *RecommendationMetadataClient) listHandleResponse(resp *http.Response) (RecommendationMetadataClientListResponse, error) {
-	result := RecommendationMetadataClientListResponse{RawResponse: resp}
+	result := RecommendationMetadataClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetadataEntityListResult); err != nil {
 		return RecommendationMetadataClientListResponse{}, err
 	}

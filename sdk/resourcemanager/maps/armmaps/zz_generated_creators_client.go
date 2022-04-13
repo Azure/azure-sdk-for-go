@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type CreatorsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewCreatorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CreatorsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewCreatorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CreatorsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &CreatorsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create or update a Maps Creator resource. Creator resource will manage Azure resources required to populate
@@ -104,7 +109,7 @@ func (client *CreatorsClient) createOrUpdateCreateRequest(ctx context.Context, r
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *CreatorsClient) createOrUpdateHandleResponse(resp *http.Response) (CreatorsClientCreateOrUpdateResponse, error) {
-	result := CreatorsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := CreatorsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Creator); err != nil {
 		return CreatorsClientCreateOrUpdateResponse{}, err
 	}
@@ -129,7 +134,7 @@ func (client *CreatorsClient) Delete(ctx context.Context, resourceGroupName stri
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return CreatorsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return CreatorsClientDeleteResponse{RawResponse: resp}, nil
+	return CreatorsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -215,7 +220,7 @@ func (client *CreatorsClient) getCreateRequest(ctx context.Context, resourceGrou
 
 // getHandleResponse handles the Get response.
 func (client *CreatorsClient) getHandleResponse(resp *http.Response) (CreatorsClientGetResponse, error) {
-	result := CreatorsClientGetResponse{RawResponse: resp}
+	result := CreatorsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Creator); err != nil {
 		return CreatorsClientGetResponse{}, err
 	}
@@ -227,16 +232,32 @@ func (client *CreatorsClient) getHandleResponse(resp *http.Response) (CreatorsCl
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The name of the Maps Account.
 // options - CreatorsClientListByAccountOptions contains the optional parameters for the CreatorsClient.ListByAccount method.
-func (client *CreatorsClient) ListByAccount(resourceGroupName string, accountName string, options *CreatorsClientListByAccountOptions) *CreatorsClientListByAccountPager {
-	return &CreatorsClientListByAccountPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByAccountCreateRequest(ctx, resourceGroupName, accountName, options)
+func (client *CreatorsClient) ListByAccount(resourceGroupName string, accountName string, options *CreatorsClientListByAccountOptions) *runtime.Pager[CreatorsClientListByAccountResponse] {
+	return runtime.NewPager(runtime.PageProcessor[CreatorsClientListByAccountResponse]{
+		More: func(page CreatorsClientListByAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp CreatorsClientListByAccountResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CreatorList.NextLink)
+		Fetcher: func(ctx context.Context, page *CreatorsClientListByAccountResponse) (CreatorsClientListByAccountResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByAccountCreateRequest(ctx, resourceGroupName, accountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CreatorsClientListByAccountResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CreatorsClientListByAccountResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CreatorsClientListByAccountResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByAccountHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByAccountCreateRequest creates the ListByAccount request.
@@ -267,7 +288,7 @@ func (client *CreatorsClient) listByAccountCreateRequest(ctx context.Context, re
 
 // listByAccountHandleResponse handles the ListByAccount response.
 func (client *CreatorsClient) listByAccountHandleResponse(resp *http.Response) (CreatorsClientListByAccountResponse, error) {
-	result := CreatorsClientListByAccountResponse{RawResponse: resp}
+	result := CreatorsClientListByAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CreatorList); err != nil {
 		return CreatorsClientListByAccountResponse{}, err
 	}
@@ -328,7 +349,7 @@ func (client *CreatorsClient) updateCreateRequest(ctx context.Context, resourceG
 
 // updateHandleResponse handles the Update response.
 func (client *CreatorsClient) updateHandleResponse(resp *http.Response) (CreatorsClientUpdateResponse, error) {
-	result := CreatorsClientUpdateResponse{RawResponse: resp}
+	result := CreatorsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Creator); err != nil {
 		return CreatorsClientUpdateResponse{}, err
 	}

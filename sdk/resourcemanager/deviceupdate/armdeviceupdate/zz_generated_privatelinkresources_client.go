@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type PrivateLinkResourcesClient struct {
 // subscriptionID - The Azure subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateLinkResourcesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkResourcesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PrivateLinkResourcesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Get the specified private link resource associated with the device update account.
@@ -103,7 +108,7 @@ func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, 
 
 // getHandleResponse handles the Get response.
 func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response) (PrivateLinkResourcesClientGetResponse, error) {
-	result := PrivateLinkResourcesClientGetResponse{RawResponse: resp}
+	result := PrivateLinkResourcesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GroupInformation); err != nil {
 		return PrivateLinkResourcesClientGetResponse{}, err
 	}
@@ -116,19 +121,26 @@ func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response)
 // accountName - Account name.
 // options - PrivateLinkResourcesClientListByAccountOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByAccount
 // method.
-func (client *PrivateLinkResourcesClient) ListByAccount(ctx context.Context, resourceGroupName string, accountName string, options *PrivateLinkResourcesClientListByAccountOptions) (PrivateLinkResourcesClientListByAccountResponse, error) {
-	req, err := client.listByAccountCreateRequest(ctx, resourceGroupName, accountName, options)
-	if err != nil {
-		return PrivateLinkResourcesClientListByAccountResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return PrivateLinkResourcesClientListByAccountResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateLinkResourcesClientListByAccountResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listByAccountHandleResponse(resp)
+func (client *PrivateLinkResourcesClient) ListByAccount(resourceGroupName string, accountName string, options *PrivateLinkResourcesClientListByAccountOptions) *runtime.Pager[PrivateLinkResourcesClientListByAccountResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PrivateLinkResourcesClientListByAccountResponse]{
+		More: func(page PrivateLinkResourcesClientListByAccountResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *PrivateLinkResourcesClientListByAccountResponse) (PrivateLinkResourcesClientListByAccountResponse, error) {
+			req, err := client.listByAccountCreateRequest(ctx, resourceGroupName, accountName, options)
+			if err != nil {
+				return PrivateLinkResourcesClientListByAccountResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PrivateLinkResourcesClientListByAccountResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PrivateLinkResourcesClientListByAccountResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByAccountHandleResponse(resp)
+		},
+	})
 }
 
 // listByAccountCreateRequest creates the ListByAccount request.
@@ -159,7 +171,7 @@ func (client *PrivateLinkResourcesClient) listByAccountCreateRequest(ctx context
 
 // listByAccountHandleResponse handles the ListByAccount response.
 func (client *PrivateLinkResourcesClient) listByAccountHandleResponse(resp *http.Response) (PrivateLinkResourcesClientListByAccountResponse, error) {
-	result := PrivateLinkResourcesClientListByAccountResponse{RawResponse: resp}
+	result := PrivateLinkResourcesClientListByAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
 		return PrivateLinkResourcesClientListByAccountResponse{}, err
 	}

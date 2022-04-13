@@ -1,5 +1,112 @@
 # Release History
 
+## 0.3.0 (2022-04-12)
+### Breaking Changes
+
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `NewPrivateLinkServicesForPowerBIClient` return value(s) have been changed from `(*PrivateLinkServicesForPowerBIClient)` to `(*PrivateLinkServicesForPowerBIClient, error)`
+- Function `NewPrivateLinkServiceResourceOperationResultsClient` return value(s) have been changed from `(*PrivateLinkServiceResourceOperationResultsClient)` to `(*PrivateLinkServiceResourceOperationResultsClient, error)`
+- Function `NewPrivateLinkServicesClient` return value(s) have been changed from `(*PrivateLinkServicesClient)` to `(*PrivateLinkServicesClient, error)`
+- Function `NewPrivateLinkResourcesClient` return value(s) have been changed from `(*PrivateLinkResourcesClient)` to `(*PrivateLinkResourcesClient, error)`
+- Function `*PrivateLinkServiceResourceOperationResultsClient.BeginGet` return value(s) have been changed from `(PrivateLinkServiceResourceOperationResultsClientGetPollerResponse, error)` to `(*armruntime.Poller[PrivateLinkServiceResourceOperationResultsClientGetResponse], error)`
+- Function `NewPowerBIResourcesClient` return value(s) have been changed from `(*PowerBIResourcesClient)` to `(*PowerBIResourcesClient, error)`
+- Function `NewPrivateEndpointConnectionsClient` return value(s) have been changed from `(*PrivateEndpointConnectionsClient)` to `(*PrivateEndpointConnectionsClient, error)`
+- Function `*PrivateEndpointConnectionsClient.ListByResource` return value(s) have been changed from `(*PrivateEndpointConnectionsClientListByResourcePager)` to `(*runtime.Pager[PrivateEndpointConnectionsClientListByResourceResponse])`
+- Function `*PrivateLinkResourcesClient.ListByResource` return value(s) have been changed from `(*PrivateLinkResourcesClientListByResourcePager)` to `(*runtime.Pager[PrivateLinkResourcesClientListByResourceResponse])`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*PrivateLinkServiceResourceOperationResultsClientGetPoller.Done` has been removed
+- Function `ActionType.ToPtr` has been removed
+- Function `ResourceProvisioningState.ToPtr` has been removed
+- Function `Origin.ToPtr` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.Done` has been removed
+- Function `PrivateEndpointConnectionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsClientListByResourcePager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.Poll` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*PrivateLinkServiceResourceOperationResultsClientGetPoller.Poll` has been removed
+- Function `*PrivateLinkResourcesClientListByResourcePager.PageResponse` has been removed
+- Function `*PrivateLinkServiceResourceOperationResultsClientGetPollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.FinalResponse` has been removed
+- Function `PersistedConnectionStatus.ToPtr` has been removed
+- Function `ActionsRequired.ToPtr` has been removed
+- Function `*PrivateLinkResourcesClientListByResourcePager.Err` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsClientListByResourcePager.NextPage` has been removed
+- Function `*PrivateLinkServiceResourceOperationResultsClientGetPoller.ResumeToken` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*PrivateEndpointConnectionsClientListByResourcePager.Err` has been removed
+- Function `PrivateLinkServiceResourceOperationResultsClientGetPollerResponse.PollUntilDone` has been removed
+- Function `*PrivateLinkResourcesClientListByResourcePager.NextPage` has been removed
+- Function `*PrivateLinkServiceResourceOperationResultsClientGetPoller.FinalResponse` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePollerResponse.Resume` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `PowerBIResourcesClientCreateResult` has been removed
+- Struct `PowerBIResourcesClientListByResourceNameResult` has been removed
+- Struct `PowerBIResourcesClientUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionsClientCreateResult` has been removed
+- Struct `PrivateEndpointConnectionsClientDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsClientDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientGetResult` has been removed
+- Struct `PrivateEndpointConnectionsClientListByResourcePager` has been removed
+- Struct `PrivateEndpointConnectionsClientListByResourceResult` has been removed
+- Struct `PrivateLinkResourcesClientGetResult` has been removed
+- Struct `PrivateLinkResourcesClientListByResourcePager` has been removed
+- Struct `PrivateLinkResourcesClientListByResourceResult` has been removed
+- Struct `PrivateLinkServiceResourceOperationResultsClientGetPoller` has been removed
+- Struct `PrivateLinkServiceResourceOperationResultsClientGetPollerResponse` has been removed
+- Struct `PrivateLinkServiceResourceOperationResultsClientGetResult` has been removed
+- Struct `PrivateLinkServicesClientListByResourceGroupResult` has been removed
+- Struct `PrivateLinkServicesForPowerBIClientListBySubscriptionIDResult` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `PrivateLinkServicesForPowerBIClientListBySubscriptionIDResult` of struct `PrivateLinkServicesForPowerBIClientListBySubscriptionIDResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForPowerBIClientListBySubscriptionIDResponse` has been removed
+- Field `PrivateEndpointConnectionsClientListByResourceResult` of struct `PrivateEndpointConnectionsClientListByResourceResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientListByResourceResponse` has been removed
+- Field `PowerBIResourcesClientUpdateResult` of struct `PowerBIResourcesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `PowerBIResourcesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientDeleteResponse` has been removed
+- Field `PrivateLinkServicesClientListByResourceGroupResult` of struct `PrivateLinkServicesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesClientListByResourceGroupResponse` has been removed
+- Field `PowerBIResourcesClientCreateResult` of struct `PowerBIResourcesClientCreateResponse` has been removed
+- Field `RawResponse` of struct `PowerBIResourcesClientCreateResponse` has been removed
+- Field `PrivateLinkResourcesClientGetResult` of struct `PrivateLinkResourcesClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientGetResponse` has been removed
+- Field `PrivateLinkServiceResourceOperationResultsClientGetResult` of struct `PrivateLinkServiceResourceOperationResultsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServiceResourceOperationResultsClientGetResponse` has been removed
+- Field `PrivateEndpointConnectionsClientCreateResult` of struct `PrivateEndpointConnectionsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientCreateResponse` has been removed
+- Field `PrivateEndpointConnectionsClientGetResult` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PowerBIResourcesClientDeleteResponse` has been removed
+- Field `PrivateLinkResourcesClientListByResourceResult` of struct `PrivateLinkResourcesClientListByResourceResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientListByResourceResponse` has been removed
+- Field `PowerBIResourcesClientListByResourceNameResult` of struct `PowerBIResourcesClientListByResourceNameResponse` has been removed
+- Field `RawResponse` of struct `PowerBIResourcesClientListByResourceNameResponse` has been removed
+
+### Features Added
+
+- New field `TenantResourceArray` in struct `PowerBIResourcesClientListByResourceNameResponse`
+- New anonymous field `TenantResource` in struct `PowerBIResourcesClientCreateResponse`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsClientBeginDeleteOptions`
+- New field `TenantResourceArray` in struct `PrivateLinkServicesForPowerBIClientListBySubscriptionIDResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientGetResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `AsyncOperationDetail` in struct `PrivateLinkServiceResourceOperationResultsClientGetResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientCreateResponse`
+- New field `TenantResourceArray` in struct `PrivateLinkServicesClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `PrivateLinkServiceResourceOperationResultsClientBeginGetOptions`
+- New anonymous field `PrivateLinkResource` in struct `PrivateLinkResourcesClientGetResponse`
+- New anonymous field `TenantResource` in struct `PowerBIResourcesClientUpdateResponse`
+- New anonymous field `PrivateEndpointConnectionListResult` in struct `PrivateEndpointConnectionsClientListByResourceResponse`
+- New anonymous field `PrivateLinkResourcesListResult` in struct `PrivateLinkResourcesClientListByResourceResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

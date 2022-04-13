@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type RoutesClient struct {
 // subscriptionID - Azure Subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewRoutesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RoutesClient {
+func NewRoutesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RoutesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &RoutesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreate - Creates a new route with the specified route name under the specified subscription, resource group, profile,
@@ -59,22 +64,18 @@ func NewRoutesClient(subscriptionID string, credential azcore.TokenCredential, o
 // routeName - Name of the routing rule.
 // route - Route properties
 // options - RoutesClientBeginCreateOptions contains the optional parameters for the RoutesClient.BeginCreate method.
-func (client *RoutesClient) BeginCreate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, route Route, options *RoutesClientBeginCreateOptions) (RoutesClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, profileName, endpointName, routeName, route, options)
-	if err != nil {
-		return RoutesClientCreatePollerResponse{}, err
+func (client *RoutesClient) BeginCreate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, route Route, options *RoutesClientBeginCreateOptions) (*armruntime.Poller[RoutesClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, profileName, endpointName, routeName, route, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[RoutesClientCreateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[RoutesClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := RoutesClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("RoutesClient.Create", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return RoutesClientCreatePollerResponse{}, err
-	}
-	result.Poller = &RoutesClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Creates a new route with the specified route name under the specified subscription, resource group, profile, and
@@ -138,22 +139,18 @@ func (client *RoutesClient) createCreateRequest(ctx context.Context, resourceGro
 // endpointName - Name of the endpoint under the profile which is unique globally.
 // routeName - Name of the routing rule.
 // options - RoutesClientBeginDeleteOptions contains the optional parameters for the RoutesClient.BeginDelete method.
-func (client *RoutesClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, options *RoutesClientBeginDeleteOptions) (RoutesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, profileName, endpointName, routeName, options)
-	if err != nil {
-		return RoutesClientDeletePollerResponse{}, err
+func (client *RoutesClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, options *RoutesClientBeginDeleteOptions) (*armruntime.Poller[RoutesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, profileName, endpointName, routeName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[RoutesClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[RoutesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := RoutesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("RoutesClient.Delete", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return RoutesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &RoutesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes an existing route with the specified route name under the specified subscription, resource group, profile,
@@ -268,7 +265,7 @@ func (client *RoutesClient) getCreateRequest(ctx context.Context, resourceGroupN
 
 // getHandleResponse handles the Get response.
 func (client *RoutesClient) getHandleResponse(resp *http.Response) (RoutesClientGetResponse, error) {
-	result := RoutesClientGetResponse{RawResponse: resp}
+	result := RoutesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Route); err != nil {
 		return RoutesClientGetResponse{}, err
 	}
@@ -282,16 +279,32 @@ func (client *RoutesClient) getHandleResponse(resp *http.Response) (RoutesClient
 // group.
 // endpointName - Name of the endpoint under the profile which is unique globally.
 // options - RoutesClientListByEndpointOptions contains the optional parameters for the RoutesClient.ListByEndpoint method.
-func (client *RoutesClient) ListByEndpoint(resourceGroupName string, profileName string, endpointName string, options *RoutesClientListByEndpointOptions) *RoutesClientListByEndpointPager {
-	return &RoutesClientListByEndpointPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByEndpointCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
+func (client *RoutesClient) ListByEndpoint(resourceGroupName string, profileName string, endpointName string, options *RoutesClientListByEndpointOptions) *runtime.Pager[RoutesClientListByEndpointResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RoutesClientListByEndpointResponse]{
+		More: func(page RoutesClientListByEndpointResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RoutesClientListByEndpointResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RouteListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *RoutesClientListByEndpointResponse) (RoutesClientListByEndpointResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByEndpointCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RoutesClientListByEndpointResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RoutesClientListByEndpointResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RoutesClientListByEndpointResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByEndpointHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByEndpointCreateRequest creates the ListByEndpoint request.
@@ -326,7 +339,7 @@ func (client *RoutesClient) listByEndpointCreateRequest(ctx context.Context, res
 
 // listByEndpointHandleResponse handles the ListByEndpoint response.
 func (client *RoutesClient) listByEndpointHandleResponse(resp *http.Response) (RoutesClientListByEndpointResponse, error) {
-	result := RoutesClientListByEndpointResponse{RawResponse: resp}
+	result := RoutesClientListByEndpointResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RouteListResult); err != nil {
 		return RoutesClientListByEndpointResponse{}, err
 	}
@@ -343,22 +356,18 @@ func (client *RoutesClient) listByEndpointHandleResponse(resp *http.Response) (R
 // routeName - Name of the routing rule.
 // routeUpdateProperties - Route update properties
 // options - RoutesClientBeginUpdateOptions contains the optional parameters for the RoutesClient.BeginUpdate method.
-func (client *RoutesClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, routeUpdateProperties RouteUpdateParameters, options *RoutesClientBeginUpdateOptions) (RoutesClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, profileName, endpointName, routeName, routeUpdateProperties, options)
-	if err != nil {
-		return RoutesClientUpdatePollerResponse{}, err
+func (client *RoutesClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, routeUpdateProperties RouteUpdateParameters, options *RoutesClientBeginUpdateOptions) (*armruntime.Poller[RoutesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, profileName, endpointName, routeName, routeUpdateProperties, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[RoutesClientUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[RoutesClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := RoutesClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("RoutesClient.Update", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return RoutesClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &RoutesClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates an existing route with the specified route name under the specified subscription, resource group, profile,

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,184 +19,260 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
 )
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/incidents/GetIncidents.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/manualTrigger/AutomationRules_ManualTriggerPlaybook.json
+func ExampleIncidentsClient_RunPlaybook() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+		return
+	}
+	ctx := context.Background()
+	client, err := armsecurityinsights.NewIncidentsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	_, err = client.RunPlaybook(ctx,
+		"<resource-group-name>",
+		"<workspace-name>",
+		"<incident-identifier>",
+		&armsecurityinsights.IncidentsClientRunPlaybookOptions{RequestBody: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+		return
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/incidents/GetIncidents.json
 func ExampleIncidentsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewIncidentsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewIncidentsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List("<resource-group-name>",
 		"<workspace-name>",
 		&armsecurityinsights.IncidentsClientListOptions{Filter: nil,
-			Orderby:   to.StringPtr("<orderby>"),
-			Top:       to.Int32Ptr(1),
+			Orderby:   to.Ptr("<orderby>"),
+			Top:       to.Ptr[int32](1),
 			SkipToken: nil,
 		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/incidents/GetIncidentById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/incidents/GetIncidentById.json
 func ExampleIncidentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewIncidentsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewIncidentsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<incident-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.IncidentsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/incidents/CreateIncident.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/incidents/CreateIncident.json
 func ExampleIncidentsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewIncidentsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewIncidentsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<incident-id>",
 		armsecurityinsights.Incident{
-			Etag: to.StringPtr("<etag>"),
+			Etag: to.Ptr("<etag>"),
 			Properties: &armsecurityinsights.IncidentProperties{
-				Description:           to.StringPtr("<description>"),
-				Classification:        armsecurityinsights.IncidentClassification("FalsePositive").ToPtr(),
-				ClassificationComment: to.StringPtr("<classification-comment>"),
-				ClassificationReason:  armsecurityinsights.IncidentClassificationReason("IncorrectAlertLogic").ToPtr(),
-				FirstActivityTimeUTC:  to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:00:30Z"); return t }()),
-				LastActivityTimeUTC:   to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:05:30Z"); return t }()),
+				Description:           to.Ptr("<description>"),
+				Classification:        to.Ptr(armsecurityinsights.IncidentClassificationFalsePositive),
+				ClassificationComment: to.Ptr("<classification-comment>"),
+				ClassificationReason:  to.Ptr(armsecurityinsights.IncidentClassificationReasonIncorrectAlertLogic),
+				FirstActivityTimeUTC:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:00:30Z"); return t }()),
+				LastActivityTimeUTC:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:05:30Z"); return t }()),
 				Owner: &armsecurityinsights.IncidentOwnerInfo{
-					ObjectID: to.StringPtr("<object-id>"),
+					ObjectID: to.Ptr("<object-id>"),
 				},
-				Severity: armsecurityinsights.IncidentSeverity("High").ToPtr(),
-				Status:   armsecurityinsights.IncidentStatus("Closed").ToPtr(),
-				Title:    to.StringPtr("<title>"),
+				Severity: to.Ptr(armsecurityinsights.IncidentSeverityHigh),
+				Status:   to.Ptr(armsecurityinsights.IncidentStatusClosed),
+				Title:    to.Ptr("<title>"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.IncidentsClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/incidents/DeleteIncident.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/incidents/DeleteIncident.json
 func ExampleIncidentsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewIncidentsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewIncidentsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<incident-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/incidents/CreateTeam.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/incidents/CreateTeam.json
 func ExampleIncidentsClient_CreateTeam() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewIncidentsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewIncidentsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateTeam(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<incident-id>",
 		armsecurityinsights.TeamProperties{
-			TeamDescription: to.StringPtr("<team-description>"),
-			TeamName:        to.StringPtr("<team-name>"),
+			TeamDescription: to.Ptr("<team-description>"),
+			TeamName:        to.Ptr("<team-name>"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.IncidentsClientCreateTeamResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/incidents/GetAllIncidentAlerts.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/incidents/GetAllIncidentAlerts.json
 func ExampleIncidentsClient_ListAlerts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewIncidentsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewIncidentsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ListAlerts(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<incident-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.IncidentsClientListAlertsResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/incidents/GetAllIncidentBookmarks.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/incidents/GetAllIncidentBookmarks.json
 func ExampleIncidentsClient_ListBookmarks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewIncidentsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewIncidentsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ListBookmarks(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<incident-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.IncidentsClientListBookmarksResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/incidents/entities/GetAllIncidentEntities.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/incidents/entities/GetAllIncidentEntities.json
 func ExampleIncidentsClient_ListEntities() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewIncidentsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewIncidentsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ListEntities(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<incident-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.IncidentsClientListEntitiesResult)
+	// TODO: use response item
+	_ = res
 }

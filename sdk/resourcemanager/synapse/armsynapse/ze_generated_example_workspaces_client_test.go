@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,227 +19,266 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse"
 )
 
-// x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListWorkspacesInResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListWorkspacesInResourceGroup.json
 func ExampleWorkspacesClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsynapse.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewWorkspacesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetWorkspace.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetWorkspace.json
 func ExampleWorkspacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsynapse.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewWorkspacesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WorkspacesClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/UpdateWorkspace.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/UpdateWorkspace.json
 func ExampleWorkspacesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsynapse.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewWorkspacesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		armsynapse.WorkspacePatchInfo{
 			Identity: &armsynapse.ManagedIdentity{
-				Type: armsynapse.ResourceIdentityTypeSystemAssigned.ToPtr(),
+				Type: to.Ptr(armsynapse.ResourceIdentityTypeSystemAssigned),
 			},
 			Properties: &armsynapse.WorkspacePatchProperties{
 				Encryption: &armsynapse.EncryptionDetails{
 					Cmk: &armsynapse.CustomerManagedKeyDetails{
 						Key: &armsynapse.WorkspaceKeyDetails{
-							Name:        to.StringPtr("<name>"),
-							KeyVaultURL: to.StringPtr("<key-vault-url>"),
+							Name:        to.Ptr("<name>"),
+							KeyVaultURL: to.Ptr("<key-vault-url>"),
 						},
 					},
 				},
 				ManagedVirtualNetworkSettings: &armsynapse.ManagedVirtualNetworkSettings{
 					AllowedAADTenantIDsForLinking: []*string{
-						to.StringPtr("740239CE-A25B-485B-86A0-262F29F6EBDB")},
-					LinkedAccessCheckOnTargetResource: to.BoolPtr(false),
-					PreventDataExfiltration:           to.BoolPtr(false),
+						to.Ptr("740239CE-A25B-485B-86A0-262F29F6EBDB")},
+					LinkedAccessCheckOnTargetResource: to.Ptr(false),
+					PreventDataExfiltration:           to.Ptr(false),
 				},
-				PublicNetworkAccess: armsynapse.WorkspacePublicNetworkAccess("Enabled").ToPtr(),
+				PublicNetworkAccess: to.Ptr(armsynapse.WorkspacePublicNetworkAccessEnabled),
 				PurviewConfiguration: &armsynapse.PurviewConfiguration{
-					PurviewResourceID: to.StringPtr("<purview-resource-id>"),
+					PurviewResourceID: to.Ptr("<purview-resource-id>"),
 				},
-				SQLAdministratorLoginPassword: to.StringPtr("<sqladministrator-login-password>"),
+				SQLAdministratorLoginPassword: to.Ptr("<sqladministrator-login-password>"),
 				WorkspaceRepositoryConfiguration: &armsynapse.WorkspaceRepositoryConfiguration{
-					Type:                to.StringPtr("<type>"),
-					AccountName:         to.StringPtr("<account-name>"),
-					CollaborationBranch: to.StringPtr("<collaboration-branch>"),
-					HostName:            to.StringPtr("<host-name>"),
-					ProjectName:         to.StringPtr("<project-name>"),
-					RepositoryName:      to.StringPtr("<repository-name>"),
-					RootFolder:          to.StringPtr("<root-folder>"),
+					Type:                to.Ptr("<type>"),
+					AccountName:         to.Ptr("<account-name>"),
+					CollaborationBranch: to.Ptr("<collaboration-branch>"),
+					HostName:            to.Ptr("<host-name>"),
+					ProjectName:         to.Ptr("<project-name>"),
+					RepositoryName:      to.Ptr("<repository-name>"),
+					RootFolder:          to.Ptr("<root-folder>"),
 				},
 			},
 			Tags: map[string]*string{
-				"key": to.StringPtr("value"),
+				"key": to.Ptr("value"),
 			},
 		},
-		nil)
+		&armsynapse.WorkspacesClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WorkspacesClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateWorkspace.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateWorkspace.json
 func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsynapse.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewWorkspacesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		armsynapse.Workspace{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Tags: map[string]*string{
-				"key": to.StringPtr("value"),
+				"key": to.Ptr("value"),
 			},
 			Identity: &armsynapse.ManagedIdentity{
-				Type: armsynapse.ResourceIdentityTypeSystemAssignedUserAssigned.ToPtr(),
+				Type: to.Ptr(armsynapse.ResourceIdentityTypeSystemAssignedUserAssigned),
 				UserAssignedIdentities: map[string]*armsynapse.UserAssignedManagedIdentity{
 					"/subscriptions/00000000-1111-2222-3333-444444444444/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1": {},
 				},
 			},
 			Properties: &armsynapse.WorkspaceProperties{
 				CspWorkspaceAdminProperties: &armsynapse.CspWorkspaceAdminProperties{
-					InitialWorkspaceAdminObjectID: to.StringPtr("<initial-workspace-admin-object-id>"),
+					InitialWorkspaceAdminObjectID: to.Ptr("<initial-workspace-admin-object-id>"),
 				},
 				DefaultDataLakeStorage: &armsynapse.DataLakeStorageAccountDetails{
-					AccountURL: to.StringPtr("<account-url>"),
-					Filesystem: to.StringPtr("<filesystem>"),
+					AccountURL: to.Ptr("<account-url>"),
+					Filesystem: to.Ptr("<filesystem>"),
 				},
 				Encryption: &armsynapse.EncryptionDetails{
 					Cmk: &armsynapse.CustomerManagedKeyDetails{
 						KekIdentity: &armsynapse.KekIdentityProperties{
 							UseSystemAssignedIdentity: false,
-							UserAssignedIdentity:      to.StringPtr("<user-assigned-identity>"),
+							UserAssignedIdentity:      to.Ptr("<user-assigned-identity>"),
 						},
 						Key: &armsynapse.WorkspaceKeyDetails{
-							Name:        to.StringPtr("<name>"),
-							KeyVaultURL: to.StringPtr("<key-vault-url>"),
+							Name:        to.Ptr("<name>"),
+							KeyVaultURL: to.Ptr("<key-vault-url>"),
 						},
 					},
 				},
-				ManagedResourceGroupName: to.StringPtr("<managed-resource-group-name>"),
-				ManagedVirtualNetwork:    to.StringPtr("<managed-virtual-network>"),
+				ManagedResourceGroupName: to.Ptr("<managed-resource-group-name>"),
+				ManagedVirtualNetwork:    to.Ptr("<managed-virtual-network>"),
 				ManagedVirtualNetworkSettings: &armsynapse.ManagedVirtualNetworkSettings{
 					AllowedAADTenantIDsForLinking: []*string{
-						to.StringPtr("740239CE-A25B-485B-86A0-262F29F6EBDB")},
-					LinkedAccessCheckOnTargetResource: to.BoolPtr(false),
-					PreventDataExfiltration:           to.BoolPtr(false),
+						to.Ptr("740239CE-A25B-485B-86A0-262F29F6EBDB")},
+					LinkedAccessCheckOnTargetResource: to.Ptr(false),
+					PreventDataExfiltration:           to.Ptr(false),
 				},
-				PublicNetworkAccess: armsynapse.WorkspacePublicNetworkAccess("Enabled").ToPtr(),
+				PublicNetworkAccess: to.Ptr(armsynapse.WorkspacePublicNetworkAccessEnabled),
 				PurviewConfiguration: &armsynapse.PurviewConfiguration{
-					PurviewResourceID: to.StringPtr("<purview-resource-id>"),
+					PurviewResourceID: to.Ptr("<purview-resource-id>"),
 				},
-				SQLAdministratorLogin:         to.StringPtr("<sqladministrator-login>"),
-				SQLAdministratorLoginPassword: to.StringPtr("<sqladministrator-login-password>"),
+				SQLAdministratorLogin:         to.Ptr("<sqladministrator-login>"),
+				SQLAdministratorLoginPassword: to.Ptr("<sqladministrator-login-password>"),
 				WorkspaceRepositoryConfiguration: &armsynapse.WorkspaceRepositoryConfiguration{
-					Type:                to.StringPtr("<type>"),
-					AccountName:         to.StringPtr("<account-name>"),
-					CollaborationBranch: to.StringPtr("<collaboration-branch>"),
-					HostName:            to.StringPtr("<host-name>"),
-					ProjectName:         to.StringPtr("<project-name>"),
-					RepositoryName:      to.StringPtr("<repository-name>"),
-					RootFolder:          to.StringPtr("<root-folder>"),
+					Type:                to.Ptr("<type>"),
+					AccountName:         to.Ptr("<account-name>"),
+					CollaborationBranch: to.Ptr("<collaboration-branch>"),
+					HostName:            to.Ptr("<host-name>"),
+					ProjectName:         to.Ptr("<project-name>"),
+					RepositoryName:      to.Ptr("<repository-name>"),
+					RootFolder:          to.Ptr("<root-folder>"),
 				},
 			},
 		},
-		nil)
+		&armsynapse.WorkspacesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WorkspacesClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DeleteWorkspace.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DeleteWorkspace.json
 func ExampleWorkspacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsynapse.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewWorkspacesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
-		nil)
+		&armsynapse.WorkspacesClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WorkspacesClientDeleteResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListWorkspacesInSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListWorkspacesInSubscription.json
 func ExampleWorkspacesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsynapse.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewWorkspacesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

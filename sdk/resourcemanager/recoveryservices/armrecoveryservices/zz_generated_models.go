@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,13 +8,7 @@
 
 package armrecoveryservices
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"reflect"
-	"time"
-)
+import "time"
 
 // CertificateRequest - Details of the certificate to be uploaded to the vault.
 type CertificateRequest struct {
@@ -83,13 +77,6 @@ type ClientDiscoveryForServiceSpecification struct {
 	LogSpecifications []*ClientDiscoveryForLogSpecification `json:"logSpecifications,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ClientDiscoveryForServiceSpecification.
-func (c ClientDiscoveryForServiceSpecification) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "logSpecifications", c.LogSpecifications)
-	return json.Marshal(objectMap)
-}
-
 // ClientDiscoveryResponse - Operations List response which contains list of available APIs.
 type ClientDiscoveryResponse struct {
 	// Link to the next chunk of the response
@@ -97,14 +84,6 @@ type ClientDiscoveryResponse struct {
 
 	// List of available operations.
 	Value []*ClientDiscoveryValueForSingleAPI `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ClientDiscoveryResponse.
-func (c ClientDiscoveryResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
 }
 
 // ClientDiscoveryValueForSingleAPI - Available operation details.
@@ -161,21 +140,10 @@ type Error struct {
 	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Error.
-func (e Error) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
-}
-
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
+	Info interface{} `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -198,16 +166,6 @@ type IdentityData struct {
 
 	// READ-ONLY; The tenant ID of resource.
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type IdentityData.
-func (i IdentityData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "principalId", i.PrincipalID)
-	populate(objectMap, "tenantId", i.TenantID)
-	populate(objectMap, "type", i.Type)
-	populate(objectMap, "userAssignedIdentities", i.UserAssignedIdentities)
-	return json.Marshal(objectMap)
 }
 
 // JobsSummary - Summary of the replication job data for this vault.
@@ -274,53 +232,6 @@ type OperationResource struct {
 	Status *string `json:"status,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationResource.
-func (o OperationResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "endTime", o.EndTime)
-	populate(objectMap, "error", o.Error)
-	populate(objectMap, "id", o.ID)
-	populate(objectMap, "name", o.Name)
-	populateTimeRFC3339(objectMap, "startTime", o.StartTime)
-	populate(objectMap, "status", o.Status)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type OperationResource.
-func (o *OperationResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &o.EndTime)
-			delete(rawMsg, key)
-		case "error":
-			err = unpopulate(val, &o.Error)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &o.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &o.Name)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &o.StartTime)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &o.Status)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // OperationsClientGetOperationResultOptions contains the optional parameters for the OperationsClient.GetOperationResult
 // method.
 type OperationsClientGetOperationResultOptions struct {
@@ -359,18 +270,6 @@ type PatchTrackedResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PatchTrackedResource.
-func (p PatchTrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", p.Etag)
-	populate(objectMap, "id", p.ID)
-	populate(objectMap, "location", p.Location)
-	populate(objectMap, "name", p.Name)
-	populate(objectMap, "tags", p.Tags)
-	populate(objectMap, "type", p.Type)
-	return json.Marshal(objectMap)
-}
-
 // PatchVault - Patch Resource information, as returned by the resource provider.
 type PatchVault struct {
 	// Optional ETag.
@@ -399,21 +298,6 @@ type PatchVault struct {
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PatchVault.
-func (p PatchVault) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", p.Etag)
-	populate(objectMap, "id", p.ID)
-	populate(objectMap, "identity", p.Identity)
-	populate(objectMap, "location", p.Location)
-	populate(objectMap, "name", p.Name)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "sku", p.SKU)
-	populate(objectMap, "tags", p.Tags)
-	populate(objectMap, "type", p.Type)
-	return json.Marshal(objectMap)
 }
 
 // PrivateEndpoint - The Private Endpoint network resource that is linked to the Private Endpoint connection.
@@ -480,15 +364,6 @@ type PrivateLinkResourceProperties struct {
 	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceProperties.
-func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "groupId", p.GroupID)
-	populate(objectMap, "requiredMembers", p.RequiredMembers)
-	populate(objectMap, "requiredZoneNames", p.RequiredZoneNames)
-	return json.Marshal(objectMap)
-}
-
 // PrivateLinkResources - Class which represent the stamps associated with the vault.
 type PrivateLinkResources struct {
 	// Link to the next chunk of the response
@@ -496,14 +371,6 @@ type PrivateLinkResources struct {
 
 	// A collection of private link resources
 	Value []*PrivateLinkResource `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResources.
-func (p PrivateLinkResources) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
@@ -537,37 +404,6 @@ type RawCertificateData struct {
 	Certificate []byte `json:"certificate,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RawCertificateData.
-func (r RawCertificateData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "authType", r.AuthType)
-	populateByteArray(objectMap, "certificate", r.Certificate, runtime.Base64StdFormat)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RawCertificateData.
-func (r *RawCertificateData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "authType":
-			err = unpopulate(val, &r.AuthType)
-			delete(rawMsg, key)
-		case "certificate":
-			err = runtime.DecodeByteArray(string(val), &r.Certificate, runtime.Base64StdFormat)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // RegisteredIdentitiesClientDeleteOptions contains the optional parameters for the RegisteredIdentitiesClient.Delete method.
 type RegisteredIdentitiesClientDeleteOptions struct {
 	// placeholder for future optional parameters
@@ -598,13 +434,6 @@ type ReplicationUsage struct {
 type ReplicationUsageList struct {
 	// The list of replication usages for the given vault.
 	Value []*ReplicationUsage `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ReplicationUsageList.
-func (r ReplicationUsageList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // ReplicationUsagesClientListOptions contains the optional parameters for the ReplicationUsagesClient.List method.
@@ -675,104 +504,6 @@ type ResourceCertificateAndAADDetails struct {
 	ValidTo *time.Time `json:"validTo,omitempty"`
 }
 
-// GetResourceCertificateDetails implements the ResourceCertificateDetailsClassification interface for type ResourceCertificateAndAADDetails.
-func (r *ResourceCertificateAndAADDetails) GetResourceCertificateDetails() *ResourceCertificateDetails {
-	return &ResourceCertificateDetails{
-		AuthType:     r.AuthType,
-		Certificate:  r.Certificate,
-		FriendlyName: r.FriendlyName,
-		Issuer:       r.Issuer,
-		ResourceID:   r.ResourceID,
-		Subject:      r.Subject,
-		Thumbprint:   r.Thumbprint,
-		ValidFrom:    r.ValidFrom,
-		ValidTo:      r.ValidTo,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourceCertificateAndAADDetails.
-func (r ResourceCertificateAndAADDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "aadAuthority", r.AADAuthority)
-	populate(objectMap, "aadTenantId", r.AADTenantID)
-	objectMap["authType"] = "AzureActiveDirectory"
-	populate(objectMap, "azureManagementEndpointAudience", r.AzureManagementEndpointAudience)
-	populateByteArray(objectMap, "certificate", r.Certificate, runtime.Base64StdFormat)
-	populate(objectMap, "friendlyName", r.FriendlyName)
-	populate(objectMap, "issuer", r.Issuer)
-	populate(objectMap, "resourceId", r.ResourceID)
-	populate(objectMap, "servicePrincipalClientId", r.ServicePrincipalClientID)
-	populate(objectMap, "servicePrincipalObjectId", r.ServicePrincipalObjectID)
-	populate(objectMap, "serviceResourceId", r.ServiceResourceID)
-	populate(objectMap, "subject", r.Subject)
-	populate(objectMap, "thumbprint", r.Thumbprint)
-	populateTimeRFC3339(objectMap, "validFrom", r.ValidFrom)
-	populateTimeRFC3339(objectMap, "validTo", r.ValidTo)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ResourceCertificateAndAADDetails.
-func (r *ResourceCertificateAndAADDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "aadAuthority":
-			err = unpopulate(val, &r.AADAuthority)
-			delete(rawMsg, key)
-		case "aadTenantId":
-			err = unpopulate(val, &r.AADTenantID)
-			delete(rawMsg, key)
-		case "authType":
-			err = unpopulate(val, &r.AuthType)
-			delete(rawMsg, key)
-		case "azureManagementEndpointAudience":
-			err = unpopulate(val, &r.AzureManagementEndpointAudience)
-			delete(rawMsg, key)
-		case "certificate":
-			err = runtime.DecodeByteArray(string(val), &r.Certificate, runtime.Base64StdFormat)
-			delete(rawMsg, key)
-		case "friendlyName":
-			err = unpopulate(val, &r.FriendlyName)
-			delete(rawMsg, key)
-		case "issuer":
-			err = unpopulate(val, &r.Issuer)
-			delete(rawMsg, key)
-		case "resourceId":
-			err = unpopulate(val, &r.ResourceID)
-			delete(rawMsg, key)
-		case "servicePrincipalClientId":
-			err = unpopulate(val, &r.ServicePrincipalClientID)
-			delete(rawMsg, key)
-		case "servicePrincipalObjectId":
-			err = unpopulate(val, &r.ServicePrincipalObjectID)
-			delete(rawMsg, key)
-		case "serviceResourceId":
-			err = unpopulate(val, &r.ServiceResourceID)
-			delete(rawMsg, key)
-		case "subject":
-			err = unpopulate(val, &r.Subject)
-			delete(rawMsg, key)
-		case "thumbprint":
-			err = unpopulate(val, &r.Thumbprint)
-			delete(rawMsg, key)
-		case "validFrom":
-			err = unpopulateTimeRFC3339(val, &r.ValidFrom)
-			delete(rawMsg, key)
-		case "validTo":
-			err = unpopulateTimeRFC3339(val, &r.ValidTo)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ResourceCertificateAndAcsDetails - Certificate details representing the Vault credentials for ACS.
 type ResourceCertificateAndAcsDetails struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
@@ -810,92 +541,6 @@ type ResourceCertificateAndAcsDetails struct {
 
 	// Certificate Validity End Date time.
 	ValidTo *time.Time `json:"validTo,omitempty"`
-}
-
-// GetResourceCertificateDetails implements the ResourceCertificateDetailsClassification interface for type ResourceCertificateAndAcsDetails.
-func (r *ResourceCertificateAndAcsDetails) GetResourceCertificateDetails() *ResourceCertificateDetails {
-	return &ResourceCertificateDetails{
-		AuthType:     r.AuthType,
-		Certificate:  r.Certificate,
-		FriendlyName: r.FriendlyName,
-		Issuer:       r.Issuer,
-		ResourceID:   r.ResourceID,
-		Subject:      r.Subject,
-		Thumbprint:   r.Thumbprint,
-		ValidFrom:    r.ValidFrom,
-		ValidTo:      r.ValidTo,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourceCertificateAndAcsDetails.
-func (r ResourceCertificateAndAcsDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["authType"] = "AccessControlService"
-	populateByteArray(objectMap, "certificate", r.Certificate, runtime.Base64StdFormat)
-	populate(objectMap, "friendlyName", r.FriendlyName)
-	populate(objectMap, "globalAcsHostName", r.GlobalAcsHostName)
-	populate(objectMap, "globalAcsNamespace", r.GlobalAcsNamespace)
-	populate(objectMap, "globalAcsRPRealm", r.GlobalAcsRPRealm)
-	populate(objectMap, "issuer", r.Issuer)
-	populate(objectMap, "resourceId", r.ResourceID)
-	populate(objectMap, "subject", r.Subject)
-	populate(objectMap, "thumbprint", r.Thumbprint)
-	populateTimeRFC3339(objectMap, "validFrom", r.ValidFrom)
-	populateTimeRFC3339(objectMap, "validTo", r.ValidTo)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ResourceCertificateAndAcsDetails.
-func (r *ResourceCertificateAndAcsDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "authType":
-			err = unpopulate(val, &r.AuthType)
-			delete(rawMsg, key)
-		case "certificate":
-			err = runtime.DecodeByteArray(string(val), &r.Certificate, runtime.Base64StdFormat)
-			delete(rawMsg, key)
-		case "friendlyName":
-			err = unpopulate(val, &r.FriendlyName)
-			delete(rawMsg, key)
-		case "globalAcsHostName":
-			err = unpopulate(val, &r.GlobalAcsHostName)
-			delete(rawMsg, key)
-		case "globalAcsNamespace":
-			err = unpopulate(val, &r.GlobalAcsNamespace)
-			delete(rawMsg, key)
-		case "globalAcsRPRealm":
-			err = unpopulate(val, &r.GlobalAcsRPRealm)
-			delete(rawMsg, key)
-		case "issuer":
-			err = unpopulate(val, &r.Issuer)
-			delete(rawMsg, key)
-		case "resourceId":
-			err = unpopulate(val, &r.ResourceID)
-			delete(rawMsg, key)
-		case "subject":
-			err = unpopulate(val, &r.Subject)
-			delete(rawMsg, key)
-		case "thumbprint":
-			err = unpopulate(val, &r.Thumbprint)
-			delete(rawMsg, key)
-		case "validFrom":
-			err = unpopulateTimeRFC3339(val, &r.ValidFrom)
-			delete(rawMsg, key)
-		case "validTo":
-			err = unpopulateTimeRFC3339(val, &r.ValidTo)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ResourceCertificateDetailsClassification provides polymorphic access to related types.
@@ -937,70 +582,6 @@ type ResourceCertificateDetails struct {
 	ValidTo *time.Time `json:"validTo,omitempty"`
 }
 
-// GetResourceCertificateDetails implements the ResourceCertificateDetailsClassification interface for type ResourceCertificateDetails.
-func (r *ResourceCertificateDetails) GetResourceCertificateDetails() *ResourceCertificateDetails {
-	return r
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourceCertificateDetails.
-func (r ResourceCertificateDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["authType"] = r.AuthType
-	populateByteArray(objectMap, "certificate", r.Certificate, runtime.Base64StdFormat)
-	populate(objectMap, "friendlyName", r.FriendlyName)
-	populate(objectMap, "issuer", r.Issuer)
-	populate(objectMap, "resourceId", r.ResourceID)
-	populate(objectMap, "subject", r.Subject)
-	populate(objectMap, "thumbprint", r.Thumbprint)
-	populateTimeRFC3339(objectMap, "validFrom", r.ValidFrom)
-	populateTimeRFC3339(objectMap, "validTo", r.ValidTo)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ResourceCertificateDetails.
-func (r *ResourceCertificateDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "authType":
-			err = unpopulate(val, &r.AuthType)
-			delete(rawMsg, key)
-		case "certificate":
-			err = runtime.DecodeByteArray(string(val), &r.Certificate, runtime.Base64StdFormat)
-			delete(rawMsg, key)
-		case "friendlyName":
-			err = unpopulate(val, &r.FriendlyName)
-			delete(rawMsg, key)
-		case "issuer":
-			err = unpopulate(val, &r.Issuer)
-			delete(rawMsg, key)
-		case "resourceId":
-			err = unpopulate(val, &r.ResourceID)
-			delete(rawMsg, key)
-		case "subject":
-			err = unpopulate(val, &r.Subject)
-			delete(rawMsg, key)
-		case "thumbprint":
-			err = unpopulate(val, &r.Thumbprint)
-			delete(rawMsg, key)
-		case "validFrom":
-			err = unpopulateTimeRFC3339(val, &r.ValidFrom)
-			delete(rawMsg, key)
-		case "validTo":
-			err = unpopulateTimeRFC3339(val, &r.ValidTo)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // SKU - Identifies the unique system identifier for each Azure resource.
 type SKU struct {
 	// REQUIRED; The Sku name.
@@ -1040,53 +621,6 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TrackedResource - Tracked resource with location.
 type TrackedResource struct {
 	// REQUIRED; Resource location.
@@ -1106,18 +640,6 @@ type TrackedResource struct {
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
-func (t TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", t.Etag)
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "tags", t.Tags)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
 }
 
 // UpgradeDetails - Details for upgrading vault.
@@ -1148,65 +670,6 @@ type UpgradeDetails struct {
 
 	// READ-ONLY; Resource ID of the upgraded vault.
 	UpgradedResourceID *string `json:"upgradedResourceId,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type UpgradeDetails.
-func (u UpgradeDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "endTimeUtc", u.EndTimeUTC)
-	populateTimeRFC3339(objectMap, "lastUpdatedTimeUtc", u.LastUpdatedTimeUTC)
-	populate(objectMap, "message", u.Message)
-	populate(objectMap, "operationId", u.OperationID)
-	populate(objectMap, "previousResourceId", u.PreviousResourceID)
-	populateTimeRFC3339(objectMap, "startTimeUtc", u.StartTimeUTC)
-	populate(objectMap, "status", u.Status)
-	populate(objectMap, "triggerType", u.TriggerType)
-	populate(objectMap, "upgradedResourceId", u.UpgradedResourceID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type UpgradeDetails.
-func (u *UpgradeDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "endTimeUtc":
-			err = unpopulateTimeRFC3339(val, &u.EndTimeUTC)
-			delete(rawMsg, key)
-		case "lastUpdatedTimeUtc":
-			err = unpopulateTimeRFC3339(val, &u.LastUpdatedTimeUTC)
-			delete(rawMsg, key)
-		case "message":
-			err = unpopulate(val, &u.Message)
-			delete(rawMsg, key)
-		case "operationId":
-			err = unpopulate(val, &u.OperationID)
-			delete(rawMsg, key)
-		case "previousResourceId":
-			err = unpopulate(val, &u.PreviousResourceID)
-			delete(rawMsg, key)
-		case "startTimeUtc":
-			err = unpopulateTimeRFC3339(val, &u.StartTimeUTC)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &u.Status)
-			delete(rawMsg, key)
-		case "triggerType":
-			err = unpopulate(val, &u.TriggerType)
-			delete(rawMsg, key)
-		case "upgradedResourceId":
-			err = unpopulate(val, &u.UpgradedResourceID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // UsagesClientListByVaultsOptions contains the optional parameters for the UsagesClient.ListByVaults method.
@@ -1256,22 +719,6 @@ type Vault struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Vault.
-func (v Vault) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", v.Etag)
-	populate(objectMap, "id", v.ID)
-	populate(objectMap, "identity", v.Identity)
-	populate(objectMap, "location", v.Location)
-	populate(objectMap, "name", v.Name)
-	populate(objectMap, "properties", v.Properties)
-	populate(objectMap, "sku", v.SKU)
-	populate(objectMap, "systemData", v.SystemData)
-	populate(objectMap, "tags", v.Tags)
-	populate(objectMap, "type", v.Type)
-	return json.Marshal(objectMap)
-}
-
 // VaultCertificateResponse - Certificate corresponding to a vault that can be used by clients to register themselves with
 // the vault.
 type VaultCertificateResponse struct {
@@ -1286,45 +733,6 @@ type VaultCertificateResponse struct {
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VaultCertificateResponse.
-func (v VaultCertificateResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", v.ID)
-	populate(objectMap, "name", v.Name)
-	populate(objectMap, "properties", v.Properties)
-	populate(objectMap, "type", v.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VaultCertificateResponse.
-func (v *VaultCertificateResponse) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &v.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &v.Name)
-			delete(rawMsg, key)
-		case "properties":
-			v.Properties, err = unmarshalResourceCertificateDetailsClassification(val)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &v.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // VaultCertificatesClientCreateOptions contains the optional parameters for the VaultCertificatesClient.Create method.
@@ -1381,31 +789,12 @@ type VaultExtendedInfoResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VaultExtendedInfoResource.
-func (v VaultExtendedInfoResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", v.Etag)
-	populate(objectMap, "id", v.ID)
-	populate(objectMap, "name", v.Name)
-	populate(objectMap, "properties", v.Properties)
-	populate(objectMap, "type", v.Type)
-	return json.Marshal(objectMap)
-}
-
 // VaultList - The response model for a list of Vaults.
 type VaultList struct {
 	Value []*Vault `json:"value,omitempty"`
 
 	// READ-ONLY
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VaultList.
-func (v VaultList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", v.NextLink)
-	populate(objectMap, "value", v.Value)
-	return json.Marshal(objectMap)
 }
 
 // VaultProperties - Properties of the vault.
@@ -1438,21 +827,6 @@ type VaultProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VaultProperties.
-func (v VaultProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "backupStorageVersion", v.BackupStorageVersion)
-	populate(objectMap, "encryption", v.Encryption)
-	populate(objectMap, "moveDetails", v.MoveDetails)
-	populate(objectMap, "moveState", v.MoveState)
-	populate(objectMap, "privateEndpointConnections", v.PrivateEndpointConnections)
-	populate(objectMap, "privateEndpointStateForBackup", v.PrivateEndpointStateForBackup)
-	populate(objectMap, "privateEndpointStateForSiteRecovery", v.PrivateEndpointStateForSiteRecovery)
-	populate(objectMap, "provisioningState", v.ProvisioningState)
-	populate(objectMap, "upgradeDetails", v.UpgradeDetails)
-	return json.Marshal(objectMap)
-}
-
 // VaultPropertiesEncryption - Customer Managed Key details of the resource.
 type VaultPropertiesEncryption struct {
 	// Enabling/Disabling the Double Encryption state
@@ -1483,49 +857,6 @@ type VaultPropertiesMoveDetails struct {
 	TargetResourceID *string `json:"targetResourceId,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VaultPropertiesMoveDetails.
-func (v VaultPropertiesMoveDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "completionTimeUtc", v.CompletionTimeUTC)
-	populate(objectMap, "operationId", v.OperationID)
-	populate(objectMap, "sourceResourceId", v.SourceResourceID)
-	populateTimeRFC3339(objectMap, "startTimeUtc", v.StartTimeUTC)
-	populate(objectMap, "targetResourceId", v.TargetResourceID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VaultPropertiesMoveDetails.
-func (v *VaultPropertiesMoveDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "completionTimeUtc":
-			err = unpopulateTimeRFC3339(val, &v.CompletionTimeUTC)
-			delete(rawMsg, key)
-		case "operationId":
-			err = unpopulate(val, &v.OperationID)
-			delete(rawMsg, key)
-		case "sourceResourceId":
-			err = unpopulate(val, &v.SourceResourceID)
-			delete(rawMsg, key)
-		case "startTimeUtc":
-			err = unpopulateTimeRFC3339(val, &v.StartTimeUTC)
-			delete(rawMsg, key)
-		case "targetResourceId":
-			err = unpopulate(val, &v.TargetResourceID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // VaultUsage - Usages of a vault.
 type VaultUsage struct {
 	// Current value of usage.
@@ -1547,74 +878,22 @@ type VaultUsage struct {
 	Unit *UsagesUnit `json:"unit,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VaultUsage.
-func (v VaultUsage) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "currentValue", v.CurrentValue)
-	populate(objectMap, "limit", v.Limit)
-	populate(objectMap, "name", v.Name)
-	populateTimeRFC3339(objectMap, "nextResetTime", v.NextResetTime)
-	populate(objectMap, "quotaPeriod", v.QuotaPeriod)
-	populate(objectMap, "unit", v.Unit)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VaultUsage.
-func (v *VaultUsage) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "currentValue":
-			err = unpopulate(val, &v.CurrentValue)
-			delete(rawMsg, key)
-		case "limit":
-			err = unpopulate(val, &v.Limit)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &v.Name)
-			delete(rawMsg, key)
-		case "nextResetTime":
-			err = unpopulateTimeRFC3339(val, &v.NextResetTime)
-			delete(rawMsg, key)
-		case "quotaPeriod":
-			err = unpopulate(val, &v.QuotaPeriod)
-			delete(rawMsg, key)
-		case "unit":
-			err = unpopulate(val, &v.Unit)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // VaultUsageList - Usage for vault.
 type VaultUsageList struct {
 	// The list of usages for the given vault.
 	Value []*VaultUsage `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VaultUsageList.
-func (v VaultUsageList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", v.Value)
-	return json.Marshal(objectMap)
-}
-
 // VaultsClientBeginCreateOrUpdateOptions contains the optional parameters for the VaultsClient.BeginCreateOrUpdate method.
 type VaultsClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // VaultsClientBeginUpdateOptions contains the optional parameters for the VaultsClient.BeginUpdate method.
 type VaultsClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // VaultsClientDeleteOptions contains the optional parameters for the VaultsClient.Delete method.
@@ -1635,31 +914,4 @@ type VaultsClientListByResourceGroupOptions struct {
 // VaultsClientListBySubscriptionIDOptions contains the optional parameters for the VaultsClient.ListBySubscriptionID method.
 type VaultsClientListBySubscriptionIDOptions struct {
 	// placeholder for future optional parameters
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func populateByteArray(m map[string]interface{}, k string, b []byte, f runtime.Base64Encoding) {
-	if azcore.IsNullValue(b) {
-		m[k] = nil
-	} else if len(b) == 0 {
-		return
-	} else {
-		m[k] = runtime.EncodeByteArray(b, f)
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

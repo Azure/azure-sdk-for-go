@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed authentication in Germany West Central using connection string (#17424).
 
 ### Other Changes
 

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,280 +19,344 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 )
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnGatewayGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnGatewayGet.json
 func ExampleVPNGatewaysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewVPNGatewaysClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewVPNGatewaysClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<gateway-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.VPNGatewaysClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnGatewayPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnGatewayPut.json
 func ExampleVPNGatewaysClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewVPNGatewaysClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewVPNGatewaysClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<gateway-name>",
 		armnetwork.VPNGateway{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Tags: map[string]*string{
-				"key1": to.StringPtr("value1"),
+				"key1": to.Ptr("value1"),
 			},
 			Properties: &armnetwork.VPNGatewayProperties{
 				BgpSettings: &armnetwork.BgpSettings{
-					Asn: to.Int64Ptr(65515),
+					Asn: to.Ptr[int64](65515),
 					BgpPeeringAddresses: []*armnetwork.IPConfigurationBgpPeeringAddress{
 						{
 							CustomBgpIPAddresses: []*string{
-								to.StringPtr("169.254.21.5")},
-							IPConfigurationID: to.StringPtr("<ipconfiguration-id>"),
+								to.Ptr("169.254.21.5")},
+							IPConfigurationID: to.Ptr("<ipconfiguration-id>"),
 						},
 						{
 							CustomBgpIPAddresses: []*string{
-								to.StringPtr("169.254.21.10")},
-							IPConfigurationID: to.StringPtr("<ipconfiguration-id>"),
+								to.Ptr("169.254.21.10")},
+							IPConfigurationID: to.Ptr("<ipconfiguration-id>"),
 						}},
-					PeerWeight: to.Int32Ptr(0),
+					PeerWeight: to.Ptr[int32](0),
 				},
 				Connections: []*armnetwork.VPNConnection{
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("<name>"),
 						Properties: &armnetwork.VPNConnectionProperties{
 							RemoteVPNSite: &armnetwork.SubResource{
-								ID: to.StringPtr("<id>"),
+								ID: to.Ptr("<id>"),
 							},
 							VPNLinkConnections: []*armnetwork.VPNSiteLinkConnection{
 								{
-									Name: to.StringPtr("<name>"),
+									Name: to.Ptr("<name>"),
 									Properties: &armnetwork.VPNSiteLinkConnectionProperties{
-										ConnectionBandwidth: to.Int32Ptr(200),
+										ConnectionBandwidth: to.Ptr[int32](200),
 										EgressNatRules: []*armnetwork.SubResource{
 											{
-												ID: to.StringPtr("<id>"),
+												ID: to.Ptr("<id>"),
 											}},
-										SharedKey:                 to.StringPtr("<shared-key>"),
-										VPNConnectionProtocolType: armnetwork.VirtualNetworkGatewayConnectionProtocol("IKEv2").ToPtr(),
+										SharedKey:                 to.Ptr("<shared-key>"),
+										VPNConnectionProtocolType: to.Ptr(armnetwork.VirtualNetworkGatewayConnectionProtocolIKEv2),
 										VPNSiteLink: &armnetwork.SubResource{
-											ID: to.StringPtr("<id>"),
+											ID: to.Ptr("<id>"),
 										},
 									},
 								}},
 						},
 					}},
-				EnableBgpRouteTranslationForNat: to.BoolPtr(false),
-				IsRoutingPreferenceInternet:     to.BoolPtr(false),
+				EnableBgpRouteTranslationForNat: to.Ptr(false),
+				IsRoutingPreferenceInternet:     to.Ptr(false),
 				NatRules: []*armnetwork.VPNGatewayNatRule{
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("<name>"),
 						Properties: &armnetwork.VPNGatewayNatRuleProperties{
-							Type: armnetwork.VPNNatRuleType("Static").ToPtr(),
+							Type: to.Ptr(armnetwork.VPNNatRuleTypeStatic),
 							ExternalMappings: []*armnetwork.VPNNatRuleMapping{
 								{
-									AddressSpace: to.StringPtr("<address-space>"),
+									AddressSpace: to.Ptr("<address-space>"),
 								}},
 							InternalMappings: []*armnetwork.VPNNatRuleMapping{
 								{
-									AddressSpace: to.StringPtr("<address-space>"),
+									AddressSpace: to.Ptr("<address-space>"),
 								}},
-							IPConfigurationID: to.StringPtr("<ipconfiguration-id>"),
-							Mode:              armnetwork.VPNNatRuleMode("EgressSnat").ToPtr(),
+							IPConfigurationID: to.Ptr("<ipconfiguration-id>"),
+							Mode:              to.Ptr(armnetwork.VPNNatRuleModeEgressSnat),
 						},
 					}},
 				VirtualHub: &armnetwork.SubResource{
-					ID: to.StringPtr("<id>"),
+					ID: to.Ptr("<id>"),
 				},
 			},
 		},
-		nil)
+		&armnetwork.VPNGatewaysClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.VPNGatewaysClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnGatewayUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnGatewayUpdateTags.json
 func ExampleVPNGatewaysClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewVPNGatewaysClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewVPNGatewaysClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdateTags(ctx,
 		"<resource-group-name>",
 		"<gateway-name>",
 		armnetwork.TagsObject{
 			Tags: map[string]*string{
-				"tag1": to.StringPtr("value1"),
-				"tag2": to.StringPtr("value2"),
+				"tag1": to.Ptr("value1"),
+				"tag2": to.Ptr("value2"),
 			},
 		},
-		nil)
+		&armnetwork.VPNGatewaysClientBeginUpdateTagsOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.VPNGatewaysClientUpdateTagsResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnGatewayDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnGatewayDelete.json
 func ExampleVPNGatewaysClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewVPNGatewaysClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewVPNGatewaysClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<gateway-name>",
-		nil)
+		&armnetwork.VPNGatewaysClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnGatewayReset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnGatewayReset.json
 func ExampleVPNGatewaysClient_BeginReset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewVPNGatewaysClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewVPNGatewaysClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginReset(ctx,
 		"<resource-group-name>",
 		"<gateway-name>",
-		nil)
+		&armnetwork.VPNGatewaysClientBeginResetOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.VPNGatewaysClientResetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnGatewayStartPacketCaptureFilterData.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnGatewayStartPacketCaptureFilterData.json
 func ExampleVPNGatewaysClient_BeginStartPacketCapture() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewVPNGatewaysClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewVPNGatewaysClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginStartPacketCapture(ctx,
 		"<resource-group-name>",
 		"<gateway-name>",
 		&armnetwork.VPNGatewaysClientBeginStartPacketCaptureOptions{Parameters: &armnetwork.VPNGatewayPacketCaptureStartParameters{
-			FilterData: to.StringPtr("<filter-data>"),
+			FilterData: to.Ptr("<filter-data>"),
 		},
+			ResumeToken: "",
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.VPNGatewaysClientStartPacketCaptureResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnGatewayStopPacketCapture.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnGatewayStopPacketCapture.json
 func ExampleVPNGatewaysClient_BeginStopPacketCapture() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewVPNGatewaysClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewVPNGatewaysClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginStopPacketCapture(ctx,
 		"<resource-group-name>",
 		"<gateway-name>",
 		&armnetwork.VPNGatewaysClientBeginStopPacketCaptureOptions{Parameters: &armnetwork.VPNGatewayPacketCaptureStopParameters{
-			SasURL: to.StringPtr("<sas-url>"),
+			SasURL: to.Ptr("<sas-url>"),
 		},
+			ResumeToken: "",
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.VPNGatewaysClientStopPacketCaptureResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnGatewayListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnGatewayListByResourceGroup.json
 func ExampleVPNGatewaysClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewVPNGatewaysClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewVPNGatewaysClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnGatewayList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnGatewayList.json
 func ExampleVPNGatewaysClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewVPNGatewaysClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewVPNGatewaysClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

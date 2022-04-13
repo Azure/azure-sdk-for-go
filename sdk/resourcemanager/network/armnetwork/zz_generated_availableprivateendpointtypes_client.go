@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type AvailablePrivateEndpointTypesClient struct {
 // ID forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAvailablePrivateEndpointTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AvailablePrivateEndpointTypesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAvailablePrivateEndpointTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AvailablePrivateEndpointTypesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AvailablePrivateEndpointTypesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
@@ -55,16 +60,32 @@ func NewAvailablePrivateEndpointTypesClient(subscriptionID string, credential az
 // location - The location of the domain name.
 // options - AvailablePrivateEndpointTypesClientListOptions contains the optional parameters for the AvailablePrivateEndpointTypesClient.List
 // method.
-func (client *AvailablePrivateEndpointTypesClient) List(location string, options *AvailablePrivateEndpointTypesClientListOptions) *AvailablePrivateEndpointTypesClientListPager {
-	return &AvailablePrivateEndpointTypesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, location, options)
+func (client *AvailablePrivateEndpointTypesClient) List(location string, options *AvailablePrivateEndpointTypesClientListOptions) *runtime.Pager[AvailablePrivateEndpointTypesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AvailablePrivateEndpointTypesClientListResponse]{
+		More: func(page AvailablePrivateEndpointTypesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AvailablePrivateEndpointTypesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AvailablePrivateEndpointTypesResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AvailablePrivateEndpointTypesClientListResponse) (AvailablePrivateEndpointTypesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, location, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AvailablePrivateEndpointTypesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AvailablePrivateEndpointTypesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AvailablePrivateEndpointTypesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -91,7 +112,7 @@ func (client *AvailablePrivateEndpointTypesClient) listCreateRequest(ctx context
 
 // listHandleResponse handles the List response.
 func (client *AvailablePrivateEndpointTypesClient) listHandleResponse(resp *http.Response) (AvailablePrivateEndpointTypesClientListResponse, error) {
-	result := AvailablePrivateEndpointTypesClientListResponse{RawResponse: resp}
+	result := AvailablePrivateEndpointTypesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailablePrivateEndpointTypesResult); err != nil {
 		return AvailablePrivateEndpointTypesClientListResponse{}, err
 	}
@@ -105,16 +126,32 @@ func (client *AvailablePrivateEndpointTypesClient) listHandleResponse(resp *http
 // resourceGroupName - The name of the resource group.
 // options - AvailablePrivateEndpointTypesClientListByResourceGroupOptions contains the optional parameters for the AvailablePrivateEndpointTypesClient.ListByResourceGroup
 // method.
-func (client *AvailablePrivateEndpointTypesClient) ListByResourceGroup(location string, resourceGroupName string, options *AvailablePrivateEndpointTypesClientListByResourceGroupOptions) *AvailablePrivateEndpointTypesClientListByResourceGroupPager {
-	return &AvailablePrivateEndpointTypesClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, location, resourceGroupName, options)
+func (client *AvailablePrivateEndpointTypesClient) ListByResourceGroup(location string, resourceGroupName string, options *AvailablePrivateEndpointTypesClientListByResourceGroupOptions) *runtime.Pager[AvailablePrivateEndpointTypesClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AvailablePrivateEndpointTypesClientListByResourceGroupResponse]{
+		More: func(page AvailablePrivateEndpointTypesClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AvailablePrivateEndpointTypesClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AvailablePrivateEndpointTypesResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AvailablePrivateEndpointTypesClientListByResourceGroupResponse) (AvailablePrivateEndpointTypesClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, location, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AvailablePrivateEndpointTypesClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AvailablePrivateEndpointTypesClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AvailablePrivateEndpointTypesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -145,7 +182,7 @@ func (client *AvailablePrivateEndpointTypesClient) listByResourceGroupCreateRequ
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *AvailablePrivateEndpointTypesClient) listByResourceGroupHandleResponse(resp *http.Response) (AvailablePrivateEndpointTypesClientListByResourceGroupResponse, error) {
-	result := AvailablePrivateEndpointTypesClientListByResourceGroupResponse{RawResponse: resp}
+	result := AvailablePrivateEndpointTypesClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailablePrivateEndpointTypesResult); err != nil {
 		return AvailablePrivateEndpointTypesClientListByResourceGroupResponse{}, err
 	}

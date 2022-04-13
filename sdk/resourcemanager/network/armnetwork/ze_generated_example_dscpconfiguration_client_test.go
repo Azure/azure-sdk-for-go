@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,170 +19,200 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 )
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/DscpConfigurationCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/DscpConfigurationCreate.json
 func ExampleDscpConfigurationClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewDscpConfigurationClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewDscpConfigurationClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<dscp-configuration-name>",
 		armnetwork.DscpConfiguration{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Properties: &armnetwork.DscpConfigurationPropertiesFormat{
 				QosDefinitionCollection: []*armnetwork.QosDefinition{
 					{
 						DestinationIPRanges: []*armnetwork.QosIPRange{
 							{
-								EndIP:   to.StringPtr("<end-ip>"),
-								StartIP: to.StringPtr("<start-ip>"),
+								EndIP:   to.Ptr("<end-ip>"),
+								StartIP: to.Ptr("<start-ip>"),
 							}},
 						DestinationPortRanges: []*armnetwork.QosPortRange{
 							{
-								End:   to.Int32Ptr(15),
-								Start: to.Int32Ptr(15),
+								End:   to.Ptr[int32](15),
+								Start: to.Ptr[int32](15),
 							}},
 						Markings: []*int32{
-							to.Int32Ptr(1)},
+							to.Ptr[int32](1)},
 						SourceIPRanges: []*armnetwork.QosIPRange{
 							{
-								EndIP:   to.StringPtr("<end-ip>"),
-								StartIP: to.StringPtr("<start-ip>"),
+								EndIP:   to.Ptr("<end-ip>"),
+								StartIP: to.Ptr("<start-ip>"),
 							}},
 						SourcePortRanges: []*armnetwork.QosPortRange{
 							{
-								End:   to.Int32Ptr(11),
-								Start: to.Int32Ptr(10),
+								End:   to.Ptr[int32](11),
+								Start: to.Ptr[int32](10),
 							},
 							{
-								End:   to.Int32Ptr(21),
-								Start: to.Int32Ptr(20),
+								End:   to.Ptr[int32](21),
+								Start: to.Ptr[int32](20),
 							}},
-						Protocol: armnetwork.ProtocolType("Tcp").ToPtr(),
+						Protocol: to.Ptr(armnetwork.ProtocolTypeTCP),
 					},
 					{
 						DestinationIPRanges: []*armnetwork.QosIPRange{
 							{
-								EndIP:   to.StringPtr("<end-ip>"),
-								StartIP: to.StringPtr("<start-ip>"),
+								EndIP:   to.Ptr("<end-ip>"),
+								StartIP: to.Ptr("<start-ip>"),
 							}},
 						DestinationPortRanges: []*armnetwork.QosPortRange{
 							{
-								End:   to.Int32Ptr(52),
-								Start: to.Int32Ptr(51),
+								End:   to.Ptr[int32](52),
+								Start: to.Ptr[int32](51),
 							}},
 						Markings: []*int32{
-							to.Int32Ptr(2)},
+							to.Ptr[int32](2)},
 						SourceIPRanges: []*armnetwork.QosIPRange{
 							{
-								EndIP:   to.StringPtr("<end-ip>"),
-								StartIP: to.StringPtr("<start-ip>"),
+								EndIP:   to.Ptr("<end-ip>"),
+								StartIP: to.Ptr("<start-ip>"),
 							}},
 						SourcePortRanges: []*armnetwork.QosPortRange{
 							{
-								End:   to.Int32Ptr(12),
-								Start: to.Int32Ptr(11),
+								End:   to.Ptr[int32](12),
+								Start: to.Ptr[int32](11),
 							}},
-						Protocol: armnetwork.ProtocolType("Udp").ToPtr(),
+						Protocol: to.Ptr(armnetwork.ProtocolTypeUDP),
 					}},
 			},
 		},
-		nil)
+		&armnetwork.DscpConfigurationClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.DscpConfigurationClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/DscpConfigurationDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/DscpConfigurationDelete.json
 func ExampleDscpConfigurationClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewDscpConfigurationClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewDscpConfigurationClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<dscp-configuration-name>",
-		nil)
+		&armnetwork.DscpConfigurationClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/DscpConfigurationGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/DscpConfigurationGet.json
 func ExampleDscpConfigurationClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewDscpConfigurationClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewDscpConfigurationClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<dscp-configuration-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.DscpConfigurationClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/DscpConfigurationList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/DscpConfigurationList.json
 func ExampleDscpConfigurationClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewDscpConfigurationClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewDscpConfigurationClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List("<resource-group-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/DscpConfigurationListAll.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/DscpConfigurationListAll.json
 func ExampleDscpConfigurationClient_ListAll() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewDscpConfigurationClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewDscpConfigurationClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListAll(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

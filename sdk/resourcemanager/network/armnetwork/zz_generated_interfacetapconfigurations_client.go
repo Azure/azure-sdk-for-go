@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type InterfaceTapConfigurationsClient struct {
 // ID forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewInterfaceTapConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *InterfaceTapConfigurationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewInterfaceTapConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*InterfaceTapConfigurationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &InterfaceTapConfigurationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a Tap configuration in the specified NetworkInterface.
@@ -58,22 +63,18 @@ func NewInterfaceTapConfigurationsClient(subscriptionID string, credential azcor
 // tapConfigurationParameters - Parameters supplied to the create or update tap configuration operation.
 // options - InterfaceTapConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the InterfaceTapConfigurationsClient.BeginCreateOrUpdate
 // method.
-func (client *InterfaceTapConfigurationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkInterfaceName string, tapConfigurationName string, tapConfigurationParameters InterfaceTapConfiguration, options *InterfaceTapConfigurationsClientBeginCreateOrUpdateOptions) (InterfaceTapConfigurationsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters, options)
-	if err != nil {
-		return InterfaceTapConfigurationsClientCreateOrUpdatePollerResponse{}, err
+func (client *InterfaceTapConfigurationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkInterfaceName string, tapConfigurationName string, tapConfigurationParameters InterfaceTapConfiguration, options *InterfaceTapConfigurationsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[InterfaceTapConfigurationsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[InterfaceTapConfigurationsClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[InterfaceTapConfigurationsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := InterfaceTapConfigurationsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("InterfaceTapConfigurationsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return InterfaceTapConfigurationsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &InterfaceTapConfigurationsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a Tap configuration in the specified NetworkInterface.
@@ -130,22 +131,18 @@ func (client *InterfaceTapConfigurationsClient) createOrUpdateCreateRequest(ctx 
 // tapConfigurationName - The name of the tap configuration.
 // options - InterfaceTapConfigurationsClientBeginDeleteOptions contains the optional parameters for the InterfaceTapConfigurationsClient.BeginDelete
 // method.
-func (client *InterfaceTapConfigurationsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkInterfaceName string, tapConfigurationName string, options *InterfaceTapConfigurationsClientBeginDeleteOptions) (InterfaceTapConfigurationsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, networkInterfaceName, tapConfigurationName, options)
-	if err != nil {
-		return InterfaceTapConfigurationsClientDeletePollerResponse{}, err
+func (client *InterfaceTapConfigurationsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkInterfaceName string, tapConfigurationName string, options *InterfaceTapConfigurationsClientBeginDeleteOptions) (*armruntime.Poller[InterfaceTapConfigurationsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkInterfaceName, tapConfigurationName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[InterfaceTapConfigurationsClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[InterfaceTapConfigurationsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := InterfaceTapConfigurationsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("InterfaceTapConfigurationsClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return InterfaceTapConfigurationsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &InterfaceTapConfigurationsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified tap configuration from the NetworkInterface.
@@ -249,7 +246,7 @@ func (client *InterfaceTapConfigurationsClient) getCreateRequest(ctx context.Con
 
 // getHandleResponse handles the Get response.
 func (client *InterfaceTapConfigurationsClient) getHandleResponse(resp *http.Response) (InterfaceTapConfigurationsClientGetResponse, error) {
-	result := InterfaceTapConfigurationsClientGetResponse{RawResponse: resp}
+	result := InterfaceTapConfigurationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InterfaceTapConfiguration); err != nil {
 		return InterfaceTapConfigurationsClientGetResponse{}, err
 	}
@@ -262,16 +259,32 @@ func (client *InterfaceTapConfigurationsClient) getHandleResponse(resp *http.Res
 // networkInterfaceName - The name of the network interface.
 // options - InterfaceTapConfigurationsClientListOptions contains the optional parameters for the InterfaceTapConfigurationsClient.List
 // method.
-func (client *InterfaceTapConfigurationsClient) List(resourceGroupName string, networkInterfaceName string, options *InterfaceTapConfigurationsClientListOptions) *InterfaceTapConfigurationsClientListPager {
-	return &InterfaceTapConfigurationsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, networkInterfaceName, options)
+func (client *InterfaceTapConfigurationsClient) List(resourceGroupName string, networkInterfaceName string, options *InterfaceTapConfigurationsClientListOptions) *runtime.Pager[InterfaceTapConfigurationsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[InterfaceTapConfigurationsClientListResponse]{
+		More: func(page InterfaceTapConfigurationsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp InterfaceTapConfigurationsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.InterfaceTapConfigurationListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *InterfaceTapConfigurationsClientListResponse) (InterfaceTapConfigurationsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, networkInterfaceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return InterfaceTapConfigurationsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return InterfaceTapConfigurationsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return InterfaceTapConfigurationsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -302,7 +315,7 @@ func (client *InterfaceTapConfigurationsClient) listCreateRequest(ctx context.Co
 
 // listHandleResponse handles the List response.
 func (client *InterfaceTapConfigurationsClient) listHandleResponse(resp *http.Response) (InterfaceTapConfigurationsClientListResponse, error) {
-	result := InterfaceTapConfigurationsClientListResponse{RawResponse: resp}
+	result := InterfaceTapConfigurationsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InterfaceTapConfigurationListResult); err != nil {
 		return InterfaceTapConfigurationsClientListResponse{}, err
 	}

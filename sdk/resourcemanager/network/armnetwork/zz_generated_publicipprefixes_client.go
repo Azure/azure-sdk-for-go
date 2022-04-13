@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type PublicIPPrefixesClient struct {
 // ID forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPublicIPPrefixesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PublicIPPrefixesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewPublicIPPrefixesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PublicIPPrefixesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PublicIPPrefixesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a static or dynamic public IP prefix.
@@ -57,22 +62,18 @@ func NewPublicIPPrefixesClient(subscriptionID string, credential azcore.TokenCre
 // parameters - Parameters supplied to the create or update public IP prefix operation.
 // options - PublicIPPrefixesClientBeginCreateOrUpdateOptions contains the optional parameters for the PublicIPPrefixesClient.BeginCreateOrUpdate
 // method.
-func (client *PublicIPPrefixesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, publicIPPrefixName string, parameters PublicIPPrefix, options *PublicIPPrefixesClientBeginCreateOrUpdateOptions) (PublicIPPrefixesClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, publicIPPrefixName, parameters, options)
-	if err != nil {
-		return PublicIPPrefixesClientCreateOrUpdatePollerResponse{}, err
+func (client *PublicIPPrefixesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, publicIPPrefixName string, parameters PublicIPPrefix, options *PublicIPPrefixesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[PublicIPPrefixesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, publicIPPrefixName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PublicIPPrefixesClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[PublicIPPrefixesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PublicIPPrefixesClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PublicIPPrefixesClient.CreateOrUpdate", "location", resp, client.pl)
-	if err != nil {
-		return PublicIPPrefixesClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &PublicIPPrefixesClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a static or dynamic public IP prefix.
@@ -124,22 +125,18 @@ func (client *PublicIPPrefixesClient) createOrUpdateCreateRequest(ctx context.Co
 // publicIPPrefixName - The name of the PublicIpPrefix.
 // options - PublicIPPrefixesClientBeginDeleteOptions contains the optional parameters for the PublicIPPrefixesClient.BeginDelete
 // method.
-func (client *PublicIPPrefixesClient) BeginDelete(ctx context.Context, resourceGroupName string, publicIPPrefixName string, options *PublicIPPrefixesClientBeginDeleteOptions) (PublicIPPrefixesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, publicIPPrefixName, options)
-	if err != nil {
-		return PublicIPPrefixesClientDeletePollerResponse{}, err
+func (client *PublicIPPrefixesClient) BeginDelete(ctx context.Context, resourceGroupName string, publicIPPrefixName string, options *PublicIPPrefixesClientBeginDeleteOptions) (*armruntime.Poller[PublicIPPrefixesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, publicIPPrefixName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PublicIPPrefixesClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[PublicIPPrefixesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PublicIPPrefixesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PublicIPPrefixesClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return PublicIPPrefixesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &PublicIPPrefixesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified public IP prefix.
@@ -236,7 +233,7 @@ func (client *PublicIPPrefixesClient) getCreateRequest(ctx context.Context, reso
 
 // getHandleResponse handles the Get response.
 func (client *PublicIPPrefixesClient) getHandleResponse(resp *http.Response) (PublicIPPrefixesClientGetResponse, error) {
-	result := PublicIPPrefixesClientGetResponse{RawResponse: resp}
+	result := PublicIPPrefixesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicIPPrefix); err != nil {
 		return PublicIPPrefixesClientGetResponse{}, err
 	}
@@ -247,16 +244,32 @@ func (client *PublicIPPrefixesClient) getHandleResponse(resp *http.Response) (Pu
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - PublicIPPrefixesClientListOptions contains the optional parameters for the PublicIPPrefixesClient.List method.
-func (client *PublicIPPrefixesClient) List(resourceGroupName string, options *PublicIPPrefixesClientListOptions) *PublicIPPrefixesClientListPager {
-	return &PublicIPPrefixesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, options)
+func (client *PublicIPPrefixesClient) List(resourceGroupName string, options *PublicIPPrefixesClientListOptions) *runtime.Pager[PublicIPPrefixesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PublicIPPrefixesClientListResponse]{
+		More: func(page PublicIPPrefixesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PublicIPPrefixesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PublicIPPrefixListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PublicIPPrefixesClientListResponse) (PublicIPPrefixesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PublicIPPrefixesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PublicIPPrefixesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PublicIPPrefixesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -283,7 +296,7 @@ func (client *PublicIPPrefixesClient) listCreateRequest(ctx context.Context, res
 
 // listHandleResponse handles the List response.
 func (client *PublicIPPrefixesClient) listHandleResponse(resp *http.Response) (PublicIPPrefixesClientListResponse, error) {
-	result := PublicIPPrefixesClientListResponse{RawResponse: resp}
+	result := PublicIPPrefixesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicIPPrefixListResult); err != nil {
 		return PublicIPPrefixesClientListResponse{}, err
 	}
@@ -294,16 +307,32 @@ func (client *PublicIPPrefixesClient) listHandleResponse(resp *http.Response) (P
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PublicIPPrefixesClientListAllOptions contains the optional parameters for the PublicIPPrefixesClient.ListAll
 // method.
-func (client *PublicIPPrefixesClient) ListAll(options *PublicIPPrefixesClientListAllOptions) *PublicIPPrefixesClientListAllPager {
-	return &PublicIPPrefixesClientListAllPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listAllCreateRequest(ctx, options)
+func (client *PublicIPPrefixesClient) ListAll(options *PublicIPPrefixesClientListAllOptions) *runtime.Pager[PublicIPPrefixesClientListAllResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PublicIPPrefixesClientListAllResponse]{
+		More: func(page PublicIPPrefixesClientListAllResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PublicIPPrefixesClientListAllResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PublicIPPrefixListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PublicIPPrefixesClientListAllResponse) (PublicIPPrefixesClientListAllResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAllCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PublicIPPrefixesClientListAllResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PublicIPPrefixesClientListAllResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PublicIPPrefixesClientListAllResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAllHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listAllCreateRequest creates the ListAll request.
@@ -326,7 +355,7 @@ func (client *PublicIPPrefixesClient) listAllCreateRequest(ctx context.Context, 
 
 // listAllHandleResponse handles the ListAll response.
 func (client *PublicIPPrefixesClient) listAllHandleResponse(resp *http.Response) (PublicIPPrefixesClientListAllResponse, error) {
-	result := PublicIPPrefixesClientListAllResponse{RawResponse: resp}
+	result := PublicIPPrefixesClientListAllResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicIPPrefixListResult); err != nil {
 		return PublicIPPrefixesClientListAllResponse{}, err
 	}
@@ -383,7 +412,7 @@ func (client *PublicIPPrefixesClient) updateTagsCreateRequest(ctx context.Contex
 
 // updateTagsHandleResponse handles the UpdateTags response.
 func (client *PublicIPPrefixesClient) updateTagsHandleResponse(resp *http.Response) (PublicIPPrefixesClientUpdateTagsResponse, error) {
-	result := PublicIPPrefixesClientUpdateTagsResponse{RawResponse: resp}
+	result := PublicIPPrefixesClientUpdateTagsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicIPPrefix); err != nil {
 		return PublicIPPrefixesClientUpdateTagsResponse{}, err
 	}

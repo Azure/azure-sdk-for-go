@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,15 +8,14 @@ package armnetwork_test
 
 import (
 	"context"
+	"testing"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 	"github.com/stretchr/testify/suite"
-	"testing"
-	"time"
 )
 
 type IPGroupsClientTestSuite struct {
@@ -53,40 +52,28 @@ func TestIPGroupsClient(t *testing.T) {
 
 func (testsuite *IPGroupsClientTestSuite) TestIPGroupsCRUD() {
 	// create ip group
-	ipgClient := armnetwork.NewIPGroupsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	ipgClient, err := armnetwork.NewIPGroupsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	ipgName := "go-test-ipg"
 	ipgPoller, err := ipgClient.BeginCreateOrUpdate(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
 		ipgName,
 		armnetwork.IPGroup{
-			Location: to.StringPtr(testsuite.location),
+			Location: to.Ptr(testsuite.location),
 			Properties: &armnetwork.IPGroupPropertiesFormat{
 				IPAddresses: []*string{
-					to.StringPtr("13.64.39.16/32"),
-					to.StringPtr("40.74.146.80/31"),
-					to.StringPtr("40.74.147.32/28"),
+					to.Ptr("13.64.39.16/32"),
+					to.Ptr("40.74.146.80/31"),
+					to.Ptr("40.74.147.32/28"),
 				},
 			},
 		},
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	var resp armnetwork.IPGroupsClientCreateOrUpdateResponse
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		for {
-			_, err = ipgPoller.Poller.Poll(testsuite.ctx)
-			testsuite.Require().NoError(err)
-			if ipgPoller.Poller.Done() {
-				resp, err = ipgPoller.Poller.FinalResponse(testsuite.ctx)
-				testsuite.Require().NoError(err)
-				break
-			}
-		}
-	} else {
-		resp, err = ipgPoller.PollUntilDone(testsuite.ctx, 30*time.Second)
-		testsuite.Require().NoError(err)
-	}
+	resp, err := testutil.PollForTest(testsuite.ctx, ipgPoller)
+	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(ipgName, *resp.Name)
 
 	// update
@@ -96,7 +83,7 @@ func (testsuite *IPGroupsClientTestSuite) TestIPGroupsCRUD() {
 		ipgName,
 		armnetwork.TagsObject{
 			Tags: map[string]*string{
-				"test": to.StringPtr("live"),
+				"test": to.Ptr("live"),
 			},
 		},
 		nil,
@@ -111,25 +98,13 @@ func (testsuite *IPGroupsClientTestSuite) TestIPGroupsCRUD() {
 
 	// list ip group
 	listPager := ipgClient.List(nil)
-	testsuite.Require().True(listPager.NextPage(context.Background()))
+	testsuite.Require().True(listPager.More())
 
 	// delete ip group
 	delPoller, err := ipgClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, ipgName, nil)
 	testsuite.Require().NoError(err)
-	var delResp armnetwork.IPGroupsClientDeleteResponse
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		for {
-			_, err = delPoller.Poller.Poll(testsuite.ctx)
-			testsuite.Require().NoError(err)
-			if delPoller.Poller.Done() {
-				delResp, err = delPoller.Poller.FinalResponse(testsuite.ctx)
-				testsuite.Require().NoError(err)
-				break
-			}
-		}
-	} else {
-		delResp, err = delPoller.PollUntilDone(testsuite.ctx, 30*time.Second)
-		testsuite.Require().NoError(err)
-	}
-	testsuite.Require().Equal(200, delResp.RawResponse.StatusCode)
+	delResp, err := testutil.PollForTest(testsuite.ctx, delPoller)
+	testsuite.Require().NoError(err)
+	//testsuite.Require().Equal(200, delResp.RawResponse.StatusCode)
+	_ = delResp
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type MultipleActivationKeysClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewMultipleActivationKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MultipleActivationKeysClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewMultipleActivationKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MultipleActivationKeysClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &MultipleActivationKeysClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreate - Create a MAK key.
@@ -56,22 +61,16 @@ func NewMultipleActivationKeysClient(subscriptionID string, credential azcore.To
 // multipleActivationKey - Details of the MAK key.
 // options - MultipleActivationKeysClientBeginCreateOptions contains the optional parameters for the MultipleActivationKeysClient.BeginCreate
 // method.
-func (client *MultipleActivationKeysClient) BeginCreate(ctx context.Context, resourceGroupName string, multipleActivationKeyName string, multipleActivationKey MultipleActivationKey, options *MultipleActivationKeysClientBeginCreateOptions) (MultipleActivationKeysClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, multipleActivationKeyName, multipleActivationKey, options)
-	if err != nil {
-		return MultipleActivationKeysClientCreatePollerResponse{}, err
+func (client *MultipleActivationKeysClient) BeginCreate(ctx context.Context, resourceGroupName string, multipleActivationKeyName string, multipleActivationKey MultipleActivationKey, options *MultipleActivationKeysClientBeginCreateOptions) (*armruntime.Poller[MultipleActivationKeysClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, multipleActivationKeyName, multipleActivationKey, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[MultipleActivationKeysClientCreateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[MultipleActivationKeysClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := MultipleActivationKeysClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("MultipleActivationKeysClient.Create", "", resp, client.pl)
-	if err != nil {
-		return MultipleActivationKeysClientCreatePollerResponse{}, err
-	}
-	result.Poller = &MultipleActivationKeysClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Create a MAK key.
@@ -135,7 +134,7 @@ func (client *MultipleActivationKeysClient) Delete(ctx context.Context, resource
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return MultipleActivationKeysClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return MultipleActivationKeysClientDeleteResponse{RawResponse: resp}, nil
+	return MultipleActivationKeysClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -213,7 +212,7 @@ func (client *MultipleActivationKeysClient) getCreateRequest(ctx context.Context
 
 // getHandleResponse handles the Get response.
 func (client *MultipleActivationKeysClient) getHandleResponse(resp *http.Response) (MultipleActivationKeysClientGetResponse, error) {
-	result := MultipleActivationKeysClientGetResponse{RawResponse: resp}
+	result := MultipleActivationKeysClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MultipleActivationKey); err != nil {
 		return MultipleActivationKeysClientGetResponse{}, err
 	}
@@ -224,16 +223,32 @@ func (client *MultipleActivationKeysClient) getHandleResponse(resp *http.Respons
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - MultipleActivationKeysClientListOptions contains the optional parameters for the MultipleActivationKeysClient.List
 // method.
-func (client *MultipleActivationKeysClient) List(options *MultipleActivationKeysClientListOptions) *MultipleActivationKeysClientListPager {
-	return &MultipleActivationKeysClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *MultipleActivationKeysClient) List(options *MultipleActivationKeysClientListOptions) *runtime.Pager[MultipleActivationKeysClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[MultipleActivationKeysClientListResponse]{
+		More: func(page MultipleActivationKeysClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp MultipleActivationKeysClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.MultipleActivationKeyList.NextLink)
+		Fetcher: func(ctx context.Context, page *MultipleActivationKeysClientListResponse) (MultipleActivationKeysClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return MultipleActivationKeysClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return MultipleActivationKeysClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return MultipleActivationKeysClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -256,7 +271,7 @@ func (client *MultipleActivationKeysClient) listCreateRequest(ctx context.Contex
 
 // listHandleResponse handles the List response.
 func (client *MultipleActivationKeysClient) listHandleResponse(resp *http.Response) (MultipleActivationKeysClientListResponse, error) {
-	result := MultipleActivationKeysClientListResponse{RawResponse: resp}
+	result := MultipleActivationKeysClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MultipleActivationKeyList); err != nil {
 		return MultipleActivationKeysClientListResponse{}, err
 	}
@@ -268,16 +283,32 @@ func (client *MultipleActivationKeysClient) listHandleResponse(resp *http.Respon
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - MultipleActivationKeysClientListByResourceGroupOptions contains the optional parameters for the MultipleActivationKeysClient.ListByResourceGroup
 // method.
-func (client *MultipleActivationKeysClient) ListByResourceGroup(resourceGroupName string, options *MultipleActivationKeysClientListByResourceGroupOptions) *MultipleActivationKeysClientListByResourceGroupPager {
-	return &MultipleActivationKeysClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *MultipleActivationKeysClient) ListByResourceGroup(resourceGroupName string, options *MultipleActivationKeysClientListByResourceGroupOptions) *runtime.Pager[MultipleActivationKeysClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[MultipleActivationKeysClientListByResourceGroupResponse]{
+		More: func(page MultipleActivationKeysClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp MultipleActivationKeysClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.MultipleActivationKeyList.NextLink)
+		Fetcher: func(ctx context.Context, page *MultipleActivationKeysClientListByResourceGroupResponse) (MultipleActivationKeysClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return MultipleActivationKeysClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return MultipleActivationKeysClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return MultipleActivationKeysClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -304,7 +335,7 @@ func (client *MultipleActivationKeysClient) listByResourceGroupCreateRequest(ctx
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *MultipleActivationKeysClient) listByResourceGroupHandleResponse(resp *http.Response) (MultipleActivationKeysClientListByResourceGroupResponse, error) {
-	result := MultipleActivationKeysClientListByResourceGroupResponse{RawResponse: resp}
+	result := MultipleActivationKeysClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MultipleActivationKeyList); err != nil {
 		return MultipleActivationKeysClientListByResourceGroupResponse{}, err
 	}
@@ -361,7 +392,7 @@ func (client *MultipleActivationKeysClient) updateCreateRequest(ctx context.Cont
 
 // updateHandleResponse handles the Update response.
 func (client *MultipleActivationKeysClient) updateHandleResponse(resp *http.Response) (MultipleActivationKeysClientUpdateResponse, error) {
-	result := MultipleActivationKeysClientUpdateResponse{RawResponse: resp}
+	result := MultipleActivationKeysClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MultipleActivationKey); err != nil {
 		return MultipleActivationKeysClientUpdateResponse{}, err
 	}

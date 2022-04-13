@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,15 +8,14 @@ package armnetwork_test
 
 import (
 	"context"
+	"testing"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 	"github.com/stretchr/testify/suite"
-	"testing"
-	"time"
 )
 
 type VirtualNetworksClientTestSuite struct {
@@ -53,18 +52,19 @@ func TestVirtualNetworksClient(t *testing.T) {
 
 func (testsuite *VirtualNetworksClientTestSuite) TestVirtualMachineCRUD() {
 	// create virtual network
-	vnClient := armnetwork.NewVirtualNetworksClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	vnClient, err := armnetwork.NewVirtualNetworksClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	vnName := "go-test-vn"
 	vnPoller, err := vnClient.BeginCreateOrUpdate(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
 		vnName,
 		armnetwork.VirtualNetwork{
-			Location: to.StringPtr(testsuite.location),
+			Location: to.Ptr(testsuite.location),
 			Properties: &armnetwork.VirtualNetworkPropertiesFormat{
 				AddressSpace: &armnetwork.AddressSpace{
 					AddressPrefixes: []*string{
-						to.StringPtr("10.1.0.0/16"),
+						to.Ptr("10.1.0.0/16"),
 					},
 				},
 			},
@@ -72,21 +72,8 @@ func (testsuite *VirtualNetworksClientTestSuite) TestVirtualMachineCRUD() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	var vnResp armnetwork.VirtualNetworksClientCreateOrUpdateResponse
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		for {
-			_, err = vnPoller.Poller.Poll(testsuite.ctx)
-			testsuite.Require().NoError(err)
-			if vnPoller.Poller.Done() {
-				vnResp, err = vnPoller.Poller.FinalResponse(testsuite.ctx)
-				testsuite.Require().NoError(err)
-				break
-			}
-		}
-	} else {
-		vnResp, err = vnPoller.PollUntilDone(testsuite.ctx, 30*time.Second)
-		testsuite.Require().NoError(err)
-	}
+	vnResp, err := testutil.PollForTest(testsuite.ctx, vnPoller)
+	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(vnName, *vnResp.Name)
 
 	//virtual network update tags
@@ -96,8 +83,8 @@ func (testsuite *VirtualNetworksClientTestSuite) TestVirtualMachineCRUD() {
 		vnName,
 		armnetwork.TagsObject{
 			Tags: map[string]*string{
-				"tag1": to.StringPtr("value1"),
-				"tag2": to.StringPtr("value2"),
+				"tag1": to.Ptr("value1"),
+				"tag2": to.Ptr("value2"),
 			},
 		},
 		nil,
@@ -112,25 +99,13 @@ func (testsuite *VirtualNetworksClientTestSuite) TestVirtualMachineCRUD() {
 
 	//virtual network list
 	listPager := vnClient.List(testsuite.resourceGroupName, nil)
-	testsuite.Require().Equal(true, listPager.NextPage(context.Background()))
+	testsuite.Require().Equal(true, listPager.More())
 
 	//virtual network delete
 	delPoller, err := vnClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, vnName, nil)
 	testsuite.Require().NoError(err)
-	var delResp armnetwork.VirtualNetworksClientDeleteResponse
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		for {
-			_, err = delPoller.Poller.Poll(testsuite.ctx)
-			testsuite.Require().NoError(err)
-			if delPoller.Poller.Done() {
-				delResp, err = delPoller.Poller.FinalResponse(testsuite.ctx)
-				testsuite.Require().NoError(err)
-				break
-			}
-		}
-	} else {
-		delResp, err = delPoller.PollUntilDone(testsuite.ctx, 30*time.Second)
-		testsuite.Require().NoError(err)
-	}
-	testsuite.Require().Equal(200, delResp.RawResponse.StatusCode)
+	delResp, err := testutil.PollForTest(testsuite.ctx, delPoller)
+	testsuite.Require().NoError(err)
+	//testsuite.Require().Equal(200, delResp.RawResponse.StatusCode)
+	_ = delResp
 }

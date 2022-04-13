@@ -3,7 +3,7 @@
 ## 0.7.1 (Unreleased)
 
 ### Features Added
-* Added `TableErrorCode` for determining reasons of failures
+* Added `TableErrorCode` to help recover from and understood error responses
 
 ### Breaking Changes
 * Renamed `InsertEntityResponse/Options` to `UpsertEntityResponse/Options`

@@ -15,29 +15,26 @@ import (
 	"net/http"
 )
 
-// IotRecommendationTypesClient is the API spec for Microsoft.Security (Azure Security Center) resource provider
-type IotRecommendationTypesClient struct {
+// MdeOnboardingsClient is the API spec for Microsoft.Security (Azure Security Center) resource provider
+type MdeOnboardingsClient struct {
 	BaseClient
 }
 
-// NewIotRecommendationTypesClient creates an instance of the IotRecommendationTypesClient client.
-func NewIotRecommendationTypesClient(subscriptionID string, ascLocation string) IotRecommendationTypesClient {
-	return NewIotRecommendationTypesClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
+// NewMdeOnboardingsClient creates an instance of the MdeOnboardingsClient client.
+func NewMdeOnboardingsClient(subscriptionID string) MdeOnboardingsClient {
+	return NewMdeOnboardingsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewIotRecommendationTypesClientWithBaseURI creates an instance of the IotRecommendationTypesClient client using a
-// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
-// Azure stack).
-func NewIotRecommendationTypesClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotRecommendationTypesClient {
-	return IotRecommendationTypesClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
+// NewMdeOnboardingsClientWithBaseURI creates an instance of the MdeOnboardingsClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
+func NewMdeOnboardingsClientWithBaseURI(baseURI string, subscriptionID string) MdeOnboardingsClient {
+	return MdeOnboardingsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Get get IoT recommendation type
-// Parameters:
-// iotRecommendationTypeName - name of the recommendation type
-func (client IotRecommendationTypesClient) Get(ctx context.Context, iotRecommendationTypeName string) (result IotRecommendationType, err error) {
+// Get the default configuration or data needed to onboard the machine to MDE
+func (client MdeOnboardingsClient) Get(ctx context.Context) (result MdeOnboardingData, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IotRecommendationTypesClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/MdeOnboardingsClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -49,25 +46,25 @@ func (client IotRecommendationTypesClient) Get(ctx context.Context, iotRecommend
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("security.IotRecommendationTypesClient", "Get", err.Error())
+		return result, validation.NewError("security.MdeOnboardingsClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, iotRecommendationTypeName)
+	req, err := client.GetPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.IotRecommendationTypesClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "security.MdeOnboardingsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "security.IotRecommendationTypesClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "security.MdeOnboardingsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.IotRecommendationTypesClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "security.MdeOnboardingsClient", "Get", resp, "Failure responding to request")
 		return
 	}
 
@@ -75,13 +72,12 @@ func (client IotRecommendationTypesClient) Get(ctx context.Context, iotRecommend
 }
 
 // GetPreparer prepares the Get request.
-func (client IotRecommendationTypesClient) GetPreparer(ctx context.Context, iotRecommendationTypeName string) (*http.Request, error) {
+func (client MdeOnboardingsClient) GetPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"iotRecommendationTypeName": autorest.Encode("path", iotRecommendationTypeName),
-		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-08-06-preview"
+	const APIVersion = "2021-10-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -89,20 +85,20 @@ func (client IotRecommendationTypesClient) GetPreparer(ctx context.Context, iotR
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Security/iotRecommendationTypes/{iotRecommendationTypeName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Security/mdeOnboardings/default", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client IotRecommendationTypesClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client MdeOnboardingsClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client IotRecommendationTypesClient) GetResponder(resp *http.Response) (result IotRecommendationType, err error) {
+func (client MdeOnboardingsClient) GetResponder(resp *http.Response) (result MdeOnboardingData, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -112,10 +108,10 @@ func (client IotRecommendationTypesClient) GetResponder(resp *http.Response) (re
 	return
 }
 
-// List list IoT recommendation types
-func (client IotRecommendationTypesClient) List(ctx context.Context) (result IotRecommendationTypeList, err error) {
+// List the configuration or data needed to onboard the machine to MDE
+func (client MdeOnboardingsClient) List(ctx context.Context) (result MdeOnboardingDataList, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IotRecommendationTypesClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/MdeOnboardingsClient.List")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -127,25 +123,25 @@ func (client IotRecommendationTypesClient) List(ctx context.Context) (result Iot
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("security.IotRecommendationTypesClient", "List", err.Error())
+		return result, validation.NewError("security.MdeOnboardingsClient", "List", err.Error())
 	}
 
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.IotRecommendationTypesClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "security.MdeOnboardingsClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "security.IotRecommendationTypesClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "security.MdeOnboardingsClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.IotRecommendationTypesClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "security.MdeOnboardingsClient", "List", resp, "Failure responding to request")
 		return
 	}
 
@@ -153,12 +149,12 @@ func (client IotRecommendationTypesClient) List(ctx context.Context) (result Iot
 }
 
 // ListPreparer prepares the List request.
-func (client IotRecommendationTypesClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+func (client MdeOnboardingsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-08-06-preview"
+	const APIVersion = "2021-10-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -166,20 +162,20 @@ func (client IotRecommendationTypesClient) ListPreparer(ctx context.Context) (*h
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Security/iotRecommendationTypes", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Security/mdeOnboardings", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client IotRecommendationTypesClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client MdeOnboardingsClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client IotRecommendationTypesClient) ListResponder(resp *http.Response) (result IotRecommendationTypeList, err error) {
+func (client MdeOnboardingsClient) ListResponder(resp *http.Response) (result MdeOnboardingDataList, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

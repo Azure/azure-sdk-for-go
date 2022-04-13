@@ -161,6 +161,23 @@ func PossibleAutoProvisionValues() []AutoProvision {
 	return []AutoProvision{AutoProvisionOff, AutoProvisionOn}
 }
 
+// CloudName enumerates the values for cloud name.
+type CloudName string
+
+const (
+	// AWS ...
+	AWS CloudName = "AWS"
+	// Azure ...
+	Azure CloudName = "Azure"
+	// GCP ...
+	GCP CloudName = "GCP"
+)
+
+// PossibleCloudNameValues returns an array of possible values for the CloudName const type.
+func PossibleCloudNameValues() []CloudName {
+	return []CloudName{AWS, Azure, GCP}
+}
+
 // ConfigurationStatus enumerates the values for configuration status.
 type ConfigurationStatus string
 
@@ -243,15 +260,34 @@ func PossibleConnectionTypeValues() []ConnectionType {
 type ControlType string
 
 const (
-	// BuiltIn Azure Security Center managed assessments
+	// BuiltIn Microsoft Defender for Cloud managed assessments
 	BuiltIn ControlType = "BuiltIn"
-	// Custom Non Azure Security Center managed assessments
+	// Custom Non Microsoft Defender for Cloud managed assessments
 	Custom ControlType = "Custom"
 )
 
 // PossibleControlTypeValues returns an array of possible values for the ControlType const type.
 func PossibleControlTypeValues() []ControlType {
 	return []ControlType{BuiltIn, Custom}
+}
+
+// CreatedByType enumerates the values for created by type.
+type CreatedByType string
+
+const (
+	// Application ...
+	Application CreatedByType = "Application"
+	// Key ...
+	Key CreatedByType = "Key"
+	// ManagedIdentity ...
+	ManagedIdentity CreatedByType = "ManagedIdentity"
+	// User ...
+	User CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns an array of possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{Application, Key, ManagedIdentity, User}
 }
 
 // DataSource enumerates the values for data source.
@@ -282,21 +318,42 @@ func PossibleDirectionValues() []Direction {
 	return []Direction{Inbound, Outbound}
 }
 
+// EndOfSupportStatus enumerates the values for end of support status.
+type EndOfSupportStatus string
+
+const (
+	// NoLongerSupported ...
+	NoLongerSupported EndOfSupportStatus = "noLongerSupported"
+	// None ...
+	None EndOfSupportStatus = "None"
+	// UpcomingNoLongerSupported ...
+	UpcomingNoLongerSupported EndOfSupportStatus = "upcomingNoLongerSupported"
+	// UpcomingVersionNoLongerSupported ...
+	UpcomingVersionNoLongerSupported EndOfSupportStatus = "upcomingVersionNoLongerSupported"
+	// VersionNoLongerSupported ...
+	VersionNoLongerSupported EndOfSupportStatus = "versionNoLongerSupported"
+)
+
+// PossibleEndOfSupportStatusValues returns an array of possible values for the EndOfSupportStatus const type.
+func PossibleEndOfSupportStatusValues() []EndOfSupportStatus {
+	return []EndOfSupportStatus{NoLongerSupported, None, UpcomingNoLongerSupported, UpcomingVersionNoLongerSupported, VersionNoLongerSupported}
+}
+
 // EnforcementMode enumerates the values for enforcement mode.
 type EnforcementMode string
 
 const (
-	// Audit ...
-	Audit EnforcementMode = "Audit"
-	// Enforce ...
-	Enforce EnforcementMode = "Enforce"
-	// None ...
-	None EnforcementMode = "None"
+	// EnforcementModeAudit ...
+	EnforcementModeAudit EnforcementMode = "Audit"
+	// EnforcementModeEnforce ...
+	EnforcementModeEnforce EnforcementMode = "Enforce"
+	// EnforcementModeNone ...
+	EnforcementModeNone EnforcementMode = "None"
 )
 
 // PossibleEnforcementModeValues returns an array of possible values for the EnforcementMode const type.
 func PossibleEnforcementModeValues() []EnforcementMode {
-	return []EnforcementMode{Audit, Enforce, None}
+	return []EnforcementMode{EnforcementModeAudit, EnforcementModeEnforce, EnforcementModeNone}
 }
 
 // EnforcementMode1 enumerates the values for enforcement mode 1.
@@ -337,21 +394,33 @@ func PossibleEnforcementSupportValues() []EnforcementSupport {
 type EventSource string
 
 const (
-	// Alerts ...
-	Alerts EventSource = "Alerts"
-	// Assessments ...
-	Assessments EventSource = "Assessments"
-	// SecureScoreControls ...
-	SecureScoreControls EventSource = "SecureScoreControls"
-	// SecureScores ...
-	SecureScores EventSource = "SecureScores"
-	// SubAssessments ...
-	SubAssessments EventSource = "SubAssessments"
+	// EventSourceAlerts ...
+	EventSourceAlerts EventSource = "Alerts"
+	// EventSourceAssessments ...
+	EventSourceAssessments EventSource = "Assessments"
+	// EventSourceAssessmentsSnapshot ...
+	EventSourceAssessmentsSnapshot EventSource = "AssessmentsSnapshot"
+	// EventSourceRegulatoryComplianceAssessment ...
+	EventSourceRegulatoryComplianceAssessment EventSource = "RegulatoryComplianceAssessment"
+	// EventSourceRegulatoryComplianceAssessmentSnapshot ...
+	EventSourceRegulatoryComplianceAssessmentSnapshot EventSource = "RegulatoryComplianceAssessmentSnapshot"
+	// EventSourceSecureScoreControls ...
+	EventSourceSecureScoreControls EventSource = "SecureScoreControls"
+	// EventSourceSecureScoreControlsSnapshot ...
+	EventSourceSecureScoreControlsSnapshot EventSource = "SecureScoreControlsSnapshot"
+	// EventSourceSecureScores ...
+	EventSourceSecureScores EventSource = "SecureScores"
+	// EventSourceSecureScoresSnapshot ...
+	EventSourceSecureScoresSnapshot EventSource = "SecureScoresSnapshot"
+	// EventSourceSubAssessments ...
+	EventSourceSubAssessments EventSource = "SubAssessments"
+	// EventSourceSubAssessmentsSnapshot ...
+	EventSourceSubAssessmentsSnapshot EventSource = "SubAssessmentsSnapshot"
 )
 
 // PossibleEventSourceValues returns an array of possible values for the EventSource const type.
 func PossibleEventSourceValues() []EventSource {
-	return []EventSource{Alerts, Assessments, SecureScoreControls, SecureScores, SubAssessments}
+	return []EventSource{EventSourceAlerts, EventSourceAssessments, EventSourceAssessmentsSnapshot, EventSourceRegulatoryComplianceAssessment, EventSourceRegulatoryComplianceAssessmentSnapshot, EventSourceSecureScoreControls, EventSourceSecureScoreControlsSnapshot, EventSourceSecureScores, EventSourceSecureScoresSnapshot, EventSourceSubAssessments, EventSourceSubAssessmentsSnapshot}
 }
 
 // Exe enumerates the values for exe.
@@ -490,6 +559,21 @@ func PossibleHybridComputeProvisioningStateValues() []HybridComputeProvisioningS
 	return []HybridComputeProvisioningState{HybridComputeProvisioningStateExpired, HybridComputeProvisioningStateInvalid, HybridComputeProvisioningStateValid}
 }
 
+// InformationProtectionPolicyName enumerates the values for information protection policy name.
+type InformationProtectionPolicyName string
+
+const (
+	// InformationProtectionPolicyNameCustom ...
+	InformationProtectionPolicyNameCustom InformationProtectionPolicyName = "custom"
+	// InformationProtectionPolicyNameEffective ...
+	InformationProtectionPolicyNameEffective InformationProtectionPolicyName = "effective"
+)
+
+// PossibleInformationProtectionPolicyNameValues returns an array of possible values for the InformationProtectionPolicyName const type.
+func PossibleInformationProtectionPolicyNameValues() []InformationProtectionPolicyName {
+	return []InformationProtectionPolicyName{InformationProtectionPolicyNameCustom, InformationProtectionPolicyNameEffective}
+}
+
 // Issue enumerates the values for issue.
 type Issue string
 
@@ -517,19 +601,34 @@ func PossibleIssueValues() []Issue {
 type KindEnum string
 
 const (
-	// KindAAD ...
-	KindAAD KindEnum = "AAD"
-	// KindATA ...
-	KindATA KindEnum = "ATA"
-	// KindCEF ...
-	KindCEF KindEnum = "CEF"
-	// KindExternalSecuritySolution ...
-	KindExternalSecuritySolution KindEnum = "ExternalSecuritySolution"
+	// KindDataExportSetting ...
+	KindDataExportSetting KindEnum = "DataExportSetting"
+	// KindSetting ...
+	KindSetting KindEnum = "Setting"
 )
 
 // PossibleKindEnumValues returns an array of possible values for the KindEnum const type.
 func PossibleKindEnumValues() []KindEnum {
-	return []KindEnum{KindAAD, KindATA, KindCEF, KindExternalSecuritySolution}
+	return []KindEnum{KindDataExportSetting, KindSetting}
+}
+
+// KindEnum1 enumerates the values for kind enum 1.
+type KindEnum1 string
+
+const (
+	// KindAAD ...
+	KindAAD KindEnum1 = "AAD"
+	// KindATA ...
+	KindATA KindEnum1 = "ATA"
+	// KindCEF ...
+	KindCEF KindEnum1 = "CEF"
+	// KindExternalSecuritySolution ...
+	KindExternalSecuritySolution KindEnum1 = "ExternalSecuritySolution"
+)
+
+// PossibleKindEnum1Values returns an array of possible values for the KindEnum1 const type.
+func PossibleKindEnum1Values() []KindEnum1 {
+	return []KindEnum1{KindAAD, KindATA, KindCEF, KindExternalSecuritySolution}
 }
 
 // Msi enumerates the values for msi.
@@ -549,33 +648,69 @@ func PossibleMsiValues() []Msi {
 	return []Msi{MsiAudit, MsiEnforce, MsiNone}
 }
 
+// OfferingType enumerates the values for offering type.
+type OfferingType string
+
+const (
+	// OfferingTypeCloudOffering ...
+	OfferingTypeCloudOffering OfferingType = "cloudOffering"
+	// OfferingTypeCspmMonitorAws ...
+	OfferingTypeCspmMonitorAws OfferingType = "CspmMonitorAws"
+	// OfferingTypeDefenderForContainersAws ...
+	OfferingTypeDefenderForContainersAws OfferingType = "DefenderForContainersAws"
+	// OfferingTypeDefenderForServersAws ...
+	OfferingTypeDefenderForServersAws OfferingType = "DefenderForServersAws"
+	// OfferingTypeInformationProtectionAws ...
+	OfferingTypeInformationProtectionAws OfferingType = "InformationProtectionAws"
+)
+
+// PossibleOfferingTypeValues returns an array of possible values for the OfferingType const type.
+func PossibleOfferingTypeValues() []OfferingType {
+	return []OfferingType{OfferingTypeCloudOffering, OfferingTypeCspmMonitorAws, OfferingTypeDefenderForContainersAws, OfferingTypeDefenderForServersAws, OfferingTypeInformationProtectionAws}
+}
+
 // Operator enumerates the values for operator.
 type Operator string
 
 const (
-	// Contains ...
+	// Contains Applies only for non-decimal operands
 	Contains Operator = "Contains"
-	// EndsWith ...
+	// EndsWith Applies only for non-decimal operands
 	EndsWith Operator = "EndsWith"
-	// Equals ...
+	// Equals Applies for decimal and non-decimal operands
 	Equals Operator = "Equals"
-	// GreaterThan ...
+	// GreaterThan Applies only for decimal operands
 	GreaterThan Operator = "GreaterThan"
-	// GreaterThanOrEqualTo ...
+	// GreaterThanOrEqualTo Applies only for decimal operands
 	GreaterThanOrEqualTo Operator = "GreaterThanOrEqualTo"
-	// LesserThan ...
+	// LesserThan Applies only for decimal operands
 	LesserThan Operator = "LesserThan"
-	// LesserThanOrEqualTo ...
+	// LesserThanOrEqualTo Applies only for decimal operands
 	LesserThanOrEqualTo Operator = "LesserThanOrEqualTo"
-	// NotEquals ...
+	// NotEquals Applies  for decimal and non-decimal operands
 	NotEquals Operator = "NotEquals"
-	// StartsWith ...
+	// StartsWith Applies only for non-decimal operands
 	StartsWith Operator = "StartsWith"
 )
 
 // PossibleOperatorValues returns an array of possible values for the Operator const type.
 func PossibleOperatorValues() []Operator {
 	return []Operator{Contains, EndsWith, Equals, GreaterThan, GreaterThanOrEqualTo, LesserThan, LesserThanOrEqualTo, NotEquals, StartsWith}
+}
+
+// OrganizationMembershipType enumerates the values for organization membership type.
+type OrganizationMembershipType string
+
+const (
+	// Member ...
+	Member OrganizationMembershipType = "Member"
+	// Organization ...
+	Organization OrganizationMembershipType = "Organization"
+)
+
+// PossibleOrganizationMembershipTypeValues returns an array of possible values for the OrganizationMembershipType const type.
+func PossibleOrganizationMembershipTypeValues() []OrganizationMembershipType {
+	return []OrganizationMembershipType{Member, Organization}
 }
 
 // PermissionProperty enumerates the values for permission property.
@@ -602,9 +737,9 @@ func PossiblePermissionPropertyValues() []PermissionProperty {
 type PricingTier string
 
 const (
-	// Free Get free Azure security center experience with basic security features
+	// Free Get free Microsoft Defender for Cloud experience with basic security features
 	Free PricingTier = "Free"
-	// Standard Get the standard Azure security center experience with advanced security features
+	// Standard Get the standard Microsoft Defender for Cloud experience with advanced security features
 	Standard PricingTier = "Standard"
 )
 
@@ -998,21 +1133,6 @@ func PossibleScriptValues() []Script {
 	return []Script{ScriptAudit, ScriptEnforce, ScriptNone}
 }
 
-// SettingKind enumerates the values for setting kind.
-type SettingKind string
-
-const (
-	// SettingKindAlertSuppressionSetting ...
-	SettingKindAlertSuppressionSetting SettingKind = "AlertSuppressionSetting"
-	// SettingKindDataExportSetting ...
-	SettingKindDataExportSetting SettingKind = "DataExportSetting"
-)
-
-// PossibleSettingKindValues returns an array of possible values for the SettingKind const type.
-func PossibleSettingKindValues() []SettingKind {
-	return []SettingKind{SettingKindAlertSuppressionSetting, SettingKindDataExportSetting}
-}
-
 // Severity enumerates the values for severity.
 type Severity string
 
@@ -1028,6 +1148,23 @@ const (
 // PossibleSeverityValues returns an array of possible values for the Severity const type.
 func PossibleSeverityValues() []Severity {
 	return []Severity{SeverityHigh, SeverityLow, SeverityMedium}
+}
+
+// SeverityEnum enumerates the values for severity enum.
+type SeverityEnum string
+
+const (
+	// SeverityEnumHigh ...
+	SeverityEnumHigh SeverityEnum = "High"
+	// SeverityEnumLow ...
+	SeverityEnumLow SeverityEnum = "Low"
+	// SeverityEnumMedium ...
+	SeverityEnumMedium SeverityEnum = "Medium"
+)
+
+// PossibleSeverityEnumValues returns an array of possible values for the SeverityEnum const type.
+func PossibleSeverityEnumValues() []SeverityEnum {
+	return []SeverityEnum{SeverityEnumHigh, SeverityEnumLow, SeverityEnumMedium}
 }
 
 // SolutionStatus enumerates the values for solution status.
@@ -1152,6 +1289,42 @@ const (
 // PossibleSubAssessmentStatusCodeValues returns an array of possible values for the SubAssessmentStatusCode const type.
 func PossibleSubAssessmentStatusCodeValues() []SubAssessmentStatusCode {
 	return []SubAssessmentStatusCode{Healthy, NotApplicable, Unhealthy}
+}
+
+// SupportedCloudEnum enumerates the values for supported cloud enum.
+type SupportedCloudEnum string
+
+const (
+	// SupportedCloudEnumAWS ...
+	SupportedCloudEnumAWS SupportedCloudEnum = "AWS"
+	// SupportedCloudEnumGCP ...
+	SupportedCloudEnumGCP SupportedCloudEnum = "GCP"
+)
+
+// PossibleSupportedCloudEnumValues returns an array of possible values for the SupportedCloudEnum const type.
+func PossibleSupportedCloudEnumValues() []SupportedCloudEnum {
+	return []SupportedCloudEnum{SupportedCloudEnumAWS, SupportedCloudEnumGCP}
+}
+
+// TaskUpdateActionType enumerates the values for task update action type.
+type TaskUpdateActionType string
+
+const (
+	// Activate ...
+	Activate TaskUpdateActionType = "Activate"
+	// Close ...
+	Close TaskUpdateActionType = "Close"
+	// Dismiss ...
+	Dismiss TaskUpdateActionType = "Dismiss"
+	// Resolve ...
+	Resolve TaskUpdateActionType = "Resolve"
+	// Start ...
+	Start TaskUpdateActionType = "Start"
+)
+
+// PossibleTaskUpdateActionTypeValues returns an array of possible values for the TaskUpdateActionType const type.
+func PossibleTaskUpdateActionTypeValues() []TaskUpdateActionType {
+	return []TaskUpdateActionType{Activate, Close, Dismiss, Resolve, Start}
 }
 
 // TransportProtocol enumerates the values for transport protocol.

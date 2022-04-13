@@ -21,22 +21,24 @@ type AlertsClient struct {
 }
 
 // NewAlertsClient creates an instance of the AlertsClient client.
-func NewAlertsClient(subscriptionID string, ascLocation string) AlertsClient {
-	return NewAlertsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
+func NewAlertsClient(subscriptionID string) AlertsClient {
+	return NewAlertsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewAlertsClientWithBaseURI creates an instance of the AlertsClient client using a custom endpoint.  Use this when
 // interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AlertsClient {
-	return AlertsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
+func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string) AlertsClient {
+	return AlertsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // GetResourceGroupLevelAlerts get an alert that is associated a resource group or a resource in a resource group
 // Parameters:
+// ascLocation - the location where ASC stores the data of the subscription. can be retrieved from Get
+// locations
 // alertName - name of the alert object
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-func (client AlertsClient) GetResourceGroupLevelAlerts(ctx context.Context, alertName string, resourceGroupName string) (result Alert, err error) {
+func (client AlertsClient) GetResourceGroupLevelAlerts(ctx context.Context, ascLocation string, alertName string, resourceGroupName string) (result Alert, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.GetResourceGroupLevelAlerts")
 		defer func() {
@@ -57,7 +59,7 @@ func (client AlertsClient) GetResourceGroupLevelAlerts(ctx context.Context, aler
 		return result, validation.NewError("security.AlertsClient", "GetResourceGroupLevelAlerts", err.Error())
 	}
 
-	req, err := client.GetResourceGroupLevelAlertsPreparer(ctx, alertName, resourceGroupName)
+	req, err := client.GetResourceGroupLevelAlertsPreparer(ctx, ascLocation, alertName, resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AlertsClient", "GetResourceGroupLevelAlerts", nil, "Failure preparing request")
 		return
@@ -80,10 +82,10 @@ func (client AlertsClient) GetResourceGroupLevelAlerts(ctx context.Context, aler
 }
 
 // GetResourceGroupLevelAlertsPreparer prepares the GetResourceGroupLevelAlerts request.
-func (client AlertsClient) GetResourceGroupLevelAlertsPreparer(ctx context.Context, alertName string, resourceGroupName string) (*http.Request, error) {
+func (client AlertsClient) GetResourceGroupLevelAlertsPreparer(ctx context.Context, ascLocation string, alertName string, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"alertName":         autorest.Encode("path", alertName),
-		"ascLocation":       autorest.Encode("path", client.AscLocation),
+		"ascLocation":       autorest.Encode("path", ascLocation),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
@@ -121,8 +123,10 @@ func (client AlertsClient) GetResourceGroupLevelAlertsResponder(resp *http.Respo
 
 // GetSubscriptionLevelAlert get an alert that is associated with a subscription
 // Parameters:
+// ascLocation - the location where ASC stores the data of the subscription. can be retrieved from Get
+// locations
 // alertName - name of the alert object
-func (client AlertsClient) GetSubscriptionLevelAlert(ctx context.Context, alertName string) (result Alert, err error) {
+func (client AlertsClient) GetSubscriptionLevelAlert(ctx context.Context, ascLocation string, alertName string) (result Alert, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.GetSubscriptionLevelAlert")
 		defer func() {
@@ -139,7 +143,7 @@ func (client AlertsClient) GetSubscriptionLevelAlert(ctx context.Context, alertN
 		return result, validation.NewError("security.AlertsClient", "GetSubscriptionLevelAlert", err.Error())
 	}
 
-	req, err := client.GetSubscriptionLevelAlertPreparer(ctx, alertName)
+	req, err := client.GetSubscriptionLevelAlertPreparer(ctx, ascLocation, alertName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AlertsClient", "GetSubscriptionLevelAlert", nil, "Failure preparing request")
 		return
@@ -162,10 +166,10 @@ func (client AlertsClient) GetSubscriptionLevelAlert(ctx context.Context, alertN
 }
 
 // GetSubscriptionLevelAlertPreparer prepares the GetSubscriptionLevelAlert request.
-func (client AlertsClient) GetSubscriptionLevelAlertPreparer(ctx context.Context, alertName string) (*http.Request, error) {
+func (client AlertsClient) GetSubscriptionLevelAlertPreparer(ctx context.Context, ascLocation string, alertName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"alertName":      autorest.Encode("path", alertName),
-		"ascLocation":    autorest.Encode("path", client.AscLocation),
+		"ascLocation":    autorest.Encode("path", ascLocation),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -474,12 +478,14 @@ func (client AlertsClient) ListByResourceGroupComplete(ctx context.Context, reso
 // ListResourceGroupLevelAlertsByRegion list all the alerts that are associated with the resource group that are stored
 // in a specific location
 // Parameters:
+// ascLocation - the location where ASC stores the data of the subscription. can be retrieved from Get
+// locations
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
 // filter - oData filter. Optional.
 // selectParameter - oData select. Optional.
 // expand - oData expand. Optional.
-func (client AlertsClient) ListResourceGroupLevelAlertsByRegion(ctx context.Context, resourceGroupName string, filter string, selectParameter string, expand string) (result AlertListPage, err error) {
+func (client AlertsClient) ListResourceGroupLevelAlertsByRegion(ctx context.Context, ascLocation string, resourceGroupName string, filter string, selectParameter string, expand string) (result AlertListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.ListResourceGroupLevelAlertsByRegion")
 		defer func() {
@@ -501,7 +507,7 @@ func (client AlertsClient) ListResourceGroupLevelAlertsByRegion(ctx context.Cont
 	}
 
 	result.fn = client.listResourceGroupLevelAlertsByRegionNextResults
-	req, err := client.ListResourceGroupLevelAlertsByRegionPreparer(ctx, resourceGroupName, filter, selectParameter, expand)
+	req, err := client.ListResourceGroupLevelAlertsByRegionPreparer(ctx, ascLocation, resourceGroupName, filter, selectParameter, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AlertsClient", "ListResourceGroupLevelAlertsByRegion", nil, "Failure preparing request")
 		return
@@ -528,9 +534,9 @@ func (client AlertsClient) ListResourceGroupLevelAlertsByRegion(ctx context.Cont
 }
 
 // ListResourceGroupLevelAlertsByRegionPreparer prepares the ListResourceGroupLevelAlertsByRegion request.
-func (client AlertsClient) ListResourceGroupLevelAlertsByRegionPreparer(ctx context.Context, resourceGroupName string, filter string, selectParameter string, expand string) (*http.Request, error) {
+func (client AlertsClient) ListResourceGroupLevelAlertsByRegionPreparer(ctx context.Context, ascLocation string, resourceGroupName string, filter string, selectParameter string, expand string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"ascLocation":       autorest.Encode("path", client.AscLocation),
+		"ascLocation":       autorest.Encode("path", ascLocation),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
@@ -597,7 +603,7 @@ func (client AlertsClient) listResourceGroupLevelAlertsByRegionNextResults(ctx c
 }
 
 // ListResourceGroupLevelAlertsByRegionComplete enumerates all values, automatically crossing page boundaries as required.
-func (client AlertsClient) ListResourceGroupLevelAlertsByRegionComplete(ctx context.Context, resourceGroupName string, filter string, selectParameter string, expand string) (result AlertListIterator, err error) {
+func (client AlertsClient) ListResourceGroupLevelAlertsByRegionComplete(ctx context.Context, ascLocation string, resourceGroupName string, filter string, selectParameter string, expand string) (result AlertListIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.ListResourceGroupLevelAlertsByRegion")
 		defer func() {
@@ -608,17 +614,19 @@ func (client AlertsClient) ListResourceGroupLevelAlertsByRegionComplete(ctx cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListResourceGroupLevelAlertsByRegion(ctx, resourceGroupName, filter, selectParameter, expand)
+	result.page, err = client.ListResourceGroupLevelAlertsByRegion(ctx, ascLocation, resourceGroupName, filter, selectParameter, expand)
 	return
 }
 
 // ListSubscriptionLevelAlertsByRegion list all the alerts that are associated with the subscription that are stored in
 // a specific location
 // Parameters:
+// ascLocation - the location where ASC stores the data of the subscription. can be retrieved from Get
+// locations
 // filter - oData filter. Optional.
 // selectParameter - oData select. Optional.
 // expand - oData expand. Optional.
-func (client AlertsClient) ListSubscriptionLevelAlertsByRegion(ctx context.Context, filter string, selectParameter string, expand string) (result AlertListPage, err error) {
+func (client AlertsClient) ListSubscriptionLevelAlertsByRegion(ctx context.Context, ascLocation string, filter string, selectParameter string, expand string) (result AlertListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.ListSubscriptionLevelAlertsByRegion")
 		defer func() {
@@ -636,7 +644,7 @@ func (client AlertsClient) ListSubscriptionLevelAlertsByRegion(ctx context.Conte
 	}
 
 	result.fn = client.listSubscriptionLevelAlertsByRegionNextResults
-	req, err := client.ListSubscriptionLevelAlertsByRegionPreparer(ctx, filter, selectParameter, expand)
+	req, err := client.ListSubscriptionLevelAlertsByRegionPreparer(ctx, ascLocation, filter, selectParameter, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AlertsClient", "ListSubscriptionLevelAlertsByRegion", nil, "Failure preparing request")
 		return
@@ -663,9 +671,9 @@ func (client AlertsClient) ListSubscriptionLevelAlertsByRegion(ctx context.Conte
 }
 
 // ListSubscriptionLevelAlertsByRegionPreparer prepares the ListSubscriptionLevelAlertsByRegion request.
-func (client AlertsClient) ListSubscriptionLevelAlertsByRegionPreparer(ctx context.Context, filter string, selectParameter string, expand string) (*http.Request, error) {
+func (client AlertsClient) ListSubscriptionLevelAlertsByRegionPreparer(ctx context.Context, ascLocation string, filter string, selectParameter string, expand string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"ascLocation":    autorest.Encode("path", client.AscLocation),
+		"ascLocation":    autorest.Encode("path", ascLocation),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -731,7 +739,7 @@ func (client AlertsClient) listSubscriptionLevelAlertsByRegionNextResults(ctx co
 }
 
 // ListSubscriptionLevelAlertsByRegionComplete enumerates all values, automatically crossing page boundaries as required.
-func (client AlertsClient) ListSubscriptionLevelAlertsByRegionComplete(ctx context.Context, filter string, selectParameter string, expand string) (result AlertListIterator, err error) {
+func (client AlertsClient) ListSubscriptionLevelAlertsByRegionComplete(ctx context.Context, ascLocation string, filter string, selectParameter string, expand string) (result AlertListIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.ListSubscriptionLevelAlertsByRegion")
 		defer func() {
@@ -742,16 +750,18 @@ func (client AlertsClient) ListSubscriptionLevelAlertsByRegionComplete(ctx conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListSubscriptionLevelAlertsByRegion(ctx, filter, selectParameter, expand)
+	result.page, err = client.ListSubscriptionLevelAlertsByRegion(ctx, ascLocation, filter, selectParameter, expand)
 	return
 }
 
 // UpdateResourceGroupLevelAlertStateToDismiss update the alert's state
 // Parameters:
+// ascLocation - the location where ASC stores the data of the subscription. can be retrieved from Get
+// locations
 // alertName - name of the alert object
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-func (client AlertsClient) UpdateResourceGroupLevelAlertStateToDismiss(ctx context.Context, alertName string, resourceGroupName string) (result autorest.Response, err error) {
+func (client AlertsClient) UpdateResourceGroupLevelAlertStateToDismiss(ctx context.Context, ascLocation string, alertName string, resourceGroupName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.UpdateResourceGroupLevelAlertStateToDismiss")
 		defer func() {
@@ -772,7 +782,7 @@ func (client AlertsClient) UpdateResourceGroupLevelAlertStateToDismiss(ctx conte
 		return result, validation.NewError("security.AlertsClient", "UpdateResourceGroupLevelAlertStateToDismiss", err.Error())
 	}
 
-	req, err := client.UpdateResourceGroupLevelAlertStateToDismissPreparer(ctx, alertName, resourceGroupName)
+	req, err := client.UpdateResourceGroupLevelAlertStateToDismissPreparer(ctx, ascLocation, alertName, resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AlertsClient", "UpdateResourceGroupLevelAlertStateToDismiss", nil, "Failure preparing request")
 		return
@@ -795,10 +805,10 @@ func (client AlertsClient) UpdateResourceGroupLevelAlertStateToDismiss(ctx conte
 }
 
 // UpdateResourceGroupLevelAlertStateToDismissPreparer prepares the UpdateResourceGroupLevelAlertStateToDismiss request.
-func (client AlertsClient) UpdateResourceGroupLevelAlertStateToDismissPreparer(ctx context.Context, alertName string, resourceGroupName string) (*http.Request, error) {
+func (client AlertsClient) UpdateResourceGroupLevelAlertStateToDismissPreparer(ctx context.Context, ascLocation string, alertName string, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"alertName":         autorest.Encode("path", alertName),
-		"ascLocation":       autorest.Encode("path", client.AscLocation),
+		"ascLocation":       autorest.Encode("path", ascLocation),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
@@ -835,10 +845,12 @@ func (client AlertsClient) UpdateResourceGroupLevelAlertStateToDismissResponder(
 
 // UpdateResourceGroupLevelAlertStateToReactivate update the alert's state
 // Parameters:
+// ascLocation - the location where ASC stores the data of the subscription. can be retrieved from Get
+// locations
 // alertName - name of the alert object
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-func (client AlertsClient) UpdateResourceGroupLevelAlertStateToReactivate(ctx context.Context, alertName string, resourceGroupName string) (result autorest.Response, err error) {
+func (client AlertsClient) UpdateResourceGroupLevelAlertStateToReactivate(ctx context.Context, ascLocation string, alertName string, resourceGroupName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.UpdateResourceGroupLevelAlertStateToReactivate")
 		defer func() {
@@ -859,7 +871,7 @@ func (client AlertsClient) UpdateResourceGroupLevelAlertStateToReactivate(ctx co
 		return result, validation.NewError("security.AlertsClient", "UpdateResourceGroupLevelAlertStateToReactivate", err.Error())
 	}
 
-	req, err := client.UpdateResourceGroupLevelAlertStateToReactivatePreparer(ctx, alertName, resourceGroupName)
+	req, err := client.UpdateResourceGroupLevelAlertStateToReactivatePreparer(ctx, ascLocation, alertName, resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AlertsClient", "UpdateResourceGroupLevelAlertStateToReactivate", nil, "Failure preparing request")
 		return
@@ -882,10 +894,10 @@ func (client AlertsClient) UpdateResourceGroupLevelAlertStateToReactivate(ctx co
 }
 
 // UpdateResourceGroupLevelAlertStateToReactivatePreparer prepares the UpdateResourceGroupLevelAlertStateToReactivate request.
-func (client AlertsClient) UpdateResourceGroupLevelAlertStateToReactivatePreparer(ctx context.Context, alertName string, resourceGroupName string) (*http.Request, error) {
+func (client AlertsClient) UpdateResourceGroupLevelAlertStateToReactivatePreparer(ctx context.Context, ascLocation string, alertName string, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"alertName":         autorest.Encode("path", alertName),
-		"ascLocation":       autorest.Encode("path", client.AscLocation),
+		"ascLocation":       autorest.Encode("path", ascLocation),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
@@ -922,8 +934,10 @@ func (client AlertsClient) UpdateResourceGroupLevelAlertStateToReactivateRespond
 
 // UpdateSubscriptionLevelAlertStateToDismiss update the alert's state
 // Parameters:
+// ascLocation - the location where ASC stores the data of the subscription. can be retrieved from Get
+// locations
 // alertName - name of the alert object
-func (client AlertsClient) UpdateSubscriptionLevelAlertStateToDismiss(ctx context.Context, alertName string) (result autorest.Response, err error) {
+func (client AlertsClient) UpdateSubscriptionLevelAlertStateToDismiss(ctx context.Context, ascLocation string, alertName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.UpdateSubscriptionLevelAlertStateToDismiss")
 		defer func() {
@@ -940,7 +954,7 @@ func (client AlertsClient) UpdateSubscriptionLevelAlertStateToDismiss(ctx contex
 		return result, validation.NewError("security.AlertsClient", "UpdateSubscriptionLevelAlertStateToDismiss", err.Error())
 	}
 
-	req, err := client.UpdateSubscriptionLevelAlertStateToDismissPreparer(ctx, alertName)
+	req, err := client.UpdateSubscriptionLevelAlertStateToDismissPreparer(ctx, ascLocation, alertName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AlertsClient", "UpdateSubscriptionLevelAlertStateToDismiss", nil, "Failure preparing request")
 		return
@@ -963,10 +977,10 @@ func (client AlertsClient) UpdateSubscriptionLevelAlertStateToDismiss(ctx contex
 }
 
 // UpdateSubscriptionLevelAlertStateToDismissPreparer prepares the UpdateSubscriptionLevelAlertStateToDismiss request.
-func (client AlertsClient) UpdateSubscriptionLevelAlertStateToDismissPreparer(ctx context.Context, alertName string) (*http.Request, error) {
+func (client AlertsClient) UpdateSubscriptionLevelAlertStateToDismissPreparer(ctx context.Context, ascLocation string, alertName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"alertName":      autorest.Encode("path", alertName),
-		"ascLocation":    autorest.Encode("path", client.AscLocation),
+		"ascLocation":    autorest.Encode("path", ascLocation),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -1002,8 +1016,10 @@ func (client AlertsClient) UpdateSubscriptionLevelAlertStateToDismissResponder(r
 
 // UpdateSubscriptionLevelAlertStateToReactivate update the alert's state
 // Parameters:
+// ascLocation - the location where ASC stores the data of the subscription. can be retrieved from Get
+// locations
 // alertName - name of the alert object
-func (client AlertsClient) UpdateSubscriptionLevelAlertStateToReactivate(ctx context.Context, alertName string) (result autorest.Response, err error) {
+func (client AlertsClient) UpdateSubscriptionLevelAlertStateToReactivate(ctx context.Context, ascLocation string, alertName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.UpdateSubscriptionLevelAlertStateToReactivate")
 		defer func() {
@@ -1020,7 +1036,7 @@ func (client AlertsClient) UpdateSubscriptionLevelAlertStateToReactivate(ctx con
 		return result, validation.NewError("security.AlertsClient", "UpdateSubscriptionLevelAlertStateToReactivate", err.Error())
 	}
 
-	req, err := client.UpdateSubscriptionLevelAlertStateToReactivatePreparer(ctx, alertName)
+	req, err := client.UpdateSubscriptionLevelAlertStateToReactivatePreparer(ctx, ascLocation, alertName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AlertsClient", "UpdateSubscriptionLevelAlertStateToReactivate", nil, "Failure preparing request")
 		return
@@ -1043,10 +1059,10 @@ func (client AlertsClient) UpdateSubscriptionLevelAlertStateToReactivate(ctx con
 }
 
 // UpdateSubscriptionLevelAlertStateToReactivatePreparer prepares the UpdateSubscriptionLevelAlertStateToReactivate request.
-func (client AlertsClient) UpdateSubscriptionLevelAlertStateToReactivatePreparer(ctx context.Context, alertName string) (*http.Request, error) {
+func (client AlertsClient) UpdateSubscriptionLevelAlertStateToReactivatePreparer(ctx context.Context, ascLocation string, alertName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"alertName":      autorest.Encode("path", alertName),
-		"ascLocation":    autorest.Encode("path", client.AscLocation),
+		"ascLocation":    autorest.Encode("path", ascLocation),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 

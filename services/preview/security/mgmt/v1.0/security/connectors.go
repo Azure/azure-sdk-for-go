@@ -21,22 +21,24 @@ type ConnectorsClient struct {
 }
 
 // NewConnectorsClient creates an instance of the ConnectorsClient client.
-func NewConnectorsClient(subscriptionID string, ascLocation string) ConnectorsClient {
-	return NewConnectorsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
+func NewConnectorsClient(subscriptionID string) ConnectorsClient {
+	return NewConnectorsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewConnectorsClientWithBaseURI creates an instance of the ConnectorsClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewConnectorsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) ConnectorsClient {
-	return ConnectorsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
+func NewConnectorsClientWithBaseURI(baseURI string, subscriptionID string) ConnectorsClient {
+	return ConnectorsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate create a cloud account connector or update an existing one. Connect to your cloud account. For AWS,
-// use either account credentials or role-based authentication. For GCP, use account organization credentials.
+// CreateOrUpdate creates or updates a security connector. If a security connector is already created and a subsequent
+// request is issued for the same security connector id, then it will be updated.
 // Parameters:
-// connectorName - name of the cloud account connector
-// connectorSetting - settings for the cloud account connector
-func (client ConnectorsClient) CreateOrUpdate(ctx context.Context, connectorName string, connectorSetting ConnectorSetting) (result ConnectorSetting, err error) {
+// resourceGroupName - the name of the resource group within the user's subscription. The name is case
+// insensitive.
+// securityConnectorName - the security connector name.
+// securityConnector - the security connector resource
+func (client ConnectorsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, securityConnectorName string, securityConnector Connector) (result Connector, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectorsClient.CreateOrUpdate")
 		defer func() {
@@ -49,11 +51,15 @@ func (client ConnectorsClient) CreateOrUpdate(ctx context.Context, connectorName
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("security.ConnectorsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, connectorName, connectorSetting)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, securityConnectorName, securityConnector)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.ConnectorsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -76,23 +82,25 @@ func (client ConnectorsClient) CreateOrUpdate(ctx context.Context, connectorName
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client ConnectorsClient) CreateOrUpdatePreparer(ctx context.Context, connectorName string, connectorSetting ConnectorSetting) (*http.Request, error) {
+func (client ConnectorsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, securityConnectorName string, securityConnector Connector) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"connectorName":  autorest.Encode("path", connectorName),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
+		"securityConnectorName": autorest.Encode("path", securityConnectorName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-01-01-preview"
+	const APIVersion = "2021-12-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
 
+	securityConnector.SystemData = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Security/connectors/{connectorName}", pathParameters),
-		autorest.WithJSON(connectorSetting),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}", pathParameters),
+		autorest.WithJSON(securityConnector),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -105,20 +113,22 @@ func (client ConnectorsClient) CreateOrUpdateSender(req *http.Request) (*http.Re
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client ConnectorsClient) CreateOrUpdateResponder(resp *http.Response) (result ConnectorSetting, err error) {
+func (client ConnectorsClient) CreateOrUpdateResponder(resp *http.Response) (result Connector, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
 }
 
-// Delete delete a cloud account connector from a subscription
+// Delete deletes a security connector.
 // Parameters:
-// connectorName - name of the cloud account connector
-func (client ConnectorsClient) Delete(ctx context.Context, connectorName string) (result autorest.Response, err error) {
+// resourceGroupName - the name of the resource group within the user's subscription. The name is case
+// insensitive.
+// securityConnectorName - the security connector name.
+func (client ConnectorsClient) Delete(ctx context.Context, resourceGroupName string, securityConnectorName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectorsClient.Delete")
 		defer func() {
@@ -131,11 +141,15 @@ func (client ConnectorsClient) Delete(ctx context.Context, connectorName string)
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("security.ConnectorsClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, connectorName)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, securityConnectorName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.ConnectorsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -158,13 +172,14 @@ func (client ConnectorsClient) Delete(ctx context.Context, connectorName string)
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ConnectorsClient) DeletePreparer(ctx context.Context, connectorName string) (*http.Request, error) {
+func (client ConnectorsClient) DeletePreparer(ctx context.Context, resourceGroupName string, securityConnectorName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"connectorName":  autorest.Encode("path", connectorName),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
+		"securityConnectorName": autorest.Encode("path", securityConnectorName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-01-01-preview"
+	const APIVersion = "2021-12-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -172,7 +187,7 @@ func (client ConnectorsClient) DeletePreparer(ctx context.Context, connectorName
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Security/connectors/{connectorName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -194,10 +209,12 @@ func (client ConnectorsClient) DeleteResponder(resp *http.Response) (result auto
 	return
 }
 
-// Get details of a specific cloud account connector
+// Get retrieves details of a specific security connector
 // Parameters:
-// connectorName - name of the cloud account connector
-func (client ConnectorsClient) Get(ctx context.Context, connectorName string) (result ConnectorSetting, err error) {
+// resourceGroupName - the name of the resource group within the user's subscription. The name is case
+// insensitive.
+// securityConnectorName - the security connector name.
+func (client ConnectorsClient) Get(ctx context.Context, resourceGroupName string, securityConnectorName string) (result Connector, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectorsClient.Get")
 		defer func() {
@@ -210,11 +227,15 @@ func (client ConnectorsClient) Get(ctx context.Context, connectorName string) (r
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("security.ConnectorsClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, connectorName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, securityConnectorName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.ConnectorsClient", "Get", nil, "Failure preparing request")
 		return
@@ -237,13 +258,14 @@ func (client ConnectorsClient) Get(ctx context.Context, connectorName string) (r
 }
 
 // GetPreparer prepares the Get request.
-func (client ConnectorsClient) GetPreparer(ctx context.Context, connectorName string) (*http.Request, error) {
+func (client ConnectorsClient) GetPreparer(ctx context.Context, resourceGroupName string, securityConnectorName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"connectorName":  autorest.Encode("path", connectorName),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
+		"securityConnectorName": autorest.Encode("path", securityConnectorName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-01-01-preview"
+	const APIVersion = "2021-12-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -251,7 +273,7 @@ func (client ConnectorsClient) GetPreparer(ctx context.Context, connectorName st
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Security/connectors/{connectorName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -264,7 +286,7 @@ func (client ConnectorsClient) GetSender(req *http.Request) (*http.Response, err
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ConnectorsClient) GetResponder(resp *http.Response) (result ConnectorSetting, err error) {
+func (client ConnectorsClient) GetResponder(resp *http.Response) (result Connector, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -274,14 +296,15 @@ func (client ConnectorsClient) GetResponder(resp *http.Response) (result Connect
 	return
 }
 
-// List cloud accounts connectors of a subscription
-func (client ConnectorsClient) List(ctx context.Context) (result ConnectorSettingListPage, err error) {
+// List lists all the security connectors in the specified subscription. Use the 'nextLink' property in the response to
+// get the next page of security connectors for the specified subscription.
+func (client ConnectorsClient) List(ctx context.Context) (result ConnectorsListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectorsClient.List")
 		defer func() {
 			sc := -1
-			if result.csl.Response.Response != nil {
-				sc = result.csl.Response.Response.StatusCode
+			if result.cl.Response.Response != nil {
+				sc = result.cl.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -301,17 +324,17 @@ func (client ConnectorsClient) List(ctx context.Context) (result ConnectorSettin
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.csl.Response = autorest.Response{Response: resp}
+		result.cl.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "security.ConnectorsClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result.csl, err = client.ListResponder(resp)
+	result.cl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.ConnectorsClient", "List", resp, "Failure responding to request")
 		return
 	}
-	if result.csl.hasNextLink() && result.csl.IsEmpty() {
+	if result.cl.hasNextLink() && result.cl.IsEmpty() {
 		err = result.NextWithContext(ctx)
 		return
 	}
@@ -325,7 +348,7 @@ func (client ConnectorsClient) ListPreparer(ctx context.Context) (*http.Request,
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-01-01-preview"
+	const APIVersion = "2021-12-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -333,7 +356,7 @@ func (client ConnectorsClient) ListPreparer(ctx context.Context) (*http.Request,
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Security/connectors", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Security/securityConnectors", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -346,7 +369,7 @@ func (client ConnectorsClient) ListSender(req *http.Request) (*http.Response, er
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ConnectorsClient) ListResponder(resp *http.Response) (result ConnectorSettingList, err error) {
+func (client ConnectorsClient) ListResponder(resp *http.Response) (result ConnectorsList, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -357,8 +380,8 @@ func (client ConnectorsClient) ListResponder(resp *http.Response) (result Connec
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client ConnectorsClient) listNextResults(ctx context.Context, lastResults ConnectorSettingList) (result ConnectorSettingList, err error) {
-	req, err := lastResults.connectorSettingListPreparer(ctx)
+func (client ConnectorsClient) listNextResults(ctx context.Context, lastResults ConnectorsList) (result ConnectorsList, err error) {
+	req, err := lastResults.connectorsListPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "security.ConnectorsClient", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -378,7 +401,7 @@ func (client ConnectorsClient) listNextResults(ctx context.Context, lastResults 
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ConnectorsClient) ListComplete(ctx context.Context) (result ConnectorSettingListIterator, err error) {
+func (client ConnectorsClient) ListComplete(ctx context.Context) (result ConnectorsListIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectorsClient.List")
 		defer func() {
@@ -390,5 +413,224 @@ func (client ConnectorsClient) ListComplete(ctx context.Context) (result Connect
 		}()
 	}
 	result.page, err = client.List(ctx)
+	return
+}
+
+// ListByResourceGroup lists all the security connectors in the specified resource group. Use the 'nextLink' property
+// in the response to get the next page of security connectors for the specified resource group.
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription. The name is case
+// insensitive.
+func (client ConnectorsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ConnectorsListPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectorsClient.ListByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.cl.Response.Response != nil {
+				sc = result.cl.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("security.ConnectorsClient", "ListByResourceGroup", err.Error())
+	}
+
+	result.fn = client.listByResourceGroupNextResults
+	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.ConnectorsClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListByResourceGroupSender(req)
+	if err != nil {
+		result.cl.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "security.ConnectorsClient", "ListByResourceGroup", resp, "Failure sending request")
+		return
+	}
+
+	result.cl, err = client.ListByResourceGroupResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.ConnectorsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
+	}
+	if result.cl.hasNextLink() && result.cl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+		return
+	}
+
+	return
+}
+
+// ListByResourceGroupPreparer prepares the ListByResourceGroup request.
+func (client ConnectorsClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2021-12-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
+// http.Response Body if it receives an error.
+func (client ConnectorsClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
+// closes the http.Response Body.
+func (client ConnectorsClient) ListByResourceGroupResponder(resp *http.Response) (result ConnectorsList, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listByResourceGroupNextResults retrieves the next set of results, if any.
+func (client ConnectorsClient) listByResourceGroupNextResults(ctx context.Context, lastResults ConnectorsList) (result ConnectorsList, err error) {
+	req, err := lastResults.connectorsListPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "security.ConnectorsClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByResourceGroupSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "security.ConnectorsClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListByResourceGroupResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.ConnectorsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
+func (client ConnectorsClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result ConnectorsListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectorsClient.ListByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
+	return
+}
+
+// Update updates a security connector
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription. The name is case
+// insensitive.
+// securityConnectorName - the security connector name.
+// securityConnector - the security connector resource
+func (client ConnectorsClient) Update(ctx context.Context, resourceGroupName string, securityConnectorName string, securityConnector Connector) (result Connector, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectorsClient.Update")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("security.ConnectorsClient", "Update", err.Error())
+	}
+
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, securityConnectorName, securityConnector)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.ConnectorsClient", "Update", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "security.ConnectorsClient", "Update", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.ConnectorsClient", "Update", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// UpdatePreparer prepares the Update request.
+func (client ConnectorsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, securityConnectorName string, securityConnector Connector) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
+		"securityConnectorName": autorest.Encode("path", securityConnectorName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2021-12-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	securityConnector.SystemData = nil
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}", pathParameters),
+		autorest.WithJSON(securityConnector),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateSender sends the Update request. The method will close the
+// http.Response Body if it receives an error.
+func (client ConnectorsClient) UpdateSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// UpdateResponder handles the response to the Update request. The method always
+// closes the http.Response Body.
+func (client ConnectorsClient) UpdateResponder(resp *http.Response) (result Connector, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
 	return
 }

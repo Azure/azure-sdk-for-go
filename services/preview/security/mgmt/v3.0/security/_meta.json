@@ -1,5 +1,5 @@
 {
-  "commit": "e3980786418c280ecd7ed2e141407ed0f63cd493",
+  "commit": "880394b28e0f4e7925f4ecb3edc46b651ab58129",
   "readme": "/_/azure-rest-api-specs/specification/security/resource-manager/readme.md",
   "tag": "package-composite-v3",
   "use": "@microsoft.azure/autorest.go@2.1.187",

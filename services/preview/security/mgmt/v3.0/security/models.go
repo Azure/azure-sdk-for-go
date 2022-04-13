@@ -15,7 +15,6 @@ import (
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
 	"github.com/gofrs/uuid"
-	"io"
 	"net/http"
 )
 
@@ -1693,43 +1692,6 @@ func (asrp *AlertSimulatorRequestProperties) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
-}
-
-// AlertsSimulateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type AlertsSimulateFuture struct {
-	azure.FutureAPI
-	// Result returns the result of the asynchronous operation.
-	// If the operation has not completed it will return an error.
-	Result func(AlertsClient) (autorest.Response, error)
-}
-
-// UnmarshalJSON is the custom unmarshaller for CreateFuture.
-func (future *AlertsSimulateFuture) UnmarshalJSON(body []byte) error {
-	var azFuture azure.Future
-	if err := json.Unmarshal(body, &azFuture); err != nil {
-		return err
-	}
-	future.FutureAPI = &azFuture
-	future.Result = future.result
-	return nil
-}
-
-// result is the default implementation for AlertsSimulateFuture.Result.
-func (future *AlertsSimulateFuture) result(client AlertsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.AlertsSimulateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		ar.Response = future.Response()
-		err = azure.NewAsyncOpIncompleteError("security.AlertsSimulateFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
 }
 
 // AlertsSuppressionRule describes the suppression rule
@@ -3412,7 +3374,6 @@ func NewAscLocationListPage(cur AscLocationList, getNextPage func(context.Contex
 
 // Assessment security assessment on a resource
 type Assessment struct {
-	autorest.Response     `json:"-"`
 	*AssessmentProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
@@ -3498,7 +3459,7 @@ func (al AssessmentLinks) MarshalJSON() ([]byte, error) {
 type AssessmentList struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; Collection of security assessments in this page
-	Value *[]Assessment `json:"value,omitempty"`
+	Value *[]AssessmentResponse `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The URI to fetch the next page.
 	NextLink *string `json:"nextLink,omitempty"`
 }
@@ -3509,7 +3470,7 @@ func (al AssessmentList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AssessmentListIterator provides access to a complete listing of Assessment values.
+// AssessmentListIterator provides access to a complete listing of AssessmentResponse values.
 type AssessmentListIterator struct {
 	i    int
 	page AssessmentListPage
@@ -3560,9 +3521,9 @@ func (iter AssessmentListIterator) Response() AssessmentList {
 
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
-func (iter AssessmentListIterator) Value() Assessment {
+func (iter AssessmentListIterator) Value() AssessmentResponse {
 	if !iter.page.NotDone() {
-		return Assessment{}
+		return AssessmentResponse{}
 	}
 	return iter.page.Values()[iter.i]
 }
@@ -3594,7 +3555,7 @@ func (al AssessmentList) assessmentListPreparer(ctx context.Context) (*http.Requ
 		autorest.WithBaseURL(to.String(al.NextLink)))
 }
 
-// AssessmentListPage contains a page of Assessment values.
+// AssessmentListPage contains a page of AssessmentResponse values.
 type AssessmentListPage struct {
 	fn func(context.Context, AssessmentList) (AssessmentList, error)
 	al AssessmentList
@@ -3644,7 +3605,7 @@ func (page AssessmentListPage) Response() AssessmentList {
 }
 
 // Values returns the slice of values for the current page or nil if there are no values.
-func (page AssessmentListPage) Values() []Assessment {
+func (page AssessmentListPage) Values() []AssessmentResponse {
 	if page.al.IsEmpty() {
 		return nil
 	}
@@ -3661,7 +3622,6 @@ func NewAssessmentListPage(cur AssessmentList, getNextPage func(context.Context,
 
 // AssessmentMetadata security assessment metadata
 type AssessmentMetadata struct {
-	autorest.Response             `json:"-"`
 	*AssessmentMetadataProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
@@ -3729,171 +3689,6 @@ func (am *AssessmentMetadata) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
-}
-
-// AssessmentMetadataList list of security assessment metadata
-type AssessmentMetadataList struct {
-	autorest.Response `json:"-"`
-	// Value - READ-ONLY
-	Value *[]AssessmentMetadata `json:"value,omitempty"`
-	// NextLink - READ-ONLY; The URI to fetch the next page.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AssessmentMetadataList.
-func (aml AssessmentMetadataList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
-}
-
-// AssessmentMetadataListIterator provides access to a complete listing of AssessmentMetadata values.
-type AssessmentMetadataListIterator struct {
-	i    int
-	page AssessmentMetadataListPage
-}
-
-// NextWithContext advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *AssessmentMetadataListIterator) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AssessmentMetadataListIterator.NextWithContext")
-		defer func() {
-			sc := -1
-			if iter.Response().Response.Response != nil {
-				sc = iter.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err = iter.page.NextWithContext(ctx)
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (iter *AssessmentMetadataListIterator) Next() error {
-	return iter.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter AssessmentMetadataListIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter AssessmentMetadataListIterator) Response() AssessmentMetadataList {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter AssessmentMetadataListIterator) Value() AssessmentMetadata {
-	if !iter.page.NotDone() {
-		return AssessmentMetadata{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// Creates a new instance of the AssessmentMetadataListIterator type.
-func NewAssessmentMetadataListIterator(page AssessmentMetadataListPage) AssessmentMetadataListIterator {
-	return AssessmentMetadataListIterator{page: page}
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (aml AssessmentMetadataList) IsEmpty() bool {
-	return aml.Value == nil || len(*aml.Value) == 0
-}
-
-// hasNextLink returns true if the NextLink is not empty.
-func (aml AssessmentMetadataList) hasNextLink() bool {
-	return aml.NextLink != nil && len(*aml.NextLink) != 0
-}
-
-// assessmentMetadataListPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (aml AssessmentMetadataList) assessmentMetadataListPreparer(ctx context.Context) (*http.Request, error) {
-	if !aml.hasNextLink() {
-		return nil, nil
-	}
-	return autorest.Prepare((&http.Request{}).WithContext(ctx),
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(aml.NextLink)))
-}
-
-// AssessmentMetadataListPage contains a page of AssessmentMetadata values.
-type AssessmentMetadataListPage struct {
-	fn  func(context.Context, AssessmentMetadataList) (AssessmentMetadataList, error)
-	aml AssessmentMetadataList
-}
-
-// NextWithContext advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *AssessmentMetadataListPage) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AssessmentMetadataListPage.NextWithContext")
-		defer func() {
-			sc := -1
-			if page.Response().Response.Response != nil {
-				sc = page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	for {
-		next, err := page.fn(ctx, page.aml)
-		if err != nil {
-			return err
-		}
-		page.aml = next
-		if !next.hasNextLink() || !next.IsEmpty() {
-			break
-		}
-	}
-	return nil
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (page *AssessmentMetadataListPage) Next() error {
-	return page.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page AssessmentMetadataListPage) NotDone() bool {
-	return !page.aml.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page AssessmentMetadataListPage) Response() AssessmentMetadataList {
-	return page.aml
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page AssessmentMetadataListPage) Values() []AssessmentMetadata {
-	if page.aml.IsEmpty() {
-		return nil
-	}
-	return *page.aml.Value
-}
-
-// Creates a new instance of the AssessmentMetadataListPage type.
-func NewAssessmentMetadataListPage(cur AssessmentMetadataList, getNextPage func(context.Context, AssessmentMetadataList) (AssessmentMetadataList, error)) AssessmentMetadataListPage {
-	return AssessmentMetadataListPage{
-		fn:  getNextPage,
-		aml: cur,
-	}
 }
 
 // AssessmentMetadataPartnerData describes the partner that created the assessment
@@ -3970,6 +3765,330 @@ func (amp AssessmentMetadataProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// AssessmentMetadataPropertiesResponse describes properties of an assessment metadata response.
+type AssessmentMetadataPropertiesResponse struct {
+	PublishDates           *AssessmentMetadataPropertiesResponsePublishDates `json:"publishDates,omitempty"`
+	PlannedDeprecationDate *string                                           `json:"plannedDeprecationDate,omitempty"`
+	Tactics                *[]Tactics                                        `json:"tactics,omitempty"`
+	Techniques             *[]Techniques                                     `json:"techniques,omitempty"`
+	// DisplayName - User friendly display name of the assessment
+	DisplayName *string `json:"displayName,omitempty"`
+	// PolicyDefinitionID - READ-ONLY; Azure resource ID of the policy definition that turns this assessment calculation on
+	PolicyDefinitionID *string `json:"policyDefinitionId,omitempty"`
+	// Description - Human readable description of the assessment
+	Description *string `json:"description,omitempty"`
+	// RemediationDescription - Human readable description of what you should do to mitigate this security issue
+	RemediationDescription *string       `json:"remediationDescription,omitempty"`
+	Categories             *[]Categories `json:"categories,omitempty"`
+	// Severity - The severity level of the assessment. Possible values include: 'SeverityLow', 'SeverityMedium', 'SeverityHigh'
+	Severity Severity `json:"severity,omitempty"`
+	// UserImpact - The user impact of the assessment. Possible values include: 'UserImpactLow', 'UserImpactModerate', 'UserImpactHigh'
+	UserImpact UserImpact `json:"userImpact,omitempty"`
+	// ImplementationEffort - The implementation effort required to remediate this assessment. Possible values include: 'ImplementationEffortLow', 'ImplementationEffortModerate', 'ImplementationEffortHigh'
+	ImplementationEffort ImplementationEffort `json:"implementationEffort,omitempty"`
+	Threats              *[]Threats           `json:"threats,omitempty"`
+	// Preview - True if this assessment is in preview release status
+	Preview *bool `json:"preview,omitempty"`
+	// AssessmentType - BuiltIn if the assessment based on built-in Azure Policy definition, Custom if the assessment based on custom Azure Policy definition. Possible values include: 'BuiltIn', 'CustomPolicy', 'CustomerManaged', 'VerifiedPartner'
+	AssessmentType AssessmentType                 `json:"assessmentType,omitempty"`
+	PartnerData    *AssessmentMetadataPartnerData `json:"partnerData,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AssessmentMetadataPropertiesResponse.
+func (ampr AssessmentMetadataPropertiesResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ampr.PublishDates != nil {
+		objectMap["publishDates"] = ampr.PublishDates
+	}
+	if ampr.PlannedDeprecationDate != nil {
+		objectMap["plannedDeprecationDate"] = ampr.PlannedDeprecationDate
+	}
+	if ampr.Tactics != nil {
+		objectMap["tactics"] = ampr.Tactics
+	}
+	if ampr.Techniques != nil {
+		objectMap["techniques"] = ampr.Techniques
+	}
+	if ampr.DisplayName != nil {
+		objectMap["displayName"] = ampr.DisplayName
+	}
+	if ampr.Description != nil {
+		objectMap["description"] = ampr.Description
+	}
+	if ampr.RemediationDescription != nil {
+		objectMap["remediationDescription"] = ampr.RemediationDescription
+	}
+	if ampr.Categories != nil {
+		objectMap["categories"] = ampr.Categories
+	}
+	if ampr.Severity != "" {
+		objectMap["severity"] = ampr.Severity
+	}
+	if ampr.UserImpact != "" {
+		objectMap["userImpact"] = ampr.UserImpact
+	}
+	if ampr.ImplementationEffort != "" {
+		objectMap["implementationEffort"] = ampr.ImplementationEffort
+	}
+	if ampr.Threats != nil {
+		objectMap["threats"] = ampr.Threats
+	}
+	if ampr.Preview != nil {
+		objectMap["preview"] = ampr.Preview
+	}
+	if ampr.AssessmentType != "" {
+		objectMap["assessmentType"] = ampr.AssessmentType
+	}
+	if ampr.PartnerData != nil {
+		objectMap["partnerData"] = ampr.PartnerData
+	}
+	return json.Marshal(objectMap)
+}
+
+// AssessmentMetadataPropertiesResponsePublishDates ...
+type AssessmentMetadataPropertiesResponsePublishDates struct {
+	GA     *string `json:"GA,omitempty"`
+	Public *string `json:"public,omitempty"`
+}
+
+// AssessmentMetadataResponse security assessment metadata response
+type AssessmentMetadataResponse struct {
+	autorest.Response                     `json:"-"`
+	*AssessmentMetadataPropertiesResponse `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AssessmentMetadataResponse.
+func (amr AssessmentMetadataResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if amr.AssessmentMetadataPropertiesResponse != nil {
+		objectMap["properties"] = amr.AssessmentMetadataPropertiesResponse
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AssessmentMetadataResponse struct.
+func (amr *AssessmentMetadataResponse) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var assessmentMetadataPropertiesResponse AssessmentMetadataPropertiesResponse
+				err = json.Unmarshal(*v, &assessmentMetadataPropertiesResponse)
+				if err != nil {
+					return err
+				}
+				amr.AssessmentMetadataPropertiesResponse = &assessmentMetadataPropertiesResponse
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				amr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				amr.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				amr.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// AssessmentMetadataResponseList list of security assessment metadata
+type AssessmentMetadataResponseList struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY
+	Value *[]AssessmentMetadataResponse `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AssessmentMetadataResponseList.
+func (amrl AssessmentMetadataResponseList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// AssessmentMetadataResponseListIterator provides access to a complete listing of
+// AssessmentMetadataResponse values.
+type AssessmentMetadataResponseListIterator struct {
+	i    int
+	page AssessmentMetadataResponseListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AssessmentMetadataResponseListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssessmentMetadataResponseListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *AssessmentMetadataResponseListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AssessmentMetadataResponseListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AssessmentMetadataResponseListIterator) Response() AssessmentMetadataResponseList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AssessmentMetadataResponseListIterator) Value() AssessmentMetadataResponse {
+	if !iter.page.NotDone() {
+		return AssessmentMetadataResponse{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the AssessmentMetadataResponseListIterator type.
+func NewAssessmentMetadataResponseListIterator(page AssessmentMetadataResponseListPage) AssessmentMetadataResponseListIterator {
+	return AssessmentMetadataResponseListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (amrl AssessmentMetadataResponseList) IsEmpty() bool {
+	return amrl.Value == nil || len(*amrl.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (amrl AssessmentMetadataResponseList) hasNextLink() bool {
+	return amrl.NextLink != nil && len(*amrl.NextLink) != 0
+}
+
+// assessmentMetadataResponseListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (amrl AssessmentMetadataResponseList) assessmentMetadataResponseListPreparer(ctx context.Context) (*http.Request, error) {
+	if !amrl.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(amrl.NextLink)))
+}
+
+// AssessmentMetadataResponseListPage contains a page of AssessmentMetadataResponse values.
+type AssessmentMetadataResponseListPage struct {
+	fn   func(context.Context, AssessmentMetadataResponseList) (AssessmentMetadataResponseList, error)
+	amrl AssessmentMetadataResponseList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AssessmentMetadataResponseListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssessmentMetadataResponseListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.amrl)
+		if err != nil {
+			return err
+		}
+		page.amrl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *AssessmentMetadataResponseListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AssessmentMetadataResponseListPage) NotDone() bool {
+	return !page.amrl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AssessmentMetadataResponseListPage) Response() AssessmentMetadataResponseList {
+	return page.amrl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AssessmentMetadataResponseListPage) Values() []AssessmentMetadataResponse {
+	if page.amrl.IsEmpty() {
+		return nil
+	}
+	return *page.amrl.Value
+}
+
+// Creates a new instance of the AssessmentMetadataResponseListPage type.
+func NewAssessmentMetadataResponseListPage(cur AssessmentMetadataResponseList, getNextPage func(context.Context, AssessmentMetadataResponseList) (AssessmentMetadataResponseList, error)) AssessmentMetadataResponseListPage {
+	return AssessmentMetadataResponseListPage{
+		fn:   getNextPage,
+		amrl: cur,
+	}
+}
+
 // AssessmentPartnerData data regarding 3rd party partner integration
 type AssessmentPartnerData struct {
 	// PartnerName - Name of the company of the partner
@@ -3980,10 +4099,10 @@ type AssessmentPartnerData struct {
 
 // AssessmentProperties describes properties of an assessment.
 type AssessmentProperties struct {
+	Status          *AssessmentStatus    `json:"status,omitempty"`
 	ResourceDetails BasicResourceDetails `json:"resourceDetails,omitempty"`
 	// DisplayName - READ-ONLY; User friendly display name of the assessment
-	DisplayName *string           `json:"displayName,omitempty"`
-	Status      *AssessmentStatus `json:"status,omitempty"`
+	DisplayName *string `json:"displayName,omitempty"`
 	// AdditionalData - Additional data regarding the assessment
 	AdditionalData map[string]*string            `json:"additionalData"`
 	Links          *AssessmentLinks              `json:"links,omitempty"`
@@ -3994,10 +4113,10 @@ type AssessmentProperties struct {
 // MarshalJSON is the custom marshaler for AssessmentProperties.
 func (ap AssessmentProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	objectMap["resourceDetails"] = ap.ResourceDetails
 	if ap.Status != nil {
 		objectMap["status"] = ap.Status
 	}
+	objectMap["resourceDetails"] = ap.ResourceDetails
 	if ap.AdditionalData != nil {
 		objectMap["additionalData"] = ap.AdditionalData
 	}
@@ -4022,6 +4141,15 @@ func (ap *AssessmentProperties) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "status":
+			if v != nil {
+				var status AssessmentStatus
+				err = json.Unmarshal(*v, &status)
+				if err != nil {
+					return err
+				}
+				ap.Status = &status
+			}
 		case "resourceDetails":
 			if v != nil {
 				resourceDetails, err := unmarshalBasicResourceDetails(*v)
@@ -4038,15 +4166,6 @@ func (ap *AssessmentProperties) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ap.DisplayName = &displayName
-			}
-		case "status":
-			if v != nil {
-				var status AssessmentStatus
-				err = json.Unmarshal(*v, &status)
-				if err != nil {
-					return err
-				}
-				ap.Status = &status
 			}
 		case "additionalData":
 			if v != nil {
@@ -4090,6 +4209,289 @@ func (ap *AssessmentProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// AssessmentPropertiesBase describes properties of an assessment.
+type AssessmentPropertiesBase struct {
+	ResourceDetails BasicResourceDetails `json:"resourceDetails,omitempty"`
+	// DisplayName - READ-ONLY; User friendly display name of the assessment
+	DisplayName *string `json:"displayName,omitempty"`
+	// AdditionalData - Additional data regarding the assessment
+	AdditionalData map[string]*string            `json:"additionalData"`
+	Links          *AssessmentLinks              `json:"links,omitempty"`
+	Metadata       *AssessmentMetadataProperties `json:"metadata,omitempty"`
+	PartnersData   *AssessmentPartnerData        `json:"partnersData,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AssessmentPropertiesBase.
+func (apb AssessmentPropertiesBase) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	objectMap["resourceDetails"] = apb.ResourceDetails
+	if apb.AdditionalData != nil {
+		objectMap["additionalData"] = apb.AdditionalData
+	}
+	if apb.Links != nil {
+		objectMap["links"] = apb.Links
+	}
+	if apb.Metadata != nil {
+		objectMap["metadata"] = apb.Metadata
+	}
+	if apb.PartnersData != nil {
+		objectMap["partnersData"] = apb.PartnersData
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AssessmentPropertiesBase struct.
+func (apb *AssessmentPropertiesBase) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "resourceDetails":
+			if v != nil {
+				resourceDetails, err := unmarshalBasicResourceDetails(*v)
+				if err != nil {
+					return err
+				}
+				apb.ResourceDetails = resourceDetails
+			}
+		case "displayName":
+			if v != nil {
+				var displayName string
+				err = json.Unmarshal(*v, &displayName)
+				if err != nil {
+					return err
+				}
+				apb.DisplayName = &displayName
+			}
+		case "additionalData":
+			if v != nil {
+				var additionalData map[string]*string
+				err = json.Unmarshal(*v, &additionalData)
+				if err != nil {
+					return err
+				}
+				apb.AdditionalData = additionalData
+			}
+		case "links":
+			if v != nil {
+				var links AssessmentLinks
+				err = json.Unmarshal(*v, &links)
+				if err != nil {
+					return err
+				}
+				apb.Links = &links
+			}
+		case "metadata":
+			if v != nil {
+				var metadata AssessmentMetadataProperties
+				err = json.Unmarshal(*v, &metadata)
+				if err != nil {
+					return err
+				}
+				apb.Metadata = &metadata
+			}
+		case "partnersData":
+			if v != nil {
+				var partnersData AssessmentPartnerData
+				err = json.Unmarshal(*v, &partnersData)
+				if err != nil {
+					return err
+				}
+				apb.PartnersData = &partnersData
+			}
+		}
+	}
+
+	return nil
+}
+
+// AssessmentPropertiesResponse describes properties of an assessment.
+type AssessmentPropertiesResponse struct {
+	Status          *AssessmentStatusResponse `json:"status,omitempty"`
+	ResourceDetails BasicResourceDetails      `json:"resourceDetails,omitempty"`
+	// DisplayName - READ-ONLY; User friendly display name of the assessment
+	DisplayName *string `json:"displayName,omitempty"`
+	// AdditionalData - Additional data regarding the assessment
+	AdditionalData map[string]*string            `json:"additionalData"`
+	Links          *AssessmentLinks              `json:"links,omitempty"`
+	Metadata       *AssessmentMetadataProperties `json:"metadata,omitempty"`
+	PartnersData   *AssessmentPartnerData        `json:"partnersData,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AssessmentPropertiesResponse.
+func (apr AssessmentPropertiesResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if apr.Status != nil {
+		objectMap["status"] = apr.Status
+	}
+	objectMap["resourceDetails"] = apr.ResourceDetails
+	if apr.AdditionalData != nil {
+		objectMap["additionalData"] = apr.AdditionalData
+	}
+	if apr.Links != nil {
+		objectMap["links"] = apr.Links
+	}
+	if apr.Metadata != nil {
+		objectMap["metadata"] = apr.Metadata
+	}
+	if apr.PartnersData != nil {
+		objectMap["partnersData"] = apr.PartnersData
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AssessmentPropertiesResponse struct.
+func (apr *AssessmentPropertiesResponse) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "status":
+			if v != nil {
+				var status AssessmentStatusResponse
+				err = json.Unmarshal(*v, &status)
+				if err != nil {
+					return err
+				}
+				apr.Status = &status
+			}
+		case "resourceDetails":
+			if v != nil {
+				resourceDetails, err := unmarshalBasicResourceDetails(*v)
+				if err != nil {
+					return err
+				}
+				apr.ResourceDetails = resourceDetails
+			}
+		case "displayName":
+			if v != nil {
+				var displayName string
+				err = json.Unmarshal(*v, &displayName)
+				if err != nil {
+					return err
+				}
+				apr.DisplayName = &displayName
+			}
+		case "additionalData":
+			if v != nil {
+				var additionalData map[string]*string
+				err = json.Unmarshal(*v, &additionalData)
+				if err != nil {
+					return err
+				}
+				apr.AdditionalData = additionalData
+			}
+		case "links":
+			if v != nil {
+				var links AssessmentLinks
+				err = json.Unmarshal(*v, &links)
+				if err != nil {
+					return err
+				}
+				apr.Links = &links
+			}
+		case "metadata":
+			if v != nil {
+				var metadata AssessmentMetadataProperties
+				err = json.Unmarshal(*v, &metadata)
+				if err != nil {
+					return err
+				}
+				apr.Metadata = &metadata
+			}
+		case "partnersData":
+			if v != nil {
+				var partnersData AssessmentPartnerData
+				err = json.Unmarshal(*v, &partnersData)
+				if err != nil {
+					return err
+				}
+				apr.PartnersData = &partnersData
+			}
+		}
+	}
+
+	return nil
+}
+
+// AssessmentResponse security assessment on a resource - response format
+type AssessmentResponse struct {
+	autorest.Response             `json:"-"`
+	*AssessmentPropertiesResponse `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AssessmentResponse.
+func (ar AssessmentResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ar.AssessmentPropertiesResponse != nil {
+		objectMap["properties"] = ar.AssessmentPropertiesResponse
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AssessmentResponse struct.
+func (ar *AssessmentResponse) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var assessmentPropertiesResponse AssessmentPropertiesResponse
+				err = json.Unmarshal(*v, &assessmentPropertiesResponse)
+				if err != nil {
+					return err
+				}
+				ar.AssessmentPropertiesResponse = &assessmentPropertiesResponse
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ar.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ar.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ar.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
 // AssessmentStatus the result of the assessment
 type AssessmentStatus struct {
 	// Code - Programmatic code for the status of the assessment. Possible values include: 'Healthy', 'Unhealthy', 'NotApplicable'
@@ -4098,6 +4500,35 @@ type AssessmentStatus struct {
 	Cause *string `json:"cause,omitempty"`
 	// Description - Human readable description of the assessment status
 	Description *string `json:"description,omitempty"`
+}
+
+// AssessmentStatusResponse the result of the assessment
+type AssessmentStatusResponse struct {
+	// FirstEvaluationDate - READ-ONLY; The time that the assessment was created and first evaluated. Returned as UTC time in ISO 8601 format
+	FirstEvaluationDate *date.Time `json:"firstEvaluationDate,omitempty"`
+	// StatusChangeDate - READ-ONLY; The time that the status of the assessment last changed. Returned as UTC time in ISO 8601 format
+	StatusChangeDate *date.Time `json:"statusChangeDate,omitempty"`
+	// Code - Programmatic code for the status of the assessment. Possible values include: 'Healthy', 'Unhealthy', 'NotApplicable'
+	Code AssessmentStatusCode `json:"code,omitempty"`
+	// Cause - Programmatic code for the cause of the assessment status
+	Cause *string `json:"cause,omitempty"`
+	// Description - Human readable description of the assessment status
+	Description *string `json:"description,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AssessmentStatusResponse.
+func (asr AssessmentStatusResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if asr.Code != "" {
+		objectMap["code"] = asr.Code
+	}
+	if asr.Cause != nil {
+		objectMap["cause"] = asr.Cause
+	}
+	if asr.Description != nil {
+		objectMap["description"] = asr.Description
+	}
+	return json.Marshal(objectMap)
 }
 
 // AtaExternalSecuritySolution represents an ATA security solution which sends logs to an OMS workspace
@@ -4569,7 +5000,7 @@ func (aa AutomationAction) AsBasicAutomationAction() (BasicAutomationAction, boo
 }
 
 // AutomationActionEventHub the target Event Hub to which event data will be exported. To learn more about
-// Security Center continuous export capabilities, visit https://aka.ms/ASCExportLearnMore
+// Microsoft Defender for Cloud continuous export capabilities, visit https://aka.ms/ASCExportLearnMore
 type AutomationActionEventHub struct {
 	// EventHubResourceID - The target Event Hub Azure Resource ID.
 	EventHubResourceID *string `json:"eventHubResourceId,omitempty"`
@@ -4622,8 +5053,9 @@ func (aaeh AutomationActionEventHub) AsBasicAutomationAction() (BasicAutomationA
 	return &aaeh, true
 }
 
-// AutomationActionLogicApp the logic app action that should be triggered. To learn more about Security
-// Center's Workflow Automation capabilities, visit https://aka.ms/ASCWorkflowAutomationLearnMore
+// AutomationActionLogicApp the logic app action that should be triggered. To learn more about Microsoft
+// Defender for Cloud's Workflow Automation capabilities, visit
+// https://aka.ms/ASCWorkflowAutomationLearnMore
 type AutomationActionLogicApp struct {
 	// LogicAppResourceID - The triggered Logic App Azure Resource ID. This can also reside on other subscriptions, given that you have permissions to trigger the Logic App
 	LogicAppResourceID *string `json:"logicAppResourceId,omitempty"`
@@ -4678,8 +5110,8 @@ func (aala AutomationActionLogicApp) AsBasicAutomationAction() (BasicAutomationA
 // alerts data will reside in the 'SecurityAlert' table and the assessments data will reside in the
 // 'SecurityRecommendation' table (under the 'Security'/'SecurityCenterFree' solutions). Note that in order
 // to view the data in the workspace, the Security Center Log Analytics free/standard solution needs to be
-// enabled on that workspace. To learn more about Security Center continuous export capabilities, visit
-// https://aka.ms/ASCExportLearnMore
+// enabled on that workspace. To learn more about Microsoft Defender for Cloud continuous export
+// capabilities, visit https://aka.ms/ASCExportLearnMore
 type AutomationActionWorkspace struct {
 	// WorkspaceResourceID - The fully qualified Log Analytics Workspace Azure Resource ID.
 	WorkspaceResourceID *string `json:"workspaceResourceId,omitempty"`
@@ -4986,7 +5418,7 @@ type AutomationScope struct {
 // - security alerts and security assessments. To learn more about the supported security events data
 // models schemas - please visit https://aka.ms/ASCAutomationSchemas.
 type AutomationSource struct {
-	// EventSource - A valid event source type. Possible values include: 'EventSourceAssessments', 'EventSourceSubAssessments', 'EventSourceAlerts', 'EventSourceSecureScores', 'EventSourceSecureScoresSnapshot', 'EventSourceSecureScoreControls', 'EventSourceSecureScoreControlsSnapshot', 'EventSourceRegulatoryComplianceAssessment', 'EventSourceRegulatoryComplianceAssessmentSnapshot'
+	// EventSource - A valid event source type. Possible values include: 'EventSourceAssessments', 'EventSourceAssessmentsSnapshot', 'EventSourceSubAssessments', 'EventSourceSubAssessmentsSnapshot', 'EventSourceAlerts', 'EventSourceSecureScores', 'EventSourceSecureScoresSnapshot', 'EventSourceSecureScoreControls', 'EventSourceSecureScoreControlsSnapshot', 'EventSourceRegulatoryComplianceAssessment', 'EventSourceRegulatoryComplianceAssessmentSnapshot'
 	EventSource EventSource `json:"eventSource,omitempty"`
 	// RuleSets - A set of rules which evaluate upon event interception. A logical disjunction is applied between defined rule sets (logical 'or').
 	RuleSets *[]AutomationRuleSet `json:"ruleSets,omitempty"`
@@ -5746,6 +6178,112 @@ type CloudErrorBody struct {
 func (ceb CloudErrorBody) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
+}
+
+// BasicCloudOffering the security offering details
+type BasicCloudOffering interface {
+	AsCspmMonitorAwsOffering() (*CspmMonitorAwsOffering, bool)
+	AsDefenderForContainersAwsOffering() (*DefenderForContainersAwsOffering, bool)
+	AsDefenderForServersAwsOffering() (*DefenderForServersAwsOffering, bool)
+	AsInformationProtectionAwsOffering() (*InformationProtectionAwsOffering, bool)
+	AsCloudOffering() (*CloudOffering, bool)
+}
+
+// CloudOffering the security offering details
+type CloudOffering struct {
+	// Description - READ-ONLY; The offering description.
+	Description *string `json:"description,omitempty"`
+	// OfferingType - Possible values include: 'OfferingTypeCloudOffering', 'OfferingTypeCspmMonitorAws', 'OfferingTypeDefenderForContainersAws', 'OfferingTypeDefenderForServersAws', 'OfferingTypeInformationProtectionAws'
+	OfferingType OfferingType `json:"offeringType,omitempty"`
+}
+
+func unmarshalBasicCloudOffering(body []byte) (BasicCloudOffering, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["offeringType"] {
+	case string(OfferingTypeCspmMonitorAws):
+		var cmao CspmMonitorAwsOffering
+		err := json.Unmarshal(body, &cmao)
+		return cmao, err
+	case string(OfferingTypeDefenderForContainersAws):
+		var dfcao DefenderForContainersAwsOffering
+		err := json.Unmarshal(body, &dfcao)
+		return dfcao, err
+	case string(OfferingTypeDefenderForServersAws):
+		var dfsao DefenderForServersAwsOffering
+		err := json.Unmarshal(body, &dfsao)
+		return dfsao, err
+	case string(OfferingTypeInformationProtectionAws):
+		var ipao InformationProtectionAwsOffering
+		err := json.Unmarshal(body, &ipao)
+		return ipao, err
+	default:
+		var co CloudOffering
+		err := json.Unmarshal(body, &co)
+		return co, err
+	}
+}
+func unmarshalBasicCloudOfferingArray(body []byte) ([]BasicCloudOffering, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	coArray := make([]BasicCloudOffering, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		co, err := unmarshalBasicCloudOffering(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		coArray[index] = co
+	}
+	return coArray, nil
+}
+
+// MarshalJSON is the custom marshaler for CloudOffering.
+func (co CloudOffering) MarshalJSON() ([]byte, error) {
+	co.OfferingType = OfferingTypeCloudOffering
+	objectMap := make(map[string]interface{})
+	if co.OfferingType != "" {
+		objectMap["offeringType"] = co.OfferingType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsCspmMonitorAwsOffering is the BasicCloudOffering implementation for CloudOffering.
+func (co CloudOffering) AsCspmMonitorAwsOffering() (*CspmMonitorAwsOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForContainersAwsOffering is the BasicCloudOffering implementation for CloudOffering.
+func (co CloudOffering) AsDefenderForContainersAwsOffering() (*DefenderForContainersAwsOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForServersAwsOffering is the BasicCloudOffering implementation for CloudOffering.
+func (co CloudOffering) AsDefenderForServersAwsOffering() (*DefenderForServersAwsOffering, bool) {
+	return nil, false
+}
+
+// AsInformationProtectionAwsOffering is the BasicCloudOffering implementation for CloudOffering.
+func (co CloudOffering) AsInformationProtectionAwsOffering() (*InformationProtectionAwsOffering, bool) {
+	return nil, false
+}
+
+// AsCloudOffering is the BasicCloudOffering implementation for CloudOffering.
+func (co CloudOffering) AsCloudOffering() (*CloudOffering, bool) {
+	return &co, true
+}
+
+// AsBasicCloudOffering is the BasicCloudOffering implementation for CloudOffering.
+func (co CloudOffering) AsBasicCloudOffering() (BasicCloudOffering, bool) {
+	return &co, true
 }
 
 // Compliance compliance of a scope
@@ -6695,6 +7233,220 @@ func (ctina ConnectionToIPNotAllowed) AsBasicCustomAlertRule() (BasicCustomAlert
 	return &ctina, true
 }
 
+// Connector the security connector resource.
+type Connector struct {
+	autorest.Response `json:"-"`
+	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty"`
+	// ConnectorProperties - Security connector data
+	*ConnectorProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Location where the resource is stored
+	Location *string `json:"location,omitempty"`
+	// Kind - Kind of the resource
+	Kind *string `json:"kind,omitempty"`
+	// Etag - Entity tag is used for comparing two or more entities from the same requested resource.
+	Etag *string `json:"etag,omitempty"`
+	// Tags - A list of key value pairs that describe the resource.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for Connector.
+func (c Connector) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if c.ConnectorProperties != nil {
+		objectMap["properties"] = c.ConnectorProperties
+	}
+	if c.Location != nil {
+		objectMap["location"] = c.Location
+	}
+	if c.Kind != nil {
+		objectMap["kind"] = c.Kind
+	}
+	if c.Etag != nil {
+		objectMap["etag"] = c.Etag
+	}
+	if c.Tags != nil {
+		objectMap["tags"] = c.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Connector struct.
+func (c *Connector) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				c.SystemData = &systemData
+			}
+		case "properties":
+			if v != nil {
+				var connectorProperties ConnectorProperties
+				err = json.Unmarshal(*v, &connectorProperties)
+				if err != nil {
+					return err
+				}
+				c.ConnectorProperties = &connectorProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				c.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				c.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				c.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				c.Location = &location
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				c.Kind = &kind
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				c.Etag = &etag
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				c.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// ConnectorProperties a set of properties that defines the security connector configuration.
+type ConnectorProperties struct {
+	// HierarchyIdentifier - The multi cloud resource identifier (account id in case of AWS connector).
+	HierarchyIdentifier *string `json:"hierarchyIdentifier,omitempty"`
+	// CloudName - The multi cloud resource's cloud name. Possible values include: 'Azure', 'AWS', 'GCP'
+	CloudName CloudName `json:"cloudName,omitempty"`
+	// Offerings - A collection of offerings for the security connector.
+	Offerings *[]BasicCloudOffering `json:"offerings,omitempty"`
+	// OrganizationalData - The multi cloud account's organizational data
+	OrganizationalData *ConnectorPropertiesOrganizationalData `json:"organizationalData,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ConnectorProperties struct.
+func (cp *ConnectorProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "hierarchyIdentifier":
+			if v != nil {
+				var hierarchyIdentifier string
+				err = json.Unmarshal(*v, &hierarchyIdentifier)
+				if err != nil {
+					return err
+				}
+				cp.HierarchyIdentifier = &hierarchyIdentifier
+			}
+		case "cloudName":
+			if v != nil {
+				var cloudName CloudName
+				err = json.Unmarshal(*v, &cloudName)
+				if err != nil {
+					return err
+				}
+				cp.CloudName = cloudName
+			}
+		case "offerings":
+			if v != nil {
+				offerings, err := unmarshalBasicCloudOfferingArray(*v)
+				if err != nil {
+					return err
+				}
+				cp.Offerings = &offerings
+			}
+		case "organizationalData":
+			if v != nil {
+				var organizationalData ConnectorPropertiesOrganizationalData
+				err = json.Unmarshal(*v, &organizationalData)
+				if err != nil {
+					return err
+				}
+				cp.OrganizationalData = &organizationalData
+			}
+		}
+	}
+
+	return nil
+}
+
+// ConnectorPropertiesOrganizationalData the multi cloud account's organizational data
+type ConnectorPropertiesOrganizationalData struct {
+	// OrganizationMembershipType - The multi cloud account's membership type in the organization. Possible values include: 'Member', 'Organization'
+	OrganizationMembershipType OrganizationMembershipType `json:"organizationMembershipType,omitempty"`
+	// ParentHierarchyID - If the multi cloud account is not of membership type organization, this will be the ID of the account's parent
+	ParentHierarchyID *string `json:"parentHierarchyId,omitempty"`
+	// StacksetName - If the multi cloud account is of membership type organization, this will be the name of the onboarding stackset
+	StacksetName *string `json:"stacksetName,omitempty"`
+	// ExcludedAccountIds - If the multi cloud account is of membership type organization, list of accounts excluded from offering
+	ExcludedAccountIds *[]string `json:"excludedAccountIds,omitempty"`
+}
+
 // ConnectorSetting the connector setting
 type ConnectorSetting struct {
 	autorest.Response `json:"-"`
@@ -6974,6 +7726,174 @@ func (csp *ConnectorSettingProperties) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// ConnectorsList list of security connectors response.
+type ConnectorsList struct {
+	autorest.Response `json:"-"`
+	// Value - The list of security connectors under the given scope.
+	Value *[]Connector `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ConnectorsList.
+func (cl ConnectorsList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cl.Value != nil {
+		objectMap["value"] = cl.Value
+	}
+	return json.Marshal(objectMap)
+}
+
+// ConnectorsListIterator provides access to a complete listing of Connector values.
+type ConnectorsListIterator struct {
+	i    int
+	page ConnectorsListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ConnectorsListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectorsListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ConnectorsListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ConnectorsListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ConnectorsListIterator) Response() ConnectorsList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ConnectorsListIterator) Value() Connector {
+	if !iter.page.NotDone() {
+		return Connector{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ConnectorsListIterator type.
+func NewConnectorsListIterator(page ConnectorsListPage) ConnectorsListIterator {
+	return ConnectorsListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (cl ConnectorsList) IsEmpty() bool {
+	return cl.Value == nil || len(*cl.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (cl ConnectorsList) hasNextLink() bool {
+	return cl.NextLink != nil && len(*cl.NextLink) != 0
+}
+
+// connectorsListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (cl ConnectorsList) connectorsListPreparer(ctx context.Context) (*http.Request, error) {
+	if !cl.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(cl.NextLink)))
+}
+
+// ConnectorsListPage contains a page of Connector values.
+type ConnectorsListPage struct {
+	fn func(context.Context, ConnectorsList) (ConnectorsList, error)
+	cl ConnectorsList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ConnectorsListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectorsListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.cl)
+		if err != nil {
+			return err
+		}
+		page.cl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ConnectorsListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ConnectorsListPage) NotDone() bool {
+	return !page.cl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ConnectorsListPage) Response() ConnectorsList {
+	return page.cl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ConnectorsListPage) Values() []Connector {
+	if page.cl.IsEmpty() {
+		return nil
+	}
+	return *page.cl.Value
+}
+
+// Creates a new instance of the ConnectorsListPage type.
+func NewConnectorsListPage(cur ConnectorsList, getNextPage func(context.Context, ConnectorsList) (ConnectorsList, error)) ConnectorsListPage {
+	return ConnectorsListPage{
+		fn: getNextPage,
+		cl: cur,
+	}
 }
 
 // Contact contact details for security issues
@@ -7282,6 +8202,65 @@ func (crvp ContainerRegistryVulnerabilityProperties) AsAdditionalData() (*Additi
 // AsBasicAdditionalData is the BasicAdditionalData implementation for ContainerRegistryVulnerabilityProperties.
 func (crvp ContainerRegistryVulnerabilityProperties) AsBasicAdditionalData() (BasicAdditionalData, bool) {
 	return &crvp, true
+}
+
+// CspmMonitorAwsOffering the CSPM monitoring for AWS offering configurations
+type CspmMonitorAwsOffering struct {
+	// NativeCloudConnection - The native cloud connection configuration
+	NativeCloudConnection *CspmMonitorAwsOfferingNativeCloudConnection `json:"nativeCloudConnection,omitempty"`
+	// Description - READ-ONLY; The offering description.
+	Description *string `json:"description,omitempty"`
+	// OfferingType - Possible values include: 'OfferingTypeCloudOffering', 'OfferingTypeCspmMonitorAws', 'OfferingTypeDefenderForContainersAws', 'OfferingTypeDefenderForServersAws', 'OfferingTypeInformationProtectionAws'
+	OfferingType OfferingType `json:"offeringType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CspmMonitorAwsOffering.
+func (cmao CspmMonitorAwsOffering) MarshalJSON() ([]byte, error) {
+	cmao.OfferingType = OfferingTypeCspmMonitorAws
+	objectMap := make(map[string]interface{})
+	if cmao.NativeCloudConnection != nil {
+		objectMap["nativeCloudConnection"] = cmao.NativeCloudConnection
+	}
+	if cmao.OfferingType != "" {
+		objectMap["offeringType"] = cmao.OfferingType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsCspmMonitorAwsOffering is the BasicCloudOffering implementation for CspmMonitorAwsOffering.
+func (cmao CspmMonitorAwsOffering) AsCspmMonitorAwsOffering() (*CspmMonitorAwsOffering, bool) {
+	return &cmao, true
+}
+
+// AsDefenderForContainersAwsOffering is the BasicCloudOffering implementation for CspmMonitorAwsOffering.
+func (cmao CspmMonitorAwsOffering) AsDefenderForContainersAwsOffering() (*DefenderForContainersAwsOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForServersAwsOffering is the BasicCloudOffering implementation for CspmMonitorAwsOffering.
+func (cmao CspmMonitorAwsOffering) AsDefenderForServersAwsOffering() (*DefenderForServersAwsOffering, bool) {
+	return nil, false
+}
+
+// AsInformationProtectionAwsOffering is the BasicCloudOffering implementation for CspmMonitorAwsOffering.
+func (cmao CspmMonitorAwsOffering) AsInformationProtectionAwsOffering() (*InformationProtectionAwsOffering, bool) {
+	return nil, false
+}
+
+// AsCloudOffering is the BasicCloudOffering implementation for CspmMonitorAwsOffering.
+func (cmao CspmMonitorAwsOffering) AsCloudOffering() (*CloudOffering, bool) {
+	return nil, false
+}
+
+// AsBasicCloudOffering is the BasicCloudOffering implementation for CspmMonitorAwsOffering.
+func (cmao CspmMonitorAwsOffering) AsBasicCloudOffering() (BasicCloudOffering, bool) {
+	return &cmao, true
+}
+
+// CspmMonitorAwsOfferingNativeCloudConnection the native cloud connection configuration
+type CspmMonitorAwsOfferingNativeCloudConnection struct {
+	// CloudRoleArn - The cloud role ARN in AWS for this feature
+	CloudRoleArn *string `json:"cloudRoleArn,omitempty"`
 }
 
 // BasicCustomAlertRule a custom alert rule.
@@ -7631,6 +8610,671 @@ func (car CustomAlertRule) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool)
 	return &car, true
 }
 
+// CustomAssessmentAutomation custom Assessment Automation
+type CustomAssessmentAutomation struct {
+	autorest.Response `json:"-"`
+	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty"`
+	// CustomAssessmentAutomationProperties - describes Custom Assessment Automation properties.
+	*CustomAssessmentAutomationProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CustomAssessmentAutomation.
+func (caa CustomAssessmentAutomation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if caa.CustomAssessmentAutomationProperties != nil {
+		objectMap["properties"] = caa.CustomAssessmentAutomationProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CustomAssessmentAutomation struct.
+func (caa *CustomAssessmentAutomation) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				caa.SystemData = &systemData
+			}
+		case "properties":
+			if v != nil {
+				var customAssessmentAutomationProperties CustomAssessmentAutomationProperties
+				err = json.Unmarshal(*v, &customAssessmentAutomationProperties)
+				if err != nil {
+					return err
+				}
+				caa.CustomAssessmentAutomationProperties = &customAssessmentAutomationProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				caa.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				caa.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				caa.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// CustomAssessmentAutomationProperties describes the Custom Assessment Automation properties
+type CustomAssessmentAutomationProperties struct {
+	// CompressedQuery - GZip encoded KQL query representing the assessment automation results required.
+	CompressedQuery *string `json:"compressedQuery,omitempty"`
+	// SupportedCloud - Relevant cloud for the custom assessment automation. Possible values include: 'SupportedCloudEnumAWS', 'SupportedCloudEnumGCP'
+	SupportedCloud SupportedCloudEnum `json:"supportedCloud,omitempty"`
+	// Severity - The severity to relate to the assessments generated by this assessment automation. Possible values include: 'SeverityEnumHigh', 'SeverityEnumMedium', 'SeverityEnumLow'
+	Severity SeverityEnum `json:"severity,omitempty"`
+	// DisplayName - The display name of the assessments generated by this assessment automation.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description to relate to the assessments generated by this assessment automation.
+	Description *string `json:"description,omitempty"`
+	// RemediationDescription - The remediation description to relate to the assessments generated by this assessment automation.
+	RemediationDescription *string `json:"remediationDescription,omitempty"`
+	// AssessmentKey - The assessment metadata key used when an assessment is generated for this assessment automation.
+	AssessmentKey *string `json:"assessmentKey,omitempty"`
+}
+
+// CustomAssessmentAutomationRequest custom Assessment Automation request
+type CustomAssessmentAutomationRequest struct {
+	// CustomAssessmentAutomationRequestProperties - describes Custom Assessment Automation request properties.
+	*CustomAssessmentAutomationRequestProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CustomAssessmentAutomationRequest.
+func (caar CustomAssessmentAutomationRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if caar.CustomAssessmentAutomationRequestProperties != nil {
+		objectMap["properties"] = caar.CustomAssessmentAutomationRequestProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CustomAssessmentAutomationRequest struct.
+func (caar *CustomAssessmentAutomationRequest) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var customAssessmentAutomationRequestProperties CustomAssessmentAutomationRequestProperties
+				err = json.Unmarshal(*v, &customAssessmentAutomationRequestProperties)
+				if err != nil {
+					return err
+				}
+				caar.CustomAssessmentAutomationRequestProperties = &customAssessmentAutomationRequestProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				caar.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				caar.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				caar.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// CustomAssessmentAutomationRequestProperties describes the Custom Assessment Automation properties
+type CustomAssessmentAutomationRequestProperties struct {
+	// CompressedQuery - Base 64 encoded KQL query representing the assessment automation results required.
+	CompressedQuery *string `json:"compressedQuery,omitempty"`
+	// SupportedCloud - Relevant cloud for the custom assessment automation. Possible values include: 'SupportedCloudEnumAWS', 'SupportedCloudEnumGCP'
+	SupportedCloud SupportedCloudEnum `json:"supportedCloud,omitempty"`
+	// Severity - The severity to relate to the assessments generated by this assessment automation. Possible values include: 'SeverityEnumHigh', 'SeverityEnumMedium', 'SeverityEnumLow'
+	Severity SeverityEnum `json:"severity,omitempty"`
+	// DisplayName - The display name of the assessments generated by this assessment automation.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description to relate to the assessments generated by this assessment automation.
+	Description *string `json:"description,omitempty"`
+	// RemediationDescription - The remediation description to relate to the assessments generated by this assessment automation.
+	RemediationDescription *string `json:"remediationDescription,omitempty"`
+}
+
+// CustomAssessmentAutomationsListResult a list of Custom Assessment Automations
+type CustomAssessmentAutomationsListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; Collection of Custom Assessment Automations
+	Value *[]CustomAssessmentAutomation `json:"value,omitempty"`
+	// NextLink - The link used to get the next page of operations.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CustomAssessmentAutomationsListResult.
+func (caalr CustomAssessmentAutomationsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if caalr.NextLink != nil {
+		objectMap["nextLink"] = caalr.NextLink
+	}
+	return json.Marshal(objectMap)
+}
+
+// CustomAssessmentAutomationsListResultIterator provides access to a complete listing of
+// CustomAssessmentAutomation values.
+type CustomAssessmentAutomationsListResultIterator struct {
+	i    int
+	page CustomAssessmentAutomationsListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *CustomAssessmentAutomationsListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CustomAssessmentAutomationsListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *CustomAssessmentAutomationsListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter CustomAssessmentAutomationsListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter CustomAssessmentAutomationsListResultIterator) Response() CustomAssessmentAutomationsListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter CustomAssessmentAutomationsListResultIterator) Value() CustomAssessmentAutomation {
+	if !iter.page.NotDone() {
+		return CustomAssessmentAutomation{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the CustomAssessmentAutomationsListResultIterator type.
+func NewCustomAssessmentAutomationsListResultIterator(page CustomAssessmentAutomationsListResultPage) CustomAssessmentAutomationsListResultIterator {
+	return CustomAssessmentAutomationsListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (caalr CustomAssessmentAutomationsListResult) IsEmpty() bool {
+	return caalr.Value == nil || len(*caalr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (caalr CustomAssessmentAutomationsListResult) hasNextLink() bool {
+	return caalr.NextLink != nil && len(*caalr.NextLink) != 0
+}
+
+// customAssessmentAutomationsListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (caalr CustomAssessmentAutomationsListResult) customAssessmentAutomationsListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if !caalr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(caalr.NextLink)))
+}
+
+// CustomAssessmentAutomationsListResultPage contains a page of CustomAssessmentAutomation values.
+type CustomAssessmentAutomationsListResultPage struct {
+	fn    func(context.Context, CustomAssessmentAutomationsListResult) (CustomAssessmentAutomationsListResult, error)
+	caalr CustomAssessmentAutomationsListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *CustomAssessmentAutomationsListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CustomAssessmentAutomationsListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.caalr)
+		if err != nil {
+			return err
+		}
+		page.caalr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *CustomAssessmentAutomationsListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page CustomAssessmentAutomationsListResultPage) NotDone() bool {
+	return !page.caalr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page CustomAssessmentAutomationsListResultPage) Response() CustomAssessmentAutomationsListResult {
+	return page.caalr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page CustomAssessmentAutomationsListResultPage) Values() []CustomAssessmentAutomation {
+	if page.caalr.IsEmpty() {
+		return nil
+	}
+	return *page.caalr.Value
+}
+
+// Creates a new instance of the CustomAssessmentAutomationsListResultPage type.
+func NewCustomAssessmentAutomationsListResultPage(cur CustomAssessmentAutomationsListResult, getNextPage func(context.Context, CustomAssessmentAutomationsListResult) (CustomAssessmentAutomationsListResult, error)) CustomAssessmentAutomationsListResultPage {
+	return CustomAssessmentAutomationsListResultPage{
+		fn:    getNextPage,
+		caalr: cur,
+	}
+}
+
+// CustomEntityStoreAssignment custom entity store assignment
+type CustomEntityStoreAssignment struct {
+	autorest.Response `json:"-"`
+	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty"`
+	// CustomEntityStoreAssignmentProperties - describes custom entity store assignment properties.
+	*CustomEntityStoreAssignmentProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CustomEntityStoreAssignment.
+func (cesa CustomEntityStoreAssignment) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cesa.CustomEntityStoreAssignmentProperties != nil {
+		objectMap["properties"] = cesa.CustomEntityStoreAssignmentProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CustomEntityStoreAssignment struct.
+func (cesa *CustomEntityStoreAssignment) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				cesa.SystemData = &systemData
+			}
+		case "properties":
+			if v != nil {
+				var customEntityStoreAssignmentProperties CustomEntityStoreAssignmentProperties
+				err = json.Unmarshal(*v, &customEntityStoreAssignmentProperties)
+				if err != nil {
+					return err
+				}
+				cesa.CustomEntityStoreAssignmentProperties = &customEntityStoreAssignmentProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				cesa.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				cesa.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				cesa.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// CustomEntityStoreAssignmentProperties describes the custom entity store assignment properties
+type CustomEntityStoreAssignmentProperties struct {
+	// Principal - The principal assigned with entity store. Format of principal is: [AAD type]=[PrincipalObjectId];[TenantId]
+	Principal *string `json:"principal,omitempty"`
+	// EntityStoreDatabaseLink - The link to entity store database.
+	EntityStoreDatabaseLink *string `json:"entityStoreDatabaseLink,omitempty"`
+}
+
+// CustomEntityStoreAssignmentRequest describes the custom entity store assignment request
+type CustomEntityStoreAssignmentRequest struct {
+	*CustomEntityStoreAssignmentRequestProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CustomEntityStoreAssignmentRequest.
+func (cesar CustomEntityStoreAssignmentRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cesar.CustomEntityStoreAssignmentRequestProperties != nil {
+		objectMap["properties"] = cesar.CustomEntityStoreAssignmentRequestProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CustomEntityStoreAssignmentRequest struct.
+func (cesar *CustomEntityStoreAssignmentRequest) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var customEntityStoreAssignmentRequestProperties CustomEntityStoreAssignmentRequestProperties
+				err = json.Unmarshal(*v, &customEntityStoreAssignmentRequestProperties)
+				if err != nil {
+					return err
+				}
+				cesar.CustomEntityStoreAssignmentRequestProperties = &customEntityStoreAssignmentRequestProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// CustomEntityStoreAssignmentRequestProperties describes properties of custom entity store assignment
+// request
+type CustomEntityStoreAssignmentRequestProperties struct {
+	// Principal - The principal assigned with entity store. If not provided, will use caller principal. Format of principal is: [AAD type]=[PrincipalObjectId];[TenantId]
+	Principal *string `json:"principal,omitempty"`
+}
+
+// CustomEntityStoreAssignmentsListResult a list of custom entity store assignments
+type CustomEntityStoreAssignmentsListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; Collection of custom entity store assignments
+	Value *[]CustomEntityStoreAssignment `json:"value,omitempty"`
+	// NextLink - The link used to get the next page of operations.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CustomEntityStoreAssignmentsListResult.
+func (cesalr CustomEntityStoreAssignmentsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cesalr.NextLink != nil {
+		objectMap["nextLink"] = cesalr.NextLink
+	}
+	return json.Marshal(objectMap)
+}
+
+// CustomEntityStoreAssignmentsListResultIterator provides access to a complete listing of
+// CustomEntityStoreAssignment values.
+type CustomEntityStoreAssignmentsListResultIterator struct {
+	i    int
+	page CustomEntityStoreAssignmentsListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *CustomEntityStoreAssignmentsListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CustomEntityStoreAssignmentsListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *CustomEntityStoreAssignmentsListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter CustomEntityStoreAssignmentsListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter CustomEntityStoreAssignmentsListResultIterator) Response() CustomEntityStoreAssignmentsListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter CustomEntityStoreAssignmentsListResultIterator) Value() CustomEntityStoreAssignment {
+	if !iter.page.NotDone() {
+		return CustomEntityStoreAssignment{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the CustomEntityStoreAssignmentsListResultIterator type.
+func NewCustomEntityStoreAssignmentsListResultIterator(page CustomEntityStoreAssignmentsListResultPage) CustomEntityStoreAssignmentsListResultIterator {
+	return CustomEntityStoreAssignmentsListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (cesalr CustomEntityStoreAssignmentsListResult) IsEmpty() bool {
+	return cesalr.Value == nil || len(*cesalr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (cesalr CustomEntityStoreAssignmentsListResult) hasNextLink() bool {
+	return cesalr.NextLink != nil && len(*cesalr.NextLink) != 0
+}
+
+// customEntityStoreAssignmentsListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (cesalr CustomEntityStoreAssignmentsListResult) customEntityStoreAssignmentsListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if !cesalr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(cesalr.NextLink)))
+}
+
+// CustomEntityStoreAssignmentsListResultPage contains a page of CustomEntityStoreAssignment values.
+type CustomEntityStoreAssignmentsListResultPage struct {
+	fn     func(context.Context, CustomEntityStoreAssignmentsListResult) (CustomEntityStoreAssignmentsListResult, error)
+	cesalr CustomEntityStoreAssignmentsListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *CustomEntityStoreAssignmentsListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CustomEntityStoreAssignmentsListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.cesalr)
+		if err != nil {
+			return err
+		}
+		page.cesalr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *CustomEntityStoreAssignmentsListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page CustomEntityStoreAssignmentsListResultPage) NotDone() bool {
+	return !page.cesalr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page CustomEntityStoreAssignmentsListResultPage) Response() CustomEntityStoreAssignmentsListResult {
+	return page.cesalr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page CustomEntityStoreAssignmentsListResultPage) Values() []CustomEntityStoreAssignment {
+	if page.cesalr.IsEmpty() {
+		return nil
+	}
+	return *page.cesalr.Value
+}
+
+// Creates a new instance of the CustomEntityStoreAssignmentsListResultPage type.
+func NewCustomEntityStoreAssignmentsListResultPage(cur CustomEntityStoreAssignmentsListResult, getNextPage func(context.Context, CustomEntityStoreAssignmentsListResult) (CustomEntityStoreAssignmentsListResult, error)) CustomEntityStoreAssignmentsListResultPage {
+	return CustomEntityStoreAssignmentsListResultPage{
+		fn:     getNextPage,
+		cesalr: cur,
+	}
+}
+
 // CVE CVE details
 type CVE struct {
 	// Title - READ-ONLY; CVE title
@@ -7768,6 +9412,181 @@ func (desVar *DataExportSettings) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// DefenderForContainersAwsOffering the Defender for Containers AWS offering configurations
+type DefenderForContainersAwsOffering struct {
+	// KubernetesService - The kubernetes service connection configuration
+	KubernetesService *DefenderForContainersAwsOfferingKubernetesService `json:"kubernetesService,omitempty"`
+	// KubernetesScubaReader - The kubernetes to scuba connection configuration
+	KubernetesScubaReader *DefenderForContainersAwsOfferingKubernetesScubaReader `json:"kubernetesScubaReader,omitempty"`
+	// CloudWatchToKinesis - The cloudwatch to kinesis connection configuration
+	CloudWatchToKinesis *DefenderForContainersAwsOfferingCloudWatchToKinesis `json:"cloudWatchToKinesis,omitempty"`
+	// KinesisToS3 - The kinesis to s3 connection configuration
+	KinesisToS3 *DefenderForContainersAwsOfferingKinesisToS3 `json:"kinesisToS3,omitempty"`
+	// Description - READ-ONLY; The offering description.
+	Description *string `json:"description,omitempty"`
+	// OfferingType - Possible values include: 'OfferingTypeCloudOffering', 'OfferingTypeCspmMonitorAws', 'OfferingTypeDefenderForContainersAws', 'OfferingTypeDefenderForServersAws', 'OfferingTypeInformationProtectionAws'
+	OfferingType OfferingType `json:"offeringType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DefenderForContainersAwsOffering.
+func (dfcao DefenderForContainersAwsOffering) MarshalJSON() ([]byte, error) {
+	dfcao.OfferingType = OfferingTypeDefenderForContainersAws
+	objectMap := make(map[string]interface{})
+	if dfcao.KubernetesService != nil {
+		objectMap["kubernetesService"] = dfcao.KubernetesService
+	}
+	if dfcao.KubernetesScubaReader != nil {
+		objectMap["kubernetesScubaReader"] = dfcao.KubernetesScubaReader
+	}
+	if dfcao.CloudWatchToKinesis != nil {
+		objectMap["cloudWatchToKinesis"] = dfcao.CloudWatchToKinesis
+	}
+	if dfcao.KinesisToS3 != nil {
+		objectMap["kinesisToS3"] = dfcao.KinesisToS3
+	}
+	if dfcao.OfferingType != "" {
+		objectMap["offeringType"] = dfcao.OfferingType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsCspmMonitorAwsOffering is the BasicCloudOffering implementation for DefenderForContainersAwsOffering.
+func (dfcao DefenderForContainersAwsOffering) AsCspmMonitorAwsOffering() (*CspmMonitorAwsOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForContainersAwsOffering is the BasicCloudOffering implementation for DefenderForContainersAwsOffering.
+func (dfcao DefenderForContainersAwsOffering) AsDefenderForContainersAwsOffering() (*DefenderForContainersAwsOffering, bool) {
+	return &dfcao, true
+}
+
+// AsDefenderForServersAwsOffering is the BasicCloudOffering implementation for DefenderForContainersAwsOffering.
+func (dfcao DefenderForContainersAwsOffering) AsDefenderForServersAwsOffering() (*DefenderForServersAwsOffering, bool) {
+	return nil, false
+}
+
+// AsInformationProtectionAwsOffering is the BasicCloudOffering implementation for DefenderForContainersAwsOffering.
+func (dfcao DefenderForContainersAwsOffering) AsInformationProtectionAwsOffering() (*InformationProtectionAwsOffering, bool) {
+	return nil, false
+}
+
+// AsCloudOffering is the BasicCloudOffering implementation for DefenderForContainersAwsOffering.
+func (dfcao DefenderForContainersAwsOffering) AsCloudOffering() (*CloudOffering, bool) {
+	return nil, false
+}
+
+// AsBasicCloudOffering is the BasicCloudOffering implementation for DefenderForContainersAwsOffering.
+func (dfcao DefenderForContainersAwsOffering) AsBasicCloudOffering() (BasicCloudOffering, bool) {
+	return &dfcao, true
+}
+
+// DefenderForContainersAwsOfferingCloudWatchToKinesis the cloudwatch to kinesis connection configuration
+type DefenderForContainersAwsOfferingCloudWatchToKinesis struct {
+	// CloudRoleArn - The cloud role ARN in AWS for this feature
+	CloudRoleArn *string `json:"cloudRoleArn,omitempty"`
+}
+
+// DefenderForContainersAwsOfferingKinesisToS3 the kinesis to s3 connection configuration
+type DefenderForContainersAwsOfferingKinesisToS3 struct {
+	// CloudRoleArn - The cloud role ARN in AWS for this feature
+	CloudRoleArn *string `json:"cloudRoleArn,omitempty"`
+}
+
+// DefenderForContainersAwsOfferingKubernetesScubaReader the kubernetes to scuba connection configuration
+type DefenderForContainersAwsOfferingKubernetesScubaReader struct {
+	// CloudRoleArn - The cloud role ARN in AWS for this feature
+	CloudRoleArn *string `json:"cloudRoleArn,omitempty"`
+}
+
+// DefenderForContainersAwsOfferingKubernetesService the kubernetes service connection configuration
+type DefenderForContainersAwsOfferingKubernetesService struct {
+	// CloudRoleArn - The cloud role ARN in AWS for this feature
+	CloudRoleArn *string `json:"cloudRoleArn,omitempty"`
+}
+
+// DefenderForServersAwsOffering the Defender for Servers AWS offering configurations
+type DefenderForServersAwsOffering struct {
+	// DefenderForServers - The Defender for servers connection configuration
+	DefenderForServers *DefenderForServersAwsOfferingDefenderForServers `json:"defenderForServers,omitempty"`
+	// ArcAutoProvisioning - The ARC autoprovisioning configuration
+	ArcAutoProvisioning *DefenderForServersAwsOfferingArcAutoProvisioning `json:"arcAutoProvisioning,omitempty"`
+	// Description - READ-ONLY; The offering description.
+	Description *string `json:"description,omitempty"`
+	// OfferingType - Possible values include: 'OfferingTypeCloudOffering', 'OfferingTypeCspmMonitorAws', 'OfferingTypeDefenderForContainersAws', 'OfferingTypeDefenderForServersAws', 'OfferingTypeInformationProtectionAws'
+	OfferingType OfferingType `json:"offeringType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DefenderForServersAwsOffering.
+func (dfsao DefenderForServersAwsOffering) MarshalJSON() ([]byte, error) {
+	dfsao.OfferingType = OfferingTypeDefenderForServersAws
+	objectMap := make(map[string]interface{})
+	if dfsao.DefenderForServers != nil {
+		objectMap["defenderForServers"] = dfsao.DefenderForServers
+	}
+	if dfsao.ArcAutoProvisioning != nil {
+		objectMap["arcAutoProvisioning"] = dfsao.ArcAutoProvisioning
+	}
+	if dfsao.OfferingType != "" {
+		objectMap["offeringType"] = dfsao.OfferingType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsCspmMonitorAwsOffering is the BasicCloudOffering implementation for DefenderForServersAwsOffering.
+func (dfsao DefenderForServersAwsOffering) AsCspmMonitorAwsOffering() (*CspmMonitorAwsOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForContainersAwsOffering is the BasicCloudOffering implementation for DefenderForServersAwsOffering.
+func (dfsao DefenderForServersAwsOffering) AsDefenderForContainersAwsOffering() (*DefenderForContainersAwsOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForServersAwsOffering is the BasicCloudOffering implementation for DefenderForServersAwsOffering.
+func (dfsao DefenderForServersAwsOffering) AsDefenderForServersAwsOffering() (*DefenderForServersAwsOffering, bool) {
+	return &dfsao, true
+}
+
+// AsInformationProtectionAwsOffering is the BasicCloudOffering implementation for DefenderForServersAwsOffering.
+func (dfsao DefenderForServersAwsOffering) AsInformationProtectionAwsOffering() (*InformationProtectionAwsOffering, bool) {
+	return nil, false
+}
+
+// AsCloudOffering is the BasicCloudOffering implementation for DefenderForServersAwsOffering.
+func (dfsao DefenderForServersAwsOffering) AsCloudOffering() (*CloudOffering, bool) {
+	return nil, false
+}
+
+// AsBasicCloudOffering is the BasicCloudOffering implementation for DefenderForServersAwsOffering.
+func (dfsao DefenderForServersAwsOffering) AsBasicCloudOffering() (BasicCloudOffering, bool) {
+	return &dfsao, true
+}
+
+// DefenderForServersAwsOfferingArcAutoProvisioning the ARC autoprovisioning configuration
+type DefenderForServersAwsOfferingArcAutoProvisioning struct {
+	// Enabled - Is arc auto provisioning enabled
+	Enabled *bool `json:"enabled,omitempty"`
+	// ServicePrincipalSecretMetadata - Metadata of Service Principal secret for autoprovisioning
+	ServicePrincipalSecretMetadata *DefenderForServersAwsOfferingArcAutoProvisioningServicePrincipalSecretMetadata `json:"servicePrincipalSecretMetadata,omitempty"`
+}
+
+// DefenderForServersAwsOfferingArcAutoProvisioningServicePrincipalSecretMetadata metadata of Service
+// Principal secret for autoprovisioning
+type DefenderForServersAwsOfferingArcAutoProvisioningServicePrincipalSecretMetadata struct {
+	// ExpiryDate - expiration date of service principal secret
+	ExpiryDate *string `json:"expiryDate,omitempty"`
+	// ParameterStoreRegion - region of parameter store where secret is kept
+	ParameterStoreRegion *string `json:"parameterStoreRegion,omitempty"`
+	// ParameterNameInStore - name of secret resource in parameter store
+	ParameterNameInStore *string `json:"parameterNameInStore,omitempty"`
+}
+
+// DefenderForServersAwsOfferingDefenderForServers the Defender for servers connection configuration
+type DefenderForServersAwsOfferingDefenderForServers struct {
+	// CloudRoleArn - The cloud role ARN in AWS for this feature
+	CloudRoleArn *string `json:"cloudRoleArn,omitempty"`
 }
 
 // DenylistCustomAlertRule a custom alert rule that checks if a value (depends on the custom alert type) is
@@ -7956,326 +9775,6 @@ func (dcar DenylistCustomAlertRule) AsCustomAlertRule() (*CustomAlertRule, bool)
 // AsBasicCustomAlertRule is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
 func (dcar DenylistCustomAlertRule) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool) {
 	return &dcar, true
-}
-
-// Device device model
-type Device struct {
-	autorest.Response `json:"-"`
-	// DeviceProperties - Device data
-	*DeviceProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for Device.
-func (d Device) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if d.DeviceProperties != nil {
-		objectMap["properties"] = d.DeviceProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for Device struct.
-func (d *Device) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var deviceProperties DeviceProperties
-				err = json.Unmarshal(*v, &deviceProperties)
-				if err != nil {
-					return err
-				}
-				d.DeviceProperties = &deviceProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				d.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				d.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				d.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
-}
-
-// DeviceList list of Devices
-type DeviceList struct {
-	autorest.Response `json:"-"`
-	// Value - List of devices
-	Value *[]Device `json:"value,omitempty"`
-	// NextLink - READ-ONLY; When there are too many devices for one page, use this URI to fetch the next page.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for DeviceList.
-func (dl DeviceList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if dl.Value != nil {
-		objectMap["value"] = dl.Value
-	}
-	return json.Marshal(objectMap)
-}
-
-// DeviceListIterator provides access to a complete listing of Device values.
-type DeviceListIterator struct {
-	i    int
-	page DeviceListPage
-}
-
-// NextWithContext advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *DeviceListIterator) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DeviceListIterator.NextWithContext")
-		defer func() {
-			sc := -1
-			if iter.Response().Response.Response != nil {
-				sc = iter.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err = iter.page.NextWithContext(ctx)
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (iter *DeviceListIterator) Next() error {
-	return iter.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter DeviceListIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter DeviceListIterator) Response() DeviceList {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter DeviceListIterator) Value() Device {
-	if !iter.page.NotDone() {
-		return Device{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// Creates a new instance of the DeviceListIterator type.
-func NewDeviceListIterator(page DeviceListPage) DeviceListIterator {
-	return DeviceListIterator{page: page}
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (dl DeviceList) IsEmpty() bool {
-	return dl.Value == nil || len(*dl.Value) == 0
-}
-
-// hasNextLink returns true if the NextLink is not empty.
-func (dl DeviceList) hasNextLink() bool {
-	return dl.NextLink != nil && len(*dl.NextLink) != 0
-}
-
-// deviceListPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (dl DeviceList) deviceListPreparer(ctx context.Context) (*http.Request, error) {
-	if !dl.hasNextLink() {
-		return nil, nil
-	}
-	return autorest.Prepare((&http.Request{}).WithContext(ctx),
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(dl.NextLink)))
-}
-
-// DeviceListPage contains a page of Device values.
-type DeviceListPage struct {
-	fn func(context.Context, DeviceList) (DeviceList, error)
-	dl DeviceList
-}
-
-// NextWithContext advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *DeviceListPage) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DeviceListPage.NextWithContext")
-		defer func() {
-			sc := -1
-			if page.Response().Response.Response != nil {
-				sc = page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	for {
-		next, err := page.fn(ctx, page.dl)
-		if err != nil {
-			return err
-		}
-		page.dl = next
-		if !next.hasNextLink() || !next.IsEmpty() {
-			break
-		}
-	}
-	return nil
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (page *DeviceListPage) Next() error {
-	return page.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page DeviceListPage) NotDone() bool {
-	return !page.dl.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page DeviceListPage) Response() DeviceList {
-	return page.dl
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page DeviceListPage) Values() []Device {
-	if page.dl.IsEmpty() {
-		return nil
-	}
-	return *page.dl.Value
-}
-
-// Creates a new instance of the DeviceListPage type.
-func NewDeviceListPage(cur DeviceList, getNextPage func(context.Context, DeviceList) (DeviceList, error)) DeviceListPage {
-	return DeviceListPage{
-		fn: getNextPage,
-		dl: cur,
-	}
-}
-
-// DeviceProperties device Information
-type DeviceProperties struct {
-	// DisplayName - Device display name given by the collector
-	DisplayName *string `json:"displayName,omitempty"`
-	// DeviceType - Device type.
-	DeviceType *string `json:"deviceType,omitempty"`
-	// SourceName - READ-ONLY; The source that created the device
-	SourceName *string `json:"sourceName,omitempty"`
-	// NetworkInterfaces - READ-ONLY; List of network interfaces.
-	NetworkInterfaces *[]NetworkInterface `json:"networkInterfaces,omitempty"`
-	// Vendor - READ-ONLY; Device vendor
-	Vendor *string `json:"vendor,omitempty"`
-	// OsName - Device operating system name.
-	OsName *string `json:"osName,omitempty"`
-	// Protocols - READ-ONLY; List of protocols.
-	Protocols *[]Protocol1 `json:"protocols,omitempty"`
-	// LastActiveTime - READ-ONLY; last time the device was active in the network
-	LastActiveTime *date.Time `json:"lastActiveTime,omitempty"`
-	// LastUpdateTime - READ-ONLY; last time the device was updated
-	LastUpdateTime *date.Time `json:"lastUpdateTime,omitempty"`
-	// ManagementState - READ-ONLY; Managed state of the device. Possible values include: 'Managed', 'Unmanaged'
-	ManagementState ManagementState `json:"managementState,omitempty"`
-	// AuthorizationState - Authorized state of the device. Possible values include: 'Authorized', 'Unauthorized'
-	AuthorizationState AuthorizationState `json:"authorizationState,omitempty"`
-	// DeviceCriticality - Device criticality. Possible values include: 'Important', 'Standard'
-	DeviceCriticality DeviceCriticality `json:"deviceCriticality,omitempty"`
-	// PurdueLevel - Purdue level of the device. Possible values include: 'ProcessControl', 'Supervisory', 'Enterprise'
-	PurdueLevel PurdueLevel `json:"purdueLevel,omitempty"`
-	// Notes - user notes for the device, up to 300 characters.
-	Notes *string `json:"notes,omitempty"`
-	// Firmwares - READ-ONLY; List of device firmwares.
-	Firmwares *[]Firmware `json:"firmwares,omitempty"`
-	// DiscoveryTime - READ-ONLY; Discovered time of the device.
-	DiscoveryTime *date.Time `json:"discoveryTime,omitempty"`
-	// ProgrammingState - READ-ONLY; Indicates whether this device is programming. Possible values include: 'ProgrammingDevice', 'NotProgrammingDevice'
-	ProgrammingState ProgrammingState `json:"programmingState,omitempty"`
-	// LastProgrammingTime - READ-ONLY; last time the device was programming or programed.
-	LastProgrammingTime *date.Time `json:"lastProgrammingTime,omitempty"`
-	// ScanningFunctionality - READ-ONLY; Indicates whether the device is a scanner. Possible values include: 'ScannerDevice', 'NotScannerDevice'
-	ScanningFunctionality ScanningFunctionality `json:"scanningFunctionality,omitempty"`
-	// LastScanTime - READ-ONLY; last time the device was scanning.
-	LastScanTime *date.Time `json:"lastScanTime,omitempty"`
-	// RiskScore - READ-ONLY; risk score of the device.
-	RiskScore *int32 `json:"riskScore,omitempty"`
-	// Sensors - READ-ONLY; List of sensors that scanned this device.
-	Sensors *[]Sensor `json:"sensors,omitempty"`
-	// Site - READ-ONLY
-	Site *Site `json:"site,omitempty"`
-	// DeviceStatus - READ-ONLY; Device status. Possible values include: 'DeviceStatusActive', 'DeviceStatusRemoved'
-	DeviceStatus DeviceStatus `json:"deviceStatus,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for DeviceProperties.
-func (dp DeviceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if dp.DisplayName != nil {
-		objectMap["displayName"] = dp.DisplayName
-	}
-	if dp.DeviceType != nil {
-		objectMap["deviceType"] = dp.DeviceType
-	}
-	if dp.OsName != nil {
-		objectMap["osName"] = dp.OsName
-	}
-	if dp.AuthorizationState != "" {
-		objectMap["authorizationState"] = dp.AuthorizationState
-	}
-	if dp.DeviceCriticality != "" {
-		objectMap["deviceCriticality"] = dp.DeviceCriticality
-	}
-	if dp.PurdueLevel != "" {
-		objectMap["purdueLevel"] = dp.PurdueLevel
-	}
-	if dp.Notes != nil {
-		objectMap["notes"] = dp.Notes
-	}
-	return json.Marshal(objectMap)
 }
 
 // DeviceSecurityGroup the device security group resource
@@ -9864,30 +11363,6 @@ func (funiar FileUploadsNotInAllowedRange) AsBasicCustomAlertRule() (BasicCustom
 	return &funiar, true
 }
 
-// Firmware firmware information
-type Firmware struct {
-	// ModuleAddress - READ-ONLY; Address of the specific module a firmware is related to
-	ModuleAddress *string `json:"moduleAddress,omitempty"`
-	// Rack - READ-ONLY; Rack number of the module a firmware is related to.
-	Rack *string `json:"rack,omitempty"`
-	// Slot - READ-ONLY; Slot number in the rack of the module a firmware is related to
-	Slot *string `json:"slot,omitempty"`
-	// Serial - READ-ONLY; Serial of the firmware
-	Serial *string `json:"serial,omitempty"`
-	// Model - READ-ONLY; Firmware model
-	Model *string `json:"model,omitempty"`
-	// Version - READ-ONLY; Firmware version
-	Version *string `json:"version,omitempty"`
-	// AdditionalData - READ-ONLY;  A bag of fields which extends the firmware information.
-	AdditionalData interface{} `json:"additionalData,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for Firmware.
-func (f Firmware) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
-}
-
 // GcpCredentialsDetailsProperties GCP cloud account connector based service to service credentials, the
 // credentials are composed of the organization ID and a JSON API key (write only)
 type GcpCredentialsDetailsProperties struct {
@@ -10614,6 +12089,65 @@ func (hcsp HybridComputeSettingsProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// InformationProtectionAwsOffering the information protection for AWS offering configurations
+type InformationProtectionAwsOffering struct {
+	// InformationProtection - The native cloud connection configuration
+	InformationProtection *InformationProtectionAwsOfferingInformationProtection `json:"informationProtection,omitempty"`
+	// Description - READ-ONLY; The offering description.
+	Description *string `json:"description,omitempty"`
+	// OfferingType - Possible values include: 'OfferingTypeCloudOffering', 'OfferingTypeCspmMonitorAws', 'OfferingTypeDefenderForContainersAws', 'OfferingTypeDefenderForServersAws', 'OfferingTypeInformationProtectionAws'
+	OfferingType OfferingType `json:"offeringType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InformationProtectionAwsOffering.
+func (ipao InformationProtectionAwsOffering) MarshalJSON() ([]byte, error) {
+	ipao.OfferingType = OfferingTypeInformationProtectionAws
+	objectMap := make(map[string]interface{})
+	if ipao.InformationProtection != nil {
+		objectMap["informationProtection"] = ipao.InformationProtection
+	}
+	if ipao.OfferingType != "" {
+		objectMap["offeringType"] = ipao.OfferingType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsCspmMonitorAwsOffering is the BasicCloudOffering implementation for InformationProtectionAwsOffering.
+func (ipao InformationProtectionAwsOffering) AsCspmMonitorAwsOffering() (*CspmMonitorAwsOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForContainersAwsOffering is the BasicCloudOffering implementation for InformationProtectionAwsOffering.
+func (ipao InformationProtectionAwsOffering) AsDefenderForContainersAwsOffering() (*DefenderForContainersAwsOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForServersAwsOffering is the BasicCloudOffering implementation for InformationProtectionAwsOffering.
+func (ipao InformationProtectionAwsOffering) AsDefenderForServersAwsOffering() (*DefenderForServersAwsOffering, bool) {
+	return nil, false
+}
+
+// AsInformationProtectionAwsOffering is the BasicCloudOffering implementation for InformationProtectionAwsOffering.
+func (ipao InformationProtectionAwsOffering) AsInformationProtectionAwsOffering() (*InformationProtectionAwsOffering, bool) {
+	return &ipao, true
+}
+
+// AsCloudOffering is the BasicCloudOffering implementation for InformationProtectionAwsOffering.
+func (ipao InformationProtectionAwsOffering) AsCloudOffering() (*CloudOffering, bool) {
+	return nil, false
+}
+
+// AsBasicCloudOffering is the BasicCloudOffering implementation for InformationProtectionAwsOffering.
+func (ipao InformationProtectionAwsOffering) AsBasicCloudOffering() (BasicCloudOffering, bool) {
+	return &ipao, true
+}
+
+// InformationProtectionAwsOfferingInformationProtection the native cloud connection configuration
+type InformationProtectionAwsOfferingInformationProtection struct {
+	// CloudRoleArn - The cloud role ARN in AWS for this feature
+	CloudRoleArn *string `json:"cloudRoleArn,omitempty"`
+}
+
 // InformationProtectionKeyword the information type keyword.
 type InformationProtectionKeyword struct {
 	// Pattern - The keyword pattern.
@@ -11122,863 +12656,6 @@ type IngestionSettingToken struct {
 
 // MarshalJSON is the custom marshaler for IngestionSettingToken.
 func (ist IngestionSettingToken) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
-}
-
-// IotAlertListModel list of IoT alerts
-type IotAlertListModel struct {
-	autorest.Response `json:"-"`
-	// Value - READ-ONLY; List data
-	Value *[]IotAlertModel `json:"value,omitempty"`
-	// NextLink - READ-ONLY; When available, follow the URI to get the next page of data
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for IotAlertListModel.
-func (ialm IotAlertListModel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
-}
-
-// IotAlertListModelIterator provides access to a complete listing of IotAlertModel values.
-type IotAlertListModelIterator struct {
-	i    int
-	page IotAlertListModelPage
-}
-
-// NextWithContext advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *IotAlertListModelIterator) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IotAlertListModelIterator.NextWithContext")
-		defer func() {
-			sc := -1
-			if iter.Response().Response.Response != nil {
-				sc = iter.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err = iter.page.NextWithContext(ctx)
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (iter *IotAlertListModelIterator) Next() error {
-	return iter.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter IotAlertListModelIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter IotAlertListModelIterator) Response() IotAlertListModel {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter IotAlertListModelIterator) Value() IotAlertModel {
-	if !iter.page.NotDone() {
-		return IotAlertModel{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// Creates a new instance of the IotAlertListModelIterator type.
-func NewIotAlertListModelIterator(page IotAlertListModelPage) IotAlertListModelIterator {
-	return IotAlertListModelIterator{page: page}
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (ialm IotAlertListModel) IsEmpty() bool {
-	return ialm.Value == nil || len(*ialm.Value) == 0
-}
-
-// hasNextLink returns true if the NextLink is not empty.
-func (ialm IotAlertListModel) hasNextLink() bool {
-	return ialm.NextLink != nil && len(*ialm.NextLink) != 0
-}
-
-// iotAlertListModelPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (ialm IotAlertListModel) iotAlertListModelPreparer(ctx context.Context) (*http.Request, error) {
-	if !ialm.hasNextLink() {
-		return nil, nil
-	}
-	return autorest.Prepare((&http.Request{}).WithContext(ctx),
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(ialm.NextLink)))
-}
-
-// IotAlertListModelPage contains a page of IotAlertModel values.
-type IotAlertListModelPage struct {
-	fn   func(context.Context, IotAlertListModel) (IotAlertListModel, error)
-	ialm IotAlertListModel
-}
-
-// NextWithContext advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *IotAlertListModelPage) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IotAlertListModelPage.NextWithContext")
-		defer func() {
-			sc := -1
-			if page.Response().Response.Response != nil {
-				sc = page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	for {
-		next, err := page.fn(ctx, page.ialm)
-		if err != nil {
-			return err
-		}
-		page.ialm = next
-		if !next.hasNextLink() || !next.IsEmpty() {
-			break
-		}
-	}
-	return nil
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (page *IotAlertListModelPage) Next() error {
-	return page.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page IotAlertListModelPage) NotDone() bool {
-	return !page.ialm.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page IotAlertListModelPage) Response() IotAlertListModel {
-	return page.ialm
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page IotAlertListModelPage) Values() []IotAlertModel {
-	if page.ialm.IsEmpty() {
-		return nil
-	}
-	return *page.ialm.Value
-}
-
-// Creates a new instance of the IotAlertListModelPage type.
-func NewIotAlertListModelPage(cur IotAlertListModel, getNextPage func(context.Context, IotAlertListModel) (IotAlertListModel, error)) IotAlertListModelPage {
-	return IotAlertListModelPage{
-		fn:   getNextPage,
-		ialm: cur,
-	}
-}
-
-// IotAlertModel ioT alert
-type IotAlertModel struct {
-	autorest.Response `json:"-"`
-	// IotAlertPropertiesModel - Alert properties
-	*IotAlertPropertiesModel `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for IotAlertModel.
-func (iam IotAlertModel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if iam.IotAlertPropertiesModel != nil {
-		objectMap["properties"] = iam.IotAlertPropertiesModel
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for IotAlertModel struct.
-func (iam *IotAlertModel) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var iotAlertPropertiesModel IotAlertPropertiesModel
-				err = json.Unmarshal(*v, &iotAlertPropertiesModel)
-				if err != nil {
-					return err
-				}
-				iam.IotAlertPropertiesModel = &iotAlertPropertiesModel
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				iam.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				iam.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				iam.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
-}
-
-// IotAlertPropertiesModel ioT alert properties
-type IotAlertPropertiesModel struct {
-	// SystemAlertID - READ-ONLY; Holds the product canonical identifier of the alert within the scope of a product
-	SystemAlertID *string `json:"systemAlertId,omitempty"`
-	// CompromisedEntity - READ-ONLY; Display name of the main entity being reported on
-	CompromisedEntity *string `json:"compromisedEntity,omitempty"`
-	// AlertType - READ-ONLY; The type name of the alert
-	AlertType *string `json:"alertType,omitempty"`
-	// StartTimeUtc - READ-ONLY; The impact start time of the alert (the time of the first event or activity included in the alert)
-	StartTimeUtc *string `json:"startTimeUtc,omitempty"`
-	// EndTimeUtc - READ-ONLY; The impact end time of the alert (the time of the last event or activity included in the alert)
-	EndTimeUtc *string `json:"endTimeUtc,omitempty"`
-	// Entities - A list of entities related to the alert
-	Entities *[]interface{} `json:"entities,omitempty"`
-	// ExtendedProperties - A bag of fields which extends the alert information
-	ExtendedProperties interface{} `json:"extendedProperties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for IotAlertPropertiesModel.
-func (iapm IotAlertPropertiesModel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if iapm.Entities != nil {
-		objectMap["entities"] = iapm.Entities
-	}
-	if iapm.ExtendedProperties != nil {
-		objectMap["extendedProperties"] = iapm.ExtendedProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// IotAlertType ioT alert type.
-type IotAlertType struct {
-	autorest.Response `json:"-"`
-	// IotAlertTypeProperties - Alert type properties
-	*IotAlertTypeProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for IotAlertType.
-func (iat IotAlertType) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if iat.IotAlertTypeProperties != nil {
-		objectMap["properties"] = iat.IotAlertTypeProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for IotAlertType struct.
-func (iat *IotAlertType) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var iotAlertTypeProperties IotAlertTypeProperties
-				err = json.Unmarshal(*v, &iotAlertTypeProperties)
-				if err != nil {
-					return err
-				}
-				iat.IotAlertTypeProperties = &iotAlertTypeProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				iat.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				iat.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				iat.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
-}
-
-// IotAlertTypeList list of alert types
-type IotAlertTypeList struct {
-	autorest.Response `json:"-"`
-	// Value - List data
-	Value *[]IotAlertType `json:"value,omitempty"`
-}
-
-// IotAlertTypeProperties ioT alert type information.
-type IotAlertTypeProperties struct {
-	// AlertDisplayName - READ-ONLY; The display name of the alert
-	AlertDisplayName *string `json:"alertDisplayName,omitempty"`
-	// Severity - READ-ONLY; The severity of the alert. Possible values include: 'Informational', 'Low', 'Medium', 'High'
-	Severity AlertSeverity `json:"severity,omitempty"`
-	// Description - READ-ONLY; Description of the suspected vulnerability and meaning.
-	Description *string `json:"description,omitempty"`
-	// ProviderName - READ-ONLY; The name of the alert provider or internal partner
-	ProviderName *string `json:"providerName,omitempty"`
-	// ProductName - READ-ONLY; The name of the product which published this alert
-	ProductName *string `json:"productName,omitempty"`
-	// ProductComponentName - READ-ONLY; The name of a component inside the product which generated the alert
-	ProductComponentName *string `json:"productComponentName,omitempty"`
-	// VendorName - READ-ONLY; The name of the vendor that raise the alert
-	VendorName *string `json:"vendorName,omitempty"`
-	// Intent - READ-ONLY; Kill chain related intent behind the alert. Could contain multiple enum values (separated by commas). Possible values include: 'Unknown', 'PreAttack', 'InitialAccess', 'Persistence', 'PrivilegeEscalation', 'DefenseEvasion', 'CredentialAccess', 'Discovery', 'LateralMovement', 'Execution', 'Collection', 'Exfiltration', 'CommandAndControl', 'Impact', 'Probing', 'Exploitation'
-	Intent AlertIntent `json:"intent,omitempty"`
-	// RemediationSteps - READ-ONLY; Manual action items to take to remediate the alert
-	RemediationSteps *[]string `json:"remediationSteps,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for IotAlertTypeProperties.
-func (iatp IotAlertTypeProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
-}
-
-// IotDefenderSettingsList list of IoT Defender settings
-type IotDefenderSettingsList struct {
-	autorest.Response `json:"-"`
-	// Value - READ-ONLY; List data
-	Value *[]IotDefenderSettingsModel `json:"value,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for IotDefenderSettingsList.
-func (idsl IotDefenderSettingsList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
-}
-
-// IotDefenderSettingsModel ioT Defender settings
-type IotDefenderSettingsModel struct {
-	autorest.Response `json:"-"`
-	// IotDefenderSettingsProperties - IoT Defender settings properties
-	*IotDefenderSettingsProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for IotDefenderSettingsModel.
-func (idsm IotDefenderSettingsModel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if idsm.IotDefenderSettingsProperties != nil {
-		objectMap["properties"] = idsm.IotDefenderSettingsProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for IotDefenderSettingsModel struct.
-func (idsm *IotDefenderSettingsModel) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var iotDefenderSettingsProperties IotDefenderSettingsProperties
-				err = json.Unmarshal(*v, &iotDefenderSettingsProperties)
-				if err != nil {
-					return err
-				}
-				idsm.IotDefenderSettingsProperties = &iotDefenderSettingsProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				idsm.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				idsm.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				idsm.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
-}
-
-// IotDefenderSettingsProperties ioT Defender settings properties
-type IotDefenderSettingsProperties struct {
-	// DeviceQuota - Size of the device quota (as a opposed to a Pay as You Go billing model). Value is required to be in multiples of 1000.
-	DeviceQuota *int32 `json:"deviceQuota,omitempty"`
-	// SentinelWorkspaceResourceIds - Sentinel Workspace Resource Ids
-	SentinelWorkspaceResourceIds *[]string `json:"sentinelWorkspaceResourceIds,omitempty"`
-	// OnboardingKind - The kind of onboarding for the subscription. Possible values include: 'Default', 'MigratedToAzure', 'Evaluation', 'Purchased'
-	OnboardingKind OnboardingKind `json:"onboardingKind,omitempty"`
-	// EvaluationEndTime - READ-ONLY; End time of the evaluation period, if such exist
-	EvaluationEndTime *date.Time `json:"evaluationEndTime,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for IotDefenderSettingsProperties.
-func (idsp IotDefenderSettingsProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if idsp.DeviceQuota != nil {
-		objectMap["deviceQuota"] = idsp.DeviceQuota
-	}
-	if idsp.SentinelWorkspaceResourceIds != nil {
-		objectMap["sentinelWorkspaceResourceIds"] = idsp.SentinelWorkspaceResourceIds
-	}
-	if idsp.OnboardingKind != "" {
-		objectMap["onboardingKind"] = idsp.OnboardingKind
-	}
-	return json.Marshal(objectMap)
-}
-
-// IotRecommendationListModel list of IoT recommendations
-type IotRecommendationListModel struct {
-	autorest.Response `json:"-"`
-	// Value - READ-ONLY; List data
-	Value *[]IotRecommendationModel `json:"value,omitempty"`
-	// NextLink - READ-ONLY; When available, follow the URI to get the next page of data
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for IotRecommendationListModel.
-func (irlm IotRecommendationListModel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
-}
-
-// IotRecommendationListModelIterator provides access to a complete listing of IotRecommendationModel
-// values.
-type IotRecommendationListModelIterator struct {
-	i    int
-	page IotRecommendationListModelPage
-}
-
-// NextWithContext advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *IotRecommendationListModelIterator) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IotRecommendationListModelIterator.NextWithContext")
-		defer func() {
-			sc := -1
-			if iter.Response().Response.Response != nil {
-				sc = iter.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err = iter.page.NextWithContext(ctx)
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (iter *IotRecommendationListModelIterator) Next() error {
-	return iter.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter IotRecommendationListModelIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter IotRecommendationListModelIterator) Response() IotRecommendationListModel {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter IotRecommendationListModelIterator) Value() IotRecommendationModel {
-	if !iter.page.NotDone() {
-		return IotRecommendationModel{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// Creates a new instance of the IotRecommendationListModelIterator type.
-func NewIotRecommendationListModelIterator(page IotRecommendationListModelPage) IotRecommendationListModelIterator {
-	return IotRecommendationListModelIterator{page: page}
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (irlm IotRecommendationListModel) IsEmpty() bool {
-	return irlm.Value == nil || len(*irlm.Value) == 0
-}
-
-// hasNextLink returns true if the NextLink is not empty.
-func (irlm IotRecommendationListModel) hasNextLink() bool {
-	return irlm.NextLink != nil && len(*irlm.NextLink) != 0
-}
-
-// iotRecommendationListModelPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (irlm IotRecommendationListModel) iotRecommendationListModelPreparer(ctx context.Context) (*http.Request, error) {
-	if !irlm.hasNextLink() {
-		return nil, nil
-	}
-	return autorest.Prepare((&http.Request{}).WithContext(ctx),
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(irlm.NextLink)))
-}
-
-// IotRecommendationListModelPage contains a page of IotRecommendationModel values.
-type IotRecommendationListModelPage struct {
-	fn   func(context.Context, IotRecommendationListModel) (IotRecommendationListModel, error)
-	irlm IotRecommendationListModel
-}
-
-// NextWithContext advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *IotRecommendationListModelPage) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IotRecommendationListModelPage.NextWithContext")
-		defer func() {
-			sc := -1
-			if page.Response().Response.Response != nil {
-				sc = page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	for {
-		next, err := page.fn(ctx, page.irlm)
-		if err != nil {
-			return err
-		}
-		page.irlm = next
-		if !next.hasNextLink() || !next.IsEmpty() {
-			break
-		}
-	}
-	return nil
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (page *IotRecommendationListModelPage) Next() error {
-	return page.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page IotRecommendationListModelPage) NotDone() bool {
-	return !page.irlm.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page IotRecommendationListModelPage) Response() IotRecommendationListModel {
-	return page.irlm
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page IotRecommendationListModelPage) Values() []IotRecommendationModel {
-	if page.irlm.IsEmpty() {
-		return nil
-	}
-	return *page.irlm.Value
-}
-
-// Creates a new instance of the IotRecommendationListModelPage type.
-func NewIotRecommendationListModelPage(cur IotRecommendationListModel, getNextPage func(context.Context, IotRecommendationListModel) (IotRecommendationListModel, error)) IotRecommendationListModelPage {
-	return IotRecommendationListModelPage{
-		fn:   getNextPage,
-		irlm: cur,
-	}
-}
-
-// IotRecommendationModel ioT recommendation
-type IotRecommendationModel struct {
-	autorest.Response `json:"-"`
-	// IotRecommendationPropertiesModel - Recommendation properties
-	*IotRecommendationPropertiesModel `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for IotRecommendationModel.
-func (irm IotRecommendationModel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if irm.IotRecommendationPropertiesModel != nil {
-		objectMap["properties"] = irm.IotRecommendationPropertiesModel
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for IotRecommendationModel struct.
-func (irm *IotRecommendationModel) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var iotRecommendationPropertiesModel IotRecommendationPropertiesModel
-				err = json.Unmarshal(*v, &iotRecommendationPropertiesModel)
-				if err != nil {
-					return err
-				}
-				irm.IotRecommendationPropertiesModel = &iotRecommendationPropertiesModel
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				irm.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				irm.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				irm.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
-}
-
-// IotRecommendationPropertiesModel ioT recommendation properties
-type IotRecommendationPropertiesModel struct {
-	// DeviceID - READ-ONLY; Identifier of the device being reported on
-	DeviceID *string `json:"deviceId,omitempty"`
-	// RecommendationType - READ-ONLY; The type name of the recommendation
-	RecommendationType *string `json:"recommendationType,omitempty"`
-	// DiscoveredTimeUtc - READ-ONLY; The discovery time of the recommendation
-	DiscoveredTimeUtc *string `json:"discoveredTimeUtc,omitempty"`
-	// RecommendationAdditionalData - A bag of fields which extends the recommendation information
-	RecommendationAdditionalData interface{} `json:"recommendationAdditionalData,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for IotRecommendationPropertiesModel.
-func (irpm IotRecommendationPropertiesModel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if irpm.RecommendationAdditionalData != nil {
-		objectMap["recommendationAdditionalData"] = irpm.RecommendationAdditionalData
-	}
-	return json.Marshal(objectMap)
-}
-
-// IotRecommendationType ioT recommendation type.
-type IotRecommendationType struct {
-	autorest.Response `json:"-"`
-	// IotRecommendationTypeProperties - Recommendation type properties
-	*IotRecommendationTypeProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for IotRecommendationType.
-func (irt IotRecommendationType) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if irt.IotRecommendationTypeProperties != nil {
-		objectMap["properties"] = irt.IotRecommendationTypeProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for IotRecommendationType struct.
-func (irt *IotRecommendationType) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var iotRecommendationTypeProperties IotRecommendationTypeProperties
-				err = json.Unmarshal(*v, &iotRecommendationTypeProperties)
-				if err != nil {
-					return err
-				}
-				irt.IotRecommendationTypeProperties = &iotRecommendationTypeProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				irt.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				irt.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				irt.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
-}
-
-// IotRecommendationTypeList list of recommendation types
-type IotRecommendationTypeList struct {
-	autorest.Response `json:"-"`
-	// Value - List data
-	Value *[]IotRecommendationType `json:"value,omitempty"`
-}
-
-// IotRecommendationTypeProperties ioT recommendation type information.
-type IotRecommendationTypeProperties struct {
-	// RecommendationDisplayName - READ-ONLY; The display name of the recommendation
-	RecommendationDisplayName *string `json:"recommendationDisplayName,omitempty"`
-	// Severity - READ-ONLY; The severity of the recommendation. Possible values include: 'RecommendationSeverityUnknown', 'RecommendationSeverityNotApplicable', 'RecommendationSeverityHealthy', 'RecommendationSeverityOffByPolicy', 'RecommendationSeverityLow', 'RecommendationSeverityMedium', 'RecommendationSeverityHigh'
-	Severity RecommendationSeverity `json:"severity,omitempty"`
-	// Description - READ-ONLY; Description of the suspected vulnerability and meaning.
-	Description *string `json:"description,omitempty"`
-	// ProductName - READ-ONLY; The name of the product which published this recommendation
-	ProductName *string `json:"productName,omitempty"`
-	// ProductComponentName - READ-ONLY; The name of a component inside the product which generated the recommendation
-	ProductComponentName *string `json:"productComponentName,omitempty"`
-	// VendorName - READ-ONLY; The name of the vendor that raised the recommendation
-	VendorName *string `json:"vendorName,omitempty"`
-	// Control - READ-ONLY; The name of the recommendation's control category
-	Control *string `json:"control,omitempty"`
-	// RemediationSteps - READ-ONLY; Manual action items to take to resolve the recommendation
-	RemediationSteps *[]string `json:"remediationSteps,omitempty"`
-	// DataSource - READ-ONLY; The alert's data source
-	DataSource *string `json:"dataSource,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for IotRecommendationTypeProperties.
-func (irtp IotRecommendationTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
 }
@@ -13102,133 +13779,6 @@ func NewIoTSecuritySolutionsListPage(cur IoTSecuritySolutionsList, getNextPage f
 	}
 }
 
-// IotSensorProperties ioT sensor properties
-type IotSensorProperties struct {
-	// ConnectivityTime - READ-ONLY; Last connectivity time of the IoT sensor
-	ConnectivityTime *string `json:"connectivityTime,omitempty"`
-	// CreationTime - READ-ONLY; Creation time of the IoT sensor
-	CreationTime *string `json:"creationTime,omitempty"`
-	// DynamicLearning - READ-ONLY; Dynamic mode status of the IoT sensor
-	DynamicLearning *bool `json:"dynamicLearning,omitempty"`
-	// LearningMode - READ-ONLY; Learning mode status of the IoT sensor
-	LearningMode *bool `json:"learningMode,omitempty"`
-	// SensorStatus - READ-ONLY; Status of the IoT sensor. Possible values include: 'Ok', 'Disconnected', 'Unavailable'
-	SensorStatus SensorStatus `json:"sensorStatus,omitempty"`
-	// SensorVersion - READ-ONLY; Version of the IoT sensor
-	SensorVersion *string `json:"sensorVersion,omitempty"`
-	// TiAutomaticUpdates - TI Automatic mode status of the IoT sensor
-	TiAutomaticUpdates *bool `json:"tiAutomaticUpdates,omitempty"`
-	// TiStatus - READ-ONLY; TI Status of the IoT sensor. Possible values include: 'TiStatusOk', 'TiStatusFailed', 'TiStatusInProgress', 'TiStatusUpdateAvailable'
-	TiStatus TiStatus `json:"tiStatus,omitempty"`
-	// TiVersion - READ-ONLY; TI Version of the IoT sensor
-	TiVersion *string `json:"tiVersion,omitempty"`
-	// Zone - Zone of the IoT sensor
-	Zone *string `json:"zone,omitempty"`
-	// SensorType - Type of sensor. Possible values include: 'SensorTypeOt', 'SensorTypeEnterprise'
-	SensorType SensorType `json:"sensorType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for IotSensorProperties.
-func (isp IotSensorProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if isp.TiAutomaticUpdates != nil {
-		objectMap["tiAutomaticUpdates"] = isp.TiAutomaticUpdates
-	}
-	if isp.Zone != nil {
-		objectMap["zone"] = isp.Zone
-	}
-	if isp.SensorType != "" {
-		objectMap["sensorType"] = isp.SensorType
-	}
-	return json.Marshal(objectMap)
-}
-
-// IotSensorsList list of IoT sensors
-type IotSensorsList struct {
-	autorest.Response `json:"-"`
-	// Value - READ-ONLY; List data
-	Value *[]IotSensorsModel `json:"value,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for IotSensorsList.
-func (isl IotSensorsList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
-}
-
-// IotSensorsModel ioT sensor model
-type IotSensorsModel struct {
-	autorest.Response `json:"-"`
-	// IotSensorProperties - IoT sensor properties
-	*IotSensorProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for IotSensorsModel.
-func (ism IotSensorsModel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ism.IotSensorProperties != nil {
-		objectMap["properties"] = ism.IotSensorProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for IotSensorsModel struct.
-func (ism *IotSensorsModel) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var iotSensorProperties IotSensorProperties
-				err = json.Unmarshal(*v, &iotSensorProperties)
-				if err != nil {
-					return err
-				}
-				ism.IotSensorProperties = &iotSensorProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				ism.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				ism.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				ism.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
-}
-
 // IoTSeverityMetrics ioT Security solution analytics severity metrics.
 type IoTSeverityMetrics struct {
 	// High - Count of high severity alerts/recommendations.
@@ -13237,132 +13787,6 @@ type IoTSeverityMetrics struct {
 	Medium *int64 `json:"medium,omitempty"`
 	// Low - Count of low severity alerts/recommendations.
 	Low *int64 `json:"low,omitempty"`
-}
-
-// IotSiteProperties ioT site properties
-type IotSiteProperties struct {
-	// DisplayName - Display name of the IoT site
-	DisplayName *string `json:"displayName,omitempty"`
-	// Tags - Tags of the IoT site
-	Tags map[string]*string `json:"tags"`
-}
-
-// MarshalJSON is the custom marshaler for IotSiteProperties.
-func (isp IotSiteProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if isp.DisplayName != nil {
-		objectMap["displayName"] = isp.DisplayName
-	}
-	if isp.Tags != nil {
-		objectMap["tags"] = isp.Tags
-	}
-	return json.Marshal(objectMap)
-}
-
-// IotSitesList list of IoT sites
-type IotSitesList struct {
-	autorest.Response `json:"-"`
-	// Value - READ-ONLY; List data
-	Value *[]IotSitesModel `json:"value,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for IotSitesList.
-func (isl IotSitesList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
-}
-
-// IotSitesModel ioT site model
-type IotSitesModel struct {
-	autorest.Response `json:"-"`
-	// IotSiteProperties - IoT site properties
-	*IotSiteProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for IotSitesModel.
-func (ism IotSitesModel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ism.IotSiteProperties != nil {
-		objectMap["properties"] = ism.IotSiteProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for IotSitesModel struct.
-func (ism *IotSitesModel) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var iotSiteProperties IotSiteProperties
-				err = json.Unmarshal(*v, &iotSiteProperties)
-				if err != nil {
-					return err
-				}
-				ism.IotSiteProperties = &iotSiteProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				ism.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				ism.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				ism.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
-}
-
-// IPAddress IP Address information
-type IPAddress struct {
-	// V4Address - READ-ONLY; IPV4 address
-	V4Address *string `json:"v4Address,omitempty"`
-	// DetectionTime - READ-ONLY; Detection time of the ip address.
-	DetectionTime *date.Time `json:"detectionTime,omitempty"`
-	// SubnetCidr - READ-ONLY; Subnet Classless Inter-Domain Routing
-	SubnetCidr *string `json:"subnetCidr,omitempty"`
-	// Fqdn - READ-ONLY; Fully qualified domain name
-	Fqdn *string `json:"fqdn,omitempty"`
-	// FqdnLastLookupTime - READ-ONLY; FQDN last lookup time.
-	FqdnLastLookupTime *date.Time `json:"fqdnLastLookupTime,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for IPAddress.
-func (ia IPAddress) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
 }
 
 // JitNetworkAccessPoliciesList ...
@@ -14237,22 +14661,92 @@ func (lai LogAnalyticsIdentifier) AsBasicResourceIdentifier() (BasicResourceIden
 	return &lai, true
 }
 
-// MacAddress MAC Address information
-type MacAddress struct {
-	// Address - READ-ONLY; MAC address
-	Address *string `json:"address,omitempty"`
-	// DetectionTime - READ-ONLY; Detection time of the mac address.
-	DetectionTime *date.Time `json:"detectionTime,omitempty"`
-	// Significance - READ-ONLY; Indicates whether this is the primary secondary MAC address of the device. Possible values include: 'Primary', 'Secondary'
-	Significance MacSignificance `json:"significance,omitempty"`
-	// RelationToIPStatus - READ-ONLY; Indicates whether the relation of the mac to the ip address is certain or a guess. Possible values include: 'Guess', 'Certain'
-	RelationToIPStatus RelationToIPStatus `json:"relationToIpStatus,omitempty"`
+// MdeOnboardingData the resource of the configuration or data needed to onboard the machine to MDE
+type MdeOnboardingData struct {
+	autorest.Response            `json:"-"`
+	*MdeOnboardingDataProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for MacAddress.
-func (ma MacAddress) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for MdeOnboardingData.
+func (mod MdeOnboardingData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if mod.MdeOnboardingDataProperties != nil {
+		objectMap["properties"] = mod.MdeOnboardingDataProperties
+	}
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for MdeOnboardingData struct.
+func (mod *MdeOnboardingData) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var mdeOnboardingDataProperties MdeOnboardingDataProperties
+				err = json.Unmarshal(*v, &mdeOnboardingDataProperties)
+				if err != nil {
+					return err
+				}
+				mod.MdeOnboardingDataProperties = &mdeOnboardingDataProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				mod.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				mod.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				mod.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// MdeOnboardingDataList list of all MDE onboarding data resources
+type MdeOnboardingDataList struct {
+	autorest.Response `json:"-"`
+	// Value - List of the resources of the configuration or data needed to onboard the machine to MDE
+	Value *[]MdeOnboardingData `json:"value,omitempty"`
+}
+
+// MdeOnboardingDataProperties properties of the MDE configuration or data parameter needed to onboard the
+// machine to MDE
+type MdeOnboardingDataProperties struct {
+	// OnboardingPackageWindows - The onboarding package used to onboard Windows machines to MDE, coded in base64. This can also be used for onboarding using the dedicated VM Extension
+	OnboardingPackageWindows *[]byte `json:"onboardingPackageWindows,omitempty"`
+	// OnboardingPackageLinux - The onboarding package used to onboard Linux machines to MDE, coded in base64. This can also be used for onboarding using the dedicated VM Extension
+	OnboardingPackageLinux *[]byte `json:"onboardingPackageLinux,omitempty"`
 }
 
 // MqttC2DMessagesNotInAllowedRange number of cloud to device messages (MQTT protocol) is not in allowed
@@ -14843,61 +15337,6 @@ func (mdmniar MqttD2CMessagesNotInAllowedRange) AsBasicCustomAlertRule() (BasicC
 	return &mdmniar, true
 }
 
-// NetworkInterface network interface
-type NetworkInterface struct {
-	IPAddress  *IPAddress  `json:"ipAddress,omitempty"`
-	MacAddress *MacAddress `json:"macAddress,omitempty"`
-	// Vlans - READ-ONLY; List of device vlans.
-	Vlans *[]string `json:"vlans,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for NetworkInterface.
-func (ni NetworkInterface) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ni.IPAddress != nil {
-		objectMap["ipAddress"] = ni.IPAddress
-	}
-	if ni.MacAddress != nil {
-		objectMap["macAddress"] = ni.MacAddress
-	}
-	return json.Marshal(objectMap)
-}
-
-// OnPremiseIotSensor on-premise IoT sensor
-type OnPremiseIotSensor struct {
-	autorest.Response `json:"-"`
-	// Properties - On-premise IoT sensor properties
-	Properties interface{} `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for OnPremiseIotSensor.
-func (opis OnPremiseIotSensor) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if opis.Properties != nil {
-		objectMap["properties"] = opis.Properties
-	}
-	return json.Marshal(objectMap)
-}
-
-// OnPremiseIotSensorsList list of on-premise IoT sensors
-type OnPremiseIotSensorsList struct {
-	autorest.Response `json:"-"`
-	// Value - READ-ONLY; List data
-	Value *[]OnPremiseIotSensor `json:"value,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for OnPremiseIotSensorsList.
-func (opisl OnPremiseIotSensorsList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
-}
-
 // BasicOnPremiseResourceDetails details of the On Premise resource that was assessed
 type BasicOnPremiseResourceDetails interface {
 	AsOnPremiseSQLResourceDetails() (*OnPremiseSQLResourceDetails, bool)
@@ -15287,147 +15726,6 @@ func NewOperationListPage(cur OperationList, getNextPage func(context.Context, O
 	}
 }
 
-// PackageDownloadInfo information on a specific package download
-type PackageDownloadInfo struct {
-	// Version - READ-ONLY; Version number
-	Version *string `json:"version,omitempty"`
-	// Link - Download link
-	Link *string `json:"link,omitempty"`
-	// VersionKind - READ-ONLY; Kind of the version. Possible values include: 'Latest', 'Previous', 'Preview'
-	VersionKind VersionKind `json:"versionKind,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for PackageDownloadInfo.
-func (pdi PackageDownloadInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if pdi.Link != nil {
-		objectMap["link"] = pdi.Link
-	}
-	return json.Marshal(objectMap)
-}
-
-// PackageDownloads information about package downloads
-type PackageDownloads struct {
-	autorest.Response `json:"-"`
-	// Sensor - READ-ONLY; Contains all Sensor binary downloads
-	Sensor *PackageDownloadsSensor `json:"sensor,omitempty"`
-	// CentralManager - READ-ONLY; All downloads for Central Manager
-	CentralManager *PackageDownloadsCentralManager `json:"centralManager,omitempty"`
-	// ThreatIntelligence - READ-ONLY; All downloads for threat intelligence
-	ThreatIntelligence *[]PackageDownloadInfo `json:"threatIntelligence,omitempty"`
-	// Snmp - READ-ONLY; SNMP Server file
-	Snmp *[]PackageDownloadInfo `json:"snmp,omitempty"`
-	// WmiTool - READ-ONLY; Used for local configuration export
-	WmiTool *[]PackageDownloadInfo `json:"wmiTool,omitempty"`
-	// AuthorizedDevicesImportTemplate - READ-ONLY; Authorized devices import template
-	AuthorizedDevicesImportTemplate *[]PackageDownloadInfo `json:"authorizedDevicesImportTemplate,omitempty"`
-	// DeviceInformationUpdateImportTemplate - READ-ONLY; Authorized devices import template
-	DeviceInformationUpdateImportTemplate *[]PackageDownloadInfo `json:"deviceInformationUpdateImportTemplate,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for PackageDownloads.
-func (pd PackageDownloads) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
-}
-
-// PackageDownloadsCentralManager all downloads for Central Manager
-type PackageDownloadsCentralManager struct {
-	// Full - READ-ONLY; Contains full package downloads
-	Full *PackageDownloadsCentralManagerFull `json:"full,omitempty"`
-	// Upgrade - READ-ONLY; Central Manager upgrade package downloads (on existing installations)
-	Upgrade *[]UpgradePackageDownloadInfo `json:"upgrade,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for PackageDownloadsCentralManager.
-func (pdM PackageDownloadsCentralManager) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
-}
-
-// PackageDownloadsCentralManagerFull contains full package downloads
-type PackageDownloadsCentralManagerFull struct {
-	// Iso - READ-ONLY; Contains all ISO full versions of the Central Manager
-	Iso *[]PackageDownloadInfo `json:"iso,omitempty"`
-	// Ovf - READ-ONLY; Contains all OVF (virtual machine) full versions of the Central Manager
-	Ovf *PackageDownloadsCentralManagerFullOvf `json:"ovf,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for PackageDownloadsCentralManagerFull.
-func (pdM PackageDownloadsCentralManagerFull) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
-}
-
-// PackageDownloadsCentralManagerFullOvf contains all OVF (virtual machine) full versions of the Central
-// Manager
-type PackageDownloadsCentralManagerFullOvf struct {
-	// Enterprise - READ-ONLY; The Enterprise package type
-	Enterprise *[]PackageDownloadInfo `json:"enterprise,omitempty"`
-	// EnterpriseHighAvailability - READ-ONLY; The EnterpriseHighAvailability package type
-	EnterpriseHighAvailability *[]PackageDownloadInfo `json:"enterpriseHighAvailability,omitempty"`
-	// Medium - READ-ONLY; The Medium package type
-	Medium *[]PackageDownloadInfo `json:"medium,omitempty"`
-	// MediumHighAvailability - READ-ONLY; The MediumHighAvailability package type
-	MediumHighAvailability *[]PackageDownloadInfo `json:"mediumHighAvailability,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for PackageDownloadsCentralManagerFullOvf.
-func (pdM PackageDownloadsCentralManagerFullOvf) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
-}
-
-// PackageDownloadsSensor contains all Sensor binary downloads
-type PackageDownloadsSensor struct {
-	// Full - READ-ONLY; Contains full package downloads
-	Full *PackageDownloadsSensorFull `json:"full,omitempty"`
-	// Upgrade - Sensor upgrade package downloads (on existing installations)
-	Upgrade *[]UpgradePackageDownloadInfo `json:"upgrade,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for PackageDownloadsSensor.
-func (pd PackageDownloadsSensor) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if pd.Upgrade != nil {
-		objectMap["upgrade"] = pd.Upgrade
-	}
-	return json.Marshal(objectMap)
-}
-
-// PackageDownloadsSensorFull contains full package downloads
-type PackageDownloadsSensorFull struct {
-	// Iso - READ-ONLY; Contains all ISO full versions for the sensor
-	Iso *[]PackageDownloadInfo `json:"iso,omitempty"`
-	// Ovf - Contains all OVF (virtual machine) full versions for the sensor
-	Ovf *PackageDownloadsSensorFullOvf `json:"ovf,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for PackageDownloadsSensorFull.
-func (pd PackageDownloadsSensorFull) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if pd.Ovf != nil {
-		objectMap["ovf"] = pd.Ovf
-	}
-	return json.Marshal(objectMap)
-}
-
-// PackageDownloadsSensorFullOvf contains all OVF (virtual machine) full versions for the sensor
-type PackageDownloadsSensorFullOvf struct {
-	// Enterprise - READ-ONLY; Enterprise package type
-	Enterprise *[]PackageDownloadInfo `json:"enterprise,omitempty"`
-	// Medium - READ-ONLY; Medium package type
-	Medium *[]PackageDownloadInfo `json:"medium,omitempty"`
-	// Line - READ-ONLY; Line package type
-	Line *[]PackageDownloadInfo `json:"line,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for PackageDownloadsSensorFullOvf.
-func (pd PackageDownloadsSensorFullOvf) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
-}
-
 // PathRecommendation represents a path that is recommended to be allowed and its properties
 type PathRecommendation struct {
 	// Path - The full path of the file, or an identifier of the application
@@ -15447,9 +15745,9 @@ type PathRecommendation struct {
 	ConfigurationStatus ConfigurationStatus1 `json:"configurationStatus,omitempty"`
 }
 
-// Pricing azure Security Center is provided in two pricing tiers: free and standard, with the standard
-// tier available with a trial period. The standard tier offers advanced security capabilities, while the
-// free tier offers basic security features.
+// Pricing microsoft Defender for Cloud is provided in two pricing tiers: free and standard, with the
+// standard tier available with a trial period. The standard tier offers advanced security capabilities,
+// while the free tier offers basic security features.
 type Pricing struct {
 	autorest.Response `json:"-"`
 	// PricingProperties - Pricing data
@@ -15531,8 +15829,10 @@ type PricingList struct {
 
 // PricingProperties pricing properties for the relevant scope
 type PricingProperties struct {
-	// PricingTier - The pricing tier value. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. Possible values include: 'PricingTierFree', 'PricingTierStandard'
+	// PricingTier - The pricing tier value. Microsoft Defender for Cloud is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. Possible values include: 'Free', 'Standard'
 	PricingTier PricingTier `json:"pricingTier,omitempty"`
+	// SubPlan - The sub-plan selected for a Standard pricing configuration, when more than one sub-plan is available. Each sub-plan enables a set of security features. When not specified, full plan is applied.
+	SubPlan *string `json:"subPlan,omitempty"`
 	// FreeTrialRemainingTime - READ-ONLY; The duration left for the subscriptions free trial period - in ISO 8601 format (e.g. P3Y6M4DT12H30M5S).
 	FreeTrialRemainingTime *string `json:"freeTrialRemainingTime,omitempty"`
 }
@@ -15542,6 +15842,9 @@ func (pp PricingProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if pp.PricingTier != "" {
 		objectMap["pricingTier"] = pp.PricingTier
+	}
+	if pp.SubPlan != nil {
+		objectMap["subPlan"] = pp.SubPlan
 	}
 	return json.Marshal(objectMap)
 }
@@ -15745,23 +16048,6 @@ type ProtectionMode struct {
 	Script Script `json:"script,omitempty"`
 	// Executable - Possible values include: 'ExecutableAudit', 'ExecutableEnforce', 'ExecutableNone'
 	Executable Executable `json:"executable,omitempty"`
-}
-
-// Protocol1 protocol data
-type Protocol1 struct {
-	// Name - READ-ONLY; Protocol name
-	Name *string `json:"name,omitempty"`
-	// Identifiers - list of protocol identifiers.
-	Identifiers *string `json:"identifiers,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for Protocol1.
-func (p1 Protocol1) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if p1.Identifiers != nil {
-		objectMap["identifiers"] = p1.Identifiers
-	}
-	return json.Marshal(objectMap)
 }
 
 // ProxyServerProperties for a non-Azure machine that is not connected directly to the internet, specify a
@@ -15988,12 +16274,6 @@ func (qpniar QueuePurgesNotInAllowedRange) AsCustomAlertRule() (*CustomAlertRule
 // AsBasicCustomAlertRule is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
 func (qpniar QueuePurgesNotInAllowedRange) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool) {
 	return &qpniar, true
-}
-
-// ReadCloser ...
-type ReadCloser struct {
-	autorest.Response `json:"-"`
-	Value             *io.ReadCloser `json:"value,omitempty"`
 }
 
 // RecommendationConfigurationProperties the type of IoT Security recommendation.
@@ -16827,12 +17107,6 @@ type Remediation struct {
 	Automated *bool `json:"automated,omitempty"`
 	// PortalLink - Optional link to remediate in Azure Portal.
 	PortalLink *string `json:"portalLink,omitempty"`
-}
-
-// ResetPasswordInput reset password input.
-type ResetPasswordInput struct {
-	// ApplianceID - The appliance id of the sensor.
-	ApplianceID *string `json:"applianceId,omitempty"`
 }
 
 // Resource describes an Azure resource.
@@ -18222,20 +18496,6 @@ type SensitivityLabel struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
-// Sensor sensor data
-type Sensor struct {
-	// Name - READ-ONLY; Sensor name
-	Name *string `json:"name,omitempty"`
-	// Zone - READ-ONLY; Zone Name.
-	Zone *string `json:"zone,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for Sensor.
-func (s Sensor) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
-}
-
 // ServerVulnerabilityAssessment describes the server vulnerability assessment details on a resource
 type ServerVulnerabilityAssessment struct {
 	autorest.Response                        `json:"-"`
@@ -18732,18 +18992,6 @@ func NewSettingsListPage(cur SettingsList, getNextPage func(context.Context, Set
 		fn: getNextPage,
 		sl: cur,
 	}
-}
-
-// Site site data
-type Site struct {
-	// DisplayName - READ-ONLY; Site display name
-	DisplayName *string `json:"displayName,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for Site.
-func (s Site) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
 }
 
 // Software represents a software data
@@ -21602,27 +21850,6 @@ type UpdateIoTSecuritySolutionProperties struct {
 	RecommendationsConfiguration *[]RecommendationConfigurationProperties `json:"recommendationsConfiguration,omitempty"`
 }
 
-// UpgradePackageDownloadInfo information on a specific package upgrade download
-type UpgradePackageDownloadInfo struct {
-	// FromVersion - READ-ONLY; Minimum base version for upgrade
-	FromVersion *string `json:"fromVersion,omitempty"`
-	// Version - READ-ONLY; Version number
-	Version *string `json:"version,omitempty"`
-	// Link - Download link
-	Link *string `json:"link,omitempty"`
-	// VersionKind - READ-ONLY; Kind of the version. Possible values include: 'Latest', 'Previous', 'Preview'
-	VersionKind VersionKind `json:"versionKind,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for UpgradePackageDownloadInfo.
-func (updi UpgradePackageDownloadInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if updi.Link != nil {
-		objectMap["link"] = updi.Link
-	}
-	return json.Marshal(objectMap)
-}
-
 // UserDefinedResourcesProperties properties of the IoT Security solution's user defined resources.
 type UserDefinedResourcesProperties struct {
 	// Query - Azure Resource Graph query which represents the security solution's user defined resources. Required to start with "where type != "Microsoft.Devices/IotHubs""
@@ -21681,7 +21908,7 @@ type VMRecommendation struct {
 	// RecommendationAction - Possible values include: 'RecommendationActionRecommended', 'RecommendationActionAdd', 'RecommendationActionRemove'
 	RecommendationAction RecommendationAction `json:"recommendationAction,omitempty"`
 	ResourceID           *string              `json:"resourceId,omitempty"`
-	// EnforcementSupport - Possible values include: 'EnforcementSupportSupported', 'EnforcementSupportNotSupported', 'EnforcementSupportUnknown'
+	// EnforcementSupport - Possible values include: 'Supported', 'NotSupported', 'Unknown'
 	EnforcementSupport EnforcementSupport `json:"enforcementSupport,omitempty"`
 }
 

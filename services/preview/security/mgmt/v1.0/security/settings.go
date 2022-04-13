@@ -21,20 +21,20 @@ type SettingsClient struct {
 }
 
 // NewSettingsClient creates an instance of the SettingsClient client.
-func NewSettingsClient(subscriptionID string, ascLocation string) SettingsClient {
-	return NewSettingsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
+func NewSettingsClient(subscriptionID string) SettingsClient {
+	return NewSettingsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewSettingsClientWithBaseURI creates an instance of the SettingsClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewSettingsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) SettingsClient {
-	return SettingsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
+func NewSettingsClientWithBaseURI(baseURI string, subscriptionID string) SettingsClient {
+	return SettingsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Get settings of different configurations in security center
+// Get settings of different configurations in Microsoft Defender for Cloud
 // Parameters:
 // settingName - name of setting: (MCAS/WDATP)
-func (client SettingsClient) Get(ctx context.Context, settingName string) (result Setting, err error) {
+func (client SettingsClient) Get(ctx context.Context, settingName string) (result SettingModel, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SettingsClient.Get")
 		defer func() {
@@ -101,7 +101,7 @@ func (client SettingsClient) GetSender(req *http.Request) (*http.Response, error
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client SettingsClient) GetResponder(resp *http.Response) (result Setting, err error) {
+func (client SettingsClient) GetResponder(resp *http.Response) (result SettingModel, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -111,7 +111,7 @@ func (client SettingsClient) GetResponder(resp *http.Response) (result Setting, 
 	return
 }
 
-// List settings about different configurations in security center
+// List settings about different configurations in Microsoft Defender for Cloud
 func (client SettingsClient) List(ctx context.Context) (result SettingsListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SettingsClient.List")
@@ -230,11 +230,11 @@ func (client SettingsClient) ListComplete(ctx context.Context) (result SettingsL
 	return
 }
 
-// Update updating settings about different configurations in security center
+// Update updating settings about different configurations in Microsoft Defender for Cloud
 // Parameters:
 // settingName - name of setting: (MCAS/WDATP)
 // setting - setting object
-func (client SettingsClient) Update(ctx context.Context, settingName string, setting Setting) (result Setting, err error) {
+func (client SettingsClient) Update(ctx context.Context, settingName string, setting BasicSetting) (result SettingModel, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SettingsClient.Update")
 		defer func() {
@@ -274,7 +274,7 @@ func (client SettingsClient) Update(ctx context.Context, settingName string, set
 }
 
 // UpdatePreparer prepares the Update request.
-func (client SettingsClient) UpdatePreparer(ctx context.Context, settingName string, setting Setting) (*http.Request, error) {
+func (client SettingsClient) UpdatePreparer(ctx context.Context, settingName string, setting BasicSetting) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"settingName":    autorest.Encode("path", settingName),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
@@ -303,7 +303,7 @@ func (client SettingsClient) UpdateSender(req *http.Request) (*http.Response, er
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client SettingsClient) UpdateResponder(resp *http.Response) (result Setting, err error) {
+func (client SettingsClient) UpdateResponder(resp *http.Response) (result SettingModel, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

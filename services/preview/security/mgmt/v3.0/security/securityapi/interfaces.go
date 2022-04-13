@@ -12,6 +12,40 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// MdeOnboardingsClientAPI contains the set of methods on the MdeOnboardingsClient type.
+type MdeOnboardingsClientAPI interface {
+	Get(ctx context.Context) (result security.MdeOnboardingData, err error)
+	List(ctx context.Context) (result security.MdeOnboardingDataList, err error)
+}
+
+var _ MdeOnboardingsClientAPI = (*security.MdeOnboardingsClient)(nil)
+
+// CustomAssessmentAutomationsClientAPI contains the set of methods on the CustomAssessmentAutomationsClient type.
+type CustomAssessmentAutomationsClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, customAssessmentAutomationName string, customAssessmentAutomationBody security.CustomAssessmentAutomationRequest) (result security.CustomAssessmentAutomation, err error)
+	Delete(ctx context.Context, resourceGroupName string, customAssessmentAutomationName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, customAssessmentAutomationName string) (result security.CustomAssessmentAutomation, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result security.CustomAssessmentAutomationsListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result security.CustomAssessmentAutomationsListResultIterator, err error)
+	ListBySubscription(ctx context.Context) (result security.CustomAssessmentAutomationsListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result security.CustomAssessmentAutomationsListResultIterator, err error)
+}
+
+var _ CustomAssessmentAutomationsClientAPI = (*security.CustomAssessmentAutomationsClient)(nil)
+
+// CustomEntityStoreAssignmentsClientAPI contains the set of methods on the CustomEntityStoreAssignmentsClient type.
+type CustomEntityStoreAssignmentsClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, customEntityStoreAssignmentName string, customEntityStoreAssignmentRequestBody security.CustomEntityStoreAssignmentRequest) (result security.CustomEntityStoreAssignment, err error)
+	Delete(ctx context.Context, resourceGroupName string, customEntityStoreAssignmentName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, customEntityStoreAssignmentName string) (result security.CustomEntityStoreAssignment, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result security.CustomEntityStoreAssignmentsListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result security.CustomEntityStoreAssignmentsListResultIterator, err error)
+	ListBySubscription(ctx context.Context) (result security.CustomEntityStoreAssignmentsListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result security.CustomEntityStoreAssignmentsListResultIterator, err error)
+}
+
+var _ CustomEntityStoreAssignmentsClientAPI = (*security.CustomEntityStoreAssignmentsClient)(nil)
+
 // ComplianceResultsClientAPI contains the set of methods on the ComplianceResultsClient type.
 type ComplianceResultsClientAPI interface {
 	Get(ctx context.Context, resourceID string, complianceResultName string) (result security.ComplianceResult, err error)
@@ -92,7 +126,7 @@ var _ IotSecuritySolutionsAnalyticsRecommendationClientAPI = (*security.IotSecur
 
 // LocationsClientAPI contains the set of methods on the LocationsClient type.
 type LocationsClientAPI interface {
-	Get(ctx context.Context) (result security.AscLocation, err error)
+	Get(ctx context.Context, ascLocation string) (result security.AscLocation, err error)
 	List(ctx context.Context) (result security.AscLocationListPage, err error)
 	ListComplete(ctx context.Context) (result security.AscLocationListIterator, err error)
 }
@@ -109,16 +143,16 @@ var _ OperationsClientAPI = (*security.OperationsClient)(nil)
 
 // TasksClientAPI contains the set of methods on the TasksClient type.
 type TasksClientAPI interface {
-	GetResourceGroupLevelTask(ctx context.Context, resourceGroupName string, taskName string) (result security.Task, err error)
-	GetSubscriptionLevelTask(ctx context.Context, taskName string) (result security.Task, err error)
+	GetResourceGroupLevelTask(ctx context.Context, resourceGroupName string, ascLocation string, taskName string) (result security.Task, err error)
+	GetSubscriptionLevelTask(ctx context.Context, ascLocation string, taskName string) (result security.Task, err error)
 	List(ctx context.Context, filter string) (result security.TaskListPage, err error)
 	ListComplete(ctx context.Context, filter string) (result security.TaskListIterator, err error)
-	ListByHomeRegion(ctx context.Context, filter string) (result security.TaskListPage, err error)
-	ListByHomeRegionComplete(ctx context.Context, filter string) (result security.TaskListIterator, err error)
-	ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string) (result security.TaskListPage, err error)
-	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string) (result security.TaskListIterator, err error)
-	UpdateResourceGroupLevelTaskState(ctx context.Context, resourceGroupName string, taskName string, taskUpdateActionType string) (result autorest.Response, err error)
-	UpdateSubscriptionLevelTaskState(ctx context.Context, taskName string, taskUpdateActionType string) (result autorest.Response, err error)
+	ListByHomeRegion(ctx context.Context, ascLocation string, filter string) (result security.TaskListPage, err error)
+	ListByHomeRegionComplete(ctx context.Context, ascLocation string, filter string) (result security.TaskListIterator, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string, ascLocation string, filter string) (result security.TaskListPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, ascLocation string, filter string) (result security.TaskListIterator, err error)
+	UpdateResourceGroupLevelTaskState(ctx context.Context, resourceGroupName string, ascLocation string, taskName string, taskUpdateActionType security.TaskUpdateActionType) (result autorest.Response, err error)
+	UpdateSubscriptionLevelTaskState(ctx context.Context, ascLocation string, taskName string, taskUpdateActionType security.TaskUpdateActionType) (result autorest.Response, err error)
 }
 
 var _ TasksClientAPI = (*security.TasksClient)(nil)
@@ -144,8 +178,8 @@ var _ CompliancesClientAPI = (*security.CompliancesClient)(nil)
 
 // InformationProtectionPoliciesClientAPI contains the set of methods on the InformationProtectionPoliciesClient type.
 type InformationProtectionPoliciesClientAPI interface {
-	CreateOrUpdate(ctx context.Context, scope string, informationProtectionPolicyName string, informationProtectionPolicy security.InformationProtectionPolicy) (result security.InformationProtectionPolicy, err error)
-	Get(ctx context.Context, scope string, informationProtectionPolicyName string) (result security.InformationProtectionPolicy, err error)
+	CreateOrUpdate(ctx context.Context, scope string, informationProtectionPolicyName security.InformationProtectionPolicyName, informationProtectionPolicy security.InformationProtectionPolicy) (result security.InformationProtectionPolicy, err error)
+	Get(ctx context.Context, scope string, informationProtectionPolicyName security.InformationProtectionPolicyName) (result security.InformationProtectionPolicy, err error)
 	List(ctx context.Context, scope string) (result security.InformationProtectionPolicyListPage, err error)
 	ListComplete(ctx context.Context, scope string) (result security.InformationProtectionPolicyListIterator, err error)
 }
@@ -251,23 +285,23 @@ var _ ServerVulnerabilityAssessmentClientAPI = (*security.ServerVulnerabilityAss
 
 // AssessmentsMetadataClientAPI contains the set of methods on the AssessmentsMetadataClient type.
 type AssessmentsMetadataClientAPI interface {
-	CreateInSubscription(ctx context.Context, assessmentMetadataName string, assessmentMetadata security.AssessmentMetadata) (result security.AssessmentMetadata, err error)
+	CreateInSubscription(ctx context.Context, assessmentMetadataName string, assessmentMetadata security.AssessmentMetadataResponse) (result security.AssessmentMetadataResponse, err error)
 	DeleteInSubscription(ctx context.Context, assessmentMetadataName string) (result autorest.Response, err error)
-	Get(ctx context.Context, assessmentMetadataName string) (result security.AssessmentMetadata, err error)
-	GetInSubscription(ctx context.Context, assessmentMetadataName string) (result security.AssessmentMetadata, err error)
-	List(ctx context.Context) (result security.AssessmentMetadataListPage, err error)
-	ListComplete(ctx context.Context) (result security.AssessmentMetadataListIterator, err error)
-	ListBySubscription(ctx context.Context) (result security.AssessmentMetadataListPage, err error)
-	ListBySubscriptionComplete(ctx context.Context) (result security.AssessmentMetadataListIterator, err error)
+	Get(ctx context.Context, assessmentMetadataName string) (result security.AssessmentMetadataResponse, err error)
+	GetInSubscription(ctx context.Context, assessmentMetadataName string) (result security.AssessmentMetadataResponse, err error)
+	List(ctx context.Context) (result security.AssessmentMetadataResponseListPage, err error)
+	ListComplete(ctx context.Context) (result security.AssessmentMetadataResponseListIterator, err error)
+	ListBySubscription(ctx context.Context) (result security.AssessmentMetadataResponseListPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result security.AssessmentMetadataResponseListIterator, err error)
 }
 
 var _ AssessmentsMetadataClientAPI = (*security.AssessmentsMetadataClient)(nil)
 
 // AssessmentsClientAPI contains the set of methods on the AssessmentsClient type.
 type AssessmentsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceID string, assessmentName string, assessment security.Assessment) (result security.Assessment, err error)
+	CreateOrUpdate(ctx context.Context, resourceID string, assessmentName string, assessment security.Assessment) (result security.AssessmentResponse, err error)
 	Delete(ctx context.Context, resourceID string, assessmentName string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceID string, assessmentName string, expand security.ExpandEnum) (result security.Assessment, err error)
+	Get(ctx context.Context, resourceID string, assessmentName string, expand security.ExpandEnum) (result security.AssessmentResponse, err error)
 	List(ctx context.Context, scope string) (result security.AssessmentListPage, err error)
 	ListComplete(ctx context.Context, scope string) (result security.AssessmentListIterator, err error)
 }
@@ -276,10 +310,10 @@ var _ AssessmentsClientAPI = (*security.AssessmentsClient)(nil)
 
 // AdaptiveApplicationControlsClientAPI contains the set of methods on the AdaptiveApplicationControlsClient type.
 type AdaptiveApplicationControlsClientAPI interface {
-	Delete(ctx context.Context, groupName string) (result autorest.Response, err error)
-	Get(ctx context.Context, groupName string) (result security.AdaptiveApplicationControlGroup, err error)
+	Delete(ctx context.Context, ascLocation string, groupName string) (result autorest.Response, err error)
+	Get(ctx context.Context, ascLocation string, groupName string) (result security.AdaptiveApplicationControlGroup, err error)
 	List(ctx context.Context, includePathRecommendations *bool, summary *bool) (result security.AdaptiveApplicationControlGroups, err error)
-	Put(ctx context.Context, groupName string, body security.AdaptiveApplicationControlGroup) (result security.AdaptiveApplicationControlGroup, err error)
+	Put(ctx context.Context, ascLocation string, groupName string, body security.AdaptiveApplicationControlGroup) (result security.AdaptiveApplicationControlGroup, err error)
 }
 
 var _ AdaptiveApplicationControlsClientAPI = (*security.AdaptiveApplicationControlsClient)(nil)
@@ -296,51 +330,51 @@ var _ AdaptiveNetworkHardeningsClientAPI = (*security.AdaptiveNetworkHardeningsC
 
 // AllowedConnectionsClientAPI contains the set of methods on the AllowedConnectionsClient type.
 type AllowedConnectionsClientAPI interface {
-	Get(ctx context.Context, resourceGroupName string, connectionType security.ConnectionType) (result security.AllowedConnectionsResource, err error)
+	Get(ctx context.Context, resourceGroupName string, ascLocation string, connectionType security.ConnectionType) (result security.AllowedConnectionsResource, err error)
 	List(ctx context.Context) (result security.AllowedConnectionsListPage, err error)
 	ListComplete(ctx context.Context) (result security.AllowedConnectionsListIterator, err error)
-	ListByHomeRegion(ctx context.Context) (result security.AllowedConnectionsListPage, err error)
-	ListByHomeRegionComplete(ctx context.Context) (result security.AllowedConnectionsListIterator, err error)
+	ListByHomeRegion(ctx context.Context, ascLocation string) (result security.AllowedConnectionsListPage, err error)
+	ListByHomeRegionComplete(ctx context.Context, ascLocation string) (result security.AllowedConnectionsListIterator, err error)
 }
 
 var _ AllowedConnectionsClientAPI = (*security.AllowedConnectionsClient)(nil)
 
 // TopologyClientAPI contains the set of methods on the TopologyClient type.
 type TopologyClientAPI interface {
-	Get(ctx context.Context, resourceGroupName string, topologyResourceName string) (result security.TopologyResource, err error)
+	Get(ctx context.Context, resourceGroupName string, ascLocation string, topologyResourceName string) (result security.TopologyResource, err error)
 	List(ctx context.Context) (result security.TopologyListPage, err error)
 	ListComplete(ctx context.Context) (result security.TopologyListIterator, err error)
-	ListByHomeRegion(ctx context.Context) (result security.TopologyListPage, err error)
-	ListByHomeRegionComplete(ctx context.Context) (result security.TopologyListIterator, err error)
+	ListByHomeRegion(ctx context.Context, ascLocation string) (result security.TopologyListPage, err error)
+	ListByHomeRegionComplete(ctx context.Context, ascLocation string) (result security.TopologyListIterator, err error)
 }
 
 var _ TopologyClientAPI = (*security.TopologyClient)(nil)
 
 // JitNetworkAccessPoliciesClientAPI contains the set of methods on the JitNetworkAccessPoliciesClient type.
 type JitNetworkAccessPoliciesClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, jitNetworkAccessPolicyName string, body security.JitNetworkAccessPolicy) (result security.JitNetworkAccessPolicy, err error)
-	Delete(ctx context.Context, resourceGroupName string, jitNetworkAccessPolicyName string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, jitNetworkAccessPolicyName string) (result security.JitNetworkAccessPolicy, err error)
-	Initiate(ctx context.Context, resourceGroupName string, jitNetworkAccessPolicyName string, body security.JitNetworkAccessPolicyInitiateRequest) (result security.JitNetworkAccessRequest, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, ascLocation string, jitNetworkAccessPolicyName string, body security.JitNetworkAccessPolicy) (result security.JitNetworkAccessPolicy, err error)
+	Delete(ctx context.Context, resourceGroupName string, ascLocation string, jitNetworkAccessPolicyName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, ascLocation string, jitNetworkAccessPolicyName string) (result security.JitNetworkAccessPolicy, err error)
+	Initiate(ctx context.Context, resourceGroupName string, ascLocation string, jitNetworkAccessPolicyName string, body security.JitNetworkAccessPolicyInitiateRequest) (result security.JitNetworkAccessRequest, err error)
 	List(ctx context.Context) (result security.JitNetworkAccessPoliciesListPage, err error)
 	ListComplete(ctx context.Context) (result security.JitNetworkAccessPoliciesListIterator, err error)
-	ListByRegion(ctx context.Context) (result security.JitNetworkAccessPoliciesListPage, err error)
-	ListByRegionComplete(ctx context.Context) (result security.JitNetworkAccessPoliciesListIterator, err error)
+	ListByRegion(ctx context.Context, ascLocation string) (result security.JitNetworkAccessPoliciesListPage, err error)
+	ListByRegionComplete(ctx context.Context, ascLocation string) (result security.JitNetworkAccessPoliciesListIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result security.JitNetworkAccessPoliciesListPage, err error)
 	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result security.JitNetworkAccessPoliciesListIterator, err error)
-	ListByResourceGroupAndRegion(ctx context.Context, resourceGroupName string) (result security.JitNetworkAccessPoliciesListPage, err error)
-	ListByResourceGroupAndRegionComplete(ctx context.Context, resourceGroupName string) (result security.JitNetworkAccessPoliciesListIterator, err error)
+	ListByResourceGroupAndRegion(ctx context.Context, resourceGroupName string, ascLocation string) (result security.JitNetworkAccessPoliciesListPage, err error)
+	ListByResourceGroupAndRegionComplete(ctx context.Context, resourceGroupName string, ascLocation string) (result security.JitNetworkAccessPoliciesListIterator, err error)
 }
 
 var _ JitNetworkAccessPoliciesClientAPI = (*security.JitNetworkAccessPoliciesClient)(nil)
 
 // DiscoveredSecuritySolutionsClientAPI contains the set of methods on the DiscoveredSecuritySolutionsClient type.
 type DiscoveredSecuritySolutionsClientAPI interface {
-	Get(ctx context.Context, resourceGroupName string, discoveredSecuritySolutionName string) (result security.DiscoveredSecuritySolution, err error)
+	Get(ctx context.Context, resourceGroupName string, ascLocation string, discoveredSecuritySolutionName string) (result security.DiscoveredSecuritySolution, err error)
 	List(ctx context.Context) (result security.DiscoveredSecuritySolutionListPage, err error)
 	ListComplete(ctx context.Context) (result security.DiscoveredSecuritySolutionListIterator, err error)
-	ListByHomeRegion(ctx context.Context) (result security.DiscoveredSecuritySolutionListPage, err error)
-	ListByHomeRegionComplete(ctx context.Context) (result security.DiscoveredSecuritySolutionListIterator, err error)
+	ListByHomeRegion(ctx context.Context, ascLocation string) (result security.DiscoveredSecuritySolutionListPage, err error)
+	ListByHomeRegionComplete(ctx context.Context, ascLocation string) (result security.DiscoveredSecuritySolutionListIterator, err error)
 }
 
 var _ DiscoveredSecuritySolutionsClientAPI = (*security.DiscoveredSecuritySolutionsClient)(nil)
@@ -348,18 +382,18 @@ var _ DiscoveredSecuritySolutionsClientAPI = (*security.DiscoveredSecuritySoluti
 // SolutionsReferenceDataClientAPI contains the set of methods on the SolutionsReferenceDataClient type.
 type SolutionsReferenceDataClientAPI interface {
 	List(ctx context.Context) (result security.SolutionsReferenceDataList, err error)
-	ListByHomeRegion(ctx context.Context) (result security.SolutionsReferenceDataList, err error)
+	ListByHomeRegion(ctx context.Context, ascLocation string) (result security.SolutionsReferenceDataList, err error)
 }
 
 var _ SolutionsReferenceDataClientAPI = (*security.SolutionsReferenceDataClient)(nil)
 
 // ExternalSecuritySolutionsClientAPI contains the set of methods on the ExternalSecuritySolutionsClient type.
 type ExternalSecuritySolutionsClientAPI interface {
-	Get(ctx context.Context, resourceGroupName string, externalSecuritySolutionsName string) (result security.ExternalSecuritySolutionModel, err error)
+	Get(ctx context.Context, resourceGroupName string, ascLocation string, externalSecuritySolutionsName string) (result security.ExternalSecuritySolutionModel, err error)
 	List(ctx context.Context) (result security.ExternalSecuritySolutionListPage, err error)
 	ListComplete(ctx context.Context) (result security.ExternalSecuritySolutionListIterator, err error)
-	ListByHomeRegion(ctx context.Context) (result security.ExternalSecuritySolutionListPage, err error)
-	ListByHomeRegionComplete(ctx context.Context) (result security.ExternalSecuritySolutionListIterator, err error)
+	ListByHomeRegion(ctx context.Context, ascLocation string) (result security.ExternalSecuritySolutionListPage, err error)
+	ListByHomeRegionComplete(ctx context.Context, ascLocation string) (result security.ExternalSecuritySolutionListIterator, err error)
 }
 
 var _ ExternalSecuritySolutionsClientAPI = (*security.ExternalSecuritySolutionsClient)(nil)
@@ -395,7 +429,7 @@ var _ SecureScoreControlDefinitionsClientAPI = (*security.SecureScoreControlDefi
 
 // SolutionsClientAPI contains the set of methods on the SolutionsClient type.
 type SolutionsClientAPI interface {
-	Get(ctx context.Context, resourceGroupName string, securitySolutionName string) (result security.Solution, err error)
+	Get(ctx context.Context, resourceGroupName string, ascLocation string, securitySolutionName string) (result security.Solution, err error)
 	List(ctx context.Context) (result security.SolutionListPage, err error)
 	ListComplete(ctx context.Context) (result security.SolutionListIterator, err error)
 }
@@ -440,139 +474,35 @@ type SQLVulnerabilityAssessmentBaselineRulesClientAPI interface {
 
 var _ SQLVulnerabilityAssessmentBaselineRulesClientAPI = (*security.SQLVulnerabilityAssessmentBaselineRulesClient)(nil)
 
-// IotDefenderSettingsClientAPI contains the set of methods on the IotDefenderSettingsClient type.
-type IotDefenderSettingsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, iotDefenderSettingsModel security.IotDefenderSettingsModel) (result security.IotDefenderSettingsModel, err error)
-	Delete(ctx context.Context) (result autorest.Response, err error)
-	DownloadManagerActivation(ctx context.Context) (result security.ReadCloser, err error)
-	Get(ctx context.Context) (result security.IotDefenderSettingsModel, err error)
-	List(ctx context.Context) (result security.IotDefenderSettingsList, err error)
-	PackageDownloadsMethod(ctx context.Context) (result security.PackageDownloads, err error)
-}
-
-var _ IotDefenderSettingsClientAPI = (*security.IotDefenderSettingsClient)(nil)
-
-// IotSensorsClientAPI contains the set of methods on the IotSensorsClient type.
-type IotSensorsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, scope string, iotSensorName string, iotSensorsModel security.IotSensorsModel) (result security.IotSensorsModel, err error)
-	Delete(ctx context.Context, scope string, iotSensorName string) (result autorest.Response, err error)
-	DownloadActivation(ctx context.Context, scope string, iotSensorName string) (result security.ReadCloser, err error)
-	DownloadResetPassword(ctx context.Context, scope string, iotSensorName string, body security.ResetPasswordInput) (result security.ReadCloser, err error)
-	Get(ctx context.Context, scope string, iotSensorName string) (result security.IotSensorsModel, err error)
-	List(ctx context.Context, scope string) (result security.IotSensorsList, err error)
-	TriggerTiPackageUpdate(ctx context.Context, scope string, iotSensorName string) (result autorest.Response, err error)
-}
-
-var _ IotSensorsClientAPI = (*security.IotSensorsClient)(nil)
-
-// DevicesForSubscriptionClientAPI contains the set of methods on the DevicesForSubscriptionClient type.
-type DevicesForSubscriptionClientAPI interface {
-	List(ctx context.Context, limit *int32, skipToken string, deviceManagementType security.ManagementState) (result security.DeviceListPage, err error)
-	ListComplete(ctx context.Context, limit *int32, skipToken string, deviceManagementType security.ManagementState) (result security.DeviceListIterator, err error)
-}
-
-var _ DevicesForSubscriptionClientAPI = (*security.DevicesForSubscriptionClient)(nil)
-
-// DevicesForHubClientAPI contains the set of methods on the DevicesForHubClient type.
-type DevicesForHubClientAPI interface {
-	List(ctx context.Context, resourceID string, limit *int32, skipToken string, deviceManagementType security.ManagementState) (result security.DeviceListPage, err error)
-	ListComplete(ctx context.Context, resourceID string, limit *int32, skipToken string, deviceManagementType security.ManagementState) (result security.DeviceListIterator, err error)
-}
-
-var _ DevicesForHubClientAPI = (*security.DevicesForHubClient)(nil)
-
-// DeviceClientAPI contains the set of methods on the DeviceClient type.
-type DeviceClientAPI interface {
-	Get(ctx context.Context, resourceID string, deviceID string) (result security.Device, err error)
-}
-
-var _ DeviceClientAPI = (*security.DeviceClient)(nil)
-
-// OnPremiseIotSensorsClientAPI contains the set of methods on the OnPremiseIotSensorsClient type.
-type OnPremiseIotSensorsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, onPremiseIotSensorName string) (result security.OnPremiseIotSensor, err error)
-	Delete(ctx context.Context, onPremiseIotSensorName string) (result autorest.Response, err error)
-	DownloadActivation(ctx context.Context, onPremiseIotSensorName string) (result security.ReadCloser, err error)
-	DownloadResetPassword(ctx context.Context, onPremiseIotSensorName string, body security.ResetPasswordInput) (result security.ReadCloser, err error)
-	Get(ctx context.Context, onPremiseIotSensorName string) (result security.OnPremiseIotSensor, err error)
-	List(ctx context.Context) (result security.OnPremiseIotSensorsList, err error)
-}
-
-var _ OnPremiseIotSensorsClientAPI = (*security.OnPremiseIotSensorsClient)(nil)
-
-// IotSitesClientAPI contains the set of methods on the IotSitesClient type.
-type IotSitesClientAPI interface {
-	CreateOrUpdate(ctx context.Context, scope string, iotSitesModel security.IotSitesModel) (result security.IotSitesModel, err error)
-	Delete(ctx context.Context, scope string) (result autorest.Response, err error)
-	Get(ctx context.Context, scope string) (result security.IotSitesModel, err error)
-	List(ctx context.Context, scope string) (result security.IotSitesList, err error)
-}
-
-var _ IotSitesClientAPI = (*security.IotSitesClient)(nil)
-
-// IotAlertsClientAPI contains the set of methods on the IotAlertsClient type.
-type IotAlertsClientAPI interface {
-	Get(ctx context.Context, scope string, iotAlertID string) (result security.IotAlertModel, err error)
-	List(ctx context.Context, scope string, minStartTimeUtc string, maxStartTimeUtc string, alertType string, deviceManagementType security.ManagementState, compromisedEntity string, limit *int32, skipToken string) (result security.IotAlertListModelPage, err error)
-	ListComplete(ctx context.Context, scope string, minStartTimeUtc string, maxStartTimeUtc string, alertType string, deviceManagementType security.ManagementState, compromisedEntity string, limit *int32, skipToken string) (result security.IotAlertListModelIterator, err error)
-}
-
-var _ IotAlertsClientAPI = (*security.IotAlertsClient)(nil)
-
-// IotAlertTypesClientAPI contains the set of methods on the IotAlertTypesClient type.
-type IotAlertTypesClientAPI interface {
-	Get(ctx context.Context, iotAlertTypeName string) (result security.IotAlertType, err error)
-	List(ctx context.Context) (result security.IotAlertTypeList, err error)
-}
-
-var _ IotAlertTypesClientAPI = (*security.IotAlertTypesClient)(nil)
-
-// IotRecommendationsClientAPI contains the set of methods on the IotRecommendationsClient type.
-type IotRecommendationsClientAPI interface {
-	Get(ctx context.Context, scope string, iotRecommendationID string) (result security.IotRecommendationModel, err error)
-	List(ctx context.Context, scope string, recommendationType string, deviceID string, limit *int32, skipToken string) (result security.IotRecommendationListModelPage, err error)
-	ListComplete(ctx context.Context, scope string, recommendationType string, deviceID string, limit *int32, skipToken string) (result security.IotRecommendationListModelIterator, err error)
-}
-
-var _ IotRecommendationsClientAPI = (*security.IotRecommendationsClient)(nil)
-
-// IotRecommendationTypesClientAPI contains the set of methods on the IotRecommendationTypesClient type.
-type IotRecommendationTypesClientAPI interface {
-	Get(ctx context.Context, iotRecommendationTypeName string) (result security.IotRecommendationType, err error)
-	List(ctx context.Context) (result security.IotRecommendationTypeList, err error)
-}
-
-var _ IotRecommendationTypesClientAPI = (*security.IotRecommendationTypesClient)(nil)
-
 // AlertsClientAPI contains the set of methods on the AlertsClient type.
 type AlertsClientAPI interface {
-	GetResourceGroupLevel(ctx context.Context, alertName string, resourceGroupName string) (result security.Alert, err error)
-	GetSubscriptionLevel(ctx context.Context, alertName string) (result security.Alert, err error)
+	GetResourceGroupLevel(ctx context.Context, ascLocation string, alertName string, resourceGroupName string) (result security.Alert, err error)
+	GetSubscriptionLevel(ctx context.Context, ascLocation string, alertName string) (result security.Alert, err error)
 	List(ctx context.Context) (result security.AlertListPage, err error)
 	ListComplete(ctx context.Context) (result security.AlertListIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result security.AlertListPage, err error)
 	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result security.AlertListIterator, err error)
-	ListResourceGroupLevelByRegion(ctx context.Context, resourceGroupName string) (result security.AlertListPage, err error)
-	ListResourceGroupLevelByRegionComplete(ctx context.Context, resourceGroupName string) (result security.AlertListIterator, err error)
-	ListSubscriptionLevelByRegion(ctx context.Context) (result security.AlertListPage, err error)
-	ListSubscriptionLevelByRegionComplete(ctx context.Context) (result security.AlertListIterator, err error)
-	Simulate(ctx context.Context, alertSimulatorRequestBody security.AlertSimulatorRequestBody) (result security.AlertsSimulateFuture, err error)
-	UpdateResourceGroupLevelStateToActivate(ctx context.Context, alertName string, resourceGroupName string) (result autorest.Response, err error)
-	UpdateResourceGroupLevelStateToDismiss(ctx context.Context, alertName string, resourceGroupName string) (result autorest.Response, err error)
-	UpdateResourceGroupLevelStateToResolve(ctx context.Context, alertName string, resourceGroupName string) (result autorest.Response, err error)
-	UpdateSubscriptionLevelStateToActivate(ctx context.Context, alertName string) (result autorest.Response, err error)
-	UpdateSubscriptionLevelStateToDismiss(ctx context.Context, alertName string) (result autorest.Response, err error)
-	UpdateSubscriptionLevelStateToResolve(ctx context.Context, alertName string) (result autorest.Response, err error)
+	ListResourceGroupLevelByRegion(ctx context.Context, ascLocation string, resourceGroupName string) (result security.AlertListPage, err error)
+	ListResourceGroupLevelByRegionComplete(ctx context.Context, ascLocation string, resourceGroupName string) (result security.AlertListIterator, err error)
+	ListSubscriptionLevelByRegion(ctx context.Context, ascLocation string) (result security.AlertListPage, err error)
+	ListSubscriptionLevelByRegionComplete(ctx context.Context, ascLocation string) (result security.AlertListIterator, err error)
+	Simulate(ctx context.Context, ascLocation string, alertSimulatorRequestBody security.AlertSimulatorRequestBody) (result autorest.Response, err error)
+	UpdateResourceGroupLevelStateToActivate(ctx context.Context, ascLocation string, alertName string, resourceGroupName string) (result autorest.Response, err error)
+	UpdateResourceGroupLevelStateToDismiss(ctx context.Context, ascLocation string, alertName string, resourceGroupName string) (result autorest.Response, err error)
+	UpdateResourceGroupLevelStateToResolve(ctx context.Context, ascLocation string, alertName string, resourceGroupName string) (result autorest.Response, err error)
+	UpdateSubscriptionLevelStateToActivate(ctx context.Context, ascLocation string, alertName string) (result autorest.Response, err error)
+	UpdateSubscriptionLevelStateToDismiss(ctx context.Context, ascLocation string, alertName string) (result autorest.Response, err error)
+	UpdateSubscriptionLevelStateToResolve(ctx context.Context, ascLocation string, alertName string) (result autorest.Response, err error)
 }
 
 var _ AlertsClientAPI = (*security.AlertsClient)(nil)
 
 // SettingsClientAPI contains the set of methods on the SettingsClient type.
 type SettingsClientAPI interface {
-	Get(ctx context.Context, settingName string) (result security.SettingModel, err error)
+	Get(ctx context.Context, settingName security.SettingName4) (result security.SettingModel, err error)
 	List(ctx context.Context) (result security.SettingsListPage, err error)
 	ListComplete(ctx context.Context) (result security.SettingsListIterator, err error)
-	Update(ctx context.Context, settingName string, setting security.BasicSetting) (result security.SettingModel, err error)
+	Update(ctx context.Context, settingName security.SettingName5, setting security.BasicSetting) (result security.SettingModel, err error)
 }
 
 var _ SettingsClientAPI = (*security.SettingsClient)(nil)
@@ -600,3 +530,17 @@ type SoftwareInventoriesClientAPI interface {
 }
 
 var _ SoftwareInventoriesClientAPI = (*security.SoftwareInventoriesClient)(nil)
+
+// ConnectorsGroupClientAPI contains the set of methods on the ConnectorsGroupClient type.
+type ConnectorsGroupClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, securityConnectorName string, securityConnector security.Connector) (result security.Connector, err error)
+	Delete(ctx context.Context, resourceGroupName string, securityConnectorName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, securityConnectorName string) (result security.Connector, err error)
+	List(ctx context.Context) (result security.ConnectorsListPage, err error)
+	ListComplete(ctx context.Context) (result security.ConnectorsListIterator, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result security.ConnectorsListPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result security.ConnectorsListIterator, err error)
+	Update(ctx context.Context, resourceGroupName string, securityConnectorName string, securityConnector security.Connector) (result security.Connector, err error)
+}
+
+var _ ConnectorsGroupClientAPI = (*security.ConnectorsGroupClient)(nil)

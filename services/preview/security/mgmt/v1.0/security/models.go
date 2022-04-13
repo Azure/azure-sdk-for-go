@@ -40,7 +40,7 @@ type AadExternalSecuritySolution struct {
 	// Location - READ-ONLY; Location where the resource is stored
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindExternalSecuritySolution', 'KindCEF', 'KindATA', 'KindAAD'
-	Kind KindEnum `json:"kind,omitempty"`
+	Kind KindEnum1 `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AadExternalSecuritySolution.
@@ -2551,7 +2551,7 @@ func (awg *AppWhitelistingGroup) UnmarshalJSON(body []byte) error {
 // AppWhitelistingGroupData represents a VM/server group and set of rules that are Recommended by Azure
 // Security Center to be allowed
 type AppWhitelistingGroupData struct {
-	// EnforcementMode - Possible values include: 'Audit', 'Enforce', 'None'
+	// EnforcementMode - Possible values include: 'EnforcementModeAudit', 'EnforcementModeEnforce', 'EnforcementModeNone'
 	EnforcementMode EnforcementMode `json:"enforcementMode,omitempty"`
 	ProtectionMode  *ProtectionMode `json:"protectionMode,omitempty"`
 	// ConfigurationStatus - Possible values include: 'ConfigurationStatus2Configured', 'ConfigurationStatus2NotConfigured', 'ConfigurationStatus2InProgress', 'ConfigurationStatus2Failed', 'ConfigurationStatus2NoStatus'
@@ -2788,7 +2788,7 @@ type AtaExternalSecuritySolution struct {
 	// Location - READ-ONLY; Location where the resource is stored
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindExternalSecuritySolution', 'KindCEF', 'KindATA', 'KindAAD'
-	Kind KindEnum `json:"kind,omitempty"`
+	Kind KindEnum1 `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AtaExternalSecuritySolution.
@@ -3245,7 +3245,7 @@ func (aa AutomationAction) AsBasicAutomationAction() (BasicAutomationAction, boo
 }
 
 // AutomationActionEventHub the target Event Hub to which event data will be exported. To learn more about
-// Security Center continuous export capabilities, visit https://aka.ms/ASCExportLearnMore
+// Microsoft Defender for Cloud continuous export capabilities, visit https://aka.ms/ASCExportLearnMore
 type AutomationActionEventHub struct {
 	// EventHubResourceID - The target Event Hub Azure Resource ID.
 	EventHubResourceID *string `json:"eventHubResourceId,omitempty"`
@@ -3298,8 +3298,9 @@ func (aaeh AutomationActionEventHub) AsBasicAutomationAction() (BasicAutomationA
 	return &aaeh, true
 }
 
-// AutomationActionLogicApp the logic app action that should be triggered. To learn more about Security
-// Center's Workflow Automation capabilities, visit https://aka.ms/ASCWorkflowAutomationLearnMore
+// AutomationActionLogicApp the logic app action that should be triggered. To learn more about Microsoft
+// Defender for Cloud's Workflow Automation capabilities, visit
+// https://aka.ms/ASCWorkflowAutomationLearnMore
 type AutomationActionLogicApp struct {
 	// LogicAppResourceID - The triggered Logic App Azure Resource ID. This can also reside on other subscriptions, given that you have permissions to trigger the Logic App
 	LogicAppResourceID *string `json:"logicAppResourceId,omitempty"`
@@ -3354,8 +3355,8 @@ func (aala AutomationActionLogicApp) AsBasicAutomationAction() (BasicAutomationA
 // alerts data will reside in the 'SecurityAlert' table and the assessments data will reside in the
 // 'SecurityRecommendation' table (under the 'Security'/'SecurityCenterFree' solutions). Note that in order
 // to view the data in the workspace, the Security Center Log Analytics free/standard solution needs to be
-// enabled on that workspace. To learn more about Security Center continuous export capabilities, visit
-// https://aka.ms/ASCExportLearnMore
+// enabled on that workspace. To learn more about Microsoft Defender for Cloud continuous export
+// capabilities, visit https://aka.ms/ASCExportLearnMore
 type AutomationActionWorkspace struct {
 	// WorkspaceResourceID - The fully qualified Log Analytics Workspace Azure Resource ID.
 	WorkspaceResourceID *string `json:"workspaceResourceId,omitempty"`
@@ -3662,7 +3663,7 @@ type AutomationScope struct {
 // - security alerts and security assessments. To learn more about the supported security events data
 // models schemas - please visit https://aka.ms/ASCAutomationSchemas.
 type AutomationSource struct {
-	// EventSource - A valid event source type. Possible values include: 'Assessments', 'SubAssessments', 'Alerts', 'SecureScores', 'SecureScoreControls'
+	// EventSource - A valid event source type. Possible values include: 'EventSourceAssessments', 'EventSourceAssessmentsSnapshot', 'EventSourceSubAssessments', 'EventSourceSubAssessmentsSnapshot', 'EventSourceAlerts', 'EventSourceSecureScores', 'EventSourceSecureScoresSnapshot', 'EventSourceSecureScoreControls', 'EventSourceSecureScoreControlsSnapshot', 'EventSourceRegulatoryComplianceAssessment', 'EventSourceRegulatoryComplianceAssessmentSnapshot'
 	EventSource EventSource `json:"eventSource,omitempty"`
 	// RuleSets - A set of rules which evaluate upon event interception. A logical disjunction is applied between defined rule sets (logical 'or').
 	RuleSets *[]AutomationRuleSet `json:"ruleSets,omitempty"`
@@ -4060,6 +4061,253 @@ func (acadp AwsCredsAuthenticationDetailsProperties) AsBasicAuthenticationDetail
 	return &acadp, true
 }
 
+// AWSEnvironmentData the aws connector environment data
+type AWSEnvironmentData struct {
+	// OrganizationalData - The AWS account's organizational data
+	OrganizationalData BasicAwsOrganizationalData `json:"organizationalData,omitempty"`
+	// EnvironmentType - Possible values include: 'EnvironmentTypeEnvironmentData', 'EnvironmentTypeAwsAccount', 'EnvironmentTypeGcpProject', 'EnvironmentTypeGithubScope'
+	EnvironmentType EnvironmentType `json:"environmentType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AWSEnvironmentData.
+func (aed AWSEnvironmentData) MarshalJSON() ([]byte, error) {
+	aed.EnvironmentType = EnvironmentTypeAwsAccount
+	objectMap := make(map[string]interface{})
+	objectMap["organizationalData"] = aed.OrganizationalData
+	if aed.EnvironmentType != "" {
+		objectMap["environmentType"] = aed.EnvironmentType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAWSEnvironmentData is the BasicEnvironmentData implementation for AWSEnvironmentData.
+func (aed AWSEnvironmentData) AsAWSEnvironmentData() (*AWSEnvironmentData, bool) {
+	return &aed, true
+}
+
+// AsGcpProjectEnvironmentData is the BasicEnvironmentData implementation for AWSEnvironmentData.
+func (aed AWSEnvironmentData) AsGcpProjectEnvironmentData() (*GcpProjectEnvironmentData, bool) {
+	return nil, false
+}
+
+// AsGithubScopeEnvironmentData is the BasicEnvironmentData implementation for AWSEnvironmentData.
+func (aed AWSEnvironmentData) AsGithubScopeEnvironmentData() (*GithubScopeEnvironmentData, bool) {
+	return nil, false
+}
+
+// AsEnvironmentData is the BasicEnvironmentData implementation for AWSEnvironmentData.
+func (aed AWSEnvironmentData) AsEnvironmentData() (*EnvironmentData, bool) {
+	return nil, false
+}
+
+// AsBasicEnvironmentData is the BasicEnvironmentData implementation for AWSEnvironmentData.
+func (aed AWSEnvironmentData) AsBasicEnvironmentData() (BasicEnvironmentData, bool) {
+	return &aed, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for AWSEnvironmentData struct.
+func (aed *AWSEnvironmentData) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "organizationalData":
+			if v != nil {
+				organizationalData, err := unmarshalBasicAwsOrganizationalData(*v)
+				if err != nil {
+					return err
+				}
+				aed.OrganizationalData = organizationalData
+			}
+		case "environmentType":
+			if v != nil {
+				var environmentType EnvironmentType
+				err = json.Unmarshal(*v, &environmentType)
+				if err != nil {
+					return err
+				}
+				aed.EnvironmentType = environmentType
+			}
+		}
+	}
+
+	return nil
+}
+
+// BasicAwsOrganizationalData the awsOrganization data
+type BasicAwsOrganizationalData interface {
+	AsAwsOrganizationalDataMaster() (*AwsOrganizationalDataMaster, bool)
+	AsAwsOrganizationalDataMember() (*AwsOrganizationalDataMember, bool)
+	AsAwsOrganizationalData() (*AwsOrganizationalData, bool)
+}
+
+// AwsOrganizationalData the awsOrganization data
+type AwsOrganizationalData struct {
+	// OrganizationMembershipType - Possible values include: 'OrganizationMembershipTypeAwsOrganizationalData', 'OrganizationMembershipTypeOrganization', 'OrganizationMembershipTypeMember'
+	OrganizationMembershipType OrganizationMembershipType `json:"organizationMembershipType,omitempty"`
+}
+
+func unmarshalBasicAwsOrganizationalData(body []byte) (BasicAwsOrganizationalData, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["organizationMembershipType"] {
+	case string(OrganizationMembershipTypeOrganization):
+		var aodm AwsOrganizationalDataMaster
+		err := json.Unmarshal(body, &aodm)
+		return aodm, err
+	case string(OrganizationMembershipTypeMember):
+		var aodm AwsOrganizationalDataMember
+		err := json.Unmarshal(body, &aodm)
+		return aodm, err
+	default:
+		var aod AwsOrganizationalData
+		err := json.Unmarshal(body, &aod)
+		return aod, err
+	}
+}
+func unmarshalBasicAwsOrganizationalDataArray(body []byte) ([]BasicAwsOrganizationalData, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	aodArray := make([]BasicAwsOrganizationalData, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		aod, err := unmarshalBasicAwsOrganizationalData(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		aodArray[index] = aod
+	}
+	return aodArray, nil
+}
+
+// MarshalJSON is the custom marshaler for AwsOrganizationalData.
+func (aod AwsOrganizationalData) MarshalJSON() ([]byte, error) {
+	aod.OrganizationMembershipType = OrganizationMembershipTypeAwsOrganizationalData
+	objectMap := make(map[string]interface{})
+	if aod.OrganizationMembershipType != "" {
+		objectMap["organizationMembershipType"] = aod.OrganizationMembershipType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAwsOrganizationalDataMaster is the BasicAwsOrganizationalData implementation for AwsOrganizationalData.
+func (aod AwsOrganizationalData) AsAwsOrganizationalDataMaster() (*AwsOrganizationalDataMaster, bool) {
+	return nil, false
+}
+
+// AsAwsOrganizationalDataMember is the BasicAwsOrganizationalData implementation for AwsOrganizationalData.
+func (aod AwsOrganizationalData) AsAwsOrganizationalDataMember() (*AwsOrganizationalDataMember, bool) {
+	return nil, false
+}
+
+// AsAwsOrganizationalData is the BasicAwsOrganizationalData implementation for AwsOrganizationalData.
+func (aod AwsOrganizationalData) AsAwsOrganizationalData() (*AwsOrganizationalData, bool) {
+	return &aod, true
+}
+
+// AsBasicAwsOrganizationalData is the BasicAwsOrganizationalData implementation for AwsOrganizationalData.
+func (aod AwsOrganizationalData) AsBasicAwsOrganizationalData() (BasicAwsOrganizationalData, bool) {
+	return &aod, true
+}
+
+// AwsOrganizationalDataMaster the awsOrganization data for the master account
+type AwsOrganizationalDataMaster struct {
+	// StacksetName - If the multi cloud account is of membership type organization, this will be the name of the onboarding stackset
+	StacksetName *string `json:"stacksetName,omitempty"`
+	// ExcludedAccountIds - If the multi cloud account is of membership type organization, list of accounts excluded from offering
+	ExcludedAccountIds *[]string `json:"excludedAccountIds,omitempty"`
+	// OrganizationMembershipType - Possible values include: 'OrganizationMembershipTypeAwsOrganizationalData', 'OrganizationMembershipTypeOrganization', 'OrganizationMembershipTypeMember'
+	OrganizationMembershipType OrganizationMembershipType `json:"organizationMembershipType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AwsOrganizationalDataMaster.
+func (aodm AwsOrganizationalDataMaster) MarshalJSON() ([]byte, error) {
+	aodm.OrganizationMembershipType = OrganizationMembershipTypeOrganization
+	objectMap := make(map[string]interface{})
+	if aodm.StacksetName != nil {
+		objectMap["stacksetName"] = aodm.StacksetName
+	}
+	if aodm.ExcludedAccountIds != nil {
+		objectMap["excludedAccountIds"] = aodm.ExcludedAccountIds
+	}
+	if aodm.OrganizationMembershipType != "" {
+		objectMap["organizationMembershipType"] = aodm.OrganizationMembershipType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAwsOrganizationalDataMaster is the BasicAwsOrganizationalData implementation for AwsOrganizationalDataMaster.
+func (aodm AwsOrganizationalDataMaster) AsAwsOrganizationalDataMaster() (*AwsOrganizationalDataMaster, bool) {
+	return &aodm, true
+}
+
+// AsAwsOrganizationalDataMember is the BasicAwsOrganizationalData implementation for AwsOrganizationalDataMaster.
+func (aodm AwsOrganizationalDataMaster) AsAwsOrganizationalDataMember() (*AwsOrganizationalDataMember, bool) {
+	return nil, false
+}
+
+// AsAwsOrganizationalData is the BasicAwsOrganizationalData implementation for AwsOrganizationalDataMaster.
+func (aodm AwsOrganizationalDataMaster) AsAwsOrganizationalData() (*AwsOrganizationalData, bool) {
+	return nil, false
+}
+
+// AsBasicAwsOrganizationalData is the BasicAwsOrganizationalData implementation for AwsOrganizationalDataMaster.
+func (aodm AwsOrganizationalDataMaster) AsBasicAwsOrganizationalData() (BasicAwsOrganizationalData, bool) {
+	return &aodm, true
+}
+
+// AwsOrganizationalDataMember the awsOrganization data for the member account
+type AwsOrganizationalDataMember struct {
+	// ParentHierarchyID - If the multi cloud account is not of membership type organization, this will be the ID of the account's parent
+	ParentHierarchyID *string `json:"parentHierarchyId,omitempty"`
+	// OrganizationMembershipType - Possible values include: 'OrganizationMembershipTypeAwsOrganizationalData', 'OrganizationMembershipTypeOrganization', 'OrganizationMembershipTypeMember'
+	OrganizationMembershipType OrganizationMembershipType `json:"organizationMembershipType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AwsOrganizationalDataMember.
+func (aodm AwsOrganizationalDataMember) MarshalJSON() ([]byte, error) {
+	aodm.OrganizationMembershipType = OrganizationMembershipTypeMember
+	objectMap := make(map[string]interface{})
+	if aodm.ParentHierarchyID != nil {
+		objectMap["parentHierarchyId"] = aodm.ParentHierarchyID
+	}
+	if aodm.OrganizationMembershipType != "" {
+		objectMap["organizationMembershipType"] = aodm.OrganizationMembershipType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAwsOrganizationalDataMaster is the BasicAwsOrganizationalData implementation for AwsOrganizationalDataMember.
+func (aodm AwsOrganizationalDataMember) AsAwsOrganizationalDataMaster() (*AwsOrganizationalDataMaster, bool) {
+	return nil, false
+}
+
+// AsAwsOrganizationalDataMember is the BasicAwsOrganizationalData implementation for AwsOrganizationalDataMember.
+func (aodm AwsOrganizationalDataMember) AsAwsOrganizationalDataMember() (*AwsOrganizationalDataMember, bool) {
+	return &aodm, true
+}
+
+// AsAwsOrganizationalData is the BasicAwsOrganizationalData implementation for AwsOrganizationalDataMember.
+func (aodm AwsOrganizationalDataMember) AsAwsOrganizationalData() (*AwsOrganizationalData, bool) {
+	return nil, false
+}
+
+// AsBasicAwsOrganizationalData is the BasicAwsOrganizationalData implementation for AwsOrganizationalDataMember.
+func (aodm AwsOrganizationalDataMember) AsBasicAwsOrganizationalData() (BasicAwsOrganizationalData, bool) {
+	return &aodm, true
+}
+
 // AzureResourceDetails details of the Azure resource that was assessed
 type AzureResourceDetails struct {
 	// ID - READ-ONLY; Azure resource Id of the assessed resource
@@ -4165,7 +4413,7 @@ type CefExternalSecuritySolution struct {
 	// Location - READ-ONLY; Location where the resource is stored
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindExternalSecuritySolution', 'KindCEF', 'KindATA', 'KindAAD'
-	Kind KindEnum `json:"kind,omitempty"`
+	Kind KindEnum1 `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for CefExternalSecuritySolution.
@@ -4326,9 +4574,10 @@ func (csp *CefSolutionProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// CloudError error response structure.
+// CloudError common error response for all Azure Resource Manager APIs to return error details for failed
+// operations. (This also follows the OData error response format.).
 type CloudError struct {
-	// CloudErrorBody - Error data
+	// CloudErrorBody - The error object.
 	*CloudErrorBody `json:"error,omitempty"`
 }
 
@@ -4365,18 +4614,170 @@ func (ce *CloudError) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// CloudErrorBody error details.
+// CloudErrorBody the error detail.
 type CloudErrorBody struct {
-	// Code - READ-ONLY; An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
+	// Code - READ-ONLY; The error code.
 	Code *string `json:"code,omitempty"`
-	// Message - READ-ONLY; A message describing the error, intended to be suitable for display in a user interface.
+	// Message - READ-ONLY; The error message.
 	Message *string `json:"message,omitempty"`
+	// Target - READ-ONLY; The error target.
+	Target *string `json:"target,omitempty"`
+	// Details - READ-ONLY; The error details.
+	Details *[]CloudErrorBody `json:"details,omitempty"`
+	// AdditionalInfo - READ-ONLY; The error additional info.
+	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for CloudErrorBody.
 func (ceb CloudErrorBody) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
+}
+
+// BasicCloudOffering the security offering details
+type BasicCloudOffering interface {
+	AsCspmMonitorAwsOffering() (*CspmMonitorAwsOffering, bool)
+	AsDefenderForContainersAwsOffering() (*DefenderForContainersAwsOffering, bool)
+	AsDefenderForServersAwsOffering() (*DefenderForServersAwsOffering, bool)
+	AsInformationProtectionAwsOffering() (*InformationProtectionAwsOffering, bool)
+	AsCspmMonitorGcpOffering() (*CspmMonitorGcpOffering, bool)
+	AsDefenderForServersGcpOffering() (*DefenderForServersGcpOffering, bool)
+	AsDefenderForContainersGcpOffering() (*DefenderForContainersGcpOffering, bool)
+	AsCspmMonitorGithubOffering() (*CspmMonitorGithubOffering, bool)
+	AsCloudOffering() (*CloudOffering, bool)
+}
+
+// CloudOffering the security offering details
+type CloudOffering struct {
+	// Description - READ-ONLY; The offering description.
+	Description *string `json:"description,omitempty"`
+	// OfferingType - Possible values include: 'OfferingTypeCloudOffering', 'OfferingTypeCspmMonitorAws', 'OfferingTypeDefenderForContainersAws', 'OfferingTypeDefenderForServersAws', 'OfferingTypeInformationProtectionAws', 'OfferingTypeCspmMonitorGcp', 'OfferingTypeDefenderForServersGcp', 'OfferingTypeDefenderForContainersGcp', 'OfferingTypeCspmMonitorGithub'
+	OfferingType OfferingType `json:"offeringType,omitempty"`
+}
+
+func unmarshalBasicCloudOffering(body []byte) (BasicCloudOffering, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["offeringType"] {
+	case string(OfferingTypeCspmMonitorAws):
+		var cmao CspmMonitorAwsOffering
+		err := json.Unmarshal(body, &cmao)
+		return cmao, err
+	case string(OfferingTypeDefenderForContainersAws):
+		var dfcao DefenderForContainersAwsOffering
+		err := json.Unmarshal(body, &dfcao)
+		return dfcao, err
+	case string(OfferingTypeDefenderForServersAws):
+		var dfsao DefenderForServersAwsOffering
+		err := json.Unmarshal(body, &dfsao)
+		return dfsao, err
+	case string(OfferingTypeInformationProtectionAws):
+		var ipao InformationProtectionAwsOffering
+		err := json.Unmarshal(body, &ipao)
+		return ipao, err
+	case string(OfferingTypeCspmMonitorGcp):
+		var cmgo CspmMonitorGcpOffering
+		err := json.Unmarshal(body, &cmgo)
+		return cmgo, err
+	case string(OfferingTypeDefenderForServersGcp):
+		var dfsgo DefenderForServersGcpOffering
+		err := json.Unmarshal(body, &dfsgo)
+		return dfsgo, err
+	case string(OfferingTypeDefenderForContainersGcp):
+		var dfcgo DefenderForContainersGcpOffering
+		err := json.Unmarshal(body, &dfcgo)
+		return dfcgo, err
+	case string(OfferingTypeCspmMonitorGithub):
+		var cmgo CspmMonitorGithubOffering
+		err := json.Unmarshal(body, &cmgo)
+		return cmgo, err
+	default:
+		var co CloudOffering
+		err := json.Unmarshal(body, &co)
+		return co, err
+	}
+}
+func unmarshalBasicCloudOfferingArray(body []byte) ([]BasicCloudOffering, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	coArray := make([]BasicCloudOffering, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		co, err := unmarshalBasicCloudOffering(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		coArray[index] = co
+	}
+	return coArray, nil
+}
+
+// MarshalJSON is the custom marshaler for CloudOffering.
+func (co CloudOffering) MarshalJSON() ([]byte, error) {
+	co.OfferingType = OfferingTypeCloudOffering
+	objectMap := make(map[string]interface{})
+	if co.OfferingType != "" {
+		objectMap["offeringType"] = co.OfferingType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsCspmMonitorAwsOffering is the BasicCloudOffering implementation for CloudOffering.
+func (co CloudOffering) AsCspmMonitorAwsOffering() (*CspmMonitorAwsOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForContainersAwsOffering is the BasicCloudOffering implementation for CloudOffering.
+func (co CloudOffering) AsDefenderForContainersAwsOffering() (*DefenderForContainersAwsOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForServersAwsOffering is the BasicCloudOffering implementation for CloudOffering.
+func (co CloudOffering) AsDefenderForServersAwsOffering() (*DefenderForServersAwsOffering, bool) {
+	return nil, false
+}
+
+// AsInformationProtectionAwsOffering is the BasicCloudOffering implementation for CloudOffering.
+func (co CloudOffering) AsInformationProtectionAwsOffering() (*InformationProtectionAwsOffering, bool) {
+	return nil, false
+}
+
+// AsCspmMonitorGcpOffering is the BasicCloudOffering implementation for CloudOffering.
+func (co CloudOffering) AsCspmMonitorGcpOffering() (*CspmMonitorGcpOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForServersGcpOffering is the BasicCloudOffering implementation for CloudOffering.
+func (co CloudOffering) AsDefenderForServersGcpOffering() (*DefenderForServersGcpOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForContainersGcpOffering is the BasicCloudOffering implementation for CloudOffering.
+func (co CloudOffering) AsDefenderForContainersGcpOffering() (*DefenderForContainersGcpOffering, bool) {
+	return nil, false
+}
+
+// AsCspmMonitorGithubOffering is the BasicCloudOffering implementation for CloudOffering.
+func (co CloudOffering) AsCspmMonitorGithubOffering() (*CspmMonitorGithubOffering, bool) {
+	return nil, false
+}
+
+// AsCloudOffering is the BasicCloudOffering implementation for CloudOffering.
+func (co CloudOffering) AsCloudOffering() (*CloudOffering, bool) {
+	return &co, true
+}
+
+// AsBasicCloudOffering is the BasicCloudOffering implementation for CloudOffering.
+func (co CloudOffering) AsBasicCloudOffering() (BasicCloudOffering, bool) {
+	return &co, true
 }
 
 // Compliance compliance of a scope
@@ -4690,6 +5091,13 @@ type ConnectedWorkspace struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// ConnectionStrings connection string for ingesting security data and logs
+type ConnectionStrings struct {
+	autorest.Response `json:"-"`
+	// Value - Connection strings
+	Value *[]IngestionConnectionString `json:"value,omitempty"`
+}
+
 // ConnectionToIPNotAllowed outbound connection to an ip that isn't allowed. Allow list consists of ipv4 or
 // ipv6 range in CIDR notation.
 type ConnectionToIPNotAllowed struct {
@@ -4871,6 +5279,207 @@ func (ctina ConnectionToIPNotAllowed) AsCustomAlertRule() (*CustomAlertRule, boo
 // AsBasicCustomAlertRule is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
 func (ctina ConnectionToIPNotAllowed) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool) {
 	return &ctina, true
+}
+
+// Connector the security connector resource.
+type Connector struct {
+	autorest.Response `json:"-"`
+	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty"`
+	// ConnectorProperties - Security connector data
+	*ConnectorProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Location where the resource is stored
+	Location *string `json:"location,omitempty"`
+	// Kind - Kind of the resource
+	Kind *string `json:"kind,omitempty"`
+	// Etag - Entity tag is used for comparing two or more entities from the same requested resource.
+	Etag *string `json:"etag,omitempty"`
+	// Tags - A list of key value pairs that describe the resource.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for Connector.
+func (c Connector) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if c.ConnectorProperties != nil {
+		objectMap["properties"] = c.ConnectorProperties
+	}
+	if c.Location != nil {
+		objectMap["location"] = c.Location
+	}
+	if c.Kind != nil {
+		objectMap["kind"] = c.Kind
+	}
+	if c.Etag != nil {
+		objectMap["etag"] = c.Etag
+	}
+	if c.Tags != nil {
+		objectMap["tags"] = c.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Connector struct.
+func (c *Connector) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				c.SystemData = &systemData
+			}
+		case "properties":
+			if v != nil {
+				var connectorProperties ConnectorProperties
+				err = json.Unmarshal(*v, &connectorProperties)
+				if err != nil {
+					return err
+				}
+				c.ConnectorProperties = &connectorProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				c.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				c.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				c.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				c.Location = &location
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				c.Kind = &kind
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				c.Etag = &etag
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				c.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// ConnectorProperties a set of properties that defines the security connector configuration.
+type ConnectorProperties struct {
+	// HierarchyIdentifier - The multi cloud resource identifier (account id in case of AWS connector, project number in case of GCP connector).
+	HierarchyIdentifier *string `json:"hierarchyIdentifier,omitempty"`
+	// EnvironmentName - The multi cloud resource's cloud name. Possible values include: 'Azure', 'AWS', 'GCP', 'Github'
+	EnvironmentName CloudName `json:"environmentName,omitempty"`
+	// Offerings - A collection of offerings for the security connector.
+	Offerings *[]BasicCloudOffering `json:"offerings,omitempty"`
+	// EnvironmentData - The security connector environment data.
+	EnvironmentData BasicEnvironmentData `json:"environmentData,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ConnectorProperties struct.
+func (cp *ConnectorProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "hierarchyIdentifier":
+			if v != nil {
+				var hierarchyIdentifier string
+				err = json.Unmarshal(*v, &hierarchyIdentifier)
+				if err != nil {
+					return err
+				}
+				cp.HierarchyIdentifier = &hierarchyIdentifier
+			}
+		case "environmentName":
+			if v != nil {
+				var environmentName CloudName
+				err = json.Unmarshal(*v, &environmentName)
+				if err != nil {
+					return err
+				}
+				cp.EnvironmentName = environmentName
+			}
+		case "offerings":
+			if v != nil {
+				offerings, err := unmarshalBasicCloudOfferingArray(*v)
+				if err != nil {
+					return err
+				}
+				cp.Offerings = &offerings
+			}
+		case "environmentData":
+			if v != nil {
+				environmentData, err := unmarshalBasicEnvironmentData(*v)
+				if err != nil {
+					return err
+				}
+				cp.EnvironmentData = environmentData
+			}
+		}
+	}
+
+	return nil
 }
 
 // ConnectorSetting the connector setting
@@ -5152,6 +5761,174 @@ func (csp *ConnectorSettingProperties) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// ConnectorsList list of security connectors response.
+type ConnectorsList struct {
+	autorest.Response `json:"-"`
+	// Value - The list of security connectors under the given scope.
+	Value *[]Connector `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ConnectorsList.
+func (cl ConnectorsList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cl.Value != nil {
+		objectMap["value"] = cl.Value
+	}
+	return json.Marshal(objectMap)
+}
+
+// ConnectorsListIterator provides access to a complete listing of Connector values.
+type ConnectorsListIterator struct {
+	i    int
+	page ConnectorsListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ConnectorsListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectorsListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ConnectorsListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ConnectorsListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ConnectorsListIterator) Response() ConnectorsList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ConnectorsListIterator) Value() Connector {
+	if !iter.page.NotDone() {
+		return Connector{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ConnectorsListIterator type.
+func NewConnectorsListIterator(page ConnectorsListPage) ConnectorsListIterator {
+	return ConnectorsListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (cl ConnectorsList) IsEmpty() bool {
+	return cl.Value == nil || len(*cl.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (cl ConnectorsList) hasNextLink() bool {
+	return cl.NextLink != nil && len(*cl.NextLink) != 0
+}
+
+// connectorsListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (cl ConnectorsList) connectorsListPreparer(ctx context.Context) (*http.Request, error) {
+	if !cl.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(cl.NextLink)))
+}
+
+// ConnectorsListPage contains a page of Connector values.
+type ConnectorsListPage struct {
+	fn func(context.Context, ConnectorsList) (ConnectorsList, error)
+	cl ConnectorsList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ConnectorsListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectorsListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.cl)
+		if err != nil {
+			return err
+		}
+		page.cl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ConnectorsListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ConnectorsListPage) NotDone() bool {
+	return !page.cl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ConnectorsListPage) Response() ConnectorsList {
+	return page.cl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ConnectorsListPage) Values() []Connector {
+	if page.cl.IsEmpty() {
+		return nil
+	}
+	return *page.cl.Value
+}
+
+// Creates a new instance of the ConnectorsListPage type.
+func NewConnectorsListPage(cur ConnectorsList, getNextPage func(context.Context, ConnectorsList) (ConnectorsList, error)) ConnectorsListPage {
+	return ConnectorsListPage{
+		fn: getNextPage,
+		cl: cur,
+	}
 }
 
 // Contact contact details for security issues
@@ -5460,6 +6237,234 @@ func (crvp ContainerRegistryVulnerabilityProperties) AsAdditionalData() (*Additi
 // AsBasicAdditionalData is the BasicAdditionalData implementation for ContainerRegistryVulnerabilityProperties.
 func (crvp ContainerRegistryVulnerabilityProperties) AsBasicAdditionalData() (BasicAdditionalData, bool) {
 	return &crvp, true
+}
+
+// CspmMonitorAwsOffering the CSPM monitoring for AWS offering
+type CspmMonitorAwsOffering struct {
+	// NativeCloudConnection - The native cloud connection configuration
+	NativeCloudConnection *CspmMonitorAwsOfferingNativeCloudConnection `json:"nativeCloudConnection,omitempty"`
+	// Description - READ-ONLY; The offering description.
+	Description *string `json:"description,omitempty"`
+	// OfferingType - Possible values include: 'OfferingTypeCloudOffering', 'OfferingTypeCspmMonitorAws', 'OfferingTypeDefenderForContainersAws', 'OfferingTypeDefenderForServersAws', 'OfferingTypeInformationProtectionAws', 'OfferingTypeCspmMonitorGcp', 'OfferingTypeDefenderForServersGcp', 'OfferingTypeDefenderForContainersGcp', 'OfferingTypeCspmMonitorGithub'
+	OfferingType OfferingType `json:"offeringType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CspmMonitorAwsOffering.
+func (cmao CspmMonitorAwsOffering) MarshalJSON() ([]byte, error) {
+	cmao.OfferingType = OfferingTypeCspmMonitorAws
+	objectMap := make(map[string]interface{})
+	if cmao.NativeCloudConnection != nil {
+		objectMap["nativeCloudConnection"] = cmao.NativeCloudConnection
+	}
+	if cmao.OfferingType != "" {
+		objectMap["offeringType"] = cmao.OfferingType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsCspmMonitorAwsOffering is the BasicCloudOffering implementation for CspmMonitorAwsOffering.
+func (cmao CspmMonitorAwsOffering) AsCspmMonitorAwsOffering() (*CspmMonitorAwsOffering, bool) {
+	return &cmao, true
+}
+
+// AsDefenderForContainersAwsOffering is the BasicCloudOffering implementation for CspmMonitorAwsOffering.
+func (cmao CspmMonitorAwsOffering) AsDefenderForContainersAwsOffering() (*DefenderForContainersAwsOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForServersAwsOffering is the BasicCloudOffering implementation for CspmMonitorAwsOffering.
+func (cmao CspmMonitorAwsOffering) AsDefenderForServersAwsOffering() (*DefenderForServersAwsOffering, bool) {
+	return nil, false
+}
+
+// AsInformationProtectionAwsOffering is the BasicCloudOffering implementation for CspmMonitorAwsOffering.
+func (cmao CspmMonitorAwsOffering) AsInformationProtectionAwsOffering() (*InformationProtectionAwsOffering, bool) {
+	return nil, false
+}
+
+// AsCspmMonitorGcpOffering is the BasicCloudOffering implementation for CspmMonitorAwsOffering.
+func (cmao CspmMonitorAwsOffering) AsCspmMonitorGcpOffering() (*CspmMonitorGcpOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForServersGcpOffering is the BasicCloudOffering implementation for CspmMonitorAwsOffering.
+func (cmao CspmMonitorAwsOffering) AsDefenderForServersGcpOffering() (*DefenderForServersGcpOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForContainersGcpOffering is the BasicCloudOffering implementation for CspmMonitorAwsOffering.
+func (cmao CspmMonitorAwsOffering) AsDefenderForContainersGcpOffering() (*DefenderForContainersGcpOffering, bool) {
+	return nil, false
+}
+
+// AsCspmMonitorGithubOffering is the BasicCloudOffering implementation for CspmMonitorAwsOffering.
+func (cmao CspmMonitorAwsOffering) AsCspmMonitorGithubOffering() (*CspmMonitorGithubOffering, bool) {
+	return nil, false
+}
+
+// AsCloudOffering is the BasicCloudOffering implementation for CspmMonitorAwsOffering.
+func (cmao CspmMonitorAwsOffering) AsCloudOffering() (*CloudOffering, bool) {
+	return nil, false
+}
+
+// AsBasicCloudOffering is the BasicCloudOffering implementation for CspmMonitorAwsOffering.
+func (cmao CspmMonitorAwsOffering) AsBasicCloudOffering() (BasicCloudOffering, bool) {
+	return &cmao, true
+}
+
+// CspmMonitorAwsOfferingNativeCloudConnection the native cloud connection configuration
+type CspmMonitorAwsOfferingNativeCloudConnection struct {
+	// CloudRoleArn - The cloud role ARN in AWS for this feature
+	CloudRoleArn *string `json:"cloudRoleArn,omitempty"`
+}
+
+// CspmMonitorGcpOffering the CSPM monitoring for GCP offering
+type CspmMonitorGcpOffering struct {
+	// NativeCloudConnection - The native cloud connection configuration
+	NativeCloudConnection *CspmMonitorGcpOfferingNativeCloudConnection `json:"nativeCloudConnection,omitempty"`
+	// Description - READ-ONLY; The offering description.
+	Description *string `json:"description,omitempty"`
+	// OfferingType - Possible values include: 'OfferingTypeCloudOffering', 'OfferingTypeCspmMonitorAws', 'OfferingTypeDefenderForContainersAws', 'OfferingTypeDefenderForServersAws', 'OfferingTypeInformationProtectionAws', 'OfferingTypeCspmMonitorGcp', 'OfferingTypeDefenderForServersGcp', 'OfferingTypeDefenderForContainersGcp', 'OfferingTypeCspmMonitorGithub'
+	OfferingType OfferingType `json:"offeringType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CspmMonitorGcpOffering.
+func (cmgo CspmMonitorGcpOffering) MarshalJSON() ([]byte, error) {
+	cmgo.OfferingType = OfferingTypeCspmMonitorGcp
+	objectMap := make(map[string]interface{})
+	if cmgo.NativeCloudConnection != nil {
+		objectMap["nativeCloudConnection"] = cmgo.NativeCloudConnection
+	}
+	if cmgo.OfferingType != "" {
+		objectMap["offeringType"] = cmgo.OfferingType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsCspmMonitorAwsOffering is the BasicCloudOffering implementation for CspmMonitorGcpOffering.
+func (cmgo CspmMonitorGcpOffering) AsCspmMonitorAwsOffering() (*CspmMonitorAwsOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForContainersAwsOffering is the BasicCloudOffering implementation for CspmMonitorGcpOffering.
+func (cmgo CspmMonitorGcpOffering) AsDefenderForContainersAwsOffering() (*DefenderForContainersAwsOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForServersAwsOffering is the BasicCloudOffering implementation for CspmMonitorGcpOffering.
+func (cmgo CspmMonitorGcpOffering) AsDefenderForServersAwsOffering() (*DefenderForServersAwsOffering, bool) {
+	return nil, false
+}
+
+// AsInformationProtectionAwsOffering is the BasicCloudOffering implementation for CspmMonitorGcpOffering.
+func (cmgo CspmMonitorGcpOffering) AsInformationProtectionAwsOffering() (*InformationProtectionAwsOffering, bool) {
+	return nil, false
+}
+
+// AsCspmMonitorGcpOffering is the BasicCloudOffering implementation for CspmMonitorGcpOffering.
+func (cmgo CspmMonitorGcpOffering) AsCspmMonitorGcpOffering() (*CspmMonitorGcpOffering, bool) {
+	return &cmgo, true
+}
+
+// AsDefenderForServersGcpOffering is the BasicCloudOffering implementation for CspmMonitorGcpOffering.
+func (cmgo CspmMonitorGcpOffering) AsDefenderForServersGcpOffering() (*DefenderForServersGcpOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForContainersGcpOffering is the BasicCloudOffering implementation for CspmMonitorGcpOffering.
+func (cmgo CspmMonitorGcpOffering) AsDefenderForContainersGcpOffering() (*DefenderForContainersGcpOffering, bool) {
+	return nil, false
+}
+
+// AsCspmMonitorGithubOffering is the BasicCloudOffering implementation for CspmMonitorGcpOffering.
+func (cmgo CspmMonitorGcpOffering) AsCspmMonitorGithubOffering() (*CspmMonitorGithubOffering, bool) {
+	return nil, false
+}
+
+// AsCloudOffering is the BasicCloudOffering implementation for CspmMonitorGcpOffering.
+func (cmgo CspmMonitorGcpOffering) AsCloudOffering() (*CloudOffering, bool) {
+	return nil, false
+}
+
+// AsBasicCloudOffering is the BasicCloudOffering implementation for CspmMonitorGcpOffering.
+func (cmgo CspmMonitorGcpOffering) AsBasicCloudOffering() (BasicCloudOffering, bool) {
+	return &cmgo, true
+}
+
+// CspmMonitorGcpOfferingNativeCloudConnection the native cloud connection configuration
+type CspmMonitorGcpOfferingNativeCloudConnection struct {
+	// WorkloadIdentityProviderID - The GCP workload identity provider id for the offering
+	WorkloadIdentityProviderID *string `json:"workloadIdentityProviderId,omitempty"`
+	// ServiceAccountEmailAddress - The service account email address in GCP for this offering
+	ServiceAccountEmailAddress *string `json:"serviceAccountEmailAddress,omitempty"`
+}
+
+// CspmMonitorGithubOffering the CSPM monitoring for github offering
+type CspmMonitorGithubOffering struct {
+	// Description - READ-ONLY; The offering description.
+	Description *string `json:"description,omitempty"`
+	// OfferingType - Possible values include: 'OfferingTypeCloudOffering', 'OfferingTypeCspmMonitorAws', 'OfferingTypeDefenderForContainersAws', 'OfferingTypeDefenderForServersAws', 'OfferingTypeInformationProtectionAws', 'OfferingTypeCspmMonitorGcp', 'OfferingTypeDefenderForServersGcp', 'OfferingTypeDefenderForContainersGcp', 'OfferingTypeCspmMonitorGithub'
+	OfferingType OfferingType `json:"offeringType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CspmMonitorGithubOffering.
+func (cmgo CspmMonitorGithubOffering) MarshalJSON() ([]byte, error) {
+	cmgo.OfferingType = OfferingTypeCspmMonitorGithub
+	objectMap := make(map[string]interface{})
+	if cmgo.OfferingType != "" {
+		objectMap["offeringType"] = cmgo.OfferingType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsCspmMonitorAwsOffering is the BasicCloudOffering implementation for CspmMonitorGithubOffering.
+func (cmgo CspmMonitorGithubOffering) AsCspmMonitorAwsOffering() (*CspmMonitorAwsOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForContainersAwsOffering is the BasicCloudOffering implementation for CspmMonitorGithubOffering.
+func (cmgo CspmMonitorGithubOffering) AsDefenderForContainersAwsOffering() (*DefenderForContainersAwsOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForServersAwsOffering is the BasicCloudOffering implementation for CspmMonitorGithubOffering.
+func (cmgo CspmMonitorGithubOffering) AsDefenderForServersAwsOffering() (*DefenderForServersAwsOffering, bool) {
+	return nil, false
+}
+
+// AsInformationProtectionAwsOffering is the BasicCloudOffering implementation for CspmMonitorGithubOffering.
+func (cmgo CspmMonitorGithubOffering) AsInformationProtectionAwsOffering() (*InformationProtectionAwsOffering, bool) {
+	return nil, false
+}
+
+// AsCspmMonitorGcpOffering is the BasicCloudOffering implementation for CspmMonitorGithubOffering.
+func (cmgo CspmMonitorGithubOffering) AsCspmMonitorGcpOffering() (*CspmMonitorGcpOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForServersGcpOffering is the BasicCloudOffering implementation for CspmMonitorGithubOffering.
+func (cmgo CspmMonitorGithubOffering) AsDefenderForServersGcpOffering() (*DefenderForServersGcpOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForContainersGcpOffering is the BasicCloudOffering implementation for CspmMonitorGithubOffering.
+func (cmgo CspmMonitorGithubOffering) AsDefenderForContainersGcpOffering() (*DefenderForContainersGcpOffering, bool) {
+	return nil, false
+}
+
+// AsCspmMonitorGithubOffering is the BasicCloudOffering implementation for CspmMonitorGithubOffering.
+func (cmgo CspmMonitorGithubOffering) AsCspmMonitorGithubOffering() (*CspmMonitorGithubOffering, bool) {
+	return &cmgo, true
+}
+
+// AsCloudOffering is the BasicCloudOffering implementation for CspmMonitorGithubOffering.
+func (cmgo CspmMonitorGithubOffering) AsCloudOffering() (*CloudOffering, bool) {
+	return nil, false
+}
+
+// AsBasicCloudOffering is the BasicCloudOffering implementation for CspmMonitorGithubOffering.
+func (cmgo CspmMonitorGithubOffering) AsBasicCloudOffering() (BasicCloudOffering, bool) {
+	return &cmgo, true
 }
 
 // BasicCustomAlertRule a custom alert rule.
@@ -5799,6 +6804,671 @@ func (car CustomAlertRule) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool)
 	return &car, true
 }
 
+// CustomAssessmentAutomation custom Assessment Automation
+type CustomAssessmentAutomation struct {
+	autorest.Response `json:"-"`
+	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty"`
+	// CustomAssessmentAutomationProperties - describes Custom Assessment Automation properties.
+	*CustomAssessmentAutomationProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CustomAssessmentAutomation.
+func (caa CustomAssessmentAutomation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if caa.CustomAssessmentAutomationProperties != nil {
+		objectMap["properties"] = caa.CustomAssessmentAutomationProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CustomAssessmentAutomation struct.
+func (caa *CustomAssessmentAutomation) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				caa.SystemData = &systemData
+			}
+		case "properties":
+			if v != nil {
+				var customAssessmentAutomationProperties CustomAssessmentAutomationProperties
+				err = json.Unmarshal(*v, &customAssessmentAutomationProperties)
+				if err != nil {
+					return err
+				}
+				caa.CustomAssessmentAutomationProperties = &customAssessmentAutomationProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				caa.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				caa.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				caa.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// CustomAssessmentAutomationProperties describes the Custom Assessment Automation properties
+type CustomAssessmentAutomationProperties struct {
+	// CompressedQuery - GZip encoded KQL query representing the assessment automation results required.
+	CompressedQuery *string `json:"compressedQuery,omitempty"`
+	// SupportedCloud - Relevant cloud for the custom assessment automation. Possible values include: 'SupportedCloudEnumAWS', 'SupportedCloudEnumGCP'
+	SupportedCloud SupportedCloudEnum `json:"supportedCloud,omitempty"`
+	// Severity - The severity to relate to the assessments generated by this assessment automation. Possible values include: 'SeverityEnumHigh', 'SeverityEnumMedium', 'SeverityEnumLow'
+	Severity SeverityEnum `json:"severity,omitempty"`
+	// DisplayName - The display name of the assessments generated by this assessment automation.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description to relate to the assessments generated by this assessment automation.
+	Description *string `json:"description,omitempty"`
+	// RemediationDescription - The remediation description to relate to the assessments generated by this assessment automation.
+	RemediationDescription *string `json:"remediationDescription,omitempty"`
+	// AssessmentKey - The assessment metadata key used when an assessment is generated for this assessment automation.
+	AssessmentKey *string `json:"assessmentKey,omitempty"`
+}
+
+// CustomAssessmentAutomationRequest custom Assessment Automation request
+type CustomAssessmentAutomationRequest struct {
+	// CustomAssessmentAutomationRequestProperties - describes Custom Assessment Automation request properties.
+	*CustomAssessmentAutomationRequestProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CustomAssessmentAutomationRequest.
+func (caar CustomAssessmentAutomationRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if caar.CustomAssessmentAutomationRequestProperties != nil {
+		objectMap["properties"] = caar.CustomAssessmentAutomationRequestProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CustomAssessmentAutomationRequest struct.
+func (caar *CustomAssessmentAutomationRequest) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var customAssessmentAutomationRequestProperties CustomAssessmentAutomationRequestProperties
+				err = json.Unmarshal(*v, &customAssessmentAutomationRequestProperties)
+				if err != nil {
+					return err
+				}
+				caar.CustomAssessmentAutomationRequestProperties = &customAssessmentAutomationRequestProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				caar.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				caar.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				caar.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// CustomAssessmentAutomationRequestProperties describes the Custom Assessment Automation properties
+type CustomAssessmentAutomationRequestProperties struct {
+	// CompressedQuery - Base 64 encoded KQL query representing the assessment automation results required.
+	CompressedQuery *string `json:"compressedQuery,omitempty"`
+	// SupportedCloud - Relevant cloud for the custom assessment automation. Possible values include: 'SupportedCloudEnumAWS', 'SupportedCloudEnumGCP'
+	SupportedCloud SupportedCloudEnum `json:"supportedCloud,omitempty"`
+	// Severity - The severity to relate to the assessments generated by this assessment automation. Possible values include: 'SeverityEnumHigh', 'SeverityEnumMedium', 'SeverityEnumLow'
+	Severity SeverityEnum `json:"severity,omitempty"`
+	// DisplayName - The display name of the assessments generated by this assessment automation.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description to relate to the assessments generated by this assessment automation.
+	Description *string `json:"description,omitempty"`
+	// RemediationDescription - The remediation description to relate to the assessments generated by this assessment automation.
+	RemediationDescription *string `json:"remediationDescription,omitempty"`
+}
+
+// CustomAssessmentAutomationsListResult a list of Custom Assessment Automations
+type CustomAssessmentAutomationsListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; Collection of Custom Assessment Automations
+	Value *[]CustomAssessmentAutomation `json:"value,omitempty"`
+	// NextLink - The link used to get the next page of operations.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CustomAssessmentAutomationsListResult.
+func (caalr CustomAssessmentAutomationsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if caalr.NextLink != nil {
+		objectMap["nextLink"] = caalr.NextLink
+	}
+	return json.Marshal(objectMap)
+}
+
+// CustomAssessmentAutomationsListResultIterator provides access to a complete listing of
+// CustomAssessmentAutomation values.
+type CustomAssessmentAutomationsListResultIterator struct {
+	i    int
+	page CustomAssessmentAutomationsListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *CustomAssessmentAutomationsListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CustomAssessmentAutomationsListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *CustomAssessmentAutomationsListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter CustomAssessmentAutomationsListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter CustomAssessmentAutomationsListResultIterator) Response() CustomAssessmentAutomationsListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter CustomAssessmentAutomationsListResultIterator) Value() CustomAssessmentAutomation {
+	if !iter.page.NotDone() {
+		return CustomAssessmentAutomation{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the CustomAssessmentAutomationsListResultIterator type.
+func NewCustomAssessmentAutomationsListResultIterator(page CustomAssessmentAutomationsListResultPage) CustomAssessmentAutomationsListResultIterator {
+	return CustomAssessmentAutomationsListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (caalr CustomAssessmentAutomationsListResult) IsEmpty() bool {
+	return caalr.Value == nil || len(*caalr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (caalr CustomAssessmentAutomationsListResult) hasNextLink() bool {
+	return caalr.NextLink != nil && len(*caalr.NextLink) != 0
+}
+
+// customAssessmentAutomationsListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (caalr CustomAssessmentAutomationsListResult) customAssessmentAutomationsListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if !caalr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(caalr.NextLink)))
+}
+
+// CustomAssessmentAutomationsListResultPage contains a page of CustomAssessmentAutomation values.
+type CustomAssessmentAutomationsListResultPage struct {
+	fn    func(context.Context, CustomAssessmentAutomationsListResult) (CustomAssessmentAutomationsListResult, error)
+	caalr CustomAssessmentAutomationsListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *CustomAssessmentAutomationsListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CustomAssessmentAutomationsListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.caalr)
+		if err != nil {
+			return err
+		}
+		page.caalr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *CustomAssessmentAutomationsListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page CustomAssessmentAutomationsListResultPage) NotDone() bool {
+	return !page.caalr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page CustomAssessmentAutomationsListResultPage) Response() CustomAssessmentAutomationsListResult {
+	return page.caalr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page CustomAssessmentAutomationsListResultPage) Values() []CustomAssessmentAutomation {
+	if page.caalr.IsEmpty() {
+		return nil
+	}
+	return *page.caalr.Value
+}
+
+// Creates a new instance of the CustomAssessmentAutomationsListResultPage type.
+func NewCustomAssessmentAutomationsListResultPage(cur CustomAssessmentAutomationsListResult, getNextPage func(context.Context, CustomAssessmentAutomationsListResult) (CustomAssessmentAutomationsListResult, error)) CustomAssessmentAutomationsListResultPage {
+	return CustomAssessmentAutomationsListResultPage{
+		fn:    getNextPage,
+		caalr: cur,
+	}
+}
+
+// CustomEntityStoreAssignment custom entity store assignment
+type CustomEntityStoreAssignment struct {
+	autorest.Response `json:"-"`
+	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty"`
+	// CustomEntityStoreAssignmentProperties - describes custom entity store assignment properties.
+	*CustomEntityStoreAssignmentProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CustomEntityStoreAssignment.
+func (cesa CustomEntityStoreAssignment) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cesa.CustomEntityStoreAssignmentProperties != nil {
+		objectMap["properties"] = cesa.CustomEntityStoreAssignmentProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CustomEntityStoreAssignment struct.
+func (cesa *CustomEntityStoreAssignment) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				cesa.SystemData = &systemData
+			}
+		case "properties":
+			if v != nil {
+				var customEntityStoreAssignmentProperties CustomEntityStoreAssignmentProperties
+				err = json.Unmarshal(*v, &customEntityStoreAssignmentProperties)
+				if err != nil {
+					return err
+				}
+				cesa.CustomEntityStoreAssignmentProperties = &customEntityStoreAssignmentProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				cesa.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				cesa.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				cesa.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// CustomEntityStoreAssignmentProperties describes the custom entity store assignment properties
+type CustomEntityStoreAssignmentProperties struct {
+	// Principal - The principal assigned with entity store. Format of principal is: [AAD type]=[PrincipalObjectId];[TenantId]
+	Principal *string `json:"principal,omitempty"`
+	// EntityStoreDatabaseLink - The link to entity store database.
+	EntityStoreDatabaseLink *string `json:"entityStoreDatabaseLink,omitempty"`
+}
+
+// CustomEntityStoreAssignmentRequest describes the custom entity store assignment request
+type CustomEntityStoreAssignmentRequest struct {
+	*CustomEntityStoreAssignmentRequestProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CustomEntityStoreAssignmentRequest.
+func (cesar CustomEntityStoreAssignmentRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cesar.CustomEntityStoreAssignmentRequestProperties != nil {
+		objectMap["properties"] = cesar.CustomEntityStoreAssignmentRequestProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CustomEntityStoreAssignmentRequest struct.
+func (cesar *CustomEntityStoreAssignmentRequest) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var customEntityStoreAssignmentRequestProperties CustomEntityStoreAssignmentRequestProperties
+				err = json.Unmarshal(*v, &customEntityStoreAssignmentRequestProperties)
+				if err != nil {
+					return err
+				}
+				cesar.CustomEntityStoreAssignmentRequestProperties = &customEntityStoreAssignmentRequestProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// CustomEntityStoreAssignmentRequestProperties describes properties of custom entity store assignment
+// request
+type CustomEntityStoreAssignmentRequestProperties struct {
+	// Principal - The principal assigned with entity store. If not provided, will use caller principal. Format of principal is: [AAD type]=[PrincipalObjectId];[TenantId]
+	Principal *string `json:"principal,omitempty"`
+}
+
+// CustomEntityStoreAssignmentsListResult a list of custom entity store assignments
+type CustomEntityStoreAssignmentsListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; Collection of custom entity store assignments
+	Value *[]CustomEntityStoreAssignment `json:"value,omitempty"`
+	// NextLink - The link used to get the next page of operations.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CustomEntityStoreAssignmentsListResult.
+func (cesalr CustomEntityStoreAssignmentsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cesalr.NextLink != nil {
+		objectMap["nextLink"] = cesalr.NextLink
+	}
+	return json.Marshal(objectMap)
+}
+
+// CustomEntityStoreAssignmentsListResultIterator provides access to a complete listing of
+// CustomEntityStoreAssignment values.
+type CustomEntityStoreAssignmentsListResultIterator struct {
+	i    int
+	page CustomEntityStoreAssignmentsListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *CustomEntityStoreAssignmentsListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CustomEntityStoreAssignmentsListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *CustomEntityStoreAssignmentsListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter CustomEntityStoreAssignmentsListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter CustomEntityStoreAssignmentsListResultIterator) Response() CustomEntityStoreAssignmentsListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter CustomEntityStoreAssignmentsListResultIterator) Value() CustomEntityStoreAssignment {
+	if !iter.page.NotDone() {
+		return CustomEntityStoreAssignment{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the CustomEntityStoreAssignmentsListResultIterator type.
+func NewCustomEntityStoreAssignmentsListResultIterator(page CustomEntityStoreAssignmentsListResultPage) CustomEntityStoreAssignmentsListResultIterator {
+	return CustomEntityStoreAssignmentsListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (cesalr CustomEntityStoreAssignmentsListResult) IsEmpty() bool {
+	return cesalr.Value == nil || len(*cesalr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (cesalr CustomEntityStoreAssignmentsListResult) hasNextLink() bool {
+	return cesalr.NextLink != nil && len(*cesalr.NextLink) != 0
+}
+
+// customEntityStoreAssignmentsListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (cesalr CustomEntityStoreAssignmentsListResult) customEntityStoreAssignmentsListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if !cesalr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(cesalr.NextLink)))
+}
+
+// CustomEntityStoreAssignmentsListResultPage contains a page of CustomEntityStoreAssignment values.
+type CustomEntityStoreAssignmentsListResultPage struct {
+	fn     func(context.Context, CustomEntityStoreAssignmentsListResult) (CustomEntityStoreAssignmentsListResult, error)
+	cesalr CustomEntityStoreAssignmentsListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *CustomEntityStoreAssignmentsListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CustomEntityStoreAssignmentsListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.cesalr)
+		if err != nil {
+			return err
+		}
+		page.cesalr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *CustomEntityStoreAssignmentsListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page CustomEntityStoreAssignmentsListResultPage) NotDone() bool {
+	return !page.cesalr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page CustomEntityStoreAssignmentsListResultPage) Response() CustomEntityStoreAssignmentsListResult {
+	return page.cesalr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page CustomEntityStoreAssignmentsListResultPage) Values() []CustomEntityStoreAssignment {
+	if page.cesalr.IsEmpty() {
+		return nil
+	}
+	return *page.cesalr.Value
+}
+
+// Creates a new instance of the CustomEntityStoreAssignmentsListResultPage type.
+func NewCustomEntityStoreAssignmentsListResultPage(cur CustomEntityStoreAssignmentsListResult, getNextPage func(context.Context, CustomEntityStoreAssignmentsListResult) (CustomEntityStoreAssignmentsListResult, error)) CustomEntityStoreAssignmentsListResultPage {
+	return CustomEntityStoreAssignmentsListResultPage{
+		fn:     getNextPage,
+		cesalr: cur,
+	}
+}
+
 // CVE CVE details
 type CVE struct {
 	// Title - READ-ONLY; CVE title
@@ -5829,18 +7499,19 @@ func (c CVSS) MarshalJSON() ([]byte, error) {
 type DataExportSetting struct {
 	// DataExportSettingProperties - Data export setting data
 	*DataExportSettingProperties `json:"properties,omitempty"`
-	// Kind - the kind of the settings string (DataExportSetting). Possible values include: 'SettingKindDataExportSetting', 'SettingKindAlertSuppressionSetting'
-	Kind SettingKind `json:"kind,omitempty"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
+	// Kind - Possible values include: 'KindSetting', 'KindDataExportSetting'
+	Kind KindEnum `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DataExportSetting.
 func (desVar DataExportSetting) MarshalJSON() ([]byte, error) {
+	desVar.Kind = KindDataExportSetting
 	objectMap := make(map[string]interface{})
 	if desVar.DataExportSettingProperties != nil {
 		objectMap["properties"] = desVar.DataExportSettingProperties
@@ -5849,6 +7520,21 @@ func (desVar DataExportSetting) MarshalJSON() ([]byte, error) {
 		objectMap["kind"] = desVar.Kind
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsDataExportSetting is the BasicSetting implementation for DataExportSetting.
+func (desVar DataExportSetting) AsDataExportSetting() (*DataExportSetting, bool) {
+	return &desVar, true
+}
+
+// AsSetting is the BasicSetting implementation for DataExportSetting.
+func (desVar DataExportSetting) AsSetting() (*Setting, bool) {
+	return nil, false
+}
+
+// AsBasicSetting is the BasicSetting implementation for DataExportSetting.
+func (desVar DataExportSetting) AsBasicSetting() (BasicSetting, bool) {
+	return &desVar, true
 }
 
 // UnmarshalJSON is the custom unmarshaler for DataExportSetting struct.
@@ -5871,7 +7557,7 @@ func (desVar *DataExportSetting) UnmarshalJSON(body []byte) error {
 			}
 		case "kind":
 			if v != nil {
-				var kind SettingKind
+				var kind KindEnum
 				err = json.Unmarshal(*v, &kind)
 				if err != nil {
 					return err
@@ -5915,6 +7601,525 @@ func (desVar *DataExportSetting) UnmarshalJSON(body []byte) error {
 type DataExportSettingProperties struct {
 	// Enabled - Is the data export setting is enabled
 	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// DefenderForContainersAwsOffering the Defender for Containers AWS offering
+type DefenderForContainersAwsOffering struct {
+	// KubernetesService - The kubernetes service connection configuration
+	KubernetesService *DefenderForContainersAwsOfferingKubernetesService `json:"kubernetesService,omitempty"`
+	// KubernetesScubaReader - The kubernetes to scuba connection configuration
+	KubernetesScubaReader *DefenderForContainersAwsOfferingKubernetesScubaReader `json:"kubernetesScubaReader,omitempty"`
+	// CloudWatchToKinesis - The cloudwatch to kinesis connection configuration
+	CloudWatchToKinesis *DefenderForContainersAwsOfferingCloudWatchToKinesis `json:"cloudWatchToKinesis,omitempty"`
+	// KinesisToS3 - The kinesis to s3 connection configuration
+	KinesisToS3 *DefenderForContainersAwsOfferingKinesisToS3 `json:"kinesisToS3,omitempty"`
+	// Description - READ-ONLY; The offering description.
+	Description *string `json:"description,omitempty"`
+	// OfferingType - Possible values include: 'OfferingTypeCloudOffering', 'OfferingTypeCspmMonitorAws', 'OfferingTypeDefenderForContainersAws', 'OfferingTypeDefenderForServersAws', 'OfferingTypeInformationProtectionAws', 'OfferingTypeCspmMonitorGcp', 'OfferingTypeDefenderForServersGcp', 'OfferingTypeDefenderForContainersGcp', 'OfferingTypeCspmMonitorGithub'
+	OfferingType OfferingType `json:"offeringType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DefenderForContainersAwsOffering.
+func (dfcao DefenderForContainersAwsOffering) MarshalJSON() ([]byte, error) {
+	dfcao.OfferingType = OfferingTypeDefenderForContainersAws
+	objectMap := make(map[string]interface{})
+	if dfcao.KubernetesService != nil {
+		objectMap["kubernetesService"] = dfcao.KubernetesService
+	}
+	if dfcao.KubernetesScubaReader != nil {
+		objectMap["kubernetesScubaReader"] = dfcao.KubernetesScubaReader
+	}
+	if dfcao.CloudWatchToKinesis != nil {
+		objectMap["cloudWatchToKinesis"] = dfcao.CloudWatchToKinesis
+	}
+	if dfcao.KinesisToS3 != nil {
+		objectMap["kinesisToS3"] = dfcao.KinesisToS3
+	}
+	if dfcao.OfferingType != "" {
+		objectMap["offeringType"] = dfcao.OfferingType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsCspmMonitorAwsOffering is the BasicCloudOffering implementation for DefenderForContainersAwsOffering.
+func (dfcao DefenderForContainersAwsOffering) AsCspmMonitorAwsOffering() (*CspmMonitorAwsOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForContainersAwsOffering is the BasicCloudOffering implementation for DefenderForContainersAwsOffering.
+func (dfcao DefenderForContainersAwsOffering) AsDefenderForContainersAwsOffering() (*DefenderForContainersAwsOffering, bool) {
+	return &dfcao, true
+}
+
+// AsDefenderForServersAwsOffering is the BasicCloudOffering implementation for DefenderForContainersAwsOffering.
+func (dfcao DefenderForContainersAwsOffering) AsDefenderForServersAwsOffering() (*DefenderForServersAwsOffering, bool) {
+	return nil, false
+}
+
+// AsInformationProtectionAwsOffering is the BasicCloudOffering implementation for DefenderForContainersAwsOffering.
+func (dfcao DefenderForContainersAwsOffering) AsInformationProtectionAwsOffering() (*InformationProtectionAwsOffering, bool) {
+	return nil, false
+}
+
+// AsCspmMonitorGcpOffering is the BasicCloudOffering implementation for DefenderForContainersAwsOffering.
+func (dfcao DefenderForContainersAwsOffering) AsCspmMonitorGcpOffering() (*CspmMonitorGcpOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForServersGcpOffering is the BasicCloudOffering implementation for DefenderForContainersAwsOffering.
+func (dfcao DefenderForContainersAwsOffering) AsDefenderForServersGcpOffering() (*DefenderForServersGcpOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForContainersGcpOffering is the BasicCloudOffering implementation for DefenderForContainersAwsOffering.
+func (dfcao DefenderForContainersAwsOffering) AsDefenderForContainersGcpOffering() (*DefenderForContainersGcpOffering, bool) {
+	return nil, false
+}
+
+// AsCspmMonitorGithubOffering is the BasicCloudOffering implementation for DefenderForContainersAwsOffering.
+func (dfcao DefenderForContainersAwsOffering) AsCspmMonitorGithubOffering() (*CspmMonitorGithubOffering, bool) {
+	return nil, false
+}
+
+// AsCloudOffering is the BasicCloudOffering implementation for DefenderForContainersAwsOffering.
+func (dfcao DefenderForContainersAwsOffering) AsCloudOffering() (*CloudOffering, bool) {
+	return nil, false
+}
+
+// AsBasicCloudOffering is the BasicCloudOffering implementation for DefenderForContainersAwsOffering.
+func (dfcao DefenderForContainersAwsOffering) AsBasicCloudOffering() (BasicCloudOffering, bool) {
+	return &dfcao, true
+}
+
+// DefenderForContainersAwsOfferingCloudWatchToKinesis the cloudwatch to kinesis connection configuration
+type DefenderForContainersAwsOfferingCloudWatchToKinesis struct {
+	// CloudRoleArn - The cloud role ARN in AWS for this feature
+	CloudRoleArn *string `json:"cloudRoleArn,omitempty"`
+}
+
+// DefenderForContainersAwsOfferingKinesisToS3 the kinesis to s3 connection configuration
+type DefenderForContainersAwsOfferingKinesisToS3 struct {
+	// CloudRoleArn - The cloud role ARN in AWS for this feature
+	CloudRoleArn *string `json:"cloudRoleArn,omitempty"`
+}
+
+// DefenderForContainersAwsOfferingKubernetesScubaReader the kubernetes to scuba connection configuration
+type DefenderForContainersAwsOfferingKubernetesScubaReader struct {
+	// CloudRoleArn - The cloud role ARN in AWS for this feature
+	CloudRoleArn *string `json:"cloudRoleArn,omitempty"`
+}
+
+// DefenderForContainersAwsOfferingKubernetesService the kubernetes service connection configuration
+type DefenderForContainersAwsOfferingKubernetesService struct {
+	// CloudRoleArn - The cloud role ARN in AWS for this feature
+	CloudRoleArn *string `json:"cloudRoleArn,omitempty"`
+}
+
+// DefenderForContainersGcpOffering the containers GCP offering
+type DefenderForContainersGcpOffering struct {
+	// NativeCloudConnection - The native cloud connection configuration
+	NativeCloudConnection *DefenderForContainersGcpOfferingNativeCloudConnection `json:"nativeCloudConnection,omitempty"`
+	// DataPipelineNativeCloudConnection - The native cloud connection configuration
+	DataPipelineNativeCloudConnection *DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection `json:"dataPipelineNativeCloudConnection,omitempty"`
+	// AuditLogsAutoProvisioningFlag - Is audit logs data collection enabled
+	AuditLogsAutoProvisioningFlag *bool `json:"auditLogsAutoProvisioningFlag,omitempty"`
+	// DefenderAgentAutoProvisioningFlag - Is Microsoft Defender for Cloud Kubernetes agent auto provisioning enabled
+	DefenderAgentAutoProvisioningFlag *bool `json:"defenderAgentAutoProvisioningFlag,omitempty"`
+	// PolicyAgentAutoProvisioningFlag - Is Policy Kubernetes agent auto provisioning enabled
+	PolicyAgentAutoProvisioningFlag *bool `json:"policyAgentAutoProvisioningFlag,omitempty"`
+	// Description - READ-ONLY; The offering description.
+	Description *string `json:"description,omitempty"`
+	// OfferingType - Possible values include: 'OfferingTypeCloudOffering', 'OfferingTypeCspmMonitorAws', 'OfferingTypeDefenderForContainersAws', 'OfferingTypeDefenderForServersAws', 'OfferingTypeInformationProtectionAws', 'OfferingTypeCspmMonitorGcp', 'OfferingTypeDefenderForServersGcp', 'OfferingTypeDefenderForContainersGcp', 'OfferingTypeCspmMonitorGithub'
+	OfferingType OfferingType `json:"offeringType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DefenderForContainersGcpOffering.
+func (dfcgo DefenderForContainersGcpOffering) MarshalJSON() ([]byte, error) {
+	dfcgo.OfferingType = OfferingTypeDefenderForContainersGcp
+	objectMap := make(map[string]interface{})
+	if dfcgo.NativeCloudConnection != nil {
+		objectMap["nativeCloudConnection"] = dfcgo.NativeCloudConnection
+	}
+	if dfcgo.DataPipelineNativeCloudConnection != nil {
+		objectMap["dataPipelineNativeCloudConnection"] = dfcgo.DataPipelineNativeCloudConnection
+	}
+	if dfcgo.AuditLogsAutoProvisioningFlag != nil {
+		objectMap["auditLogsAutoProvisioningFlag"] = dfcgo.AuditLogsAutoProvisioningFlag
+	}
+	if dfcgo.DefenderAgentAutoProvisioningFlag != nil {
+		objectMap["defenderAgentAutoProvisioningFlag"] = dfcgo.DefenderAgentAutoProvisioningFlag
+	}
+	if dfcgo.PolicyAgentAutoProvisioningFlag != nil {
+		objectMap["policyAgentAutoProvisioningFlag"] = dfcgo.PolicyAgentAutoProvisioningFlag
+	}
+	if dfcgo.OfferingType != "" {
+		objectMap["offeringType"] = dfcgo.OfferingType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsCspmMonitorAwsOffering is the BasicCloudOffering implementation for DefenderForContainersGcpOffering.
+func (dfcgo DefenderForContainersGcpOffering) AsCspmMonitorAwsOffering() (*CspmMonitorAwsOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForContainersAwsOffering is the BasicCloudOffering implementation for DefenderForContainersGcpOffering.
+func (dfcgo DefenderForContainersGcpOffering) AsDefenderForContainersAwsOffering() (*DefenderForContainersAwsOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForServersAwsOffering is the BasicCloudOffering implementation for DefenderForContainersGcpOffering.
+func (dfcgo DefenderForContainersGcpOffering) AsDefenderForServersAwsOffering() (*DefenderForServersAwsOffering, bool) {
+	return nil, false
+}
+
+// AsInformationProtectionAwsOffering is the BasicCloudOffering implementation for DefenderForContainersGcpOffering.
+func (dfcgo DefenderForContainersGcpOffering) AsInformationProtectionAwsOffering() (*InformationProtectionAwsOffering, bool) {
+	return nil, false
+}
+
+// AsCspmMonitorGcpOffering is the BasicCloudOffering implementation for DefenderForContainersGcpOffering.
+func (dfcgo DefenderForContainersGcpOffering) AsCspmMonitorGcpOffering() (*CspmMonitorGcpOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForServersGcpOffering is the BasicCloudOffering implementation for DefenderForContainersGcpOffering.
+func (dfcgo DefenderForContainersGcpOffering) AsDefenderForServersGcpOffering() (*DefenderForServersGcpOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForContainersGcpOffering is the BasicCloudOffering implementation for DefenderForContainersGcpOffering.
+func (dfcgo DefenderForContainersGcpOffering) AsDefenderForContainersGcpOffering() (*DefenderForContainersGcpOffering, bool) {
+	return &dfcgo, true
+}
+
+// AsCspmMonitorGithubOffering is the BasicCloudOffering implementation for DefenderForContainersGcpOffering.
+func (dfcgo DefenderForContainersGcpOffering) AsCspmMonitorGithubOffering() (*CspmMonitorGithubOffering, bool) {
+	return nil, false
+}
+
+// AsCloudOffering is the BasicCloudOffering implementation for DefenderForContainersGcpOffering.
+func (dfcgo DefenderForContainersGcpOffering) AsCloudOffering() (*CloudOffering, bool) {
+	return nil, false
+}
+
+// AsBasicCloudOffering is the BasicCloudOffering implementation for DefenderForContainersGcpOffering.
+func (dfcgo DefenderForContainersGcpOffering) AsBasicCloudOffering() (BasicCloudOffering, bool) {
+	return &dfcgo, true
+}
+
+// DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection the native cloud connection
+// configuration
+type DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection struct {
+	// ServiceAccountEmailAddress - The data collection service account email address in GCP for this offering
+	ServiceAccountEmailAddress *string `json:"serviceAccountEmailAddress,omitempty"`
+	// WorkloadIdentityProviderID - The data collection GCP workload identity provider id for this offering
+	WorkloadIdentityProviderID *string `json:"workloadIdentityProviderId,omitempty"`
+}
+
+// DefenderForContainersGcpOfferingNativeCloudConnection the native cloud connection configuration
+type DefenderForContainersGcpOfferingNativeCloudConnection struct {
+	// ServiceAccountEmailAddress - The service account email address in GCP for this offering
+	ServiceAccountEmailAddress *string `json:"serviceAccountEmailAddress,omitempty"`
+	// WorkloadIdentityProviderID - The GCP workload identity provider id for this offering
+	WorkloadIdentityProviderID *string `json:"workloadIdentityProviderId,omitempty"`
+}
+
+// DefenderForServersAwsOffering the Defender for Servers AWS offering
+type DefenderForServersAwsOffering struct {
+	// DefenderForServers - The Defender for servers connection configuration
+	DefenderForServers *DefenderForServersAwsOfferingDefenderForServers `json:"defenderForServers,omitempty"`
+	// ArcAutoProvisioning - The ARC autoprovisioning configuration
+	ArcAutoProvisioning *DefenderForServersAwsOfferingArcAutoProvisioning `json:"arcAutoProvisioning,omitempty"`
+	// VaAutoProvisioning - The Vulnerability Assessment autoprovisioning configuration
+	VaAutoProvisioning *DefenderForServersAwsOfferingVaAutoProvisioning `json:"vaAutoProvisioning,omitempty"`
+	// MdeAutoProvisioning - The Microsoft Defender for Endpoint autoprovisioning configuration
+	MdeAutoProvisioning *DefenderForServersAwsOfferingMdeAutoProvisioning `json:"mdeAutoProvisioning,omitempty"`
+	// SubPlan - configuration for the servers offering subPlan
+	SubPlan *DefenderForServersAwsOfferingSubPlan `json:"subPlan,omitempty"`
+	// Description - READ-ONLY; The offering description.
+	Description *string `json:"description,omitempty"`
+	// OfferingType - Possible values include: 'OfferingTypeCloudOffering', 'OfferingTypeCspmMonitorAws', 'OfferingTypeDefenderForContainersAws', 'OfferingTypeDefenderForServersAws', 'OfferingTypeInformationProtectionAws', 'OfferingTypeCspmMonitorGcp', 'OfferingTypeDefenderForServersGcp', 'OfferingTypeDefenderForContainersGcp', 'OfferingTypeCspmMonitorGithub'
+	OfferingType OfferingType `json:"offeringType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DefenderForServersAwsOffering.
+func (dfsao DefenderForServersAwsOffering) MarshalJSON() ([]byte, error) {
+	dfsao.OfferingType = OfferingTypeDefenderForServersAws
+	objectMap := make(map[string]interface{})
+	if dfsao.DefenderForServers != nil {
+		objectMap["defenderForServers"] = dfsao.DefenderForServers
+	}
+	if dfsao.ArcAutoProvisioning != nil {
+		objectMap["arcAutoProvisioning"] = dfsao.ArcAutoProvisioning
+	}
+	if dfsao.VaAutoProvisioning != nil {
+		objectMap["vaAutoProvisioning"] = dfsao.VaAutoProvisioning
+	}
+	if dfsao.MdeAutoProvisioning != nil {
+		objectMap["mdeAutoProvisioning"] = dfsao.MdeAutoProvisioning
+	}
+	if dfsao.SubPlan != nil {
+		objectMap["subPlan"] = dfsao.SubPlan
+	}
+	if dfsao.OfferingType != "" {
+		objectMap["offeringType"] = dfsao.OfferingType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsCspmMonitorAwsOffering is the BasicCloudOffering implementation for DefenderForServersAwsOffering.
+func (dfsao DefenderForServersAwsOffering) AsCspmMonitorAwsOffering() (*CspmMonitorAwsOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForContainersAwsOffering is the BasicCloudOffering implementation for DefenderForServersAwsOffering.
+func (dfsao DefenderForServersAwsOffering) AsDefenderForContainersAwsOffering() (*DefenderForContainersAwsOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForServersAwsOffering is the BasicCloudOffering implementation for DefenderForServersAwsOffering.
+func (dfsao DefenderForServersAwsOffering) AsDefenderForServersAwsOffering() (*DefenderForServersAwsOffering, bool) {
+	return &dfsao, true
+}
+
+// AsInformationProtectionAwsOffering is the BasicCloudOffering implementation for DefenderForServersAwsOffering.
+func (dfsao DefenderForServersAwsOffering) AsInformationProtectionAwsOffering() (*InformationProtectionAwsOffering, bool) {
+	return nil, false
+}
+
+// AsCspmMonitorGcpOffering is the BasicCloudOffering implementation for DefenderForServersAwsOffering.
+func (dfsao DefenderForServersAwsOffering) AsCspmMonitorGcpOffering() (*CspmMonitorGcpOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForServersGcpOffering is the BasicCloudOffering implementation for DefenderForServersAwsOffering.
+func (dfsao DefenderForServersAwsOffering) AsDefenderForServersGcpOffering() (*DefenderForServersGcpOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForContainersGcpOffering is the BasicCloudOffering implementation for DefenderForServersAwsOffering.
+func (dfsao DefenderForServersAwsOffering) AsDefenderForContainersGcpOffering() (*DefenderForContainersGcpOffering, bool) {
+	return nil, false
+}
+
+// AsCspmMonitorGithubOffering is the BasicCloudOffering implementation for DefenderForServersAwsOffering.
+func (dfsao DefenderForServersAwsOffering) AsCspmMonitorGithubOffering() (*CspmMonitorGithubOffering, bool) {
+	return nil, false
+}
+
+// AsCloudOffering is the BasicCloudOffering implementation for DefenderForServersAwsOffering.
+func (dfsao DefenderForServersAwsOffering) AsCloudOffering() (*CloudOffering, bool) {
+	return nil, false
+}
+
+// AsBasicCloudOffering is the BasicCloudOffering implementation for DefenderForServersAwsOffering.
+func (dfsao DefenderForServersAwsOffering) AsBasicCloudOffering() (BasicCloudOffering, bool) {
+	return &dfsao, true
+}
+
+// DefenderForServersAwsOfferingArcAutoProvisioning the ARC autoprovisioning configuration
+type DefenderForServersAwsOfferingArcAutoProvisioning struct {
+	// Enabled - Is arc auto provisioning enabled
+	Enabled *bool `json:"enabled,omitempty"`
+	// ServicePrincipalSecretMetadata - Metadata of Service Principal secret for autoprovisioning
+	ServicePrincipalSecretMetadata *DefenderForServersAwsOfferingArcAutoProvisioningServicePrincipalSecretMetadata `json:"servicePrincipalSecretMetadata,omitempty"`
+}
+
+// DefenderForServersAwsOfferingArcAutoProvisioningServicePrincipalSecretMetadata metadata of Service
+// Principal secret for autoprovisioning
+type DefenderForServersAwsOfferingArcAutoProvisioningServicePrincipalSecretMetadata struct {
+	// ExpiryDate - expiration date of service principal secret
+	ExpiryDate *string `json:"expiryDate,omitempty"`
+	// ParameterStoreRegion - region of parameter store where secret is kept
+	ParameterStoreRegion *string `json:"parameterStoreRegion,omitempty"`
+	// ParameterNameInStore - name of secret resource in parameter store
+	ParameterNameInStore *string `json:"parameterNameInStore,omitempty"`
+}
+
+// DefenderForServersAwsOfferingDefenderForServers the Defender for servers connection configuration
+type DefenderForServersAwsOfferingDefenderForServers struct {
+	// CloudRoleArn - The cloud role ARN in AWS for this feature
+	CloudRoleArn *string `json:"cloudRoleArn,omitempty"`
+}
+
+// DefenderForServersAwsOfferingMdeAutoProvisioning the Microsoft Defender for Endpoint autoprovisioning
+// configuration
+type DefenderForServersAwsOfferingMdeAutoProvisioning struct {
+	// Enabled - Is Microsoft Defender for Endpoint auto provisioning enabled
+	Enabled *bool `json:"enabled,omitempty"`
+	// Configuration - configuration for Microsoft Defender for Endpoint autoprovisioning
+	Configuration interface{} `json:"configuration,omitempty"`
+}
+
+// DefenderForServersAwsOfferingSubPlan configuration for the servers offering subPlan
+type DefenderForServersAwsOfferingSubPlan struct {
+	// Type - The available sub plans. Possible values include: 'P1', 'P2'
+	Type SubPlan `json:"type,omitempty"`
+}
+
+// DefenderForServersAwsOfferingVaAutoProvisioning the Vulnerability Assessment autoprovisioning
+// configuration
+type DefenderForServersAwsOfferingVaAutoProvisioning struct {
+	// Enabled - Is Vulnerability Assessment auto provisioning enabled
+	Enabled *bool `json:"enabled,omitempty"`
+	// Configuration - configuration for Vulnerability Assessment autoprovisioning
+	Configuration *DefenderForServersAwsOfferingVaAutoProvisioningConfiguration `json:"configuration,omitempty"`
+}
+
+// DefenderForServersAwsOfferingVaAutoProvisioningConfiguration configuration for Vulnerability Assessment
+// autoprovisioning
+type DefenderForServersAwsOfferingVaAutoProvisioningConfiguration struct {
+	// Type - The Vulnerability Assessment solution to be provisioned. Can be either 'TVM' or 'Qualys'. Possible values include: 'Qualys', 'TVM'
+	Type Type `json:"type,omitempty"`
+}
+
+// DefenderForServersGcpOffering the Defender for Servers GCP offering configurations
+type DefenderForServersGcpOffering struct {
+	// DefenderForServers - The Defender for servers connection configuration
+	DefenderForServers *DefenderForServersGcpOfferingDefenderForServers `json:"defenderForServers,omitempty"`
+	// ArcAutoProvisioning - The ARC autoprovisioning configuration
+	ArcAutoProvisioning *DefenderForServersGcpOfferingArcAutoProvisioning `json:"arcAutoProvisioning,omitempty"`
+	// VaAutoProvisioning - The Vulnerability Assessment autoprovisioning configuration
+	VaAutoProvisioning *DefenderForServersGcpOfferingVaAutoProvisioning `json:"vaAutoProvisioning,omitempty"`
+	// MdeAutoProvisioning - The Microsoft Defender for Endpoint autoprovisioning configuration
+	MdeAutoProvisioning *DefenderForServersGcpOfferingMdeAutoProvisioning `json:"mdeAutoProvisioning,omitempty"`
+	// SubPlan - configuration for the servers offering subPlan
+	SubPlan *DefenderForServersGcpOfferingSubPlan `json:"subPlan,omitempty"`
+	// Description - READ-ONLY; The offering description.
+	Description *string `json:"description,omitempty"`
+	// OfferingType - Possible values include: 'OfferingTypeCloudOffering', 'OfferingTypeCspmMonitorAws', 'OfferingTypeDefenderForContainersAws', 'OfferingTypeDefenderForServersAws', 'OfferingTypeInformationProtectionAws', 'OfferingTypeCspmMonitorGcp', 'OfferingTypeDefenderForServersGcp', 'OfferingTypeDefenderForContainersGcp', 'OfferingTypeCspmMonitorGithub'
+	OfferingType OfferingType `json:"offeringType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DefenderForServersGcpOffering.
+func (dfsgo DefenderForServersGcpOffering) MarshalJSON() ([]byte, error) {
+	dfsgo.OfferingType = OfferingTypeDefenderForServersGcp
+	objectMap := make(map[string]interface{})
+	if dfsgo.DefenderForServers != nil {
+		objectMap["defenderForServers"] = dfsgo.DefenderForServers
+	}
+	if dfsgo.ArcAutoProvisioning != nil {
+		objectMap["arcAutoProvisioning"] = dfsgo.ArcAutoProvisioning
+	}
+	if dfsgo.VaAutoProvisioning != nil {
+		objectMap["vaAutoProvisioning"] = dfsgo.VaAutoProvisioning
+	}
+	if dfsgo.MdeAutoProvisioning != nil {
+		objectMap["mdeAutoProvisioning"] = dfsgo.MdeAutoProvisioning
+	}
+	if dfsgo.SubPlan != nil {
+		objectMap["subPlan"] = dfsgo.SubPlan
+	}
+	if dfsgo.OfferingType != "" {
+		objectMap["offeringType"] = dfsgo.OfferingType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsCspmMonitorAwsOffering is the BasicCloudOffering implementation for DefenderForServersGcpOffering.
+func (dfsgo DefenderForServersGcpOffering) AsCspmMonitorAwsOffering() (*CspmMonitorAwsOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForContainersAwsOffering is the BasicCloudOffering implementation for DefenderForServersGcpOffering.
+func (dfsgo DefenderForServersGcpOffering) AsDefenderForContainersAwsOffering() (*DefenderForContainersAwsOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForServersAwsOffering is the BasicCloudOffering implementation for DefenderForServersGcpOffering.
+func (dfsgo DefenderForServersGcpOffering) AsDefenderForServersAwsOffering() (*DefenderForServersAwsOffering, bool) {
+	return nil, false
+}
+
+// AsInformationProtectionAwsOffering is the BasicCloudOffering implementation for DefenderForServersGcpOffering.
+func (dfsgo DefenderForServersGcpOffering) AsInformationProtectionAwsOffering() (*InformationProtectionAwsOffering, bool) {
+	return nil, false
+}
+
+// AsCspmMonitorGcpOffering is the BasicCloudOffering implementation for DefenderForServersGcpOffering.
+func (dfsgo DefenderForServersGcpOffering) AsCspmMonitorGcpOffering() (*CspmMonitorGcpOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForServersGcpOffering is the BasicCloudOffering implementation for DefenderForServersGcpOffering.
+func (dfsgo DefenderForServersGcpOffering) AsDefenderForServersGcpOffering() (*DefenderForServersGcpOffering, bool) {
+	return &dfsgo, true
+}
+
+// AsDefenderForContainersGcpOffering is the BasicCloudOffering implementation for DefenderForServersGcpOffering.
+func (dfsgo DefenderForServersGcpOffering) AsDefenderForContainersGcpOffering() (*DefenderForContainersGcpOffering, bool) {
+	return nil, false
+}
+
+// AsCspmMonitorGithubOffering is the BasicCloudOffering implementation for DefenderForServersGcpOffering.
+func (dfsgo DefenderForServersGcpOffering) AsCspmMonitorGithubOffering() (*CspmMonitorGithubOffering, bool) {
+	return nil, false
+}
+
+// AsCloudOffering is the BasicCloudOffering implementation for DefenderForServersGcpOffering.
+func (dfsgo DefenderForServersGcpOffering) AsCloudOffering() (*CloudOffering, bool) {
+	return nil, false
+}
+
+// AsBasicCloudOffering is the BasicCloudOffering implementation for DefenderForServersGcpOffering.
+func (dfsgo DefenderForServersGcpOffering) AsBasicCloudOffering() (BasicCloudOffering, bool) {
+	return &dfsgo, true
+}
+
+// DefenderForServersGcpOfferingArcAutoProvisioning the ARC autoprovisioning configuration
+type DefenderForServersGcpOfferingArcAutoProvisioning struct {
+	// Enabled - Is arc auto provisioning enabled
+	Enabled *bool `json:"enabled,omitempty"`
+	// Configuration - Configuration for ARC autoprovisioning
+	Configuration *DefenderForServersGcpOfferingArcAutoProvisioningConfiguration `json:"configuration,omitempty"`
+}
+
+// DefenderForServersGcpOfferingArcAutoProvisioningConfiguration configuration for ARC autoprovisioning
+type DefenderForServersGcpOfferingArcAutoProvisioningConfiguration struct {
+	// ClientID - The Azure service principal client id for agent onboarding
+	ClientID *string `json:"clientId,omitempty"`
+	// AgentOnboardingServiceAccountNumericID - The agent onboarding service account numeric id
+	AgentOnboardingServiceAccountNumericID *string `json:"agentOnboardingServiceAccountNumericId,omitempty"`
+}
+
+// DefenderForServersGcpOfferingDefenderForServers the Defender for servers connection configuration
+type DefenderForServersGcpOfferingDefenderForServers struct {
+	// WorkloadIdentityProviderID - The workload identity provider id in GCP for this feature
+	WorkloadIdentityProviderID *string `json:"workloadIdentityProviderId,omitempty"`
+	// ServiceAccountEmailAddress - The service account email address in GCP for this feature
+	ServiceAccountEmailAddress *string `json:"serviceAccountEmailAddress,omitempty"`
+}
+
+// DefenderForServersGcpOfferingMdeAutoProvisioning the Microsoft Defender for Endpoint autoprovisioning
+// configuration
+type DefenderForServersGcpOfferingMdeAutoProvisioning struct {
+	// Enabled - Is Microsoft Defender for Endpoint auto provisioning enabled
+	Enabled *bool `json:"enabled,omitempty"`
+	// Configuration - configuration for Microsoft Defender for Endpoint autoprovisioning
+	Configuration interface{} `json:"configuration,omitempty"`
+}
+
+// DefenderForServersGcpOfferingSubPlan configuration for the servers offering subPlan
+type DefenderForServersGcpOfferingSubPlan struct {
+	// Type - The available sub plans. Possible values include: 'P1', 'P2'
+	Type SubPlan `json:"type,omitempty"`
+}
+
+// DefenderForServersGcpOfferingVaAutoProvisioning the Vulnerability Assessment autoprovisioning
+// configuration
+type DefenderForServersGcpOfferingVaAutoProvisioning struct {
+	// Enabled - Is Vulnerability Assessment auto provisioning enabled
+	Enabled *bool `json:"enabled,omitempty"`
+	// Configuration - configuration for Vulnerability Assessment autoprovisioning
+	Configuration *DefenderForServersGcpOfferingVaAutoProvisioningConfiguration `json:"configuration,omitempty"`
+}
+
+// DefenderForServersGcpOfferingVaAutoProvisioningConfiguration configuration for Vulnerability Assessment
+// autoprovisioning
+type DefenderForServersGcpOfferingVaAutoProvisioningConfiguration struct {
+	// Type - The Vulnerability Assessment solution to be provisioned. Can be either 'TVM' or 'Qualys'. Possible values include: 'Qualys', 'TVM'
+	Type Type `json:"type,omitempty"`
 }
 
 // DenylistCustomAlertRule a custom alert rule that checks if a value (depends on the custom alert type) is
@@ -6862,6 +9067,114 @@ type EffectiveNetworkSecurityGroups struct {
 	NetworkSecurityGroups *[]string `json:"networkSecurityGroups,omitempty"`
 }
 
+// BasicEnvironmentData the security connector environment data.
+type BasicEnvironmentData interface {
+	AsAWSEnvironmentData() (*AWSEnvironmentData, bool)
+	AsGcpProjectEnvironmentData() (*GcpProjectEnvironmentData, bool)
+	AsGithubScopeEnvironmentData() (*GithubScopeEnvironmentData, bool)
+	AsEnvironmentData() (*EnvironmentData, bool)
+}
+
+// EnvironmentData the security connector environment data.
+type EnvironmentData struct {
+	// EnvironmentType - Possible values include: 'EnvironmentTypeEnvironmentData', 'EnvironmentTypeAwsAccount', 'EnvironmentTypeGcpProject', 'EnvironmentTypeGithubScope'
+	EnvironmentType EnvironmentType `json:"environmentType,omitempty"`
+}
+
+func unmarshalBasicEnvironmentData(body []byte) (BasicEnvironmentData, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["environmentType"] {
+	case string(EnvironmentTypeAwsAccount):
+		var aed AWSEnvironmentData
+		err := json.Unmarshal(body, &aed)
+		return aed, err
+	case string(EnvironmentTypeGcpProject):
+		var gped GcpProjectEnvironmentData
+		err := json.Unmarshal(body, &gped)
+		return gped, err
+	case string(EnvironmentTypeGithubScope):
+		var gsed GithubScopeEnvironmentData
+		err := json.Unmarshal(body, &gsed)
+		return gsed, err
+	default:
+		var ed EnvironmentData
+		err := json.Unmarshal(body, &ed)
+		return ed, err
+	}
+}
+func unmarshalBasicEnvironmentDataArray(body []byte) ([]BasicEnvironmentData, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	edArray := make([]BasicEnvironmentData, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		ed, err := unmarshalBasicEnvironmentData(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		edArray[index] = ed
+	}
+	return edArray, nil
+}
+
+// MarshalJSON is the custom marshaler for EnvironmentData.
+func (ed EnvironmentData) MarshalJSON() ([]byte, error) {
+	ed.EnvironmentType = EnvironmentTypeEnvironmentData
+	objectMap := make(map[string]interface{})
+	if ed.EnvironmentType != "" {
+		objectMap["environmentType"] = ed.EnvironmentType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAWSEnvironmentData is the BasicEnvironmentData implementation for EnvironmentData.
+func (ed EnvironmentData) AsAWSEnvironmentData() (*AWSEnvironmentData, bool) {
+	return nil, false
+}
+
+// AsGcpProjectEnvironmentData is the BasicEnvironmentData implementation for EnvironmentData.
+func (ed EnvironmentData) AsGcpProjectEnvironmentData() (*GcpProjectEnvironmentData, bool) {
+	return nil, false
+}
+
+// AsGithubScopeEnvironmentData is the BasicEnvironmentData implementation for EnvironmentData.
+func (ed EnvironmentData) AsGithubScopeEnvironmentData() (*GithubScopeEnvironmentData, bool) {
+	return nil, false
+}
+
+// AsEnvironmentData is the BasicEnvironmentData implementation for EnvironmentData.
+func (ed EnvironmentData) AsEnvironmentData() (*EnvironmentData, bool) {
+	return &ed, true
+}
+
+// AsBasicEnvironmentData is the BasicEnvironmentData implementation for EnvironmentData.
+func (ed EnvironmentData) AsBasicEnvironmentData() (BasicEnvironmentData, bool) {
+	return &ed, true
+}
+
+// ErrorAdditionalInfo the resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// Type - READ-ONLY; The additional info type.
+	Type *string `json:"type,omitempty"`
+	// Info - READ-ONLY; The additional info.
+	Info interface{} `json:"info,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorAdditionalInfo.
+func (eai ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ETag entity tag is used for comparing two or more entities from the same requested resource.
 type ETag struct {
 	// Etag - Entity tag is used for comparing two or more entities from the same requested resource.
@@ -6890,7 +9203,7 @@ type ExternalSecuritySolution struct {
 	// Location - READ-ONLY; Location where the resource is stored
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindExternalSecuritySolution', 'KindCEF', 'KindATA', 'KindAAD'
-	Kind KindEnum `json:"kind,omitempty"`
+	Kind KindEnum1 `json:"kind,omitempty"`
 }
 
 func unmarshalBasicExternalSecuritySolution(body []byte) (BasicExternalSecuritySolution, error) {
@@ -7758,6 +10071,335 @@ func (gcdp GcpCredentialsDetailsProperties) AsBasicAuthenticationDetailsProperti
 	return &gcdp, true
 }
 
+// BasicGcpOrganizationalData the gcpOrganization data
+type BasicGcpOrganizationalData interface {
+	AsGcpOrganizationalDataOrganization() (*GcpOrganizationalDataOrganization, bool)
+	AsGcpOrganizationalDataMember() (*GcpOrganizationalDataMember, bool)
+	AsGcpOrganizationalData() (*GcpOrganizationalData, bool)
+}
+
+// GcpOrganizationalData the gcpOrganization data
+type GcpOrganizationalData struct {
+	// OrganizationMembershipType - Possible values include: 'OrganizationMembershipTypeBasicGcpOrganizationalDataOrganizationMembershipTypeGcpOrganizationalData', 'OrganizationMembershipTypeBasicGcpOrganizationalDataOrganizationMembershipTypeOrganization', 'OrganizationMembershipTypeBasicGcpOrganizationalDataOrganizationMembershipTypeMember'
+	OrganizationMembershipType OrganizationMembershipTypeBasicGcpOrganizationalData `json:"organizationMembershipType,omitempty"`
+}
+
+func unmarshalBasicGcpOrganizationalData(body []byte) (BasicGcpOrganizationalData, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["organizationMembershipType"] {
+	case string(OrganizationMembershipTypeBasicGcpOrganizationalDataOrganizationMembershipTypeOrganization):
+		var godo GcpOrganizationalDataOrganization
+		err := json.Unmarshal(body, &godo)
+		return godo, err
+	case string(OrganizationMembershipTypeBasicGcpOrganizationalDataOrganizationMembershipTypeMember):
+		var godm GcpOrganizationalDataMember
+		err := json.Unmarshal(body, &godm)
+		return godm, err
+	default:
+		var god GcpOrganizationalData
+		err := json.Unmarshal(body, &god)
+		return god, err
+	}
+}
+func unmarshalBasicGcpOrganizationalDataArray(body []byte) ([]BasicGcpOrganizationalData, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	godArray := make([]BasicGcpOrganizationalData, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		god, err := unmarshalBasicGcpOrganizationalData(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		godArray[index] = god
+	}
+	return godArray, nil
+}
+
+// MarshalJSON is the custom marshaler for GcpOrganizationalData.
+func (god GcpOrganizationalData) MarshalJSON() ([]byte, error) {
+	god.OrganizationMembershipType = OrganizationMembershipTypeBasicGcpOrganizationalDataOrganizationMembershipTypeGcpOrganizationalData
+	objectMap := make(map[string]interface{})
+	if god.OrganizationMembershipType != "" {
+		objectMap["organizationMembershipType"] = god.OrganizationMembershipType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsGcpOrganizationalDataOrganization is the BasicGcpOrganizationalData implementation for GcpOrganizationalData.
+func (god GcpOrganizationalData) AsGcpOrganizationalDataOrganization() (*GcpOrganizationalDataOrganization, bool) {
+	return nil, false
+}
+
+// AsGcpOrganizationalDataMember is the BasicGcpOrganizationalData implementation for GcpOrganizationalData.
+func (god GcpOrganizationalData) AsGcpOrganizationalDataMember() (*GcpOrganizationalDataMember, bool) {
+	return nil, false
+}
+
+// AsGcpOrganizationalData is the BasicGcpOrganizationalData implementation for GcpOrganizationalData.
+func (god GcpOrganizationalData) AsGcpOrganizationalData() (*GcpOrganizationalData, bool) {
+	return &god, true
+}
+
+// AsBasicGcpOrganizationalData is the BasicGcpOrganizationalData implementation for GcpOrganizationalData.
+func (god GcpOrganizationalData) AsBasicGcpOrganizationalData() (BasicGcpOrganizationalData, bool) {
+	return &god, true
+}
+
+// GcpOrganizationalDataMember the gcpOrganization data for the member account
+type GcpOrganizationalDataMember struct {
+	// ParentHierarchyID - If the multi cloud account is not of membership type organization, this will be the ID of the project's parent
+	ParentHierarchyID *string `json:"parentHierarchyId,omitempty"`
+	// OrganizationMembershipType - Possible values include: 'OrganizationMembershipTypeBasicGcpOrganizationalDataOrganizationMembershipTypeGcpOrganizationalData', 'OrganizationMembershipTypeBasicGcpOrganizationalDataOrganizationMembershipTypeOrganization', 'OrganizationMembershipTypeBasicGcpOrganizationalDataOrganizationMembershipTypeMember'
+	OrganizationMembershipType OrganizationMembershipTypeBasicGcpOrganizationalData `json:"organizationMembershipType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for GcpOrganizationalDataMember.
+func (godm GcpOrganizationalDataMember) MarshalJSON() ([]byte, error) {
+	godm.OrganizationMembershipType = OrganizationMembershipTypeBasicGcpOrganizationalDataOrganizationMembershipTypeMember
+	objectMap := make(map[string]interface{})
+	if godm.ParentHierarchyID != nil {
+		objectMap["parentHierarchyId"] = godm.ParentHierarchyID
+	}
+	if godm.OrganizationMembershipType != "" {
+		objectMap["organizationMembershipType"] = godm.OrganizationMembershipType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsGcpOrganizationalDataOrganization is the BasicGcpOrganizationalData implementation for GcpOrganizationalDataMember.
+func (godm GcpOrganizationalDataMember) AsGcpOrganizationalDataOrganization() (*GcpOrganizationalDataOrganization, bool) {
+	return nil, false
+}
+
+// AsGcpOrganizationalDataMember is the BasicGcpOrganizationalData implementation for GcpOrganizationalDataMember.
+func (godm GcpOrganizationalDataMember) AsGcpOrganizationalDataMember() (*GcpOrganizationalDataMember, bool) {
+	return &godm, true
+}
+
+// AsGcpOrganizationalData is the BasicGcpOrganizationalData implementation for GcpOrganizationalDataMember.
+func (godm GcpOrganizationalDataMember) AsGcpOrganizationalData() (*GcpOrganizationalData, bool) {
+	return nil, false
+}
+
+// AsBasicGcpOrganizationalData is the BasicGcpOrganizationalData implementation for GcpOrganizationalDataMember.
+func (godm GcpOrganizationalDataMember) AsBasicGcpOrganizationalData() (BasicGcpOrganizationalData, bool) {
+	return &godm, true
+}
+
+// GcpOrganizationalDataOrganization the gcpOrganization data for the parent account
+type GcpOrganizationalDataOrganization struct {
+	// ExcludedProjectNumbers - If the multi cloud account is of membership type organization, list of accounts excluded from offering
+	ExcludedProjectNumbers *[]string `json:"excludedProjectNumbers,omitempty"`
+	// ServiceAccountEmailAddress - The service account email address which represents the organization level permissions container.
+	ServiceAccountEmailAddress *string `json:"serviceAccountEmailAddress,omitempty"`
+	// WorkloadIdentityProviderID - The GCP workload identity provider id which represents the permissions required to auto provision security connectors
+	WorkloadIdentityProviderID *string `json:"workloadIdentityProviderId,omitempty"`
+	// OrganizationMembershipType - Possible values include: 'OrganizationMembershipTypeBasicGcpOrganizationalDataOrganizationMembershipTypeGcpOrganizationalData', 'OrganizationMembershipTypeBasicGcpOrganizationalDataOrganizationMembershipTypeOrganization', 'OrganizationMembershipTypeBasicGcpOrganizationalDataOrganizationMembershipTypeMember'
+	OrganizationMembershipType OrganizationMembershipTypeBasicGcpOrganizationalData `json:"organizationMembershipType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for GcpOrganizationalDataOrganization.
+func (godo GcpOrganizationalDataOrganization) MarshalJSON() ([]byte, error) {
+	godo.OrganizationMembershipType = OrganizationMembershipTypeBasicGcpOrganizationalDataOrganizationMembershipTypeOrganization
+	objectMap := make(map[string]interface{})
+	if godo.ExcludedProjectNumbers != nil {
+		objectMap["excludedProjectNumbers"] = godo.ExcludedProjectNumbers
+	}
+	if godo.ServiceAccountEmailAddress != nil {
+		objectMap["serviceAccountEmailAddress"] = godo.ServiceAccountEmailAddress
+	}
+	if godo.WorkloadIdentityProviderID != nil {
+		objectMap["workloadIdentityProviderId"] = godo.WorkloadIdentityProviderID
+	}
+	if godo.OrganizationMembershipType != "" {
+		objectMap["organizationMembershipType"] = godo.OrganizationMembershipType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsGcpOrganizationalDataOrganization is the BasicGcpOrganizationalData implementation for GcpOrganizationalDataOrganization.
+func (godo GcpOrganizationalDataOrganization) AsGcpOrganizationalDataOrganization() (*GcpOrganizationalDataOrganization, bool) {
+	return &godo, true
+}
+
+// AsGcpOrganizationalDataMember is the BasicGcpOrganizationalData implementation for GcpOrganizationalDataOrganization.
+func (godo GcpOrganizationalDataOrganization) AsGcpOrganizationalDataMember() (*GcpOrganizationalDataMember, bool) {
+	return nil, false
+}
+
+// AsGcpOrganizationalData is the BasicGcpOrganizationalData implementation for GcpOrganizationalDataOrganization.
+func (godo GcpOrganizationalDataOrganization) AsGcpOrganizationalData() (*GcpOrganizationalData, bool) {
+	return nil, false
+}
+
+// AsBasicGcpOrganizationalData is the BasicGcpOrganizationalData implementation for GcpOrganizationalDataOrganization.
+func (godo GcpOrganizationalDataOrganization) AsBasicGcpOrganizationalData() (BasicGcpOrganizationalData, bool) {
+	return &godo, true
+}
+
+// GcpProjectDetails the details about the project represented by the security connector
+type GcpProjectDetails struct {
+	// ProjectNumber - The unique GCP Project number
+	ProjectNumber *string `json:"projectNumber,omitempty"`
+	// ProjectID - The GCP Project id
+	ProjectID *string `json:"projectId,omitempty"`
+	// WorkloadIdentityPoolID - READ-ONLY; The GCP workload identity federation pool id
+	WorkloadIdentityPoolID *string `json:"workloadIdentityPoolId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for GcpProjectDetails.
+func (gpd GcpProjectDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if gpd.ProjectNumber != nil {
+		objectMap["projectNumber"] = gpd.ProjectNumber
+	}
+	if gpd.ProjectID != nil {
+		objectMap["projectId"] = gpd.ProjectID
+	}
+	return json.Marshal(objectMap)
+}
+
+// GcpProjectEnvironmentData the GCP project connector environment data
+type GcpProjectEnvironmentData struct {
+	// OrganizationalData - The Gcp project's organizational data
+	OrganizationalData BasicGcpOrganizationalData `json:"organizationalData,omitempty"`
+	// ProjectDetails - The Gcp project's details
+	ProjectDetails *GcpProjectDetails `json:"projectDetails,omitempty"`
+	// EnvironmentType - Possible values include: 'EnvironmentTypeEnvironmentData', 'EnvironmentTypeAwsAccount', 'EnvironmentTypeGcpProject', 'EnvironmentTypeGithubScope'
+	EnvironmentType EnvironmentType `json:"environmentType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for GcpProjectEnvironmentData.
+func (gped GcpProjectEnvironmentData) MarshalJSON() ([]byte, error) {
+	gped.EnvironmentType = EnvironmentTypeGcpProject
+	objectMap := make(map[string]interface{})
+	objectMap["organizationalData"] = gped.OrganizationalData
+	if gped.ProjectDetails != nil {
+		objectMap["projectDetails"] = gped.ProjectDetails
+	}
+	if gped.EnvironmentType != "" {
+		objectMap["environmentType"] = gped.EnvironmentType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAWSEnvironmentData is the BasicEnvironmentData implementation for GcpProjectEnvironmentData.
+func (gped GcpProjectEnvironmentData) AsAWSEnvironmentData() (*AWSEnvironmentData, bool) {
+	return nil, false
+}
+
+// AsGcpProjectEnvironmentData is the BasicEnvironmentData implementation for GcpProjectEnvironmentData.
+func (gped GcpProjectEnvironmentData) AsGcpProjectEnvironmentData() (*GcpProjectEnvironmentData, bool) {
+	return &gped, true
+}
+
+// AsGithubScopeEnvironmentData is the BasicEnvironmentData implementation for GcpProjectEnvironmentData.
+func (gped GcpProjectEnvironmentData) AsGithubScopeEnvironmentData() (*GithubScopeEnvironmentData, bool) {
+	return nil, false
+}
+
+// AsEnvironmentData is the BasicEnvironmentData implementation for GcpProjectEnvironmentData.
+func (gped GcpProjectEnvironmentData) AsEnvironmentData() (*EnvironmentData, bool) {
+	return nil, false
+}
+
+// AsBasicEnvironmentData is the BasicEnvironmentData implementation for GcpProjectEnvironmentData.
+func (gped GcpProjectEnvironmentData) AsBasicEnvironmentData() (BasicEnvironmentData, bool) {
+	return &gped, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for GcpProjectEnvironmentData struct.
+func (gped *GcpProjectEnvironmentData) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "organizationalData":
+			if v != nil {
+				organizationalData, err := unmarshalBasicGcpOrganizationalData(*v)
+				if err != nil {
+					return err
+				}
+				gped.OrganizationalData = organizationalData
+			}
+		case "projectDetails":
+			if v != nil {
+				var projectDetails GcpProjectDetails
+				err = json.Unmarshal(*v, &projectDetails)
+				if err != nil {
+					return err
+				}
+				gped.ProjectDetails = &projectDetails
+			}
+		case "environmentType":
+			if v != nil {
+				var environmentType EnvironmentType
+				err = json.Unmarshal(*v, &environmentType)
+				if err != nil {
+					return err
+				}
+				gped.EnvironmentType = environmentType
+			}
+		}
+	}
+
+	return nil
+}
+
+// GithubScopeEnvironmentData the github scope connector's environment data
+type GithubScopeEnvironmentData struct {
+	// EnvironmentType - Possible values include: 'EnvironmentTypeEnvironmentData', 'EnvironmentTypeAwsAccount', 'EnvironmentTypeGcpProject', 'EnvironmentTypeGithubScope'
+	EnvironmentType EnvironmentType `json:"environmentType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for GithubScopeEnvironmentData.
+func (gsed GithubScopeEnvironmentData) MarshalJSON() ([]byte, error) {
+	gsed.EnvironmentType = EnvironmentTypeGithubScope
+	objectMap := make(map[string]interface{})
+	if gsed.EnvironmentType != "" {
+		objectMap["environmentType"] = gsed.EnvironmentType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAWSEnvironmentData is the BasicEnvironmentData implementation for GithubScopeEnvironmentData.
+func (gsed GithubScopeEnvironmentData) AsAWSEnvironmentData() (*AWSEnvironmentData, bool) {
+	return nil, false
+}
+
+// AsGcpProjectEnvironmentData is the BasicEnvironmentData implementation for GithubScopeEnvironmentData.
+func (gsed GithubScopeEnvironmentData) AsGcpProjectEnvironmentData() (*GcpProjectEnvironmentData, bool) {
+	return nil, false
+}
+
+// AsGithubScopeEnvironmentData is the BasicEnvironmentData implementation for GithubScopeEnvironmentData.
+func (gsed GithubScopeEnvironmentData) AsGithubScopeEnvironmentData() (*GithubScopeEnvironmentData, bool) {
+	return &gsed, true
+}
+
+// AsEnvironmentData is the BasicEnvironmentData implementation for GithubScopeEnvironmentData.
+func (gsed GithubScopeEnvironmentData) AsEnvironmentData() (*EnvironmentData, bool) {
+	return nil, false
+}
+
+// AsBasicEnvironmentData is the BasicEnvironmentData implementation for GithubScopeEnvironmentData.
+func (gsed GithubScopeEnvironmentData) AsBasicEnvironmentData() (BasicEnvironmentData, bool) {
+	return &gsed, true
+}
+
 // HTTPC2DMessagesNotInAllowedRange number of cloud to device messages (HTTP protocol) is not in allowed
 // range.
 type HTTPC2DMessagesNotInAllowedRange struct {
@@ -8368,6 +11010,85 @@ func (hcsp HybridComputeSettingsProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// InformationProtectionAwsOffering the information protection for AWS offering
+type InformationProtectionAwsOffering struct {
+	// InformationProtection - The native cloud connection configuration
+	InformationProtection *InformationProtectionAwsOfferingInformationProtection `json:"informationProtection,omitempty"`
+	// Description - READ-ONLY; The offering description.
+	Description *string `json:"description,omitempty"`
+	// OfferingType - Possible values include: 'OfferingTypeCloudOffering', 'OfferingTypeCspmMonitorAws', 'OfferingTypeDefenderForContainersAws', 'OfferingTypeDefenderForServersAws', 'OfferingTypeInformationProtectionAws', 'OfferingTypeCspmMonitorGcp', 'OfferingTypeDefenderForServersGcp', 'OfferingTypeDefenderForContainersGcp', 'OfferingTypeCspmMonitorGithub'
+	OfferingType OfferingType `json:"offeringType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InformationProtectionAwsOffering.
+func (ipao InformationProtectionAwsOffering) MarshalJSON() ([]byte, error) {
+	ipao.OfferingType = OfferingTypeInformationProtectionAws
+	objectMap := make(map[string]interface{})
+	if ipao.InformationProtection != nil {
+		objectMap["informationProtection"] = ipao.InformationProtection
+	}
+	if ipao.OfferingType != "" {
+		objectMap["offeringType"] = ipao.OfferingType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsCspmMonitorAwsOffering is the BasicCloudOffering implementation for InformationProtectionAwsOffering.
+func (ipao InformationProtectionAwsOffering) AsCspmMonitorAwsOffering() (*CspmMonitorAwsOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForContainersAwsOffering is the BasicCloudOffering implementation for InformationProtectionAwsOffering.
+func (ipao InformationProtectionAwsOffering) AsDefenderForContainersAwsOffering() (*DefenderForContainersAwsOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForServersAwsOffering is the BasicCloudOffering implementation for InformationProtectionAwsOffering.
+func (ipao InformationProtectionAwsOffering) AsDefenderForServersAwsOffering() (*DefenderForServersAwsOffering, bool) {
+	return nil, false
+}
+
+// AsInformationProtectionAwsOffering is the BasicCloudOffering implementation for InformationProtectionAwsOffering.
+func (ipao InformationProtectionAwsOffering) AsInformationProtectionAwsOffering() (*InformationProtectionAwsOffering, bool) {
+	return &ipao, true
+}
+
+// AsCspmMonitorGcpOffering is the BasicCloudOffering implementation for InformationProtectionAwsOffering.
+func (ipao InformationProtectionAwsOffering) AsCspmMonitorGcpOffering() (*CspmMonitorGcpOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForServersGcpOffering is the BasicCloudOffering implementation for InformationProtectionAwsOffering.
+func (ipao InformationProtectionAwsOffering) AsDefenderForServersGcpOffering() (*DefenderForServersGcpOffering, bool) {
+	return nil, false
+}
+
+// AsDefenderForContainersGcpOffering is the BasicCloudOffering implementation for InformationProtectionAwsOffering.
+func (ipao InformationProtectionAwsOffering) AsDefenderForContainersGcpOffering() (*DefenderForContainersGcpOffering, bool) {
+	return nil, false
+}
+
+// AsCspmMonitorGithubOffering is the BasicCloudOffering implementation for InformationProtectionAwsOffering.
+func (ipao InformationProtectionAwsOffering) AsCspmMonitorGithubOffering() (*CspmMonitorGithubOffering, bool) {
+	return nil, false
+}
+
+// AsCloudOffering is the BasicCloudOffering implementation for InformationProtectionAwsOffering.
+func (ipao InformationProtectionAwsOffering) AsCloudOffering() (*CloudOffering, bool) {
+	return nil, false
+}
+
+// AsBasicCloudOffering is the BasicCloudOffering implementation for InformationProtectionAwsOffering.
+func (ipao InformationProtectionAwsOffering) AsBasicCloudOffering() (BasicCloudOffering, bool) {
+	return &ipao, true
+}
+
+// InformationProtectionAwsOfferingInformationProtection the native cloud connection configuration
+type InformationProtectionAwsOfferingInformationProtection struct {
+	// CloudRoleArn - The cloud role ARN in AWS for this feature
+	CloudRoleArn *string `json:"cloudRoleArn,omitempty"`
+}
+
 // InformationProtectionKeyword the information type keyword.
 type InformationProtectionKeyword struct {
 	// Pattern - The keyword pattern.
@@ -8662,6 +11383,222 @@ type InformationType struct {
 	Custom *bool `json:"custom,omitempty"`
 	// Keywords - The information type keywords.
 	Keywords *[]InformationProtectionKeyword `json:"keywords,omitempty"`
+}
+
+// IngestionConnectionString connection string for ingesting security data and logs
+type IngestionConnectionString struct {
+	// Location - READ-ONLY; The region where ingested logs and data resides
+	Location *string `json:"location,omitempty"`
+	// Value - READ-ONLY; Connection string value
+	Value *string `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IngestionConnectionString.
+func (ics IngestionConnectionString) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// IngestionSetting configures how to correlate scan data and logs with resources associated with the
+// subscription.
+type IngestionSetting struct {
+	autorest.Response `json:"-"`
+	// Properties - Ingestion setting data
+	Properties interface{} `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IngestionSetting.
+func (is IngestionSetting) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if is.Properties != nil {
+		objectMap["properties"] = is.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
+// IngestionSettingList list of ingestion settings
+type IngestionSettingList struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; List of ingestion settings
+	Value *[]IngestionSetting `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IngestionSettingList.
+func (isl IngestionSettingList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// IngestionSettingListIterator provides access to a complete listing of IngestionSetting values.
+type IngestionSettingListIterator struct {
+	i    int
+	page IngestionSettingListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *IngestionSettingListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IngestionSettingListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *IngestionSettingListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter IngestionSettingListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter IngestionSettingListIterator) Response() IngestionSettingList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter IngestionSettingListIterator) Value() IngestionSetting {
+	if !iter.page.NotDone() {
+		return IngestionSetting{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the IngestionSettingListIterator type.
+func NewIngestionSettingListIterator(page IngestionSettingListPage) IngestionSettingListIterator {
+	return IngestionSettingListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (isl IngestionSettingList) IsEmpty() bool {
+	return isl.Value == nil || len(*isl.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (isl IngestionSettingList) hasNextLink() bool {
+	return isl.NextLink != nil && len(*isl.NextLink) != 0
+}
+
+// ingestionSettingListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (isl IngestionSettingList) ingestionSettingListPreparer(ctx context.Context) (*http.Request, error) {
+	if !isl.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(isl.NextLink)))
+}
+
+// IngestionSettingListPage contains a page of IngestionSetting values.
+type IngestionSettingListPage struct {
+	fn  func(context.Context, IngestionSettingList) (IngestionSettingList, error)
+	isl IngestionSettingList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *IngestionSettingListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IngestionSettingListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.isl)
+		if err != nil {
+			return err
+		}
+		page.isl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *IngestionSettingListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page IngestionSettingListPage) NotDone() bool {
+	return !page.isl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page IngestionSettingListPage) Response() IngestionSettingList {
+	return page.isl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page IngestionSettingListPage) Values() []IngestionSetting {
+	if page.isl.IsEmpty() {
+		return nil
+	}
+	return *page.isl.Value
+}
+
+// Creates a new instance of the IngestionSettingListPage type.
+func NewIngestionSettingListPage(cur IngestionSettingList, getNextPage func(context.Context, IngestionSettingList) (IngestionSettingList, error)) IngestionSettingListPage {
+	return IngestionSettingListPage{
+		fn:  getNextPage,
+		isl: cur,
+	}
+}
+
+// IngestionSettingToken configures how to correlate scan data and logs with resources associated with the
+// subscription.
+type IngestionSettingToken struct {
+	autorest.Response `json:"-"`
+	// Token - READ-ONLY; The token is used for correlating security data and logs with the resources in the subscription.
+	Token *string `json:"token,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IngestionSettingToken.
+func (ist IngestionSettingToken) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // JitNetworkAccessPoliciesList ...
@@ -9475,6 +12412,94 @@ type Location struct {
 func (l Location) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
+}
+
+// MdeOnboardingData the resource of the configuration or data needed to onboard the machine to MDE
+type MdeOnboardingData struct {
+	autorest.Response            `json:"-"`
+	*MdeOnboardingDataProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MdeOnboardingData.
+func (mod MdeOnboardingData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mod.MdeOnboardingDataProperties != nil {
+		objectMap["properties"] = mod.MdeOnboardingDataProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for MdeOnboardingData struct.
+func (mod *MdeOnboardingData) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var mdeOnboardingDataProperties MdeOnboardingDataProperties
+				err = json.Unmarshal(*v, &mdeOnboardingDataProperties)
+				if err != nil {
+					return err
+				}
+				mod.MdeOnboardingDataProperties = &mdeOnboardingDataProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				mod.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				mod.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				mod.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// MdeOnboardingDataList list of all MDE onboarding data resources
+type MdeOnboardingDataList struct {
+	autorest.Response `json:"-"`
+	// Value - List of the resources of the configuration or data needed to onboard the machine to MDE
+	Value *[]MdeOnboardingData `json:"value,omitempty"`
+}
+
+// MdeOnboardingDataProperties properties of the MDE configuration or data parameter needed to onboard the
+// machine to MDE
+type MdeOnboardingDataProperties struct {
+	// OnboardingPackageWindows - The onboarding package used to onboard Windows machines to MDE, coded in base64. This can also be used for onboarding using the dedicated VM Extension
+	OnboardingPackageWindows *[]byte `json:"onboardingPackageWindows,omitempty"`
+	// OnboardingPackageLinux - The onboarding package used to onboard Linux machines to MDE, coded in base64. This can also be used for onboarding using the dedicated VM Extension
+	OnboardingPackageLinux *[]byte `json:"onboardingPackageLinux,omitempty"`
 }
 
 // MqttC2DMessagesNotInAllowedRange number of cloud to device messages (MQTT protocol) is not in allowed
@@ -10446,7 +13471,7 @@ type PathRecommendation struct {
 	// Action - Possible values include: 'Recommended', 'Add', 'Remove'
 	Action Action `json:"action,omitempty"`
 	// Type - Possible values include: 'File', 'FileHash', 'PublisherSignature', 'ProductSignature', 'BinarySignature', 'VersionAndAboveSignature'
-	Type          Type           `json:"type,omitempty"`
+	Type          Type1          `json:"type,omitempty"`
 	PublisherInfo *PublisherInfo `json:"publisherInfo,omitempty"`
 	// Common - Whether the path is commonly run on the machine
 	Common    *bool                 `json:"common,omitempty"`
@@ -13297,11 +16322,17 @@ type ServicePrincipalProperties struct {
 	Secret *string `json:"secret,omitempty"`
 }
 
-// Setting represents a security setting in Azure Security Center.
+// BasicSetting the kind of the security setting
+type BasicSetting interface {
+	AsDataExportSetting() (*DataExportSetting, bool)
+	AsSetting() (*Setting, bool)
+}
+
+// Setting the kind of the security setting
 type Setting struct {
 	autorest.Response `json:"-"`
-	// Kind - the kind of the settings string (DataExportSetting). Possible values include: 'SettingKindDataExportSetting', 'SettingKindAlertSuppressionSetting'
-	Kind SettingKind `json:"kind,omitempty"`
+	// Kind - Possible values include: 'KindSetting', 'KindDataExportSetting'
+	Kind KindEnum `json:"kind,omitempty"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource name
@@ -13310,8 +16341,46 @@ type Setting struct {
 	Type *string `json:"type,omitempty"`
 }
 
+func unmarshalBasicSetting(body []byte) (BasicSetting, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["kind"] {
+	case string(KindDataExportSetting):
+		var desVar DataExportSetting
+		err := json.Unmarshal(body, &desVar)
+		return desVar, err
+	default:
+		var s Setting
+		err := json.Unmarshal(body, &s)
+		return s, err
+	}
+}
+func unmarshalBasicSettingArray(body []byte) ([]BasicSetting, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	sArray := make([]BasicSetting, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		s, err := unmarshalBasicSetting(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		sArray[index] = s
+	}
+	return sArray, nil
+}
+
 // MarshalJSON is the custom marshaler for Setting.
 func (s Setting) MarshalJSON() ([]byte, error) {
+	s.Kind = KindSetting
 	objectMap := make(map[string]interface{})
 	if s.Kind != "" {
 		objectMap["kind"] = s.Kind
@@ -13319,32 +16388,43 @@ func (s Setting) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// SettingResource the kind of the security setting
-type SettingResource struct {
-	// Kind - the kind of the settings string (DataExportSetting). Possible values include: 'SettingKindDataExportSetting', 'SettingKindAlertSuppressionSetting'
-	Kind SettingKind `json:"kind,omitempty"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
+// AsDataExportSetting is the BasicSetting implementation for Setting.
+func (s Setting) AsDataExportSetting() (*DataExportSetting, bool) {
+	return nil, false
 }
 
-// MarshalJSON is the custom marshaler for SettingResource.
-func (sr SettingResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if sr.Kind != "" {
-		objectMap["kind"] = sr.Kind
+// AsSetting is the BasicSetting implementation for Setting.
+func (s Setting) AsSetting() (*Setting, bool) {
+	return &s, true
+}
+
+// AsBasicSetting is the BasicSetting implementation for Setting.
+func (s Setting) AsBasicSetting() (BasicSetting, bool) {
+	return &s, true
+}
+
+// SettingModel ...
+type SettingModel struct {
+	autorest.Response `json:"-"`
+	Value             BasicSetting `json:"value,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for SettingModel struct.
+func (sm *SettingModel) UnmarshalJSON(body []byte) error {
+	s, err := unmarshalBasicSetting(body)
+	if err != nil {
+		return err
 	}
-	return json.Marshal(objectMap)
+	sm.Value = s
+
+	return nil
 }
 
 // SettingsList subscription settings list.
 type SettingsList struct {
 	autorest.Response `json:"-"`
 	// Value - The settings list.
-	Value *[]Setting `json:"value,omitempty"`
+	Value *[]BasicSetting `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The URI to fetch the next page.
 	NextLink *string `json:"nextLink,omitempty"`
 }
@@ -13356,6 +16436,38 @@ func (sl SettingsList) MarshalJSON() ([]byte, error) {
 		objectMap["value"] = sl.Value
 	}
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SettingsList struct.
+func (sl *SettingsList) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "value":
+			if v != nil {
+				value, err := unmarshalBasicSettingArray(*v)
+				if err != nil {
+					return err
+				}
+				sl.Value = &value
+			}
+		case "nextLink":
+			if v != nil {
+				var nextLink string
+				err = json.Unmarshal(*v, &nextLink)
+				if err != nil {
+					return err
+				}
+				sl.NextLink = &nextLink
+			}
+		}
+	}
+
+	return nil
 }
 
 // SettingsListIterator provides access to a complete listing of Setting values.
@@ -13409,7 +16521,7 @@ func (iter SettingsListIterator) Response() SettingsList {
 
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
-func (iter SettingsListIterator) Value() Setting {
+func (iter SettingsListIterator) Value() BasicSetting {
 	if !iter.page.NotDone() {
 		return Setting{}
 	}
@@ -13443,7 +16555,7 @@ func (sl SettingsList) settingsListPreparer(ctx context.Context) (*http.Request,
 		autorest.WithBaseURL(to.String(sl.NextLink)))
 }
 
-// SettingsListPage contains a page of Setting values.
+// SettingsListPage contains a page of BasicSetting values.
 type SettingsListPage struct {
 	fn func(context.Context, SettingsList) (SettingsList, error)
 	sl SettingsList
@@ -13493,7 +16605,7 @@ func (page SettingsListPage) Response() SettingsList {
 }
 
 // Values returns the slice of values for the current page or nil if there are no values.
-func (page SettingsListPage) Values() []Setting {
+func (page SettingsListPage) Values() []BasicSetting {
 	if page.sl.IsEmpty() {
 		return nil
 	}
@@ -13503,6 +16615,268 @@ func (page SettingsListPage) Values() []Setting {
 // Creates a new instance of the SettingsListPage type.
 func NewSettingsListPage(cur SettingsList, getNextPage func(context.Context, SettingsList) (SettingsList, error)) SettingsListPage {
 	return SettingsListPage{
+		fn: getNextPage,
+		sl: cur,
+	}
+}
+
+// Software represents a software data
+type Software struct {
+	autorest.Response `json:"-"`
+	// SoftwareProperties - Properties of the Software Inventory resource
+	*SoftwareProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Software.
+func (s Software) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if s.SoftwareProperties != nil {
+		objectMap["properties"] = s.SoftwareProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Software struct.
+func (s *Software) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var softwareProperties SoftwareProperties
+				err = json.Unmarshal(*v, &softwareProperties)
+				if err != nil {
+					return err
+				}
+				s.SoftwareProperties = &softwareProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				s.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				s.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				s.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// SoftwareProperties software Inventory resource properties
+type SoftwareProperties struct {
+	// DeviceID - Unique identifier for the virtual machine in the service.
+	DeviceID *string `json:"deviceId,omitempty"`
+	// OsPlatform - Platform of the operating system running on the device.
+	OsPlatform *string `json:"osPlatform,omitempty"`
+	// Vendor - Name of the software vendor.
+	Vendor *string `json:"vendor,omitempty"`
+	// SoftwareName - Name of the software product.
+	SoftwareName *string `json:"softwareName,omitempty"`
+	// Version - Version number of the software product.
+	Version *string `json:"version,omitempty"`
+	// EndOfSupportStatus - End of support status. Possible values include: 'None', 'NoLongerSupported', 'VersionNoLongerSupported', 'UpcomingNoLongerSupported', 'UpcomingVersionNoLongerSupported'
+	EndOfSupportStatus EndOfSupportStatus `json:"endOfSupportStatus,omitempty"`
+	// EndOfSupportDate - The end of support date in case the product is upcoming end of support.
+	EndOfSupportDate *string `json:"endOfSupportDate,omitempty"`
+	// NumberOfKnownVulnerabilities - Number of weaknesses.
+	NumberOfKnownVulnerabilities *int32 `json:"numberOfKnownVulnerabilities,omitempty"`
+	// FirstSeenAt - First time that the software was seen in the device.
+	FirstSeenAt *string `json:"firstSeenAt,omitempty"`
+}
+
+// SoftwaresList represents the software inventory of the virtual machine.
+type SoftwaresList struct {
+	autorest.Response `json:"-"`
+	Value             *[]Software `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SoftwaresList.
+func (sl SoftwaresList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sl.Value != nil {
+		objectMap["value"] = sl.Value
+	}
+	return json.Marshal(objectMap)
+}
+
+// SoftwaresListIterator provides access to a complete listing of Software values.
+type SoftwaresListIterator struct {
+	i    int
+	page SoftwaresListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *SoftwaresListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SoftwaresListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *SoftwaresListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter SoftwaresListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter SoftwaresListIterator) Response() SoftwaresList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter SoftwaresListIterator) Value() Software {
+	if !iter.page.NotDone() {
+		return Software{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the SoftwaresListIterator type.
+func NewSoftwaresListIterator(page SoftwaresListPage) SoftwaresListIterator {
+	return SoftwaresListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (sl SoftwaresList) IsEmpty() bool {
+	return sl.Value == nil || len(*sl.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (sl SoftwaresList) hasNextLink() bool {
+	return sl.NextLink != nil && len(*sl.NextLink) != 0
+}
+
+// softwaresListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (sl SoftwaresList) softwaresListPreparer(ctx context.Context) (*http.Request, error) {
+	if !sl.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(sl.NextLink)))
+}
+
+// SoftwaresListPage contains a page of Software values.
+type SoftwaresListPage struct {
+	fn func(context.Context, SoftwaresList) (SoftwaresList, error)
+	sl SoftwaresList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *SoftwaresListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SoftwaresListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.sl)
+		if err != nil {
+			return err
+		}
+		page.sl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *SoftwaresListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page SoftwaresListPage) NotDone() bool {
+	return !page.sl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page SoftwaresListPage) Response() SoftwaresList {
+	return page.sl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page SoftwaresListPage) Values() []Software {
+	if page.sl.IsEmpty() {
+		return nil
+	}
+	return *page.sl.Value
+}
+
+// Creates a new instance of the SoftwaresListPage type.
+func NewSoftwaresListPage(cur SoftwaresList, getNextPage func(context.Context, SoftwaresList) (SoftwaresList, error)) SoftwaresListPage {
+	return SoftwaresListPage{
 		fn: getNextPage,
 		sl: cur,
 	}
@@ -13947,6 +17321,22 @@ func (sas SubAssessmentStatus) MarshalJSON() ([]byte, error) {
 type SuppressionAlertsScope struct {
 	// AllOf - All the conditions inside need to be true in order to suppress the alert
 	AllOf *[]ScopeElement `json:"allOf,omitempty"`
+}
+
+// SystemData metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// CreatedBy - The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// CreatedByType - The type of identity that created the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	CreatedByType CreatedByType `json:"createdByType,omitempty"`
+	// CreatedAt - The timestamp of resource creation (UTC).
+	CreatedAt *date.Time `json:"createdAt,omitempty"`
+	// LastModifiedBy - The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	LastModifiedByType CreatedByType `json:"lastModifiedByType,omitempty"`
+	// LastModifiedAt - The timestamp of resource last modification (UTC)
+	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
 }
 
 // Tags a list of key value pairs that describe the resource.

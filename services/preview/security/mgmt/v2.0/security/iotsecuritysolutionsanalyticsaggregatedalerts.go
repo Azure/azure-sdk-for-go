@@ -23,15 +23,15 @@ type IoTSecuritySolutionsAnalyticsAggregatedAlertsClient struct {
 
 // NewIoTSecuritySolutionsAnalyticsAggregatedAlertsClient creates an instance of the
 // IoTSecuritySolutionsAnalyticsAggregatedAlertsClient client.
-func NewIoTSecuritySolutionsAnalyticsAggregatedAlertsClient(subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsAggregatedAlertsClient {
-	return NewIoTSecuritySolutionsAnalyticsAggregatedAlertsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
+func NewIoTSecuritySolutionsAnalyticsAggregatedAlertsClient(subscriptionID string) IoTSecuritySolutionsAnalyticsAggregatedAlertsClient {
+	return NewIoTSecuritySolutionsAnalyticsAggregatedAlertsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewIoTSecuritySolutionsAnalyticsAggregatedAlertsClientWithBaseURI creates an instance of the
 // IoTSecuritySolutionsAnalyticsAggregatedAlertsClient client using a custom endpoint.  Use this when interacting with
 // an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewIoTSecuritySolutionsAnalyticsAggregatedAlertsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsAggregatedAlertsClient {
-	return IoTSecuritySolutionsAnalyticsAggregatedAlertsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
+func NewIoTSecuritySolutionsAnalyticsAggregatedAlertsClientWithBaseURI(baseURI string, subscriptionID string) IoTSecuritySolutionsAnalyticsAggregatedAlertsClient {
+	return IoTSecuritySolutionsAnalyticsAggregatedAlertsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List security Analytics of a security solution

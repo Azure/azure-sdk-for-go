@@ -21,14 +21,14 @@ type PricingsClient struct {
 }
 
 // NewPricingsClient creates an instance of the PricingsClient client.
-func NewPricingsClient(subscriptionID string, ascLocation string) PricingsClient {
-	return NewPricingsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
+func NewPricingsClient(subscriptionID string) PricingsClient {
+	return NewPricingsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewPricingsClientWithBaseURI creates an instance of the PricingsClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewPricingsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) PricingsClient {
-	return PricingsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
+func NewPricingsClientWithBaseURI(baseURI string, subscriptionID string) PricingsClient {
+	return PricingsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdateResourceGroupPricing security pricing configuration in the resource group

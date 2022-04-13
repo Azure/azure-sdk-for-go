@@ -23,15 +23,15 @@ type IoTSecuritySolutionsResourceGroupClient struct {
 
 // NewIoTSecuritySolutionsResourceGroupClient creates an instance of the IoTSecuritySolutionsResourceGroupClient
 // client.
-func NewIoTSecuritySolutionsResourceGroupClient(subscriptionID string, ascLocation string) IoTSecuritySolutionsResourceGroupClient {
-	return NewIoTSecuritySolutionsResourceGroupClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
+func NewIoTSecuritySolutionsResourceGroupClient(subscriptionID string) IoTSecuritySolutionsResourceGroupClient {
+	return NewIoTSecuritySolutionsResourceGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewIoTSecuritySolutionsResourceGroupClientWithBaseURI creates an instance of the
 // IoTSecuritySolutionsResourceGroupClient client using a custom endpoint.  Use this when interacting with an Azure
 // cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewIoTSecuritySolutionsResourceGroupClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IoTSecuritySolutionsResourceGroupClient {
-	return IoTSecuritySolutionsResourceGroupClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
+func NewIoTSecuritySolutionsResourceGroupClientWithBaseURI(baseURI string, subscriptionID string) IoTSecuritySolutionsResourceGroupClient {
+	return IoTSecuritySolutionsResourceGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List list of security solutions

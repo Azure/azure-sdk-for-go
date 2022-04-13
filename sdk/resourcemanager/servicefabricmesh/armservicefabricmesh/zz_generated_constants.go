@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armservicefabricmesh
 
 const (
 	moduleName    = "armservicefabricmesh"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // ApplicationScopedVolumeKind - Specifies the application-scoped volume kind.
@@ -28,11 +28,6 @@ func PossibleApplicationScopedVolumeKindValues() []ApplicationScopedVolumeKind {
 	}
 }
 
-// ToPtr returns a *ApplicationScopedVolumeKind pointing to the current value.
-func (c ApplicationScopedVolumeKind) ToPtr() *ApplicationScopedVolumeKind {
-	return &c
-}
-
 // AutoScalingMechanismKind - Enumerates the mechanisms for auto scaling.
 type AutoScalingMechanismKind string
 
@@ -48,11 +43,6 @@ func PossibleAutoScalingMechanismKindValues() []AutoScalingMechanismKind {
 	}
 }
 
-// ToPtr returns a *AutoScalingMechanismKind pointing to the current value.
-func (c AutoScalingMechanismKind) ToPtr() *AutoScalingMechanismKind {
-	return &c
-}
-
 // AutoScalingMetricKind - Enumerates the metrics that are used for triggering auto scaling.
 type AutoScalingMetricKind string
 
@@ -66,11 +56,6 @@ func PossibleAutoScalingMetricKindValues() []AutoScalingMetricKind {
 	return []AutoScalingMetricKind{
 		AutoScalingMetricKindResource,
 	}
-}
-
-// ToPtr returns a *AutoScalingMetricKind pointing to the current value.
-func (c AutoScalingMetricKind) ToPtr() *AutoScalingMetricKind {
-	return &c
 }
 
 // AutoScalingResourceMetricName - Enumerates the resources that are used for triggering auto scaling.
@@ -91,11 +76,6 @@ func PossibleAutoScalingResourceMetricNameValues() []AutoScalingResourceMetricNa
 	}
 }
 
-// ToPtr returns a *AutoScalingResourceMetricName pointing to the current value.
-func (c AutoScalingResourceMetricName) ToPtr() *AutoScalingResourceMetricName {
-	return &c
-}
-
 // AutoScalingTriggerKind - Enumerates the triggers for auto scaling.
 type AutoScalingTriggerKind string
 
@@ -110,11 +90,6 @@ func PossibleAutoScalingTriggerKindValues() []AutoScalingTriggerKind {
 	return []AutoScalingTriggerKind{
 		AutoScalingTriggerKindAverageLoad,
 	}
-}
-
-// ToPtr returns a *AutoScalingTriggerKind pointing to the current value.
-func (c AutoScalingTriggerKind) ToPtr() *AutoScalingTriggerKind {
-	return &c
 }
 
 // DiagnosticsSinkKind - The kind of DiagnosticsSink.
@@ -135,11 +110,6 @@ func PossibleDiagnosticsSinkKindValues() []DiagnosticsSinkKind {
 	}
 }
 
-// ToPtr returns a *DiagnosticsSinkKind pointing to the current value.
-func (c DiagnosticsSinkKind) ToPtr() *DiagnosticsSinkKind {
-	return &c
-}
-
 // HeaderMatchType - how to match header value
 type HeaderMatchType string
 
@@ -152,11 +122,6 @@ func PossibleHeaderMatchTypeValues() []HeaderMatchType {
 	return []HeaderMatchType{
 		HeaderMatchTypeExact,
 	}
-}
-
-// ToPtr returns a *HeaderMatchType pointing to the current value.
-func (c HeaderMatchType) ToPtr() *HeaderMatchType {
-	return &c
 }
 
 // HealthState - The health state of a Service Fabric entity such as Cluster, Node, Application, Service, Partition, Replica
@@ -189,11 +154,6 @@ func PossibleHealthStateValues() []HealthState {
 	}
 }
 
-// ToPtr returns a *HealthState pointing to the current value.
-func (c HealthState) ToPtr() *HealthState {
-	return &c
-}
-
 // NetworkKind - The type of a Service Fabric container network.
 type NetworkKind string
 
@@ -207,11 +167,6 @@ func PossibleNetworkKindValues() []NetworkKind {
 	return []NetworkKind{
 		NetworkKindLocal,
 	}
-}
-
-// ToPtr returns a *NetworkKind pointing to the current value.
-func (c NetworkKind) ToPtr() *NetworkKind {
-	return &c
 }
 
 // OperatingSystemType - The operation system required by the code in service.
@@ -232,11 +187,6 @@ func PossibleOperatingSystemTypeValues() []OperatingSystemType {
 	}
 }
 
-// ToPtr returns a *OperatingSystemType pointing to the current value.
-func (c OperatingSystemType) ToPtr() *OperatingSystemType {
-	return &c
-}
-
 // PathMatchType - how to match value in the Uri
 type PathMatchType string
 
@@ -249,11 +199,6 @@ func PossiblePathMatchTypeValues() []PathMatchType {
 	return []PathMatchType{
 		PathMatchTypePrefix,
 	}
-}
-
-// ToPtr returns a *PathMatchType pointing to the current value.
-func (c PathMatchType) ToPtr() *PathMatchType {
-	return &c
 }
 
 // ResourceStatus - Status of the resource.
@@ -287,11 +232,6 @@ func PossibleResourceStatusValues() []ResourceStatus {
 	}
 }
 
-// ToPtr returns a *ResourceStatus pointing to the current value.
-func (c ResourceStatus) ToPtr() *ResourceStatus {
-	return &c
-}
-
 // SecretKind - Describes the kind of secret.
 type SecretKind string
 
@@ -305,11 +245,6 @@ func PossibleSecretKindValues() []SecretKind {
 	return []SecretKind{
 		SecretKindInlinedValue,
 	}
-}
-
-// ToPtr returns a *SecretKind pointing to the current value.
-func (c SecretKind) ToPtr() *SecretKind {
-	return &c
 }
 
 // SizeTypes - Volume size
@@ -330,11 +265,6 @@ func PossibleSizeTypesValues() []SizeTypes {
 	}
 }
 
-// ToPtr returns a *SizeTypes pointing to the current value.
-func (c SizeTypes) ToPtr() *SizeTypes {
-	return &c
-}
-
 // VolumeProvider - Describes the provider of the volume resource.
 type VolumeProvider string
 
@@ -348,9 +278,4 @@ func PossibleVolumeProviderValues() []VolumeProvider {
 	return []VolumeProvider{
 		VolumeProviderSFAzureFile,
 	}
-}
-
-// ToPtr returns a *VolumeProvider pointing to the current value.
-func (c VolumeProvider) ToPtr() *VolumeProvider {
-	return &c
 }

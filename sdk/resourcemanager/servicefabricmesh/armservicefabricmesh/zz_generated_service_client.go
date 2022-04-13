@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ServiceClient struct {
 // subscriptionID - The customer subscription identifier
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewServiceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServiceClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewServiceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServiceClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ServiceClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets the information about the service resource with the given name. The information include the description and
@@ -97,7 +102,7 @@ func (client *ServiceClient) getCreateRequest(ctx context.Context, resourceGroup
 
 // getHandleResponse handles the Get response.
 func (client *ServiceClient) getHandleResponse(resp *http.Response) (ServiceClientGetResponse, error) {
-	result := ServiceClientGetResponse{RawResponse: resp}
+	result := ServiceClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceResourceDescription); err != nil {
 		return ServiceClientGetResponse{}, err
 	}
@@ -110,16 +115,32 @@ func (client *ServiceClient) getHandleResponse(resp *http.Response) (ServiceClie
 // resourceGroupName - Azure resource group name
 // applicationResourceName - The identity of the application.
 // options - ServiceClientListOptions contains the optional parameters for the ServiceClient.List method.
-func (client *ServiceClient) List(resourceGroupName string, applicationResourceName string, options *ServiceClientListOptions) *ServiceClientListPager {
-	return &ServiceClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, applicationResourceName, options)
+func (client *ServiceClient) List(resourceGroupName string, applicationResourceName string, options *ServiceClientListOptions) *runtime.Pager[ServiceClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ServiceClientListResponse]{
+		More: func(page ServiceClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ServiceClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServiceResourceDescriptionList.NextLink)
+		Fetcher: func(ctx context.Context, page *ServiceClientListResponse) (ServiceClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, applicationResourceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ServiceClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ServiceClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ServiceClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -147,7 +168,7 @@ func (client *ServiceClient) listCreateRequest(ctx context.Context, resourceGrou
 
 // listHandleResponse handles the List response.
 func (client *ServiceClient) listHandleResponse(resp *http.Response) (ServiceClientListResponse, error) {
-	result := ServiceClientListResponse{RawResponse: resp}
+	result := ServiceClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceResourceDescriptionList); err != nil {
 		return ServiceClientListResponse{}, err
 	}

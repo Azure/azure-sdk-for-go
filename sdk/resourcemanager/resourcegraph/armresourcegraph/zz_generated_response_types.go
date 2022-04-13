@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,41 +8,18 @@
 
 package armresourcegraph
 
-import "net/http"
-
 // ClientResourcesHistoryResponse contains the response from method Client.ResourcesHistory.
 type ClientResourcesHistoryResponse struct {
-	ClientResourcesHistoryResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ClientResourcesHistoryResult contains the result from method Client.ResourcesHistory.
-type ClientResourcesHistoryResult struct {
 	// Anything
 	Interface interface{}
 }
 
 // ClientResourcesResponse contains the response from method Client.Resources.
 type ClientResourcesResponse struct {
-	ClientResourcesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ClientResourcesResult contains the result from method Client.Resources.
-type ClientResourcesResult struct {
 	QueryResponse
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.List.
 type OperationsClientListResponse struct {
-	OperationsClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsClientListResult contains the result from method OperationsClient.List.
-type OperationsClientListResult struct {
 	OperationListResult
 }

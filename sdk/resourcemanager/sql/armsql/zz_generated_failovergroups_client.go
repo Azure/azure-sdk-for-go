@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type FailoverGroupsClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewFailoverGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FailoverGroupsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewFailoverGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FailoverGroupsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &FailoverGroupsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a failover group.
@@ -58,22 +63,16 @@ func NewFailoverGroupsClient(subscriptionID string, credential azcore.TokenCrede
 // parameters - The failover group parameters.
 // options - FailoverGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the FailoverGroupsClient.BeginCreateOrUpdate
 // method.
-func (client *FailoverGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, parameters FailoverGroup, options *FailoverGroupsClientBeginCreateOrUpdateOptions) (FailoverGroupsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, failoverGroupName, parameters, options)
-	if err != nil {
-		return FailoverGroupsClientCreateOrUpdatePollerResponse{}, err
+func (client *FailoverGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, parameters FailoverGroup, options *FailoverGroupsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[FailoverGroupsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, failoverGroupName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[FailoverGroupsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[FailoverGroupsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := FailoverGroupsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("FailoverGroupsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return FailoverGroupsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &FailoverGroupsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a failover group.
@@ -131,22 +130,16 @@ func (client *FailoverGroupsClient) createOrUpdateCreateRequest(ctx context.Cont
 // failoverGroupName - The name of the failover group.
 // options - FailoverGroupsClientBeginDeleteOptions contains the optional parameters for the FailoverGroupsClient.BeginDelete
 // method.
-func (client *FailoverGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsClientBeginDeleteOptions) (FailoverGroupsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, failoverGroupName, options)
-	if err != nil {
-		return FailoverGroupsClientDeletePollerResponse{}, err
+func (client *FailoverGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsClientBeginDeleteOptions) (*armruntime.Poller[FailoverGroupsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, failoverGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[FailoverGroupsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[FailoverGroupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := FailoverGroupsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("FailoverGroupsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return FailoverGroupsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &FailoverGroupsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a failover group.
@@ -203,22 +196,16 @@ func (client *FailoverGroupsClient) deleteCreateRequest(ctx context.Context, res
 // failoverGroupName - The name of the failover group.
 // options - FailoverGroupsClientBeginFailoverOptions contains the optional parameters for the FailoverGroupsClient.BeginFailover
 // method.
-func (client *FailoverGroupsClient) BeginFailover(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsClientBeginFailoverOptions) (FailoverGroupsClientFailoverPollerResponse, error) {
-	resp, err := client.failover(ctx, resourceGroupName, serverName, failoverGroupName, options)
-	if err != nil {
-		return FailoverGroupsClientFailoverPollerResponse{}, err
+func (client *FailoverGroupsClient) BeginFailover(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsClientBeginFailoverOptions) (*armruntime.Poller[FailoverGroupsClientFailoverResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.failover(ctx, resourceGroupName, serverName, failoverGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[FailoverGroupsClientFailoverResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[FailoverGroupsClientFailoverResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := FailoverGroupsClientFailoverPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("FailoverGroupsClient.Failover", "", resp, client.pl)
-	if err != nil {
-		return FailoverGroupsClientFailoverPollerResponse{}, err
-	}
-	result.Poller = &FailoverGroupsClientFailoverPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Failover - Fails over from the current primary server to this server.
@@ -277,22 +264,16 @@ func (client *FailoverGroupsClient) failoverCreateRequest(ctx context.Context, r
 // failoverGroupName - The name of the failover group.
 // options - FailoverGroupsClientBeginForceFailoverAllowDataLossOptions contains the optional parameters for the FailoverGroupsClient.BeginForceFailoverAllowDataLoss
 // method.
-func (client *FailoverGroupsClient) BeginForceFailoverAllowDataLoss(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsClientBeginForceFailoverAllowDataLossOptions) (FailoverGroupsClientForceFailoverAllowDataLossPollerResponse, error) {
-	resp, err := client.forceFailoverAllowDataLoss(ctx, resourceGroupName, serverName, failoverGroupName, options)
-	if err != nil {
-		return FailoverGroupsClientForceFailoverAllowDataLossPollerResponse{}, err
+func (client *FailoverGroupsClient) BeginForceFailoverAllowDataLoss(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsClientBeginForceFailoverAllowDataLossOptions) (*armruntime.Poller[FailoverGroupsClientForceFailoverAllowDataLossResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.forceFailoverAllowDataLoss(ctx, resourceGroupName, serverName, failoverGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[FailoverGroupsClientForceFailoverAllowDataLossResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[FailoverGroupsClientForceFailoverAllowDataLossResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := FailoverGroupsClientForceFailoverAllowDataLossPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("FailoverGroupsClient.ForceFailoverAllowDataLoss", "", resp, client.pl)
-	if err != nil {
-		return FailoverGroupsClientForceFailoverAllowDataLossPollerResponse{}, err
-	}
-	result.Poller = &FailoverGroupsClientForceFailoverAllowDataLossPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // ForceFailoverAllowDataLoss - Fails over from the current primary server to this server. This operation might result in
@@ -397,7 +378,7 @@ func (client *FailoverGroupsClient) getCreateRequest(ctx context.Context, resour
 
 // getHandleResponse handles the Get response.
 func (client *FailoverGroupsClient) getHandleResponse(resp *http.Response) (FailoverGroupsClientGetResponse, error) {
-	result := FailoverGroupsClientGetResponse{RawResponse: resp}
+	result := FailoverGroupsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FailoverGroup); err != nil {
 		return FailoverGroupsClientGetResponse{}, err
 	}
@@ -411,16 +392,32 @@ func (client *FailoverGroupsClient) getHandleResponse(resp *http.Response) (Fail
 // serverName - The name of the server containing the failover group.
 // options - FailoverGroupsClientListByServerOptions contains the optional parameters for the FailoverGroupsClient.ListByServer
 // method.
-func (client *FailoverGroupsClient) ListByServer(resourceGroupName string, serverName string, options *FailoverGroupsClientListByServerOptions) *FailoverGroupsClientListByServerPager {
-	return &FailoverGroupsClientListByServerPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+func (client *FailoverGroupsClient) ListByServer(resourceGroupName string, serverName string, options *FailoverGroupsClientListByServerOptions) *runtime.Pager[FailoverGroupsClientListByServerResponse] {
+	return runtime.NewPager(runtime.PageProcessor[FailoverGroupsClientListByServerResponse]{
+		More: func(page FailoverGroupsClientListByServerResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp FailoverGroupsClientListByServerResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.FailoverGroupListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *FailoverGroupsClientListByServerResponse) (FailoverGroupsClientListByServerResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return FailoverGroupsClientListByServerResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return FailoverGroupsClientListByServerResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return FailoverGroupsClientListByServerResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServerHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByServerCreateRequest creates the ListByServer request.
@@ -451,7 +448,7 @@ func (client *FailoverGroupsClient) listByServerCreateRequest(ctx context.Contex
 
 // listByServerHandleResponse handles the ListByServer response.
 func (client *FailoverGroupsClient) listByServerHandleResponse(resp *http.Response) (FailoverGroupsClientListByServerResponse, error) {
-	result := FailoverGroupsClientListByServerResponse{RawResponse: resp}
+	result := FailoverGroupsClientListByServerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FailoverGroupListResult); err != nil {
 		return FailoverGroupsClientListByServerResponse{}, err
 	}
@@ -467,22 +464,16 @@ func (client *FailoverGroupsClient) listByServerHandleResponse(resp *http.Respon
 // parameters - The failover group parameters.
 // options - FailoverGroupsClientBeginUpdateOptions contains the optional parameters for the FailoverGroupsClient.BeginUpdate
 // method.
-func (client *FailoverGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, parameters FailoverGroupUpdate, options *FailoverGroupsClientBeginUpdateOptions) (FailoverGroupsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, serverName, failoverGroupName, parameters, options)
-	if err != nil {
-		return FailoverGroupsClientUpdatePollerResponse{}, err
+func (client *FailoverGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, parameters FailoverGroupUpdate, options *FailoverGroupsClientBeginUpdateOptions) (*armruntime.Poller[FailoverGroupsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, serverName, failoverGroupName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[FailoverGroupsClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[FailoverGroupsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := FailoverGroupsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("FailoverGroupsClient.Update", "", resp, client.pl)
-	if err != nil {
-		return FailoverGroupsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &FailoverGroupsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates a failover group.

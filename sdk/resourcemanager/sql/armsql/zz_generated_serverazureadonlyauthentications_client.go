@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ServerAzureADOnlyAuthenticationsClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewServerAzureADOnlyAuthenticationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerAzureADOnlyAuthenticationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewServerAzureADOnlyAuthenticationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServerAzureADOnlyAuthenticationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ServerAzureADOnlyAuthenticationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Sets Server Active Directory only authentication property or updates an existing server Active Directory
@@ -59,22 +64,16 @@ func NewServerAzureADOnlyAuthenticationsClient(subscriptionID string, credential
 // parameters - The required parameters for creating or updating an Active Directory only authentication property.
 // options - ServerAzureADOnlyAuthenticationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerAzureADOnlyAuthenticationsClient.BeginCreateOrUpdate
 // method.
-func (client *ServerAzureADOnlyAuthenticationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, authenticationName AuthenticationName, parameters ServerAzureADOnlyAuthentication, options *ServerAzureADOnlyAuthenticationsClientBeginCreateOrUpdateOptions) (ServerAzureADOnlyAuthenticationsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, authenticationName, parameters, options)
-	if err != nil {
-		return ServerAzureADOnlyAuthenticationsClientCreateOrUpdatePollerResponse{}, err
+func (client *ServerAzureADOnlyAuthenticationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, authenticationName AuthenticationName, parameters ServerAzureADOnlyAuthentication, options *ServerAzureADOnlyAuthenticationsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ServerAzureADOnlyAuthenticationsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, authenticationName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ServerAzureADOnlyAuthenticationsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServerAzureADOnlyAuthenticationsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServerAzureADOnlyAuthenticationsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServerAzureADOnlyAuthenticationsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return ServerAzureADOnlyAuthenticationsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ServerAzureADOnlyAuthenticationsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Sets Server Active Directory only authentication property or updates an existing server Active Directory
@@ -133,22 +132,16 @@ func (client *ServerAzureADOnlyAuthenticationsClient) createOrUpdateCreateReques
 // authenticationName - The name of server azure active directory only authentication.
 // options - ServerAzureADOnlyAuthenticationsClientBeginDeleteOptions contains the optional parameters for the ServerAzureADOnlyAuthenticationsClient.BeginDelete
 // method.
-func (client *ServerAzureADOnlyAuthenticationsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, authenticationName AuthenticationName, options *ServerAzureADOnlyAuthenticationsClientBeginDeleteOptions) (ServerAzureADOnlyAuthenticationsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, authenticationName, options)
-	if err != nil {
-		return ServerAzureADOnlyAuthenticationsClientDeletePollerResponse{}, err
+func (client *ServerAzureADOnlyAuthenticationsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, authenticationName AuthenticationName, options *ServerAzureADOnlyAuthenticationsClientBeginDeleteOptions) (*armruntime.Poller[ServerAzureADOnlyAuthenticationsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, authenticationName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ServerAzureADOnlyAuthenticationsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServerAzureADOnlyAuthenticationsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServerAzureADOnlyAuthenticationsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServerAzureADOnlyAuthenticationsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return ServerAzureADOnlyAuthenticationsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ServerAzureADOnlyAuthenticationsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes an existing server Active Directory only authentication property.
@@ -252,7 +245,7 @@ func (client *ServerAzureADOnlyAuthenticationsClient) getCreateRequest(ctx conte
 
 // getHandleResponse handles the Get response.
 func (client *ServerAzureADOnlyAuthenticationsClient) getHandleResponse(resp *http.Response) (ServerAzureADOnlyAuthenticationsClientGetResponse, error) {
-	result := ServerAzureADOnlyAuthenticationsClientGetResponse{RawResponse: resp}
+	result := ServerAzureADOnlyAuthenticationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerAzureADOnlyAuthentication); err != nil {
 		return ServerAzureADOnlyAuthenticationsClientGetResponse{}, err
 	}
@@ -266,16 +259,32 @@ func (client *ServerAzureADOnlyAuthenticationsClient) getHandleResponse(resp *ht
 // serverName - The name of the server.
 // options - ServerAzureADOnlyAuthenticationsClientListByServerOptions contains the optional parameters for the ServerAzureADOnlyAuthenticationsClient.ListByServer
 // method.
-func (client *ServerAzureADOnlyAuthenticationsClient) ListByServer(resourceGroupName string, serverName string, options *ServerAzureADOnlyAuthenticationsClientListByServerOptions) *ServerAzureADOnlyAuthenticationsClientListByServerPager {
-	return &ServerAzureADOnlyAuthenticationsClientListByServerPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+func (client *ServerAzureADOnlyAuthenticationsClient) ListByServer(resourceGroupName string, serverName string, options *ServerAzureADOnlyAuthenticationsClientListByServerOptions) *runtime.Pager[ServerAzureADOnlyAuthenticationsClientListByServerResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ServerAzureADOnlyAuthenticationsClientListByServerResponse]{
+		More: func(page ServerAzureADOnlyAuthenticationsClientListByServerResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ServerAzureADOnlyAuthenticationsClientListByServerResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AzureADOnlyAuthListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ServerAzureADOnlyAuthenticationsClientListByServerResponse) (ServerAzureADOnlyAuthenticationsClientListByServerResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ServerAzureADOnlyAuthenticationsClientListByServerResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ServerAzureADOnlyAuthenticationsClientListByServerResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ServerAzureADOnlyAuthenticationsClientListByServerResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServerHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByServerCreateRequest creates the ListByServer request.
@@ -306,7 +315,7 @@ func (client *ServerAzureADOnlyAuthenticationsClient) listByServerCreateRequest(
 
 // listByServerHandleResponse handles the ListByServer response.
 func (client *ServerAzureADOnlyAuthenticationsClient) listByServerHandleResponse(resp *http.Response) (ServerAzureADOnlyAuthenticationsClientListByServerResponse, error) {
-	result := ServerAzureADOnlyAuthenticationsClientListByServerResponse{RawResponse: resp}
+	result := ServerAzureADOnlyAuthenticationsClientListByServerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureADOnlyAuthListResult); err != nil {
 		return ServerAzureADOnlyAuthenticationsClientListByServerResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type RestorableDroppedManagedDatabasesClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewRestorableDroppedManagedDatabasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RestorableDroppedManagedDatabasesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewRestorableDroppedManagedDatabasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorableDroppedManagedDatabasesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &RestorableDroppedManagedDatabasesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets a restorable dropped managed database.
@@ -103,7 +108,7 @@ func (client *RestorableDroppedManagedDatabasesClient) getCreateRequest(ctx cont
 
 // getHandleResponse handles the Get response.
 func (client *RestorableDroppedManagedDatabasesClient) getHandleResponse(resp *http.Response) (RestorableDroppedManagedDatabasesClientGetResponse, error) {
-	result := RestorableDroppedManagedDatabasesClientGetResponse{RawResponse: resp}
+	result := RestorableDroppedManagedDatabasesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorableDroppedManagedDatabase); err != nil {
 		return RestorableDroppedManagedDatabasesClientGetResponse{}, err
 	}
@@ -117,16 +122,32 @@ func (client *RestorableDroppedManagedDatabasesClient) getHandleResponse(resp *h
 // managedInstanceName - The name of the managed instance.
 // options - RestorableDroppedManagedDatabasesClientListByInstanceOptions contains the optional parameters for the RestorableDroppedManagedDatabasesClient.ListByInstance
 // method.
-func (client *RestorableDroppedManagedDatabasesClient) ListByInstance(resourceGroupName string, managedInstanceName string, options *RestorableDroppedManagedDatabasesClientListByInstanceOptions) *RestorableDroppedManagedDatabasesClientListByInstancePager {
-	return &RestorableDroppedManagedDatabasesClientListByInstancePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
+func (client *RestorableDroppedManagedDatabasesClient) ListByInstance(resourceGroupName string, managedInstanceName string, options *RestorableDroppedManagedDatabasesClientListByInstanceOptions) *runtime.Pager[RestorableDroppedManagedDatabasesClientListByInstanceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RestorableDroppedManagedDatabasesClientListByInstanceResponse]{
+		More: func(page RestorableDroppedManagedDatabasesClientListByInstanceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RestorableDroppedManagedDatabasesClientListByInstanceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RestorableDroppedManagedDatabaseListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *RestorableDroppedManagedDatabasesClientListByInstanceResponse) (RestorableDroppedManagedDatabasesClientListByInstanceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RestorableDroppedManagedDatabasesClientListByInstanceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RestorableDroppedManagedDatabasesClientListByInstanceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RestorableDroppedManagedDatabasesClientListByInstanceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByInstanceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByInstanceCreateRequest creates the ListByInstance request.
@@ -157,7 +178,7 @@ func (client *RestorableDroppedManagedDatabasesClient) listByInstanceCreateReque
 
 // listByInstanceHandleResponse handles the ListByInstance response.
 func (client *RestorableDroppedManagedDatabasesClient) listByInstanceHandleResponse(resp *http.Response) (RestorableDroppedManagedDatabasesClientListByInstanceResponse, error) {
-	result := RestorableDroppedManagedDatabasesClientListByInstanceResponse{RawResponse: resp}
+	result := RestorableDroppedManagedDatabasesClientListByInstanceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorableDroppedManagedDatabaseListResult); err != nil {
 		return RestorableDroppedManagedDatabasesClientListByInstanceResponse{}, err
 	}

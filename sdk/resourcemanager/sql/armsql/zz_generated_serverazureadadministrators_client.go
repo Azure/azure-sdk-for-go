@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ServerAzureADAdministratorsClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewServerAzureADAdministratorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerAzureADAdministratorsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewServerAzureADAdministratorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServerAzureADAdministratorsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ServerAzureADAdministratorsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates an existing Azure Active Directory administrator.
@@ -58,22 +63,16 @@ func NewServerAzureADAdministratorsClient(subscriptionID string, credential azco
 // parameters - The requested Azure Active Directory administrator Resource state.
 // options - ServerAzureADAdministratorsClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerAzureADAdministratorsClient.BeginCreateOrUpdate
 // method.
-func (client *ServerAzureADAdministratorsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, administratorName AdministratorName, parameters ServerAzureADAdministrator, options *ServerAzureADAdministratorsClientBeginCreateOrUpdateOptions) (ServerAzureADAdministratorsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, administratorName, parameters, options)
-	if err != nil {
-		return ServerAzureADAdministratorsClientCreateOrUpdatePollerResponse{}, err
+func (client *ServerAzureADAdministratorsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, administratorName AdministratorName, parameters ServerAzureADAdministrator, options *ServerAzureADAdministratorsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ServerAzureADAdministratorsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, administratorName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ServerAzureADAdministratorsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServerAzureADAdministratorsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServerAzureADAdministratorsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServerAzureADAdministratorsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return ServerAzureADAdministratorsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ServerAzureADAdministratorsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates an existing Azure Active Directory administrator.
@@ -131,22 +130,16 @@ func (client *ServerAzureADAdministratorsClient) createOrUpdateCreateRequest(ctx
 // administratorName - The name of server active directory administrator.
 // options - ServerAzureADAdministratorsClientBeginDeleteOptions contains the optional parameters for the ServerAzureADAdministratorsClient.BeginDelete
 // method.
-func (client *ServerAzureADAdministratorsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, administratorName AdministratorName, options *ServerAzureADAdministratorsClientBeginDeleteOptions) (ServerAzureADAdministratorsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, administratorName, options)
-	if err != nil {
-		return ServerAzureADAdministratorsClientDeletePollerResponse{}, err
+func (client *ServerAzureADAdministratorsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, administratorName AdministratorName, options *ServerAzureADAdministratorsClientBeginDeleteOptions) (*armruntime.Poller[ServerAzureADAdministratorsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, administratorName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ServerAzureADAdministratorsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServerAzureADAdministratorsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServerAzureADAdministratorsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServerAzureADAdministratorsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return ServerAzureADAdministratorsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ServerAzureADAdministratorsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the Azure Active Directory administrator with the given name.
@@ -250,7 +243,7 @@ func (client *ServerAzureADAdministratorsClient) getCreateRequest(ctx context.Co
 
 // getHandleResponse handles the Get response.
 func (client *ServerAzureADAdministratorsClient) getHandleResponse(resp *http.Response) (ServerAzureADAdministratorsClientGetResponse, error) {
-	result := ServerAzureADAdministratorsClientGetResponse{RawResponse: resp}
+	result := ServerAzureADAdministratorsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerAzureADAdministrator); err != nil {
 		return ServerAzureADAdministratorsClientGetResponse{}, err
 	}
@@ -264,16 +257,32 @@ func (client *ServerAzureADAdministratorsClient) getHandleResponse(resp *http.Re
 // serverName - The name of the server.
 // options - ServerAzureADAdministratorsClientListByServerOptions contains the optional parameters for the ServerAzureADAdministratorsClient.ListByServer
 // method.
-func (client *ServerAzureADAdministratorsClient) ListByServer(resourceGroupName string, serverName string, options *ServerAzureADAdministratorsClientListByServerOptions) *ServerAzureADAdministratorsClientListByServerPager {
-	return &ServerAzureADAdministratorsClientListByServerPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+func (client *ServerAzureADAdministratorsClient) ListByServer(resourceGroupName string, serverName string, options *ServerAzureADAdministratorsClientListByServerOptions) *runtime.Pager[ServerAzureADAdministratorsClientListByServerResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ServerAzureADAdministratorsClientListByServerResponse]{
+		More: func(page ServerAzureADAdministratorsClientListByServerResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ServerAzureADAdministratorsClientListByServerResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AdministratorListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ServerAzureADAdministratorsClientListByServerResponse) (ServerAzureADAdministratorsClientListByServerResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ServerAzureADAdministratorsClientListByServerResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ServerAzureADAdministratorsClientListByServerResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ServerAzureADAdministratorsClientListByServerResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServerHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByServerCreateRequest creates the ListByServer request.
@@ -304,7 +313,7 @@ func (client *ServerAzureADAdministratorsClient) listByServerCreateRequest(ctx c
 
 // listByServerHandleResponse handles the ListByServer response.
 func (client *ServerAzureADAdministratorsClient) listByServerHandleResponse(resp *http.Response) (ServerAzureADAdministratorsClientListByServerResponse, error) {
-	result := ServerAzureADAdministratorsClientListByServerResponse{RawResponse: resp}
+	result := ServerAzureADAdministratorsClientListByServerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdministratorListResult); err != nil {
 		return ServerAzureADAdministratorsClientListByServerResponse{}, err
 	}

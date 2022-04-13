@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type LedgerDigestUploadsClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewLedgerDigestUploadsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LedgerDigestUploadsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewLedgerDigestUploadsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LedgerDigestUploadsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &LedgerDigestUploadsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Enables upload ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
@@ -57,22 +62,16 @@ func NewLedgerDigestUploadsClient(subscriptionID string, credential azcore.Token
 // databaseName - The name of the database.
 // options - LedgerDigestUploadsClientBeginCreateOrUpdateOptions contains the optional parameters for the LedgerDigestUploadsClient.BeginCreateOrUpdate
 // method.
-func (client *LedgerDigestUploadsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, ledgerDigestUploads LedgerDigestUploadsName, parameters LedgerDigestUploads, options *LedgerDigestUploadsClientBeginCreateOrUpdateOptions) (LedgerDigestUploadsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, databaseName, ledgerDigestUploads, parameters, options)
-	if err != nil {
-		return LedgerDigestUploadsClientCreateOrUpdatePollerResponse{}, err
+func (client *LedgerDigestUploadsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, ledgerDigestUploads LedgerDigestUploadsName, parameters LedgerDigestUploads, options *LedgerDigestUploadsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[LedgerDigestUploadsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, databaseName, ledgerDigestUploads, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[LedgerDigestUploadsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[LedgerDigestUploadsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := LedgerDigestUploadsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("LedgerDigestUploadsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return LedgerDigestUploadsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &LedgerDigestUploadsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Enables upload ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
@@ -134,22 +133,16 @@ func (client *LedgerDigestUploadsClient) createOrUpdateCreateRequest(ctx context
 // databaseName - The name of the database.
 // options - LedgerDigestUploadsClientBeginDisableOptions contains the optional parameters for the LedgerDigestUploadsClient.BeginDisable
 // method.
-func (client *LedgerDigestUploadsClient) BeginDisable(ctx context.Context, resourceGroupName string, serverName string, databaseName string, ledgerDigestUploads LedgerDigestUploadsName, options *LedgerDigestUploadsClientBeginDisableOptions) (LedgerDigestUploadsClientDisablePollerResponse, error) {
-	resp, err := client.disable(ctx, resourceGroupName, serverName, databaseName, ledgerDigestUploads, options)
-	if err != nil {
-		return LedgerDigestUploadsClientDisablePollerResponse{}, err
+func (client *LedgerDigestUploadsClient) BeginDisable(ctx context.Context, resourceGroupName string, serverName string, databaseName string, ledgerDigestUploads LedgerDigestUploadsName, options *LedgerDigestUploadsClientBeginDisableOptions) (*armruntime.Poller[LedgerDigestUploadsClientDisableResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.disable(ctx, resourceGroupName, serverName, databaseName, ledgerDigestUploads, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[LedgerDigestUploadsClientDisableResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[LedgerDigestUploadsClientDisableResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := LedgerDigestUploadsClientDisablePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("LedgerDigestUploadsClient.Disable", "", resp, client.pl)
-	if err != nil {
-		return LedgerDigestUploadsClientDisablePollerResponse{}, err
-	}
-	result.Poller = &LedgerDigestUploadsClientDisablePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Disable - Disables uploading ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
@@ -261,7 +254,7 @@ func (client *LedgerDigestUploadsClient) getCreateRequest(ctx context.Context, r
 
 // getHandleResponse handles the Get response.
 func (client *LedgerDigestUploadsClient) getHandleResponse(resp *http.Response) (LedgerDigestUploadsClientGetResponse, error) {
-	result := LedgerDigestUploadsClientGetResponse{RawResponse: resp}
+	result := LedgerDigestUploadsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LedgerDigestUploads); err != nil {
 		return LedgerDigestUploadsClientGetResponse{}, err
 	}
@@ -276,16 +269,32 @@ func (client *LedgerDigestUploadsClient) getHandleResponse(resp *http.Response) 
 // databaseName - The name of the database.
 // options - LedgerDigestUploadsClientListByDatabaseOptions contains the optional parameters for the LedgerDigestUploadsClient.ListByDatabase
 // method.
-func (client *LedgerDigestUploadsClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *LedgerDigestUploadsClientListByDatabaseOptions) *LedgerDigestUploadsClientListByDatabasePager {
-	return &LedgerDigestUploadsClientListByDatabasePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
+func (client *LedgerDigestUploadsClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *LedgerDigestUploadsClientListByDatabaseOptions) *runtime.Pager[LedgerDigestUploadsClientListByDatabaseResponse] {
+	return runtime.NewPager(runtime.PageProcessor[LedgerDigestUploadsClientListByDatabaseResponse]{
+		More: func(page LedgerDigestUploadsClientListByDatabaseResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp LedgerDigestUploadsClientListByDatabaseResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.LedgerDigestUploadsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *LedgerDigestUploadsClientListByDatabaseResponse) (LedgerDigestUploadsClientListByDatabaseResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return LedgerDigestUploadsClientListByDatabaseResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return LedgerDigestUploadsClientListByDatabaseResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return LedgerDigestUploadsClientListByDatabaseResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByDatabaseHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
@@ -320,7 +329,7 @@ func (client *LedgerDigestUploadsClient) listByDatabaseCreateRequest(ctx context
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
 func (client *LedgerDigestUploadsClient) listByDatabaseHandleResponse(resp *http.Response) (LedgerDigestUploadsClientListByDatabaseResponse, error) {
-	result := LedgerDigestUploadsClientListByDatabaseResponse{RawResponse: resp}
+	result := LedgerDigestUploadsClientListByDatabaseResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LedgerDigestUploadsListResult); err != nil {
 		return LedgerDigestUploadsClientListByDatabaseResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ServerTrustGroupsClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewServerTrustGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerTrustGroupsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewServerTrustGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServerTrustGroupsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ServerTrustGroupsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a server trust group.
@@ -58,22 +63,16 @@ func NewServerTrustGroupsClient(subscriptionID string, credential azcore.TokenCr
 // parameters - The server trust group parameters.
 // options - ServerTrustGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerTrustGroupsClient.BeginCreateOrUpdate
 // method.
-func (client *ServerTrustGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, locationName string, serverTrustGroupName string, parameters ServerTrustGroup, options *ServerTrustGroupsClientBeginCreateOrUpdateOptions) (ServerTrustGroupsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, locationName, serverTrustGroupName, parameters, options)
-	if err != nil {
-		return ServerTrustGroupsClientCreateOrUpdatePollerResponse{}, err
+func (client *ServerTrustGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, locationName string, serverTrustGroupName string, parameters ServerTrustGroup, options *ServerTrustGroupsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ServerTrustGroupsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, locationName, serverTrustGroupName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ServerTrustGroupsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServerTrustGroupsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServerTrustGroupsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServerTrustGroupsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return ServerTrustGroupsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ServerTrustGroupsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a server trust group.
@@ -131,22 +130,16 @@ func (client *ServerTrustGroupsClient) createOrUpdateCreateRequest(ctx context.C
 // serverTrustGroupName - The name of the server trust group.
 // options - ServerTrustGroupsClientBeginDeleteOptions contains the optional parameters for the ServerTrustGroupsClient.BeginDelete
 // method.
-func (client *ServerTrustGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, locationName string, serverTrustGroupName string, options *ServerTrustGroupsClientBeginDeleteOptions) (ServerTrustGroupsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, locationName, serverTrustGroupName, options)
-	if err != nil {
-		return ServerTrustGroupsClientDeletePollerResponse{}, err
+func (client *ServerTrustGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, locationName string, serverTrustGroupName string, options *ServerTrustGroupsClientBeginDeleteOptions) (*armruntime.Poller[ServerTrustGroupsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, locationName, serverTrustGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ServerTrustGroupsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServerTrustGroupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServerTrustGroupsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServerTrustGroupsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return ServerTrustGroupsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ServerTrustGroupsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a server trust group.
@@ -249,7 +242,7 @@ func (client *ServerTrustGroupsClient) getCreateRequest(ctx context.Context, res
 
 // getHandleResponse handles the Get response.
 func (client *ServerTrustGroupsClient) getHandleResponse(resp *http.Response) (ServerTrustGroupsClientGetResponse, error) {
-	result := ServerTrustGroupsClientGetResponse{RawResponse: resp}
+	result := ServerTrustGroupsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerTrustGroup); err != nil {
 		return ServerTrustGroupsClientGetResponse{}, err
 	}
@@ -263,16 +256,32 @@ func (client *ServerTrustGroupsClient) getHandleResponse(resp *http.Response) (S
 // managedInstanceName - The name of the managed instance.
 // options - ServerTrustGroupsClientListByInstanceOptions contains the optional parameters for the ServerTrustGroupsClient.ListByInstance
 // method.
-func (client *ServerTrustGroupsClient) ListByInstance(resourceGroupName string, managedInstanceName string, options *ServerTrustGroupsClientListByInstanceOptions) *ServerTrustGroupsClientListByInstancePager {
-	return &ServerTrustGroupsClientListByInstancePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
+func (client *ServerTrustGroupsClient) ListByInstance(resourceGroupName string, managedInstanceName string, options *ServerTrustGroupsClientListByInstanceOptions) *runtime.Pager[ServerTrustGroupsClientListByInstanceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ServerTrustGroupsClientListByInstanceResponse]{
+		More: func(page ServerTrustGroupsClientListByInstanceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ServerTrustGroupsClientListByInstanceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServerTrustGroupListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ServerTrustGroupsClientListByInstanceResponse) (ServerTrustGroupsClientListByInstanceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ServerTrustGroupsClientListByInstanceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ServerTrustGroupsClientListByInstanceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ServerTrustGroupsClientListByInstanceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByInstanceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByInstanceCreateRequest creates the ListByInstance request.
@@ -303,7 +312,7 @@ func (client *ServerTrustGroupsClient) listByInstanceCreateRequest(ctx context.C
 
 // listByInstanceHandleResponse handles the ListByInstance response.
 func (client *ServerTrustGroupsClient) listByInstanceHandleResponse(resp *http.Response) (ServerTrustGroupsClientListByInstanceResponse, error) {
-	result := ServerTrustGroupsClientListByInstanceResponse{RawResponse: resp}
+	result := ServerTrustGroupsClientListByInstanceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerTrustGroupListResult); err != nil {
 		return ServerTrustGroupsClientListByInstanceResponse{}, err
 	}
@@ -317,16 +326,32 @@ func (client *ServerTrustGroupsClient) listByInstanceHandleResponse(resp *http.R
 // locationName - The name of the region where the resource is located.
 // options - ServerTrustGroupsClientListByLocationOptions contains the optional parameters for the ServerTrustGroupsClient.ListByLocation
 // method.
-func (client *ServerTrustGroupsClient) ListByLocation(resourceGroupName string, locationName string, options *ServerTrustGroupsClientListByLocationOptions) *ServerTrustGroupsClientListByLocationPager {
-	return &ServerTrustGroupsClientListByLocationPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByLocationCreateRequest(ctx, resourceGroupName, locationName, options)
+func (client *ServerTrustGroupsClient) ListByLocation(resourceGroupName string, locationName string, options *ServerTrustGroupsClientListByLocationOptions) *runtime.Pager[ServerTrustGroupsClientListByLocationResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ServerTrustGroupsClientListByLocationResponse]{
+		More: func(page ServerTrustGroupsClientListByLocationResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ServerTrustGroupsClientListByLocationResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServerTrustGroupListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ServerTrustGroupsClientListByLocationResponse) (ServerTrustGroupsClientListByLocationResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByLocationCreateRequest(ctx, resourceGroupName, locationName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ServerTrustGroupsClientListByLocationResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ServerTrustGroupsClientListByLocationResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ServerTrustGroupsClientListByLocationResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByLocationHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
@@ -357,7 +382,7 @@ func (client *ServerTrustGroupsClient) listByLocationCreateRequest(ctx context.C
 
 // listByLocationHandleResponse handles the ListByLocation response.
 func (client *ServerTrustGroupsClient) listByLocationHandleResponse(resp *http.Response) (ServerTrustGroupsClientListByLocationResponse, error) {
-	result := ServerTrustGroupsClientListByLocationResponse{RawResponse: resp}
+	result := ServerTrustGroupsClientListByLocationResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerTrustGroupListResult); err != nil {
 		return ServerTrustGroupsClientListByLocationResponse{}, err
 	}

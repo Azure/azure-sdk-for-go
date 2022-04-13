@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type JobExecutionsClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewJobExecutionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *JobExecutionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewJobExecutionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobExecutionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &JobExecutionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Cancel - Requests cancellation of a job execution.
@@ -72,7 +77,7 @@ func (client *JobExecutionsClient) Cancel(ctx context.Context, resourceGroupName
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return JobExecutionsClientCancelResponse{}, runtime.NewResponseError(resp)
 	}
-	return JobExecutionsClientCancelResponse{RawResponse: resp}, nil
+	return JobExecutionsClientCancelResponse{}, nil
 }
 
 // cancelCreateRequest creates the Cancel request.
@@ -118,22 +123,16 @@ func (client *JobExecutionsClient) cancelCreateRequest(ctx context.Context, reso
 // jobName - The name of the job to get.
 // options - JobExecutionsClientBeginCreateOptions contains the optional parameters for the JobExecutionsClient.BeginCreate
 // method.
-func (client *JobExecutionsClient) BeginCreate(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobExecutionsClientBeginCreateOptions) (JobExecutionsClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, serverName, jobAgentName, jobName, options)
-	if err != nil {
-		return JobExecutionsClientCreatePollerResponse{}, err
+func (client *JobExecutionsClient) BeginCreate(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobExecutionsClientBeginCreateOptions) (*armruntime.Poller[JobExecutionsClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, serverName, jobAgentName, jobName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[JobExecutionsClientCreateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[JobExecutionsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := JobExecutionsClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("JobExecutionsClient.Create", "", resp, client.pl)
-	if err != nil {
-		return JobExecutionsClientCreatePollerResponse{}, err
-	}
-	result.Poller = &JobExecutionsClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Starts an elastic job execution.
@@ -197,22 +196,16 @@ func (client *JobExecutionsClient) createCreateRequest(ctx context.Context, reso
 // jobExecutionID - The job execution id to create the job execution under.
 // options - JobExecutionsClientBeginCreateOrUpdateOptions contains the optional parameters for the JobExecutionsClient.BeginCreateOrUpdate
 // method.
-func (client *JobExecutionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *JobExecutionsClientBeginCreateOrUpdateOptions) (JobExecutionsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobExecutionID, options)
-	if err != nil {
-		return JobExecutionsClientCreateOrUpdatePollerResponse{}, err
+func (client *JobExecutionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *JobExecutionsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[JobExecutionsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobExecutionID, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[JobExecutionsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[JobExecutionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := JobExecutionsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("JobExecutionsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return JobExecutionsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &JobExecutionsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a job execution.
@@ -328,7 +321,7 @@ func (client *JobExecutionsClient) getCreateRequest(ctx context.Context, resourc
 
 // getHandleResponse handles the Get response.
 func (client *JobExecutionsClient) getHandleResponse(resp *http.Response) (JobExecutionsClientGetResponse, error) {
-	result := JobExecutionsClientGetResponse{RawResponse: resp}
+	result := JobExecutionsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobExecution); err != nil {
 		return JobExecutionsClientGetResponse{}, err
 	}
@@ -343,16 +336,32 @@ func (client *JobExecutionsClient) getHandleResponse(resp *http.Response) (JobEx
 // jobAgentName - The name of the job agent.
 // options - JobExecutionsClientListByAgentOptions contains the optional parameters for the JobExecutionsClient.ListByAgent
 // method.
-func (client *JobExecutionsClient) ListByAgent(resourceGroupName string, serverName string, jobAgentName string, options *JobExecutionsClientListByAgentOptions) *JobExecutionsClientListByAgentPager {
-	return &JobExecutionsClientListByAgentPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByAgentCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, options)
+func (client *JobExecutionsClient) ListByAgent(resourceGroupName string, serverName string, jobAgentName string, options *JobExecutionsClientListByAgentOptions) *runtime.Pager[JobExecutionsClientListByAgentResponse] {
+	return runtime.NewPager(runtime.PageProcessor[JobExecutionsClientListByAgentResponse]{
+		More: func(page JobExecutionsClientListByAgentResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp JobExecutionsClientListByAgentResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobExecutionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *JobExecutionsClientListByAgentResponse) (JobExecutionsClientListByAgentResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByAgentCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return JobExecutionsClientListByAgentResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return JobExecutionsClientListByAgentResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return JobExecutionsClientListByAgentResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByAgentHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByAgentCreateRequest creates the ListByAgent request.
@@ -408,7 +417,7 @@ func (client *JobExecutionsClient) listByAgentCreateRequest(ctx context.Context,
 
 // listByAgentHandleResponse handles the ListByAgent response.
 func (client *JobExecutionsClient) listByAgentHandleResponse(resp *http.Response) (JobExecutionsClientListByAgentResponse, error) {
-	result := JobExecutionsClientListByAgentResponse{RawResponse: resp}
+	result := JobExecutionsClientListByAgentResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobExecutionListResult); err != nil {
 		return JobExecutionsClientListByAgentResponse{}, err
 	}
@@ -423,16 +432,32 @@ func (client *JobExecutionsClient) listByAgentHandleResponse(resp *http.Response
 // jobAgentName - The name of the job agent.
 // jobName - The name of the job to get.
 // options - JobExecutionsClientListByJobOptions contains the optional parameters for the JobExecutionsClient.ListByJob method.
-func (client *JobExecutionsClient) ListByJob(resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobExecutionsClientListByJobOptions) *JobExecutionsClientListByJobPager {
-	return &JobExecutionsClientListByJobPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByJobCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, options)
+func (client *JobExecutionsClient) ListByJob(resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobExecutionsClientListByJobOptions) *runtime.Pager[JobExecutionsClientListByJobResponse] {
+	return runtime.NewPager(runtime.PageProcessor[JobExecutionsClientListByJobResponse]{
+		More: func(page JobExecutionsClientListByJobResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp JobExecutionsClientListByJobResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobExecutionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *JobExecutionsClientListByJobResponse) (JobExecutionsClientListByJobResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByJobCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return JobExecutionsClientListByJobResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return JobExecutionsClientListByJobResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return JobExecutionsClientListByJobResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByJobHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByJobCreateRequest creates the ListByJob request.
@@ -492,7 +517,7 @@ func (client *JobExecutionsClient) listByJobCreateRequest(ctx context.Context, r
 
 // listByJobHandleResponse handles the ListByJob response.
 func (client *JobExecutionsClient) listByJobHandleResponse(resp *http.Response) (JobExecutionsClientListByJobResponse, error) {
-	result := JobExecutionsClientListByJobResponse{RawResponse: resp}
+	result := JobExecutionsClientListByJobResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobExecutionListResult); err != nil {
 		return JobExecutionsClientListByJobResponse{}, err
 	}

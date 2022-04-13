@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type SyncMembersClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSyncMembersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SyncMembersClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewSyncMembersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SyncMembersClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SyncMembersClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a sync member.
@@ -60,22 +65,16 @@ func NewSyncMembersClient(subscriptionID string, credential azcore.TokenCredenti
 // parameters - The requested sync member resource state.
 // options - SyncMembersClientBeginCreateOrUpdateOptions contains the optional parameters for the SyncMembersClient.BeginCreateOrUpdate
 // method.
-func (client *SyncMembersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, parameters SyncMember, options *SyncMembersClientBeginCreateOrUpdateOptions) (SyncMembersClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, parameters, options)
-	if err != nil {
-		return SyncMembersClientCreateOrUpdatePollerResponse{}, err
+func (client *SyncMembersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, parameters SyncMember, options *SyncMembersClientBeginCreateOrUpdateOptions) (*armruntime.Poller[SyncMembersClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SyncMembersClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SyncMembersClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SyncMembersClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SyncMembersClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return SyncMembersClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &SyncMembersClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a sync member.
@@ -142,22 +141,16 @@ func (client *SyncMembersClient) createOrUpdateCreateRequest(ctx context.Context
 // syncGroupName - The name of the sync group on which the sync member is hosted.
 // syncMemberName - The name of the sync member.
 // options - SyncMembersClientBeginDeleteOptions contains the optional parameters for the SyncMembersClient.BeginDelete method.
-func (client *SyncMembersClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersClientBeginDeleteOptions) (SyncMembersClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, options)
-	if err != nil {
-		return SyncMembersClientDeletePollerResponse{}, err
+func (client *SyncMembersClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersClientBeginDeleteOptions) (*armruntime.Poller[SyncMembersClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SyncMembersClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SyncMembersClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SyncMembersClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SyncMembersClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return SyncMembersClientDeletePollerResponse{}, err
-	}
-	result.Poller = &SyncMembersClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a sync member.
@@ -278,7 +271,7 @@ func (client *SyncMembersClient) getCreateRequest(ctx context.Context, resourceG
 
 // getHandleResponse handles the Get response.
 func (client *SyncMembersClient) getHandleResponse(resp *http.Response) (SyncMembersClientGetResponse, error) {
-	result := SyncMembersClientGetResponse{RawResponse: resp}
+	result := SyncMembersClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncMember); err != nil {
 		return SyncMembersClientGetResponse{}, err
 	}
@@ -294,16 +287,32 @@ func (client *SyncMembersClient) getHandleResponse(resp *http.Response) (SyncMem
 // syncGroupName - The name of the sync group.
 // options - SyncMembersClientListBySyncGroupOptions contains the optional parameters for the SyncMembersClient.ListBySyncGroup
 // method.
-func (client *SyncMembersClient) ListBySyncGroup(resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncMembersClientListBySyncGroupOptions) *SyncMembersClientListBySyncGroupPager {
-	return &SyncMembersClientListBySyncGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySyncGroupCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, options)
+func (client *SyncMembersClient) ListBySyncGroup(resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncMembersClientListBySyncGroupOptions) *runtime.Pager[SyncMembersClientListBySyncGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SyncMembersClientListBySyncGroupResponse]{
+		More: func(page SyncMembersClientListBySyncGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SyncMembersClientListBySyncGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SyncMemberListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SyncMembersClientListBySyncGroupResponse) (SyncMembersClientListBySyncGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySyncGroupCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SyncMembersClientListBySyncGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SyncMembersClientListBySyncGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SyncMembersClientListBySyncGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySyncGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySyncGroupCreateRequest creates the ListBySyncGroup request.
@@ -342,7 +351,7 @@ func (client *SyncMembersClient) listBySyncGroupCreateRequest(ctx context.Contex
 
 // listBySyncGroupHandleResponse handles the ListBySyncGroup response.
 func (client *SyncMembersClient) listBySyncGroupHandleResponse(resp *http.Response) (SyncMembersClientListBySyncGroupResponse, error) {
-	result := SyncMembersClientListBySyncGroupResponse{RawResponse: resp}
+	result := SyncMembersClientListBySyncGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncMemberListResult); err != nil {
 		return SyncMembersClientListBySyncGroupResponse{}, err
 	}
@@ -359,16 +368,32 @@ func (client *SyncMembersClient) listBySyncGroupHandleResponse(resp *http.Respon
 // syncMemberName - The name of the sync member.
 // options - SyncMembersClientListMemberSchemasOptions contains the optional parameters for the SyncMembersClient.ListMemberSchemas
 // method.
-func (client *SyncMembersClient) ListMemberSchemas(resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersClientListMemberSchemasOptions) *SyncMembersClientListMemberSchemasPager {
-	return &SyncMembersClientListMemberSchemasPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listMemberSchemasCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, options)
+func (client *SyncMembersClient) ListMemberSchemas(resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersClientListMemberSchemasOptions) *runtime.Pager[SyncMembersClientListMemberSchemasResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SyncMembersClientListMemberSchemasResponse]{
+		More: func(page SyncMembersClientListMemberSchemasResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SyncMembersClientListMemberSchemasResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SyncFullSchemaPropertiesListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SyncMembersClientListMemberSchemasResponse) (SyncMembersClientListMemberSchemasResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listMemberSchemasCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SyncMembersClientListMemberSchemasResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SyncMembersClientListMemberSchemasResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SyncMembersClientListMemberSchemasResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listMemberSchemasHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listMemberSchemasCreateRequest creates the ListMemberSchemas request.
@@ -411,7 +436,7 @@ func (client *SyncMembersClient) listMemberSchemasCreateRequest(ctx context.Cont
 
 // listMemberSchemasHandleResponse handles the ListMemberSchemas response.
 func (client *SyncMembersClient) listMemberSchemasHandleResponse(resp *http.Response) (SyncMembersClientListMemberSchemasResponse, error) {
-	result := SyncMembersClientListMemberSchemasResponse{RawResponse: resp}
+	result := SyncMembersClientListMemberSchemasResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncFullSchemaPropertiesListResult); err != nil {
 		return SyncMembersClientListMemberSchemasResponse{}, err
 	}
@@ -428,22 +453,16 @@ func (client *SyncMembersClient) listMemberSchemasHandleResponse(resp *http.Resp
 // syncMemberName - The name of the sync member.
 // options - SyncMembersClientBeginRefreshMemberSchemaOptions contains the optional parameters for the SyncMembersClient.BeginRefreshMemberSchema
 // method.
-func (client *SyncMembersClient) BeginRefreshMemberSchema(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersClientBeginRefreshMemberSchemaOptions) (SyncMembersClientRefreshMemberSchemaPollerResponse, error) {
-	resp, err := client.refreshMemberSchema(ctx, resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, options)
-	if err != nil {
-		return SyncMembersClientRefreshMemberSchemaPollerResponse{}, err
+func (client *SyncMembersClient) BeginRefreshMemberSchema(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersClientBeginRefreshMemberSchemaOptions) (*armruntime.Poller[SyncMembersClientRefreshMemberSchemaResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.refreshMemberSchema(ctx, resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SyncMembersClientRefreshMemberSchemaResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SyncMembersClientRefreshMemberSchemaResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SyncMembersClientRefreshMemberSchemaPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SyncMembersClient.RefreshMemberSchema", "", resp, client.pl)
-	if err != nil {
-		return SyncMembersClientRefreshMemberSchemaPollerResponse{}, err
-	}
-	result.Poller = &SyncMembersClientRefreshMemberSchemaPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // RefreshMemberSchema - Refreshes a sync member database schema.
@@ -510,22 +529,16 @@ func (client *SyncMembersClient) refreshMemberSchemaCreateRequest(ctx context.Co
 // syncMemberName - The name of the sync member.
 // parameters - The requested sync member resource state.
 // options - SyncMembersClientBeginUpdateOptions contains the optional parameters for the SyncMembersClient.BeginUpdate method.
-func (client *SyncMembersClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, parameters SyncMember, options *SyncMembersClientBeginUpdateOptions) (SyncMembersClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, parameters, options)
-	if err != nil {
-		return SyncMembersClientUpdatePollerResponse{}, err
+func (client *SyncMembersClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, parameters SyncMember, options *SyncMembersClientBeginUpdateOptions) (*armruntime.Poller[SyncMembersClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SyncMembersClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SyncMembersClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SyncMembersClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SyncMembersClient.Update", "", resp, client.pl)
-	if err != nil {
-		return SyncMembersClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &SyncMembersClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates an existing sync member.

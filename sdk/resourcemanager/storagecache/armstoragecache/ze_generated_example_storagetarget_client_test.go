@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -18,68 +18,118 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache"
 )
 
-// x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2021-09-01/examples/StorageTargets_Flush.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-01-01/examples/StorageTargets_Flush.json
 func ExampleStorageTargetClient_BeginFlush() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstoragecache.NewStorageTargetClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewStorageTargetClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginFlush(ctx,
 		"<resource-group-name>",
 		"<cache-name>",
 		"<storage-target-name>",
-		nil)
+		&armstoragecache.StorageTargetClientBeginFlushOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2021-09-01/examples/StorageTargets_Suspend.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-01-01/examples/StorageTargets_Suspend.json
 func ExampleStorageTargetClient_BeginSuspend() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstoragecache.NewStorageTargetClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewStorageTargetClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginSuspend(ctx,
 		"<resource-group-name>",
 		"<cache-name>",
 		"<storage-target-name>",
-		nil)
+		&armstoragecache.StorageTargetClientBeginSuspendOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2021-09-01/examples/StorageTargets_Resume.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-01-01/examples/StorageTargets_Resume.json
 func ExampleStorageTargetClient_BeginResume() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstoragecache.NewStorageTargetClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewStorageTargetClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginResume(ctx,
 		"<resource-group-name>",
 		"<cache-name>",
 		"<storage-target-name>",
-		nil)
+		&armstoragecache.StorageTargetClientBeginResumeOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-01-01/examples/StorageTargets_Invalidate.json
+func ExampleStorageTargetClient_BeginInvalidate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+		return
+	}
+	ctx := context.Background()
+	client, err := armstoragecache.NewStorageTargetClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	poller, err := client.BeginInvalidate(ctx,
+		"<resource-group-name>",
+		"<cache-name>",
+		"<storage-target-name>",
+		&armstoragecache.StorageTargetClientBeginInvalidateOptions{ResumeToken: ""})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+		return
+	}
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }

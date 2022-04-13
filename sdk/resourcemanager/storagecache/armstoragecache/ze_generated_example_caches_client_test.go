@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,374 +19,447 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache"
 )
 
-// x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2021-09-01/examples/Caches_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-01-01/examples/Caches_List.json
 func ExampleCachesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2021-09-01/examples/Caches_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-01-01/examples/Caches_ListByResourceGroup.json
 func ExampleCachesClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2021-09-01/examples/Caches_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-01-01/examples/Caches_Delete.json
 func ExampleCachesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<cache-name>",
-		nil)
+		&armstoragecache.CachesClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2021-09-01/examples/Caches_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-01-01/examples/Caches_Get.json
 func ExampleCachesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<cache-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.CachesClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2021-09-01/examples/Caches_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-01-01/examples/Caches_CreateOrUpdate.json
 func ExampleCachesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<cache-name>",
 		&armstoragecache.CachesClientBeginCreateOrUpdateOptions{Cache: &armstoragecache.Cache{
 			Identity: &armstoragecache.CacheIdentity{
-				Type: armstoragecache.CacheIdentityTypeUserAssigned.ToPtr(),
+				Type: to.Ptr(armstoragecache.CacheIdentityTypeUserAssigned),
 				UserAssignedIdentities: map[string]*armstoragecache.UserAssignedIdentitiesValue{
 					"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1": {},
 				},
 			},
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Properties: &armstoragecache.CacheProperties{
-				CacheSizeGB: to.Int32Ptr(3072),
+				CacheSizeGB: to.Ptr[int32](3072),
 				DirectoryServicesSettings: &armstoragecache.CacheDirectorySettings{
 					ActiveDirectory: &armstoragecache.CacheActiveDirectorySettings{
-						CacheNetBiosName: to.StringPtr("<cache-net-bios-name>"),
+						CacheNetBiosName: to.Ptr("<cache-net-bios-name>"),
 						Credentials: &armstoragecache.CacheActiveDirectorySettingsCredentials{
-							Password: to.StringPtr("<password>"),
-							Username: to.StringPtr("<username>"),
+							Password: to.Ptr("<password>"),
+							Username: to.Ptr("<username>"),
 						},
-						DomainName:            to.StringPtr("<domain-name>"),
-						DomainNetBiosName:     to.StringPtr("<domain-net-bios-name>"),
-						PrimaryDNSIPAddress:   to.StringPtr("<primary-dnsipaddress>"),
-						SecondaryDNSIPAddress: to.StringPtr("<secondary-dnsipaddress>"),
+						DomainName:            to.Ptr("<domain-name>"),
+						DomainNetBiosName:     to.Ptr("<domain-net-bios-name>"),
+						PrimaryDNSIPAddress:   to.Ptr("<primary-dnsipaddress>"),
+						SecondaryDNSIPAddress: to.Ptr("<secondary-dnsipaddress>"),
 					},
 					UsernameDownload: &armstoragecache.CacheUsernameDownloadSettings{
 						Credentials: &armstoragecache.CacheUsernameDownloadSettingsCredentials{
-							BindDn:       to.StringPtr("<bind-dn>"),
-							BindPassword: to.StringPtr("<bind-password>"),
+							BindDn:       to.Ptr("<bind-dn>"),
+							BindPassword: to.Ptr("<bind-password>"),
 						},
-						ExtendedGroups: to.BoolPtr(true),
-						LdapBaseDN:     to.StringPtr("<ldap-base-dn>"),
-						LdapServer:     to.StringPtr("<ldap-server>"),
-						UsernameSource: armstoragecache.UsernameSource("LDAP").ToPtr(),
+						ExtendedGroups: to.Ptr(true),
+						LdapBaseDN:     to.Ptr("<ldap-base-dn>"),
+						LdapServer:     to.Ptr("<ldap-server>"),
+						UsernameSource: to.Ptr(armstoragecache.UsernameSourceLDAP),
 					},
 				},
 				EncryptionSettings: &armstoragecache.CacheEncryptionSettings{
 					KeyEncryptionKey: &armstoragecache.KeyVaultKeyReference{
-						KeyURL: to.StringPtr("<key-url>"),
+						KeyURL: to.Ptr("<key-url>"),
 						SourceVault: &armstoragecache.KeyVaultKeyReferenceSourceVault{
-							ID: to.StringPtr("<id>"),
+							ID: to.Ptr("<id>"),
 						},
 					},
 				},
 				SecuritySettings: &armstoragecache.CacheSecuritySettings{
 					AccessPolicies: []*armstoragecache.NfsAccessPolicy{
 						{
-							Name: to.StringPtr("<name>"),
+							Name: to.Ptr("<name>"),
 							AccessRules: []*armstoragecache.NfsAccessRule{
 								{
-									Access:         armstoragecache.NfsAccessRuleAccess("rw").ToPtr(),
-									RootSquash:     to.BoolPtr(false),
-									Scope:          armstoragecache.NfsAccessRuleScope("default").ToPtr(),
-									SubmountAccess: to.BoolPtr(true),
-									Suid:           to.BoolPtr(false),
+									Access:         to.Ptr(armstoragecache.NfsAccessRuleAccessRw),
+									RootSquash:     to.Ptr(false),
+									Scope:          to.Ptr(armstoragecache.NfsAccessRuleScopeDefault),
+									SubmountAccess: to.Ptr(true),
+									Suid:           to.Ptr(false),
 								}},
 						}},
 				},
-				Subnet: to.StringPtr("<subnet>"),
+				Subnet: to.Ptr("<subnet>"),
 			},
 			SKU: &armstoragecache.CacheSKU{
-				Name: to.StringPtr("<name>"),
+				Name: to.Ptr("<name>"),
 			},
 			Tags: map[string]*string{
-				"Dept": to.StringPtr("Contoso"),
+				"Dept": to.Ptr("Contoso"),
 			},
 		},
+			ResumeToken: "",
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.CachesClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2021-09-01/examples/Caches_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-01-01/examples/Caches_Update.json
 func ExampleCachesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<cache-name>",
 		&armstoragecache.CachesClientUpdateOptions{Cache: &armstoragecache.Cache{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Properties: &armstoragecache.CacheProperties{
-				CacheSizeGB: to.Int32Ptr(3072),
+				CacheSizeGB: to.Ptr[int32](3072),
 				DirectoryServicesSettings: &armstoragecache.CacheDirectorySettings{
 					ActiveDirectory: &armstoragecache.CacheActiveDirectorySettings{
-						CacheNetBiosName:      to.StringPtr("<cache-net-bios-name>"),
-						DomainName:            to.StringPtr("<domain-name>"),
-						DomainNetBiosName:     to.StringPtr("<domain-net-bios-name>"),
-						PrimaryDNSIPAddress:   to.StringPtr("<primary-dnsipaddress>"),
-						SecondaryDNSIPAddress: to.StringPtr("<secondary-dnsipaddress>"),
+						CacheNetBiosName:      to.Ptr("<cache-net-bios-name>"),
+						DomainName:            to.Ptr("<domain-name>"),
+						DomainNetBiosName:     to.Ptr("<domain-net-bios-name>"),
+						PrimaryDNSIPAddress:   to.Ptr("<primary-dnsipaddress>"),
+						SecondaryDNSIPAddress: to.Ptr("<secondary-dnsipaddress>"),
 					},
 					UsernameDownload: &armstoragecache.CacheUsernameDownloadSettings{
-						ExtendedGroups: to.BoolPtr(true),
-						UsernameSource: armstoragecache.UsernameSource("AD").ToPtr(),
+						ExtendedGroups: to.Ptr(true),
+						UsernameSource: to.Ptr(armstoragecache.UsernameSourceAD),
 					},
 				},
 				NetworkSettings: &armstoragecache.CacheNetworkSettings{
-					DNSSearchDomain: to.StringPtr("<dnssearch-domain>"),
+					DNSSearchDomain: to.Ptr("<dnssearch-domain>"),
 					DNSServers: []*string{
-						to.StringPtr("10.1.22.33"),
-						to.StringPtr("10.1.12.33")},
-					Mtu:       to.Int32Ptr(1500),
-					NtpServer: to.StringPtr("<ntp-server>"),
+						to.Ptr("10.1.22.33"),
+						to.Ptr("10.1.12.33")},
+					Mtu:       to.Ptr[int32](1500),
+					NtpServer: to.Ptr("<ntp-server>"),
 				},
 				SecuritySettings: &armstoragecache.CacheSecuritySettings{
 					AccessPolicies: []*armstoragecache.NfsAccessPolicy{
 						{
-							Name: to.StringPtr("<name>"),
+							Name: to.Ptr("<name>"),
 							AccessRules: []*armstoragecache.NfsAccessRule{
 								{
-									Access:         armstoragecache.NfsAccessRuleAccess("rw").ToPtr(),
-									RootSquash:     to.BoolPtr(false),
-									Scope:          armstoragecache.NfsAccessRuleScope("default").ToPtr(),
-									SubmountAccess: to.BoolPtr(true),
-									Suid:           to.BoolPtr(false),
+									Access:         to.Ptr(armstoragecache.NfsAccessRuleAccessRw),
+									RootSquash:     to.Ptr(false),
+									Scope:          to.Ptr(armstoragecache.NfsAccessRuleScopeDefault),
+									SubmountAccess: to.Ptr(true),
+									Suid:           to.Ptr(false),
 								}},
 						},
 						{
-							Name: to.StringPtr("<name>"),
+							Name: to.Ptr("<name>"),
 							AccessRules: []*armstoragecache.NfsAccessRule{
 								{
-									Access:         armstoragecache.NfsAccessRuleAccess("rw").ToPtr(),
-									Filter:         to.StringPtr("<filter>"),
-									RootSquash:     to.BoolPtr(false),
-									Scope:          armstoragecache.NfsAccessRuleScope("host").ToPtr(),
-									SubmountAccess: to.BoolPtr(true),
-									Suid:           to.BoolPtr(true),
+									Access:         to.Ptr(armstoragecache.NfsAccessRuleAccessRw),
+									Filter:         to.Ptr("<filter>"),
+									RootSquash:     to.Ptr(false),
+									Scope:          to.Ptr(armstoragecache.NfsAccessRuleScopeHost),
+									SubmountAccess: to.Ptr(true),
+									Suid:           to.Ptr(true),
 								},
 								{
-									Access:         armstoragecache.NfsAccessRuleAccess("rw").ToPtr(),
-									Filter:         to.StringPtr("<filter>"),
-									RootSquash:     to.BoolPtr(false),
-									Scope:          armstoragecache.NfsAccessRuleScope("network").ToPtr(),
-									SubmountAccess: to.BoolPtr(true),
-									Suid:           to.BoolPtr(true),
+									Access:         to.Ptr(armstoragecache.NfsAccessRuleAccessRw),
+									Filter:         to.Ptr("<filter>"),
+									RootSquash:     to.Ptr(false),
+									Scope:          to.Ptr(armstoragecache.NfsAccessRuleScopeNetwork),
+									SubmountAccess: to.Ptr(true),
+									Suid:           to.Ptr(true),
 								},
 								{
-									Access:         armstoragecache.NfsAccessRuleAccess("no").ToPtr(),
-									AnonymousGID:   to.StringPtr("<anonymous-gid>"),
-									AnonymousUID:   to.StringPtr("<anonymous-uid>"),
-									RootSquash:     to.BoolPtr(true),
-									Scope:          armstoragecache.NfsAccessRuleScope("default").ToPtr(),
-									SubmountAccess: to.BoolPtr(true),
-									Suid:           to.BoolPtr(false),
+									Access:         to.Ptr(armstoragecache.NfsAccessRuleAccessNo),
+									AnonymousGID:   to.Ptr("<anonymous-gid>"),
+									AnonymousUID:   to.Ptr("<anonymous-uid>"),
+									RootSquash:     to.Ptr(true),
+									Scope:          to.Ptr(armstoragecache.NfsAccessRuleScopeDefault),
+									SubmountAccess: to.Ptr(true),
+									Suid:           to.Ptr(false),
 								}},
 						}},
 				},
-				Subnet: to.StringPtr("<subnet>"),
+				Subnet: to.Ptr("<subnet>"),
 			},
 			SKU: &armstoragecache.CacheSKU{
-				Name: to.StringPtr("<name>"),
+				Name: to.Ptr("<name>"),
 			},
 			Tags: map[string]*string{
-				"Dept": to.StringPtr("Contoso"),
+				"Dept": to.Ptr("Contoso"),
 			},
 		},
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.CachesClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2021-09-01/examples/Caches_DebugInfo.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-01-01/examples/Caches_DebugInfo.json
 func ExampleCachesClient_BeginDebugInfo() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDebugInfo(ctx,
 		"<resource-group-name>",
 		"<cache-name>",
-		nil)
+		&armstoragecache.CachesClientBeginDebugInfoOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2021-09-01/examples/Caches_Flush.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-01-01/examples/Caches_Flush.json
 func ExampleCachesClient_BeginFlush() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginFlush(ctx,
 		"<resource-group-name>",
 		"<cache-name>",
-		nil)
+		&armstoragecache.CachesClientBeginFlushOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2021-09-01/examples/Caches_Start.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-01-01/examples/Caches_Start.json
 func ExampleCachesClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginStart(ctx,
 		"<resource-group-name>",
 		"<cache-name>",
-		nil)
+		&armstoragecache.CachesClientBeginStartOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2021-09-01/examples/Caches_Stop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-01-01/examples/Caches_Stop.json
 func ExampleCachesClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginStop(ctx,
 		"<resource-group-name>",
 		"<cache-name>",
-		nil)
+		&armstoragecache.CachesClientBeginStopOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2021-09-01/examples/Caches_UpgradeFirmware.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-01-01/examples/Caches_UpgradeFirmware.json
 func ExampleCachesClient_BeginUpgradeFirmware() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpgradeFirmware(ctx,
 		"<resource-group-name>",
 		"<cache-name>",
-		nil)
+		&armstoragecache.CachesClientBeginUpgradeFirmwareOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }

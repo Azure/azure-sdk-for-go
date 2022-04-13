@@ -22,20 +22,20 @@ import (
 	"strings"
 )
 
-// AscOperationsClient contains the methods for the AscOperations group.
-// Don't use this type directly, use NewAscOperationsClient() instead.
-type AscOperationsClient struct {
+// AscUsagesClient contains the methods for the AscUsages group.
+// Don't use this type directly, use NewAscUsagesClient() instead.
+type AscUsagesClient struct {
 	host           string
 	subscriptionID string
 	pl             runtime.Pipeline
 }
 
-// NewAscOperationsClient creates a new instance of AscOperationsClient with the specified values.
+// NewAscUsagesClient creates a new instance of AscUsagesClient with the specified values.
 // subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAscOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AscOperationsClient, error) {
+func NewAscUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AscUsagesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
@@ -47,7 +47,7 @@ func NewAscOperationsClient(subscriptionID string, credential azcore.TokenCreden
 	if err != nil {
 		return nil, err
 	}
-	client := &AscOperationsClient{
+	client := &AscUsagesClient{
 		subscriptionID: subscriptionID,
 		host:           ep,
 		pl:             pl,
@@ -55,29 +55,41 @@ func NewAscOperationsClient(subscriptionID string, credential azcore.TokenCreden
 	return client, nil
 }
 
-// Get - Gets the status of an asynchronous operation for the Azure HPC Cache
+// List - Gets the quantity used and quota limit for resources
 // If the operation fails it returns an *azcore.ResponseError type.
-// location - The name of the region used to look up the operation.
-// operationID - The operation id which uniquely identifies the asynchronous operation.
-// options - AscOperationsClientGetOptions contains the optional parameters for the AscOperationsClient.Get method.
-func (client *AscOperationsClient) Get(ctx context.Context, location string, operationID string, options *AscOperationsClientGetOptions) (AscOperationsClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, location, operationID, options)
-	if err != nil {
-		return AscOperationsClientGetResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return AscOperationsClientGetResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AscOperationsClientGetResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.getHandleResponse(resp)
+// location - The name of the region to query for usage information.
+// options - AscUsagesClientListOptions contains the optional parameters for the AscUsagesClient.List method.
+func (client *AscUsagesClient) List(location string, options *AscUsagesClientListOptions) *runtime.Pager[AscUsagesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AscUsagesClientListResponse]{
+		More: func(page AscUsagesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *AscUsagesClientListResponse) (AscUsagesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, location, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AscUsagesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AscUsagesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AscUsagesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
-// getCreateRequest creates the Get request.
-func (client *AscOperationsClient) getCreateRequest(ctx context.Context, location string, operationID string, options *AscOperationsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/locations/{location}/ascOperations/{operationId}"
+// listCreateRequest creates the List request.
+func (client *AscUsagesClient) listCreateRequest(ctx context.Context, location string, options *AscUsagesClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/locations/{location}/usages"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -86,10 +98,6 @@ func (client *AscOperationsClient) getCreateRequest(ctx context.Context, locatio
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	if operationID == "" {
-		return nil, errors.New("parameter operationID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -101,11 +109,11 @@ func (client *AscOperationsClient) getCreateRequest(ctx context.Context, locatio
 	return req, nil
 }
 
-// getHandleResponse handles the Get response.
-func (client *AscOperationsClient) getHandleResponse(resp *http.Response) (AscOperationsClientGetResponse, error) {
-	result := AscOperationsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AscOperation); err != nil {
-		return AscOperationsClientGetResponse{}, err
+// listHandleResponse handles the List response.
+func (client *AscUsagesClient) listHandleResponse(resp *http.Response) (AscUsagesClientListResponse, error) {
+	result := AscUsagesClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceUsagesListResult); err != nil {
+		return AscUsagesClientListResponse{}, err
 	}
 	return result, nil
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armstoragecache
 
 const (
 	moduleName    = "armstoragecache"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // CacheIdentityType - The type of identity used for the cache
@@ -33,11 +33,6 @@ func PossibleCacheIdentityTypeValues() []CacheIdentityType {
 	}
 }
 
-// ToPtr returns a *CacheIdentityType pointing to the current value.
-func (c CacheIdentityType) ToPtr() *CacheIdentityType {
-	return &c
-}
-
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -58,11 +53,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // DomainJoinedType - True if the HPC Cache is joined to the Active Directory domain.
 type DomainJoinedType string
 
@@ -81,11 +71,6 @@ func PossibleDomainJoinedTypeValues() []DomainJoinedType {
 	}
 }
 
-// ToPtr returns a *DomainJoinedType pointing to the current value.
-func (c DomainJoinedType) ToPtr() *DomainJoinedType {
-	return &c
-}
-
 // FirmwareStatusType - True if there is a firmware update ready to install on this Cache. The firmware will automatically
 // be installed after firmwareUpdateDeadline if not triggered earlier via the upgrade operation.
 type FirmwareStatusType string
@@ -101,11 +86,6 @@ func PossibleFirmwareStatusTypeValues() []FirmwareStatusType {
 		FirmwareStatusTypeAvailable,
 		FirmwareStatusTypeUnavailable,
 	}
-}
-
-// ToPtr returns a *FirmwareStatusType pointing to the current value.
-func (c FirmwareStatusType) ToPtr() *FirmwareStatusType {
-	return &c
 }
 
 // HealthStateType - List of Cache health states.
@@ -138,11 +118,6 @@ func PossibleHealthStateTypeValues() []HealthStateType {
 	}
 }
 
-// ToPtr returns a *HealthStateType pointing to the current value.
-func (c HealthStateType) ToPtr() *HealthStateType {
-	return &c
-}
-
 type MetricAggregationType string
 
 const (
@@ -168,11 +143,6 @@ func PossibleMetricAggregationTypeValues() []MetricAggregationType {
 	}
 }
 
-// ToPtr returns a *MetricAggregationType pointing to the current value.
-func (c MetricAggregationType) ToPtr() *MetricAggregationType {
-	return &c
-}
-
 // NfsAccessRuleAccess - Access allowed by this rule.
 type NfsAccessRuleAccess string
 
@@ -189,11 +159,6 @@ func PossibleNfsAccessRuleAccessValues() []NfsAccessRuleAccess {
 		NfsAccessRuleAccessRo,
 		NfsAccessRuleAccessRw,
 	}
-}
-
-// ToPtr returns a *NfsAccessRuleAccess pointing to the current value.
-func (c NfsAccessRuleAccess) ToPtr() *NfsAccessRuleAccess {
-	return &c
 }
 
 // NfsAccessRuleScope - Scope for this rule. The scope and filter determine which clients match the rule.
@@ -214,11 +179,6 @@ func PossibleNfsAccessRuleScopeValues() []NfsAccessRuleScope {
 	}
 }
 
-// ToPtr returns a *NfsAccessRuleScope pointing to the current value.
-func (c NfsAccessRuleScope) ToPtr() *NfsAccessRuleScope {
-	return &c
-}
-
 // OperationalStateType - Storage target operational state.
 type OperationalStateType string
 
@@ -237,11 +197,6 @@ func PossibleOperationalStateTypeValues() []OperationalStateType {
 		OperationalStateTypeReady,
 		OperationalStateTypeSuspended,
 	}
-}
-
-// ToPtr returns a *OperationalStateType pointing to the current value.
-func (c OperationalStateType) ToPtr() *OperationalStateType {
-	return &c
 }
 
 // ProvisioningStateType - ARM provisioning state, see https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property
@@ -268,11 +223,6 @@ func PossibleProvisioningStateTypeValues() []ProvisioningStateType {
 	}
 }
 
-// ToPtr returns a *ProvisioningStateType pointing to the current value.
-func (c ProvisioningStateType) ToPtr() *ProvisioningStateType {
-	return &c
-}
-
 // ReasonCode - The reason for the restriction. As of now this can be "QuotaId" or "NotAvailableForSubscription". "QuotaId"
 // is set when the SKU has requiredQuotas parameter as the subscription does not belong to that
 // quota. "NotAvailableForSubscription" is related to capacity at the datacenter.
@@ -289,11 +239,6 @@ func PossibleReasonCodeValues() []ReasonCode {
 		ReasonCodeNotAvailableForSubscription,
 		ReasonCodeQuotaID,
 	}
-}
-
-// ToPtr returns a *ReasonCode pointing to the current value.
-func (c ReasonCode) ToPtr() *ReasonCode {
-	return &c
 }
 
 // StorageTargetType - Type of the Storage Target.
@@ -316,11 +261,6 @@ func PossibleStorageTargetTypeValues() []StorageTargetType {
 	}
 }
 
-// ToPtr returns a *StorageTargetType pointing to the current value.
-func (c StorageTargetType) ToPtr() *StorageTargetType {
-	return &c
-}
-
 // UsernameDownloadedType - Indicates whether or not the HPC Cache has performed the username download successfully.
 type UsernameDownloadedType string
 
@@ -337,11 +277,6 @@ func PossibleUsernameDownloadedTypeValues() []UsernameDownloadedType {
 		UsernameDownloadedTypeNo,
 		UsernameDownloadedTypeYes,
 	}
-}
-
-// ToPtr returns a *UsernameDownloadedType pointing to the current value.
-func (c UsernameDownloadedType) ToPtr() *UsernameDownloadedType {
-	return &c
 }
 
 // UsernameSource - This setting determines how the cache gets username and group names for clients.
@@ -362,9 +297,4 @@ func PossibleUsernameSourceValues() []UsernameSource {
 		UsernameSourceLDAP,
 		UsernameSourceNone,
 	}
-}
-
-// ToPtr returns a *UsernameSource pointing to the current value.
-func (c UsernameSource) ToPtr() *UsernameSource {
-	return &c
 }

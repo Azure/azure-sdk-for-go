@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,15 +10,15 @@ package armresourcehealth
 
 const (
 	moduleName    = "armresourcehealth"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v0.5.0"
 )
 
-// AvailabilityStateValues - Availability status of the resource. When it is null, this availabilityStatus object represents
-// an availability impacting event
+// AvailabilityStateValues - Impacted resource status of the resource.
 type AvailabilityStateValues string
 
 const (
 	AvailabilityStateValuesAvailable   AvailabilityStateValues = "Available"
+	AvailabilityStateValuesDegraded    AvailabilityStateValues = "Degraded"
 	AvailabilityStateValuesUnavailable AvailabilityStateValues = "Unavailable"
 	AvailabilityStateValuesUnknown     AvailabilityStateValues = "Unknown"
 )
@@ -27,79 +27,43 @@ const (
 func PossibleAvailabilityStateValuesValues() []AvailabilityStateValues {
 	return []AvailabilityStateValues{
 		AvailabilityStateValuesAvailable,
+		AvailabilityStateValuesDegraded,
 		AvailabilityStateValuesUnavailable,
 		AvailabilityStateValuesUnknown,
 	}
-}
-
-// ToPtr returns a *AvailabilityStateValues pointing to the current value.
-func (c AvailabilityStateValues) ToPtr() *AvailabilityStateValues {
-	return &c
 }
 
 // ReasonChronicityTypes - Chronicity of the availability transition.
 type ReasonChronicityTypes string
 
 const (
-	ReasonChronicityTypesTransient  ReasonChronicityTypes = "Transient"
 	ReasonChronicityTypesPersistent ReasonChronicityTypes = "Persistent"
+	ReasonChronicityTypesTransient  ReasonChronicityTypes = "Transient"
 )
 
 // PossibleReasonChronicityTypesValues returns the possible values for the ReasonChronicityTypes const type.
 func PossibleReasonChronicityTypesValues() []ReasonChronicityTypes {
 	return []ReasonChronicityTypes{
-		ReasonChronicityTypesTransient,
 		ReasonChronicityTypesPersistent,
+		ReasonChronicityTypesTransient,
 	}
 }
 
-// ToPtr returns a *ReasonChronicityTypes pointing to the current value.
-func (c ReasonChronicityTypes) ToPtr() *ReasonChronicityTypes {
-	return &c
-}
-
-// SeverityValues - The severity level of this active event.
-type SeverityValues string
+// ReasonTypeValues - When the resource's availabilityState is Unavailable, it describes where the health impacting event
+// was originated.
+type ReasonTypeValues string
 
 const (
-	SeverityValuesError       SeverityValues = "Error"
-	SeverityValuesInformation SeverityValues = "Information"
-	SeverityValuesWarning     SeverityValues = "Warning"
+	ReasonTypeValuesPlanned       ReasonTypeValues = "Planned"
+	ReasonTypeValuesUnplanned     ReasonTypeValues = "Unplanned"
+	ReasonTypeValuesUserInitiated ReasonTypeValues = "UserInitiated"
 )
 
-// PossibleSeverityValuesValues returns the possible values for the SeverityValues const type.
-func PossibleSeverityValuesValues() []SeverityValues {
-	return []SeverityValues{
-		SeverityValuesError,
-		SeverityValuesInformation,
-		SeverityValuesWarning,
+// PossibleReasonTypeValuesValues returns the possible values for the ReasonTypeValues const type.
+func PossibleReasonTypeValuesValues() []ReasonTypeValues {
+	return []ReasonTypeValues{
+		ReasonTypeValuesPlanned,
+		ReasonTypeValuesUnplanned,
+		ReasonTypeValuesUserInitiated,
 	}
-}
-
-// ToPtr returns a *SeverityValues pointing to the current value.
-func (c SeverityValues) ToPtr() *SeverityValues {
-	return &c
-}
-
-// StageValues - The stage of this active event.
-type StageValues string
-
-const (
-	StageValuesActive   StageValues = "Active"
-	StageValuesArchived StageValues = "Archived"
-	StageValuesResolve  StageValues = "Resolve"
-)
-
-// PossibleStageValuesValues returns the possible values for the StageValues const type.
-func PossibleStageValuesValues() []StageValues {
-	return []StageValues{
-		StageValuesActive,
-		StageValuesArchived,
-		StageValuesResolve,
-	}
-}
-
-// ToPtr returns a *StageValues pointing to the current value.
-func (c StageValues) ToPtr() *StageValues {
-	return &c
 }

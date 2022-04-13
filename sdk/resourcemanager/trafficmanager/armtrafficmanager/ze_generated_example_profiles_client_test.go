@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,146 +17,196 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/trafficmanager/armtrafficmanager"
 )
 
-// x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-08-01/examples/Profile-GET-ByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-08-01/examples/Profile-GET-ByResourceGroup.json
 func ExampleProfilesClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armtrafficmanager.NewProfilesClient("<subscription-id>", cred, nil)
-	res, err := client.ListByResourceGroup(ctx,
-		"<resource-group-name>",
-		nil)
+	client, err := armtrafficmanager.NewProfilesClient("<subscription-id>", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ProfilesClientListByResourceGroupResult)
+	pager := client.ListByResourceGroup("<resource-group-name>",
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+			return
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
 }
 
-// x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-08-01/examples/Profile-GET-BySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-08-01/examples/Profile-GET-BySubscription.json
 func ExampleProfilesClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armtrafficmanager.NewProfilesClient("<subscription-id>", cred, nil)
-	res, err := client.ListBySubscription(ctx,
-		nil)
+	client, err := armtrafficmanager.NewProfilesClient("<subscription-id>", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ProfilesClientListBySubscriptionResult)
+	pager := client.ListBySubscription(nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+			return
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
 }
 
-// x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-08-01/examples/Profile-GET-WithEndpoints.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-08-01/examples/Profile-GET-WithEndpoints.json
 func ExampleProfilesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armtrafficmanager.NewProfilesClient("<subscription-id>", cred, nil)
+	client, err := armtrafficmanager.NewProfilesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<profile-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ProfilesClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-08-01/examples/Profile-PUT-MultiValue.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-08-01/examples/Profile-PUT-MultiValue.json
 func ExampleProfilesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armtrafficmanager.NewProfilesClient("<subscription-id>", cred, nil)
+	client, err := armtrafficmanager.NewProfilesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<profile-name>",
 		armtrafficmanager.Profile{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Properties: &armtrafficmanager.ProfileProperties{
 				DNSConfig: &armtrafficmanager.DNSConfig{
-					RelativeName: to.StringPtr("<relative-name>"),
-					TTL:          to.Int64Ptr(35),
+					RelativeName: to.Ptr("<relative-name>"),
+					TTL:          to.Ptr[int64](35),
 				},
-				MaxReturn: to.Int64Ptr(2),
+				MaxReturn: to.Ptr[int64](2),
 				MonitorConfig: &armtrafficmanager.MonitorConfig{
-					Path:     to.StringPtr("<path>"),
-					Port:     to.Int64Ptr(80),
-					Protocol: armtrafficmanager.MonitorProtocol("HTTP").ToPtr(),
+					Path:     to.Ptr("<path>"),
+					Port:     to.Ptr[int64](80),
+					Protocol: to.Ptr(armtrafficmanager.MonitorProtocolHTTP),
 				},
-				ProfileStatus:               armtrafficmanager.ProfileStatus("Enabled").ToPtr(),
-				TrafficRoutingMethod:        armtrafficmanager.TrafficRoutingMethod("MultiValue").ToPtr(),
-				TrafficViewEnrollmentStatus: armtrafficmanager.TrafficViewEnrollmentStatus("Disabled").ToPtr(),
+				ProfileStatus:               to.Ptr(armtrafficmanager.ProfileStatusEnabled),
+				TrafficRoutingMethod:        to.Ptr(armtrafficmanager.TrafficRoutingMethodMultiValue),
+				TrafficViewEnrollmentStatus: to.Ptr(armtrafficmanager.TrafficViewEnrollmentStatusDisabled),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ProfilesClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-08-01/examples/Profile-DELETE.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-08-01/examples/Profile-DELETE.json
 func ExampleProfilesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armtrafficmanager.NewProfilesClient("<subscription-id>", cred, nil)
+	client, err := armtrafficmanager.NewProfilesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Delete(ctx,
 		"<resource-group-name>",
 		"<profile-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ProfilesClientDeleteResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-08-01/examples/Profile-PATCH-MonitorConfig.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-08-01/examples/Profile-PATCH-MonitorConfig.json
 func ExampleProfilesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armtrafficmanager.NewProfilesClient("<subscription-id>", cred, nil)
+	client, err := armtrafficmanager.NewProfilesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<profile-name>",
 		armtrafficmanager.Profile{
 			Properties: &armtrafficmanager.ProfileProperties{
 				MonitorConfig: &armtrafficmanager.MonitorConfig{
-					Path: to.StringPtr("<path>"),
+					Path: to.Ptr("<path>"),
 					CustomHeaders: []*armtrafficmanager.MonitorConfigCustomHeadersItem{
 						{
-							Name:  to.StringPtr("<name>"),
-							Value: to.StringPtr("<value>"),
+							Name:  to.Ptr("<name>"),
+							Value: to.Ptr("<value>"),
 						},
 						{
-							Name:  to.StringPtr("<name>"),
-							Value: to.StringPtr("<value>"),
+							Name:  to.Ptr("<name>"),
+							Value: to.Ptr("<value>"),
 						}},
-					IntervalInSeconds:         to.Int64Ptr(30),
-					Port:                      to.Int64Ptr(80),
-					TimeoutInSeconds:          to.Int64Ptr(6),
-					ToleratedNumberOfFailures: to.Int64Ptr(4),
-					Protocol:                  armtrafficmanager.MonitorProtocol("HTTP").ToPtr(),
+					IntervalInSeconds:         to.Ptr[int64](30),
+					Port:                      to.Ptr[int64](80),
+					TimeoutInSeconds:          to.Ptr[int64](6),
+					ToleratedNumberOfFailures: to.Ptr[int64](4),
+					Protocol:                  to.Ptr(armtrafficmanager.MonitorProtocolHTTP),
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ProfilesClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }

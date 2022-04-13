@@ -1,5 +1,106 @@
 # Release History
 
+## 0.3.0 (2022-04-13)
+### Breaking Changes
+
+- Function `*ProfilesClient.ListByResourceGroup` parameter(s) have been changed from `(context.Context, string, *ProfilesClientListByResourceGroupOptions)` to `(string, *ProfilesClientListByResourceGroupOptions)`
+- Function `*ProfilesClient.ListByResourceGroup` return value(s) have been changed from `(ProfilesClientListByResourceGroupResponse, error)` to `(*runtime.Pager[ProfilesClientListByResourceGroupResponse])`
+- Function `*ProfilesClient.ListBySubscription` parameter(s) have been changed from `(context.Context, *ProfilesClientListBySubscriptionOptions)` to `(*ProfilesClientListBySubscriptionOptions)`
+- Function `*ProfilesClient.ListBySubscription` return value(s) have been changed from `(ProfilesClientListBySubscriptionResponse, error)` to `(*runtime.Pager[ProfilesClientListBySubscriptionResponse])`
+- Function `NewUserMetricsKeysClient` return value(s) have been changed from `(*UserMetricsKeysClient)` to `(*UserMetricsKeysClient, error)`
+- Function `NewGeographicHierarchiesClient` return value(s) have been changed from `(*GeographicHierarchiesClient)` to `(*GeographicHierarchiesClient, error)`
+- Function `*HeatMapClient.Get` parameter(s) have been changed from `(context.Context, string, string, Enum8, *HeatMapClientGetOptions)` to `(context.Context, string, string, *HeatMapClientGetOptions)`
+- Function `*EndpointsClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, string, Endpoint, *EndpointsClientUpdateOptions)` to `(context.Context, string, string, EndpointType, string, Endpoint, *EndpointsClientUpdateOptions)`
+- Function `*EndpointsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, Endpoint, *EndpointsClientCreateOrUpdateOptions)` to `(context.Context, string, string, EndpointType, string, Endpoint, *EndpointsClientCreateOrUpdateOptions)`
+- Function `*EndpointsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *EndpointsClientDeleteOptions)` to `(context.Context, string, string, EndpointType, string, *EndpointsClientDeleteOptions)`
+- Function `NewEndpointsClient` return value(s) have been changed from `(*EndpointsClient)` to `(*EndpointsClient, error)`
+- Function `NewProfilesClient` return value(s) have been changed from `(*ProfilesClient)` to `(*ProfilesClient, error)`
+- Function `*EndpointsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *EndpointsClientGetOptions)` to `(context.Context, string, string, EndpointType, string, *EndpointsClientGetOptions)`
+- Function `NewHeatMapClient` return value(s) have been changed from `(*HeatMapClient)` to `(*HeatMapClient, error)`
+- Const `Enum8Default` has been removed
+- Function `EndpointMonitorStatus.ToPtr` has been removed
+- Function `MonitorProtocol.ToPtr` has been removed
+- Function `EndpointStatus.ToPtr` has been removed
+- Function `TrafficRoutingMethod.ToPtr` has been removed
+- Function `ProfileStatus.ToPtr` has been removed
+- Function `ProfileMonitorStatus.ToPtr` has been removed
+- Function `TrafficViewEnrollmentStatus.ToPtr` has been removed
+- Function `Enum8.ToPtr` has been removed
+- Function `AllowedEndpointRecordType.ToPtr` has been removed
+- Function `PossibleEnum8Values` has been removed
+- Struct `EndpointsClientCreateOrUpdateResult` has been removed
+- Struct `EndpointsClientDeleteResult` has been removed
+- Struct `EndpointsClientGetResult` has been removed
+- Struct `EndpointsClientUpdateResult` has been removed
+- Struct `GeographicHierarchiesClientGetDefaultResult` has been removed
+- Struct `HeatMapClientGetResult` has been removed
+- Struct `ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityResult` has been removed
+- Struct `ProfilesClientCreateOrUpdateResult` has been removed
+- Struct `ProfilesClientDeleteResult` has been removed
+- Struct `ProfilesClientGetResult` has been removed
+- Struct `ProfilesClientListByResourceGroupResult` has been removed
+- Struct `ProfilesClientListBySubscriptionResult` has been removed
+- Struct `ProfilesClientUpdateResult` has been removed
+- Struct `UserMetricsKeysClientCreateOrUpdateResult` has been removed
+- Struct `UserMetricsKeysClientDeleteResult` has been removed
+- Struct `UserMetricsKeysClientGetResult` has been removed
+- Field `UserMetricsKeysClientGetResult` of struct `UserMetricsKeysClientGetResponse` has been removed
+- Field `RawResponse` of struct `UserMetricsKeysClientGetResponse` has been removed
+- Field `EndpointsClientUpdateResult` of struct `EndpointsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `EndpointsClientUpdateResponse` has been removed
+- Field `EndpointsClientDeleteResult` of struct `EndpointsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `EndpointsClientDeleteResponse` has been removed
+- Field `EndpointsClientCreateOrUpdateResult` of struct `EndpointsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `EndpointsClientCreateOrUpdateResponse` has been removed
+- Field `ProfilesClientGetResult` of struct `ProfilesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ProfilesClientGetResponse` has been removed
+- Field `ProfilesClientListByResourceGroupResult` of struct `ProfilesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ProfilesClientListByResourceGroupResponse` has been removed
+- Field `HeatMapClientGetResult` of struct `HeatMapClientGetResponse` has been removed
+- Field `RawResponse` of struct `HeatMapClientGetResponse` has been removed
+- Field `ProfilesClientUpdateResult` of struct `ProfilesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ProfilesClientUpdateResponse` has been removed
+- Field `UserMetricsKeysClientCreateOrUpdateResult` of struct `UserMetricsKeysClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `UserMetricsKeysClientCreateOrUpdateResponse` has been removed
+- Field `EndpointsClientGetResult` of struct `EndpointsClientGetResponse` has been removed
+- Field `RawResponse` of struct `EndpointsClientGetResponse` has been removed
+- Field `ProfilesClientDeleteResult` of struct `ProfilesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `ProfilesClientDeleteResponse` has been removed
+- Field `ProfilesClientCreateOrUpdateResult` of struct `ProfilesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ProfilesClientCreateOrUpdateResponse` has been removed
+- Field `GeographicHierarchiesClientGetDefaultResult` of struct `GeographicHierarchiesClientGetDefaultResponse` has been removed
+- Field `RawResponse` of struct `GeographicHierarchiesClientGetDefaultResponse` has been removed
+- Field `ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityResult` of struct `ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityResponse` has been removed
+- Field `UserMetricsKeysClientDeleteResult` of struct `UserMetricsKeysClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `UserMetricsKeysClientDeleteResponse` has been removed
+- Field `ProfilesClientListBySubscriptionResult` of struct `ProfilesClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `ProfilesClientListBySubscriptionResponse` has been removed
+
+### Features Added
+
+- New const `EndpointTypeExternalEndpoints`
+- New const `EndpointTypeNestedEndpoints`
+- New const `EndpointTypeAzureEndpoints`
+- New function `PossibleEndpointTypeValues() []EndpointType`
+- New anonymous field `ProfileListResult` in struct `ProfilesClientListByResourceGroupResponse`
+- New anonymous field `ProfileListResult` in struct `ProfilesClientListBySubscriptionResponse`
+- New anonymous field `Profile` in struct `ProfilesClientCreateOrUpdateResponse`
+- New anonymous field `HeatMapModel` in struct `HeatMapClientGetResponse`
+- New anonymous field `DeleteOperationResult` in struct `EndpointsClientDeleteResponse`
+- New anonymous field `Endpoint` in struct `EndpointsClientGetResponse`
+- New anonymous field `GeographicHierarchy` in struct `GeographicHierarchiesClientGetDefaultResponse`
+- New anonymous field `NameAvailability` in struct `ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityResponse`
+- New anonymous field `Endpoint` in struct `EndpointsClientUpdateResponse`
+- New anonymous field `Endpoint` in struct `EndpointsClientCreateOrUpdateResponse`
+- New anonymous field `DeleteOperationResult` in struct `ProfilesClientDeleteResponse`
+- New anonymous field `UserMetricsModel` in struct `UserMetricsKeysClientGetResponse`
+- New anonymous field `DeleteOperationResult` in struct `UserMetricsKeysClientDeleteResponse`
+- New anonymous field `Profile` in struct `ProfilesClientUpdateResponse`
+- New anonymous field `UserMetricsModel` in struct `UserMetricsKeysClientCreateOrUpdateResponse`
+- New anonymous field `Profile` in struct `ProfilesClientGetResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

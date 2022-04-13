@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type SnapshotsClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSnapshotsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SnapshotsClient {
+func NewSnapshotsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SnapshotsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SnapshotsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a snapshot.
@@ -59,22 +64,16 @@ func NewSnapshotsClient(subscriptionID string, credential azcore.TokenCredential
 // snapshot - Snapshot object supplied in the body of the Put disk operation.
 // options - SnapshotsClientBeginCreateOrUpdateOptions contains the optional parameters for the SnapshotsClient.BeginCreateOrUpdate
 // method.
-func (client *SnapshotsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot, options *SnapshotsClientBeginCreateOrUpdateOptions) (SnapshotsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, snapshotName, snapshot, options)
-	if err != nil {
-		return SnapshotsClientCreateOrUpdatePollerResponse{}, err
+func (client *SnapshotsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot, options *SnapshotsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[SnapshotsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, snapshotName, snapshot, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SnapshotsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SnapshotsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SnapshotsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SnapshotsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return SnapshotsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &SnapshotsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a snapshot.
@@ -127,22 +126,16 @@ func (client *SnapshotsClient) createOrUpdateCreateRequest(ctx context.Context, 
 // Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80
 // characters.
 // options - SnapshotsClientBeginDeleteOptions contains the optional parameters for the SnapshotsClient.BeginDelete method.
-func (client *SnapshotsClient) BeginDelete(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsClientBeginDeleteOptions) (SnapshotsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, snapshotName, options)
-	if err != nil {
-		return SnapshotsClientDeletePollerResponse{}, err
+func (client *SnapshotsClient) BeginDelete(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsClientBeginDeleteOptions) (*armruntime.Poller[SnapshotsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, snapshotName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SnapshotsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SnapshotsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SnapshotsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SnapshotsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return SnapshotsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &SnapshotsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a snapshot.
@@ -237,7 +230,7 @@ func (client *SnapshotsClient) getCreateRequest(ctx context.Context, resourceGro
 
 // getHandleResponse handles the Get response.
 func (client *SnapshotsClient) getHandleResponse(resp *http.Response) (SnapshotsClientGetResponse, error) {
-	result := SnapshotsClientGetResponse{RawResponse: resp}
+	result := SnapshotsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Snapshot); err != nil {
 		return SnapshotsClientGetResponse{}, err
 	}
@@ -253,22 +246,18 @@ func (client *SnapshotsClient) getHandleResponse(resp *http.Response) (Snapshots
 // grantAccessData - Access data object supplied in the body of the get snapshot access operation.
 // options - SnapshotsClientBeginGrantAccessOptions contains the optional parameters for the SnapshotsClient.BeginGrantAccess
 // method.
-func (client *SnapshotsClient) BeginGrantAccess(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData, options *SnapshotsClientBeginGrantAccessOptions) (SnapshotsClientGrantAccessPollerResponse, error) {
-	resp, err := client.grantAccess(ctx, resourceGroupName, snapshotName, grantAccessData, options)
-	if err != nil {
-		return SnapshotsClientGrantAccessPollerResponse{}, err
+func (client *SnapshotsClient) BeginGrantAccess(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData, options *SnapshotsClientBeginGrantAccessOptions) (*armruntime.Poller[SnapshotsClientGrantAccessResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.grantAccess(ctx, resourceGroupName, snapshotName, grantAccessData, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SnapshotsClientGrantAccessResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[SnapshotsClientGrantAccessResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SnapshotsClientGrantAccessPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SnapshotsClient.GrantAccess", "location", resp, client.pl)
-	if err != nil {
-		return SnapshotsClientGrantAccessPollerResponse{}, err
-	}
-	result.Poller = &SnapshotsClientGrantAccessPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // GrantAccess - Grants access to a snapshot.
@@ -317,16 +306,32 @@ func (client *SnapshotsClient) grantAccessCreateRequest(ctx context.Context, res
 // List - Lists snapshots under a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SnapshotsClientListOptions contains the optional parameters for the SnapshotsClient.List method.
-func (client *SnapshotsClient) List(options *SnapshotsClientListOptions) *SnapshotsClientListPager {
-	return &SnapshotsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *SnapshotsClient) List(options *SnapshotsClientListOptions) *runtime.Pager[SnapshotsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SnapshotsClientListResponse]{
+		More: func(page SnapshotsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SnapshotsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SnapshotList.NextLink)
+		Fetcher: func(ctx context.Context, page *SnapshotsClientListResponse) (SnapshotsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SnapshotsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SnapshotsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SnapshotsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -349,7 +354,7 @@ func (client *SnapshotsClient) listCreateRequest(ctx context.Context, options *S
 
 // listHandleResponse handles the List response.
 func (client *SnapshotsClient) listHandleResponse(resp *http.Response) (SnapshotsClientListResponse, error) {
-	result := SnapshotsClientListResponse{RawResponse: resp}
+	result := SnapshotsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SnapshotList); err != nil {
 		return SnapshotsClientListResponse{}, err
 	}
@@ -361,16 +366,32 @@ func (client *SnapshotsClient) listHandleResponse(resp *http.Response) (Snapshot
 // resourceGroupName - The name of the resource group.
 // options - SnapshotsClientListByResourceGroupOptions contains the optional parameters for the SnapshotsClient.ListByResourceGroup
 // method.
-func (client *SnapshotsClient) ListByResourceGroup(resourceGroupName string, options *SnapshotsClientListByResourceGroupOptions) *SnapshotsClientListByResourceGroupPager {
-	return &SnapshotsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *SnapshotsClient) ListByResourceGroup(resourceGroupName string, options *SnapshotsClientListByResourceGroupOptions) *runtime.Pager[SnapshotsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SnapshotsClientListByResourceGroupResponse]{
+		More: func(page SnapshotsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SnapshotsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SnapshotList.NextLink)
+		Fetcher: func(ctx context.Context, page *SnapshotsClientListByResourceGroupResponse) (SnapshotsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SnapshotsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SnapshotsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SnapshotsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -397,7 +418,7 @@ func (client *SnapshotsClient) listByResourceGroupCreateRequest(ctx context.Cont
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *SnapshotsClient) listByResourceGroupHandleResponse(resp *http.Response) (SnapshotsClientListByResourceGroupResponse, error) {
-	result := SnapshotsClientListByResourceGroupResponse{RawResponse: resp}
+	result := SnapshotsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SnapshotList); err != nil {
 		return SnapshotsClientListByResourceGroupResponse{}, err
 	}
@@ -412,22 +433,18 @@ func (client *SnapshotsClient) listByResourceGroupHandleResponse(resp *http.Resp
 // characters.
 // options - SnapshotsClientBeginRevokeAccessOptions contains the optional parameters for the SnapshotsClient.BeginRevokeAccess
 // method.
-func (client *SnapshotsClient) BeginRevokeAccess(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsClientBeginRevokeAccessOptions) (SnapshotsClientRevokeAccessPollerResponse, error) {
-	resp, err := client.revokeAccess(ctx, resourceGroupName, snapshotName, options)
-	if err != nil {
-		return SnapshotsClientRevokeAccessPollerResponse{}, err
+func (client *SnapshotsClient) BeginRevokeAccess(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsClientBeginRevokeAccessOptions) (*armruntime.Poller[SnapshotsClientRevokeAccessResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.revokeAccess(ctx, resourceGroupName, snapshotName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SnapshotsClientRevokeAccessResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[SnapshotsClientRevokeAccessResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SnapshotsClientRevokeAccessPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SnapshotsClient.RevokeAccess", "location", resp, client.pl)
-	if err != nil {
-		return SnapshotsClientRevokeAccessPollerResponse{}, err
-	}
-	result.Poller = &SnapshotsClientRevokeAccessPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // RevokeAccess - Revokes access to a snapshot.
@@ -480,22 +497,16 @@ func (client *SnapshotsClient) revokeAccessCreateRequest(ctx context.Context, re
 // characters.
 // snapshot - Snapshot object supplied in the body of the Patch snapshot operation.
 // options - SnapshotsClientBeginUpdateOptions contains the optional parameters for the SnapshotsClient.BeginUpdate method.
-func (client *SnapshotsClient) BeginUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate, options *SnapshotsClientBeginUpdateOptions) (SnapshotsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, snapshotName, snapshot, options)
-	if err != nil {
-		return SnapshotsClientUpdatePollerResponse{}, err
+func (client *SnapshotsClient) BeginUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate, options *SnapshotsClientBeginUpdateOptions) (*armruntime.Poller[SnapshotsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, snapshotName, snapshot, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SnapshotsClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SnapshotsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SnapshotsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SnapshotsClient.Update", "", resp, client.pl)
-	if err != nil {
-		return SnapshotsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &SnapshotsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates (patches) a snapshot.

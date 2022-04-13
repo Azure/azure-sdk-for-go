@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,14 +17,19 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 )
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineImagesEdgeZone_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineImagesEdgeZone_Get_MaximumSet_Gen.json
 func ExampleVirtualMachineImagesEdgeZoneClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcompute.NewVirtualMachineImagesEdgeZoneClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineImagesEdgeZoneClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<location>",
 		"<edge-zone>",
@@ -34,68 +39,91 @@ func ExampleVirtualMachineImagesEdgeZoneClient_Get() {
 		"<version>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.VirtualMachineImagesEdgeZoneClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineImagesEdgeZone_List_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineImagesEdgeZone_List_MaximumSet_Gen.json
 func ExampleVirtualMachineImagesEdgeZoneClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcompute.NewVirtualMachineImagesEdgeZoneClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineImagesEdgeZoneClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.List(ctx,
 		"<location>",
 		"<edge-zone>",
 		"<publisher-name>",
 		"<offer>",
 		"<skus>",
-		&armcompute.VirtualMachineImagesEdgeZoneClientListOptions{Expand: to.StringPtr("<expand>"),
-			Top:     to.Int32Ptr(12),
-			Orderby: to.StringPtr("<orderby>"),
+		&armcompute.VirtualMachineImagesEdgeZoneClientListOptions{Expand: to.Ptr("<expand>"),
+			Top:     to.Ptr[int32](12),
+			Orderby: to.Ptr("<orderby>"),
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.VirtualMachineImagesEdgeZoneClientListResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineImagesEdgeZone_ListOffers_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineImagesEdgeZone_ListOffers_MaximumSet_Gen.json
 func ExampleVirtualMachineImagesEdgeZoneClient_ListOffers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcompute.NewVirtualMachineImagesEdgeZoneClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineImagesEdgeZoneClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ListOffers(ctx,
 		"<location>",
 		"<edge-zone>",
 		"<publisher-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.VirtualMachineImagesEdgeZoneClientListOffersResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineImagesEdgeZone_ListPublishers_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineImagesEdgeZone_ListPublishers_MaximumSet_Gen.json
 func ExampleVirtualMachineImagesEdgeZoneClient_ListPublishers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcompute.NewVirtualMachineImagesEdgeZoneClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineImagesEdgeZoneClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ListPublishers(ctx,
 		"<location>",
 		"<edge-zone>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.VirtualMachineImagesEdgeZoneClientListPublishersResult)
+	// TODO: use response item
+	_ = res
 }

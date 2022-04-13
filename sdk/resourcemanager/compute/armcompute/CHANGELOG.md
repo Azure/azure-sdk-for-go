@@ -1,5 +1,2580 @@
 # Release History
 
+## 0.6.0 (2022-04-13)
+### Breaking Changes
+
+- Function `*GalleryImagesClient.ListByGallery` return value(s) have been changed from `(*GalleryImagesClientListByGalleryPager)` to `(*runtime.Pager[GalleryImagesClientListByGalleryResponse])`
+- Function `*CapacityReservationsClient.ListByCapacityReservationGroup` return value(s) have been changed from `(*CapacityReservationsClientListByCapacityReservationGroupPager)` to `(*runtime.Pager[CapacityReservationsClientListByCapacityReservationGroupResponse])`
+- Function `NewVirtualMachineScaleSetsClient` return value(s) have been changed from `(*VirtualMachineScaleSetsClient)` to `(*VirtualMachineScaleSetsClient, error)`
+- Function `*VirtualMachineScaleSetsClient.List` return value(s) have been changed from `(*VirtualMachineScaleSetsClientListPager)` to `(*runtime.Pager[VirtualMachineScaleSetsClientListResponse])`
+- Function `*CapacityReservationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(CapacityReservationsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[CapacityReservationsClientCreateOrUpdateResponse], error)`
+- Function `*SharedGalleriesClient.List` return value(s) have been changed from `(*SharedGalleriesClientListPager)` to `(*runtime.Pager[SharedGalleriesClientListResponse])`
+- Function `*VirtualMachinesClient.BeginDeallocate` return value(s) have been changed from `(VirtualMachinesClientDeallocatePollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientDeallocateResponse], error)`
+- Function `*LogAnalyticsClient.BeginExportThrottledRequests` return value(s) have been changed from `(LogAnalyticsClientExportThrottledRequestsPollerResponse, error)` to `(*armruntime.Poller[LogAnalyticsClientExportThrottledRequestsResponse], error)`
+- Function `*VirtualMachineScaleSetsClient.BeginRestart` return value(s) have been changed from `(VirtualMachineScaleSetsClientRestartPollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetsClientRestartResponse], error)`
+- Function `*VirtualMachinesClient.BeginAssessPatches` return value(s) have been changed from `(VirtualMachinesClientAssessPatchesPollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientAssessPatchesResponse], error)`
+- Function `*RestorePointCollectionsClient.List` return value(s) have been changed from `(*RestorePointCollectionsClientListPager)` to `(*runtime.Pager[RestorePointCollectionsClientListResponse])`
+- Function `*CloudServiceOperatingSystemsClient.ListOSVersions` return value(s) have been changed from `(*CloudServiceOperatingSystemsClientListOSVersionsPager)` to `(*runtime.Pager[CloudServiceOperatingSystemsClientListOSVersionsResponse])`
+- Function `*VirtualMachineScaleSetsClient.ListAll` return value(s) have been changed from `(*VirtualMachineScaleSetsClientListAllPager)` to `(*runtime.Pager[VirtualMachineScaleSetsClientListAllResponse])`
+- Function `NewDedicatedHostGroupsClient` return value(s) have been changed from `(*DedicatedHostGroupsClient)` to `(*DedicatedHostGroupsClient, error)`
+- Function `*DisksClient.BeginCreateOrUpdate` return value(s) have been changed from `(DisksClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[DisksClientCreateOrUpdateResponse], error)`
+- Function `NewLogAnalyticsClient` return value(s) have been changed from `(*LogAnalyticsClient)` to `(*LogAnalyticsClient, error)`
+- Function `*CloudServiceRoleInstancesClient.List` return value(s) have been changed from `(*CloudServiceRoleInstancesClientListPager)` to `(*runtime.Pager[CloudServiceRoleInstancesClientListResponse])`
+- Function `*DiskEncryptionSetsClient.BeginDelete` return value(s) have been changed from `(DiskEncryptionSetsClientDeletePollerResponse, error)` to `(*armruntime.Poller[DiskEncryptionSetsClientDeleteResponse], error)`
+- Function `*GalleryImageVersionsClient.ListByGalleryImage` return value(s) have been changed from `(*GalleryImageVersionsClientListByGalleryImagePager)` to `(*runtime.Pager[GalleryImageVersionsClientListByGalleryImageResponse])`
+- Function `*DiskEncryptionSetsClient.BeginCreateOrUpdate` return value(s) have been changed from `(DiskEncryptionSetsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[DiskEncryptionSetsClientCreateOrUpdateResponse], error)`
+- Function `*CloudServiceRoleInstancesClient.BeginDelete` return value(s) have been changed from `(CloudServiceRoleInstancesClientDeletePollerResponse, error)` to `(*armruntime.Poller[CloudServiceRoleInstancesClientDeleteResponse], error)`
+- Function `*GalleryImageVersionsClient.BeginDelete` return value(s) have been changed from `(GalleryImageVersionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[GalleryImageVersionsClientDeleteResponse], error)`
+- Function `*VirtualMachinesClient.ListAvailableSizes` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachinesClientListAvailableSizesOptions)` to `(string, string, *VirtualMachinesClientListAvailableSizesOptions)`
+- Function `*VirtualMachinesClient.ListAvailableSizes` return value(s) have been changed from `(VirtualMachinesClientListAvailableSizesResponse, error)` to `(*runtime.Pager[VirtualMachinesClientListAvailableSizesResponse])`
+- Function `*CloudServiceRolesClient.List` return value(s) have been changed from `(*CloudServiceRolesClientListPager)` to `(*runtime.Pager[CloudServiceRolesClientListResponse])`
+- Function `*DedicatedHostGroupsClient.ListBySubscription` return value(s) have been changed from `(*DedicatedHostGroupsClientListBySubscriptionPager)` to `(*runtime.Pager[DedicatedHostGroupsClientListBySubscriptionResponse])`
+- Function `*CloudServiceRoleInstancesClient.BeginRebuild` return value(s) have been changed from `(CloudServiceRoleInstancesClientRebuildPollerResponse, error)` to `(*armruntime.Poller[CloudServiceRoleInstancesClientRebuildResponse], error)`
+- Function `NewSSHPublicKeysClient` return value(s) have been changed from `(*SSHPublicKeysClient)` to `(*SSHPublicKeysClient, error)`
+- Function `*VirtualMachinesClient.BeginRedeploy` return value(s) have been changed from `(VirtualMachinesClientRedeployPollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientRedeployResponse], error)`
+- Function `*CloudServicesClient.BeginDelete` return value(s) have been changed from `(CloudServicesClientDeletePollerResponse, error)` to `(*armruntime.Poller[CloudServicesClientDeleteResponse], error)`
+- Function `*AvailabilitySetsClient.ListAvailableSizes` parameter(s) have been changed from `(context.Context, string, string, *AvailabilitySetsClientListAvailableSizesOptions)` to `(string, string, *AvailabilitySetsClientListAvailableSizesOptions)`
+- Function `*AvailabilitySetsClient.ListAvailableSizes` return value(s) have been changed from `(AvailabilitySetsClientListAvailableSizesResponse, error)` to `(*runtime.Pager[AvailabilitySetsClientListAvailableSizesResponse])`
+- Function `*DiskAccessesClient.BeginDelete` return value(s) have been changed from `(DiskAccessesClientDeletePollerResponse, error)` to `(*armruntime.Poller[DiskAccessesClientDeleteResponse], error)`
+- Function `*VirtualMachineScaleSetExtensionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualMachineScaleSetExtensionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetExtensionsClientCreateOrUpdateResponse], error)`
+- Function `*CloudServicesClient.BeginStart` return value(s) have been changed from `(CloudServicesClientStartPollerResponse, error)` to `(*armruntime.Poller[CloudServicesClientStartResponse], error)`
+- Function `NewGalleriesClient` return value(s) have been changed from `(*GalleriesClient)` to `(*GalleriesClient, error)`
+- Function `NewCommunityGalleryImageVersionsClient` return value(s) have been changed from `(*CommunityGalleryImageVersionsClient)` to `(*CommunityGalleryImageVersionsClient, error)`
+- Function `*RestorePointsClient.BeginCreate` return value(s) have been changed from `(RestorePointsClientCreatePollerResponse, error)` to `(*armruntime.Poller[RestorePointsClientCreateResponse], error)`
+- Function `*GalleryImagesClient.BeginDelete` return value(s) have been changed from `(GalleryImagesClientDeletePollerResponse, error)` to `(*armruntime.Poller[GalleryImagesClientDeleteResponse], error)`
+- Function `*VirtualMachinesClient.BeginRestart` return value(s) have been changed from `(VirtualMachinesClientRestartPollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientRestartResponse], error)`
+- Function `NewImagesClient` return value(s) have been changed from `(*ImagesClient)` to `(*ImagesClient, error)`
+- Function `*VirtualMachineScaleSetRollingUpgradesClient.BeginStartExtensionUpgrade` return value(s) have been changed from `(VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradeResponse], error)`
+- Function `*VirtualMachineScaleSetVMRunCommandsClient.BeginUpdate` return value(s) have been changed from `(VirtualMachineScaleSetVMRunCommandsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetVMRunCommandsClientUpdateResponse], error)`
+- Function `*VirtualMachinesClient.BeginReapply` return value(s) have been changed from `(VirtualMachinesClientReapplyPollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientReapplyResponse], error)`
+- Function `*VirtualMachineScaleSetsClient.ListByLocation` return value(s) have been changed from `(*VirtualMachineScaleSetsClientListByLocationPager)` to `(*runtime.Pager[VirtualMachineScaleSetsClientListByLocationResponse])`
+- Function `*DiskRestorePointClient.BeginRevokeAccess` return value(s) have been changed from `(DiskRestorePointClientRevokeAccessPollerResponse, error)` to `(*armruntime.Poller[DiskRestorePointClientRevokeAccessResponse], error)`
+- Function `NewCapacityReservationGroupsClient` return value(s) have been changed from `(*CapacityReservationGroupsClient)` to `(*CapacityReservationGroupsClient, error)`
+- Function `*GalleryApplicationsClient.BeginUpdate` return value(s) have been changed from `(GalleryApplicationsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[GalleryApplicationsClientUpdateResponse], error)`
+- Function `NewUsageClient` return value(s) have been changed from `(*UsageClient)` to `(*UsageClient, error)`
+- Function `*VirtualMachinesClient.BeginConvertToManagedDisks` return value(s) have been changed from `(VirtualMachinesClientConvertToManagedDisksPollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientConvertToManagedDisksResponse], error)`
+- Function `*SharedGalleryImagesClient.List` return value(s) have been changed from `(*SharedGalleryImagesClientListPager)` to `(*runtime.Pager[SharedGalleryImagesClientListResponse])`
+- Function `*CapacityReservationGroupsClient.ListByResourceGroup` return value(s) have been changed from `(*CapacityReservationGroupsClientListByResourceGroupPager)` to `(*runtime.Pager[CapacityReservationGroupsClientListByResourceGroupResponse])`
+- Function `*UsageClient.List` return value(s) have been changed from `(*UsageClientListPager)` to `(*runtime.Pager[UsageClientListResponse])`
+- Function `NewSharedGalleryImagesClient` return value(s) have been changed from `(*SharedGalleryImagesClient)` to `(*SharedGalleryImagesClient, error)`
+- Function `*DedicatedHostsClient.BeginUpdate` return value(s) have been changed from `(DedicatedHostsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[DedicatedHostsClientUpdateResponse], error)`
+- Function `*CloudServicesUpdateDomainClient.ListUpdateDomains` return value(s) have been changed from `(*CloudServicesUpdateDomainClientListUpdateDomainsPager)` to `(*runtime.Pager[CloudServicesUpdateDomainClientListUpdateDomainsResponse])`
+- Function `*AvailabilitySetsClient.List` return value(s) have been changed from `(*AvailabilitySetsClientListPager)` to `(*runtime.Pager[AvailabilitySetsClientListResponse])`
+- Function `*GalleryImageVersionsClient.BeginUpdate` return value(s) have been changed from `(GalleryImageVersionsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[GalleryImageVersionsClientUpdateResponse], error)`
+- Function `NewCloudServiceRolesClient` return value(s) have been changed from `(*CloudServiceRolesClient)` to `(*CloudServiceRolesClient, error)`
+- Function `*DiskAccessesClient.BeginCreateOrUpdate` return value(s) have been changed from `(DiskAccessesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[DiskAccessesClientCreateOrUpdateResponse], error)`
+- Function `NewVirtualMachinesClient` return value(s) have been changed from `(*VirtualMachinesClient)` to `(*VirtualMachinesClient, error)`
+- Function `*RestorePointCollectionsClient.ListAll` return value(s) have been changed from `(*RestorePointCollectionsClientListAllPager)` to `(*runtime.Pager[RestorePointCollectionsClientListAllResponse])`
+- Function `*VirtualMachineScaleSetsClient.BeginPowerOff` return value(s) have been changed from `(VirtualMachineScaleSetsClientPowerOffPollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetsClientPowerOffResponse], error)`
+- Function `NewDedicatedHostsClient` return value(s) have been changed from `(*DedicatedHostsClient)` to `(*DedicatedHostsClient, error)`
+- Function `*VirtualMachineExtensionsClient.BeginDelete` return value(s) have been changed from `(VirtualMachineExtensionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineExtensionsClientDeleteResponse], error)`
+- Function `NewVirtualMachineScaleSetExtensionsClient` return value(s) have been changed from `(*VirtualMachineScaleSetExtensionsClient)` to `(*VirtualMachineScaleSetExtensionsClient, error)`
+- Function `*VirtualMachineRunCommandsClient.BeginUpdate` return value(s) have been changed from `(VirtualMachineRunCommandsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineRunCommandsClientUpdateResponse], error)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginRunCommand` return value(s) have been changed from `(VirtualMachineScaleSetVMsClientRunCommandPollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetVMsClientRunCommandResponse], error)`
+- Function `*DedicatedHostsClient.BeginRestart` return value(s) have been changed from `(DedicatedHostsClientRestartPollerResponse, error)` to `(*armruntime.Poller[DedicatedHostsClientRestartResponse], error)`
+- Function `*VirtualMachineScaleSetVMRunCommandsClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdateResponse], error)`
+- Function `*GalleryApplicationVersionsClient.BeginUpdate` return value(s) have been changed from `(GalleryApplicationVersionsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[GalleryApplicationVersionsClientUpdateResponse], error)`
+- Function `NewDiskAccessesClient` return value(s) have been changed from `(*DiskAccessesClient)` to `(*DiskAccessesClient, error)`
+- Function `NewGalleryApplicationVersionsClient` return value(s) have been changed from `(*GalleryApplicationVersionsClient)` to `(*GalleryApplicationVersionsClient, error)`
+- Function `*DiskRestorePointClient.BeginGrantAccess` return value(s) have been changed from `(DiskRestorePointClientGrantAccessPollerResponse, error)` to `(*armruntime.Poller[DiskRestorePointClientGrantAccessResponse], error)`
+- Function `*CloudServiceRoleInstancesClient.BeginRestart` return value(s) have been changed from `(CloudServiceRoleInstancesClientRestartPollerResponse, error)` to `(*armruntime.Poller[CloudServiceRoleInstancesClientRestartResponse], error)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginReimageAll` return value(s) have been changed from `(VirtualMachineScaleSetVMsClientReimageAllPollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetVMsClientReimageAllResponse], error)`
+- Function `*VirtualMachinesClient.BeginStart` return value(s) have been changed from `(VirtualMachinesClientStartPollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientStartResponse], error)`
+- Function `*VirtualMachineRunCommandsClient.BeginDelete` return value(s) have been changed from `(VirtualMachineRunCommandsClientDeletePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineRunCommandsClientDeleteResponse], error)`
+- Function `NewVirtualMachineScaleSetRollingUpgradesClient` return value(s) have been changed from `(*VirtualMachineScaleSetRollingUpgradesClient)` to `(*VirtualMachineScaleSetRollingUpgradesClient, error)`
+- Function `*GallerySharingProfileClient.BeginUpdate` return value(s) have been changed from `(GallerySharingProfileClientUpdatePollerResponse, error)` to `(*armruntime.Poller[GallerySharingProfileClientUpdateResponse], error)`
+- Function `NewCloudServiceRoleInstancesClient` return value(s) have been changed from `(*CloudServiceRoleInstancesClient)` to `(*CloudServiceRoleInstancesClient, error)`
+- Function `NewSnapshotsClient` return value(s) have been changed from `(*SnapshotsClient)` to `(*SnapshotsClient, error)`
+- Function `NewResourceSKUsClient` return value(s) have been changed from `(*ResourceSKUsClient)` to `(*ResourceSKUsClient, error)`
+- Function `*VirtualMachineScaleSetVMExtensionsClient.BeginUpdate` return value(s) have been changed from `(VirtualMachineScaleSetVMExtensionsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetVMExtensionsClientUpdateResponse], error)`
+- Function `*VirtualMachineScaleSetsClient.BeginReimage` return value(s) have been changed from `(VirtualMachineScaleSetsClientReimagePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetsClientReimageResponse], error)`
+- Function `*SnapshotsClient.BeginRevokeAccess` return value(s) have been changed from `(SnapshotsClientRevokeAccessPollerResponse, error)` to `(*armruntime.Poller[SnapshotsClientRevokeAccessResponse], error)`
+- Function `*CloudServicesUpdateDomainClient.BeginWalkUpdateDomain` return value(s) have been changed from `(CloudServicesUpdateDomainClientWalkUpdateDomainPollerResponse, error)` to `(*armruntime.Poller[CloudServicesUpdateDomainClientWalkUpdateDomainResponse], error)`
+- Function `*GalleryApplicationVersionsClient.BeginDelete` return value(s) have been changed from `(GalleryApplicationVersionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[GalleryApplicationVersionsClientDeleteResponse], error)`
+- Function `*DedicatedHostsClient.BeginDelete` return value(s) have been changed from `(DedicatedHostsClientDeletePollerResponse, error)` to `(*armruntime.Poller[DedicatedHostsClientDeleteResponse], error)`
+- Function `*DiskEncryptionSetsClient.ListAssociatedResources` return value(s) have been changed from `(*DiskEncryptionSetsClientListAssociatedResourcesPager)` to `(*runtime.Pager[DiskEncryptionSetsClientListAssociatedResourcesResponse])`
+- Function `*SSHPublicKeysClient.ListByResourceGroup` return value(s) have been changed from `(*SSHPublicKeysClientListByResourceGroupPager)` to `(*runtime.Pager[SSHPublicKeysClientListByResourceGroupResponse])`
+- Function `*VirtualMachineScaleSetsClient.BeginReimageAll` return value(s) have been changed from `(VirtualMachineScaleSetsClientReimageAllPollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetsClientReimageAllResponse], error)`
+- Function `*VirtualMachinesClient.BeginInstallPatches` return value(s) have been changed from `(VirtualMachinesClientInstallPatchesPollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientInstallPatchesResponse], error)`
+- Function `*AvailabilitySetsClient.ListBySubscription` return value(s) have been changed from `(*AvailabilitySetsClientListBySubscriptionPager)` to `(*runtime.Pager[AvailabilitySetsClientListBySubscriptionResponse])`
+- Function `*CloudServicesClient.BeginRebuild` return value(s) have been changed from `(CloudServicesClientRebuildPollerResponse, error)` to `(*armruntime.Poller[CloudServicesClientRebuildResponse], error)`
+- Function `NewSharedGalleriesClient` return value(s) have been changed from `(*SharedGalleriesClient)` to `(*SharedGalleriesClient, error)`
+- Function `*VirtualMachineScaleSetVMsClient.List` return value(s) have been changed from `(*VirtualMachineScaleSetVMsClientListPager)` to `(*runtime.Pager[VirtualMachineScaleSetVMsClientListResponse])`
+- Function `*VirtualMachinesClient.List` return value(s) have been changed from `(*VirtualMachinesClientListPager)` to `(*runtime.Pager[VirtualMachinesClientListResponse])`
+- Function `*GalleryApplicationsClient.ListByGallery` return value(s) have been changed from `(*GalleryApplicationsClientListByGalleryPager)` to `(*runtime.Pager[GalleryApplicationsClientListByGalleryResponse])`
+- Function `*VirtualMachineExtensionsClient.BeginUpdate` return value(s) have been changed from `(VirtualMachineExtensionsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineExtensionsClientUpdateResponse], error)`
+- Function `*VirtualMachineScaleSetVMExtensionsClient.BeginDelete` return value(s) have been changed from `(VirtualMachineScaleSetVMExtensionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetVMExtensionsClientDeleteResponse], error)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginReimage` return value(s) have been changed from `(VirtualMachineScaleSetVMsClientReimagePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetVMsClientReimageResponse], error)`
+- Function `*ResourceSKUsClient.List` return value(s) have been changed from `(*ResourceSKUsClientListPager)` to `(*runtime.Pager[ResourceSKUsClientListResponse])`
+- Function `NewVirtualMachineScaleSetVMRunCommandsClient` return value(s) have been changed from `(*VirtualMachineScaleSetVMRunCommandsClient)` to `(*VirtualMachineScaleSetVMRunCommandsClient, error)`
+- Function `*VirtualMachineScaleSetsClient.BeginPerformMaintenance` return value(s) have been changed from `(VirtualMachineScaleSetsClientPerformMaintenancePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetsClientPerformMaintenanceResponse], error)`
+- Function `*VirtualMachineScaleSetsClient.BeginUpdateInstances` return value(s) have been changed from `(VirtualMachineScaleSetsClientUpdateInstancesPollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetsClientUpdateInstancesResponse], error)`
+- Function `*VirtualMachinesClient.BeginCapture` return value(s) have been changed from `(VirtualMachinesClientCapturePollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientCaptureResponse], error)`
+- Function `*DiskAccessesClient.BeginDeleteAPrivateEndpointConnection` return value(s) have been changed from `(DiskAccessesClientDeleteAPrivateEndpointConnectionPollerResponse, error)` to `(*armruntime.Poller[DiskAccessesClientDeleteAPrivateEndpointConnectionResponse], error)`
+- Function `NewDiskEncryptionSetsClient` return value(s) have been changed from `(*DiskEncryptionSetsClient)` to `(*DiskEncryptionSetsClient, error)`
+- Function `*SnapshotsClient.BeginCreateOrUpdate` return value(s) have been changed from `(SnapshotsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[SnapshotsClientCreateOrUpdateResponse], error)`
+- Function `NewVirtualMachineRunCommandsClient` return value(s) have been changed from `(*VirtualMachineRunCommandsClient)` to `(*VirtualMachineRunCommandsClient, error)`
+- Function `NewCapacityReservationsClient` return value(s) have been changed from `(*CapacityReservationsClient)` to `(*CapacityReservationsClient, error)`
+- Function `NewCommunityGalleriesClient` return value(s) have been changed from `(*CommunityGalleriesClient)` to `(*CommunityGalleriesClient, error)`
+- Function `*SnapshotsClient.ListByResourceGroup` return value(s) have been changed from `(*SnapshotsClientListByResourceGroupPager)` to `(*runtime.Pager[SnapshotsClientListByResourceGroupResponse])`
+- Function `NewRestorePointCollectionsClient` return value(s) have been changed from `(*RestorePointCollectionsClient)` to `(*RestorePointCollectionsClient, error)`
+- Function `*DiskAccessesClient.BeginUpdate` return value(s) have been changed from `(DiskAccessesClientUpdatePollerResponse, error)` to `(*armruntime.Poller[DiskAccessesClientUpdateResponse], error)`
+- Function `*DedicatedHostsClient.ListByHostGroup` return value(s) have been changed from `(*DedicatedHostsClientListByHostGroupPager)` to `(*runtime.Pager[DedicatedHostsClientListByHostGroupResponse])`
+- Function `*VirtualMachineScaleSetsClient.BeginDeleteInstances` return value(s) have been changed from `(VirtualMachineScaleSetsClientDeleteInstancesPollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetsClientDeleteInstancesResponse], error)`
+- Function `*VirtualMachinesClient.BeginRunCommand` return value(s) have been changed from `(VirtualMachinesClientRunCommandPollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientRunCommandResponse], error)`
+- Function `*GalleryApplicationVersionsClient.ListByGalleryApplication` return value(s) have been changed from `(*GalleryApplicationVersionsClientListByGalleryApplicationPager)` to `(*runtime.Pager[GalleryApplicationVersionsClientListByGalleryApplicationResponse])`
+- Function `NewCloudServiceOperatingSystemsClient` return value(s) have been changed from `(*CloudServiceOperatingSystemsClient)` to `(*CloudServiceOperatingSystemsClient, error)`
+- Function `*ImagesClient.List` return value(s) have been changed from `(*ImagesClientListPager)` to `(*runtime.Pager[ImagesClientListResponse])`
+- Function `*GalleriesClient.BeginUpdate` return value(s) have been changed from `(GalleriesClientUpdatePollerResponse, error)` to `(*armruntime.Poller[GalleriesClientUpdateResponse], error)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginUpdate` return value(s) have been changed from `(VirtualMachineScaleSetVMsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetVMsClientUpdateResponse], error)`
+- Function `*DiskEncryptionSetsClient.List` return value(s) have been changed from `(*DiskEncryptionSetsClientListPager)` to `(*runtime.Pager[DiskEncryptionSetsClientListResponse])`
+- Function `*DedicatedHostsClient.BeginCreateOrUpdate` return value(s) have been changed from `(DedicatedHostsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[DedicatedHostsClientCreateOrUpdateResponse], error)`
+- Function `*DiskAccessesClient.ListByResourceGroup` return value(s) have been changed from `(*DiskAccessesClientListByResourceGroupPager)` to `(*runtime.Pager[DiskAccessesClientListByResourceGroupResponse])`
+- Function `NewCloudServicesClient` return value(s) have been changed from `(*CloudServicesClient)` to `(*CloudServicesClient, error)`
+- Function `*CloudServicesClient.ListAll` return value(s) have been changed from `(*CloudServicesClientListAllPager)` to `(*runtime.Pager[CloudServicesClientListAllResponse])`
+- Function `*VirtualMachinesClient.BeginPerformMaintenance` return value(s) have been changed from `(VirtualMachinesClientPerformMaintenancePollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientPerformMaintenanceResponse], error)`
+- Function `*GalleriesClient.BeginCreateOrUpdate` return value(s) have been changed from `(GalleriesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[GalleriesClientCreateOrUpdateResponse], error)`
+- Function `*VirtualMachinesClient.BeginReimage` return value(s) have been changed from `(VirtualMachinesClientReimagePollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientReimageResponse], error)`
+- Function `*SnapshotsClient.BeginGrantAccess` return value(s) have been changed from `(SnapshotsClientGrantAccessPollerResponse, error)` to `(*armruntime.Poller[SnapshotsClientGrantAccessResponse], error)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginDelete` return value(s) have been changed from `(VirtualMachineScaleSetVMsClientDeletePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetVMsClientDeleteResponse], error)`
+- Function `*DiskAccessesClient.BeginUpdateAPrivateEndpointConnection` return value(s) have been changed from `(DiskAccessesClientUpdateAPrivateEndpointConnectionPollerResponse, error)` to `(*armruntime.Poller[DiskAccessesClientUpdateAPrivateEndpointConnectionResponse], error)`
+- Function `*VirtualMachineRunCommandsClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualMachineRunCommandsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineRunCommandsClientCreateOrUpdateResponse], error)`
+- Function `*CloudServicesClient.List` return value(s) have been changed from `(*CloudServicesClientListPager)` to `(*runtime.Pager[CloudServicesClientListResponse])`
+- Function `NewProximityPlacementGroupsClient` return value(s) have been changed from `(*ProximityPlacementGroupsClient)` to `(*ProximityPlacementGroupsClient, error)`
+- Function `*DiskAccessesClient.ListPrivateEndpointConnections` return value(s) have been changed from `(*DiskAccessesClientListPrivateEndpointConnectionsPager)` to `(*runtime.Pager[DiskAccessesClientListPrivateEndpointConnectionsResponse])`
+- Function `NewVirtualMachineScaleSetVMsClient` return value(s) have been changed from `(*VirtualMachineScaleSetVMsClient)` to `(*VirtualMachineScaleSetVMsClient, error)`
+- Function `*ProximityPlacementGroupsClient.ListBySubscription` return value(s) have been changed from `(*ProximityPlacementGroupsClientListBySubscriptionPager)` to `(*runtime.Pager[ProximityPlacementGroupsClientListBySubscriptionResponse])`
+- Function `*VirtualMachineScaleSetVMsClient.BeginPowerOff` return value(s) have been changed from `(VirtualMachineScaleSetVMsClientPowerOffPollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetVMsClientPowerOffResponse], error)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginDeallocate` return value(s) have been changed from `(VirtualMachineScaleSetVMsClientDeallocatePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetVMsClientDeallocateResponse], error)`
+- Function `*RestorePointCollectionsClient.BeginDelete` return value(s) have been changed from `(RestorePointCollectionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[RestorePointCollectionsClientDeleteResponse], error)`
+- Function `*CloudServicesClient.BeginPowerOff` return value(s) have been changed from `(CloudServicesClientPowerOffPollerResponse, error)` to `(*armruntime.Poller[CloudServicesClientPowerOffResponse], error)`
+- Function `*VirtualMachineScaleSetsClient.BeginDelete` return value(s) have been changed from `(VirtualMachineScaleSetsClientDeletePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetsClientDeleteResponse], error)`
+- Function `*CapacityReservationsClient.BeginDelete` return value(s) have been changed from `(CapacityReservationsClientDeletePollerResponse, error)` to `(*armruntime.Poller[CapacityReservationsClientDeleteResponse], error)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginRedeploy` return value(s) have been changed from `(VirtualMachineScaleSetVMsClientRedeployPollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetVMsClientRedeployResponse], error)`
+- Function `NewVirtualMachineSizesClient` return value(s) have been changed from `(*VirtualMachineSizesClient)` to `(*VirtualMachineSizesClient, error)`
+- Function `*VirtualMachinesClient.ListAll` return value(s) have been changed from `(*VirtualMachinesClientListAllPager)` to `(*runtime.Pager[VirtualMachinesClientListAllResponse])`
+- Function `*CloudServicesClient.BeginDeleteInstances` return value(s) have been changed from `(CloudServicesClientDeleteInstancesPollerResponse, error)` to `(*armruntime.Poller[CloudServicesClientDeleteInstancesResponse], error)`
+- Function `*VirtualMachineScaleSetRollingUpgradesClient.BeginCancel` return value(s) have been changed from `(VirtualMachineScaleSetRollingUpgradesClientCancelPollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetRollingUpgradesClientCancelResponse], error)`
+- Function `*CloudServiceOperatingSystemsClient.ListOSFamilies` return value(s) have been changed from `(*CloudServiceOperatingSystemsClientListOSFamiliesPager)` to `(*runtime.Pager[CloudServiceOperatingSystemsClientListOSFamiliesResponse])`
+- Function `*VirtualMachinesClient.BeginUpdate` return value(s) have been changed from `(VirtualMachinesClientUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientUpdateResponse], error)`
+- Function `*DiskEncryptionSetsClient.BeginUpdate` return value(s) have been changed from `(DiskEncryptionSetsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[DiskEncryptionSetsClientUpdateResponse], error)`
+- Function `NewDisksClient` return value(s) have been changed from `(*DisksClient)` to `(*DisksClient, error)`
+- Function `*VirtualMachineScaleSetsClient.BeginUpdate` return value(s) have been changed from `(VirtualMachineScaleSetsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetsClientUpdateResponse], error)`
+- Function `*VirtualMachineScaleSetVMExtensionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualMachineScaleSetVMExtensionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetVMExtensionsClientCreateOrUpdateResponse], error)`
+- Function `*VirtualMachineScaleSetsClient.GetOSUpgradeHistory` return value(s) have been changed from `(*VirtualMachineScaleSetsClientGetOSUpgradeHistoryPager)` to `(*runtime.Pager[VirtualMachineScaleSetsClientGetOSUpgradeHistoryResponse])`
+- Function `NewDiskRestorePointClient` return value(s) have been changed from `(*DiskRestorePointClient)` to `(*DiskRestorePointClient, error)`
+- Function `*SnapshotsClient.List` return value(s) have been changed from `(*SnapshotsClientListPager)` to `(*runtime.Pager[SnapshotsClientListResponse])`
+- Function `*VirtualMachineScaleSetExtensionsClient.BeginDelete` return value(s) have been changed from `(VirtualMachineScaleSetExtensionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetExtensionsClientDeleteResponse], error)`
+- Function `*VirtualMachineScaleSetsClient.BeginStart` return value(s) have been changed from `(VirtualMachineScaleSetsClientStartPollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetsClientStartResponse], error)`
+- Function `NewAvailabilitySetsClient` return value(s) have been changed from `(*AvailabilitySetsClient)` to `(*AvailabilitySetsClient, error)`
+- Function `*ImagesClient.BeginUpdate` return value(s) have been changed from `(ImagesClientUpdatePollerResponse, error)` to `(*armruntime.Poller[ImagesClientUpdateResponse], error)`
+- Function `*ImagesClient.ListByResourceGroup` return value(s) have been changed from `(*ImagesClientListByResourceGroupPager)` to `(*runtime.Pager[ImagesClientListByResourceGroupResponse])`
+- Function `*ImagesClient.BeginCreateOrUpdate` return value(s) have been changed from `(ImagesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ImagesClientCreateOrUpdateResponse], error)`
+- Function `*VirtualMachinesClient.BeginPowerOff` return value(s) have been changed from `(VirtualMachinesClientPowerOffPollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientPowerOffResponse], error)`
+- Function `NewCloudServicesUpdateDomainClient` return value(s) have been changed from `(*CloudServicesUpdateDomainClient)` to `(*CloudServicesUpdateDomainClient, error)`
+- Function `NewGalleryApplicationsClient` return value(s) have been changed from `(*GalleryApplicationsClient)` to `(*GalleryApplicationsClient, error)`
+- Function `*VirtualMachineSizesClient.List` parameter(s) have been changed from `(context.Context, string, *VirtualMachineSizesClientListOptions)` to `(string, *VirtualMachineSizesClientListOptions)`
+- Function `*VirtualMachineSizesClient.List` return value(s) have been changed from `(VirtualMachineSizesClientListResponse, error)` to `(*runtime.Pager[VirtualMachineSizesClientListResponse])`
+- Function `*RestorePointsClient.BeginDelete` return value(s) have been changed from `(RestorePointsClientDeletePollerResponse, error)` to `(*armruntime.Poller[RestorePointsClientDeleteResponse], error)`
+- Function `*DiskEncryptionSetsClient.ListByResourceGroup` return value(s) have been changed from `(*DiskEncryptionSetsClientListByResourceGroupPager)` to `(*runtime.Pager[DiskEncryptionSetsClientListByResourceGroupResponse])`
+- Function `NewGallerySharingProfileClient` return value(s) have been changed from `(*GallerySharingProfileClient)` to `(*GallerySharingProfileClient, error)`
+- Function `*CloudServicesClient.BeginReimage` return value(s) have been changed from `(CloudServicesClientReimagePollerResponse, error)` to `(*armruntime.Poller[CloudServicesClientReimageResponse], error)`
+- Function `NewGalleryImagesClient` return value(s) have been changed from `(*GalleryImagesClient)` to `(*GalleryImagesClient, error)`
+- Function `*DisksClient.BeginRevokeAccess` return value(s) have been changed from `(DisksClientRevokeAccessPollerResponse, error)` to `(*armruntime.Poller[DisksClientRevokeAccessResponse], error)`
+- Function `NewGalleryImageVersionsClient` return value(s) have been changed from `(*GalleryImageVersionsClient)` to `(*GalleryImageVersionsClient, error)`
+- Function `*GalleryApplicationVersionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(GalleryApplicationVersionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[GalleryApplicationVersionsClientCreateOrUpdateResponse], error)`
+- Function `NewVirtualMachineImagesClient` return value(s) have been changed from `(*VirtualMachineImagesClient)` to `(*VirtualMachineImagesClient, error)`
+- Function `*DedicatedHostGroupsClient.ListByResourceGroup` return value(s) have been changed from `(*DedicatedHostGroupsClientListByResourceGroupPager)` to `(*runtime.Pager[DedicatedHostGroupsClientListByResourceGroupResponse])`
+- Function `*DisksClient.BeginGrantAccess` return value(s) have been changed from `(DisksClientGrantAccessPollerResponse, error)` to `(*armruntime.Poller[DisksClientGrantAccessResponse], error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsClientListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsClientListResponse, error)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewVirtualMachineScaleSetVMExtensionsClient` return value(s) have been changed from `(*VirtualMachineScaleSetVMExtensionsClient)` to `(*VirtualMachineScaleSetVMExtensionsClient, error)`
+- Function `*VirtualMachineExtensionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualMachineExtensionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineExtensionsClientCreateOrUpdateResponse], error)`
+- Function `*GalleriesClient.ListByResourceGroup` return value(s) have been changed from `(*GalleriesClientListByResourceGroupPager)` to `(*runtime.Pager[GalleriesClientListByResourceGroupResponse])`
+- Function `*DisksClient.BeginUpdate` return value(s) have been changed from `(DisksClientUpdatePollerResponse, error)` to `(*armruntime.Poller[DisksClientUpdateResponse], error)`
+- Function `*VirtualMachineRunCommandsClient.List` return value(s) have been changed from `(*VirtualMachineRunCommandsClientListPager)` to `(*runtime.Pager[VirtualMachineRunCommandsClientListResponse])`
+- Function `*VirtualMachineScaleSetExtensionsClient.BeginUpdate` return value(s) have been changed from `(VirtualMachineScaleSetExtensionsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetExtensionsClientUpdateResponse], error)`
+- Function `*DisksClient.List` return value(s) have been changed from `(*DisksClientListPager)` to `(*runtime.Pager[DisksClientListResponse])`
+- Function `*CapacityReservationsClient.BeginUpdate` return value(s) have been changed from `(CapacityReservationsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[CapacityReservationsClientUpdateResponse], error)`
+- Function `*SnapshotsClient.BeginUpdate` return value(s) have been changed from `(SnapshotsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[SnapshotsClientUpdateResponse], error)`
+- Function `*VirtualMachineScaleSetExtensionsClient.List` return value(s) have been changed from `(*VirtualMachineScaleSetExtensionsClientListPager)` to `(*runtime.Pager[VirtualMachineScaleSetExtensionsClientListResponse])`
+- Function `*VirtualMachineScaleSetVMRunCommandsClient.List` return value(s) have been changed from `(*VirtualMachineScaleSetVMRunCommandsClientListPager)` to `(*runtime.Pager[VirtualMachineScaleSetVMRunCommandsClientListResponse])`
+- Function `*VirtualMachineRunCommandsClient.ListByVirtualMachine` return value(s) have been changed from `(*VirtualMachineRunCommandsClientListByVirtualMachinePager)` to `(*runtime.Pager[VirtualMachineRunCommandsClientListByVirtualMachineResponse])`
+- Function `*DiskAccessesClient.List` return value(s) have been changed from `(*DiskAccessesClientListPager)` to `(*runtime.Pager[DiskAccessesClientListResponse])`
+- Function `*CloudServicesClient.BeginRestart` return value(s) have been changed from `(CloudServicesClientRestartPollerResponse, error)` to `(*armruntime.Poller[CloudServicesClientRestartResponse], error)`
+- Function `*ProximityPlacementGroupsClient.ListByResourceGroup` return value(s) have been changed from `(*ProximityPlacementGroupsClientListByResourceGroupPager)` to `(*runtime.Pager[ProximityPlacementGroupsClientListByResourceGroupResponse])`
+- Function `*GalleriesClient.List` return value(s) have been changed from `(*GalleriesClientListPager)` to `(*runtime.Pager[GalleriesClientListResponse])`
+- Function `NewCommunityGalleryImagesClient` return value(s) have been changed from `(*CommunityGalleryImagesClient)` to `(*CommunityGalleryImagesClient, error)`
+- Function `*VirtualMachineScaleSetVMRunCommandsClient.BeginDelete` return value(s) have been changed from `(VirtualMachineScaleSetVMRunCommandsClientDeletePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetVMRunCommandsClientDeleteResponse], error)`
+- Function `*VirtualMachinesClient.BeginDelete` return value(s) have been changed from `(VirtualMachinesClientDeletePollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientDeleteResponse], error)`
+- Function `NewRestorePointsClient` return value(s) have been changed from `(*RestorePointsClient)` to `(*RestorePointsClient, error)`
+- Function `*LogAnalyticsClient.BeginExportRequestRateByInterval` return value(s) have been changed from `(LogAnalyticsClientExportRequestRateByIntervalPollerResponse, error)` to `(*armruntime.Poller[LogAnalyticsClientExportRequestRateByIntervalResponse], error)`
+- Function `*GalleryImagesClient.BeginUpdate` return value(s) have been changed from `(GalleryImagesClientUpdatePollerResponse, error)` to `(*armruntime.Poller[GalleryImagesClientUpdateResponse], error)`
+- Function `*VirtualMachinesClient.ListByLocation` return value(s) have been changed from `(*VirtualMachinesClientListByLocationPager)` to `(*runtime.Pager[VirtualMachinesClientListByLocationResponse])`
+- Function `*VirtualMachineScaleSetVMsClient.BeginRestart` return value(s) have been changed from `(VirtualMachineScaleSetVMsClientRestartPollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetVMsClientRestartResponse], error)`
+- Function `*DisksClient.ListByResourceGroup` return value(s) have been changed from `(*DisksClientListByResourceGroupPager)` to `(*runtime.Pager[DisksClientListByResourceGroupResponse])`
+- Function `*GalleryApplicationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(GalleryApplicationsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[GalleryApplicationsClientCreateOrUpdateResponse], error)`
+- Function `*GalleryApplicationsClient.BeginDelete` return value(s) have been changed from `(GalleryApplicationsClientDeletePollerResponse, error)` to `(*armruntime.Poller[GalleryApplicationsClientDeleteResponse], error)`
+- Function `*VirtualMachineScaleSetsClient.BeginRedeploy` return value(s) have been changed from `(VirtualMachineScaleSetsClientRedeployPollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetsClientRedeployResponse], error)`
+- Function `*GalleriesClient.BeginDelete` return value(s) have been changed from `(GalleriesClientDeletePollerResponse, error)` to `(*armruntime.Poller[GalleriesClientDeleteResponse], error)`
+- Function `*VirtualMachineScaleSetsClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualMachineScaleSetsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetsClientCreateOrUpdateResponse], error)`
+- Function `*SharedGalleryImageVersionsClient.List` return value(s) have been changed from `(*SharedGalleryImageVersionsClientListPager)` to `(*runtime.Pager[SharedGalleryImageVersionsClientListResponse])`
+- Function `NewVirtualMachineExtensionsClient` return value(s) have been changed from `(*VirtualMachineExtensionsClient)` to `(*VirtualMachineExtensionsClient, error)`
+- Function `*VirtualMachineScaleSetsClient.ListSKUs` return value(s) have been changed from `(*VirtualMachineScaleSetsClientListSKUsPager)` to `(*runtime.Pager[VirtualMachineScaleSetsClientListSKUsResponse])`
+- Function `*SSHPublicKeysClient.ListBySubscription` return value(s) have been changed from `(*SSHPublicKeysClientListBySubscriptionPager)` to `(*runtime.Pager[SSHPublicKeysClientListBySubscriptionResponse])`
+- Function `*SnapshotsClient.BeginDelete` return value(s) have been changed from `(SnapshotsClientDeletePollerResponse, error)` to `(*armruntime.Poller[SnapshotsClientDeleteResponse], error)`
+- Function `*VirtualMachineScaleSetsClient.BeginSetOrchestrationServiceState` return value(s) have been changed from `(VirtualMachineScaleSetsClientSetOrchestrationServiceStatePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetsClientSetOrchestrationServiceStateResponse], error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `NewSharedGalleryImageVersionsClient` return value(s) have been changed from `(*SharedGalleryImageVersionsClient)` to `(*SharedGalleryImageVersionsClient, error)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginStart` return value(s) have been changed from `(VirtualMachineScaleSetVMsClientStartPollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetVMsClientStartResponse], error)`
+- Function `*CloudServicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(CloudServicesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[CloudServicesClientCreateOrUpdateResponse], error)`
+- Function `*VirtualMachineScaleSetRollingUpgradesClient.BeginStartOSUpgrade` return value(s) have been changed from `(VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradeResponse], error)`
+- Function `*DiskRestorePointClient.ListByRestorePoint` return value(s) have been changed from `(*DiskRestorePointClientListByRestorePointPager)` to `(*runtime.Pager[DiskRestorePointClientListByRestorePointResponse])`
+- Function `*GalleryImageVersionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(GalleryImageVersionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[GalleryImageVersionsClientCreateOrUpdateResponse], error)`
+- Function `*CloudServicesClient.BeginUpdate` return value(s) have been changed from `(CloudServicesClientUpdatePollerResponse, error)` to `(*armruntime.Poller[CloudServicesClientUpdateResponse], error)`
+- Function `*DisksClient.BeginDelete` return value(s) have been changed from `(DisksClientDeletePollerResponse, error)` to `(*armruntime.Poller[DisksClientDeleteResponse], error)`
+- Function `*VirtualMachineScaleSetsClient.BeginDeallocate` return value(s) have been changed from `(VirtualMachineScaleSetsClientDeallocatePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetsClientDeallocateResponse], error)`
+- Function `*VirtualMachinesClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualMachinesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientCreateOrUpdateResponse], error)`
+- Function `NewVirtualMachineExtensionImagesClient` return value(s) have been changed from `(*VirtualMachineExtensionImagesClient)` to `(*VirtualMachineExtensionImagesClient, error)`
+- Function `NewVirtualMachineImagesEdgeZoneClient` return value(s) have been changed from `(*VirtualMachineImagesEdgeZoneClient)` to `(*VirtualMachineImagesEdgeZoneClient, error)`
+- Function `*GalleryImagesClient.BeginCreateOrUpdate` return value(s) have been changed from `(GalleryImagesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[GalleryImagesClientCreateOrUpdateResponse], error)`
+- Function `*CloudServiceRoleInstancesClient.BeginReimage` return value(s) have been changed from `(CloudServiceRoleInstancesClientReimagePollerResponse, error)` to `(*armruntime.Poller[CloudServiceRoleInstancesClientReimageResponse], error)`
+- Function `*ImagesClient.BeginDelete` return value(s) have been changed from `(ImagesClientDeletePollerResponse, error)` to `(*armruntime.Poller[ImagesClientDeleteResponse], error)`
+- Function `*CapacityReservationGroupsClient.ListBySubscription` return value(s) have been changed from `(*CapacityReservationGroupsClientListBySubscriptionPager)` to `(*runtime.Pager[CapacityReservationGroupsClientListBySubscriptionResponse])`
+- Function `*VirtualMachineScaleSetVMsClient.BeginPerformMaintenance` return value(s) have been changed from `(VirtualMachineScaleSetVMsClientPerformMaintenancePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineScaleSetVMsClientPerformMaintenanceResponse], error)`
+- Function `*SnapshotsClientListPager.NextPage` has been removed
+- Function `*ImagesClientDeletePoller.FinalResponse` has been removed
+- Function `*VirtualMachineExtensionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*DiskAccessesClientDeletePoller.Poll` has been removed
+- Function `*DiskEncryptionSetsClientListByResourceGroupPager.NextPage` has been removed
+- Function `DedicatedHostsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*DedicatedHostsClientDeletePoller.FinalResponse` has been removed
+- Function `*SnapshotsClientGrantAccessPollerResponse.Resume` has been removed
+- Function `*GalleryImageVersionsClientUpdatePollerResponse.Resume` has been removed
+- Function `*ImagesClientUpdatePoller.Done` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `SharingState.ToPtr` has been removed
+- Function `*VirtualMachineScaleSetsClientReimageAllPoller.Done` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesClientCancelPoller.ResumeToken` has been removed
+- Function `GallerySharingPermissionTypes.ToPtr` has been removed
+- Function `*CloudServiceOperatingSystemsClientListOSFamiliesPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetsClientReimagePoller.ResumeToken` has been removed
+- Function `DiskAccessesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesClientRestartPollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsClientDeletePoller.ResumeToken` has been removed
+- Function `*AvailabilitySetsClientListPager.Err` has been removed
+- Function `*DiskEncryptionSetsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachineRunCommandsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*DiskAccessesClientUpdateAPrivateEndpointConnectionPollerResponse.Resume` has been removed
+- Function `*CapacityReservationGroupsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `ExpandTypesForGetCapacityReservationGroups.ToPtr` has been removed
+- Function `*GalleriesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `VirtualMachineExtensionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ImagesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*DiskEncryptionSetsClientUpdatePoller.Done` has been removed
+- Function `*DiskEncryptionSetsClientUpdatePoller.FinalResponse` has been removed
+- Function `*ImagesClientUpdatePoller.FinalResponse` has been removed
+- Function `*CapacityReservationsClientListByCapacityReservationGroupPager.NextPage` has been removed
+- Function `*CloudServicesClientPowerOffPoller.Done` has been removed
+- Function `*GalleryImageVersionsClientDeletePoller.Done` has been removed
+- Function `*DiskAccessesClientListPager.Err` has been removed
+- Function `*DedicatedHostsClientDeletePoller.ResumeToken` has been removed
+- Function `*VirtualMachineExtensionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMsClientListPager.NextPage` has been removed
+- Function `VirtualMachineScaleSetVMsClientStartPollerResponse.PollUntilDone` has been removed
+- Function `DiskEncryptionSetsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsClientUpdatePoller.Done` has been removed
+- Function `*VirtualMachineScaleSetsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetsClientGetOSUpgradeHistoryPager.PageResponse` has been removed
+- Function `*DiskAccessesClientListPrivateEndpointConnectionsPager.NextPage` has been removed
+- Function `VirtualMachineSizeTypes.ToPtr` has been removed
+- Function `*VirtualMachineScaleSetsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineExtensionsClientUpdatePoller.FinalResponse` has been removed
+- Function `*ProximityPlacementGroupsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*SnapshotsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*LogAnalyticsClientExportThrottledRequestsPollerResponse.Resume` has been removed
+- Function `*GalleryApplicationsClientUpdatePoller.ResumeToken` has been removed
+- Function `*DiskEncryptionSetsClientDeletePollerResponse.Resume` has been removed
+- Function `EncryptionType.ToPtr` has been removed
+- Function `DiskAccessesClientUpdateAPrivateEndpointConnectionPollerResponse.PollUntilDone` has been removed
+- Function `*DiskAccessesClientUpdatePoller.Poll` has been removed
+- Function `*DisksClientUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesClientStartPollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetsClientUpdatePoller.Poll` has been removed
+- Function `*DiskAccessesClientDeletePoller.ResumeToken` has been removed
+- Function `*CloudServiceRoleInstancesClientRestartPoller.Done` has been removed
+- Function `*VirtualMachineScaleSetsClientRestartPoller.FinalResponse` has been removed
+- Function `*CloudServicesClientRebuildPollerResponse.Resume` has been removed
+- Function `*LogAnalyticsClientExportThrottledRequestsPoller.Poll` has been removed
+- Function `*VirtualMachineRunCommandsClientListByVirtualMachinePager.Err` has been removed
+- Function `*VirtualMachinesClientPowerOffPollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetVMsClientRunCommandPoller.Done` has been removed
+- Function `VirtualMachineScaleSetsClientPerformMaintenancePollerResponse.PollUntilDone` has been removed
+- Function `*CloudServiceOperatingSystemsClientListOSFamiliesPager.PageResponse` has been removed
+- Function `*ImagesClientUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetVMsClientPowerOffPoller.ResumeToken` has been removed
+- Function `*SnapshotsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*SharedGalleryImageVersionsClientListPager.PageResponse` has been removed
+- Function `*GalleryImagesClientUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachineRunCommandsClientListByVirtualMachinePager.PageResponse` has been removed
+- Function `*ProximityPlacementGroupsClientListBySubscriptionPager.Err` has been removed
+- Function `*DedicatedHostsClientRestartPollerResponse.Resume` has been removed
+- Function `*VirtualMachineExtensionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*SSHPublicKeysClientListBySubscriptionPager.NextPage` has been removed
+- Function `*CloudServicesClientPowerOffPollerResponse.Resume` has been removed
+- Function `CachingTypes.ToPtr` has been removed
+- Function `*ImagesClientListByResourceGroupPager.Err` has been removed
+- Function `*ImagesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*VirtualMachinesClientRunCommandPoller.ResumeToken` has been removed
+- Function `VirtualMachineScaleSetExtensionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetsClientListByLocationPager.Err` has been removed
+- Function `*DiskEncryptionSetsClientListByResourceGroupPager.Err` has been removed
+- Function `*GalleriesClientDeletePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetsClientStartPoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMsClientRunCommandPoller.ResumeToken` has been removed
+- Function `*DiskRestorePointClientGrantAccessPoller.FinalResponse` has been removed
+- Function `*AvailabilitySetsClientListPager.PageResponse` has been removed
+- Function `*VirtualMachinesClientRedeployPoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetsClientStartPoller.FinalResponse` has been removed
+- Function `*RestorePointsClientDeletePoller.FinalResponse` has been removed
+- Function `DedicatedHostsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ResourceSKURestrictionsType.ToPtr` has been removed
+- Function `*DiskAccessesClientListPrivateEndpointConnectionsPager.Err` has been removed
+- Function `IntervalInMins.ToPtr` has been removed
+- Function `*SnapshotsClientRevokeAccessPollerResponse.Resume` has been removed
+- Function `*VirtualMachineRunCommandsClientListPager.Err` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsClientListPager.NextPage` has been removed
+- Function `VirtualMachineScaleSetVMExtensionsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineRunCommandsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineRunCommandsClientUpdatePoller.Poll` has been removed
+- Function `*CloudServicesClientStartPoller.Done` has been removed
+- Function `*VirtualMachinesClientStartPoller.ResumeToken` has been removed
+- Function `VirtualMachineRunCommandsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*CapacityReservationsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualMachineScaleSetExtensionsClientDeletePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetsClientUpdatePoller.Done` has been removed
+- Function `ReplicationStatusTypes.ToPtr` has been removed
+- Function `*DiskEncryptionSetsClientListPager.PageResponse` has been removed
+- Function `*RestorePointsClientDeletePoller.Done` has been removed
+- Function `VirtualMachineScaleSetsClientRestartPollerResponse.PollUntilDone` has been removed
+- Function `*GalleryImagesClientCreateOrUpdatePoller.Done` has been removed
+- Function `ImagesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `PatchInstallationState.ToPtr` has been removed
+- Function `*VirtualMachinesClientListByLocationPager.PageResponse` has been removed
+- Function `*GalleryImagesClientUpdatePollerResponse.Resume` has been removed
+- Function `*GalleryApplicationsClientListByGalleryPager.PageResponse` has been removed
+- Function `*CloudServicesClientRebuildPoller.Done` has been removed
+- Function `*DiskAccessesClientDeleteAPrivateEndpointConnectionPollerResponse.Resume` has been removed
+- Function `*DiskAccessesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*GalleryApplicationsClientUpdatePoller.Poll` has been removed
+- Function `*ImagesClientListPager.NextPage` has been removed
+- Function `VirtualMachinesClientStartPollerResponse.PollUntilDone` has been removed
+- Function `*SSHPublicKeysClientListBySubscriptionPager.Err` has been removed
+- Function `*GallerySharingProfileClientUpdatePollerResponse.Resume` has been removed
+- Function `*SnapshotsClientRevokeAccessPoller.ResumeToken` has been removed
+- Function `OrchestrationMode.ToPtr` has been removed
+- Function `*GalleryImagesClientUpdatePoller.Poll` has been removed
+- Function `NetworkAccessPolicy.ToPtr` has been removed
+- Function `*VirtualMachinesClientReapplyPoller.Poll` has been removed
+- Function `*DisksClientListByResourceGroupPager.PageResponse` has been removed
+- Function `GalleryPropertiesProvisioningState.ToPtr` has been removed
+- Function `*VirtualMachineRunCommandsClientListByVirtualMachinePager.NextPage` has been removed
+- Function `VirtualMachineScaleSetVMsClientReimageAllPollerResponse.PollUntilDone` has been removed
+- Function `*ProximityPlacementGroupsClientListByResourceGroupPager.Err` has been removed
+- Function `*GalleryApplicationVersionsClientListByGalleryApplicationPager.Err` has been removed
+- Function `PrivateEndpointServiceConnectionStatus.ToPtr` has been removed
+- Function `*CloudServicesClientReimagePoller.FinalResponse` has been removed
+- Function `*CloudServicesClientDeleteInstancesPoller.Poll` has been removed
+- Function `DedicatedHostLicenseTypes.ToPtr` has been removed
+- Function `*VirtualMachineExtensionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*SharedGalleriesClientListPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetsClientDeletePoller.ResumeToken` has been removed
+- Function `CloudServicesClientReimagePollerResponse.PollUntilDone` has been removed
+- Function `*CloudServiceRoleInstancesClientReimagePoller.Done` has been removed
+- Function `*VirtualMachinesClientRestartPoller.ResumeToken` has been removed
+- Function `*DiskEncryptionSetsClientUpdatePoller.Poll` has been removed
+- Function `*VirtualMachineExtensionsClientUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetsClientStartPoller.ResumeToken` has been removed
+- Function `OrchestrationServiceState.ToPtr` has been removed
+- Function `*SSHPublicKeysClientListByResourceGroupPager.Err` has been removed
+- Function `*CloudServicesUpdateDomainClientWalkUpdateDomainPollerResponse.Resume` has been removed
+- Function `*DiskAccessesClientDeletePollerResponse.Resume` has been removed
+- Function `*VirtualMachinesClientPowerOffPoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetsClientDeletePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetVMsClientDeletePoller.Poll` has been removed
+- Function `GalleryApplicationVersionsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetsClientRestartPoller.Done` has been removed
+- Function `*SnapshotsClientListPager.PageResponse` has been removed
+- Function `*DiskAccessesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachinesClientUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetVMsClientStartPoller.FinalResponse` has been removed
+- Function `GalleryImagesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `VirtualMachineScaleSetsClientDeleteInstancesPollerResponse.PollUntilDone` has been removed
+- Function `*CloudServiceRoleInstancesClientDeletePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetsClientListAllPager.NextPage` has been removed
+- Function `*SnapshotsClientDeletePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetVMsClientStartPoller.Poll` has been removed
+- Function `HyperVGenerationType.ToPtr` has been removed
+- Function `OperatingSystemType.ToPtr` has been removed
+- Function `*VirtualMachineScaleSetVMsClientPerformMaintenancePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetsClientDeletePoller.Poll` has been removed
+- Function `*DedicatedHostsClientUpdatePollerResponse.Resume` has been removed
+- Function `VirtualMachinesClientAssessPatchesPollerResponse.PollUntilDone` has been removed
+- Function `*DiskAccessesClientDeletePoller.Done` has been removed
+- Function `*VirtualMachineScaleSetVMsClientReimagePoller.FinalResponse` has been removed
+- Function `VirtualMachineScaleSetVMRunCommandsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*CapacityReservationsClientDeletePoller.Done` has been removed
+- Function `*VirtualMachinesClientCapturePoller.ResumeToken` has been removed
+- Function `*VirtualMachinesClientReapplyPoller.Done` has been removed
+- Function `*VirtualMachineScaleSetVMsClientDeallocatePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetExtensionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*GalleryImageVersionsClientUpdatePoller.Poll` has been removed
+- Function `VirtualMachinesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineExtensionsClientDeletePollerResponse.Resume` has been removed
+- Function `*VirtualMachinesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetExtensionsClientListPager.PageResponse` has been removed
+- Function `*DiskEncryptionSetsClientUpdatePoller.ResumeToken` has been removed
+- Function `ExtendedLocationType.ToPtr` has been removed
+- Function `VirtualMachinesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*GalleryApplicationsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetsClientUpdateInstancesPoller.FinalResponse` has been removed
+- Function `VirtualMachineScaleSetsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DedicatedHostGroupsClientListBySubscriptionPager.NextPage` has been removed
+- Function `*GalleryApplicationVersionsClientDeletePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetVMsClientDeallocatePoller.ResumeToken` has been removed
+- Function `OperatingSystemTypes.ToPtr` has been removed
+- Function `*DisksClientRevokeAccessPoller.ResumeToken` has been removed
+- Function `OrchestrationServiceNames.ToPtr` has been removed
+- Function `*GalleryImagesClientListByGalleryPager.Err` has been removed
+- Function `*VirtualMachineScaleSetsClientDeallocatePoller.Done` has been removed
+- Function `*VirtualMachinesClientDeletePoller.FinalResponse` has been removed
+- Function `*CloudServicesClientRestartPoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetsClientRedeployPoller.Poll` has been removed
+- Function `*DiskAccessesClientDeletePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetsClientDeletePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetVMsClientReimagePollerResponse.Resume` has been removed
+- Function `*VirtualMachinesClientReapplyPoller.ResumeToken` has been removed
+- Function `*GalleryImageVersionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsClientDeletePoller.Poll` has been removed
+- Function `*DiskRestorePointClientRevokeAccessPoller.FinalResponse` has been removed
+- Function `*CloudServicesClientDeleteInstancesPoller.ResumeToken` has been removed
+- Function `*DedicatedHostsClientUpdatePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMsClientReimageAllPoller.FinalResponse` has been removed
+- Function `*DiskAccessesClientUpdatePollerResponse.Resume` has been removed
+- Function `*DiskRestorePointClientRevokeAccessPoller.Poll` has been removed
+- Function `CloudServiceRoleInstancesClientRestartPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineRunCommandsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetVMsClientUpdatePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMsClientRedeployPoller.Done` has been removed
+- Function `VirtualMachineScaleSetExtensionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetExtensionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `DiffDiskOptions.ToPtr` has been removed
+- Function `*VirtualMachinesClientRedeployPoller.Poll` has been removed
+- Function `*GalleryImageVersionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*CloudServicesClientUpdatePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsClientUpdatePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetsClientDeallocatePoller.Poll` has been removed
+- Function `*DiskRestorePointClientGrantAccessPollerResponse.Resume` has been removed
+- Function `StorageAccountTypes.ToPtr` has been removed
+- Function `CapacityReservationGroupInstanceViewTypes.ToPtr` has been removed
+- Function `CapacityReservationsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `HostCaching.ToPtr` has been removed
+- Function `*VirtualMachineScaleSetsClientSetOrchestrationServiceStatePollerResponse.Resume` has been removed
+- Function `VirtualMachineScaleSetVMsClientPowerOffPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*GallerySharingProfileClientUpdatePoller.Poll` has been removed
+- Function `*VirtualMachineRunCommandsClientListPager.NextPage` has been removed
+- Function `*VirtualMachineRunCommandsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetVMsClientUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsClientUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetVMsClientStartPoller.Done` has been removed
+- Function `DedicatedHostsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*AvailabilitySetsClientListBySubscriptionPager.Err` has been removed
+- Function `VirtualMachineScaleSetsClientRedeployPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesClientConvertToManagedDisksPoller.Poll` has been removed
+- Function `*CloudServicesUpdateDomainClientWalkUpdateDomainPoller.Done` has been removed
+- Function `*VirtualMachineScaleSetVMsClientDeallocatePoller.Done` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsClientUpdatePoller.FinalResponse` has been removed
+- Function `*GalleryImagesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `VirtualMachineExtensionsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesClientDeallocatePoller.Poll` has been removed
+- Function `CapacityReservationsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetsClientReimagePoller.FinalResponse` has been removed
+- Function `*SnapshotsClientRevokeAccessPoller.Done` has been removed
+- Function `*CloudServicesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*CloudServiceRolesClientListPager.Err` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsClientUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesClientRestartPoller.FinalResponse` has been removed
+- Function `*GalleryApplicationVersionsClientDeletePoller.ResumeToken` has been removed
+- Function `*DedicatedHostsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `DiskDeleteOptionTypes.ToPtr` has been removed
+- Function `DeleteOptions.ToPtr` has been removed
+- Function `*VirtualMachineScaleSetExtensionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualMachineScaleSetsClientUpdateInstancesPoller.Poll` has been removed
+- Function `*CapacityReservationGroupsClientListByResourceGroupPager.Err` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetsClientReimagePoller.Poll` has been removed
+- Function `NetworkAPIVersion.ToPtr` has been removed
+- Function `InstanceViewTypes.ToPtr` has been removed
+- Function `*CloudServiceOperatingSystemsClientListOSFamiliesPager.Err` has been removed
+- Function `*GalleryApplicationVersionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `SnapshotsClientGrantAccessPollerResponse.PollUntilDone` has been removed
+- Function `*CapacityReservationsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `RestorePointsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*DiskAccessesClientUpdateAPrivateEndpointConnectionPoller.Done` has been removed
+- Function `*VirtualMachineRunCommandsClientUpdatePoller.Done` has been removed
+- Function `GalleryApplicationVersionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `DiskCreateOptionTypes.ToPtr` has been removed
+- Function `VirtualMachinesClientRunCommandPollerResponse.PollUntilDone` has been removed
+- Function `*CloudServicesClientRebuildPoller.ResumeToken` has been removed
+- Function `RollingUpgradeActionType.ToPtr` has been removed
+- Function `AggregatedReplicationState.ToPtr` has been removed
+- Function `*CloudServicesClientStartPoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetsClientListByLocationPager.PageResponse` has been removed
+- Function `*GalleryImageVersionsClientDeletePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetsClientListPager.Err` has been removed
+- Function `*VirtualMachineScaleSetsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `DiskEncryptionSetsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*CloudServicesClientDeleteInstancesPoller.Done` has been removed
+- Function `*DiskRestorePointClientGrantAccessPoller.Done` has been removed
+- Function `VirtualMachinesClientDeallocatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetVMsClientRedeployPoller.Poll` has been removed
+- Function `*CloudServicesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetVMsClientRedeployPoller.FinalResponse` has been removed
+- Function `*DedicatedHostsClientRestartPoller.Done` has been removed
+- Function `*VirtualMachineScaleSetVMsClientDeletePoller.ResumeToken` has been removed
+- Function `*VirtualMachinesClientStartPoller.Poll` has been removed
+- Function `*CapacityReservationsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*GalleriesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `VirtualMachinesClientConvertToManagedDisksPollerResponse.PollUntilDone` has been removed
+- Function `*DedicatedHostsClientUpdatePoller.Done` has been removed
+- Function `*CloudServicesClientPowerOffPoller.ResumeToken` has been removed
+- Function `*SnapshotsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradePoller.Poll` has been removed
+- Function `*VirtualMachinesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*DiskEncryptionSetsClientListAssociatedResourcesPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetsClientPerformMaintenancePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsClientUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetsClientPowerOffPoller.Poll` has been removed
+- Function `VirtualMachineScaleSetRollingUpgradesClientCancelPollerResponse.PollUntilDone` has been removed
+- Function `*CapacityReservationsClientDeletePoller.Poll` has been removed
+- Function `*DisksClientListByResourceGroupPager.NextPage` has been removed
+- Function `ImagesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesClientReapplyPoller.FinalResponse` has been removed
+- Function `*VirtualMachineExtensionsClientUpdatePoller.Done` has been removed
+- Function `*SnapshotsClientDeletePollerResponse.Resume` has been removed
+- Function `*GalleryImageVersionsClientUpdatePoller.FinalResponse` has been removed
+- Function `*DedicatedHostsClientListByHostGroupPager.Err` has been removed
+- Function `*DiskEncryptionSetsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradePoller.ResumeToken` has been removed
+- Function `*DiskRestorePointClientRevokeAccessPollerResponse.Resume` has been removed
+- Function `*DiskRestorePointClientListByRestorePointPager.NextPage` has been removed
+- Function `*RestorePointsClientDeletePollerResponse.Resume` has been removed
+- Function `VirtualMachineScaleSetsClientStartPollerResponse.PollUntilDone` has been removed
+- Function `*DisksClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetsClientListPager.PageResponse` has been removed
+- Function `*SnapshotsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*CloudServicesClientListAllPager.NextPage` has been removed
+- Function `*RestorePointsClientCreatePollerResponse.Resume` has been removed
+- Function `*GalleryApplicationsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `GalleriesClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*GalleriesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetVMsClientRedeployPollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetVMsClientRestartPoller.Poll` has been removed
+- Function `*GalleryApplicationVersionsClientUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineExtensionsClientDeletePoller.Done` has been removed
+- Function `*VirtualMachineScaleSetVMsClientRunCommandPoller.FinalResponse` has been removed
+- Function `*SnapshotsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*CloudServicesUpdateDomainClientWalkUpdateDomainPoller.FinalResponse` has been removed
+- Function `RepairAction.ToPtr` has been removed
+- Function `DiskSecurityTypes.ToPtr` has been removed
+- Function `VirtualMachinePriorityTypes.ToPtr` has been removed
+- Function `VirtualMachineScaleSetsClientDeallocatePollerResponse.PollUntilDone` has been removed
+- Function `*SnapshotsClientGrantAccessPoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetsClientDeallocatePoller.FinalResponse` has been removed
+- Function `*CloudServiceRoleInstancesClientListPager.PageResponse` has been removed
+- Function `*CapacityReservationsClientDeletePoller.FinalResponse` has been removed
+- Function `*DiskRestorePointClientGrantAccessPoller.ResumeToken` has been removed
+- Function `VirtualMachineScaleSetsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `MaintenanceOperationResultCodeTypes.ToPtr` has been removed
+- Function `*SnapshotsClientUpdatePoller.ResumeToken` has been removed
+- Function `*GalleriesClientListPager.NextPage` has been removed
+- Function `*GalleriesClientDeletePollerResponse.Resume` has been removed
+- Function `*VirtualMachinesClientDeallocatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetsClientPerformMaintenancePoller.FinalResponse` has been removed
+- Function `*DisksClientCreateOrUpdatePoller.Done` has been removed
+- Function `*SnapshotsClientListPager.Err` has been removed
+- Function `*CloudServicesClientStartPollerResponse.Resume` has been removed
+- Function `SnapshotsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*CloudServicesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*DiskRestorePointClientListByRestorePointPager.Err` has been removed
+- Function `VirtualMachineScaleSetsClientReimagePollerResponse.PollUntilDone` has been removed
+- Function `*CloudServiceOperatingSystemsClientListOSVersionsPager.PageResponse` has been removed
+- Function `CloudServicesClientDeleteInstancesPollerResponse.PollUntilDone` has been removed
+- Function `IPVersion.ToPtr` has been removed
+- Function `*VirtualMachineScaleSetsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetsClientDeleteInstancesPoller.Poll` has been removed
+- Function `CloudServicesUpdateDomainClientWalkUpdateDomainPollerResponse.PollUntilDone` has been removed
+- Function `StatusLevelTypes.ToPtr` has been removed
+- Function `*CloudServicesClientUpdatePollerResponse.Resume` has been removed
+- Function `*CloudServicesUpdateDomainClientListUpdateDomainsPager.Err` has been removed
+- Function `*DiskEncryptionSetsClientDeletePoller.ResumeToken` has been removed
+- Function `*ImagesClientDeletePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMsClientDeletePoller.Done` has been removed
+- Function `*VirtualMachineScaleSetVMsClientPowerOffPoller.Done` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesClientCancelPollerResponse.Resume` has been removed
+- Function `*CloudServicesUpdateDomainClientListUpdateDomainsPager.NextPage` has been removed
+- Function `*VirtualMachinesClientAssessPatchesPoller.Done` has been removed
+- Function `*DedicatedHostsClientUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesClientCreateOrUpdatePoller.Done` has been removed
+- Function `GalleryExpandParams.ToPtr` has been removed
+- Function `*VirtualMachineScaleSetVMsClientRestartPoller.ResumeToken` has been removed
+- Function `*DisksClientGrantAccessPoller.Poll` has been removed
+- Function `*VirtualMachineExtensionsClientDeletePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMsClientPowerOffPollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetVMsClientListPager.PageResponse` has been removed
+- Function `*CloudServiceRoleInstancesClientRestartPollerResponse.Resume` has been removed
+- Function `*CloudServiceRolesClientListPager.PageResponse` has been removed
+- Function `*SharedGalleryImagesClientListPager.PageResponse` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradePoller.Done` has been removed
+- Function `*VirtualMachinesClientAssessPatchesPoller.FinalResponse` has been removed
+- Function `ExecutionState.ToPtr` has been removed
+- Function `*CapacityReservationsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `VirtualMachineScaleSetScaleInRules.ToPtr` has been removed
+- Function `*CloudServicesClientListPager.PageResponse` has been removed
+- Function `*GalleriesClientListPager.Err` has been removed
+- Function `SharingUpdateOperationTypes.ToPtr` has been removed
+- Function `*CapacityReservationsClientUpdatePoller.Done` has been removed
+- Function `*VirtualMachinesClientInstallPatchesPoller.Poll` has been removed
+- Function `*GalleryApplicationVersionsClientDeletePoller.Done` has been removed
+- Function `*VirtualMachinesClientUpdatePoller.Done` has been removed
+- Function `*VirtualMachinesClientRunCommandPoller.Done` has been removed
+- Function `*DiskAccessesClientDeleteAPrivateEndpointConnectionPoller.Done` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradePoller.Done` has been removed
+- Function `*DiskEncryptionSetsClientListAssociatedResourcesPager.PageResponse` has been removed
+- Function `*CloudServicesClientDeleteInstancesPollerResponse.Resume` has been removed
+- Function `*GalleryApplicationVersionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*DiskRestorePointClientRevokeAccessPoller.Done` has been removed
+- Function `*RestorePointCollectionsClientListAllPager.PageResponse` has been removed
+- Function `*DisksClientDeletePoller.Done` has been removed
+- Function `*VirtualMachineScaleSetVMsClientReimagePoller.ResumeToken` has been removed
+- Function `*CloudServicesClientDeletePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsClientUpdatePoller.ResumeToken` has been removed
+- Function `GalleryApplicationsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetsClientReimagePoller.Done` has been removed
+- Function `*DisksClientRevokeAccessPoller.FinalResponse` has been removed
+- Function `CloudServicesClientPowerOffPollerResponse.PollUntilDone` has been removed
+- Function `DataAccessAuthMode.ToPtr` has been removed
+- Function `*VirtualMachineScaleSetVMsClientDeletePollerResponse.Resume` has been removed
+- Function `*SnapshotsClientGrantAccessPoller.Done` has been removed
+- Function `*VirtualMachinesClientConvertToManagedDisksPollerResponse.Resume` has been removed
+- Function `*CapacityReservationsClientUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesClientPerformMaintenancePoller.Poll` has been removed
+- Function `*RestorePointsClientDeletePoller.ResumeToken` has been removed
+- Function `AvailabilitySetSKUTypes.ToPtr` has been removed
+- Function `*VirtualMachinesClientAssessPatchesPoller.ResumeToken` has been removed
+- Function `*DiskAccessesClientListPrivateEndpointConnectionsPager.PageResponse` has been removed
+- Function `*GalleryApplicationsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*DisksClientUpdatePoller.Done` has been removed
+- Function `VirtualMachineScaleSetVMsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*GalleriesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualMachinesClientInstallPatchesPoller.FinalResponse` has been removed
+- Function `*CapacityReservationsClientUpdatePoller.ResumeToken` has been removed
+- Function `*DisksClientListPager.NextPage` has been removed
+- Function `*CloudServiceRolesClientListPager.NextPage` has been removed
+- Function `*CloudServiceRoleInstancesClientReimagePoller.FinalResponse` has been removed
+- Function `*SnapshotsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*GalleryImagesClientListByGalleryPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetsClientPowerOffPollerResponse.Resume` has been removed
+- Function `*CloudServicesClientListPager.NextPage` has been removed
+- Function `SharedToValues.ToPtr` has been removed
+- Function `*DiskEncryptionSetsClientDeletePoller.Poll` has been removed
+- Function `GalleryApplicationsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetsClientStartPollerResponse.Resume` has been removed
+- Function `CloudServicesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `VirtualMachineScaleSetVMExtensionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*GalleryImagesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*DisksClientDeletePoller.Poll` has been removed
+- Function `*DedicatedHostGroupsClientListBySubscriptionPager.Err` has been removed
+- Function `VirtualMachineScaleSetsClientUpdateInstancesPollerResponse.PollUntilDone` has been removed
+- Function `*AvailabilitySetsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*VirtualMachineScaleSetsClientListSKUsPager.NextPage` has been removed
+- Function `*VirtualMachinesClientInstallPatchesPollerResponse.Resume` has been removed
+- Function `ExtendedLocationTypes.ToPtr` has been removed
+- Function `*DiskEncryptionSetsClientListPager.Err` has been removed
+- Function `*VirtualMachinesClientDeletePoller.Done` has been removed
+- Function `*CloudServicesClientStartPoller.ResumeToken` has been removed
+- Function `VMGuestPatchRebootSetting.ToPtr` has been removed
+- Function `*ImagesClientDeletePoller.ResumeToken` has been removed
+- Function `*DiskAccessesClientUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsClientUpdatePoller.Done` has been removed
+- Function `CloudServiceUpgradeMode.ToPtr` has been removed
+- Function `*CloudServiceRoleInstancesClientReimagePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMsClientRunCommandPollerResponse.Resume` has been removed
+- Function `*ImagesClientUpdatePoller.ResumeToken` has been removed
+- Function `VirtualMachinesClientRestartPollerResponse.PollUntilDone` has been removed
+- Function `*GalleryApplicationsClientDeletePoller.Poll` has been removed
+- Function `VirtualMachineScaleSetVMsClientRestartPollerResponse.PollUntilDone` has been removed
+- Function `DisksClientRevokeAccessPollerResponse.PollUntilDone` has been removed
+- Function `*CloudServicesClientStartPoller.FinalResponse` has been removed
+- Function `*LogAnalyticsClientExportThrottledRequestsPoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetVMsClientReimageAllPollerResponse.Resume` has been removed
+- Function `*GalleryApplicationVersionsClientDeletePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetsClientListByLocationPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetsClientDeletePoller.Done` has been removed
+- Function `*CloudServicesClientUpdatePoller.FinalResponse` has been removed
+- Function `CloudServicesClientRestartPollerResponse.PollUntilDone` has been removed
+- Function `*DisksClientGrantAccessPoller.FinalResponse` has been removed
+- Function `DiskEncryptionSetType.ToPtr` has been removed
+- Function `*GalleryImagesClientDeletePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetsClientDeallocatePollerResponse.Resume` has been removed
+- Function `*LogAnalyticsClientExportRequestRateByIntervalPoller.FinalResponse` has been removed
+- Function `HyperVGeneration.ToPtr` has been removed
+- Function `*ResourceSKUsClientListPager.NextPage` has been removed
+- Function `*DedicatedHostsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VirtualMachinesClientPerformMaintenancePollerResponse.Resume` has been removed
+- Function `*GalleryApplicationsClientDeletePoller.Done` has been removed
+- Function `*ImagesClientDeletePoller.Done` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesClientCancelPoller.Done` has been removed
+- Function `*GalleryImagesClientListByGalleryPager.PageResponse` has been removed
+- Function `VirtualMachineScaleSetsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineRunCommandsClientDeletePoller.ResumeToken` has been removed
+- Function `*SnapshotsClientUpdatePollerResponse.Resume` has been removed
+- Function `*CloudServicesClientUpdatePoller.ResumeToken` has been removed
+- Function `*GalleryApplicationsClientUpdatePoller.FinalResponse` has been removed
+- Function `*ImagesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*DisksClientListByResourceGroupPager.Err` has been removed
+- Function `*VirtualMachinesClientReimagePollerResponse.Resume` has been removed
+- Function `*CloudServicesClientRestartPollerResponse.Resume` has been removed
+- Function `*CloudServicesClientListAllPager.Err` has been removed
+- Function `CloudServiceRoleInstancesClientRebuildPollerResponse.PollUntilDone` has been removed
+- Function `DiskRestorePointClientRevokeAccessPollerResponse.PollUntilDone` has been removed
+- Function `*GalleryImageVersionsClientListByGalleryImagePager.PageResponse` has been removed
+- Function `LinuxVMGuestPatchMode.ToPtr` has been removed
+- Function `VMGuestPatchClassificationWindows.ToPtr` has been removed
+- Function `VirtualMachinesClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `DisksClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*CloudServiceRoleInstancesClientRebuildPoller.ResumeToken` has been removed
+- Function `*GalleryImagesClientDeletePoller.ResumeToken` has been removed
+- Function `ReplicationMode.ToPtr` has been removed
+- Function `*AvailabilitySetsClientListBySubscriptionPager.NextPage` has been removed
+- Function `*ProximityPlacementGroupsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*CloudServiceRoleInstancesClientRebuildPoller.Done` has been removed
+- Function `*RestorePointsClientCreatePoller.Done` has been removed
+- Function `*VirtualMachineScaleSetsClientPerformMaintenancePoller.ResumeToken` has been removed
+- Function `SnapshotsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `RestorePointCollectionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetExtensionsClientListPager.Err` has been removed
+- Function `*RestorePointCollectionsClientListPager.NextPage` has been removed
+- Function `*VirtualMachinesClientAssessPatchesPollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetVMsClientDeallocatePollerResponse.Resume` has been removed
+- Function `*DedicatedHostsClientDeletePoller.Done` has been removed
+- Function `*DisksClientDeletePoller.FinalResponse` has been removed
+- Function `*SnapshotsClientListByResourceGroupPager.Err` has been removed
+- Function `VirtualMachineExtensionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*GalleriesClientUpdatePollerResponse.Resume` has been removed
+- Function `SettingNames.ToPtr` has been removed
+- Function `UpgradeMode.ToPtr` has been removed
+- Function `*DisksClientUpdatePoller.ResumeToken` has been removed
+- Function `*SharedGalleriesClientListPager.PageResponse` has been removed
+- Function `*VirtualMachinesClientInstallPatchesPoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetsClientReimageAllPoller.FinalResponse` has been removed
+- Function `DiskEncryptionSetIdentityType.ToPtr` has been removed
+- Function `*GalleriesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*SnapshotsClientRevokeAccessPoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetVMsClientDeallocatePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsClientDeletePoller.FinalResponse` has been removed
+- Function `ResourceIdentityType.ToPtr` has been removed
+- Function `PublicIPAddressSKUTier.ToPtr` has been removed
+- Function `*CloudServicesUpdateDomainClientWalkUpdateDomainPoller.Poll` has been removed
+- Function `CapacityReservationInstanceViewTypes.ToPtr` has been removed
+- Function `*VirtualMachinesClientUpdatePoller.ResumeToken` has been removed
+- Function `*CapacityReservationsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineExtensionsClientUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetsClientPerformMaintenancePollerResponse.Resume` has been removed
+- Function `*GalleryImageVersionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualMachineRunCommandsClientDeletePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesClientCapturePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMsClientUpdatePoller.Done` has been removed
+- Function `*SSHPublicKeysClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*VirtualMachineScaleSetsClientUpdatePoller.ResumeToken` has been removed
+- Function `*DiskAccessesClientUpdateAPrivateEndpointConnectionPoller.ResumeToken` has been removed
+- Function `*DiskRestorePointClientRevokeAccessPoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetExtensionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*DiskAccessesClientDeleteAPrivateEndpointConnectionPoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetsClientRestartPoller.Poll` has been removed
+- Function `*CloudServiceRoleInstancesClientRebuildPoller.Poll` has been removed
+- Function `*ImagesClientListPager.Err` has been removed
+- Function `*VirtualMachineScaleSetsClientRestartPoller.ResumeToken` has been removed
+- Function `*CloudServicesClientDeletePollerResponse.Resume` has been removed
+- Function `*DisksClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*SnapshotsClientUpdatePoller.Poll` has been removed
+- Function `*CloudServicesUpdateDomainClientListUpdateDomainsPager.PageResponse` has been removed
+- Function `ResourceSKUCapacityScaleType.ToPtr` has been removed
+- Function `VirtualMachineScaleSetsClientSetOrchestrationServiceStatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesClientRedeployPoller.ResumeToken` has been removed
+- Function `*SnapshotsClientUpdatePoller.FinalResponse` has been removed
+- Function `*DedicatedHostsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*GalleryApplicationsClientDeletePoller.ResumeToken` has been removed
+- Function `PrivateEndpointConnectionProvisioningState.ToPtr` has been removed
+- Function `SecurityTypes.ToPtr` has been removed
+- Function `*ImagesClientDeletePollerResponse.Resume` has been removed
+- Function `*GalleryApplicationsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*GalleryApplicationsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*CloudServicesClientRebuildPoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMsClientPerformMaintenancePoller.Done` has been removed
+- Function `*VirtualMachineScaleSetVMsClientListPager.Err` has been removed
+- Function `*CloudServiceRoleInstancesClientRestartPoller.Poll` has been removed
+- Function `*DedicatedHostsClientRestartPoller.FinalResponse` has been removed
+- Function `*ImagesClientListByResourceGroupPager.NextPage` has been removed
+- Function `*VirtualMachinesClientRedeployPoller.Done` has been removed
+- Function `*VirtualMachineScaleSetExtensionsClientUpdatePoller.Done` has been removed
+- Function `*VirtualMachinesClientDeallocatePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesClientUpdatePoller.FinalResponse` has been removed
+- Function `*CloudServiceRoleInstancesClientDeletePoller.ResumeToken` has been removed
+- Function `*DiskRestorePointClientGrantAccessPoller.Poll` has been removed
+- Function `*GallerySharingProfileClientUpdatePoller.Done` has been removed
+- Function `*VirtualMachinesClientListByLocationPager.Err` has been removed
+- Function `*GalleriesClientUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetExtensionsClientUpdatePoller.ResumeToken` has been removed
+- Function `VirtualMachinesClientCapturePollerResponse.PollUntilDone` has been removed
+- Function `CloudServiceRoleInstancesClientReimagePollerResponse.PollUntilDone` has been removed
+- Function `*DisksClientGrantAccessPoller.ResumeToken` has been removed
+- Function `VirtualMachinesClientRedeployPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetsClientListSKUsPager.Err` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsClientListPager.Err` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetsClientUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetsClientUpdateInstancesPoller.Done` has been removed
+- Function `ProximityPlacementGroupType.ToPtr` has been removed
+- Function `*RestorePointCollectionsClientListPager.PageResponse` has been removed
+- Function `*DiskAccessesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualMachineRunCommandsClientUpdatePoller.ResumeToken` has been removed
+- Function `*DisksClientUpdatePollerResponse.Resume` has been removed
+- Function `*DiskEncryptionSetsClientListAssociatedResourcesPager.Err` has been removed
+- Function `*CloudServicesClientDeletePoller.FinalResponse` has been removed
+- Function `*DisksClientListPager.PageResponse` has been removed
+- Function `CapacityReservationsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetExtensionsClientUpdatePoller.Poll` has been removed
+- Function `*DiskEncryptionSetsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*CloudServicesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `VirtualMachineScaleSetVMsClientRunCommandPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesClientRestartPoller.Done` has been removed
+- Function `GalleryApplicationsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesClientReapplyPollerResponse.Resume` has been removed
+- Function `*VirtualMachinesClientConvertToManagedDisksPoller.ResumeToken` has been removed
+- Function `*VirtualMachinesClientStartPoller.Done` has been removed
+- Function `GalleryImageVersionsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `CloudServicesClientStartPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesClientDeletePoller.ResumeToken` has been removed
+- Function `VMGuestPatchRebootStatus.ToPtr` has been removed
+- Function `*VirtualMachineScaleSetVMsClientPerformMaintenancePollerResponse.Resume` has been removed
+- Function `*VirtualMachinesClientDeallocatePoller.Done` has been removed
+- Function `*VirtualMachinesClientReimagePoller.FinalResponse` has been removed
+- Function `*VirtualMachineExtensionsClientDeletePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetsClientListSKUsPager.PageResponse` has been removed
+- Function `*CloudServiceRoleInstancesClientRebuildPollerResponse.Resume` has been removed
+- Function `*DiskEncryptionSetsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualMachinesClientInstallPatchesPoller.Done` has been removed
+- Function `*GalleryImageVersionsClientDeletePollerResponse.Resume` has been removed
+- Function `VirtualMachinesClientPowerOffPollerResponse.PollUntilDone` has been removed
+- Function `*CloudServicesClientRestartPoller.Poll` has been removed
+- Function `OrchestrationServiceStateAction.ToPtr` has been removed
+- Function `*VirtualMachineScaleSetVMsClientDeletePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetsClientPowerOffPoller.Done` has been removed
+- Function `*LogAnalyticsClientExportRequestRateByIntervalPollerResponse.Resume` has been removed
+- Function `OperatingSystemStateTypes.ToPtr` has been removed
+- Function `CloudServicesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*SnapshotsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `DiskStorageAccountTypes.ToPtr` has been removed
+- Function `GalleryImageVersionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesClientPowerOffPoller.Poll` has been removed
+- Function `*GalleryImageVersionsClientDeletePoller.Poll` has been removed
+- Function `*CloudServiceRoleInstancesClientRestartPoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetsClientReimageAllPoller.Poll` has been removed
+- Function `WindowsVMGuestPatchMode.ToPtr` has been removed
+- Function `*DisksClientGrantAccessPollerResponse.Resume` has been removed
+- Function `ArchitectureTypes.ToPtr` has been removed
+- Function `GalleryImageVersionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*DedicatedHostsClientListByHostGroupPager.NextPage` has been removed
+- Function `*CloudServicesClientReimagePoller.ResumeToken` has been removed
+- Function `*DedicatedHostsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*DiskAccessesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineRunCommandsClientListPager.PageResponse` has been removed
+- Function `*GalleriesClientUpdatePoller.FinalResponse` has been removed
+- Function `DiskAccessesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DiskAccessesClientUpdateAPrivateEndpointConnectionPoller.Poll` has been removed
+- Function `DiskDetachOptionTypes.ToPtr` has been removed
+- Function `DiskState.ToPtr` has been removed
+- Function `*DiskEncryptionSetsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `PatchOperationStatus.ToPtr` has been removed
+- Function `*CloudServiceRoleInstancesClientDeletePoller.Poll` has been removed
+- Function `*VirtualMachinesClientCapturePoller.Done` has been removed
+- Function `*DiskAccessesClientUpdatePoller.Done` has been removed
+- Function `*CloudServiceRoleInstancesClientListPager.Err` has been removed
+- Function `LinuxPatchAssessmentMode.ToPtr` has been removed
+- Function `SharingProfileGroupTypes.ToPtr` has been removed
+- Function `*GalleryImageVersionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `VirtualMachineScaleSetExtensionsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `VirtualMachineRunCommandsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineRunCommandsClientDeletePoller.Poll` has been removed
+- Function `*DedicatedHostGroupsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*RestorePointCollectionsClientDeletePoller.Done` has been removed
+- Function `GallerySharingProfileClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*CloudServicesClientRestartPoller.ResumeToken` has been removed
+- Function `VirtualMachinesClientReapplyPollerResponse.PollUntilDone` has been removed
+- Function `DiskEncryptionSetsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `RestorePointCollectionExpandOptions.ToPtr` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsClientUpdatePoller.Poll` has been removed
+- Function `*CloudServiceOperatingSystemsClientListOSVersionsPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetExtensionsClientDeletePoller.Done` has been removed
+- Function `*VirtualMachineScaleSetsClientUpdateInstancesPoller.ResumeToken` has been removed
+- Function `*DiskAccessesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `ImagesClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DisksClientRevokeAccessPoller.Done` has been removed
+- Function `*VirtualMachineScaleSetsClientReimageAllPollerResponse.Resume` has been removed
+- Function `*GalleryApplicationsClientListByGalleryPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesClientCancelPoller.FinalResponse` has been removed
+- Function `*GalleryImagesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMsClientReimagePoller.Poll` has been removed
+- Function `ExpandTypesForGetVMScaleSets.ToPtr` has been removed
+- Function `*VirtualMachineRunCommandsClientDeletePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetsClientStartPoller.Done` has been removed
+- Function `*VirtualMachinesClientListByLocationPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetsClientPerformMaintenancePoller.Done` has been removed
+- Function `*VirtualMachineScaleSetExtensionsClientListPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetsClientDeleteInstancesPollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetsClientSetOrchestrationServiceStatePoller.Done` has been removed
+- Function `LogAnalyticsClientExportRequestRateByIntervalPollerResponse.PollUntilDone` has been removed
+- Function `*GalleryImageVersionsClientUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetVMsClientReimageAllPoller.ResumeToken` has been removed
+- Function `*CloudServiceRoleInstancesClientReimagePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetsClientSetOrchestrationServiceStatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetVMsClientPerformMaintenancePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetsClientSetOrchestrationServiceStatePoller.Poll` has been removed
+- Function `HyperVGenerationTypes.ToPtr` has been removed
+- Function `VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradePollerResponse.PollUntilDone` has been removed
+- Function `Architecture.ToPtr` has been removed
+- Function `PublicIPAddressSKUName.ToPtr` has been removed
+- Function `VirtualMachineScaleSetVMsClientDeallocatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*CapacityReservationsClientListByCapacityReservationGroupPager.Err` has been removed
+- Function `*VirtualMachinesClientListPager.Err` has been removed
+- Function `*DedicatedHostsClientRestartPoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetExtensionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*DisksClientDeletePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetExtensionsClientDeletePoller.ResumeToken` has been removed
+- Function `*GalleryApplicationVersionsClientDeletePoller.Poll` has been removed
+- Function `*DiskAccessesClientListPager.NextPage` has been removed
+- Function `*DiskAccessesClientListByResourceGroupPager.Err` has been removed
+- Function `*VirtualMachinesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetsClientRedeployPollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetVMsClientPowerOffPoller.Poll` has been removed
+- Function `*RestorePointsClientDeletePoller.Poll` has been removed
+- Function `*ImagesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*GalleryImageVersionsClientListByGalleryImagePager.Err` has been removed
+- Function `*DiskEncryptionSetsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*GalleryApplicationsClientDeletePollerResponse.Resume` has been removed
+- Function `*GalleriesClientUpdatePoller.Done` has been removed
+- Function `*CapacityReservationGroupsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetVMsClientReimageAllPoller.Done` has been removed
+- Function `*VirtualMachineScaleSetsClientReimagePollerResponse.Resume` has been removed
+- Function `*LogAnalyticsClientExportRequestRateByIntervalPoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradePoller.ResumeToken` has been removed
+- Function `*DedicatedHostsClientRestartPoller.ResumeToken` has been removed
+- Function `SnapshotStorageAccountTypes.ToPtr` has been removed
+- Function `VirtualMachineRunCommandsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*RestorePointCollectionsClientDeletePoller.FinalResponse` has been removed
+- Function `*CloudServiceRoleInstancesClientRestartPoller.ResumeToken` has been removed
+- Function `DisksClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetVMsClientRedeployPoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetsClientListAllPager.Err` has been removed
+- Function `*GalleryApplicationVersionsClientUpdatePoller.Done` has been removed
+- Function `*LogAnalyticsClientExportThrottledRequestsPoller.Done` has been removed
+- Function `DisksClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*CloudServicesClientPowerOffPoller.Poll` has been removed
+- Function `*GalleryApplicationVersionsClientUpdatePoller.Poll` has been removed
+- Function `*ImagesClientListPager.PageResponse` has been removed
+- Function `AccessLevel.ToPtr` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `DiskCreateOption.ToPtr` has been removed
+- Function `*DedicatedHostsClientCreateOrUpdatePoller.Done` has been removed
+- Function `VirtualMachineScaleSetVMsClientPerformMaintenancePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetsClientRedeployPoller.ResumeToken` has been removed
+- Function `*LogAnalyticsClientExportRequestRateByIntervalPoller.ResumeToken` has been removed
+- Function `VirtualMachineScaleSetVMRunCommandsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsClientDeletePoller.Done` has been removed
+- Function `*LogAnalyticsClientExportRequestRateByIntervalPoller.Done` has been removed
+- Function `*DiskAccessesClientUpdateAPrivateEndpointConnectionPoller.FinalResponse` has been removed
+- Function `*CloudServicesClientListPager.Err` has been removed
+- Function `*VirtualMachineScaleSetsClientListPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetsClientPowerOffPoller.FinalResponse` has been removed
+- Function `*RestorePointCollectionsClientListAllPager.Err` has been removed
+- Function `VirtualMachineEvictionPolicyTypes.ToPtr` has been removed
+- Function `*ProximityPlacementGroupsClientListBySubscriptionPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsClientUpdatePoller.ResumeToken` has been removed
+- Function `*DisksClientListPager.Err` has been removed
+- Function `*ProximityPlacementGroupsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*DisksClientRevokeAccessPollerResponse.Resume` has been removed
+- Function `*CloudServiceRoleInstancesClientReimagePollerResponse.Resume` has been removed
+- Function `GalleryImagesClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*GalleriesClientDeletePoller.Poll` has been removed
+- Function `*DiskAccessesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `SnapshotsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetsClientPowerOffPoller.ResumeToken` has been removed
+- Function `*UsageClientListPager.Err` has been removed
+- Function `PublicIPAllocationMethod.ToPtr` has been removed
+- Function `*SharedGalleryImageVersionsClientListPager.Err` has been removed
+- Function `*VirtualMachinesClientListAllPager.NextPage` has been removed
+- Function `*VirtualMachinesClientRunCommandPollerResponse.Resume` has been removed
+- Function `StorageAccountType.ToPtr` has been removed
+- Function `*GalleryImageVersionsClientUpdatePoller.Done` has been removed
+- Function `GalleryApplicationVersionPropertiesProvisioningState.ToPtr` has been removed
+- Function `*RestorePointCollectionsClientListPager.Err` has been removed
+- Function `*CapacityReservationGroupsClientListBySubscriptionPager.Err` has been removed
+- Function `*RestorePointsClientCreatePoller.ResumeToken` has been removed
+- Function `*CloudServicesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `SnapshotsClientRevokeAccessPollerResponse.PollUntilDone` has been removed
+- Function `*DedicatedHostsClientListByHostGroupPager.PageResponse` has been removed
+- Function `*SnapshotsClientDeletePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetsClientRestartPollerResponse.Resume` has been removed
+- Function `IPVersions.ToPtr` has been removed
+- Function `VirtualMachineScaleSetVMsClientReimagePollerResponse.PollUntilDone` has been removed
+- Function `*DedicatedHostsClientDeletePoller.Poll` has been removed
+- Function `PublicNetworkAccess.ToPtr` has been removed
+- Function `CloudServiceRoleInstancesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsClientListPager.PageResponse` has been removed
+- Function `PatchAssessmentState.ToPtr` has been removed
+- Function `*GalleryApplicationsClientUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetsClientRedeployPoller.Done` has been removed
+- Function `*GallerySharingProfileClientUpdatePoller.ResumeToken` has been removed
+- Function `*CloudServicesClientReimagePoller.Done` has been removed
+- Function `*VirtualMachineScaleSetVMsClientReimageAllPoller.Poll` has been removed
+- Function `*CloudServicesClientListAllPager.PageResponse` has been removed
+- Function `*VirtualMachinesClientReimagePoller.ResumeToken` has been removed
+- Function `*VirtualMachinesClientListAllPager.Err` has been removed
+- Function `ResourceSKURestrictionsReasonCode.ToPtr` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradePollerResponse.Resume` has been removed
+- Function `UpgradeState.ToPtr` has been removed
+- Function `*VirtualMachinesClientConvertToManagedDisksPoller.FinalResponse` has been removed
+- Function `*VirtualMachinesClientCapturePoller.FinalResponse` has been removed
+- Function `*GalleryApplicationVersionsClientListByGalleryApplicationPager.PageResponse` has been removed
+- Function `*DedicatedHostsClientUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetVMsClientRestartPollerResponse.Resume` has been removed
+- Function `*VirtualMachinesClientStartPoller.FinalResponse` has been removed
+- Function `*RestorePointsClientCreatePoller.FinalResponse` has been removed
+- Function `*DisksClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachinesClientDeallocatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsClientDeletePoller.FinalResponse` has been removed
+- Function `*GalleriesClientDeletePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesClientAssessPatchesPoller.Poll` has been removed
+- Function `*DisksClientUpdatePoller.Poll` has been removed
+- Function `*GalleryImagesClientDeletePollerResponse.Resume` has been removed
+- Function `*UsageClientListPager.PageResponse` has been removed
+- Function `VMDiskTypes.ToPtr` has been removed
+- Function `CloudServicesClientRebuildPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesClientConvertToManagedDisksPoller.Done` has been removed
+- Function `*CloudServicesClientPowerOffPoller.FinalResponse` has been removed
+- Function `*ImagesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualMachinesClientReimagePoller.Done` has been removed
+- Function `*LogAnalyticsClientExportThrottledRequestsPoller.FinalResponse` has been removed
+- Function `*CapacityReservationsClientUpdatePoller.Poll` has been removed
+- Function `*AvailabilitySetsClientListPager.NextPage` has been removed
+- Function `*VirtualMachinesClientPerformMaintenancePoller.FinalResponse` has been removed
+- Function `*CapacityReservationsClientUpdatePollerResponse.Resume` has been removed
+- Function `*CloudServicesClientReimagePoller.Poll` has been removed
+- Function `*GalleryApplicationVersionsClientListByGalleryApplicationPager.NextPage` has been removed
+- Function `*GalleryImagesClientUpdatePoller.Done` has been removed
+- Function `*VirtualMachinesClientUpdatePoller.Poll` has been removed
+- Function `DisksClientGrantAccessPollerResponse.PollUntilDone` has been removed
+- Function `*GalleryApplicationVersionsClientUpdatePoller.FinalResponse` has been removed
+- Function `*CloudServiceRoleInstancesClientDeletePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesClientPerformMaintenancePoller.Done` has been removed
+- Function `*GalleriesClientListPager.PageResponse` has been removed
+- Function `*VirtualMachinesClientPowerOffPoller.ResumeToken` has been removed
+- Function `*GalleriesClientListByResourceGroupPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetExtensionsClientDeletePoller.Poll` has been removed
+- Function `*GalleryApplicationVersionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `RestorePointExpandOptions.ToPtr` has been removed
+- Function `*DedicatedHostGroupsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*VirtualMachineScaleSetExtensionsClientUpdatePoller.FinalResponse` has been removed
+- Function `*UsageClientListPager.NextPage` has been removed
+- Function `*VirtualMachinesClientListPager.NextPage` has been removed
+- Function `*CapacityReservationGroupsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*GalleryApplicationVersionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*SSHPublicKeysClientListByResourceGroupPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetVMsClientRestartPoller.Done` has been removed
+- Function `*VirtualMachineScaleSetVMsClientStartPollerResponse.Resume` has been removed
+- Function `*SnapshotsClientUpdatePoller.Done` has been removed
+- Function `RestorePointsClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineRunCommandsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*DiskAccessesClientDeleteAPrivateEndpointConnectionPoller.FinalResponse` has been removed
+- Function `VirtualMachineScaleSetSKUScaleType.ToPtr` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradePoller.FinalResponse` has been removed
+- Function `CloudServicesClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineExtensionsClientUpdatePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsClientDeletePoller.ResumeToken` has been removed
+- Function `*CloudServicesClientDeletePoller.ResumeToken` has been removed
+- Function `*RestorePointCollectionsClientListAllPager.NextPage` has been removed
+- Function `*ResourceSKUsClientListPager.PageResponse` has been removed
+- Function `*VirtualMachineScaleSetVMsClientRunCommandPoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetsClientUpdateInstancesPollerResponse.Resume` has been removed
+- Function `GalleryImagePropertiesProvisioningState.ToPtr` has been removed
+- Function `*VirtualMachineScaleSetVMsClientStartPoller.ResumeToken` has been removed
+- Function `*VirtualMachineRunCommandsClientUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsClientDeletePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdatePoller.Done` has been removed
+- Function `GalleriesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMsClientPowerOffPoller.FinalResponse` has been removed
+- Function `*VirtualMachinesClientRunCommandPoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetsClientUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetsClientDeleteInstancesPoller.ResumeToken` has been removed
+- Function `*SharedGalleryImagesClientListPager.NextPage` has been removed
+- Function `ConfidentialVMEncryptionType.ToPtr` has been removed
+- Function `VirtualMachineScaleSetVMsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*GalleryImagesClientUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachinesClientRedeployPollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetsClientGetOSUpgradeHistoryPager.NextPage` has been removed
+- Function `*CapacityReservationsClientDeletePoller.ResumeToken` has been removed
+- Function `*DedicatedHostGroupsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*SnapshotsClientGrantAccessPoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMsClientReimagePoller.Done` has been removed
+- Function `*CapacityReservationGroupsClientListBySubscriptionPager.NextPage` has been removed
+- Function `*RestorePointCollectionsClientDeletePoller.Poll` has been removed
+- Function `*DedicatedHostGroupsClientListByResourceGroupPager.Err` has been removed
+- Function `*DiskRestorePointClientListByRestorePointPager.PageResponse` has been removed
+- Function `*GalleryApplicationsClientListByGalleryPager.Err` has been removed
+- Function `*CloudServiceRoleInstancesClientDeletePoller.Done` has been removed
+- Function `*CloudServiceRoleInstancesClientRebuildPoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*DisksClientDeletePollerResponse.Resume` has been removed
+- Function `*VirtualMachineRunCommandsClientDeletePoller.Done` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetExtensionsClientUpdatePollerResponse.Resume` has been removed
+- Function `*ImagesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `VirtualMachineScaleSetsClientPowerOffPollerResponse.PollUntilDone` has been removed
+- Function `*CapacityReservationsClientDeletePollerResponse.Resume` has been removed
+- Function `*DiskAccessesClientDeleteAPrivateEndpointConnectionPoller.ResumeToken` has been removed
+- Function `*SharedGalleryImagesClientListPager.Err` has been removed
+- Function `*GallerySharingProfileClientUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesClientDeletePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetVMsClientRestartPoller.FinalResponse` has been removed
+- Function `*GalleryImagesClientDeletePoller.Done` has been removed
+- Function `*VirtualMachinesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*DedicatedHostsClientDeletePollerResponse.Resume` has been removed
+- Function `VirtualMachinesClientReimagePollerResponse.PollUntilDone` has been removed
+- Function `*GalleryImageVersionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*GalleryImagesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `VirtualMachinesClientInstallPatchesPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetsClientDeleteInstancesPoller.FinalResponse` has been removed
+- Function `DiskAccessesClientDeleteAPrivateEndpointConnectionPollerResponse.PollUntilDone` has been removed
+- Function `*SnapshotsClientDeletePoller.FinalResponse` has been removed
+- Function `VMGuestPatchRebootBehavior.ToPtr` has been removed
+- Function `*RestorePointCollectionsClientDeletePoller.ResumeToken` has been removed
+- Function `*VirtualMachineRunCommandsClientUpdatePoller.FinalResponse` has been removed
+- Function `DedicatedHostsClientRestartPollerResponse.PollUntilDone` has been removed
+- Function `*DiskEncryptionSetsClientUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachinesClientListPager.PageResponse` has been removed
+- Function `SelectPermissions.ToPtr` has been removed
+- Function `GalleriesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*CloudServiceOperatingSystemsClientListOSVersionsPager.Err` has been removed
+- Function `*ImagesClientUpdatePoller.Poll` has been removed
+- Function `*RestorePointCollectionsClientDeletePollerResponse.Resume` has been removed
+- Function `*CloudServicesUpdateDomainClientWalkUpdateDomainPoller.ResumeToken` has been removed
+- Function `*VirtualMachinesClientCapturePollerResponse.Resume` has been removed
+- Function `*DiskAccessesClientListByResourceGroupPager.NextPage` has been removed
+- Function `VirtualMachineScaleSetVMExtensionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `GalleryApplicationVersionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `VMGuestPatchClassificationLinux.ToPtr` has been removed
+- Function `*DiskEncryptionSetsClientDeletePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesClientListAllPager.PageResponse` has been removed
+- Function `*VirtualMachineScaleSetExtensionsClientDeletePollerResponse.Resume` has been removed
+- Function `*GalleryImageVersionsClientDeletePoller.FinalResponse` has been removed
+- Function `*CloudServiceRoleInstancesClientListPager.NextPage` has been removed
+- Function `*DisksClientGrantAccessPoller.Done` has been removed
+- Function `*GalleryApplicationsClientUpdatePoller.Done` has been removed
+- Function `*CloudServicesClientUpdatePoller.Done` has been removed
+- Function `*SharedGalleriesClientListPager.Err` has been removed
+- Function `UpgradeOperationInvoker.ToPtr` has been removed
+- Function `SecurityEncryptionTypes.ToPtr` has been removed
+- Function `*VirtualMachinesClientPowerOffPoller.Done` has been removed
+- Function `*VirtualMachinesClientReimagePoller.Poll` has been removed
+- Function `ReplicationState.ToPtr` has been removed
+- Function `*VirtualMachineScaleSetsClientListAllPager.PageResponse` has been removed
+- Function `*SnapshotsClientDeletePoller.Done` has been removed
+- Function `*GalleryImageVersionsClientListByGalleryImagePager.NextPage` has been removed
+- Function `*GalleriesClientListByResourceGroupPager.Err` has been removed
+- Function `VirtualMachineScaleSetVMsClientRedeployPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsClientDeletePoller.Done` has been removed
+- Function `*SharedGalleryImageVersionsClientListPager.NextPage` has been removed
+- Function `VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetsClientReimageAllPoller.ResumeToken` has been removed
+- Function `*DiskEncryptionSetsClientDeletePoller.Done` has been removed
+- Function `*VirtualMachinesClientDeletePoller.Poll` has been removed
+- Function `*GalleryImagesClientDeletePoller.FinalResponse` has been removed
+- Function `DiskAccessesClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*GalleryApplicationsClientDeletePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetsClientDeleteInstancesPoller.Done` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsClientDeletePoller.Poll` has been removed
+- Function `*GalleriesClientUpdatePoller.Poll` has been removed
+- Function `DiskRestorePointClientGrantAccessPollerResponse.PollUntilDone` has been removed
+- Function `*CloudServicesClientDeletePoller.Done` has been removed
+- Function `*DisksClientRevokeAccessPoller.Poll` has been removed
+- Function `*DisksClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*CapacityReservationsClientListByCapacityReservationGroupPager.PageResponse` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesClientCancelPoller.Poll` has been removed
+- Function `*SnapshotsClientGrantAccessPoller.ResumeToken` has been removed
+- Function `ConsistencyModeTypes.ToPtr` has been removed
+- Function `VirtualMachinesClientPerformMaintenancePollerResponse.PollUntilDone` has been removed
+- Function `VirtualMachineScaleSetsClientReimageAllPollerResponse.PollUntilDone` has been removed
+- Function `GalleryImagesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*DiskAccessesClientUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetsClientSetOrchestrationServiceStatePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetsClientDeallocatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetVMsClientUpdatePoller.FinalResponse` has been removed
+- Function `*RestorePointsClientCreatePoller.Poll` has been removed
+- Function `DiffDiskPlacement.ToPtr` has been removed
+- Function `WindowsPatchAssessmentMode.ToPtr` has been removed
+- Function `*GalleriesClientDeletePoller.Done` has been removed
+- Function `*ResourceSKUsClientListPager.Err` has been removed
+- Function `*SSHPublicKeysClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*DiskEncryptionSetsClientListPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineExtensionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetsClientGetOSUpgradeHistoryPager.Err` has been removed
+- Function `GalleryImageVersionPropertiesProvisioningState.ToPtr` has been removed
+- Function `GalleryExtendedLocationType.ToPtr` has been removed
+- Function `*VirtualMachineScaleSetsClientRedeployPoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetVMsClientUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsClientDeletePollerResponse.Resume` has been removed
+- Function `*VirtualMachinesClientRestartPoller.Poll` has been removed
+- Function `*GalleryApplicationVersionsClientUpdatePoller.ResumeToken` has been removed
+- Function `*DiskAccessesClientListPager.PageResponse` has been removed
+- Function `*CloudServicesClientDeleteInstancesPoller.FinalResponse` has been removed
+- Function `RollingUpgradeStatusCode.ToPtr` has been removed
+- Function `*VirtualMachineScaleSetVMsClientPerformMaintenancePoller.ResumeToken` has been removed
+- Function `ProtocolTypes.ToPtr` has been removed
+- Function `*CloudServicesClientRestartPoller.Done` has been removed
+- Function `*SnapshotsClientRevokeAccessPoller.Poll` has been removed
+- Function `*GalleryApplicationVersionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*GalleriesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*CloudServicesClientReimagePollerResponse.Resume` has been removed
+- Function `*VirtualMachinesClientRunCommandPoller.Poll` has been removed
+- Function `*CloudServicesClientRebuildPoller.FinalResponse` has been removed
+- Function `LogAnalyticsClientExportThrottledRequestsPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesClientPerformMaintenancePoller.ResumeToken` has been removed
+- Function `*VirtualMachineExtensionsClientDeletePoller.FinalResponse` has been removed
+- Struct `AvailabilitySetsClientCreateOrUpdateResult` has been removed
+- Struct `AvailabilitySetsClientGetResult` has been removed
+- Struct `AvailabilitySetsClientListAvailableSizesResult` has been removed
+- Struct `AvailabilitySetsClientListBySubscriptionPager` has been removed
+- Struct `AvailabilitySetsClientListBySubscriptionResult` has been removed
+- Struct `AvailabilitySetsClientListPager` has been removed
+- Struct `AvailabilitySetsClientListResult` has been removed
+- Struct `AvailabilitySetsClientUpdateResult` has been removed
+- Struct `CapacityReservationGroupsClientCreateOrUpdateResult` has been removed
+- Struct `CapacityReservationGroupsClientGetResult` has been removed
+- Struct `CapacityReservationGroupsClientListByResourceGroupPager` has been removed
+- Struct `CapacityReservationGroupsClientListByResourceGroupResult` has been removed
+- Struct `CapacityReservationGroupsClientListBySubscriptionPager` has been removed
+- Struct `CapacityReservationGroupsClientListBySubscriptionResult` has been removed
+- Struct `CapacityReservationGroupsClientUpdateResult` has been removed
+- Struct `CapacityReservationsClientCreateOrUpdatePoller` has been removed
+- Struct `CapacityReservationsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `CapacityReservationsClientCreateOrUpdateResult` has been removed
+- Struct `CapacityReservationsClientDeletePoller` has been removed
+- Struct `CapacityReservationsClientDeletePollerResponse` has been removed
+- Struct `CapacityReservationsClientGetResult` has been removed
+- Struct `CapacityReservationsClientListByCapacityReservationGroupPager` has been removed
+- Struct `CapacityReservationsClientListByCapacityReservationGroupResult` has been removed
+- Struct `CapacityReservationsClientUpdatePoller` has been removed
+- Struct `CapacityReservationsClientUpdatePollerResponse` has been removed
+- Struct `CapacityReservationsClientUpdateResult` has been removed
+- Struct `CloudServiceOperatingSystemsClientGetOSFamilyResult` has been removed
+- Struct `CloudServiceOperatingSystemsClientGetOSVersionResult` has been removed
+- Struct `CloudServiceOperatingSystemsClientListOSFamiliesPager` has been removed
+- Struct `CloudServiceOperatingSystemsClientListOSFamiliesResult` has been removed
+- Struct `CloudServiceOperatingSystemsClientListOSVersionsPager` has been removed
+- Struct `CloudServiceOperatingSystemsClientListOSVersionsResult` has been removed
+- Struct `CloudServiceRoleInstancesClientDeletePoller` has been removed
+- Struct `CloudServiceRoleInstancesClientDeletePollerResponse` has been removed
+- Struct `CloudServiceRoleInstancesClientGetInstanceViewResult` has been removed
+- Struct `CloudServiceRoleInstancesClientGetResult` has been removed
+- Struct `CloudServiceRoleInstancesClientListPager` has been removed
+- Struct `CloudServiceRoleInstancesClientListResult` has been removed
+- Struct `CloudServiceRoleInstancesClientRebuildPoller` has been removed
+- Struct `CloudServiceRoleInstancesClientRebuildPollerResponse` has been removed
+- Struct `CloudServiceRoleInstancesClientReimagePoller` has been removed
+- Struct `CloudServiceRoleInstancesClientReimagePollerResponse` has been removed
+- Struct `CloudServiceRoleInstancesClientRestartPoller` has been removed
+- Struct `CloudServiceRoleInstancesClientRestartPollerResponse` has been removed
+- Struct `CloudServiceRolesClientGetResult` has been removed
+- Struct `CloudServiceRolesClientListPager` has been removed
+- Struct `CloudServiceRolesClientListResult` has been removed
+- Struct `CloudServicesClientCreateOrUpdatePoller` has been removed
+- Struct `CloudServicesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `CloudServicesClientCreateOrUpdateResult` has been removed
+- Struct `CloudServicesClientDeleteInstancesPoller` has been removed
+- Struct `CloudServicesClientDeleteInstancesPollerResponse` has been removed
+- Struct `CloudServicesClientDeletePoller` has been removed
+- Struct `CloudServicesClientDeletePollerResponse` has been removed
+- Struct `CloudServicesClientGetInstanceViewResult` has been removed
+- Struct `CloudServicesClientGetResult` has been removed
+- Struct `CloudServicesClientListAllPager` has been removed
+- Struct `CloudServicesClientListAllResult` has been removed
+- Struct `CloudServicesClientListPager` has been removed
+- Struct `CloudServicesClientListResult` has been removed
+- Struct `CloudServicesClientPowerOffPoller` has been removed
+- Struct `CloudServicesClientPowerOffPollerResponse` has been removed
+- Struct `CloudServicesClientRebuildPoller` has been removed
+- Struct `CloudServicesClientRebuildPollerResponse` has been removed
+- Struct `CloudServicesClientReimagePoller` has been removed
+- Struct `CloudServicesClientReimagePollerResponse` has been removed
+- Struct `CloudServicesClientRestartPoller` has been removed
+- Struct `CloudServicesClientRestartPollerResponse` has been removed
+- Struct `CloudServicesClientStartPoller` has been removed
+- Struct `CloudServicesClientStartPollerResponse` has been removed
+- Struct `CloudServicesClientUpdatePoller` has been removed
+- Struct `CloudServicesClientUpdatePollerResponse` has been removed
+- Struct `CloudServicesClientUpdateResult` has been removed
+- Struct `CloudServicesUpdateDomainClientGetUpdateDomainResult` has been removed
+- Struct `CloudServicesUpdateDomainClientListUpdateDomainsPager` has been removed
+- Struct `CloudServicesUpdateDomainClientListUpdateDomainsResult` has been removed
+- Struct `CloudServicesUpdateDomainClientWalkUpdateDomainPoller` has been removed
+- Struct `CloudServicesUpdateDomainClientWalkUpdateDomainPollerResponse` has been removed
+- Struct `CommunityGalleriesClientGetResult` has been removed
+- Struct `CommunityGalleryImageVersionsClientGetResult` has been removed
+- Struct `CommunityGalleryImagesClientGetResult` has been removed
+- Struct `DedicatedHostGroupsClientCreateOrUpdateResult` has been removed
+- Struct `DedicatedHostGroupsClientGetResult` has been removed
+- Struct `DedicatedHostGroupsClientListByResourceGroupPager` has been removed
+- Struct `DedicatedHostGroupsClientListByResourceGroupResult` has been removed
+- Struct `DedicatedHostGroupsClientListBySubscriptionPager` has been removed
+- Struct `DedicatedHostGroupsClientListBySubscriptionResult` has been removed
+- Struct `DedicatedHostGroupsClientUpdateResult` has been removed
+- Struct `DedicatedHostsClientCreateOrUpdatePoller` has been removed
+- Struct `DedicatedHostsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `DedicatedHostsClientCreateOrUpdateResult` has been removed
+- Struct `DedicatedHostsClientDeletePoller` has been removed
+- Struct `DedicatedHostsClientDeletePollerResponse` has been removed
+- Struct `DedicatedHostsClientGetResult` has been removed
+- Struct `DedicatedHostsClientListByHostGroupPager` has been removed
+- Struct `DedicatedHostsClientListByHostGroupResult` has been removed
+- Struct `DedicatedHostsClientRestartPoller` has been removed
+- Struct `DedicatedHostsClientRestartPollerResponse` has been removed
+- Struct `DedicatedHostsClientUpdatePoller` has been removed
+- Struct `DedicatedHostsClientUpdatePollerResponse` has been removed
+- Struct `DedicatedHostsClientUpdateResult` has been removed
+- Struct `DiskAccessesClientCreateOrUpdatePoller` has been removed
+- Struct `DiskAccessesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `DiskAccessesClientCreateOrUpdateResult` has been removed
+- Struct `DiskAccessesClientDeleteAPrivateEndpointConnectionPoller` has been removed
+- Struct `DiskAccessesClientDeleteAPrivateEndpointConnectionPollerResponse` has been removed
+- Struct `DiskAccessesClientDeletePoller` has been removed
+- Struct `DiskAccessesClientDeletePollerResponse` has been removed
+- Struct `DiskAccessesClientGetAPrivateEndpointConnectionResult` has been removed
+- Struct `DiskAccessesClientGetPrivateLinkResourcesResult` has been removed
+- Struct `DiskAccessesClientGetResult` has been removed
+- Struct `DiskAccessesClientListByResourceGroupPager` has been removed
+- Struct `DiskAccessesClientListByResourceGroupResult` has been removed
+- Struct `DiskAccessesClientListPager` has been removed
+- Struct `DiskAccessesClientListPrivateEndpointConnectionsPager` has been removed
+- Struct `DiskAccessesClientListPrivateEndpointConnectionsResult` has been removed
+- Struct `DiskAccessesClientListResult` has been removed
+- Struct `DiskAccessesClientUpdateAPrivateEndpointConnectionPoller` has been removed
+- Struct `DiskAccessesClientUpdateAPrivateEndpointConnectionPollerResponse` has been removed
+- Struct `DiskAccessesClientUpdateAPrivateEndpointConnectionResult` has been removed
+- Struct `DiskAccessesClientUpdatePoller` has been removed
+- Struct `DiskAccessesClientUpdatePollerResponse` has been removed
+- Struct `DiskAccessesClientUpdateResult` has been removed
+- Struct `DiskEncryptionSetsClientCreateOrUpdatePoller` has been removed
+- Struct `DiskEncryptionSetsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `DiskEncryptionSetsClientCreateOrUpdateResult` has been removed
+- Struct `DiskEncryptionSetsClientDeletePoller` has been removed
+- Struct `DiskEncryptionSetsClientDeletePollerResponse` has been removed
+- Struct `DiskEncryptionSetsClientGetResult` has been removed
+- Struct `DiskEncryptionSetsClientListAssociatedResourcesPager` has been removed
+- Struct `DiskEncryptionSetsClientListAssociatedResourcesResult` has been removed
+- Struct `DiskEncryptionSetsClientListByResourceGroupPager` has been removed
+- Struct `DiskEncryptionSetsClientListByResourceGroupResult` has been removed
+- Struct `DiskEncryptionSetsClientListPager` has been removed
+- Struct `DiskEncryptionSetsClientListResult` has been removed
+- Struct `DiskEncryptionSetsClientUpdatePoller` has been removed
+- Struct `DiskEncryptionSetsClientUpdatePollerResponse` has been removed
+- Struct `DiskEncryptionSetsClientUpdateResult` has been removed
+- Struct `DiskRestorePointClientGetResult` has been removed
+- Struct `DiskRestorePointClientGrantAccessPoller` has been removed
+- Struct `DiskRestorePointClientGrantAccessPollerResponse` has been removed
+- Struct `DiskRestorePointClientGrantAccessResult` has been removed
+- Struct `DiskRestorePointClientListByRestorePointPager` has been removed
+- Struct `DiskRestorePointClientListByRestorePointResult` has been removed
+- Struct `DiskRestorePointClientRevokeAccessPoller` has been removed
+- Struct `DiskRestorePointClientRevokeAccessPollerResponse` has been removed
+- Struct `DisksClientCreateOrUpdatePoller` has been removed
+- Struct `DisksClientCreateOrUpdatePollerResponse` has been removed
+- Struct `DisksClientCreateOrUpdateResult` has been removed
+- Struct `DisksClientDeletePoller` has been removed
+- Struct `DisksClientDeletePollerResponse` has been removed
+- Struct `DisksClientGetResult` has been removed
+- Struct `DisksClientGrantAccessPoller` has been removed
+- Struct `DisksClientGrantAccessPollerResponse` has been removed
+- Struct `DisksClientGrantAccessResult` has been removed
+- Struct `DisksClientListByResourceGroupPager` has been removed
+- Struct `DisksClientListByResourceGroupResult` has been removed
+- Struct `DisksClientListPager` has been removed
+- Struct `DisksClientListResult` has been removed
+- Struct `DisksClientRevokeAccessPoller` has been removed
+- Struct `DisksClientRevokeAccessPollerResponse` has been removed
+- Struct `DisksClientUpdatePoller` has been removed
+- Struct `DisksClientUpdatePollerResponse` has been removed
+- Struct `DisksClientUpdateResult` has been removed
+- Struct `GalleriesClientCreateOrUpdatePoller` has been removed
+- Struct `GalleriesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `GalleriesClientCreateOrUpdateResult` has been removed
+- Struct `GalleriesClientDeletePoller` has been removed
+- Struct `GalleriesClientDeletePollerResponse` has been removed
+- Struct `GalleriesClientGetResult` has been removed
+- Struct `GalleriesClientListByResourceGroupPager` has been removed
+- Struct `GalleriesClientListByResourceGroupResult` has been removed
+- Struct `GalleriesClientListPager` has been removed
+- Struct `GalleriesClientListResult` has been removed
+- Struct `GalleriesClientUpdatePoller` has been removed
+- Struct `GalleriesClientUpdatePollerResponse` has been removed
+- Struct `GalleriesClientUpdateResult` has been removed
+- Struct `GalleryApplicationVersionsClientCreateOrUpdatePoller` has been removed
+- Struct `GalleryApplicationVersionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `GalleryApplicationVersionsClientCreateOrUpdateResult` has been removed
+- Struct `GalleryApplicationVersionsClientDeletePoller` has been removed
+- Struct `GalleryApplicationVersionsClientDeletePollerResponse` has been removed
+- Struct `GalleryApplicationVersionsClientGetResult` has been removed
+- Struct `GalleryApplicationVersionsClientListByGalleryApplicationPager` has been removed
+- Struct `GalleryApplicationVersionsClientListByGalleryApplicationResult` has been removed
+- Struct `GalleryApplicationVersionsClientUpdatePoller` has been removed
+- Struct `GalleryApplicationVersionsClientUpdatePollerResponse` has been removed
+- Struct `GalleryApplicationVersionsClientUpdateResult` has been removed
+- Struct `GalleryApplicationsClientCreateOrUpdatePoller` has been removed
+- Struct `GalleryApplicationsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `GalleryApplicationsClientCreateOrUpdateResult` has been removed
+- Struct `GalleryApplicationsClientDeletePoller` has been removed
+- Struct `GalleryApplicationsClientDeletePollerResponse` has been removed
+- Struct `GalleryApplicationsClientGetResult` has been removed
+- Struct `GalleryApplicationsClientListByGalleryPager` has been removed
+- Struct `GalleryApplicationsClientListByGalleryResult` has been removed
+- Struct `GalleryApplicationsClientUpdatePoller` has been removed
+- Struct `GalleryApplicationsClientUpdatePollerResponse` has been removed
+- Struct `GalleryApplicationsClientUpdateResult` has been removed
+- Struct `GalleryImageVersionsClientCreateOrUpdatePoller` has been removed
+- Struct `GalleryImageVersionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `GalleryImageVersionsClientCreateOrUpdateResult` has been removed
+- Struct `GalleryImageVersionsClientDeletePoller` has been removed
+- Struct `GalleryImageVersionsClientDeletePollerResponse` has been removed
+- Struct `GalleryImageVersionsClientGetResult` has been removed
+- Struct `GalleryImageVersionsClientListByGalleryImagePager` has been removed
+- Struct `GalleryImageVersionsClientListByGalleryImageResult` has been removed
+- Struct `GalleryImageVersionsClientUpdatePoller` has been removed
+- Struct `GalleryImageVersionsClientUpdatePollerResponse` has been removed
+- Struct `GalleryImageVersionsClientUpdateResult` has been removed
+- Struct `GalleryImagesClientCreateOrUpdatePoller` has been removed
+- Struct `GalleryImagesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `GalleryImagesClientCreateOrUpdateResult` has been removed
+- Struct `GalleryImagesClientDeletePoller` has been removed
+- Struct `GalleryImagesClientDeletePollerResponse` has been removed
+- Struct `GalleryImagesClientGetResult` has been removed
+- Struct `GalleryImagesClientListByGalleryPager` has been removed
+- Struct `GalleryImagesClientListByGalleryResult` has been removed
+- Struct `GalleryImagesClientUpdatePoller` has been removed
+- Struct `GalleryImagesClientUpdatePollerResponse` has been removed
+- Struct `GalleryImagesClientUpdateResult` has been removed
+- Struct `GallerySharingProfileClientUpdatePoller` has been removed
+- Struct `GallerySharingProfileClientUpdatePollerResponse` has been removed
+- Struct `GallerySharingProfileClientUpdateResult` has been removed
+- Struct `ImagesClientCreateOrUpdatePoller` has been removed
+- Struct `ImagesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ImagesClientCreateOrUpdateResult` has been removed
+- Struct `ImagesClientDeletePoller` has been removed
+- Struct `ImagesClientDeletePollerResponse` has been removed
+- Struct `ImagesClientGetResult` has been removed
+- Struct `ImagesClientListByResourceGroupPager` has been removed
+- Struct `ImagesClientListByResourceGroupResult` has been removed
+- Struct `ImagesClientListPager` has been removed
+- Struct `ImagesClientListResult` has been removed
+- Struct `ImagesClientUpdatePoller` has been removed
+- Struct `ImagesClientUpdatePollerResponse` has been removed
+- Struct `ImagesClientUpdateResult` has been removed
+- Struct `LogAnalyticsClientExportRequestRateByIntervalPoller` has been removed
+- Struct `LogAnalyticsClientExportRequestRateByIntervalPollerResponse` has been removed
+- Struct `LogAnalyticsClientExportRequestRateByIntervalResult` has been removed
+- Struct `LogAnalyticsClientExportThrottledRequestsPoller` has been removed
+- Struct `LogAnalyticsClientExportThrottledRequestsPollerResponse` has been removed
+- Struct `LogAnalyticsClientExportThrottledRequestsResult` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `ProximityPlacementGroupsClientCreateOrUpdateResult` has been removed
+- Struct `ProximityPlacementGroupsClientGetResult` has been removed
+- Struct `ProximityPlacementGroupsClientListByResourceGroupPager` has been removed
+- Struct `ProximityPlacementGroupsClientListByResourceGroupResult` has been removed
+- Struct `ProximityPlacementGroupsClientListBySubscriptionPager` has been removed
+- Struct `ProximityPlacementGroupsClientListBySubscriptionResult` has been removed
+- Struct `ProximityPlacementGroupsClientUpdateResult` has been removed
+- Struct `ResourceSKUsClientListPager` has been removed
+- Struct `ResourceSKUsClientListResult` has been removed
+- Struct `RestorePointCollectionsClientCreateOrUpdateResult` has been removed
+- Struct `RestorePointCollectionsClientDeletePoller` has been removed
+- Struct `RestorePointCollectionsClientDeletePollerResponse` has been removed
+- Struct `RestorePointCollectionsClientGetResult` has been removed
+- Struct `RestorePointCollectionsClientListAllPager` has been removed
+- Struct `RestorePointCollectionsClientListAllResult` has been removed
+- Struct `RestorePointCollectionsClientListPager` has been removed
+- Struct `RestorePointCollectionsClientListResult` has been removed
+- Struct `RestorePointCollectionsClientUpdateResult` has been removed
+- Struct `RestorePointsClientCreatePoller` has been removed
+- Struct `RestorePointsClientCreatePollerResponse` has been removed
+- Struct `RestorePointsClientCreateResult` has been removed
+- Struct `RestorePointsClientDeletePoller` has been removed
+- Struct `RestorePointsClientDeletePollerResponse` has been removed
+- Struct `RestorePointsClientGetResult` has been removed
+- Struct `SSHPublicKeysClientCreateResult` has been removed
+- Struct `SSHPublicKeysClientGenerateKeyPairResult` has been removed
+- Struct `SSHPublicKeysClientGetResult` has been removed
+- Struct `SSHPublicKeysClientListByResourceGroupPager` has been removed
+- Struct `SSHPublicKeysClientListByResourceGroupResult` has been removed
+- Struct `SSHPublicKeysClientListBySubscriptionPager` has been removed
+- Struct `SSHPublicKeysClientListBySubscriptionResult` has been removed
+- Struct `SSHPublicKeysClientUpdateResult` has been removed
+- Struct `SharedGalleriesClientGetResult` has been removed
+- Struct `SharedGalleriesClientListPager` has been removed
+- Struct `SharedGalleriesClientListResult` has been removed
+- Struct `SharedGalleryImageVersionsClientGetResult` has been removed
+- Struct `SharedGalleryImageVersionsClientListPager` has been removed
+- Struct `SharedGalleryImageVersionsClientListResult` has been removed
+- Struct `SharedGalleryImagesClientGetResult` has been removed
+- Struct `SharedGalleryImagesClientListPager` has been removed
+- Struct `SharedGalleryImagesClientListResult` has been removed
+- Struct `SnapshotsClientCreateOrUpdatePoller` has been removed
+- Struct `SnapshotsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `SnapshotsClientCreateOrUpdateResult` has been removed
+- Struct `SnapshotsClientDeletePoller` has been removed
+- Struct `SnapshotsClientDeletePollerResponse` has been removed
+- Struct `SnapshotsClientGetResult` has been removed
+- Struct `SnapshotsClientGrantAccessPoller` has been removed
+- Struct `SnapshotsClientGrantAccessPollerResponse` has been removed
+- Struct `SnapshotsClientGrantAccessResult` has been removed
+- Struct `SnapshotsClientListByResourceGroupPager` has been removed
+- Struct `SnapshotsClientListByResourceGroupResult` has been removed
+- Struct `SnapshotsClientListPager` has been removed
+- Struct `SnapshotsClientListResult` has been removed
+- Struct `SnapshotsClientRevokeAccessPoller` has been removed
+- Struct `SnapshotsClientRevokeAccessPollerResponse` has been removed
+- Struct `SnapshotsClientUpdatePoller` has been removed
+- Struct `SnapshotsClientUpdatePollerResponse` has been removed
+- Struct `SnapshotsClientUpdateResult` has been removed
+- Struct `UsageClientListPager` has been removed
+- Struct `UsageClientListResult` has been removed
+- Struct `VirtualMachineExtensionImagesClientGetResult` has been removed
+- Struct `VirtualMachineExtensionImagesClientListTypesResult` has been removed
+- Struct `VirtualMachineExtensionImagesClientListVersionsResult` has been removed
+- Struct `VirtualMachineExtensionsClientCreateOrUpdatePoller` has been removed
+- Struct `VirtualMachineExtensionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualMachineExtensionsClientCreateOrUpdateResult` has been removed
+- Struct `VirtualMachineExtensionsClientDeletePoller` has been removed
+- Struct `VirtualMachineExtensionsClientDeletePollerResponse` has been removed
+- Struct `VirtualMachineExtensionsClientGetResult` has been removed
+- Struct `VirtualMachineExtensionsClientListResult` has been removed
+- Struct `VirtualMachineExtensionsClientUpdatePoller` has been removed
+- Struct `VirtualMachineExtensionsClientUpdatePollerResponse` has been removed
+- Struct `VirtualMachineExtensionsClientUpdateResult` has been removed
+- Struct `VirtualMachineImagesClientGetResult` has been removed
+- Struct `VirtualMachineImagesClientListOffersResult` has been removed
+- Struct `VirtualMachineImagesClientListPublishersResult` has been removed
+- Struct `VirtualMachineImagesClientListResult` has been removed
+- Struct `VirtualMachineImagesClientListSKUsResult` has been removed
+- Struct `VirtualMachineImagesEdgeZoneClientGetResult` has been removed
+- Struct `VirtualMachineImagesEdgeZoneClientListOffersResult` has been removed
+- Struct `VirtualMachineImagesEdgeZoneClientListPublishersResult` has been removed
+- Struct `VirtualMachineImagesEdgeZoneClientListResult` has been removed
+- Struct `VirtualMachineImagesEdgeZoneClientListSKUsResult` has been removed
+- Struct `VirtualMachineRunCommandsClientCreateOrUpdatePoller` has been removed
+- Struct `VirtualMachineRunCommandsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualMachineRunCommandsClientCreateOrUpdateResult` has been removed
+- Struct `VirtualMachineRunCommandsClientDeletePoller` has been removed
+- Struct `VirtualMachineRunCommandsClientDeletePollerResponse` has been removed
+- Struct `VirtualMachineRunCommandsClientGetByVirtualMachineResult` has been removed
+- Struct `VirtualMachineRunCommandsClientGetResult` has been removed
+- Struct `VirtualMachineRunCommandsClientListByVirtualMachinePager` has been removed
+- Struct `VirtualMachineRunCommandsClientListByVirtualMachineResult` has been removed
+- Struct `VirtualMachineRunCommandsClientListPager` has been removed
+- Struct `VirtualMachineRunCommandsClientListResult` has been removed
+- Struct `VirtualMachineRunCommandsClientUpdatePoller` has been removed
+- Struct `VirtualMachineRunCommandsClientUpdatePollerResponse` has been removed
+- Struct `VirtualMachineRunCommandsClientUpdateResult` has been removed
+- Struct `VirtualMachineScaleSetExtensionsClientCreateOrUpdatePoller` has been removed
+- Struct `VirtualMachineScaleSetExtensionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetExtensionsClientCreateOrUpdateResult` has been removed
+- Struct `VirtualMachineScaleSetExtensionsClientDeletePoller` has been removed
+- Struct `VirtualMachineScaleSetExtensionsClientDeletePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetExtensionsClientGetResult` has been removed
+- Struct `VirtualMachineScaleSetExtensionsClientListPager` has been removed
+- Struct `VirtualMachineScaleSetExtensionsClientListResult` has been removed
+- Struct `VirtualMachineScaleSetExtensionsClientUpdatePoller` has been removed
+- Struct `VirtualMachineScaleSetExtensionsClientUpdatePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetExtensionsClientUpdateResult` has been removed
+- Struct `VirtualMachineScaleSetRollingUpgradesClientCancelPoller` has been removed
+- Struct `VirtualMachineScaleSetRollingUpgradesClientCancelPollerResponse` has been removed
+- Struct `VirtualMachineScaleSetRollingUpgradesClientGetLatestResult` has been removed
+- Struct `VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradePoller` has been removed
+- Struct `VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradePoller` has been removed
+- Struct `VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsClientCreateOrUpdatePoller` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsClientCreateOrUpdateResult` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsClientDeletePoller` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsClientDeletePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsClientGetResult` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsClientListResult` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsClientUpdatePoller` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsClientUpdatePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsClientUpdateResult` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdatePoller` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdateResult` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsClientDeletePoller` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsClientDeletePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsClientGetResult` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsClientListPager` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsClientListResult` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsClientUpdatePoller` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsClientUpdatePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsClientUpdateResult` has been removed
+- Struct `VirtualMachineScaleSetVMsClientDeallocatePoller` has been removed
+- Struct `VirtualMachineScaleSetVMsClientDeallocatePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsClientDeletePoller` has been removed
+- Struct `VirtualMachineScaleSetVMsClientDeletePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsClientGetInstanceViewResult` has been removed
+- Struct `VirtualMachineScaleSetVMsClientGetResult` has been removed
+- Struct `VirtualMachineScaleSetVMsClientListPager` has been removed
+- Struct `VirtualMachineScaleSetVMsClientListResult` has been removed
+- Struct `VirtualMachineScaleSetVMsClientPerformMaintenancePoller` has been removed
+- Struct `VirtualMachineScaleSetVMsClientPerformMaintenancePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsClientPowerOffPoller` has been removed
+- Struct `VirtualMachineScaleSetVMsClientPowerOffPollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsClientRedeployPoller` has been removed
+- Struct `VirtualMachineScaleSetVMsClientRedeployPollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsClientReimageAllPoller` has been removed
+- Struct `VirtualMachineScaleSetVMsClientReimageAllPollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsClientReimagePoller` has been removed
+- Struct `VirtualMachineScaleSetVMsClientReimagePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsClientRestartPoller` has been removed
+- Struct `VirtualMachineScaleSetVMsClientRestartPollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsClientRetrieveBootDiagnosticsDataResult` has been removed
+- Struct `VirtualMachineScaleSetVMsClientRunCommandPoller` has been removed
+- Struct `VirtualMachineScaleSetVMsClientRunCommandPollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsClientRunCommandResult` has been removed
+- Struct `VirtualMachineScaleSetVMsClientStartPoller` has been removed
+- Struct `VirtualMachineScaleSetVMsClientStartPollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsClientUpdatePoller` has been removed
+- Struct `VirtualMachineScaleSetVMsClientUpdatePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsClientUpdateResult` has been removed
+- Struct `VirtualMachineScaleSetsClientCreateOrUpdatePoller` has been removed
+- Struct `VirtualMachineScaleSetsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetsClientCreateOrUpdateResult` has been removed
+- Struct `VirtualMachineScaleSetsClientDeallocatePoller` has been removed
+- Struct `VirtualMachineScaleSetsClientDeallocatePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetsClientDeleteInstancesPoller` has been removed
+- Struct `VirtualMachineScaleSetsClientDeleteInstancesPollerResponse` has been removed
+- Struct `VirtualMachineScaleSetsClientDeletePoller` has been removed
+- Struct `VirtualMachineScaleSetsClientDeletePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetsClientForceRecoveryServiceFabricPlatformUpdateDomainWalkResult` has been removed
+- Struct `VirtualMachineScaleSetsClientGetInstanceViewResult` has been removed
+- Struct `VirtualMachineScaleSetsClientGetOSUpgradeHistoryPager` has been removed
+- Struct `VirtualMachineScaleSetsClientGetOSUpgradeHistoryResult` has been removed
+- Struct `VirtualMachineScaleSetsClientGetResult` has been removed
+- Struct `VirtualMachineScaleSetsClientListAllPager` has been removed
+- Struct `VirtualMachineScaleSetsClientListAllResult` has been removed
+- Struct `VirtualMachineScaleSetsClientListByLocationPager` has been removed
+- Struct `VirtualMachineScaleSetsClientListByLocationResult` has been removed
+- Struct `VirtualMachineScaleSetsClientListPager` has been removed
+- Struct `VirtualMachineScaleSetsClientListResult` has been removed
+- Struct `VirtualMachineScaleSetsClientListSKUsPager` has been removed
+- Struct `VirtualMachineScaleSetsClientListSKUsResult` has been removed
+- Struct `VirtualMachineScaleSetsClientPerformMaintenancePoller` has been removed
+- Struct `VirtualMachineScaleSetsClientPerformMaintenancePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetsClientPowerOffPoller` has been removed
+- Struct `VirtualMachineScaleSetsClientPowerOffPollerResponse` has been removed
+- Struct `VirtualMachineScaleSetsClientRedeployPoller` has been removed
+- Struct `VirtualMachineScaleSetsClientRedeployPollerResponse` has been removed
+- Struct `VirtualMachineScaleSetsClientReimageAllPoller` has been removed
+- Struct `VirtualMachineScaleSetsClientReimageAllPollerResponse` has been removed
+- Struct `VirtualMachineScaleSetsClientReimagePoller` has been removed
+- Struct `VirtualMachineScaleSetsClientReimagePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetsClientRestartPoller` has been removed
+- Struct `VirtualMachineScaleSetsClientRestartPollerResponse` has been removed
+- Struct `VirtualMachineScaleSetsClientSetOrchestrationServiceStatePoller` has been removed
+- Struct `VirtualMachineScaleSetsClientSetOrchestrationServiceStatePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetsClientStartPoller` has been removed
+- Struct `VirtualMachineScaleSetsClientStartPollerResponse` has been removed
+- Struct `VirtualMachineScaleSetsClientUpdateInstancesPoller` has been removed
+- Struct `VirtualMachineScaleSetsClientUpdateInstancesPollerResponse` has been removed
+- Struct `VirtualMachineScaleSetsClientUpdatePoller` has been removed
+- Struct `VirtualMachineScaleSetsClientUpdatePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetsClientUpdateResult` has been removed
+- Struct `VirtualMachineSizesClientListResult` has been removed
+- Struct `VirtualMachinesClientAssessPatchesPoller` has been removed
+- Struct `VirtualMachinesClientAssessPatchesPollerResponse` has been removed
+- Struct `VirtualMachinesClientAssessPatchesResult` has been removed
+- Struct `VirtualMachinesClientCapturePoller` has been removed
+- Struct `VirtualMachinesClientCapturePollerResponse` has been removed
+- Struct `VirtualMachinesClientCaptureResult` has been removed
+- Struct `VirtualMachinesClientConvertToManagedDisksPoller` has been removed
+- Struct `VirtualMachinesClientConvertToManagedDisksPollerResponse` has been removed
+- Struct `VirtualMachinesClientCreateOrUpdatePoller` has been removed
+- Struct `VirtualMachinesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualMachinesClientCreateOrUpdateResult` has been removed
+- Struct `VirtualMachinesClientDeallocatePoller` has been removed
+- Struct `VirtualMachinesClientDeallocatePollerResponse` has been removed
+- Struct `VirtualMachinesClientDeletePoller` has been removed
+- Struct `VirtualMachinesClientDeletePollerResponse` has been removed
+- Struct `VirtualMachinesClientGetResult` has been removed
+- Struct `VirtualMachinesClientInstallPatchesPoller` has been removed
+- Struct `VirtualMachinesClientInstallPatchesPollerResponse` has been removed
+- Struct `VirtualMachinesClientInstallPatchesResult` has been removed
+- Struct `VirtualMachinesClientInstanceViewResult` has been removed
+- Struct `VirtualMachinesClientListAllPager` has been removed
+- Struct `VirtualMachinesClientListAllResult` has been removed
+- Struct `VirtualMachinesClientListAvailableSizesResult` has been removed
+- Struct `VirtualMachinesClientListByLocationPager` has been removed
+- Struct `VirtualMachinesClientListByLocationResult` has been removed
+- Struct `VirtualMachinesClientListPager` has been removed
+- Struct `VirtualMachinesClientListResult` has been removed
+- Struct `VirtualMachinesClientPerformMaintenancePoller` has been removed
+- Struct `VirtualMachinesClientPerformMaintenancePollerResponse` has been removed
+- Struct `VirtualMachinesClientPowerOffPoller` has been removed
+- Struct `VirtualMachinesClientPowerOffPollerResponse` has been removed
+- Struct `VirtualMachinesClientReapplyPoller` has been removed
+- Struct `VirtualMachinesClientReapplyPollerResponse` has been removed
+- Struct `VirtualMachinesClientRedeployPoller` has been removed
+- Struct `VirtualMachinesClientRedeployPollerResponse` has been removed
+- Struct `VirtualMachinesClientReimagePoller` has been removed
+- Struct `VirtualMachinesClientReimagePollerResponse` has been removed
+- Struct `VirtualMachinesClientRestartPoller` has been removed
+- Struct `VirtualMachinesClientRestartPollerResponse` has been removed
+- Struct `VirtualMachinesClientRetrieveBootDiagnosticsDataResult` has been removed
+- Struct `VirtualMachinesClientRunCommandPoller` has been removed
+- Struct `VirtualMachinesClientRunCommandPollerResponse` has been removed
+- Struct `VirtualMachinesClientRunCommandResult` has been removed
+- Struct `VirtualMachinesClientStartPoller` has been removed
+- Struct `VirtualMachinesClientStartPollerResponse` has been removed
+- Struct `VirtualMachinesClientUpdatePoller` has been removed
+- Struct `VirtualMachinesClientUpdatePollerResponse` has been removed
+- Struct `VirtualMachinesClientUpdateResult` has been removed
+- Field `RawResponse` of struct `CloudServicesClientReimageResponse` has been removed
+- Field `RawResponse` of struct `CloudServiceRoleInstancesClientRestartResponse` has been removed
+- Field `VirtualMachineRunCommandsClientUpdateResult` of struct `VirtualMachineRunCommandsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineRunCommandsClientUpdateResponse` has been removed
+- Field `CommunityGalleryImageVersionsClientGetResult` of struct `CommunityGalleryImageVersionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `CommunityGalleryImageVersionsClientGetResponse` has been removed
+- Field `DiskAccessesClientGetResult` of struct `DiskAccessesClientGetResponse` has been removed
+- Field `RawResponse` of struct `DiskAccessesClientGetResponse` has been removed
+- Field `GalleryApplicationVersionsClientCreateOrUpdateResult` of struct `GalleryApplicationVersionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `GalleryApplicationVersionsClientCreateOrUpdateResponse` has been removed
+- Field `CloudServicesUpdateDomainClientGetUpdateDomainResult` of struct `CloudServicesUpdateDomainClientGetUpdateDomainResponse` has been removed
+- Field `RawResponse` of struct `CloudServicesUpdateDomainClientGetUpdateDomainResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradeResponse` has been removed
+- Field `VirtualMachineScaleSetsClientCreateOrUpdateResult` of struct `VirtualMachineScaleSetsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetsClientCreateOrUpdateResponse` has been removed
+- Field `DiskRestorePointClientGrantAccessResult` of struct `DiskRestorePointClientGrantAccessResponse` has been removed
+- Field `RawResponse` of struct `DiskRestorePointClientGrantAccessResponse` has been removed
+- Field `ImagesClientListResult` of struct `ImagesClientListResponse` has been removed
+- Field `RawResponse` of struct `ImagesClientListResponse` has been removed
+- Field `SharedGalleriesClientListResult` of struct `SharedGalleriesClientListResponse` has been removed
+- Field `RawResponse` of struct `SharedGalleriesClientListResponse` has been removed
+- Field `VirtualMachineExtensionsClientUpdateResult` of struct `VirtualMachineExtensionsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineExtensionsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `SnapshotsClientDeleteResponse` has been removed
+- Field `VirtualMachineScaleSetRollingUpgradesClientGetLatestResult` of struct `VirtualMachineScaleSetRollingUpgradesClientGetLatestResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetRollingUpgradesClientGetLatestResponse` has been removed
+- Field `RawResponse` of struct `DisksClientDeleteResponse` has been removed
+- Field `DiskAccessesClientListResult` of struct `DiskAccessesClientListResponse` has been removed
+- Field `RawResponse` of struct `DiskAccessesClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientRestartResponse` has been removed
+- Field `GallerySharingProfileClientUpdateResult` of struct `GallerySharingProfileClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `GallerySharingProfileClientUpdateResponse` has been removed
+- Field `VirtualMachineExtensionsClientListResult` of struct `VirtualMachineExtensionsClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineExtensionsClientListResponse` has been removed
+- Field `GalleryImageVersionsClientListByGalleryImageResult` of struct `GalleryImageVersionsClientListByGalleryImageResponse` has been removed
+- Field `RawResponse` of struct `GalleryImageVersionsClientListByGalleryImageResponse` has been removed
+- Field `DedicatedHostGroupsClientListByResourceGroupResult` of struct `DedicatedHostGroupsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `DedicatedHostGroupsClientListByResourceGroupResponse` has been removed
+- Field `VirtualMachineRunCommandsClientGetByVirtualMachineResult` of struct `VirtualMachineRunCommandsClientGetByVirtualMachineResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineRunCommandsClientGetByVirtualMachineResponse` has been removed
+- Field `CloudServicesClientGetInstanceViewResult` of struct `CloudServicesClientGetInstanceViewResponse` has been removed
+- Field `RawResponse` of struct `CloudServicesClientGetInstanceViewResponse` has been removed
+- Field `VirtualMachineImagesClientListPublishersResult` of struct `VirtualMachineImagesClientListPublishersResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineImagesClientListPublishersResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetVMsClientPerformMaintenanceResponse` has been removed
+- Field `VirtualMachineImagesClientListSKUsResult` of struct `VirtualMachineImagesClientListSKUsResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineImagesClientListSKUsResponse` has been removed
+- Field `SSHPublicKeysClientCreateResult` of struct `SSHPublicKeysClientCreateResponse` has been removed
+- Field `RawResponse` of struct `SSHPublicKeysClientCreateResponse` has been removed
+- Field `CloudServiceOperatingSystemsClientGetOSVersionResult` of struct `CloudServiceOperatingSystemsClientGetOSVersionResponse` has been removed
+- Field `RawResponse` of struct `CloudServiceOperatingSystemsClientGetOSVersionResponse` has been removed
+- Field `VirtualMachineImagesEdgeZoneClientListResult` of struct `VirtualMachineImagesEdgeZoneClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineImagesEdgeZoneClientListResponse` has been removed
+- Field `VirtualMachineScaleSetVMsClientGetResult` of struct `VirtualMachineScaleSetVMsClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetVMsClientGetResponse` has been removed
+- Field `GalleriesClientListByResourceGroupResult` of struct `GalleriesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `GalleriesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientGeneralizeResponse` has been removed
+- Field `RawResponse` of struct `CloudServiceRoleInstancesClientRebuildResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetExtensionsClientDeleteResponse` has been removed
+- Field `VirtualMachineScaleSetVMsClientListResult` of struct `VirtualMachineScaleSetVMsClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetVMsClientListResponse` has been removed
+- Field `CapacityReservationGroupsClientListByResourceGroupResult` of struct `CapacityReservationGroupsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `CapacityReservationGroupsClientListByResourceGroupResponse` has been removed
+- Field `CloudServicesUpdateDomainClientListUpdateDomainsResult` of struct `CloudServicesUpdateDomainClientListUpdateDomainsResponse` has been removed
+- Field `RawResponse` of struct `CloudServicesUpdateDomainClientListUpdateDomainsResponse` has been removed
+- Field `VirtualMachineScaleSetsClientGetResult` of struct `VirtualMachineScaleSetsClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetsClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetVMExtensionsClientDeleteResponse` has been removed
+- Field `CloudServiceRoleInstancesClientGetResult` of struct `CloudServiceRoleInstancesClientGetResponse` has been removed
+- Field `RawResponse` of struct `CloudServiceRoleInstancesClientGetResponse` has been removed
+- Field `AvailabilitySetsClientListResult` of struct `AvailabilitySetsClientListResponse` has been removed
+- Field `RawResponse` of struct `AvailabilitySetsClientListResponse` has been removed
+- Field `VirtualMachineExtensionsClientGetResult` of struct `VirtualMachineExtensionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineExtensionsClientGetResponse` has been removed
+- Field `VirtualMachineScaleSetVMRunCommandsClientListResult` of struct `VirtualMachineScaleSetVMRunCommandsClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetVMRunCommandsClientListResponse` has been removed
+- Field `VirtualMachinesClientAssessPatchesResult` of struct `VirtualMachinesClientAssessPatchesResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientAssessPatchesResponse` has been removed
+- Field `DiskAccessesClientGetAPrivateEndpointConnectionResult` of struct `DiskAccessesClientGetAPrivateEndpointConnectionResponse` has been removed
+- Field `RawResponse` of struct `DiskAccessesClientGetAPrivateEndpointConnectionResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetsClientUpdateInstancesResponse` has been removed
+- Field `CapacityReservationGroupsClientListBySubscriptionResult` of struct `CapacityReservationGroupsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `CapacityReservationGroupsClientListBySubscriptionResponse` has been removed
+- Field `SSHPublicKeysClientGenerateKeyPairResult` of struct `SSHPublicKeysClientGenerateKeyPairResponse` has been removed
+- Field `RawResponse` of struct `SSHPublicKeysClientGenerateKeyPairResponse` has been removed
+- Field `DiskEncryptionSetsClientListByResourceGroupResult` of struct `DiskEncryptionSetsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `DiskEncryptionSetsClientListByResourceGroupResponse` has been removed
+- Field `GalleryImageVersionsClientCreateOrUpdateResult` of struct `GalleryImageVersionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `GalleryImageVersionsClientCreateOrUpdateResponse` has been removed
+- Field `SharedGalleryImageVersionsClientListResult` of struct `SharedGalleryImageVersionsClientListResponse` has been removed
+- Field `RawResponse` of struct `SharedGalleryImageVersionsClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetsClientPerformMaintenanceResponse` has been removed
+- Field `VirtualMachinesClientRetrieveBootDiagnosticsDataResult` of struct `VirtualMachinesClientRetrieveBootDiagnosticsDataResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientRetrieveBootDiagnosticsDataResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetVMsClientSimulateEvictionResponse` has been removed
+- Field `VirtualMachineImagesEdgeZoneClientGetResult` of struct `VirtualMachineImagesEdgeZoneClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineImagesEdgeZoneClientGetResponse` has been removed
+- Field `VirtualMachineImagesEdgeZoneClientListSKUsResult` of struct `VirtualMachineImagesEdgeZoneClientListSKUsResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineImagesEdgeZoneClientListSKUsResponse` has been removed
+- Field `CommunityGalleriesClientGetResult` of struct `CommunityGalleriesClientGetResponse` has been removed
+- Field `RawResponse` of struct `CommunityGalleriesClientGetResponse` has been removed
+- Field `GalleryApplicationsClientCreateOrUpdateResult` of struct `GalleryApplicationsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `GalleryApplicationsClientCreateOrUpdateResponse` has been removed
+- Field `VirtualMachinesClientInstanceViewResult` of struct `VirtualMachinesClientInstanceViewResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientInstanceViewResponse` has been removed
+- Field `DiskRestorePointClientGetResult` of struct `DiskRestorePointClientGetResponse` has been removed
+- Field `RawResponse` of struct `DiskRestorePointClientGetResponse` has been removed
+- Field `SharedGalleriesClientGetResult` of struct `SharedGalleriesClientGetResponse` has been removed
+- Field `RawResponse` of struct `SharedGalleriesClientGetResponse` has been removed
+- Field `DiskAccessesClientGetPrivateLinkResourcesResult` of struct `DiskAccessesClientGetPrivateLinkResourcesResponse` has been removed
+- Field `RawResponse` of struct `DiskAccessesClientGetPrivateLinkResourcesResponse` has been removed
+- Field `CloudServiceOperatingSystemsClientListOSFamiliesResult` of struct `CloudServiceOperatingSystemsClientListOSFamiliesResponse` has been removed
+- Field `RawResponse` of struct `CloudServiceOperatingSystemsClientListOSFamiliesResponse` has been removed
+- Field `VirtualMachineScaleSetVMExtensionsClientGetResult` of struct `VirtualMachineScaleSetVMExtensionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetVMExtensionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientSimulateEvictionResponse` has been removed
+- Field `RawResponse` of struct `RestorePointCollectionsClientDeleteResponse` has been removed
+- Field `VirtualMachinesClientCaptureResult` of struct `VirtualMachinesClientCaptureResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientCaptureResponse` has been removed
+- Field `GalleryApplicationsClientListByGalleryResult` of struct `GalleryApplicationsClientListByGalleryResponse` has been removed
+- Field `RawResponse` of struct `GalleryApplicationsClientListByGalleryResponse` has been removed
+- Field `VirtualMachineScaleSetsClientListByLocationResult` of struct `VirtualMachineScaleSetsClientListByLocationResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetsClientListByLocationResponse` has been removed
+- Field `CloudServiceRolesClientGetResult` of struct `CloudServiceRolesClientGetResponse` has been removed
+- Field `RawResponse` of struct `CloudServiceRolesClientGetResponse` has been removed
+- Field `CommunityGalleryImagesClientGetResult` of struct `CommunityGalleryImagesClientGetResponse` has been removed
+- Field `RawResponse` of struct `CommunityGalleryImagesClientGetResponse` has been removed
+- Field `SharedGalleryImagesClientGetResult` of struct `SharedGalleryImagesClientGetResponse` has been removed
+- Field `RawResponse` of struct `SharedGalleryImagesClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetVMsClientReimageAllResponse` has been removed
+- Field `VirtualMachineScaleSetsClientForceRecoveryServiceFabricPlatformUpdateDomainWalkResult` of struct `VirtualMachineScaleSetsClientForceRecoveryServiceFabricPlatformUpdateDomainWalkResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetsClientForceRecoveryServiceFabricPlatformUpdateDomainWalkResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientConvertToManagedDisksResponse` has been removed
+- Field `DisksClientGrantAccessResult` of struct `DisksClientGrantAccessResponse` has been removed
+- Field `RawResponse` of struct `DisksClientGrantAccessResponse` has been removed
+- Field `RestorePointCollectionsClientGetResult` of struct `RestorePointCollectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `RestorePointCollectionsClientGetResponse` has been removed
+- Field `VirtualMachineSizesClientListResult` of struct `VirtualMachineSizesClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineSizesClientListResponse` has been removed
+- Field `SSHPublicKeysClientListByResourceGroupResult` of struct `SSHPublicKeysClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `SSHPublicKeysClientListByResourceGroupResponse` has been removed
+- Field `VirtualMachinesClientInstallPatchesResult` of struct `VirtualMachinesClientInstallPatchesResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientInstallPatchesResponse` has been removed
+- Field `RawResponse` of struct `RestorePointsClientDeleteResponse` has been removed
+- Field `VirtualMachineScaleSetVMsClientRetrieveBootDiagnosticsDataResult` of struct `VirtualMachineScaleSetVMsClientRetrieveBootDiagnosticsDataResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetVMsClientRetrieveBootDiagnosticsDataResponse` has been removed
+- Field `GalleriesClientGetResult` of struct `GalleriesClientGetResponse` has been removed
+- Field `RawResponse` of struct `GalleriesClientGetResponse` has been removed
+- Field `CloudServiceRoleInstancesClientGetInstanceViewResult` of struct `CloudServiceRoleInstancesClientGetInstanceViewResponse` has been removed
+- Field `RawResponse` of struct `CloudServiceRoleInstancesClientGetInstanceViewResponse` has been removed
+- Field `RawResponse` of struct `DiskAccessesClientDeleteAPrivateEndpointConnectionResponse` has been removed
+- Field `DisksClientGetResult` of struct `DisksClientGetResponse` has been removed
+- Field `RawResponse` of struct `DisksClientGetResponse` has been removed
+- Field `VirtualMachineScaleSetVMsClientGetInstanceViewResult` of struct `VirtualMachineScaleSetVMsClientGetInstanceViewResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetVMsClientGetInstanceViewResponse` has been removed
+- Field `RawResponse` of struct `CloudServicesClientDeleteInstancesResponse` has been removed
+- Field `CapacityReservationGroupsClientUpdateResult` of struct `CapacityReservationGroupsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `CapacityReservationGroupsClientUpdateResponse` has been removed
+- Field `VirtualMachineScaleSetVMExtensionsClientUpdateResult` of struct `VirtualMachineScaleSetVMExtensionsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetVMExtensionsClientUpdateResponse` has been removed
+- Field `DiskRestorePointClientListByRestorePointResult` of struct `DiskRestorePointClientListByRestorePointResponse` has been removed
+- Field `RawResponse` of struct `DiskRestorePointClientListByRestorePointResponse` has been removed
+- Field `RawResponse` of struct `CloudServicesClientRebuildResponse` has been removed
+- Field `VirtualMachinesClientListByLocationResult` of struct `VirtualMachinesClientListByLocationResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientListByLocationResponse` has been removed
+- Field `DedicatedHostGroupsClientUpdateResult` of struct `DedicatedHostGroupsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `DedicatedHostGroupsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetsClientRedeployResponse` has been removed
+- Field `VirtualMachineScaleSetExtensionsClientListResult` of struct `VirtualMachineScaleSetExtensionsClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetExtensionsClientListResponse` has been removed
+- Field `RestorePointCollectionsClientUpdateResult` of struct `RestorePointCollectionsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `RestorePointCollectionsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetVMRunCommandsClientDeleteResponse` has been removed
+- Field `DisksClientCreateOrUpdateResult` of struct `DisksClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DisksClientCreateOrUpdateResponse` has been removed
+- Field `AvailabilitySetsClientCreateOrUpdateResult` of struct `AvailabilitySetsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `AvailabilitySetsClientCreateOrUpdateResponse` has been removed
+- Field `VirtualMachineScaleSetVMExtensionsClientCreateOrUpdateResult` of struct `VirtualMachineScaleSetVMExtensionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetVMExtensionsClientCreateOrUpdateResponse` has been removed
+- Field `SharedGalleryImageVersionsClientGetResult` of struct `SharedGalleryImageVersionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SharedGalleryImageVersionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientRedeployResponse` has been removed
+- Field `CapacityReservationsClientListByCapacityReservationGroupResult` of struct `CapacityReservationsClientListByCapacityReservationGroupResponse` has been removed
+- Field `RawResponse` of struct `CapacityReservationsClientListByCapacityReservationGroupResponse` has been removed
+- Field `VirtualMachineScaleSetsClientListSKUsResult` of struct `VirtualMachineScaleSetsClientListSKUsResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetsClientListSKUsResponse` has been removed
+- Field `DiskEncryptionSetsClientListAssociatedResourcesResult` of struct `DiskEncryptionSetsClientListAssociatedResourcesResponse` has been removed
+- Field `RawResponse` of struct `DiskEncryptionSetsClientListAssociatedResourcesResponse` has been removed
+- Field `RawResponse` of struct `CloudServicesClientDeleteResponse` has been removed
+- Field `VirtualMachineScaleSetsClientUpdateResult` of struct `VirtualMachineScaleSetsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetsClientUpdateResponse` has been removed
+- Field `GalleriesClientListResult` of struct `GalleriesClientListResponse` has been removed
+- Field `RawResponse` of struct `GalleriesClientListResponse` has been removed
+- Field `RawResponse` of struct `ImagesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetsClientStartResponse` has been removed
+- Field `CloudServicesClientUpdateResult` of struct `CloudServicesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `CloudServicesClientUpdateResponse` has been removed
+- Field `VirtualMachineScaleSetExtensionsClientCreateOrUpdateResult` of struct `VirtualMachineScaleSetExtensionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetExtensionsClientCreateOrUpdateResponse` has been removed
+- Field `ResourceSKUsClientListResult` of struct `ResourceSKUsClientListResponse` has been removed
+- Field `RawResponse` of struct `ResourceSKUsClientListResponse` has been removed
+- Field `RestorePointCollectionsClientListAllResult` of struct `RestorePointCollectionsClientListAllResponse` has been removed
+- Field `RawResponse` of struct `RestorePointCollectionsClientListAllResponse` has been removed
+- Field `RawResponse` of struct `DedicatedHostsClientRestartResponse` has been removed
+- Field `RestorePointCollectionsClientListResult` of struct `RestorePointCollectionsClientListResponse` has been removed
+- Field `RawResponse` of struct `RestorePointCollectionsClientListResponse` has been removed
+- Field `ImagesClientCreateOrUpdateResult` of struct `ImagesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ImagesClientCreateOrUpdateResponse` has been removed
+- Field `VirtualMachineRunCommandsClientListResult` of struct `VirtualMachineRunCommandsClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineRunCommandsClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetsClientReimageResponse` has been removed
+- Field `VirtualMachineScaleSetVMExtensionsClientListResult` of struct `VirtualMachineScaleSetVMExtensionsClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetVMExtensionsClientListResponse` has been removed
+- Field `DiskAccessesClientUpdateResult` of struct `DiskAccessesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `DiskAccessesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientDeleteResponse` has been removed
+- Field `VirtualMachineScaleSetVMRunCommandsClientGetResult` of struct `VirtualMachineScaleSetVMRunCommandsClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetVMRunCommandsClientGetResponse` has been removed
+- Field `VirtualMachinesClientListResult` of struct `VirtualMachinesClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientListResponse` has been removed
+- Field `GalleryApplicationsClientUpdateResult` of struct `GalleryApplicationsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `GalleryApplicationsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `GalleryApplicationsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `DiskRestorePointClientRevokeAccessResponse` has been removed
+- Field `GalleriesClientUpdateResult` of struct `GalleriesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `GalleriesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `DiskEncryptionSetsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetsClientConvertToSinglePlacementGroupResponse` has been removed
+- Field `CloudServiceRolesClientListResult` of struct `CloudServiceRolesClientListResponse` has been removed
+- Field `RawResponse` of struct `CloudServiceRolesClientListResponse` has been removed
+- Field `RawResponse` of struct `GalleryImagesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientReimageResponse` has been removed
+- Field `DiskEncryptionSetsClientListResult` of struct `DiskEncryptionSetsClientListResponse` has been removed
+- Field `RawResponse` of struct `DiskEncryptionSetsClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetsClientRestartResponse` has been removed
+- Field `GalleryImagesClientUpdateResult` of struct `GalleryImagesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `GalleryImagesClientUpdateResponse` has been removed
+- Field `DiskEncryptionSetsClientCreateOrUpdateResult` of struct `DiskEncryptionSetsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DiskEncryptionSetsClientCreateOrUpdateResponse` has been removed
+- Field `DedicatedHostGroupsClientCreateOrUpdateResult` of struct `DedicatedHostGroupsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DedicatedHostGroupsClientCreateOrUpdateResponse` has been removed
+- Field `ProximityPlacementGroupsClientListByResourceGroupResult` of struct `ProximityPlacementGroupsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ProximityPlacementGroupsClientListByResourceGroupResponse` has been removed
+- Field `VirtualMachinesClientListAllResult` of struct `VirtualMachinesClientListAllResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientListAllResponse` has been removed
+- Field `SSHPublicKeysClientGetResult` of struct `SSHPublicKeysClientGetResponse` has been removed
+- Field `RawResponse` of struct `SSHPublicKeysClientGetResponse` has been removed
+- Field `RawResponse` of struct `CloudServicesClientRestartResponse` has been removed
+- Field `VirtualMachineImagesEdgeZoneClientListOffersResult` of struct `VirtualMachineImagesEdgeZoneClientListOffersResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineImagesEdgeZoneClientListOffersResponse` has been removed
+- Field `VirtualMachineImagesClientListResult` of struct `VirtualMachineImagesClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineImagesClientListResponse` has been removed
+- Field `RestorePointCollectionsClientCreateOrUpdateResult` of struct `RestorePointCollectionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `RestorePointCollectionsClientCreateOrUpdateResponse` has been removed
+- Field `CloudServicesClientListResult` of struct `CloudServicesClientListResponse` has been removed
+- Field `RawResponse` of struct `CloudServicesClientListResponse` has been removed
+- Field `VirtualMachinesClientRunCommandResult` of struct `VirtualMachinesClientRunCommandResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientRunCommandResponse` has been removed
+- Field `CapacityReservationsClientCreateOrUpdateResult` of struct `CapacityReservationsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `CapacityReservationsClientCreateOrUpdateResponse` has been removed
+- Field `VirtualMachineScaleSetsClientListAllResult` of struct `VirtualMachineScaleSetsClientListAllResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetsClientListAllResponse` has been removed
+- Field `RawResponse` of struct `SnapshotsClientRevokeAccessResponse` has been removed
+- Field `VirtualMachinesClientCreateOrUpdateResult` of struct `VirtualMachinesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DiskAccessesClientDeleteResponse` has been removed
+- Field `CloudServiceRoleInstancesClientListResult` of struct `CloudServiceRoleInstancesClientListResponse` has been removed
+- Field `RawResponse` of struct `CloudServiceRoleInstancesClientListResponse` has been removed
+- Field `GalleryImageVersionsClientUpdateResult` of struct `GalleryImageVersionsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `GalleryImageVersionsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientStartResponse` has been removed
+- Field `ImagesClientListByResourceGroupResult` of struct `ImagesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ImagesClientListByResourceGroupResponse` has been removed
+- Field `SharedGalleryImagesClientListResult` of struct `SharedGalleryImagesClientListResponse` has been removed
+- Field `RawResponse` of struct `SharedGalleryImagesClientListResponse` has been removed
+- Field `ProximityPlacementGroupsClientGetResult` of struct `ProximityPlacementGroupsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ProximityPlacementGroupsClientGetResponse` has been removed
+- Field `GalleryApplicationsClientGetResult` of struct `GalleryApplicationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `GalleryApplicationsClientGetResponse` has been removed
+- Field `DiskEncryptionSetsClientGetResult` of struct `DiskEncryptionSetsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DiskEncryptionSetsClientGetResponse` has been removed
+- Field `DedicatedHostsClientGetResult` of struct `DedicatedHostsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DedicatedHostsClientGetResponse` has been removed
+- Field `VirtualMachinesClientUpdateResult` of struct `VirtualMachinesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientUpdateResponse` has been removed
+- Field `CapacityReservationsClientGetResult` of struct `CapacityReservationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `CapacityReservationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `CloudServiceRoleInstancesClientReimageResponse` has been removed
+- Field `RawResponse` of struct `GalleryImageVersionsClientDeleteResponse` has been removed
+- Field `CloudServiceOperatingSystemsClientGetOSFamilyResult` of struct `CloudServiceOperatingSystemsClientGetOSFamilyResponse` has been removed
+- Field `RawResponse` of struct `CloudServiceOperatingSystemsClientGetOSFamilyResponse` has been removed
+- Field `RawResponse` of struct `CloudServicesClientStartResponse` has been removed
+- Field `SSHPublicKeysClientListBySubscriptionResult` of struct `SSHPublicKeysClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `SSHPublicKeysClientListBySubscriptionResponse` has been removed
+- Field `VirtualMachinesClientGetResult` of struct `VirtualMachinesClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientDeallocateResponse` has been removed
+- Field `VirtualMachineRunCommandsClientCreateOrUpdateResult` of struct `VirtualMachineRunCommandsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineRunCommandsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `GalleryApplicationVersionsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetVMsClientDeleteResponse` has been removed
+- Field `GalleryImagesClientCreateOrUpdateResult` of struct `GalleryImagesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `GalleryImagesClientCreateOrUpdateResponse` has been removed
+- Field `DiskAccessesClientUpdateAPrivateEndpointConnectionResult` of struct `DiskAccessesClientUpdateAPrivateEndpointConnectionResponse` has been removed
+- Field `RawResponse` of struct `DiskAccessesClientUpdateAPrivateEndpointConnectionResponse` has been removed
+- Field `UsageClientListResult` of struct `UsageClientListResponse` has been removed
+- Field `RawResponse` of struct `UsageClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetVMsClientRestartResponse` has been removed
+- Field `AvailabilitySetsClientUpdateResult` of struct `AvailabilitySetsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `AvailabilitySetsClientUpdateResponse` has been removed
+- Field `RestorePointsClientCreateResult` of struct `RestorePointsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `RestorePointsClientCreateResponse` has been removed
+- Field `ImagesClientGetResult` of struct `ImagesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ImagesClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineExtensionsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `CloudServicesUpdateDomainClientWalkUpdateDomainResponse` has been removed
+- Field `CapacityReservationGroupsClientGetResult` of struct `CapacityReservationGroupsClientGetResponse` has been removed
+- Field `RawResponse` of struct `CapacityReservationGroupsClientGetResponse` has been removed
+- Field `ProximityPlacementGroupsClientCreateOrUpdateResult` of struct `ProximityPlacementGroupsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ProximityPlacementGroupsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetRollingUpgradesClientCancelResponse` has been removed
+- Field `VirtualMachineScaleSetExtensionsClientGetResult` of struct `VirtualMachineScaleSetExtensionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetExtensionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AvailabilitySetsClientDeleteResponse` has been removed
+- Field `LogAnalyticsClientExportThrottledRequestsResult` of struct `LogAnalyticsClientExportThrottledRequestsResponse` has been removed
+- Field `RawResponse` of struct `LogAnalyticsClientExportThrottledRequestsResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetsClientSetOrchestrationServiceStateResponse` has been removed
+- Field `SnapshotsClientGetResult` of struct `SnapshotsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SnapshotsClientGetResponse` has been removed
+- Field `VirtualMachinesClientListAvailableSizesResult` of struct `VirtualMachinesClientListAvailableSizesResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientListAvailableSizesResponse` has been removed
+- Field `CloudServicesClientCreateOrUpdateResult` of struct `CloudServicesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `CloudServicesClientCreateOrUpdateResponse` has been removed
+- Field `DisksClientListResult` of struct `DisksClientListResponse` has been removed
+- Field `RawResponse` of struct `DisksClientListResponse` has been removed
+- Field `RawResponse` of struct `CloudServiceRoleInstancesClientDeleteResponse` has been removed
+- Field `CloudServicesClientGetResult` of struct `CloudServicesClientGetResponse` has been removed
+- Field `RawResponse` of struct `CloudServicesClientGetResponse` has been removed
+- Field `VirtualMachineImagesClientGetResult` of struct `VirtualMachineImagesClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineImagesClientGetResponse` has been removed
+- Field `DiskEncryptionSetsClientUpdateResult` of struct `DiskEncryptionSetsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `DiskEncryptionSetsClientUpdateResponse` has been removed
+- Field `VirtualMachineScaleSetVMRunCommandsClientUpdateResult` of struct `VirtualMachineScaleSetVMRunCommandsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetVMRunCommandsClientUpdateResponse` has been removed
+- Field `DisksClientListByResourceGroupResult` of struct `DisksClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `DisksClientListByResourceGroupResponse` has been removed
+- Field `VirtualMachineExtensionImagesClientGetResult` of struct `VirtualMachineExtensionImagesClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineExtensionImagesClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineRunCommandsClientDeleteResponse` has been removed
+- Field `VirtualMachineScaleSetsClientListResult` of struct `VirtualMachineScaleSetsClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetsClientListResponse` has been removed
+- Field `GalleryApplicationVersionsClientListByGalleryApplicationResult` of struct `GalleryApplicationVersionsClientListByGalleryApplicationResponse` has been removed
+- Field `RawResponse` of struct `GalleryApplicationVersionsClientListByGalleryApplicationResponse` has been removed
+- Field `RawResponse` of struct `ProximityPlacementGroupsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetsClientDeleteInstancesResponse` has been removed
+- Field `GalleryApplicationVersionsClientGetResult` of struct `GalleryApplicationVersionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `GalleryApplicationVersionsClientGetResponse` has been removed
+- Field `DiskAccessesClientListPrivateEndpointConnectionsResult` of struct `DiskAccessesClientListPrivateEndpointConnectionsResponse` has been removed
+- Field `RawResponse` of struct `DiskAccessesClientListPrivateEndpointConnectionsResponse` has been removed
+- Field `VirtualMachineScaleSetVMsClientUpdateResult` of struct `VirtualMachineScaleSetVMsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetVMsClientUpdateResponse` has been removed
+- Field `DedicatedHostsClientUpdateResult` of struct `DedicatedHostsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `DedicatedHostsClientUpdateResponse` has been removed
+- Field `VirtualMachineScaleSetsClientGetInstanceViewResult` of struct `VirtualMachineScaleSetsClientGetInstanceViewResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetsClientGetInstanceViewResponse` has been removed
+- Field `DedicatedHostGroupsClientListBySubscriptionResult` of struct `DedicatedHostGroupsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `DedicatedHostGroupsClientListBySubscriptionResponse` has been removed
+- Field `DiskAccessesClientCreateOrUpdateResult` of struct `DiskAccessesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DiskAccessesClientCreateOrUpdateResponse` has been removed
+- Field `DiskAccessesClientListByResourceGroupResult` of struct `DiskAccessesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `DiskAccessesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetVMsClientPowerOffResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetVMsClientRedeployResponse` has been removed
+- Field `RestorePointsClientGetResult` of struct `RestorePointsClientGetResponse` has been removed
+- Field `RawResponse` of struct `RestorePointsClientGetResponse` has been removed
+- Field `ProximityPlacementGroupsClientUpdateResult` of struct `ProximityPlacementGroupsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ProximityPlacementGroupsClientUpdateResponse` has been removed
+- Field `VirtualMachineScaleSetsClientGetOSUpgradeHistoryResult` of struct `VirtualMachineScaleSetsClientGetOSUpgradeHistoryResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetsClientGetOSUpgradeHistoryResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientPowerOffResponse` has been removed
+- Field `VirtualMachineImagesClientListOffersResult` of struct `VirtualMachineImagesClientListOffersResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineImagesClientListOffersResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetVMsClientDeallocateResponse` has been removed
+- Field `RawResponse` of struct `CloudServiceRoleInstancesClientGetRemoteDesktopFileResponse` has been removed
+- Field `SnapshotsClientListResult` of struct `SnapshotsClientListResponse` has been removed
+- Field `RawResponse` of struct `SnapshotsClientListResponse` has been removed
+- Field `CapacityReservationsClientUpdateResult` of struct `CapacityReservationsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `CapacityReservationsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetsClientReimageAllResponse` has been removed
+- Field `VirtualMachineExtensionImagesClientListVersionsResult` of struct `VirtualMachineExtensionImagesClientListVersionsResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineExtensionImagesClientListVersionsResponse` has been removed
+- Field `VirtualMachineExtensionImagesClientListTypesResult` of struct `VirtualMachineExtensionImagesClientListTypesResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineExtensionImagesClientListTypesResponse` has been removed
+- Field `VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdateResult` of struct `VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DedicatedHostsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetVMsClientStartResponse` has been removed
+- Field `VirtualMachineScaleSetVMsClientRunCommandResult` of struct `VirtualMachineScaleSetVMsClientRunCommandResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetVMsClientRunCommandResponse` has been removed
+- Field `ProximityPlacementGroupsClientListBySubscriptionResult` of struct `ProximityPlacementGroupsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `ProximityPlacementGroupsClientListBySubscriptionResponse` has been removed
+- Field `SnapshotsClientGrantAccessResult` of struct `SnapshotsClientGrantAccessResponse` has been removed
+- Field `RawResponse` of struct `SnapshotsClientGrantAccessResponse` has been removed
+- Field `VirtualMachineRunCommandsClientGetResult` of struct `VirtualMachineRunCommandsClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineRunCommandsClientGetResponse` has been removed
+- Field `RawResponse` of struct `CloudServicesClientPowerOffResponse` has been removed
+- Field `GalleriesClientCreateOrUpdateResult` of struct `GalleriesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `GalleriesClientCreateOrUpdateResponse` has been removed
+- Field `SnapshotsClientUpdateResult` of struct `SnapshotsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `SnapshotsClientUpdateResponse` has been removed
+- Field `GalleryImagesClientGetResult` of struct `GalleryImagesClientGetResponse` has been removed
+- Field `RawResponse` of struct `GalleryImagesClientGetResponse` has been removed
+- Field `CloudServiceOperatingSystemsClientListOSVersionsResult` of struct `CloudServiceOperatingSystemsClientListOSVersionsResponse` has been removed
+- Field `RawResponse` of struct `CloudServiceOperatingSystemsClientListOSVersionsResponse` has been removed
+- Field `DedicatedHostsClientCreateOrUpdateResult` of struct `DedicatedHostsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DedicatedHostsClientCreateOrUpdateResponse` has been removed
+- Field `LogAnalyticsClientExportRequestRateByIntervalResult` of struct `LogAnalyticsClientExportRequestRateByIntervalResponse` has been removed
+- Field `RawResponse` of struct `LogAnalyticsClientExportRequestRateByIntervalResponse` has been removed
+- Field `RawResponse` of struct `GalleriesClientDeleteResponse` has been removed
+- Field `AvailabilitySetsClientListAvailableSizesResult` of struct `AvailabilitySetsClientListAvailableSizesResponse` has been removed
+- Field `RawResponse` of struct `AvailabilitySetsClientListAvailableSizesResponse` has been removed
+- Field `DedicatedHostsClientListByHostGroupResult` of struct `DedicatedHostsClientListByHostGroupResponse` has been removed
+- Field `RawResponse` of struct `DedicatedHostsClientListByHostGroupResponse` has been removed
+- Field `CloudServicesClientListAllResult` of struct `CloudServicesClientListAllResponse` has been removed
+- Field `RawResponse` of struct `CloudServicesClientListAllResponse` has been removed
+- Field `AvailabilitySetsClientGetResult` of struct `AvailabilitySetsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AvailabilitySetsClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientReapplyResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetsClientDeallocateResponse` has been removed
+- Field `RawResponse` of struct `CapacityReservationsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradeResponse` has been removed
+- Field `VirtualMachineExtensionsClientCreateOrUpdateResult` of struct `VirtualMachineExtensionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineExtensionsClientCreateOrUpdateResponse` has been removed
+- Field `AvailabilitySetsClientListBySubscriptionResult` of struct `AvailabilitySetsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `AvailabilitySetsClientListBySubscriptionResponse` has been removed
+- Field `ImagesClientUpdateResult` of struct `ImagesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ImagesClientUpdateResponse` has been removed
+- Field `VirtualMachineScaleSetExtensionsClientUpdateResult` of struct `VirtualMachineScaleSetExtensionsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetExtensionsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `CapacityReservationGroupsClientDeleteResponse` has been removed
+- Field `GalleryImagesClientListByGalleryResult` of struct `GalleryImagesClientListByGalleryResponse` has been removed
+- Field `RawResponse` of struct `GalleryImagesClientListByGalleryResponse` has been removed
+- Field `VirtualMachineRunCommandsClientListByVirtualMachineResult` of struct `VirtualMachineRunCommandsClientListByVirtualMachineResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineRunCommandsClientListByVirtualMachineResponse` has been removed
+- Field `DisksClientUpdateResult` of struct `DisksClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `DisksClientUpdateResponse` has been removed
+- Field `GalleryImageVersionsClientGetResult` of struct `GalleryImageVersionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `GalleryImageVersionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetsClientDeleteResponse` has been removed
+- Field `SnapshotsClientListByResourceGroupResult` of struct `SnapshotsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `SnapshotsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `DedicatedHostGroupsClientDeleteResponse` has been removed
+- Field `DedicatedHostGroupsClientGetResult` of struct `DedicatedHostGroupsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DedicatedHostGroupsClientGetResponse` has been removed
+- Field `SSHPublicKeysClientUpdateResult` of struct `SSHPublicKeysClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `SSHPublicKeysClientUpdateResponse` has been removed
+- Field `VirtualMachineImagesEdgeZoneClientListPublishersResult` of struct `VirtualMachineImagesEdgeZoneClientListPublishersResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineImagesEdgeZoneClientListPublishersResponse` has been removed
+- Field `RawResponse` of struct `SSHPublicKeysClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetsClientPowerOffResponse` has been removed
+- Field `SnapshotsClientCreateOrUpdateResult` of struct `SnapshotsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SnapshotsClientCreateOrUpdateResponse` has been removed
+- Field `CapacityReservationGroupsClientCreateOrUpdateResult` of struct `CapacityReservationGroupsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `CapacityReservationGroupsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineScaleSetVMsClientReimageResponse` has been removed
+- Field `RawResponse` of struct `DisksClientRevokeAccessResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientPerformMaintenanceResponse` has been removed
+- Field `GalleryApplicationVersionsClientUpdateResult` of struct `GalleryApplicationVersionsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `GalleryApplicationVersionsClientUpdateResponse` has been removed
+
+### Features Added
+
+- New function `CommunityGalleryInfo.MarshalJSON() ([]byte, error)`
+- New struct `CloudError`
+- New struct `CommunityGalleryInfo`
+- New struct `DiskRestorePointReplicationStatus`
+- New struct `GalleryArtifactSource`
+- New struct `ManagedArtifact`
+- New field `ResumeToken` in struct `DedicatedHostsClientBeginUpdateOptions`
+- New anonymous field `VirtualMachine` in struct `VirtualMachinesClientUpdateResponse`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetVMRunCommandsClientBeginCreateOrUpdateOptions`
+- New anonymous field `GalleryList` in struct `GalleriesClientListResponse`
+- New field `ResumeToken` in struct `VirtualMachineRunCommandsClientBeginUpdateOptions`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetVMsClientBeginReimageOptions`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetsClientBeginReimageAllOptions`
+- New anonymous field `VirtualMachineScaleSetListResult` in struct `VirtualMachineScaleSetsClientListResponse`
+- New anonymous field `GalleryImage` in struct `GalleryImagesClientUpdateResponse`
+- New anonymous field `AvailabilitySet` in struct `AvailabilitySetsClientCreateOrUpdateResponse`
+- New anonymous field `VirtualMachineScaleSetListSKUsResult` in struct `VirtualMachineScaleSetsClientListSKUsResponse`
+- New anonymous field `DiskAccessList` in struct `DiskAccessesClientListResponse`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginStartOptions`
+- New field `VirtualMachineExtensionImageArray` in struct `VirtualMachineExtensionImagesClientListVersionsResponse`
+- New anonymous field `VirtualMachineScaleSetVMInstanceView` in struct `VirtualMachineScaleSetVMsClientGetInstanceViewResponse`
+- New field `Body` in struct `CloudServiceRoleInstancesClientGetRemoteDesktopFileResponse`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetsClientBeginPerformMaintenanceOptions`
+- New anonymous field `DiskAccess` in struct `DiskAccessesClientGetResponse`
+- New field `ResumeToken` in struct `CloudServiceRoleInstancesClientBeginRestartOptions`
+- New field `ResumeToken` in struct `RestorePointsClientBeginCreateOptions`
+- New field `ResumeToken` in struct `DiskRestorePointClientBeginRevokeAccessOptions`
+- New anonymous field `SSHPublicKeyGenerateKeyPairResult` in struct `SSHPublicKeysClientGenerateKeyPairResponse`
+- New anonymous field `AvailabilitySetListResult` in struct `AvailabilitySetsClientListBySubscriptionResponse`
+- New field `ResumeToken` in struct `CloudServicesUpdateDomainClientBeginWalkUpdateDomainOptions`
+- New anonymous field `VirtualMachineRunCommand` in struct `VirtualMachineScaleSetVMRunCommandsClientGetResponse`
+- New field `ResumeToken` in struct `CloudServicesClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginConvertToManagedDisksOptions`
+- New field `ResumeToken` in struct `CloudServicesClientBeginStartOptions`
+- New field `ResumeToken` in struct `GalleryApplicationVersionsClientBeginDeleteOptions`
+- New anonymous field `AccessURI` in struct `SnapshotsClientGrantAccessResponse`
+- New anonymous field `Disk` in struct `DisksClientCreateOrUpdateResponse`
+- New anonymous field `VirtualMachineListResult` in struct `VirtualMachinesClientListResponse`
+- New field `ResumeToken` in struct `GalleryApplicationsClientBeginDeleteOptions`
+- New anonymous field `VirtualMachineCaptureResult` in struct `VirtualMachinesClientCaptureResponse`
+- New anonymous field `DiskEncryptionSetList` in struct `DiskEncryptionSetsClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `CloudServicesClientBeginRebuildOptions`
+- New anonymous field `VirtualMachineSizeListResult` in struct `VirtualMachineSizesClientListResponse`
+- New anonymous field `RestorePointCollection` in struct `RestorePointCollectionsClientCreateOrUpdateResponse`
+- New anonymous field `Snapshot` in struct `SnapshotsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `GalleriesClientBeginCreateOrUpdateOptions`
+- New anonymous field `ListUsagesResult` in struct `UsageClientListResponse`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetsClientBeginRestartOptions`
+- New anonymous field `DiskList` in struct `DisksClientListResponse`
+- New field `ResumeToken` in struct `GalleryApplicationVersionsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginPerformMaintenanceOptions`
+- New anonymous field `SharingUpdate` in struct `GallerySharingProfileClientUpdateResponse`
+- New anonymous field `RetrieveBootDiagnosticsDataResult` in struct `VirtualMachinesClientRetrieveBootDiagnosticsDataResponse`
+- New field `ResumeToken` in struct `LogAnalyticsClientBeginExportRequestRateByIntervalOptions`
+- New field `ResumeToken` in struct `SnapshotsClientBeginGrantAccessOptions`
+- New anonymous field `CloudServiceInstanceView` in struct `CloudServicesClientGetInstanceViewResponse`
+- New anonymous field `CapacityReservation` in struct `CapacityReservationsClientGetResponse`
+- New anonymous field `ProximityPlacementGroup` in struct `ProximityPlacementGroupsClientCreateOrUpdateResponse`
+- New anonymous field `DedicatedHostListResult` in struct `DedicatedHostsClientListByHostGroupResponse`
+- New anonymous field `Disk` in struct `DisksClientUpdateResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `VirtualMachineScaleSetVMListResult` in struct `VirtualMachineScaleSetVMsClientListResponse`
+- New anonymous field `Image` in struct `ImagesClientUpdateResponse`
+- New field `VirtualMachineExtensionImageArray` in struct `VirtualMachineExtensionImagesClientListTypesResponse`
+- New anonymous field `SharedGalleryImageVersion` in struct `SharedGalleryImageVersionsClientGetResponse`
+- New field `ResumeToken` in struct `DisksClientBeginCreateOrUpdateOptions`
+- New anonymous field `CapacityReservationGroup` in struct `CapacityReservationGroupsClientCreateOrUpdateResponse`
+- New anonymous field `VirtualMachineRunCommand` in struct `VirtualMachineScaleSetVMRunCommandsClientUpdateResponse`
+- New field `ResumeToken` in struct `DiskAccessesClientBeginUpdateAPrivateEndpointConnectionOptions`
+- New anonymous field `DiskRestorePointList` in struct `DiskRestorePointClientListByRestorePointResponse`
+- New anonymous field `VirtualMachineScaleSet` in struct `VirtualMachineScaleSetsClientCreateOrUpdateResponse`
+- New anonymous field `VirtualMachineExtensionImage` in struct `VirtualMachineExtensionImagesClientGetResponse`
+- New anonymous field `AccessURI` in struct `DisksClientGrantAccessResponse`
+- New anonymous field `DedicatedHostGroupListResult` in struct `DedicatedHostGroupsClientListByResourceGroupResponse`
+- New anonymous field `SSHPublicKeysGroupListResult` in struct `SSHPublicKeysClientListBySubscriptionResponse`
+- New anonymous field `VirtualMachineImage` in struct `VirtualMachineImagesClientGetResponse`
+- New anonymous field `RestorePointCollectionListResult` in struct `RestorePointCollectionsClientListAllResponse`
+- New anonymous field `CapacityReservation` in struct `CapacityReservationsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `RestorePointsClientBeginDeleteOptions`
+- New anonymous field `VirtualMachineExtensionsListResult` in struct `VirtualMachineExtensionsClientListResponse`
+- New anonymous field `RollingUpgradeStatusInfo` in struct `VirtualMachineScaleSetRollingUpgradesClientGetLatestResponse`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetRollingUpgradesClientBeginStartExtensionUpgradeOptions`
+- New field `ResumeToken` in struct `GalleriesClientBeginUpdateOptions`
+- New anonymous field `VirtualMachineListResult` in struct `VirtualMachinesClientListAllResponse`
+- New anonymous field `Gallery` in struct `GalleriesClientUpdateResponse`
+- New field `ResumeToken` in struct `CloudServicesClientBeginRestartOptions`
+- New field `VirtualMachineImageResourceArray` in struct `VirtualMachineImagesEdgeZoneClientListSKUsResponse`
+- New anonymous field `VirtualMachineScaleSet` in struct `VirtualMachineScaleSetsClientGetResponse`
+- New field `ResumeToken` in struct `GalleryImagesClientBeginDeleteOptions`
+- New anonymous field `CapacityReservationGroupListResult` in struct `CapacityReservationGroupsClientListByResourceGroupResponse`
+- New anonymous field `ImageListResult` in struct `ImagesClientListResponse`
+- New anonymous field `DedicatedHost` in struct `DedicatedHostsClientGetResponse`
+- New field `ResumeToken` in struct `CloudServiceRoleInstancesClientBeginDeleteOptions`
+- New anonymous field `VirtualMachineScaleSetExtension` in struct `VirtualMachineScaleSetExtensionsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `CapacityReservationsClientBeginDeleteOptions`
+- New anonymous field `VirtualMachineExtension` in struct `VirtualMachineExtensionsClientUpdateResponse`
+- New field `ResumeToken` in struct `DisksClientBeginGrantAccessOptions`
+- New field `VirtualMachineImageResourceArray` in struct `VirtualMachineImagesClientListSKUsResponse`
+- New anonymous field `ResourceURIList` in struct `DiskEncryptionSetsClientListAssociatedResourcesResponse`
+- New anonymous field `OSFamily` in struct `CloudServiceOperatingSystemsClientGetOSFamilyResponse`
+- New anonymous field `GalleryApplicationVersion` in struct `GalleryApplicationVersionsClientCreateOrUpdateResponse`
+- New anonymous field `RestorePoint` in struct `RestorePointsClientGetResponse`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetsClientBeginRedeployOptions`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginUpdateOptions`
+- New anonymous field `LogAnalyticsOperationResult` in struct `LogAnalyticsClientExportThrottledRequestsResponse`
+- New anonymous field `UpdateDomain` in struct `CloudServicesUpdateDomainClientGetUpdateDomainResponse`
+- New anonymous field `VirtualMachineScaleSetVMExtension` in struct `VirtualMachineScaleSetVMExtensionsClientCreateOrUpdateResponse`
+- New anonymous field `CloudServiceRoleListResult` in struct `CloudServiceRolesClientListResponse`
+- New field `ResumeToken` in struct `DiskEncryptionSetsClientBeginDeleteOptions`
+- New anonymous field `DiskEncryptionSetList` in struct `DiskEncryptionSetsClientListResponse`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginDeallocateOptions`
+- New anonymous field `CommunityGalleryImage` in struct `CommunityGalleryImagesClientGetResponse`
+- New anonymous field `ImageListResult` in struct `ImagesClientListByResourceGroupResponse`
+- New field `VirtualMachineImageResourceArray` in struct `VirtualMachineImagesClientListPublishersResponse`
+- New anonymous field `GalleryImageVersion` in struct `GalleryImageVersionsClientGetResponse`
+- New anonymous field `VirtualMachineAssessPatchesResult` in struct `VirtualMachinesClientAssessPatchesResponse`
+- New anonymous field `VirtualMachineScaleSetExtension` in struct `VirtualMachineScaleSetExtensionsClientGetResponse`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginReimageOptions`
+- New field `ResumeToken` in struct `DiskEncryptionSetsClientBeginUpdateOptions`
+- New anonymous field `DiskRestorePoint` in struct `DiskRestorePointClientGetResponse`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetVMsClientBeginRunCommandOptions`
+- New anonymous field `VirtualMachineSizeListResult` in struct `VirtualMachinesClientListAvailableSizesResponse`
+- New anonymous field `OSVersion` in struct `CloudServiceOperatingSystemsClientGetOSVersionResponse`
+- New anonymous field `PrivateLinkResourceListResult` in struct `DiskAccessesClientGetPrivateLinkResourcesResponse`
+- New anonymous field `GalleryApplication` in struct `GalleryApplicationsClientUpdateResponse`
+- New anonymous field `CapacityReservationGroupListResult` in struct `CapacityReservationGroupsClientListBySubscriptionResponse`
+- New field `ResumeToken` in struct `GalleryApplicationVersionsClientBeginUpdateOptions`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetVMExtensionsClientBeginCreateOrUpdateOptions`
+- New anonymous field `CloudService` in struct `CloudServicesClientUpdateResponse`
+- New anonymous field `GalleryImageVersionList` in struct `GalleryImageVersionsClientListByGalleryImageResponse`
+- New field `ResumeToken` in struct `SnapshotsClientBeginCreateOrUpdateOptions`
+- New anonymous field `CloudService` in struct `CloudServicesClientCreateOrUpdateResponse`
+- New anonymous field `CapacityReservation` in struct `CapacityReservationsClientUpdateResponse`
+- New anonymous field `RestorePointCollection` in struct `RestorePointCollectionsClientGetResponse`
+- New anonymous field `DiskAccessList` in struct `DiskAccessesClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `GalleryImageVersionsClientBeginUpdateOptions`
+- New anonymous field `SharedGallery` in struct `SharedGalleriesClientGetResponse`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetVMsClientBeginRestartOptions`
+- New field `ResumeToken` in struct `SnapshotsClientBeginUpdateOptions`
+- New anonymous field `RoleInstanceListResult` in struct `CloudServiceRoleInstancesClientListResponse`
+- New anonymous field `CommunityGalleryImageVersion` in struct `CommunityGalleryImageVersionsClientGetResponse`
+- New anonymous field `VirtualMachineScaleSetVMExtension` in struct `VirtualMachineScaleSetVMExtensionsClientGetResponse`
+- New anonymous field `DiskEncryptionSet` in struct `DiskEncryptionSetsClientGetResponse`
+- New anonymous field `VirtualMachineScaleSetVM` in struct `VirtualMachineScaleSetVMsClientGetResponse`
+- New field `ResumeToken` in struct `CloudServicesClientBeginReimageOptions`
+- New field `ResumeToken` in struct `GalleryApplicationsClientBeginCreateOrUpdateOptions`
+- New anonymous field `GalleryApplicationList` in struct `GalleryApplicationsClientListByGalleryResponse`
+- New field `ResumeToken` in struct `CloudServiceRoleInstancesClientBeginReimageOptions`
+- New field `ResumeToken` in struct `CloudServicesClientBeginPowerOffOptions`
+- New field `ResumeToken` in struct `VirtualMachineRunCommandsClientBeginCreateOrUpdateOptions`
+- New anonymous field `DedicatedHost` in struct `DedicatedHostsClientCreateOrUpdateResponse`
+- New anonymous field `GalleryList` in struct `GalleriesClientListByResourceGroupResponse`
+- New anonymous field `RunCommandResult` in struct `VirtualMachineScaleSetVMsClientRunCommandResponse`
+- New anonymous field `VirtualMachineRunCommandsListResult` in struct `VirtualMachineRunCommandsClientListByVirtualMachineResponse`
+- New anonymous field `UpdateDomainListResult` in struct `CloudServicesUpdateDomainClientListUpdateDomainsResponse`
+- New anonymous field `VirtualMachineScaleSet` in struct `VirtualMachineScaleSetsClientUpdateResponse`
+- New anonymous field `SSHPublicKeyResource` in struct `SSHPublicKeysClientUpdateResponse`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetVMRunCommandsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetsClientBeginReimageOptions`
+- New anonymous field `RunCommandDocument` in struct `VirtualMachineRunCommandsClientGetResponse`
+- New anonymous field `VirtualMachineInstallPatchesResult` in struct `VirtualMachinesClientInstallPatchesResponse`
+- New anonymous field `SharedGalleryList` in struct `SharedGalleriesClientListResponse`
+- New anonymous field `VirtualMachineScaleSetListResult` in struct `VirtualMachineScaleSetsClientListByLocationResponse`
+- New field `ResumeToken` in struct `DiskRestorePointClientBeginGrantAccessOptions`
+- New anonymous field `DedicatedHostGroup` in struct `DedicatedHostGroupsClientUpdateResponse`
+- New anonymous field `ProximityPlacementGroup` in struct `ProximityPlacementGroupsClientGetResponse`
+- New field `ResumeToken` in struct `GalleryImagesClientBeginUpdateOptions`
+- New field `ResumeToken` in struct `DedicatedHostsClientBeginCreateOrUpdateOptions`
+- New anonymous field `GalleryApplicationVersionList` in struct `GalleryApplicationVersionsClientListByGalleryApplicationResponse`
+- New anonymous field `GalleryApplication` in struct `GalleryApplicationsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetVMsClientBeginPerformMaintenanceOptions`
+- New anonymous field `PrivateEndpointConnectionListResult` in struct `DiskAccessesClientListPrivateEndpointConnectionsResponse`
+- New field `ResumeToken` in struct `CloudServicesClientBeginDeleteInstancesOptions`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginAssessPatchesOptions`
+- New field `ResumeToken` in struct `DiskAccessesClientBeginDeleteOptions`
+- New anonymous field `VirtualMachineExtension` in struct `VirtualMachineExtensionsClientCreateOrUpdateResponse`
+- New anonymous field `DedicatedHost` in struct `DedicatedHostsClientUpdateResponse`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetVMExtensionsClientBeginDeleteOptions`
+- New anonymous field `VirtualMachineScaleSetVMExtensionsListResult` in struct `VirtualMachineScaleSetVMExtensionsClientListResponse`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `GalleriesClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `ImagesClientBeginUpdateOptions`
+- New field `ResumeToken` in struct `DisksClientBeginRevokeAccessOptions`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetsClientBeginStartOptions`
+- New anonymous field `SSHPublicKeysGroupListResult` in struct `SSHPublicKeysClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `SnapshotsClientBeginRevokeAccessOptions`
+- New field `ResumeToken` in struct `ImagesClientBeginDeleteOptions`
+- New anonymous field `VirtualMachineScaleSetExtension` in struct `VirtualMachineScaleSetExtensionsClientUpdateResponse`
+- New anonymous field `Disk` in struct `DisksClientGetResponse`
+- New field `ResumeToken` in struct `GalleryImageVersionsClientBeginCreateOrUpdateOptions`
+- New anonymous field `VirtualMachineSizeListResult` in struct `AvailabilitySetsClientListAvailableSizesResponse`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginDeleteOptions`
+- New anonymous field `SnapshotList` in struct `SnapshotsClientListResponse`
+- New field `ResumeToken` in struct `VirtualMachineExtensionsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `VirtualMachineExtensionsClientBeginUpdateOptions`
+- New field `ResumeToken` in struct `GalleryApplicationsClientBeginUpdateOptions`
+- New anonymous field `SharedGalleryImageList` in struct `SharedGalleryImagesClientListResponse`
+- New field `VirtualMachineImageResourceArray` in struct `VirtualMachineImagesClientListResponse`
+- New field `ResumeToken` in struct `CloudServiceRoleInstancesClientBeginRebuildOptions`
+- New anonymous field `CapacityReservationGroup` in struct `CapacityReservationGroupsClientUpdateResponse`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetExtensionsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `DisksClientBeginUpdateOptions`
+- New anonymous field `ProximityPlacementGroupListResult` in struct `ProximityPlacementGroupsClientListByResourceGroupResponse`
+- New anonymous field `VirtualMachine` in struct `VirtualMachinesClientCreateOrUpdateResponse`
+- New anonymous field `Gallery` in struct `GalleriesClientGetResponse`
+- New anonymous field `GalleryImage` in struct `GalleryImagesClientCreateOrUpdateResponse`
+- New field `VirtualMachineImageResourceArray` in struct `VirtualMachineImagesEdgeZoneClientListOffersResponse`
+- New anonymous field `VirtualMachineRunCommand` in struct `VirtualMachineRunCommandsClientGetByVirtualMachineResponse`
+- New anonymous field `VirtualMachineRunCommandsListResult` in struct `VirtualMachineScaleSetVMRunCommandsClientListResponse`
+- New anonymous field `CapacityReservationGroup` in struct `CapacityReservationGroupsClientGetResponse`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetsClientBeginDeallocateOptions`
+- New anonymous field `CloudServiceListResult` in struct `CloudServicesClientListResponse`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginPowerOffOptions`
+- New anonymous field `CapacityReservationListResult` in struct `CapacityReservationsClientListByCapacityReservationGroupResponse`
+- New anonymous field `SharedGalleryImage` in struct `SharedGalleryImagesClientGetResponse`
+- New anonymous field `VirtualMachineRunCommand` in struct `VirtualMachineRunCommandsClientCreateOrUpdateResponse`
+- New anonymous field `RestorePointCollectionListResult` in struct `RestorePointCollectionsClientListResponse`
+- New anonymous field `RoleInstance` in struct `CloudServiceRoleInstancesClientGetResponse`
+- New anonymous field `VirtualMachineScaleSetExtensionListResult` in struct `VirtualMachineScaleSetExtensionsClientListResponse`
+- New anonymous field `AvailabilitySet` in struct `AvailabilitySetsClientUpdateResponse`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetRollingUpgradesClientBeginCancelOptions`
+- New field `ResumeToken` in struct `LogAnalyticsClientBeginExportThrottledRequestsOptions`
+- New field `ResumeToken` in struct `DedicatedHostsClientBeginRestartOptions`
+- New field `ResumeToken` in struct `ImagesClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetVMsClientBeginDeallocateOptions`
+- New field `VirtualMachineImageResourceArray` in struct `VirtualMachineImagesEdgeZoneClientListResponse`
+- New anonymous field `GalleryImageList` in struct `GalleryImagesClientListByGalleryResponse`
+- New anonymous field `AccessURI` in struct `DiskRestorePointClientGrantAccessResponse`
+- New anonymous field `RunCommandResult` in struct `VirtualMachinesClientRunCommandResponse`
+- New field `VirtualMachineImageResourceArray` in struct `VirtualMachineImagesClientListOffersResponse`
+- New field `ResumeToken` in struct `DiskAccessesClientBeginCreateOrUpdateOptions`
+- New anonymous field `CloudServiceListResult` in struct `CloudServicesClientListAllResponse`
+- New anonymous field `RestorePoint` in struct `RestorePointsClientCreateResponse`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginRunCommandOptions`
+- New anonymous field `RunCommandListResult` in struct `VirtualMachineRunCommandsClientListResponse`
+- New anonymous field `GalleryImageVersion` in struct `GalleryImageVersionsClientUpdateResponse`
+- New anonymous field `Image` in struct `ImagesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `SnapshotsClientBeginDeleteOptions`
+- New anonymous field `LogAnalyticsOperationResult` in struct `LogAnalyticsClientExportRequestRateByIntervalResponse`
+- New anonymous field `VirtualMachineInstanceView` in struct `VirtualMachinesClientInstanceViewResponse`
+- New anonymous field `CloudServiceRole` in struct `CloudServiceRolesClientGetResponse`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetsClientBeginDeleteInstancesOptions`
+- New field `VirtualMachineImageResourceArray` in struct `VirtualMachineImagesEdgeZoneClientListPublishersResponse`
+- New anonymous field `RecoveryWalkResponse` in struct `VirtualMachineScaleSetsClientForceRecoveryServiceFabricPlatformUpdateDomainWalkResponse`
+- New anonymous field `DedicatedHostGroup` in struct `DedicatedHostGroupsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `DiskEncryptionSetsClientBeginCreateOrUpdateOptions`
+- New anonymous field `Snapshot` in struct `SnapshotsClientUpdateResponse`
+- New anonymous field `ResourceSKUsResult` in struct `ResourceSKUsClientListResponse`
+- New anonymous field `SnapshotList` in struct `SnapshotsClientListByResourceGroupResponse`
+- New anonymous field `GalleryImageVersion` in struct `GalleryImageVersionsClientCreateOrUpdateResponse`
+- New anonymous field `ProximityPlacementGroup` in struct `ProximityPlacementGroupsClientUpdateResponse`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetVMsClientBeginReimageAllOptions`
+- New anonymous field `Gallery` in struct `GalleriesClientCreateOrUpdateResponse`
+- New anonymous field `SharedGalleryImageVersionList` in struct `SharedGalleryImageVersionsClientListResponse`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginCaptureOptions`
+- New anonymous field `ProximityPlacementGroupListResult` in struct `ProximityPlacementGroupsClientListBySubscriptionResponse`
+- New anonymous field `OSVersionListResult` in struct `CloudServiceOperatingSystemsClientListOSVersionsResponse`
+- New anonymous field `GalleryImage` in struct `GalleryImagesClientGetResponse`
+- New field `ResumeToken` in struct `DiskAccessesClientBeginUpdateOptions`
+- New field `ResumeToken` in struct `DiskAccessesClientBeginDeleteAPrivateEndpointConnectionOptions`
+- New field `ResumeToken` in struct `CapacityReservationsClientBeginUpdateOptions`
+- New anonymous field `AvailabilitySetListResult` in struct `AvailabilitySetsClientListResponse`
+- New field `ResumeToken` in struct `DedicatedHostsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetVMRunCommandsClientBeginUpdateOptions`
+- New anonymous field `VirtualMachineScaleSetListOSUpgradeHistory` in struct `VirtualMachineScaleSetsClientGetOSUpgradeHistoryResponse`
+- New anonymous field `VirtualMachineScaleSetVM` in struct `VirtualMachineScaleSetVMsClientUpdateResponse`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetsClientBeginUpdateInstancesOptions`
+- New anonymous field `GalleryApplicationVersion` in struct `GalleryApplicationVersionsClientGetResponse`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetVMsClientBeginUpdateOptions`
+- New anonymous field `RetrieveBootDiagnosticsDataResult` in struct `VirtualMachineScaleSetVMsClientRetrieveBootDiagnosticsDataResponse`
+- New field `ResumeToken` in struct `CloudServicesClientBeginUpdateOptions`
+- New anonymous field `DiskList` in struct `DisksClientListByResourceGroupResponse`
+- New anonymous field `GalleryApplication` in struct `GalleryApplicationsClientGetResponse`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetsClientBeginUpdateOptions`
+- New anonymous field `Snapshot` in struct `SnapshotsClientGetResponse`
+- New anonymous field `VirtualMachineListResult` in struct `VirtualMachinesClientListByLocationResponse`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginReapplyOptions`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetVMsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetsClientBeginSetOrchestrationServiceStateOptions`
+- New anonymous field `RoleInstanceView` in struct `CloudServiceRoleInstancesClientGetInstanceViewResponse`
+- New field `ResumeToken` in struct `RestorePointCollectionsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `CapacityReservationsClientBeginCreateOrUpdateOptions`
+- New anonymous field `DiskEncryptionSet` in struct `DiskEncryptionSetsClientCreateOrUpdateResponse`
+- New anonymous field `SSHPublicKeyResource` in struct `SSHPublicKeysClientCreateResponse`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetVMsClientBeginPowerOffOptions`
+- New anonymous field `DiskEncryptionSet` in struct `DiskEncryptionSetsClientUpdateResponse`
+- New anonymous field `DedicatedHostGroup` in struct `DedicatedHostGroupsClientGetResponse`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetVMsClientBeginRedeployOptions`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginRedeployOptions`
+- New anonymous field `VirtualMachineScaleSetListWithLinkResult` in struct `VirtualMachineScaleSetsClientListAllResponse`
+- New field `ResumeToken` in struct `GalleryImagesClientBeginCreateOrUpdateOptions`
+- New anonymous field `VirtualMachineImage` in struct `VirtualMachineImagesEdgeZoneClientGetResponse`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginInstallPatchesOptions`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetExtensionsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetVMExtensionsClientBeginUpdateOptions`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginRestartOptions`
+- New anonymous field `DedicatedHostGroupListResult` in struct `DedicatedHostGroupsClientListBySubscriptionResponse`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetVMsClientBeginStartOptions`
+- New anonymous field `VirtualMachineRunCommand` in struct `VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `GallerySharingProfileClientBeginUpdateOptions`
+- New anonymous field `VirtualMachineRunCommand` in struct `VirtualMachineRunCommandsClientUpdateResponse`
+- New field `ResumeToken` in struct `GalleryImageVersionsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetExtensionsClientBeginUpdateOptions`
+- New anonymous field `RestorePointCollection` in struct `RestorePointCollectionsClientUpdateResponse`
+- New anonymous field `VirtualMachineExtension` in struct `VirtualMachineExtensionsClientGetResponse`
+- New anonymous field `DiskAccess` in struct `DiskAccessesClientUpdateResponse`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `CloudServicesClientBeginCreateOrUpdateOptions`
+- New anonymous field `Image` in struct `ImagesClientGetResponse`
+- New anonymous field `GalleryApplicationVersion` in struct `GalleryApplicationVersionsClientUpdateResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `DiskAccessesClientGetAPrivateEndpointConnectionResponse`
+- New anonymous field `VirtualMachineScaleSetInstanceView` in struct `VirtualMachineScaleSetsClientGetInstanceViewResponse`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetsClientBeginPowerOffOptions`
+- New field `ResumeToken` in struct `DisksClientBeginDeleteOptions`
+- New anonymous field `VirtualMachine` in struct `VirtualMachinesClientGetResponse`
+- New anonymous field `DiskAccess` in struct `DiskAccessesClientCreateOrUpdateResponse`
+- New anonymous field `OSFamilyListResult` in struct `CloudServiceOperatingSystemsClientListOSFamiliesResponse`
+- New field `ResumeToken` in struct `VirtualMachineScaleSetRollingUpgradesClientBeginStartOSUpgradeOptions`
+- New field `ResumeToken` in struct `VirtualMachineExtensionsClientBeginCreateOrUpdateOptions`
+- New anonymous field `CommunityGallery` in struct `CommunityGalleriesClientGetResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `DiskAccessesClientUpdateAPrivateEndpointConnectionResponse`
+- New anonymous field `AvailabilitySet` in struct `AvailabilitySetsClientGetResponse`
+- New anonymous field `VirtualMachineScaleSetVMExtension` in struct `VirtualMachineScaleSetVMExtensionsClientUpdateResponse`
+- New field `ResumeToken` in struct `VirtualMachineRunCommandsClientBeginDeleteOptions`
+- New anonymous field `SSHPublicKeyResource` in struct `SSHPublicKeysClientGetResponse`
+- New anonymous field `CloudService` in struct `CloudServicesClientGetResponse`
+
+
 ## 0.5.0 (2022-03-07)
 ### Features Added
 

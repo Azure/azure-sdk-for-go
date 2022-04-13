@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type RestorePointCollectionsClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewRestorePointCollectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RestorePointCollectionsClient {
+func NewRestorePointCollectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorePointCollectionsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &RestorePointCollectionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - The operation to create or update the restore point collection. Please refer to https://aka.ms/RestorePoints
@@ -101,7 +106,7 @@ func (client *RestorePointCollectionsClient) createOrUpdateCreateRequest(ctx con
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *RestorePointCollectionsClient) createOrUpdateHandleResponse(resp *http.Response) (RestorePointCollectionsClientCreateOrUpdateResponse, error) {
-	result := RestorePointCollectionsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := RestorePointCollectionsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorePointCollection); err != nil {
 		return RestorePointCollectionsClientCreateOrUpdateResponse{}, err
 	}
@@ -115,22 +120,16 @@ func (client *RestorePointCollectionsClient) createOrUpdateHandleResponse(resp *
 // restorePointCollectionName - The name of the Restore Point Collection.
 // options - RestorePointCollectionsClientBeginDeleteOptions contains the optional parameters for the RestorePointCollectionsClient.BeginDelete
 // method.
-func (client *RestorePointCollectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, restorePointCollectionName string, options *RestorePointCollectionsClientBeginDeleteOptions) (RestorePointCollectionsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, restorePointCollectionName, options)
-	if err != nil {
-		return RestorePointCollectionsClientDeletePollerResponse{}, err
+func (client *RestorePointCollectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, restorePointCollectionName string, options *RestorePointCollectionsClientBeginDeleteOptions) (*armruntime.Poller[RestorePointCollectionsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, restorePointCollectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[RestorePointCollectionsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[RestorePointCollectionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := RestorePointCollectionsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("RestorePointCollectionsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return RestorePointCollectionsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &RestorePointCollectionsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - The operation to delete the restore point collection. This operation will also delete all the contained restore
@@ -229,7 +228,7 @@ func (client *RestorePointCollectionsClient) getCreateRequest(ctx context.Contex
 
 // getHandleResponse handles the Get response.
 func (client *RestorePointCollectionsClient) getHandleResponse(resp *http.Response) (RestorePointCollectionsClientGetResponse, error) {
-	result := RestorePointCollectionsClientGetResponse{RawResponse: resp}
+	result := RestorePointCollectionsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorePointCollection); err != nil {
 		return RestorePointCollectionsClientGetResponse{}, err
 	}
@@ -241,16 +240,32 @@ func (client *RestorePointCollectionsClient) getHandleResponse(resp *http.Respon
 // resourceGroupName - The name of the resource group.
 // options - RestorePointCollectionsClientListOptions contains the optional parameters for the RestorePointCollectionsClient.List
 // method.
-func (client *RestorePointCollectionsClient) List(resourceGroupName string, options *RestorePointCollectionsClientListOptions) *RestorePointCollectionsClientListPager {
-	return &RestorePointCollectionsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, options)
+func (client *RestorePointCollectionsClient) List(resourceGroupName string, options *RestorePointCollectionsClientListOptions) *runtime.Pager[RestorePointCollectionsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RestorePointCollectionsClientListResponse]{
+		More: func(page RestorePointCollectionsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RestorePointCollectionsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RestorePointCollectionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *RestorePointCollectionsClientListResponse) (RestorePointCollectionsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RestorePointCollectionsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RestorePointCollectionsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RestorePointCollectionsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -277,7 +292,7 @@ func (client *RestorePointCollectionsClient) listCreateRequest(ctx context.Conte
 
 // listHandleResponse handles the List response.
 func (client *RestorePointCollectionsClient) listHandleResponse(resp *http.Response) (RestorePointCollectionsClientListResponse, error) {
-	result := RestorePointCollectionsClientListResponse{RawResponse: resp}
+	result := RestorePointCollectionsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorePointCollectionListResult); err != nil {
 		return RestorePointCollectionsClientListResponse{}, err
 	}
@@ -290,16 +305,32 @@ func (client *RestorePointCollectionsClient) listHandleResponse(resp *http.Respo
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - RestorePointCollectionsClientListAllOptions contains the optional parameters for the RestorePointCollectionsClient.ListAll
 // method.
-func (client *RestorePointCollectionsClient) ListAll(options *RestorePointCollectionsClientListAllOptions) *RestorePointCollectionsClientListAllPager {
-	return &RestorePointCollectionsClientListAllPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listAllCreateRequest(ctx, options)
+func (client *RestorePointCollectionsClient) ListAll(options *RestorePointCollectionsClientListAllOptions) *runtime.Pager[RestorePointCollectionsClientListAllResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RestorePointCollectionsClientListAllResponse]{
+		More: func(page RestorePointCollectionsClientListAllResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RestorePointCollectionsClientListAllResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RestorePointCollectionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *RestorePointCollectionsClientListAllResponse) (RestorePointCollectionsClientListAllResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAllCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RestorePointCollectionsClientListAllResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RestorePointCollectionsClientListAllResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RestorePointCollectionsClientListAllResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAllHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listAllCreateRequest creates the ListAll request.
@@ -322,7 +353,7 @@ func (client *RestorePointCollectionsClient) listAllCreateRequest(ctx context.Co
 
 // listAllHandleResponse handles the ListAll response.
 func (client *RestorePointCollectionsClient) listAllHandleResponse(resp *http.Response) (RestorePointCollectionsClientListAllResponse, error) {
-	result := RestorePointCollectionsClientListAllResponse{RawResponse: resp}
+	result := RestorePointCollectionsClientListAllResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorePointCollectionListResult); err != nil {
 		return RestorePointCollectionsClientListAllResponse{}, err
 	}
@@ -379,7 +410,7 @@ func (client *RestorePointCollectionsClient) updateCreateRequest(ctx context.Con
 
 // updateHandleResponse handles the Update response.
 func (client *RestorePointCollectionsClient) updateHandleResponse(resp *http.Response) (RestorePointCollectionsClientUpdateResponse, error) {
-	result := RestorePointCollectionsClientUpdateResponse{RawResponse: resp}
+	result := RestorePointCollectionsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorePointCollection); err != nil {
 		return RestorePointCollectionsClientUpdateResponse{}, err
 	}

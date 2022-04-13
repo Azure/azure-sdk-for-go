@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type CloudServiceRolesClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewCloudServiceRolesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CloudServiceRolesClient {
+func NewCloudServiceRolesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CloudServiceRolesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &CloudServiceRolesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets a role from a cloud service.
@@ -101,7 +106,7 @@ func (client *CloudServiceRolesClient) getCreateRequest(ctx context.Context, rol
 
 // getHandleResponse handles the Get response.
 func (client *CloudServiceRolesClient) getHandleResponse(resp *http.Response) (CloudServiceRolesClientGetResponse, error) {
-	result := CloudServiceRolesClientGetResponse{RawResponse: resp}
+	result := CloudServiceRolesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CloudServiceRole); err != nil {
 		return CloudServiceRolesClientGetResponse{}, err
 	}
@@ -112,16 +117,32 @@ func (client *CloudServiceRolesClient) getHandleResponse(resp *http.Response) (C
 // Do this till nextLink is null to fetch all the roles.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - CloudServiceRolesClientListOptions contains the optional parameters for the CloudServiceRolesClient.List method.
-func (client *CloudServiceRolesClient) List(resourceGroupName string, cloudServiceName string, options *CloudServiceRolesClientListOptions) *CloudServiceRolesClientListPager {
-	return &CloudServiceRolesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
+func (client *CloudServiceRolesClient) List(resourceGroupName string, cloudServiceName string, options *CloudServiceRolesClientListOptions) *runtime.Pager[CloudServiceRolesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[CloudServiceRolesClientListResponse]{
+		More: func(page CloudServiceRolesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp CloudServiceRolesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CloudServiceRoleListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *CloudServiceRolesClientListResponse) (CloudServiceRolesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CloudServiceRolesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CloudServiceRolesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CloudServiceRolesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -152,7 +173,7 @@ func (client *CloudServiceRolesClient) listCreateRequest(ctx context.Context, re
 
 // listHandleResponse handles the List response.
 func (client *CloudServiceRolesClient) listHandleResponse(resp *http.Response) (CloudServiceRolesClientListResponse, error) {
-	result := CloudServiceRolesClientListResponse{RawResponse: resp}
+	result := CloudServiceRolesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CloudServiceRoleListResult); err != nil {
 		return CloudServiceRolesClientListResponse{}, err
 	}

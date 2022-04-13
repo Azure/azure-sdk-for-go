@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type CloudServicesUpdateDomainClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewCloudServicesUpdateDomainClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CloudServicesUpdateDomainClient {
+func NewCloudServicesUpdateDomainClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CloudServicesUpdateDomainClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &CloudServicesUpdateDomainClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // GetUpdateDomain - Gets the specified update domain of a cloud service. Use nextLink property in the response to get the
@@ -104,7 +109,7 @@ func (client *CloudServicesUpdateDomainClient) getUpdateDomainCreateRequest(ctx 
 
 // getUpdateDomainHandleResponse handles the GetUpdateDomain response.
 func (client *CloudServicesUpdateDomainClient) getUpdateDomainHandleResponse(resp *http.Response) (CloudServicesUpdateDomainClientGetUpdateDomainResponse, error) {
-	result := CloudServicesUpdateDomainClientGetUpdateDomainResponse{RawResponse: resp}
+	result := CloudServicesUpdateDomainClientGetUpdateDomainResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UpdateDomain); err != nil {
 		return CloudServicesUpdateDomainClientGetUpdateDomainResponse{}, err
 	}
@@ -117,16 +122,32 @@ func (client *CloudServicesUpdateDomainClient) getUpdateDomainHandleResponse(res
 // cloudServiceName - Name of the cloud service.
 // options - CloudServicesUpdateDomainClientListUpdateDomainsOptions contains the optional parameters for the CloudServicesUpdateDomainClient.ListUpdateDomains
 // method.
-func (client *CloudServicesUpdateDomainClient) ListUpdateDomains(resourceGroupName string, cloudServiceName string, options *CloudServicesUpdateDomainClientListUpdateDomainsOptions) *CloudServicesUpdateDomainClientListUpdateDomainsPager {
-	return &CloudServicesUpdateDomainClientListUpdateDomainsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listUpdateDomainsCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
+func (client *CloudServicesUpdateDomainClient) ListUpdateDomains(resourceGroupName string, cloudServiceName string, options *CloudServicesUpdateDomainClientListUpdateDomainsOptions) *runtime.Pager[CloudServicesUpdateDomainClientListUpdateDomainsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[CloudServicesUpdateDomainClientListUpdateDomainsResponse]{
+		More: func(page CloudServicesUpdateDomainClientListUpdateDomainsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp CloudServicesUpdateDomainClientListUpdateDomainsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.UpdateDomainListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *CloudServicesUpdateDomainClientListUpdateDomainsResponse) (CloudServicesUpdateDomainClientListUpdateDomainsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listUpdateDomainsCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CloudServicesUpdateDomainClientListUpdateDomainsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CloudServicesUpdateDomainClientListUpdateDomainsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CloudServicesUpdateDomainClientListUpdateDomainsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listUpdateDomainsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listUpdateDomainsCreateRequest creates the ListUpdateDomains request.
@@ -157,7 +178,7 @@ func (client *CloudServicesUpdateDomainClient) listUpdateDomainsCreateRequest(ct
 
 // listUpdateDomainsHandleResponse handles the ListUpdateDomains response.
 func (client *CloudServicesUpdateDomainClient) listUpdateDomainsHandleResponse(resp *http.Response) (CloudServicesUpdateDomainClientListUpdateDomainsResponse, error) {
-	result := CloudServicesUpdateDomainClientListUpdateDomainsResponse{RawResponse: resp}
+	result := CloudServicesUpdateDomainClientListUpdateDomainsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UpdateDomainListResult); err != nil {
 		return CloudServicesUpdateDomainClientListUpdateDomainsResponse{}, err
 	}
@@ -172,22 +193,16 @@ func (client *CloudServicesUpdateDomainClient) listUpdateDomainsHandleResponse(r
 // index: the first update domain has an ID of 0, the second has an ID of 1, and so on.
 // options - CloudServicesUpdateDomainClientBeginWalkUpdateDomainOptions contains the optional parameters for the CloudServicesUpdateDomainClient.BeginWalkUpdateDomain
 // method.
-func (client *CloudServicesUpdateDomainClient) BeginWalkUpdateDomain(ctx context.Context, resourceGroupName string, cloudServiceName string, updateDomain int32, options *CloudServicesUpdateDomainClientBeginWalkUpdateDomainOptions) (CloudServicesUpdateDomainClientWalkUpdateDomainPollerResponse, error) {
-	resp, err := client.walkUpdateDomain(ctx, resourceGroupName, cloudServiceName, updateDomain, options)
-	if err != nil {
-		return CloudServicesUpdateDomainClientWalkUpdateDomainPollerResponse{}, err
+func (client *CloudServicesUpdateDomainClient) BeginWalkUpdateDomain(ctx context.Context, resourceGroupName string, cloudServiceName string, updateDomain int32, options *CloudServicesUpdateDomainClientBeginWalkUpdateDomainOptions) (*armruntime.Poller[CloudServicesUpdateDomainClientWalkUpdateDomainResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.walkUpdateDomain(ctx, resourceGroupName, cloudServiceName, updateDomain, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[CloudServicesUpdateDomainClientWalkUpdateDomainResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[CloudServicesUpdateDomainClientWalkUpdateDomainResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := CloudServicesUpdateDomainClientWalkUpdateDomainPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("CloudServicesUpdateDomainClient.WalkUpdateDomain", "", resp, client.pl)
-	if err != nil {
-		return CloudServicesUpdateDomainClientWalkUpdateDomainPollerResponse{}, err
-	}
-	result.Poller = &CloudServicesUpdateDomainClientWalkUpdateDomainPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // WalkUpdateDomain - Updates the role instances in the specified update domain.

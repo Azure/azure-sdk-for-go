@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,19 +32,23 @@ type AssessmentsClient struct {
 // NewAssessmentsClient creates a new instance of AssessmentsClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAssessmentsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *AssessmentsClient {
+func NewAssessmentsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AssessmentsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AssessmentsClient{
-		host: string(ep),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create a security assessment on your resource. An assessment metadata that describes this assessment must
@@ -90,7 +95,7 @@ func (client *AssessmentsClient) createOrUpdateCreateRequest(ctx context.Context
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *AssessmentsClient) createOrUpdateHandleResponse(resp *http.Response) (AssessmentsClientCreateOrUpdateResponse, error) {
-	result := AssessmentsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := AssessmentsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssessmentResponse); err != nil {
 		return AssessmentsClientCreateOrUpdateResponse{}, err
 	}
@@ -115,7 +120,7 @@ func (client *AssessmentsClient) Delete(ctx context.Context, resourceID string, 
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return AssessmentsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return AssessmentsClientDeleteResponse{RawResponse: resp}, nil
+	return AssessmentsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -181,7 +186,7 @@ func (client *AssessmentsClient) getCreateRequest(ctx context.Context, resourceI
 
 // getHandleResponse handles the Get response.
 func (client *AssessmentsClient) getHandleResponse(resp *http.Response) (AssessmentsClientGetResponse, error) {
-	result := AssessmentsClientGetResponse{RawResponse: resp}
+	result := AssessmentsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssessmentResponse); err != nil {
 		return AssessmentsClientGetResponse{}, err
 	}
@@ -193,16 +198,32 @@ func (client *AssessmentsClient) getHandleResponse(resp *http.Response) (Assessm
 // scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
 // (/providers/Microsoft.Management/managementGroups/mgName).
 // options - AssessmentsClientListOptions contains the optional parameters for the AssessmentsClient.List method.
-func (client *AssessmentsClient) List(scope string, options *AssessmentsClientListOptions) *AssessmentsClientListPager {
-	return &AssessmentsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, scope, options)
+func (client *AssessmentsClient) List(scope string, options *AssessmentsClientListOptions) *runtime.Pager[AssessmentsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AssessmentsClientListResponse]{
+		More: func(page AssessmentsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AssessmentsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AssessmentList.NextLink)
+		Fetcher: func(ctx context.Context, page *AssessmentsClientListResponse) (AssessmentsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, scope, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AssessmentsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AssessmentsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AssessmentsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -222,7 +243,7 @@ func (client *AssessmentsClient) listCreateRequest(ctx context.Context, scope st
 
 // listHandleResponse handles the List response.
 func (client *AssessmentsClient) listHandleResponse(resp *http.Response) (AssessmentsClientListResponse, error) {
-	result := AssessmentsClientListResponse{RawResponse: resp}
+	result := AssessmentsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssessmentList); err != nil {
 		return AssessmentsClientListResponse{}, err
 	}

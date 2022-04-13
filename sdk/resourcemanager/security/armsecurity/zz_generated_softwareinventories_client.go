@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type SoftwareInventoriesClient struct {
 // subscriptionID - Azure subscription ID
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSoftwareInventoriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SoftwareInventoriesClient {
+func NewSoftwareInventoriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SoftwareInventoriesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SoftwareInventoriesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets a single software data of the virtual machine.
@@ -112,7 +117,7 @@ func (client *SoftwareInventoriesClient) getCreateRequest(ctx context.Context, r
 
 // getHandleResponse handles the Get response.
 func (client *SoftwareInventoriesClient) getHandleResponse(resp *http.Response) (SoftwareInventoriesClientGetResponse, error) {
-	result := SoftwareInventoriesClientGetResponse{RawResponse: resp}
+	result := SoftwareInventoriesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Software); err != nil {
 		return SoftwareInventoriesClientGetResponse{}, err
 	}
@@ -127,16 +132,32 @@ func (client *SoftwareInventoriesClient) getHandleResponse(resp *http.Response) 
 // resourceName - Name of the resource.
 // options - SoftwareInventoriesClientListByExtendedResourceOptions contains the optional parameters for the SoftwareInventoriesClient.ListByExtendedResource
 // method.
-func (client *SoftwareInventoriesClient) ListByExtendedResource(resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, options *SoftwareInventoriesClientListByExtendedResourceOptions) *SoftwareInventoriesClientListByExtendedResourcePager {
-	return &SoftwareInventoriesClientListByExtendedResourcePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByExtendedResourceCreateRequest(ctx, resourceGroupName, resourceNamespace, resourceType, resourceName, options)
+func (client *SoftwareInventoriesClient) ListByExtendedResource(resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, options *SoftwareInventoriesClientListByExtendedResourceOptions) *runtime.Pager[SoftwareInventoriesClientListByExtendedResourceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SoftwareInventoriesClientListByExtendedResourceResponse]{
+		More: func(page SoftwareInventoriesClientListByExtendedResourceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SoftwareInventoriesClientListByExtendedResourceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SoftwaresList.NextLink)
+		Fetcher: func(ctx context.Context, page *SoftwareInventoriesClientListByExtendedResourceResponse) (SoftwareInventoriesClientListByExtendedResourceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByExtendedResourceCreateRequest(ctx, resourceGroupName, resourceNamespace, resourceType, resourceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SoftwareInventoriesClientListByExtendedResourceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SoftwareInventoriesClientListByExtendedResourceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SoftwareInventoriesClientListByExtendedResourceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByExtendedResourceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByExtendedResourceCreateRequest creates the ListByExtendedResource request.
@@ -175,7 +196,7 @@ func (client *SoftwareInventoriesClient) listByExtendedResourceCreateRequest(ctx
 
 // listByExtendedResourceHandleResponse handles the ListByExtendedResource response.
 func (client *SoftwareInventoriesClient) listByExtendedResourceHandleResponse(resp *http.Response) (SoftwareInventoriesClientListByExtendedResourceResponse, error) {
-	result := SoftwareInventoriesClientListByExtendedResourceResponse{RawResponse: resp}
+	result := SoftwareInventoriesClientListByExtendedResourceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SoftwaresList); err != nil {
 		return SoftwareInventoriesClientListByExtendedResourceResponse{}, err
 	}
@@ -186,16 +207,32 @@ func (client *SoftwareInventoriesClient) listByExtendedResourceHandleResponse(re
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SoftwareInventoriesClientListBySubscriptionOptions contains the optional parameters for the SoftwareInventoriesClient.ListBySubscription
 // method.
-func (client *SoftwareInventoriesClient) ListBySubscription(options *SoftwareInventoriesClientListBySubscriptionOptions) *SoftwareInventoriesClientListBySubscriptionPager {
-	return &SoftwareInventoriesClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *SoftwareInventoriesClient) ListBySubscription(options *SoftwareInventoriesClientListBySubscriptionOptions) *runtime.Pager[SoftwareInventoriesClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SoftwareInventoriesClientListBySubscriptionResponse]{
+		More: func(page SoftwareInventoriesClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SoftwareInventoriesClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SoftwaresList.NextLink)
+		Fetcher: func(ctx context.Context, page *SoftwareInventoriesClientListBySubscriptionResponse) (SoftwareInventoriesClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SoftwareInventoriesClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SoftwareInventoriesClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SoftwareInventoriesClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -218,7 +255,7 @@ func (client *SoftwareInventoriesClient) listBySubscriptionCreateRequest(ctx con
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *SoftwareInventoriesClient) listBySubscriptionHandleResponse(resp *http.Response) (SoftwareInventoriesClientListBySubscriptionResponse, error) {
-	result := SoftwareInventoriesClientListBySubscriptionResponse{RawResponse: resp}
+	result := SoftwareInventoriesClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SoftwaresList); err != nil {
 		return SoftwareInventoriesClientListBySubscriptionResponse{}, err
 	}

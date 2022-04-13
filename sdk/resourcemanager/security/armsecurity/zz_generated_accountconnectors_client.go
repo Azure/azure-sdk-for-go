@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type AccountConnectorsClient struct {
 // subscriptionID - Azure subscription ID
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAccountConnectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AccountConnectorsClient {
+func NewAccountConnectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccountConnectorsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AccountConnectorsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create a cloud account connector or update an existing one. Connect to your cloud account. For AWS, use
@@ -96,7 +101,7 @@ func (client *AccountConnectorsClient) createOrUpdateCreateRequest(ctx context.C
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *AccountConnectorsClient) createOrUpdateHandleResponse(resp *http.Response) (AccountConnectorsClientCreateOrUpdateResponse, error) {
-	result := AccountConnectorsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := AccountConnectorsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectorSetting); err != nil {
 		return AccountConnectorsClientCreateOrUpdateResponse{}, err
 	}
@@ -120,7 +125,7 @@ func (client *AccountConnectorsClient) Delete(ctx context.Context, connectorName
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return AccountConnectorsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return AccountConnectorsClientDeleteResponse{RawResponse: resp}, nil
+	return AccountConnectorsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -188,7 +193,7 @@ func (client *AccountConnectorsClient) getCreateRequest(ctx context.Context, con
 
 // getHandleResponse handles the Get response.
 func (client *AccountConnectorsClient) getHandleResponse(resp *http.Response) (AccountConnectorsClientGetResponse, error) {
-	result := AccountConnectorsClientGetResponse{RawResponse: resp}
+	result := AccountConnectorsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectorSetting); err != nil {
 		return AccountConnectorsClientGetResponse{}, err
 	}
@@ -198,16 +203,32 @@ func (client *AccountConnectorsClient) getHandleResponse(resp *http.Response) (A
 // List - Cloud accounts connectors of a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AccountConnectorsClientListOptions contains the optional parameters for the AccountConnectorsClient.List method.
-func (client *AccountConnectorsClient) List(options *AccountConnectorsClientListOptions) *AccountConnectorsClientListPager {
-	return &AccountConnectorsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *AccountConnectorsClient) List(options *AccountConnectorsClientListOptions) *runtime.Pager[AccountConnectorsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AccountConnectorsClientListResponse]{
+		More: func(page AccountConnectorsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AccountConnectorsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ConnectorSettingList.NextLink)
+		Fetcher: func(ctx context.Context, page *AccountConnectorsClientListResponse) (AccountConnectorsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AccountConnectorsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AccountConnectorsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AccountConnectorsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -230,7 +251,7 @@ func (client *AccountConnectorsClient) listCreateRequest(ctx context.Context, op
 
 // listHandleResponse handles the List response.
 func (client *AccountConnectorsClient) listHandleResponse(resp *http.Response) (AccountConnectorsClientListResponse, error) {
-	result := AccountConnectorsClientListResponse{RawResponse: resp}
+	result := AccountConnectorsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectorSettingList); err != nil {
 		return AccountConnectorsClientListResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,111 +17,129 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
 )
 
-// x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/InformationProtectionPolicies/GetCustomInformationProtectionPolicy_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/InformationProtectionPolicies/GetCustomInformationProtectionPolicy_example.json
 func ExampleInformationProtectionPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurity.NewInformationProtectionPoliciesClient(cred, nil)
+	client, err := armsecurity.NewInformationProtectionPoliciesClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<scope>",
-		armsecurity.InformationProtectionPolicyName("custom"),
+		armsecurity.InformationProtectionPolicyNameCustom,
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.InformationProtectionPoliciesClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/InformationProtectionPolicies/CreateOrUpdateInformationProtectionPolicy_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/InformationProtectionPolicies/CreateOrUpdateInformationProtectionPolicy_example.json
 func ExampleInformationProtectionPoliciesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurity.NewInformationProtectionPoliciesClient(cred, nil)
+	client, err := armsecurity.NewInformationProtectionPoliciesClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<scope>",
-		armsecurity.InformationProtectionPolicyName("custom"),
+		armsecurity.InformationProtectionPolicyNameCustom,
 		armsecurity.InformationProtectionPolicy{
 			Properties: &armsecurity.InformationProtectionPolicyProperties{
 				InformationTypes: map[string]*armsecurity.InformationType{
 					"3bf35491-99b8-41f2-86d5-c1200a7df658": {
-						Custom:      to.BoolPtr(true),
-						DisplayName: to.StringPtr("<display-name>"),
-						Enabled:     to.BoolPtr(true),
+						Custom:      to.Ptr(true),
+						DisplayName: to.Ptr("<display-name>"),
+						Enabled:     to.Ptr(true),
 						Keywords: []*armsecurity.InformationProtectionKeyword{
 							{
-								CanBeNumeric: to.BoolPtr(true),
-								Custom:       to.BoolPtr(true),
-								Pattern:      to.StringPtr("<pattern>"),
+								CanBeNumeric: to.Ptr(true),
+								Custom:       to.Ptr(true),
+								Pattern:      to.Ptr("<pattern>"),
 							}},
-						Order:              to.Int32Ptr(1400),
-						RecommendedLabelID: to.StringPtr("<recommended-label-id>"),
+						Order:              to.Ptr[int32](1400),
+						RecommendedLabelID: to.Ptr("<recommended-label-id>"),
 					},
 					"7fb9419d-2473-4ad8-8e11-b25cc8cf6a07": {
-						Custom:      to.BoolPtr(false),
-						DisplayName: to.StringPtr("<display-name>"),
-						Enabled:     to.BoolPtr(true),
+						Custom:      to.Ptr(false),
+						DisplayName: to.Ptr("<display-name>"),
+						Enabled:     to.Ptr(true),
 						Keywords: []*armsecurity.InformationProtectionKeyword{
 							{
-								CanBeNumeric: to.BoolPtr(false),
-								Custom:       to.BoolPtr(true),
-								Pattern:      to.StringPtr("<pattern>"),
+								CanBeNumeric: to.Ptr(false),
+								Custom:       to.Ptr(true),
+								Pattern:      to.Ptr("<pattern>"),
 							}},
-						Order:              to.Int32Ptr(100),
-						RecommendedLabelID: to.StringPtr("<recommended-label-id>"),
+						Order:              to.Ptr[int32](100),
+						RecommendedLabelID: to.Ptr("<recommended-label-id>"),
 					},
 				},
 				Labels: map[string]*armsecurity.SensitivityLabel{
 					"1345da73-bc5a-4a8f-b7dd-3820eb713da8": {
-						DisplayName: to.StringPtr("<display-name>"),
-						Enabled:     to.BoolPtr(true),
-						Order:       to.Int32Ptr(100),
+						DisplayName: to.Ptr("<display-name>"),
+						Enabled:     to.Ptr(true),
+						Order:       to.Ptr[int32](100),
 					},
 					"575739d2-3d53-4df0-9042-4c7772d5c7b1": {
-						DisplayName: to.StringPtr("<display-name>"),
-						Enabled:     to.BoolPtr(true),
-						Order:       to.Int32Ptr(300),
+						DisplayName: to.Ptr("<display-name>"),
+						Enabled:     to.Ptr(true),
+						Order:       to.Ptr[int32](300),
 					},
 					"7aa516c7-5a53-4857-bc6e-6808c6acd542": {
-						DisplayName: to.StringPtr("<display-name>"),
-						Enabled:     to.BoolPtr(true),
-						Order:       to.Int32Ptr(200),
+						DisplayName: to.Ptr("<display-name>"),
+						Enabled:     to.Ptr(true),
+						Order:       to.Ptr[int32](200),
 					},
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.InformationProtectionPoliciesClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/InformationProtectionPolicies/ListInformationProtectionPolicies_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/InformationProtectionPolicies/ListInformationProtectionPolicies_example.json
 func ExampleInformationProtectionPoliciesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurity.NewInformationProtectionPoliciesClient(cred, nil)
+	client, err := armsecurity.NewInformationProtectionPoliciesClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List("<scope>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

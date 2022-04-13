@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,19 +32,23 @@ type DeviceSecurityGroupsClient struct {
 // NewDeviceSecurityGroupsClient creates a new instance of DeviceSecurityGroupsClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDeviceSecurityGroupsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *DeviceSecurityGroupsClient {
+func NewDeviceSecurityGroupsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*DeviceSecurityGroupsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DeviceSecurityGroupsClient{
-		host: string(ep),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Use this method to creates or updates the device security group on a specified IoT Hub resource.
@@ -90,7 +95,7 @@ func (client *DeviceSecurityGroupsClient) createOrUpdateCreateRequest(ctx contex
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *DeviceSecurityGroupsClient) createOrUpdateHandleResponse(resp *http.Response) (DeviceSecurityGroupsClientCreateOrUpdateResponse, error) {
-	result := DeviceSecurityGroupsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := DeviceSecurityGroupsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceSecurityGroup); err != nil {
 		return DeviceSecurityGroupsClientCreateOrUpdateResponse{}, err
 	}
@@ -116,7 +121,7 @@ func (client *DeviceSecurityGroupsClient) Delete(ctx context.Context, resourceID
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return DeviceSecurityGroupsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return DeviceSecurityGroupsClientDeleteResponse{RawResponse: resp}, nil
+	return DeviceSecurityGroupsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -181,7 +186,7 @@ func (client *DeviceSecurityGroupsClient) getCreateRequest(ctx context.Context, 
 
 // getHandleResponse handles the Get response.
 func (client *DeviceSecurityGroupsClient) getHandleResponse(resp *http.Response) (DeviceSecurityGroupsClientGetResponse, error) {
-	result := DeviceSecurityGroupsClientGetResponse{RawResponse: resp}
+	result := DeviceSecurityGroupsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceSecurityGroup); err != nil {
 		return DeviceSecurityGroupsClientGetResponse{}, err
 	}
@@ -193,16 +198,32 @@ func (client *DeviceSecurityGroupsClient) getHandleResponse(resp *http.Response)
 // resourceID - The identifier of the resource.
 // options - DeviceSecurityGroupsClientListOptions contains the optional parameters for the DeviceSecurityGroupsClient.List
 // method.
-func (client *DeviceSecurityGroupsClient) List(resourceID string, options *DeviceSecurityGroupsClientListOptions) *DeviceSecurityGroupsClientListPager {
-	return &DeviceSecurityGroupsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceID, options)
+func (client *DeviceSecurityGroupsClient) List(resourceID string, options *DeviceSecurityGroupsClientListOptions) *runtime.Pager[DeviceSecurityGroupsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DeviceSecurityGroupsClientListResponse]{
+		More: func(page DeviceSecurityGroupsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DeviceSecurityGroupsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeviceSecurityGroupList.NextLink)
+		Fetcher: func(ctx context.Context, page *DeviceSecurityGroupsClientListResponse) (DeviceSecurityGroupsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceID, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DeviceSecurityGroupsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DeviceSecurityGroupsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DeviceSecurityGroupsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -222,7 +243,7 @@ func (client *DeviceSecurityGroupsClient) listCreateRequest(ctx context.Context,
 
 // listHandleResponse handles the List response.
 func (client *DeviceSecurityGroupsClient) listHandleResponse(resp *http.Response) (DeviceSecurityGroupsClientListResponse, error) {
-	result := DeviceSecurityGroupsClientListResponse{RawResponse: resp}
+	result := DeviceSecurityGroupsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceSecurityGroupList); err != nil {
 		return DeviceSecurityGroupsClientListResponse{}, err
 	}

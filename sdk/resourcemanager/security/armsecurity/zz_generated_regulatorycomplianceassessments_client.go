@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type RegulatoryComplianceAssessmentsClient struct {
 // subscriptionID - Azure subscription ID
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewRegulatoryComplianceAssessmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RegulatoryComplianceAssessmentsClient {
+func NewRegulatoryComplianceAssessmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RegulatoryComplianceAssessmentsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &RegulatoryComplianceAssessmentsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Supported regulatory compliance details and state for selected assessment
@@ -103,7 +108,7 @@ func (client *RegulatoryComplianceAssessmentsClient) getCreateRequest(ctx contex
 
 // getHandleResponse handles the Get response.
 func (client *RegulatoryComplianceAssessmentsClient) getHandleResponse(resp *http.Response) (RegulatoryComplianceAssessmentsClientGetResponse, error) {
-	result := RegulatoryComplianceAssessmentsClientGetResponse{RawResponse: resp}
+	result := RegulatoryComplianceAssessmentsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegulatoryComplianceAssessment); err != nil {
 		return RegulatoryComplianceAssessmentsClientGetResponse{}, err
 	}
@@ -116,16 +121,32 @@ func (client *RegulatoryComplianceAssessmentsClient) getHandleResponse(resp *htt
 // regulatoryComplianceControlName - Name of the regulatory compliance control object
 // options - RegulatoryComplianceAssessmentsClientListOptions contains the optional parameters for the RegulatoryComplianceAssessmentsClient.List
 // method.
-func (client *RegulatoryComplianceAssessmentsClient) List(regulatoryComplianceStandardName string, regulatoryComplianceControlName string, options *RegulatoryComplianceAssessmentsClientListOptions) *RegulatoryComplianceAssessmentsClientListPager {
-	return &RegulatoryComplianceAssessmentsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, regulatoryComplianceStandardName, regulatoryComplianceControlName, options)
+func (client *RegulatoryComplianceAssessmentsClient) List(regulatoryComplianceStandardName string, regulatoryComplianceControlName string, options *RegulatoryComplianceAssessmentsClientListOptions) *runtime.Pager[RegulatoryComplianceAssessmentsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RegulatoryComplianceAssessmentsClientListResponse]{
+		More: func(page RegulatoryComplianceAssessmentsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RegulatoryComplianceAssessmentsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RegulatoryComplianceAssessmentList.NextLink)
+		Fetcher: func(ctx context.Context, page *RegulatoryComplianceAssessmentsClientListResponse) (RegulatoryComplianceAssessmentsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, regulatoryComplianceStandardName, regulatoryComplianceControlName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RegulatoryComplianceAssessmentsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RegulatoryComplianceAssessmentsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RegulatoryComplianceAssessmentsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -159,7 +180,7 @@ func (client *RegulatoryComplianceAssessmentsClient) listCreateRequest(ctx conte
 
 // listHandleResponse handles the List response.
 func (client *RegulatoryComplianceAssessmentsClient) listHandleResponse(resp *http.Response) (RegulatoryComplianceAssessmentsClientListResponse, error) {
-	result := RegulatoryComplianceAssessmentsClientListResponse{RawResponse: resp}
+	result := RegulatoryComplianceAssessmentsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegulatoryComplianceAssessmentList); err != nil {
 		return RegulatoryComplianceAssessmentsClientListResponse{}, err
 	}

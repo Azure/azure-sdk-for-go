@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ProjectsClient struct {
 // subscriptionID - The Azure subscription identifier.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewProjectsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ProjectsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewProjectsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProjectsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ProjectsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreate - Creates a Team Services project in the collection with the specified name. 'VersionControlOption' and 'ProcessTemplateId'
@@ -60,22 +65,16 @@ func NewProjectsClient(subscriptionID string, credential azcore.TokenCredential,
 // resourceName - Name of the Team Services project.
 // body - The request data.
 // options - ProjectsClientBeginCreateOptions contains the optional parameters for the ProjectsClient.BeginCreate method.
-func (client *ProjectsClient) BeginCreate(ctx context.Context, resourceGroupName string, rootResourceName string, resourceName string, body ProjectResource, options *ProjectsClientBeginCreateOptions) (ProjectsClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, rootResourceName, resourceName, body, options)
-	if err != nil {
-		return ProjectsClientCreatePollerResponse{}, err
+func (client *ProjectsClient) BeginCreate(ctx context.Context, resourceGroupName string, rootResourceName string, resourceName string, body ProjectResource, options *ProjectsClientBeginCreateOptions) (*armruntime.Poller[ProjectsClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, rootResourceName, resourceName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ProjectsClientCreateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ProjectsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ProjectsClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ProjectsClient.Create", "", resp, client.pl)
-	if err != nil {
-		return ProjectsClientCreatePollerResponse{}, err
-	}
-	result.Poller = &ProjectsClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Creates a Team Services project in the collection with the specified name. 'VersionControlOption' and 'ProcessTemplateId'
@@ -185,7 +184,7 @@ func (client *ProjectsClient) getCreateRequest(ctx context.Context, resourceGrou
 
 // getHandleResponse handles the Get response.
 func (client *ProjectsClient) getHandleResponse(resp *http.Response) (ProjectsClientGetResponse, error) {
-	result := ProjectsClientGetResponse{RawResponse: resp}
+	result := ProjectsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProjectResource); err != nil {
 		return ProjectsClientGetResponse{}, err
 	}
@@ -255,7 +254,7 @@ func (client *ProjectsClient) getJobStatusCreateRequest(ctx context.Context, res
 
 // getJobStatusHandleResponse handles the GetJobStatus response.
 func (client *ProjectsClient) getJobStatusHandleResponse(resp *http.Response) (ProjectsClientGetJobStatusResponse, error) {
-	result := ProjectsClientGetJobStatusResponse{RawResponse: resp}
+	result := ProjectsClientGetJobStatusResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProjectResource); err != nil {
 		return ProjectsClientGetJobStatusResponse{}, err
 	}
@@ -311,7 +310,7 @@ func (client *ProjectsClient) listByResourceGroupCreateRequest(ctx context.Conte
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *ProjectsClient) listByResourceGroupHandleResponse(resp *http.Response) (ProjectsClientListByResourceGroupResponse, error) {
-	result := ProjectsClientListByResourceGroupResponse{RawResponse: resp}
+	result := ProjectsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProjectResourceListResult); err != nil {
 		return ProjectsClientListByResourceGroupResponse{}, err
 	}
@@ -372,7 +371,7 @@ func (client *ProjectsClient) updateCreateRequest(ctx context.Context, resourceG
 
 // updateHandleResponse handles the Update response.
 func (client *ProjectsClient) updateHandleResponse(resp *http.Response) (ProjectsClientUpdateResponse, error) {
-	result := ProjectsClientUpdateResponse{RawResponse: resp}
+	result := ProjectsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProjectResource); err != nil {
 		return ProjectsClientUpdateResponse{}, err
 	}

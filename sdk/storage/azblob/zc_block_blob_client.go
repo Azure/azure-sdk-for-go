@@ -10,7 +10,6 @@ import (
 	"context"
 	"io"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
@@ -47,7 +46,7 @@ func NewBlockBlobClientWithNoCredential(blobURL string, options *ClientOptions) 
 	con := newConnection(blobURL, nil, options.getConnectionOptions())
 	return &BlockBlobClient{
 		client:     &blockBlobClient{con: con},
-		BlobClient: BlobClient{client: &blobClient{con: con}},
+		BlobClient: BlobClient{client: &blobClient{con: con}, sharedKey},
 	}, nil
 }
 
@@ -56,8 +55,11 @@ func NewBlockBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, 
 	authPolicy := newSharedKeyCredPolicy(cred)
 	con := newConnection(blobURL, authPolicy, options.getConnectionOptions())
 	return &BlockBlobClient{
-		client:     &blockBlobClient{con: con},
-		BlobClient: BlobClient{client: &blobClient{con: con}},
+		client: &blockBlobClient{con: con},
+		BlobClient: BlobClient{
+			client:    &blobClient{con: con},
+			sharedKey: cred,
+		},
 	}, nil
 }
 

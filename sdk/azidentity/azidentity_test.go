@@ -6,13 +6,16 @@ package azidentity
 import (
 	"context"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/public"
@@ -195,6 +198,34 @@ func Test_DefaultAuthorityHost(t *testing.T) {
 	}
 	if authorityHost != cloud.AzurePublicCloud.LoginEndpoint {
 		t.Fatal("unexpected default host: " + authorityHost)
+	}
+}
+
+func Test_GetTokenRequiresScopes(t *testing.T) {
+	for _, ctor := range []func() (azcore.TokenCredential, error){
+		func() (azcore.TokenCredential, error) { return NewAzureCLICredential(nil) },
+		func() (azcore.TokenCredential, error) {
+			return NewClientCertificateCredential("tenantID", "clientID", allCertTests[0].certs, allCertTests[0].key, nil)
+		},
+		func() (azcore.TokenCredential, error) {
+			return NewClientSecretCredential("tenantID", "clientID", "secret", nil)
+		},
+		func() (azcore.TokenCredential, error) { return NewDeviceCodeCredential(nil) },
+		func() (azcore.TokenCredential, error) { return NewInteractiveBrowserCredential(nil) },
+		func() (azcore.TokenCredential, error) {
+			return NewUsernamePasswordCredential("tenantID", "clientID", "username", "password", nil)
+		},
+	} {
+		cred, err := ctor()
+		t.Run(fmt.Sprintf("%T", cred), func(t *testing.T) {
+			if err != nil {
+				t.Fatal(err)
+			}
+			_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{})
+			if err == nil {
+				t.Fatal("expected an error")
+			}
+		})
 	}
 }
 

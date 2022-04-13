@@ -1,14 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package internal
+package azservicebus
 
-import (
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
-)
+import "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 
-// NOTE: these are intended to mirror the constant values in azservicebus/log.go
 const (
 	// EventConn is used whenever we create a connection or any links (ie: receivers, senders).
 	EventConn log.Event = "azsb.Conn"
@@ -23,5 +19,5 @@ const (
 	EventSender log.Event = "azsb.Sender"
 
 	// EventAdmin is used for operations in the azservicebus/admin.Client
-	EventAdmin log.Event = atom.EventAdmin
+	EventAdmin log.Event = "azsb.Admin"
 )

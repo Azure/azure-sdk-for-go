@@ -11,8 +11,8 @@
         "Content-Length": "35",
         "Content-Type": "application/json",
         "dataserviceversion": "3.0",
-        "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Mon, 24 Jan 2022 20:59:51 GMT",
+        "User-Agent": "azsdk-go-aztables/v0.7.1 azsdk-go-azcore/v0.23.0 (go1.18; Windows_NT)",
+        "x-ms-date": "Wed, 13 Apr 2022 19:25:41 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -21,15 +21,15 @@
       "StatusCode": 201,
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Mon, 24 Jan 2022 20:59:52 GMT",
-        "ETag": "W/\u0022datetime\u00272022-01-24T20%3A59%3A52.6200328Z\u0027\u0022",
-        "Location": "https://rosebudprim.table.cosmos.azure.com/Tables(\u0027tableName2528422725\u0027)",
+        "Date": "Wed, 13 Apr 2022 19:25:41 GMT",
+        "ETag": "W/\u0022datetime\u00272022-04-13T19%3A25%3A41.9262984Z\u0027\u0022",
+        "Location": "https://fakeaccount.table.cosmos.azure.com/Tables(\u0027tableName2528422725\u0027)",
         "Transfer-Encoding": "chunked",
-        "x-ms-request-id": "1b5eaef9-7be9-40ff-b0ad-ff902de808c1"
+        "x-ms-request-id": "7ae9967a-4d13-4d0e-902e-d29ae4647793"
       },
       "ResponseBody": {
         "TableName": "tableName2528422725",
-        "odata.metadata": "https://rosebudprim.table.cosmos.azure.com/$metadata#Tables/@Element"
+        "odata.metadata": "https://fakeaccount.table.cosmos.azure.com/$metadata#Tables/@Element"
       }
     },
     {
@@ -39,15 +39,16 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Mon, 24 Jan 2022 20:59:51 GMT",
+        "User-Agent": "azsdk-go-aztables/v0.7.1 azsdk-go-azcore/v0.23.0 (go1.18; Windows_NT)",
+        "x-ms-date": "Wed, 13 Apr 2022 19:25:42 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": null,
       "StatusCode": 204,
       "ResponseHeaders": {
-        "Date": "Mon, 24 Jan 2022 20:59:52 GMT",
-        "x-ms-request-id": "aaaf29e0-d21a-44ae-981e-0e451cf13513"
+        "Content-Type": "application/json",
+        "Date": "Wed, 13 Apr 2022 19:25:41 GMT",
+        "x-ms-request-id": "df08b7c8-b9d0-41d6-8c91-1def5c344624"
       },
       "ResponseBody": null
     }

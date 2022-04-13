@@ -8,6 +8,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
 
@@ -15,7 +16,7 @@ func TestSetEmptyAccessPolicy(t *testing.T) {
 	client, delete := initClientTest(t, "storage", true)
 	defer delete()
 
-	_, err := client.SetAccessPolicy(ctx, &SetAccessPolicyOptions{})
+	_, err := client.SetAccessPolicy(ctx, nil)
 	require.NoError(t, err)
 }
 
@@ -45,6 +46,22 @@ func TestSetAccessPolicy(t *testing.T) {
 
 	_, err := client.SetAccessPolicy(ctx, &param)
 	require.NoError(t, err)
+
+	recording.Sleep(60 * time.Second)
+
+	resp, err := client.GetAccessPolicy(ctx, nil)
+	require.NoError(t, err)
+	require.Equal(t, 1, len(resp.SignedIdentifiers))
+
+	// set nil access policy
+	_, err = client.SetAccessPolicy(ctx, nil)
+	require.NoError(t, err)
+
+	recording.Sleep(60 * time.Second)
+
+	resp, err = client.GetAccessPolicy(ctx, nil)
+	require.NoError(t, err)
+	require.Equal(t, 0, len(resp.SignedIdentifiers))
 }
 
 func TestSetMultipleAccessPolicies(t *testing.T) {

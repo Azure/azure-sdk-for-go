@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type FunctionsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewFunctionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FunctionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewFunctionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FunctionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &FunctionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrReplace - Creates a function or replaces an already existing function under an existing streaming job.
@@ -111,7 +116,7 @@ func (client *FunctionsClient) createOrReplaceCreateRequest(ctx context.Context,
 
 // createOrReplaceHandleResponse handles the CreateOrReplace response.
 func (client *FunctionsClient) createOrReplaceHandleResponse(resp *http.Response) (FunctionsClientCreateOrReplaceResponse, error) {
-	result := FunctionsClientCreateOrReplaceResponse{RawResponse: resp}
+	result := FunctionsClientCreateOrReplaceResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -139,7 +144,7 @@ func (client *FunctionsClient) Delete(ctx context.Context, resourceGroupName str
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return FunctionsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return FunctionsClientDeleteResponse{RawResponse: resp}, nil
+	return FunctionsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -225,7 +230,7 @@ func (client *FunctionsClient) getCreateRequest(ctx context.Context, resourceGro
 
 // getHandleResponse handles the Get response.
 func (client *FunctionsClient) getHandleResponse(resp *http.Response) (FunctionsClientGetResponse, error) {
-	result := FunctionsClientGetResponse{RawResponse: resp}
+	result := FunctionsClientGetResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -241,16 +246,32 @@ func (client *FunctionsClient) getHandleResponse(resp *http.Response) (Functions
 // jobName - The name of the streaming job.
 // options - FunctionsClientListByStreamingJobOptions contains the optional parameters for the FunctionsClient.ListByStreamingJob
 // method.
-func (client *FunctionsClient) ListByStreamingJob(resourceGroupName string, jobName string, options *FunctionsClientListByStreamingJobOptions) *FunctionsClientListByStreamingJobPager {
-	return &FunctionsClientListByStreamingJobPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByStreamingJobCreateRequest(ctx, resourceGroupName, jobName, options)
+func (client *FunctionsClient) ListByStreamingJob(resourceGroupName string, jobName string, options *FunctionsClientListByStreamingJobOptions) *runtime.Pager[FunctionsClientListByStreamingJobResponse] {
+	return runtime.NewPager(runtime.PageProcessor[FunctionsClientListByStreamingJobResponse]{
+		More: func(page FunctionsClientListByStreamingJobResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp FunctionsClientListByStreamingJobResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.FunctionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *FunctionsClientListByStreamingJobResponse) (FunctionsClientListByStreamingJobResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByStreamingJobCreateRequest(ctx, resourceGroupName, jobName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return FunctionsClientListByStreamingJobResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return FunctionsClientListByStreamingJobResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return FunctionsClientListByStreamingJobResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByStreamingJobHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByStreamingJobCreateRequest creates the ListByStreamingJob request.
@@ -284,7 +305,7 @@ func (client *FunctionsClient) listByStreamingJobCreateRequest(ctx context.Conte
 
 // listByStreamingJobHandleResponse handles the ListByStreamingJob response.
 func (client *FunctionsClient) listByStreamingJobHandleResponse(resp *http.Response) (FunctionsClientListByStreamingJobResponse, error) {
-	result := FunctionsClientListByStreamingJobResponse{RawResponse: resp}
+	result := FunctionsClientListByStreamingJobResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FunctionListResult); err != nil {
 		return FunctionsClientListByStreamingJobResponse{}, err
 	}
@@ -348,7 +369,7 @@ func (client *FunctionsClient) retrieveDefaultDefinitionCreateRequest(ctx contex
 
 // retrieveDefaultDefinitionHandleResponse handles the RetrieveDefaultDefinition response.
 func (client *FunctionsClient) retrieveDefaultDefinitionHandleResponse(resp *http.Response) (FunctionsClientRetrieveDefaultDefinitionResponse, error) {
-	result := FunctionsClientRetrieveDefaultDefinitionResponse{RawResponse: resp}
+	result := FunctionsClientRetrieveDefaultDefinitionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Function); err != nil {
 		return FunctionsClientRetrieveDefaultDefinitionResponse{}, err
 	}
@@ -363,22 +384,16 @@ func (client *FunctionsClient) retrieveDefaultDefinitionHandleResponse(resp *htt
 // jobName - The name of the streaming job.
 // functionName - The name of the function.
 // options - FunctionsClientBeginTestOptions contains the optional parameters for the FunctionsClient.BeginTest method.
-func (client *FunctionsClient) BeginTest(ctx context.Context, resourceGroupName string, jobName string, functionName string, options *FunctionsClientBeginTestOptions) (FunctionsClientTestPollerResponse, error) {
-	resp, err := client.test(ctx, resourceGroupName, jobName, functionName, options)
-	if err != nil {
-		return FunctionsClientTestPollerResponse{}, err
+func (client *FunctionsClient) BeginTest(ctx context.Context, resourceGroupName string, jobName string, functionName string, options *FunctionsClientBeginTestOptions) (*armruntime.Poller[FunctionsClientTestResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.test(ctx, resourceGroupName, jobName, functionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[FunctionsClientTestResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[FunctionsClientTestResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := FunctionsClientTestPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("FunctionsClient.Test", "", resp, client.pl)
-	if err != nil {
-		return FunctionsClientTestPollerResponse{}, err
-	}
-	result.Poller = &FunctionsClientTestPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Test - Tests if the information provided for a function is valid. This can range from testing the connection to the underlying
@@ -495,7 +510,7 @@ func (client *FunctionsClient) updateCreateRequest(ctx context.Context, resource
 
 // updateHandleResponse handles the Update response.
 func (client *FunctionsClient) updateHandleResponse(resp *http.Response) (FunctionsClientUpdateResponse, error) {
-	result := FunctionsClientUpdateResponse{RawResponse: resp}
+	result := FunctionsClientUpdateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}

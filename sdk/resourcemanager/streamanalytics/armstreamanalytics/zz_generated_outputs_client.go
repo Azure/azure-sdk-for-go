@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type OutputsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewOutputsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OutputsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewOutputsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OutputsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &OutputsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrReplace - Creates an output or replaces an already existing output under an existing streaming job.
@@ -110,7 +115,7 @@ func (client *OutputsClient) createOrReplaceCreateRequest(ctx context.Context, r
 
 // createOrReplaceHandleResponse handles the CreateOrReplace response.
 func (client *OutputsClient) createOrReplaceHandleResponse(resp *http.Response) (OutputsClientCreateOrReplaceResponse, error) {
-	result := OutputsClientCreateOrReplaceResponse{RawResponse: resp}
+	result := OutputsClientCreateOrReplaceResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -138,7 +143,7 @@ func (client *OutputsClient) Delete(ctx context.Context, resourceGroupName strin
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return OutputsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return OutputsClientDeleteResponse{RawResponse: resp}, nil
+	return OutputsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -224,7 +229,7 @@ func (client *OutputsClient) getCreateRequest(ctx context.Context, resourceGroup
 
 // getHandleResponse handles the Get response.
 func (client *OutputsClient) getHandleResponse(resp *http.Response) (OutputsClientGetResponse, error) {
-	result := OutputsClientGetResponse{RawResponse: resp}
+	result := OutputsClientGetResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -240,16 +245,32 @@ func (client *OutputsClient) getHandleResponse(resp *http.Response) (OutputsClie
 // jobName - The name of the streaming job.
 // options - OutputsClientListByStreamingJobOptions contains the optional parameters for the OutputsClient.ListByStreamingJob
 // method.
-func (client *OutputsClient) ListByStreamingJob(resourceGroupName string, jobName string, options *OutputsClientListByStreamingJobOptions) *OutputsClientListByStreamingJobPager {
-	return &OutputsClientListByStreamingJobPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByStreamingJobCreateRequest(ctx, resourceGroupName, jobName, options)
+func (client *OutputsClient) ListByStreamingJob(resourceGroupName string, jobName string, options *OutputsClientListByStreamingJobOptions) *runtime.Pager[OutputsClientListByStreamingJobResponse] {
+	return runtime.NewPager(runtime.PageProcessor[OutputsClientListByStreamingJobResponse]{
+		More: func(page OutputsClientListByStreamingJobResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp OutputsClientListByStreamingJobResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.OutputListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *OutputsClientListByStreamingJobResponse) (OutputsClientListByStreamingJobResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByStreamingJobCreateRequest(ctx, resourceGroupName, jobName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return OutputsClientListByStreamingJobResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return OutputsClientListByStreamingJobResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return OutputsClientListByStreamingJobResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByStreamingJobHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByStreamingJobCreateRequest creates the ListByStreamingJob request.
@@ -283,7 +304,7 @@ func (client *OutputsClient) listByStreamingJobCreateRequest(ctx context.Context
 
 // listByStreamingJobHandleResponse handles the ListByStreamingJob response.
 func (client *OutputsClient) listByStreamingJobHandleResponse(resp *http.Response) (OutputsClientListByStreamingJobResponse, error) {
-	result := OutputsClientListByStreamingJobResponse{RawResponse: resp}
+	result := OutputsClientListByStreamingJobResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OutputListResult); err != nil {
 		return OutputsClientListByStreamingJobResponse{}, err
 	}
@@ -296,22 +317,16 @@ func (client *OutputsClient) listByStreamingJobHandleResponse(resp *http.Respons
 // jobName - The name of the streaming job.
 // outputName - The name of the output.
 // options - OutputsClientBeginTestOptions contains the optional parameters for the OutputsClient.BeginTest method.
-func (client *OutputsClient) BeginTest(ctx context.Context, resourceGroupName string, jobName string, outputName string, options *OutputsClientBeginTestOptions) (OutputsClientTestPollerResponse, error) {
-	resp, err := client.test(ctx, resourceGroupName, jobName, outputName, options)
-	if err != nil {
-		return OutputsClientTestPollerResponse{}, err
+func (client *OutputsClient) BeginTest(ctx context.Context, resourceGroupName string, jobName string, outputName string, options *OutputsClientBeginTestOptions) (*armruntime.Poller[OutputsClientTestResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.test(ctx, resourceGroupName, jobName, outputName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[OutputsClientTestResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[OutputsClientTestResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := OutputsClientTestPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("OutputsClient.Test", "", resp, client.pl)
-	if err != nil {
-		return OutputsClientTestPollerResponse{}, err
-	}
-	result.Poller = &OutputsClientTestPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Test - Tests whether an output’s datasource is reachable and usable by the Azure Stream Analytics service.
@@ -425,7 +440,7 @@ func (client *OutputsClient) updateCreateRequest(ctx context.Context, resourceGr
 
 // updateHandleResponse handles the Update response.
 func (client *OutputsClient) updateHandleResponse(resp *http.Response) (OutputsClientUpdateResponse, error) {
-	result := OutputsClientUpdateResponse{RawResponse: resp}
+	result := OutputsClientUpdateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}

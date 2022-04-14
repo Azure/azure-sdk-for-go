@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
@@ -48,7 +49,7 @@ func newGetKeyTest(ctx context.Context, options perf.PerfTestOptions) (perf.Glob
 		},
 	})
 
-	_, err = client.CreateRSAKey(ctx, d.keyName, nil)
+	_, err = client.CreateRSAKey(ctx, d.keyName, &azkeys.CreateRSAKeyOptions{Size: to.Ptr(int32(2048))})
 	if err != nil {
 		return nil, err
 	}

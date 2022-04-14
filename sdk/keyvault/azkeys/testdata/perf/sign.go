@@ -58,7 +58,7 @@ func newSignTest(ctx context.Context, options perf.PerfTestOptions) (perf.Global
 		return nil, err
 	}
 
-	resp, err := client.CreateRSAKey(ctx, d.keyName, nil)
+	resp, err := client.CreateRSAKey(ctx, d.keyName, &azkeys.CreateRSAKeyOptions{Size: to.Ptr(int32(2048))}
 	if err != nil {
 		return nil, err
 	}

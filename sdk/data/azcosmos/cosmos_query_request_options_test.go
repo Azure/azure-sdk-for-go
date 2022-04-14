@@ -11,10 +11,11 @@ func TestQueryRequestOptionsToHeaders(t *testing.T) {
 	options := &QueryOptions{}
 	options.ConsistencyLevel = ConsistencyLevelSession.ToPtr()
 	options.SessionToken = "sessionToken"
-	options.MaxItemCount = 20
+	options.PageSizeHint = 20
 	options.EnableScanInQuery = true
 	options.ResponseContinuationTokenLimitInKb = 100
 	options.PopulateIndexMetrics = true
+	options.ContinuationToken = "continuationToken"
 	header := options.toHeaders()
 	if header == nil {
 		t.Fatal("toHeaders should return non-nil")
@@ -28,7 +29,7 @@ func TestQueryRequestOptionsToHeaders(t *testing.T) {
 		t.Errorf("SessionToken should be sessionToken but got %v", headers[cosmosHeaderSessionToken])
 	}
 	if headers[cosmosHeaderMaxItemCount] != "20" {
-		t.Errorf("MaxItemCount should be 20 but got %v", headers[cosmosHeaderMaxItemCount])
+		t.Errorf("PageSizeHint should be 20 but got %v", headers[cosmosHeaderMaxItemCount])
 	}
 	if headers[cosmosHeaderEnableScanInQuery] != "true" {
 		t.Errorf("EnableScanInQuery should be true but got %v", headers[cosmosHeaderEnableScanInQuery])
@@ -38,5 +39,11 @@ func TestQueryRequestOptionsToHeaders(t *testing.T) {
 	}
 	if headers[cosmosHeaderPopulateIndexMetrics] != "true" {
 		t.Errorf("PopulateIndexMetrics should be true but got %v", headers[cosmosHeaderPopulateIndexMetrics])
+	}
+	if headers[cosmosHeaderContinuationToken] != "continuationToken" {
+		t.Errorf("ContinuationToken should be continuationToken but got %v", headers[cosmosHeaderContinuationToken])
+	}
+	if headers[cosmosHeaderPopulateQueryMetrics] != "true" {
+		t.Errorf("PopulateQueryMetrics should be true but got %v", headers[cosmosHeaderPopulateQueryMetrics])
 	}
 }

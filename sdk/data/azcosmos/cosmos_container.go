@@ -400,8 +400,55 @@ func (c *ContainerClient) DeleteItem(
 	return newItemResponse(azResponse)
 }
 
-func (t *ContainerClient) QueryItemsByPartitionKey(query string, partitionKey PartitionKey, queryOptions *QueryOptions) *runtime.Pager[ListEntitiesResponse] {
-	return nil
+// QueryItemsByPartitionKey executes a single partition query in a Cosmos container.
+// ctx - The context for the request.
+// query - The SQL query to execute.
+// partitionKey - The partition key to scope the query on.
+// o - Options for the operation.
+func (c *ContainerClient) QueryItemsByPartitionKey(query string, partitionKey PartitionKey, o *QueryOptions) *runtime.Pager[QueryItemsResponse] {
+	h := headerOptionsOverride{
+		partitionKey: &partitionKey,
+	}
+
+	if o == nil {
+		o = &QueryOptions{}
+	}
+
+	operationContext := pipelineRequestOptions{
+		resourceType:    resourceTypeCollection,
+		resourceAddress: c.link,
+		headerOptionsOverride: &h,
+	}
+
+	path, _ := generatePathForNameBased(resourceTypeCollection, operationContext.resourceAddress, true)
+
+	return runtime.NewPager(runtime.PageProcessor[QueryItemsResponse]{
+		More: func(page QueryItemsResponse) bool {
+			return page.ContinuationToken != ""
+		},
+		Fetcher: func(ctx context.Context, page *QueryItemsResponse) (QueryItemsResponse, error) {
+			if page != nil {
+				if page.ContinuationToken != "" {
+					// Use the previous page continuation if available
+					o.ContinuationToken = page.ContinuationToken
+				}
+			} 
+
+			azResponse, err := c.database.client.sendQueryRequest(
+				path,
+				ctx,
+				query,
+				operationContext,
+				o,
+				nil)
+
+			if err != nil {
+				return QueryItemsResponse{}, err
+			}
+
+			return newQueryResponse(azResponse)
+		},
+	})
 }
 
 func (c *ContainerClient) getRID(ctx context.Context) (string, error) {
@@ -411,16 +458,4 @@ func (c *ContainerClient) getRID(ctx context.Context) (string, error) {
 	}
 
 	return containerResponse.ContainerProperties.ResourceID, nil
-}
-
-// ListEntitiesResponse contains response fields for ListEntitiesPager.NextPage
-type ListEntitiesResponse struct {
-	// NextPartitionKey contains the information returned from the x-ms-continuation-NextPartitionKey header response.
-	NextPartitionKey *string
-
-	// NextRowKey contains the information returned from the x-ms-continuation-NextRowKey header response.
-	NextRowKey *string
-
-	// List of table entities.
-	Entities [][]byte
 }

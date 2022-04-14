@@ -23,11 +23,14 @@ type QueryOptions struct {
 	PopulateIndexMetrics bool
 	// ResponseContinuationTokenLimitInKb is used to limit the length of continuation token in the query response. Valid values are >= 0.
 	ResponseContinuationTokenLimitInKb int
-	// MaxItemCount determines the maximum number of items to be retrieved in a query result page.
+	// PageSizeHint determines the maximum number of items to be retrieved in a query result page.
 	// '-1' Used for dynamic page size. This is a maximum. Query can return 0 items in the page.
-	MaxItemCount int
+	PageSizeHint int
 	// EnableScanInQuery Allow scan on the queries which couldn't be served as indexing was opted out on the requested paths.
 	EnableScanInQuery bool
+	// ContinuationToken to be used to continue a previous query execution.
+	// Obtained from QueryItemsResponse.ContinuationToken.
+	ContinuationToken string
 }
 
 func (options *QueryOptions) toHeaders() *map[string]string {
@@ -45,8 +48,8 @@ func (options *QueryOptions) toHeaders() *map[string]string {
 		headers[cosmosHeaderResponseContinuationTokenLimitInKb] = strconv.Itoa(options.ResponseContinuationTokenLimitInKb)
 	}
 
-	if options.MaxItemCount != 0 {
-		headers[cosmosHeaderMaxItemCount] = strconv.Itoa(options.MaxItemCount)
+	if options.PageSizeHint != 0 {
+		headers[cosmosHeaderMaxItemCount] = strconv.Itoa(options.PageSizeHint)
 	}
 
 	if options.EnableScanInQuery {
@@ -56,6 +59,12 @@ func (options *QueryOptions) toHeaders() *map[string]string {
 	if options.PopulateIndexMetrics {
 		headers[cosmosHeaderPopulateIndexMetrics] = "true"
 	}
+
+	if options.ContinuationToken != "" {
+		headers[cosmosHeaderContinuationToken] = options.ContinuationToken
+	}
+
+	headers[cosmosHeaderPopulateQueryMetrics] = "true"
 
 	return &headers
 }

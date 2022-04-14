@@ -400,8 +400,8 @@ func (c *ContainerClient) DeleteItem(
 	return newItemResponse(azResponse)
 }
 
-func (t *ContainerClient) QueryItemsByPartitionKey(query string, partitionKey PartitionKey, listOptions *QueryOptions) *runtime.Pager[ListEntitiesResponse] {
-
+func (t *ContainerClient) QueryItemsByPartitionKey(query string, partitionKey PartitionKey, queryOptions *QueryOptions) *runtime.Pager[ListEntitiesResponse] {
+	return nil
 }
 
 func (c *ContainerClient) getRID(ctx context.Context) (string, error) {
@@ -411,4 +411,16 @@ func (c *ContainerClient) getRID(ctx context.Context) (string, error) {
 	}
 
 	return containerResponse.ContainerProperties.ResourceID, nil
+}
+
+// ListEntitiesResponse contains response fields for ListEntitiesPager.NextPage
+type ListEntitiesResponse struct {
+	// NextPartitionKey contains the information returned from the x-ms-continuation-NextPartitionKey header response.
+	NextPartitionKey *string
+
+	// NextRowKey contains the information returned from the x-ms-continuation-NextRowKey header response.
+	NextRowKey *string
+
+	// List of table entities.
+	Entities [][]byte
 }

@@ -3,6 +3,8 @@
 
 package azcosmos
 
+import "strconv"
+
 // QueryOptions includes options for query operations on items.
 type QueryOptions struct {
 	// SessionToken to be used when using Session consistency on the account.
@@ -19,6 +21,13 @@ type QueryOptions struct {
 	// PopulateIndexMetrics is used to obtain the index metrics to understand how the query engine used existing indexes and how it could use potential new indexes.
 	// Please note that this options will incur overhead, so it should be enabled only when debugging slow queries.
 	PopulateIndexMetrics bool
+	// ResponseContinuationTokenLimitInKb is used to limit the length of continuation token in the query response. Valid values are >= 0.
+	ResponseContinuationTokenLimitInKb int
+	// MaxItemCount determines the maximum number of items to be retrieved in a query result page.
+	// '-1' Used for dynamic page size. This is a maximum. Query can return 0 items in the page.
+	MaxItemCount int
+	// EnableScanInQuery Allow scan on the queries which couldn't be served as indexing was opted out on the requested paths.
+	EnableScanInQuery bool
 }
 
 func (options *QueryOptions) toHeaders() *map[string]string {
@@ -30,6 +39,18 @@ func (options *QueryOptions) toHeaders() *map[string]string {
 
 	if options.SessionToken != "" {
 		headers[cosmosHeaderSessionToken] = options.SessionToken
+	}
+
+	if options.ResponseContinuationTokenLimitInKb > 0 {
+		headers[cosmosHeaderResponseContinuationTokenLimitInKb] = strconv.Itoa(options.ResponseContinuationTokenLimitInKb)
+	}
+
+	if options.MaxItemCount != 0 {
+		headers[cosmosHeaderMaxItemCount] = strconv.Itoa(options.MaxItemCount)
+	}
+
+	if options.EnableScanInQuery {
+		headers[cosmosHeaderEnableScanInQuery] = "true"
 	}
 
 	return &headers

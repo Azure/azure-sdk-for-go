@@ -76,6 +76,7 @@ in any hosting environment which supports managed identities, such as (this list
 
 - [Authenticate with DefaultAzureCredential](#authenticate-with-defaultazurecredential "Authenticate with DefaultAzureCredential")
 - [Define a custom authentication flow with ChainedTokenCredential](#define-a-custom-authentication-flow-with-chainedtokencredential "Define a custom authentication flow with ChainedTokenCredential")
+- [Specify a user-assigned managed identity for DefaultAzureCredential](#specify-a-user-assigned-managed-identity-for-defaultazurecredential)
 
 ### Authenticate with DefaultAzureCredential
 
@@ -90,6 +91,9 @@ if err != nil {
 client := armresources.NewResourceGroupsClient("subscription ID", cred, nil)
 ```
 
+### Specify a user-assigned managed identity for DefaultAzureCredential
+
+To configure `DefaultAzureCredential` to authenticate a user-assigned managed identity, set the environment variable `AZURE_CLIENT_ID` to the identity's client ID.
 
 ### Define a custom authentication flow with `ChainedTokenCredential`
 

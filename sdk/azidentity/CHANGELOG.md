@@ -3,6 +3,9 @@
 ## 0.14.1 (Unreleased)
 
 ### Features Added
+* `DefaultAzureCredential` reads environment variable `AZURE_CLIENT_ID` for the
+  client ID of a user-assigned managed identity
+  ([#17293](https://github.com/Azure/azure-sdk-for-go/pull/17293))
 
 ### Breaking Changes
 

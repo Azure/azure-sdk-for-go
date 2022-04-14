@@ -30,6 +30,7 @@ const (
 	ChannelNameKikChannel              ChannelName = original.ChannelNameKikChannel
 	ChannelNameLineChannel             ChannelName = original.ChannelNameLineChannel
 	ChannelNameMsTeamsChannel          ChannelName = original.ChannelNameMsTeamsChannel
+	ChannelNameOutlookChannel          ChannelName = original.ChannelNameOutlookChannel
 	ChannelNameSkypeChannel            ChannelName = original.ChannelNameSkypeChannel
 	ChannelNameSlackChannel            ChannelName = original.ChannelNameSlackChannel
 	ChannelNameSmsChannel              ChannelName = original.ChannelNameSmsChannel

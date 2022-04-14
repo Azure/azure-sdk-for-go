@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,149 +17,175 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy"
 )
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/deletePolicyAssignment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/deletePolicyAssignment.json
 func ExampleAssignmentsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armpolicy.NewAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewAssignmentsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Delete(ctx,
 		"<scope>",
 		"<policy-assignment-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AssignmentsClientDeleteResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/createPolicyAssignment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/createPolicyAssignment.json
 func ExampleAssignmentsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armpolicy.NewAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewAssignmentsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Create(ctx,
 		"<scope>",
 		"<policy-assignment-name>",
 		armpolicy.Assignment{
 			Properties: &armpolicy.AssignmentProperties{
-				Description: to.StringPtr("<description>"),
-				DisplayName: to.StringPtr("<display-name>"),
+				Description: to.Ptr("<description>"),
+				DisplayName: to.Ptr("<display-name>"),
 				Metadata: map[string]interface{}{
 					"assignedBy": "Special Someone",
 				},
 				NonComplianceMessages: []*armpolicy.NonComplianceMessage{
 					{
-						Message: to.StringPtr("<message>"),
+						Message: to.Ptr("<message>"),
 					}},
 				Parameters: map[string]*armpolicy.ParameterValuesValue{
 					"prefix": {
-						Value: map[string]interface{}{
-							"0": "D",
-							"1": "e",
-							"2": "p",
-							"3": "t",
-							"4": "A",
-						},
+						Value: "DeptA",
 					},
 					"suffix": {
-						Value: map[string]interface{}{
-							"0": "-",
-							"1": "L",
-							"2": "C",
-						},
+						Value: "-LC",
 					},
 				},
-				PolicyDefinitionID: to.StringPtr("<policy-definition-id>"),
+				PolicyDefinitionID: to.Ptr("<policy-definition-id>"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/getPolicyAssignment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/getPolicyAssignment.json
 func ExampleAssignmentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armpolicy.NewAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewAssignmentsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<scope>",
 		"<policy-assignment-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AssignmentsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/updatePolicyAssignmentWithIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/updatePolicyAssignmentWithIdentity.json
 func ExampleAssignmentsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armpolicy.NewAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewAssignmentsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Update(ctx,
 		"<scope>",
 		"<policy-assignment-name>",
 		armpolicy.AssignmentUpdate{
 			Identity: &armpolicy.Identity{
-				Type: armpolicy.ResourceIdentityTypeSystemAssigned.ToPtr(),
+				Type: to.Ptr(armpolicy.ResourceIdentityTypeSystemAssigned),
 			},
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AssignmentsClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicyAssignmentsForResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicyAssignmentsForResourceGroup.json
 func ExampleAssignmentsClient_ListForResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armpolicy.NewAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewAssignmentsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListForResourceGroup("<resource-group-name>",
-		&armpolicy.AssignmentsClientListForResourceGroupOptions{Filter: to.StringPtr("<filter>"),
+		&armpolicy.AssignmentsClientListForResourceGroupOptions{Filter: to.Ptr("<filter>"),
 			Top: nil,
 		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicyAssignmentsForResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicyAssignmentsForResource.json
 func ExampleAssignmentsClient_ListForResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armpolicy.NewAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewAssignmentsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListForResource("<resource-group-name>",
 		"<resource-provider-namespace>",
 		"<parent-resource-path>",
@@ -168,67 +194,74 @@ func ExampleAssignmentsClient_ListForResource() {
 		&armpolicy.AssignmentsClientListForResourceOptions{Filter: nil,
 			Top: nil,
 		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicyAssignmentsForManagementGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicyAssignmentsForManagementGroup.json
 func ExampleAssignmentsClient_ListForManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armpolicy.NewAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewAssignmentsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListForManagementGroup("<management-group-id>",
-		&armpolicy.AssignmentsClientListForManagementGroupOptions{Filter: to.StringPtr("<filter>"),
+		&armpolicy.AssignmentsClientListForManagementGroupOptions{Filter: to.Ptr("<filter>"),
 			Top: nil,
 		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicyAssignments.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicyAssignments.json
 func ExampleAssignmentsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armpolicy.NewAssignmentsClient("<subscription-id>", cred, nil)
-	pager := client.List(&armpolicy.AssignmentsClientListOptions{Filter: to.StringPtr("<filter>"),
+	client, err := armpolicy.NewAssignmentsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	pager := client.List(&armpolicy.AssignmentsClientListOptions{Filter: to.Ptr("<filter>"),
 		Top: nil,
 	})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

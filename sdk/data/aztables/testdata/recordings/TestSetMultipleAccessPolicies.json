@@ -11,8 +11,8 @@
         "Content-Length": "34",
         "Content-Type": "application/json",
         "dataserviceversion": "3.0",
-        "User-Agent": "azsdk-go-aztables/v0.7.1 azsdk-go-azcore/v0.23.0 (go1.18; Windows_NT)",
-        "x-ms-date": "Wed, 13 Apr 2022 19:25:10 GMT",
+        "User-Agent": "azsdk-go-aztables/v0.7.1 azsdk-go-azcore/v0.23.1 (go1.18; Windows_NT)",
+        "x-ms-date": "Thu, 14 Apr 2022 15:01:18 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -22,7 +22,7 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Type": "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
-        "Date": "Wed, 13 Apr 2022 19:25:10 GMT",
+        "Date": "Thu, 14 Apr 2022 15:01:18 GMT",
         "Location": "https://fakeaccount.table.core.windows.net/Tables(\u0027tableName507237871\u0027)",
         "Server": [
           "Windows-Azure-Table/1.0",
@@ -30,7 +30,7 @@
         ],
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "123dbe0b-d002-00a9-256c-4f34c3000000",
+        "x-ms-request-id": "72eb3eac-3002-007e-2710-507815000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": {
@@ -45,22 +45,25 @@
         "Accept": "application/xml",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "Content-Length": "375",
+        "Content-Length": "414",
         "Content-Type": "application/xml",
-        "User-Agent": "azsdk-go-aztables/v0.7.1 azsdk-go-azcore/v0.23.0 (go1.18; Windows_NT)",
-        "x-ms-date": "Wed, 13 Apr 2022 19:25:10 GMT",
+        "User-Agent": "azsdk-go-aztables/v0.7.1 azsdk-go-azcore/v0.23.1 (go1.18; Windows_NT)",
+        "x-ms-date": "Thu, 14 Apr 2022 15:01:19 GMT",
         "x-ms-version": "2019-02-02"
       },
-      "RequestBody": "\u003CSignedIdentifiers\u003E\u003CSignedIdentifier\u003E\u003CId\u003Eempty\u003C/Id\u003E\u003C/SignedIdentifier\u003E\u003CSignedIdentifier\u003E\u003CAccessPolicy\u003E\u003CPermission\u003Er\u003C/Permission\u003E\u003C/AccessPolicy\u003E\u003CId\u003Epartial\u003C/Id\u003E\u003C/SignedIdentifier\u003E\u003CSignedIdentifier\u003E\u003CAccessPolicy\u003E\u003CPermission\u003Er\u003C/Permission\u003E\u003CExpiry\u003E2021-06-08T02:10:09Z\u003C/Expiry\u003E\u003CStart\u003E2021-06-08T02:10:09Z\u003C/Start\u003E\u003C/AccessPolicy\u003E\u003CId\u003Efull\u003C/Id\u003E\u003C/SignedIdentifier\u003E\u003C/SignedIdentifiers\u003E",
+      "RequestBody": [
+        "\u003C?xml version=\u00221.0\u0022 encoding=\u0022UTF-8\u0022?\u003E\n",
+        "\u003CSignedIdentifiers\u003E\u003CSignedIdentifier\u003E\u003CId\u003Eempty\u003C/Id\u003E\u003C/SignedIdentifier\u003E\u003CSignedIdentifier\u003E\u003CAccessPolicy\u003E\u003CPermission\u003Er\u003C/Permission\u003E\u003C/AccessPolicy\u003E\u003CId\u003Epartial\u003C/Id\u003E\u003C/SignedIdentifier\u003E\u003CSignedIdentifier\u003E\u003CAccessPolicy\u003E\u003CPermission\u003Er\u003C/Permission\u003E\u003CExpiry\u003E2021-06-08T02:10:09Z\u003C/Expiry\u003E\u003CStart\u003E2021-06-08T02:10:09Z\u003C/Start\u003E\u003C/AccessPolicy\u003E\u003CId\u003Efull\u003C/Id\u003E\u003C/SignedIdentifier\u003E\u003C/SignedIdentifiers\u003E"
+      ],
       "StatusCode": 204,
       "ResponseHeaders": {
         "Content-Length": "0",
-        "Date": "Wed, 13 Apr 2022 19:25:10 GMT",
+        "Date": "Thu, 14 Apr 2022 15:01:18 GMT",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
-        "x-ms-request-id": "123dbe11-d002-00a9-2a6c-4f34c3000000",
+        "x-ms-request-id": "72eb3efd-3002-007e-7510-507815000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": null
@@ -73,21 +76,22 @@
         "Accept": "application/xml",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-aztables/v0.7.1 azsdk-go-azcore/v0.23.0 (go1.18; Windows_NT)",
-        "x-ms-date": "Wed, 13 Apr 2022 19:25:10 GMT",
+        "User-Agent": "azsdk-go-aztables/v0.7.1 azsdk-go-azcore/v0.23.1 (go1.18; Windows_NT)",
+        "x-ms-date": "Thu, 14 Apr 2022 15:01:19 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Content-Type": "application/xml",
-        "Date": "Wed, 13 Apr 2022 19:25:10 GMT",
+        "Date": "Thu, 14 Apr 2022 15:01:18 GMT",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "Transfer-Encoding": "chunked",
-        "x-ms-request-id": "123dbe13-d002-00a9-2c6c-4f34c3000000",
+        "Vary": "Origin",
+        "x-ms-request-id": "72eb3f16-3002-007e-0b10-507815000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CSignedIdentifiers\u003E\u003CSignedIdentifier\u003E\u003CId\u003Eempty\u003C/Id\u003E\u003C/SignedIdentifier\u003E\u003CSignedIdentifier\u003E\u003CId\u003Epartial\u003C/Id\u003E\u003CAccessPolicy\u003E\u003CPermission\u003Er\u003C/Permission\u003E\u003C/AccessPolicy\u003E\u003C/SignedIdentifier\u003E\u003CSignedIdentifier\u003E\u003CId\u003Efull\u003C/Id\u003E\u003CAccessPolicy\u003E\u003CStart\u003E2021-06-08T02:10:09.0000000Z\u003C/Start\u003E\u003CExpiry\u003E2021-06-08T02:10:09.0000000Z\u003C/Expiry\u003E\u003CPermission\u003Er\u003C/Permission\u003E\u003C/AccessPolicy\u003E\u003C/SignedIdentifier\u003E\u003C/SignedIdentifiers\u003E"
@@ -99,8 +103,8 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-aztables/v0.7.1 azsdk-go-azcore/v0.23.0 (go1.18; Windows_NT)",
-        "x-ms-date": "Wed, 13 Apr 2022 19:25:10 GMT",
+        "User-Agent": "azsdk-go-aztables/v0.7.1 azsdk-go-azcore/v0.23.1 (go1.18; Windows_NT)",
+        "x-ms-date": "Thu, 14 Apr 2022 15:01:19 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": null,
@@ -108,13 +112,13 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Wed, 13 Apr 2022 19:25:10 GMT",
+        "Date": "Thu, 14 Apr 2022 15:01:18 GMT",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "123dbe15-d002-00a9-2e6c-4f34c3000000",
+        "x-ms-request-id": "72eb3f27-3002-007e-1c10-507815000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": null

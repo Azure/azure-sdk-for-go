@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,16 +8,15 @@ package armdeploymentscripts_test
 
 import (
 	"context"
+	"testing"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/msi/armmsi"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeploymentscripts"
 	"github.com/stretchr/testify/suite"
-	"testing"
-	"time"
 )
 
 type DeploymentScriptsClientTestSuite struct {
@@ -54,14 +53,15 @@ func TestDeploymentScriptsClient(t *testing.T) {
 
 func (testsuite *DeploymentScriptsClientTestSuite) TestDeploymentScriptsCRUD() {
 	// create identity
-	userAssignedIdentitiesClient := armmsi.NewUserAssignedIdentitiesClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	userAssignedIdentitiesClient, err := armmsi.NewUserAssignedIdentitiesClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	identityName := "go-test-identity"
 	identityResp, err := userAssignedIdentitiesClient.CreateOrUpdate(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
 		identityName,
 		armmsi.Identity{
-			Location: to.StringPtr(testsuite.location),
+			Location: to.Ptr(testsuite.location),
 		},
 		nil,
 	)
@@ -69,7 +69,8 @@ func (testsuite *DeploymentScriptsClientTestSuite) TestDeploymentScriptsCRUD() {
 	testsuite.Require().Equal(identityName, *identityResp.Name)
 
 	// create deployment script
-	deploymentScriptsClient := armdeploymentscripts.NewClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	deploymentScriptsClient, err := armdeploymentscripts.NewClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	scriptName := "go-test-script"
 	dsPollerResp, err := deploymentScriptsClient.BeginCreate(
 		testsuite.ctx,
@@ -77,39 +78,26 @@ func (testsuite *DeploymentScriptsClientTestSuite) TestDeploymentScriptsCRUD() {
 		scriptName,
 		&armdeploymentscripts.AzurePowerShellScript{
 			Identity: &armdeploymentscripts.ManagedServiceIdentity{
-				Type: armdeploymentscripts.ManagedServiceIdentityTypeUserAssigned.ToPtr(),
+				Type: to.Ptr(armdeploymentscripts.ManagedServiceIdentityTypeUserAssigned),
 				UserAssignedIdentities: map[string]*armdeploymentscripts.UserAssignedIdentity{
 					*identityResp.ID: {},
 				},
 			},
-			Kind:     armdeploymentscripts.ScriptTypeAzurePowerShell.ToPtr(),
-			Location: to.StringPtr(testsuite.location),
+			Kind:     to.Ptr(armdeploymentscripts.ScriptTypeAzurePowerShell),
+			Location: to.Ptr(testsuite.location),
 			Properties: &armdeploymentscripts.AzurePowerShellScriptProperties{
-				RetentionInterval:   to.StringPtr("PT26H"),
-				PrimaryScriptURI:    to.StringPtr("https://raw.githubusercontent.com/Azure/azure-docs-json-samples/master/deployment-script/deploymentscript-helloworld.ps1"),
-				Arguments:           to.StringPtr("-name \"John Dole\""),
-				Timeout:             to.StringPtr("PT30M"),
-				AzPowerShellVersion: to.StringPtr("3.0"),
+				RetentionInterval:   to.Ptr("PT26H"),
+				PrimaryScriptURI:    to.Ptr("https://raw.githubusercontent.com/Azure/azure-docs-json-samples/master/deployment-script/deploymentscript-helloworld.ps1"),
+				Arguments:           to.Ptr("-name \"John Dole\""),
+				Timeout:             to.Ptr("PT30M"),
+				AzPowerShellVersion: to.Ptr("3.0"),
 			},
 		},
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	var dsResp armdeploymentscripts.ClientCreateResponse
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		for {
-			_, err = dsPollerResp.Poller.Poll(testsuite.ctx)
-			testsuite.Require().NoError(err)
-			if dsPollerResp.Poller.Done() {
-				dsResp, err = dsPollerResp.Poller.FinalResponse(testsuite.ctx)
-				testsuite.Require().NoError(err)
-				break
-			}
-		}
-	} else {
-		dsResp, err = dsPollerResp.PollUntilDone(testsuite.ctx, 30*time.Second)
-		testsuite.Require().NoError(err)
-	}
+	dsResp, err := testutil.PollForTest(testsuite.ctx, dsPollerResp)
+	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(scriptName, *dsResp.GetDeploymentScript().Name)
 
 	// get deployment scripts
@@ -135,7 +123,7 @@ func (testsuite *DeploymentScriptsClientTestSuite) TestDeploymentScriptsCRUD() {
 		&armdeploymentscripts.ClientUpdateOptions{
 			DeploymentScript: &armdeploymentscripts.DeploymentScriptUpdateParameter{
 				Tags: map[string]*string{
-					"test": to.StringPtr("live"),
+					"test": to.Ptr("live"),
 				},
 			},
 		},
@@ -145,14 +133,13 @@ func (testsuite *DeploymentScriptsClientTestSuite) TestDeploymentScriptsCRUD() {
 
 	// list deployment script by subscription
 	listBySubscription := deploymentScriptsClient.ListBySubscription(nil)
-	testsuite.Require().NoError(listBySubscription.Err())
+	testsuite.Require().True(listBySubscription.More())
 
 	// list deployment script by resource group
 	listByResourceGroup := deploymentScriptsClient.ListByResourceGroup(testsuite.resourceGroupName, nil)
-	testsuite.Require().NoError(listByResourceGroup.Err())
+	testsuite.Require().True(listByResourceGroup.More())
 
 	// delete deployment script
-	delResp, err := deploymentScriptsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, scriptName, nil)
+	_, err = deploymentScriptsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, scriptName, nil)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(200, delResp.RawResponse.StatusCode)
 }

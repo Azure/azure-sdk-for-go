@@ -134,6 +134,9 @@ func deleteTableResponseFromGen(g generated.TableClientDeleteResponse) DeleteTab
 // Specify nil for options if you want to use the default options.
 func (t *ServiceClient) DeleteTable(ctx context.Context, name string, options *DeleteTableOptions) (DeleteTableResponse, error) {
 	resp, err := t.client.Delete(ctx, name, options.toGenerated())
+	if err != nil {
+		return DeleteTableResponse{}, err
+	}
 	return deleteTableResponseFromGen(resp), err
 }
 
@@ -277,6 +280,9 @@ func (t *ServiceClient) GetStatistics(ctx context.Context, options *GetStatistic
 		options = &GetStatisticsOptions{}
 	}
 	resp, err := t.service.GetStatistics(ctx, generated.Enum5Service, generated.Enum7Stats, options.toGenerated())
+	if err != nil {
+		return GetStatisticsResponse{}, err
+	}
 	return getStatisticsResponseFromGenerated(&resp), err
 }
 
@@ -317,6 +323,9 @@ func (t *ServiceClient) GetProperties(ctx context.Context, options *GetPropertie
 		options = &GetPropertiesOptions{}
 	}
 	resp, err := t.service.GetProperties(ctx, generated.Enum5Service, generated.Enum6Properties, options.toGenerated())
+	if err != nil {
+		return GetPropertiesResponse{}, err
+	}
 	return getPropertiesResponseFromGenerated(&resp), err
 }
 
@@ -354,6 +363,9 @@ func (t *ServiceClient) SetProperties(ctx context.Context, properties ServicePro
 		options = &SetPropertiesOptions{}
 	}
 	resp, err := t.service.SetProperties(ctx, generated.Enum5Service, generated.Enum6Properties, *properties.toGenerated(), options.toGenerated())
+	if err != nil {
+		return SetPropertiesResponse{}, err
+	}
 	return setPropertiesResponseFromGenerated(&resp), err
 }
 

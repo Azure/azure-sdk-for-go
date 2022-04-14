@@ -10,6 +10,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
@@ -172,6 +173,9 @@ func TestSASClientReadOnly(t *testing.T) {
 	// Failure on a read
 	_, err = client.AddEntity(ctx, marshalled, nil)
 	require.Error(t, err)
+	var httpErr *azcore.ResponseError
+	require.ErrorAs(t, err, &httpErr)
+	require.Contains(t, PossibleTableErrorCodeValues(), TableErrorCode(httpErr.ErrorCode))
 
 	// Success on a list
 	pager := client.ListEntities(nil)
@@ -238,6 +242,9 @@ func TestSASCosmosClientReadOnly(t *testing.T) {
 	// Failure on a read
 	_, err = client.AddEntity(ctx, marshalled, nil)
 	require.Error(t, err)
+	var httpErr *azcore.ResponseError
+	require.ErrorAs(t, err, &httpErr)
+	require.Contains(t, PossibleTableErrorCodeValues(), TableErrorCode(httpErr.ErrorCode))
 
 	// Success on a list
 	pager := client.ListEntities(nil)

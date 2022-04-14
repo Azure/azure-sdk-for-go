@@ -126,7 +126,7 @@ func (t *Client) CreateTable(ctx context.Context, options *CreateTableOptions) (
 	}
 	resp, err := t.client.Create(ctx, generated.Enum1Three0, generated.TableProperties{TableName: &t.name}, options.toGenerated(), &generated.QueryOptions{})
 	if err != nil {
-		return CreateTableResponse{}, parseErrorCode(err)
+		return CreateTableResponse{}, err
 	}
 	return createTableResponseFromGen(&resp), err
 }
@@ -247,7 +247,7 @@ func (t *Client) ListEntities(listOptions *ListEntitiesOptions) *runtime.Pager[L
 				NextRowKey:       rowKey,
 			}, listOptions.toQueryOptions())
 			if err != nil {
-				return ListEntitiesResponse{}, parseErrorCode(err)
+				return ListEntitiesResponse{}, err
 			}
 			return newListEntitiesPage(resp)
 		},
@@ -300,7 +300,7 @@ func (t *Client) GetEntity(ctx context.Context, partitionKey string, rowKey stri
 	genOptions, queryOptions := options.toGenerated()
 	resp, err := t.client.QueryEntityWithPartitionAndRowKey(ctx, generated.Enum1Three0, t.name, partitionKey, rowKey, genOptions, queryOptions)
 	if err != nil {
-		return GetEntityResponse{}, parseErrorCode(err)
+		return GetEntityResponse{}, err
 	}
 	return newGetEntityResponse(resp)
 }
@@ -342,7 +342,7 @@ func (t *Client) AddEntity(ctx context.Context, entity []byte, options *AddEntit
 	resp, err := t.client.InsertEntity(ctx, generated.Enum1Three0, t.name, &generated.TableClientInsertEntityOptions{TableEntityProperties: mapEntity, ResponsePreference: to.Ptr(generated.ResponseFormatReturnNoContent)}, nil)
 	if err != nil {
 		err = checkEntityForPkRk(&mapEntity, err)
-		return AddEntityResponse{}, parseErrorCode(err)
+		return AddEntityResponse{}, err
 	}
 	return addEntityResponseFromGenerated(&resp), err
 }
@@ -377,7 +377,7 @@ func (t *Client) DeleteEntity(ctx context.Context, partitionKey string, rowKey s
 	}
 	resp, err := t.client.DeleteEntity(ctx, generated.Enum1Three0, t.name, partitionKey, rowKey, string(*options.IfMatch), options.toGenerated(), &generated.QueryOptions{})
 	if err != nil {
-		return DeleteEntityResponse{}, parseErrorCode(err)
+		return DeleteEntityResponse{}, err
 	}
 	return deleteEntityResponseFromGenerated(&resp), err
 }
@@ -483,7 +483,7 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *Updat
 			&generated.QueryOptions{},
 		)
 		if err != nil {
-			return UpdateEntityResponse{}, parseErrorCode(err)
+			return UpdateEntityResponse{}, err
 		}
 		return updateEntityResponseFromMergeGenerated(&resp), err
 	case UpdateModeReplace:
@@ -497,7 +497,7 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *Updat
 			&generated.QueryOptions{},
 		)
 		if err != nil {
-			return UpdateEntityResponse{}, parseErrorCode(err)
+			return UpdateEntityResponse{}, err
 		}
 		return updateEntityResponseFromUpdateGenerated(&resp), err
 	}
@@ -586,7 +586,7 @@ func (t *Client) UpsertEntity(ctx context.Context, entity []byte, options *Upser
 			&generated.QueryOptions{},
 		)
 		if err != nil {
-			return UpsertEntityResponse{}, parseErrorCode(err)
+			return UpsertEntityResponse{}, err
 		}
 		return insertEntityFromGeneratedMerge(&resp), err
 	case UpdateModeReplace:
@@ -600,7 +600,7 @@ func (t *Client) UpsertEntity(ctx context.Context, entity []byte, options *Upser
 			&generated.QueryOptions{},
 		)
 		if err != nil {
-			return UpsertEntityResponse{}, parseErrorCode(err)
+			return UpsertEntityResponse{}, err
 		}
 		return insertEntityFromGeneratedUpdate(&resp), err
 	}
@@ -644,7 +644,7 @@ func getAccessPolicyResponseFromGenerated(g *generated.TableClientGetAccessPolic
 func (t *Client) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyOptions) (GetAccessPolicyResponse, error) {
 	resp, err := t.client.GetAccessPolicy(ctx, t.name, generated.Enum4ACL, options.toGenerated())
 	if err != nil {
-		return GetAccessPolicyResponse{}, parseErrorCode(err)
+		return GetAccessPolicyResponse{}, err
 	}
 	return getAccessPolicyResponseFromGenerated(&resp), err
 }
@@ -685,7 +685,7 @@ func (t *Client) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOp
 		err = errTooManyAccessPoliciesError
 	}
 	if err != nil {
-		return SetAccessPolicyResponse{}, parseErrorCode(err)
+		return SetAccessPolicyResponse{}, err
 	}
 	return setAccessPolicyResponseFromGenerated(&response), err
 }

@@ -2,6 +2,8 @@ module github.com/Azure/azure-sdk-for-go/sdk/data/aztables
 
 go 1.18
 
+replace github.com/Azure/azure-sdk-for-go/sdk/azcore => ../../azcore
+
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.23.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.13.0

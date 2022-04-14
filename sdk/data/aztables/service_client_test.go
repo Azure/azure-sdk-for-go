@@ -32,6 +32,7 @@ func TestServiceErrorsServiceClient(t *testing.T) {
 			var httpErr *azcore.ResponseError
 			require.ErrorAs(t, err, &httpErr)
 			require.Equal(t, string(TableAlreadyExists), httpErr.ErrorCode)
+			require.Contains(t, PossibleTableErrorCodeValues(), TableErrorCode(httpErr.ErrorCode))
 
 			_, err = service.DeleteTable(ctx, tableName, nil)
 			require.NoError(t, err)
@@ -113,7 +114,6 @@ func TestQueryTable(t *testing.T) {
 				require.LessOrEqual(t, len(resp.Tables), 2)
 				resultCount += len(resp.Tables)
 				pageCount++
-				fmt.Printf("pageCount: %d\tresultCount: %d\n", pageCount, resultCount)
 			}
 
 			require.Equal(t, resultCount, tableCount-1)
@@ -359,6 +359,7 @@ func TestSetTooManyCors(t *testing.T) {
 	require.Error(t, err)
 	var httpErr *azcore.ResponseError
 	require.ErrorAs(t, err, &httpErr)
+	require.Contains(t, PossibleTableErrorCodeValues(), TableErrorCode(httpErr.ErrorCode))
 }
 
 func TestRetentionTooLong(t *testing.T) {
@@ -380,6 +381,7 @@ func TestRetentionTooLong(t *testing.T) {
 	require.Error(t, err)
 	var httpErr *azcore.ResponseError
 	require.ErrorAs(t, err, &httpErr)
+	require.Contains(t, PossibleTableErrorCodeValues(), TableErrorCode(httpErr.ErrorCode))
 }
 
 func TestGetAccountSASToken(t *testing.T) {

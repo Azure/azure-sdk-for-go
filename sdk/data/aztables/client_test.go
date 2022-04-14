@@ -30,6 +30,7 @@ func TestServiceErrors(t *testing.T) {
 			var httpErr *azcore.ResponseError
 			require.ErrorAs(t, err, &httpErr)
 			require.Equal(t, string(TableAlreadyExists), httpErr.ErrorCode)
+			require.Contains(t, PossibleTableErrorCodeValues(), TableErrorCode(httpErr.ErrorCode))
 		})
 	}
 }
@@ -123,6 +124,7 @@ func TestDeleteEntityWithETag(t *testing.T) {
 			require.Error(t, err)
 			var httpErr *azcore.ResponseError
 			require.ErrorAs(t, err, &httpErr)
+			require.Contains(t, PossibleTableErrorCodeValues(), TableErrorCode(httpErr.ErrorCode))
 
 			_, err = client.DeleteEntity(ctx, simpleEntity.PartitionKey, simpleEntity.RowKey, &DeleteEntityOptions{IfMatch: &oldETag})
 			require.NoError(t, err)
@@ -202,6 +204,7 @@ func TestMergeEntityDoesNotExist(t *testing.T) {
 			var httpErr *azcore.ResponseError
 			require.ErrorAs(t, updateErr, &httpErr)
 			require.Equal(t, string(ResourceNotFound), httpErr.ErrorCode)
+			require.Contains(t, PossibleTableErrorCodeValues(), TableErrorCode(httpErr.ErrorCode))
 		})
 	}
 }

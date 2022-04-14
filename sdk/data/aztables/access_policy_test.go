@@ -189,4 +189,5 @@ func TestSetInvalidAccessPolicy(t *testing.T) {
 	var httpErr *azcore.ResponseError
 	require.ErrorAs(t, err, &httpErr)
 	require.Equal(t, "InvalidXmlDocument", httpErr.ErrorCode)
+	require.Contains(t, PossibleTableErrorCodeValues(), TableErrorCode(httpErr.ErrorCode))
 }

@@ -4,10 +4,7 @@
 package aztables
 
 import (
-	"encoding/json"
 	"errors"
-	"io/ioutil"
-	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -25,6 +22,7 @@ const (
 	InvalidDuplicateRow          TableErrorCode = "InvalidDuplicateRow"
 	InvalidInput                 TableErrorCode = "InvalidInput"
 	InvalidValueType             TableErrorCode = "InvalidValueType"
+	InvalidXmlDocument           TableErrorCode = "InvalidXmlDocument"
 	JSONFormatNotSupported       TableErrorCode = "JsonFormatNotSupported"
 	MethodNotAllowed             TableErrorCode = "MethodNotAllowed"
 	NotImplemented               TableErrorCode = "NotImplemented"
@@ -55,6 +53,7 @@ func PossibleTableErrorCodeValues() []TableErrorCode {
 		InvalidDuplicateRow,
 		InvalidInput,
 		InvalidValueType,
+		InvalidXmlDocument,
 		JSONFormatNotSupported,
 		MethodNotAllowed,
 		NotImplemented,
@@ -63,6 +62,7 @@ func PossibleTableErrorCodeValues() []TableErrorCode {
 		PropertyNameInvalid,
 		PropertyNameTooLong,
 		PropertyValueTooLarge,
+		ResourceNotFound,
 		TableAlreadyExists,
 		TableBeingDeleted,
 		TableNotFound,
@@ -74,36 +74,20 @@ func PossibleTableErrorCodeValues() []TableErrorCode {
 	}
 }
 
-type oDataError struct {
-	Error oDataMessage `json:"odata.error"`
-}
-
-type oDataMessage struct {
-	Code TableErrorCode `json:"code"`
-}
-
-// parseErrorCode creates a azcore.ResponseError with the Code as one of the TableErrorCodes
-func parseErrorCode(svcErr error) error {
-	var httpErr *azcore.ResponseError
-	if errors.As(svcErr, &httpErr) {
-		body, err := ioutil.ReadAll(httpErr.RawResponse.Body)
-		if err != nil {
-			return svcErr
+// validateResponseError creates a response error for transactional batches and validates
+// that the ErrorCode has been set
+func validateResponseError(e error) error {
+	var respErr *azcore.ResponseError
+	if errors.As(e, &respErr) {
+		// validate that ErrorCode != ""
+		if respErr.ErrorCode != "" {
+			return e
 		}
 
-		log.Println(string(body))
-		var oerr oDataError
-		err = json.Unmarshal(body, &oerr)
-		if err != nil {
-			return svcErr
-		}
 
-		return &azcore.ResponseError{
-			RawResponse: httpErr.RawResponse,
-			StatusCode:  httpErr.StatusCode,
-			ErrorCode:   string(oerr.Error.Code),
-		}
+
+		return respErr
 	}
 
-	return svcErr
+	return e
 }

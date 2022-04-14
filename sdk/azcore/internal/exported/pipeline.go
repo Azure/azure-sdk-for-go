@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package pipeline
+package exported
 
 import (
 	"errors"
@@ -16,6 +16,7 @@ import (
 
 // Policy represents an extensibility point for the Pipeline that can mutate the specified
 // Request and react to the received Response.
+// Exported as policy.Policy.
 type Policy interface {
 	// Do applies the policy to the specified Request.  When implementing a Policy, mutate the
 	// request before calling req.Next() to move on to the next policy, and respond to the result
@@ -25,11 +26,13 @@ type Policy interface {
 
 // Pipeline represents a primitive for sending HTTP requests and receiving responses.
 // Its behavior can be extended by specifying policies during construction.
+// Exported as runtime.Pipeline.
 type Pipeline struct {
 	policies []Policy
 }
 
 // Transporter represents an HTTP pipeline transport used to send HTTP requests and receive responses.
+// Exported as policy.Transporter.
 type Transporter interface {
 	// Do sends the HTTP request and returns the HTTP response or error.
 	Do(req *http.Request) (*http.Response, error)
@@ -56,6 +59,7 @@ func (tp transportPolicy) Do(req *Request) (*http.Response, error) {
 }
 
 // NewPipeline creates a new Pipeline object from the specified Policies.
+// Not directly exported, but used as part of runtime.NewPipeline().
 func NewPipeline(transport Transporter, policies ...Policy) Pipeline {
 	// transport policy must always be the last in the slice
 	policies = append(policies, transportPolicy{trans: transport})

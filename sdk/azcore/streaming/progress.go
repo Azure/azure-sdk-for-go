@@ -9,7 +9,7 @@ package streaming
 import (
 	"io"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 )
 
 type progress struct {
@@ -21,7 +21,7 @@ type progress struct {
 
 // NopCloser returns a ReadSeekCloser with a no-op close method wrapping the provided io.ReadSeeker.
 func NopCloser(rs io.ReadSeeker) io.ReadSeekCloser {
-	return shared.NopCloser(rs)
+	return exported.NopCloser(rs)
 }
 
 // NewRequestProgress adds progress reporting to an HTTP request's body stream.

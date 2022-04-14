@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package pipeline
+package exported
 
 import (
 	"context"
@@ -18,17 +18,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 )
 
-// PolicyFunc is a type that implements the Policy interface.
-// Use this type when implementing a stateless policy as a first-class function.
-type PolicyFunc func(*Request) (*http.Response, error)
-
-// Do implements the Policy interface on PolicyFunc.
-func (pf PolicyFunc) Do(req *Request) (*http.Response, error) {
-	return pf(req)
-}
-
 // Request is an abstraction over the creation of an HTTP request as it passes through the pipeline.
 // Don't use this type directly, use NewRequest() instead.
+// Exported as policy.Request.
 type Request struct {
 	req      *http.Request
 	body     io.ReadSeekCloser
@@ -53,6 +45,7 @@ func (ov opValues) get(value interface{}) bool {
 }
 
 // NewRequest creates a new Request with the specified input.
+// Exported as runtime.NewRequest().
 func NewRequest(ctx context.Context, httpMethod string, endpoint string) (*Request, error) {
 	req, err := http.NewRequestWithContext(ctx, httpMethod, endpoint, nil)
 	if err != nil {

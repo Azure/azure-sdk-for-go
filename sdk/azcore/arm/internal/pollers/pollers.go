@@ -9,7 +9,7 @@ package pollers
 import (
 	"net/http"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
 )
 
 // provisioningState returns the provisioning state from the response or the empty string.
@@ -50,7 +50,7 @@ func status(jsonBody map[string]interface{}) string {
 // Typically used for Azure-AsyncOperation flows.
 // If there is no status in the response body the empty string is returned.
 func GetStatus(resp *http.Response) (string, error) {
-	jsonBody, err := shared.GetJSON(resp)
+	jsonBody, err := pollers.GetJSON(resp)
 	if err != nil {
 		return "", err
 	}
@@ -60,7 +60,7 @@ func GetStatus(resp *http.Response) (string, error) {
 // GetProvisioningState returns the LRO's state from the response body.
 // If there is no state in the response body the empty string is returned.
 func GetProvisioningState(resp *http.Response) (string, error) {
-	jsonBody, err := shared.GetJSON(resp)
+	jsonBody, err := pollers.GetJSON(resp)
 	if err != nil {
 		return "", err
 	}

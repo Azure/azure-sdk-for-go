@@ -52,7 +52,7 @@ func New(resp *http.Response, finalState pollers.FinalStateVia, pollerID string)
 	// service sent us a status then use that instead.
 	curState := pollers.StatusInProgress
 	status, err := getValue(resp, "status")
-	if err != nil && !errors.Is(err, shared.ErrNoBody) {
+	if err != nil && !errors.Is(err, pollers.ErrNoBody) {
 		return nil, err
 	}
 	if status != "" {
@@ -99,7 +99,7 @@ func (p *Poller) Update(resp *http.Response) error {
 	}
 	// check for resourceLocation
 	resLoc, err := getValue(resp, "resourceLocation")
-	if err != nil && !errors.Is(err, shared.ErrNoBody) {
+	if err != nil && !errors.Is(err, pollers.ErrNoBody) {
 		return err
 	} else if resLoc != "" {
 		p.FinalGET = resLoc
@@ -116,7 +116,7 @@ func (p *Poller) Status() string {
 }
 
 func getValue(resp *http.Response, val string) (string, error) {
-	jsonBody, err := shared.GetJSON(resp)
+	jsonBody, err := pollers.GetJSON(resp)
 	if err != nil {
 		return "", err
 	}

@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package shared
+package exported
 
 import (
 	"bytes"
@@ -15,6 +15,7 @@ import (
 )
 
 // NewResponseError creates a new *ResponseError from the provided HTTP response.
+// Exported as runtime.NewResponseError().
 func NewResponseError(resp *http.Response) error {
 	respErr := &ResponseError{
 		StatusCode:  resp.StatusCode,
@@ -94,6 +95,7 @@ func extractErrorCodeXML(body []byte) string {
 // ResponseError is returned when a request is made to a service and
 // the service returns a non-success HTTP status code.
 // Use errors.As() to access this type in the error chain.
+// Exported as azcore.ResponseError.
 type ResponseError struct {
 	// ErrorCode is the error code returned by the resource provider if available.
 	ErrorCode string

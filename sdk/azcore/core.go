@@ -9,15 +9,16 @@ package azcore
 import (
 	"reflect"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 // AccessToken represents an Azure service bearer access token with expiry information.
-type AccessToken = shared.AccessToken
+type AccessToken = exported.AccessToken
 
 // TokenCredential represents a credential capable of providing an OAuth token.
-type TokenCredential = shared.TokenCredential
+type TokenCredential = exported.TokenCredential
 
 // holds sentinel values used to send nulls
 var nullables map[reflect.Type]interface{} = map[reflect.Type]interface{}{}

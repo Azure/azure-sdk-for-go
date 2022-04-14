@@ -15,7 +15,7 @@ import (
 	"reflect"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
@@ -71,14 +71,14 @@ func PollerType(p *Poller) reflect.Type {
 }
 
 // NewPoller creates a Poller from the specified input.
-func NewPoller(lro Operation, resp *http.Response, pl pipeline.Pipeline) *Poller {
+func NewPoller(lro Operation, resp *http.Response, pl exported.Pipeline) *Poller {
 	return &Poller{lro: lro, pl: pl, resp: resp}
 }
 
 // Poller encapsulates state and logic for polling on long-running operations.
 type Poller struct {
 	lro  Operation
-	pl   pipeline.Pipeline
+	pl   exported.Pipeline
 	resp *http.Response
 	err  error
 }
@@ -100,7 +100,7 @@ func (l *Poller) Poll(ctx context.Context) (*http.Response, error) {
 		}
 		return nil, l.err
 	}
-	req, err := pipeline.NewRequest(ctx, http.MethodGet, l.lro.URL())
+	req, err := exported.NewRequest(ctx, http.MethodGet, l.lro.URL())
 	if err != nil {
 		return nil, err
 	}
@@ -112,7 +112,7 @@ func (l *Poller) Poll(ctx context.Context) (*http.Response, error) {
 	defer resp.Body.Close()
 	if !StatusCodeValid(resp) {
 		// the LRO failed.  unmarshall the error and update state
-		l.err = shared.NewResponseError(resp)
+		l.err = exported.NewResponseError(resp)
 		l.resp = nil
 		return nil, l.err
 	}
@@ -122,7 +122,7 @@ func (l *Poller) Poll(ctx context.Context) (*http.Response, error) {
 	l.resp = resp
 	log.Writef(log.EventLRO, "Status %s", l.lro.Status())
 	if Failed(l.lro.Status()) {
-		l.err = shared.NewResponseError(resp)
+		l.err = exported.NewResponseError(resp)
 		l.resp = nil
 		return nil, l.err
 	}
@@ -150,7 +150,7 @@ func (l *Poller) FinalResponse(ctx context.Context, respType interface{}) (*http
 	// update l.resp with the content from final GET if applicable
 	if u := l.lro.FinalGetURL(); u != "" {
 		log.Write(log.EventLRO, "Performing final GET.")
-		req, err := pipeline.NewRequest(ctx, http.MethodGet, u)
+		req, err := exported.NewRequest(ctx, http.MethodGet, u)
 		if err != nil {
 			return nil, err
 		}
@@ -159,7 +159,7 @@ func (l *Poller) FinalResponse(ctx context.Context, respType interface{}) (*http
 			return nil, err
 		}
 		if !StatusCodeValid(resp) {
-			return nil, shared.NewResponseError(resp)
+			return nil, exported.NewResponseError(resp)
 		}
 		l.resp = resp
 	}
@@ -170,7 +170,7 @@ func (l *Poller) FinalResponse(ctx context.Context, respType interface{}) (*http
 		log.Write(log.EventLRO, "final response specifies a response type but no payload was received")
 		return l.resp, nil
 	}
-	body, err := shared.Payload(l.resp)
+	body, err := exported.Payload(l.resp)
 	if err != nil {
 		return nil, err
 	}

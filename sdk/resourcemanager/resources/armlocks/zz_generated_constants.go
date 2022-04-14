@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armlocks
 
 const (
 	moduleName    = "armlocks"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -33,11 +33,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // LockLevel - The level of the lock. Possible values are: NotSpecified, CanNotDelete, ReadOnly. CanNotDelete means authorized
 // users are able to read and modify the resources, but not delete. ReadOnly means
 // authorized users can only read from a resource, but they can't modify or delete it.
@@ -56,9 +51,4 @@ func PossibleLockLevelValues() []LockLevel {
 		LockLevelNotSpecified,
 		LockLevelReadOnly,
 	}
-}
-
-// ToPtr returns a *LockLevel pointing to the current value.
-func (c LockLevel) ToPtr() *LockLevel {
-	return &c
 }

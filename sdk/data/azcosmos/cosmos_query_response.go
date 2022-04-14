@@ -4,9 +4,10 @@
 package azcosmos
 
 import (
+	"encoding/json"
 	"net/http"
 
-	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // QueryItemsResponse contains response from the query operation.
@@ -29,11 +30,33 @@ func newQueryResponse(resp *http.Response) (QueryItemsResponse, error) {
 	}
 
 	response.ContinuationToken = resp.Header.Get(cosmosHeaderContinuationToken)
-	defer resp.Body.Close()
-	body, err := azruntime.Payload(resp)
-	if err != nil {
-		return response, err
+	queryMetrics := resp.Header.Get(cosmosHeaderQueryMetrics)
+	if queryMetrics != "" {
+		response.QueryMetrics = &queryMetrics
 	}
-	response.Value = body
+	queryIndexUtilization := resp.Header.Get(cosmosHeaderIndexUtilization)
+	if queryIndexUtilization != "" {
+		response.IndexMetrics = &queryIndexUtilization
+	}
+
+	result := queryServiceResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
+		return QueryItemsResponse{}, err
+	}
+
+	marshalledValue := make([][]byte, 0)
+	for _, e := range result.Documents {
+		m, err := json.Marshal(e)
+		if err != nil {
+			return QueryItemsResponse{}, err
+		}
+		marshalledValue = append(marshalledValue, m)
+	}
+	response.Items = marshalledValue
+	
 	return response, nil
+}
+
+type queryServiceResponse struct {
+	Documents []map[string]interface{} `json:"Documents,omitempty"`
 }

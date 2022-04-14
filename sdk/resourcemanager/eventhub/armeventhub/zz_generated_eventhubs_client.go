@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type EventHubsClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewEventHubsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *EventHubsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewEventHubsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EventHubsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &EventHubsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a new Event Hub as a nested resource within a Namespace.
@@ -106,7 +111,7 @@ func (client *EventHubsClient) createOrUpdateCreateRequest(ctx context.Context, 
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *EventHubsClient) createOrUpdateHandleResponse(resp *http.Response) (EventHubsClientCreateOrUpdateResponse, error) {
-	result := EventHubsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := EventHubsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Eventhub); err != nil {
 		return EventHubsClientCreateOrUpdateResponse{}, err
 	}
@@ -174,7 +179,7 @@ func (client *EventHubsClient) createOrUpdateAuthorizationRuleCreateRequest(ctx 
 
 // createOrUpdateAuthorizationRuleHandleResponse handles the CreateOrUpdateAuthorizationRule response.
 func (client *EventHubsClient) createOrUpdateAuthorizationRuleHandleResponse(resp *http.Response) (EventHubsClientCreateOrUpdateAuthorizationRuleResponse, error) {
-	result := EventHubsClientCreateOrUpdateAuthorizationRuleResponse{RawResponse: resp}
+	result := EventHubsClientCreateOrUpdateAuthorizationRuleResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRule); err != nil {
 		return EventHubsClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
@@ -199,7 +204,7 @@ func (client *EventHubsClient) Delete(ctx context.Context, resourceGroupName str
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return EventHubsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return EventHubsClientDeleteResponse{RawResponse: resp}, nil
+	return EventHubsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -252,7 +257,7 @@ func (client *EventHubsClient) DeleteAuthorizationRule(ctx context.Context, reso
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return EventHubsClientDeleteAuthorizationRuleResponse{}, runtime.NewResponseError(resp)
 	}
-	return EventHubsClientDeleteAuthorizationRuleResponse{RawResponse: resp}, nil
+	return EventHubsClientDeleteAuthorizationRuleResponse{}, nil
 }
 
 // deleteAuthorizationRuleCreateRequest creates the DeleteAuthorizationRule request.
@@ -342,7 +347,7 @@ func (client *EventHubsClient) getCreateRequest(ctx context.Context, resourceGro
 
 // getHandleResponse handles the Get response.
 func (client *EventHubsClient) getHandleResponse(resp *http.Response) (EventHubsClientGetResponse, error) {
-	result := EventHubsClientGetResponse{RawResponse: resp}
+	result := EventHubsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Eventhub); err != nil {
 		return EventHubsClientGetResponse{}, err
 	}
@@ -408,7 +413,7 @@ func (client *EventHubsClient) getAuthorizationRuleCreateRequest(ctx context.Con
 
 // getAuthorizationRuleHandleResponse handles the GetAuthorizationRule response.
 func (client *EventHubsClient) getAuthorizationRuleHandleResponse(resp *http.Response) (EventHubsClientGetAuthorizationRuleResponse, error) {
-	result := EventHubsClientGetAuthorizationRuleResponse{RawResponse: resp}
+	result := EventHubsClientGetAuthorizationRuleResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRule); err != nil {
 		return EventHubsClientGetAuthorizationRuleResponse{}, err
 	}
@@ -422,16 +427,32 @@ func (client *EventHubsClient) getAuthorizationRuleHandleResponse(resp *http.Res
 // eventHubName - The Event Hub name
 // options - EventHubsClientListAuthorizationRulesOptions contains the optional parameters for the EventHubsClient.ListAuthorizationRules
 // method.
-func (client *EventHubsClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, eventHubName string, options *EventHubsClientListAuthorizationRulesOptions) *EventHubsClientListAuthorizationRulesPager {
-	return &EventHubsClientListAuthorizationRulesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, options)
+func (client *EventHubsClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, eventHubName string, options *EventHubsClientListAuthorizationRulesOptions) *runtime.Pager[EventHubsClientListAuthorizationRulesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[EventHubsClientListAuthorizationRulesResponse]{
+		More: func(page EventHubsClientListAuthorizationRulesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp EventHubsClientListAuthorizationRulesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AuthorizationRuleListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *EventHubsClientListAuthorizationRulesResponse) (EventHubsClientListAuthorizationRulesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return EventHubsClientListAuthorizationRulesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return EventHubsClientListAuthorizationRulesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return EventHubsClientListAuthorizationRulesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAuthorizationRulesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listAuthorizationRulesCreateRequest creates the ListAuthorizationRules request.
@@ -466,7 +487,7 @@ func (client *EventHubsClient) listAuthorizationRulesCreateRequest(ctx context.C
 
 // listAuthorizationRulesHandleResponse handles the ListAuthorizationRules response.
 func (client *EventHubsClient) listAuthorizationRulesHandleResponse(resp *http.Response) (EventHubsClientListAuthorizationRulesResponse, error) {
-	result := EventHubsClientListAuthorizationRulesResponse{RawResponse: resp}
+	result := EventHubsClientListAuthorizationRulesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRuleListResult); err != nil {
 		return EventHubsClientListAuthorizationRulesResponse{}, err
 	}
@@ -479,16 +500,32 @@ func (client *EventHubsClient) listAuthorizationRulesHandleResponse(resp *http.R
 // namespaceName - The Namespace name
 // options - EventHubsClientListByNamespaceOptions contains the optional parameters for the EventHubsClient.ListByNamespace
 // method.
-func (client *EventHubsClient) ListByNamespace(resourceGroupName string, namespaceName string, options *EventHubsClientListByNamespaceOptions) *EventHubsClientListByNamespacePager {
-	return &EventHubsClientListByNamespacePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByNamespaceCreateRequest(ctx, resourceGroupName, namespaceName, options)
+func (client *EventHubsClient) ListByNamespace(resourceGroupName string, namespaceName string, options *EventHubsClientListByNamespaceOptions) *runtime.Pager[EventHubsClientListByNamespaceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[EventHubsClientListByNamespaceResponse]{
+		More: func(page EventHubsClientListByNamespaceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp EventHubsClientListByNamespaceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *EventHubsClientListByNamespaceResponse) (EventHubsClientListByNamespaceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByNamespaceCreateRequest(ctx, resourceGroupName, namespaceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return EventHubsClientListByNamespaceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return EventHubsClientListByNamespaceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return EventHubsClientListByNamespaceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByNamespaceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByNamespaceCreateRequest creates the ListByNamespace request.
@@ -525,7 +562,7 @@ func (client *EventHubsClient) listByNamespaceCreateRequest(ctx context.Context,
 
 // listByNamespaceHandleResponse handles the ListByNamespace response.
 func (client *EventHubsClient) listByNamespaceHandleResponse(resp *http.Response) (EventHubsClientListByNamespaceResponse, error) {
-	result := EventHubsClientListByNamespaceResponse{RawResponse: resp}
+	result := EventHubsClientListByNamespaceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
 		return EventHubsClientListByNamespaceResponse{}, err
 	}
@@ -590,7 +627,7 @@ func (client *EventHubsClient) listKeysCreateRequest(ctx context.Context, resour
 
 // listKeysHandleResponse handles the ListKeys response.
 func (client *EventHubsClient) listKeysHandleResponse(resp *http.Response) (EventHubsClientListKeysResponse, error) {
-	result := EventHubsClientListKeysResponse{RawResponse: resp}
+	result := EventHubsClientListKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
 		return EventHubsClientListKeysResponse{}, err
 	}
@@ -657,7 +694,7 @@ func (client *EventHubsClient) regenerateKeysCreateRequest(ctx context.Context, 
 
 // regenerateKeysHandleResponse handles the RegenerateKeys response.
 func (client *EventHubsClient) regenerateKeysHandleResponse(resp *http.Response) (EventHubsClientRegenerateKeysResponse, error) {
-	result := EventHubsClientRegenerateKeysResponse{RawResponse: resp}
+	result := EventHubsClientRegenerateKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
 		return EventHubsClientRegenerateKeysResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type SubscriptionFeatureRegistrationsClient struct {
 // subscriptionID - The Azure subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSubscriptionFeatureRegistrationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SubscriptionFeatureRegistrationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewSubscriptionFeatureRegistrationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SubscriptionFeatureRegistrationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SubscriptionFeatureRegistrationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create or update a feature registration.
@@ -101,7 +106,7 @@ func (client *SubscriptionFeatureRegistrationsClient) createOrUpdateCreateReques
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *SubscriptionFeatureRegistrationsClient) createOrUpdateHandleResponse(resp *http.Response) (SubscriptionFeatureRegistrationsClientCreateOrUpdateResponse, error) {
-	result := SubscriptionFeatureRegistrationsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := SubscriptionFeatureRegistrationsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionFeatureRegistration); err != nil {
 		return SubscriptionFeatureRegistrationsClientCreateOrUpdateResponse{}, err
 	}
@@ -126,7 +131,7 @@ func (client *SubscriptionFeatureRegistrationsClient) Delete(ctx context.Context
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return SubscriptionFeatureRegistrationsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SubscriptionFeatureRegistrationsClientDeleteResponse{RawResponse: resp}, nil
+	return SubscriptionFeatureRegistrationsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -204,7 +209,7 @@ func (client *SubscriptionFeatureRegistrationsClient) getCreateRequest(ctx conte
 
 // getHandleResponse handles the Get response.
 func (client *SubscriptionFeatureRegistrationsClient) getHandleResponse(resp *http.Response) (SubscriptionFeatureRegistrationsClientGetResponse, error) {
-	result := SubscriptionFeatureRegistrationsClientGetResponse{RawResponse: resp}
+	result := SubscriptionFeatureRegistrationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionFeatureRegistration); err != nil {
 		return SubscriptionFeatureRegistrationsClientGetResponse{}, err
 	}
@@ -215,16 +220,32 @@ func (client *SubscriptionFeatureRegistrationsClient) getHandleResponse(resp *ht
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SubscriptionFeatureRegistrationsClientListAllBySubscriptionOptions contains the optional parameters for the SubscriptionFeatureRegistrationsClient.ListAllBySubscription
 // method.
-func (client *SubscriptionFeatureRegistrationsClient) ListAllBySubscription(options *SubscriptionFeatureRegistrationsClientListAllBySubscriptionOptions) *SubscriptionFeatureRegistrationsClientListAllBySubscriptionPager {
-	return &SubscriptionFeatureRegistrationsClientListAllBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listAllBySubscriptionCreateRequest(ctx, options)
+func (client *SubscriptionFeatureRegistrationsClient) ListAllBySubscription(options *SubscriptionFeatureRegistrationsClientListAllBySubscriptionOptions) *runtime.Pager[SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse]{
+		More: func(page SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SubscriptionFeatureRegistrationList.NextLink)
+		Fetcher: func(ctx context.Context, page *SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse) (SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAllBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAllBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listAllBySubscriptionCreateRequest creates the ListAllBySubscription request.
@@ -247,7 +268,7 @@ func (client *SubscriptionFeatureRegistrationsClient) listAllBySubscriptionCreat
 
 // listAllBySubscriptionHandleResponse handles the ListAllBySubscription response.
 func (client *SubscriptionFeatureRegistrationsClient) listAllBySubscriptionHandleResponse(resp *http.Response) (SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse, error) {
-	result := SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse{RawResponse: resp}
+	result := SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionFeatureRegistrationList); err != nil {
 		return SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse{}, err
 	}
@@ -259,16 +280,32 @@ func (client *SubscriptionFeatureRegistrationsClient) listAllBySubscriptionHandl
 // providerNamespace - The provider namespace.
 // options - SubscriptionFeatureRegistrationsClientListBySubscriptionOptions contains the optional parameters for the SubscriptionFeatureRegistrationsClient.ListBySubscription
 // method.
-func (client *SubscriptionFeatureRegistrationsClient) ListBySubscription(providerNamespace string, options *SubscriptionFeatureRegistrationsClientListBySubscriptionOptions) *SubscriptionFeatureRegistrationsClientListBySubscriptionPager {
-	return &SubscriptionFeatureRegistrationsClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, providerNamespace, options)
+func (client *SubscriptionFeatureRegistrationsClient) ListBySubscription(providerNamespace string, options *SubscriptionFeatureRegistrationsClientListBySubscriptionOptions) *runtime.Pager[SubscriptionFeatureRegistrationsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SubscriptionFeatureRegistrationsClientListBySubscriptionResponse]{
+		More: func(page SubscriptionFeatureRegistrationsClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SubscriptionFeatureRegistrationsClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SubscriptionFeatureRegistrationList.NextLink)
+		Fetcher: func(ctx context.Context, page *SubscriptionFeatureRegistrationsClientListBySubscriptionResponse) (SubscriptionFeatureRegistrationsClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, providerNamespace, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SubscriptionFeatureRegistrationsClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SubscriptionFeatureRegistrationsClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SubscriptionFeatureRegistrationsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -295,7 +332,7 @@ func (client *SubscriptionFeatureRegistrationsClient) listBySubscriptionCreateRe
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *SubscriptionFeatureRegistrationsClient) listBySubscriptionHandleResponse(resp *http.Response) (SubscriptionFeatureRegistrationsClientListBySubscriptionResponse, error) {
-	result := SubscriptionFeatureRegistrationsClientListBySubscriptionResponse{RawResponse: resp}
+	result := SubscriptionFeatureRegistrationsClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionFeatureRegistrationList); err != nil {
 		return SubscriptionFeatureRegistrationsClientListBySubscriptionResponse{}, err
 	}

@@ -1296,7 +1296,7 @@ type ManagedClusterAddonProfileIdentity struct {
 type ManagedClusterAgentPoolProfile struct {
 	// Name - Windows agent pool names must be 6 characters or less.
 	Name *string `json:"name,omitempty"`
-	// Count - Number of agents (VMs) to host docker containers. Allowed values must be in the range of 0 to 1000 (inclusive) for user pools and in the range of 1 to 1000 (inclusive) for system pools. The default value is 1.
+	// Count - Desired Number of agents (VMs) specified to host docker containers. Allowed values must be in the range of 0 to 1000 (inclusive) for user pools and in the range of 1 to 1000 (inclusive) for system pools. The default value is 1.
 	Count *int32 `json:"count,omitempty"`
 	// VMSize - VM size availability varies by region. If a node contains insufficient compute resources (memory, cpu, etc) pods might fail to run correctly. For more details on restricted VM sizes, see: https://docs.microsoft.com/azure/aks/quotas-skus-regions
 	VMSize       *string `json:"vmSize,omitempty"`
@@ -1494,7 +1494,7 @@ func (mcapp ManagedClusterAgentPoolProfile) MarshalJSON() ([]byte, error) {
 
 // ManagedClusterAgentPoolProfileProperties properties for the container service agent pool profile.
 type ManagedClusterAgentPoolProfileProperties struct {
-	// Count - Number of agents (VMs) to host docker containers. Allowed values must be in the range of 0 to 1000 (inclusive) for user pools and in the range of 1 to 1000 (inclusive) for system pools. The default value is 1.
+	// Count - Desired Number of agents (VMs) specified to host docker containers. Allowed values must be in the range of 0 to 1000 (inclusive) for user pools and in the range of 1 to 1000 (inclusive) for system pools. The default value is 1.
 	Count *int32 `json:"count,omitempty"`
 	// VMSize - VM size availability varies by region. If a node contains insufficient compute resources (memory, cpu, etc) pods might fail to run correctly. For more details on restricted VM sizes, see: https://docs.microsoft.com/azure/aks/quotas-skus-regions
 	VMSize       *string `json:"vmSize,omitempty"`
@@ -2371,7 +2371,7 @@ type ManagedClusterSecurityProfile struct {
 type ManagedClusterSecurityProfileAzureDefender struct {
 	// Enabled - Whether to enable Azure Defender
 	Enabled *bool `json:"enabled,omitempty"`
-	// LogAnalyticsWorkspaceResourceID - Resource ID of the Log Analytics workspace to be associated with Azure Defender.  When Azure Defender is enabled, this field is required and must be a valid workspace resource ID. When Azure Defender is disabled, leave the field empty.
+	// LogAnalyticsWorkspaceResourceID - Resource ID of the Log Analytics workspace to be associated with Azure Defender.  When Azure Defender is enabled, this field is required and must be a valid workspace resource ID. When Azure Defender is disabled, this field should not be exists.
 	LogAnalyticsWorkspaceResourceID *string `json:"logAnalyticsWorkspaceResourceId,omitempty"`
 }
 

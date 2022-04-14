@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
@@ -15,9 +15,9 @@ import (
 // BearerTokenPolicy authorizes requests with bearer tokens acquired from a TokenCredential.
 type BearerTokenPolicy struct {
 	// mainResource is the resource to be retreived using the tenant specified in the credential
-	mainResource *shared.ExpiringResource[*exported.AccessToken, acquiringResourceState]
+	mainResource *shared.ExpiringResource[*azcore.AccessToken, acquiringResourceState]
 	// the following fields are read-only
-	cred   exported.TokenCredential
+	cred   azcore.TokenCredential
 	scopes []string
 }
 
@@ -28,8 +28,8 @@ type acquiringResourceState struct {
 
 // acquire acquires or updates the resource; only one
 // thread/goroutine at a time ever calls this function
-func acquire(state acquiringResourceState) (newResource *exported.AccessToken, newExpiration time.Time, err error) {
-	tk, err := state.p.cred.GetToken(state.req.Raw().Context(), exported.TokenRequestOptions{Scopes: state.p.scopes})
+func acquire(state acquiringResourceState) (newResource *azcore.AccessToken, newExpiration time.Time, err error) {
+	tk, err := state.p.cred.GetToken(state.req.Raw().Context(), policy.TokenRequestOptions{Scopes: state.p.scopes})
 	if err != nil {
 		return nil, time.Time{}, err
 	}
@@ -40,7 +40,7 @@ func acquire(state acquiringResourceState) (newResource *exported.AccessToken, n
 // cred: an azcore.TokenCredential implementation such as a credential object from azidentity
 // scopes: the list of permission scopes required for the token.
 // opts: optional settings. Pass nil to accept default values; this is the same as passing a zero-value options.
-func NewBearerTokenPolicy(cred exported.TokenCredential, scopes []string, opts *policy.BearerTokenOptions) *BearerTokenPolicy {
+func NewBearerTokenPolicy(cred azcore.TokenCredential, scopes []string, opts *policy.BearerTokenOptions) *BearerTokenPolicy {
 	return &BearerTokenPolicy{
 		cred:         cred,
 		scopes:       scopes,

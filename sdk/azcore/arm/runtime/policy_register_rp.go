@@ -15,6 +15,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	armpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
@@ -49,7 +50,7 @@ func setDefaults(r *armpolicy.RegistrationOptions) {
 // NewRPRegistrationPolicy creates a policy object configured using the specified options.
 // The policy controls whether an unregistered resource provider should automatically be
 // registered. See https://aka.ms/rps-not-found for more information.
-func NewRPRegistrationPolicy(cred exported.TokenCredential, o *armpolicy.RegistrationOptions) (azpolicy.Policy, error) {
+func NewRPRegistrationPolicy(cred azcore.TokenCredential, o *armpolicy.RegistrationOptions) (azpolicy.Policy, error) {
 	if o == nil {
 		o = &armpolicy.RegistrationOptions{}
 	}

@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
@@ -25,14 +25,14 @@ const (
 )
 
 type mockCredential struct {
-	getTokenImpl func(ctx context.Context, options exported.TokenRequestOptions) (*exported.AccessToken, error)
+	getTokenImpl func(ctx context.Context, options policy.TokenRequestOptions) (*azcore.AccessToken, error)
 }
 
-func (mc mockCredential) GetToken(ctx context.Context, options exported.TokenRequestOptions) (*exported.AccessToken, error) {
+func (mc mockCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	if mc.getTokenImpl != nil {
 		return mc.getTokenImpl(ctx, options)
 	}
-	return &exported.AccessToken{Token: "***", ExpiresOn: time.Now().Add(time.Hour)}, nil
+	return &azcore.AccessToken{Token: "***", ExpiresOn: time.Now().Add(time.Hour)}, nil
 }
 
 func (mc mockCredential) NewAuthenticationPolicy() policy.Policy {
@@ -82,7 +82,7 @@ func TestBearerPolicy_CredentialFailGetToken(t *testing.T) {
 	defer close()
 	expectedErr := errors.New("oops")
 	failCredential := mockCredential{}
-	failCredential.getTokenImpl = func(ctx context.Context, options exported.TokenRequestOptions) (*exported.AccessToken, error) {
+	failCredential.getTokenImpl = func(ctx context.Context, options policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 		return nil, expectedErr
 	}
 	b := NewBearerTokenPolicy(failCredential, nil, nil)

@@ -10,17 +10,17 @@ import (
 	"errors"
 	"reflect"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	azpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // NewPipeline creates a pipeline from connection options.
 // The telemetry policy, when enabled, will use the specified module and version info.
-func NewPipeline(module, version string, cred exported.TokenCredential, plOpts azruntime.PipelineOptions, options *arm.ClientOptions) (azruntime.Pipeline, error) {
+func NewPipeline(module, version string, cred azcore.TokenCredential, plOpts azruntime.PipelineOptions, options *arm.ClientOptions) (azruntime.Pipeline, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}

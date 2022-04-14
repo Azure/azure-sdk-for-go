@@ -56,8 +56,11 @@ func NewBlockBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, 
 	authPolicy := newSharedKeyCredPolicy(cred)
 	con := newConnection(blobURL, authPolicy, options.getConnectionOptions())
 	return &BlockBlobClient{
-		client:     &blockBlobClient{con: con},
-		BlobClient: BlobClient{client: &blobClient{con: con}},
+		client: &blockBlobClient{con: con},
+		BlobClient: BlobClient{
+			client:    &blobClient{con: con},
+			sharedKey: cred,
+		},
 	}, nil
 }
 

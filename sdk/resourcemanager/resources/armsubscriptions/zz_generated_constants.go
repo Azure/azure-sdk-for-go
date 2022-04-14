@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armsubscriptions
 
 const (
 	moduleName    = "armsubscriptions"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // LocationType - The location type.
@@ -27,11 +27,6 @@ func PossibleLocationTypeValues() []LocationType {
 		LocationTypeRegion,
 		LocationTypeEdgeZone,
 	}
-}
-
-// ToPtr returns a *LocationType pointing to the current value.
-func (c LocationType) ToPtr() *LocationType {
-	return &c
 }
 
 // RegionCategory - The category of the region.
@@ -52,11 +47,6 @@ func PossibleRegionCategoryValues() []RegionCategory {
 	}
 }
 
-// ToPtr returns a *RegionCategory pointing to the current value.
-func (c RegionCategory) ToPtr() *RegionCategory {
-	return &c
-}
-
 // RegionType - The type of the region.
 type RegionType string
 
@@ -71,11 +61,6 @@ func PossibleRegionTypeValues() []RegionType {
 		RegionTypeLogical,
 		RegionTypePhysical,
 	}
-}
-
-// ToPtr returns a *RegionType pointing to the current value.
-func (c RegionType) ToPtr() *RegionType {
-	return &c
 }
 
 // ResourceNameStatus - Is the resource name Allowed or Reserved
@@ -94,11 +79,6 @@ func PossibleResourceNameStatusValues() []ResourceNameStatus {
 	}
 }
 
-// ToPtr returns a *ResourceNameStatus pointing to the current value.
-func (c ResourceNameStatus) ToPtr() *ResourceNameStatus {
-	return &c
-}
-
 // SpendingLimit - The subscription spending limit.
 type SpendingLimit string
 
@@ -115,11 +95,6 @@ func PossibleSpendingLimitValues() []SpendingLimit {
 		SpendingLimitOff,
 		SpendingLimitCurrentPeriodOff,
 	}
-}
-
-// ToPtr returns a *SpendingLimit pointing to the current value.
-func (c SpendingLimit) ToPtr() *SpendingLimit {
-	return &c
 }
 
 // SubscriptionState - The subscription state. Possible values are Enabled, Warned, PastDue, Disabled, and Deleted.
@@ -144,11 +119,6 @@ func PossibleSubscriptionStateValues() []SubscriptionState {
 	}
 }
 
-// ToPtr returns a *SubscriptionState pointing to the current value.
-func (c SubscriptionState) ToPtr() *SubscriptionState {
-	return &c
-}
-
 // TenantCategory - Category of the tenant.
 type TenantCategory string
 
@@ -165,9 +135,4 @@ func PossibleTenantCategoryValues() []TenantCategory {
 		TenantCategoryProjectedBy,
 		TenantCategoryManagedBy,
 	}
-}
-
-// ToPtr returns a *TenantCategory pointing to the current value.
-func (c TenantCategory) ToPtr() *TenantCategory {
-	return &c
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type SchemaRegistryClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSchemaRegistryClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SchemaRegistryClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewSchemaRegistryClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SchemaRegistryClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SchemaRegistryClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate -
@@ -106,7 +111,7 @@ func (client *SchemaRegistryClient) createOrUpdateCreateRequest(ctx context.Cont
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *SchemaRegistryClient) createOrUpdateHandleResponse(resp *http.Response) (SchemaRegistryClientCreateOrUpdateResponse, error) {
-	result := SchemaRegistryClientCreateOrUpdateResponse{RawResponse: resp}
+	result := SchemaRegistryClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SchemaGroup); err != nil {
 		return SchemaRegistryClientCreateOrUpdateResponse{}, err
 	}
@@ -131,7 +136,7 @@ func (client *SchemaRegistryClient) Delete(ctx context.Context, resourceGroupNam
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return SchemaRegistryClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SchemaRegistryClientDeleteResponse{RawResponse: resp}, nil
+	return SchemaRegistryClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -217,7 +222,7 @@ func (client *SchemaRegistryClient) getCreateRequest(ctx context.Context, resour
 
 // getHandleResponse handles the Get response.
 func (client *SchemaRegistryClient) getHandleResponse(resp *http.Response) (SchemaRegistryClientGetResponse, error) {
-	result := SchemaRegistryClientGetResponse{RawResponse: resp}
+	result := SchemaRegistryClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SchemaGroup); err != nil {
 		return SchemaRegistryClientGetResponse{}, err
 	}
@@ -230,16 +235,32 @@ func (client *SchemaRegistryClient) getHandleResponse(resp *http.Response) (Sche
 // namespaceName - The Namespace name
 // options - SchemaRegistryClientListByNamespaceOptions contains the optional parameters for the SchemaRegistryClient.ListByNamespace
 // method.
-func (client *SchemaRegistryClient) ListByNamespace(resourceGroupName string, namespaceName string, options *SchemaRegistryClientListByNamespaceOptions) *SchemaRegistryClientListByNamespacePager {
-	return &SchemaRegistryClientListByNamespacePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByNamespaceCreateRequest(ctx, resourceGroupName, namespaceName, options)
+func (client *SchemaRegistryClient) ListByNamespace(resourceGroupName string, namespaceName string, options *SchemaRegistryClientListByNamespaceOptions) *runtime.Pager[SchemaRegistryClientListByNamespaceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SchemaRegistryClientListByNamespaceResponse]{
+		More: func(page SchemaRegistryClientListByNamespaceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SchemaRegistryClientListByNamespaceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SchemaGroupListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SchemaRegistryClientListByNamespaceResponse) (SchemaRegistryClientListByNamespaceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByNamespaceCreateRequest(ctx, resourceGroupName, namespaceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SchemaRegistryClientListByNamespaceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SchemaRegistryClientListByNamespaceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SchemaRegistryClientListByNamespaceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByNamespaceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByNamespaceCreateRequest creates the ListByNamespace request.
@@ -276,7 +297,7 @@ func (client *SchemaRegistryClient) listByNamespaceCreateRequest(ctx context.Con
 
 // listByNamespaceHandleResponse handles the ListByNamespace response.
 func (client *SchemaRegistryClient) listByNamespaceHandleResponse(resp *http.Response) (SchemaRegistryClientListByNamespaceResponse, error) {
-	result := SchemaRegistryClientListByNamespaceResponse{RawResponse: resp}
+	result := SchemaRegistryClientListByNamespaceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SchemaGroupListResult); err != nil {
 		return SchemaRegistryClientListByNamespaceResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,44 +17,58 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
 )
 
-// x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/Clusters/ClusterQuotaConfigurationPatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/Clusters/ClusterQuotaConfigurationPatch.json
 func ExampleConfigurationClient_Patch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armeventhub.NewConfigurationClient("<subscription-id>", cred, nil)
+	client, err := armeventhub.NewConfigurationClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Patch(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		armeventhub.ClusterQuotaConfigurationProperties{
 			Settings: map[string]*string{
-				"eventhub-per-namespace-quota": to.StringPtr("20"),
-				"namespaces-per-cluster-quota": to.StringPtr("200"),
+				"eventhub-per-namespace-quota": to.Ptr("20"),
+				"namespaces-per-cluster-quota": to.Ptr("200"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ConfigurationClientPatchResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/Clusters/ClusterQuotaConfigurationGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/Clusters/ClusterQuotaConfigurationGet.json
 func ExampleConfigurationClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armeventhub.NewConfigurationClient("<subscription-id>", cred, nil)
+	client, err := armeventhub.NewConfigurationClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ConfigurationClientGetResult)
+	// TODO: use response item
+	_ = res
 }

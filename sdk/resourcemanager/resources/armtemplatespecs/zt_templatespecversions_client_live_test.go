@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,13 +8,14 @@ package armtemplatespecs_test
 
 import (
 	"context"
+	"testing"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armtemplatespecs"
 	"github.com/stretchr/testify/suite"
-	"testing"
 )
 
 type TemplateSpecVersionsClientTestSuite struct {
@@ -53,15 +54,19 @@ func TestTemplateSpecVersionsClient(t *testing.T) {
 func (testsuite *TemplateSpecVersionsClientTestSuite) TestTemplateSpecVersionsCRUD() {
 	// create template spec
 	templateSpecName := "go-test-template"
-	templateSpecsClient := armtemplatespecs.NewClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	templateSpecsClient, err := armtemplatespecs.NewClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	resp, err := templateSpecsClient.CreateOrUpdate(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
 		templateSpecName,
 		armtemplatespecs.TemplateSpec{
-			Location: to.StringPtr(testsuite.location),
+			Location: to.Ptr(testsuite.location),
 			Properties: &armtemplatespecs.TemplateSpecProperties{
-				Description: to.StringPtr("template spec properties description."),
+				Description: to.Ptr("template spec properties description."),
+				Metadata: map[string]string{
+					"live": "test",
+				},
 			},
 		},
 		nil,
@@ -71,21 +76,28 @@ func (testsuite *TemplateSpecVersionsClientTestSuite) TestTemplateSpecVersionsCR
 
 	// create template version
 	templateSpecVersion := "go-test-template-version"
-	templateSpecVersionsClient := armtemplatespecs.NewTemplateSpecVersionsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	templateSpecVersionsClient, err := armtemplatespecs.NewTemplateSpecVersionsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	vResp, err := templateSpecVersionsClient.CreateOrUpdate(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
 		templateSpecName,
 		templateSpecVersion,
 		armtemplatespecs.TemplateSpecVersion{
-			Location: to.StringPtr(testsuite.location),
+			Location: to.Ptr(testsuite.location),
 			Properties: &armtemplatespecs.TemplateSpecVersionProperties{
-				Description: to.StringPtr("<description>"),
+				Description: to.Ptr("<description>"),
 				MainTemplate: map[string]interface{}{
 					"$schema":        "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
 					"contentVersion": "1.0.0.0",
 					"parameters":     map[string]interface{}{},
 					"resources":      []interface{}{},
+				},
+				Metadata: map[string]string{
+					"live": "test",
+				},
+				UIFormDefinition: map[string]string{
+					"live": "test",
 				},
 			},
 		},
@@ -98,7 +110,7 @@ func (testsuite *TemplateSpecVersionsClientTestSuite) TestTemplateSpecVersionsCR
 	updateResp, err := templateSpecVersionsClient.Update(testsuite.ctx, testsuite.resourceGroupName, templateSpecName, templateSpecVersion, &armtemplatespecs.TemplateSpecVersionsClientUpdateOptions{
 		TemplateSpecVersionUpdateModel: &armtemplatespecs.TemplateSpecVersionUpdateModel{
 			Tags: map[string]*string{
-				"test": to.StringPtr("live"),
+				"test": to.Ptr("live"),
 			},
 		},
 	})
@@ -112,10 +124,9 @@ func (testsuite *TemplateSpecVersionsClientTestSuite) TestTemplateSpecVersionsCR
 
 	// list
 	pager := templateSpecVersionsClient.List(testsuite.resourceGroupName, templateSpecName, nil)
-	testsuite.Require().NoError(pager.Err())
+	testsuite.Require().True(pager.More())
 
 	// delete
-	delResp, err := templateSpecVersionsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, templateSpecName, templateSpecVersion, nil)
+	_, err = templateSpecVersionsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, templateSpecName, templateSpecVersion, nil)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(200, delResp.RawResponse.StatusCode)
 }

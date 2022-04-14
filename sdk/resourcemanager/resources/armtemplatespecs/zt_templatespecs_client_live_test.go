@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,13 +8,14 @@ package armtemplatespecs_test
 
 import (
 	"context"
+	"testing"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armtemplatespecs"
 	"github.com/stretchr/testify/suite"
-	"testing"
 )
 
 type TemplateSpecsClientTestSuite struct {
@@ -53,15 +54,19 @@ func TestTemplateSpecsClient(t *testing.T) {
 func (testsuite *TemplateSpecsClientTestSuite) TestTemplateSpecsCRUD() {
 	// create template spec
 	templateSpecName := "go-test-template"
-	templateSpecsClient := armtemplatespecs.NewClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	templateSpecsClient, err := armtemplatespecs.NewClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	resp, err := templateSpecsClient.CreateOrUpdate(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
 		templateSpecName,
 		armtemplatespecs.TemplateSpec{
-			Location: to.StringPtr(testsuite.location),
+			Location: to.Ptr(testsuite.location),
 			Properties: &armtemplatespecs.TemplateSpecProperties{
-				Description: to.StringPtr("template spec properties description."),
+				Description: to.Ptr("template spec properties description."),
+				Metadata: map[string]string{
+					"live": "test",
+				},
 			},
 		},
 		nil,
@@ -73,7 +78,7 @@ func (testsuite *TemplateSpecsClientTestSuite) TestTemplateSpecsCRUD() {
 	updateResp, err := templateSpecsClient.Update(testsuite.ctx, testsuite.resourceGroupName, templateSpecName, &armtemplatespecs.ClientUpdateOptions{
 		TemplateSpec: &armtemplatespecs.TemplateSpecUpdateModel{
 			Tags: map[string]*string{
-				"test": to.StringPtr("live"),
+				"test": to.Ptr("live"),
 			},
 		},
 	})
@@ -87,14 +92,13 @@ func (testsuite *TemplateSpecsClientTestSuite) TestTemplateSpecsCRUD() {
 
 	// list template spec by resource group
 	listByResourceGroup := templateSpecsClient.ListByResourceGroup(testsuite.resourceGroupName, nil)
-	testsuite.Require().NoError(listByResourceGroup.Err())
+	testsuite.Require().True(listByResourceGroup.More())
 
 	// list template spec by subscription
 	listBySubscription := templateSpecsClient.ListBySubscription(nil)
-	testsuite.Require().NoError(listBySubscription.Err())
+	testsuite.Require().True(listBySubscription.More())
 
 	// delete template spec
-	delResp, err := templateSpecsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, templateSpecName, nil)
+	_, err = templateSpecsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, templateSpecName, nil)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(200, delResp.RawResponse.StatusCode)
 }

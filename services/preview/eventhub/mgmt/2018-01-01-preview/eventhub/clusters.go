@@ -58,9 +58,7 @@ func (client ClustersClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 			Constraints: []validation.Constraint{{Target: "parameters.Sku", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "parameters.Sku.Name", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "parameters.Sku.Capacity", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "parameters.Sku.Capacity", Name: validation.InclusiveMaximum, Rule: int64(32), Chain: nil},
-							{Target: "parameters.Sku.Capacity", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil},
-						}},
+						Chain: []validation.Constraint{{Target: "parameters.Sku.Capacity", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil}}},
 				}}}}}); err != nil {
 		return result, validation.NewError("eventhub.ClustersClient", "CreateOrUpdate", err.Error())
 	}

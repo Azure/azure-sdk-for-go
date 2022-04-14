@@ -90,7 +90,7 @@ func (client MigrationConfigsClient) CompleteMigrationPreparer(ctx context.Conte
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -176,7 +176,7 @@ func (client MigrationConfigsClient) CreateAndStartMigrationPreparer(ctx context
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -275,7 +275,7 @@ func (client MigrationConfigsClient) DeletePreparer(ctx context.Context, resourc
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -361,7 +361,7 @@ func (client MigrationConfigsClient) GetPreparer(ctx context.Context, resourceGr
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -452,7 +452,7 @@ func (client MigrationConfigsClient) ListPreparer(ctx context.Context, resourceG
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -576,7 +576,7 @@ func (client MigrationConfigsClient) RevertPreparer(ctx context.Context, resourc
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

@@ -91,7 +91,7 @@ func (client QueuesClient) CreateOrUpdatePreparer(ctx context.Context, resourceG
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -192,7 +192,7 @@ func (client QueuesClient) CreateOrUpdateAuthorizationRulePreparer(ctx context.C
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -284,7 +284,7 @@ func (client QueuesClient) DeletePreparer(ctx context.Context, resourceGroupName
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -378,7 +378,7 @@ func (client QueuesClient) DeleteAuthorizationRulePreparer(ctx context.Context, 
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -467,7 +467,7 @@ func (client QueuesClient) GetPreparer(ctx context.Context, resourceGroupName st
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -562,7 +562,7 @@ func (client QueuesClient) GetAuthorizationRulePreparer(ctx context.Context, res
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -657,7 +657,7 @@ func (client QueuesClient) ListAuthorizationRulesPreparer(ctx context.Context, r
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -799,7 +799,7 @@ func (client QueuesClient) ListByNamespacePreparer(ctx context.Context, resource
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -937,7 +937,7 @@ func (client QueuesClient) ListKeysPreparer(ctx context.Context, resourceGroupNa
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1033,7 +1033,7 @@ func (client QueuesClient) RegenerateKeysPreparer(ctx context.Context, resourceG
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

@@ -50,11 +50,11 @@ type ArmDisasterRecovery struct {
 	autorest.Response `json:"-"`
 	// ArmDisasterRecoveryProperties - Properties required to the Create Or Update Alias(Disaster Recovery configurations)
 	*ArmDisasterRecoveryProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource ID.
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name.
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -319,11 +319,11 @@ type AuthorizationRule struct {
 	autorest.Response `json:"-"`
 	// AuthorizationRuleProperties - Properties supplied to create or update AuthorizationRule
 	*AuthorizationRuleProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource ID.
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name.
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -602,11 +602,11 @@ type ConsumerGroup struct {
 	autorest.Response `json:"-"`
 	// ConsumerGroupProperties - Single item in List or Get Consumer group operation
 	*ConsumerGroupProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource ID.
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name.
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -923,11 +923,11 @@ type EHNamespace struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
-	// ID - READ-ONLY; Resource ID.
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name.
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1397,11 +1397,11 @@ type MessagingPlan struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
-	// ID - READ-ONLY; Resource ID.
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name.
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1515,11 +1515,11 @@ type MessagingRegions struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
-	// ID - READ-ONLY; Resource ID.
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name.
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1725,11 +1725,11 @@ type Model struct {
 	autorest.Response `json:"-"`
 	// Properties - Properties supplied to the Create Or Update Event Hub operation.
 	*Properties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource ID.
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name.
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1878,11 +1878,11 @@ type NetworkRuleSet struct {
 	autorest.Response `json:"-"`
 	// NetworkRuleSetProperties - NetworkRuleSet properties
 	*NetworkRuleSetProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource ID.
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name.
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2375,13 +2375,13 @@ type RegenerateAccessKeyParameters struct {
 	Key *string `json:"key,omitempty"`
 }
 
-// Resource the resource definition.
+// Resource common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
-	// ID - READ-ONLY; Resource ID.
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name.
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2413,11 +2413,11 @@ type TrackedResource struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
-	// ID - READ-ONLY; Resource ID.
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name.
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 

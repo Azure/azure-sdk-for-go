@@ -109,7 +109,7 @@ func (client EventHubsClient) CreateOrUpdatePreparer(ctx context.Context, resour
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -211,7 +211,7 @@ func (client EventHubsClient) CreateOrUpdateAuthorizationRulePreparer(ctx contex
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -304,7 +304,7 @@ func (client EventHubsClient) DeletePreparer(ctx context.Context, resourceGroupN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -398,7 +398,7 @@ func (client EventHubsClient) DeleteAuthorizationRulePreparer(ctx context.Contex
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -488,7 +488,7 @@ func (client EventHubsClient) GetPreparer(ctx context.Context, resourceGroupName
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -583,7 +583,7 @@ func (client EventHubsClient) GetAuthorizationRulePreparer(ctx context.Context, 
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -679,7 +679,7 @@ func (client EventHubsClient) ListAuthorizationRulesPreparer(ctx context.Context
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -821,7 +821,7 @@ func (client EventHubsClient) ListByNamespacePreparer(ctx context.Context, resou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -959,7 +959,7 @@ func (client EventHubsClient) ListKeysPreparer(ctx context.Context, resourceGrou
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1055,7 +1055,7 @@ func (client EventHubsClient) RegenerateKeysPreparer(ctx context.Context, resour
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

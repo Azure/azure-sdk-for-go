@@ -97,7 +97,7 @@ func (client ConsumerGroupsClient) CreateOrUpdatePreparer(ctx context.Context, r
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -195,7 +195,7 @@ func (client ConsumerGroupsClient) DeletePreparer(ctx context.Context, resourceG
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -290,7 +290,7 @@ func (client ConsumerGroupsClient) GetPreparer(ctx context.Context, resourceGrou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -401,7 +401,7 @@ func (client ConsumerGroupsClient) ListByEventHubPreparer(ctx context.Context, r
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

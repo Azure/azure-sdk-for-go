@@ -3,12 +3,6 @@
 
 package aztables
 
-import (
-	"errors"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-)
-
 // TableErrorCode is the error code returned by the service on failed operations. For more
 // information about Table service error codes: https://docs.microsoft.com/en-us/rest/api/storageservices/table-service-error-codes
 type TableErrorCode string
@@ -72,22 +66,4 @@ func PossibleTableErrorCodeValues() []TableErrorCode {
 		XMethodIncorrectValue,
 		XMethodNotUsingPost,
 	}
-}
-
-// validateResponseError creates a response error for transactional batches and validates
-// that the ErrorCode has been set
-func validateResponseError(e error) error {
-	var respErr *azcore.ResponseError
-	if errors.As(e, &respErr) {
-		// validate that ErrorCode != ""
-		if respErr.ErrorCode != "" {
-			return e
-		}
-
-
-
-		return respErr
-	}
-
-	return e
 }

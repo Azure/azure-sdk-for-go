@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type AccountsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AccountsClient {
+func NewAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccountsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AccountsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginAbortHierarchicalNamespaceMigration - Abort live Migration of storage account to enable Hns
@@ -56,22 +61,18 @@ func NewAccountsClient(subscriptionID string, credential azcore.TokenCredential,
 // 3 and 24 characters in length and use numbers and lower-case letters only.
 // options - AccountsClientBeginAbortHierarchicalNamespaceMigrationOptions contains the optional parameters for the AccountsClient.BeginAbortHierarchicalNamespaceMigration
 // method.
-func (client *AccountsClient) BeginAbortHierarchicalNamespaceMigration(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginAbortHierarchicalNamespaceMigrationOptions) (AccountsClientAbortHierarchicalNamespaceMigrationPollerResponse, error) {
-	resp, err := client.abortHierarchicalNamespaceMigration(ctx, resourceGroupName, accountName, options)
-	if err != nil {
-		return AccountsClientAbortHierarchicalNamespaceMigrationPollerResponse{}, err
+func (client *AccountsClient) BeginAbortHierarchicalNamespaceMigration(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginAbortHierarchicalNamespaceMigrationOptions) (*armruntime.Poller[AccountsClientAbortHierarchicalNamespaceMigrationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.abortHierarchicalNamespaceMigration(ctx, resourceGroupName, accountName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[AccountsClientAbortHierarchicalNamespaceMigrationResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[AccountsClientAbortHierarchicalNamespaceMigrationResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := AccountsClientAbortHierarchicalNamespaceMigrationPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("AccountsClient.AbortHierarchicalNamespaceMigration", "location", resp, client.pl)
-	if err != nil {
-		return AccountsClientAbortHierarchicalNamespaceMigrationPollerResponse{}, err
-	}
-	result.Poller = &AccountsClientAbortHierarchicalNamespaceMigrationPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // AbortHierarchicalNamespaceMigration - Abort live Migration of storage account to enable Hns
@@ -111,7 +112,7 @@ func (client *AccountsClient) abortHierarchicalNamespaceMigrationCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -150,7 +151,7 @@ func (client *AccountsClient) checkNameAvailabilityCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, accountName)
@@ -158,7 +159,7 @@ func (client *AccountsClient) checkNameAvailabilityCreateRequest(ctx context.Con
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
 func (client *AccountsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (AccountsClientCheckNameAvailabilityResponse, error) {
-	result := AccountsClientCheckNameAvailabilityResponse{RawResponse: resp}
+	result := AccountsClientCheckNameAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResult); err != nil {
 		return AccountsClientCheckNameAvailabilityResponse{}, err
 	}
@@ -175,22 +176,16 @@ func (client *AccountsClient) checkNameAvailabilityHandleResponse(resp *http.Res
 // 3 and 24 characters in length and use numbers and lower-case letters only.
 // parameters - The parameters to provide for the created account.
 // options - AccountsClientBeginCreateOptions contains the optional parameters for the AccountsClient.BeginCreate method.
-func (client *AccountsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, parameters AccountCreateParameters, options *AccountsClientBeginCreateOptions) (AccountsClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, accountName, parameters, options)
-	if err != nil {
-		return AccountsClientCreatePollerResponse{}, err
+func (client *AccountsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, parameters AccountCreateParameters, options *AccountsClientBeginCreateOptions) (*armruntime.Poller[AccountsClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, accountName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[AccountsClientCreateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[AccountsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := AccountsClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("AccountsClient.Create", "", resp, client.pl)
-	if err != nil {
-		return AccountsClientCreatePollerResponse{}, err
-	}
-	result.Poller = &AccountsClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Asynchronously creates a new storage account with the specified parameters. If an account is already created and
@@ -233,7 +228,7 @@ func (client *AccountsClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -257,7 +252,7 @@ func (client *AccountsClient) Delete(ctx context.Context, resourceGroupName stri
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return AccountsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return AccountsClientDeleteResponse{RawResponse: resp}, nil
+	return AccountsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -280,7 +275,7 @@ func (client *AccountsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -293,22 +288,18 @@ func (client *AccountsClient) deleteCreateRequest(ctx context.Context, resourceG
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
 // options - AccountsClientBeginFailoverOptions contains the optional parameters for the AccountsClient.BeginFailover method.
-func (client *AccountsClient) BeginFailover(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginFailoverOptions) (AccountsClientFailoverPollerResponse, error) {
-	resp, err := client.failover(ctx, resourceGroupName, accountName, options)
-	if err != nil {
-		return AccountsClientFailoverPollerResponse{}, err
+func (client *AccountsClient) BeginFailover(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginFailoverOptions) (*armruntime.Poller[AccountsClientFailoverResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.failover(ctx, resourceGroupName, accountName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[AccountsClientFailoverResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[AccountsClientFailoverResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := AccountsClientFailoverPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("AccountsClient.Failover", "location", resp, client.pl)
-	if err != nil {
-		return AccountsClientFailoverPollerResponse{}, err
-	}
-	result.Poller = &AccountsClientFailoverPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Failover - Failover request can be triggered for a storage account in case of availability issues. The failover occurs
@@ -350,7 +341,7 @@ func (client *AccountsClient) failoverCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -397,7 +388,7 @@ func (client *AccountsClient) getPropertiesCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", string(*options.Expand))
 	}
@@ -408,7 +399,7 @@ func (client *AccountsClient) getPropertiesCreateRequest(ctx context.Context, re
 
 // getPropertiesHandleResponse handles the GetProperties response.
 func (client *AccountsClient) getPropertiesHandleResponse(resp *http.Response) (AccountsClientGetPropertiesResponse, error) {
-	result := AccountsClientGetPropertiesResponse{RawResponse: resp}
+	result := AccountsClientGetPropertiesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Account); err != nil {
 		return AccountsClientGetPropertiesResponse{}, err
 	}
@@ -425,22 +416,18 @@ func (client *AccountsClient) getPropertiesHandleResponse(resp *http.Response) (
 // request will validate the migration whereas the hydration request will migrate the account.
 // options - AccountsClientBeginHierarchicalNamespaceMigrationOptions contains the optional parameters for the AccountsClient.BeginHierarchicalNamespaceMigration
 // method.
-func (client *AccountsClient) BeginHierarchicalNamespaceMigration(ctx context.Context, resourceGroupName string, accountName string, requestType string, options *AccountsClientBeginHierarchicalNamespaceMigrationOptions) (AccountsClientHierarchicalNamespaceMigrationPollerResponse, error) {
-	resp, err := client.hierarchicalNamespaceMigration(ctx, resourceGroupName, accountName, requestType, options)
-	if err != nil {
-		return AccountsClientHierarchicalNamespaceMigrationPollerResponse{}, err
+func (client *AccountsClient) BeginHierarchicalNamespaceMigration(ctx context.Context, resourceGroupName string, accountName string, requestType string, options *AccountsClientBeginHierarchicalNamespaceMigrationOptions) (*armruntime.Poller[AccountsClientHierarchicalNamespaceMigrationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.hierarchicalNamespaceMigration(ctx, resourceGroupName, accountName, requestType, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[AccountsClientHierarchicalNamespaceMigrationResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[AccountsClientHierarchicalNamespaceMigrationResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := AccountsClientHierarchicalNamespaceMigrationPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("AccountsClient.HierarchicalNamespaceMigration", "location", resp, client.pl)
-	if err != nil {
-		return AccountsClientHierarchicalNamespaceMigrationPollerResponse{}, err
-	}
-	result.Poller = &AccountsClientHierarchicalNamespaceMigrationPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // HierarchicalNamespaceMigration - Live Migration of storage account to enable Hns
@@ -480,7 +467,7 @@ func (client *AccountsClient) hierarchicalNamespaceMigrationCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	reqQP.Set("requestType", requestType)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
@@ -491,16 +478,32 @@ func (client *AccountsClient) hierarchicalNamespaceMigrationCreateRequest(ctx co
 // ListKeys operation for this.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AccountsClientListOptions contains the optional parameters for the AccountsClient.List method.
-func (client *AccountsClient) List(options *AccountsClientListOptions) *AccountsClientListPager {
-	return &AccountsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *AccountsClient) List(options *AccountsClientListOptions) *runtime.Pager[AccountsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AccountsClientListResponse]{
+		More: func(page AccountsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AccountsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AccountListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AccountsClientListResponse) (AccountsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AccountsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AccountsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AccountsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -515,7 +518,7 @@ func (client *AccountsClient) listCreateRequest(ctx context.Context, options *Ac
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -523,7 +526,7 @@ func (client *AccountsClient) listCreateRequest(ctx context.Context, options *Ac
 
 // listHandleResponse handles the List response.
 func (client *AccountsClient) listHandleResponse(resp *http.Response) (AccountsClientListResponse, error) {
-	result := AccountsClientListResponse{RawResponse: resp}
+	result := AccountsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountListResult); err != nil {
 		return AccountsClientListResponse{}, err
 	}
@@ -572,7 +575,7 @@ func (client *AccountsClient) listAccountSASCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -580,7 +583,7 @@ func (client *AccountsClient) listAccountSASCreateRequest(ctx context.Context, r
 
 // listAccountSASHandleResponse handles the ListAccountSAS response.
 func (client *AccountsClient) listAccountSASHandleResponse(resp *http.Response) (AccountsClientListAccountSASResponse, error) {
-	result := AccountsClientListAccountSASResponse{RawResponse: resp}
+	result := AccountsClientListAccountSASResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListAccountSasResponse); err != nil {
 		return AccountsClientListAccountSASResponse{}, err
 	}
@@ -593,16 +596,32 @@ func (client *AccountsClient) listAccountSASHandleResponse(resp *http.Response) 
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // options - AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.ListByResourceGroup
 // method.
-func (client *AccountsClient) ListByResourceGroup(resourceGroupName string, options *AccountsClientListByResourceGroupOptions) *AccountsClientListByResourceGroupPager {
-	return &AccountsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *AccountsClient) ListByResourceGroup(resourceGroupName string, options *AccountsClientListByResourceGroupOptions) *runtime.Pager[AccountsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AccountsClientListByResourceGroupResponse]{
+		More: func(page AccountsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AccountsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AccountListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AccountsClientListByResourceGroupResponse) (AccountsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AccountsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AccountsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AccountsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -621,7 +640,7 @@ func (client *AccountsClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -629,7 +648,7 @@ func (client *AccountsClient) listByResourceGroupCreateRequest(ctx context.Conte
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *AccountsClient) listByResourceGroupHandleResponse(resp *http.Response) (AccountsClientListByResourceGroupResponse, error) {
-	result := AccountsClientListByResourceGroupResponse{RawResponse: resp}
+	result := AccountsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountListResult); err != nil {
 		return AccountsClientListByResourceGroupResponse{}, err
 	}
@@ -677,7 +696,7 @@ func (client *AccountsClient) listKeysCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", "kerb")
 	}
@@ -688,7 +707,7 @@ func (client *AccountsClient) listKeysCreateRequest(ctx context.Context, resourc
 
 // listKeysHandleResponse handles the ListKeys response.
 func (client *AccountsClient) listKeysHandleResponse(resp *http.Response) (AccountsClientListKeysResponse, error) {
-	result := AccountsClientListKeysResponse{RawResponse: resp}
+	result := AccountsClientListKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountListKeysResult); err != nil {
 		return AccountsClientListKeysResponse{}, err
 	}
@@ -737,7 +756,7 @@ func (client *AccountsClient) listServiceSASCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -745,7 +764,7 @@ func (client *AccountsClient) listServiceSASCreateRequest(ctx context.Context, r
 
 // listServiceSASHandleResponse handles the ListServiceSAS response.
 func (client *AccountsClient) listServiceSASHandleResponse(resp *http.Response) (AccountsClientListServiceSASResponse, error) {
-	result := AccountsClientListServiceSASResponse{RawResponse: resp}
+	result := AccountsClientListServiceSASResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListServiceSasResponse); err != nil {
 		return AccountsClientListServiceSASResponse{}, err
 	}
@@ -794,7 +813,7 @@ func (client *AccountsClient) regenerateKeyCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, regenerateKey)
@@ -802,7 +821,7 @@ func (client *AccountsClient) regenerateKeyCreateRequest(ctx context.Context, re
 
 // regenerateKeyHandleResponse handles the RegenerateKey response.
 func (client *AccountsClient) regenerateKeyHandleResponse(resp *http.Response) (AccountsClientRegenerateKeyResponse, error) {
-	result := AccountsClientRegenerateKeyResponse{RawResponse: resp}
+	result := AccountsClientRegenerateKeyResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountListKeysResult); err != nil {
 		return AccountsClientRegenerateKeyResponse{}, err
 	}
@@ -817,22 +836,18 @@ func (client *AccountsClient) regenerateKeyHandleResponse(resp *http.Response) (
 // parameters - The parameters to provide for restore blob ranges.
 // options - AccountsClientBeginRestoreBlobRangesOptions contains the optional parameters for the AccountsClient.BeginRestoreBlobRanges
 // method.
-func (client *AccountsClient) BeginRestoreBlobRanges(ctx context.Context, resourceGroupName string, accountName string, parameters BlobRestoreParameters, options *AccountsClientBeginRestoreBlobRangesOptions) (AccountsClientRestoreBlobRangesPollerResponse, error) {
-	resp, err := client.restoreBlobRanges(ctx, resourceGroupName, accountName, parameters, options)
-	if err != nil {
-		return AccountsClientRestoreBlobRangesPollerResponse{}, err
+func (client *AccountsClient) BeginRestoreBlobRanges(ctx context.Context, resourceGroupName string, accountName string, parameters BlobRestoreParameters, options *AccountsClientBeginRestoreBlobRangesOptions) (*armruntime.Poller[AccountsClientRestoreBlobRangesResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.restoreBlobRanges(ctx, resourceGroupName, accountName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[AccountsClientRestoreBlobRangesResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[AccountsClientRestoreBlobRangesResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := AccountsClientRestoreBlobRangesPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("AccountsClient.RestoreBlobRanges", "location", resp, client.pl)
-	if err != nil {
-		return AccountsClientRestoreBlobRangesPollerResponse{}, err
-	}
-	result.Poller = &AccountsClientRestoreBlobRangesPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // RestoreBlobRanges - Restore blobs in the specified blob ranges
@@ -872,7 +887,7 @@ func (client *AccountsClient) restoreBlobRangesCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -897,7 +912,7 @@ func (client *AccountsClient) RevokeUserDelegationKeys(ctx context.Context, reso
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AccountsClientRevokeUserDelegationKeysResponse{}, runtime.NewResponseError(resp)
 	}
-	return AccountsClientRevokeUserDelegationKeysResponse{RawResponse: resp}, nil
+	return AccountsClientRevokeUserDelegationKeysResponse{}, nil
 }
 
 // revokeUserDelegationKeysCreateRequest creates the RevokeUserDelegationKeys request.
@@ -920,7 +935,7 @@ func (client *AccountsClient) revokeUserDelegationKeysCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -973,7 +988,7 @@ func (client *AccountsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -981,7 +996,7 @@ func (client *AccountsClient) updateCreateRequest(ctx context.Context, resourceG
 
 // updateHandleResponse handles the Update response.
 func (client *AccountsClient) updateHandleResponse(resp *http.Response) (AccountsClientUpdateResponse, error) {
-	result := AccountsClientUpdateResponse{RawResponse: resp}
+	result := AccountsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Account); err != nil {
 		return AccountsClientUpdateResponse{}, err
 	}

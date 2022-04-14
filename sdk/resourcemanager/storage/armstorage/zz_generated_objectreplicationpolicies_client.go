@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ObjectReplicationPoliciesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewObjectReplicationPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ObjectReplicationPoliciesClient {
+func NewObjectReplicationPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ObjectReplicationPoliciesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ObjectReplicationPoliciesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create or update the object replication policy of the storage account.
@@ -99,7 +104,7 @@ func (client *ObjectReplicationPoliciesClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, properties)
@@ -107,7 +112,7 @@ func (client *ObjectReplicationPoliciesClient) createOrUpdateCreateRequest(ctx c
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ObjectReplicationPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (ObjectReplicationPoliciesClientCreateOrUpdateResponse, error) {
-	result := ObjectReplicationPoliciesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := ObjectReplicationPoliciesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ObjectReplicationPolicy); err != nil {
 		return ObjectReplicationPoliciesClientCreateOrUpdateResponse{}, err
 	}
@@ -136,7 +141,7 @@ func (client *ObjectReplicationPoliciesClient) Delete(ctx context.Context, resou
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ObjectReplicationPoliciesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ObjectReplicationPoliciesClientDeleteResponse{RawResponse: resp}, nil
+	return ObjectReplicationPoliciesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -163,7 +168,7 @@ func (client *ObjectReplicationPoliciesClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -218,7 +223,7 @@ func (client *ObjectReplicationPoliciesClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -226,7 +231,7 @@ func (client *ObjectReplicationPoliciesClient) getCreateRequest(ctx context.Cont
 
 // getHandleResponse handles the Get response.
 func (client *ObjectReplicationPoliciesClient) getHandleResponse(resp *http.Response) (ObjectReplicationPoliciesClientGetResponse, error) {
-	result := ObjectReplicationPoliciesClientGetResponse{RawResponse: resp}
+	result := ObjectReplicationPoliciesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ObjectReplicationPolicy); err != nil {
 		return ObjectReplicationPoliciesClientGetResponse{}, err
 	}
@@ -240,19 +245,26 @@ func (client *ObjectReplicationPoliciesClient) getHandleResponse(resp *http.Resp
 // 3 and 24 characters in length and use numbers and lower-case letters only.
 // options - ObjectReplicationPoliciesClientListOptions contains the optional parameters for the ObjectReplicationPoliciesClient.List
 // method.
-func (client *ObjectReplicationPoliciesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *ObjectReplicationPoliciesClientListOptions) (ObjectReplicationPoliciesClientListResponse, error) {
-	req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
-	if err != nil {
-		return ObjectReplicationPoliciesClientListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ObjectReplicationPoliciesClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ObjectReplicationPoliciesClientListResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listHandleResponse(resp)
+func (client *ObjectReplicationPoliciesClient) List(resourceGroupName string, accountName string, options *ObjectReplicationPoliciesClientListOptions) *runtime.Pager[ObjectReplicationPoliciesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ObjectReplicationPoliciesClientListResponse]{
+		More: func(page ObjectReplicationPoliciesClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ObjectReplicationPoliciesClientListResponse) (ObjectReplicationPoliciesClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+			if err != nil {
+				return ObjectReplicationPoliciesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ObjectReplicationPoliciesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ObjectReplicationPoliciesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -275,7 +287,7 @@ func (client *ObjectReplicationPoliciesClient) listCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -283,7 +295,7 @@ func (client *ObjectReplicationPoliciesClient) listCreateRequest(ctx context.Con
 
 // listHandleResponse handles the List response.
 func (client *ObjectReplicationPoliciesClient) listHandleResponse(resp *http.Response) (ObjectReplicationPoliciesClientListResponse, error) {
-	result := ObjectReplicationPoliciesClientListResponse{RawResponse: resp}
+	result := ObjectReplicationPoliciesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ObjectReplicationPolicies); err != nil {
 		return ObjectReplicationPoliciesClientListResponse{}, err
 	}

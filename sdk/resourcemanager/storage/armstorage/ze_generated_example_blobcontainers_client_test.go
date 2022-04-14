@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,67 +19,83 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 )
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/BlobContainersList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/BlobContainersList.json
 func ExampleBlobContainersClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List("<resource-group-name>",
 		"<account-name>",
 		&armstorage.BlobContainersClientListOptions{Maxpagesize: nil,
 			Filter:  nil,
 			Include: nil,
 		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/BlobContainersPutDefaultEncryptionScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/BlobContainersPutDefaultEncryptionScope.json
 func ExampleBlobContainersClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Create(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<container-name>",
 		armstorage.BlobContainer{
 			ContainerProperties: &armstorage.ContainerProperties{
-				DefaultEncryptionScope:      to.StringPtr("<default-encryption-scope>"),
-				DenyEncryptionScopeOverride: to.BoolPtr(true),
+				DefaultEncryptionScope:      to.Ptr("<default-encryption-scope>"),
+				DenyEncryptionScopeOverride: to.Ptr(true),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BlobContainersClientCreateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/BlobContainersPatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/BlobContainersPatch.json
 func ExampleBlobContainersClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<account-name>",
@@ -87,113 +103,147 @@ func ExampleBlobContainersClient_Update() {
 		armstorage.BlobContainer{
 			ContainerProperties: &armstorage.ContainerProperties{
 				Metadata: map[string]*string{
-					"metadata": to.StringPtr("true"),
+					"metadata": to.Ptr("true"),
 				},
-				PublicAccess: armstorage.PublicAccessContainer.ToPtr(),
+				PublicAccess: to.Ptr(armstorage.PublicAccessContainer),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BlobContainersClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/BlobContainersGetWithAllowProtectedAppendWritesAll.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/BlobContainersGetWithAllowProtectedAppendWritesAll.json
 func ExampleBlobContainersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<container-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BlobContainersClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/BlobContainersDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/BlobContainersDelete.json
 func ExampleBlobContainersClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<container-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/BlobContainersSetLegalHold.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/BlobContainersSetLegalHold.json
 func ExampleBlobContainersClient_SetLegalHold() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.SetLegalHold(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<container-name>",
 		armstorage.LegalHold{
 			Tags: []*string{
-				to.StringPtr("tag1"),
-				to.StringPtr("tag2"),
-				to.StringPtr("tag3")},
+				to.Ptr("tag1"),
+				to.Ptr("tag2"),
+				to.Ptr("tag3")},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BlobContainersClientSetLegalHoldResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/BlobContainersClearLegalHold.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/BlobContainersClearLegalHold.json
 func ExampleBlobContainersClient_ClearLegalHold() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ClearLegalHold(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<container-name>",
 		armstorage.LegalHold{
 			Tags: []*string{
-				to.StringPtr("tag1"),
-				to.StringPtr("tag2"),
-				to.StringPtr("tag3")},
+				to.Ptr("tag1"),
+				to.Ptr("tag2"),
+				to.Ptr("tag3")},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BlobContainersClientClearLegalHoldResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/BlobContainersPutImmutabilityPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/BlobContainersPutImmutabilityPolicy.json
 func ExampleBlobContainersClient_CreateOrUpdateImmutabilityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdateImmutabilityPolicy(ctx,
 		"<resource-group-name>",
 		"<account-name>",
@@ -201,44 +251,58 @@ func ExampleBlobContainersClient_CreateOrUpdateImmutabilityPolicy() {
 		&armstorage.BlobContainersClientCreateOrUpdateImmutabilityPolicyOptions{IfMatch: nil,
 			Parameters: &armstorage.ImmutabilityPolicy{
 				Properties: &armstorage.ImmutabilityPolicyProperty{
-					AllowProtectedAppendWrites:            to.BoolPtr(true),
-					ImmutabilityPeriodSinceCreationInDays: to.Int32Ptr(3),
+					AllowProtectedAppendWrites:            to.Ptr(true),
+					ImmutabilityPeriodSinceCreationInDays: to.Ptr[int32](3),
 				},
 			},
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BlobContainersClientCreateOrUpdateImmutabilityPolicyResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/BlobContainersGetImmutabilityPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/BlobContainersGetImmutabilityPolicy.json
 func ExampleBlobContainersClient_GetImmutabilityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetImmutabilityPolicy(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<container-name>",
 		&armstorage.BlobContainersClientGetImmutabilityPolicyOptions{IfMatch: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BlobContainersClientGetImmutabilityPolicyResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/BlobContainersDeleteImmutabilityPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/BlobContainersDeleteImmutabilityPolicy.json
 func ExampleBlobContainersClient_DeleteImmutabilityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.DeleteImmutabilityPolicy(ctx,
 		"<resource-group-name>",
 		"<account-name>",
@@ -246,19 +310,26 @@ func ExampleBlobContainersClient_DeleteImmutabilityPolicy() {
 		"<if-match>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BlobContainersClientDeleteImmutabilityPolicyResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/BlobContainersLockImmutabilityPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/BlobContainersLockImmutabilityPolicy.json
 func ExampleBlobContainersClient_LockImmutabilityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.LockImmutabilityPolicy(ctx,
 		"<resource-group-name>",
 		"<account-name>",
@@ -266,19 +337,26 @@ func ExampleBlobContainersClient_LockImmutabilityPolicy() {
 		"<if-match>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BlobContainersClientLockImmutabilityPolicyResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/BlobContainersExtendImmutabilityPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/BlobContainersExtendImmutabilityPolicy.json
 func ExampleBlobContainersClient_ExtendImmutabilityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ExtendImmutabilityPolicy(ctx,
 		"<resource-group-name>",
 		"<account-name>",
@@ -286,57 +364,73 @@ func ExampleBlobContainersClient_ExtendImmutabilityPolicy() {
 		"<if-match>",
 		&armstorage.BlobContainersClientExtendImmutabilityPolicyOptions{Parameters: &armstorage.ImmutabilityPolicy{
 			Properties: &armstorage.ImmutabilityPolicyProperty{
-				ImmutabilityPeriodSinceCreationInDays: to.Int32Ptr(100),
+				ImmutabilityPeriodSinceCreationInDays: to.Ptr[int32](100),
 			},
 		},
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BlobContainersClientExtendImmutabilityPolicyResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/BlobContainersLease_Acquire.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/BlobContainersLease_Acquire.json
 func ExampleBlobContainersClient_Lease() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Lease(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<container-name>",
 		&armstorage.BlobContainersClientLeaseOptions{Parameters: &armstorage.LeaseContainerRequest{
-			Action:        armstorage.LeaseContainerRequestAction("Acquire").ToPtr(),
-			LeaseDuration: to.Int32Ptr(-1),
+			Action:        to.Ptr(armstorage.LeaseContainerRequestActionAcquire),
+			LeaseDuration: to.Ptr[int32](-1),
 		},
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BlobContainersClientLeaseResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/ObjectLevelWormContainerMigration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/ObjectLevelWormContainerMigration.json
 func ExampleBlobContainersClient_BeginObjectLevelWorm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginObjectLevelWorm(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<container-name>",
-		nil)
+		&armstorage.BlobContainersClientBeginObjectLevelWormOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }

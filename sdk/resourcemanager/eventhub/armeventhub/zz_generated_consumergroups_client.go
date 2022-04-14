@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type ConsumerGroupsClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewConsumerGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ConsumerGroupsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewConsumerGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConsumerGroupsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ConsumerGroupsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates an Event Hubs consumer group as a nested resource within a Namespace.
@@ -111,7 +116,7 @@ func (client *ConsumerGroupsClient) createOrUpdateCreateRequest(ctx context.Cont
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ConsumerGroupsClient) createOrUpdateHandleResponse(resp *http.Response) (ConsumerGroupsClientCreateOrUpdateResponse, error) {
-	result := ConsumerGroupsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := ConsumerGroupsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConsumerGroup); err != nil {
 		return ConsumerGroupsClientCreateOrUpdateResponse{}, err
 	}
@@ -137,7 +142,7 @@ func (client *ConsumerGroupsClient) Delete(ctx context.Context, resourceGroupNam
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ConsumerGroupsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ConsumerGroupsClientDeleteResponse{RawResponse: resp}, nil
+	return ConsumerGroupsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -232,7 +237,7 @@ func (client *ConsumerGroupsClient) getCreateRequest(ctx context.Context, resour
 
 // getHandleResponse handles the Get response.
 func (client *ConsumerGroupsClient) getHandleResponse(resp *http.Response) (ConsumerGroupsClientGetResponse, error) {
-	result := ConsumerGroupsClientGetResponse{RawResponse: resp}
+	result := ConsumerGroupsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConsumerGroup); err != nil {
 		return ConsumerGroupsClientGetResponse{}, err
 	}
@@ -247,16 +252,32 @@ func (client *ConsumerGroupsClient) getHandleResponse(resp *http.Response) (Cons
 // eventHubName - The Event Hub name
 // options - ConsumerGroupsClientListByEventHubOptions contains the optional parameters for the ConsumerGroupsClient.ListByEventHub
 // method.
-func (client *ConsumerGroupsClient) ListByEventHub(resourceGroupName string, namespaceName string, eventHubName string, options *ConsumerGroupsClientListByEventHubOptions) *ConsumerGroupsClientListByEventHubPager {
-	return &ConsumerGroupsClientListByEventHubPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByEventHubCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, options)
+func (client *ConsumerGroupsClient) ListByEventHub(resourceGroupName string, namespaceName string, eventHubName string, options *ConsumerGroupsClientListByEventHubOptions) *runtime.Pager[ConsumerGroupsClientListByEventHubResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ConsumerGroupsClientListByEventHubResponse]{
+		More: func(page ConsumerGroupsClientListByEventHubResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ConsumerGroupsClientListByEventHubResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ConsumerGroupListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ConsumerGroupsClientListByEventHubResponse) (ConsumerGroupsClientListByEventHubResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByEventHubCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ConsumerGroupsClientListByEventHubResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ConsumerGroupsClientListByEventHubResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ConsumerGroupsClientListByEventHubResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByEventHubHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByEventHubCreateRequest creates the ListByEventHub request.
@@ -297,7 +318,7 @@ func (client *ConsumerGroupsClient) listByEventHubCreateRequest(ctx context.Cont
 
 // listByEventHubHandleResponse handles the ListByEventHub response.
 func (client *ConsumerGroupsClient) listByEventHubHandleResponse(resp *http.Response) (ConsumerGroupsClientListByEventHubResponse, error) {
-	result := ConsumerGroupsClientListByEventHubResponse{RawResponse: resp}
+	result := ConsumerGroupsClientListByEventHubResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConsumerGroupListResult); err != nil {
 		return ConsumerGroupsClientListByEventHubResponse{}, err
 	}

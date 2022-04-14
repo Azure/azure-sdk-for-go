@@ -5,9 +5,9 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/a1a224b54f05debfa94fd19477ed820c64f0f9fc/specification/signalr/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/a1a224b54f05debfa94fd19477ed820c64f0f9fc/specification/signalr/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/b9d36b704e582a2bd5677fedc813607e73963469/specification/signalr/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/b9d36b704e582a2bd5677fedc813607e73963469/specification/signalr/resource-manager/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 0.3.0
+module-version: 0.4.0
 
 ```

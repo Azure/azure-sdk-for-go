@@ -11,8 +11,8 @@
         "Content-Length": "35",
         "Content-Type": "application/json",
         "dataserviceversion": "3.0",
-        "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Mon, 24 Jan 2022 20:59:23 GMT",
+        "User-Agent": "azsdk-go-aztables/v0.7.1 azsdk-go-azcore/v0.23.0 (go1.18; Windows_NT)",
+        "x-ms-date": "Wed, 13 Apr 2022 19:25:21 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -22,19 +22,19 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Type": "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
-        "Date": "Mon, 24 Jan 2022 20:59:24 GMT",
-        "Location": "https://rosebudprim.table.core.windows.net/Tables(\u0027tableName1596276702\u0027)",
+        "Date": "Wed, 13 Apr 2022 19:25:21 GMT",
+        "Location": "https://fakeaccount.table.core.windows.net/Tables(\u0027tableName1596276702\u0027)",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "f9917b50-b002-0054-5165-11ec4e000000",
+        "x-ms-request-id": "123dc96a-d002-00a9-746c-4f34c3000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": {
-        "odata.metadata": "https://rosebudprim.table.core.windows.net/$metadata#Tables/@Element",
+        "odata.metadata": "https://fakeaccount.table.core.windows.net/$metadata#Tables/@Element",
         "TableName": "tableName1596276702"
       }
     },
@@ -49,8 +49,8 @@
         "Content-Type": "application/json",
         "dataserviceversion": "3.0",
         "If-Match": "*",
-        "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Mon, 24 Jan 2022 20:59:23 GMT",
+        "User-Agent": "azsdk-go-aztables/v0.7.1 azsdk-go-azcore/v0.23.0 (go1.18; Windows_NT)",
+        "x-ms-date": "Wed, 13 Apr 2022 19:25:21 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -65,14 +65,14 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Type": "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
-        "Date": "Mon, 24 Jan 2022 20:59:24 GMT",
+        "Date": "Wed, 13 Apr 2022 19:25:21 GMT",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "f9917b86-b002-0054-0665-11ec4e000000",
+        "x-ms-request-id": "123dc973-d002-00a9-7c6c-4f34c3000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": {
@@ -80,7 +80,7 @@
           "code": "ResourceNotFound",
           "message": {
             "lang": "en-US",
-            "value": "The specified resource does not exist.\nRequestId:f9917b86-b002-0054-0665-11ec4e000000\nTime:2022-01-24T20:59:24.3204563Z"
+            "value": "The specified resource does not exist.\nRequestId:123dc973-d002-00a9-7c6c-4f34c3000000\nTime:2022-04-13T19:25:21.6893366Z"
           }
         }
       }
@@ -92,8 +92,8 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Mon, 24 Jan 2022 20:59:23 GMT",
+        "User-Agent": "azsdk-go-aztables/v0.7.1 azsdk-go-azcore/v0.23.0 (go1.18; Windows_NT)",
+        "x-ms-date": "Wed, 13 Apr 2022 19:25:21 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": null,
@@ -101,13 +101,13 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Mon, 24 Jan 2022 20:59:24 GMT",
+        "Date": "Wed, 13 Apr 2022 19:25:21 GMT",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "f9917bb7-b002-0054-3765-11ec4e000000",
+        "x-ms-request-id": "123dc976-d002-00a9-7f6c-4f34c3000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": null

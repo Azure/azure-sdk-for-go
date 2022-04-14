@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type FileSharesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewFileSharesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FileSharesClient {
+func NewFileSharesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FileSharesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &FileSharesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Creates a new share under the specified account as described by request body. The share resource includes metadata
@@ -103,7 +108,7 @@ func (client *FileSharesClient) createCreateRequest(ctx context.Context, resourc
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, fileShare)
@@ -111,7 +116,7 @@ func (client *FileSharesClient) createCreateRequest(ctx context.Context, resourc
 
 // createHandleResponse handles the Create response.
 func (client *FileSharesClient) createHandleResponse(resp *http.Response) (FileSharesClientCreateResponse, error) {
-	result := FileSharesClientCreateResponse{RawResponse: resp}
+	result := FileSharesClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileShare); err != nil {
 		return FileSharesClientCreateResponse{}, err
 	}
@@ -139,7 +144,7 @@ func (client *FileSharesClient) Delete(ctx context.Context, resourceGroupName st
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return FileSharesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return FileSharesClientDeleteResponse{RawResponse: resp}, nil
+	return FileSharesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -166,7 +171,7 @@ func (client *FileSharesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	if options != nil && options.Include != nil {
 		reqQP.Set("$include", *options.Include)
 	}
@@ -226,7 +231,7 @@ func (client *FileSharesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -240,7 +245,7 @@ func (client *FileSharesClient) getCreateRequest(ctx context.Context, resourceGr
 
 // getHandleResponse handles the Get response.
 func (client *FileSharesClient) getHandleResponse(resp *http.Response) (FileSharesClientGetResponse, error) {
-	result := FileSharesClientGetResponse{RawResponse: resp}
+	result := FileSharesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileShare); err != nil {
 		return FileSharesClientGetResponse{}, err
 	}
@@ -296,7 +301,7 @@ func (client *FileSharesClient) leaseCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.XMSSnapshot != nil {
 		req.Raw().Header.Set("x-ms-snapshot", *options.XMSSnapshot)
@@ -310,7 +315,7 @@ func (client *FileSharesClient) leaseCreateRequest(ctx context.Context, resource
 
 // leaseHandleResponse handles the Lease response.
 func (client *FileSharesClient) leaseHandleResponse(resp *http.Response) (FileSharesClientLeaseResponse, error) {
-	result := FileSharesClientLeaseResponse{RawResponse: resp}
+	result := FileSharesClientLeaseResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -326,16 +331,32 @@ func (client *FileSharesClient) leaseHandleResponse(resp *http.Response) (FileSh
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
 // options - FileSharesClientListOptions contains the optional parameters for the FileSharesClient.List method.
-func (client *FileSharesClient) List(resourceGroupName string, accountName string, options *FileSharesClientListOptions) *FileSharesClientListPager {
-	return &FileSharesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+func (client *FileSharesClient) List(resourceGroupName string, accountName string, options *FileSharesClientListOptions) *runtime.Pager[FileSharesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[FileSharesClientListResponse]{
+		More: func(page FileSharesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp FileSharesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.FileShareItems.NextLink)
+		Fetcher: func(ctx context.Context, page *FileSharesClientListResponse) (FileSharesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return FileSharesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return FileSharesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return FileSharesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -358,7 +379,7 @@ func (client *FileSharesClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	if options != nil && options.Maxpagesize != nil {
 		reqQP.Set("$maxpagesize", *options.Maxpagesize)
 	}
@@ -375,7 +396,7 @@ func (client *FileSharesClient) listCreateRequest(ctx context.Context, resourceG
 
 // listHandleResponse handles the List response.
 func (client *FileSharesClient) listHandleResponse(resp *http.Response) (FileSharesClientListResponse, error) {
-	result := FileSharesClientListResponse{RawResponse: resp}
+	result := FileSharesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileShareItems); err != nil {
 		return FileSharesClientListResponse{}, err
 	}
@@ -403,7 +424,7 @@ func (client *FileSharesClient) Restore(ctx context.Context, resourceGroupName s
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return FileSharesClientRestoreResponse{}, runtime.NewResponseError(resp)
 	}
-	return FileSharesClientRestoreResponse{RawResponse: resp}, nil
+	return FileSharesClientRestoreResponse{}, nil
 }
 
 // restoreCreateRequest creates the Restore request.
@@ -430,7 +451,7 @@ func (client *FileSharesClient) restoreCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, deletedShare)
@@ -486,7 +507,7 @@ func (client *FileSharesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, fileShare)
@@ -494,7 +515,7 @@ func (client *FileSharesClient) updateCreateRequest(ctx context.Context, resourc
 
 // updateHandleResponse handles the Update response.
 func (client *FileSharesClient) updateHandleResponse(resp *http.Response) (FileSharesClientUpdateResponse, error) {
-	result := FileSharesClientUpdateResponse{RawResponse: resp}
+	result := FileSharesClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileShare); err != nil {
 		return FileSharesClientUpdateResponse{}, err
 	}

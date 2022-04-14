@@ -1,5 +1,75 @@
 # Release History
 
+## 0.4.0 (2022-04-14)
+### Breaking Changes
+
+- Function `*Client.ListByResourceGroup` return value(s) have been changed from `(*ClientListByResourceGroupPager)` to `(*runtime.Pager[ClientListByResourceGroupResponse])`
+- Function `NewClient` return value(s) have been changed from `(*Client)` to `(*Client, error)`
+- Function `*Client.BeginCreate` return value(s) have been changed from `(ClientCreatePollerResponse, error)` to `(*armruntime.Poller[ClientCreateResponse], error)`
+- Function `*Client.ListBySubscription` return value(s) have been changed from `(*ClientListBySubscriptionPager)` to `(*runtime.Pager[ClientListBySubscriptionResponse])`
+- Function `*ClientUpdateResult.UnmarshalJSON` has been removed
+- Function `*ClientCreatePoller.Done` has been removed
+- Function `CleanupOptions.ToPtr` has been removed
+- Function `ScriptProvisioningState.ToPtr` has been removed
+- Function `*ClientListBySubscriptionPager.Err` has been removed
+- Function `*ClientCreatePoller.Poll` has been removed
+- Function `*ClientCreatePollerResponse.Resume` has been removed
+- Function `*ClientGetResult.UnmarshalJSON` has been removed
+- Function `ManagedServiceIdentityType.ToPtr` has been removed
+- Function `*ClientListByResourceGroupPager.PageResponse` has been removed
+- Function `ClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*ClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*ClientCreatePoller.FinalResponse` has been removed
+- Function `*ClientListBySubscriptionPager.NextPage` has been removed
+- Function `*ClientCreateResult.UnmarshalJSON` has been removed
+- Function `*ClientListByResourceGroupPager.Err` has been removed
+- Function `*ClientCreatePoller.ResumeToken` has been removed
+- Function `*ClientListByResourceGroupPager.NextPage` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `ScriptType.ToPtr` has been removed
+- Struct `ClientCreatePoller` has been removed
+- Struct `ClientCreatePollerResponse` has been removed
+- Struct `ClientCreateResult` has been removed
+- Struct `ClientGetLogsDefaultResult` has been removed
+- Struct `ClientGetLogsResult` has been removed
+- Struct `ClientGetResult` has been removed
+- Struct `ClientListByResourceGroupPager` has been removed
+- Struct `ClientListByResourceGroupResult` has been removed
+- Struct `ClientListBySubscriptionPager` has been removed
+- Struct `ClientListBySubscriptionResult` has been removed
+- Struct `ClientUpdateResult` has been removed
+- Field `ClientGetLogsDefaultResult` of struct `ClientGetLogsDefaultResponse` has been removed
+- Field `RawResponse` of struct `ClientGetLogsDefaultResponse` has been removed
+- Field `RawResponse` of struct `ClientDeleteResponse` has been removed
+- Field `ClientListByResourceGroupResult` of struct `ClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ClientListByResourceGroupResponse` has been removed
+- Field `ClientGetResult` of struct `ClientGetResponse` has been removed
+- Field `RawResponse` of struct `ClientGetResponse` has been removed
+- Field `ClientCreateResult` of struct `ClientCreateResponse` has been removed
+- Field `RawResponse` of struct `ClientCreateResponse` has been removed
+- Field `ClientListBySubscriptionResult` of struct `ClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `ClientListBySubscriptionResponse` has been removed
+- Field `ClientGetLogsResult` of struct `ClientGetLogsResponse` has been removed
+- Field `RawResponse` of struct `ClientGetLogsResponse` has been removed
+- Field `ClientUpdateResult` of struct `ClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ClientUpdateResponse` has been removed
+
+### Features Added
+
+- New function `*ClientUpdateResponse.UnmarshalJSON([]byte) error`
+- New function `*ClientCreateResponse.UnmarshalJSON([]byte) error`
+- New function `*ClientGetResponse.UnmarshalJSON([]byte) error`
+- New struct `Error`
+- New anonymous field `DeploymentScriptClassification` in struct `ClientGetResponse`
+- New anonymous field `ScriptLog` in struct `ClientGetLogsDefaultResponse`
+- New anonymous field `DeploymentScriptListResult` in struct `ClientListByResourceGroupResponse`
+- New anonymous field `ScriptLogsList` in struct `ClientGetLogsResponse`
+- New anonymous field `DeploymentScriptListResult` in struct `ClientListBySubscriptionResponse`
+- New anonymous field `DeploymentScriptClassification` in struct `ClientCreateResponse`
+- New anonymous field `DeploymentScriptClassification` in struct `ClientUpdateResponse`
+- New field `ResumeToken` in struct `ClientBeginCreateOptions`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

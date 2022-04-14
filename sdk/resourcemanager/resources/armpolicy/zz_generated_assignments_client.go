@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type AssignmentsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AssignmentsClient {
+func NewAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AssignmentsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AssignmentsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - This operation creates or updates a policy assignment with the given scope and name. Policy assignments apply
@@ -98,7 +103,7 @@ func (client *AssignmentsClient) createCreateRequest(ctx context.Context, scope 
 
 // createHandleResponse handles the Create response.
 func (client *AssignmentsClient) createHandleResponse(resp *http.Response) (AssignmentsClientCreateResponse, error) {
-	result := AssignmentsClientCreateResponse{RawResponse: resp}
+	result := AssignmentsClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Assignment); err != nil {
 		return AssignmentsClientCreateResponse{}, err
 	}
@@ -149,7 +154,7 @@ func (client *AssignmentsClient) createByIDCreateRequest(ctx context.Context, po
 
 // createByIDHandleResponse handles the CreateByID response.
 func (client *AssignmentsClient) createByIDHandleResponse(resp *http.Response) (AssignmentsClientCreateByIDResponse, error) {
-	result := AssignmentsClientCreateByIDResponse{RawResponse: resp}
+	result := AssignmentsClientCreateByIDResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Assignment); err != nil {
 		return AssignmentsClientCreateByIDResponse{}, err
 	}
@@ -203,7 +208,7 @@ func (client *AssignmentsClient) deleteCreateRequest(ctx context.Context, scope 
 
 // deleteHandleResponse handles the Delete response.
 func (client *AssignmentsClient) deleteHandleResponse(resp *http.Response) (AssignmentsClientDeleteResponse, error) {
-	result := AssignmentsClientDeleteResponse{RawResponse: resp}
+	result := AssignmentsClientDeleteResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Assignment); err != nil {
 		return AssignmentsClientDeleteResponse{}, err
 	}
@@ -252,7 +257,7 @@ func (client *AssignmentsClient) deleteByIDCreateRequest(ctx context.Context, po
 
 // deleteByIDHandleResponse handles the DeleteByID response.
 func (client *AssignmentsClient) deleteByIDHandleResponse(resp *http.Response) (AssignmentsClientDeleteByIDResponse, error) {
-	result := AssignmentsClientDeleteByIDResponse{RawResponse: resp}
+	result := AssignmentsClientDeleteByIDResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Assignment); err != nil {
 		return AssignmentsClientDeleteByIDResponse{}, err
 	}
@@ -304,7 +309,7 @@ func (client *AssignmentsClient) getCreateRequest(ctx context.Context, scope str
 
 // getHandleResponse handles the Get response.
 func (client *AssignmentsClient) getHandleResponse(resp *http.Response) (AssignmentsClientGetResponse, error) {
-	result := AssignmentsClientGetResponse{RawResponse: resp}
+	result := AssignmentsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Assignment); err != nil {
 		return AssignmentsClientGetResponse{}, err
 	}
@@ -352,7 +357,7 @@ func (client *AssignmentsClient) getByIDCreateRequest(ctx context.Context, polic
 
 // getByIDHandleResponse handles the GetByID response.
 func (client *AssignmentsClient) getByIDHandleResponse(resp *http.Response) (AssignmentsClientGetByIDResponse, error) {
-	result := AssignmentsClientGetByIDResponse{RawResponse: resp}
+	result := AssignmentsClientGetByIDResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Assignment); err != nil {
 		return AssignmentsClientGetByIDResponse{}, err
 	}
@@ -372,16 +377,32 @@ func (client *AssignmentsClient) getByIDHandleResponse(resp *http.Response) (Ass
 // definition whose id is {value}.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AssignmentsClientListOptions contains the optional parameters for the AssignmentsClient.List method.
-func (client *AssignmentsClient) List(options *AssignmentsClientListOptions) *AssignmentsClientListPager {
-	return &AssignmentsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *AssignmentsClient) List(options *AssignmentsClientListOptions) *runtime.Pager[AssignmentsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AssignmentsClientListResponse]{
+		More: func(page AssignmentsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AssignmentsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AssignmentListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AssignmentsClientListResponse) (AssignmentsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AssignmentsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AssignmentsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AssignmentsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -412,7 +433,7 @@ func (client *AssignmentsClient) listCreateRequest(ctx context.Context, options 
 
 // listHandleResponse handles the List response.
 func (client *AssignmentsClient) listHandleResponse(resp *http.Response) (AssignmentsClientListResponse, error) {
-	result := AssignmentsClientListResponse{RawResponse: resp}
+	result := AssignmentsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssignmentListResult); err != nil {
 		return AssignmentsClientListResponse{}, err
 	}
@@ -430,16 +451,32 @@ func (client *AssignmentsClient) listHandleResponse(resp *http.Response) (Assign
 // managementGroupID - The ID of the management group.
 // options - AssignmentsClientListForManagementGroupOptions contains the optional parameters for the AssignmentsClient.ListForManagementGroup
 // method.
-func (client *AssignmentsClient) ListForManagementGroup(managementGroupID string, options *AssignmentsClientListForManagementGroupOptions) *AssignmentsClientListForManagementGroupPager {
-	return &AssignmentsClientListForManagementGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listForManagementGroupCreateRequest(ctx, managementGroupID, options)
+func (client *AssignmentsClient) ListForManagementGroup(managementGroupID string, options *AssignmentsClientListForManagementGroupOptions) *runtime.Pager[AssignmentsClientListForManagementGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AssignmentsClientListForManagementGroupResponse]{
+		More: func(page AssignmentsClientListForManagementGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AssignmentsClientListForManagementGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AssignmentListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AssignmentsClientListForManagementGroupResponse) (AssignmentsClientListForManagementGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listForManagementGroupCreateRequest(ctx, managementGroupID, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AssignmentsClientListForManagementGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AssignmentsClientListForManagementGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AssignmentsClientListForManagementGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listForManagementGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listForManagementGroupCreateRequest creates the ListForManagementGroup request.
@@ -470,7 +507,7 @@ func (client *AssignmentsClient) listForManagementGroupCreateRequest(ctx context
 
 // listForManagementGroupHandleResponse handles the ListForManagementGroup response.
 func (client *AssignmentsClient) listForManagementGroupHandleResponse(resp *http.Response) (AssignmentsClientListForManagementGroupResponse, error) {
-	result := AssignmentsClientListForManagementGroupResponse{RawResponse: resp}
+	result := AssignmentsClientListForManagementGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssignmentListResult); err != nil {
 		return AssignmentsClientListForManagementGroupResponse{}, err
 	}
@@ -507,16 +544,32 @@ func (client *AssignmentsClient) listForManagementGroupHandleResponse(resp *http
 // resourceName - The name of the resource.
 // options - AssignmentsClientListForResourceOptions contains the optional parameters for the AssignmentsClient.ListForResource
 // method.
-func (client *AssignmentsClient) ListForResource(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *AssignmentsClientListForResourceOptions) *AssignmentsClientListForResourcePager {
-	return &AssignmentsClientListForResourcePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listForResourceCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, options)
+func (client *AssignmentsClient) ListForResource(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *AssignmentsClientListForResourceOptions) *runtime.Pager[AssignmentsClientListForResourceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AssignmentsClientListForResourceResponse]{
+		More: func(page AssignmentsClientListForResourceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AssignmentsClientListForResourceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AssignmentListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AssignmentsClientListForResourceResponse) (AssignmentsClientListForResourceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listForResourceCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AssignmentsClientListForResourceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AssignmentsClientListForResourceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AssignmentsClientListForResourceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listForResourceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listForResourceCreateRequest creates the ListForResource request.
@@ -561,7 +614,7 @@ func (client *AssignmentsClient) listForResourceCreateRequest(ctx context.Contex
 
 // listForResourceHandleResponse handles the ListForResource response.
 func (client *AssignmentsClient) listForResourceHandleResponse(resp *http.Response) (AssignmentsClientListForResourceResponse, error) {
-	result := AssignmentsClientListForResourceResponse{RawResponse: resp}
+	result := AssignmentsClientListForResourceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssignmentListResult); err != nil {
 		return AssignmentsClientListForResourceResponse{}, err
 	}
@@ -583,16 +636,32 @@ func (client *AssignmentsClient) listForResourceHandleResponse(resp *http.Respon
 // resourceGroupName - The name of the resource group that contains policy assignments.
 // options - AssignmentsClientListForResourceGroupOptions contains the optional parameters for the AssignmentsClient.ListForResourceGroup
 // method.
-func (client *AssignmentsClient) ListForResourceGroup(resourceGroupName string, options *AssignmentsClientListForResourceGroupOptions) *AssignmentsClientListForResourceGroupPager {
-	return &AssignmentsClientListForResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listForResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *AssignmentsClient) ListForResourceGroup(resourceGroupName string, options *AssignmentsClientListForResourceGroupOptions) *runtime.Pager[AssignmentsClientListForResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AssignmentsClientListForResourceGroupResponse]{
+		More: func(page AssignmentsClientListForResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AssignmentsClientListForResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AssignmentListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AssignmentsClientListForResourceGroupResponse) (AssignmentsClientListForResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listForResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AssignmentsClientListForResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AssignmentsClientListForResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AssignmentsClientListForResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listForResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listForResourceGroupCreateRequest creates the ListForResourceGroup request.
@@ -627,7 +696,7 @@ func (client *AssignmentsClient) listForResourceGroupCreateRequest(ctx context.C
 
 // listForResourceGroupHandleResponse handles the ListForResourceGroup response.
 func (client *AssignmentsClient) listForResourceGroupHandleResponse(resp *http.Response) (AssignmentsClientListForResourceGroupResponse, error) {
-	result := AssignmentsClientListForResourceGroupResponse{RawResponse: resp}
+	result := AssignmentsClientListForResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssignmentListResult); err != nil {
 		return AssignmentsClientListForResourceGroupResponse{}, err
 	}
@@ -682,7 +751,7 @@ func (client *AssignmentsClient) updateCreateRequest(ctx context.Context, scope 
 
 // updateHandleResponse handles the Update response.
 func (client *AssignmentsClient) updateHandleResponse(resp *http.Response) (AssignmentsClientUpdateResponse, error) {
-	result := AssignmentsClientUpdateResponse{RawResponse: resp}
+	result := AssignmentsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Assignment); err != nil {
 		return AssignmentsClientUpdateResponse{}, err
 	}
@@ -733,7 +802,7 @@ func (client *AssignmentsClient) updateByIDCreateRequest(ctx context.Context, po
 
 // updateByIDHandleResponse handles the UpdateByID response.
 func (client *AssignmentsClient) updateByIDHandleResponse(resp *http.Response) (AssignmentsClientUpdateByIDResponse, error) {
-	result := AssignmentsClientUpdateByIDResponse{RawResponse: resp}
+	result := AssignmentsClientUpdateByIDResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Assignment); err != nil {
 		return AssignmentsClientUpdateByIDResponse{}, err
 	}

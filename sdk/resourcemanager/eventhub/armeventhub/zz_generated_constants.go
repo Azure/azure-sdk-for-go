@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armeventhub
 
 const (
 	moduleName    = "armeventhub"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 type AccessRights string
@@ -30,11 +30,6 @@ func PossibleAccessRightsValues() []AccessRights {
 	}
 }
 
-// ToPtr returns a *AccessRights pointing to the current value.
-func (c AccessRights) ToPtr() *AccessRights {
-	return &c
-}
-
 // ClusterSKUName - Name of this SKU.
 type ClusterSKUName string
 
@@ -47,11 +42,6 @@ func PossibleClusterSKUNameValues() []ClusterSKUName {
 	return []ClusterSKUName{
 		ClusterSKUNameDedicated,
 	}
-}
-
-// ToPtr returns a *ClusterSKUName pointing to the current value.
-func (c ClusterSKUName) ToPtr() *ClusterSKUName {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -74,11 +64,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // DefaultAction - Default Action for Network Rule Set
 type DefaultAction string
 
@@ -93,11 +78,6 @@ func PossibleDefaultActionValues() []DefaultAction {
 		DefaultActionAllow,
 		DefaultActionDeny,
 	}
-}
-
-// ToPtr returns a *DefaultAction pointing to the current value.
-func (c DefaultAction) ToPtr() *DefaultAction {
-	return &c
 }
 
 // EncodingCaptureDescription - Enumerates the possible values for the encoding format of capture description. Note: 'AvroDeflate'
@@ -115,11 +95,6 @@ func PossibleEncodingCaptureDescriptionValues() []EncodingCaptureDescription {
 		EncodingCaptureDescriptionAvro,
 		EncodingCaptureDescriptionAvroDeflate,
 	}
-}
-
-// ToPtr returns a *EncodingCaptureDescription pointing to the current value.
-func (c EncodingCaptureDescription) ToPtr() *EncodingCaptureDescription {
-	return &c
 }
 
 // EndPointProvisioningState - Provisioning state of the Private Endpoint Connection.
@@ -144,11 +119,6 @@ func PossibleEndPointProvisioningStateValues() []EndPointProvisioningState {
 		EndPointProvisioningStateSucceeded,
 		EndPointProvisioningStateUpdating,
 	}
-}
-
-// ToPtr returns a *EndPointProvisioningState pointing to the current value.
-func (c EndPointProvisioningState) ToPtr() *EndPointProvisioningState {
-	return &c
 }
 
 // EntityStatus - Enumerates the possible values for the status of the Event Hub.
@@ -181,11 +151,6 @@ func PossibleEntityStatusValues() []EntityStatus {
 	}
 }
 
-// ToPtr returns a *EntityStatus pointing to the current value.
-func (c EntityStatus) ToPtr() *EntityStatus {
-	return &c
-}
-
 // KeyType - The access key to regenerate.
 type KeyType string
 
@@ -200,11 +165,6 @@ func PossibleKeyTypeValues() []KeyType {
 		KeyTypePrimaryKey,
 		KeyTypeSecondaryKey,
 	}
-}
-
-// ToPtr returns a *KeyType pointing to the current value.
-func (c KeyType) ToPtr() *KeyType {
-	return &c
 }
 
 // ManagedServiceIdentityType - Type of managed service identity.
@@ -227,11 +187,6 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 	}
 }
 
-// ToPtr returns a *ManagedServiceIdentityType pointing to the current value.
-func (c ManagedServiceIdentityType) ToPtr() *ManagedServiceIdentityType {
-	return &c
-}
-
 // NetworkRuleIPAction - The IP Filter Action
 type NetworkRuleIPAction string
 
@@ -244,11 +199,6 @@ func PossibleNetworkRuleIPActionValues() []NetworkRuleIPAction {
 	return []NetworkRuleIPAction{
 		NetworkRuleIPActionAllow,
 	}
-}
-
-// ToPtr returns a *NetworkRuleIPAction pointing to the current value.
-func (c NetworkRuleIPAction) ToPtr() *NetworkRuleIPAction {
-	return &c
 }
 
 // PrivateLinkConnectionStatus - Status of the connection.
@@ -271,11 +221,6 @@ func PossiblePrivateLinkConnectionStatusValues() []PrivateLinkConnectionStatus {
 	}
 }
 
-// ToPtr returns a *PrivateLinkConnectionStatus pointing to the current value.
-func (c PrivateLinkConnectionStatus) ToPtr() *PrivateLinkConnectionStatus {
-	return &c
-}
-
 // ProvisioningStateDR - Provisioning state of the Alias(Disaster Recovery configuration) - possible values 'Accepted' or
 // 'Succeeded' or 'Failed'
 type ProvisioningStateDR string
@@ -295,11 +240,6 @@ func PossibleProvisioningStateDRValues() []ProvisioningStateDR {
 	}
 }
 
-// ToPtr returns a *ProvisioningStateDR pointing to the current value.
-func (c ProvisioningStateDR) ToPtr() *ProvisioningStateDR {
-	return &c
-}
-
 // PublicNetworkAccessFlag - This determines if traffic is allowed over public network. By default it is enabled.
 type PublicNetworkAccessFlag string
 
@@ -314,11 +254,6 @@ func PossiblePublicNetworkAccessFlagValues() []PublicNetworkAccessFlag {
 		PublicNetworkAccessFlagDisabled,
 		PublicNetworkAccessFlagEnabled,
 	}
-}
-
-// ToPtr returns a *PublicNetworkAccessFlag pointing to the current value.
-func (c PublicNetworkAccessFlag) ToPtr() *PublicNetworkAccessFlag {
-	return &c
 }
 
 // RoleDisasterRecovery - role of namespace in GEO DR - possible values 'Primary' or 'PrimaryNotReplicating' or 'Secondary'
@@ -339,11 +274,6 @@ func PossibleRoleDisasterRecoveryValues() []RoleDisasterRecovery {
 	}
 }
 
-// ToPtr returns a *RoleDisasterRecovery pointing to the current value.
-func (c RoleDisasterRecovery) ToPtr() *RoleDisasterRecovery {
-	return &c
-}
-
 // SKUName - Name of this SKU.
 type SKUName string
 
@@ -360,11 +290,6 @@ func PossibleSKUNameValues() []SKUName {
 		SKUNamePremium,
 		SKUNameStandard,
 	}
-}
-
-// ToPtr returns a *SKUName pointing to the current value.
-func (c SKUName) ToPtr() *SKUName {
-	return &c
 }
 
 // SKUTier - The billing tier of this particular SKU.
@@ -385,11 +310,6 @@ func PossibleSKUTierValues() []SKUTier {
 	}
 }
 
-// ToPtr returns a *SKUTier pointing to the current value.
-func (c SKUTier) ToPtr() *SKUTier {
-	return &c
-}
-
 type SchemaCompatibility string
 
 const (
@@ -407,11 +327,6 @@ func PossibleSchemaCompatibilityValues() []SchemaCompatibility {
 	}
 }
 
-// ToPtr returns a *SchemaCompatibility pointing to the current value.
-func (c SchemaCompatibility) ToPtr() *SchemaCompatibility {
-	return &c
-}
-
 type SchemaType string
 
 const (
@@ -425,11 +340,6 @@ func PossibleSchemaTypeValues() []SchemaType {
 		SchemaTypeAvro,
 		SchemaTypeUnknown,
 	}
-}
-
-// ToPtr returns a *SchemaType pointing to the current value.
-func (c SchemaType) ToPtr() *SchemaType {
-	return &c
 }
 
 // UnavailableReason - Specifies the reason for the unavailability of the service.
@@ -454,9 +364,4 @@ func PossibleUnavailableReasonValues() []UnavailableReason {
 		UnavailableReasonNameInLockdown,
 		UnavailableReasonTooManyNamespaceInCurrentSubscription,
 	}
-}
-
-// ToPtr returns a *UnavailableReason pointing to the current value.
-func (c UnavailableReason) ToPtr() *UnavailableReason {
-	return &c
 }

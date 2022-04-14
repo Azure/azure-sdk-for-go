@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,83 +17,101 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 )
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedDatabaseSecurityAlertGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedDatabaseSecurityAlertGet.json
 func ExampleManagedDatabaseSecurityAlertPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewManagedDatabaseSecurityAlertPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedDatabaseSecurityAlertPoliciesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<managed-instance-name>",
 		"<database-name>",
-		armsql.SecurityAlertPolicyName("Default"),
+		armsql.SecurityAlertPolicyNameDefault,
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ManagedDatabaseSecurityAlertPoliciesClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedDatabaseSecurityAlertCreateMax.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedDatabaseSecurityAlertCreateMax.json
 func ExampleManagedDatabaseSecurityAlertPoliciesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewManagedDatabaseSecurityAlertPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedDatabaseSecurityAlertPoliciesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<managed-instance-name>",
 		"<database-name>",
-		armsql.SecurityAlertPolicyName("Default"),
+		armsql.SecurityAlertPolicyNameDefault,
 		armsql.ManagedDatabaseSecurityAlertPolicy{
 			Properties: &armsql.SecurityAlertPolicyProperties{
 				DisabledAlerts: []*string{
-					to.StringPtr("Sql_Injection"),
-					to.StringPtr("Usage_Anomaly")},
-				EmailAccountAdmins: to.BoolPtr(true),
+					to.Ptr("Sql_Injection"),
+					to.Ptr("Usage_Anomaly")},
+				EmailAccountAdmins: to.Ptr(true),
 				EmailAddresses: []*string{
-					to.StringPtr("test@contoso.com"),
-					to.StringPtr("user@contoso.com")},
-				RetentionDays:           to.Int32Ptr(6),
-				State:                   armsql.SecurityAlertPolicyStateEnabled.ToPtr(),
-				StorageAccountAccessKey: to.StringPtr("<storage-account-access-key>"),
-				StorageEndpoint:         to.StringPtr("<storage-endpoint>"),
+					to.Ptr("test@contoso.com"),
+					to.Ptr("user@contoso.com")},
+				RetentionDays:           to.Ptr[int32](6),
+				State:                   to.Ptr(armsql.SecurityAlertPolicyStateEnabled),
+				StorageAccountAccessKey: to.Ptr("<storage-account-access-key>"),
+				StorageEndpoint:         to.Ptr("<storage-endpoint>"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ManagedDatabaseSecurityAlertPoliciesClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedDatabaseSecurityAlertListByDatabase.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedDatabaseSecurityAlertListByDatabase.json
 func ExampleManagedDatabaseSecurityAlertPoliciesClient_ListByDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewManagedDatabaseSecurityAlertPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedDatabaseSecurityAlertPoliciesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByDatabase("<resource-group-name>",
 		"<managed-instance-name>",
 		"<database-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

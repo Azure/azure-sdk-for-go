@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armredisenterprise
 
 const (
 	moduleName    = "armredisenterprise"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // AccessKeyType - Which access key to regenerate.
@@ -29,11 +29,6 @@ func PossibleAccessKeyTypeValues() []AccessKeyType {
 	}
 }
 
-// ToPtr returns a *AccessKeyType pointing to the current value.
-func (c AccessKeyType) ToPtr() *AccessKeyType {
-	return &c
-}
-
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 
@@ -46,11 +41,6 @@ func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
 	}
-}
-
-// ToPtr returns a *ActionType pointing to the current value.
-func (c ActionType) ToPtr() *ActionType {
-	return &c
 }
 
 // AofFrequency - Sets the frequency at which data is written to disk.
@@ -69,11 +59,6 @@ func PossibleAofFrequencyValues() []AofFrequency {
 	}
 }
 
-// ToPtr returns a *AofFrequency pointing to the current value.
-func (c AofFrequency) ToPtr() *AofFrequency {
-	return &c
-}
-
 // ClusteringPolicy - Clustering policy - default is OSSCluster. Specified at create time.
 type ClusteringPolicy string
 
@@ -88,11 +73,6 @@ func PossibleClusteringPolicyValues() []ClusteringPolicy {
 		ClusteringPolicyEnterpriseCluster,
 		ClusteringPolicyOSSCluster,
 	}
-}
-
-// ToPtr returns a *ClusteringPolicy pointing to the current value.
-func (c ClusteringPolicy) ToPtr() *ClusteringPolicy {
-	return &c
 }
 
 // EvictionPolicy - Redis eviction policy - default is VolatileLRU
@@ -123,9 +103,26 @@ func PossibleEvictionPolicyValues() []EvictionPolicy {
 	}
 }
 
-// ToPtr returns a *EvictionPolicy pointing to the current value.
-func (c EvictionPolicy) ToPtr() *EvictionPolicy {
-	return &c
+// LinkState - State of the link between the database resources.
+type LinkState string
+
+const (
+	LinkStateLinkFailed   LinkState = "LinkFailed"
+	LinkStateLinked       LinkState = "Linked"
+	LinkStateLinking      LinkState = "Linking"
+	LinkStateUnlinkFailed LinkState = "UnlinkFailed"
+	LinkStateUnlinking    LinkState = "Unlinking"
+)
+
+// PossibleLinkStateValues returns the possible values for the LinkState const type.
+func PossibleLinkStateValues() []LinkState {
+	return []LinkState{
+		LinkStateLinkFailed,
+		LinkStateLinked,
+		LinkStateLinking,
+		LinkStateUnlinkFailed,
+		LinkStateUnlinking,
+	}
 }
 
 // Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
@@ -145,11 +142,6 @@ func PossibleOriginValues() []Origin {
 		OriginUser,
 		OriginUserSystem,
 	}
-}
-
-// ToPtr returns a *Origin pointing to the current value.
-func (c Origin) ToPtr() *Origin {
-	return &c
 }
 
 // PrivateEndpointConnectionProvisioningState - The current provisioning state.
@@ -172,11 +164,6 @@ func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpoin
 	}
 }
 
-// ToPtr returns a *PrivateEndpointConnectionProvisioningState pointing to the current value.
-func (c PrivateEndpointConnectionProvisioningState) ToPtr() *PrivateEndpointConnectionProvisioningState {
-	return &c
-}
-
 // PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
 type PrivateEndpointServiceConnectionStatus string
 
@@ -195,11 +182,6 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 	}
 }
 
-// ToPtr returns a *PrivateEndpointServiceConnectionStatus pointing to the current value.
-func (c PrivateEndpointServiceConnectionStatus) ToPtr() *PrivateEndpointServiceConnectionStatus {
-	return &c
-}
-
 // Protocol - Specifies whether redis clients can connect using TLS-encrypted or plaintext redis protocols. Default is TLS-encrypted.
 type Protocol string
 
@@ -214,11 +196,6 @@ func PossibleProtocolValues() []Protocol {
 		ProtocolEncrypted,
 		ProtocolPlaintext,
 	}
-}
-
-// ToPtr returns a *Protocol pointing to the current value.
-func (c Protocol) ToPtr() *Protocol {
-	return &c
 }
 
 // ProvisioningState - Current provisioning status
@@ -245,11 +222,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // RdbFrequency - Sets the frequency at which a snapshot of the database is created.
 type RdbFrequency string
 
@@ -266,11 +238,6 @@ func PossibleRdbFrequencyValues() []RdbFrequency {
 		RdbFrequencySixH,
 		RdbFrequencyTwelveH,
 	}
-}
-
-// ToPtr returns a *RdbFrequency pointing to the current value.
-func (c RdbFrequency) ToPtr() *RdbFrequency {
-	return &c
 }
 
 // ResourceState - Current resource status
@@ -309,11 +276,6 @@ func PossibleResourceStateValues() []ResourceState {
 	}
 }
 
-// ToPtr returns a *ResourceState pointing to the current value.
-func (c ResourceState) ToPtr() *ResourceState {
-	return &c
-}
-
 // SKUName - The type of RedisEnterprise cluster to deploy. Possible values: (EnterpriseE10, EnterpriseFlashF300 etc.)
 type SKUName string
 
@@ -340,11 +302,6 @@ func PossibleSKUNameValues() []SKUName {
 	}
 }
 
-// ToPtr returns a *SKUName pointing to the current value.
-func (c SKUName) ToPtr() *SKUName {
-	return &c
-}
-
 // TLSVersion - The minimum TLS version for the cluster to support, e.g. '1.2'
 type TLSVersion string
 
@@ -361,9 +318,4 @@ func PossibleTLSVersionValues() []TLSVersion {
 		TLSVersionOne1,
 		TLSVersionOne2,
 	}
-}
-
-// ToPtr returns a *TLSVersion pointing to the current value.
-func (c TLSVersion) ToPtr() *TLSVersion {
-	return &c
 }

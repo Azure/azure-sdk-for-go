@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ResourceGuardsClient struct {
 // subscriptionID - The subscription Id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewResourceGuardsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ResourceGuardsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewResourceGuardsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceGuardsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ResourceGuardsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Delete - Deletes a ResourceGuard resource from the resource group.
@@ -66,7 +71,7 @@ func (client *ResourceGuardsClient) Delete(ctx context.Context, resourceGroupNam
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ResourceGuardsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ResourceGuardsClientDeleteResponse{RawResponse: resp}, nil
+	return ResourceGuardsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -89,7 +94,7 @@ func (client *ResourceGuardsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -135,7 +140,7 @@ func (client *ResourceGuardsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -143,7 +148,7 @@ func (client *ResourceGuardsClient) getCreateRequest(ctx context.Context, resour
 
 // getHandleResponse handles the Get response.
 func (client *ResourceGuardsClient) getHandleResponse(resp *http.Response) (ResourceGuardsClientGetResponse, error) {
-	result := ResourceGuardsClientGetResponse{RawResponse: resp}
+	result := ResourceGuardsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceGuardResource); err != nil {
 		return ResourceGuardsClientGetResponse{}, err
 	}
@@ -156,16 +161,32 @@ func (client *ResourceGuardsClient) getHandleResponse(resp *http.Response) (Reso
 // resourceGroupName - The name of the resource group where the backup vault is present.
 // options - ResourceGuardsClientGetBackupSecurityPINRequestsObjectsOptions contains the optional parameters for the ResourceGuardsClient.GetBackupSecurityPINRequestsObjects
 // method.
-func (client *ResourceGuardsClient) GetBackupSecurityPINRequestsObjects(resourceGroupName string, resourceGuardsName string, options *ResourceGuardsClientGetBackupSecurityPINRequestsObjectsOptions) *ResourceGuardsClientGetBackupSecurityPINRequestsObjectsPager {
-	return &ResourceGuardsClientGetBackupSecurityPINRequestsObjectsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.getBackupSecurityPINRequestsObjectsCreateRequest(ctx, resourceGroupName, resourceGuardsName, options)
+func (client *ResourceGuardsClient) GetBackupSecurityPINRequestsObjects(resourceGroupName string, resourceGuardsName string, options *ResourceGuardsClientGetBackupSecurityPINRequestsObjectsOptions) *runtime.Pager[ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse]{
+		More: func(page ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DppBaseResourceList.NextLink)
+		Fetcher: func(ctx context.Context, page *ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse) (ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.getBackupSecurityPINRequestsObjectsCreateRequest(ctx, resourceGroupName, resourceGuardsName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.getBackupSecurityPINRequestsObjectsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // getBackupSecurityPINRequestsObjectsCreateRequest creates the GetBackupSecurityPINRequestsObjects request.
@@ -188,7 +209,7 @@ func (client *ResourceGuardsClient) getBackupSecurityPINRequestsObjectsCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -196,7 +217,7 @@ func (client *ResourceGuardsClient) getBackupSecurityPINRequestsObjectsCreateReq
 
 // getBackupSecurityPINRequestsObjectsHandleResponse handles the GetBackupSecurityPINRequestsObjects response.
 func (client *ResourceGuardsClient) getBackupSecurityPINRequestsObjectsHandleResponse(resp *http.Response) (ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse, error) {
-	result := ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse{RawResponse: resp}
+	result := ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DppBaseResourceList); err != nil {
 		return ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse{}, err
 	}
@@ -248,7 +269,7 @@ func (client *ResourceGuardsClient) getDefaultBackupSecurityPINRequestsObjectCre
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -256,7 +277,7 @@ func (client *ResourceGuardsClient) getDefaultBackupSecurityPINRequestsObjectCre
 
 // getDefaultBackupSecurityPINRequestsObjectHandleResponse handles the GetDefaultBackupSecurityPINRequestsObject response.
 func (client *ResourceGuardsClient) getDefaultBackupSecurityPINRequestsObjectHandleResponse(resp *http.Response) (ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectResponse, error) {
-	result := ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectResponse{RawResponse: resp}
+	result := ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DppBaseResource); err != nil {
 		return ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectResponse{}, err
 	}
@@ -308,7 +329,7 @@ func (client *ResourceGuardsClient) getDefaultDeleteProtectedItemRequestsObjectC
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -316,7 +337,7 @@ func (client *ResourceGuardsClient) getDefaultDeleteProtectedItemRequestsObjectC
 
 // getDefaultDeleteProtectedItemRequestsObjectHandleResponse handles the GetDefaultDeleteProtectedItemRequestsObject response.
 func (client *ResourceGuardsClient) getDefaultDeleteProtectedItemRequestsObjectHandleResponse(resp *http.Response) (ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectResponse, error) {
-	result := ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectResponse{RawResponse: resp}
+	result := ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DppBaseResource); err != nil {
 		return ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectResponse{}, err
 	}
@@ -368,7 +389,7 @@ func (client *ResourceGuardsClient) getDefaultDeleteResourceGuardProxyRequestsOb
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -376,7 +397,7 @@ func (client *ResourceGuardsClient) getDefaultDeleteResourceGuardProxyRequestsOb
 
 // getDefaultDeleteResourceGuardProxyRequestsObjectHandleResponse handles the GetDefaultDeleteResourceGuardProxyRequestsObject response.
 func (client *ResourceGuardsClient) getDefaultDeleteResourceGuardProxyRequestsObjectHandleResponse(resp *http.Response) (ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectResponse, error) {
-	result := ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectResponse{RawResponse: resp}
+	result := ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DppBaseResource); err != nil {
 		return ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectResponse{}, err
 	}
@@ -428,7 +449,7 @@ func (client *ResourceGuardsClient) getDefaultDisableSoftDeleteRequestsObjectCre
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -436,7 +457,7 @@ func (client *ResourceGuardsClient) getDefaultDisableSoftDeleteRequestsObjectCre
 
 // getDefaultDisableSoftDeleteRequestsObjectHandleResponse handles the GetDefaultDisableSoftDeleteRequestsObject response.
 func (client *ResourceGuardsClient) getDefaultDisableSoftDeleteRequestsObjectHandleResponse(resp *http.Response) (ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectResponse, error) {
-	result := ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectResponse{RawResponse: resp}
+	result := ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DppBaseResource); err != nil {
 		return ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectResponse{}, err
 	}
@@ -488,7 +509,7 @@ func (client *ResourceGuardsClient) getDefaultUpdateProtectedItemRequestsObjectC
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -496,7 +517,7 @@ func (client *ResourceGuardsClient) getDefaultUpdateProtectedItemRequestsObjectC
 
 // getDefaultUpdateProtectedItemRequestsObjectHandleResponse handles the GetDefaultUpdateProtectedItemRequestsObject response.
 func (client *ResourceGuardsClient) getDefaultUpdateProtectedItemRequestsObjectHandleResponse(resp *http.Response) (ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectResponse, error) {
-	result := ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectResponse{RawResponse: resp}
+	result := ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DppBaseResource); err != nil {
 		return ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectResponse{}, err
 	}
@@ -548,7 +569,7 @@ func (client *ResourceGuardsClient) getDefaultUpdateProtectionPolicyRequestsObje
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -556,7 +577,7 @@ func (client *ResourceGuardsClient) getDefaultUpdateProtectionPolicyRequestsObje
 
 // getDefaultUpdateProtectionPolicyRequestsObjectHandleResponse handles the GetDefaultUpdateProtectionPolicyRequestsObject response.
 func (client *ResourceGuardsClient) getDefaultUpdateProtectionPolicyRequestsObjectHandleResponse(resp *http.Response) (ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectResponse, error) {
-	result := ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectResponse{RawResponse: resp}
+	result := ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DppBaseResource); err != nil {
 		return ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectResponse{}, err
 	}
@@ -569,16 +590,32 @@ func (client *ResourceGuardsClient) getDefaultUpdateProtectionPolicyRequestsObje
 // resourceGroupName - The name of the resource group where the backup vault is present.
 // options - ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsOptions contains the optional parameters for the ResourceGuardsClient.GetDeleteProtectedItemRequestsObjects
 // method.
-func (client *ResourceGuardsClient) GetDeleteProtectedItemRequestsObjects(resourceGroupName string, resourceGuardsName string, options *ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsOptions) *ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsPager {
-	return &ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.getDeleteProtectedItemRequestsObjectsCreateRequest(ctx, resourceGroupName, resourceGuardsName, options)
+func (client *ResourceGuardsClient) GetDeleteProtectedItemRequestsObjects(resourceGroupName string, resourceGuardsName string, options *ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsOptions) *runtime.Pager[ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsResponse]{
+		More: func(page ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DppBaseResourceList.NextLink)
+		Fetcher: func(ctx context.Context, page *ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsResponse) (ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.getDeleteProtectedItemRequestsObjectsCreateRequest(ctx, resourceGroupName, resourceGuardsName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.getDeleteProtectedItemRequestsObjectsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // getDeleteProtectedItemRequestsObjectsCreateRequest creates the GetDeleteProtectedItemRequestsObjects request.
@@ -601,7 +638,7 @@ func (client *ResourceGuardsClient) getDeleteProtectedItemRequestsObjectsCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -609,7 +646,7 @@ func (client *ResourceGuardsClient) getDeleteProtectedItemRequestsObjectsCreateR
 
 // getDeleteProtectedItemRequestsObjectsHandleResponse handles the GetDeleteProtectedItemRequestsObjects response.
 func (client *ResourceGuardsClient) getDeleteProtectedItemRequestsObjectsHandleResponse(resp *http.Response) (ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsResponse, error) {
-	result := ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsResponse{RawResponse: resp}
+	result := ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DppBaseResourceList); err != nil {
 		return ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsResponse{}, err
 	}
@@ -622,16 +659,32 @@ func (client *ResourceGuardsClient) getDeleteProtectedItemRequestsObjectsHandleR
 // resourceGroupName - The name of the resource group where the backup vault is present.
 // options - ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsOptions contains the optional parameters for the
 // ResourceGuardsClient.GetDeleteResourceGuardProxyRequestsObjects method.
-func (client *ResourceGuardsClient) GetDeleteResourceGuardProxyRequestsObjects(resourceGroupName string, resourceGuardsName string, options *ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsOptions) *ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsPager {
-	return &ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.getDeleteResourceGuardProxyRequestsObjectsCreateRequest(ctx, resourceGroupName, resourceGuardsName, options)
+func (client *ResourceGuardsClient) GetDeleteResourceGuardProxyRequestsObjects(resourceGroupName string, resourceGuardsName string, options *ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsOptions) *runtime.Pager[ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsResponse]{
+		More: func(page ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DppBaseResourceList.NextLink)
+		Fetcher: func(ctx context.Context, page *ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsResponse) (ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.getDeleteResourceGuardProxyRequestsObjectsCreateRequest(ctx, resourceGroupName, resourceGuardsName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.getDeleteResourceGuardProxyRequestsObjectsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // getDeleteResourceGuardProxyRequestsObjectsCreateRequest creates the GetDeleteResourceGuardProxyRequestsObjects request.
@@ -654,7 +707,7 @@ func (client *ResourceGuardsClient) getDeleteResourceGuardProxyRequestsObjectsCr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -662,7 +715,7 @@ func (client *ResourceGuardsClient) getDeleteResourceGuardProxyRequestsObjectsCr
 
 // getDeleteResourceGuardProxyRequestsObjectsHandleResponse handles the GetDeleteResourceGuardProxyRequestsObjects response.
 func (client *ResourceGuardsClient) getDeleteResourceGuardProxyRequestsObjectsHandleResponse(resp *http.Response) (ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsResponse, error) {
-	result := ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsResponse{RawResponse: resp}
+	result := ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DppBaseResourceList); err != nil {
 		return ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsResponse{}, err
 	}
@@ -675,16 +728,32 @@ func (client *ResourceGuardsClient) getDeleteResourceGuardProxyRequestsObjectsHa
 // resourceGroupName - The name of the resource group where the backup vault is present.
 // options - ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsOptions contains the optional parameters for the ResourceGuardsClient.GetDisableSoftDeleteRequestsObjects
 // method.
-func (client *ResourceGuardsClient) GetDisableSoftDeleteRequestsObjects(resourceGroupName string, resourceGuardsName string, options *ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsOptions) *ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsPager {
-	return &ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.getDisableSoftDeleteRequestsObjectsCreateRequest(ctx, resourceGroupName, resourceGuardsName, options)
+func (client *ResourceGuardsClient) GetDisableSoftDeleteRequestsObjects(resourceGroupName string, resourceGuardsName string, options *ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsOptions) *runtime.Pager[ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsResponse]{
+		More: func(page ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DppBaseResourceList.NextLink)
+		Fetcher: func(ctx context.Context, page *ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsResponse) (ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.getDisableSoftDeleteRequestsObjectsCreateRequest(ctx, resourceGroupName, resourceGuardsName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.getDisableSoftDeleteRequestsObjectsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // getDisableSoftDeleteRequestsObjectsCreateRequest creates the GetDisableSoftDeleteRequestsObjects request.
@@ -707,7 +776,7 @@ func (client *ResourceGuardsClient) getDisableSoftDeleteRequestsObjectsCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -715,7 +784,7 @@ func (client *ResourceGuardsClient) getDisableSoftDeleteRequestsObjectsCreateReq
 
 // getDisableSoftDeleteRequestsObjectsHandleResponse handles the GetDisableSoftDeleteRequestsObjects response.
 func (client *ResourceGuardsClient) getDisableSoftDeleteRequestsObjectsHandleResponse(resp *http.Response) (ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsResponse, error) {
-	result := ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsResponse{RawResponse: resp}
+	result := ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DppBaseResourceList); err != nil {
 		return ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsResponse{}, err
 	}
@@ -727,16 +796,32 @@ func (client *ResourceGuardsClient) getDisableSoftDeleteRequestsObjectsHandleRes
 // resourceGroupName - The name of the resource group where the backup vault is present.
 // options - ResourceGuardsClientGetResourcesInResourceGroupOptions contains the optional parameters for the ResourceGuardsClient.GetResourcesInResourceGroup
 // method.
-func (client *ResourceGuardsClient) GetResourcesInResourceGroup(resourceGroupName string, options *ResourceGuardsClientGetResourcesInResourceGroupOptions) *ResourceGuardsClientGetResourcesInResourceGroupPager {
-	return &ResourceGuardsClientGetResourcesInResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.getResourcesInResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *ResourceGuardsClient) GetResourcesInResourceGroup(resourceGroupName string, options *ResourceGuardsClientGetResourcesInResourceGroupOptions) *runtime.Pager[ResourceGuardsClientGetResourcesInResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ResourceGuardsClientGetResourcesInResourceGroupResponse]{
+		More: func(page ResourceGuardsClientGetResourcesInResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ResourceGuardsClientGetResourcesInResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ResourceGuardResourceList.NextLink)
+		Fetcher: func(ctx context.Context, page *ResourceGuardsClientGetResourcesInResourceGroupResponse) (ResourceGuardsClientGetResourcesInResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.getResourcesInResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ResourceGuardsClientGetResourcesInResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ResourceGuardsClientGetResourcesInResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ResourceGuardsClientGetResourcesInResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.getResourcesInResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // getResourcesInResourceGroupCreateRequest creates the GetResourcesInResourceGroup request.
@@ -755,7 +840,7 @@ func (client *ResourceGuardsClient) getResourcesInResourceGroupCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -763,7 +848,7 @@ func (client *ResourceGuardsClient) getResourcesInResourceGroupCreateRequest(ctx
 
 // getResourcesInResourceGroupHandleResponse handles the GetResourcesInResourceGroup response.
 func (client *ResourceGuardsClient) getResourcesInResourceGroupHandleResponse(resp *http.Response) (ResourceGuardsClientGetResourcesInResourceGroupResponse, error) {
-	result := ResourceGuardsClientGetResourcesInResourceGroupResponse{RawResponse: resp}
+	result := ResourceGuardsClientGetResourcesInResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceGuardResourceList); err != nil {
 		return ResourceGuardsClientGetResourcesInResourceGroupResponse{}, err
 	}
@@ -774,16 +859,32 @@ func (client *ResourceGuardsClient) getResourcesInResourceGroupHandleResponse(re
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ResourceGuardsClientGetResourcesInSubscriptionOptions contains the optional parameters for the ResourceGuardsClient.GetResourcesInSubscription
 // method.
-func (client *ResourceGuardsClient) GetResourcesInSubscription(options *ResourceGuardsClientGetResourcesInSubscriptionOptions) *ResourceGuardsClientGetResourcesInSubscriptionPager {
-	return &ResourceGuardsClientGetResourcesInSubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.getResourcesInSubscriptionCreateRequest(ctx, options)
+func (client *ResourceGuardsClient) GetResourcesInSubscription(options *ResourceGuardsClientGetResourcesInSubscriptionOptions) *runtime.Pager[ResourceGuardsClientGetResourcesInSubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ResourceGuardsClientGetResourcesInSubscriptionResponse]{
+		More: func(page ResourceGuardsClientGetResourcesInSubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ResourceGuardsClientGetResourcesInSubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ResourceGuardResourceList.NextLink)
+		Fetcher: func(ctx context.Context, page *ResourceGuardsClientGetResourcesInSubscriptionResponse) (ResourceGuardsClientGetResourcesInSubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.getResourcesInSubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ResourceGuardsClientGetResourcesInSubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ResourceGuardsClientGetResourcesInSubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ResourceGuardsClientGetResourcesInSubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.getResourcesInSubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // getResourcesInSubscriptionCreateRequest creates the GetResourcesInSubscription request.
@@ -798,7 +899,7 @@ func (client *ResourceGuardsClient) getResourcesInSubscriptionCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -806,7 +907,7 @@ func (client *ResourceGuardsClient) getResourcesInSubscriptionCreateRequest(ctx 
 
 // getResourcesInSubscriptionHandleResponse handles the GetResourcesInSubscription response.
 func (client *ResourceGuardsClient) getResourcesInSubscriptionHandleResponse(resp *http.Response) (ResourceGuardsClientGetResourcesInSubscriptionResponse, error) {
-	result := ResourceGuardsClientGetResourcesInSubscriptionResponse{RawResponse: resp}
+	result := ResourceGuardsClientGetResourcesInSubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceGuardResourceList); err != nil {
 		return ResourceGuardsClientGetResourcesInSubscriptionResponse{}, err
 	}
@@ -819,16 +920,32 @@ func (client *ResourceGuardsClient) getResourcesInSubscriptionHandleResponse(res
 // resourceGroupName - The name of the resource group where the backup vault is present.
 // options - ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsOptions contains the optional parameters for the ResourceGuardsClient.GetUpdateProtectedItemRequestsObjects
 // method.
-func (client *ResourceGuardsClient) GetUpdateProtectedItemRequestsObjects(resourceGroupName string, resourceGuardsName string, options *ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsOptions) *ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsPager {
-	return &ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.getUpdateProtectedItemRequestsObjectsCreateRequest(ctx, resourceGroupName, resourceGuardsName, options)
+func (client *ResourceGuardsClient) GetUpdateProtectedItemRequestsObjects(resourceGroupName string, resourceGuardsName string, options *ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsOptions) *runtime.Pager[ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsResponse]{
+		More: func(page ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DppBaseResourceList.NextLink)
+		Fetcher: func(ctx context.Context, page *ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsResponse) (ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.getUpdateProtectedItemRequestsObjectsCreateRequest(ctx, resourceGroupName, resourceGuardsName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.getUpdateProtectedItemRequestsObjectsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // getUpdateProtectedItemRequestsObjectsCreateRequest creates the GetUpdateProtectedItemRequestsObjects request.
@@ -851,7 +968,7 @@ func (client *ResourceGuardsClient) getUpdateProtectedItemRequestsObjectsCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -859,7 +976,7 @@ func (client *ResourceGuardsClient) getUpdateProtectedItemRequestsObjectsCreateR
 
 // getUpdateProtectedItemRequestsObjectsHandleResponse handles the GetUpdateProtectedItemRequestsObjects response.
 func (client *ResourceGuardsClient) getUpdateProtectedItemRequestsObjectsHandleResponse(resp *http.Response) (ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsResponse, error) {
-	result := ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsResponse{RawResponse: resp}
+	result := ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DppBaseResourceList); err != nil {
 		return ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsResponse{}, err
 	}
@@ -872,16 +989,32 @@ func (client *ResourceGuardsClient) getUpdateProtectedItemRequestsObjectsHandleR
 // resourceGroupName - The name of the resource group where the backup vault is present.
 // options - ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsOptions contains the optional parameters for the
 // ResourceGuardsClient.GetUpdateProtectionPolicyRequestsObjects method.
-func (client *ResourceGuardsClient) GetUpdateProtectionPolicyRequestsObjects(resourceGroupName string, resourceGuardsName string, options *ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsOptions) *ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsPager {
-	return &ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.getUpdateProtectionPolicyRequestsObjectsCreateRequest(ctx, resourceGroupName, resourceGuardsName, options)
+func (client *ResourceGuardsClient) GetUpdateProtectionPolicyRequestsObjects(resourceGroupName string, resourceGuardsName string, options *ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsOptions) *runtime.Pager[ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsResponse]{
+		More: func(page ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DppBaseResourceList.NextLink)
+		Fetcher: func(ctx context.Context, page *ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsResponse) (ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.getUpdateProtectionPolicyRequestsObjectsCreateRequest(ctx, resourceGroupName, resourceGuardsName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.getUpdateProtectionPolicyRequestsObjectsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // getUpdateProtectionPolicyRequestsObjectsCreateRequest creates the GetUpdateProtectionPolicyRequestsObjects request.
@@ -904,7 +1037,7 @@ func (client *ResourceGuardsClient) getUpdateProtectionPolicyRequestsObjectsCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -912,7 +1045,7 @@ func (client *ResourceGuardsClient) getUpdateProtectionPolicyRequestsObjectsCrea
 
 // getUpdateProtectionPolicyRequestsObjectsHandleResponse handles the GetUpdateProtectionPolicyRequestsObjects response.
 func (client *ResourceGuardsClient) getUpdateProtectionPolicyRequestsObjectsHandleResponse(resp *http.Response) (ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsResponse, error) {
-	result := ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsResponse{RawResponse: resp}
+	result := ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DppBaseResourceList); err != nil {
 		return ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsResponse{}, err
 	}
@@ -960,7 +1093,7 @@ func (client *ResourceGuardsClient) patchCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -968,7 +1101,7 @@ func (client *ResourceGuardsClient) patchCreateRequest(ctx context.Context, reso
 
 // patchHandleResponse handles the Patch response.
 func (client *ResourceGuardsClient) patchHandleResponse(resp *http.Response) (ResourceGuardsClientPatchResponse, error) {
-	result := ResourceGuardsClientPatchResponse{RawResponse: resp}
+	result := ResourceGuardsClientPatchResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceGuardResource); err != nil {
 		return ResourceGuardsClientPatchResponse{}, err
 	}
@@ -1016,7 +1149,7 @@ func (client *ResourceGuardsClient) putCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -1024,7 +1157,7 @@ func (client *ResourceGuardsClient) putCreateRequest(ctx context.Context, resour
 
 // putHandleResponse handles the Put response.
 func (client *ResourceGuardsClient) putHandleResponse(resp *http.Response) (ResourceGuardsClientPutResponse, error) {
-	result := ResourceGuardsClientPutResponse{RawResponse: resp}
+	result := ResourceGuardsClientPutResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceGuardResource); err != nil {
 		return ResourceGuardsClientPutResponse{}, err
 	}

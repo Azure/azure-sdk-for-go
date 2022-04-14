@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armproviderhub
 
 const (
 	moduleName    = "armproviderhub"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 type ExtensionCategory string
@@ -56,11 +56,6 @@ func PossibleExtensionCategoryValues() []ExtensionCategory {
 	}
 }
 
-// ToPtr returns a *ExtensionCategory pointing to the current value.
-func (c ExtensionCategory) ToPtr() *ExtensionCategory {
-	return &c
-}
-
 type ExtensionOptionType string
 
 const (
@@ -78,11 +73,6 @@ func PossibleExtensionOptionTypeValues() []ExtensionOptionType {
 	}
 }
 
-// ToPtr returns a *ExtensionOptionType pointing to the current value.
-func (c ExtensionOptionType) ToPtr() *ExtensionOptionType {
-	return &c
-}
-
 type FeaturesPolicy string
 
 const (
@@ -96,11 +86,6 @@ func PossibleFeaturesPolicyValues() []FeaturesPolicy {
 		FeaturesPolicyAll,
 		FeaturesPolicyAny,
 	}
-}
-
-// ToPtr returns a *FeaturesPolicy pointing to the current value.
-func (c FeaturesPolicy) ToPtr() *FeaturesPolicy {
-	return &c
 }
 
 type IdentityManagementTypes string
@@ -124,11 +109,6 @@ func PossibleIdentityManagementTypesValues() []IdentityManagementTypes {
 	}
 }
 
-// ToPtr returns a *IdentityManagementTypes pointing to the current value.
-func (c IdentityManagementTypes) ToPtr() *IdentityManagementTypes {
-	return &c
-}
-
 type LinkedAction string
 
 const (
@@ -148,11 +128,6 @@ func PossibleLinkedActionValues() []LinkedAction {
 	}
 }
 
-// ToPtr returns a *LinkedAction pointing to the current value.
-func (c LinkedAction) ToPtr() *LinkedAction {
-	return &c
-}
-
 type LinkedOperation string
 
 const (
@@ -170,11 +145,6 @@ func PossibleLinkedOperationValues() []LinkedOperation {
 	}
 }
 
-// ToPtr returns a *LinkedOperation pointing to the current value.
-func (c LinkedOperation) ToPtr() *LinkedOperation {
-	return &c
-}
-
 type LoggingDetails string
 
 const (
@@ -188,11 +158,6 @@ func PossibleLoggingDetailsValues() []LoggingDetails {
 		LoggingDetailsBody,
 		LoggingDetailsNone,
 	}
-}
-
-// ToPtr returns a *LoggingDetails pointing to the current value.
-func (c LoggingDetails) ToPtr() *LoggingDetails {
-	return &c
 }
 
 type LoggingDirections string
@@ -212,11 +177,6 @@ func PossibleLoggingDirectionsValues() []LoggingDirections {
 	}
 }
 
-// ToPtr returns a *LoggingDirections pointing to the current value.
-func (c LoggingDirections) ToPtr() *LoggingDirections {
-	return &c
-}
-
 type ManifestResourceDeletionPolicy string
 
 const (
@@ -234,11 +194,6 @@ func PossibleManifestResourceDeletionPolicyValues() []ManifestResourceDeletionPo
 	}
 }
 
-// ToPtr returns a *ManifestResourceDeletionPolicy pointing to the current value.
-func (c ManifestResourceDeletionPolicy) ToPtr() *ManifestResourceDeletionPolicy {
-	return &c
-}
-
 type MessageScope string
 
 const (
@@ -252,11 +207,6 @@ func PossibleMessageScopeValues() []MessageScope {
 		MessageScopeNotSpecified,
 		MessageScopeRegisteredSubscriptions,
 	}
-}
-
-// ToPtr returns a *MessageScope pointing to the current value.
-func (c MessageScope) ToPtr() *MessageScope {
-	return &c
 }
 
 type NotificationMode string
@@ -276,11 +226,6 @@ func PossibleNotificationModeValues() []NotificationMode {
 	}
 }
 
-// ToPtr returns a *NotificationMode pointing to the current value.
-func (c NotificationMode) ToPtr() *NotificationMode {
-	return &c
-}
-
 type OperationsDefinitionActionType string
 
 const (
@@ -294,11 +239,6 @@ func PossibleOperationsDefinitionActionTypeValues() []OperationsDefinitionAction
 		OperationsDefinitionActionTypeInternal,
 		OperationsDefinitionActionTypeNotSpecified,
 	}
-}
-
-// ToPtr returns a *OperationsDefinitionActionType pointing to the current value.
-func (c OperationsDefinitionActionType) ToPtr() *OperationsDefinitionActionType {
-	return &c
 }
 
 type OperationsDefinitionOrigin string
@@ -316,11 +256,6 @@ func PossibleOperationsDefinitionOriginValues() []OperationsDefinitionOrigin {
 		OperationsDefinitionOriginSystem,
 		OperationsDefinitionOriginUser,
 	}
-}
-
-// ToPtr returns a *OperationsDefinitionOrigin pointing to the current value.
-func (c OperationsDefinitionOrigin) ToPtr() *OperationsDefinitionOrigin {
-	return &c
 }
 
 type OptInHeaderType string
@@ -344,11 +279,6 @@ func PossibleOptInHeaderTypeValues() []OptInHeaderType {
 	}
 }
 
-// ToPtr returns a *OptInHeaderType pointing to the current value.
-func (c OptInHeaderType) ToPtr() *OptInHeaderType {
-	return &c
-}
-
 type PreflightOption string
 
 const (
@@ -364,11 +294,6 @@ func PossiblePreflightOptionValues() []PreflightOption {
 		PreflightOptionDefaultValidationOnly,
 		PreflightOptionNone,
 	}
-}
-
-// ToPtr returns a *PreflightOption pointing to the current value.
-func (c PreflightOption) ToPtr() *PreflightOption {
-	return &c
 }
 
 type ProvisioningState string
@@ -408,11 +333,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 type Regionality string
 
 const (
@@ -428,11 +348,6 @@ func PossibleRegionalityValues() []Regionality {
 		RegionalityNotSpecified,
 		RegionalityRegional,
 	}
-}
-
-// ToPtr returns a *Regionality pointing to the current value.
-func (c Regionality) ToPtr() *Regionality {
-	return &c
 }
 
 type ResourceDeletionPolicy string
@@ -452,11 +367,6 @@ func PossibleResourceDeletionPolicyValues() []ResourceDeletionPolicy {
 	}
 }
 
-// ToPtr returns a *ResourceDeletionPolicy pointing to the current value.
-func (c ResourceDeletionPolicy) ToPtr() *ResourceDeletionPolicy {
-	return &c
-}
-
 type ResourceProviderCapabilitiesEffect string
 
 const (
@@ -474,11 +384,6 @@ func PossibleResourceProviderCapabilitiesEffectValues() []ResourceProviderCapabi
 	}
 }
 
-// ToPtr returns a *ResourceProviderCapabilitiesEffect pointing to the current value.
-func (c ResourceProviderCapabilitiesEffect) ToPtr() *ResourceProviderCapabilitiesEffect {
-	return &c
-}
-
 type ResourceProviderManagementResourceAccessPolicy string
 
 const (
@@ -494,11 +399,6 @@ func PossibleResourceProviderManagementResourceAccessPolicyValues() []ResourcePr
 		ResourceProviderManagementResourceAccessPolicyAcisReadAllowed,
 		ResourceProviderManagementResourceAccessPolicyNotSpecified,
 	}
-}
-
-// ToPtr returns a *ResourceProviderManagementResourceAccessPolicy pointing to the current value.
-func (c ResourceProviderManagementResourceAccessPolicy) ToPtr() *ResourceProviderManagementResourceAccessPolicy {
-	return &c
 }
 
 type ResourceProviderType string
@@ -528,11 +428,6 @@ func PossibleResourceProviderTypeValues() []ResourceProviderType {
 	}
 }
 
-// ToPtr returns a *ResourceProviderType pointing to the current value.
-func (c ResourceProviderType) ToPtr() *ResourceProviderType {
-	return &c
-}
-
 type ResourceTypeMarketplaceType string
 
 const (
@@ -550,11 +445,6 @@ func PossibleResourceTypeMarketplaceTypeValues() []ResourceTypeMarketplaceType {
 		ResourceTypeMarketplaceTypeNotSpecified,
 		ResourceTypeMarketplaceTypeStore,
 	}
-}
-
-// ToPtr returns a *ResourceTypeMarketplaceType pointing to the current value.
-func (c ResourceTypeMarketplaceType) ToPtr() *ResourceTypeMarketplaceType {
-	return &c
 }
 
 type ResourceTypeRegistrationPropertiesMarketplaceType string
@@ -576,11 +466,6 @@ func PossibleResourceTypeRegistrationPropertiesMarketplaceTypeValues() []Resourc
 	}
 }
 
-// ToPtr returns a *ResourceTypeRegistrationPropertiesMarketplaceType pointing to the current value.
-func (c ResourceTypeRegistrationPropertiesMarketplaceType) ToPtr() *ResourceTypeRegistrationPropertiesMarketplaceType {
-	return &c
-}
-
 type ResourceValidation string
 
 const (
@@ -596,11 +481,6 @@ func PossibleResourceValidationValues() []ResourceValidation {
 		ResourceValidationProfaneWords,
 		ResourceValidationReservedWords,
 	}
-}
-
-// ToPtr returns a *ResourceValidation pointing to the current value.
-func (c ResourceValidation) ToPtr() *ResourceValidation {
-	return &c
 }
 
 type RoutingType string
@@ -632,11 +512,6 @@ func PossibleRoutingTypeValues() []RoutingType {
 	}
 }
 
-// ToPtr returns a *RoutingType pointing to the current value.
-func (c RoutingType) ToPtr() *RoutingType {
-	return &c
-}
-
 type SKULocationInfoType string
 
 const (
@@ -654,11 +529,6 @@ func PossibleSKULocationInfoTypeValues() []SKULocationInfoType {
 	}
 }
 
-// ToPtr returns a *SKULocationInfoType pointing to the current value.
-func (c SKULocationInfoType) ToPtr() *SKULocationInfoType {
-	return &c
-}
-
 type SKUScaleType string
 
 const (
@@ -674,11 +544,6 @@ func PossibleSKUScaleTypeValues() []SKUScaleType {
 		SKUScaleTypeManual,
 		SKUScaleTypeNone,
 	}
-}
-
-// ToPtr returns a *SKUScaleType pointing to the current value.
-func (c SKUScaleType) ToPtr() *SKUScaleType {
-	return &c
 }
 
 type SubscriptionNotificationOperation string
@@ -704,11 +569,6 @@ func PossibleSubscriptionNotificationOperationValues() []SubscriptionNotificatio
 	}
 }
 
-// ToPtr returns a *SubscriptionNotificationOperation pointing to the current value.
-func (c SubscriptionNotificationOperation) ToPtr() *SubscriptionNotificationOperation {
-	return &c
-}
-
 type SubscriptionReregistrationResult string
 
 const (
@@ -726,11 +586,6 @@ func PossibleSubscriptionReregistrationResultValues() []SubscriptionReregistrati
 		SubscriptionReregistrationResultForcedUpdate,
 		SubscriptionReregistrationResultNotApplicable,
 	}
-}
-
-// ToPtr returns a *SubscriptionReregistrationResult pointing to the current value.
-func (c SubscriptionReregistrationResult) ToPtr() *SubscriptionReregistrationResult {
-	return &c
 }
 
 type SubscriptionState string
@@ -754,11 +609,6 @@ func PossibleSubscriptionStateValues() []SubscriptionState {
 		SubscriptionStatePastDue,
 		SubscriptionStateWarned,
 	}
-}
-
-// ToPtr returns a *SubscriptionState pointing to the current value.
-func (c SubscriptionState) ToPtr() *SubscriptionState {
-	return &c
 }
 
 type SubscriptionTransitioningState string
@@ -798,11 +648,6 @@ func PossibleSubscriptionTransitioningStateValues() []SubscriptionTransitioningS
 	}
 }
 
-// ToPtr returns a *SubscriptionTransitioningState pointing to the current value.
-func (c SubscriptionTransitioningState) ToPtr() *SubscriptionTransitioningState {
-	return &c
-}
-
 type TemplateDeploymentCapabilities string
 
 const (
@@ -816,11 +661,6 @@ func PossibleTemplateDeploymentCapabilitiesValues() []TemplateDeploymentCapabili
 		TemplateDeploymentCapabilitiesDefault,
 		TemplateDeploymentCapabilitiesPreflight,
 	}
-}
-
-// ToPtr returns a *TemplateDeploymentCapabilities pointing to the current value.
-func (c TemplateDeploymentCapabilities) ToPtr() *TemplateDeploymentCapabilities {
-	return &c
 }
 
 type TemplateDeploymentPreflightOptions string
@@ -844,11 +684,6 @@ func PossibleTemplateDeploymentPreflightOptionsValues() []TemplateDeploymentPref
 	}
 }
 
-// ToPtr returns a *TemplateDeploymentPreflightOptions pointing to the current value.
-func (c TemplateDeploymentPreflightOptions) ToPtr() *TemplateDeploymentPreflightOptions {
-	return &c
-}
-
 type ThrottlingMetricType string
 
 const (
@@ -864,11 +699,6 @@ func PossibleThrottlingMetricTypeValues() []ThrottlingMetricType {
 		ThrottlingMetricTypeNumberOfRequests,
 		ThrottlingMetricTypeNumberOfResources,
 	}
-}
-
-// ToPtr returns a *ThrottlingMetricType pointing to the current value.
-func (c ThrottlingMetricType) ToPtr() *ThrottlingMetricType {
-	return &c
 }
 
 type TrafficRegionCategory string
@@ -896,9 +726,4 @@ func PossibleTrafficRegionCategoryValues() []TrafficRegionCategory {
 		TrafficRegionCategoryRestOfTheWorldGroupOne,
 		TrafficRegionCategoryRestOfTheWorldGroupTwo,
 	}
-}
-
-// ToPtr returns a *TrafficRegionCategory pointing to the current value.
-func (c TrafficRegionCategory) ToPtr() *TrafficRegionCategory {
-	return &c
 }

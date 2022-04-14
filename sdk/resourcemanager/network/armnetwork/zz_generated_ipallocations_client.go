@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type IPAllocationsClient struct {
 // ID forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewIPAllocationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IPAllocationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewIPAllocationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IPAllocationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &IPAllocationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates an IpAllocation in the specified resource group.
@@ -57,22 +62,18 @@ func NewIPAllocationsClient(subscriptionID string, credential azcore.TokenCreden
 // parameters - Parameters supplied to the create or update virtual network operation.
 // options - IPAllocationsClientBeginCreateOrUpdateOptions contains the optional parameters for the IPAllocationsClient.BeginCreateOrUpdate
 // method.
-func (client *IPAllocationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, ipAllocationName string, parameters IPAllocation, options *IPAllocationsClientBeginCreateOrUpdateOptions) (IPAllocationsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, ipAllocationName, parameters, options)
-	if err != nil {
-		return IPAllocationsClientCreateOrUpdatePollerResponse{}, err
+func (client *IPAllocationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, ipAllocationName string, parameters IPAllocation, options *IPAllocationsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[IPAllocationsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, ipAllocationName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[IPAllocationsClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[IPAllocationsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := IPAllocationsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("IPAllocationsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return IPAllocationsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &IPAllocationsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates an IpAllocation in the specified resource group.
@@ -124,22 +125,18 @@ func (client *IPAllocationsClient) createOrUpdateCreateRequest(ctx context.Conte
 // ipAllocationName - The name of the IpAllocation.
 // options - IPAllocationsClientBeginDeleteOptions contains the optional parameters for the IPAllocationsClient.BeginDelete
 // method.
-func (client *IPAllocationsClient) BeginDelete(ctx context.Context, resourceGroupName string, ipAllocationName string, options *IPAllocationsClientBeginDeleteOptions) (IPAllocationsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, ipAllocationName, options)
-	if err != nil {
-		return IPAllocationsClientDeletePollerResponse{}, err
+func (client *IPAllocationsClient) BeginDelete(ctx context.Context, resourceGroupName string, ipAllocationName string, options *IPAllocationsClientBeginDeleteOptions) (*armruntime.Poller[IPAllocationsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, ipAllocationName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[IPAllocationsClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[IPAllocationsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := IPAllocationsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("IPAllocationsClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return IPAllocationsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &IPAllocationsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified IpAllocation.
@@ -236,7 +233,7 @@ func (client *IPAllocationsClient) getCreateRequest(ctx context.Context, resourc
 
 // getHandleResponse handles the Get response.
 func (client *IPAllocationsClient) getHandleResponse(resp *http.Response) (IPAllocationsClientGetResponse, error) {
-	result := IPAllocationsClientGetResponse{RawResponse: resp}
+	result := IPAllocationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IPAllocation); err != nil {
 		return IPAllocationsClientGetResponse{}, err
 	}
@@ -246,16 +243,32 @@ func (client *IPAllocationsClient) getHandleResponse(resp *http.Response) (IPAll
 // List - Gets all IpAllocations in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - IPAllocationsClientListOptions contains the optional parameters for the IPAllocationsClient.List method.
-func (client *IPAllocationsClient) List(options *IPAllocationsClientListOptions) *IPAllocationsClientListPager {
-	return &IPAllocationsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *IPAllocationsClient) List(options *IPAllocationsClientListOptions) *runtime.Pager[IPAllocationsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[IPAllocationsClientListResponse]{
+		More: func(page IPAllocationsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp IPAllocationsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.IPAllocationListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *IPAllocationsClientListResponse) (IPAllocationsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return IPAllocationsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return IPAllocationsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return IPAllocationsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -278,7 +291,7 @@ func (client *IPAllocationsClient) listCreateRequest(ctx context.Context, option
 
 // listHandleResponse handles the List response.
 func (client *IPAllocationsClient) listHandleResponse(resp *http.Response) (IPAllocationsClientListResponse, error) {
-	result := IPAllocationsClientListResponse{RawResponse: resp}
+	result := IPAllocationsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IPAllocationListResult); err != nil {
 		return IPAllocationsClientListResponse{}, err
 	}
@@ -290,16 +303,32 @@ func (client *IPAllocationsClient) listHandleResponse(resp *http.Response) (IPAl
 // resourceGroupName - The name of the resource group.
 // options - IPAllocationsClientListByResourceGroupOptions contains the optional parameters for the IPAllocationsClient.ListByResourceGroup
 // method.
-func (client *IPAllocationsClient) ListByResourceGroup(resourceGroupName string, options *IPAllocationsClientListByResourceGroupOptions) *IPAllocationsClientListByResourceGroupPager {
-	return &IPAllocationsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *IPAllocationsClient) ListByResourceGroup(resourceGroupName string, options *IPAllocationsClientListByResourceGroupOptions) *runtime.Pager[IPAllocationsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[IPAllocationsClientListByResourceGroupResponse]{
+		More: func(page IPAllocationsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp IPAllocationsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.IPAllocationListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *IPAllocationsClientListByResourceGroupResponse) (IPAllocationsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return IPAllocationsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return IPAllocationsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return IPAllocationsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -326,7 +355,7 @@ func (client *IPAllocationsClient) listByResourceGroupCreateRequest(ctx context.
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *IPAllocationsClient) listByResourceGroupHandleResponse(resp *http.Response) (IPAllocationsClientListByResourceGroupResponse, error) {
-	result := IPAllocationsClientListByResourceGroupResponse{RawResponse: resp}
+	result := IPAllocationsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IPAllocationListResult); err != nil {
 		return IPAllocationsClientListByResourceGroupResponse{}, err
 	}
@@ -383,7 +412,7 @@ func (client *IPAllocationsClient) updateTagsCreateRequest(ctx context.Context, 
 
 // updateTagsHandleResponse handles the UpdateTags response.
 func (client *IPAllocationsClient) updateTagsHandleResponse(resp *http.Response) (IPAllocationsClientUpdateTagsResponse, error) {
-	result := IPAllocationsClientUpdateTagsResponse{RawResponse: resp}
+	result := IPAllocationsClientUpdateTagsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IPAllocation); err != nil {
 		return IPAllocationsClientUpdateTagsResponse{}, err
 	}

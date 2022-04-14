@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,19 +32,23 @@ type InformationProtectionPoliciesClient struct {
 // NewInformationProtectionPoliciesClient creates a new instance of InformationProtectionPoliciesClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewInformationProtectionPoliciesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *InformationProtectionPoliciesClient {
+func NewInformationProtectionPoliciesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*InformationProtectionPoliciesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &InformationProtectionPoliciesClient{
-		host: string(ep),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Details of the information protection policy.
@@ -90,7 +95,7 @@ func (client *InformationProtectionPoliciesClient) createOrUpdateCreateRequest(c
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *InformationProtectionPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (InformationProtectionPoliciesClientCreateOrUpdateResponse, error) {
-	result := InformationProtectionPoliciesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := InformationProtectionPoliciesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InformationProtectionPolicy); err != nil {
 		return InformationProtectionPoliciesClientCreateOrUpdateResponse{}, err
 	}
@@ -140,7 +145,7 @@ func (client *InformationProtectionPoliciesClient) getCreateRequest(ctx context.
 
 // getHandleResponse handles the Get response.
 func (client *InformationProtectionPoliciesClient) getHandleResponse(resp *http.Response) (InformationProtectionPoliciesClientGetResponse, error) {
-	result := InformationProtectionPoliciesClientGetResponse{RawResponse: resp}
+	result := InformationProtectionPoliciesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InformationProtectionPolicy); err != nil {
 		return InformationProtectionPoliciesClientGetResponse{}, err
 	}
@@ -153,16 +158,32 @@ func (client *InformationProtectionPoliciesClient) getHandleResponse(resp *http.
 // (/providers/Microsoft.Management/managementGroups/mgName).
 // options - InformationProtectionPoliciesClientListOptions contains the optional parameters for the InformationProtectionPoliciesClient.List
 // method.
-func (client *InformationProtectionPoliciesClient) List(scope string, options *InformationProtectionPoliciesClientListOptions) *InformationProtectionPoliciesClientListPager {
-	return &InformationProtectionPoliciesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, scope, options)
+func (client *InformationProtectionPoliciesClient) List(scope string, options *InformationProtectionPoliciesClientListOptions) *runtime.Pager[InformationProtectionPoliciesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[InformationProtectionPoliciesClientListResponse]{
+		More: func(page InformationProtectionPoliciesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp InformationProtectionPoliciesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.InformationProtectionPolicyList.NextLink)
+		Fetcher: func(ctx context.Context, page *InformationProtectionPoliciesClientListResponse) (InformationProtectionPoliciesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, scope, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return InformationProtectionPoliciesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return InformationProtectionPoliciesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return InformationProtectionPoliciesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -182,7 +203,7 @@ func (client *InformationProtectionPoliciesClient) listCreateRequest(ctx context
 
 // listHandleResponse handles the List response.
 func (client *InformationProtectionPoliciesClient) listHandleResponse(resp *http.Response) (InformationProtectionPoliciesClientListResponse, error) {
-	result := InformationProtectionPoliciesClientListResponse{RawResponse: resp}
+	result := InformationProtectionPoliciesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InformationProtectionPolicyList); err != nil {
 		return InformationProtectionPoliciesClientListResponse{}, err
 	}

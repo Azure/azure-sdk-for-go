@@ -62,6 +62,9 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 // ctx: Context used to control the request lifetime.
 // opts: Options for the token request, in particular the desired scope of the access token.
 func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
+	if len(opts.Scopes) == 0 {
+		return nil, errors.New(credNameUserPassword + ": GetToken() requires at least one scope")
+	}
 	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes, public.WithSilentAccount(c.account))
 	if err == nil {
 		logGetTokenSuccess(c, opts)

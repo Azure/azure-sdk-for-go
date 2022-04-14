@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type DatabasesClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDatabasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DatabasesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewDatabasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabasesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DatabasesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // AddPrincipals - Add Database principals permissions.
@@ -96,7 +101,7 @@ func (client *DatabasesClient) addPrincipalsCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, databasePrincipalsToAdd)
@@ -104,7 +109,7 @@ func (client *DatabasesClient) addPrincipalsCreateRequest(ctx context.Context, r
 
 // addPrincipalsHandleResponse handles the AddPrincipals response.
 func (client *DatabasesClient) addPrincipalsHandleResponse(resp *http.Response) (DatabasesClientAddPrincipalsResponse, error) {
-	result := DatabasesClientAddPrincipalsResponse{RawResponse: resp}
+	result := DatabasesClientAddPrincipalsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabasePrincipalListResult); err != nil {
 		return DatabasesClientAddPrincipalsResponse{}, err
 	}
@@ -153,7 +158,7 @@ func (client *DatabasesClient) checkNameAvailabilityCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, resourceName)
@@ -161,7 +166,7 @@ func (client *DatabasesClient) checkNameAvailabilityCreateRequest(ctx context.Co
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
 func (client *DatabasesClient) checkNameAvailabilityHandleResponse(resp *http.Response) (DatabasesClientCheckNameAvailabilityResponse, error) {
-	result := DatabasesClientCheckNameAvailabilityResponse{RawResponse: resp}
+	result := DatabasesClientCheckNameAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameResult); err != nil {
 		return DatabasesClientCheckNameAvailabilityResponse{}, err
 	}
@@ -176,22 +181,16 @@ func (client *DatabasesClient) checkNameAvailabilityHandleResponse(resp *http.Re
 // parameters - The database parameters supplied to the CreateOrUpdate operation.
 // options - DatabasesClientBeginCreateOrUpdateOptions contains the optional parameters for the DatabasesClient.BeginCreateOrUpdate
 // method.
-func (client *DatabasesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters DatabaseClassification, options *DatabasesClientBeginCreateOrUpdateOptions) (DatabasesClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, clusterName, databaseName, parameters, options)
-	if err != nil {
-		return DatabasesClientCreateOrUpdatePollerResponse{}, err
+func (client *DatabasesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters DatabaseClassification, options *DatabasesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[DatabasesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, clusterName, databaseName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DatabasesClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DatabasesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DatabasesClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DatabasesClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return DatabasesClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &DatabasesClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a database.
@@ -235,7 +234,7 @@ func (client *DatabasesClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -247,22 +246,16 @@ func (client *DatabasesClient) createOrUpdateCreateRequest(ctx context.Context, 
 // clusterName - The name of the Kusto cluster.
 // databaseName - The name of the database in the Kusto cluster.
 // options - DatabasesClientBeginDeleteOptions contains the optional parameters for the DatabasesClient.BeginDelete method.
-func (client *DatabasesClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *DatabasesClientBeginDeleteOptions) (DatabasesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, databaseName, options)
-	if err != nil {
-		return DatabasesClientDeletePollerResponse{}, err
+func (client *DatabasesClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *DatabasesClientBeginDeleteOptions) (*armruntime.Poller[DatabasesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, databaseName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DatabasesClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DatabasesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DatabasesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DatabasesClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return DatabasesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &DatabasesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the database with the given name.
@@ -306,7 +299,7 @@ func (client *DatabasesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -357,7 +350,7 @@ func (client *DatabasesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -365,7 +358,7 @@ func (client *DatabasesClient) getCreateRequest(ctx context.Context, resourceGro
 
 // getHandleResponse handles the Get response.
 func (client *DatabasesClient) getHandleResponse(resp *http.Response) (DatabasesClientGetResponse, error) {
-	result := DatabasesClientGetResponse{RawResponse: resp}
+	result := DatabasesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return DatabasesClientGetResponse{}, err
 	}
@@ -377,19 +370,26 @@ func (client *DatabasesClient) getHandleResponse(resp *http.Response) (Databases
 // resourceGroupName - The name of the resource group containing the Kusto cluster.
 // clusterName - The name of the Kusto cluster.
 // options - DatabasesClientListByClusterOptions contains the optional parameters for the DatabasesClient.ListByCluster method.
-func (client *DatabasesClient) ListByCluster(ctx context.Context, resourceGroupName string, clusterName string, options *DatabasesClientListByClusterOptions) (DatabasesClientListByClusterResponse, error) {
-	req, err := client.listByClusterCreateRequest(ctx, resourceGroupName, clusterName, options)
-	if err != nil {
-		return DatabasesClientListByClusterResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return DatabasesClientListByClusterResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabasesClientListByClusterResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listByClusterHandleResponse(resp)
+func (client *DatabasesClient) ListByCluster(resourceGroupName string, clusterName string, options *DatabasesClientListByClusterOptions) *runtime.Pager[DatabasesClientListByClusterResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DatabasesClientListByClusterResponse]{
+		More: func(page DatabasesClientListByClusterResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *DatabasesClientListByClusterResponse) (DatabasesClientListByClusterResponse, error) {
+			req, err := client.listByClusterCreateRequest(ctx, resourceGroupName, clusterName, options)
+			if err != nil {
+				return DatabasesClientListByClusterResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DatabasesClientListByClusterResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DatabasesClientListByClusterResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByClusterHandleResponse(resp)
+		},
+	})
 }
 
 // listByClusterCreateRequest creates the ListByCluster request.
@@ -412,7 +412,7 @@ func (client *DatabasesClient) listByClusterCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -420,7 +420,7 @@ func (client *DatabasesClient) listByClusterCreateRequest(ctx context.Context, r
 
 // listByClusterHandleResponse handles the ListByCluster response.
 func (client *DatabasesClient) listByClusterHandleResponse(resp *http.Response) (DatabasesClientListByClusterResponse, error) {
-	result := DatabasesClientListByClusterResponse{RawResponse: resp}
+	result := DatabasesClientListByClusterResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseListResult); err != nil {
 		return DatabasesClientListByClusterResponse{}, err
 	}
@@ -434,19 +434,26 @@ func (client *DatabasesClient) listByClusterHandleResponse(resp *http.Response) 
 // databaseName - The name of the database in the Kusto cluster.
 // options - DatabasesClientListPrincipalsOptions contains the optional parameters for the DatabasesClient.ListPrincipals
 // method.
-func (client *DatabasesClient) ListPrincipals(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *DatabasesClientListPrincipalsOptions) (DatabasesClientListPrincipalsResponse, error) {
-	req, err := client.listPrincipalsCreateRequest(ctx, resourceGroupName, clusterName, databaseName, options)
-	if err != nil {
-		return DatabasesClientListPrincipalsResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return DatabasesClientListPrincipalsResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabasesClientListPrincipalsResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listPrincipalsHandleResponse(resp)
+func (client *DatabasesClient) ListPrincipals(resourceGroupName string, clusterName string, databaseName string, options *DatabasesClientListPrincipalsOptions) *runtime.Pager[DatabasesClientListPrincipalsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DatabasesClientListPrincipalsResponse]{
+		More: func(page DatabasesClientListPrincipalsResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *DatabasesClientListPrincipalsResponse) (DatabasesClientListPrincipalsResponse, error) {
+			req, err := client.listPrincipalsCreateRequest(ctx, resourceGroupName, clusterName, databaseName, options)
+			if err != nil {
+				return DatabasesClientListPrincipalsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DatabasesClientListPrincipalsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DatabasesClientListPrincipalsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listPrincipalsHandleResponse(resp)
+		},
+	})
 }
 
 // listPrincipalsCreateRequest creates the ListPrincipals request.
@@ -473,7 +480,7 @@ func (client *DatabasesClient) listPrincipalsCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -481,7 +488,7 @@ func (client *DatabasesClient) listPrincipalsCreateRequest(ctx context.Context, 
 
 // listPrincipalsHandleResponse handles the ListPrincipals response.
 func (client *DatabasesClient) listPrincipalsHandleResponse(resp *http.Response) (DatabasesClientListPrincipalsResponse, error) {
-	result := DatabasesClientListPrincipalsResponse{RawResponse: resp}
+	result := DatabasesClientListPrincipalsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabasePrincipalListResult); err != nil {
 		return DatabasesClientListPrincipalsResponse{}, err
 	}
@@ -535,7 +542,7 @@ func (client *DatabasesClient) removePrincipalsCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, databasePrincipalsToRemove)
@@ -543,7 +550,7 @@ func (client *DatabasesClient) removePrincipalsCreateRequest(ctx context.Context
 
 // removePrincipalsHandleResponse handles the RemovePrincipals response.
 func (client *DatabasesClient) removePrincipalsHandleResponse(resp *http.Response) (DatabasesClientRemovePrincipalsResponse, error) {
-	result := DatabasesClientRemovePrincipalsResponse{RawResponse: resp}
+	result := DatabasesClientRemovePrincipalsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabasePrincipalListResult); err != nil {
 		return DatabasesClientRemovePrincipalsResponse{}, err
 	}
@@ -557,22 +564,16 @@ func (client *DatabasesClient) removePrincipalsHandleResponse(resp *http.Respons
 // databaseName - The name of the database in the Kusto cluster.
 // parameters - The database parameters supplied to the Update operation.
 // options - DatabasesClientBeginUpdateOptions contains the optional parameters for the DatabasesClient.BeginUpdate method.
-func (client *DatabasesClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters DatabaseClassification, options *DatabasesClientBeginUpdateOptions) (DatabasesClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, clusterName, databaseName, parameters, options)
-	if err != nil {
-		return DatabasesClientUpdatePollerResponse{}, err
+func (client *DatabasesClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters DatabaseClassification, options *DatabasesClientBeginUpdateOptions) (*armruntime.Poller[DatabasesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, clusterName, databaseName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DatabasesClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DatabasesClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DatabasesClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DatabasesClient.Update", "", resp, client.pl)
-	if err != nil {
-		return DatabasesClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &DatabasesClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates a database.
@@ -616,7 +617,7 @@ func (client *DatabasesClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)

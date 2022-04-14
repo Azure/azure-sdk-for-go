@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armfrontdoor
 
 const (
 	moduleName    = "armfrontdoor"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // ActionType - Defines the action to take on rule match.
@@ -33,11 +33,6 @@ func PossibleActionTypeValues() []ActionType {
 	}
 }
 
-// ToPtr returns a *ActionType pointing to the current value.
-func (c ActionType) ToPtr() *ActionType {
-	return &c
-}
-
 // AggregationInterval - The aggregation interval of the Timeseries
 type AggregationInterval string
 
@@ -52,11 +47,6 @@ func PossibleAggregationIntervalValues() []AggregationInterval {
 		AggregationIntervalDaily,
 		AggregationIntervalHourly,
 	}
-}
-
-// ToPtr returns a *AggregationInterval pointing to the current value.
-func (c AggregationInterval) ToPtr() *AggregationInterval {
-	return &c
 }
 
 // Availability - Indicates whether the name is available.
@@ -75,11 +65,6 @@ func PossibleAvailabilityValues() []Availability {
 	}
 }
 
-// ToPtr returns a *Availability pointing to the current value.
-func (c Availability) ToPtr() *Availability {
-	return &c
-}
-
 // BackendEnabledState - Whether to enable use of this backend. Permitted values are 'Enabled' or 'Disabled'
 type BackendEnabledState string
 
@@ -94,11 +79,6 @@ func PossibleBackendEnabledStateValues() []BackendEnabledState {
 		BackendEnabledStateDisabled,
 		BackendEnabledStateEnabled,
 	}
-}
-
-// ToPtr returns a *BackendEnabledState pointing to the current value.
-func (c BackendEnabledState) ToPtr() *BackendEnabledState {
-	return &c
 }
 
 // CustomHTTPSProvisioningState - Provisioning status of Custom Https of the frontendEndpoint.
@@ -121,11 +101,6 @@ func PossibleCustomHTTPSProvisioningStateValues() []CustomHTTPSProvisioningState
 		CustomHTTPSProvisioningStateEnabling,
 		CustomHTTPSProvisioningStateFailed,
 	}
-}
-
-// ToPtr returns a *CustomHTTPSProvisioningState pointing to the current value.
-func (c CustomHTTPSProvisioningState) ToPtr() *CustomHTTPSProvisioningState {
-	return &c
 }
 
 // CustomHTTPSProvisioningSubstate - Provisioning substate shows the progress of custom HTTPS enabling/disabling process step
@@ -161,11 +136,6 @@ func PossibleCustomHTTPSProvisioningSubstateValues() []CustomHTTPSProvisioningSu
 	}
 }
 
-// ToPtr returns a *CustomHTTPSProvisioningSubstate pointing to the current value.
-func (c CustomHTTPSProvisioningSubstate) ToPtr() *CustomHTTPSProvisioningSubstate {
-	return &c
-}
-
 // CustomRuleEnabledState - Describes if the custom rule is in enabled or disabled state. Defaults to Enabled if not specified.
 type CustomRuleEnabledState string
 
@@ -182,11 +152,6 @@ func PossibleCustomRuleEnabledStateValues() []CustomRuleEnabledState {
 	}
 }
 
-// ToPtr returns a *CustomRuleEnabledState pointing to the current value.
-func (c CustomRuleEnabledState) ToPtr() *CustomRuleEnabledState {
-	return &c
-}
-
 // DynamicCompressionEnabled - Whether to use dynamic compression for cached content
 type DynamicCompressionEnabled string
 
@@ -201,11 +166,6 @@ func PossibleDynamicCompressionEnabledValues() []DynamicCompressionEnabled {
 		DynamicCompressionEnabledDisabled,
 		DynamicCompressionEnabledEnabled,
 	}
-}
-
-// ToPtr returns a *DynamicCompressionEnabled pointing to the current value.
-func (c DynamicCompressionEnabled) ToPtr() *DynamicCompressionEnabled {
-	return &c
 }
 
 // EndpointType - The type of endpoint
@@ -228,11 +188,6 @@ func PossibleEndpointTypeValues() []EndpointType {
 	}
 }
 
-// ToPtr returns a *EndpointType pointing to the current value.
-func (c EndpointType) ToPtr() *EndpointType {
-	return &c
-}
-
 // EnforceCertificateNameCheckEnabledState - Whether to enforce certificate name check on HTTPS requests to all backend pools.
 // No effect on non-HTTPS requests.
 type EnforceCertificateNameCheckEnabledState string
@@ -248,11 +203,6 @@ func PossibleEnforceCertificateNameCheckEnabledStateValues() []EnforceCertificat
 		EnforceCertificateNameCheckEnabledStateDisabled,
 		EnforceCertificateNameCheckEnabledStateEnabled,
 	}
-}
-
-// ToPtr returns a *EnforceCertificateNameCheckEnabledState pointing to the current value.
-func (c EnforceCertificateNameCheckEnabledState) ToPtr() *EnforceCertificateNameCheckEnabledState {
-	return &c
 }
 
 // FrontDoorCertificateSource - Defines the source of the SSL certificate
@@ -271,11 +221,6 @@ func PossibleFrontDoorCertificateSourceValues() []FrontDoorCertificateSource {
 	}
 }
 
-// ToPtr returns a *FrontDoorCertificateSource pointing to the current value.
-func (c FrontDoorCertificateSource) ToPtr() *FrontDoorCertificateSource {
-	return &c
-}
-
 // FrontDoorCertificateType - Defines the type of the certificate used for secure connections to a frontendEndpoint
 type FrontDoorCertificateType string
 
@@ -288,11 +233,6 @@ func PossibleFrontDoorCertificateTypeValues() []FrontDoorCertificateType {
 	return []FrontDoorCertificateType{
 		FrontDoorCertificateTypeDedicated,
 	}
-}
-
-// ToPtr returns a *FrontDoorCertificateType pointing to the current value.
-func (c FrontDoorCertificateType) ToPtr() *FrontDoorCertificateType {
-	return &c
 }
 
 // FrontDoorEnabledState - Operational status of the Front Door load balancer. Permitted values are 'Enabled' or 'Disabled'
@@ -309,11 +249,6 @@ func PossibleFrontDoorEnabledStateValues() []FrontDoorEnabledState {
 		FrontDoorEnabledStateDisabled,
 		FrontDoorEnabledStateEnabled,
 	}
-}
-
-// ToPtr returns a *FrontDoorEnabledState pointing to the current value.
-func (c FrontDoorEnabledState) ToPtr() *FrontDoorEnabledState {
-	return &c
 }
 
 // FrontDoorForwardingProtocol - Protocol this rule will use when forwarding traffic to backends.
@@ -334,11 +269,6 @@ func PossibleFrontDoorForwardingProtocolValues() []FrontDoorForwardingProtocol {
 	}
 }
 
-// ToPtr returns a *FrontDoorForwardingProtocol pointing to the current value.
-func (c FrontDoorForwardingProtocol) ToPtr() *FrontDoorForwardingProtocol {
-	return &c
-}
-
 // FrontDoorHealthProbeMethod - Configures which HTTP method to use to probe the backends defined under backendPools.
 type FrontDoorHealthProbeMethod string
 
@@ -355,11 +285,6 @@ func PossibleFrontDoorHealthProbeMethodValues() []FrontDoorHealthProbeMethod {
 	}
 }
 
-// ToPtr returns a *FrontDoorHealthProbeMethod pointing to the current value.
-func (c FrontDoorHealthProbeMethod) ToPtr() *FrontDoorHealthProbeMethod {
-	return &c
-}
-
 // FrontDoorProtocol - Accepted protocol schemes.
 type FrontDoorProtocol string
 
@@ -374,11 +299,6 @@ func PossibleFrontDoorProtocolValues() []FrontDoorProtocol {
 		FrontDoorProtocolHTTP,
 		FrontDoorProtocolHTTPS,
 	}
-}
-
-// ToPtr returns a *FrontDoorProtocol pointing to the current value.
-func (c FrontDoorProtocol) ToPtr() *FrontDoorProtocol {
-	return &c
 }
 
 // FrontDoorQuery - Treatment of URL query terms when forming the cache key.
@@ -401,11 +321,6 @@ func PossibleFrontDoorQueryValues() []FrontDoorQuery {
 	}
 }
 
-// ToPtr returns a *FrontDoorQuery pointing to the current value.
-func (c FrontDoorQuery) ToPtr() *FrontDoorQuery {
-	return &c
-}
-
 // FrontDoorRedirectProtocol - The protocol of the destination to where the traffic is redirected
 type FrontDoorRedirectProtocol string
 
@@ -422,11 +337,6 @@ func PossibleFrontDoorRedirectProtocolValues() []FrontDoorRedirectProtocol {
 		FrontDoorRedirectProtocolHTTPSOnly,
 		FrontDoorRedirectProtocolMatchRequest,
 	}
-}
-
-// ToPtr returns a *FrontDoorRedirectProtocol pointing to the current value.
-func (c FrontDoorRedirectProtocol) ToPtr() *FrontDoorRedirectProtocol {
-	return &c
 }
 
 // FrontDoorRedirectType - The redirect type the rule will use when redirecting traffic.
@@ -447,11 +357,6 @@ func PossibleFrontDoorRedirectTypeValues() []FrontDoorRedirectType {
 		FrontDoorRedirectTypePermanentRedirect,
 		FrontDoorRedirectTypeTemporaryRedirect,
 	}
-}
-
-// ToPtr returns a *FrontDoorRedirectType pointing to the current value.
-func (c FrontDoorRedirectType) ToPtr() *FrontDoorRedirectType {
-	return &c
 }
 
 // FrontDoorResourceState - Resource status of the Front Door or Front Door SubResource.
@@ -478,11 +383,6 @@ func PossibleFrontDoorResourceStateValues() []FrontDoorResourceState {
 	}
 }
 
-// ToPtr returns a *FrontDoorResourceState pointing to the current value.
-func (c FrontDoorResourceState) ToPtr() *FrontDoorResourceState {
-	return &c
-}
-
 // FrontDoorTLSProtocolType - Defines the TLS extension protocol that is used for secure delivery
 type FrontDoorTLSProtocolType string
 
@@ -495,11 +395,6 @@ func PossibleFrontDoorTLSProtocolTypeValues() []FrontDoorTLSProtocolType {
 	return []FrontDoorTLSProtocolType{
 		FrontDoorTLSProtocolTypeServerNameIndication,
 	}
-}
-
-// ToPtr returns a *FrontDoorTLSProtocolType pointing to the current value.
-func (c FrontDoorTLSProtocolType) ToPtr() *FrontDoorTLSProtocolType {
-	return &c
 }
 
 // HeaderActionType - Which type of manipulation to apply to the header.
@@ -520,11 +415,6 @@ func PossibleHeaderActionTypeValues() []HeaderActionType {
 	}
 }
 
-// ToPtr returns a *HeaderActionType pointing to the current value.
-func (c HeaderActionType) ToPtr() *HeaderActionType {
-	return &c
-}
-
 // HealthProbeEnabled - Whether to enable health probes to be made against backends defined under backendPools. Health probes
 // can only be disabled if there is a single enabled backend in single enabled backend pool.
 type HealthProbeEnabled string
@@ -540,11 +430,6 @@ func PossibleHealthProbeEnabledValues() []HealthProbeEnabled {
 		HealthProbeEnabledDisabled,
 		HealthProbeEnabledEnabled,
 	}
-}
-
-// ToPtr returns a *HealthProbeEnabled pointing to the current value.
-func (c HealthProbeEnabled) ToPtr() *HealthProbeEnabled {
-	return &c
 }
 
 type LatencyScorecardAggregationInterval string
@@ -564,11 +449,6 @@ func PossibleLatencyScorecardAggregationIntervalValues() []LatencyScorecardAggre
 	}
 }
 
-// ToPtr returns a *LatencyScorecardAggregationInterval pointing to the current value.
-func (c LatencyScorecardAggregationInterval) ToPtr() *LatencyScorecardAggregationInterval {
-	return &c
-}
-
 // ManagedRuleEnabledState - Describes if the managed rule is in enabled or disabled state.
 type ManagedRuleEnabledState string
 
@@ -583,11 +463,6 @@ func PossibleManagedRuleEnabledStateValues() []ManagedRuleEnabledState {
 		ManagedRuleEnabledStateDisabled,
 		ManagedRuleEnabledStateEnabled,
 	}
-}
-
-// ToPtr returns a *ManagedRuleEnabledState pointing to the current value.
-func (c ManagedRuleEnabledState) ToPtr() *ManagedRuleEnabledState {
-	return &c
 }
 
 // ManagedRuleExclusionMatchVariable - The variable type to be excluded.
@@ -610,11 +485,6 @@ func PossibleManagedRuleExclusionMatchVariableValues() []ManagedRuleExclusionMat
 		ManagedRuleExclusionMatchVariableRequestCookieNames,
 		ManagedRuleExclusionMatchVariableRequestHeaderNames,
 	}
-}
-
-// ToPtr returns a *ManagedRuleExclusionMatchVariable pointing to the current value.
-func (c ManagedRuleExclusionMatchVariable) ToPtr() *ManagedRuleExclusionMatchVariable {
-	return &c
 }
 
 // ManagedRuleExclusionSelectorMatchOperator - Comparison operator to apply to the selector when specifying which elements
@@ -640,11 +510,6 @@ func PossibleManagedRuleExclusionSelectorMatchOperatorValues() []ManagedRuleExcl
 	}
 }
 
-// ToPtr returns a *ManagedRuleExclusionSelectorMatchOperator pointing to the current value.
-func (c ManagedRuleExclusionSelectorMatchOperator) ToPtr() *ManagedRuleExclusionSelectorMatchOperator {
-	return &c
-}
-
 // ManagedRuleSetActionType - Defines the action to take when a managed rule set score threshold is met.
 type ManagedRuleSetActionType string
 
@@ -663,11 +528,6 @@ func PossibleManagedRuleSetActionTypeValues() []ManagedRuleSetActionType {
 	}
 }
 
-// ToPtr returns a *ManagedRuleSetActionType pointing to the current value.
-func (c ManagedRuleSetActionType) ToPtr() *ManagedRuleSetActionType {
-	return &c
-}
-
 // MatchProcessingBehavior - If this rule is a match should the rules engine continue running the remaining rules or stop.
 // If not present, defaults to Continue.
 type MatchProcessingBehavior string
@@ -683,11 +543,6 @@ func PossibleMatchProcessingBehaviorValues() []MatchProcessingBehavior {
 		MatchProcessingBehaviorContinue,
 		MatchProcessingBehaviorStop,
 	}
-}
-
-// ToPtr returns a *MatchProcessingBehavior pointing to the current value.
-func (c MatchProcessingBehavior) ToPtr() *MatchProcessingBehavior {
-	return &c
 }
 
 // MatchVariable - Request variable to compare with.
@@ -720,11 +575,6 @@ func PossibleMatchVariableValues() []MatchVariable {
 	}
 }
 
-// ToPtr returns a *MatchVariable pointing to the current value.
-func (c MatchVariable) ToPtr() *MatchVariable {
-	return &c
-}
-
 // MinimumTLSVersion - The minimum TLS version required from the clients to establish an SSL handshake with Front Door.
 type MinimumTLSVersion string
 
@@ -739,11 +589,6 @@ func PossibleMinimumTLSVersionValues() []MinimumTLSVersion {
 		MinimumTLSVersionOne0,
 		MinimumTLSVersionOne2,
 	}
-}
-
-// ToPtr returns a *MinimumTLSVersion pointing to the current value.
-func (c MinimumTLSVersion) ToPtr() *MinimumTLSVersion {
-	return &c
 }
 
 // NetworkExperimentResourceState - Defines the server side resource status
@@ -770,12 +615,7 @@ func PossibleNetworkExperimentResourceStateValues() []NetworkExperimentResourceS
 	}
 }
 
-// ToPtr returns a *NetworkExperimentResourceState pointing to the current value.
-func (c NetworkExperimentResourceState) ToPtr() *NetworkExperimentResourceState {
-	return &c
-}
-
-// NetworkOperationStatus - Status of the Azure async operation. Possible values are: 'InProgress', 'Succeeded', and 'Failed'.
+// NetworkOperationStatus - Status of the Azure async operation.
 type NetworkOperationStatus string
 
 const (
@@ -791,11 +631,6 @@ func PossibleNetworkOperationStatusValues() []NetworkOperationStatus {
 		NetworkOperationStatusInProgress,
 		NetworkOperationStatusSucceeded,
 	}
-}
-
-// ToPtr returns a *NetworkOperationStatus pointing to the current value.
-func (c NetworkOperationStatus) ToPtr() *NetworkOperationStatus {
-	return &c
 }
 
 // Operator - Comparison type to use for matching with the variable value.
@@ -834,11 +669,6 @@ func PossibleOperatorValues() []Operator {
 	}
 }
 
-// ToPtr returns a *Operator pointing to the current value.
-func (c Operator) ToPtr() *Operator {
-	return &c
-}
-
 // PolicyEnabledState - Describes if the policy is in enabled or disabled state. Defaults to Enabled if not specified.
 type PolicyEnabledState string
 
@@ -853,11 +683,6 @@ func PossiblePolicyEnabledStateValues() []PolicyEnabledState {
 		PolicyEnabledStateDisabled,
 		PolicyEnabledStateEnabled,
 	}
-}
-
-// ToPtr returns a *PolicyEnabledState pointing to the current value.
-func (c PolicyEnabledState) ToPtr() *PolicyEnabledState {
-	return &c
 }
 
 // PolicyMode - Describes if it is in detection mode or prevention mode at policy level.
@@ -876,11 +701,6 @@ func PossiblePolicyModeValues() []PolicyMode {
 	}
 }
 
-// ToPtr returns a *PolicyMode pointing to the current value.
-func (c PolicyMode) ToPtr() *PolicyMode {
-	return &c
-}
-
 // PolicyRequestBodyCheck - Describes if policy managed rules will inspect the request body content.
 type PolicyRequestBodyCheck string
 
@@ -895,11 +715,6 @@ func PossiblePolicyRequestBodyCheckValues() []PolicyRequestBodyCheck {
 		PolicyRequestBodyCheckDisabled,
 		PolicyRequestBodyCheckEnabled,
 	}
-}
-
-// ToPtr returns a *PolicyRequestBodyCheck pointing to the current value.
-func (c PolicyRequestBodyCheck) ToPtr() *PolicyRequestBodyCheck {
-	return &c
 }
 
 // PolicyResourceState - Resource status of the policy.
@@ -926,11 +741,6 @@ func PossiblePolicyResourceStateValues() []PolicyResourceState {
 	}
 }
 
-// ToPtr returns a *PolicyResourceState pointing to the current value.
-func (c PolicyResourceState) ToPtr() *PolicyResourceState {
-	return &c
-}
-
 // PrivateEndpointStatus - The Approval status for the connection to the Private Link
 type PrivateEndpointStatus string
 
@@ -953,11 +763,6 @@ func PossiblePrivateEndpointStatusValues() []PrivateEndpointStatus {
 	}
 }
 
-// ToPtr returns a *PrivateEndpointStatus pointing to the current value.
-func (c PrivateEndpointStatus) ToPtr() *PrivateEndpointStatus {
-	return &c
-}
-
 // ResourceType - Type of Front Door resource used in CheckNameAvailability.
 type ResourceType string
 
@@ -972,11 +777,6 @@ func PossibleResourceTypeValues() []ResourceType {
 		ResourceTypeMicrosoftNetworkFrontDoors,
 		ResourceTypeMicrosoftNetworkFrontDoorsFrontendEndpoints,
 	}
-}
-
-// ToPtr returns a *ResourceType pointing to the current value.
-func (c ResourceType) ToPtr() *ResourceType {
-	return &c
 }
 
 // RoutingRuleEnabledState - Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'
@@ -995,11 +795,6 @@ func PossibleRoutingRuleEnabledStateValues() []RoutingRuleEnabledState {
 	}
 }
 
-// ToPtr returns a *RoutingRuleEnabledState pointing to the current value.
-func (c RoutingRuleEnabledState) ToPtr() *RoutingRuleEnabledState {
-	return &c
-}
-
 // RuleType - Describes type of rule.
 type RuleType string
 
@@ -1014,11 +809,6 @@ func PossibleRuleTypeValues() []RuleType {
 		RuleTypeMatchRule,
 		RuleTypeRateLimitRule,
 	}
-}
-
-// ToPtr returns a *RuleType pointing to the current value.
-func (c RuleType) ToPtr() *RuleType {
-	return &c
 }
 
 // RulesEngineMatchVariable - Match Variable
@@ -1057,11 +847,6 @@ func PossibleRulesEngineMatchVariableValues() []RulesEngineMatchVariable {
 	}
 }
 
-// ToPtr returns a *RulesEngineMatchVariable pointing to the current value.
-func (c RulesEngineMatchVariable) ToPtr() *RulesEngineMatchVariable {
-	return &c
-}
-
 // RulesEngineOperator - Describes operator to apply to the match condition.
 type RulesEngineOperator string
 
@@ -1096,11 +881,6 @@ func PossibleRulesEngineOperatorValues() []RulesEngineOperator {
 	}
 }
 
-// ToPtr returns a *RulesEngineOperator pointing to the current value.
-func (c RulesEngineOperator) ToPtr() *RulesEngineOperator {
-	return &c
-}
-
 // SKUName - Name of the pricing tier.
 type SKUName string
 
@@ -1119,11 +899,6 @@ func PossibleSKUNameValues() []SKUName {
 	}
 }
 
-// ToPtr returns a *SKUName pointing to the current value.
-func (c SKUName) ToPtr() *SKUName {
-	return &c
-}
-
 // SessionAffinityEnabledState - Whether to allow session affinity on this host. Valid options are 'Enabled' or 'Disabled'
 type SessionAffinityEnabledState string
 
@@ -1138,11 +913,6 @@ func PossibleSessionAffinityEnabledStateValues() []SessionAffinityEnabledState {
 		SessionAffinityEnabledStateDisabled,
 		SessionAffinityEnabledStateEnabled,
 	}
-}
-
-// ToPtr returns a *SessionAffinityEnabledState pointing to the current value.
-func (c SessionAffinityEnabledState) ToPtr() *SessionAffinityEnabledState {
-	return &c
 }
 
 // State - The state of the Experiment
@@ -1161,11 +931,6 @@ func PossibleStateValues() []State {
 	}
 }
 
-// ToPtr returns a *State pointing to the current value.
-func (c State) ToPtr() *State {
-	return &c
-}
-
 type TimeseriesAggregationInterval string
 
 const (
@@ -1179,11 +944,6 @@ func PossibleTimeseriesAggregationIntervalValues() []TimeseriesAggregationInterv
 		TimeseriesAggregationIntervalDaily,
 		TimeseriesAggregationIntervalHourly,
 	}
-}
-
-// ToPtr returns a *TimeseriesAggregationInterval pointing to the current value.
-func (c TimeseriesAggregationInterval) ToPtr() *TimeseriesAggregationInterval {
-	return &c
 }
 
 // TimeseriesType - The type of Timeseries
@@ -1204,11 +964,6 @@ func PossibleTimeseriesTypeValues() []TimeseriesType {
 		TimeseriesTypeLatencyP95,
 		TimeseriesTypeMeasurementCounts,
 	}
-}
-
-// ToPtr returns a *TimeseriesType pointing to the current value.
-func (c TimeseriesType) ToPtr() *TimeseriesType {
-	return &c
 }
 
 // Transform - Describes what transforms are applied before matching
@@ -1235,11 +990,6 @@ func PossibleTransformValues() []Transform {
 	}
 }
 
-// ToPtr returns a *Transform pointing to the current value.
-func (c Transform) ToPtr() *Transform {
-	return &c
-}
-
 // TransformType - Describes what transforms applied before matching.
 type TransformType string
 
@@ -1262,9 +1012,4 @@ func PossibleTransformTypeValues() []TransformType {
 		TransformTypeURLEncode,
 		TransformTypeUppercase,
 	}
-}
-
-// ToPtr returns a *TransformType pointing to the current value.
-func (c TransformType) ToPtr() *TransformType {
-	return &c
 }

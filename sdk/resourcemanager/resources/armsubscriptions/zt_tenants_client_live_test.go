@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,13 @@ package armsubscriptions_test
 
 import (
 	"context"
+	"testing"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions"
 	"github.com/stretchr/testify/suite"
-	"testing"
 )
 
 type TenantsClientTestSuite struct {
@@ -50,7 +51,8 @@ func TestTenantsClient(t *testing.T) {
 }
 
 func (testsuite *TenantsClientTestSuite) TestTenantsCRUD() {
-	tenantsClient := armsubscriptions.NewTenantsClient(testsuite.cred, testsuite.options)
+	tenantsClient, err := armsubscriptions.NewTenantsClient(testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	pager := tenantsClient.List(nil)
-	testsuite.Require().NoError(pager.Err())
+	testsuite.Require().True(pager.More())
 }

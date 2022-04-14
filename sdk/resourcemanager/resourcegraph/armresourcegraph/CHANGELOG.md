@@ -1,5 +1,40 @@
 # Release History
 
+## 0.4.0 (2022-04-13)
+### Breaking Changes
+
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsClientListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsClientListResponse, error)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewClient` return value(s) have been changed from `(*Client)` to `(*Client, error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `AuthorizationScopeFilter.ToPtr` has been removed
+- Function `ColumnDataType.ToPtr` has been removed
+- Function `FacetSortOrder.ToPtr` has been removed
+- Function `ResultFormat.ToPtr` has been removed
+- Function `ResultTruncated.ToPtr` has been removed
+- Struct `ClientResourcesHistoryResult` has been removed
+- Struct `ClientResourcesResult` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Field `ClientResourcesResult` of struct `ClientResourcesResponse` has been removed
+- Field `RawResponse` of struct `ClientResourcesResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `ClientResourcesHistoryResult` of struct `ClientResourcesHistoryResponse` has been removed
+- Field `RawResponse` of struct `ClientResourcesHistoryResponse` has been removed
+
+### Features Added
+
+- New function `Table.MarshalJSON() ([]byte, error)`
+- New function `Error.MarshalJSON() ([]byte, error)`
+- New struct `Column`
+- New struct `Error`
+- New struct `ErrorResponse`
+- New struct `Table`
+- New anonymous field `QueryResponse` in struct `ClientResourcesResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New field `Interface` in struct `ClientResourcesHistoryResponse`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

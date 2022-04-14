@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,77 @@ type ManagementClient struct {
 // subscriptionID - Azure Subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagementClient {
+func NewManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagementClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ManagementClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
+}
+
+// CheckEndpointNameAvailability - Check the availability of a resource name. This is needed for resources where name is globally
+// unique, such as a afdx endpoint.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// checkEndpointNameAvailabilityInput - Input to check.
+// options - ManagementClientCheckEndpointNameAvailabilityOptions contains the optional parameters for the ManagementClient.CheckEndpointNameAvailability
+// method.
+func (client *ManagementClient) CheckEndpointNameAvailability(ctx context.Context, resourceGroupName string, checkEndpointNameAvailabilityInput CheckEndpointNameAvailabilityInput, options *ManagementClientCheckEndpointNameAvailabilityOptions) (ManagementClientCheckEndpointNameAvailabilityResponse, error) {
+	req, err := client.checkEndpointNameAvailabilityCreateRequest(ctx, resourceGroupName, checkEndpointNameAvailabilityInput, options)
+	if err != nil {
+		return ManagementClientCheckEndpointNameAvailabilityResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return ManagementClientCheckEndpointNameAvailabilityResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return ManagementClientCheckEndpointNameAvailabilityResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.checkEndpointNameAvailabilityHandleResponse(resp)
+}
+
+// checkEndpointNameAvailabilityCreateRequest creates the CheckEndpointNameAvailability request.
+func (client *ManagementClient) checkEndpointNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, checkEndpointNameAvailabilityInput CheckEndpointNameAvailabilityInput, options *ManagementClientCheckEndpointNameAvailabilityOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/checkEndpointNameAvailability"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, checkEndpointNameAvailabilityInput)
+}
+
+// checkEndpointNameAvailabilityHandleResponse handles the CheckEndpointNameAvailability response.
+func (client *ManagementClient) checkEndpointNameAvailabilityHandleResponse(resp *http.Response) (ManagementClientCheckEndpointNameAvailabilityResponse, error) {
+	result := ManagementClientCheckEndpointNameAvailabilityResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CheckEndpointNameAvailabilityOutput); err != nil {
+		return ManagementClientCheckEndpointNameAvailabilityResponse{}, err
+	}
+	return result, nil
 }
 
 // CheckNameAvailability - Check the availability of a resource name. This is needed for resources where name is globally
@@ -86,7 +144,7 @@ func (client *ManagementClient) checkNameAvailabilityCreateRequest(ctx context.C
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
 func (client *ManagementClient) checkNameAvailabilityHandleResponse(resp *http.Response) (ManagementClientCheckNameAvailabilityResponse, error) {
-	result := ManagementClientCheckNameAvailabilityResponse{RawResponse: resp}
+	result := ManagementClientCheckNameAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityOutput); err != nil {
 		return ManagementClientCheckNameAvailabilityResponse{}, err
 	}
@@ -134,7 +192,7 @@ func (client *ManagementClient) checkNameAvailabilityWithSubscriptionCreateReque
 
 // checkNameAvailabilityWithSubscriptionHandleResponse handles the CheckNameAvailabilityWithSubscription response.
 func (client *ManagementClient) checkNameAvailabilityWithSubscriptionHandleResponse(resp *http.Response) (ManagementClientCheckNameAvailabilityWithSubscriptionResponse, error) {
-	result := ManagementClientCheckNameAvailabilityWithSubscriptionResponse{RawResponse: resp}
+	result := ManagementClientCheckNameAvailabilityWithSubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityOutput); err != nil {
 		return ManagementClientCheckNameAvailabilityWithSubscriptionResponse{}, err
 	}
@@ -183,7 +241,7 @@ func (client *ManagementClient) validateProbeCreateRequest(ctx context.Context, 
 
 // validateProbeHandleResponse handles the ValidateProbe response.
 func (client *ManagementClient) validateProbeHandleResponse(resp *http.Response) (ManagementClientValidateProbeResponse, error) {
-	result := ManagementClientValidateProbeResponse{RawResponse: resp}
+	result := ManagementClientValidateProbeResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ValidateProbeOutput); err != nil {
 		return ManagementClientValidateProbeResponse{}, err
 	}

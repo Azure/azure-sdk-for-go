@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type BackupsClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewBackupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BackupsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewBackupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &BackupsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreate - Create a backup for the volume
@@ -59,22 +64,18 @@ func NewBackupsClient(subscriptionID string, credential azcore.TokenCredential, 
 // backupName - The name of the backup
 // body - Backup object supplied in the body of the operation.
 // options - BackupsClientBeginCreateOptions contains the optional parameters for the BackupsClient.BeginCreate method.
-func (client *BackupsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, backupName string, body Backup, options *BackupsClientBeginCreateOptions) (BackupsClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, accountName, poolName, volumeName, backupName, body, options)
-	if err != nil {
-		return BackupsClientCreatePollerResponse{}, err
+func (client *BackupsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, backupName string, body Backup, options *BackupsClientBeginCreateOptions) (*armruntime.Poller[BackupsClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, accountName, poolName, volumeName, backupName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[BackupsClientCreateResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[BackupsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := BackupsClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("BackupsClient.Create", "location", resp, client.pl)
-	if err != nil {
-		return BackupsClientCreatePollerResponse{}, err
-	}
-	result.Poller = &BackupsClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Create a backup for the volume
@@ -126,7 +127,7 @@ func (client *BackupsClient) createCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, body)
@@ -140,22 +141,18 @@ func (client *BackupsClient) createCreateRequest(ctx context.Context, resourceGr
 // volumeName - The name of the volume
 // backupName - The name of the backup
 // options - BackupsClientBeginDeleteOptions contains the optional parameters for the BackupsClient.BeginDelete method.
-func (client *BackupsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, backupName string, options *BackupsClientBeginDeleteOptions) (BackupsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, poolName, volumeName, backupName, options)
-	if err != nil {
-		return BackupsClientDeletePollerResponse{}, err
+func (client *BackupsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, backupName string, options *BackupsClientBeginDeleteOptions) (*armruntime.Poller[BackupsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, poolName, volumeName, backupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[BackupsClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[BackupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := BackupsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("BackupsClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return BackupsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &BackupsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete a backup of the volume
@@ -207,7 +204,7 @@ func (client *BackupsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -267,7 +264,7 @@ func (client *BackupsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -275,7 +272,7 @@ func (client *BackupsClient) getCreateRequest(ctx context.Context, resourceGroup
 
 // getHandleResponse handles the Get response.
 func (client *BackupsClient) getHandleResponse(resp *http.Response) (BackupsClientGetResponse, error) {
-	result := BackupsClientGetResponse{RawResponse: resp}
+	result := BackupsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Backup); err != nil {
 		return BackupsClientGetResponse{}, err
 	}
@@ -332,7 +329,7 @@ func (client *BackupsClient) getStatusCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -340,7 +337,7 @@ func (client *BackupsClient) getStatusCreateRequest(ctx context.Context, resourc
 
 // getStatusHandleResponse handles the GetStatus response.
 func (client *BackupsClient) getStatusHandleResponse(resp *http.Response) (BackupsClientGetStatusResponse, error) {
-	result := BackupsClientGetStatusResponse{RawResponse: resp}
+	result := BackupsClientGetStatusResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupStatus); err != nil {
 		return BackupsClientGetStatusResponse{}, err
 	}
@@ -398,7 +395,7 @@ func (client *BackupsClient) getVolumeRestoreStatusCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -406,7 +403,7 @@ func (client *BackupsClient) getVolumeRestoreStatusCreateRequest(ctx context.Con
 
 // getVolumeRestoreStatusHandleResponse handles the GetVolumeRestoreStatus response.
 func (client *BackupsClient) getVolumeRestoreStatusHandleResponse(resp *http.Response) (BackupsClientGetVolumeRestoreStatusResponse, error) {
-	result := BackupsClientGetVolumeRestoreStatusResponse{RawResponse: resp}
+	result := BackupsClientGetVolumeRestoreStatusResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestoreStatus); err != nil {
 		return BackupsClientGetVolumeRestoreStatusResponse{}, err
 	}
@@ -420,19 +417,26 @@ func (client *BackupsClient) getVolumeRestoreStatusHandleResponse(resp *http.Res
 // poolName - The name of the capacity pool
 // volumeName - The name of the volume
 // options - BackupsClientListOptions contains the optional parameters for the BackupsClient.List method.
-func (client *BackupsClient) List(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *BackupsClientListOptions) (BackupsClientListResponse, error) {
-	req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
-	if err != nil {
-		return BackupsClientListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return BackupsClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BackupsClientListResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listHandleResponse(resp)
+func (client *BackupsClient) List(resourceGroupName string, accountName string, poolName string, volumeName string, options *BackupsClientListOptions) *runtime.Pager[BackupsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[BackupsClientListResponse]{
+		More: func(page BackupsClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *BackupsClientListResponse) (BackupsClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
+			if err != nil {
+				return BackupsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return BackupsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return BackupsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -463,7 +467,7 @@ func (client *BackupsClient) listCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -471,7 +475,7 @@ func (client *BackupsClient) listCreateRequest(ctx context.Context, resourceGrou
 
 // listHandleResponse handles the List response.
 func (client *BackupsClient) listHandleResponse(resp *http.Response) (BackupsClientListResponse, error) {
-	result := BackupsClientListResponse{RawResponse: resp}
+	result := BackupsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupsList); err != nil {
 		return BackupsClientListResponse{}, err
 	}
@@ -486,22 +490,18 @@ func (client *BackupsClient) listHandleResponse(resp *http.Response) (BackupsCli
 // volumeName - The name of the volume
 // backupName - The name of the backup
 // options - BackupsClientBeginUpdateOptions contains the optional parameters for the BackupsClient.BeginUpdate method.
-func (client *BackupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, backupName string, options *BackupsClientBeginUpdateOptions) (BackupsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, accountName, poolName, volumeName, backupName, options)
-	if err != nil {
-		return BackupsClientUpdatePollerResponse{}, err
+func (client *BackupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, backupName string, options *BackupsClientBeginUpdateOptions) (*armruntime.Poller[BackupsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, accountName, poolName, volumeName, backupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[BackupsClientUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[BackupsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := BackupsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("BackupsClient.Update", "location", resp, client.pl)
-	if err != nil {
-		return BackupsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &BackupsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Patch a backup for the volume
@@ -553,7 +553,7 @@ func (client *BackupsClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.Body != nil {

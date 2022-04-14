@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type LinkedServicesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewLinkedServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LinkedServicesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewLinkedServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LinkedServicesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &LinkedServicesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or update a linked service.
@@ -57,22 +62,16 @@ func NewLinkedServicesClient(subscriptionID string, credential azcore.TokenCrede
 // parameters - The parameters required to create or update a linked service.
 // options - LinkedServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the LinkedServicesClient.BeginCreateOrUpdate
 // method.
-func (client *LinkedServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, parameters LinkedService, options *LinkedServicesClientBeginCreateOrUpdateOptions) (LinkedServicesClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, linkedServiceName, parameters, options)
-	if err != nil {
-		return LinkedServicesClientCreateOrUpdatePollerResponse{}, err
+func (client *LinkedServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, parameters LinkedService, options *LinkedServicesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[LinkedServicesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, linkedServiceName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[LinkedServicesClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[LinkedServicesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := LinkedServicesClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("LinkedServicesClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return LinkedServicesClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &LinkedServicesClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update a linked service.
@@ -129,22 +128,16 @@ func (client *LinkedServicesClient) createOrUpdateCreateRequest(ctx context.Cont
 // linkedServiceName - Name of the linked service.
 // options - LinkedServicesClientBeginDeleteOptions contains the optional parameters for the LinkedServicesClient.BeginDelete
 // method.
-func (client *LinkedServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, options *LinkedServicesClientBeginDeleteOptions) (LinkedServicesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, linkedServiceName, options)
-	if err != nil {
-		return LinkedServicesClientDeletePollerResponse{}, err
+func (client *LinkedServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, options *LinkedServicesClientBeginDeleteOptions) (*armruntime.Poller[LinkedServicesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, linkedServiceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[LinkedServicesClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[LinkedServicesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := LinkedServicesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("LinkedServicesClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return LinkedServicesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &LinkedServicesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a linked service instance.
@@ -247,7 +240,7 @@ func (client *LinkedServicesClient) getCreateRequest(ctx context.Context, resour
 
 // getHandleResponse handles the Get response.
 func (client *LinkedServicesClient) getHandleResponse(resp *http.Response) (LinkedServicesClientGetResponse, error) {
-	result := LinkedServicesClientGetResponse{RawResponse: resp}
+	result := LinkedServicesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LinkedService); err != nil {
 		return LinkedServicesClientGetResponse{}, err
 	}
@@ -260,19 +253,26 @@ func (client *LinkedServicesClient) getHandleResponse(resp *http.Response) (Link
 // workspaceName - The name of the workspace.
 // options - LinkedServicesClientListByWorkspaceOptions contains the optional parameters for the LinkedServicesClient.ListByWorkspace
 // method.
-func (client *LinkedServicesClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string, options *LinkedServicesClientListByWorkspaceOptions) (LinkedServicesClientListByWorkspaceResponse, error) {
-	req, err := client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
-	if err != nil {
-		return LinkedServicesClientListByWorkspaceResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return LinkedServicesClientListByWorkspaceResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LinkedServicesClientListByWorkspaceResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listByWorkspaceHandleResponse(resp)
+func (client *LinkedServicesClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *LinkedServicesClientListByWorkspaceOptions) *runtime.Pager[LinkedServicesClientListByWorkspaceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[LinkedServicesClientListByWorkspaceResponse]{
+		More: func(page LinkedServicesClientListByWorkspaceResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *LinkedServicesClientListByWorkspaceResponse) (LinkedServicesClientListByWorkspaceResponse, error) {
+			req, err := client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
+			if err != nil {
+				return LinkedServicesClientListByWorkspaceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return LinkedServicesClientListByWorkspaceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return LinkedServicesClientListByWorkspaceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByWorkspaceHandleResponse(resp)
+		},
+	})
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
@@ -303,7 +303,7 @@ func (client *LinkedServicesClient) listByWorkspaceCreateRequest(ctx context.Con
 
 // listByWorkspaceHandleResponse handles the ListByWorkspace response.
 func (client *LinkedServicesClient) listByWorkspaceHandleResponse(resp *http.Response) (LinkedServicesClientListByWorkspaceResponse, error) {
-	result := LinkedServicesClientListByWorkspaceResponse{RawResponse: resp}
+	result := LinkedServicesClientListByWorkspaceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LinkedServiceListResult); err != nil {
 		return LinkedServicesClientListByWorkspaceResponse{}, err
 	}

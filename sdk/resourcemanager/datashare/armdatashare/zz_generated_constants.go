@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armdatashare
 
 const (
 	moduleName    = "armdatashare"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -31,11 +31,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
 	}
-}
-
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
 }
 
 // DataSetKind - Kind of data set.
@@ -76,11 +71,6 @@ func PossibleDataSetKindValues() []DataSetKind {
 	}
 }
 
-// ToPtr returns a *DataSetKind pointing to the current value.
-func (c DataSetKind) ToPtr() *DataSetKind {
-	return &c
-}
-
 // DataSetMappingKind - Kind of data set mapping.
 type DataSetMappingKind string
 
@@ -115,11 +105,6 @@ func PossibleDataSetMappingKindValues() []DataSetMappingKind {
 	}
 }
 
-// ToPtr returns a *DataSetMappingKind pointing to the current value.
-func (c DataSetMappingKind) ToPtr() *DataSetMappingKind {
-	return &c
-}
-
 // DataSetMappingStatus - Gets the status of the data set mapping.
 type DataSetMappingStatus string
 
@@ -134,11 +119,6 @@ func PossibleDataSetMappingStatusValues() []DataSetMappingStatus {
 		DataSetMappingStatusBroken,
 		DataSetMappingStatusOk,
 	}
-}
-
-// ToPtr returns a *DataSetMappingStatus pointing to the current value.
-func (c DataSetMappingStatus) ToPtr() *DataSetMappingStatus {
-	return &c
 }
 
 // DataSetType - Type of data set
@@ -179,11 +159,6 @@ func PossibleDataSetTypeValues() []DataSetType {
 	}
 }
 
-// ToPtr returns a *DataSetType pointing to the current value.
-func (c DataSetType) ToPtr() *DataSetType {
-	return &c
-}
-
 // InvitationStatus - The status of the invitation.
 type InvitationStatus string
 
@@ -202,11 +177,6 @@ func PossibleInvitationStatusValues() []InvitationStatus {
 		InvitationStatusRejected,
 		InvitationStatusWithdrawn,
 	}
-}
-
-// ToPtr returns a *InvitationStatus pointing to the current value.
-func (c InvitationStatus) ToPtr() *InvitationStatus {
-	return &c
 }
 
 // LastModifiedByType - The type of identity that last modified the resource.
@@ -229,11 +199,6 @@ func PossibleLastModifiedByTypeValues() []LastModifiedByType {
 	}
 }
 
-// ToPtr returns a *LastModifiedByType pointing to the current value.
-func (c LastModifiedByType) ToPtr() *LastModifiedByType {
-	return &c
-}
-
 // OutputType - Type of output file
 type OutputType string
 
@@ -248,11 +213,6 @@ func PossibleOutputTypeValues() []OutputType {
 		OutputTypeCSV,
 		OutputTypeParquet,
 	}
-}
-
-// ToPtr returns a *OutputType pointing to the current value.
-func (c OutputType) ToPtr() *OutputType {
-	return &c
 }
 
 // ProvisioningState - Provisioning state of the Account
@@ -277,11 +237,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // RecurrenceInterval - Recurrence Interval
 type RecurrenceInterval string
 
@@ -296,11 +251,6 @@ func PossibleRecurrenceIntervalValues() []RecurrenceInterval {
 		RecurrenceIntervalDay,
 		RecurrenceIntervalHour,
 	}
-}
-
-// ToPtr returns a *RecurrenceInterval pointing to the current value.
-func (c RecurrenceInterval) ToPtr() *RecurrenceInterval {
-	return &c
 }
 
 // RegistrationStatus - Registration status
@@ -321,11 +271,6 @@ func PossibleRegistrationStatusValues() []RegistrationStatus {
 	}
 }
 
-// ToPtr returns a *RegistrationStatus pointing to the current value.
-func (c RegistrationStatus) ToPtr() *RegistrationStatus {
-	return &c
-}
-
 // ShareKind - Share kind.
 type ShareKind string
 
@@ -340,11 +285,6 @@ func PossibleShareKindValues() []ShareKind {
 		ShareKindCopyBased,
 		ShareKindInPlace,
 	}
-}
-
-// ToPtr returns a *ShareKind pointing to the current value.
-func (c ShareKind) ToPtr() *ShareKind {
-	return &c
 }
 
 // ShareSubscriptionStatus - Gets the status of share subscription
@@ -367,11 +307,6 @@ func PossibleShareSubscriptionStatusValues() []ShareSubscriptionStatus {
 	}
 }
 
-// ToPtr returns a *ShareSubscriptionStatus pointing to the current value.
-func (c ShareSubscriptionStatus) ToPtr() *ShareSubscriptionStatus {
-	return &c
-}
-
 // SourceShareSynchronizationSettingKind - Kind of synchronization setting on share.
 type SourceShareSynchronizationSettingKind string
 
@@ -384,11 +319,6 @@ func PossibleSourceShareSynchronizationSettingKindValues() []SourceShareSynchron
 	return []SourceShareSynchronizationSettingKind{
 		SourceShareSynchronizationSettingKindScheduleBased,
 	}
-}
-
-// ToPtr returns a *SourceShareSynchronizationSettingKind pointing to the current value.
-func (c SourceShareSynchronizationSettingKind) ToPtr() *SourceShareSynchronizationSettingKind {
-	return &c
 }
 
 // Status - Operation state of the long running operation.
@@ -415,11 +345,6 @@ func PossibleStatusValues() []Status {
 	}
 }
 
-// ToPtr returns a *Status pointing to the current value.
-func (c Status) ToPtr() *Status {
-	return &c
-}
-
 // SynchronizationMode - Synchronization mode
 type SynchronizationMode string
 
@@ -436,11 +361,6 @@ func PossibleSynchronizationModeValues() []SynchronizationMode {
 	}
 }
 
-// ToPtr returns a *SynchronizationMode pointing to the current value.
-func (c SynchronizationMode) ToPtr() *SynchronizationMode {
-	return &c
-}
-
 // SynchronizationSettingKind - Kind of synchronization setting.
 type SynchronizationSettingKind string
 
@@ -455,11 +375,6 @@ func PossibleSynchronizationSettingKindValues() []SynchronizationSettingKind {
 	}
 }
 
-// ToPtr returns a *SynchronizationSettingKind pointing to the current value.
-func (c SynchronizationSettingKind) ToPtr() *SynchronizationSettingKind {
-	return &c
-}
-
 // TriggerKind - Kind of synchronization on trigger.
 type TriggerKind string
 
@@ -472,11 +387,6 @@ func PossibleTriggerKindValues() []TriggerKind {
 	return []TriggerKind{
 		TriggerKindScheduleBased,
 	}
-}
-
-// ToPtr returns a *TriggerKind pointing to the current value.
-func (c TriggerKind) ToPtr() *TriggerKind {
-	return &c
 }
 
 // TriggerStatus - Gets the trigger state
@@ -497,11 +407,6 @@ func PossibleTriggerStatusValues() []TriggerStatus {
 	}
 }
 
-// ToPtr returns a *TriggerStatus pointing to the current value.
-func (c TriggerStatus) ToPtr() *TriggerStatus {
-	return &c
-}
-
 // Type - Identity Type
 type Type string
 
@@ -514,9 +419,4 @@ func PossibleTypeValues() []Type {
 	return []Type{
 		TypeSystemAssigned,
 	}
-}
-
-// ToPtr returns a *Type pointing to the current value.
-func (c Type) ToPtr() *Type {
-	return &c
 }

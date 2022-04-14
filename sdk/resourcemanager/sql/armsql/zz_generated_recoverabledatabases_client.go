@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type RecoverableDatabasesClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewRecoverableDatabasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RecoverableDatabasesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewRecoverableDatabasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RecoverableDatabasesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &RecoverableDatabasesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets a recoverable database, which is a resource representing a database's geo backup
@@ -104,7 +109,7 @@ func (client *RecoverableDatabasesClient) getCreateRequest(ctx context.Context, 
 
 // getHandleResponse handles the Get response.
 func (client *RecoverableDatabasesClient) getHandleResponse(resp *http.Response) (RecoverableDatabasesClientGetResponse, error) {
-	result := RecoverableDatabasesClientGetResponse{RawResponse: resp}
+	result := RecoverableDatabasesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecoverableDatabase); err != nil {
 		return RecoverableDatabasesClientGetResponse{}, err
 	}
@@ -118,19 +123,26 @@ func (client *RecoverableDatabasesClient) getHandleResponse(resp *http.Response)
 // serverName - The name of the server.
 // options - RecoverableDatabasesClientListByServerOptions contains the optional parameters for the RecoverableDatabasesClient.ListByServer
 // method.
-func (client *RecoverableDatabasesClient) ListByServer(ctx context.Context, resourceGroupName string, serverName string, options *RecoverableDatabasesClientListByServerOptions) (RecoverableDatabasesClientListByServerResponse, error) {
-	req, err := client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
-	if err != nil {
-		return RecoverableDatabasesClientListByServerResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return RecoverableDatabasesClientListByServerResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RecoverableDatabasesClientListByServerResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listByServerHandleResponse(resp)
+func (client *RecoverableDatabasesClient) ListByServer(resourceGroupName string, serverName string, options *RecoverableDatabasesClientListByServerOptions) *runtime.Pager[RecoverableDatabasesClientListByServerResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RecoverableDatabasesClientListByServerResponse]{
+		More: func(page RecoverableDatabasesClientListByServerResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *RecoverableDatabasesClientListByServerResponse) (RecoverableDatabasesClientListByServerResponse, error) {
+			req, err := client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+			if err != nil {
+				return RecoverableDatabasesClientListByServerResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RecoverableDatabasesClientListByServerResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RecoverableDatabasesClientListByServerResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServerHandleResponse(resp)
+		},
+	})
 }
 
 // listByServerCreateRequest creates the ListByServer request.
@@ -161,7 +173,7 @@ func (client *RecoverableDatabasesClient) listByServerCreateRequest(ctx context.
 
 // listByServerHandleResponse handles the ListByServer response.
 func (client *RecoverableDatabasesClient) listByServerHandleResponse(resp *http.Response) (RecoverableDatabasesClientListByServerResponse, error) {
-	result := RecoverableDatabasesClientListByServerResponse{RawResponse: resp}
+	result := RecoverableDatabasesClientListByServerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecoverableDatabaseListResult); err != nil {
 		return RecoverableDatabasesClientListByServerResponse{}, err
 	}

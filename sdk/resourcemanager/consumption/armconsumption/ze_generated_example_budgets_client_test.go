@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,138 +19,162 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption"
 )
 
-// x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/BudgetsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/BudgetsList.json
 func ExampleBudgetsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armconsumption.NewBudgetsClient(cred, nil)
+	client, err := armconsumption.NewBudgetsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List("<scope>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/Budget.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/Budget.json
 func ExampleBudgetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armconsumption.NewBudgetsClient(cred, nil)
+	client, err := armconsumption.NewBudgetsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<scope>",
 		"<budget-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BudgetsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/CreateOrUpdateBudget.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/CreateOrUpdateBudget.json
 func ExampleBudgetsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armconsumption.NewBudgetsClient(cred, nil)
+	client, err := armconsumption.NewBudgetsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<scope>",
 		"<budget-name>",
 		armconsumption.Budget{
-			ETag: to.StringPtr("<etag>"),
+			ETag: to.Ptr("<etag>"),
 			Properties: &armconsumption.BudgetProperties{
-				Amount:   to.Float64Ptr(100.65),
-				Category: armconsumption.CategoryType("Cost").ToPtr(),
+				Amount:   to.Ptr[float64](100.65),
+				Category: to.Ptr(armconsumption.CategoryTypeCost),
 				Filter: &armconsumption.BudgetFilter{
 					And: []*armconsumption.BudgetFilterProperties{
 						{
 							Dimensions: &armconsumption.BudgetComparisonExpression{
-								Name:     to.StringPtr("<name>"),
-								Operator: armconsumption.BudgetOperatorType("In").ToPtr(),
+								Name:     to.Ptr("<name>"),
+								Operator: to.Ptr(armconsumption.BudgetOperatorTypeIn),
 								Values: []*string{
-									to.StringPtr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Compute/virtualMachines/MSVM2"),
-									to.StringPtr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Compute/virtualMachines/platformcloudplatformGeneric1")},
+									to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Compute/virtualMachines/MSVM2"),
+									to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Compute/virtualMachines/platformcloudplatformGeneric1")},
 							},
 						},
 						{
 							Tags: &armconsumption.BudgetComparisonExpression{
-								Name:     to.StringPtr("<name>"),
-								Operator: armconsumption.BudgetOperatorType("In").ToPtr(),
+								Name:     to.Ptr("<name>"),
+								Operator: to.Ptr(armconsumption.BudgetOperatorTypeIn),
 								Values: []*string{
-									to.StringPtr("Dev"),
-									to.StringPtr("Prod")},
+									to.Ptr("Dev"),
+									to.Ptr("Prod")},
 							},
 						},
 						{
 							Tags: &armconsumption.BudgetComparisonExpression{
-								Name:     to.StringPtr("<name>"),
-								Operator: armconsumption.BudgetOperatorType("In").ToPtr(),
+								Name:     to.Ptr("<name>"),
+								Operator: to.Ptr(armconsumption.BudgetOperatorTypeIn),
 								Values: []*string{
-									to.StringPtr("engineering"),
-									to.StringPtr("sales")},
+									to.Ptr("engineering"),
+									to.Ptr("sales")},
 							},
 						}},
 				},
 				Notifications: map[string]*armconsumption.Notification{
 					"Actual_GreaterThan_80_Percent": {
 						ContactEmails: []*string{
-							to.StringPtr("johndoe@contoso.com"),
-							to.StringPtr("janesmith@contoso.com")},
+							to.Ptr("johndoe@contoso.com"),
+							to.Ptr("janesmith@contoso.com")},
 						ContactGroups: []*string{
-							to.StringPtr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/microsoft.insights/actionGroups/SampleActionGroup")},
+							to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/microsoft.insights/actionGroups/SampleActionGroup")},
 						ContactRoles: []*string{
-							to.StringPtr("Contributor"),
-							to.StringPtr("Reader")},
-						Enabled:       to.BoolPtr(true),
-						Locale:        armconsumption.CultureCode("en-us").ToPtr(),
-						Operator:      armconsumption.OperatorType("GreaterThan").ToPtr(),
-						Threshold:     to.Float64Ptr(80),
-						ThresholdType: armconsumption.ThresholdType("Actual").ToPtr(),
+							to.Ptr("Contributor"),
+							to.Ptr("Reader")},
+						Enabled:       to.Ptr(true),
+						Locale:        to.Ptr(armconsumption.CultureCodeEnUs),
+						Operator:      to.Ptr(armconsumption.OperatorTypeGreaterThan),
+						Threshold:     to.Ptr[float64](80),
+						ThresholdType: to.Ptr(armconsumption.ThresholdTypeActual),
 					},
 				},
-				TimeGrain: armconsumption.TimeGrainType("Monthly").ToPtr(),
+				TimeGrain: to.Ptr(armconsumption.TimeGrainTypeMonthly),
 				TimePeriod: &armconsumption.BudgetTimePeriod{
-					EndDate:   to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-31T00:00:00Z"); return t }()),
-					StartDate: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-01T00:00:00Z"); return t }()),
+					EndDate:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-31T00:00:00Z"); return t }()),
+					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-01T00:00:00Z"); return t }()),
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BudgetsClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/DeleteBudget.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/DeleteBudget.json
 func ExampleBudgetsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armconsumption.NewBudgetsClient(cred, nil)
+	client, err := armconsumption.NewBudgetsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<scope>",
 		"<budget-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }

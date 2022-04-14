@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,12 +9,10 @@ package armcompute_test
 import (
 	"context"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
@@ -55,7 +53,8 @@ func TestVirtualMachineScaleSetsClient(t *testing.T) {
 
 func (testsuite *VirtualMachineScaleSetsClientTestSuite) TestVirtualMachineScaleSetsCRUD() {
 	// create virtual network and subnet
-	vnClient := armnetwork.NewVirtualNetworksClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	vnClient, err := armnetwork.NewVirtualNetworksClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	vnName := "go-test-network"
 	subName := "go-test-subnet"
 	vnPoller, err := vnClient.BeginCreateOrUpdate(
@@ -63,18 +62,18 @@ func (testsuite *VirtualMachineScaleSetsClientTestSuite) TestVirtualMachineScale
 		testsuite.resourceGroupName,
 		vnName,
 		armnetwork.VirtualNetwork{
-			Location: to.StringPtr(testsuite.location),
+			Location: to.Ptr(testsuite.location),
 			Properties: &armnetwork.VirtualNetworkPropertiesFormat{
 				AddressSpace: &armnetwork.AddressSpace{
 					AddressPrefixes: []*string{
-						to.StringPtr("10.1.0.0/16"),
+						to.Ptr("10.1.0.0/16"),
 					},
 				},
 				Subnets: []*armnetwork.Subnet{
 					{
-						Name: to.StringPtr(subName),
+						Name: to.Ptr(subName),
 						Properties: &armnetwork.SubnetPropertiesFormat{
-							AddressPrefix: to.StringPtr("10.1.0.0/24"),
+							AddressPrefix: to.Ptr("10.1.0.0/24"),
 						},
 					},
 				},
@@ -83,73 +82,61 @@ func (testsuite *VirtualMachineScaleSetsClientTestSuite) TestVirtualMachineScale
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	var vnResp armnetwork.VirtualNetworksClientCreateOrUpdateResponse
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		for {
-			_, err = vnPoller.Poller.Poll(testsuite.ctx)
-			testsuite.Require().NoError(err)
-			if vnPoller.Poller.Done() {
-				vnResp, err = vnPoller.Poller.FinalResponse(testsuite.ctx)
-				testsuite.Require().NoError(err)
-				break
-			}
-		}
-	} else {
-		vnResp, err = vnPoller.PollUntilDone(testsuite.ctx, 30*time.Second)
-		testsuite.Require().NoError(err)
-	}
+	vnResp, err := testutil.PollForTest(testsuite.ctx, vnPoller)
+	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(vnName, *vnResp.Name)
 
 	// create virtual machine scale set
-	vmssClient := armcompute.NewVirtualMachineScaleSetsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	vmssClient, err := armcompute.NewVirtualMachineScaleSetsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	vmssName := "go-test-vmss"
 	vmssPoller, err := vmssClient.BeginCreateOrUpdate(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
 		vmssName,
 		armcompute.VirtualMachineScaleSet{
-			Location: to.StringPtr(testsuite.location),
+			Location: to.Ptr(testsuite.location),
 			SKU: &armcompute.SKU{
-				//Name:     to.StringPtr("Basic_A0"), //armcompute.VirtualMachineSizeTypesBasicA0
-				Name:     to.StringPtr("Standard_A0"), //armcompute.VirtualMachineSizeTypesBasicA0
-				Capacity: to.Int64Ptr(1),
+				//Name:     to.Ptr("Basic_A0"), //armcompute.VirtualMachineSizeTypesBasicA0
+				Name:     to.Ptr("Standard_A0"), //armcompute.VirtualMachineSizeTypesBasicA0
+				Capacity: to.Ptr[int64](1),
 			},
 			Properties: &armcompute.VirtualMachineScaleSetProperties{
-				Overprovision: to.BoolPtr(false),
+				Overprovision: to.Ptr(false),
 				UpgradePolicy: &armcompute.UpgradePolicy{
-					Mode: armcompute.UpgradeModeManual.ToPtr(),
+					Mode: to.Ptr(armcompute.UpgradeModeManual),
 					AutomaticOSUpgradePolicy: &armcompute.AutomaticOSUpgradePolicy{
-						EnableAutomaticOSUpgrade: to.BoolPtr(false),
-						DisableAutomaticRollback: to.BoolPtr(false),
+						EnableAutomaticOSUpgrade: to.Ptr(false),
+						DisableAutomaticRollback: to.Ptr(false),
 					},
 				},
 				VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
 					OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
-						ComputerNamePrefix: to.StringPtr("vmss"),
-						AdminUsername:      to.StringPtr("sample-user"),
-						AdminPassword:      to.StringPtr("Password01!@#"),
+						ComputerNamePrefix: to.Ptr("vmss"),
+						AdminUsername:      to.Ptr("sample-user"),
+						AdminPassword:      to.Ptr("Password01!@#"),
 					},
 					StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
 						ImageReference: &armcompute.ImageReference{
-							Offer:     to.StringPtr("WindowsServer"),
-							Publisher: to.StringPtr("MicrosoftWindowsServer"),
-							SKU:       to.StringPtr("2019-Datacenter"),
-							Version:   to.StringPtr("latest"),
+							Offer:     to.Ptr("WindowsServer"),
+							Publisher: to.Ptr("MicrosoftWindowsServer"),
+							SKU:       to.Ptr("2019-Datacenter"),
+							Version:   to.Ptr("latest"),
 						},
 					},
 					NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
 						NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
 							{
-								Name: to.StringPtr(vmssName),
+								Name: to.Ptr(vmssName),
 								Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
-									Primary:            to.BoolPtr(true),
-									EnableIPForwarding: to.BoolPtr(true),
+									Primary:            to.Ptr(true),
+									EnableIPForwarding: to.Ptr(true),
 									IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
 										{
-											Name: to.StringPtr(vmssName),
+											Name: to.Ptr(vmssName),
 											Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
 												Subnet: &armcompute.APIEntityReference{
-													ID: to.StringPtr(*vnResp.Properties.Subnets[0].ID),
+													ID: to.Ptr(*vnResp.Properties.Subnets[0].ID),
 												},
 											},
 										},
@@ -164,21 +151,8 @@ func (testsuite *VirtualMachineScaleSetsClientTestSuite) TestVirtualMachineScale
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	var vmssResp armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		for {
-			_, err = vmssPoller.Poller.Poll(testsuite.ctx)
-			testsuite.Require().NoError(err)
-			if vmssPoller.Poller.Done() {
-				vmssResp, err = vmssPoller.Poller.FinalResponse(testsuite.ctx)
-				testsuite.Require().NoError(err)
-				break
-			}
-		}
-	} else {
-		vmssResp, err = vmssPoller.PollUntilDone(testsuite.ctx, 30*time.Second)
-		testsuite.Require().NoError(err)
-	}
+	vmssResp, err := testutil.PollForTest(testsuite.ctx, vmssPoller)
+	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(vmssName, *vmssResp.Name)
 
 	// update
@@ -188,27 +162,14 @@ func (testsuite *VirtualMachineScaleSetsClientTestSuite) TestVirtualMachineScale
 		vmssName,
 		armcompute.VirtualMachineScaleSetUpdate{
 			Tags: map[string]*string{
-				"test": to.StringPtr("live"),
+				"test": to.Ptr("live"),
 			},
 		},
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	var updateResp armcompute.VirtualMachineScaleSetsClientUpdateResponse
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		for {
-			_, err = updatePollerResp.Poller.Poll(testsuite.ctx)
-			testsuite.Require().NoError(err)
-			if updatePollerResp.Poller.Done() {
-				updateResp, err = updatePollerResp.Poller.FinalResponse(testsuite.ctx)
-				testsuite.Require().NoError(err)
-				break
-			}
-		}
-	} else {
-		updateResp, err = updatePollerResp.PollUntilDone(testsuite.ctx, 30*time.Second)
-		testsuite.Require().NoError(err)
-	}
+	updateResp, err := testutil.PollForTest(testsuite.ctx, updatePollerResp)
+	testsuite.Require().NoError(err)
 	testsuite.Require().Equal("live", *updateResp.Tags["test"])
 
 	// get
@@ -218,25 +179,11 @@ func (testsuite *VirtualMachineScaleSetsClientTestSuite) TestVirtualMachineScale
 
 	// list
 	listResp := vmssClient.List(testsuite.resourceGroupName, nil)
-	testsuite.Require().NoError(listResp.Err())
+	testsuite.Require().True(listResp.More())
 
 	// delete
 	delPoller, err := vmssClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, vmssName, nil)
 	testsuite.Require().NoError(err)
-	var delResp armcompute.VirtualMachineScaleSetsClientDeleteResponse
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		for {
-			_, err = delPoller.Poller.Poll(testsuite.ctx)
-			testsuite.Require().NoError(err)
-			if delPoller.Poller.Done() {
-				delResp, err = delPoller.Poller.FinalResponse(testsuite.ctx)
-				testsuite.Require().NoError(err)
-				break
-			}
-		}
-	} else {
-		delResp, err = delPoller.PollUntilDone(testsuite.ctx, 30*time.Second)
-		testsuite.Require().NoError(err)
-	}
-	testsuite.Require().Equal(200, delResp.RawResponse.StatusCode)
+	_, err = testutil.PollForTest(testsuite.ctx, delPoller)
+	testsuite.Require().NoError(err)
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ManagedInstanceLongTermRetentionPoliciesClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewManagedInstanceLongTermRetentionPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedInstanceLongTermRetentionPoliciesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewManagedInstanceLongTermRetentionPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedInstanceLongTermRetentionPoliciesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ManagedInstanceLongTermRetentionPoliciesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Sets a managed database's long term retention policy.
@@ -59,22 +64,16 @@ func NewManagedInstanceLongTermRetentionPoliciesClient(subscriptionID string, cr
 // parameters - The long term retention policy info.
 // options - ManagedInstanceLongTermRetentionPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for
 // the ManagedInstanceLongTermRetentionPoliciesClient.BeginCreateOrUpdate method.
-func (client *ManagedInstanceLongTermRetentionPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, policyName ManagedInstanceLongTermRetentionPolicyName, parameters ManagedInstanceLongTermRetentionPolicy, options *ManagedInstanceLongTermRetentionPoliciesClientBeginCreateOrUpdateOptions) (ManagedInstanceLongTermRetentionPoliciesClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, managedInstanceName, databaseName, policyName, parameters, options)
-	if err != nil {
-		return ManagedInstanceLongTermRetentionPoliciesClientCreateOrUpdatePollerResponse{}, err
+func (client *ManagedInstanceLongTermRetentionPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, policyName ManagedInstanceLongTermRetentionPolicyName, parameters ManagedInstanceLongTermRetentionPolicy, options *ManagedInstanceLongTermRetentionPoliciesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ManagedInstanceLongTermRetentionPoliciesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, managedInstanceName, databaseName, policyName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ManagedInstanceLongTermRetentionPoliciesClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ManagedInstanceLongTermRetentionPoliciesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ManagedInstanceLongTermRetentionPoliciesClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ManagedInstanceLongTermRetentionPoliciesClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return ManagedInstanceLongTermRetentionPoliciesClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ManagedInstanceLongTermRetentionPoliciesClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Sets a managed database's long term retention policy.
@@ -188,7 +187,7 @@ func (client *ManagedInstanceLongTermRetentionPoliciesClient) getCreateRequest(c
 
 // getHandleResponse handles the Get response.
 func (client *ManagedInstanceLongTermRetentionPoliciesClient) getHandleResponse(resp *http.Response) (ManagedInstanceLongTermRetentionPoliciesClientGetResponse, error) {
-	result := ManagedInstanceLongTermRetentionPoliciesClientGetResponse{RawResponse: resp}
+	result := ManagedInstanceLongTermRetentionPoliciesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceLongTermRetentionPolicy); err != nil {
 		return ManagedInstanceLongTermRetentionPoliciesClientGetResponse{}, err
 	}
@@ -203,16 +202,32 @@ func (client *ManagedInstanceLongTermRetentionPoliciesClient) getHandleResponse(
 // databaseName - The name of the database.
 // options - ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseOptions contains the optional parameters for the
 // ManagedInstanceLongTermRetentionPoliciesClient.ListByDatabase method.
-func (client *ManagedInstanceLongTermRetentionPoliciesClient) ListByDatabase(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseOptions) *ManagedInstanceLongTermRetentionPoliciesClientListByDatabasePager {
-	return &ManagedInstanceLongTermRetentionPoliciesClientListByDatabasePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, options)
+func (client *ManagedInstanceLongTermRetentionPoliciesClient) ListByDatabase(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseOptions) *runtime.Pager[ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseResponse]{
+		More: func(page ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedInstanceLongTermRetentionPolicyListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseResponse) (ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByDatabaseHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
@@ -247,7 +262,7 @@ func (client *ManagedInstanceLongTermRetentionPoliciesClient) listByDatabaseCrea
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
 func (client *ManagedInstanceLongTermRetentionPoliciesClient) listByDatabaseHandleResponse(resp *http.Response) (ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseResponse, error) {
-	result := ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseResponse{RawResponse: resp}
+	result := ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceLongTermRetentionPolicyListResult); err != nil {
 		return ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseResponse{}, err
 	}

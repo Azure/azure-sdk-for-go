@@ -11,8 +11,8 @@
         "Content-Length": "35",
         "Content-Type": "application/json",
         "dataserviceversion": "3.0",
-        "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Mon, 24 Jan 2022 20:59:15 GMT",
+        "User-Agent": "azsdk-go-aztables/v0.7.1 azsdk-go-azcore/v0.23.0 (go1.18; Windows_NT)",
+        "x-ms-date": "Wed, 13 Apr 2022 19:25:15 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -21,15 +21,15 @@
       "StatusCode": 201,
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Mon, 24 Jan 2022 20:59:16 GMT",
-        "ETag": "W/\u0022datetime\u00272022-01-24T20%3A59%3A16.5669384Z\u0027\u0022",
-        "Location": "https://rosebudprim.table.cosmos.azure.com/Tables(\u0027tableName4289488389\u0027)",
+        "Date": "Wed, 13 Apr 2022 19:25:15 GMT",
+        "ETag": "W/\u0022datetime\u00272022-04-13T19%3A25%3A15.7779464Z\u0027\u0022",
+        "Location": "https://fakeaccount.table.cosmos.azure.com/Tables(\u0027tableName4289488389\u0027)",
         "Transfer-Encoding": "chunked",
-        "x-ms-request-id": "4a67b80d-bfe6-4dfc-ad4a-7a2b72fd5d14"
+        "x-ms-request-id": "4923073d-f25e-4e1a-a8b2-0719c03a6ccd"
       },
       "ResponseBody": {
         "TableName": "tableName4289488389",
-        "odata.metadata": "https://rosebudprim.table.cosmos.azure.com/$metadata#Tables/@Element"
+        "odata.metadata": "https://fakeaccount.table.cosmos.azure.com/$metadata#Tables/@Element"
       }
     },
     {
@@ -44,8 +44,8 @@
         "Content-Type": "application/json",
         "dataserviceversion": "3.0",
         "prefer": "return-no-content",
-        "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Mon, 24 Jan 2022 20:59:15 GMT",
+        "User-Agent": "azsdk-go-aztables/v0.7.1 azsdk-go-azcore/v0.23.0 (go1.18; Windows_NT)",
+        "x-ms-date": "Wed, 13 Apr 2022 19:25:16 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -58,11 +58,12 @@
       },
       "StatusCode": 204,
       "ResponseHeaders": {
-        "Date": "Mon, 24 Jan 2022 20:59:16 GMT",
-        "ETag": "W/\u0022datetime\u00272022-01-24T20%3A59%3A16.9756168Z\u0027\u0022",
-        "Location": "https://rosebudprim.table.cosmos.azure.com/tableName4289488389(PartitionKey=\u0027partition\u0027,RowKey=\u00271\u0027)",
+        "Content-Type": "application/json",
+        "Date": "Wed, 13 Apr 2022 19:25:15 GMT",
+        "ETag": "W/\u0022datetime\u00272022-04-13T19%3A25%3A16.1941000Z\u0027\u0022",
+        "Location": "https://fakeaccount.table.cosmos.azure.com/tableName4289488389(PartitionKey=\u0027partition\u0027,RowKey=\u00271\u0027)",
         "Preference-Applied": "return-no-content",
-        "x-ms-request-id": "44965fa8-9621-49e9-978c-ecad10f2ebc9"
+        "x-ms-request-id": "7a16d6d9-a055-44d1-8dc1-39259a4a200e"
       },
       "ResponseBody": null
     },
@@ -73,15 +74,16 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Mon, 24 Jan 2022 20:59:15 GMT",
+        "User-Agent": "azsdk-go-aztables/v0.7.1 azsdk-go-azcore/v0.23.0 (go1.18; Windows_NT)",
+        "x-ms-date": "Wed, 13 Apr 2022 19:25:16 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": null,
       "StatusCode": 204,
       "ResponseHeaders": {
-        "Date": "Mon, 24 Jan 2022 20:59:16 GMT",
-        "x-ms-request-id": "d7a94191-e1f5-4c01-b4c1-1917726e6e89"
+        "Content-Type": "application/json",
+        "Date": "Wed, 13 Apr 2022 19:25:16 GMT",
+        "x-ms-request-id": "c6af4e68-a3e1-4f84-af67-fcf3bf7cea9d"
       },
       "ResponseBody": null
     }

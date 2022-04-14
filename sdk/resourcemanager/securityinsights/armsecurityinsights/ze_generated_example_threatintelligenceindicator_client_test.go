@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,213 +17,257 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
 )
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/threatintelligence/CreateThreatIntelligence.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/threatintelligence/CreateThreatIntelligence.json
 func ExampleThreatIntelligenceIndicatorClient_CreateIndicator() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewThreatIntelligenceIndicatorClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewThreatIntelligenceIndicatorClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateIndicator(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
-		armsecurityinsights.ThreatIntelligenceIndicatorModelForRequestBody{
-			Kind: armsecurityinsights.ThreatIntelligenceResourceKindEnum("indicator").ToPtr(),
+		armsecurityinsights.ThreatIntelligenceIndicatorModel{
+			Kind: to.Ptr(armsecurityinsights.ThreatIntelligenceResourceKindEnumIndicator),
 			Properties: &armsecurityinsights.ThreatIntelligenceIndicatorProperties{
-				Description:        to.StringPtr("<description>"),
-				Confidence:         to.Int32Ptr(78),
-				CreatedByRef:       to.StringPtr("<created-by-ref>"),
-				DisplayName:        to.StringPtr("<display-name>"),
+				Description:        to.Ptr("<description>"),
+				Confidence:         to.Ptr[int32](78),
+				CreatedByRef:       to.Ptr("<created-by-ref>"),
+				DisplayName:        to.Ptr("<display-name>"),
 				ExternalReferences: []*armsecurityinsights.ThreatIntelligenceExternalReference{},
 				GranularMarkings:   []*armsecurityinsights.ThreatIntelligenceGranularMarkingModel{},
 				KillChainPhases:    []*armsecurityinsights.ThreatIntelligenceKillChainPhase{},
 				Labels:             []*string{},
-				Modified:           to.StringPtr("<modified>"),
-				Pattern:            to.StringPtr("<pattern>"),
-				PatternType:        to.StringPtr("<pattern-type>"),
-				Revoked:            to.BoolPtr(false),
-				Source:             to.StringPtr("<source>"),
+				Modified:           to.Ptr("<modified>"),
+				Pattern:            to.Ptr("<pattern>"),
+				PatternType:        to.Ptr("<pattern-type>"),
+				Revoked:            to.Ptr(false),
+				Source:             to.Ptr("<source>"),
 				ThreatIntelligenceTags: []*string{
-					to.StringPtr("new schema")},
+					to.Ptr("new schema")},
 				ThreatTypes: []*string{
-					to.StringPtr("compromised")},
-				ValidFrom:  to.StringPtr("<valid-from>"),
-				ValidUntil: to.StringPtr("<valid-until>"),
+					to.Ptr("compromised")},
+				ValidFrom:  to.Ptr("<valid-from>"),
+				ValidUntil: to.Ptr("<valid-until>"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ThreatIntelligenceIndicatorClientCreateIndicatorResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/threatintelligence/GetThreatIntelligenceById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/threatintelligence/GetThreatIntelligenceById.json
 func ExampleThreatIntelligenceIndicatorClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewThreatIntelligenceIndicatorClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewThreatIntelligenceIndicatorClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ThreatIntelligenceIndicatorClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/threatintelligence/UpdateThreatIntelligence.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/threatintelligence/UpdateThreatIntelligence.json
 func ExampleThreatIntelligenceIndicatorClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewThreatIntelligenceIndicatorClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewThreatIntelligenceIndicatorClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Create(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<name>",
-		armsecurityinsights.ThreatIntelligenceIndicatorModelForRequestBody{
-			Kind: armsecurityinsights.ThreatIntelligenceResourceKindEnum("indicator").ToPtr(),
+		armsecurityinsights.ThreatIntelligenceIndicatorModel{
+			Kind: to.Ptr(armsecurityinsights.ThreatIntelligenceResourceKindEnumIndicator),
 			Properties: &armsecurityinsights.ThreatIntelligenceIndicatorProperties{
-				Description:        to.StringPtr("<description>"),
-				Confidence:         to.Int32Ptr(78),
-				CreatedByRef:       to.StringPtr("<created-by-ref>"),
-				DisplayName:        to.StringPtr("<display-name>"),
+				Description:        to.Ptr("<description>"),
+				Confidence:         to.Ptr[int32](78),
+				CreatedByRef:       to.Ptr("<created-by-ref>"),
+				DisplayName:        to.Ptr("<display-name>"),
 				ExternalReferences: []*armsecurityinsights.ThreatIntelligenceExternalReference{},
 				GranularMarkings:   []*armsecurityinsights.ThreatIntelligenceGranularMarkingModel{},
 				KillChainPhases:    []*armsecurityinsights.ThreatIntelligenceKillChainPhase{},
 				Labels:             []*string{},
-				Modified:           to.StringPtr("<modified>"),
-				Pattern:            to.StringPtr("<pattern>"),
-				PatternType:        to.StringPtr("<pattern-type>"),
-				Revoked:            to.BoolPtr(false),
-				Source:             to.StringPtr("<source>"),
+				Modified:           to.Ptr("<modified>"),
+				Pattern:            to.Ptr("<pattern>"),
+				PatternType:        to.Ptr("<pattern-type>"),
+				Revoked:            to.Ptr(false),
+				Source:             to.Ptr("<source>"),
 				ThreatIntelligenceTags: []*string{
-					to.StringPtr("new schema")},
+					to.Ptr("new schema")},
 				ThreatTypes: []*string{
-					to.StringPtr("compromised")},
-				ValidFrom:  to.StringPtr("<valid-from>"),
-				ValidUntil: to.StringPtr("<valid-until>"),
+					to.Ptr("compromised")},
+				ValidFrom:  to.Ptr("<valid-from>"),
+				ValidUntil: to.Ptr("<valid-until>"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ThreatIntelligenceIndicatorClientCreateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/threatintelligence/DeleteThreatIntelligence.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/threatintelligence/DeleteThreatIntelligence.json
 func ExampleThreatIntelligenceIndicatorClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewThreatIntelligenceIndicatorClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewThreatIntelligenceIndicatorClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/threatintelligence/QueryThreatIntelligence.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/threatintelligence/QueryThreatIntelligence.json
 func ExampleThreatIntelligenceIndicatorClient_QueryIndicators() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewThreatIntelligenceIndicatorClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewThreatIntelligenceIndicatorClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.QueryIndicators("<resource-group-name>",
 		"<workspace-name>",
 		armsecurityinsights.ThreatIntelligenceFilteringCriteria{
-			MaxConfidence: to.Int32Ptr(80),
-			MaxValidUntil: to.StringPtr("<max-valid-until>"),
-			MinConfidence: to.Int32Ptr(25),
-			MinValidUntil: to.StringPtr("<min-valid-until>"),
-			PageSize:      to.Int32Ptr(100),
+			MaxConfidence: to.Ptr[int32](80),
+			MaxValidUntil: to.Ptr("<max-valid-until>"),
+			MinConfidence: to.Ptr[int32](25),
+			MinValidUntil: to.Ptr("<min-valid-until>"),
+			PageSize:      to.Ptr[int32](100),
 			SortBy: []*armsecurityinsights.ThreatIntelligenceSortingCriteria{
 				{
-					ItemKey:   to.StringPtr("<item-key>"),
-					SortOrder: armsecurityinsights.ThreatIntelligenceSortingCriteriaEnum("descending").ToPtr(),
+					ItemKey:   to.Ptr("<item-key>"),
+					SortOrder: to.Ptr(armsecurityinsights.ThreatIntelligenceSortingCriteriaEnumDescending),
 				}},
 			Sources: []*string{
-				to.StringPtr("Azure Sentinel")},
+				to.Ptr("Azure Sentinel")},
 		},
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/threatintelligence/AppendTagsThreatIntelligence.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/threatintelligence/AppendTagsThreatIntelligence.json
 func ExampleThreatIntelligenceIndicatorClient_AppendTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewThreatIntelligenceIndicatorClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewThreatIntelligenceIndicatorClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.AppendTags(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<name>",
 		armsecurityinsights.ThreatIntelligenceAppendTags{
 			ThreatIntelligenceTags: []*string{
-				to.StringPtr("tag1"),
-				to.StringPtr("tag2")},
+				to.Ptr("tag1"),
+				to.Ptr("tag2")},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/threatintelligence/ReplaceTagsThreatIntelligence.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/threatintelligence/ReplaceTagsThreatIntelligence.json
 func ExampleThreatIntelligenceIndicatorClient_ReplaceTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewThreatIntelligenceIndicatorClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewThreatIntelligenceIndicatorClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ReplaceTags(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<name>",
-		armsecurityinsights.ThreatIntelligenceIndicatorModelForRequestBody{
-			Kind: armsecurityinsights.ThreatIntelligenceResourceKindEnum("indicator").ToPtr(),
-			Etag: to.StringPtr("<etag>"),
+		armsecurityinsights.ThreatIntelligenceIndicatorModel{
+			Etag: to.Ptr("<etag>"),
+			Kind: to.Ptr(armsecurityinsights.ThreatIntelligenceResourceKindEnumIndicator),
 			Properties: &armsecurityinsights.ThreatIntelligenceIndicatorProperties{
 				ThreatIntelligenceTags: []*string{
-					to.StringPtr("patching tags")},
+					to.Ptr("patching tags")},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ThreatIntelligenceIndicatorClientReplaceTagsResult)
+	// TODO: use response item
+	_ = res
 }

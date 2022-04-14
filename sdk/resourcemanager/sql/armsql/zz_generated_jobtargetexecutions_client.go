@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type JobTargetExecutionsClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewJobTargetExecutionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *JobTargetExecutionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewJobTargetExecutionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobTargetExecutionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &JobTargetExecutionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets a target execution.
@@ -119,7 +124,7 @@ func (client *JobTargetExecutionsClient) getCreateRequest(ctx context.Context, r
 
 // getHandleResponse handles the Get response.
 func (client *JobTargetExecutionsClient) getHandleResponse(resp *http.Response) (JobTargetExecutionsClientGetResponse, error) {
-	result := JobTargetExecutionsClientGetResponse{RawResponse: resp}
+	result := JobTargetExecutionsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobExecution); err != nil {
 		return JobTargetExecutionsClientGetResponse{}, err
 	}
@@ -136,16 +141,32 @@ func (client *JobTargetExecutionsClient) getHandleResponse(resp *http.Response) 
 // jobExecutionID - The id of the job execution
 // options - JobTargetExecutionsClientListByJobExecutionOptions contains the optional parameters for the JobTargetExecutionsClient.ListByJobExecution
 // method.
-func (client *JobTargetExecutionsClient) ListByJobExecution(resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *JobTargetExecutionsClientListByJobExecutionOptions) *JobTargetExecutionsClientListByJobExecutionPager {
-	return &JobTargetExecutionsClientListByJobExecutionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByJobExecutionCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobExecutionID, options)
+func (client *JobTargetExecutionsClient) ListByJobExecution(resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *JobTargetExecutionsClientListByJobExecutionOptions) *runtime.Pager[JobTargetExecutionsClientListByJobExecutionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[JobTargetExecutionsClientListByJobExecutionResponse]{
+		More: func(page JobTargetExecutionsClientListByJobExecutionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp JobTargetExecutionsClientListByJobExecutionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobExecutionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *JobTargetExecutionsClientListByJobExecutionResponse) (JobTargetExecutionsClientListByJobExecutionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByJobExecutionCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobExecutionID, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return JobTargetExecutionsClientListByJobExecutionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return JobTargetExecutionsClientListByJobExecutionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return JobTargetExecutionsClientListByJobExecutionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByJobExecutionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByJobExecutionCreateRequest creates the ListByJobExecution request.
@@ -206,7 +227,7 @@ func (client *JobTargetExecutionsClient) listByJobExecutionCreateRequest(ctx con
 
 // listByJobExecutionHandleResponse handles the ListByJobExecution response.
 func (client *JobTargetExecutionsClient) listByJobExecutionHandleResponse(resp *http.Response) (JobTargetExecutionsClientListByJobExecutionResponse, error) {
-	result := JobTargetExecutionsClientListByJobExecutionResponse{RawResponse: resp}
+	result := JobTargetExecutionsClientListByJobExecutionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobExecutionListResult); err != nil {
 		return JobTargetExecutionsClientListByJobExecutionResponse{}, err
 	}
@@ -224,16 +245,32 @@ func (client *JobTargetExecutionsClient) listByJobExecutionHandleResponse(resp *
 // stepName - The name of the step.
 // options - JobTargetExecutionsClientListByStepOptions contains the optional parameters for the JobTargetExecutionsClient.ListByStep
 // method.
-func (client *JobTargetExecutionsClient) ListByStep(resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, stepName string, options *JobTargetExecutionsClientListByStepOptions) *JobTargetExecutionsClientListByStepPager {
-	return &JobTargetExecutionsClientListByStepPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByStepCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobExecutionID, stepName, options)
+func (client *JobTargetExecutionsClient) ListByStep(resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, stepName string, options *JobTargetExecutionsClientListByStepOptions) *runtime.Pager[JobTargetExecutionsClientListByStepResponse] {
+	return runtime.NewPager(runtime.PageProcessor[JobTargetExecutionsClientListByStepResponse]{
+		More: func(page JobTargetExecutionsClientListByStepResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp JobTargetExecutionsClientListByStepResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobExecutionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *JobTargetExecutionsClientListByStepResponse) (JobTargetExecutionsClientListByStepResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByStepCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobExecutionID, stepName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return JobTargetExecutionsClientListByStepResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return JobTargetExecutionsClientListByStepResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return JobTargetExecutionsClientListByStepResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByStepHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByStepCreateRequest creates the ListByStep request.
@@ -298,7 +335,7 @@ func (client *JobTargetExecutionsClient) listByStepCreateRequest(ctx context.Con
 
 // listByStepHandleResponse handles the ListByStep response.
 func (client *JobTargetExecutionsClient) listByStepHandleResponse(resp *http.Response) (JobTargetExecutionsClientListByStepResponse, error) {
-	result := JobTargetExecutionsClientListByStepResponse{RawResponse: resp}
+	result := JobTargetExecutionsClientListByStepResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobExecutionListResult); err != nil {
 		return JobTargetExecutionsClientListByStepResponse{}, err
 	}

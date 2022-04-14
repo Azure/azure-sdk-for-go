@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type DevicesClient struct {
 // subscriptionID - The subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDevicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DevicesClient {
+func NewDevicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DevicesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DevicesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a Data Box Edge/Data Box Gateway resource.
@@ -90,7 +95,7 @@ func (client *DevicesClient) createOrUpdateCreateRequest(ctx context.Context, de
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, dataBoxEdgeDevice)
@@ -98,7 +103,7 @@ func (client *DevicesClient) createOrUpdateCreateRequest(ctx context.Context, de
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *DevicesClient) createOrUpdateHandleResponse(resp *http.Response) (DevicesClientCreateOrUpdateResponse, error) {
-	result := DevicesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := DevicesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Device); err != nil {
 		return DevicesClientCreateOrUpdateResponse{}, err
 	}
@@ -112,22 +117,16 @@ func (client *DevicesClient) createOrUpdateHandleResponse(resp *http.Response) (
 // securitySettings - The security settings.
 // options - DevicesClientBeginCreateOrUpdateSecuritySettingsOptions contains the optional parameters for the DevicesClient.BeginCreateOrUpdateSecuritySettings
 // method.
-func (client *DevicesClient) BeginCreateOrUpdateSecuritySettings(ctx context.Context, deviceName string, resourceGroupName string, securitySettings SecuritySettings, options *DevicesClientBeginCreateOrUpdateSecuritySettingsOptions) (DevicesClientCreateOrUpdateSecuritySettingsPollerResponse, error) {
-	resp, err := client.createOrUpdateSecuritySettings(ctx, deviceName, resourceGroupName, securitySettings, options)
-	if err != nil {
-		return DevicesClientCreateOrUpdateSecuritySettingsPollerResponse{}, err
+func (client *DevicesClient) BeginCreateOrUpdateSecuritySettings(ctx context.Context, deviceName string, resourceGroupName string, securitySettings SecuritySettings, options *DevicesClientBeginCreateOrUpdateSecuritySettingsOptions) (*armruntime.Poller[DevicesClientCreateOrUpdateSecuritySettingsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdateSecuritySettings(ctx, deviceName, resourceGroupName, securitySettings, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DevicesClientCreateOrUpdateSecuritySettingsResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DevicesClientCreateOrUpdateSecuritySettingsResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DevicesClientCreateOrUpdateSecuritySettingsPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DevicesClient.CreateOrUpdateSecuritySettings", "", resp, client.pl)
-	if err != nil {
-		return DevicesClientCreateOrUpdateSecuritySettingsPollerResponse{}, err
-	}
-	result.Poller = &DevicesClientCreateOrUpdateSecuritySettingsPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdateSecuritySettings - Updates the security settings on a Data Box Edge/Data Box Gateway device.
@@ -167,7 +166,7 @@ func (client *DevicesClient) createOrUpdateSecuritySettingsCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, securitySettings)
@@ -178,22 +177,16 @@ func (client *DevicesClient) createOrUpdateSecuritySettingsCreateRequest(ctx con
 // deviceName - The device name.
 // resourceGroupName - The resource group name.
 // options - DevicesClientBeginDeleteOptions contains the optional parameters for the DevicesClient.BeginDelete method.
-func (client *DevicesClient) BeginDelete(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginDeleteOptions) (DevicesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, deviceName, resourceGroupName, options)
-	if err != nil {
-		return DevicesClientDeletePollerResponse{}, err
+func (client *DevicesClient) BeginDelete(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginDeleteOptions) (*armruntime.Poller[DevicesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, deviceName, resourceGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DevicesClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DevicesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DevicesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DevicesClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return DevicesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &DevicesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the Data Box Edge/Data Box Gateway device.
@@ -233,7 +226,7 @@ func (client *DevicesClient) deleteCreateRequest(ctx context.Context, deviceName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -245,22 +238,16 @@ func (client *DevicesClient) deleteCreateRequest(ctx context.Context, deviceName
 // resourceGroupName - The resource group name.
 // options - DevicesClientBeginDownloadUpdatesOptions contains the optional parameters for the DevicesClient.BeginDownloadUpdates
 // method.
-func (client *DevicesClient) BeginDownloadUpdates(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginDownloadUpdatesOptions) (DevicesClientDownloadUpdatesPollerResponse, error) {
-	resp, err := client.downloadUpdates(ctx, deviceName, resourceGroupName, options)
-	if err != nil {
-		return DevicesClientDownloadUpdatesPollerResponse{}, err
+func (client *DevicesClient) BeginDownloadUpdates(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginDownloadUpdatesOptions) (*armruntime.Poller[DevicesClientDownloadUpdatesResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.downloadUpdates(ctx, deviceName, resourceGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DevicesClientDownloadUpdatesResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DevicesClientDownloadUpdatesResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DevicesClientDownloadUpdatesPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DevicesClient.DownloadUpdates", "", resp, client.pl)
-	if err != nil {
-		return DevicesClientDownloadUpdatesPollerResponse{}, err
-	}
-	result.Poller = &DevicesClientDownloadUpdatesPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DownloadUpdates - Downloads the updates on a Data Box Edge/Data Box Gateway device.
@@ -300,7 +287,7 @@ func (client *DevicesClient) downloadUpdatesCreateRequest(ctx context.Context, d
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -347,7 +334,7 @@ func (client *DevicesClient) generateCertificateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -355,7 +342,7 @@ func (client *DevicesClient) generateCertificateCreateRequest(ctx context.Contex
 
 // generateCertificateHandleResponse handles the GenerateCertificate response.
 func (client *DevicesClient) generateCertificateHandleResponse(resp *http.Response) (DevicesClientGenerateCertificateResponse, error) {
-	result := DevicesClientGenerateCertificateResponse{RawResponse: resp}
+	result := DevicesClientGenerateCertificateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GenerateCertResponse); err != nil {
 		return DevicesClientGenerateCertificateResponse{}, err
 	}
@@ -402,7 +389,7 @@ func (client *DevicesClient) getCreateRequest(ctx context.Context, deviceName st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -410,7 +397,7 @@ func (client *DevicesClient) getCreateRequest(ctx context.Context, deviceName st
 
 // getHandleResponse handles the Get response.
 func (client *DevicesClient) getHandleResponse(resp *http.Response) (DevicesClientGetResponse, error) {
-	result := DevicesClientGetResponse{RawResponse: resp}
+	result := DevicesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Device); err != nil {
 		return DevicesClientGetResponse{}, err
 	}
@@ -458,7 +445,7 @@ func (client *DevicesClient) getExtendedInformationCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -466,7 +453,7 @@ func (client *DevicesClient) getExtendedInformationCreateRequest(ctx context.Con
 
 // getExtendedInformationHandleResponse handles the GetExtendedInformation response.
 func (client *DevicesClient) getExtendedInformationHandleResponse(resp *http.Response) (DevicesClientGetExtendedInformationResponse, error) {
-	result := DevicesClientGetExtendedInformationResponse{RawResponse: resp}
+	result := DevicesClientGetExtendedInformationResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceExtendedInfo); err != nil {
 		return DevicesClientGetExtendedInformationResponse{}, err
 	}
@@ -514,7 +501,7 @@ func (client *DevicesClient) getNetworkSettingsCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -522,7 +509,7 @@ func (client *DevicesClient) getNetworkSettingsCreateRequest(ctx context.Context
 
 // getNetworkSettingsHandleResponse handles the GetNetworkSettings response.
 func (client *DevicesClient) getNetworkSettingsHandleResponse(resp *http.Response) (DevicesClientGetNetworkSettingsResponse, error) {
-	result := DevicesClientGetNetworkSettingsResponse{RawResponse: resp}
+	result := DevicesClientGetNetworkSettingsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSettings); err != nil {
 		return DevicesClientGetNetworkSettingsResponse{}, err
 	}
@@ -571,7 +558,7 @@ func (client *DevicesClient) getUpdateSummaryCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -579,7 +566,7 @@ func (client *DevicesClient) getUpdateSummaryCreateRequest(ctx context.Context, 
 
 // getUpdateSummaryHandleResponse handles the GetUpdateSummary response.
 func (client *DevicesClient) getUpdateSummaryHandleResponse(resp *http.Response) (DevicesClientGetUpdateSummaryResponse, error) {
-	result := DevicesClientGetUpdateSummaryResponse{RawResponse: resp}
+	result := DevicesClientGetUpdateSummaryResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UpdateSummary); err != nil {
 		return DevicesClientGetUpdateSummaryResponse{}, err
 	}
@@ -592,22 +579,16 @@ func (client *DevicesClient) getUpdateSummaryHandleResponse(resp *http.Response)
 // resourceGroupName - The resource group name.
 // options - DevicesClientBeginInstallUpdatesOptions contains the optional parameters for the DevicesClient.BeginInstallUpdates
 // method.
-func (client *DevicesClient) BeginInstallUpdates(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginInstallUpdatesOptions) (DevicesClientInstallUpdatesPollerResponse, error) {
-	resp, err := client.installUpdates(ctx, deviceName, resourceGroupName, options)
-	if err != nil {
-		return DevicesClientInstallUpdatesPollerResponse{}, err
+func (client *DevicesClient) BeginInstallUpdates(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginInstallUpdatesOptions) (*armruntime.Poller[DevicesClientInstallUpdatesResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.installUpdates(ctx, deviceName, resourceGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DevicesClientInstallUpdatesResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DevicesClientInstallUpdatesResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DevicesClientInstallUpdatesPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DevicesClient.InstallUpdates", "", resp, client.pl)
-	if err != nil {
-		return DevicesClientInstallUpdatesPollerResponse{}, err
-	}
-	result.Poller = &DevicesClientInstallUpdatesPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // InstallUpdates - Installs the updates on the Data Box Edge/Data Box Gateway device.
@@ -647,7 +628,7 @@ func (client *DevicesClient) installUpdatesCreateRequest(ctx context.Context, de
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -658,16 +639,32 @@ func (client *DevicesClient) installUpdatesCreateRequest(ctx context.Context, de
 // resourceGroupName - The resource group name.
 // options - DevicesClientListByResourceGroupOptions contains the optional parameters for the DevicesClient.ListByResourceGroup
 // method.
-func (client *DevicesClient) ListByResourceGroup(resourceGroupName string, options *DevicesClientListByResourceGroupOptions) *DevicesClientListByResourceGroupPager {
-	return &DevicesClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *DevicesClient) ListByResourceGroup(resourceGroupName string, options *DevicesClientListByResourceGroupOptions) *runtime.Pager[DevicesClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DevicesClientListByResourceGroupResponse]{
+		More: func(page DevicesClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DevicesClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeviceList.NextLink)
+		Fetcher: func(ctx context.Context, page *DevicesClientListByResourceGroupResponse) (DevicesClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DevicesClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DevicesClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DevicesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -686,7 +683,7 @@ func (client *DevicesClient) listByResourceGroupCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-03-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -697,7 +694,7 @@ func (client *DevicesClient) listByResourceGroupCreateRequest(ctx context.Contex
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *DevicesClient) listByResourceGroupHandleResponse(resp *http.Response) (DevicesClientListByResourceGroupResponse, error) {
-	result := DevicesClientListByResourceGroupResponse{RawResponse: resp}
+	result := DevicesClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceList); err != nil {
 		return DevicesClientListByResourceGroupResponse{}, err
 	}
@@ -708,16 +705,32 @@ func (client *DevicesClient) listByResourceGroupHandleResponse(resp *http.Respon
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DevicesClientListBySubscriptionOptions contains the optional parameters for the DevicesClient.ListBySubscription
 // method.
-func (client *DevicesClient) ListBySubscription(options *DevicesClientListBySubscriptionOptions) *DevicesClientListBySubscriptionPager {
-	return &DevicesClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *DevicesClient) ListBySubscription(options *DevicesClientListBySubscriptionOptions) *runtime.Pager[DevicesClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DevicesClientListBySubscriptionResponse]{
+		More: func(page DevicesClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DevicesClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeviceList.NextLink)
+		Fetcher: func(ctx context.Context, page *DevicesClientListBySubscriptionResponse) (DevicesClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DevicesClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DevicesClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DevicesClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -732,7 +745,7 @@ func (client *DevicesClient) listBySubscriptionCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-03-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -743,7 +756,7 @@ func (client *DevicesClient) listBySubscriptionCreateRequest(ctx context.Context
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *DevicesClient) listBySubscriptionHandleResponse(resp *http.Response) (DevicesClientListBySubscriptionResponse, error) {
-	result := DevicesClientListBySubscriptionResponse{RawResponse: resp}
+	result := DevicesClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceList); err != nil {
 		return DevicesClientListBySubscriptionResponse{}, err
 	}
@@ -756,22 +769,16 @@ func (client *DevicesClient) listBySubscriptionHandleResponse(resp *http.Respons
 // resourceGroupName - The resource group name.
 // options - DevicesClientBeginScanForUpdatesOptions contains the optional parameters for the DevicesClient.BeginScanForUpdates
 // method.
-func (client *DevicesClient) BeginScanForUpdates(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginScanForUpdatesOptions) (DevicesClientScanForUpdatesPollerResponse, error) {
-	resp, err := client.scanForUpdates(ctx, deviceName, resourceGroupName, options)
-	if err != nil {
-		return DevicesClientScanForUpdatesPollerResponse{}, err
+func (client *DevicesClient) BeginScanForUpdates(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginScanForUpdatesOptions) (*armruntime.Poller[DevicesClientScanForUpdatesResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.scanForUpdates(ctx, deviceName, resourceGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DevicesClientScanForUpdatesResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DevicesClientScanForUpdatesResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DevicesClientScanForUpdatesPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DevicesClient.ScanForUpdates", "", resp, client.pl)
-	if err != nil {
-		return DevicesClientScanForUpdatesPollerResponse{}, err
-	}
-	result.Poller = &DevicesClientScanForUpdatesPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // ScanForUpdates - Scans for updates on a Data Box Edge/Data Box Gateway device.
@@ -811,7 +818,7 @@ func (client *DevicesClient) scanForUpdatesCreateRequest(ctx context.Context, de
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -858,7 +865,7 @@ func (client *DevicesClient) updateCreateRequest(ctx context.Context, deviceName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -866,7 +873,7 @@ func (client *DevicesClient) updateCreateRequest(ctx context.Context, deviceName
 
 // updateHandleResponse handles the Update response.
 func (client *DevicesClient) updateHandleResponse(resp *http.Response) (DevicesClientUpdateResponse, error) {
-	result := DevicesClientUpdateResponse{RawResponse: resp}
+	result := DevicesClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Device); err != nil {
 		return DevicesClientUpdateResponse{}, err
 	}
@@ -915,7 +922,7 @@ func (client *DevicesClient) updateExtendedInformationCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -923,7 +930,7 @@ func (client *DevicesClient) updateExtendedInformationCreateRequest(ctx context.
 
 // updateExtendedInformationHandleResponse handles the UpdateExtendedInformation response.
 func (client *DevicesClient) updateExtendedInformationHandleResponse(resp *http.Response) (DevicesClientUpdateExtendedInformationResponse, error) {
-	result := DevicesClientUpdateExtendedInformationResponse{RawResponse: resp}
+	result := DevicesClientUpdateExtendedInformationResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceExtendedInfo); err != nil {
 		return DevicesClientUpdateExtendedInformationResponse{}, err
 	}
@@ -972,7 +979,7 @@ func (client *DevicesClient) uploadCertificateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -980,7 +987,7 @@ func (client *DevicesClient) uploadCertificateCreateRequest(ctx context.Context,
 
 // uploadCertificateHandleResponse handles the UploadCertificate response.
 func (client *DevicesClient) uploadCertificateHandleResponse(resp *http.Response) (DevicesClientUploadCertificateResponse, error) {
-	result := DevicesClientUploadCertificateResponse{RawResponse: resp}
+	result := DevicesClientUploadCertificateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UploadCertificateResponse); err != nil {
 		return DevicesClientUploadCertificateResponse{}, err
 	}

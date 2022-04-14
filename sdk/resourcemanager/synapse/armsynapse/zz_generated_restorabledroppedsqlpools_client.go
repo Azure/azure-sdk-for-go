@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type RestorableDroppedSQLPoolsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewRestorableDroppedSQLPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RestorableDroppedSQLPoolsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewRestorableDroppedSQLPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorableDroppedSQLPoolsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &RestorableDroppedSQLPoolsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets a deleted sql pool that can be restored
@@ -103,7 +108,7 @@ func (client *RestorableDroppedSQLPoolsClient) getCreateRequest(ctx context.Cont
 
 // getHandleResponse handles the Get response.
 func (client *RestorableDroppedSQLPoolsClient) getHandleResponse(resp *http.Response) (RestorableDroppedSQLPoolsClientGetResponse, error) {
-	result := RestorableDroppedSQLPoolsClientGetResponse{RawResponse: resp}
+	result := RestorableDroppedSQLPoolsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorableDroppedSQLPool); err != nil {
 		return RestorableDroppedSQLPoolsClientGetResponse{}, err
 	}
@@ -116,19 +121,26 @@ func (client *RestorableDroppedSQLPoolsClient) getHandleResponse(resp *http.Resp
 // workspaceName - The name of the workspace.
 // options - RestorableDroppedSQLPoolsClientListByWorkspaceOptions contains the optional parameters for the RestorableDroppedSQLPoolsClient.ListByWorkspace
 // method.
-func (client *RestorableDroppedSQLPoolsClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string, options *RestorableDroppedSQLPoolsClientListByWorkspaceOptions) (RestorableDroppedSQLPoolsClientListByWorkspaceResponse, error) {
-	req, err := client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
-	if err != nil {
-		return RestorableDroppedSQLPoolsClientListByWorkspaceResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return RestorableDroppedSQLPoolsClientListByWorkspaceResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RestorableDroppedSQLPoolsClientListByWorkspaceResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listByWorkspaceHandleResponse(resp)
+func (client *RestorableDroppedSQLPoolsClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *RestorableDroppedSQLPoolsClientListByWorkspaceOptions) *runtime.Pager[RestorableDroppedSQLPoolsClientListByWorkspaceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RestorableDroppedSQLPoolsClientListByWorkspaceResponse]{
+		More: func(page RestorableDroppedSQLPoolsClientListByWorkspaceResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *RestorableDroppedSQLPoolsClientListByWorkspaceResponse) (RestorableDroppedSQLPoolsClientListByWorkspaceResponse, error) {
+			req, err := client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
+			if err != nil {
+				return RestorableDroppedSQLPoolsClientListByWorkspaceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RestorableDroppedSQLPoolsClientListByWorkspaceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RestorableDroppedSQLPoolsClientListByWorkspaceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByWorkspaceHandleResponse(resp)
+		},
+	})
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
@@ -159,7 +171,7 @@ func (client *RestorableDroppedSQLPoolsClient) listByWorkspaceCreateRequest(ctx 
 
 // listByWorkspaceHandleResponse handles the ListByWorkspace response.
 func (client *RestorableDroppedSQLPoolsClient) listByWorkspaceHandleResponse(resp *http.Response) (RestorableDroppedSQLPoolsClientListByWorkspaceResponse, error) {
-	result := RestorableDroppedSQLPoolsClientListByWorkspaceResponse{RawResponse: resp}
+	result := RestorableDroppedSQLPoolsClientListByWorkspaceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorableDroppedSQLPoolListResult); err != nil {
 		return RestorableDroppedSQLPoolsClientListByWorkspaceResponse{}, err
 	}

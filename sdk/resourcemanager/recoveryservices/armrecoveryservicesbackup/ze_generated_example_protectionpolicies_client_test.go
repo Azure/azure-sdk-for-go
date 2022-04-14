@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,128 +19,149 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureIaasVm/V2Policy/v2-Get-Policy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureIaasVm/V2Policy/v2-Get-Policy.json
 func ExampleProtectionPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicesbackup.NewProtectionPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armrecoveryservicesbackup.NewProtectionPoliciesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<vault-name>",
 		"<resource-group-name>",
 		"<policy-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ProtectionPoliciesClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureStorage/ProtectionPolicies_CreateOrUpdate_Daily.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureStorage/ProtectionPolicies_CreateOrUpdate_Daily.json
 func ExampleProtectionPoliciesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicesbackup.NewProtectionPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armrecoveryservicesbackup.NewProtectionPoliciesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<vault-name>",
 		"<resource-group-name>",
 		"<policy-name>",
 		armrecoveryservicesbackup.ProtectionPolicyResource{
 			Properties: &armrecoveryservicesbackup.AzureFileShareProtectionPolicy{
-				BackupManagementType: to.StringPtr("<backup-management-type>"),
+				BackupManagementType: to.Ptr("<backup-management-type>"),
 				RetentionPolicy: &armrecoveryservicesbackup.LongTermRetentionPolicy{
-					RetentionPolicyType: to.StringPtr("<retention-policy-type>"),
+					RetentionPolicyType: to.Ptr("<retention-policy-type>"),
 					DailySchedule: &armrecoveryservicesbackup.DailyRetentionSchedule{
 						RetentionDuration: &armrecoveryservicesbackup.RetentionDuration{
-							Count:        to.Int32Ptr(5),
-							DurationType: armrecoveryservicesbackup.RetentionDurationType("Days").ToPtr(),
+							Count:        to.Ptr[int32](5),
+							DurationType: to.Ptr(armrecoveryservicesbackup.RetentionDurationTypeDays),
 						},
 						RetentionTimes: []*time.Time{
-							to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-29T08:00:00.000Z"); return t }())},
+							to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-29T08:00:00.000Z"); return t }())},
 					},
 					MonthlySchedule: &armrecoveryservicesbackup.MonthlyRetentionSchedule{
 						RetentionDuration: &armrecoveryservicesbackup.RetentionDuration{
-							Count:        to.Int32Ptr(60),
-							DurationType: armrecoveryservicesbackup.RetentionDurationType("Months").ToPtr(),
+							Count:        to.Ptr[int32](60),
+							DurationType: to.Ptr(armrecoveryservicesbackup.RetentionDurationTypeMonths),
 						},
-						RetentionScheduleFormatType: armrecoveryservicesbackup.RetentionScheduleFormat("Weekly").ToPtr(),
+						RetentionScheduleFormatType: to.Ptr(armrecoveryservicesbackup.RetentionScheduleFormatWeekly),
 						RetentionScheduleWeekly: &armrecoveryservicesbackup.WeeklyRetentionFormat{
 							DaysOfTheWeek: []*armrecoveryservicesbackup.DayOfWeek{
-								armrecoveryservicesbackup.DayOfWeekSunday.ToPtr()},
+								to.Ptr(armrecoveryservicesbackup.DayOfWeekSunday)},
 							WeeksOfTheMonth: []*armrecoveryservicesbackup.WeekOfMonth{
-								armrecoveryservicesbackup.WeekOfMonthFirst.ToPtr()},
+								to.Ptr(armrecoveryservicesbackup.WeekOfMonthFirst)},
 						},
 						RetentionTimes: []*time.Time{
-							to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-29T08:00:00.000Z"); return t }())},
+							to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-29T08:00:00.000Z"); return t }())},
 					},
 					WeeklySchedule: &armrecoveryservicesbackup.WeeklyRetentionSchedule{
 						DaysOfTheWeek: []*armrecoveryservicesbackup.DayOfWeek{
-							armrecoveryservicesbackup.DayOfWeekSunday.ToPtr()},
+							to.Ptr(armrecoveryservicesbackup.DayOfWeekSunday)},
 						RetentionDuration: &armrecoveryservicesbackup.RetentionDuration{
-							Count:        to.Int32Ptr(12),
-							DurationType: armrecoveryservicesbackup.RetentionDurationType("Weeks").ToPtr(),
+							Count:        to.Ptr[int32](12),
+							DurationType: to.Ptr(armrecoveryservicesbackup.RetentionDurationTypeWeeks),
 						},
 						RetentionTimes: []*time.Time{
-							to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-29T08:00:00.000Z"); return t }())},
+							to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-29T08:00:00.000Z"); return t }())},
 					},
 					YearlySchedule: &armrecoveryservicesbackup.YearlyRetentionSchedule{
 						MonthsOfYear: []*armrecoveryservicesbackup.MonthOfYear{
-							armrecoveryservicesbackup.MonthOfYearJanuary.ToPtr()},
+							to.Ptr(armrecoveryservicesbackup.MonthOfYearJanuary)},
 						RetentionDuration: &armrecoveryservicesbackup.RetentionDuration{
-							Count:        to.Int32Ptr(10),
-							DurationType: armrecoveryservicesbackup.RetentionDurationType("Years").ToPtr(),
+							Count:        to.Ptr[int32](10),
+							DurationType: to.Ptr(armrecoveryservicesbackup.RetentionDurationTypeYears),
 						},
-						RetentionScheduleFormatType: armrecoveryservicesbackup.RetentionScheduleFormat("Weekly").ToPtr(),
+						RetentionScheduleFormatType: to.Ptr(armrecoveryservicesbackup.RetentionScheduleFormatWeekly),
 						RetentionScheduleWeekly: &armrecoveryservicesbackup.WeeklyRetentionFormat{
 							DaysOfTheWeek: []*armrecoveryservicesbackup.DayOfWeek{
-								armrecoveryservicesbackup.DayOfWeekSunday.ToPtr()},
+								to.Ptr(armrecoveryservicesbackup.DayOfWeekSunday)},
 							WeeksOfTheMonth: []*armrecoveryservicesbackup.WeekOfMonth{
-								armrecoveryservicesbackup.WeekOfMonthFirst.ToPtr()},
+								to.Ptr(armrecoveryservicesbackup.WeekOfMonthFirst)},
 						},
 						RetentionTimes: []*time.Time{
-							to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-29T08:00:00.000Z"); return t }())},
+							to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-29T08:00:00.000Z"); return t }())},
 					},
 				},
 				SchedulePolicy: &armrecoveryservicesbackup.SimpleSchedulePolicy{
-					SchedulePolicyType:   to.StringPtr("<schedule-policy-type>"),
-					ScheduleRunFrequency: armrecoveryservicesbackup.ScheduleRunType("Daily").ToPtr(),
+					SchedulePolicyType:   to.Ptr("<schedule-policy-type>"),
+					ScheduleRunFrequency: to.Ptr(armrecoveryservicesbackup.ScheduleRunTypeDaily),
 					ScheduleRunTimes: []*time.Time{
-						to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-29T08:00:00.000Z"); return t }())},
+						to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-29T08:00:00.000Z"); return t }())},
 				},
-				TimeZone:     to.StringPtr("<time-zone>"),
-				WorkLoadType: armrecoveryservicesbackup.WorkloadType("AzureFileShare").ToPtr(),
+				TimeZone:     to.Ptr("<time-zone>"),
+				WorkLoadType: to.Ptr(armrecoveryservicesbackup.WorkloadTypeAzureFileShare),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ProtectionPoliciesClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureIaasVm/ProtectionPolicies_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureIaasVm/ProtectionPolicies_Delete.json
 func ExampleProtectionPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicesbackup.NewProtectionPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armrecoveryservicesbackup.NewProtectionPoliciesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<vault-name>",
 		"<resource-group-name>",
 		"<policy-name>",
-		nil)
+		&armrecoveryservicesbackup.ProtectionPoliciesClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }

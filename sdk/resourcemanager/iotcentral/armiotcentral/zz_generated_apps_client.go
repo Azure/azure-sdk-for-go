@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type AppsClient struct {
 // subscriptionID - The subscription identifier.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAppsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AppsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAppsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AppsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AppsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CheckNameAvailability - Check if an IoT Central application name is available.
@@ -82,7 +87,7 @@ func (client *AppsClient) checkNameAvailabilityCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, operationInputs)
@@ -90,7 +95,7 @@ func (client *AppsClient) checkNameAvailabilityCreateRequest(ctx context.Context
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
 func (client *AppsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (AppsClientCheckNameAvailabilityResponse, error) {
-	result := AppsClientCheckNameAvailabilityResponse{RawResponse: resp}
+	result := AppsClientCheckNameAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppAvailabilityInfo); err != nil {
 		return AppsClientCheckNameAvailabilityResponse{}, err
 	}
@@ -130,7 +135,7 @@ func (client *AppsClient) checkSubdomainAvailabilityCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, operationInputs)
@@ -138,7 +143,7 @@ func (client *AppsClient) checkSubdomainAvailabilityCreateRequest(ctx context.Co
 
 // checkSubdomainAvailabilityHandleResponse handles the CheckSubdomainAvailability response.
 func (client *AppsClient) checkSubdomainAvailabilityHandleResponse(resp *http.Response) (AppsClientCheckSubdomainAvailabilityResponse, error) {
-	result := AppsClientCheckSubdomainAvailabilityResponse{RawResponse: resp}
+	result := AppsClientCheckSubdomainAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppAvailabilityInfo); err != nil {
 		return AppsClientCheckSubdomainAvailabilityResponse{}, err
 	}
@@ -154,22 +159,16 @@ func (client *AppsClient) checkSubdomainAvailabilityHandleResponse(resp *http.Re
 // app - The IoT Central application metadata and security metadata.
 // options - AppsClientBeginCreateOrUpdateOptions contains the optional parameters for the AppsClient.BeginCreateOrUpdate
 // method.
-func (client *AppsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, app App, options *AppsClientBeginCreateOrUpdateOptions) (AppsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, app, options)
-	if err != nil {
-		return AppsClientCreateOrUpdatePollerResponse{}, err
+func (client *AppsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, app App, options *AppsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[AppsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, app, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[AppsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[AppsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := AppsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("AppsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return AppsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &AppsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update the metadata of an IoT Central application. The usual pattern to modify a property is
@@ -185,7 +184,7 @@ func (client *AppsClient) createOrUpdate(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -211,7 +210,7 @@ func (client *AppsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, app)
@@ -222,22 +221,16 @@ func (client *AppsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 // resourceGroupName - The name of the resource group that contains the IoT Central application.
 // resourceName - The ARM resource name of the IoT Central application.
 // options - AppsClientBeginDeleteOptions contains the optional parameters for the AppsClient.BeginDelete method.
-func (client *AppsClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, options *AppsClientBeginDeleteOptions) (AppsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, options)
-	if err != nil {
-		return AppsClientDeletePollerResponse{}, err
+func (client *AppsClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, options *AppsClientBeginDeleteOptions) (*armruntime.Poller[AppsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[AppsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[AppsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := AppsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("AppsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return AppsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &AppsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete an IoT Central application.
@@ -251,7 +244,7 @@ func (client *AppsClient) deleteOperation(ctx context.Context, resourceGroupName
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -277,7 +270,7 @@ func (client *AppsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -323,7 +316,7 @@ func (client *AppsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -331,7 +324,7 @@ func (client *AppsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 
 // getHandleResponse handles the Get response.
 func (client *AppsClient) getHandleResponse(resp *http.Response) (AppsClientGetResponse, error) {
-	result := AppsClientGetResponse{RawResponse: resp}
+	result := AppsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.App); err != nil {
 		return AppsClientGetResponse{}, err
 	}
@@ -343,16 +336,32 @@ func (client *AppsClient) getHandleResponse(resp *http.Response) (AppsClientGetR
 // resourceGroupName - The name of the resource group that contains the IoT Central application.
 // options - AppsClientListByResourceGroupOptions contains the optional parameters for the AppsClient.ListByResourceGroup
 // method.
-func (client *AppsClient) ListByResourceGroup(resourceGroupName string, options *AppsClientListByResourceGroupOptions) *AppsClientListByResourceGroupPager {
-	return &AppsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *AppsClient) ListByResourceGroup(resourceGroupName string, options *AppsClientListByResourceGroupOptions) *runtime.Pager[AppsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AppsClientListByResourceGroupResponse]{
+		More: func(page AppsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AppsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AppListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AppsClientListByResourceGroupResponse) (AppsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AppsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AppsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AppsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -371,7 +380,7 @@ func (client *AppsClient) listByResourceGroupCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -379,7 +388,7 @@ func (client *AppsClient) listByResourceGroupCreateRequest(ctx context.Context, 
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *AppsClient) listByResourceGroupHandleResponse(resp *http.Response) (AppsClientListByResourceGroupResponse, error) {
-	result := AppsClientListByResourceGroupResponse{RawResponse: resp}
+	result := AppsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppListResult); err != nil {
 		return AppsClientListByResourceGroupResponse{}, err
 	}
@@ -389,16 +398,32 @@ func (client *AppsClient) listByResourceGroupHandleResponse(resp *http.Response)
 // ListBySubscription - Get all IoT Central Applications in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AppsClientListBySubscriptionOptions contains the optional parameters for the AppsClient.ListBySubscription method.
-func (client *AppsClient) ListBySubscription(options *AppsClientListBySubscriptionOptions) *AppsClientListBySubscriptionPager {
-	return &AppsClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *AppsClient) ListBySubscription(options *AppsClientListBySubscriptionOptions) *runtime.Pager[AppsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AppsClientListBySubscriptionResponse]{
+		More: func(page AppsClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AppsClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AppListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AppsClientListBySubscriptionResponse) (AppsClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AppsClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AppsClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AppsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -413,7 +438,7 @@ func (client *AppsClient) listBySubscriptionCreateRequest(ctx context.Context, o
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -421,7 +446,7 @@ func (client *AppsClient) listBySubscriptionCreateRequest(ctx context.Context, o
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *AppsClient) listBySubscriptionHandleResponse(resp *http.Response) (AppsClientListBySubscriptionResponse, error) {
-	result := AppsClientListBySubscriptionResponse{RawResponse: resp}
+	result := AppsClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppListResult); err != nil {
 		return AppsClientListBySubscriptionResponse{}, err
 	}
@@ -431,16 +456,32 @@ func (client *AppsClient) listBySubscriptionHandleResponse(resp *http.Response) 
 // ListTemplates - Get all available application templates.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AppsClientListTemplatesOptions contains the optional parameters for the AppsClient.ListTemplates method.
-func (client *AppsClient) ListTemplates(options *AppsClientListTemplatesOptions) *AppsClientListTemplatesPager {
-	return &AppsClientListTemplatesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listTemplatesCreateRequest(ctx, options)
+func (client *AppsClient) ListTemplates(options *AppsClientListTemplatesOptions) *runtime.Pager[AppsClientListTemplatesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AppsClientListTemplatesResponse]{
+		More: func(page AppsClientListTemplatesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AppsClientListTemplatesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AppTemplatesResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AppsClientListTemplatesResponse) (AppsClientListTemplatesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listTemplatesCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AppsClientListTemplatesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AppsClientListTemplatesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AppsClientListTemplatesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listTemplatesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listTemplatesCreateRequest creates the ListTemplates request.
@@ -455,7 +496,7 @@ func (client *AppsClient) listTemplatesCreateRequest(ctx context.Context, option
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -463,7 +504,7 @@ func (client *AppsClient) listTemplatesCreateRequest(ctx context.Context, option
 
 // listTemplatesHandleResponse handles the ListTemplates response.
 func (client *AppsClient) listTemplatesHandleResponse(resp *http.Response) (AppsClientListTemplatesResponse, error) {
-	result := AppsClientListTemplatesResponse{RawResponse: resp}
+	result := AppsClientListTemplatesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppTemplatesResult); err != nil {
 		return AppsClientListTemplatesResponse{}, err
 	}
@@ -476,22 +517,16 @@ func (client *AppsClient) listTemplatesHandleResponse(resp *http.Response) (Apps
 // resourceName - The ARM resource name of the IoT Central application.
 // appPatch - The IoT Central application metadata and security metadata.
 // options - AppsClientBeginUpdateOptions contains the optional parameters for the AppsClient.BeginUpdate method.
-func (client *AppsClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, appPatch AppPatch, options *AppsClientBeginUpdateOptions) (AppsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, resourceName, appPatch, options)
-	if err != nil {
-		return AppsClientUpdatePollerResponse{}, err
+func (client *AppsClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, appPatch AppPatch, options *AppsClientBeginUpdateOptions) (*armruntime.Poller[AppsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, resourceName, appPatch, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[AppsClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[AppsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := AppsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("AppsClient.Update", "", resp, client.pl)
-	if err != nil {
-		return AppsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &AppsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Update the metadata of an IoT Central application.
@@ -505,7 +540,7 @@ func (client *AppsClient) update(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -531,7 +566,7 @@ func (client *AppsClient) updateCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, appPatch)

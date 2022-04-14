@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type MetricAlertsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewMetricAlertsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MetricAlertsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewMetricAlertsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MetricAlertsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &MetricAlertsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create or update an metric alert definition.
@@ -99,7 +104,7 @@ func (client *MetricAlertsClient) createOrUpdateCreateRequest(ctx context.Contex
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *MetricAlertsClient) createOrUpdateHandleResponse(resp *http.Response) (MetricAlertsClientCreateOrUpdateResponse, error) {
-	result := MetricAlertsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := MetricAlertsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricAlertResource); err != nil {
 		return MetricAlertsClientCreateOrUpdateResponse{}, err
 	}
@@ -123,7 +128,7 @@ func (client *MetricAlertsClient) Delete(ctx context.Context, resourceGroupName 
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return MetricAlertsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return MetricAlertsClientDeleteResponse{RawResponse: resp}, nil
+	return MetricAlertsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -200,7 +205,7 @@ func (client *MetricAlertsClient) getCreateRequest(ctx context.Context, resource
 
 // getHandleResponse handles the Get response.
 func (client *MetricAlertsClient) getHandleResponse(resp *http.Response) (MetricAlertsClientGetResponse, error) {
-	result := MetricAlertsClientGetResponse{RawResponse: resp}
+	result := MetricAlertsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricAlertResource); err != nil {
 		return MetricAlertsClientGetResponse{}, err
 	}
@@ -212,19 +217,26 @@ func (client *MetricAlertsClient) getHandleResponse(resp *http.Response) (Metric
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - MetricAlertsClientListByResourceGroupOptions contains the optional parameters for the MetricAlertsClient.ListByResourceGroup
 // method.
-func (client *MetricAlertsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *MetricAlertsClientListByResourceGroupOptions) (MetricAlertsClientListByResourceGroupResponse, error) {
-	req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-	if err != nil {
-		return MetricAlertsClientListByResourceGroupResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return MetricAlertsClientListByResourceGroupResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MetricAlertsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listByResourceGroupHandleResponse(resp)
+func (client *MetricAlertsClient) ListByResourceGroup(resourceGroupName string, options *MetricAlertsClientListByResourceGroupOptions) *runtime.Pager[MetricAlertsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[MetricAlertsClientListByResourceGroupResponse]{
+		More: func(page MetricAlertsClientListByResourceGroupResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *MetricAlertsClientListByResourceGroupResponse) (MetricAlertsClientListByResourceGroupResponse, error) {
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			if err != nil {
+				return MetricAlertsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return MetricAlertsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return MetricAlertsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
+		},
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -251,7 +263,7 @@ func (client *MetricAlertsClient) listByResourceGroupCreateRequest(ctx context.C
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *MetricAlertsClient) listByResourceGroupHandleResponse(resp *http.Response) (MetricAlertsClientListByResourceGroupResponse, error) {
-	result := MetricAlertsClientListByResourceGroupResponse{RawResponse: resp}
+	result := MetricAlertsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricAlertResourceCollection); err != nil {
 		return MetricAlertsClientListByResourceGroupResponse{}, err
 	}
@@ -262,19 +274,26 @@ func (client *MetricAlertsClient) listByResourceGroupHandleResponse(resp *http.R
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - MetricAlertsClientListBySubscriptionOptions contains the optional parameters for the MetricAlertsClient.ListBySubscription
 // method.
-func (client *MetricAlertsClient) ListBySubscription(ctx context.Context, options *MetricAlertsClientListBySubscriptionOptions) (MetricAlertsClientListBySubscriptionResponse, error) {
-	req, err := client.listBySubscriptionCreateRequest(ctx, options)
-	if err != nil {
-		return MetricAlertsClientListBySubscriptionResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return MetricAlertsClientListBySubscriptionResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MetricAlertsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listBySubscriptionHandleResponse(resp)
+func (client *MetricAlertsClient) ListBySubscription(options *MetricAlertsClientListBySubscriptionOptions) *runtime.Pager[MetricAlertsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[MetricAlertsClientListBySubscriptionResponse]{
+		More: func(page MetricAlertsClientListBySubscriptionResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *MetricAlertsClientListBySubscriptionResponse) (MetricAlertsClientListBySubscriptionResponse, error) {
+			req, err := client.listBySubscriptionCreateRequest(ctx, options)
+			if err != nil {
+				return MetricAlertsClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return MetricAlertsClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return MetricAlertsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
+		},
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -297,7 +316,7 @@ func (client *MetricAlertsClient) listBySubscriptionCreateRequest(ctx context.Co
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *MetricAlertsClient) listBySubscriptionHandleResponse(resp *http.Response) (MetricAlertsClientListBySubscriptionResponse, error) {
-	result := MetricAlertsClientListBySubscriptionResponse{RawResponse: resp}
+	result := MetricAlertsClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricAlertResourceCollection); err != nil {
 		return MetricAlertsClientListBySubscriptionResponse{}, err
 	}
@@ -353,7 +372,7 @@ func (client *MetricAlertsClient) updateCreateRequest(ctx context.Context, resou
 
 // updateHandleResponse handles the Update response.
 func (client *MetricAlertsClient) updateHandleResponse(resp *http.Response) (MetricAlertsClientUpdateResponse, error) {
-	result := MetricAlertsClientUpdateResponse{RawResponse: resp}
+	result := MetricAlertsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricAlertResource); err != nil {
 		return MetricAlertsClientUpdateResponse{}, err
 	}

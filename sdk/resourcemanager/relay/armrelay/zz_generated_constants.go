@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armrelay
 
 const (
 	moduleName    = "armrelay"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 type AccessRights string
@@ -30,11 +30,6 @@ func PossibleAccessRightsValues() []AccessRights {
 	}
 }
 
-// ToPtr returns a *AccessRights pointing to the current value.
-func (c AccessRights) ToPtr() *AccessRights {
-	return &c
-}
-
 // KeyType - The access key to regenerate.
 type KeyType string
 
@@ -49,11 +44,6 @@ func PossibleKeyTypeValues() []KeyType {
 		KeyTypePrimaryKey,
 		KeyTypeSecondaryKey,
 	}
-}
-
-// ToPtr returns a *KeyType pointing to the current value.
-func (c KeyType) ToPtr() *KeyType {
-	return &c
 }
 
 type ProvisioningStateEnum string
@@ -79,11 +69,6 @@ func PossibleProvisioningStateEnumValues() []ProvisioningStateEnum {
 	}
 }
 
-// ToPtr returns a *ProvisioningStateEnum pointing to the current value.
-func (c ProvisioningStateEnum) ToPtr() *ProvisioningStateEnum {
-	return &c
-}
-
 // Relaytype - WCF relay type.
 type Relaytype string
 
@@ -98,11 +83,6 @@ func PossibleRelaytypeValues() []Relaytype {
 		RelaytypeNetTCP,
 		RelaytypeHTTP,
 	}
-}
-
-// ToPtr returns a *Relaytype pointing to the current value.
-func (c Relaytype) ToPtr() *Relaytype {
-	return &c
 }
 
 // UnavailableReason - Specifies the reason for the unavailability of the service.
@@ -127,9 +107,4 @@ func PossibleUnavailableReasonValues() []UnavailableReason {
 		UnavailableReasonNameInLockdown,
 		UnavailableReasonTooManyNamespaceInCurrentSubscription,
 	}
-}
-
-// ToPtr returns a *UnavailableReason pointing to the current value.
-func (c UnavailableReason) ToPtr() *UnavailableReason {
-	return &c
 }

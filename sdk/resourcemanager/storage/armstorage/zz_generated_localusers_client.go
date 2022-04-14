@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type LocalUsersClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewLocalUsersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LocalUsersClient {
+func NewLocalUsersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocalUsersClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &LocalUsersClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create or update the properties of a local user associated with the storage account
@@ -98,7 +103,7 @@ func (client *LocalUsersClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, properties)
@@ -106,7 +111,7 @@ func (client *LocalUsersClient) createOrUpdateCreateRequest(ctx context.Context,
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *LocalUsersClient) createOrUpdateHandleResponse(resp *http.Response) (LocalUsersClientCreateOrUpdateResponse, error) {
-	result := LocalUsersClientCreateOrUpdateResponse{RawResponse: resp}
+	result := LocalUsersClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LocalUser); err != nil {
 		return LocalUsersClientCreateOrUpdateResponse{}, err
 	}
@@ -133,7 +138,7 @@ func (client *LocalUsersClient) Delete(ctx context.Context, resourceGroupName st
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return LocalUsersClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return LocalUsersClientDeleteResponse{RawResponse: resp}, nil
+	return LocalUsersClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -160,7 +165,7 @@ func (client *LocalUsersClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -213,7 +218,7 @@ func (client *LocalUsersClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -221,7 +226,7 @@ func (client *LocalUsersClient) getCreateRequest(ctx context.Context, resourceGr
 
 // getHandleResponse handles the Get response.
 func (client *LocalUsersClient) getHandleResponse(resp *http.Response) (LocalUsersClientGetResponse, error) {
-	result := LocalUsersClientGetResponse{RawResponse: resp}
+	result := LocalUsersClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LocalUser); err != nil {
 		return LocalUsersClientGetResponse{}, err
 	}
@@ -234,19 +239,26 @@ func (client *LocalUsersClient) getHandleResponse(resp *http.Response) (LocalUse
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
 // options - LocalUsersClientListOptions contains the optional parameters for the LocalUsersClient.List method.
-func (client *LocalUsersClient) List(ctx context.Context, resourceGroupName string, accountName string, options *LocalUsersClientListOptions) (LocalUsersClientListResponse, error) {
-	req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
-	if err != nil {
-		return LocalUsersClientListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return LocalUsersClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LocalUsersClientListResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listHandleResponse(resp)
+func (client *LocalUsersClient) List(resourceGroupName string, accountName string, options *LocalUsersClientListOptions) *runtime.Pager[LocalUsersClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[LocalUsersClientListResponse]{
+		More: func(page LocalUsersClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *LocalUsersClientListResponse) (LocalUsersClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+			if err != nil {
+				return LocalUsersClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return LocalUsersClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return LocalUsersClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -269,7 +281,7 @@ func (client *LocalUsersClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -277,7 +289,7 @@ func (client *LocalUsersClient) listCreateRequest(ctx context.Context, resourceG
 
 // listHandleResponse handles the List response.
 func (client *LocalUsersClient) listHandleResponse(resp *http.Response) (LocalUsersClientListResponse, error) {
-	result := LocalUsersClientListResponse{RawResponse: resp}
+	result := LocalUsersClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LocalUsers); err != nil {
 		return LocalUsersClientListResponse{}, err
 	}
@@ -331,7 +343,7 @@ func (client *LocalUsersClient) listKeysCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -339,7 +351,7 @@ func (client *LocalUsersClient) listKeysCreateRequest(ctx context.Context, resou
 
 // listKeysHandleResponse handles the ListKeys response.
 func (client *LocalUsersClient) listKeysHandleResponse(resp *http.Response) (LocalUsersClientListKeysResponse, error) {
-	result := LocalUsersClientListKeysResponse{RawResponse: resp}
+	result := LocalUsersClientListKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LocalUserKeys); err != nil {
 		return LocalUsersClientListKeysResponse{}, err
 	}
@@ -394,7 +406,7 @@ func (client *LocalUsersClient) regeneratePasswordCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -402,7 +414,7 @@ func (client *LocalUsersClient) regeneratePasswordCreateRequest(ctx context.Cont
 
 // regeneratePasswordHandleResponse handles the RegeneratePassword response.
 func (client *LocalUsersClient) regeneratePasswordHandleResponse(resp *http.Response) (LocalUsersClientRegeneratePasswordResponse, error) {
-	result := LocalUsersClientRegeneratePasswordResponse{RawResponse: resp}
+	result := LocalUsersClientRegeneratePasswordResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LocalUserRegeneratePasswordResult); err != nil {
 		return LocalUsersClientRegeneratePasswordResponse{}, err
 	}

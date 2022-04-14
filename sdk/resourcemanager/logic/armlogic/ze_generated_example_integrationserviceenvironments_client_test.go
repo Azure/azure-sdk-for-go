@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,190 +19,233 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic"
 )
 
-// x-ms-original-file: specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/IntegrationServiceEnvironments_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/IntegrationServiceEnvironments_ListBySubscription.json
 func ExampleIntegrationServiceEnvironmentsClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armlogic.NewIntegrationServiceEnvironmentsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationServiceEnvironmentsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListBySubscription(&armlogic.IntegrationServiceEnvironmentsClientListBySubscriptionOptions{Top: nil})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/IntegrationServiceEnvironments_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/IntegrationServiceEnvironments_ListByResourceGroup.json
 func ExampleIntegrationServiceEnvironmentsClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armlogic.NewIntegrationServiceEnvironmentsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationServiceEnvironmentsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByResourceGroup("<resource-group>",
 		&armlogic.IntegrationServiceEnvironmentsClientListByResourceGroupOptions{Top: nil})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/IntegrationServiceEnvironments_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/IntegrationServiceEnvironments_Get.json
 func ExampleIntegrationServiceEnvironmentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armlogic.NewIntegrationServiceEnvironmentsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationServiceEnvironmentsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group>",
 		"<integration-service-environment-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.IntegrationServiceEnvironmentsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/IntegrationServiceEnvironments_Put.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/IntegrationServiceEnvironments_Put.json
 func ExampleIntegrationServiceEnvironmentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armlogic.NewIntegrationServiceEnvironmentsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationServiceEnvironmentsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group>",
 		"<integration-service-environment-name>",
 		armlogic.IntegrationServiceEnvironment{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Properties: &armlogic.IntegrationServiceEnvironmentProperties{
 				EncryptionConfiguration: &armlogic.IntegrationServiceEnvironmenEncryptionConfiguration{
 					EncryptionKeyReference: &armlogic.IntegrationServiceEnvironmenEncryptionKeyReference{
-						KeyName: to.StringPtr("<key-name>"),
+						KeyName: to.Ptr("<key-name>"),
 						KeyVault: &armlogic.ResourceReference{
-							ID: to.StringPtr("<id>"),
+							ID: to.Ptr("<id>"),
 						},
-						KeyVersion: to.StringPtr("<key-version>"),
+						KeyVersion: to.Ptr("<key-version>"),
 					},
 				},
 				NetworkConfiguration: &armlogic.NetworkConfiguration{
 					AccessEndpoint: &armlogic.IntegrationServiceEnvironmentAccessEndpoint{
-						Type: armlogic.IntegrationServiceEnvironmentAccessEndpointType("Internal").ToPtr(),
+						Type: to.Ptr(armlogic.IntegrationServiceEnvironmentAccessEndpointTypeInternal),
 					},
 					Subnets: []*armlogic.ResourceReference{
 						{
-							ID: to.StringPtr("<id>"),
+							ID: to.Ptr("<id>"),
 						},
 						{
-							ID: to.StringPtr("<id>"),
+							ID: to.Ptr("<id>"),
 						},
 						{
-							ID: to.StringPtr("<id>"),
+							ID: to.Ptr("<id>"),
 						},
 						{
-							ID: to.StringPtr("<id>"),
+							ID: to.Ptr("<id>"),
 						}},
 				},
 			},
 			SKU: &armlogic.IntegrationServiceEnvironmentSKU{
-				Name:     armlogic.IntegrationServiceEnvironmentSKUName("Premium").ToPtr(),
-				Capacity: to.Int32Ptr(2),
+				Name:     to.Ptr(armlogic.IntegrationServiceEnvironmentSKUNamePremium),
+				Capacity: to.Ptr[int32](2),
 			},
 		},
-		nil)
+		&armlogic.IntegrationServiceEnvironmentsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.IntegrationServiceEnvironmentsClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/IntegrationServiceEnvironments_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/IntegrationServiceEnvironments_Patch.json
 func ExampleIntegrationServiceEnvironmentsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armlogic.NewIntegrationServiceEnvironmentsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationServiceEnvironmentsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group>",
 		"<integration-service-environment-name>",
 		armlogic.IntegrationServiceEnvironment{
 			Tags: map[string]*string{
-				"tag1": to.StringPtr("value1"),
+				"tag1": to.Ptr("value1"),
 			},
 			SKU: &armlogic.IntegrationServiceEnvironmentSKU{
-				Name:     armlogic.IntegrationServiceEnvironmentSKUName("Developer").ToPtr(),
-				Capacity: to.Int32Ptr(0),
+				Name:     to.Ptr(armlogic.IntegrationServiceEnvironmentSKUNameDeveloper),
+				Capacity: to.Ptr[int32](0),
 			},
 		},
-		nil)
+		&armlogic.IntegrationServiceEnvironmentsClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.IntegrationServiceEnvironmentsClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/IntegrationServiceEnvironments_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/IntegrationServiceEnvironments_Delete.json
 func ExampleIntegrationServiceEnvironmentsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armlogic.NewIntegrationServiceEnvironmentsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationServiceEnvironmentsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group>",
 		"<integration-service-environment-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/IntegrationServiceEnvironments_Restart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/IntegrationServiceEnvironments_Restart.json
 func ExampleIntegrationServiceEnvironmentsClient_Restart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armlogic.NewIntegrationServiceEnvironmentsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationServiceEnvironmentsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Restart(ctx,
 		"<resource-group>",
 		"<integration-service-environment-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }

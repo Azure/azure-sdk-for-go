@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -28,19 +29,23 @@ type APIClient struct {
 // NewAPIClient creates a new instance of APIClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAPIClient(credential azcore.TokenCredential, options *arm.ClientOptions) *APIClient {
+func NewAPIClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*APIClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &APIClient{
-		host: string(ep),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // CheckNameAvailability - Checks if the specified management group name is valid and unique
@@ -79,7 +84,7 @@ func (client *APIClient) checkNameAvailabilityCreateRequest(ctx context.Context,
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
 func (client *APIClient) checkNameAvailabilityHandleResponse(resp *http.Response) (APIClientCheckNameAvailabilityResponse, error) {
-	result := APIClientCheckNameAvailabilityResponse{RawResponse: resp}
+	result := APIClientCheckNameAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResult); err != nil {
 		return APIClientCheckNameAvailabilityResponse{}, err
 	}
@@ -120,7 +125,7 @@ func (client *APIClient) startTenantBackfillCreateRequest(ctx context.Context, o
 
 // startTenantBackfillHandleResponse handles the StartTenantBackfill response.
 func (client *APIClient) startTenantBackfillHandleResponse(resp *http.Response) (APIClientStartTenantBackfillResponse, error) {
-	result := APIClientStartTenantBackfillResponse{RawResponse: resp}
+	result := APIClientStartTenantBackfillResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TenantBackfillStatusResult); err != nil {
 		return APIClientStartTenantBackfillResponse{}, err
 	}
@@ -162,7 +167,7 @@ func (client *APIClient) tenantBackfillStatusCreateRequest(ctx context.Context, 
 
 // tenantBackfillStatusHandleResponse handles the TenantBackfillStatus response.
 func (client *APIClient) tenantBackfillStatusHandleResponse(resp *http.Response) (APIClientTenantBackfillStatusResponse, error) {
-	result := APIClientTenantBackfillStatusResponse{RawResponse: resp}
+	result := APIClientTenantBackfillStatusResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TenantBackfillStatusResult); err != nil {
 		return APIClientTenantBackfillStatusResponse{}, err
 	}

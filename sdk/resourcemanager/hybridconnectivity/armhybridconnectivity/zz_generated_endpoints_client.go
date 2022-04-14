@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -30,19 +31,23 @@ type EndpointsClient struct {
 // NewEndpointsClient creates a new instance of EndpointsClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewEndpointsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *EndpointsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewEndpointsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*EndpointsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &EndpointsClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create or update the endpoint to the target resource.
@@ -85,7 +90,7 @@ func (client *EndpointsClient) createOrUpdateCreateRequest(ctx context.Context, 
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *EndpointsClient) createOrUpdateHandleResponse(resp *http.Response) (EndpointsClientCreateOrUpdateResponse, error) {
-	result := EndpointsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := EndpointsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointResource); err != nil {
 		return EndpointsClientCreateOrUpdateResponse{}, err
 	}
@@ -109,7 +114,7 @@ func (client *EndpointsClient) Delete(ctx context.Context, resourceURI string, e
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return EndpointsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return EndpointsClientDeleteResponse{RawResponse: resp}, nil
+	return EndpointsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -166,7 +171,7 @@ func (client *EndpointsClient) getCreateRequest(ctx context.Context, resourceURI
 
 // getHandleResponse handles the Get response.
 func (client *EndpointsClient) getHandleResponse(resp *http.Response) (EndpointsClientGetResponse, error) {
-	result := EndpointsClientGetResponse{RawResponse: resp}
+	result := EndpointsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointResource); err != nil {
 		return EndpointsClientGetResponse{}, err
 	}
@@ -177,16 +182,32 @@ func (client *EndpointsClient) getHandleResponse(resp *http.Response) (Endpoints
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
 // options - EndpointsClientListOptions contains the optional parameters for the EndpointsClient.List method.
-func (client *EndpointsClient) List(resourceURI string, options *EndpointsClientListOptions) *EndpointsClientListPager {
-	return &EndpointsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceURI, options)
+func (client *EndpointsClient) List(resourceURI string, options *EndpointsClientListOptions) *runtime.Pager[EndpointsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[EndpointsClientListResponse]{
+		More: func(page EndpointsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp EndpointsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.EndpointsList.NextLink)
+		Fetcher: func(ctx context.Context, page *EndpointsClientListResponse) (EndpointsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceURI, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return EndpointsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return EndpointsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return EndpointsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -206,7 +227,7 @@ func (client *EndpointsClient) listCreateRequest(ctx context.Context, resourceUR
 
 // listHandleResponse handles the List response.
 func (client *EndpointsClient) listHandleResponse(resp *http.Response) (EndpointsClientListResponse, error) {
-	result := EndpointsClientListResponse{RawResponse: resp}
+	result := EndpointsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointsList); err != nil {
 		return EndpointsClientListResponse{}, err
 	}
@@ -255,7 +276,7 @@ func (client *EndpointsClient) listCredentialsCreateRequest(ctx context.Context,
 
 // listCredentialsHandleResponse handles the ListCredentials response.
 func (client *EndpointsClient) listCredentialsHandleResponse(resp *http.Response) (EndpointsClientListCredentialsResponse, error) {
-	result := EndpointsClientListCredentialsResponse{RawResponse: resp}
+	result := EndpointsClientListCredentialsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointAccessResource); err != nil {
 		return EndpointsClientListCredentialsResponse{}, err
 	}
@@ -301,7 +322,7 @@ func (client *EndpointsClient) updateCreateRequest(ctx context.Context, resource
 
 // updateHandleResponse handles the Update response.
 func (client *EndpointsClient) updateHandleResponse(resp *http.Response) (EndpointsClientUpdateResponse, error) {
-	result := EndpointsClientUpdateResponse{RawResponse: resp}
+	result := EndpointsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointResource); err != nil {
 		return EndpointsClientUpdateResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armdataboxedge
 
 const (
 	moduleName    = "armdataboxedge"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // AccessLevel - Access level allowed for this remote application type
@@ -33,11 +33,6 @@ func PossibleAccessLevelValues() []AccessLevel {
 	}
 }
 
-// ToPtr returns a *AccessLevel pointing to the current value.
-func (c AccessLevel) ToPtr() *AccessLevel {
-	return &c
-}
-
 // AccountType - Type of storage accessed on the storage account.
 type AccountType string
 
@@ -52,11 +47,6 @@ func PossibleAccountTypeValues() []AccountType {
 		AccountTypeBlobStorage,
 		AccountTypeGeneralPurposeStorage,
 	}
-}
-
-// ToPtr returns a *AccountType pointing to the current value.
-func (c AccountType) ToPtr() *AccountType {
-	return &c
 }
 
 // AddonState - Addon Provisioning State
@@ -85,11 +75,6 @@ func PossibleAddonStateValues() []AddonState {
 	}
 }
 
-// ToPtr returns a *AddonState pointing to the current value.
-func (c AddonState) ToPtr() *AddonState {
-	return &c
-}
-
 // AddonType - Addon type.
 type AddonType string
 
@@ -104,11 +89,6 @@ func PossibleAddonTypeValues() []AddonType {
 		AddonTypeArcForKubernetes,
 		AddonTypeIotEdge,
 	}
-}
-
-// ToPtr returns a *AddonType pointing to the current value.
-func (c AddonType) ToPtr() *AddonType {
-	return &c
 }
 
 // AlertSeverity - Severity of the alert.
@@ -129,11 +109,6 @@ func PossibleAlertSeverityValues() []AlertSeverity {
 	}
 }
 
-// ToPtr returns a *AlertSeverity pointing to the current value.
-func (c AlertSeverity) ToPtr() *AlertSeverity {
-	return &c
-}
-
 // AuthenticationType - The authentication type.
 type AuthenticationType string
 
@@ -148,11 +123,6 @@ func PossibleAuthenticationTypeValues() []AuthenticationType {
 		AuthenticationTypeAzureActiveDirectory,
 		AuthenticationTypeInvalid,
 	}
-}
-
-// ToPtr returns a *AuthenticationType pointing to the current value.
-func (c AuthenticationType) ToPtr() *AuthenticationType {
-	return &c
 }
 
 // AzureContainerDataFormat - Storage format used for the file represented by the share.
@@ -173,11 +143,6 @@ func PossibleAzureContainerDataFormatValues() []AzureContainerDataFormat {
 	}
 }
 
-// ToPtr returns a *AzureContainerDataFormat pointing to the current value.
-func (c AzureContainerDataFormat) ToPtr() *AzureContainerDataFormat {
-	return &c
-}
-
 // ClientPermissionType - Type of access to be allowed for the client.
 type ClientPermissionType string
 
@@ -196,9 +161,22 @@ func PossibleClientPermissionTypeValues() []ClientPermissionType {
 	}
 }
 
-// ToPtr returns a *ClientPermissionType pointing to the current value.
-func (c ClientPermissionType) ToPtr() *ClientPermissionType {
-	return &c
+// ClusterWitnessType - Cluster Witness Type
+type ClusterWitnessType string
+
+const (
+	ClusterWitnessTypeCloud     ClusterWitnessType = "Cloud"
+	ClusterWitnessTypeFileShare ClusterWitnessType = "FileShare"
+	ClusterWitnessTypeNone      ClusterWitnessType = "None"
+)
+
+// PossibleClusterWitnessTypeValues returns the possible values for the ClusterWitnessType const type.
+func PossibleClusterWitnessTypeValues() []ClusterWitnessType {
+	return []ClusterWitnessType{
+		ClusterWitnessTypeCloud,
+		ClusterWitnessTypeFileShare,
+		ClusterWitnessTypeNone,
+	}
 }
 
 // ContainerStatus - Current status of the container.
@@ -223,11 +201,6 @@ func PossibleContainerStatusValues() []ContainerStatus {
 	}
 }
 
-// ToPtr returns a *ContainerStatus pointing to the current value.
-func (c ContainerStatus) ToPtr() *ContainerStatus {
-	return &c
-}
-
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -248,11 +221,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // DataBoxEdgeDeviceKind - The kind of the device.
 type DataBoxEdgeDeviceKind string
 
@@ -271,11 +239,6 @@ func PossibleDataBoxEdgeDeviceKindValues() []DataBoxEdgeDeviceKind {
 		DataBoxEdgeDeviceKindAzureStackEdge,
 		DataBoxEdgeDeviceKindAzureStackHub,
 	}
-}
-
-// ToPtr returns a *DataBoxEdgeDeviceKind pointing to the current value.
-func (c DataBoxEdgeDeviceKind) ToPtr() *DataBoxEdgeDeviceKind {
-	return &c
 }
 
 // DataBoxEdgeDeviceStatus - The status of the Data Box Edge/Gateway device.
@@ -304,11 +267,6 @@ func PossibleDataBoxEdgeDeviceStatusValues() []DataBoxEdgeDeviceStatus {
 	}
 }
 
-// ToPtr returns a *DataBoxEdgeDeviceStatus pointing to the current value.
-func (c DataBoxEdgeDeviceStatus) ToPtr() *DataBoxEdgeDeviceStatus {
-	return &c
-}
-
 // DataPolicy - Data policy of the share.
 type DataPolicy string
 
@@ -325,11 +283,6 @@ func PossibleDataPolicyValues() []DataPolicy {
 	}
 }
 
-// ToPtr returns a *DataPolicy pointing to the current value.
-func (c DataPolicy) ToPtr() *DataPolicy {
-	return &c
-}
-
 // DataResidencyType - DataResidencyType enum
 type DataResidencyType string
 
@@ -344,11 +297,6 @@ func PossibleDataResidencyTypeValues() []DataResidencyType {
 		DataResidencyTypeGeoZoneReplication,
 		DataResidencyTypeZoneReplication,
 	}
-}
-
-// ToPtr returns a *DataResidencyType pointing to the current value.
-func (c DataResidencyType) ToPtr() *DataResidencyType {
-	return &c
 }
 
 type DayOfWeek string
@@ -376,11 +324,6 @@ func PossibleDayOfWeekValues() []DayOfWeek {
 	}
 }
 
-// ToPtr returns a *DayOfWeek pointing to the current value.
-func (c DayOfWeek) ToPtr() *DayOfWeek {
-	return &c
-}
-
 // DeviceType - The type of the Data Box Edge/Gateway device.
 type DeviceType string
 
@@ -393,11 +336,6 @@ func PossibleDeviceTypeValues() []DeviceType {
 	return []DeviceType{
 		DeviceTypeDataBoxEdgeDevice,
 	}
-}
-
-// ToPtr returns a *DeviceType pointing to the current value.
-func (c DeviceType) ToPtr() *DeviceType {
-	return &c
 }
 
 // DownloadPhase - The download phase.
@@ -420,11 +358,6 @@ func PossibleDownloadPhaseValues() []DownloadPhase {
 	}
 }
 
-// ToPtr returns a *DownloadPhase pointing to the current value.
-func (c DownloadPhase) ToPtr() *DownloadPhase {
-	return &c
-}
-
 // EncryptionAlgorithm - The algorithm used to encrypt "Value".
 type EncryptionAlgorithm string
 
@@ -443,11 +376,6 @@ func PossibleEncryptionAlgorithmValues() []EncryptionAlgorithm {
 	}
 }
 
-// ToPtr returns a *EncryptionAlgorithm pointing to the current value.
-func (c EncryptionAlgorithm) ToPtr() *EncryptionAlgorithm {
-	return &c
-}
-
 // HostPlatformType - Platform where the runtime is hosted.
 type HostPlatformType string
 
@@ -462,11 +390,6 @@ func PossibleHostPlatformTypeValues() []HostPlatformType {
 		HostPlatformTypeKubernetesCluster,
 		HostPlatformTypeLinuxVM,
 	}
-}
-
-// ToPtr returns a *HostPlatformType pointing to the current value.
-func (c HostPlatformType) ToPtr() *HostPlatformType {
-	return &c
 }
 
 // InstallRebootBehavior - Indicates if updates are available and at least one of the updates needs a reboot.
@@ -487,11 +410,6 @@ func PossibleInstallRebootBehaviorValues() []InstallRebootBehavior {
 	}
 }
 
-// ToPtr returns a *InstallRebootBehavior pointing to the current value.
-func (c InstallRebootBehavior) ToPtr() *InstallRebootBehavior {
-	return &c
-}
-
 // InstallationImpact - Impact of Installing an updateType
 type InstallationImpact string
 
@@ -508,11 +426,6 @@ func PossibleInstallationImpactValues() []InstallationImpact {
 		InstallationImpactKubernetesWorkloadsDown,
 		InstallationImpactNone,
 	}
-}
-
-// ToPtr returns a *InstallationImpact pointing to the current value.
-func (c InstallationImpact) ToPtr() *InstallationImpact {
-	return &c
 }
 
 // JobStatus - The current status of the job.
@@ -539,11 +452,6 @@ func PossibleJobStatusValues() []JobStatus {
 		JobStatusScheduled,
 		JobStatusSucceeded,
 	}
-}
-
-// ToPtr returns a *JobStatus pointing to the current value.
-func (c JobStatus) ToPtr() *JobStatus {
-	return &c
 }
 
 // JobType - The type of the job.
@@ -576,11 +484,6 @@ func PossibleJobTypeValues() []JobType {
 	}
 }
 
-// ToPtr returns a *JobType pointing to the current value.
-func (c JobType) ToPtr() *JobType {
-	return &c
-}
-
 // KeyVaultSyncStatus - For changing or to initiate the resync to key-vault set the status to KeyVaultSyncPending, rest of
 // the status will not be applicable.
 type KeyVaultSyncStatus string
@@ -606,11 +509,6 @@ func PossibleKeyVaultSyncStatusValues() []KeyVaultSyncStatus {
 	}
 }
 
-// ToPtr returns a *KeyVaultSyncStatus pointing to the current value.
-func (c KeyVaultSyncStatus) ToPtr() *KeyVaultSyncStatus {
-	return &c
-}
-
 // KubernetesNodeType - Node type - Master/Worker
 type KubernetesNodeType string
 
@@ -627,11 +525,6 @@ func PossibleKubernetesNodeTypeValues() []KubernetesNodeType {
 		KubernetesNodeTypeMaster,
 		KubernetesNodeTypeWorker,
 	}
-}
-
-// ToPtr returns a *KubernetesNodeType pointing to the current value.
-func (c KubernetesNodeType) ToPtr() *KubernetesNodeType {
-	return &c
 }
 
 // KubernetesState - State of Kubernetes deployment
@@ -660,11 +553,6 @@ func PossibleKubernetesStateValues() []KubernetesState {
 	}
 }
 
-// ToPtr returns a *KubernetesState pointing to the current value.
-func (c KubernetesState) ToPtr() *KubernetesState {
-	return &c
-}
-
 // MetricAggregationType - Metric aggregation type.
 type MetricAggregationType string
 
@@ -691,11 +579,6 @@ func PossibleMetricAggregationTypeValues() []MetricAggregationType {
 	}
 }
 
-// ToPtr returns a *MetricAggregationType pointing to the current value.
-func (c MetricAggregationType) ToPtr() *MetricAggregationType {
-	return &c
-}
-
 // MetricCategory - Metric category.
 type MetricCategory string
 
@@ -710,11 +593,6 @@ func PossibleMetricCategoryValues() []MetricCategory {
 		MetricCategoryCapacity,
 		MetricCategoryTransaction,
 	}
-}
-
-// ToPtr returns a *MetricCategory pointing to the current value.
-func (c MetricCategory) ToPtr() *MetricCategory {
-	return &c
 }
 
 // MetricUnit - Metric units.
@@ -745,11 +623,6 @@ func PossibleMetricUnitValues() []MetricUnit {
 	}
 }
 
-// ToPtr returns a *MetricUnit pointing to the current value.
-func (c MetricUnit) ToPtr() *MetricUnit {
-	return &c
-}
-
 // MonitoringStatus - Current monitoring status of the share.
 type MonitoringStatus string
 
@@ -766,11 +639,6 @@ func PossibleMonitoringStatusValues() []MonitoringStatus {
 	}
 }
 
-// ToPtr returns a *MonitoringStatus pointing to the current value.
-func (c MonitoringStatus) ToPtr() *MonitoringStatus {
-	return &c
-}
-
 // MountType - Mounting type.
 type MountType string
 
@@ -785,11 +653,6 @@ func PossibleMountTypeValues() []MountType {
 		MountTypeHostPath,
 		MountTypeVolume,
 	}
-}
-
-// ToPtr returns a *MountType pointing to the current value.
-func (c MountType) ToPtr() *MountType {
-	return &c
 }
 
 // MsiIdentityType - Identity type
@@ -810,11 +673,6 @@ func PossibleMsiIdentityTypeValues() []MsiIdentityType {
 	}
 }
 
-// ToPtr returns a *MsiIdentityType pointing to the current value.
-func (c MsiIdentityType) ToPtr() *MsiIdentityType {
-	return &c
-}
-
 // NetworkAdapterDHCPStatus - Value indicating whether this adapter has DHCP enabled.
 type NetworkAdapterDHCPStatus string
 
@@ -829,11 +687,6 @@ func PossibleNetworkAdapterDHCPStatusValues() []NetworkAdapterDHCPStatus {
 		NetworkAdapterDHCPStatusDisabled,
 		NetworkAdapterDHCPStatusEnabled,
 	}
-}
-
-// ToPtr returns a *NetworkAdapterDHCPStatus pointing to the current value.
-func (c NetworkAdapterDHCPStatus) ToPtr() *NetworkAdapterDHCPStatus {
-	return &c
 }
 
 // NetworkAdapterRDMAStatus - Value indicating whether this adapter is RDMA capable.
@@ -852,11 +705,6 @@ func PossibleNetworkAdapterRDMAStatusValues() []NetworkAdapterRDMAStatus {
 	}
 }
 
-// ToPtr returns a *NetworkAdapterRDMAStatus pointing to the current value.
-func (c NetworkAdapterRDMAStatus) ToPtr() *NetworkAdapterRDMAStatus {
-	return &c
-}
-
 // NetworkAdapterStatus - Value indicating whether this adapter is valid.
 type NetworkAdapterStatus string
 
@@ -871,11 +719,6 @@ func PossibleNetworkAdapterStatusValues() []NetworkAdapterStatus {
 		NetworkAdapterStatusActive,
 		NetworkAdapterStatusInactive,
 	}
-}
-
-// ToPtr returns a *NetworkAdapterStatus pointing to the current value.
-func (c NetworkAdapterStatus) ToPtr() *NetworkAdapterStatus {
-	return &c
 }
 
 // NetworkGroup - The network group.
@@ -894,11 +737,6 @@ func PossibleNetworkGroupValues() []NetworkGroup {
 		NetworkGroupNone,
 		NetworkGroupRDMA,
 	}
-}
-
-// ToPtr returns a *NetworkGroup pointing to the current value.
-func (c NetworkGroup) ToPtr() *NetworkGroup {
-	return &c
 }
 
 // NodeStatus - The current status of the individual node
@@ -921,11 +759,6 @@ func PossibleNodeStatusValues() []NodeStatus {
 		NodeStatusUnknown,
 		NodeStatusUp,
 	}
-}
-
-// ToPtr returns a *NodeStatus pointing to the current value.
-func (c NodeStatus) ToPtr() *NodeStatus {
-	return &c
 }
 
 // OrderState - Status of the order as per the allowed status types.
@@ -974,11 +807,6 @@ func PossibleOrderStateValues() []OrderState {
 	}
 }
 
-// ToPtr returns a *OrderState pointing to the current value.
-func (c OrderState) ToPtr() *OrderState {
-	return &c
-}
-
 // PlatformType - Host OS supported by the Arc addon.
 type PlatformType string
 
@@ -993,11 +821,6 @@ func PossiblePlatformTypeValues() []PlatformType {
 		PlatformTypeLinux,
 		PlatformTypeWindows,
 	}
-}
-
-// ToPtr returns a *PlatformType pointing to the current value.
-func (c PlatformType) ToPtr() *PlatformType {
-	return &c
 }
 
 // PosixComplianceStatus - If provisioned storage is posix compliant.
@@ -1018,11 +841,6 @@ func PossiblePosixComplianceStatusValues() []PosixComplianceStatus {
 	}
 }
 
-// ToPtr returns a *PosixComplianceStatus pointing to the current value.
-func (c PosixComplianceStatus) ToPtr() *PosixComplianceStatus {
-	return &c
-}
-
 // ProactiveDiagnosticsConsent - Proactive diagnostic collection consent flag
 type ProactiveDiagnosticsConsent string
 
@@ -1037,11 +855,6 @@ func PossibleProactiveDiagnosticsConsentValues() []ProactiveDiagnosticsConsent {
 		ProactiveDiagnosticsConsentDisabled,
 		ProactiveDiagnosticsConsentEnabled,
 	}
-}
-
-// ToPtr returns a *ProactiveDiagnosticsConsent pointing to the current value.
-func (c ProactiveDiagnosticsConsent) ToPtr() *ProactiveDiagnosticsConsent {
-	return &c
 }
 
 // RemoteApplicationType - Remote application type
@@ -1064,11 +877,6 @@ func PossibleRemoteApplicationTypeValues() []RemoteApplicationType {
 	}
 }
 
-// ToPtr returns a *RemoteApplicationType pointing to the current value.
-func (c RemoteApplicationType) ToPtr() *RemoteApplicationType {
-	return &c
-}
-
 // ResourceMoveStatus - Denotes whether move operation is in progress
 type ResourceMoveStatus string
 
@@ -1087,11 +895,6 @@ func PossibleResourceMoveStatusValues() []ResourceMoveStatus {
 	}
 }
 
-// ToPtr returns a *ResourceMoveStatus pointing to the current value.
-func (c ResourceMoveStatus) ToPtr() *ResourceMoveStatus {
-	return &c
-}
-
 // RoleStatus - Local Edge Management Status
 type RoleStatus string
 
@@ -1106,11 +909,6 @@ func PossibleRoleStatusValues() []RoleStatus {
 		RoleStatusDisabled,
 		RoleStatusEnabled,
 	}
-}
-
-// ToPtr returns a *RoleStatus pointing to the current value.
-func (c RoleStatus) ToPtr() *RoleStatus {
-	return &c
 }
 
 type RoleTypes string
@@ -1138,11 +936,6 @@ func PossibleRoleTypesValues() []RoleTypes {
 	}
 }
 
-// ToPtr returns a *RoleTypes pointing to the current value.
-func (c RoleTypes) ToPtr() *RoleTypes {
-	return &c
-}
-
 // SKUAvailability - Links to the next set of results
 type SKUAvailability string
 
@@ -1159,20 +952,19 @@ func PossibleSKUAvailabilityValues() []SKUAvailability {
 	}
 }
 
-// ToPtr returns a *SKUAvailability pointing to the current value.
-func (c SKUAvailability) ToPtr() *SKUAvailability {
-	return &c
-}
-
 // SKUName - The Sku name.
 type SKUName string
 
 const (
 	SKUNameEP21281T4Mx1W     SKUName = "EP2_128_1T4_Mx1_W"
+	SKUNameEP2128GPU1Mx1W    SKUName = "EP2_128_GPU1_Mx1_W"
 	SKUNameEP22562T4W        SKUName = "EP2_256_2T4_W"
+	SKUNameEP2256GPU2Mx1     SKUName = "EP2_256_GPU2_Mx1"
 	SKUNameEP2641VPUW        SKUName = "EP2_64_1VPU_W"
+	SKUNameEP264Mx1W         SKUName = "EP2_64_Mx1_W"
 	SKUNameEdge              SKUName = "Edge"
 	SKUNameEdgeMRMini        SKUName = "EdgeMR_Mini"
+	SKUNameEdgeMRTCP         SKUName = "EdgeMR_TCP"
 	SKUNameEdgePBase         SKUName = "EdgeP_Base"
 	SKUNameEdgePHigh         SKUName = "EdgeP_High"
 	SKUNameEdgePRBase        SKUName = "EdgePR_Base"
@@ -1199,10 +991,14 @@ const (
 func PossibleSKUNameValues() []SKUName {
 	return []SKUName{
 		SKUNameEP21281T4Mx1W,
+		SKUNameEP2128GPU1Mx1W,
 		SKUNameEP22562T4W,
+		SKUNameEP2256GPU2Mx1,
 		SKUNameEP2641VPUW,
+		SKUNameEP264Mx1W,
 		SKUNameEdge,
 		SKUNameEdgeMRMini,
+		SKUNameEdgeMRTCP,
 		SKUNameEdgePBase,
 		SKUNameEdgePHigh,
 		SKUNameEdgePRBase,
@@ -1226,11 +1022,6 @@ func PossibleSKUNameValues() []SKUName {
 	}
 }
 
-// ToPtr returns a *SKUName pointing to the current value.
-func (c SKUName) ToPtr() *SKUName {
-	return &c
-}
-
 // SKUSignupOption - Sku can be signed up by customer or not.
 type SKUSignupOption string
 
@@ -1247,11 +1038,6 @@ func PossibleSKUSignupOptionValues() []SKUSignupOption {
 	}
 }
 
-// ToPtr returns a *SKUSignupOption pointing to the current value.
-func (c SKUSignupOption) ToPtr() *SKUSignupOption {
-	return &c
-}
-
 // SKUTier - The Sku tier.
 type SKUTier string
 
@@ -1264,11 +1050,6 @@ func PossibleSKUTierValues() []SKUTier {
 	return []SKUTier{
 		SKUTierStandard,
 	}
-}
-
-// ToPtr returns a *SKUTier pointing to the current value.
-func (c SKUTier) ToPtr() *SKUTier {
-	return &c
 }
 
 // SKUVersion - Availability of the Sku as preview/stable.
@@ -1287,11 +1068,6 @@ func PossibleSKUVersionValues() []SKUVersion {
 	}
 }
 
-// ToPtr returns a *SKUVersion pointing to the current value.
-func (c SKUVersion) ToPtr() *SKUVersion {
-	return &c
-}
-
 // SSLStatus - Signifies whether SSL needs to be enabled or not.
 type SSLStatus string
 
@@ -1306,11 +1082,6 @@ func PossibleSSLStatusValues() []SSLStatus {
 		SSLStatusDisabled,
 		SSLStatusEnabled,
 	}
-}
-
-// ToPtr returns a *SSLStatus pointing to the current value.
-func (c SSLStatus) ToPtr() *SSLStatus {
-	return &c
 }
 
 // ShareAccessProtocol - Access protocol to be used by the share.
@@ -1329,11 +1100,6 @@ func PossibleShareAccessProtocolValues() []ShareAccessProtocol {
 	}
 }
 
-// ToPtr returns a *ShareAccessProtocol pointing to the current value.
-func (c ShareAccessProtocol) ToPtr() *ShareAccessProtocol {
-	return &c
-}
-
 // ShareAccessType - Type of access to be allowed on the share for this user.
 type ShareAccessType string
 
@@ -1350,11 +1116,6 @@ func PossibleShareAccessTypeValues() []ShareAccessType {
 		ShareAccessTypeCustom,
 		ShareAccessTypeRead,
 	}
-}
-
-// ToPtr returns a *ShareAccessType pointing to the current value.
-func (c ShareAccessType) ToPtr() *ShareAccessType {
-	return &c
 }
 
 // ShareStatus - Current status of the share.
@@ -1379,11 +1140,6 @@ func PossibleShareStatusValues() []ShareStatus {
 	}
 }
 
-// ToPtr returns a *ShareStatus pointing to the current value.
-func (c ShareStatus) ToPtr() *ShareStatus {
-	return &c
-}
-
 type ShipmentType string
 
 const (
@@ -1399,11 +1155,6 @@ func PossibleShipmentTypeValues() []ShipmentType {
 		ShipmentTypeSelfPickup,
 		ShipmentTypeShippedToCustomer,
 	}
-}
-
-// ToPtr returns a *ShipmentType pointing to the current value.
-func (c ShipmentType) ToPtr() *ShipmentType {
-	return &c
 }
 
 // StorageAccountStatus - Current status of the storage account
@@ -1428,11 +1179,6 @@ func PossibleStorageAccountStatusValues() []StorageAccountStatus {
 	}
 }
 
-// ToPtr returns a *StorageAccountStatus pointing to the current value.
-func (c StorageAccountStatus) ToPtr() *StorageAccountStatus {
-	return &c
-}
-
 type SubscriptionState string
 
 const (
@@ -1452,11 +1198,6 @@ func PossibleSubscriptionStateValues() []SubscriptionState {
 		SubscriptionStateUnregistered,
 		SubscriptionStateWarned,
 	}
-}
-
-// ToPtr returns a *SubscriptionState pointing to the current value.
-func (c SubscriptionState) ToPtr() *SubscriptionState {
-	return &c
 }
 
 type TimeGrain string
@@ -1486,11 +1227,6 @@ func PossibleTimeGrainValues() []TimeGrain {
 	}
 }
 
-// ToPtr returns a *TimeGrain pointing to the current value.
-func (c TimeGrain) ToPtr() *TimeGrain {
-	return &c
-}
-
 // TriggerEventType - Trigger Kind.
 type TriggerEventType string
 
@@ -1505,11 +1241,6 @@ func PossibleTriggerEventTypeValues() []TriggerEventType {
 		TriggerEventTypeFileEvent,
 		TriggerEventTypePeriodicTimerEvent,
 	}
-}
-
-// ToPtr returns a *TriggerEventType pointing to the current value.
-func (c TriggerEventType) ToPtr() *TriggerEventType {
-	return &c
 }
 
 // UpdateOperation - The current update operation.
@@ -1530,11 +1261,6 @@ func PossibleUpdateOperationValues() []UpdateOperation {
 		UpdateOperationNone,
 		UpdateOperationScan,
 	}
-}
-
-// ToPtr returns a *UpdateOperation pointing to the current value.
-func (c UpdateOperation) ToPtr() *UpdateOperation {
-	return &c
 }
 
 // UpdateOperationStage - Current stage of the update operation.
@@ -1583,11 +1309,6 @@ func PossibleUpdateOperationStageValues() []UpdateOperationStage {
 	}
 }
 
-// ToPtr returns a *UpdateOperationStage pointing to the current value.
-func (c UpdateOperationStage) ToPtr() *UpdateOperationStage {
-	return &c
-}
-
 // UpdateStatus - Status of the update.
 type UpdateStatus string
 
@@ -1610,11 +1331,6 @@ func PossibleUpdateStatusValues() []UpdateStatus {
 	}
 }
 
-// ToPtr returns a *UpdateStatus pointing to the current value.
-func (c UpdateStatus) ToPtr() *UpdateStatus {
-	return &c
-}
-
 // UpdateType - Type of the Update
 type UpdateType string
 
@@ -1633,11 +1349,6 @@ func PossibleUpdateTypeValues() []UpdateType {
 	}
 }
 
-// ToPtr returns a *UpdateType pointing to the current value.
-func (c UpdateType) ToPtr() *UpdateType {
-	return &c
-}
-
 // UserType - Type of the user.
 type UserType string
 
@@ -1654,9 +1365,4 @@ func PossibleUserTypeValues() []UserType {
 		UserTypeLocalManagement,
 		UserTypeShare,
 	}
-}
-
-// ToPtr returns a *UserType pointing to the current value.
-func (c UserType) ToPtr() *UserType {
-	return &c
 }

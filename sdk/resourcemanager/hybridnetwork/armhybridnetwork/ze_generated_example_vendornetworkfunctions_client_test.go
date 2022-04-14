@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,33 +19,45 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork"
 )
 
-// x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/VendorNfGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/VendorNfGet.json
 func ExampleVendorNetworkFunctionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armhybridnetwork.NewVendorNetworkFunctionsClient("<subscription-id>", cred, nil)
+	client, err := armhybridnetwork.NewVendorNetworkFunctionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<location-name>",
 		"<vendor-name>",
 		"<service-key>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.VendorNetworkFunctionsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/VendorNfCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/VendorNfCreate.json
 func ExampleVendorNetworkFunctionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armhybridnetwork.NewVendorNetworkFunctionsClient("<subscription-id>", cred, nil)
+	client, err := armhybridnetwork.NewVendorNetworkFunctionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<location-name>",
 		"<vendor-name>",
@@ -58,81 +70,88 @@ func ExampleVendorNetworkFunctionsClient_BeginCreateOrUpdate() {
 							{
 								IPConfigurations: []*armhybridnetwork.NetworkInterfaceIPConfiguration{
 									{
-										Gateway:            to.StringPtr("<gateway>"),
-										IPAddress:          to.StringPtr("<ipaddress>"),
-										IPAllocationMethod: armhybridnetwork.IPAllocationMethod("Dynamic").ToPtr(),
-										IPVersion:          armhybridnetwork.IPVersion("IPv4").ToPtr(),
-										Subnet:             to.StringPtr("<subnet>"),
+										Gateway:            to.Ptr("<gateway>"),
+										IPAddress:          to.Ptr("<ipaddress>"),
+										IPAllocationMethod: to.Ptr(armhybridnetwork.IPAllocationMethodDynamic),
+										IPVersion:          to.Ptr(armhybridnetwork.IPVersionIPv4),
+										Subnet:             to.Ptr("<subnet>"),
 									}},
-								MacAddress:           to.StringPtr("<mac-address>"),
-								NetworkInterfaceName: to.StringPtr("<network-interface-name>"),
-								VMSwitchType:         armhybridnetwork.VMSwitchType("Management").ToPtr(),
+								MacAddress:           to.Ptr("<mac-address>"),
+								NetworkInterfaceName: to.Ptr("<network-interface-name>"),
+								VMSwitchType:         to.Ptr(armhybridnetwork.VMSwitchTypeManagement),
 							},
 							{
 								IPConfigurations: []*armhybridnetwork.NetworkInterfaceIPConfiguration{
 									{
-										Gateway:            to.StringPtr("<gateway>"),
-										IPAddress:          to.StringPtr("<ipaddress>"),
-										IPAllocationMethod: armhybridnetwork.IPAllocationMethod("Dynamic").ToPtr(),
-										IPVersion:          armhybridnetwork.IPVersion("IPv4").ToPtr(),
-										Subnet:             to.StringPtr("<subnet>"),
+										Gateway:            to.Ptr("<gateway>"),
+										IPAddress:          to.Ptr("<ipaddress>"),
+										IPAllocationMethod: to.Ptr(armhybridnetwork.IPAllocationMethodDynamic),
+										IPVersion:          to.Ptr(armhybridnetwork.IPVersionIPv4),
+										Subnet:             to.Ptr("<subnet>"),
 									}},
-								MacAddress:           to.StringPtr("<mac-address>"),
-								NetworkInterfaceName: to.StringPtr("<network-interface-name>"),
-								VMSwitchType:         armhybridnetwork.VMSwitchType("Wan").ToPtr(),
+								MacAddress:           to.Ptr("<mac-address>"),
+								NetworkInterfaceName: to.Ptr("<network-interface-name>"),
+								VMSwitchType:         to.Ptr(armhybridnetwork.VMSwitchTypeWan),
 							}},
 						OSProfile: &armhybridnetwork.OsProfile{
-							AdminUsername: to.StringPtr("<admin-username>"),
-							CustomData:    to.StringPtr("<custom-data>"),
+							AdminUsername: to.Ptr("<admin-username>"),
+							CustomData:    to.Ptr("<custom-data>"),
 							LinuxConfiguration: &armhybridnetwork.LinuxConfiguration{
 								SSH: &armhybridnetwork.SSHConfiguration{
 									PublicKeys: []*armhybridnetwork.SSHPublicKey{
 										{
-											Path:    to.StringPtr("<path>"),
-											KeyData: to.StringPtr("<key-data>"),
+											Path:    to.Ptr("<path>"),
+											KeyData: to.Ptr("<key-data>"),
 										}},
 								},
 							},
 						},
-						RoleName:           to.StringPtr("<role-name>"),
+						RoleName:           to.Ptr("<role-name>"),
 						UserDataParameters: map[string]interface{}{},
 					}},
-				SKUType:                 armhybridnetwork.SKUType("SDWAN").ToPtr(),
-				VendorProvisioningState: armhybridnetwork.VendorProvisioningState("Provisioning").ToPtr(),
+				SKUType:                 to.Ptr(armhybridnetwork.SKUTypeSDWAN),
+				VendorProvisioningState: to.Ptr(armhybridnetwork.VendorProvisioningStateProvisioning),
 			},
 		},
-		nil)
+		&armhybridnetwork.VendorNetworkFunctionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.VendorNetworkFunctionsClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/VendorNfListByVendor.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/VendorNfListByVendor.json
 func ExampleVendorNetworkFunctionsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armhybridnetwork.NewVendorNetworkFunctionsClient("<subscription-id>", cred, nil)
+	client, err := armhybridnetwork.NewVendorNetworkFunctionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List("<location-name>",
 		"<vendor-name>",
 		&armhybridnetwork.VendorNetworkFunctionsClientListOptions{Filter: nil})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

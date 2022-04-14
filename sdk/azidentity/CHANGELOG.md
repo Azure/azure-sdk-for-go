@@ -7,8 +7,11 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* `AzureCLICredential` panics after receiving an unexpected error type
+  ([#17490](https://github.com/Azure/azure-sdk-for-go/issues/17490))
 
 ### Other Changes
+* `GetToken()` returns an error when the caller specifies no scope
 
 ## 0.14.0 (2022-04-05)
 

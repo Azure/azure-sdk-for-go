@@ -1,6 +1,6 @@
 # Release History
 
-## 0.23.1 (Unreleased)
+## 0.23.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,13 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.23.1 (2022-04-14)
+
+### Bugs Fixed
+* Include XML header when marshalling XML content.
+* Handle XML namespaces when searching for error code.
+* Handle `odata.error` when searching for error code.
 
 ## 0.23.0 (2022-04-04)
 

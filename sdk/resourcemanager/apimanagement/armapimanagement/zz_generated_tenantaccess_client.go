@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type TenantAccessClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewTenantAccessClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TenantAccessClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewTenantAccessClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TenantAccessClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &TenantAccessClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Update tenant access information details.
@@ -107,7 +112,7 @@ func (client *TenantAccessClient) createCreateRequest(ctx context.Context, resou
 
 // createHandleResponse handles the Create response.
 func (client *TenantAccessClient) createHandleResponse(resp *http.Response) (TenantAccessClientCreateResponse, error) {
-	result := TenantAccessClientCreateResponse{RawResponse: resp}
+	result := TenantAccessClientCreateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -170,7 +175,7 @@ func (client *TenantAccessClient) getCreateRequest(ctx context.Context, resource
 
 // getHandleResponse handles the Get response.
 func (client *TenantAccessClient) getHandleResponse(resp *http.Response) (TenantAccessClientGetResponse, error) {
-	result := TenantAccessClientGetResponse{RawResponse: resp}
+	result := TenantAccessClientGetResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -230,7 +235,7 @@ func (client *TenantAccessClient) getEntityTagCreateRequest(ctx context.Context,
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *TenantAccessClient) getEntityTagHandleResponse(resp *http.Response) (TenantAccessClientGetEntityTagResponse, error) {
-	result := TenantAccessClientGetEntityTagResponse{RawResponse: resp}
+	result := TenantAccessClientGetEntityTagResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -246,16 +251,32 @@ func (client *TenantAccessClient) getEntityTagHandleResponse(resp *http.Response
 // serviceName - The name of the API Management service.
 // options - TenantAccessClientListByServiceOptions contains the optional parameters for the TenantAccessClient.ListByService
 // method.
-func (client *TenantAccessClient) ListByService(resourceGroupName string, serviceName string, options *TenantAccessClientListByServiceOptions) *TenantAccessClientListByServicePager {
-	return &TenantAccessClientListByServicePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+func (client *TenantAccessClient) ListByService(resourceGroupName string, serviceName string, options *TenantAccessClientListByServiceOptions) *runtime.Pager[TenantAccessClientListByServiceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[TenantAccessClientListByServiceResponse]{
+		More: func(page TenantAccessClientListByServiceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp TenantAccessClientListByServiceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AccessInformationCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *TenantAccessClientListByServiceResponse) (TenantAccessClientListByServiceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return TenantAccessClientListByServiceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return TenantAccessClientListByServiceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return TenantAccessClientListByServiceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServiceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByServiceCreateRequest creates the ListByService request.
@@ -289,7 +310,7 @@ func (client *TenantAccessClient) listByServiceCreateRequest(ctx context.Context
 
 // listByServiceHandleResponse handles the ListByService response.
 func (client *TenantAccessClient) listByServiceHandleResponse(resp *http.Response) (TenantAccessClientListByServiceResponse, error) {
-	result := TenantAccessClientListByServiceResponse{RawResponse: resp}
+	result := TenantAccessClientListByServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessInformationCollection); err != nil {
 		return TenantAccessClientListByServiceResponse{}, err
 	}
@@ -350,7 +371,7 @@ func (client *TenantAccessClient) listSecretsCreateRequest(ctx context.Context, 
 
 // listSecretsHandleResponse handles the ListSecrets response.
 func (client *TenantAccessClient) listSecretsHandleResponse(resp *http.Response) (TenantAccessClientListSecretsResponse, error) {
-	result := TenantAccessClientListSecretsResponse{RawResponse: resp}
+	result := TenantAccessClientListSecretsResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -379,7 +400,7 @@ func (client *TenantAccessClient) RegeneratePrimaryKey(ctx context.Context, reso
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return TenantAccessClientRegeneratePrimaryKeyResponse{}, runtime.NewResponseError(resp)
 	}
-	return TenantAccessClientRegeneratePrimaryKeyResponse{RawResponse: resp}, nil
+	return TenantAccessClientRegeneratePrimaryKeyResponse{}, nil
 }
 
 // regeneratePrimaryKeyCreateRequest creates the RegeneratePrimaryKey request.
@@ -431,7 +452,7 @@ func (client *TenantAccessClient) RegenerateSecondaryKey(ctx context.Context, re
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return TenantAccessClientRegenerateSecondaryKeyResponse{}, runtime.NewResponseError(resp)
 	}
-	return TenantAccessClientRegenerateSecondaryKeyResponse{RawResponse: resp}, nil
+	return TenantAccessClientRegenerateSecondaryKeyResponse{}, nil
 }
 
 // regenerateSecondaryKeyCreateRequest creates the RegenerateSecondaryKey request.
@@ -521,7 +542,7 @@ func (client *TenantAccessClient) updateCreateRequest(ctx context.Context, resou
 
 // updateHandleResponse handles the Update response.
 func (client *TenantAccessClient) updateHandleResponse(resp *http.Response) (TenantAccessClientUpdateResponse, error) {
-	result := TenantAccessClientUpdateResponse{RawResponse: resp}
+	result := TenantAccessClientUpdateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type ModuleClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewModuleClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ModuleClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewModuleClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ModuleClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ModuleClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create or Update the module identified by module name.
@@ -104,7 +109,7 @@ func (client *ModuleClient) createOrUpdateCreateRequest(ctx context.Context, res
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ModuleClient) createOrUpdateHandleResponse(resp *http.Response) (ModuleClientCreateOrUpdateResponse, error) {
-	result := ModuleClientCreateOrUpdateResponse{RawResponse: resp}
+	result := ModuleClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Module); err != nil {
 		return ModuleClientCreateOrUpdateResponse{}, err
 	}
@@ -129,7 +134,7 @@ func (client *ModuleClient) Delete(ctx context.Context, resourceGroupName string
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ModuleClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ModuleClientDeleteResponse{RawResponse: resp}, nil
+	return ModuleClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -215,7 +220,7 @@ func (client *ModuleClient) getCreateRequest(ctx context.Context, resourceGroupN
 
 // getHandleResponse handles the Get response.
 func (client *ModuleClient) getHandleResponse(resp *http.Response) (ModuleClientGetResponse, error) {
-	result := ModuleClientGetResponse{RawResponse: resp}
+	result := ModuleClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Module); err != nil {
 		return ModuleClientGetResponse{}, err
 	}
@@ -228,16 +233,32 @@ func (client *ModuleClient) getHandleResponse(resp *http.Response) (ModuleClient
 // automationAccountName - The name of the automation account.
 // options - ModuleClientListByAutomationAccountOptions contains the optional parameters for the ModuleClient.ListByAutomationAccount
 // method.
-func (client *ModuleClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *ModuleClientListByAutomationAccountOptions) *ModuleClientListByAutomationAccountPager {
-	return &ModuleClientListByAutomationAccountPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
+func (client *ModuleClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *ModuleClientListByAutomationAccountOptions) *runtime.Pager[ModuleClientListByAutomationAccountResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ModuleClientListByAutomationAccountResponse]{
+		More: func(page ModuleClientListByAutomationAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ModuleClientListByAutomationAccountResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ModuleListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ModuleClientListByAutomationAccountResponse) (ModuleClientListByAutomationAccountResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ModuleClientListByAutomationAccountResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ModuleClientListByAutomationAccountResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ModuleClientListByAutomationAccountResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByAutomationAccountHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
@@ -268,7 +289,7 @@ func (client *ModuleClient) listByAutomationAccountCreateRequest(ctx context.Con
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
 func (client *ModuleClient) listByAutomationAccountHandleResponse(resp *http.Response) (ModuleClientListByAutomationAccountResponse, error) {
-	result := ModuleClientListByAutomationAccountResponse{RawResponse: resp}
+	result := ModuleClientListByAutomationAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ModuleListResult); err != nil {
 		return ModuleClientListByAutomationAccountResponse{}, err
 	}
@@ -329,7 +350,7 @@ func (client *ModuleClient) updateCreateRequest(ctx context.Context, resourceGro
 
 // updateHandleResponse handles the Update response.
 func (client *ModuleClient) updateHandleResponse(resp *http.Response) (ModuleClientUpdateResponse, error) {
-	result := ModuleClientUpdateResponse{RawResponse: resp}
+	result := ModuleClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Module); err != nil {
 		return ModuleClientUpdateResponse{}, err
 	}

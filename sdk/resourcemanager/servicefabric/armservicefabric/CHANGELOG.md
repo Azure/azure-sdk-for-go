@@ -1,5 +1,267 @@
 # Release History
 
+## 0.5.0 (2022-04-13)
+### Breaking Changes
+
+- Function `*ServicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(ServicesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ServicesClientCreateOrUpdateResponse], error)`
+- Function `NewClusterVersionsClient` return value(s) have been changed from `(*ClusterVersionsClient)` to `(*ClusterVersionsClient, error)`
+- Function `*ApplicationTypeVersionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ApplicationTypeVersionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ApplicationTypeVersionsClientCreateOrUpdateResponse], error)`
+- Function `NewApplicationsClient` return value(s) have been changed from `(*ApplicationsClient)` to `(*ApplicationsClient, error)`
+- Function `*ApplicationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ApplicationsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ApplicationsClientCreateOrUpdateResponse], error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewClustersClient` return value(s) have been changed from `(*ClustersClient)` to `(*ClustersClient, error)`
+- Function `*ServicesClient.BeginUpdate` return value(s) have been changed from `(ServicesClientUpdatePollerResponse, error)` to `(*armruntime.Poller[ServicesClientUpdateResponse], error)`
+- Function `NewServicesClient` return value(s) have been changed from `(*ServicesClient)` to `(*ServicesClient, error)`
+- Function `*ApplicationsClient.BeginDelete` return value(s) have been changed from `(ApplicationsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ApplicationsClientDeleteResponse], error)`
+- Function `NewApplicationTypeVersionsClient` return value(s) have been changed from `(*ApplicationTypeVersionsClient)` to `(*ApplicationTypeVersionsClient, error)`
+- Function `*ApplicationTypesClient.BeginDelete` return value(s) have been changed from `(ApplicationTypesClientDeletePollerResponse, error)` to `(*armruntime.Poller[ApplicationTypesClientDeleteResponse], error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*ServicesClient.BeginDelete` return value(s) have been changed from `(ServicesClientDeletePollerResponse, error)` to `(*armruntime.Poller[ServicesClientDeleteResponse], error)`
+- Function `*ApplicationsClient.BeginUpdate` return value(s) have been changed from `(ApplicationsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[ApplicationsClientUpdateResponse], error)`
+- Function `*ClustersClient.BeginCreateOrUpdate` return value(s) have been changed from `(ClustersClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ClustersClientCreateOrUpdateResponse], error)`
+- Function `*ApplicationTypeVersionsClient.BeginDelete` return value(s) have been changed from `(ApplicationTypeVersionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ApplicationTypeVersionsClientDeleteResponse], error)`
+- Function `*ClustersClient.BeginUpdate` return value(s) have been changed from `(ClustersClientUpdatePollerResponse, error)` to `(*armruntime.Poller[ClustersClientUpdateResponse], error)`
+- Function `NewApplicationTypesClient` return value(s) have been changed from `(*ApplicationTypesClient)` to `(*ApplicationTypesClient, error)`
+- Function `*ApplicationTypeVersionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ServicesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ServicesClientDeletePoller.Done` has been removed
+- Function `*ServicesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `ServiceCorrelationScheme.ToPtr` has been removed
+- Function `*ApplicationTypesClientDeletePoller.Poll` has been removed
+- Function `ClusterState.ToPtr` has been removed
+- Function `VmssZonalUpgradeMode.ToPtr` has been removed
+- Function `*ApplicationsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `ClustersClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ClustersClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ApplicationsClientDeletePoller.Poll` has been removed
+- Function `MoveCost.ToPtr` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `NotificationChannel.ToPtr` has been removed
+- Function `*ServicesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `ServicesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ServicesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ApplicationTypeVersionsClientDeletePoller.FinalResponse` has been removed
+- Function `*ServicesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ApplicationsClientUpdatePoller.Poll` has been removed
+- Function `DurabilityLevel.ToPtr` has been removed
+- Function `UpgradeMode.ToPtr` has been removed
+- Function `*ClustersClientUpdatePoller.Poll` has been removed
+- Function `*ApplicationTypeVersionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ApplicationsClientDeletePoller.FinalResponse` has been removed
+- Function `*ApplicationTypeVersionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ClustersClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ApplicationTypeVersionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ClustersClientUpdatePoller.ResumeToken` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*ApplicationsClientCreateOrUpdatePoller.Done` has been removed
+- Function `RollingUpgradeMode.ToPtr` has been removed
+- Function `*ApplicationTypeVersionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `ServicesClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ApplicationTypesClientDeletePoller.FinalResponse` has been removed
+- Function `AddOnFeatures.ToPtr` has been removed
+- Function `*ServicesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ServicesClientUpdatePoller.Poll` has been removed
+- Function `*ApplicationsClientUpdatePoller.FinalResponse` has been removed
+- Function `*ServicesClientUpdatePoller.FinalResponse` has been removed
+- Function `ServiceKind.ToPtr` has been removed
+- Function `*ApplicationTypeVersionsClientDeletePoller.Poll` has been removed
+- Function `ApplicationsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ClusterUpgradeCadence.ToPtr` has been removed
+- Function `ServiceLoadMetricWeight.ToPtr` has been removed
+- Function `*ApplicationTypesClientDeletePoller.ResumeToken` has been removed
+- Function `*ApplicationTypeVersionsClientDeletePollerResponse.Resume` has been removed
+- Function `*ServicesClientDeletePollerResponse.Resume` has been removed
+- Function `*ApplicationTypeVersionsClientDeletePoller.Done` has been removed
+- Function `*ClustersClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ServicesClientUpdatePollerResponse.Resume` has been removed
+- Function `ApplicationsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `ApplicationTypeVersionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ServicesClientDeletePoller.ResumeToken` has been removed
+- Function `ServicePlacementPolicyType.ToPtr` has been removed
+- Function `*ServicesClientUpdatePoller.ResumeToken` has been removed
+- Function `*ApplicationsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `SfZonalUpgradeMode.ToPtr` has been removed
+- Function `ApplicationTypesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ClustersClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ApplicationsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `ApplicationsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ClustersClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ClustersClientUpdatePoller.Done` has been removed
+- Function `*ApplicationTypeVersionsClientDeletePoller.ResumeToken` has been removed
+- Function `ClusterEnvironment.ToPtr` has been removed
+- Function `*ApplicationsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ApplicationsClientDeletePollerResponse.Resume` has been removed
+- Function `*ApplicationTypesClientDeletePollerResponse.Resume` has been removed
+- Function `*ClustersClientUpdatePoller.FinalResponse` has been removed
+- Function `*ApplicationsClientDeletePoller.Done` has been removed
+- Function `*ServicesClientDeletePoller.FinalResponse` has been removed
+- Function `*ApplicationsClientUpdatePoller.Done` has been removed
+- Function `*ApplicationsClientUpdatePoller.ResumeToken` has been removed
+- Function `StoreName.ToPtr` has been removed
+- Function `ArmUpgradeFailureAction.ToPtr` has been removed
+- Function `*ApplicationsClientDeletePoller.ResumeToken` has been removed
+- Function `NotificationLevel.ToPtr` has been removed
+- Function `ApplicationTypeVersionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ArmServicePackageActivationMode.ToPtr` has been removed
+- Function `*ApplicationTypesClientDeletePoller.Done` has been removed
+- Function `*ServicesClientDeletePoller.Poll` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*ApplicationsClientUpdatePollerResponse.Resume` has been removed
+- Function `*ClustersClientCreateOrUpdatePoller.Poll` has been removed
+- Function `PartitionScheme.ToPtr` has been removed
+- Function `ClusterVersionsEnvironment.ToPtr` has been removed
+- Function `ReliabilityLevel.ToPtr` has been removed
+- Function `*ServicesClientUpdatePoller.Done` has been removed
+- Function `*ClustersClientUpdatePollerResponse.Resume` has been removed
+- Function `ManagedIdentityType.ToPtr` has been removed
+- Function `NotificationCategory.ToPtr` has been removed
+- Struct `ApplicationTypeVersionsClientCreateOrUpdatePoller` has been removed
+- Struct `ApplicationTypeVersionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ApplicationTypeVersionsClientCreateOrUpdateResult` has been removed
+- Struct `ApplicationTypeVersionsClientDeletePoller` has been removed
+- Struct `ApplicationTypeVersionsClientDeletePollerResponse` has been removed
+- Struct `ApplicationTypeVersionsClientGetResult` has been removed
+- Struct `ApplicationTypeVersionsClientListResult` has been removed
+- Struct `ApplicationTypesClientCreateOrUpdateResult` has been removed
+- Struct `ApplicationTypesClientDeletePoller` has been removed
+- Struct `ApplicationTypesClientDeletePollerResponse` has been removed
+- Struct `ApplicationTypesClientGetResult` has been removed
+- Struct `ApplicationTypesClientListResult` has been removed
+- Struct `ApplicationsClientCreateOrUpdatePoller` has been removed
+- Struct `ApplicationsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ApplicationsClientCreateOrUpdateResult` has been removed
+- Struct `ApplicationsClientDeletePoller` has been removed
+- Struct `ApplicationsClientDeletePollerResponse` has been removed
+- Struct `ApplicationsClientGetResult` has been removed
+- Struct `ApplicationsClientListResult` has been removed
+- Struct `ApplicationsClientUpdatePoller` has been removed
+- Struct `ApplicationsClientUpdatePollerResponse` has been removed
+- Struct `ApplicationsClientUpdateResult` has been removed
+- Struct `ClusterVersionsClientGetByEnvironmentResult` has been removed
+- Struct `ClusterVersionsClientGetResult` has been removed
+- Struct `ClusterVersionsClientListByEnvironmentResult` has been removed
+- Struct `ClusterVersionsClientListResult` has been removed
+- Struct `ClustersClientCreateOrUpdatePoller` has been removed
+- Struct `ClustersClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ClustersClientCreateOrUpdateResult` has been removed
+- Struct `ClustersClientGetResult` has been removed
+- Struct `ClustersClientListByResourceGroupResult` has been removed
+- Struct `ClustersClientListResult` has been removed
+- Struct `ClustersClientListUpgradableVersionsResult` has been removed
+- Struct `ClustersClientUpdatePoller` has been removed
+- Struct `ClustersClientUpdatePollerResponse` has been removed
+- Struct `ClustersClientUpdateResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `ServicesClientCreateOrUpdatePoller` has been removed
+- Struct `ServicesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ServicesClientCreateOrUpdateResult` has been removed
+- Struct `ServicesClientDeletePoller` has been removed
+- Struct `ServicesClientDeletePollerResponse` has been removed
+- Struct `ServicesClientGetResult` has been removed
+- Struct `ServicesClientListResult` has been removed
+- Struct `ServicesClientUpdatePoller` has been removed
+- Struct `ServicesClientUpdatePollerResponse` has been removed
+- Struct `ServicesClientUpdateResult` has been removed
+- Field `ServicesClientCreateOrUpdateResult` of struct `ServicesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientCreateOrUpdateResponse` has been removed
+- Field `ServicesClientUpdateResult` of struct `ServicesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientUpdateResponse` has been removed
+- Field `ClustersClientListResult` of struct `ClustersClientListResponse` has been removed
+- Field `RawResponse` of struct `ClustersClientListResponse` has been removed
+- Field `ApplicationsClientUpdateResult` of struct `ApplicationsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ApplicationsClientUpdateResponse` has been removed
+- Field `ClustersClientCreateOrUpdateResult` of struct `ClustersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ClustersClientCreateOrUpdateResponse` has been removed
+- Field `ClusterVersionsClientGetByEnvironmentResult` of struct `ClusterVersionsClientGetByEnvironmentResponse` has been removed
+- Field `RawResponse` of struct `ClusterVersionsClientGetByEnvironmentResponse` has been removed
+- Field `ApplicationsClientCreateOrUpdateResult` of struct `ApplicationsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ApplicationsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ApplicationsClientDeleteResponse` has been removed
+- Field `ServicesClientListResult` of struct `ServicesClientListResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientListResponse` has been removed
+- Field `ApplicationsClientListResult` of struct `ApplicationsClientListResponse` has been removed
+- Field `RawResponse` of struct `ApplicationsClientListResponse` has been removed
+- Field `RawResponse` of struct `ApplicationTypesClientDeleteResponse` has been removed
+- Field `ClustersClientListByResourceGroupResult` of struct `ClustersClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ClustersClientListByResourceGroupResponse` has been removed
+- Field `ClustersClientGetResult` of struct `ClustersClientGetResponse` has been removed
+- Field `RawResponse` of struct `ClustersClientGetResponse` has been removed
+- Field `ApplicationTypesClientGetResult` of struct `ApplicationTypesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ApplicationTypesClientGetResponse` has been removed
+- Field `ApplicationTypesClientListResult` of struct `ApplicationTypesClientListResponse` has been removed
+- Field `RawResponse` of struct `ApplicationTypesClientListResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `ApplicationTypeVersionsClientGetResult` of struct `ApplicationTypeVersionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ApplicationTypeVersionsClientGetResponse` has been removed
+- Field `ApplicationsClientGetResult` of struct `ApplicationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ApplicationsClientGetResponse` has been removed
+- Field `ApplicationTypesClientCreateOrUpdateResult` of struct `ApplicationTypesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ApplicationTypesClientCreateOrUpdateResponse` has been removed
+- Field `ClusterVersionsClientListResult` of struct `ClusterVersionsClientListResponse` has been removed
+- Field `RawResponse` of struct `ClusterVersionsClientListResponse` has been removed
+- Field `ClusterVersionsClientListByEnvironmentResult` of struct `ClusterVersionsClientListByEnvironmentResponse` has been removed
+- Field `RawResponse` of struct `ClusterVersionsClientListByEnvironmentResponse` has been removed
+- Field `ClustersClientUpdateResult` of struct `ClustersClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ClustersClientUpdateResponse` has been removed
+- Field `ClusterVersionsClientGetResult` of struct `ClusterVersionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ClusterVersionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ClustersClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `ApplicationTypeVersionsClientDeleteResponse` has been removed
+- Field `ServicesClientGetResult` of struct `ServicesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientGetResponse` has been removed
+- Field `ApplicationTypeVersionsClientListResult` of struct `ApplicationTypeVersionsClientListResponse` has been removed
+- Field `RawResponse` of struct `ApplicationTypeVersionsClientListResponse` has been removed
+- Field `ApplicationTypeVersionsClientCreateOrUpdateResult` of struct `ApplicationTypeVersionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ApplicationTypeVersionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientDeleteResponse` has been removed
+- Field `ClustersClientListUpgradableVersionsResult` of struct `ClustersClientListUpgradableVersionsResponse` has been removed
+- Field `RawResponse` of struct `ClustersClientListUpgradableVersionsResponse` has been removed
+
+### Features Added
+
+- New struct `ErrorModel`
+- New struct `ErrorModelError`
+- New anonymous field `ApplicationTypeResource` in struct `ApplicationTypesClientGetResponse`
+- New anonymous field `ClusterCodeVersionsListResult` in struct `ClusterVersionsClientGetResponse`
+- New field `ResumeToken` in struct `ApplicationsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `ServicesClientBeginCreateOrUpdateOptions`
+- New anonymous field `UpgradableVersionPathResult` in struct `ClustersClientListUpgradableVersionsResponse`
+- New anonymous field `ApplicationTypeVersionResourceList` in struct `ApplicationTypeVersionsClientListResponse`
+- New anonymous field `ServiceResourceList` in struct `ServicesClientListResponse`
+- New field `ResumeToken` in struct `ServicesClientBeginDeleteOptions`
+- New anonymous field `ApplicationTypeResource` in struct `ApplicationTypesClientCreateOrUpdateResponse`
+- New anonymous field `ClusterCodeVersionsListResult` in struct `ClusterVersionsClientListByEnvironmentResponse`
+- New anonymous field `ApplicationTypeVersionResource` in struct `ApplicationTypeVersionsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `ApplicationTypesClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `ClustersClientBeginCreateOrUpdateOptions`
+- New anonymous field `Cluster` in struct `ClustersClientCreateOrUpdateResponse`
+- New anonymous field `ApplicationResource` in struct `ApplicationsClientUpdateResponse`
+- New anonymous field `ClusterCodeVersionsListResult` in struct `ClusterVersionsClientListResponse`
+- New anonymous field `ServiceResource` in struct `ServicesClientGetResponse`
+- New anonymous field `ServiceResource` in struct `ServicesClientUpdateResponse`
+- New anonymous field `Cluster` in struct `ClustersClientUpdateResponse`
+- New anonymous field `Cluster` in struct `ClustersClientGetResponse`
+- New field `ResumeToken` in struct `ApplicationsClientBeginCreateOrUpdateOptions`
+- New anonymous field `ServiceResource` in struct `ServicesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `ApplicationTypeVersionsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `ApplicationTypeVersionsClientBeginCreateOrUpdateOptions`
+- New anonymous field `ClusterListResult` in struct `ClustersClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `ClustersClientBeginUpdateOptions`
+- New field `ResumeToken` in struct `ApplicationsClientBeginUpdateOptions`
+- New field `ResumeToken` in struct `ServicesClientBeginUpdateOptions`
+- New anonymous field `ApplicationTypeVersionResource` in struct `ApplicationTypeVersionsClientGetResponse`
+- New anonymous field `ApplicationResourceList` in struct `ApplicationsClientListResponse`
+- New anonymous field `ApplicationResource` in struct `ApplicationsClientGetResponse`
+- New anonymous field `ClusterListResult` in struct `ClustersClientListResponse`
+- New anonymous field `ClusterCodeVersionsListResult` in struct `ClusterVersionsClientGetByEnvironmentResponse`
+- New anonymous field `ApplicationTypeResourceList` in struct `ApplicationTypesClientListResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `ApplicationResource` in struct `ApplicationsClientCreateOrUpdateResponse`
+
+
 ## 0.4.0 (2022-02-22)
 ### Breaking Changes
 

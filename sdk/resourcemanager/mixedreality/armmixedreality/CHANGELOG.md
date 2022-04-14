@@ -1,5 +1,152 @@
 # Release History
 
+## 0.3.0 (2022-04-12)
+### Breaking Changes
+
+- Function `*SpatialAnchorsAccountsClient.ListByResourceGroup` return value(s) have been changed from `(*SpatialAnchorsAccountsClientListByResourceGroupPager)` to `(*runtime.Pager[SpatialAnchorsAccountsClientListByResourceGroupResponse])`
+- Function `*SpatialAnchorsAccountsClient.ListBySubscription` return value(s) have been changed from `(*SpatialAnchorsAccountsClientListBySubscriptionPager)` to `(*runtime.Pager[SpatialAnchorsAccountsClientListBySubscriptionResponse])`
+- Function `*ObjectAnchorsAccountsClient.ListBySubscription` return value(s) have been changed from `(*ObjectAnchorsAccountsClientListBySubscriptionPager)` to `(*runtime.Pager[ObjectAnchorsAccountsClientListBySubscriptionResponse])`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewClient` return value(s) have been changed from `(*Client)` to `(*Client, error)`
+- Function `NewRemoteRenderingAccountsClient` return value(s) have been changed from `(*RemoteRenderingAccountsClient)` to `(*RemoteRenderingAccountsClient, error)`
+- Function `NewSpatialAnchorsAccountsClient` return value(s) have been changed from `(*SpatialAnchorsAccountsClient)` to `(*SpatialAnchorsAccountsClient, error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `NewObjectAnchorsAccountsClient` return value(s) have been changed from `(*ObjectAnchorsAccountsClient)` to `(*ObjectAnchorsAccountsClient, error)`
+- Function `*RemoteRenderingAccountsClient.ListByResourceGroup` return value(s) have been changed from `(*RemoteRenderingAccountsClientListByResourceGroupPager)` to `(*runtime.Pager[RemoteRenderingAccountsClientListByResourceGroupResponse])`
+- Function `*ObjectAnchorsAccountsClient.ListByResourceGroup` return value(s) have been changed from `(*ObjectAnchorsAccountsClientListByResourceGroupPager)` to `(*runtime.Pager[ObjectAnchorsAccountsClientListByResourceGroupResponse])`
+- Function `*RemoteRenderingAccountsClient.ListBySubscription` return value(s) have been changed from `(*RemoteRenderingAccountsClientListBySubscriptionPager)` to `(*runtime.Pager[RemoteRenderingAccountsClientListBySubscriptionResponse])`
+- Function `*ObjectAnchorsAccountsClientListBySubscriptionPager.Err` has been removed
+- Function `*SpatialAnchorsAccountsClientListBySubscriptionPager.NextPage` has been removed
+- Function `*ObjectAnchorsAccountsClientListBySubscriptionPager.NextPage` has been removed
+- Function `*ObjectAnchorsAccountsClientListByResourceGroupPager.Err` has been removed
+- Function `*ObjectAnchorsAccountsClientListByResourceGroupPager.NextPage` has been removed
+- Function `NameUnavailableReason.ToPtr` has been removed
+- Function `*SpatialAnchorsAccountsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*RemoteRenderingAccountsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*SpatialAnchorsAccountsClientListBySubscriptionPager.Err` has been removed
+- Function `*RemoteRenderingAccountsClientListByResourceGroupPager.Err` has been removed
+- Function `*RemoteRenderingAccountsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*ObjectAnchorsAccountsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*RemoteRenderingAccountsClientListBySubscriptionPager.NextPage` has been removed
+- Function `*SpatialAnchorsAccountsClientListByResourceGroupPager.NextPage` has been removed
+- Function `SKUTier.ToPtr` has been removed
+- Function `*SpatialAnchorsAccountsClientListByResourceGroupPager.Err` has been removed
+- Function `*RemoteRenderingAccountsClientListBySubscriptionPager.Err` has been removed
+- Function `*RemoteRenderingAccountsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*SpatialAnchorsAccountsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*ObjectAnchorsAccountsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `Serial.ToPtr` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Struct `ClientCheckNameAvailabilityLocalResult` has been removed
+- Struct `ObjectAnchorsAccountsClientCreateResult` has been removed
+- Struct `ObjectAnchorsAccountsClientGetResult` has been removed
+- Struct `ObjectAnchorsAccountsClientListByResourceGroupPager` has been removed
+- Struct `ObjectAnchorsAccountsClientListByResourceGroupResult` has been removed
+- Struct `ObjectAnchorsAccountsClientListBySubscriptionPager` has been removed
+- Struct `ObjectAnchorsAccountsClientListBySubscriptionResult` has been removed
+- Struct `ObjectAnchorsAccountsClientListKeysResult` has been removed
+- Struct `ObjectAnchorsAccountsClientRegenerateKeysResult` has been removed
+- Struct `ObjectAnchorsAccountsClientUpdateResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `RemoteRenderingAccountsClientCreateResult` has been removed
+- Struct `RemoteRenderingAccountsClientGetResult` has been removed
+- Struct `RemoteRenderingAccountsClientListByResourceGroupPager` has been removed
+- Struct `RemoteRenderingAccountsClientListByResourceGroupResult` has been removed
+- Struct `RemoteRenderingAccountsClientListBySubscriptionPager` has been removed
+- Struct `RemoteRenderingAccountsClientListBySubscriptionResult` has been removed
+- Struct `RemoteRenderingAccountsClientListKeysResult` has been removed
+- Struct `RemoteRenderingAccountsClientRegenerateKeysResult` has been removed
+- Struct `RemoteRenderingAccountsClientUpdateResult` has been removed
+- Struct `SpatialAnchorsAccountsClientCreateResult` has been removed
+- Struct `SpatialAnchorsAccountsClientGetResult` has been removed
+- Struct `SpatialAnchorsAccountsClientListByResourceGroupPager` has been removed
+- Struct `SpatialAnchorsAccountsClientListByResourceGroupResult` has been removed
+- Struct `SpatialAnchorsAccountsClientListBySubscriptionPager` has been removed
+- Struct `SpatialAnchorsAccountsClientListBySubscriptionResult` has been removed
+- Struct `SpatialAnchorsAccountsClientListKeysResult` has been removed
+- Struct `SpatialAnchorsAccountsClientRegenerateKeysResult` has been removed
+- Struct `SpatialAnchorsAccountsClientUpdateResult` has been removed
+- Field `RawResponse` of struct `RemoteRenderingAccountsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `SpatialAnchorsAccountsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `ObjectAnchorsAccountsClientDeleteResponse` has been removed
+- Field `RemoteRenderingAccountsClientListBySubscriptionResult` of struct `RemoteRenderingAccountsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `RemoteRenderingAccountsClientListBySubscriptionResponse` has been removed
+- Field `SpatialAnchorsAccountsClientUpdateResult` of struct `SpatialAnchorsAccountsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `SpatialAnchorsAccountsClientUpdateResponse` has been removed
+- Field `SpatialAnchorsAccountsClientListBySubscriptionResult` of struct `SpatialAnchorsAccountsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `SpatialAnchorsAccountsClientListBySubscriptionResponse` has been removed
+- Field `SpatialAnchorsAccountsClientCreateResult` of struct `SpatialAnchorsAccountsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `SpatialAnchorsAccountsClientCreateResponse` has been removed
+- Field `RemoteRenderingAccountsClientRegenerateKeysResult` of struct `RemoteRenderingAccountsClientRegenerateKeysResponse` has been removed
+- Field `RawResponse` of struct `RemoteRenderingAccountsClientRegenerateKeysResponse` has been removed
+- Field `SpatialAnchorsAccountsClientListKeysResult` of struct `SpatialAnchorsAccountsClientListKeysResponse` has been removed
+- Field `RawResponse` of struct `SpatialAnchorsAccountsClientListKeysResponse` has been removed
+- Field `RemoteRenderingAccountsClientListByResourceGroupResult` of struct `RemoteRenderingAccountsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `RemoteRenderingAccountsClientListByResourceGroupResponse` has been removed
+- Field `ObjectAnchorsAccountsClientRegenerateKeysResult` of struct `ObjectAnchorsAccountsClientRegenerateKeysResponse` has been removed
+- Field `RawResponse` of struct `ObjectAnchorsAccountsClientRegenerateKeysResponse` has been removed
+- Field `ObjectAnchorsAccountsClientListKeysResult` of struct `ObjectAnchorsAccountsClientListKeysResponse` has been removed
+- Field `RawResponse` of struct `ObjectAnchorsAccountsClientListKeysResponse` has been removed
+- Field `RemoteRenderingAccountsClientCreateResult` of struct `RemoteRenderingAccountsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `RemoteRenderingAccountsClientCreateResponse` has been removed
+- Field `SpatialAnchorsAccountsClientRegenerateKeysResult` of struct `SpatialAnchorsAccountsClientRegenerateKeysResponse` has been removed
+- Field `RawResponse` of struct `SpatialAnchorsAccountsClientRegenerateKeysResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `RemoteRenderingAccountsClientListKeysResult` of struct `RemoteRenderingAccountsClientListKeysResponse` has been removed
+- Field `RawResponse` of struct `RemoteRenderingAccountsClientListKeysResponse` has been removed
+- Field `ClientCheckNameAvailabilityLocalResult` of struct `ClientCheckNameAvailabilityLocalResponse` has been removed
+- Field `RawResponse` of struct `ClientCheckNameAvailabilityLocalResponse` has been removed
+- Field `ObjectAnchorsAccountsClientGetResult` of struct `ObjectAnchorsAccountsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ObjectAnchorsAccountsClientGetResponse` has been removed
+- Field `RemoteRenderingAccountsClientUpdateResult` of struct `RemoteRenderingAccountsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `RemoteRenderingAccountsClientUpdateResponse` has been removed
+- Field `SpatialAnchorsAccountsClientListByResourceGroupResult` of struct `SpatialAnchorsAccountsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `SpatialAnchorsAccountsClientListByResourceGroupResponse` has been removed
+- Field `ObjectAnchorsAccountsClientListBySubscriptionResult` of struct `ObjectAnchorsAccountsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `ObjectAnchorsAccountsClientListBySubscriptionResponse` has been removed
+- Field `ObjectAnchorsAccountsClientListByResourceGroupResult` of struct `ObjectAnchorsAccountsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ObjectAnchorsAccountsClientListByResourceGroupResponse` has been removed
+- Field `RemoteRenderingAccountsClientGetResult` of struct `RemoteRenderingAccountsClientGetResponse` has been removed
+- Field `RawResponse` of struct `RemoteRenderingAccountsClientGetResponse` has been removed
+- Field `SpatialAnchorsAccountsClientGetResult` of struct `SpatialAnchorsAccountsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SpatialAnchorsAccountsClientGetResponse` has been removed
+- Field `ObjectAnchorsAccountsClientUpdateResult` of struct `ObjectAnchorsAccountsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ObjectAnchorsAccountsClientUpdateResponse` has been removed
+- Field `ObjectAnchorsAccountsClientCreateResult` of struct `ObjectAnchorsAccountsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `ObjectAnchorsAccountsClientCreateResponse` has been removed
+
+### Features Added
+
+- New anonymous field `SpatialAnchorsAccountPage` in struct `SpatialAnchorsAccountsClientListByResourceGroupResponse`
+- New anonymous field `AccountKeys` in struct `SpatialAnchorsAccountsClientRegenerateKeysResponse`
+- New anonymous field `SpatialAnchorsAccountPage` in struct `SpatialAnchorsAccountsClientListBySubscriptionResponse`
+- New anonymous field `AccountKeys` in struct `ObjectAnchorsAccountsClientListKeysResponse`
+- New anonymous field `RemoteRenderingAccount` in struct `RemoteRenderingAccountsClientUpdateResponse`
+- New anonymous field `ObjectAnchorsAccount` in struct `ObjectAnchorsAccountsClientUpdateResponse`
+- New anonymous field `RemoteRenderingAccountPage` in struct `RemoteRenderingAccountsClientListBySubscriptionResponse`
+- New anonymous field `SpatialAnchorsAccount` in struct `SpatialAnchorsAccountsClientGetResponse`
+- New anonymous field `AccountKeys` in struct `RemoteRenderingAccountsClientListKeysResponse`
+- New anonymous field `SpatialAnchorsAccount` in struct `SpatialAnchorsAccountsClientCreateResponse`
+- New anonymous field `AccountKeys` in struct `RemoteRenderingAccountsClientRegenerateKeysResponse`
+- New anonymous field `OperationPage` in struct `OperationsClientListResponse`
+- New anonymous field `CheckNameAvailabilityResponse` in struct `ClientCheckNameAvailabilityLocalResponse`
+- New anonymous field `ObjectAnchorsAccount` in struct `ObjectAnchorsAccountsClientCreateResponse`
+- New anonymous field `ObjectAnchorsAccountPage` in struct `ObjectAnchorsAccountsClientListBySubscriptionResponse`
+- New anonymous field `AccountKeys` in struct `ObjectAnchorsAccountsClientRegenerateKeysResponse`
+- New anonymous field `SpatialAnchorsAccount` in struct `SpatialAnchorsAccountsClientUpdateResponse`
+- New anonymous field `AccountKeys` in struct `SpatialAnchorsAccountsClientListKeysResponse`
+- New anonymous field `ObjectAnchorsAccount` in struct `ObjectAnchorsAccountsClientGetResponse`
+- New anonymous field `RemoteRenderingAccount` in struct `RemoteRenderingAccountsClientGetResponse`
+- New anonymous field `RemoteRenderingAccountPage` in struct `RemoteRenderingAccountsClientListByResourceGroupResponse`
+- New anonymous field `RemoteRenderingAccount` in struct `RemoteRenderingAccountsClientCreateResponse`
+- New anonymous field `ObjectAnchorsAccountPage` in struct `ObjectAnchorsAccountsClientListByResourceGroupResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type FlowLogsClient struct {
 // ID forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewFlowLogsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FlowLogsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewFlowLogsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FlowLogsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &FlowLogsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or update a flow log for the specified network security group.
@@ -58,22 +63,18 @@ func NewFlowLogsClient(subscriptionID string, credential azcore.TokenCredential,
 // parameters - Parameters that define the create or update flow log resource.
 // options - FlowLogsClientBeginCreateOrUpdateOptions contains the optional parameters for the FlowLogsClient.BeginCreateOrUpdate
 // method.
-func (client *FlowLogsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string, parameters FlowLog, options *FlowLogsClientBeginCreateOrUpdateOptions) (FlowLogsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, networkWatcherName, flowLogName, parameters, options)
-	if err != nil {
-		return FlowLogsClientCreateOrUpdatePollerResponse{}, err
+func (client *FlowLogsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string, parameters FlowLog, options *FlowLogsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[FlowLogsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, networkWatcherName, flowLogName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[FlowLogsClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[FlowLogsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := FlowLogsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("FlowLogsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return FlowLogsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &FlowLogsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update a flow log for the specified network security group.
@@ -129,22 +130,18 @@ func (client *FlowLogsClient) createOrUpdateCreateRequest(ctx context.Context, r
 // networkWatcherName - The name of the network watcher.
 // flowLogName - The name of the flow log resource.
 // options - FlowLogsClientBeginDeleteOptions contains the optional parameters for the FlowLogsClient.BeginDelete method.
-func (client *FlowLogsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string, options *FlowLogsClientBeginDeleteOptions) (FlowLogsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, networkWatcherName, flowLogName, options)
-	if err != nil {
-		return FlowLogsClientDeletePollerResponse{}, err
+func (client *FlowLogsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string, options *FlowLogsClientBeginDeleteOptions) (*armruntime.Poller[FlowLogsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkWatcherName, flowLogName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[FlowLogsClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[FlowLogsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := FlowLogsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("FlowLogsClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return FlowLogsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &FlowLogsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified flow log resource.
@@ -247,7 +244,7 @@ func (client *FlowLogsClient) getCreateRequest(ctx context.Context, resourceGrou
 
 // getHandleResponse handles the Get response.
 func (client *FlowLogsClient) getHandleResponse(resp *http.Response) (FlowLogsClientGetResponse, error) {
-	result := FlowLogsClientGetResponse{RawResponse: resp}
+	result := FlowLogsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FlowLog); err != nil {
 		return FlowLogsClientGetResponse{}, err
 	}
@@ -259,16 +256,32 @@ func (client *FlowLogsClient) getHandleResponse(resp *http.Response) (FlowLogsCl
 // resourceGroupName - The name of the resource group containing Network Watcher.
 // networkWatcherName - The name of the Network Watcher resource.
 // options - FlowLogsClientListOptions contains the optional parameters for the FlowLogsClient.List method.
-func (client *FlowLogsClient) List(resourceGroupName string, networkWatcherName string, options *FlowLogsClientListOptions) *FlowLogsClientListPager {
-	return &FlowLogsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, networkWatcherName, options)
+func (client *FlowLogsClient) List(resourceGroupName string, networkWatcherName string, options *FlowLogsClientListOptions) *runtime.Pager[FlowLogsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[FlowLogsClientListResponse]{
+		More: func(page FlowLogsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp FlowLogsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.FlowLogListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *FlowLogsClientListResponse) (FlowLogsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, networkWatcherName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return FlowLogsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return FlowLogsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return FlowLogsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -299,7 +312,7 @@ func (client *FlowLogsClient) listCreateRequest(ctx context.Context, resourceGro
 
 // listHandleResponse handles the List response.
 func (client *FlowLogsClient) listHandleResponse(resp *http.Response) (FlowLogsClientListResponse, error) {
-	result := FlowLogsClientListResponse{RawResponse: resp}
+	result := FlowLogsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FlowLogListResult); err != nil {
 		return FlowLogsClientListResponse{}, err
 	}
@@ -360,7 +373,7 @@ func (client *FlowLogsClient) updateTagsCreateRequest(ctx context.Context, resou
 
 // updateTagsHandleResponse handles the UpdateTags response.
 func (client *FlowLogsClient) updateTagsHandleResponse(resp *http.Response) (FlowLogsClientUpdateTagsResponse, error) {
-	result := FlowLogsClientUpdateTagsResponse{RawResponse: resp}
+	result := FlowLogsClientUpdateTagsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FlowLog); err != nil {
 		return FlowLogsClientUpdateTagsResponse{}, err
 	}

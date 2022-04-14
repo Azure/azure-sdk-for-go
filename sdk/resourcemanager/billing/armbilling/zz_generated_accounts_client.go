@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,19 +32,23 @@ type AccountsClient struct {
 // NewAccountsClient creates a new instance of AccountsClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAccountsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *AccountsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAccountsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AccountsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AccountsClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets a billing account by its ID.
@@ -88,7 +93,7 @@ func (client *AccountsClient) getCreateRequest(ctx context.Context, billingAccou
 
 // getHandleResponse handles the Get response.
 func (client *AccountsClient) getHandleResponse(resp *http.Response) (AccountsClientGetResponse, error) {
-	result := AccountsClientGetResponse{RawResponse: resp}
+	result := AccountsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Account); err != nil {
 		return AccountsClientGetResponse{}, err
 	}
@@ -98,16 +103,32 @@ func (client *AccountsClient) getHandleResponse(resp *http.Response) (AccountsCl
 // List - Lists the billing accounts that a user has access to.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AccountsClientListOptions contains the optional parameters for the AccountsClient.List method.
-func (client *AccountsClient) List(options *AccountsClientListOptions) *AccountsClientListPager {
-	return &AccountsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *AccountsClient) List(options *AccountsClientListOptions) *runtime.Pager[AccountsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AccountsClientListResponse]{
+		More: func(page AccountsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AccountsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AccountListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AccountsClientListResponse) (AccountsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AccountsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AccountsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AccountsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -129,7 +150,7 @@ func (client *AccountsClient) listCreateRequest(ctx context.Context, options *Ac
 
 // listHandleResponse handles the List response.
 func (client *AccountsClient) listHandleResponse(resp *http.Response) (AccountsClientListResponse, error) {
-	result := AccountsClientListResponse{RawResponse: resp}
+	result := AccountsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountListResult); err != nil {
 		return AccountsClientListResponse{}, err
 	}
@@ -142,16 +163,32 @@ func (client *AccountsClient) listHandleResponse(resp *http.Response) (AccountsC
 // billingAccountName - The ID that uniquely identifies a billing account.
 // options - AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionOptions contains the optional parameters for the
 // AccountsClient.ListInvoiceSectionsByCreateSubscriptionPermission method.
-func (client *AccountsClient) ListInvoiceSectionsByCreateSubscriptionPermission(billingAccountName string, options *AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionOptions) *AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionPager {
-	return &AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listInvoiceSectionsByCreateSubscriptionPermissionCreateRequest(ctx, billingAccountName, options)
+func (client *AccountsClient) ListInvoiceSectionsByCreateSubscriptionPermission(billingAccountName string, options *AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionOptions) *runtime.Pager[AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse]{
+		More: func(page AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.InvoiceSectionListWithCreateSubPermissionResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse) (AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listInvoiceSectionsByCreateSubscriptionPermissionCreateRequest(ctx, billingAccountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listInvoiceSectionsByCreateSubscriptionPermissionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listInvoiceSectionsByCreateSubscriptionPermissionCreateRequest creates the ListInvoiceSectionsByCreateSubscriptionPermission request.
@@ -174,7 +211,7 @@ func (client *AccountsClient) listInvoiceSectionsByCreateSubscriptionPermissionC
 
 // listInvoiceSectionsByCreateSubscriptionPermissionHandleResponse handles the ListInvoiceSectionsByCreateSubscriptionPermission response.
 func (client *AccountsClient) listInvoiceSectionsByCreateSubscriptionPermissionHandleResponse(resp *http.Response) (AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse, error) {
-	result := AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse{RawResponse: resp}
+	result := AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InvoiceSectionListWithCreateSubPermissionResult); err != nil {
 		return AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse{}, err
 	}
@@ -187,22 +224,18 @@ func (client *AccountsClient) listInvoiceSectionsByCreateSubscriptionPermissionH
 // billingAccountName - The ID that uniquely identifies a billing account.
 // parameters - Request parameters that are provided to the update billing account operation.
 // options - AccountsClientBeginUpdateOptions contains the optional parameters for the AccountsClient.BeginUpdate method.
-func (client *AccountsClient) BeginUpdate(ctx context.Context, billingAccountName string, parameters AccountUpdateRequest, options *AccountsClientBeginUpdateOptions) (AccountsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, billingAccountName, parameters, options)
-	if err != nil {
-		return AccountsClientUpdatePollerResponse{}, err
+func (client *AccountsClient) BeginUpdate(ctx context.Context, billingAccountName string, parameters AccountUpdateRequest, options *AccountsClientBeginUpdateOptions) (*armruntime.Poller[AccountsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, billingAccountName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[AccountsClientUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[AccountsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := AccountsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("AccountsClient.Update", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return AccountsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &AccountsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates the properties of a billing account. Currently, displayName and address can be updated. The operation

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armnotificationhubs
 
 const (
 	moduleName    = "armnotificationhubs"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 type AccessRights string
@@ -30,11 +30,6 @@ func PossibleAccessRightsValues() []AccessRights {
 	}
 }
 
-// ToPtr returns a *AccessRights pointing to the current value.
-func (c AccessRights) ToPtr() *AccessRights {
-	return &c
-}
-
 // NamespaceType - The namespace type.
 type NamespaceType string
 
@@ -49,11 +44,6 @@ func PossibleNamespaceTypeValues() []NamespaceType {
 		NamespaceTypeMessaging,
 		NamespaceTypeNotificationHub,
 	}
-}
-
-// ToPtr returns a *NamespaceType pointing to the current value.
-func (c NamespaceType) ToPtr() *NamespaceType {
-	return &c
 }
 
 // SKUName - Name of the notification hub sku
@@ -72,9 +62,4 @@ func PossibleSKUNameValues() []SKUName {
 		SKUNameFree,
 		SKUNameStandard,
 	}
-}
-
-// ToPtr returns a *SKUName pointing to the current value.
-func (c SKUName) ToPtr() *SKUName {
-	return &c
 }

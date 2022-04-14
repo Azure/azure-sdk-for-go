@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,13 @@ package armstorage_test
 
 import (
 	"context"
+	"testing"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 	"github.com/stretchr/testify/suite"
-	"testing"
 )
 
 type SKUsClientTestSuite struct {
@@ -50,8 +51,8 @@ func TestSKUsClient(t *testing.T) {
 }
 
 func (testsuite *SKUsClientTestSuite) TestSKUs() {
-	skusClient := armstorage.NewSKUsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
-	resp, err := skusClient.List(testsuite.ctx, nil)
+	skusClient, err := armstorage.NewSKUsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Greater(len(resp.Value), 1)
+	resp := skusClient.List(nil)
+	testsuite.Require().True(resp.More())
 }

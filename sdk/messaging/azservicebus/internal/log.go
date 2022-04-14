@@ -3,21 +3,25 @@
 
 package internal
 
-import "github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
+)
 
+// NOTE: these are intended to mirror the constant values in azservicebus/log.go
 const (
-	// Link/connection creation
-	EventConn = "azsb.Conn"
+	// EventConn is used whenever we create a connection or any links (ie: receivers, senders).
+	EventConn log.Event = "azsb.Conn"
 
-	// authentication/claims negotiation
-	EventAuth = "azsb.Auth"
+	// EventAuth is used when we're doing authentication/claims negotiation.
+	EventAuth log.Event = "azsb.Auth"
 
-	// receiver operations
-	EventReceiver = "azsb.Receiver"
+	// EventReceiver represents operations that happen on Receivers.
+	EventReceiver log.Event = "azsb.Receiver"
 
-	// mgmt link
-	EventMgmtLink = "azsb.Mgmt"
+	// EventSender represents operations that happen on Senders.
+	EventSender log.Event = "azsb.Sender"
 
-	// internal operations
-	EventRetry = utils.EventRetry
+	// EventAdmin is used for operations in the azservicebus/admin.Client
+	EventAdmin log.Event = atom.EventAdmin
 )

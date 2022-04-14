@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,79 +19,92 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub"
 )
 
-// x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2021-07-01-preview/examples/iothub_get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_get.json
 func ExampleResourceClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ResourceClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2021-07-01-preview/examples/iothub_createOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_createOrUpdate.json
 func ExampleResourceClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		armiothub.Description{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Tags:     map[string]*string{},
-			Etag:     to.StringPtr("<etag>"),
+			Etag:     to.Ptr("<etag>"),
 			Properties: &armiothub.Properties{
 				CloudToDevice: &armiothub.CloudToDeviceProperties{
-					DefaultTTLAsIso8601: to.StringPtr("<default-ttlas-iso8601>"),
+					DefaultTTLAsIso8601: to.Ptr("<default-ttlas-iso8601>"),
 					Feedback: &armiothub.FeedbackProperties{
-						LockDurationAsIso8601: to.StringPtr("<lock-duration-as-iso8601>"),
-						MaxDeliveryCount:      to.Int32Ptr(10),
-						TTLAsIso8601:          to.StringPtr("<ttlas-iso8601>"),
+						LockDurationAsIso8601: to.Ptr("<lock-duration-as-iso8601>"),
+						MaxDeliveryCount:      to.Ptr[int32](10),
+						TTLAsIso8601:          to.Ptr("<ttlas-iso8601>"),
 					},
-					MaxDeliveryCount: to.Int32Ptr(10),
+					MaxDeliveryCount: to.Ptr[int32](10),
 				},
-				EnableFileUploadNotifications: to.BoolPtr(false),
+				EnableDataResidency:           to.Ptr(true),
+				EnableFileUploadNotifications: to.Ptr(false),
 				EventHubEndpoints: map[string]*armiothub.EventHubProperties{
 					"events": {
-						PartitionCount:      to.Int32Ptr(2),
-						RetentionTimeInDays: to.Int64Ptr(1),
+						PartitionCount:      to.Ptr[int32](2),
+						RetentionTimeInDays: to.Ptr[int64](1),
 					},
 				},
-				Features:      armiothub.Capabilities("None").ToPtr(),
+				Features:      to.Ptr(armiothub.CapabilitiesNone),
 				IPFilterRules: []*armiothub.IPFilterRule{},
 				MessagingEndpoints: map[string]*armiothub.MessagingEndpointProperties{
 					"fileNotifications": {
-						LockDurationAsIso8601: to.StringPtr("<lock-duration-as-iso8601>"),
-						MaxDeliveryCount:      to.Int32Ptr(10),
-						TTLAsIso8601:          to.StringPtr("<ttlas-iso8601>"),
+						LockDurationAsIso8601: to.Ptr("<lock-duration-as-iso8601>"),
+						MaxDeliveryCount:      to.Ptr[int32](10),
+						TTLAsIso8601:          to.Ptr("<ttlas-iso8601>"),
 					},
 				},
-				MinTLSVersion: to.StringPtr("<min-tlsversion>"),
+				MinTLSVersion: to.Ptr("<min-tlsversion>"),
 				NetworkRuleSets: &armiothub.NetworkRuleSetProperties{
-					ApplyToBuiltInEventHubEndpoint: to.BoolPtr(true),
-					DefaultAction:                  armiothub.DefaultAction("Deny").ToPtr(),
+					ApplyToBuiltInEventHubEndpoint: to.Ptr(true),
+					DefaultAction:                  to.Ptr(armiothub.DefaultActionDeny),
 					IPRules: []*armiothub.NetworkRuleSetIPRule{
 						{
-							Action:     armiothub.NetworkRuleIPAction("Allow").ToPtr(),
-							FilterName: to.StringPtr("<filter-name>"),
-							IPMask:     to.StringPtr("<ipmask>"),
+							Action:     to.Ptr(armiothub.NetworkRuleIPActionAllow),
+							FilterName: to.Ptr("<filter-name>"),
+							IPMask:     to.Ptr("<ipmask>"),
 						},
 						{
-							Action:     armiothub.NetworkRuleIPAction("Allow").ToPtr(),
-							FilterName: to.StringPtr("<filter-name>"),
-							IPMask:     to.StringPtr("<ipmask>"),
+							Action:     to.Ptr(armiothub.NetworkRuleIPActionAllow),
+							FilterName: to.Ptr("<filter-name>"),
+							IPMask:     to.Ptr("<ipmask>"),
 						}},
 				},
 				Routing: &armiothub.RoutingProperties{
@@ -102,187 +115,232 @@ func ExampleResourceClient_BeginCreateOrUpdate() {
 						StorageContainers: []*armiothub.RoutingStorageContainerProperties{},
 					},
 					FallbackRoute: &armiothub.FallbackRouteProperties{
-						Name:      to.StringPtr("<name>"),
-						Condition: to.StringPtr("<condition>"),
+						Name:      to.Ptr("<name>"),
+						Condition: to.Ptr("<condition>"),
 						EndpointNames: []*string{
-							to.StringPtr("events")},
-						IsEnabled: to.BoolPtr(true),
-						Source:    armiothub.RoutingSource("DeviceMessages").ToPtr(),
+							to.Ptr("events")},
+						IsEnabled: to.Ptr(true),
+						Source:    to.Ptr(armiothub.RoutingSourceDeviceMessages),
 					},
 					Routes: []*armiothub.RouteProperties{},
 				},
 				StorageEndpoints: map[string]*armiothub.StorageEndpointProperties{
 					"$default": {
-						ConnectionString: to.StringPtr("<connection-string>"),
-						ContainerName:    to.StringPtr("<container-name>"),
-						SasTTLAsIso8601:  to.StringPtr("<sas-ttlas-iso8601>"),
+						ConnectionString: to.Ptr("<connection-string>"),
+						ContainerName:    to.Ptr("<container-name>"),
+						SasTTLAsIso8601:  to.Ptr("<sas-ttlas-iso8601>"),
 					},
 				},
 			},
 			SKU: &armiothub.SKUInfo{
-				Name:     armiothub.IotHubSKU("S1").ToPtr(),
-				Capacity: to.Int64Ptr(1),
+				Name:     to.Ptr(armiothub.IotHubSKUS1),
+				Capacity: to.Ptr[int64](1),
 			},
 		},
-		&armiothub.ResourceClientBeginCreateOrUpdateOptions{IfMatch: nil})
+		&armiothub.ResourceClientBeginCreateOrUpdateOptions{IfMatch: nil,
+			ResumeToken: "",
+		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ResourceClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2021-07-01-preview/examples/iothub_patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_patch.json
 func ExampleResourceClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		armiothub.TagsResource{
 			Tags: map[string]*string{
-				"foo": to.StringPtr("bar"),
+				"foo": to.Ptr("bar"),
 			},
 		},
-		nil)
+		&armiothub.ResourceClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ResourceClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2021-07-01-preview/examples/iothub_delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_delete.json
 func ExampleResourceClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		nil)
+		&armiothub.ResourceClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ResourceClientDeleteResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2021-07-01-preview/examples/iothub_listbysubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_listbysubscription.json
 func ExampleResourceClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListBySubscription(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2021-07-01-preview/examples/iothub_listbyrg.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_listbyrg.json
 func ExampleResourceClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2021-07-01-preview/examples/iothub_stats.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_stats.json
 func ExampleResourceClient_GetStats() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetStats(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ResourceClientGetStatsResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2021-07-01-preview/examples/iothub_listehgroups.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_listehgroups.json
 func ExampleResourceClient_ListEventHubConsumerGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListEventHubConsumerGroups("<resource-group-name>",
 		"<resource-name>",
 		"<event-hub-endpoint-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2021-07-01-preview/examples/iothub_getconsumergroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_getconsumergroup.json
 func ExampleResourceClient_GetEventHubConsumerGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetEventHubConsumerGroup(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
@@ -290,19 +348,26 @@ func ExampleResourceClient_GetEventHubConsumerGroup() {
 		"<name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ResourceClientGetEventHubConsumerGroupResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2021-07-01-preview/examples/iothub_createconsumergroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_createconsumergroup.json
 func ExampleResourceClient_CreateEventHubConsumerGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateEventHubConsumerGroup(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
@@ -310,24 +375,31 @@ func ExampleResourceClient_CreateEventHubConsumerGroup() {
 		"<name>",
 		armiothub.EventHubConsumerGroupBodyDescription{
 			Properties: &armiothub.EventHubConsumerGroupName{
-				Name: to.StringPtr("<name>"),
+				Name: to.Ptr("<name>"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ResourceClientCreateEventHubConsumerGroupResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2021-07-01-preview/examples/iothub_deleteconsumergroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_deleteconsumergroup.json
 func ExampleResourceClient_DeleteEventHubConsumerGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.DeleteEventHubConsumerGroup(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
@@ -335,277 +407,339 @@ func ExampleResourceClient_DeleteEventHubConsumerGroup() {
 		"<name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2021-07-01-preview/examples/iothub_listjobs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_listjobs.json
 func ExampleResourceClient_ListJobs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListJobs("<resource-group-name>",
 		"<resource-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2021-07-01-preview/examples/iothub_getjob.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_getjob.json
 func ExampleResourceClient_GetJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetJob(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		"<job-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ResourceClientGetJobResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2021-07-01-preview/examples/iothub_quotametrics.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_quotametrics.json
 func ExampleResourceClient_GetQuotaMetrics() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.GetQuotaMetrics("<resource-group-name>",
 		"<resource-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2021-07-01-preview/examples/iothub_routingendpointhealth.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_routingendpointhealth.json
 func ExampleResourceClient_GetEndpointHealth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.GetEndpointHealth("<resource-group-name>",
 		"<iot-hub-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2021-07-01-preview/examples/checkNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/checkNameAvailability.json
 func ExampleResourceClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CheckNameAvailability(ctx,
 		armiothub.OperationInputs{
-			Name: to.StringPtr("<name>"),
+			Name: to.Ptr("<name>"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ResourceClientCheckNameAvailabilityResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2021-07-01-preview/examples/iothub_testallroutes.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_testallroutes.json
 func ExampleResourceClient_TestAllRoutes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.TestAllRoutes(ctx,
 		"<iot-hub-name>",
 		"<resource-group-name>",
 		armiothub.TestAllRoutesInput{
 			Message: &armiothub.RoutingMessage{
 				AppProperties: map[string]*string{
-					"key1": to.StringPtr("value1"),
+					"key1": to.Ptr("value1"),
 				},
-				Body: to.StringPtr("<body>"),
+				Body: to.Ptr("<body>"),
 				SystemProperties: map[string]*string{
-					"key1": to.StringPtr("value1"),
+					"key1": to.Ptr("value1"),
 				},
 			},
-			RoutingSource: armiothub.RoutingSource("DeviceMessages").ToPtr(),
+			RoutingSource: to.Ptr(armiothub.RoutingSourceDeviceMessages),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ResourceClientTestAllRoutesResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2021-07-01-preview/examples/iothub_testnewroute.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_testnewroute.json
 func ExampleResourceClient_TestRoute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.TestRoute(ctx,
 		"<iot-hub-name>",
 		"<resource-group-name>",
 		armiothub.TestRouteInput{
 			Message: &armiothub.RoutingMessage{
 				AppProperties: map[string]*string{
-					"key1": to.StringPtr("value1"),
+					"key1": to.Ptr("value1"),
 				},
-				Body: to.StringPtr("<body>"),
+				Body: to.Ptr("<body>"),
 				SystemProperties: map[string]*string{
-					"key1": to.StringPtr("value1"),
+					"key1": to.Ptr("value1"),
 				},
 			},
 			Route: &armiothub.RouteProperties{
-				Name: to.StringPtr("<name>"),
+				Name: to.Ptr("<name>"),
 				EndpointNames: []*string{
-					to.StringPtr("id1")},
-				IsEnabled: to.BoolPtr(true),
-				Source:    armiothub.RoutingSource("DeviceMessages").ToPtr(),
+					to.Ptr("id1")},
+				IsEnabled: to.Ptr(true),
+				Source:    to.Ptr(armiothub.RoutingSourceDeviceMessages),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ResourceClientTestRouteResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2021-07-01-preview/examples/iothub_listkeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_listkeys.json
 func ExampleResourceClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListKeys("<resource-group-name>",
 		"<resource-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2021-07-01-preview/examples/iothub_getkey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_getkey.json
 func ExampleResourceClient_GetKeysForKeyName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetKeysForKeyName(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		"<key-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ResourceClientGetKeysForKeyNameResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2021-07-01-preview/examples/iothub_exportdevices.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_exportdevices.json
 func ExampleResourceClient_ExportDevices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ExportDevices(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		armiothub.ExportDevicesRequest{
-			AuthenticationType:     armiothub.AuthenticationType("identityBased").ToPtr(),
-			ExcludeKeys:            to.BoolPtr(true),
-			ExportBlobContainerURI: to.StringPtr("<export-blob-container-uri>"),
-			Identity: &armiothub.ManagedIdentity{
-				UserAssignedIdentity: to.StringPtr("<user-assigned-identity>"),
-			},
+			ExcludeKeys:            to.Ptr(true),
+			ExportBlobContainerURI: to.Ptr("<export-blob-container-uri>"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ResourceClientExportDevicesResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2021-07-01-preview/examples/iothub_importdevices.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_importdevices.json
 func ExampleResourceClient_ImportDevices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ImportDevices(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		armiothub.ImportDevicesRequest{
-			InputBlobContainerURI:  to.StringPtr("<input-blob-container-uri>"),
-			OutputBlobContainerURI: to.StringPtr("<output-blob-container-uri>"),
+			InputBlobContainerURI:  to.Ptr("<input-blob-container-uri>"),
+			OutputBlobContainerURI: to.Ptr("<output-blob-container-uri>"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ResourceClientImportDevicesResult)
+	// TODO: use response item
+	_ = res
 }

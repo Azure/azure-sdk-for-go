@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armappplatform
 
 const (
 	moduleName    = "armappplatform"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 // APIPortalProvisioningState - State of the API portal.
@@ -35,9 +35,18 @@ func PossibleAPIPortalProvisioningStateValues() []APIPortalProvisioningState {
 	}
 }
 
-// ToPtr returns a *APIPortalProvisioningState pointing to the current value.
-func (c APIPortalProvisioningState) ToPtr() *APIPortalProvisioningState {
-	return &c
+// ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+type ActionType string
+
+const (
+	ActionTypeInternal ActionType = "Internal"
+)
+
+// PossibleActionTypeValues returns the possible values for the ActionType const type.
+func PossibleActionTypeValues() []ActionType {
+	return []ActionType{
+		ActionTypeInternal,
+	}
 }
 
 // AppResourceProvisioningState - Provisioning state of the App
@@ -60,11 +69,6 @@ func PossibleAppResourceProvisioningStateValues() []AppResourceProvisioningState
 		AppResourceProvisioningStateSucceeded,
 		AppResourceProvisioningStateUpdating,
 	}
-}
-
-// ToPtr returns a *AppResourceProvisioningState pointing to the current value.
-func (c AppResourceProvisioningState) ToPtr() *AppResourceProvisioningState {
-	return &c
 }
 
 // BindingType - Buildpack Binding Type
@@ -91,11 +95,6 @@ func PossibleBindingTypeValues() []BindingType {
 	}
 }
 
-// ToPtr returns a *BindingType pointing to the current value.
-func (c BindingType) ToPtr() *BindingType {
-	return &c
-}
-
 // BuildProvisioningState - Provisioning state of the KPack build result
 type BuildProvisioningState string
 
@@ -116,11 +115,6 @@ func PossibleBuildProvisioningStateValues() []BuildProvisioningState {
 		BuildProvisioningStateSucceeded,
 		BuildProvisioningStateUpdating,
 	}
-}
-
-// ToPtr returns a *BuildProvisioningState pointing to the current value.
-func (c BuildProvisioningState) ToPtr() *BuildProvisioningState {
-	return &c
 }
 
 // BuildResultProvisioningState - Provisioning state of the KPack build result
@@ -145,11 +139,6 @@ func PossibleBuildResultProvisioningStateValues() []BuildResultProvisioningState
 	}
 }
 
-// ToPtr returns a *BuildResultProvisioningState pointing to the current value.
-func (c BuildResultProvisioningState) ToPtr() *BuildResultProvisioningState {
-	return &c
-}
-
 // BuildServiceProvisioningState - Provisioning state of the KPack build result
 type BuildServiceProvisioningState string
 
@@ -170,11 +159,6 @@ func PossibleBuildServiceProvisioningStateValues() []BuildServiceProvisioningSta
 		BuildServiceProvisioningStateSucceeded,
 		BuildServiceProvisioningStateUpdating,
 	}
-}
-
-// ToPtr returns a *BuildServiceProvisioningState pointing to the current value.
-func (c BuildServiceProvisioningState) ToPtr() *BuildServiceProvisioningState {
-	return &c
 }
 
 // BuilderProvisioningState - Builder provision status.
@@ -199,11 +183,6 @@ func PossibleBuilderProvisioningStateValues() []BuilderProvisioningState {
 	}
 }
 
-// ToPtr returns a *BuilderProvisioningState pointing to the current value.
-func (c BuilderProvisioningState) ToPtr() *BuilderProvisioningState {
-	return &c
-}
-
 // BuildpackBindingProvisioningState - State of the Buildpack Binding.
 type BuildpackBindingProvisioningState string
 
@@ -224,11 +203,6 @@ func PossibleBuildpackBindingProvisioningStateValues() []BuildpackBindingProvisi
 		BuildpackBindingProvisioningStateSucceeded,
 		BuildpackBindingProvisioningStateUpdating,
 	}
-}
-
-// ToPtr returns a *BuildpackBindingProvisioningState pointing to the current value.
-func (c BuildpackBindingProvisioningState) ToPtr() *BuildpackBindingProvisioningState {
-	return &c
 }
 
 // ConfigServerState - State of the config server.
@@ -253,11 +227,6 @@ func PossibleConfigServerStateValues() []ConfigServerState {
 	}
 }
 
-// ToPtr returns a *ConfigServerState pointing to the current value.
-func (c ConfigServerState) ToPtr() *ConfigServerState {
-	return &c
-}
-
 // ConfigurationServiceProvisioningState - State of the Application Configuration Service.
 type ConfigurationServiceProvisioningState string
 
@@ -280,11 +249,6 @@ func PossibleConfigurationServiceProvisioningStateValues() []ConfigurationServic
 	}
 }
 
-// ToPtr returns a *ConfigurationServiceProvisioningState pointing to the current value.
-func (c ConfigurationServiceProvisioningState) ToPtr() *ConfigurationServiceProvisioningState {
-	return &c
-}
-
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -303,30 +267,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
 	}
-}
-
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
-// CustomPersistentDiskPropertiesType - The type of the underlying resource to mount as a persistent disk.
-type CustomPersistentDiskPropertiesType string
-
-const (
-	CustomPersistentDiskPropertiesTypeAzureFileVolume CustomPersistentDiskPropertiesType = "AzureFileVolume"
-)
-
-// PossibleCustomPersistentDiskPropertiesTypeValues returns the possible values for the CustomPersistentDiskPropertiesType const type.
-func PossibleCustomPersistentDiskPropertiesTypeValues() []CustomPersistentDiskPropertiesType {
-	return []CustomPersistentDiskPropertiesType{
-		CustomPersistentDiskPropertiesTypeAzureFileVolume,
-	}
-}
-
-// ToPtr returns a *CustomPersistentDiskPropertiesType pointing to the current value.
-func (c CustomPersistentDiskPropertiesType) ToPtr() *CustomPersistentDiskPropertiesType {
-	return &c
 }
 
 // DeploymentResourceProvisioningState - Provisioning state of the Deployment
@@ -349,11 +289,6 @@ func PossibleDeploymentResourceProvisioningStateValues() []DeploymentResourcePro
 	}
 }
 
-// ToPtr returns a *DeploymentResourceProvisioningState pointing to the current value.
-func (c DeploymentResourceProvisioningState) ToPtr() *DeploymentResourceProvisioningState {
-	return &c
-}
-
 // DeploymentResourceStatus - Status of the Deployment
 type DeploymentResourceStatus string
 
@@ -368,11 +303,6 @@ func PossibleDeploymentResourceStatusValues() []DeploymentResourceStatus {
 		DeploymentResourceStatusRunning,
 		DeploymentResourceStatusStopped,
 	}
-}
-
-// ToPtr returns a *DeploymentResourceStatus pointing to the current value.
-func (c DeploymentResourceStatus) ToPtr() *DeploymentResourceStatus {
-	return &c
 }
 
 // GatewayProvisioningState - State of the Spring Cloud Gateway.
@@ -397,11 +327,6 @@ func PossibleGatewayProvisioningStateValues() []GatewayProvisioningState {
 	}
 }
 
-// ToPtr returns a *GatewayProvisioningState pointing to the current value.
-func (c GatewayProvisioningState) ToPtr() *GatewayProvisioningState {
-	return &c
-}
-
 // KPackBuildStageProvisioningState - The provisioning state of this build stage resource.
 type KPackBuildStageProvisioningState string
 
@@ -420,11 +345,6 @@ func PossibleKPackBuildStageProvisioningStateValues() []KPackBuildStageProvision
 		KPackBuildStageProvisioningStateRunning,
 		KPackBuildStageProvisioningStateSucceeded,
 	}
-}
-
-// ToPtr returns a *KPackBuildStageProvisioningState pointing to the current value.
-func (c KPackBuildStageProvisioningState) ToPtr() *KPackBuildStageProvisioningState {
-	return &c
 }
 
 // LastModifiedByType - The type of identity that last modified the resource.
@@ -447,11 +367,6 @@ func PossibleLastModifiedByTypeValues() []LastModifiedByType {
 	}
 }
 
-// ToPtr returns a *LastModifiedByType pointing to the current value.
-func (c LastModifiedByType) ToPtr() *LastModifiedByType {
-	return &c
-}
-
 // ManagedIdentityType - Type of the managed identity
 type ManagedIdentityType string
 
@@ -470,11 +385,6 @@ func PossibleManagedIdentityTypeValues() []ManagedIdentityType {
 		ManagedIdentityTypeSystemAssignedUserAssigned,
 		ManagedIdentityTypeUserAssigned,
 	}
-}
-
-// ToPtr returns a *ManagedIdentityType pointing to the current value.
-func (c ManagedIdentityType) ToPtr() *ManagedIdentityType {
-	return &c
 }
 
 // MonitoringSettingState - State of the Monitoring Setting.
@@ -497,11 +407,6 @@ func PossibleMonitoringSettingStateValues() []MonitoringSettingState {
 	}
 }
 
-// ToPtr returns a *MonitoringSettingState pointing to the current value.
-func (c MonitoringSettingState) ToPtr() *MonitoringSettingState {
-	return &c
-}
-
 // PowerState - Power state of the Service
 type PowerState string
 
@@ -518,11 +423,6 @@ func PossiblePowerStateValues() []PowerState {
 	}
 }
 
-// ToPtr returns a *PowerState pointing to the current value.
-func (c PowerState) ToPtr() *PowerState {
-	return &c
-}
-
 // ProvisioningState - Provisioning state of the Service
 type ProvisioningState string
 
@@ -534,6 +434,8 @@ const (
 	ProvisioningStateMoveFailed ProvisioningState = "MoveFailed"
 	ProvisioningStateMoved      ProvisioningState = "Moved"
 	ProvisioningStateMoving     ProvisioningState = "Moving"
+	ProvisioningStateStarting   ProvisioningState = "Starting"
+	ProvisioningStateStopping   ProvisioningState = "Stopping"
 	ProvisioningStateSucceeded  ProvisioningState = "Succeeded"
 	ProvisioningStateUpdating   ProvisioningState = "Updating"
 )
@@ -548,14 +450,11 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateMoveFailed,
 		ProvisioningStateMoved,
 		ProvisioningStateMoving,
+		ProvisioningStateStarting,
+		ProvisioningStateStopping,
 		ProvisioningStateSucceeded,
 		ProvisioningStateUpdating,
 	}
-}
-
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
 }
 
 // ResourceSKURestrictionsReasonCode - Gets the reason for restriction. Possible values include: 'QuotaId', 'NotAvailableForSubscription'
@@ -574,11 +473,6 @@ func PossibleResourceSKURestrictionsReasonCodeValues() []ResourceSKURestrictions
 	}
 }
 
-// ToPtr returns a *ResourceSKURestrictionsReasonCode pointing to the current value.
-func (c ResourceSKURestrictionsReasonCode) ToPtr() *ResourceSKURestrictionsReasonCode {
-	return &c
-}
-
 // ResourceSKURestrictionsType - Gets the type of restrictions. Possible values include: 'Location', 'Zone'
 type ResourceSKURestrictionsType string
 
@@ -593,11 +487,6 @@ func PossibleResourceSKURestrictionsTypeValues() []ResourceSKURestrictionsType {
 		ResourceSKURestrictionsTypeLocation,
 		ResourceSKURestrictionsTypeZone,
 	}
-}
-
-// ToPtr returns a *ResourceSKURestrictionsType pointing to the current value.
-func (c ResourceSKURestrictionsType) ToPtr() *ResourceSKURestrictionsType {
-	return &c
 }
 
 // SKUScaleType - Gets or sets the type of the scale.
@@ -616,11 +505,6 @@ func PossibleSKUScaleTypeValues() []SKUScaleType {
 		SKUScaleTypeManual,
 		SKUScaleTypeNone,
 	}
-}
-
-// ToPtr returns a *SKUScaleType pointing to the current value.
-func (c SKUScaleType) ToPtr() *SKUScaleType {
-	return &c
 }
 
 // ServiceRegistryProvisioningState - State of the Service Registry.
@@ -645,28 +529,18 @@ func PossibleServiceRegistryProvisioningStateValues() []ServiceRegistryProvision
 	}
 }
 
-// ToPtr returns a *ServiceRegistryProvisioningState pointing to the current value.
-func (c ServiceRegistryProvisioningState) ToPtr() *ServiceRegistryProvisioningState {
-	return &c
-}
-
-// StoragePropertiesStorageType - The type of the storage.
-type StoragePropertiesStorageType string
+// StorageType - The type of the storage.
+type StorageType string
 
 const (
-	StoragePropertiesStorageTypeStorageAccount StoragePropertiesStorageType = "StorageAccount"
+	StorageTypeStorageAccount StorageType = "StorageAccount"
 )
 
-// PossibleStoragePropertiesStorageTypeValues returns the possible values for the StoragePropertiesStorageType const type.
-func PossibleStoragePropertiesStorageTypeValues() []StoragePropertiesStorageType {
-	return []StoragePropertiesStorageType{
-		StoragePropertiesStorageTypeStorageAccount,
+// PossibleStorageTypeValues returns the possible values for the StorageType const type.
+func PossibleStorageTypeValues() []StorageType {
+	return []StorageType{
+		StorageTypeStorageAccount,
 	}
-}
-
-// ToPtr returns a *StoragePropertiesStorageType pointing to the current value.
-func (c StoragePropertiesStorageType) ToPtr() *StoragePropertiesStorageType {
-	return &c
 }
 
 // SupportedRuntimePlatform - The platform of this runtime version (possible values: "Java" or ".NET").
@@ -683,11 +557,6 @@ func PossibleSupportedRuntimePlatformValues() []SupportedRuntimePlatform {
 		SupportedRuntimePlatformJava,
 		SupportedRuntimePlatformNETCore,
 	}
-}
-
-// ToPtr returns a *SupportedRuntimePlatform pointing to the current value.
-func (c SupportedRuntimePlatform) ToPtr() *SupportedRuntimePlatform {
-	return &c
 }
 
 // SupportedRuntimeValue - The raw value which could be passed to deployment CRUD operations.
@@ -710,11 +579,6 @@ func PossibleSupportedRuntimeValueValues() []SupportedRuntimeValue {
 	}
 }
 
-// ToPtr returns a *SupportedRuntimeValue pointing to the current value.
-func (c SupportedRuntimeValue) ToPtr() *SupportedRuntimeValue {
-	return &c
-}
-
 // TestKeyType - Type of the test key
 type TestKeyType string
 
@@ -729,11 +593,6 @@ func PossibleTestKeyTypeValues() []TestKeyType {
 		TestKeyTypePrimary,
 		TestKeyTypeSecondary,
 	}
-}
-
-// ToPtr returns a *TestKeyType pointing to the current value.
-func (c TestKeyType) ToPtr() *TestKeyType {
-	return &c
 }
 
 // TrafficDirection - The direction of required traffic
@@ -752,7 +611,16 @@ func PossibleTrafficDirectionValues() []TrafficDirection {
 	}
 }
 
-// ToPtr returns a *TrafficDirection pointing to the current value.
-func (c TrafficDirection) ToPtr() *TrafficDirection {
-	return &c
+// Type - The type of the underlying resource to mount as a persistent disk.
+type Type string
+
+const (
+	TypeAzureFileVolume Type = "AzureFileVolume"
+)
+
+// PossibleTypeValues returns the possible values for the Type const type.
+func PossibleTypeValues() []Type {
+	return []Type{
+		TypeAzureFileVolume,
+	}
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type FlightingRingsClient struct {
 // subscriptionID - The Azure subscription ID. This is a GUID-formatted string.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewFlightingRingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FlightingRingsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewFlightingRingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FlightingRingsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &FlightingRingsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets a flighting ring of a Test Base Account.
@@ -102,7 +107,7 @@ func (client *FlightingRingsClient) getCreateRequest(ctx context.Context, resour
 
 // getHandleResponse handles the Get response.
 func (client *FlightingRingsClient) getHandleResponse(resp *http.Response) (FlightingRingsClientGetResponse, error) {
-	result := FlightingRingsClientGetResponse{RawResponse: resp}
+	result := FlightingRingsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FlightingRingResource); err != nil {
 		return FlightingRingsClientGetResponse{}, err
 	}
@@ -114,16 +119,32 @@ func (client *FlightingRingsClient) getHandleResponse(resp *http.Response) (Flig
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // options - FlightingRingsClientListOptions contains the optional parameters for the FlightingRingsClient.List method.
-func (client *FlightingRingsClient) List(resourceGroupName string, testBaseAccountName string, options *FlightingRingsClientListOptions) *FlightingRingsClientListPager {
-	return &FlightingRingsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, testBaseAccountName, options)
+func (client *FlightingRingsClient) List(resourceGroupName string, testBaseAccountName string, options *FlightingRingsClientListOptions) *runtime.Pager[FlightingRingsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[FlightingRingsClientListResponse]{
+		More: func(page FlightingRingsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp FlightingRingsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.FlightingRingListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *FlightingRingsClientListResponse) (FlightingRingsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, testBaseAccountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return FlightingRingsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return FlightingRingsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return FlightingRingsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -154,7 +175,7 @@ func (client *FlightingRingsClient) listCreateRequest(ctx context.Context, resou
 
 // listHandleResponse handles the List response.
 func (client *FlightingRingsClient) listHandleResponse(resp *http.Response) (FlightingRingsClientListResponse, error) {
-	result := FlightingRingsClientListResponse{RawResponse: resp}
+	result := FlightingRingsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FlightingRingListResult); err != nil {
 		return FlightingRingsClientListResponse{}, err
 	}

@@ -1,5 +1,97 @@
 # Release History
 
+## 0.3.0 (2022-04-12)
+### Breaking Changes
+
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*WorkspacesClient.BeginCreateOrUpdate` return value(s) have been changed from `(WorkspacesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[WorkspacesClientCreateOrUpdateResponse], error)`
+- Function `*OfferingsClient.List` return value(s) have been changed from `(*OfferingsClientListPager)` to `(*runtime.Pager[OfferingsClientListResponse])`
+- Function `*WorkspacesClient.BeginDelete` return value(s) have been changed from `(WorkspacesClientDeletePollerResponse, error)` to `(*armruntime.Poller[WorkspacesClientDeleteResponse], error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `NewWorkspaceClient` return value(s) have been changed from `(*WorkspaceClient)` to `(*WorkspaceClient, error)`
+- Function `*WorkspacesClient.ListBySubscription` return value(s) have been changed from `(*WorkspacesClientListBySubscriptionPager)` to `(*runtime.Pager[WorkspacesClientListBySubscriptionResponse])`
+- Function `NewOfferingsClient` return value(s) have been changed from `(*OfferingsClient)` to `(*OfferingsClient, error)`
+- Function `NewWorkspacesClient` return value(s) have been changed from `(*WorkspacesClient)` to `(*WorkspacesClient, error)`
+- Function `*WorkspacesClient.ListByResourceGroup` return value(s) have been changed from `(*WorkspacesClientListByResourceGroupPager)` to `(*runtime.Pager[WorkspacesClientListByResourceGroupResponse])`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*WorkspacesClientListBySubscriptionPager.Err` has been removed
+- Function `*WorkspacesClientDeletePoller.Done` has been removed
+- Function `ResourceIdentityType.ToPtr` has been removed
+- Function `*WorkspacesClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*WorkspacesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `WorkspacesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `Status.ToPtr` has been removed
+- Function `*WorkspacesClientListBySubscriptionPager.NextPage` has been removed
+- Function `*OfferingsClientListPager.PageResponse` has been removed
+- Function `ProvisioningStatus.ToPtr` has been removed
+- Function `*WorkspacesClientListByResourceGroupPager.NextPage` has been removed
+- Function `*WorkspacesClientDeletePoller.Poll` has been removed
+- Function `WorkspacesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `UsableStatus.ToPtr` has been removed
+- Function `*WorkspacesClientDeletePoller.ResumeToken` has been removed
+- Function `*WorkspacesClientListByResourceGroupPager.Err` has been removed
+- Function `*WorkspacesClientDeletePoller.FinalResponse` has been removed
+- Function `*WorkspacesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*WorkspacesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*OfferingsClientListPager.Err` has been removed
+- Function `*WorkspacesClientDeletePollerResponse.Resume` has been removed
+- Function `*WorkspacesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*WorkspacesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*WorkspacesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*OfferingsClientListPager.NextPage` has been removed
+- Struct `OfferingsClientListPager` has been removed
+- Struct `OfferingsClientListResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `WorkspaceClientCheckNameAvailabilityResult` has been removed
+- Struct `WorkspacesClientCreateOrUpdatePoller` has been removed
+- Struct `WorkspacesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `WorkspacesClientCreateOrUpdateResult` has been removed
+- Struct `WorkspacesClientDeletePoller` has been removed
+- Struct `WorkspacesClientDeletePollerResponse` has been removed
+- Struct `WorkspacesClientGetResult` has been removed
+- Struct `WorkspacesClientListByResourceGroupPager` has been removed
+- Struct `WorkspacesClientListByResourceGroupResult` has been removed
+- Struct `WorkspacesClientListBySubscriptionPager` has been removed
+- Struct `WorkspacesClientListBySubscriptionResult` has been removed
+- Struct `WorkspacesClientUpdateTagsResult` has been removed
+- Field `WorkspacesClientUpdateTagsResult` of struct `WorkspacesClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientUpdateTagsResponse` has been removed
+- Field `WorkspacesClientListByResourceGroupResult` of struct `WorkspacesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientListByResourceGroupResponse` has been removed
+- Field `WorkspacesClientGetResult` of struct `WorkspacesClientGetResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientGetResponse` has been removed
+- Field `OfferingsClientListResult` of struct `OfferingsClientListResponse` has been removed
+- Field `RawResponse` of struct `OfferingsClientListResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `WorkspacesClientListBySubscriptionResult` of struct `WorkspacesClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientListBySubscriptionResponse` has been removed
+- Field `WorkspacesClientCreateOrUpdateResult` of struct `WorkspacesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientCreateOrUpdateResponse` has been removed
+- Field `WorkspaceClientCheckNameAvailabilityResult` of struct `WorkspaceClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `WorkspaceClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientDeleteResponse` has been removed
+
+### Features Added
+
+- New anonymous field `Workspace` in struct `WorkspacesClientGetResponse`
+- New field `ResumeToken` in struct `WorkspacesClientBeginDeleteOptions`
+- New anonymous field `WorkspaceListResult` in struct `WorkspacesClientListByResourceGroupResponse`
+- New anonymous field `OperationsList` in struct `OperationsClientListResponse`
+- New anonymous field `CheckNameAvailabilityResult` in struct `WorkspaceClientCheckNameAvailabilityResponse`
+- New anonymous field `WorkspaceListResult` in struct `WorkspacesClientListBySubscriptionResponse`
+- New anonymous field `Workspace` in struct `WorkspacesClientUpdateTagsResponse`
+- New field `AutoAdd` in struct `SKUDescription`
+- New field `ResumeToken` in struct `WorkspacesClientBeginCreateOrUpdateOptions`
+- New anonymous field `Workspace` in struct `WorkspacesClientCreateOrUpdateResponse`
+- New anonymous field `OfferingsListResult` in struct `OfferingsClientListResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

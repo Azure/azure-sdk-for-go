@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type DeletedServersClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDeletedServersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DeletedServersClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewDeletedServersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeletedServersClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DeletedServersClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets a deleted server.
@@ -97,7 +102,7 @@ func (client *DeletedServersClient) getCreateRequest(ctx context.Context, locati
 
 // getHandleResponse handles the Get response.
 func (client *DeletedServersClient) getHandleResponse(resp *http.Response) (DeletedServersClientGetResponse, error) {
-	result := DeletedServersClientGetResponse{RawResponse: resp}
+	result := DeletedServersClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedServer); err != nil {
 		return DeletedServersClientGetResponse{}, err
 	}
@@ -107,16 +112,32 @@ func (client *DeletedServersClient) getHandleResponse(resp *http.Response) (Dele
 // List - Gets a list of all deleted servers in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DeletedServersClientListOptions contains the optional parameters for the DeletedServersClient.List method.
-func (client *DeletedServersClient) List(options *DeletedServersClientListOptions) *DeletedServersClientListPager {
-	return &DeletedServersClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *DeletedServersClient) List(options *DeletedServersClientListOptions) *runtime.Pager[DeletedServersClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DeletedServersClientListResponse]{
+		More: func(page DeletedServersClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DeletedServersClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeletedServerListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DeletedServersClientListResponse) (DeletedServersClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DeletedServersClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DeletedServersClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DeletedServersClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -139,7 +160,7 @@ func (client *DeletedServersClient) listCreateRequest(ctx context.Context, optio
 
 // listHandleResponse handles the List response.
 func (client *DeletedServersClient) listHandleResponse(resp *http.Response) (DeletedServersClientListResponse, error) {
-	result := DeletedServersClientListResponse{RawResponse: resp}
+	result := DeletedServersClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedServerListResult); err != nil {
 		return DeletedServersClientListResponse{}, err
 	}
@@ -151,16 +172,32 @@ func (client *DeletedServersClient) listHandleResponse(resp *http.Response) (Del
 // locationName - The name of the region where the resource is located.
 // options - DeletedServersClientListByLocationOptions contains the optional parameters for the DeletedServersClient.ListByLocation
 // method.
-func (client *DeletedServersClient) ListByLocation(locationName string, options *DeletedServersClientListByLocationOptions) *DeletedServersClientListByLocationPager {
-	return &DeletedServersClientListByLocationPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByLocationCreateRequest(ctx, locationName, options)
+func (client *DeletedServersClient) ListByLocation(locationName string, options *DeletedServersClientListByLocationOptions) *runtime.Pager[DeletedServersClientListByLocationResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DeletedServersClientListByLocationResponse]{
+		More: func(page DeletedServersClientListByLocationResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DeletedServersClientListByLocationResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeletedServerListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DeletedServersClientListByLocationResponse) (DeletedServersClientListByLocationResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByLocationCreateRequest(ctx, locationName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DeletedServersClientListByLocationResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DeletedServersClientListByLocationResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DeletedServersClientListByLocationResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByLocationHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
@@ -187,7 +224,7 @@ func (client *DeletedServersClient) listByLocationCreateRequest(ctx context.Cont
 
 // listByLocationHandleResponse handles the ListByLocation response.
 func (client *DeletedServersClient) listByLocationHandleResponse(resp *http.Response) (DeletedServersClientListByLocationResponse, error) {
-	result := DeletedServersClientListByLocationResponse{RawResponse: resp}
+	result := DeletedServersClientListByLocationResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedServerListResult); err != nil {
 		return DeletedServersClientListByLocationResponse{}, err
 	}
@@ -200,22 +237,16 @@ func (client *DeletedServersClient) listByLocationHandleResponse(resp *http.Resp
 // deletedServerName - The name of the deleted server.
 // options - DeletedServersClientBeginRecoverOptions contains the optional parameters for the DeletedServersClient.BeginRecover
 // method.
-func (client *DeletedServersClient) BeginRecover(ctx context.Context, locationName string, deletedServerName string, options *DeletedServersClientBeginRecoverOptions) (DeletedServersClientRecoverPollerResponse, error) {
-	resp, err := client.recoverOperation(ctx, locationName, deletedServerName, options)
-	if err != nil {
-		return DeletedServersClientRecoverPollerResponse{}, err
+func (client *DeletedServersClient) BeginRecover(ctx context.Context, locationName string, deletedServerName string, options *DeletedServersClientBeginRecoverOptions) (*armruntime.Poller[DeletedServersClientRecoverResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.recoverOperation(ctx, locationName, deletedServerName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DeletedServersClientRecoverResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DeletedServersClientRecoverResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeletedServersClientRecoverPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeletedServersClient.Recover", "", resp, client.pl)
-	if err != nil {
-		return DeletedServersClientRecoverPollerResponse{}, err
-	}
-	result.Poller = &DeletedServersClientRecoverPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Recover - Recovers a deleted server.

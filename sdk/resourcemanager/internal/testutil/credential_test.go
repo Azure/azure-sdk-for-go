@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -37,7 +37,8 @@ func (r *testBody) Seek(offset int64, whence int) (int64, error) {
 func TestGetCredAndClientOptions(t *testing.T) {
 	testEndpoint := "http://test"
 	cred, options := GetCredAndClientOptions(t)
-	pl := armruntime.NewPipeline("testmodule", "v0.1.0", cred, runtime.PipelineOptions{}, options)
+	pl, err := armruntime.NewPipeline("testmodule", "v0.1.0", cred, runtime.PipelineOptions{}, options)
+	require.NoError(t, err)
 	req, err := runtime.NewRequest(context.Background(), http.MethodGet, testEndpoint)
 	require.NoError(t, err)
 	err = req.SetBody(&testBody{body: strings.NewReader("test")}, "text/plain")

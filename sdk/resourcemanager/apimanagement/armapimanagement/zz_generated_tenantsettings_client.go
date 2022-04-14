@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type TenantSettingsClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewTenantSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TenantSettingsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewTenantSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TenantSettingsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &TenantSettingsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Get tenant settings.
@@ -103,7 +108,7 @@ func (client *TenantSettingsClient) getCreateRequest(ctx context.Context, resour
 
 // getHandleResponse handles the Get response.
 func (client *TenantSettingsClient) getHandleResponse(resp *http.Response) (TenantSettingsClientGetResponse, error) {
-	result := TenantSettingsClientGetResponse{RawResponse: resp}
+	result := TenantSettingsClientGetResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -119,16 +124,32 @@ func (client *TenantSettingsClient) getHandleResponse(resp *http.Response) (Tena
 // serviceName - The name of the API Management service.
 // options - TenantSettingsClientListByServiceOptions contains the optional parameters for the TenantSettingsClient.ListByService
 // method.
-func (client *TenantSettingsClient) ListByService(resourceGroupName string, serviceName string, options *TenantSettingsClientListByServiceOptions) *TenantSettingsClientListByServicePager {
-	return &TenantSettingsClientListByServicePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+func (client *TenantSettingsClient) ListByService(resourceGroupName string, serviceName string, options *TenantSettingsClientListByServiceOptions) *runtime.Pager[TenantSettingsClientListByServiceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[TenantSettingsClientListByServiceResponse]{
+		More: func(page TenantSettingsClientListByServiceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp TenantSettingsClientListByServiceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.TenantSettingsCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *TenantSettingsClientListByServiceResponse) (TenantSettingsClientListByServiceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return TenantSettingsClientListByServiceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return TenantSettingsClientListByServiceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return TenantSettingsClientListByServiceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServiceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByServiceCreateRequest creates the ListByService request.
@@ -162,7 +183,7 @@ func (client *TenantSettingsClient) listByServiceCreateRequest(ctx context.Conte
 
 // listByServiceHandleResponse handles the ListByService response.
 func (client *TenantSettingsClient) listByServiceHandleResponse(resp *http.Response) (TenantSettingsClientListByServiceResponse, error) {
-	result := TenantSettingsClientListByServiceResponse{RawResponse: resp}
+	result := TenantSettingsClientListByServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TenantSettingsCollection); err != nil {
 		return TenantSettingsClientListByServiceResponse{}, err
 	}

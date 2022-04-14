@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,19 +32,23 @@ type AssociationsClient struct {
 // NewAssociationsClient creates a new instance of AssociationsClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAssociationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *AssociationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAssociationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AssociationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AssociationsClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or update an association.
@@ -55,22 +60,16 @@ func NewAssociationsClient(credential azcore.TokenCredential, options *arm.Clien
 // association - The parameters required to create or update an association.
 // options - AssociationsClientBeginCreateOrUpdateOptions contains the optional parameters for the AssociationsClient.BeginCreateOrUpdate
 // method.
-func (client *AssociationsClient) BeginCreateOrUpdate(ctx context.Context, scope string, associationName string, association Association, options *AssociationsClientBeginCreateOrUpdateOptions) (AssociationsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, scope, associationName, association, options)
-	if err != nil {
-		return AssociationsClientCreateOrUpdatePollerResponse{}, err
+func (client *AssociationsClient) BeginCreateOrUpdate(ctx context.Context, scope string, associationName string, association Association, options *AssociationsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[AssociationsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, scope, associationName, association, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[AssociationsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[AssociationsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := AssociationsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("AssociationsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return AssociationsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &AssociationsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update an association.
@@ -115,22 +114,16 @@ func (client *AssociationsClient) createOrUpdateCreateRequest(ctx context.Contex
 // associationName - The name of the association.
 // options - AssociationsClientBeginDeleteOptions contains the optional parameters for the AssociationsClient.BeginDelete
 // method.
-func (client *AssociationsClient) BeginDelete(ctx context.Context, scope string, associationName string, options *AssociationsClientBeginDeleteOptions) (AssociationsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, scope, associationName, options)
-	if err != nil {
-		return AssociationsClientDeletePollerResponse{}, err
+func (client *AssociationsClient) BeginDelete(ctx context.Context, scope string, associationName string, options *AssociationsClientBeginDeleteOptions) (*armruntime.Poller[AssociationsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, scope, associationName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[AssociationsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[AssociationsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := AssociationsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("AssociationsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return AssociationsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &AssociationsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete an association.
@@ -210,7 +203,7 @@ func (client *AssociationsClient) getCreateRequest(ctx context.Context, scope st
 
 // getHandleResponse handles the Get response.
 func (client *AssociationsClient) getHandleResponse(resp *http.Response) (AssociationsClientGetResponse, error) {
-	result := AssociationsClientGetResponse{RawResponse: resp}
+	result := AssociationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Association); err != nil {
 		return AssociationsClientGetResponse{}, err
 	}
@@ -221,16 +214,32 @@ func (client *AssociationsClient) getHandleResponse(resp *http.Response) (Associ
 // If the operation fails it returns an *azcore.ResponseError type.
 // scope - The scope of the association.
 // options - AssociationsClientListAllOptions contains the optional parameters for the AssociationsClient.ListAll method.
-func (client *AssociationsClient) ListAll(scope string, options *AssociationsClientListAllOptions) *AssociationsClientListAllPager {
-	return &AssociationsClientListAllPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listAllCreateRequest(ctx, scope, options)
+func (client *AssociationsClient) ListAll(scope string, options *AssociationsClientListAllOptions) *runtime.Pager[AssociationsClientListAllResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AssociationsClientListAllResponse]{
+		More: func(page AssociationsClientListAllResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AssociationsClientListAllResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AssociationsList.NextLink)
+		Fetcher: func(ctx context.Context, page *AssociationsClientListAllResponse) (AssociationsClientListAllResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAllCreateRequest(ctx, scope, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AssociationsClientListAllResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AssociationsClientListAllResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AssociationsClientListAllResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAllHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listAllCreateRequest creates the ListAll request.
@@ -250,7 +259,7 @@ func (client *AssociationsClient) listAllCreateRequest(ctx context.Context, scop
 
 // listAllHandleResponse handles the ListAll response.
 func (client *AssociationsClient) listAllHandleResponse(resp *http.Response) (AssociationsClientListAllResponse, error) {
-	result := AssociationsClientListAllResponse{RawResponse: resp}
+	result := AssociationsClientListAllResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssociationsList); err != nil {
 		return AssociationsClientListAllResponse{}, err
 	}

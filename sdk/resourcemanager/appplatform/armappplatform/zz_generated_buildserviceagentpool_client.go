@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type BuildServiceAgentPoolClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewBuildServiceAgentPoolClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BuildServiceAgentPoolClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewBuildServiceAgentPoolClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BuildServiceAgentPoolClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &BuildServiceAgentPoolClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Get build service agent pool.
@@ -102,7 +107,7 @@ func (client *BuildServiceAgentPoolClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -110,7 +115,7 @@ func (client *BuildServiceAgentPoolClient) getCreateRequest(ctx context.Context,
 
 // getHandleResponse handles the Get response.
 func (client *BuildServiceAgentPoolClient) getHandleResponse(resp *http.Response) (BuildServiceAgentPoolClientGetResponse, error) {
-	result := BuildServiceAgentPoolClientGetResponse{RawResponse: resp}
+	result := BuildServiceAgentPoolClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BuildServiceAgentPoolResource); err != nil {
 		return BuildServiceAgentPoolClientGetResponse{}, err
 	}
@@ -125,16 +130,32 @@ func (client *BuildServiceAgentPoolClient) getHandleResponse(resp *http.Response
 // buildServiceName - The name of the build service resource.
 // options - BuildServiceAgentPoolClientListOptions contains the optional parameters for the BuildServiceAgentPoolClient.List
 // method.
-func (client *BuildServiceAgentPoolClient) List(resourceGroupName string, serviceName string, buildServiceName string, options *BuildServiceAgentPoolClientListOptions) *BuildServiceAgentPoolClientListPager {
-	return &BuildServiceAgentPoolClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, serviceName, buildServiceName, options)
+func (client *BuildServiceAgentPoolClient) List(resourceGroupName string, serviceName string, buildServiceName string, options *BuildServiceAgentPoolClientListOptions) *runtime.Pager[BuildServiceAgentPoolClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[BuildServiceAgentPoolClientListResponse]{
+		More: func(page BuildServiceAgentPoolClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp BuildServiceAgentPoolClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.BuildServiceAgentPoolResourceCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *BuildServiceAgentPoolClientListResponse) (BuildServiceAgentPoolClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, serviceName, buildServiceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return BuildServiceAgentPoolClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return BuildServiceAgentPoolClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return BuildServiceAgentPoolClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -161,7 +182,7 @@ func (client *BuildServiceAgentPoolClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -169,7 +190,7 @@ func (client *BuildServiceAgentPoolClient) listCreateRequest(ctx context.Context
 
 // listHandleResponse handles the List response.
 func (client *BuildServiceAgentPoolClient) listHandleResponse(resp *http.Response) (BuildServiceAgentPoolClientListResponse, error) {
-	result := BuildServiceAgentPoolClientListResponse{RawResponse: resp}
+	result := BuildServiceAgentPoolClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BuildServiceAgentPoolResourceCollection); err != nil {
 		return BuildServiceAgentPoolClientListResponse{}, err
 	}
@@ -186,22 +207,18 @@ func (client *BuildServiceAgentPoolClient) listHandleResponse(resp *http.Respons
 // agentPoolResource - Parameters for the update operation
 // options - BuildServiceAgentPoolClientBeginUpdatePutOptions contains the optional parameters for the BuildServiceAgentPoolClient.BeginUpdatePut
 // method.
-func (client *BuildServiceAgentPoolClient) BeginUpdatePut(ctx context.Context, resourceGroupName string, serviceName string, buildServiceName string, agentPoolName string, agentPoolResource BuildServiceAgentPoolResource, options *BuildServiceAgentPoolClientBeginUpdatePutOptions) (BuildServiceAgentPoolClientUpdatePutPollerResponse, error) {
-	resp, err := client.updatePut(ctx, resourceGroupName, serviceName, buildServiceName, agentPoolName, agentPoolResource, options)
-	if err != nil {
-		return BuildServiceAgentPoolClientUpdatePutPollerResponse{}, err
+func (client *BuildServiceAgentPoolClient) BeginUpdatePut(ctx context.Context, resourceGroupName string, serviceName string, buildServiceName string, agentPoolName string, agentPoolResource BuildServiceAgentPoolResource, options *BuildServiceAgentPoolClientBeginUpdatePutOptions) (*armruntime.Poller[BuildServiceAgentPoolClientUpdatePutResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updatePut(ctx, resourceGroupName, serviceName, buildServiceName, agentPoolName, agentPoolResource, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[BuildServiceAgentPoolClientUpdatePutResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[BuildServiceAgentPoolClientUpdatePutResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := BuildServiceAgentPoolClientUpdatePutPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("BuildServiceAgentPoolClient.UpdatePut", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return BuildServiceAgentPoolClientUpdatePutPollerResponse{}, err
-	}
-	result.Poller = &BuildServiceAgentPoolClientUpdatePutPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // UpdatePut - Create or update build service agent pool.
@@ -249,7 +266,7 @@ func (client *BuildServiceAgentPoolClient) updatePutCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, agentPoolResource)

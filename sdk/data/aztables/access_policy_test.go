@@ -8,6 +8,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
 
@@ -15,7 +18,7 @@ func TestSetEmptyAccessPolicy(t *testing.T) {
 	client, delete := initClientTest(t, "storage", true)
 	defer delete()
 
-	_, err := client.SetAccessPolicy(ctx, &SetAccessPolicyOptions{})
+	_, err := client.SetAccessPolicy(ctx, nil)
 	require.NoError(t, err)
 }
 
@@ -45,6 +48,22 @@ func TestSetAccessPolicy(t *testing.T) {
 
 	_, err := client.SetAccessPolicy(ctx, &param)
 	require.NoError(t, err)
+
+	recording.Sleep(60 * time.Second)
+
+	resp, err := client.GetAccessPolicy(ctx, nil)
+	require.NoError(t, err)
+	require.Equal(t, 1, len(resp.SignedIdentifiers))
+
+	// set nil access policy
+	_, err = client.SetAccessPolicy(ctx, nil)
+	require.NoError(t, err)
+
+	recording.Sleep(60 * time.Second)
+
+	resp, err = client.GetAccessPolicy(ctx, nil)
+	require.NoError(t, err)
+	require.Equal(t, 0, len(resp.SignedIdentifiers))
 }
 
 func TestSetMultipleAccessPolicies(t *testing.T) {
@@ -123,7 +142,7 @@ func TestSetTooManyAccessPolicies(t *testing.T) {
 	param := SetAccessPolicyOptions{TableACL: signedIdentifiers}
 
 	_, err := client.SetAccessPolicy(ctx, &param)
-	require.NotNil(t, err, "Set access policy succeeded but should have failed")
+	require.Error(t, err)
 	require.Contains(t, err.Error(), errTooManyAccessPoliciesError.Error())
 }
 
@@ -148,4 +167,27 @@ func TestSetNullAccessPolicy(t *testing.T) {
 	resp, err := client.GetAccessPolicy(ctx, nil)
 	require.NoError(t, err)
 	require.Equal(t, len(resp.SignedIdentifiers), 1)
+}
+
+func TestSetInvalidAccessPolicy(t *testing.T) {
+	client, delete := initClientTest(t, "storage", true)
+	defer delete()
+
+	signedIdentifiers := make([]*SignedIdentifier, 0)
+	signedIdentifiers = append(signedIdentifiers, &SignedIdentifier{
+		AccessPolicy: &AccessPolicy{
+			Expiry: to.Ptr(time.Date(2042, 1, 1, 1, 1, 1, 1, time.UTC)),
+		},
+	})
+
+	param := SetAccessPolicyOptions{
+		TableACL: signedIdentifiers,
+	}
+
+	_, err := client.SetAccessPolicy(ctx, &param)
+	require.Error(t, err)
+	var httpErr *azcore.ResponseError
+	require.ErrorAs(t, err, &httpErr)
+	require.Equal(t, "InvalidXmlDocument", httpErr.ErrorCode)
+	require.Contains(t, PossibleTableErrorCodeValues(), TableErrorCode(httpErr.ErrorCode))
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type EnergyServicesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewEnergyServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *EnergyServicesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewEnergyServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EnergyServicesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &EnergyServicesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreate - Method that gets called if subscribed for ResourceCreationBegin trigger.
@@ -55,22 +60,18 @@ func NewEnergyServicesClient(subscriptionID string, credential azcore.TokenCrede
 // resourceName - The resource name.
 // options - EnergyServicesClientBeginCreateOptions contains the optional parameters for the EnergyServicesClient.BeginCreate
 // method.
-func (client *EnergyServicesClient) BeginCreate(ctx context.Context, resourceGroupName string, resourceName string, options *EnergyServicesClientBeginCreateOptions) (EnergyServicesClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, resourceName, options)
-	if err != nil {
-		return EnergyServicesClientCreatePollerResponse{}, err
+func (client *EnergyServicesClient) BeginCreate(ctx context.Context, resourceGroupName string, resourceName string, options *EnergyServicesClientBeginCreateOptions) (*armruntime.Poller[EnergyServicesClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, resourceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[EnergyServicesClientCreateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[EnergyServicesClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := EnergyServicesClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("EnergyServicesClient.Create", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return EnergyServicesClientCreatePollerResponse{}, err
-	}
-	result.Poller = &EnergyServicesClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Method that gets called if subscribed for ResourceCreationBegin trigger.
@@ -122,22 +123,16 @@ func (client *EnergyServicesClient) createCreateRequest(ctx context.Context, res
 // resourceName - The resource name.
 // options - EnergyServicesClientBeginDeleteOptions contains the optional parameters for the EnergyServicesClient.BeginDelete
 // method.
-func (client *EnergyServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, options *EnergyServicesClientBeginDeleteOptions) (EnergyServicesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, options)
-	if err != nil {
-		return EnergyServicesClientDeletePollerResponse{}, err
+func (client *EnergyServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, options *EnergyServicesClientBeginDeleteOptions) (*armruntime.Poller[EnergyServicesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[EnergyServicesClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[EnergyServicesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := EnergyServicesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("EnergyServicesClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return EnergyServicesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &EnergyServicesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes oep resource
@@ -230,7 +225,7 @@ func (client *EnergyServicesClient) getCreateRequest(ctx context.Context, resour
 
 // getHandleResponse handles the Get response.
 func (client *EnergyServicesClient) getHandleResponse(resp *http.Response) (EnergyServicesClientGetResponse, error) {
-	result := EnergyServicesClientGetResponse{RawResponse: resp}
+	result := EnergyServicesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnergyService); err != nil {
 		return EnergyServicesClientGetResponse{}, err
 	}
@@ -242,16 +237,32 @@ func (client *EnergyServicesClient) getHandleResponse(resp *http.Response) (Ener
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - EnergyServicesClientListByResourceGroupOptions contains the optional parameters for the EnergyServicesClient.ListByResourceGroup
 // method.
-func (client *EnergyServicesClient) ListByResourceGroup(resourceGroupName string, options *EnergyServicesClientListByResourceGroupOptions) *EnergyServicesClientListByResourceGroupPager {
-	return &EnergyServicesClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *EnergyServicesClient) ListByResourceGroup(resourceGroupName string, options *EnergyServicesClientListByResourceGroupOptions) *runtime.Pager[EnergyServicesClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[EnergyServicesClientListByResourceGroupResponse]{
+		More: func(page EnergyServicesClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp EnergyServicesClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.EnergyServiceList.NextLink)
+		Fetcher: func(ctx context.Context, page *EnergyServicesClientListByResourceGroupResponse) (EnergyServicesClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return EnergyServicesClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return EnergyServicesClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return EnergyServicesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -278,7 +289,7 @@ func (client *EnergyServicesClient) listByResourceGroupCreateRequest(ctx context
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *EnergyServicesClient) listByResourceGroupHandleResponse(resp *http.Response) (EnergyServicesClientListByResourceGroupResponse, error) {
-	result := EnergyServicesClientListByResourceGroupResponse{RawResponse: resp}
+	result := EnergyServicesClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnergyServiceList); err != nil {
 		return EnergyServicesClientListByResourceGroupResponse{}, err
 	}
@@ -289,16 +300,32 @@ func (client *EnergyServicesClient) listByResourceGroupHandleResponse(resp *http
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - EnergyServicesClientListBySubscriptionOptions contains the optional parameters for the EnergyServicesClient.ListBySubscription
 // method.
-func (client *EnergyServicesClient) ListBySubscription(options *EnergyServicesClientListBySubscriptionOptions) *EnergyServicesClientListBySubscriptionPager {
-	return &EnergyServicesClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *EnergyServicesClient) ListBySubscription(options *EnergyServicesClientListBySubscriptionOptions) *runtime.Pager[EnergyServicesClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[EnergyServicesClientListBySubscriptionResponse]{
+		More: func(page EnergyServicesClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp EnergyServicesClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.EnergyServiceList.NextLink)
+		Fetcher: func(ctx context.Context, page *EnergyServicesClientListBySubscriptionResponse) (EnergyServicesClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return EnergyServicesClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return EnergyServicesClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return EnergyServicesClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -321,7 +348,7 @@ func (client *EnergyServicesClient) listBySubscriptionCreateRequest(ctx context.
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *EnergyServicesClient) listBySubscriptionHandleResponse(resp *http.Response) (EnergyServicesClientListBySubscriptionResponse, error) {
-	result := EnergyServicesClientListBySubscriptionResponse{RawResponse: resp}
+	result := EnergyServicesClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnergyServiceList); err != nil {
 		return EnergyServicesClientListBySubscriptionResponse{}, err
 	}
@@ -379,7 +406,7 @@ func (client *EnergyServicesClient) updateCreateRequest(ctx context.Context, res
 
 // updateHandleResponse handles the Update response.
 func (client *EnergyServicesClient) updateHandleResponse(resp *http.Response) (EnergyServicesClientUpdateResponse, error) {
-	result := EnergyServicesClientUpdateResponse{RawResponse: resp}
+	result := EnergyServicesClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnergyService); err != nil {
 		return EnergyServicesClientUpdateResponse{}, err
 	}

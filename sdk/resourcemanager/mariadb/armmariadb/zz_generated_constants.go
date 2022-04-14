@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armmariadb
 
 const (
 	moduleName    = "armmariadb"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // CreateMode - The mode to create a new server.
@@ -33,11 +33,6 @@ func PossibleCreateModeValues() []CreateMode {
 	}
 }
 
-// ToPtr returns a *CreateMode pointing to the current value.
-func (c CreateMode) ToPtr() *CreateMode {
-	return &c
-}
-
 // GeoRedundantBackup - Enable Geo-redundant or not for server backup.
 type GeoRedundantBackup string
 
@@ -52,11 +47,6 @@ func PossibleGeoRedundantBackupValues() []GeoRedundantBackup {
 		GeoRedundantBackupDisabled,
 		GeoRedundantBackupEnabled,
 	}
-}
-
-// ToPtr returns a *GeoRedundantBackup pointing to the current value.
-func (c GeoRedundantBackup) ToPtr() *GeoRedundantBackup {
-	return &c
 }
 
 // MinimalTLSVersionEnum - Enforce a minimal Tls version for the server.
@@ -79,11 +69,6 @@ func PossibleMinimalTLSVersionEnumValues() []MinimalTLSVersionEnum {
 	}
 }
 
-// ToPtr returns a *MinimalTLSVersionEnum pointing to the current value.
-func (c MinimalTLSVersionEnum) ToPtr() *MinimalTLSVersionEnum {
-	return &c
-}
-
 // OperationOrigin - The intended executor of the operation.
 type OperationOrigin string
 
@@ -100,11 +85,6 @@ func PossibleOperationOriginValues() []OperationOrigin {
 		OperationOriginSystem,
 		OperationOriginUser,
 	}
-}
-
-// ToPtr returns a *OperationOrigin pointing to the current value.
-func (c OperationOrigin) ToPtr() *OperationOrigin {
-	return &c
 }
 
 // PrivateEndpointProvisioningState - State of the private endpoint connection.
@@ -129,11 +109,6 @@ func PossiblePrivateEndpointProvisioningStateValues() []PrivateEndpointProvision
 	}
 }
 
-// ToPtr returns a *PrivateEndpointProvisioningState pointing to the current value.
-func (c PrivateEndpointProvisioningState) ToPtr() *PrivateEndpointProvisioningState {
-	return &c
-}
-
 // PrivateLinkServiceConnectionStateActionsRequire - The actions required for private link service connection.
 type PrivateLinkServiceConnectionStateActionsRequire string
 
@@ -146,11 +121,6 @@ func PossiblePrivateLinkServiceConnectionStateActionsRequireValues() []PrivateLi
 	return []PrivateLinkServiceConnectionStateActionsRequire{
 		PrivateLinkServiceConnectionStateActionsRequireNone,
 	}
-}
-
-// ToPtr returns a *PrivateLinkServiceConnectionStateActionsRequire pointing to the current value.
-func (c PrivateLinkServiceConnectionStateActionsRequire) ToPtr() *PrivateLinkServiceConnectionStateActionsRequire {
-	return &c
 }
 
 // PrivateLinkServiceConnectionStateStatus - The private link service connection status.
@@ -173,11 +143,6 @@ func PossiblePrivateLinkServiceConnectionStateStatusValues() []PrivateLinkServic
 	}
 }
 
-// ToPtr returns a *PrivateLinkServiceConnectionStateStatus pointing to the current value.
-func (c PrivateLinkServiceConnectionStateStatus) ToPtr() *PrivateLinkServiceConnectionStateStatus {
-	return &c
-}
-
 // PublicNetworkAccessEnum - Whether or not public network access is allowed for this server. Value is optional but if passed
 // in, must be 'Enabled' or 'Disabled'
 type PublicNetworkAccessEnum string
@@ -195,11 +160,6 @@ func PossiblePublicNetworkAccessEnumValues() []PublicNetworkAccessEnum {
 	}
 }
 
-// ToPtr returns a *PublicNetworkAccessEnum pointing to the current value.
-func (c PublicNetworkAccessEnum) ToPtr() *PublicNetworkAccessEnum {
-	return &c
-}
-
 // QueryPerformanceInsightResetDataResultState - Indicates result of the operation.
 type QueryPerformanceInsightResetDataResultState string
 
@@ -214,11 +174,6 @@ func PossibleQueryPerformanceInsightResetDataResultStateValues() []QueryPerforma
 		QueryPerformanceInsightResetDataResultStateFailed,
 		QueryPerformanceInsightResetDataResultStateSucceeded,
 	}
-}
-
-// ToPtr returns a *QueryPerformanceInsightResetDataResultState pointing to the current value.
-func (c QueryPerformanceInsightResetDataResultState) ToPtr() *QueryPerformanceInsightResetDataResultState {
-	return &c
 }
 
 // SKUTier - The tier of the particular SKU, e.g. Basic.
@@ -239,11 +194,6 @@ func PossibleSKUTierValues() []SKUTier {
 	}
 }
 
-// ToPtr returns a *SKUTier pointing to the current value.
-func (c SKUTier) ToPtr() *SKUTier {
-	return &c
-}
-
 // SSLEnforcementEnum - Enable ssl enforcement or not when connect to server.
 type SSLEnforcementEnum string
 
@@ -260,11 +210,6 @@ func PossibleSSLEnforcementEnumValues() []SSLEnforcementEnum {
 	}
 }
 
-// ToPtr returns a *SSLEnforcementEnum pointing to the current value.
-func (c SSLEnforcementEnum) ToPtr() *SSLEnforcementEnum {
-	return &c
-}
-
 type SecurityAlertPolicyName string
 
 const (
@@ -276,11 +221,6 @@ func PossibleSecurityAlertPolicyNameValues() []SecurityAlertPolicyName {
 	return []SecurityAlertPolicyName{
 		SecurityAlertPolicyNameDefault,
 	}
-}
-
-// ToPtr returns a *SecurityAlertPolicyName pointing to the current value.
-func (c SecurityAlertPolicyName) ToPtr() *SecurityAlertPolicyName {
-	return &c
 }
 
 // ServerSecurityAlertPolicyState - Specifies the state of the policy, whether it is enabled or disabled.
@@ -297,11 +237,6 @@ func PossibleServerSecurityAlertPolicyStateValues() []ServerSecurityAlertPolicyS
 		ServerSecurityAlertPolicyStateEnabled,
 		ServerSecurityAlertPolicyStateDisabled,
 	}
-}
-
-// ToPtr returns a *ServerSecurityAlertPolicyState pointing to the current value.
-func (c ServerSecurityAlertPolicyState) ToPtr() *ServerSecurityAlertPolicyState {
-	return &c
 }
 
 // ServerState - A state of a server that is visible to user.
@@ -322,11 +257,6 @@ func PossibleServerStateValues() []ServerState {
 	}
 }
 
-// ToPtr returns a *ServerState pointing to the current value.
-func (c ServerState) ToPtr() *ServerState {
-	return &c
-}
-
 // ServerVersion - The version of a server.
 type ServerVersion string
 
@@ -343,11 +273,6 @@ func PossibleServerVersionValues() []ServerVersion {
 	}
 }
 
-// ToPtr returns a *ServerVersion pointing to the current value.
-func (c ServerVersion) ToPtr() *ServerVersion {
-	return &c
-}
-
 // StorageAutogrow - Enable Storage Auto Grow.
 type StorageAutogrow string
 
@@ -362,11 +287,6 @@ func PossibleStorageAutogrowValues() []StorageAutogrow {
 		StorageAutogrowDisabled,
 		StorageAutogrowEnabled,
 	}
-}
-
-// ToPtr returns a *StorageAutogrow pointing to the current value.
-func (c StorageAutogrow) ToPtr() *StorageAutogrow {
-	return &c
 }
 
 // VirtualNetworkRuleState - Virtual Network Rule State
@@ -389,9 +309,4 @@ func PossibleVirtualNetworkRuleStateValues() []VirtualNetworkRuleState {
 		VirtualNetworkRuleStateReady,
 		VirtualNetworkRuleStateUnknown,
 	}
-}
-
-// ToPtr returns a *VirtualNetworkRuleState pointing to the current value.
-func (c VirtualNetworkRuleState) ToPtr() *VirtualNetworkRuleState {
-	return &c
 }

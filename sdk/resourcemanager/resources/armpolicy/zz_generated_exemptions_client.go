@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ExemptionsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewExemptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ExemptionsClient {
+func NewExemptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExemptionsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ExemptionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - This operation creates or updates a policy exemption with the given scope and name. Policy exemptions
@@ -99,7 +104,7 @@ func (client *ExemptionsClient) createOrUpdateCreateRequest(ctx context.Context,
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ExemptionsClient) createOrUpdateHandleResponse(resp *http.Response) (ExemptionsClientCreateOrUpdateResponse, error) {
-	result := ExemptionsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := ExemptionsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Exemption); err != nil {
 		return ExemptionsClientCreateOrUpdateResponse{}, err
 	}
@@ -129,7 +134,7 @@ func (client *ExemptionsClient) Delete(ctx context.Context, scope string, policy
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ExemptionsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ExemptionsClientDeleteResponse{RawResponse: resp}, nil
+	return ExemptionsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -196,7 +201,7 @@ func (client *ExemptionsClient) getCreateRequest(ctx context.Context, scope stri
 
 // getHandleResponse handles the Get response.
 func (client *ExemptionsClient) getHandleResponse(resp *http.Response) (ExemptionsClientGetResponse, error) {
-	result := ExemptionsClientGetResponse{RawResponse: resp}
+	result := ExemptionsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Exemption); err != nil {
 		return ExemptionsClientGetResponse{}, err
 	}
@@ -211,16 +216,32 @@ func (client *ExemptionsClient) getHandleResponse(resp *http.Response) (Exemptio
 // the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ExemptionsClientListOptions contains the optional parameters for the ExemptionsClient.List method.
-func (client *ExemptionsClient) List(options *ExemptionsClientListOptions) *ExemptionsClientListPager {
-	return &ExemptionsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *ExemptionsClient) List(options *ExemptionsClientListOptions) *runtime.Pager[ExemptionsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ExemptionsClientListResponse]{
+		More: func(page ExemptionsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ExemptionsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ExemptionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ExemptionsClientListResponse) (ExemptionsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ExemptionsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ExemptionsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ExemptionsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -248,7 +269,7 @@ func (client *ExemptionsClient) listCreateRequest(ctx context.Context, options *
 
 // listHandleResponse handles the List response.
 func (client *ExemptionsClient) listHandleResponse(resp *http.Response) (ExemptionsClientListResponse, error) {
-	result := ExemptionsClientListResponse{RawResponse: resp}
+	result := ExemptionsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExemptionListResult); err != nil {
 		return ExemptionsClientListResponse{}, err
 	}
@@ -264,16 +285,32 @@ func (client *ExemptionsClient) listHandleResponse(resp *http.Response) (Exempti
 // managementGroupID - The ID of the management group.
 // options - ExemptionsClientListForManagementGroupOptions contains the optional parameters for the ExemptionsClient.ListForManagementGroup
 // method.
-func (client *ExemptionsClient) ListForManagementGroup(managementGroupID string, options *ExemptionsClientListForManagementGroupOptions) *ExemptionsClientListForManagementGroupPager {
-	return &ExemptionsClientListForManagementGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listForManagementGroupCreateRequest(ctx, managementGroupID, options)
+func (client *ExemptionsClient) ListForManagementGroup(managementGroupID string, options *ExemptionsClientListForManagementGroupOptions) *runtime.Pager[ExemptionsClientListForManagementGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ExemptionsClientListForManagementGroupResponse]{
+		More: func(page ExemptionsClientListForManagementGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ExemptionsClientListForManagementGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ExemptionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ExemptionsClientListForManagementGroupResponse) (ExemptionsClientListForManagementGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listForManagementGroupCreateRequest(ctx, managementGroupID, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ExemptionsClientListForManagementGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ExemptionsClientListForManagementGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ExemptionsClientListForManagementGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listForManagementGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listForManagementGroupCreateRequest creates the ListForManagementGroup request.
@@ -301,7 +338,7 @@ func (client *ExemptionsClient) listForManagementGroupCreateRequest(ctx context.
 
 // listForManagementGroupHandleResponse handles the ListForManagementGroup response.
 func (client *ExemptionsClient) listForManagementGroupHandleResponse(resp *http.Response) (ExemptionsClientListForManagementGroupResponse, error) {
-	result := ExemptionsClientListForManagementGroupResponse{RawResponse: resp}
+	result := ExemptionsClientListForManagementGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExemptionListResult); err != nil {
 		return ExemptionsClientListForManagementGroupResponse{}, err
 	}
@@ -333,16 +370,32 @@ func (client *ExemptionsClient) listForManagementGroupHandleResponse(resp *http.
 // resourceName - The name of the resource.
 // options - ExemptionsClientListForResourceOptions contains the optional parameters for the ExemptionsClient.ListForResource
 // method.
-func (client *ExemptionsClient) ListForResource(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *ExemptionsClientListForResourceOptions) *ExemptionsClientListForResourcePager {
-	return &ExemptionsClientListForResourcePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listForResourceCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, options)
+func (client *ExemptionsClient) ListForResource(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *ExemptionsClientListForResourceOptions) *runtime.Pager[ExemptionsClientListForResourceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ExemptionsClientListForResourceResponse]{
+		More: func(page ExemptionsClientListForResourceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ExemptionsClientListForResourceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ExemptionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ExemptionsClientListForResourceResponse) (ExemptionsClientListForResourceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listForResourceCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ExemptionsClientListForResourceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ExemptionsClientListForResourceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ExemptionsClientListForResourceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listForResourceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listForResourceCreateRequest creates the ListForResource request.
@@ -384,7 +437,7 @@ func (client *ExemptionsClient) listForResourceCreateRequest(ctx context.Context
 
 // listForResourceHandleResponse handles the ListForResource response.
 func (client *ExemptionsClient) listForResourceHandleResponse(resp *http.Response) (ExemptionsClientListForResourceResponse, error) {
-	result := ExemptionsClientListForResourceResponse{RawResponse: resp}
+	result := ExemptionsClientListForResourceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExemptionListResult); err != nil {
 		return ExemptionsClientListForResourceResponse{}, err
 	}
@@ -401,16 +454,32 @@ func (client *ExemptionsClient) listForResourceHandleResponse(resp *http.Respons
 // resourceGroupName - The name of the resource group containing the resource.
 // options - ExemptionsClientListForResourceGroupOptions contains the optional parameters for the ExemptionsClient.ListForResourceGroup
 // method.
-func (client *ExemptionsClient) ListForResourceGroup(resourceGroupName string, options *ExemptionsClientListForResourceGroupOptions) *ExemptionsClientListForResourceGroupPager {
-	return &ExemptionsClientListForResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listForResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *ExemptionsClient) ListForResourceGroup(resourceGroupName string, options *ExemptionsClientListForResourceGroupOptions) *runtime.Pager[ExemptionsClientListForResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ExemptionsClientListForResourceGroupResponse]{
+		More: func(page ExemptionsClientListForResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ExemptionsClientListForResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ExemptionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ExemptionsClientListForResourceGroupResponse) (ExemptionsClientListForResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listForResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ExemptionsClientListForResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ExemptionsClientListForResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ExemptionsClientListForResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listForResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listForResourceGroupCreateRequest creates the ListForResourceGroup request.
@@ -442,7 +511,7 @@ func (client *ExemptionsClient) listForResourceGroupCreateRequest(ctx context.Co
 
 // listForResourceGroupHandleResponse handles the ListForResourceGroup response.
 func (client *ExemptionsClient) listForResourceGroupHandleResponse(resp *http.Response) (ExemptionsClientListForResourceGroupResponse, error) {
-	result := ExemptionsClientListForResourceGroupResponse{RawResponse: resp}
+	result := ExemptionsClientListForResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExemptionListResult); err != nil {
 		return ExemptionsClientListForResourceGroupResponse{}, err
 	}

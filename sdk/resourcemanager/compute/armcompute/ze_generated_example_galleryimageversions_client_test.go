@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,88 +19,101 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 )
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/CreateOrUpdateASimpleGalleryImageVersionWithVMAsSource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/CreateOrUpdateASimpleGalleryImageVersionWithVMAsSource.json
 func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcompute.NewGalleryImageVersionsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewGalleryImageVersionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<gallery-name>",
 		"<gallery-image-name>",
 		"<gallery-image-version-name>",
 		armcompute.GalleryImageVersion{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Properties: &armcompute.GalleryImageVersionProperties{
 				PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
 					TargetRegions: []*armcompute.TargetRegion{
 						{
-							Name: to.StringPtr("<name>"),
+							Name: to.Ptr("<name>"),
 							Encryption: &armcompute.EncryptionImages{
 								DataDiskImages: []*armcompute.DataDiskImageEncryption{
 									{
-										DiskEncryptionSetID: to.StringPtr("<disk-encryption-set-id>"),
-										Lun:                 to.Int32Ptr(0),
+										DiskEncryptionSetID: to.Ptr("<disk-encryption-set-id>"),
+										Lun:                 to.Ptr[int32](0),
 									},
 									{
-										DiskEncryptionSetID: to.StringPtr("<disk-encryption-set-id>"),
-										Lun:                 to.Int32Ptr(1),
+										DiskEncryptionSetID: to.Ptr("<disk-encryption-set-id>"),
+										Lun:                 to.Ptr[int32](1),
 									}},
 								OSDiskImage: &armcompute.OSDiskImageEncryption{
-									DiskEncryptionSetID: to.StringPtr("<disk-encryption-set-id>"),
+									DiskEncryptionSetID: to.Ptr("<disk-encryption-set-id>"),
 								},
 							},
-							RegionalReplicaCount: to.Int32Ptr(1),
+							RegionalReplicaCount: to.Ptr[int32](1),
 						},
 						{
-							Name: to.StringPtr("<name>"),
+							Name: to.Ptr("<name>"),
 							Encryption: &armcompute.EncryptionImages{
 								DataDiskImages: []*armcompute.DataDiskImageEncryption{
 									{
-										DiskEncryptionSetID: to.StringPtr("<disk-encryption-set-id>"),
-										Lun:                 to.Int32Ptr(0),
+										DiskEncryptionSetID: to.Ptr("<disk-encryption-set-id>"),
+										Lun:                 to.Ptr[int32](0),
 									},
 									{
-										DiskEncryptionSetID: to.StringPtr("<disk-encryption-set-id>"),
-										Lun:                 to.Int32Ptr(1),
+										DiskEncryptionSetID: to.Ptr("<disk-encryption-set-id>"),
+										Lun:                 to.Ptr[int32](1),
 									}},
 								OSDiskImage: &armcompute.OSDiskImageEncryption{
-									DiskEncryptionSetID: to.StringPtr("<disk-encryption-set-id>"),
+									DiskEncryptionSetID: to.Ptr("<disk-encryption-set-id>"),
 								},
 							},
-							RegionalReplicaCount: to.Int32Ptr(2),
-							StorageAccountType:   armcompute.StorageAccountType("Standard_ZRS").ToPtr(),
+							RegionalReplicaCount: to.Ptr[int32](2),
+							StorageAccountType:   to.Ptr(armcompute.StorageAccountTypeStandardZRS),
 						}},
 				},
 				StorageProfile: &armcompute.GalleryImageVersionStorageProfile{
 					Source: &armcompute.GalleryArtifactVersionSource{
-						ID: to.StringPtr("<id>"),
+						ID: to.Ptr("<id>"),
 					},
 				},
 			},
 		},
-		nil)
+		&armcompute.GalleryImageVersionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.GalleryImageVersionsClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/UpdateASimpleGalleryImageVersion.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/UpdateASimpleGalleryImageVersion.json
 func ExampleGalleryImageVersionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcompute.NewGalleryImageVersionsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewGalleryImageVersionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<gallery-name>",
@@ -111,98 +124,119 @@ func ExampleGalleryImageVersionsClient_BeginUpdate() {
 				PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
 					TargetRegions: []*armcompute.TargetRegion{
 						{
-							Name:                 to.StringPtr("<name>"),
-							RegionalReplicaCount: to.Int32Ptr(1),
+							Name:                 to.Ptr("<name>"),
+							RegionalReplicaCount: to.Ptr[int32](1),
 						},
 						{
-							Name:                 to.StringPtr("<name>"),
-							RegionalReplicaCount: to.Int32Ptr(2),
-							StorageAccountType:   armcompute.StorageAccountType("Standard_ZRS").ToPtr(),
+							Name:                 to.Ptr("<name>"),
+							RegionalReplicaCount: to.Ptr[int32](2),
+							StorageAccountType:   to.Ptr(armcompute.StorageAccountTypeStandardZRS),
 						}},
 				},
 				StorageProfile: &armcompute.GalleryImageVersionStorageProfile{
 					Source: &armcompute.GalleryArtifactVersionSource{
-						ID: to.StringPtr("<id>"),
+						ID: to.Ptr("<id>"),
 					},
 				},
 			},
 		},
-		nil)
+		&armcompute.GalleryImageVersionsClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.GalleryImageVersionsClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/GetAGalleryImageVersionWithReplicationStatus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/GetAGalleryImageVersionWithReplicationStatus.json
 func ExampleGalleryImageVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcompute.NewGalleryImageVersionsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewGalleryImageVersionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<gallery-name>",
 		"<gallery-image-name>",
 		"<gallery-image-version-name>",
-		&armcompute.GalleryImageVersionsClientGetOptions{Expand: armcompute.ReplicationStatusTypes("ReplicationStatus").ToPtr()})
+		&armcompute.GalleryImageVersionsClientGetOptions{Expand: to.Ptr(armcompute.ReplicationStatusTypesReplicationStatus)})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.GalleryImageVersionsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/DeleteAGalleryImageVersion.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/DeleteAGalleryImageVersion.json
 func ExampleGalleryImageVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcompute.NewGalleryImageVersionsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewGalleryImageVersionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<gallery-name>",
 		"<gallery-image-name>",
 		"<gallery-image-version-name>",
-		nil)
+		&armcompute.GalleryImageVersionsClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/ListGalleryImageVersionsInAGalleryImage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/ListGalleryImageVersionsInAGalleryImage.json
 func ExampleGalleryImageVersionsClient_ListByGalleryImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcompute.NewGalleryImageVersionsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewGalleryImageVersionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByGalleryImage("<resource-group-name>",
 		"<gallery-name>",
 		"<gallery-image-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

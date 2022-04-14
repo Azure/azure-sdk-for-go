@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,76 +17,97 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights"
 )
 
-// x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/ProactiveDetectionConfigurationsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/ProactiveDetectionConfigurationsList.json
 func ExampleProactiveDetectionConfigurationsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapplicationinsights.NewProactiveDetectionConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewProactiveDetectionConfigurationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ProactiveDetectionConfigurationsClientListResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/ProactiveDetectionConfigurationGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/ProactiveDetectionConfigurationGet.json
 func ExampleProactiveDetectionConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapplicationinsights.NewProactiveDetectionConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewProactiveDetectionConfigurationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		"<configuration-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ProactiveDetectionConfigurationsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/ProactiveDetectionConfigurationUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/ProactiveDetectionConfigurationUpdate.json
 func ExampleProactiveDetectionConfigurationsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapplicationinsights.NewProactiveDetectionConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewProactiveDetectionConfigurationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		"<configuration-id>",
 		armapplicationinsights.ComponentProactiveDetectionConfiguration{
 			CustomEmails: []*string{
-				to.StringPtr("foo@microsoft.com"),
-				to.StringPtr("foo2@microsoft.com")},
-			Enabled: to.BoolPtr(true),
-			Name:    to.StringPtr("<name>"),
+				to.Ptr("foo@microsoft.com"),
+				to.Ptr("foo2@microsoft.com")},
+			Enabled: to.Ptr(true),
+			Name:    to.Ptr("<name>"),
 			RuleDefinitions: &armapplicationinsights.ComponentProactiveDetectionConfigurationRuleDefinitions{
-				Description:                to.StringPtr("<description>"),
-				DisplayName:                to.StringPtr("<display-name>"),
-				HelpURL:                    to.StringPtr("<help-url>"),
-				IsEnabledByDefault:         to.BoolPtr(true),
-				IsHidden:                   to.BoolPtr(false),
-				IsInPreview:                to.BoolPtr(false),
-				Name:                       to.StringPtr("<name>"),
-				SupportsEmailNotifications: to.BoolPtr(true),
+				Description:                to.Ptr("<description>"),
+				DisplayName:                to.Ptr("<display-name>"),
+				HelpURL:                    to.Ptr("<help-url>"),
+				IsEnabledByDefault:         to.Ptr(true),
+				IsHidden:                   to.Ptr(false),
+				IsInPreview:                to.Ptr(false),
+				Name:                       to.Ptr("<name>"),
+				SupportsEmailNotifications: to.Ptr(true),
 			},
-			SendEmailsToSubscriptionOwners: to.BoolPtr(true),
+			SendEmailsToSubscriptionOwners: to.Ptr(true),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ProactiveDetectionConfigurationsClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }

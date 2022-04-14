@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type ClusterPrincipalAssignmentsClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewClusterPrincipalAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ClusterPrincipalAssignmentsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewClusterPrincipalAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClusterPrincipalAssignmentsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ClusterPrincipalAssignmentsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CheckNameAvailability - Checks that the principal assignment name is valid and is not already in use.
@@ -92,7 +97,7 @@ func (client *ClusterPrincipalAssignmentsClient) checkNameAvailabilityCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, principalAssignmentName)
@@ -100,7 +105,7 @@ func (client *ClusterPrincipalAssignmentsClient) checkNameAvailabilityCreateRequ
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
 func (client *ClusterPrincipalAssignmentsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (ClusterPrincipalAssignmentsClientCheckNameAvailabilityResponse, error) {
-	result := ClusterPrincipalAssignmentsClientCheckNameAvailabilityResponse{RawResponse: resp}
+	result := ClusterPrincipalAssignmentsClientCheckNameAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameResult); err != nil {
 		return ClusterPrincipalAssignmentsClientCheckNameAvailabilityResponse{}, err
 	}
@@ -115,22 +120,16 @@ func (client *ClusterPrincipalAssignmentsClient) checkNameAvailabilityHandleResp
 // parameters - The Kusto cluster principalAssignment's parameters supplied for the operation.
 // options - ClusterPrincipalAssignmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the ClusterPrincipalAssignmentsClient.BeginCreateOrUpdate
 // method.
-func (client *ClusterPrincipalAssignmentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, principalAssignmentName string, parameters ClusterPrincipalAssignment, options *ClusterPrincipalAssignmentsClientBeginCreateOrUpdateOptions) (ClusterPrincipalAssignmentsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, clusterName, principalAssignmentName, parameters, options)
-	if err != nil {
-		return ClusterPrincipalAssignmentsClientCreateOrUpdatePollerResponse{}, err
+func (client *ClusterPrincipalAssignmentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, principalAssignmentName string, parameters ClusterPrincipalAssignment, options *ClusterPrincipalAssignmentsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ClusterPrincipalAssignmentsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, clusterName, principalAssignmentName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClusterPrincipalAssignmentsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClusterPrincipalAssignmentsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClusterPrincipalAssignmentsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ClusterPrincipalAssignmentsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return ClusterPrincipalAssignmentsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ClusterPrincipalAssignmentsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create a Kusto cluster principalAssignment.
@@ -174,7 +173,7 @@ func (client *ClusterPrincipalAssignmentsClient) createOrUpdateCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -187,22 +186,16 @@ func (client *ClusterPrincipalAssignmentsClient) createOrUpdateCreateRequest(ctx
 // principalAssignmentName - The name of the Kusto principalAssignment.
 // options - ClusterPrincipalAssignmentsClientBeginDeleteOptions contains the optional parameters for the ClusterPrincipalAssignmentsClient.BeginDelete
 // method.
-func (client *ClusterPrincipalAssignmentsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, principalAssignmentName string, options *ClusterPrincipalAssignmentsClientBeginDeleteOptions) (ClusterPrincipalAssignmentsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, principalAssignmentName, options)
-	if err != nil {
-		return ClusterPrincipalAssignmentsClientDeletePollerResponse{}, err
+func (client *ClusterPrincipalAssignmentsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, principalAssignmentName string, options *ClusterPrincipalAssignmentsClientBeginDeleteOptions) (*armruntime.Poller[ClusterPrincipalAssignmentsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, principalAssignmentName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClusterPrincipalAssignmentsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClusterPrincipalAssignmentsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClusterPrincipalAssignmentsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ClusterPrincipalAssignmentsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return ClusterPrincipalAssignmentsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ClusterPrincipalAssignmentsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a Kusto cluster principalAssignment.
@@ -246,7 +239,7 @@ func (client *ClusterPrincipalAssignmentsClient) deleteCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -298,7 +291,7 @@ func (client *ClusterPrincipalAssignmentsClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -306,7 +299,7 @@ func (client *ClusterPrincipalAssignmentsClient) getCreateRequest(ctx context.Co
 
 // getHandleResponse handles the Get response.
 func (client *ClusterPrincipalAssignmentsClient) getHandleResponse(resp *http.Response) (ClusterPrincipalAssignmentsClientGetResponse, error) {
-	result := ClusterPrincipalAssignmentsClientGetResponse{RawResponse: resp}
+	result := ClusterPrincipalAssignmentsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterPrincipalAssignment); err != nil {
 		return ClusterPrincipalAssignmentsClientGetResponse{}, err
 	}
@@ -319,19 +312,26 @@ func (client *ClusterPrincipalAssignmentsClient) getHandleResponse(resp *http.Re
 // clusterName - The name of the Kusto cluster.
 // options - ClusterPrincipalAssignmentsClientListOptions contains the optional parameters for the ClusterPrincipalAssignmentsClient.List
 // method.
-func (client *ClusterPrincipalAssignmentsClient) List(ctx context.Context, resourceGroupName string, clusterName string, options *ClusterPrincipalAssignmentsClientListOptions) (ClusterPrincipalAssignmentsClientListResponse, error) {
-	req, err := client.listCreateRequest(ctx, resourceGroupName, clusterName, options)
-	if err != nil {
-		return ClusterPrincipalAssignmentsClientListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ClusterPrincipalAssignmentsClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClusterPrincipalAssignmentsClientListResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listHandleResponse(resp)
+func (client *ClusterPrincipalAssignmentsClient) List(resourceGroupName string, clusterName string, options *ClusterPrincipalAssignmentsClientListOptions) *runtime.Pager[ClusterPrincipalAssignmentsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ClusterPrincipalAssignmentsClientListResponse]{
+		More: func(page ClusterPrincipalAssignmentsClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ClusterPrincipalAssignmentsClientListResponse) (ClusterPrincipalAssignmentsClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, resourceGroupName, clusterName, options)
+			if err != nil {
+				return ClusterPrincipalAssignmentsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClusterPrincipalAssignmentsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClusterPrincipalAssignmentsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -354,7 +354,7 @@ func (client *ClusterPrincipalAssignmentsClient) listCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -362,7 +362,7 @@ func (client *ClusterPrincipalAssignmentsClient) listCreateRequest(ctx context.C
 
 // listHandleResponse handles the List response.
 func (client *ClusterPrincipalAssignmentsClient) listHandleResponse(resp *http.Response) (ClusterPrincipalAssignmentsClientListResponse, error) {
-	result := ClusterPrincipalAssignmentsClientListResponse{RawResponse: resp}
+	result := ClusterPrincipalAssignmentsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterPrincipalAssignmentListResult); err != nil {
 		return ClusterPrincipalAssignmentsClientListResponse{}, err
 	}

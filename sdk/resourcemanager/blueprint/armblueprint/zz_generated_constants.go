@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armblueprint
 
 const (
 	moduleName    = "armblueprint"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // ArtifactKind - Specifies the kind of blueprint artifact.
@@ -31,11 +31,6 @@ func PossibleArtifactKindValues() []ArtifactKind {
 	}
 }
 
-// ToPtr returns a *ArtifactKind pointing to the current value.
-func (c ArtifactKind) ToPtr() *ArtifactKind {
-	return &c
-}
-
 type AssignmentDeleteBehavior string
 
 const (
@@ -49,11 +44,6 @@ func PossibleAssignmentDeleteBehaviorValues() []AssignmentDeleteBehavior {
 		AssignmentDeleteBehaviorAll,
 		AssignmentDeleteBehaviorNone,
 	}
-}
-
-// ToPtr returns a *AssignmentDeleteBehavior pointing to the current value.
-func (c AssignmentDeleteBehavior) ToPtr() *AssignmentDeleteBehavior {
-	return &c
 }
 
 // AssignmentLockMode - Lock mode.
@@ -72,11 +62,6 @@ func PossibleAssignmentLockModeValues() []AssignmentLockMode {
 		AssignmentLockModeAllResourcesReadOnly,
 		AssignmentLockModeNone,
 	}
-}
-
-// ToPtr returns a *AssignmentLockMode pointing to the current value.
-func (c AssignmentLockMode) ToPtr() *AssignmentLockMode {
-	return &c
 }
 
 // AssignmentProvisioningState - State of the blueprint assignment.
@@ -111,11 +96,6 @@ func PossibleAssignmentProvisioningStateValues() []AssignmentProvisioningState {
 	}
 }
 
-// ToPtr returns a *AssignmentProvisioningState pointing to the current value.
-func (c AssignmentProvisioningState) ToPtr() *AssignmentProvisioningState {
-	return &c
-}
-
 // BlueprintTargetScope - The scope where this blueprint definition can be assigned.
 type BlueprintTargetScope string
 
@@ -135,11 +115,6 @@ func PossibleBlueprintTargetScopeValues() []BlueprintTargetScope {
 	}
 }
 
-// ToPtr returns a *BlueprintTargetScope pointing to the current value.
-func (c BlueprintTargetScope) ToPtr() *BlueprintTargetScope {
-	return &c
-}
-
 // ManagedServiceIdentityType - Type of the managed identity.
 type ManagedServiceIdentityType string
 
@@ -156,11 +131,6 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 		ManagedServiceIdentityTypeSystemAssigned,
 		ManagedServiceIdentityTypeUserAssigned,
 	}
-}
-
-// ToPtr returns a *ManagedServiceIdentityType pointing to the current value.
-func (c ManagedServiceIdentityType) ToPtr() *ManagedServiceIdentityType {
-	return &c
 }
 
 // TemplateParameterType - Allowed data types for Resource Manager template parameters.
@@ -187,9 +157,4 @@ func PossibleTemplateParameterTypeValues() []TemplateParameterType {
 		TemplateParameterTypeSecureString,
 		TemplateParameterTypeString,
 	}
-}
-
-// ToPtr returns a *TemplateParameterType pointing to the current value.
-func (c TemplateParameterType) ToPtr() *TemplateParameterType {
-	return &c
 }

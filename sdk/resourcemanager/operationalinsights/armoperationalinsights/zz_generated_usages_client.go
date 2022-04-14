@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type UsagesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *UsagesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UsagesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &UsagesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - Gets a list of usage metrics for a workspace.
@@ -54,19 +59,26 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - UsagesClientListOptions contains the optional parameters for the UsagesClient.List method.
-func (client *UsagesClient) List(ctx context.Context, resourceGroupName string, workspaceName string, options *UsagesClientListOptions) (UsagesClientListResponse, error) {
-	req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
-	if err != nil {
-		return UsagesClientListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return UsagesClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return UsagesClientListResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listHandleResponse(resp)
+func (client *UsagesClient) List(resourceGroupName string, workspaceName string, options *UsagesClientListOptions) *runtime.Pager[UsagesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[UsagesClientListResponse]{
+		More: func(page UsagesClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *UsagesClientListResponse) (UsagesClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
+			if err != nil {
+				return UsagesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return UsagesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return UsagesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -97,7 +109,7 @@ func (client *UsagesClient) listCreateRequest(ctx context.Context, resourceGroup
 
 // listHandleResponse handles the List response.
 func (client *UsagesClient) listHandleResponse(resp *http.Response) (UsagesClientListResponse, error) {
-	result := UsagesClientListResponse{RawResponse: resp}
+	result := UsagesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceListUsagesResult); err != nil {
 		return UsagesClientListResponse{}, err
 	}

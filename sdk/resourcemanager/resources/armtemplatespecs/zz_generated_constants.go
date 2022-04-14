@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armtemplatespecs
 
 const (
 	moduleName    = "armtemplatespecs"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -33,11 +33,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 type TemplateSpecExpandKind string
 
 const (
@@ -50,9 +45,4 @@ func PossibleTemplateSpecExpandKindValues() []TemplateSpecExpandKind {
 	return []TemplateSpecExpandKind{
 		TemplateSpecExpandKindVersions,
 	}
-}
-
-// ToPtr returns a *TemplateSpecExpandKind pointing to the current value.
-func (c TemplateSpecExpandKind) ToPtr() *TemplateSpecExpandKind {
-	return &c
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type PeeringsClient struct {
 // subscriptionID - The Azure subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPeeringsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PeeringsClient {
+func NewPeeringsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PeeringsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PeeringsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates a new peering or updates an existing peering with the specified name under the given subscription
@@ -91,7 +96,7 @@ func (client *PeeringsClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, peering)
@@ -99,7 +104,7 @@ func (client *PeeringsClient) createOrUpdateCreateRequest(ctx context.Context, r
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *PeeringsClient) createOrUpdateHandleResponse(resp *http.Response) (PeeringsClientCreateOrUpdateResponse, error) {
-	result := PeeringsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := PeeringsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Peering); err != nil {
 		return PeeringsClientCreateOrUpdateResponse{}, err
 	}
@@ -123,7 +128,7 @@ func (client *PeeringsClient) Delete(ctx context.Context, resourceGroupName stri
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return PeeringsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return PeeringsClientDeleteResponse{RawResponse: resp}, nil
+	return PeeringsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -146,7 +151,7 @@ func (client *PeeringsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -192,7 +197,7 @@ func (client *PeeringsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -200,7 +205,7 @@ func (client *PeeringsClient) getCreateRequest(ctx context.Context, resourceGrou
 
 // getHandleResponse handles the Get response.
 func (client *PeeringsClient) getHandleResponse(resp *http.Response) (PeeringsClientGetResponse, error) {
-	result := PeeringsClientGetResponse{RawResponse: resp}
+	result := PeeringsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Peering); err != nil {
 		return PeeringsClientGetResponse{}, err
 	}
@@ -212,16 +217,32 @@ func (client *PeeringsClient) getHandleResponse(resp *http.Response) (PeeringsCl
 // resourceGroupName - The name of the resource group.
 // options - PeeringsClientListByResourceGroupOptions contains the optional parameters for the PeeringsClient.ListByResourceGroup
 // method.
-func (client *PeeringsClient) ListByResourceGroup(resourceGroupName string, options *PeeringsClientListByResourceGroupOptions) *PeeringsClientListByResourceGroupPager {
-	return &PeeringsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *PeeringsClient) ListByResourceGroup(resourceGroupName string, options *PeeringsClientListByResourceGroupOptions) *runtime.Pager[PeeringsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PeeringsClientListByResourceGroupResponse]{
+		More: func(page PeeringsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PeeringsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PeeringsClientListByResourceGroupResponse) (PeeringsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PeeringsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PeeringsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PeeringsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -240,7 +261,7 @@ func (client *PeeringsClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -248,7 +269,7 @@ func (client *PeeringsClient) listByResourceGroupCreateRequest(ctx context.Conte
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *PeeringsClient) listByResourceGroupHandleResponse(resp *http.Response) (PeeringsClientListByResourceGroupResponse, error) {
-	result := PeeringsClientListByResourceGroupResponse{RawResponse: resp}
+	result := PeeringsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
 		return PeeringsClientListByResourceGroupResponse{}, err
 	}
@@ -259,16 +280,32 @@ func (client *PeeringsClient) listByResourceGroupHandleResponse(resp *http.Respo
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PeeringsClientListBySubscriptionOptions contains the optional parameters for the PeeringsClient.ListBySubscription
 // method.
-func (client *PeeringsClient) ListBySubscription(options *PeeringsClientListBySubscriptionOptions) *PeeringsClientListBySubscriptionPager {
-	return &PeeringsClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *PeeringsClient) ListBySubscription(options *PeeringsClientListBySubscriptionOptions) *runtime.Pager[PeeringsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PeeringsClientListBySubscriptionResponse]{
+		More: func(page PeeringsClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PeeringsClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PeeringsClientListBySubscriptionResponse) (PeeringsClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PeeringsClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PeeringsClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PeeringsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -283,7 +320,7 @@ func (client *PeeringsClient) listBySubscriptionCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -291,7 +328,7 @@ func (client *PeeringsClient) listBySubscriptionCreateRequest(ctx context.Contex
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *PeeringsClient) listBySubscriptionHandleResponse(resp *http.Response) (PeeringsClientListBySubscriptionResponse, error) {
-	result := PeeringsClientListBySubscriptionResponse{RawResponse: resp}
+	result := PeeringsClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
 		return PeeringsClientListBySubscriptionResponse{}, err
 	}
@@ -339,7 +376,7 @@ func (client *PeeringsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, tags)
@@ -347,7 +384,7 @@ func (client *PeeringsClient) updateCreateRequest(ctx context.Context, resourceG
 
 // updateHandleResponse handles the Update response.
 func (client *PeeringsClient) updateHandleResponse(resp *http.Response) (PeeringsClientUpdateResponse, error) {
-	result := PeeringsClientUpdateResponse{RawResponse: resp}
+	result := PeeringsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Peering); err != nil {
 		return PeeringsClientUpdateResponse{}, err
 	}

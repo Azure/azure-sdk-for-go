@@ -13,6 +13,9 @@ This repository is for active development of the Azure SDK for Go. For consumers
 ## Getting Started
 
 To get started with a library, see the README.md file located in the library's project folder.  You can find these library folders grouped by service in the `/sdk` directory.
+
+> NOTE: Go **1.18** or later is required.
+
 ## Packages available
 
 Each service might have a number of libraries available from each of the following categories:

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type WorkspaceManagedIdentitySQLControlSettingsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewWorkspaceManagedIdentitySQLControlSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkspaceManagedIdentitySQLControlSettingsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewWorkspaceManagedIdentitySQLControlSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspaceManagedIdentitySQLControlSettingsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &WorkspaceManagedIdentitySQLControlSettingsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or update Managed Identity Sql Control Settings
@@ -56,22 +61,18 @@ func NewWorkspaceManagedIdentitySQLControlSettingsClient(subscriptionID string, 
 // managedIdentitySQLControlSettings - Managed Identity Sql Control Settings
 // options - WorkspaceManagedIdentitySQLControlSettingsClientBeginCreateOrUpdateOptions contains the optional parameters for
 // the WorkspaceManagedIdentitySQLControlSettingsClient.BeginCreateOrUpdate method.
-func (client *WorkspaceManagedIdentitySQLControlSettingsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, managedIdentitySQLControlSettings ManagedIdentitySQLControlSettingsModel, options *WorkspaceManagedIdentitySQLControlSettingsClientBeginCreateOrUpdateOptions) (WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, managedIdentitySQLControlSettings, options)
-	if err != nil {
-		return WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdatePollerResponse{}, err
+func (client *WorkspaceManagedIdentitySQLControlSettingsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, managedIdentitySQLControlSettings ManagedIdentitySQLControlSettingsModel, options *WorkspaceManagedIdentitySQLControlSettingsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, managedIdentitySQLControlSettings, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("WorkspaceManagedIdentitySQLControlSettingsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update Managed Identity Sql Control Settings
@@ -166,7 +167,7 @@ func (client *WorkspaceManagedIdentitySQLControlSettingsClient) getCreateRequest
 
 // getHandleResponse handles the Get response.
 func (client *WorkspaceManagedIdentitySQLControlSettingsClient) getHandleResponse(resp *http.Response) (WorkspaceManagedIdentitySQLControlSettingsClientGetResponse, error) {
-	result := WorkspaceManagedIdentitySQLControlSettingsClientGetResponse{RawResponse: resp}
+	result := WorkspaceManagedIdentitySQLControlSettingsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedIdentitySQLControlSettingsModel); err != nil {
 		return WorkspaceManagedIdentitySQLControlSettingsClientGetResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,115 +17,129 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement"
 )
 
-// x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/BillingAccountQuery.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/BillingAccountQuery.json
 func ExampleQueryClient_Usage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcostmanagement.NewQueryClient(cred, nil)
+	client, err := armcostmanagement.NewQueryClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Usage(ctx,
 		"<scope>",
 		armcostmanagement.QueryDefinition{
-			Type: armcostmanagement.ExportType("Usage").ToPtr(),
+			Type: to.Ptr(armcostmanagement.ExportTypeUsage),
 			Dataset: &armcostmanagement.QueryDataset{
 				Filter: &armcostmanagement.QueryFilter{
 					And: []*armcostmanagement.QueryFilter{
 						{
 							Or: []*armcostmanagement.QueryFilter{
 								{
-									Dimension: &armcostmanagement.QueryComparisonExpression{
-										Name:     to.StringPtr("<name>"),
-										Operator: armcostmanagement.QueryOperatorType("In").ToPtr(),
+									Dimensions: &armcostmanagement.QueryComparisonExpression{
+										Name:     to.Ptr("<name>"),
+										Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
 										Values: []*string{
-											to.StringPtr("East US"),
-											to.StringPtr("West Europe")},
+											to.Ptr("East US"),
+											to.Ptr("West Europe")},
 									},
 								},
 								{
-									Tag: &armcostmanagement.QueryComparisonExpression{
-										Name:     to.StringPtr("<name>"),
-										Operator: armcostmanagement.QueryOperatorType("In").ToPtr(),
+									Tags: &armcostmanagement.QueryComparisonExpression{
+										Name:     to.Ptr("<name>"),
+										Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
 										Values: []*string{
-											to.StringPtr("UAT"),
-											to.StringPtr("Prod")},
+											to.Ptr("UAT"),
+											to.Ptr("Prod")},
 									},
 								}},
 						},
 						{
-							Dimension: &armcostmanagement.QueryComparisonExpression{
-								Name:     to.StringPtr("<name>"),
-								Operator: armcostmanagement.QueryOperatorType("In").ToPtr(),
+							Dimensions: &armcostmanagement.QueryComparisonExpression{
+								Name:     to.Ptr("<name>"),
+								Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
 								Values: []*string{
-									to.StringPtr("API")},
+									to.Ptr("API")},
 							},
 						}},
 				},
-				Granularity: armcostmanagement.GranularityType("Daily").ToPtr(),
+				Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 			},
-			Timeframe: armcostmanagement.TimeframeType("MonthToDate").ToPtr(),
+			Timeframe: to.Ptr(armcostmanagement.TimeframeTypeMonthToDate),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.QueryClientUsageResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExternalBillingAccountsQuery.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExternalBillingAccountsQuery.json
 func ExampleQueryClient_UsageByExternalCloudProviderType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcostmanagement.NewQueryClient(cred, nil)
+	client, err := armcostmanagement.NewQueryClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.UsageByExternalCloudProviderType(ctx,
-		armcostmanagement.ExternalCloudProviderType("externalBillingAccounts"),
+		armcostmanagement.ExternalCloudProviderTypeExternalBillingAccounts,
 		"<external-cloud-provider-id>",
 		armcostmanagement.QueryDefinition{
-			Type: armcostmanagement.ExportType("Usage").ToPtr(),
+			Type: to.Ptr(armcostmanagement.ExportTypeUsage),
 			Dataset: &armcostmanagement.QueryDataset{
 				Filter: &armcostmanagement.QueryFilter{
 					And: []*armcostmanagement.QueryFilter{
 						{
 							Or: []*armcostmanagement.QueryFilter{
 								{
-									Dimension: &armcostmanagement.QueryComparisonExpression{
-										Name:     to.StringPtr("<name>"),
-										Operator: armcostmanagement.QueryOperatorType("In").ToPtr(),
+									Dimensions: &armcostmanagement.QueryComparisonExpression{
+										Name:     to.Ptr("<name>"),
+										Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
 										Values: []*string{
-											to.StringPtr("East US"),
-											to.StringPtr("West Europe")},
+											to.Ptr("East US"),
+											to.Ptr("West Europe")},
 									},
 								},
 								{
-									Tag: &armcostmanagement.QueryComparisonExpression{
-										Name:     to.StringPtr("<name>"),
-										Operator: armcostmanagement.QueryOperatorType("In").ToPtr(),
+									Tags: &armcostmanagement.QueryComparisonExpression{
+										Name:     to.Ptr("<name>"),
+										Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
 										Values: []*string{
-											to.StringPtr("UAT"),
-											to.StringPtr("Prod")},
+											to.Ptr("UAT"),
+											to.Ptr("Prod")},
 									},
 								}},
 						},
 						{
-							Dimension: &armcostmanagement.QueryComparisonExpression{
-								Name:     to.StringPtr("<name>"),
-								Operator: armcostmanagement.QueryOperatorType("In").ToPtr(),
+							Dimensions: &armcostmanagement.QueryComparisonExpression{
+								Name:     to.Ptr("<name>"),
+								Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
 								Values: []*string{
-									to.StringPtr("API")},
+									to.Ptr("API")},
 							},
 						}},
 				},
-				Granularity: armcostmanagement.GranularityType("Daily").ToPtr(),
+				Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 			},
-			Timeframe: armcostmanagement.TimeframeType("MonthToDate").ToPtr(),
+			Timeframe: to.Ptr(armcostmanagement.TimeframeTypeMonthToDate),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.QueryClientUsageByExternalCloudProviderTypeResult)
+	// TODO: use response item
+	_ = res
 }

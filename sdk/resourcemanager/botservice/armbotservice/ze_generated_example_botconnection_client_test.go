@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,176 +17,221 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice"
 )
 
-// x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/ListServiceProviders.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/ListServiceProviders.json
 func ExampleBotConnectionClient_ListServiceProviders() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armbotservice.NewBotConnectionClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewBotConnectionClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ListServiceProviders(ctx,
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BotConnectionClientListServiceProvidersResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/GetConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/GetConnection.json
 func ExampleBotConnectionClient_ListWithSecrets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armbotservice.NewBotConnectionClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewBotConnectionClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ListWithSecrets(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		"<connection-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BotConnectionClientListWithSecretsResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/PutConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/PutConnection.json
 func ExampleBotConnectionClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armbotservice.NewBotConnectionClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewBotConnectionClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Create(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		"<connection-name>",
 		armbotservice.ConnectionSetting{
-			Etag:     to.StringPtr("<etag>"),
-			Location: to.StringPtr("<location>"),
+			Etag:     to.Ptr("<etag>"),
+			Location: to.Ptr("<location>"),
 			Properties: &armbotservice.ConnectionSettingProperties{
-				ClientID:     to.StringPtr("<client-id>"),
-				ClientSecret: to.StringPtr("<client-secret>"),
+				ClientID:     to.Ptr("<client-id>"),
+				ClientSecret: to.Ptr("<client-secret>"),
 				Parameters: []*armbotservice.ConnectionSettingParameter{
 					{
-						Key:   to.StringPtr("<key>"),
-						Value: to.StringPtr("<value>"),
+						Key:   to.Ptr("<key>"),
+						Value: to.Ptr("<value>"),
 					},
 					{
-						Key:   to.StringPtr("<key>"),
-						Value: to.StringPtr("<value>"),
+						Key:   to.Ptr("<key>"),
+						Value: to.Ptr("<value>"),
 					}},
-				Scopes:            to.StringPtr("<scopes>"),
-				ServiceProviderID: to.StringPtr("<service-provider-id>"),
+				Scopes:            to.Ptr("<scopes>"),
+				ServiceProviderID: to.Ptr("<service-provider-id>"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BotConnectionClientCreateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/UpdateConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/UpdateConnection.json
 func ExampleBotConnectionClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armbotservice.NewBotConnectionClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewBotConnectionClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		"<connection-name>",
 		armbotservice.ConnectionSetting{
-			Etag:     to.StringPtr("<etag>"),
-			Location: to.StringPtr("<location>"),
+			Etag:     to.Ptr("<etag>"),
+			Location: to.Ptr("<location>"),
 			Properties: &armbotservice.ConnectionSettingProperties{
-				ClientID:     to.StringPtr("<client-id>"),
-				ClientSecret: to.StringPtr("<client-secret>"),
+				ClientID:     to.Ptr("<client-id>"),
+				ClientSecret: to.Ptr("<client-secret>"),
 				Parameters: []*armbotservice.ConnectionSettingParameter{
 					{
-						Key:   to.StringPtr("<key>"),
-						Value: to.StringPtr("<value>"),
+						Key:   to.Ptr("<key>"),
+						Value: to.Ptr("<value>"),
 					},
 					{
-						Key:   to.StringPtr("<key>"),
-						Value: to.StringPtr("<value>"),
+						Key:   to.Ptr("<key>"),
+						Value: to.Ptr("<value>"),
 					}},
-				Scopes:                     to.StringPtr("<scopes>"),
-				ServiceProviderDisplayName: to.StringPtr("<service-provider-display-name>"),
-				ServiceProviderID:          to.StringPtr("<service-provider-id>"),
+				Scopes:                     to.Ptr("<scopes>"),
+				ServiceProviderDisplayName: to.Ptr("<service-provider-display-name>"),
+				ServiceProviderID:          to.Ptr("<service-provider-id>"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BotConnectionClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/GetConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/GetConnection.json
 func ExampleBotConnectionClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armbotservice.NewBotConnectionClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewBotConnectionClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		"<connection-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BotConnectionClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/DeleteConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/DeleteConnection.json
 func ExampleBotConnectionClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armbotservice.NewBotConnectionClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewBotConnectionClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		"<connection-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/ListConnectionsByBotService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/ListConnectionsByBotService.json
 func ExampleBotConnectionClient_ListByBotService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armbotservice.NewBotConnectionClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewBotConnectionClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByBotService("<resource-group-name>",
 		"<resource-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

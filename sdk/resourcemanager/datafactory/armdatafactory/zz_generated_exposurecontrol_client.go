@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ExposureControlClient struct {
 // subscriptionID - The subscription identifier.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewExposureControlClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ExposureControlClient {
+func NewExposureControlClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExposureControlClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ExposureControlClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // GetFeatureValue - Get exposure control feature for specific location.
@@ -94,7 +99,7 @@ func (client *ExposureControlClient) getFeatureValueCreateRequest(ctx context.Co
 
 // getFeatureValueHandleResponse handles the GetFeatureValue response.
 func (client *ExposureControlClient) getFeatureValueHandleResponse(resp *http.Response) (ExposureControlClientGetFeatureValueResponse, error) {
-	result := ExposureControlClientGetFeatureValueResponse{RawResponse: resp}
+	result := ExposureControlClientGetFeatureValueResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExposureControlResponse); err != nil {
 		return ExposureControlClientGetFeatureValueResponse{}, err
 	}
@@ -151,7 +156,7 @@ func (client *ExposureControlClient) getFeatureValueByFactoryCreateRequest(ctx c
 
 // getFeatureValueByFactoryHandleResponse handles the GetFeatureValueByFactory response.
 func (client *ExposureControlClient) getFeatureValueByFactoryHandleResponse(resp *http.Response) (ExposureControlClientGetFeatureValueByFactoryResponse, error) {
-	result := ExposureControlClientGetFeatureValueByFactoryResponse{RawResponse: resp}
+	result := ExposureControlClientGetFeatureValueByFactoryResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExposureControlResponse); err != nil {
 		return ExposureControlClientGetFeatureValueByFactoryResponse{}, err
 	}
@@ -208,7 +213,7 @@ func (client *ExposureControlClient) queryFeatureValuesByFactoryCreateRequest(ct
 
 // queryFeatureValuesByFactoryHandleResponse handles the QueryFeatureValuesByFactory response.
 func (client *ExposureControlClient) queryFeatureValuesByFactoryHandleResponse(resp *http.Response) (ExposureControlClientQueryFeatureValuesByFactoryResponse, error) {
-	result := ExposureControlClientQueryFeatureValuesByFactoryResponse{RawResponse: resp}
+	result := ExposureControlClientQueryFeatureValuesByFactoryResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExposureControlBatchResponse); err != nil {
 		return ExposureControlClientQueryFeatureValuesByFactoryResponse{}, err
 	}

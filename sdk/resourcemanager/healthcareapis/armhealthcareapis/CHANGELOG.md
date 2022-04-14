@@ -1,5 +1,483 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `NewWorkspacesClient` return value(s) have been changed from `(*WorkspacesClient)` to `(*WorkspacesClient, error)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)`
+- Function `NewIotConnectorsClient` return value(s) have been changed from `(*IotConnectorsClient)` to `(*IotConnectorsClient, error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.ListByService` parameter(s) have been changed from `(context.Context, string, string, *PrivateEndpointConnectionsClientListByServiceOptions)` to `(string, string, *PrivateEndpointConnectionsClientListByServiceOptions)`
+- Function `*PrivateEndpointConnectionsClient.ListByService` return value(s) have been changed from `(PrivateEndpointConnectionsClientListByServiceResponse, error)` to `(*runtime.Pager[PrivateEndpointConnectionsClientListByServiceResponse])`
+- Function `*FhirServicesClient.BeginDelete` return value(s) have been changed from `(FhirServicesClientDeletePollerResponse, error)` to `(*armruntime.Poller[FhirServicesClientDeleteResponse], error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*ServicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(ServicesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ServicesClientCreateOrUpdateResponse], error)`
+- Function `*IotConnectorsClient.ListByWorkspace` return value(s) have been changed from `(*IotConnectorsClientListByWorkspacePager)` to `(*runtime.Pager[IotConnectorsClientListByWorkspaceResponse])`
+- Function `NewFhirServicesClient` return value(s) have been changed from `(*FhirServicesClient)` to `(*FhirServicesClient, error)`
+- Function `NewOperationResultsClient` return value(s) have been changed from `(*OperationResultsClient)` to `(*OperationResultsClient, error)`
+- Function `*DicomServicesClient.BeginUpdate` return value(s) have been changed from `(DicomServicesClientUpdatePollerResponse, error)` to `(*armruntime.Poller[DicomServicesClientUpdateResponse], error)`
+- Function `*WorkspacesClient.BeginCreateOrUpdate` return value(s) have been changed from `(WorkspacesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[WorkspacesClientCreateOrUpdateResponse], error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewServicesClient` return value(s) have been changed from `(*ServicesClient)` to `(*ServicesClient, error)`
+- Function `*ServicesClient.BeginDelete` return value(s) have been changed from `(ServicesClientDeletePollerResponse, error)` to `(*armruntime.Poller[ServicesClientDeleteResponse], error)`
+- Function `*WorkspacesClient.BeginDelete` return value(s) have been changed from `(WorkspacesClientDeletePollerResponse, error)` to `(*armruntime.Poller[WorkspacesClientDeleteResponse], error)`
+- Function `*WorkspacesClient.BeginUpdate` return value(s) have been changed from `(WorkspacesClientUpdatePollerResponse, error)` to `(*armruntime.Poller[WorkspacesClientUpdateResponse], error)`
+- Function `*ServicesClient.ListByResourceGroup` return value(s) have been changed from `(*ServicesClientListByResourceGroupPager)` to `(*runtime.Pager[ServicesClientListByResourceGroupResponse])`
+- Function `*IotConnectorFhirDestinationClient.BeginDelete` return value(s) have been changed from `(IotConnectorFhirDestinationClientDeletePollerResponse, error)` to `(*armruntime.Poller[IotConnectorFhirDestinationClientDeleteResponse], error)`
+- Function `*FhirDestinationsClient.ListByIotConnector` return value(s) have been changed from `(*FhirDestinationsClientListByIotConnectorPager)` to `(*runtime.Pager[FhirDestinationsClientListByIotConnectorResponse])`
+- Function `*WorkspacesClient.ListByResourceGroup` return value(s) have been changed from `(*WorkspacesClientListByResourceGroupPager)` to `(*runtime.Pager[WorkspacesClientListByResourceGroupResponse])`
+- Function `*DicomServicesClient.BeginDelete` return value(s) have been changed from `(DicomServicesClientDeletePollerResponse, error)` to `(*armruntime.Poller[DicomServicesClientDeleteResponse], error)`
+- Function `*ServicesClient.List` return value(s) have been changed from `(*ServicesClientListPager)` to `(*runtime.Pager[ServicesClientListResponse])`
+- Function `NewIotConnectorFhirDestinationClient` return value(s) have been changed from `(*IotConnectorFhirDestinationClient)` to `(*IotConnectorFhirDestinationClient, error)`
+- Function `*WorkspacesClient.ListBySubscription` return value(s) have been changed from `(*WorkspacesClientListBySubscriptionPager)` to `(*runtime.Pager[WorkspacesClientListBySubscriptionResponse])`
+- Function `*DicomServicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(DicomServicesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[DicomServicesClientCreateOrUpdateResponse], error)`
+- Function `NewPrivateLinkResourcesClient` return value(s) have been changed from `(*PrivateLinkResourcesClient)` to `(*PrivateLinkResourcesClient, error)`
+- Function `*FhirServicesClient.BeginUpdate` return value(s) have been changed from `(FhirServicesClientUpdatePollerResponse, error)` to `(*armruntime.Poller[FhirServicesClientUpdateResponse], error)`
+- Function `NewPrivateEndpointConnectionsClient` return value(s) have been changed from `(*PrivateEndpointConnectionsClient)` to `(*PrivateEndpointConnectionsClient, error)`
+- Function `*IotConnectorsClient.BeginUpdate` return value(s) have been changed from `(IotConnectorsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[IotConnectorsClientUpdateResponse], error)`
+- Function `*IotConnectorFhirDestinationClient.BeginCreateOrUpdate` return value(s) have been changed from `(IotConnectorFhirDestinationClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[IotConnectorFhirDestinationClientCreateOrUpdateResponse], error)`
+- Function `NewDicomServicesClient` return value(s) have been changed from `(*DicomServicesClient)` to `(*DicomServicesClient, error)`
+- Function `*FhirServicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(FhirServicesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[FhirServicesClientCreateOrUpdateResponse], error)`
+- Function `*ServicesClient.BeginUpdate` return value(s) have been changed from `(ServicesClientUpdatePollerResponse, error)` to `(*armruntime.Poller[ServicesClientUpdateResponse], error)`
+- Function `*FhirServicesClient.ListByWorkspace` return value(s) have been changed from `(*FhirServicesClientListByWorkspacePager)` to `(*runtime.Pager[FhirServicesClientListByWorkspaceResponse])`
+- Function `*IotConnectorsClient.BeginCreateOrUpdate` return value(s) have been changed from `(IotConnectorsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[IotConnectorsClientCreateOrUpdateResponse], error)`
+- Function `NewFhirDestinationsClient` return value(s) have been changed from `(*FhirDestinationsClient)` to `(*FhirDestinationsClient, error)`
+- Function `*DicomServicesClient.ListByWorkspace` return value(s) have been changed from `(*DicomServicesClientListByWorkspacePager)` to `(*runtime.Pager[DicomServicesClientListByWorkspaceResponse])`
+- Function `*IotConnectorsClient.BeginDelete` return value(s) have been changed from `(IotConnectorsClientDeletePollerResponse, error)` to `(*armruntime.Poller[IotConnectorsClientDeleteResponse], error)`
+- Type of `IotMappingProperties.Content` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `ServiceManagedIdentityIdentity.Type` has been changed from `*ManagedServiceIdentityType` to `*ServiceManagedIdentityType`
+- Type of `OperationResultsDescription.Properties` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*IotConnectorFhirDestinationClientDeletePollerResponse.Resume` has been removed
+- Function `*DicomServicesClientDeletePollerResponse.Resume` has been removed
+- Function `*FhirServicesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `PrivateEndpointServiceConnectionStatus.ToPtr` has been removed
+- Function `*IotConnectorsClientUpdatePoller.FinalResponse` has been removed
+- Function `*ServicesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*IotConnectorsClientDeletePoller.ResumeToken` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `OperationResultStatus.ToPtr` has been removed
+- Function `*ServicesClientDeletePoller.ResumeToken` has been removed
+- Function `*WorkspacesClientDeletePollerResponse.Resume` has been removed
+- Function `IotConnectorFhirDestinationClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*IotConnectorFhirDestinationClientCreateOrUpdatePoller.Poll` has been removed
+- Function `ServicesClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*FhirDestinationsClientListByIotConnectorPager.PageResponse` has been removed
+- Function `*WorkspacesClientListBySubscriptionPager.Err` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*WorkspacesClientUpdatePollerResponse.Resume` has been removed
+- Function `IotConnectorsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ManagedServiceIdentityType.ToPtr` has been removed
+- Function `*ServicesClientUpdatePoller.FinalResponse` has been removed
+- Function `*WorkspacesClientDeletePoller.Poll` has been removed
+- Function `*WorkspacesClientDeletePoller.FinalResponse` has been removed
+- Function `*WorkspacesClientListByResourceGroupPager.Err` has been removed
+- Function `*WorkspacesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*IotConnectorsClientUpdatePoller.Done` has been removed
+- Function `*ServicesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ServicesClientUpdatePoller.Done` has been removed
+- Function `*IotConnectorFhirDestinationClientDeletePoller.Poll` has been removed
+- Function `DicomServicesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.Poll` has been removed
+- Function `*ServicesClientUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*WorkspacesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*DicomServicesClientDeletePoller.Done` has been removed
+- Function `*IotConnectorFhirDestinationClientCreateOrUpdatePoller.Done` has been removed
+- Function `*IotConnectorsClientListByWorkspacePager.Err` has been removed
+- Function `*FhirServicesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*IotConnectorsClientDeletePollerResponse.Resume` has been removed
+- Function `*IotConnectorFhirDestinationClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*DicomServicesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*WorkspacesClientDeletePoller.ResumeToken` has been removed
+- Function `*FhirServicesClientUpdatePoller.Poll` has been removed
+- Function `*IotConnectorsClientDeletePoller.Done` has been removed
+- Function `*ServicesClientListByResourceGroupPager.NextPage` has been removed
+- Function `IotConnectorFhirDestinationClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*WorkspacesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*DicomServicesClientUpdatePollerResponse.Resume` has been removed
+- Function `*WorkspacesClientListByResourceGroupPager.NextPage` has been removed
+- Function `PublicNetworkAccess.ToPtr` has been removed
+- Function `*WorkspacesClientUpdatePoller.FinalResponse` has been removed
+- Function `*FhirServicesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*WorkspacesClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*WorkspacesClientUpdatePoller.ResumeToken` has been removed
+- Function `*WorkspacesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ServicesClientListPager.PageResponse` has been removed
+- Function `*IotConnectorFhirDestinationClientDeletePoller.FinalResponse` has been removed
+- Function `*WorkspacesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.FinalResponse` has been removed
+- Function `*ServicesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*IotConnectorsClientListByWorkspacePager.NextPage` has been removed
+- Function `ServicesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*FhirServicesClientDeletePoller.Done` has been removed
+- Function `*DicomServicesClientUpdatePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.Done` has been removed
+- Function `FhirServicesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ServicesClientDeletePoller.FinalResponse` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*WorkspacesClientDeletePoller.Done` has been removed
+- Function `*FhirDestinationsClientListByIotConnectorPager.Err` has been removed
+- Function `WorkspacesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ServiceNameUnavailabilityReason.ToPtr` has been removed
+- Function `PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*IotConnectorsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*DicomServicesClientDeletePoller.Poll` has been removed
+- Function `*DicomServicesClientListByWorkspacePager.NextPage` has been removed
+- Function `*IotConnectorsClientListByWorkspacePager.PageResponse` has been removed
+- Function `*IotConnectorsClientDeletePoller.Poll` has been removed
+- Function `WorkspacesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `IotIdentityResolutionType.ToPtr` has been removed
+- Function `*ServicesClientListByResourceGroupPager.Err` has been removed
+- Function `*WorkspacesClientUpdatePoller.Done` has been removed
+- Function `*ServicesClientListPager.Err` has been removed
+- Function `*FhirServicesClientUpdatePoller.ResumeToken` has been removed
+- Function `*IotConnectorFhirDestinationClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ServicesClientDeletePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*IotConnectorsClientUpdatePollerResponse.Resume` has been removed
+- Function `*DicomServicesClientUpdatePoller.Done` has been removed
+- Function `*DicomServicesClientListByWorkspacePager.Err` has been removed
+- Function `*FhirServicesClientListByWorkspacePager.PageResponse` has been removed
+- Function `ActionType.ToPtr` has been removed
+- Function `*FhirServicesClientDeletePollerResponse.Resume` has been removed
+- Function `*FhirServicesClientUpdatePoller.FinalResponse` has been removed
+- Function `*IotConnectorFhirDestinationClientDeletePoller.ResumeToken` has been removed
+- Function `*DicomServicesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*FhirServicesClientDeletePoller.ResumeToken` has been removed
+- Function `*FhirServicesClientDeletePoller.Poll` has been removed
+- Function `*IotConnectorsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*FhirServicesClientUpdatePollerResponse.Resume` has been removed
+- Function `*FhirServicesClientListByWorkspacePager.Err` has been removed
+- Function `*DicomServicesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*IotConnectorFhirDestinationClientDeletePoller.Done` has been removed
+- Function `PrivateEndpointConnectionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `IotConnectorsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `FhirServicesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `IotConnectorsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*IotConnectorsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*FhirDestinationsClientListByIotConnectorPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.ResumeToken` has been removed
+- Function `*FhirServicesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*IotConnectorsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ServicesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*FhirServicesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*IotConnectorsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*FhirServicesClientListByWorkspacePager.NextPage` has been removed
+- Function `*IotConnectorsClientUpdatePoller.Poll` has been removed
+- Function `*DicomServicesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ServicesClientListPager.NextPage` has been removed
+- Function `DicomServicesClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `DicomServicesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `ServicesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ServicesClientUpdatePollerResponse.Resume` has been removed
+- Function `*WorkspacesClientListBySubscriptionPager.NextPage` has been removed
+- Function `PrivateEndpointConnectionProvisioningState.ToPtr` has been removed
+- Function `*DicomServicesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `WorkspacesClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ServicesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*WorkspacesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ServicesClientDeletePoller.Done` has been removed
+- Function `Kind.ToPtr` has been removed
+- Function `*FhirServicesClientUpdatePoller.Done` has been removed
+- Function `*IotConnectorsClientUpdatePoller.ResumeToken` has been removed
+- Function `*DicomServicesClientDeletePoller.FinalResponse` has been removed
+- Function `FhirServicesClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DicomServicesClientDeletePoller.ResumeToken` has been removed
+- Function `*ServicesClientDeletePoller.Poll` has been removed
+- Function `*IotConnectorFhirDestinationClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ServicesClientUpdatePoller.Poll` has been removed
+- Function `*WorkspacesClientUpdatePoller.Poll` has been removed
+- Function `FhirServiceKind.ToPtr` has been removed
+- Function `*FhirServicesClientDeletePoller.FinalResponse` has been removed
+- Function `*DicomServicesClientUpdatePoller.FinalResponse` has been removed
+- Function `*DicomServicesClientUpdatePoller.ResumeToken` has been removed
+- Function `*ServicesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*DicomServicesClientListByWorkspacePager.PageResponse` has been removed
+- Function `*IotConnectorsClientDeletePoller.FinalResponse` has been removed
+- Struct `DicomServicesClientCreateOrUpdatePoller` has been removed
+- Struct `DicomServicesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `DicomServicesClientCreateOrUpdateResult` has been removed
+- Struct `DicomServicesClientDeletePoller` has been removed
+- Struct `DicomServicesClientDeletePollerResponse` has been removed
+- Struct `DicomServicesClientGetResult` has been removed
+- Struct `DicomServicesClientListByWorkspacePager` has been removed
+- Struct `DicomServicesClientListByWorkspaceResult` has been removed
+- Struct `DicomServicesClientUpdatePoller` has been removed
+- Struct `DicomServicesClientUpdatePollerResponse` has been removed
+- Struct `DicomServicesClientUpdateResult` has been removed
+- Struct `FhirDestinationsClientListByIotConnectorPager` has been removed
+- Struct `FhirDestinationsClientListByIotConnectorResult` has been removed
+- Struct `FhirServicesClientCreateOrUpdatePoller` has been removed
+- Struct `FhirServicesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `FhirServicesClientCreateOrUpdateResult` has been removed
+- Struct `FhirServicesClientDeletePoller` has been removed
+- Struct `FhirServicesClientDeletePollerResponse` has been removed
+- Struct `FhirServicesClientGetResult` has been removed
+- Struct `FhirServicesClientListByWorkspacePager` has been removed
+- Struct `FhirServicesClientListByWorkspaceResult` has been removed
+- Struct `FhirServicesClientUpdatePoller` has been removed
+- Struct `FhirServicesClientUpdatePollerResponse` has been removed
+- Struct `FhirServicesClientUpdateResult` has been removed
+- Struct `IotConnectorFhirDestinationClientCreateOrUpdatePoller` has been removed
+- Struct `IotConnectorFhirDestinationClientCreateOrUpdatePollerResponse` has been removed
+- Struct `IotConnectorFhirDestinationClientCreateOrUpdateResult` has been removed
+- Struct `IotConnectorFhirDestinationClientDeletePoller` has been removed
+- Struct `IotConnectorFhirDestinationClientDeletePollerResponse` has been removed
+- Struct `IotConnectorFhirDestinationClientGetResult` has been removed
+- Struct `IotConnectorsClientCreateOrUpdatePoller` has been removed
+- Struct `IotConnectorsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `IotConnectorsClientCreateOrUpdateResult` has been removed
+- Struct `IotConnectorsClientDeletePoller` has been removed
+- Struct `IotConnectorsClientDeletePollerResponse` has been removed
+- Struct `IotConnectorsClientGetResult` has been removed
+- Struct `IotConnectorsClientListByWorkspacePager` has been removed
+- Struct `IotConnectorsClientListByWorkspaceResult` has been removed
+- Struct `IotConnectorsClientUpdatePoller` has been removed
+- Struct `IotConnectorsClientUpdatePollerResponse` has been removed
+- Struct `IotConnectorsClientUpdateResult` has been removed
+- Struct `OperationResultsClientGetResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `PrivateEndpointConnectionsClientCreateOrUpdatePoller` has been removed
+- Struct `PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionsClientDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsClientDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientGetResult` has been removed
+- Struct `PrivateEndpointConnectionsClientListByServiceResult` has been removed
+- Struct `PrivateLinkResourcesClientGetResult` has been removed
+- Struct `PrivateLinkResourcesClientListByServiceResult` has been removed
+- Struct `ServicesClientCheckNameAvailabilityResult` has been removed
+- Struct `ServicesClientCreateOrUpdatePoller` has been removed
+- Struct `ServicesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ServicesClientCreateOrUpdateResult` has been removed
+- Struct `ServicesClientDeletePoller` has been removed
+- Struct `ServicesClientDeletePollerResponse` has been removed
+- Struct `ServicesClientGetResult` has been removed
+- Struct `ServicesClientListByResourceGroupPager` has been removed
+- Struct `ServicesClientListByResourceGroupResult` has been removed
+- Struct `ServicesClientListPager` has been removed
+- Struct `ServicesClientListResult` has been removed
+- Struct `ServicesClientUpdatePoller` has been removed
+- Struct `ServicesClientUpdatePollerResponse` has been removed
+- Struct `ServicesClientUpdateResult` has been removed
+- Struct `WorkspacesClientCreateOrUpdatePoller` has been removed
+- Struct `WorkspacesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `WorkspacesClientCreateOrUpdateResult` has been removed
+- Struct `WorkspacesClientDeletePoller` has been removed
+- Struct `WorkspacesClientDeletePollerResponse` has been removed
+- Struct `WorkspacesClientGetResult` has been removed
+- Struct `WorkspacesClientListByResourceGroupPager` has been removed
+- Struct `WorkspacesClientListByResourceGroupResult` has been removed
+- Struct `WorkspacesClientListBySubscriptionPager` has been removed
+- Struct `WorkspacesClientListBySubscriptionResult` has been removed
+- Struct `WorkspacesClientUpdatePoller` has been removed
+- Struct `WorkspacesClientUpdatePollerResponse` has been removed
+- Struct `WorkspacesClientUpdateResult` has been removed
+- Field `PrivateEndpointConnectionsClientCreateOrUpdateResult` of struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `ServicesClientCheckNameAvailabilityResult` of struct `ServicesClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientCheckNameAvailabilityResponse` has been removed
+- Field `WorkspacesClientListByResourceGroupResult` of struct `WorkspacesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientListByResourceGroupResponse` has been removed
+- Field `WorkspacesClientUpdateResult` of struct `WorkspacesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientUpdateResponse` has been removed
+- Field `PrivateLinkResourcesClientGetResult` of struct `PrivateLinkResourcesClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientGetResponse` has been removed
+- Field `FhirServicesClientUpdateResult` of struct `FhirServicesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `FhirServicesClientUpdateResponse` has been removed
+- Field `WorkspacesClientListBySubscriptionResult` of struct `WorkspacesClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientDeleteResponse` has been removed
+- Field `WorkspacesClientCreateOrUpdateResult` of struct `WorkspacesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientCreateOrUpdateResponse` has been removed
+- Field `IotConnectorFhirDestinationClientCreateOrUpdateResult` of struct `IotConnectorFhirDestinationClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `IotConnectorFhirDestinationClientCreateOrUpdateResponse` has been removed
+- Field `PrivateEndpointConnectionsClientListByServiceResult` of struct `PrivateEndpointConnectionsClientListByServiceResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientListByServiceResponse` has been removed
+- Field `PrivateEndpointConnectionsClientGetResult` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `DicomServicesClientListByWorkspaceResult` of struct `DicomServicesClientListByWorkspaceResponse` has been removed
+- Field `RawResponse` of struct `DicomServicesClientListByWorkspaceResponse` has been removed
+- Field `WorkspacesClientGetResult` of struct `WorkspacesClientGetResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientGetResponse` has been removed
+- Field `PrivateLinkResourcesClientListByServiceResult` of struct `PrivateLinkResourcesClientListByServiceResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientListByServiceResponse` has been removed
+- Field `RawResponse` of struct `IotConnectorFhirDestinationClientDeleteResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `ServicesClientUpdateResult` of struct `ServicesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientDeleteResponse` has been removed
+- Field `ServicesClientListResult` of struct `ServicesClientListResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientListResponse` has been removed
+- Field `FhirServicesClientGetResult` of struct `FhirServicesClientGetResponse` has been removed
+- Field `RawResponse` of struct `FhirServicesClientGetResponse` has been removed
+- Field `ServicesClientGetResult` of struct `ServicesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientGetResponse` has been removed
+- Field `IotConnectorFhirDestinationClientGetResult` of struct `IotConnectorFhirDestinationClientGetResponse` has been removed
+- Field `RawResponse` of struct `IotConnectorFhirDestinationClientGetResponse` has been removed
+- Field `IotConnectorsClientUpdateResult` of struct `IotConnectorsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `IotConnectorsClientUpdateResponse` has been removed
+- Field `FhirServicesClientListByWorkspaceResult` of struct `FhirServicesClientListByWorkspaceResponse` has been removed
+- Field `RawResponse` of struct `FhirServicesClientListByWorkspaceResponse` has been removed
+- Field `ServicesClientCreateOrUpdateResult` of struct `ServicesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DicomServicesClientDeleteResponse` has been removed
+- Field `ServicesClientListByResourceGroupResult` of struct `ServicesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientListByResourceGroupResponse` has been removed
+- Field `OperationResultsClientGetResult` of struct `OperationResultsClientGetResponse` has been removed
+- Field `RawResponse` of struct `OperationResultsClientGetResponse` has been removed
+- Field `DicomServicesClientCreateOrUpdateResult` of struct `DicomServicesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DicomServicesClientCreateOrUpdateResponse` has been removed
+- Field `FhirDestinationsClientListByIotConnectorResult` of struct `FhirDestinationsClientListByIotConnectorResponse` has been removed
+- Field `RawResponse` of struct `FhirDestinationsClientListByIotConnectorResponse` has been removed
+- Field `RawResponse` of struct `FhirServicesClientDeleteResponse` has been removed
+- Field `DicomServicesClientUpdateResult` of struct `DicomServicesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `DicomServicesClientUpdateResponse` has been removed
+- Field `IotConnectorsClientGetResult` of struct `IotConnectorsClientGetResponse` has been removed
+- Field `RawResponse` of struct `IotConnectorsClientGetResponse` has been removed
+- Field `IotConnectorsClientListByWorkspaceResult` of struct `IotConnectorsClientListByWorkspaceResponse` has been removed
+- Field `RawResponse` of struct `IotConnectorsClientListByWorkspaceResponse` has been removed
+- Field `DicomServicesClientGetResult` of struct `DicomServicesClientGetResponse` has been removed
+- Field `RawResponse` of struct `DicomServicesClientGetResponse` has been removed
+- Field `RawResponse` of struct `IotConnectorsClientDeleteResponse` has been removed
+- Field `IotConnectorsClientCreateOrUpdateResult` of struct `IotConnectorsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `IotConnectorsClientCreateOrUpdateResponse` has been removed
+- Field `FhirServicesClientCreateOrUpdateResult` of struct `FhirServicesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `FhirServicesClientCreateOrUpdateResponse` has been removed
+
+### Features Added
+
+- New const `ServiceManagedIdentityTypeNone`
+- New const `ServiceManagedIdentityTypeSystemAssignedUserAssigned`
+- New const `FhirResourceVersionPolicyVersionedUpdate`
+- New const `ServiceEventStateDisabled`
+- New const `ServiceManagedIdentityTypeUserAssigned`
+- New const `FhirResourceVersionPolicyVersioned`
+- New const `FhirResourceVersionPolicyNoVersion`
+- New const `ServiceEventStateUpdating`
+- New const `ServiceManagedIdentityTypeSystemAssigned`
+- New const `ServiceEventStateEnabled`
+- New function `MetricSpecification.MarshalJSON() ([]byte, error)`
+- New function `DicomServiceProperties.MarshalJSON() ([]byte, error)`
+- New function `ServiceManagedIdentityIdentity.MarshalJSON() ([]byte, error)`
+- New function `ServiceSpecification.MarshalJSON() ([]byte, error)`
+- New function `PossibleServiceManagedIdentityTypeValues() []ServiceManagedIdentityType`
+- New function `PossibleServiceEventStateValues() []ServiceEventState`
+- New function `NewWorkspacePrivateLinkResourcesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspacePrivateLinkResourcesClient, error)`
+- New function `*WorkspacePrivateEndpointConnectionsClient.BeginDelete(context.Context, string, string, string, *WorkspacePrivateEndpointConnectionsClientBeginDeleteOptions) (*armruntime.Poller[WorkspacePrivateEndpointConnectionsClientDeleteResponse], error)`
+- New function `WorkspaceProperties.MarshalJSON() ([]byte, error)`
+- New function `*WorkspacePrivateLinkResourcesClient.ListByWorkspace(string, string, *WorkspacePrivateLinkResourcesClientListByWorkspaceOptions) *runtime.Pager[WorkspacePrivateLinkResourcesClientListByWorkspaceResponse]`
+- New function `*WorkspacePrivateEndpointConnectionsClient.BeginCreateOrUpdate(context.Context, string, string, string, PrivateEndpointConnectionDescription, *WorkspacePrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[WorkspacePrivateEndpointConnectionsClientCreateOrUpdateResponse], error)`
+- New function `NewWorkspacePrivateEndpointConnectionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspacePrivateEndpointConnectionsClient, error)`
+- New function `*WorkspacePrivateEndpointConnectionsClient.ListByWorkspace(string, string, *WorkspacePrivateEndpointConnectionsClientListByWorkspaceOptions) *runtime.Pager[WorkspacePrivateEndpointConnectionsClientListByWorkspaceResponse]`
+- New function `*WorkspacePrivateEndpointConnectionsClient.Get(context.Context, string, string, string, *WorkspacePrivateEndpointConnectionsClientGetOptions) (WorkspacePrivateEndpointConnectionsClientGetResponse, error)`
+- New function `PossibleFhirResourceVersionPolicyValues() []FhirResourceVersionPolicy`
+- New function `PrivateEndpointConnectionListResult.MarshalJSON() ([]byte, error)`
+- New function `*WorkspacePrivateLinkResourcesClient.Get(context.Context, string, string, string, *WorkspacePrivateLinkResourcesClientGetOptions) (WorkspacePrivateLinkResourcesClientGetResponse, error)`
+- New function `ResourceVersionPolicyConfiguration.MarshalJSON() ([]byte, error)`
+- New struct `LogSpecification`
+- New struct `MetricDimension`
+- New struct `MetricSpecification`
+- New struct `OperationProperties`
+- New struct `PrivateEndpointConnectionListResult`
+- New struct `ResourceVersionPolicyConfiguration`
+- New struct `ServiceOciArtifactEntry`
+- New struct `ServiceSpecification`
+- New struct `UserAssignedIdentity`
+- New struct `WorkspacePrivateEndpointConnectionsClient`
+- New struct `WorkspacePrivateEndpointConnectionsClientBeginCreateOrUpdateOptions`
+- New struct `WorkspacePrivateEndpointConnectionsClientBeginDeleteOptions`
+- New struct `WorkspacePrivateEndpointConnectionsClientCreateOrUpdateResponse`
+- New struct `WorkspacePrivateEndpointConnectionsClientDeleteResponse`
+- New struct `WorkspacePrivateEndpointConnectionsClientGetOptions`
+- New struct `WorkspacePrivateEndpointConnectionsClientGetResponse`
+- New struct `WorkspacePrivateEndpointConnectionsClientListByWorkspaceOptions`
+- New struct `WorkspacePrivateEndpointConnectionsClientListByWorkspaceResponse`
+- New struct `WorkspacePrivateLinkResourcesClient`
+- New struct `WorkspacePrivateLinkResourcesClientGetOptions`
+- New struct `WorkspacePrivateLinkResourcesClientGetResponse`
+- New struct `WorkspacePrivateLinkResourcesClientListByWorkspaceOptions`
+- New struct `WorkspacePrivateLinkResourcesClientListByWorkspaceResponse`
+- New field `ResumeToken` in struct `IotConnectorsClientBeginDeleteOptions`
+- New field `OciArtifacts` in struct `ServiceAcrConfigurationInfo`
+- New anonymous field `PrivateLinkResourceListResultDescription` in struct `PrivateLinkResourcesClientListByServiceResponse`
+- New anonymous field `ServicesDescription` in struct `ServicesClientUpdateResponse`
+- New anonymous field `FhirServiceCollection` in struct `FhirServicesClientListByWorkspaceResponse`
+- New field `ResumeToken` in struct `IotConnectorsClientBeginUpdateOptions`
+- New field `ResumeToken` in struct `WorkspacesClientBeginUpdateOptions`
+- New field `ResumeToken` in struct `WorkspacesClientBeginCreateOrUpdateOptions`
+- New anonymous field `IotFhirDestination` in struct `IotConnectorFhirDestinationClientGetResponse`
+- New anonymous field `OperationResultsDescription` in struct `OperationResultsClientGetResponse`
+- New anonymous field `PrivateEndpointConnectionDescription` in struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse`
+- New anonymous field `IotConnector` in struct `IotConnectorsClientCreateOrUpdateResponse`
+- New anonymous field `Workspace` in struct `WorkspacesClientGetResponse`
+- New anonymous field `DicomService` in struct `DicomServicesClientCreateOrUpdateResponse`
+- New anonymous field `PrivateEndpointConnectionDescription` in struct `PrivateEndpointConnectionsClientGetResponse`
+- New anonymous field `ServicesDescription` in struct `ServicesClientCreateOrUpdateResponse`
+- New anonymous field `PrivateLinkResourceDescription` in struct `PrivateLinkResourcesClientGetResponse`
+- New anonymous field `IotFhirDestination` in struct `IotConnectorFhirDestinationClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `DicomServicesClientBeginCreateOrUpdateOptions`
+- New anonymous field `IotConnector` in struct `IotConnectorsClientUpdateResponse`
+- New field `ResumeToken` in struct `DicomServicesClientBeginDeleteOptions`
+- New anonymous field `ServicesDescriptionListResult` in struct `ServicesClientListResponse`
+- New field `ResumeToken` in struct `WorkspacesClientBeginDeleteOptions`
+- New anonymous field `WorkspaceList` in struct `WorkspacesClientListBySubscriptionResponse`
+- New anonymous field `PrivateEndpointConnectionListResultDescription` in struct `PrivateEndpointConnectionsClientListByServiceResponse`
+- New anonymous field `DicomService` in struct `DicomServicesClientUpdateResponse`
+- New anonymous field `ServicesDescriptionListResult` in struct `ServicesClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `IotConnectorsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `DicomServicesClientBeginUpdateOptions`
+- New anonymous field `DicomServiceCollection` in struct `DicomServicesClientListByWorkspaceResponse`
+- New field `ResumeToken` in struct `ServicesClientBeginCreateOrUpdateOptions`
+- New anonymous field `IotFhirDestinationCollection` in struct `FhirDestinationsClientListByIotConnectorResponse`
+- New field `EndTime` in struct `OperationResultsDescription`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions`
+- New anonymous field `FhirService` in struct `FhirServicesClientCreateOrUpdateResponse`
+- New anonymous field `Workspace` in struct `WorkspacesClientCreateOrUpdateResponse`
+- New field `Identity` in struct `DicomService`
+- New field `ResumeToken` in struct `IotConnectorFhirDestinationClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `FhirServicesClientBeginCreateOrUpdateOptions`
+- New anonymous field `ServicesDescription` in struct `ServicesClientGetResponse`
+- New field `Properties` in struct `OperationDetail`
+- New anonymous field `ServicesNameAvailabilityInfo` in struct `ServicesClientCheckNameAvailabilityResponse`
+- New anonymous field `FhirService` in struct `FhirServicesClientGetResponse`
+- New field `OciArtifacts` in struct `FhirServiceAcrConfiguration`
+- New anonymous field `IotConnector` in struct `IotConnectorsClientGetResponse`
+- New field `ResumeToken` in struct `FhirServicesClientBeginDeleteOptions`
+- New anonymous field `WorkspaceList` in struct `WorkspacesClientListByResourceGroupResponse`
+- New field `PublicNetworkAccess` in struct `FhirServiceProperties`
+- New field `ResourceVersionPolicyConfiguration` in struct `FhirServiceProperties`
+- New field `PrivateEndpointConnections` in struct `FhirServiceProperties`
+- New field `EventState` in struct `FhirServiceProperties`
+- New anonymous field `ListOperations` in struct `OperationsClientListResponse`
+- New field `PublicNetworkAccess` in struct `DicomServiceProperties`
+- New field `PrivateEndpointConnections` in struct `DicomServiceProperties`
+- New anonymous field `IotConnectorCollection` in struct `IotConnectorsClientListByWorkspaceResponse`
+- New field `ResumeToken` in struct `ServicesClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `ServicesClientBeginUpdateOptions`
+- New field `PublicNetworkAccess` in struct `WorkspaceProperties`
+- New field `PrivateEndpointConnections` in struct `WorkspaceProperties`
+- New anonymous field `DicomService` in struct `DicomServicesClientGetResponse`
+- New anonymous field `Workspace` in struct `WorkspacesClientUpdateResponse`
+- New field `TenantID` in struct `ServiceManagedIdentityIdentity`
+- New field `UserAssignedIdentities` in struct `ServiceManagedIdentityIdentity`
+- New field `PrincipalID` in struct `ServiceManagedIdentityIdentity`
+- New field `Identity` in struct `DicomServicePatchResource`
+- New field `ResumeToken` in struct `FhirServicesClientBeginUpdateOptions`
+- New field `ResumeToken` in struct `IotConnectorFhirDestinationClientBeginDeleteOptions`
+- New anonymous field `FhirService` in struct `FhirServicesClientUpdateResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

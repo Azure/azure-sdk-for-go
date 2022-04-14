@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armportal
 
 const (
 	moduleName    = "armportal"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 type ConfigurationName string
@@ -24,9 +24,4 @@ func PossibleConfigurationNameValues() []ConfigurationName {
 	return []ConfigurationName{
 		ConfigurationNameDefault,
 	}
-}
-
-// ToPtr returns a *ConfigurationName pointing to the current value.
-func (c ConfigurationName) ToPtr() *ConfigurationName {
-	return &c
 }

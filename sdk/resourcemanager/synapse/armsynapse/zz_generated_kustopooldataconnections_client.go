@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type KustoPoolDataConnectionsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewKustoPoolDataConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *KustoPoolDataConnectionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewKustoPoolDataConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*KustoPoolDataConnectionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &KustoPoolDataConnectionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CheckNameAvailability - Checks that the data connection name is valid and is not already in use.
@@ -109,7 +114,7 @@ func (client *KustoPoolDataConnectionsClient) checkNameAvailabilityCreateRequest
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
 func (client *KustoPoolDataConnectionsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (KustoPoolDataConnectionsClientCheckNameAvailabilityResponse, error) {
-	result := KustoPoolDataConnectionsClientCheckNameAvailabilityResponse{RawResponse: resp}
+	result := KustoPoolDataConnectionsClientCheckNameAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameResult); err != nil {
 		return KustoPoolDataConnectionsClientCheckNameAvailabilityResponse{}, err
 	}
@@ -126,22 +131,16 @@ func (client *KustoPoolDataConnectionsClient) checkNameAvailabilityHandleRespons
 // parameters - The data connection parameters supplied to the CreateOrUpdate operation.
 // options - KustoPoolDataConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the KustoPoolDataConnectionsClient.BeginCreateOrUpdate
 // method.
-func (client *KustoPoolDataConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName string, parameters DataConnectionClassification, options *KustoPoolDataConnectionsClientBeginCreateOrUpdateOptions) (KustoPoolDataConnectionsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName, parameters, options)
-	if err != nil {
-		return KustoPoolDataConnectionsClientCreateOrUpdatePollerResponse{}, err
+func (client *KustoPoolDataConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName string, parameters DataConnectionClassification, options *KustoPoolDataConnectionsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[KustoPoolDataConnectionsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[KustoPoolDataConnectionsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[KustoPoolDataConnectionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := KustoPoolDataConnectionsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("KustoPoolDataConnectionsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return KustoPoolDataConnectionsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &KustoPoolDataConnectionsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a data connection.
@@ -208,22 +207,18 @@ func (client *KustoPoolDataConnectionsClient) createOrUpdateCreateRequest(ctx co
 // parameters - The data connection parameters supplied to the CreateOrUpdate operation.
 // options - KustoPoolDataConnectionsClientBeginDataConnectionValidationOptions contains the optional parameters for the KustoPoolDataConnectionsClient.BeginDataConnectionValidation
 // method.
-func (client *KustoPoolDataConnectionsClient) BeginDataConnectionValidation(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, parameters DataConnectionValidation, options *KustoPoolDataConnectionsClientBeginDataConnectionValidationOptions) (KustoPoolDataConnectionsClientDataConnectionValidationPollerResponse, error) {
-	resp, err := client.dataConnectionValidation(ctx, resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters, options)
-	if err != nil {
-		return KustoPoolDataConnectionsClientDataConnectionValidationPollerResponse{}, err
+func (client *KustoPoolDataConnectionsClient) BeginDataConnectionValidation(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, parameters DataConnectionValidation, options *KustoPoolDataConnectionsClientBeginDataConnectionValidationOptions) (*armruntime.Poller[KustoPoolDataConnectionsClientDataConnectionValidationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.dataConnectionValidation(ctx, resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[KustoPoolDataConnectionsClientDataConnectionValidationResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[KustoPoolDataConnectionsClientDataConnectionValidationResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := KustoPoolDataConnectionsClientDataConnectionValidationPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("KustoPoolDataConnectionsClient.DataConnectionValidation", "location", resp, client.pl)
-	if err != nil {
-		return KustoPoolDataConnectionsClientDataConnectionValidationPollerResponse{}, err
-	}
-	result.Poller = &KustoPoolDataConnectionsClientDataConnectionValidationPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DataConnectionValidation - Checks that the data connection parameters are valid.
@@ -286,22 +281,16 @@ func (client *KustoPoolDataConnectionsClient) dataConnectionValidationCreateRequ
 // dataConnectionName - The name of the data connection.
 // options - KustoPoolDataConnectionsClientBeginDeleteOptions contains the optional parameters for the KustoPoolDataConnectionsClient.BeginDelete
 // method.
-func (client *KustoPoolDataConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName string, options *KustoPoolDataConnectionsClientBeginDeleteOptions) (KustoPoolDataConnectionsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName, options)
-	if err != nil {
-		return KustoPoolDataConnectionsClientDeletePollerResponse{}, err
+func (client *KustoPoolDataConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName string, options *KustoPoolDataConnectionsClientBeginDeleteOptions) (*armruntime.Poller[KustoPoolDataConnectionsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[KustoPoolDataConnectionsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[KustoPoolDataConnectionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := KustoPoolDataConnectionsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("KustoPoolDataConnectionsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return KustoPoolDataConnectionsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &KustoPoolDataConnectionsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the data connection with the given name.
@@ -423,7 +412,7 @@ func (client *KustoPoolDataConnectionsClient) getCreateRequest(ctx context.Conte
 
 // getHandleResponse handles the Get response.
 func (client *KustoPoolDataConnectionsClient) getHandleResponse(resp *http.Response) (KustoPoolDataConnectionsClientGetResponse, error) {
-	result := KustoPoolDataConnectionsClientGetResponse{RawResponse: resp}
+	result := KustoPoolDataConnectionsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return KustoPoolDataConnectionsClientGetResponse{}, err
 	}
@@ -438,19 +427,26 @@ func (client *KustoPoolDataConnectionsClient) getHandleResponse(resp *http.Respo
 // databaseName - The name of the database in the Kusto pool.
 // options - KustoPoolDataConnectionsClientListByDatabaseOptions contains the optional parameters for the KustoPoolDataConnectionsClient.ListByDatabase
 // method.
-func (client *KustoPoolDataConnectionsClient) ListByDatabase(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, options *KustoPoolDataConnectionsClientListByDatabaseOptions) (KustoPoolDataConnectionsClientListByDatabaseResponse, error) {
-	req, err := client.listByDatabaseCreateRequest(ctx, resourceGroupName, workspaceName, kustoPoolName, databaseName, options)
-	if err != nil {
-		return KustoPoolDataConnectionsClientListByDatabaseResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return KustoPoolDataConnectionsClientListByDatabaseResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KustoPoolDataConnectionsClientListByDatabaseResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listByDatabaseHandleResponse(resp)
+func (client *KustoPoolDataConnectionsClient) ListByDatabase(resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, options *KustoPoolDataConnectionsClientListByDatabaseOptions) *runtime.Pager[KustoPoolDataConnectionsClientListByDatabaseResponse] {
+	return runtime.NewPager(runtime.PageProcessor[KustoPoolDataConnectionsClientListByDatabaseResponse]{
+		More: func(page KustoPoolDataConnectionsClientListByDatabaseResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *KustoPoolDataConnectionsClientListByDatabaseResponse) (KustoPoolDataConnectionsClientListByDatabaseResponse, error) {
+			req, err := client.listByDatabaseCreateRequest(ctx, resourceGroupName, workspaceName, kustoPoolName, databaseName, options)
+			if err != nil {
+				return KustoPoolDataConnectionsClientListByDatabaseResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return KustoPoolDataConnectionsClientListByDatabaseResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return KustoPoolDataConnectionsClientListByDatabaseResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByDatabaseHandleResponse(resp)
+		},
+	})
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
@@ -489,7 +485,7 @@ func (client *KustoPoolDataConnectionsClient) listByDatabaseCreateRequest(ctx co
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
 func (client *KustoPoolDataConnectionsClient) listByDatabaseHandleResponse(resp *http.Response) (KustoPoolDataConnectionsClientListByDatabaseResponse, error) {
-	result := KustoPoolDataConnectionsClientListByDatabaseResponse{RawResponse: resp}
+	result := KustoPoolDataConnectionsClientListByDatabaseResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataConnectionListResult); err != nil {
 		return KustoPoolDataConnectionsClientListByDatabaseResponse{}, err
 	}
@@ -506,22 +502,16 @@ func (client *KustoPoolDataConnectionsClient) listByDatabaseHandleResponse(resp 
 // parameters - The data connection parameters supplied to the Update operation.
 // options - KustoPoolDataConnectionsClientBeginUpdateOptions contains the optional parameters for the KustoPoolDataConnectionsClient.BeginUpdate
 // method.
-func (client *KustoPoolDataConnectionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName string, parameters DataConnectionClassification, options *KustoPoolDataConnectionsClientBeginUpdateOptions) (KustoPoolDataConnectionsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName, parameters, options)
-	if err != nil {
-		return KustoPoolDataConnectionsClientUpdatePollerResponse{}, err
+func (client *KustoPoolDataConnectionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName string, parameters DataConnectionClassification, options *KustoPoolDataConnectionsClientBeginUpdateOptions) (*armruntime.Poller[KustoPoolDataConnectionsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[KustoPoolDataConnectionsClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[KustoPoolDataConnectionsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := KustoPoolDataConnectionsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("KustoPoolDataConnectionsClient.Update", "", resp, client.pl)
-	if err != nil {
-		return KustoPoolDataConnectionsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &KustoPoolDataConnectionsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates a data connection.

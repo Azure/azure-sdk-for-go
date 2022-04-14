@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,21 +36,25 @@ type DeviceGroupsClient struct {
 // iotDefenderLocation - Defender for IoT location
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDeviceGroupsClient(subscriptionID string, iotDefenderLocation string, credential azcore.TokenCredential, options *arm.ClientOptions) *DeviceGroupsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewDeviceGroupsClient(subscriptionID string, iotDefenderLocation string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeviceGroupsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DeviceGroupsClient{
 		subscriptionID:      subscriptionID,
 		iotDefenderLocation: iotDefenderLocation,
-		host:                string(cp.Endpoint),
-		pl:                  armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:                ep,
+		pl:                  pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create or update device group
@@ -101,7 +106,7 @@ func (client *DeviceGroupsClient) createOrUpdateCreateRequest(ctx context.Contex
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *DeviceGroupsClient) createOrUpdateHandleResponse(resp *http.Response) (DeviceGroupsClientCreateOrUpdateResponse, error) {
-	result := DeviceGroupsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := DeviceGroupsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceGroupModel); err != nil {
 		return DeviceGroupsClientCreateOrUpdateResponse{}, err
 	}
@@ -124,7 +129,7 @@ func (client *DeviceGroupsClient) Delete(ctx context.Context, deviceGroupName st
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return DeviceGroupsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return DeviceGroupsClientDeleteResponse{RawResponse: resp}, nil
+	return DeviceGroupsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -200,7 +205,7 @@ func (client *DeviceGroupsClient) getCreateRequest(ctx context.Context, deviceGr
 
 // getHandleResponse handles the Get response.
 func (client *DeviceGroupsClient) getHandleResponse(resp *http.Response) (DeviceGroupsClientGetResponse, error) {
-	result := DeviceGroupsClientGetResponse{RawResponse: resp}
+	result := DeviceGroupsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceGroupModel); err != nil {
 		return DeviceGroupsClientGetResponse{}, err
 	}
@@ -210,16 +215,32 @@ func (client *DeviceGroupsClient) getHandleResponse(resp *http.Response) (Device
 // List - List device groups
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DeviceGroupsClientListOptions contains the optional parameters for the DeviceGroupsClient.List method.
-func (client *DeviceGroupsClient) List(options *DeviceGroupsClientListOptions) *DeviceGroupsClientListPager {
-	return &DeviceGroupsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *DeviceGroupsClient) List(options *DeviceGroupsClientListOptions) *runtime.Pager[DeviceGroupsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DeviceGroupsClientListResponse]{
+		More: func(page DeviceGroupsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DeviceGroupsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeviceGroupList.NextLink)
+		Fetcher: func(ctx context.Context, page *DeviceGroupsClientListResponse) (DeviceGroupsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DeviceGroupsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DeviceGroupsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DeviceGroupsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -246,7 +267,7 @@ func (client *DeviceGroupsClient) listCreateRequest(ctx context.Context, options
 
 // listHandleResponse handles the List response.
 func (client *DeviceGroupsClient) listHandleResponse(resp *http.Response) (DeviceGroupsClientListResponse, error) {
-	result := DeviceGroupsClientListResponse{RawResponse: resp}
+	result := DeviceGroupsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceGroupList); err != nil {
 		return DeviceGroupsClientListResponse{}, err
 	}

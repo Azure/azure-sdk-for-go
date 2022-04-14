@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,14 +19,19 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
 )
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/metadata/GetAllMetadataOData.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/metadata/GetAllMetadataOData.json
 func ExampleMetadataClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewMetadataClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewMetadataClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List("<resource-group-name>",
 		"<workspace-name>",
 		&armsecurityinsights.MetadataClientListOptions{Filter: nil,
@@ -34,65 +39,82 @@ func ExampleMetadataClient_List() {
 			Top:     nil,
 			Skip:    nil,
 		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/metadata/GetMetadata.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/metadata/GetMetadata.json
 func ExampleMetadataClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewMetadataClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewMetadataClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<metadata-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.MetadataClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/metadata/DeleteMetadata.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/metadata/DeleteMetadata.json
 func ExampleMetadataClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewMetadataClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewMetadataClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<metadata-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/metadata/PutMetadata.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/metadata/PutMetadata.json
 func ExampleMetadataClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewMetadataClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewMetadataClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Create(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
@@ -100,84 +122,105 @@ func ExampleMetadataClient_Create() {
 		armsecurityinsights.MetadataModel{
 			Properties: &armsecurityinsights.MetadataProperties{
 				Author: &armsecurityinsights.MetadataAuthor{
-					Name:  to.StringPtr("<name>"),
-					Email: to.StringPtr("<email>"),
+					Name:  to.Ptr("<name>"),
+					Email: to.Ptr("<email>"),
 				},
 				Categories: &armsecurityinsights.MetadataCategories{
 					Domains: []*string{
-						to.StringPtr("Application"),
-						to.StringPtr("Security – Insider Threat")},
+						to.Ptr("Application"),
+						to.Ptr("Security – Insider Threat")},
 					Verticals: []*string{
-						to.StringPtr("Healthcare")},
+						to.Ptr("Healthcare")},
 				},
-				ContentID: to.StringPtr("<content-id>"),
+				ContentID:            to.Ptr("<content-id>"),
+				ContentSchemaVersion: to.Ptr("<content-schema-version>"),
+				CustomVersion:        to.Ptr("<custom-version>"),
 				Dependencies: &armsecurityinsights.MetadataDependencies{
 					Criteria: []*armsecurityinsights.MetadataDependencies{
 						{
 							Criteria: []*armsecurityinsights.MetadataDependencies{
 								{
-									Name:      to.StringPtr("<name>"),
-									ContentID: to.StringPtr("<content-id>"),
-									Kind:      armsecurityinsights.Kind("DataConnector").ToPtr(),
+									Name:      to.Ptr("<name>"),
+									ContentID: to.Ptr("<content-id>"),
+									Kind:      to.Ptr(armsecurityinsights.KindDataConnector),
 								},
 								{
-									ContentID: to.StringPtr("<content-id>"),
-									Kind:      armsecurityinsights.Kind("DataConnector").ToPtr(),
+									ContentID: to.Ptr("<content-id>"),
+									Kind:      to.Ptr(armsecurityinsights.KindDataConnector),
 								},
 								{
-									ContentID: to.StringPtr("<content-id>"),
-									Kind:      armsecurityinsights.Kind("DataConnector").ToPtr(),
-									Version:   to.StringPtr("<version>"),
+									ContentID: to.Ptr("<content-id>"),
+									Kind:      to.Ptr(armsecurityinsights.KindDataConnector),
+									Version:   to.Ptr("<version>"),
 								}},
-							Operator: armsecurityinsights.Operator("OR").ToPtr(),
+							Operator: to.Ptr(armsecurityinsights.OperatorOR),
 						},
 						{
-							ContentID: to.StringPtr("<content-id>"),
-							Kind:      armsecurityinsights.Kind("Playbook").ToPtr(),
-							Version:   to.StringPtr("<version>"),
+							ContentID: to.Ptr("<content-id>"),
+							Kind:      to.Ptr(armsecurityinsights.KindPlaybook),
+							Version:   to.Ptr("<version>"),
 						},
 						{
-							ContentID: to.StringPtr("<content-id>"),
-							Kind:      armsecurityinsights.Kind("Parser").ToPtr(),
+							ContentID: to.Ptr("<content-id>"),
+							Kind:      to.Ptr(armsecurityinsights.KindParser),
 						}},
-					Operator: armsecurityinsights.Operator("AND").ToPtr(),
+					Operator: to.Ptr(armsecurityinsights.OperatorAND),
 				},
-				FirstPublishDate: to.TimePtr(func() time.Time { t, _ := time.Parse("2006-01-02", "2021-05-18"); return t }()),
-				Kind:             armsecurityinsights.Kind("AnalyticsRule").ToPtr(),
-				LastPublishDate:  to.TimePtr(func() time.Time { t, _ := time.Parse("2006-01-02", "2021-05-18"); return t }()),
-				ParentID:         to.StringPtr("<parent-id>"),
+				FirstPublishDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2021-05-18"); return t }()),
+				Kind:             to.Ptr(armsecurityinsights.KindAnalyticsRule),
+				LastPublishDate:  to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2021-05-18"); return t }()),
+				ParentID:         to.Ptr("<parent-id>"),
+				PreviewImages: []*string{
+					to.Ptr("firstImage.png"),
+					to.Ptr("secondImage.jpeg")},
+				PreviewImagesDark: []*string{
+					to.Ptr("firstImageDark.png"),
+					to.Ptr("secondImageDark.jpeg")},
 				Providers: []*string{
-					to.StringPtr("Amazon"),
-					to.StringPtr("Microsoft")},
+					to.Ptr("Amazon"),
+					to.Ptr("Microsoft")},
 				Source: &armsecurityinsights.MetadataSource{
-					Name:     to.StringPtr("<name>"),
-					Kind:     armsecurityinsights.SourceKind("Solution").ToPtr(),
-					SourceID: to.StringPtr("<source-id>"),
+					Name:     to.Ptr("<name>"),
+					Kind:     to.Ptr(armsecurityinsights.SourceKindSolution),
+					SourceID: to.Ptr("<source-id>"),
 				},
 				Support: &armsecurityinsights.MetadataSupport{
-					Name:  to.StringPtr("<name>"),
-					Email: to.StringPtr("<email>"),
-					Link:  to.StringPtr("<link>"),
-					Tier:  armsecurityinsights.SupportTier("Partner").ToPtr(),
+					Name:  to.Ptr("<name>"),
+					Email: to.Ptr("<email>"),
+					Link:  to.Ptr("<link>"),
+					Tier:  to.Ptr(armsecurityinsights.SupportTierPartner),
 				},
-				Version: to.StringPtr("<version>"),
+				ThreatAnalysisTactics: []*string{
+					to.Ptr("reconnaissance"),
+					to.Ptr("commandandcontrol")},
+				ThreatAnalysisTechniques: []*string{
+					to.Ptr("T1548"),
+					to.Ptr("T1548.001")},
+				Version: to.Ptr("<version>"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.MetadataClientCreateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/metadata/PatchMetadata.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/metadata/PatchMetadata.json
 func ExampleMetadataClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewMetadataClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewMetadataClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
@@ -185,14 +228,16 @@ func ExampleMetadataClient_Update() {
 		armsecurityinsights.MetadataPatch{
 			Properties: &armsecurityinsights.MetadataPropertiesPatch{
 				Author: &armsecurityinsights.MetadataAuthor{
-					Name:  to.StringPtr("<name>"),
-					Email: to.StringPtr("<email>"),
+					Name:  to.Ptr("<name>"),
+					Email: to.Ptr("<email>"),
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.MetadataClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }

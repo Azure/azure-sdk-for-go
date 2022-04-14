@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type QueryTextsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewQueryTextsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *QueryTextsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewQueryTextsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*QueryTextsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &QueryTextsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Retrieve the Query-Store query texts for the queryId.
@@ -102,7 +107,7 @@ func (client *QueryTextsClient) getCreateRequest(ctx context.Context, resourceGr
 
 // getHandleResponse handles the Get response.
 func (client *QueryTextsClient) getHandleResponse(resp *http.Response) (QueryTextsClientGetResponse, error) {
-	result := QueryTextsClientGetResponse{RawResponse: resp}
+	result := QueryTextsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueryText); err != nil {
 		return QueryTextsClientGetResponse{}, err
 	}
@@ -115,16 +120,32 @@ func (client *QueryTextsClient) getHandleResponse(resp *http.Response) (QueryTex
 // serverName - The name of the server.
 // queryIDs - The query identifiers
 // options - QueryTextsClientListByServerOptions contains the optional parameters for the QueryTextsClient.ListByServer method.
-func (client *QueryTextsClient) ListByServer(resourceGroupName string, serverName string, queryIDs []string, options *QueryTextsClientListByServerOptions) *QueryTextsClientListByServerPager {
-	return &QueryTextsClientListByServerPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, queryIDs, options)
+func (client *QueryTextsClient) ListByServer(resourceGroupName string, serverName string, queryIDs []string, options *QueryTextsClientListByServerOptions) *runtime.Pager[QueryTextsClientListByServerResponse] {
+	return runtime.NewPager(runtime.PageProcessor[QueryTextsClientListByServerResponse]{
+		More: func(page QueryTextsClientListByServerResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp QueryTextsClientListByServerResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.QueryTextsResultList.NextLink)
+		Fetcher: func(ctx context.Context, page *QueryTextsClientListByServerResponse) (QueryTextsClientListByServerResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServerCreateRequest(ctx, resourceGroupName, serverName, queryIDs, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return QueryTextsClientListByServerResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return QueryTextsClientListByServerResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return QueryTextsClientListByServerResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServerHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByServerCreateRequest creates the ListByServer request.
@@ -158,7 +179,7 @@ func (client *QueryTextsClient) listByServerCreateRequest(ctx context.Context, r
 
 // listByServerHandleResponse handles the ListByServer response.
 func (client *QueryTextsClient) listByServerHandleResponse(resp *http.Response) (QueryTextsClientListByServerResponse, error) {
-	result := QueryTextsClientListByServerResponse{RawResponse: resp}
+	result := QueryTextsClientListByServerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueryTextsResultList); err != nil {
 		return QueryTextsClientListByServerResponse{}, err
 	}

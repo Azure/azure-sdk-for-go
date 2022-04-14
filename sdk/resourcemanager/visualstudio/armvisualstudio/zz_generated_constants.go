@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armvisualstudio
 
 const (
 	moduleName    = "armvisualstudio"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // AccountResourceRequestOperationType - The type of the operation.
@@ -31,9 +31,4 @@ func PossibleAccountResourceRequestOperationTypeValues() []AccountResourceReques
 		AccountResourceRequestOperationTypeUpdate,
 		AccountResourceRequestOperationTypeLink,
 	}
-}
-
-// ToPtr returns a *AccountResourceRequestOperationType pointing to the current value.
-func (c AccountResourceRequestOperationType) ToPtr() *AccountResourceRequestOperationType {
-	return &c
 }

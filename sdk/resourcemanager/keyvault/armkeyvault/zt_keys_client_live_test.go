@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,15 +8,14 @@ package armkeyvault_test
 
 import (
 	"context"
+	"testing"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault"
 	"github.com/stretchr/testify/suite"
-	"testing"
-	"time"
 )
 
 type KeysClientTestSuite struct {
@@ -57,38 +56,39 @@ func TestKeysClient(t *testing.T) {
 
 func (testsuite *KeysClientTestSuite) TestKeysCRUD() {
 	// create vault
-	vaultsClient := armkeyvault.NewVaultsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	vaultsClient, err := armkeyvault.NewVaultsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	vaultName := "go-test-vault3"
 	vPollerResp, err := vaultsClient.BeginCreateOrUpdate(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
 		vaultName,
 		armkeyvault.VaultCreateOrUpdateParameters{
-			Location: to.StringPtr(testsuite.location),
+			Location: to.Ptr(testsuite.location),
 			Properties: &armkeyvault.VaultProperties{
 				SKU: &armkeyvault.SKU{
-					Family: armkeyvault.SKUFamilyA.ToPtr(),
-					Name:   armkeyvault.SKUNameStandard.ToPtr(),
+					Family: to.Ptr(armkeyvault.SKUFamilyA),
+					Name:   to.Ptr(armkeyvault.SKUNameStandard),
 				},
-				TenantID: to.StringPtr(testsuite.tenantID),
+				TenantID: to.Ptr(testsuite.tenantID),
 				AccessPolicies: []*armkeyvault.AccessPolicyEntry{
 					{
-						TenantID: to.StringPtr(testsuite.tenantID),
-						ObjectID: to.StringPtr(testsuite.objectID),
+						TenantID: to.Ptr(testsuite.tenantID),
+						ObjectID: to.Ptr(testsuite.objectID),
 						Permissions: &armkeyvault.Permissions{
 							Keys: []*armkeyvault.KeyPermissions{
-								armkeyvault.KeyPermissionsGet.ToPtr(),
-								armkeyvault.KeyPermissionsList.ToPtr(),
-								armkeyvault.KeyPermissionsCreate.ToPtr(),
+								to.Ptr(armkeyvault.KeyPermissionsGet),
+								to.Ptr(armkeyvault.KeyPermissionsList),
+								to.Ptr(armkeyvault.KeyPermissionsCreate),
 							},
 							Secrets: []*armkeyvault.SecretPermissions{
-								armkeyvault.SecretPermissionsGet.ToPtr(),
-								armkeyvault.SecretPermissionsList.ToPtr(),
+								to.Ptr(armkeyvault.SecretPermissionsGet),
+								to.Ptr(armkeyvault.SecretPermissionsList),
 							},
 							Certificates: []*armkeyvault.CertificatePermissions{
-								armkeyvault.CertificatePermissionsGet.ToPtr(),
-								armkeyvault.CertificatePermissionsList.ToPtr(),
-								armkeyvault.CertificatePermissionsCreate.ToPtr(),
+								to.Ptr(armkeyvault.CertificatePermissionsGet),
+								to.Ptr(armkeyvault.CertificatePermissionsList),
+								to.Ptr(armkeyvault.CertificatePermissionsCreate),
 							},
 						},
 					},
@@ -98,25 +98,13 @@ func (testsuite *KeysClientTestSuite) TestKeysCRUD() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	var vResp armkeyvault.VaultsClientCreateOrUpdateResponse
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		for {
-			_, err = vPollerResp.Poller.Poll(testsuite.ctx)
-			testsuite.Require().NoError(err)
-			if vPollerResp.Poller.Done() {
-				vResp, err = vPollerResp.Poller.FinalResponse(testsuite.ctx)
-				testsuite.Require().NoError(err)
-				break
-			}
-		}
-	} else {
-		vResp, err = vPollerResp.PollUntilDone(testsuite.ctx, 30*time.Second)
-		testsuite.Require().NoError(err)
-	}
+	vResp, err := testutil.PollForTest(testsuite.ctx, vPollerResp)
+	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(vaultName, *vResp.Name)
 
 	// create key
-	keysClient := armkeyvault.NewKeysClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	keysClient, err := armkeyvault.NewKeysClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	keyName := "go-test-key"
 	createResp, err := keysClient.CreateIfNotExist(
 		testsuite.ctx,
@@ -126,14 +114,14 @@ func (testsuite *KeysClientTestSuite) TestKeysCRUD() {
 		armkeyvault.KeyCreateParameters{
 			Properties: &armkeyvault.KeyProperties{
 				Attributes: &armkeyvault.KeyAttributes{
-					Enabled: to.BoolPtr(true),
+					Enabled: to.Ptr(true),
 				},
-				KeySize: to.Int32Ptr(2048),
+				KeySize: to.Ptr[int32](2048),
 				KeyOps: []*armkeyvault.JSONWebKeyOperation{
-					armkeyvault.JSONWebKeyOperationEncrypt.ToPtr(),
-					armkeyvault.JSONWebKeyOperationDecrypt.ToPtr(),
+					to.Ptr(armkeyvault.JSONWebKeyOperationEncrypt),
+					to.Ptr(armkeyvault.JSONWebKeyOperationDecrypt),
 				},
-				Kty: armkeyvault.JSONWebKeyTypeRSA.ToPtr(),
+				Kty: to.Ptr(armkeyvault.JSONWebKeyTypeRSA),
 			},
 		},
 		nil,
@@ -148,11 +136,9 @@ func (testsuite *KeysClientTestSuite) TestKeysCRUD() {
 
 	// list
 	list := keysClient.List(testsuite.resourceGroupName, vaultName, nil)
-	testsuite.Require().NoError(list.Err())
-	testsuite.Require().True(list.NextPage(testsuite.ctx))
+	testsuite.Require().True(list.More())
 
 	// list versions
 	listVersions := keysClient.ListVersions(testsuite.resourceGroupName, vaultName, keyName, nil)
-	testsuite.Require().NoError(listVersions.Err())
-	testsuite.Require().True(listVersions.NextPage(testsuite.ctx))
+	testsuite.Require().True(listVersions.More())
 }

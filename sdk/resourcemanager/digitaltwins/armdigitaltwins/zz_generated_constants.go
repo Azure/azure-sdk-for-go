@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,10 +10,12 @@ package armdigitaltwins
 
 const (
 	moduleName    = "armdigitaltwins"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
-// AuthenticationType - Specifies the authentication type being used for connecting to the endpoint.
+// AuthenticationType - Specifies the authentication type being used for connecting to the endpoint. Defaults to 'KeyBased'.
+// If 'KeyBased' is selected, a connection string must be specified (at least the primary connection
+// string). If 'IdentityBased' is select, the endpointUri and entityPath properties must be specified.
 type AuthenticationType string
 
 const (
@@ -27,11 +29,6 @@ func PossibleAuthenticationTypeValues() []AuthenticationType {
 		AuthenticationTypeIdentityBased,
 		AuthenticationTypeKeyBased,
 	}
-}
-
-// ToPtr returns a *AuthenticationType pointing to the current value.
-func (c AuthenticationType) ToPtr() *AuthenticationType {
-	return &c
 }
 
 // ConnectionPropertiesProvisioningState - The provisioning state.
@@ -54,9 +51,38 @@ func PossibleConnectionPropertiesProvisioningStateValues() []ConnectionPropertie
 	}
 }
 
-// ToPtr returns a *ConnectionPropertiesProvisioningState pointing to the current value.
-func (c ConnectionPropertiesProvisioningState) ToPtr() *ConnectionPropertiesProvisioningState {
-	return &c
+// ConnectionType - The type of time series connection resource.
+type ConnectionType string
+
+const (
+	ConnectionTypeAzureDataExplorer ConnectionType = "AzureDataExplorer"
+)
+
+// PossibleConnectionTypeValues returns the possible values for the ConnectionType const type.
+func PossibleConnectionTypeValues() []ConnectionType {
+	return []ConnectionType{
+		ConnectionTypeAzureDataExplorer,
+	}
+}
+
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
+	}
 }
 
 // DigitalTwinsIdentityType - The type of Managed Identity used by the DigitalTwinsInstance. Only SystemAssigned is supported.
@@ -73,11 +99,6 @@ func PossibleDigitalTwinsIdentityTypeValues() []DigitalTwinsIdentityType {
 		DigitalTwinsIdentityTypeNone,
 		DigitalTwinsIdentityTypeSystemAssigned,
 	}
-}
-
-// ToPtr returns a *DigitalTwinsIdentityType pointing to the current value.
-func (c DigitalTwinsIdentityType) ToPtr() *DigitalTwinsIdentityType {
-	return &c
 }
 
 // EndpointProvisioningState - The provisioning state.
@@ -114,11 +135,6 @@ func PossibleEndpointProvisioningStateValues() []EndpointProvisioningState {
 	}
 }
 
-// ToPtr returns a *EndpointProvisioningState pointing to the current value.
-func (c EndpointProvisioningState) ToPtr() *EndpointProvisioningState {
-	return &c
-}
-
 // EndpointType - The type of Digital Twins endpoint
 type EndpointType string
 
@@ -135,11 +151,6 @@ func PossibleEndpointTypeValues() []EndpointType {
 		EndpointTypeEventHub,
 		EndpointTypeServiceBus,
 	}
-}
-
-// ToPtr returns a *EndpointType pointing to the current value.
-func (c EndpointType) ToPtr() *EndpointType {
-	return &c
 }
 
 // PrivateLinkServiceConnectionStatus - The status of a private endpoint connection.
@@ -160,11 +171,6 @@ func PossiblePrivateLinkServiceConnectionStatusValues() []PrivateLinkServiceConn
 		PrivateLinkServiceConnectionStatusPending,
 		PrivateLinkServiceConnectionStatusRejected,
 	}
-}
-
-// ToPtr returns a *PrivateLinkServiceConnectionStatus pointing to the current value.
-func (c PrivateLinkServiceConnectionStatus) ToPtr() *PrivateLinkServiceConnectionStatus {
-	return &c
 }
 
 // ProvisioningState - The provisioning state.
@@ -201,11 +207,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // PublicNetworkAccess - Public network access for the DigitalTwinsInstance.
 type PublicNetworkAccess string
 
@@ -220,11 +221,6 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
 	}
-}
-
-// ToPtr returns a *PublicNetworkAccess pointing to the current value.
-func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
-	return &c
 }
 
 // Reason - Message providing the reason why the given name is invalid.
@@ -243,7 +239,36 @@ func PossibleReasonValues() []Reason {
 	}
 }
 
-// ToPtr returns a *Reason pointing to the current value.
-func (c Reason) ToPtr() *Reason {
-	return &c
+// TimeSeriesDatabaseConnectionState - The provisioning state.
+type TimeSeriesDatabaseConnectionState string
+
+const (
+	TimeSeriesDatabaseConnectionStateCanceled     TimeSeriesDatabaseConnectionState = "Canceled"
+	TimeSeriesDatabaseConnectionStateDeleted      TimeSeriesDatabaseConnectionState = "Deleted"
+	TimeSeriesDatabaseConnectionStateDeleting     TimeSeriesDatabaseConnectionState = "Deleting"
+	TimeSeriesDatabaseConnectionStateDisabled     TimeSeriesDatabaseConnectionState = "Disabled"
+	TimeSeriesDatabaseConnectionStateFailed       TimeSeriesDatabaseConnectionState = "Failed"
+	TimeSeriesDatabaseConnectionStateMoving       TimeSeriesDatabaseConnectionState = "Moving"
+	TimeSeriesDatabaseConnectionStateProvisioning TimeSeriesDatabaseConnectionState = "Provisioning"
+	TimeSeriesDatabaseConnectionStateRestoring    TimeSeriesDatabaseConnectionState = "Restoring"
+	TimeSeriesDatabaseConnectionStateSucceeded    TimeSeriesDatabaseConnectionState = "Succeeded"
+	TimeSeriesDatabaseConnectionStateSuspending   TimeSeriesDatabaseConnectionState = "Suspending"
+	TimeSeriesDatabaseConnectionStateWarning      TimeSeriesDatabaseConnectionState = "Warning"
+)
+
+// PossibleTimeSeriesDatabaseConnectionStateValues returns the possible values for the TimeSeriesDatabaseConnectionState const type.
+func PossibleTimeSeriesDatabaseConnectionStateValues() []TimeSeriesDatabaseConnectionState {
+	return []TimeSeriesDatabaseConnectionState{
+		TimeSeriesDatabaseConnectionStateCanceled,
+		TimeSeriesDatabaseConnectionStateDeleted,
+		TimeSeriesDatabaseConnectionStateDeleting,
+		TimeSeriesDatabaseConnectionStateDisabled,
+		TimeSeriesDatabaseConnectionStateFailed,
+		TimeSeriesDatabaseConnectionStateMoving,
+		TimeSeriesDatabaseConnectionStateProvisioning,
+		TimeSeriesDatabaseConnectionStateRestoring,
+		TimeSeriesDatabaseConnectionStateSucceeded,
+		TimeSeriesDatabaseConnectionStateSuspending,
+		TimeSeriesDatabaseConnectionStateWarning,
+	}
 }

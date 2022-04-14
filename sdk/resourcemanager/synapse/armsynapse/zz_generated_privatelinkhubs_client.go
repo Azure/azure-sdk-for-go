@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type PrivateLinkHubsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPrivateLinkHubsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateLinkHubsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewPrivateLinkHubsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkHubsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PrivateLinkHubsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a privateLinkHub
@@ -99,7 +104,7 @@ func (client *PrivateLinkHubsClient) createOrUpdateCreateRequest(ctx context.Con
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *PrivateLinkHubsClient) createOrUpdateHandleResponse(resp *http.Response) (PrivateLinkHubsClientCreateOrUpdateResponse, error) {
-	result := PrivateLinkHubsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := PrivateLinkHubsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkHub); err != nil {
 		return PrivateLinkHubsClientCreateOrUpdateResponse{}, err
 	}
@@ -112,22 +117,16 @@ func (client *PrivateLinkHubsClient) createOrUpdateHandleResponse(resp *http.Res
 // privateLinkHubName - Name of the privateLinkHub
 // options - PrivateLinkHubsClientBeginDeleteOptions contains the optional parameters for the PrivateLinkHubsClient.BeginDelete
 // method.
-func (client *PrivateLinkHubsClient) BeginDelete(ctx context.Context, resourceGroupName string, privateLinkHubName string, options *PrivateLinkHubsClientBeginDeleteOptions) (PrivateLinkHubsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, privateLinkHubName, options)
-	if err != nil {
-		return PrivateLinkHubsClientDeletePollerResponse{}, err
+func (client *PrivateLinkHubsClient) BeginDelete(ctx context.Context, resourceGroupName string, privateLinkHubName string, options *PrivateLinkHubsClientBeginDeleteOptions) (*armruntime.Poller[PrivateLinkHubsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, privateLinkHubName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[PrivateLinkHubsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[PrivateLinkHubsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PrivateLinkHubsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PrivateLinkHubsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return PrivateLinkHubsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &PrivateLinkHubsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a privateLinkHub
@@ -221,7 +220,7 @@ func (client *PrivateLinkHubsClient) getCreateRequest(ctx context.Context, resou
 
 // getHandleResponse handles the Get response.
 func (client *PrivateLinkHubsClient) getHandleResponse(resp *http.Response) (PrivateLinkHubsClientGetResponse, error) {
-	result := PrivateLinkHubsClientGetResponse{RawResponse: resp}
+	result := PrivateLinkHubsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkHub); err != nil {
 		return PrivateLinkHubsClientGetResponse{}, err
 	}
@@ -231,16 +230,32 @@ func (client *PrivateLinkHubsClient) getHandleResponse(resp *http.Response) (Pri
 // List - Returns a list of privateLinkHubs in a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PrivateLinkHubsClientListOptions contains the optional parameters for the PrivateLinkHubsClient.List method.
-func (client *PrivateLinkHubsClient) List(options *PrivateLinkHubsClientListOptions) *PrivateLinkHubsClientListPager {
-	return &PrivateLinkHubsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *PrivateLinkHubsClient) List(options *PrivateLinkHubsClientListOptions) *runtime.Pager[PrivateLinkHubsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PrivateLinkHubsClientListResponse]{
+		More: func(page PrivateLinkHubsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PrivateLinkHubsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateLinkHubInfoListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PrivateLinkHubsClientListResponse) (PrivateLinkHubsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PrivateLinkHubsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PrivateLinkHubsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PrivateLinkHubsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -263,7 +278,7 @@ func (client *PrivateLinkHubsClient) listCreateRequest(ctx context.Context, opti
 
 // listHandleResponse handles the List response.
 func (client *PrivateLinkHubsClient) listHandleResponse(resp *http.Response) (PrivateLinkHubsClientListResponse, error) {
-	result := PrivateLinkHubsClientListResponse{RawResponse: resp}
+	result := PrivateLinkHubsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkHubInfoListResult); err != nil {
 		return PrivateLinkHubsClientListResponse{}, err
 	}
@@ -275,16 +290,32 @@ func (client *PrivateLinkHubsClient) listHandleResponse(resp *http.Response) (Pr
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - PrivateLinkHubsClientListByResourceGroupOptions contains the optional parameters for the PrivateLinkHubsClient.ListByResourceGroup
 // method.
-func (client *PrivateLinkHubsClient) ListByResourceGroup(resourceGroupName string, options *PrivateLinkHubsClientListByResourceGroupOptions) *PrivateLinkHubsClientListByResourceGroupPager {
-	return &PrivateLinkHubsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *PrivateLinkHubsClient) ListByResourceGroup(resourceGroupName string, options *PrivateLinkHubsClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkHubsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PrivateLinkHubsClientListByResourceGroupResponse]{
+		More: func(page PrivateLinkHubsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PrivateLinkHubsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateLinkHubInfoListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PrivateLinkHubsClientListByResourceGroupResponse) (PrivateLinkHubsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PrivateLinkHubsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PrivateLinkHubsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PrivateLinkHubsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -311,7 +342,7 @@ func (client *PrivateLinkHubsClient) listByResourceGroupCreateRequest(ctx contex
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *PrivateLinkHubsClient) listByResourceGroupHandleResponse(resp *http.Response) (PrivateLinkHubsClientListByResourceGroupResponse, error) {
-	result := PrivateLinkHubsClientListByResourceGroupResponse{RawResponse: resp}
+	result := PrivateLinkHubsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkHubInfoListResult); err != nil {
 		return PrivateLinkHubsClientListByResourceGroupResponse{}, err
 	}
@@ -367,7 +398,7 @@ func (client *PrivateLinkHubsClient) updateCreateRequest(ctx context.Context, re
 
 // updateHandleResponse handles the Update response.
 func (client *PrivateLinkHubsClient) updateHandleResponse(resp *http.Response) (PrivateLinkHubsClientUpdateResponse, error) {
-	result := PrivateLinkHubsClientUpdateResponse{RawResponse: resp}
+	result := PrivateLinkHubsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkHub); err != nil {
 		return PrivateLinkHubsClientUpdateResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type TableServicesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewTableServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TableServicesClient {
+func NewTableServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TableServicesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &TableServicesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // GetServiceProperties - Gets the properties of a storage account’s Table service, including properties for Storage Analytics
@@ -93,7 +98,7 @@ func (client *TableServicesClient) getServicePropertiesCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -101,7 +106,7 @@ func (client *TableServicesClient) getServicePropertiesCreateRequest(ctx context
 
 // getServicePropertiesHandleResponse handles the GetServiceProperties response.
 func (client *TableServicesClient) getServicePropertiesHandleResponse(resp *http.Response) (TableServicesClientGetServicePropertiesResponse, error) {
-	result := TableServicesClientGetServicePropertiesResponse{RawResponse: resp}
+	result := TableServicesClientGetServicePropertiesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TableServiceProperties); err != nil {
 		return TableServicesClientGetServicePropertiesResponse{}, err
 	}
@@ -149,7 +154,7 @@ func (client *TableServicesClient) listCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -157,7 +162,7 @@ func (client *TableServicesClient) listCreateRequest(ctx context.Context, resour
 
 // listHandleResponse handles the List response.
 func (client *TableServicesClient) listHandleResponse(resp *http.Response) (TableServicesClientListResponse, error) {
-	result := TableServicesClientListResponse{RawResponse: resp}
+	result := TableServicesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListTableServices); err != nil {
 		return TableServicesClientListResponse{}, err
 	}
@@ -210,7 +215,7 @@ func (client *TableServicesClient) setServicePropertiesCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -218,7 +223,7 @@ func (client *TableServicesClient) setServicePropertiesCreateRequest(ctx context
 
 // setServicePropertiesHandleResponse handles the SetServiceProperties response.
 func (client *TableServicesClient) setServicePropertiesHandleResponse(resp *http.Response) (TableServicesClientSetServicePropertiesResponse, error) {
-	result := TableServicesClientSetServicePropertiesResponse{RawResponse: resp}
+	result := TableServicesClientSetServicePropertiesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TableServiceProperties); err != nil {
 		return TableServicesClientSetServicePropertiesResponse{}, err
 	}

@@ -1,5 +1,137 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `NewArtifactSourcesClient` return value(s) have been changed from `(*ArtifactSourcesClient)` to `(*ArtifactSourcesClient, error)`
+- Function `NewRolloutsClient` return value(s) have been changed from `(*RolloutsClient)` to `(*RolloutsClient, error)`
+- Function `NewServiceTopologiesClient` return value(s) have been changed from `(*ServiceTopologiesClient)` to `(*ServiceTopologiesClient, error)`
+- Function `NewStepsClient` return value(s) have been changed from `(*StepsClient)` to `(*StepsClient, error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*RolloutsClient.BeginCreateOrUpdate` return value(s) have been changed from `(RolloutsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[RolloutsClientCreateOrUpdateResponse], error)`
+- Function `*ServiceUnitsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ServiceUnitsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ServiceUnitsClientCreateOrUpdateResponse], error)`
+- Function `NewServicesClient` return value(s) have been changed from `(*ServicesClient)` to `(*ServicesClient, error)`
+- Function `NewServiceUnitsClient` return value(s) have been changed from `(*ServiceUnitsClient)` to `(*ServiceUnitsClient, error)`
+- Type of `Operation.Properties` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*ServiceUnitsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ServiceUnitsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `RestAuthLocation.ToPtr` has been removed
+- Function `*RolloutsClientCreateOrUpdatePoller.Done` has been removed
+- Function `DeploymentMode.ToPtr` has been removed
+- Function `ServiceUnitsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ServiceUnitsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `RolloutsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `RestAuthType.ToPtr` has been removed
+- Function `StepType.ToPtr` has been removed
+- Function `*RolloutsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*RolloutsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ServiceUnitsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ServiceUnitsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `RestMatchQuantifier.ToPtr` has been removed
+- Function `RestRequestMethod.ToPtr` has been removed
+- Function `*RolloutsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*RolloutsClientCreateOrUpdatePoller.Poll` has been removed
+- Struct `ArtifactSourcesClientCreateOrUpdateResult` has been removed
+- Struct `ArtifactSourcesClientGetResult` has been removed
+- Struct `ArtifactSourcesClientListResult` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `RolloutsClientCancelResult` has been removed
+- Struct `RolloutsClientCreateOrUpdatePoller` has been removed
+- Struct `RolloutsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `RolloutsClientCreateOrUpdateResult` has been removed
+- Struct `RolloutsClientGetResult` has been removed
+- Struct `RolloutsClientListResult` has been removed
+- Struct `RolloutsClientRestartResult` has been removed
+- Struct `ServiceTopologiesClientCreateOrUpdateResult` has been removed
+- Struct `ServiceTopologiesClientGetResult` has been removed
+- Struct `ServiceTopologiesClientListResult` has been removed
+- Struct `ServiceUnitsClientCreateOrUpdatePoller` has been removed
+- Struct `ServiceUnitsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ServiceUnitsClientCreateOrUpdateResult` has been removed
+- Struct `ServiceUnitsClientGetResult` has been removed
+- Struct `ServiceUnitsClientListResult` has been removed
+- Struct `ServicesClientCreateOrUpdateResult` has been removed
+- Struct `ServicesClientGetResult` has been removed
+- Struct `ServicesClientListResult` has been removed
+- Struct `StepsClientCreateOrUpdateResult` has been removed
+- Struct `StepsClientGetResult` has been removed
+- Struct `StepsClientListResult` has been removed
+- Field `RawResponse` of struct `ServiceUnitsClientDeleteResponse` has been removed
+- Field `RolloutsClientListResult` of struct `RolloutsClientListResponse` has been removed
+- Field `RawResponse` of struct `RolloutsClientListResponse` has been removed
+- Field `ArtifactSourcesClientCreateOrUpdateResult` of struct `ArtifactSourcesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ArtifactSourcesClientCreateOrUpdateResponse` has been removed
+- Field `RolloutsClientCreateOrUpdateResult` of struct `RolloutsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `RolloutsClientCreateOrUpdateResponse` has been removed
+- Field `ServicesClientListResult` of struct `ServicesClientListResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientListResponse` has been removed
+- Field `StepsClientCreateOrUpdateResult` of struct `StepsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `StepsClientCreateOrUpdateResponse` has been removed
+- Field `ArtifactSourcesClientListResult` of struct `ArtifactSourcesClientListResponse` has been removed
+- Field `RawResponse` of struct `ArtifactSourcesClientListResponse` has been removed
+- Field `ServiceTopologiesClientListResult` of struct `ServiceTopologiesClientListResponse` has been removed
+- Field `RawResponse` of struct `ServiceTopologiesClientListResponse` has been removed
+- Field `ServiceUnitsClientCreateOrUpdateResult` of struct `ServiceUnitsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServiceUnitsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ArtifactSourcesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientDeleteResponse` has been removed
+- Field `StepsClientGetResult` of struct `StepsClientGetResponse` has been removed
+- Field `RawResponse` of struct `StepsClientGetResponse` has been removed
+- Field `ServiceUnitsClientListResult` of struct `ServiceUnitsClientListResponse` has been removed
+- Field `RawResponse` of struct `ServiceUnitsClientListResponse` has been removed
+- Field `RolloutsClientRestartResult` of struct `RolloutsClientRestartResponse` has been removed
+- Field `RawResponse` of struct `RolloutsClientRestartResponse` has been removed
+- Field `ServicesClientCreateOrUpdateResult` of struct `ServicesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientCreateOrUpdateResponse` has been removed
+- Field `RolloutsClientCancelResult` of struct `RolloutsClientCancelResponse` has been removed
+- Field `RawResponse` of struct `RolloutsClientCancelResponse` has been removed
+- Field `RawResponse` of struct `ServiceTopologiesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `RolloutsClientDeleteResponse` has been removed
+- Field `ServiceTopologiesClientGetResult` of struct `ServiceTopologiesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServiceTopologiesClientGetResponse` has been removed
+- Field `RolloutsClientGetResult` of struct `RolloutsClientGetResponse` has been removed
+- Field `RawResponse` of struct `RolloutsClientGetResponse` has been removed
+- Field `StepsClientListResult` of struct `StepsClientListResponse` has been removed
+- Field `RawResponse` of struct `StepsClientListResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `StepsClientDeleteResponse` has been removed
+- Field `ServiceTopologiesClientCreateOrUpdateResult` of struct `ServiceTopologiesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServiceTopologiesClientCreateOrUpdateResponse` has been removed
+- Field `ServicesClientGetResult` of struct `ServicesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientGetResponse` has been removed
+- Field `ArtifactSourcesClientGetResult` of struct `ArtifactSourcesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ArtifactSourcesClientGetResponse` has been removed
+- Field `ServiceUnitsClientGetResult` of struct `ServiceUnitsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServiceUnitsClientGetResponse` has been removed
+
+### Features Added
+
+- New anonymous field `Rollout` in struct `RolloutsClientGetResponse`
+- New anonymous field `ServiceTopologyResource` in struct `ServiceTopologiesClientGetResponse`
+- New anonymous field `Rollout` in struct `RolloutsClientCancelResponse`
+- New field `ArtifactSourceArray` in struct `ArtifactSourcesClientListResponse`
+- New anonymous field `ServiceUnitResource` in struct `ServiceUnitsClientGetResponse`
+- New anonymous field `RolloutRequest` in struct `RolloutsClientCreateOrUpdateResponse`
+- New anonymous field `StepResource` in struct `StepsClientCreateOrUpdateResponse`
+- New anonymous field `ServiceTopologyResource` in struct `ServiceTopologiesClientCreateOrUpdateResponse`
+- New field `ServiceResourceArray` in struct `ServicesClientListResponse`
+- New anonymous field `ArtifactSource` in struct `ArtifactSourcesClientGetResponse`
+- New field `StepResourceArray` in struct `StepsClientListResponse`
+- New field `ResumeToken` in struct `ServiceUnitsClientBeginCreateOrUpdateOptions`
+- New anonymous field `ServiceResource` in struct `ServicesClientCreateOrUpdateResponse`
+- New anonymous field `StepResource` in struct `StepsClientGetResponse`
+- New anonymous field `OperationsList` in struct `OperationsClientListResponse`
+- New anonymous field `ArtifactSource` in struct `ArtifactSourcesClientCreateOrUpdateResponse`
+- New field `RolloutArray` in struct `RolloutsClientListResponse`
+- New anonymous field `ServiceUnitResource` in struct `ServiceUnitsClientCreateOrUpdateResponse`
+- New anonymous field `Rollout` in struct `RolloutsClientRestartResponse`
+- New field `ServiceUnitResourceArray` in struct `ServiceUnitsClientListResponse`
+- New anonymous field `ServiceResource` in struct `ServicesClientGetResponse`
+- New field `ResumeToken` in struct `RolloutsClientBeginCreateOrUpdateOptions`
+- New field `ServiceTopologyResourceArray` in struct `ServiceTopologiesClientListResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

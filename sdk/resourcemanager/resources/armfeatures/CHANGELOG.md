@@ -1,5 +1,84 @@
 # Release History
 
+## 0.3.0 (2022-04-14)
+### Breaking Changes
+
+- Function `*Client.ListAll` return value(s) have been changed from `(*ClientListAllPager)` to `(*runtime.Pager[ClientListAllResponse])`
+- Function `NewSubscriptionFeatureRegistrationsClient` return value(s) have been changed from `(*SubscriptionFeatureRegistrationsClient)` to `(*SubscriptionFeatureRegistrationsClient, error)`
+- Function `*Client.List` return value(s) have been changed from `(*ClientListPager)` to `(*runtime.Pager[ClientListResponse])`
+- Function `*SubscriptionFeatureRegistrationsClient.ListBySubscription` return value(s) have been changed from `(*SubscriptionFeatureRegistrationsClientListBySubscriptionPager)` to `(*runtime.Pager[SubscriptionFeatureRegistrationsClientListBySubscriptionResponse])`
+- Function `*FeatureClient.ListOperations` return value(s) have been changed from `(*FeatureClientListOperationsPager)` to `(*runtime.Pager[FeatureClientListOperationsResponse])`
+- Function `*SubscriptionFeatureRegistrationsClient.ListAllBySubscription` return value(s) have been changed from `(*SubscriptionFeatureRegistrationsClientListAllBySubscriptionPager)` to `(*runtime.Pager[SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse])`
+- Function `NewFeatureClient` return value(s) have been changed from `(*FeatureClient)` to `(*FeatureClient, error)`
+- Function `NewClient` return value(s) have been changed from `(*Client)` to `(*Client, error)`
+- Function `*SubscriptionFeatureRegistrationsClientListBySubscriptionPager.Err` has been removed
+- Function `*SubscriptionFeatureRegistrationsClientListAllBySubscriptionPager.PageResponse` has been removed
+- Function `*ClientListPager.NextPage` has been removed
+- Function `*ClientListAllPager.Err` has been removed
+- Function `SubscriptionFeatureRegistrationState.ToPtr` has been removed
+- Function `*ClientListPager.Err` has been removed
+- Function `*SubscriptionFeatureRegistrationsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*ClientListAllPager.NextPage` has been removed
+- Function `*ClientListPager.PageResponse` has been removed
+- Function `*SubscriptionFeatureRegistrationsClientListAllBySubscriptionPager.NextPage` has been removed
+- Function `*SubscriptionFeatureRegistrationsClientListAllBySubscriptionPager.Err` has been removed
+- Function `SubscriptionFeatureRegistrationApprovalType.ToPtr` has been removed
+- Function `*FeatureClientListOperationsPager.Err` has been removed
+- Function `*SubscriptionFeatureRegistrationsClientListBySubscriptionPager.NextPage` has been removed
+- Function `*FeatureClientListOperationsPager.NextPage` has been removed
+- Function `*ClientListAllPager.PageResponse` has been removed
+- Function `*FeatureClientListOperationsPager.PageResponse` has been removed
+- Struct `ClientGetResult` has been removed
+- Struct `ClientListAllPager` has been removed
+- Struct `ClientListAllResult` has been removed
+- Struct `ClientListPager` has been removed
+- Struct `ClientListResult` has been removed
+- Struct `ClientRegisterResult` has been removed
+- Struct `ClientUnregisterResult` has been removed
+- Struct `FeatureClientListOperationsPager` has been removed
+- Struct `FeatureClientListOperationsResult` has been removed
+- Struct `SubscriptionFeatureRegistrationsClientCreateOrUpdateResult` has been removed
+- Struct `SubscriptionFeatureRegistrationsClientGetResult` has been removed
+- Struct `SubscriptionFeatureRegistrationsClientListAllBySubscriptionPager` has been removed
+- Struct `SubscriptionFeatureRegistrationsClientListAllBySubscriptionResult` has been removed
+- Struct `SubscriptionFeatureRegistrationsClientListBySubscriptionPager` has been removed
+- Struct `SubscriptionFeatureRegistrationsClientListBySubscriptionResult` has been removed
+- Field `ClientRegisterResult` of struct `ClientRegisterResponse` has been removed
+- Field `RawResponse` of struct `ClientRegisterResponse` has been removed
+- Field `ClientListAllResult` of struct `ClientListAllResponse` has been removed
+- Field `RawResponse` of struct `ClientListAllResponse` has been removed
+- Field `SubscriptionFeatureRegistrationsClientCreateOrUpdateResult` of struct `SubscriptionFeatureRegistrationsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SubscriptionFeatureRegistrationsClientCreateOrUpdateResponse` has been removed
+- Field `SubscriptionFeatureRegistrationsClientListBySubscriptionResult` of struct `SubscriptionFeatureRegistrationsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `SubscriptionFeatureRegistrationsClientListBySubscriptionResponse` has been removed
+- Field `SubscriptionFeatureRegistrationsClientGetResult` of struct `SubscriptionFeatureRegistrationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SubscriptionFeatureRegistrationsClientGetResponse` has been removed
+- Field `ClientListResult` of struct `ClientListResponse` has been removed
+- Field `RawResponse` of struct `ClientListResponse` has been removed
+- Field `ClientUnregisterResult` of struct `ClientUnregisterResponse` has been removed
+- Field `RawResponse` of struct `ClientUnregisterResponse` has been removed
+- Field `FeatureClientListOperationsResult` of struct `FeatureClientListOperationsResponse` has been removed
+- Field `RawResponse` of struct `FeatureClientListOperationsResponse` has been removed
+- Field `ClientGetResult` of struct `ClientGetResponse` has been removed
+- Field `RawResponse` of struct `ClientGetResponse` has been removed
+- Field `RawResponse` of struct `SubscriptionFeatureRegistrationsClientDeleteResponse` has been removed
+- Field `SubscriptionFeatureRegistrationsClientListAllBySubscriptionResult` of struct `SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse` has been removed
+
+### Features Added
+
+- New anonymous field `SubscriptionFeatureRegistration` in struct `SubscriptionFeatureRegistrationsClientCreateOrUpdateResponse`
+- New anonymous field `OperationListResult` in struct `FeatureClientListOperationsResponse`
+- New anonymous field `FeatureResult` in struct `ClientRegisterResponse`
+- New anonymous field `FeatureResult` in struct `ClientGetResponse`
+- New anonymous field `SubscriptionFeatureRegistrationList` in struct `SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse`
+- New anonymous field `FeatureOperationsListResult` in struct `ClientListAllResponse`
+- New anonymous field `SubscriptionFeatureRegistrationList` in struct `SubscriptionFeatureRegistrationsClientListBySubscriptionResponse`
+- New anonymous field `SubscriptionFeatureRegistration` in struct `SubscriptionFeatureRegistrationsClientGetResponse`
+- New anonymous field `FeatureResult` in struct `ClientUnregisterResponse`
+- New anonymous field `FeatureOperationsListResult` in struct `ClientListResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ServerUsagesClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewServerUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerUsagesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewServerUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServerUsagesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ServerUsagesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // ListByServer - Returns server usages.
@@ -56,19 +61,26 @@ func NewServerUsagesClient(subscriptionID string, credential azcore.TokenCredent
 // serverName - The name of the server.
 // options - ServerUsagesClientListByServerOptions contains the optional parameters for the ServerUsagesClient.ListByServer
 // method.
-func (client *ServerUsagesClient) ListByServer(ctx context.Context, resourceGroupName string, serverName string, options *ServerUsagesClientListByServerOptions) (ServerUsagesClientListByServerResponse, error) {
-	req, err := client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
-	if err != nil {
-		return ServerUsagesClientListByServerResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ServerUsagesClientListByServerResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServerUsagesClientListByServerResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listByServerHandleResponse(resp)
+func (client *ServerUsagesClient) ListByServer(resourceGroupName string, serverName string, options *ServerUsagesClientListByServerOptions) *runtime.Pager[ServerUsagesClientListByServerResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ServerUsagesClientListByServerResponse]{
+		More: func(page ServerUsagesClientListByServerResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ServerUsagesClientListByServerResponse) (ServerUsagesClientListByServerResponse, error) {
+			req, err := client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+			if err != nil {
+				return ServerUsagesClientListByServerResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ServerUsagesClientListByServerResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ServerUsagesClientListByServerResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServerHandleResponse(resp)
+		},
+	})
 }
 
 // listByServerCreateRequest creates the ListByServer request.
@@ -99,7 +111,7 @@ func (client *ServerUsagesClient) listByServerCreateRequest(ctx context.Context,
 
 // listByServerHandleResponse handles the ListByServer response.
 func (client *ServerUsagesClient) listByServerHandleResponse(resp *http.Response) (ServerUsagesClientListByServerResponse, error) {
-	result := ServerUsagesClientListByServerResponse{RawResponse: resp}
+	result := ServerUsagesClientListByServerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerUsageListResult); err != nil {
 		return ServerUsagesClientListByServerResponse{}, err
 	}

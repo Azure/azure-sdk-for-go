@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type SuppressionsClient struct {
 // subscriptionID - The Azure subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSuppressionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SuppressionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewSuppressionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SuppressionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SuppressionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Enables the snoozed or dismissed attribute of a recommendation. The snoozed or dismissed attribute is referred
@@ -102,7 +107,7 @@ func (client *SuppressionsClient) createCreateRequest(ctx context.Context, resou
 
 // createHandleResponse handles the Create response.
 func (client *SuppressionsClient) createHandleResponse(resp *http.Response) (SuppressionsClientCreateResponse, error) {
-	result := SuppressionsClientCreateResponse{RawResponse: resp}
+	result := SuppressionsClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SuppressionContract); err != nil {
 		return SuppressionsClientCreateResponse{}, err
 	}
@@ -128,7 +133,7 @@ func (client *SuppressionsClient) Delete(ctx context.Context, resourceURI string
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return SuppressionsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SuppressionsClientDeleteResponse{RawResponse: resp}, nil
+	return SuppressionsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -206,7 +211,7 @@ func (client *SuppressionsClient) getCreateRequest(ctx context.Context, resource
 
 // getHandleResponse handles the Get response.
 func (client *SuppressionsClient) getHandleResponse(resp *http.Response) (SuppressionsClientGetResponse, error) {
-	result := SuppressionsClientGetResponse{RawResponse: resp}
+	result := SuppressionsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SuppressionContract); err != nil {
 		return SuppressionsClientGetResponse{}, err
 	}
@@ -217,16 +222,32 @@ func (client *SuppressionsClient) getHandleResponse(resp *http.Response) (Suppre
 // a recommendation is referred to as a suppression.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SuppressionsClientListOptions contains the optional parameters for the SuppressionsClient.List method.
-func (client *SuppressionsClient) List(options *SuppressionsClientListOptions) *SuppressionsClientListPager {
-	return &SuppressionsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *SuppressionsClient) List(options *SuppressionsClientListOptions) *runtime.Pager[SuppressionsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SuppressionsClientListResponse]{
+		More: func(page SuppressionsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SuppressionsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SuppressionContractListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SuppressionsClientListResponse) (SuppressionsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SuppressionsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SuppressionsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SuppressionsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -255,7 +276,7 @@ func (client *SuppressionsClient) listCreateRequest(ctx context.Context, options
 
 // listHandleResponse handles the List response.
 func (client *SuppressionsClient) listHandleResponse(resp *http.Response) (SuppressionsClientListResponse, error) {
-	result := SuppressionsClientListResponse{RawResponse: resp}
+	result := SuppressionsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SuppressionContractListResult); err != nil {
 		return SuppressionsClientListResponse{}, err
 	}

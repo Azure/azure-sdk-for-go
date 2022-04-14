@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armlogic
 
 const (
 	moduleName    = "armlogic"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 // APIDeploymentParameterVisibility - The Api deployment parameter visibility.
@@ -29,11 +29,6 @@ func PossibleAPIDeploymentParameterVisibilityValues() []APIDeploymentParameterVi
 		APIDeploymentParameterVisibilityInternal,
 		APIDeploymentParameterVisibilityNotSpecified,
 	}
-}
-
-// ToPtr returns a *APIDeploymentParameterVisibility pointing to the current value.
-func (c APIDeploymentParameterVisibility) ToPtr() *APIDeploymentParameterVisibility {
-	return &c
 }
 
 // APITier - The Api tier.
@@ -56,11 +51,6 @@ func PossibleAPITierValues() []APITier {
 	}
 }
 
-// ToPtr returns a *APITier pointing to the current value.
-func (c APITier) ToPtr() *APITier {
-	return &c
-}
-
 type APIType string
 
 const (
@@ -76,11 +66,6 @@ func PossibleAPITypeValues() []APIType {
 		APITypeRest,
 		APITypeSoap,
 	}
-}
-
-// ToPtr returns a *APIType pointing to the current value.
-func (c APIType) ToPtr() *APIType {
-	return &c
 }
 
 // AgreementType - The agreement type.
@@ -103,11 +88,6 @@ func PossibleAgreementTypeValues() []AgreementType {
 	}
 }
 
-// ToPtr returns a *AgreementType pointing to the current value.
-func (c AgreementType) ToPtr() *AgreementType {
-	return &c
-}
-
 // AzureAsyncOperationState - The Azure async operation state.
 type AzureAsyncOperationState string
 
@@ -126,11 +106,6 @@ func PossibleAzureAsyncOperationStateValues() []AzureAsyncOperationState {
 		AzureAsyncOperationStatePending,
 		AzureAsyncOperationStateSucceeded,
 	}
-}
-
-// ToPtr returns a *AzureAsyncOperationState pointing to the current value.
-func (c AzureAsyncOperationState) ToPtr() *AzureAsyncOperationState {
-	return &c
 }
 
 // DayOfWeek - The day of the week.
@@ -159,11 +134,6 @@ func PossibleDayOfWeekValues() []DayOfWeek {
 	}
 }
 
-// ToPtr returns a *DayOfWeek pointing to the current value.
-func (c DayOfWeek) ToPtr() *DayOfWeek {
-	return &c
-}
-
 type DaysOfWeek string
 
 const (
@@ -187,11 +157,6 @@ func PossibleDaysOfWeekValues() []DaysOfWeek {
 		DaysOfWeekFriday,
 		DaysOfWeekSaturday,
 	}
-}
-
-// ToPtr returns a *DaysOfWeek pointing to the current value.
-func (c DaysOfWeek) ToPtr() *DaysOfWeek {
-	return &c
 }
 
 // EdifactCharacterSet - The edifact character set.
@@ -236,11 +201,6 @@ func PossibleEdifactCharacterSetValues() []EdifactCharacterSet {
 	}
 }
 
-// ToPtr returns a *EdifactCharacterSet pointing to the current value.
-func (c EdifactCharacterSet) ToPtr() *EdifactCharacterSet {
-	return &c
-}
-
 // EdifactDecimalIndicator - The edifact decimal indicator.
 type EdifactDecimalIndicator string
 
@@ -257,11 +217,6 @@ func PossibleEdifactDecimalIndicatorValues() []EdifactDecimalIndicator {
 		EdifactDecimalIndicatorComma,
 		EdifactDecimalIndicatorDecimal,
 	}
-}
-
-// ToPtr returns a *EdifactDecimalIndicator pointing to the current value.
-func (c EdifactDecimalIndicator) ToPtr() *EdifactDecimalIndicator {
-	return &c
 }
 
 // EncryptionAlgorithm - The encryption algorithm.
@@ -290,11 +245,6 @@ func PossibleEncryptionAlgorithmValues() []EncryptionAlgorithm {
 	}
 }
 
-// ToPtr returns a *EncryptionAlgorithm pointing to the current value.
-func (c EncryptionAlgorithm) ToPtr() *EncryptionAlgorithm {
-	return &c
-}
-
 // ErrorResponseCode - The error response code.
 type ErrorResponseCode string
 
@@ -313,11 +263,6 @@ func PossibleErrorResponseCodeValues() []ErrorResponseCode {
 		ErrorResponseCodeInvalidOperationID,
 		ErrorResponseCodeNotSpecified,
 	}
-}
-
-// ToPtr returns a *ErrorResponseCode pointing to the current value.
-func (c ErrorResponseCode) ToPtr() *ErrorResponseCode {
-	return &c
 }
 
 // EventLevel - The event level.
@@ -342,11 +287,6 @@ func PossibleEventLevelValues() []EventLevel {
 		EventLevelInformational,
 		EventLevelVerbose,
 	}
-}
-
-// ToPtr returns a *EventLevel pointing to the current value.
-func (c EventLevel) ToPtr() *EventLevel {
-	return &c
 }
 
 // HashingAlgorithm - The signing or hashing algorithm.
@@ -375,11 +315,6 @@ func PossibleHashingAlgorithmValues() []HashingAlgorithm {
 	}
 }
 
-// ToPtr returns a *HashingAlgorithm pointing to the current value.
-func (c HashingAlgorithm) ToPtr() *HashingAlgorithm {
-	return &c
-}
-
 // IntegrationAccountSKUName - The integration account sku name.
 type IntegrationAccountSKUName string
 
@@ -400,11 +335,6 @@ func PossibleIntegrationAccountSKUNameValues() []IntegrationAccountSKUName {
 	}
 }
 
-// ToPtr returns a *IntegrationAccountSKUName pointing to the current value.
-func (c IntegrationAccountSKUName) ToPtr() *IntegrationAccountSKUName {
-	return &c
-}
-
 // IntegrationServiceEnvironmentAccessEndpointType - The integration service environment access endpoint type.
 type IntegrationServiceEnvironmentAccessEndpointType string
 
@@ -421,11 +351,6 @@ func PossibleIntegrationServiceEnvironmentAccessEndpointTypeValues() []Integrati
 		IntegrationServiceEnvironmentAccessEndpointTypeInternal,
 		IntegrationServiceEnvironmentAccessEndpointTypeNotSpecified,
 	}
-}
-
-// ToPtr returns a *IntegrationServiceEnvironmentAccessEndpointType pointing to the current value.
-func (c IntegrationServiceEnvironmentAccessEndpointType) ToPtr() *IntegrationServiceEnvironmentAccessEndpointType {
-	return &c
 }
 
 // IntegrationServiceEnvironmentNetworkDependencyCategoryType - The integration service environment network dependency category
@@ -465,11 +390,6 @@ func PossibleIntegrationServiceEnvironmentNetworkDependencyCategoryTypeValues() 
 	}
 }
 
-// ToPtr returns a *IntegrationServiceEnvironmentNetworkDependencyCategoryType pointing to the current value.
-func (c IntegrationServiceEnvironmentNetworkDependencyCategoryType) ToPtr() *IntegrationServiceEnvironmentNetworkDependencyCategoryType {
-	return &c
-}
-
 // IntegrationServiceEnvironmentNetworkDependencyHealthState - The integration service environment network dependency health
 // state.
 type IntegrationServiceEnvironmentNetworkDependencyHealthState string
@@ -489,11 +409,6 @@ func PossibleIntegrationServiceEnvironmentNetworkDependencyHealthStateValues() [
 		IntegrationServiceEnvironmentNetworkDependencyHealthStateUnhealthy,
 		IntegrationServiceEnvironmentNetworkDependencyHealthStateUnknown,
 	}
-}
-
-// ToPtr returns a *IntegrationServiceEnvironmentNetworkDependencyHealthState pointing to the current value.
-func (c IntegrationServiceEnvironmentNetworkDependencyHealthState) ToPtr() *IntegrationServiceEnvironmentNetworkDependencyHealthState {
-	return &c
 }
 
 // IntegrationServiceEnvironmentNetworkEndPointAccessibilityState - The integration service environment network endpoint accessibility
@@ -517,11 +432,6 @@ func PossibleIntegrationServiceEnvironmentNetworkEndPointAccessibilityStateValue
 	}
 }
 
-// ToPtr returns a *IntegrationServiceEnvironmentNetworkEndPointAccessibilityState pointing to the current value.
-func (c IntegrationServiceEnvironmentNetworkEndPointAccessibilityState) ToPtr() *IntegrationServiceEnvironmentNetworkEndPointAccessibilityState {
-	return &c
-}
-
 // IntegrationServiceEnvironmentSKUName - The integration service environment sku name.
 type IntegrationServiceEnvironmentSKUName string
 
@@ -538,11 +448,6 @@ func PossibleIntegrationServiceEnvironmentSKUNameValues() []IntegrationServiceEn
 		IntegrationServiceEnvironmentSKUNameNotSpecified,
 		IntegrationServiceEnvironmentSKUNamePremium,
 	}
-}
-
-// ToPtr returns a *IntegrationServiceEnvironmentSKUName pointing to the current value.
-func (c IntegrationServiceEnvironmentSKUName) ToPtr() *IntegrationServiceEnvironmentSKUName {
-	return &c
 }
 
 // IntegrationServiceEnvironmentSKUScaleType - The integration service environment sku scale type.
@@ -563,11 +468,6 @@ func PossibleIntegrationServiceEnvironmentSKUScaleTypeValues() []IntegrationServ
 	}
 }
 
-// ToPtr returns a *IntegrationServiceEnvironmentSKUScaleType pointing to the current value.
-func (c IntegrationServiceEnvironmentSKUScaleType) ToPtr() *IntegrationServiceEnvironmentSKUScaleType {
-	return &c
-}
-
 // KeyType - The key type.
 type KeyType string
 
@@ -584,11 +484,6 @@ func PossibleKeyTypeValues() []KeyType {
 		KeyTypePrimary,
 		KeyTypeSecondary,
 	}
-}
-
-// ToPtr returns a *KeyType pointing to the current value.
-func (c KeyType) ToPtr() *KeyType {
-	return &c
 }
 
 // ManagedServiceIdentityType - Type of managed service identity. The type 'SystemAssigned' includes an implicitly created
@@ -608,11 +503,6 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 		ManagedServiceIdentityTypeSystemAssigned,
 		ManagedServiceIdentityTypeUserAssigned,
 	}
-}
-
-// ToPtr returns a *ManagedServiceIdentityType pointing to the current value.
-func (c ManagedServiceIdentityType) ToPtr() *ManagedServiceIdentityType {
-	return &c
 }
 
 // MapType - The map type.
@@ -637,11 +527,6 @@ func PossibleMapTypeValues() []MapType {
 	}
 }
 
-// ToPtr returns a *MapType pointing to the current value.
-func (c MapType) ToPtr() *MapType {
-	return &c
-}
-
 // MessageFilterType - The message filter type.
 type MessageFilterType string
 
@@ -660,11 +545,6 @@ func PossibleMessageFilterTypeValues() []MessageFilterType {
 	}
 }
 
-// ToPtr returns a *MessageFilterType pointing to the current value.
-func (c MessageFilterType) ToPtr() *MessageFilterType {
-	return &c
-}
-
 // OpenAuthenticationProviderType - Open authentication policy provider type.
 type OpenAuthenticationProviderType string
 
@@ -677,11 +557,6 @@ func PossibleOpenAuthenticationProviderTypeValues() []OpenAuthenticationProvider
 	return []OpenAuthenticationProviderType{
 		OpenAuthenticationProviderTypeAAD,
 	}
-}
-
-// ToPtr returns a *OpenAuthenticationProviderType pointing to the current value.
-func (c OpenAuthenticationProviderType) ToPtr() *OpenAuthenticationProviderType {
-	return &c
 }
 
 // ParameterType - The parameter type.
@@ -714,11 +589,6 @@ func PossibleParameterTypeValues() []ParameterType {
 	}
 }
 
-// ToPtr returns a *ParameterType pointing to the current value.
-func (c ParameterType) ToPtr() *ParameterType {
-	return &c
-}
-
 // PartnerType - The partner type.
 type PartnerType string
 
@@ -733,11 +603,6 @@ func PossiblePartnerTypeValues() []PartnerType {
 		PartnerTypeB2B,
 		PartnerTypeNotSpecified,
 	}
-}
-
-// ToPtr returns a *PartnerType pointing to the current value.
-func (c PartnerType) ToPtr() *PartnerType {
-	return &c
 }
 
 // RecurrenceFrequency - The recurrence frequency.
@@ -768,11 +633,6 @@ func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
 	}
 }
 
-// ToPtr returns a *RecurrenceFrequency pointing to the current value.
-func (c RecurrenceFrequency) ToPtr() *RecurrenceFrequency {
-	return &c
-}
-
 // SKUName - The sku name.
 type SKUName string
 
@@ -797,11 +657,6 @@ func PossibleSKUNameValues() []SKUName {
 	}
 }
 
-// ToPtr returns a *SKUName pointing to the current value.
-func (c SKUName) ToPtr() *SKUName {
-	return &c
-}
-
 // SchemaType - The schema type.
 type SchemaType string
 
@@ -816,11 +671,6 @@ func PossibleSchemaTypeValues() []SchemaType {
 		SchemaTypeNotSpecified,
 		SchemaTypeXML,
 	}
-}
-
-// ToPtr returns a *SchemaType pointing to the current value.
-func (c SchemaType) ToPtr() *SchemaType {
-	return &c
 }
 
 // SegmentTerminatorSuffix - The segment terminator suffix.
@@ -843,11 +693,6 @@ func PossibleSegmentTerminatorSuffixValues() []SegmentTerminatorSuffix {
 		SegmentTerminatorSuffixLF,
 		SegmentTerminatorSuffixCRLF,
 	}
-}
-
-// ToPtr returns a *SegmentTerminatorSuffix pointing to the current value.
-func (c SegmentTerminatorSuffix) ToPtr() *SegmentTerminatorSuffix {
-	return &c
 }
 
 // SigningAlgorithm - The signing or hashing algorithm.
@@ -874,11 +719,6 @@ func PossibleSigningAlgorithmValues() []SigningAlgorithm {
 	}
 }
 
-// ToPtr returns a *SigningAlgorithm pointing to the current value.
-func (c SigningAlgorithm) ToPtr() *SigningAlgorithm {
-	return &c
-}
-
 // StatusAnnotation - The status annotation.
 type StatusAnnotation string
 
@@ -895,11 +735,6 @@ func PossibleStatusAnnotationValues() []StatusAnnotation {
 		StatusAnnotationPreview,
 		StatusAnnotationProduction,
 	}
-}
-
-// ToPtr returns a *StatusAnnotation pointing to the current value.
-func (c StatusAnnotation) ToPtr() *StatusAnnotation {
-	return &c
 }
 
 // SwaggerSchemaType - The swagger schema type.
@@ -930,11 +765,6 @@ func PossibleSwaggerSchemaTypeValues() []SwaggerSchemaType {
 	}
 }
 
-// ToPtr returns a *SwaggerSchemaType pointing to the current value.
-func (c SwaggerSchemaType) ToPtr() *SwaggerSchemaType {
-	return &c
-}
-
 // TrackEventsOperationOptions - The track events operation options.
 type TrackEventsOperationOptions string
 
@@ -949,11 +779,6 @@ func PossibleTrackEventsOperationOptionsValues() []TrackEventsOperationOptions {
 		TrackEventsOperationOptionsDisableSourceInfoEnrich,
 		TrackEventsOperationOptionsNone,
 	}
-}
-
-// ToPtr returns a *TrackEventsOperationOptions pointing to the current value.
-func (c TrackEventsOperationOptions) ToPtr() *TrackEventsOperationOptions {
-	return &c
 }
 
 // TrackingRecordType - The tracking record type.
@@ -1000,11 +825,6 @@ func PossibleTrackingRecordTypeValues() []TrackingRecordType {
 	}
 }
 
-// ToPtr returns a *TrackingRecordType pointing to the current value.
-func (c TrackingRecordType) ToPtr() *TrackingRecordType {
-	return &c
-}
-
 // TrailingSeparatorPolicy - The trailing separator policy.
 type TrailingSeparatorPolicy string
 
@@ -1025,11 +845,6 @@ func PossibleTrailingSeparatorPolicyValues() []TrailingSeparatorPolicy {
 	}
 }
 
-// ToPtr returns a *TrailingSeparatorPolicy pointing to the current value.
-func (c TrailingSeparatorPolicy) ToPtr() *TrailingSeparatorPolicy {
-	return &c
-}
-
 // UsageIndicator - The usage indicator.
 type UsageIndicator string
 
@@ -1048,11 +863,6 @@ func PossibleUsageIndicatorValues() []UsageIndicator {
 		UsageIndicatorProduction,
 		UsageIndicatorTest,
 	}
-}
-
-// ToPtr returns a *UsageIndicator pointing to the current value.
-func (c UsageIndicator) ToPtr() *UsageIndicator {
-	return &c
 }
 
 // WorkflowProvisioningState - The workflow provisioning state.
@@ -1111,11 +921,6 @@ func PossibleWorkflowProvisioningStateValues() []WorkflowProvisioningState {
 	}
 }
 
-// ToPtr returns a *WorkflowProvisioningState pointing to the current value.
-func (c WorkflowProvisioningState) ToPtr() *WorkflowProvisioningState {
-	return &c
-}
-
 // WorkflowState - The workflow state.
 type WorkflowState string
 
@@ -1138,11 +943,6 @@ func PossibleWorkflowStateValues() []WorkflowState {
 		WorkflowStateNotSpecified,
 		WorkflowStateSuspended,
 	}
-}
-
-// ToPtr returns a *WorkflowState pointing to the current value.
-func (c WorkflowState) ToPtr() *WorkflowState {
-	return &c
 }
 
 // WorkflowStatus - The workflow status.
@@ -1181,11 +981,6 @@ func PossibleWorkflowStatusValues() []WorkflowStatus {
 		WorkflowStatusTimedOut,
 		WorkflowStatusWaiting,
 	}
-}
-
-// ToPtr returns a *WorkflowStatus pointing to the current value.
-func (c WorkflowStatus) ToPtr() *WorkflowStatus {
-	return &c
 }
 
 // WorkflowTriggerProvisioningState - The workflow trigger provisioning state.
@@ -1236,11 +1031,6 @@ func PossibleWorkflowTriggerProvisioningStateValues() []WorkflowTriggerProvision
 	}
 }
 
-// ToPtr returns a *WorkflowTriggerProvisioningState pointing to the current value.
-func (c WorkflowTriggerProvisioningState) ToPtr() *WorkflowTriggerProvisioningState {
-	return &c
-}
-
 // WsdlImportMethod - The WSDL import method.
 type WsdlImportMethod string
 
@@ -1257,11 +1047,6 @@ func PossibleWsdlImportMethodValues() []WsdlImportMethod {
 		WsdlImportMethodSoapPassThrough,
 		WsdlImportMethodSoapToRest,
 	}
-}
-
-// ToPtr returns a *WsdlImportMethod pointing to the current value.
-func (c WsdlImportMethod) ToPtr() *WsdlImportMethod {
-	return &c
 }
 
 // X12CharacterSet - The X12 character set.
@@ -1284,11 +1069,6 @@ func PossibleX12CharacterSetValues() []X12CharacterSet {
 	}
 }
 
-// ToPtr returns a *X12CharacterSet pointing to the current value.
-func (c X12CharacterSet) ToPtr() *X12CharacterSet {
-	return &c
-}
-
 // X12DateFormat - The x12 date format.
 type X12DateFormat string
 
@@ -1305,11 +1085,6 @@ func PossibleX12DateFormatValues() []X12DateFormat {
 		X12DateFormatNotSpecified,
 		X12DateFormatYYMMDD,
 	}
-}
-
-// ToPtr returns a *X12DateFormat pointing to the current value.
-func (c X12DateFormat) ToPtr() *X12DateFormat {
-	return &c
 }
 
 // X12TimeFormat - The x12 time format.
@@ -1332,9 +1107,4 @@ func PossibleX12TimeFormatValues() []X12TimeFormat {
 		X12TimeFormatHHMMSSdd,
 		X12TimeFormatNotSpecified,
 	}
-}
-
-// ToPtr returns a *X12TimeFormat pointing to the current value.
-func (c X12TimeFormat) ToPtr() *X12TimeFormat {
-	return &c
 }

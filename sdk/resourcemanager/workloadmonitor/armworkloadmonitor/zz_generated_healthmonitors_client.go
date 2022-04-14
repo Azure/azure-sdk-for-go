@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -32,19 +33,23 @@ type HealthMonitorsClient struct {
 // NewHealthMonitorsClient creates a new instance of HealthMonitorsClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewHealthMonitorsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *HealthMonitorsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewHealthMonitorsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*HealthMonitorsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &HealthMonitorsClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Get the current health status of a monitor of a virtual machine. Optional parameter: $expand (retrieve the monitor's
@@ -115,7 +120,7 @@ func (client *HealthMonitorsClient) getCreateRequest(ctx context.Context, subscr
 
 // getHandleResponse handles the Get response.
 func (client *HealthMonitorsClient) getHandleResponse(resp *http.Response) (HealthMonitorsClientGetResponse, error) {
-	result := HealthMonitorsClientGetResponse{RawResponse: resp}
+	result := HealthMonitorsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HealthMonitor); err != nil {
 		return HealthMonitorsClientGetResponse{}, err
 	}
@@ -196,7 +201,7 @@ func (client *HealthMonitorsClient) getStateChangeCreateRequest(ctx context.Cont
 
 // getStateChangeHandleResponse handles the GetStateChange response.
 func (client *HealthMonitorsClient) getStateChangeHandleResponse(resp *http.Response) (HealthMonitorsClientGetStateChangeResponse, error) {
-	result := HealthMonitorsClientGetStateChangeResponse{RawResponse: resp}
+	result := HealthMonitorsClientGetStateChangeResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HealthMonitorStateChange); err != nil {
 		return HealthMonitorsClientGetStateChangeResponse{}, err
 	}
@@ -212,16 +217,32 @@ func (client *HealthMonitorsClient) getStateChangeHandleResponse(resp *http.Resp
 // resourceCollectionName - The resource collection name (ex: virtualMachines for virtual machines).
 // resourceName - The name of the virtual machine.
 // options - HealthMonitorsClientListOptions contains the optional parameters for the HealthMonitorsClient.List method.
-func (client *HealthMonitorsClient) List(subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, options *HealthMonitorsClientListOptions) *HealthMonitorsClientListPager {
-	return &HealthMonitorsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, subscriptionID, resourceGroupName, providerName, resourceCollectionName, resourceName, options)
+func (client *HealthMonitorsClient) List(subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, options *HealthMonitorsClientListOptions) *runtime.Pager[HealthMonitorsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[HealthMonitorsClientListResponse]{
+		More: func(page HealthMonitorsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp HealthMonitorsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.HealthMonitorList.NextLink)
+		Fetcher: func(ctx context.Context, page *HealthMonitorsClientListResponse) (HealthMonitorsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, subscriptionID, resourceGroupName, providerName, resourceCollectionName, resourceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return HealthMonitorsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return HealthMonitorsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return HealthMonitorsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -266,7 +287,7 @@ func (client *HealthMonitorsClient) listCreateRequest(ctx context.Context, subsc
 
 // listHandleResponse handles the List response.
 func (client *HealthMonitorsClient) listHandleResponse(resp *http.Response) (HealthMonitorsClientListResponse, error) {
-	result := HealthMonitorsClientListResponse{RawResponse: resp}
+	result := HealthMonitorsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HealthMonitorList); err != nil {
 		return HealthMonitorsClientListResponse{}, err
 	}
@@ -285,16 +306,32 @@ func (client *HealthMonitorsClient) listHandleResponse(resp *http.Response) (Hea
 // monitorID - The monitor Id of the virtual machine.
 // options - HealthMonitorsClientListStateChangesOptions contains the optional parameters for the HealthMonitorsClient.ListStateChanges
 // method.
-func (client *HealthMonitorsClient) ListStateChanges(subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, monitorID string, options *HealthMonitorsClientListStateChangesOptions) *HealthMonitorsClientListStateChangesPager {
-	return &HealthMonitorsClientListStateChangesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listStateChangesCreateRequest(ctx, subscriptionID, resourceGroupName, providerName, resourceCollectionName, resourceName, monitorID, options)
+func (client *HealthMonitorsClient) ListStateChanges(subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, monitorID string, options *HealthMonitorsClientListStateChangesOptions) *runtime.Pager[HealthMonitorsClientListStateChangesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[HealthMonitorsClientListStateChangesResponse]{
+		More: func(page HealthMonitorsClientListStateChangesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp HealthMonitorsClientListStateChangesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.HealthMonitorStateChangeList.NextLink)
+		Fetcher: func(ctx context.Context, page *HealthMonitorsClientListStateChangesResponse) (HealthMonitorsClientListStateChangesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listStateChangesCreateRequest(ctx, subscriptionID, resourceGroupName, providerName, resourceCollectionName, resourceName, monitorID, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return HealthMonitorsClientListStateChangesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return HealthMonitorsClientListStateChangesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return HealthMonitorsClientListStateChangesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listStateChangesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listStateChangesCreateRequest creates the ListStateChanges request.
@@ -349,7 +386,7 @@ func (client *HealthMonitorsClient) listStateChangesCreateRequest(ctx context.Co
 
 // listStateChangesHandleResponse handles the ListStateChanges response.
 func (client *HealthMonitorsClient) listStateChangesHandleResponse(resp *http.Response) (HealthMonitorsClientListStateChangesResponse, error) {
-	result := HealthMonitorsClientListStateChangesResponse{RawResponse: resp}
+	result := HealthMonitorsClientListStateChangesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HealthMonitorStateChangeList); err != nil {
 		return HealthMonitorsClientListStateChangesResponse{}, err
 	}

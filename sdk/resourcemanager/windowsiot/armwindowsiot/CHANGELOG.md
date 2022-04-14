@@ -1,5 +1,63 @@
 # Release History
 
+## 0.3.0 (2022-04-13)
+### Breaking Changes
+
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*ServicesClient.ListByResourceGroup` return value(s) have been changed from `(*ServicesClientListByResourceGroupPager)` to `(*runtime.Pager[ServicesClientListByResourceGroupResponse])`
+- Function `*ServicesClient.List` return value(s) have been changed from `(*ServicesClientListPager)` to `(*runtime.Pager[ServicesClientListResponse])`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewServicesClient` return value(s) have been changed from `(*ServicesClient)` to `(*ServicesClient, error)`
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*ServicesClientListByResourceGroupPager.NextPage` has been removed
+- Function `ServiceNameUnavailabilityReason.ToPtr` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*ServicesClientListPager.PageResponse` has been removed
+- Function `*ServicesClientListByResourceGroupPager.Err` has been removed
+- Function `*ServicesClientListPager.Err` has been removed
+- Function `*ServicesClientListPager.NextPage` has been removed
+- Function `*ServicesClientListByResourceGroupPager.PageResponse` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `ServicesClientCheckDeviceServiceNameAvailabilityResult` has been removed
+- Struct `ServicesClientCreateOrUpdateResult` has been removed
+- Struct `ServicesClientDeleteResult` has been removed
+- Struct `ServicesClientGetResult` has been removed
+- Struct `ServicesClientListByResourceGroupPager` has been removed
+- Struct `ServicesClientListByResourceGroupResult` has been removed
+- Struct `ServicesClientListPager` has been removed
+- Struct `ServicesClientListResult` has been removed
+- Struct `ServicesClientUpdateResult` has been removed
+- Field `ServicesClientListResult` of struct `ServicesClientListResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientListResponse` has been removed
+- Field `ServicesClientCheckDeviceServiceNameAvailabilityResult` of struct `ServicesClientCheckDeviceServiceNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientCheckDeviceServiceNameAvailabilityResponse` has been removed
+- Field `ServicesClientCreateOrUpdateResult` of struct `ServicesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientCreateOrUpdateResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `ServicesClientUpdateResult` of struct `ServicesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientUpdateResponse` has been removed
+- Field `ServicesClientGetResult` of struct `ServicesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientGetResponse` has been removed
+- Field `ServicesClientDeleteResult` of struct `ServicesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientDeleteResponse` has been removed
+- Field `ServicesClientListByResourceGroupResult` of struct `ServicesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientListByResourceGroupResponse` has been removed
+
+### Features Added
+
+- New anonymous field `DeviceService` in struct `ServicesClientDeleteResponse`
+- New anonymous field `DeviceServiceDescriptionListResult` in struct `ServicesClientListByResourceGroupResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `DeviceServiceDescriptionListResult` in struct `ServicesClientListResponse`
+- New anonymous field `DeviceService` in struct `ServicesClientCreateOrUpdateResponse`
+- New anonymous field `DeviceService` in struct `ServicesClientGetResponse`
+- New anonymous field `DeviceServiceNameAvailabilityInfo` in struct `ServicesClientCheckDeviceServiceNameAvailabilityResponse`
+- New anonymous field `DeviceService` in struct `ServicesClientUpdateResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

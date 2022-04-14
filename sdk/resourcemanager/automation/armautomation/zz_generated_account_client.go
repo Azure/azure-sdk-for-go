@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type AccountClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAccountClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AccountClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAccountClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccountClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AccountClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create or update automation account.
@@ -99,7 +104,7 @@ func (client *AccountClient) createOrUpdateCreateRequest(ctx context.Context, re
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *AccountClient) createOrUpdateHandleResponse(resp *http.Response) (AccountClientCreateOrUpdateResponse, error) {
-	result := AccountClientCreateOrUpdateResponse{RawResponse: resp}
+	result := AccountClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Account); err != nil {
 		return AccountClientCreateOrUpdateResponse{}, err
 	}
@@ -123,7 +128,7 @@ func (client *AccountClient) Delete(ctx context.Context, resourceGroupName strin
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return AccountClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return AccountClientDeleteResponse{RawResponse: resp}, nil
+	return AccountClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -200,7 +205,7 @@ func (client *AccountClient) getCreateRequest(ctx context.Context, resourceGroup
 
 // getHandleResponse handles the Get response.
 func (client *AccountClient) getHandleResponse(resp *http.Response) (AccountClientGetResponse, error) {
-	result := AccountClientGetResponse{RawResponse: resp}
+	result := AccountClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Account); err != nil {
 		return AccountClientGetResponse{}, err
 	}
@@ -210,16 +215,32 @@ func (client *AccountClient) getHandleResponse(resp *http.Response) (AccountClie
 // List - Retrieve a list of accounts within a given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AccountClientListOptions contains the optional parameters for the AccountClient.List method.
-func (client *AccountClient) List(options *AccountClientListOptions) *AccountClientListPager {
-	return &AccountClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *AccountClient) List(options *AccountClientListOptions) *runtime.Pager[AccountClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AccountClientListResponse]{
+		More: func(page AccountClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AccountClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AccountListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AccountClientListResponse) (AccountClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AccountClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AccountClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AccountClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -242,7 +263,7 @@ func (client *AccountClient) listCreateRequest(ctx context.Context, options *Acc
 
 // listHandleResponse handles the List response.
 func (client *AccountClient) listHandleResponse(resp *http.Response) (AccountClientListResponse, error) {
-	result := AccountClientListResponse{RawResponse: resp}
+	result := AccountClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountListResult); err != nil {
 		return AccountClientListResponse{}, err
 	}
@@ -254,16 +275,32 @@ func (client *AccountClient) listHandleResponse(resp *http.Response) (AccountCli
 // resourceGroupName - Name of an Azure Resource group.
 // options - AccountClientListByResourceGroupOptions contains the optional parameters for the AccountClient.ListByResourceGroup
 // method.
-func (client *AccountClient) ListByResourceGroup(resourceGroupName string, options *AccountClientListByResourceGroupOptions) *AccountClientListByResourceGroupPager {
-	return &AccountClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *AccountClient) ListByResourceGroup(resourceGroupName string, options *AccountClientListByResourceGroupOptions) *runtime.Pager[AccountClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AccountClientListByResourceGroupResponse]{
+		More: func(page AccountClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AccountClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AccountListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AccountClientListByResourceGroupResponse) (AccountClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AccountClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AccountClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AccountClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -290,7 +327,7 @@ func (client *AccountClient) listByResourceGroupCreateRequest(ctx context.Contex
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *AccountClient) listByResourceGroupHandleResponse(resp *http.Response) (AccountClientListByResourceGroupResponse, error) {
-	result := AccountClientListByResourceGroupResponse{RawResponse: resp}
+	result := AccountClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountListResult); err != nil {
 		return AccountClientListByResourceGroupResponse{}, err
 	}
@@ -346,7 +383,7 @@ func (client *AccountClient) updateCreateRequest(ctx context.Context, resourceGr
 
 // updateHandleResponse handles the Update response.
 func (client *AccountClient) updateHandleResponse(resp *http.Response) (AccountClientUpdateResponse, error) {
-	result := AccountClientUpdateResponse{RawResponse: resp}
+	result := AccountClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Account); err != nil {
 		return AccountClientUpdateResponse{}, err
 	}

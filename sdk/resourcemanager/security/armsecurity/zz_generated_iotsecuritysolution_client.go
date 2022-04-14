@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type IotSecuritySolutionClient struct {
 // subscriptionID - Azure subscription ID
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewIotSecuritySolutionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IotSecuritySolutionClient {
+func NewIotSecuritySolutionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IotSecuritySolutionClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &IotSecuritySolutionClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Use this method to create or update yours IoT Security solution
@@ -99,7 +104,7 @@ func (client *IotSecuritySolutionClient) createOrUpdateCreateRequest(ctx context
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *IotSecuritySolutionClient) createOrUpdateHandleResponse(resp *http.Response) (IotSecuritySolutionClientCreateOrUpdateResponse, error) {
-	result := IotSecuritySolutionClientCreateOrUpdateResponse{RawResponse: resp}
+	result := IotSecuritySolutionClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecuritySolutionModel); err != nil {
 		return IotSecuritySolutionClientCreateOrUpdateResponse{}, err
 	}
@@ -124,7 +129,7 @@ func (client *IotSecuritySolutionClient) Delete(ctx context.Context, resourceGro
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return IotSecuritySolutionClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return IotSecuritySolutionClientDeleteResponse{RawResponse: resp}, nil
+	return IotSecuritySolutionClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -201,7 +206,7 @@ func (client *IotSecuritySolutionClient) getCreateRequest(ctx context.Context, r
 
 // getHandleResponse handles the Get response.
 func (client *IotSecuritySolutionClient) getHandleResponse(resp *http.Response) (IotSecuritySolutionClientGetResponse, error) {
-	result := IotSecuritySolutionClientGetResponse{RawResponse: resp}
+	result := IotSecuritySolutionClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecuritySolutionModel); err != nil {
 		return IotSecuritySolutionClientGetResponse{}, err
 	}
@@ -213,16 +218,32 @@ func (client *IotSecuritySolutionClient) getHandleResponse(resp *http.Response) 
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // options - IotSecuritySolutionClientListByResourceGroupOptions contains the optional parameters for the IotSecuritySolutionClient.ListByResourceGroup
 // method.
-func (client *IotSecuritySolutionClient) ListByResourceGroup(resourceGroupName string, options *IotSecuritySolutionClientListByResourceGroupOptions) *IotSecuritySolutionClientListByResourceGroupPager {
-	return &IotSecuritySolutionClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *IotSecuritySolutionClient) ListByResourceGroup(resourceGroupName string, options *IotSecuritySolutionClientListByResourceGroupOptions) *runtime.Pager[IotSecuritySolutionClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[IotSecuritySolutionClientListByResourceGroupResponse]{
+		More: func(page IotSecuritySolutionClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp IotSecuritySolutionClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.IoTSecuritySolutionsList.NextLink)
+		Fetcher: func(ctx context.Context, page *IotSecuritySolutionClientListByResourceGroupResponse) (IotSecuritySolutionClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return IotSecuritySolutionClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return IotSecuritySolutionClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return IotSecuritySolutionClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -252,7 +273,7 @@ func (client *IotSecuritySolutionClient) listByResourceGroupCreateRequest(ctx co
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *IotSecuritySolutionClient) listByResourceGroupHandleResponse(resp *http.Response) (IotSecuritySolutionClientListByResourceGroupResponse, error) {
-	result := IotSecuritySolutionClientListByResourceGroupResponse{RawResponse: resp}
+	result := IotSecuritySolutionClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecuritySolutionsList); err != nil {
 		return IotSecuritySolutionClientListByResourceGroupResponse{}, err
 	}
@@ -263,16 +284,32 @@ func (client *IotSecuritySolutionClient) listByResourceGroupHandleResponse(resp 
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - IotSecuritySolutionClientListBySubscriptionOptions contains the optional parameters for the IotSecuritySolutionClient.ListBySubscription
 // method.
-func (client *IotSecuritySolutionClient) ListBySubscription(options *IotSecuritySolutionClientListBySubscriptionOptions) *IotSecuritySolutionClientListBySubscriptionPager {
-	return &IotSecuritySolutionClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *IotSecuritySolutionClient) ListBySubscription(options *IotSecuritySolutionClientListBySubscriptionOptions) *runtime.Pager[IotSecuritySolutionClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[IotSecuritySolutionClientListBySubscriptionResponse]{
+		More: func(page IotSecuritySolutionClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp IotSecuritySolutionClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.IoTSecuritySolutionsList.NextLink)
+		Fetcher: func(ctx context.Context, page *IotSecuritySolutionClientListBySubscriptionResponse) (IotSecuritySolutionClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return IotSecuritySolutionClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return IotSecuritySolutionClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return IotSecuritySolutionClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -298,7 +335,7 @@ func (client *IotSecuritySolutionClient) listBySubscriptionCreateRequest(ctx con
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *IotSecuritySolutionClient) listBySubscriptionHandleResponse(resp *http.Response) (IotSecuritySolutionClientListBySubscriptionResponse, error) {
-	result := IotSecuritySolutionClientListBySubscriptionResponse{RawResponse: resp}
+	result := IotSecuritySolutionClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecuritySolutionsList); err != nil {
 		return IotSecuritySolutionClientListBySubscriptionResponse{}, err
 	}
@@ -356,7 +393,7 @@ func (client *IotSecuritySolutionClient) updateCreateRequest(ctx context.Context
 
 // updateHandleResponse handles the Update response.
 func (client *IotSecuritySolutionClient) updateHandleResponse(resp *http.Response) (IotSecuritySolutionClientUpdateResponse, error) {
-	result := IotSecuritySolutionClientUpdateResponse{RawResponse: resp}
+	result := IotSecuritySolutionClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecuritySolutionModel); err != nil {
 		return IotSecuritySolutionClientUpdateResponse{}, err
 	}

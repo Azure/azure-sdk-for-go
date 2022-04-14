@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type Client struct {
 // subscriptionID - The subscription Id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *Client {
+func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &Client{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginBMSPrepareDataMove - Prepares source vault for Data Move operation
@@ -56,22 +61,16 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 // parameters - Prepare data move request
 // options - ClientBeginBMSPrepareDataMoveOptions contains the optional parameters for the Client.BeginBMSPrepareDataMove
 // method.
-func (client *Client) BeginBMSPrepareDataMove(ctx context.Context, vaultName string, resourceGroupName string, parameters PrepareDataMoveRequest, options *ClientBeginBMSPrepareDataMoveOptions) (ClientBMSPrepareDataMovePollerResponse, error) {
-	resp, err := client.bMSPrepareDataMove(ctx, vaultName, resourceGroupName, parameters, options)
-	if err != nil {
-		return ClientBMSPrepareDataMovePollerResponse{}, err
+func (client *Client) BeginBMSPrepareDataMove(ctx context.Context, vaultName string, resourceGroupName string, parameters PrepareDataMoveRequest, options *ClientBeginBMSPrepareDataMoveOptions) (*armruntime.Poller[ClientBMSPrepareDataMoveResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.bMSPrepareDataMove(ctx, vaultName, resourceGroupName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClientBMSPrepareDataMoveResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClientBMSPrepareDataMoveResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClientBMSPrepareDataMovePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("Client.BMSPrepareDataMove", "", resp, client.pl)
-	if err != nil {
-		return ClientBMSPrepareDataMovePollerResponse{}, err
-	}
-	result.Poller = &ClientBMSPrepareDataMovePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // BMSPrepareDataMove - Prepares source vault for Data Move operation
@@ -124,22 +123,16 @@ func (client *Client) bmsPrepareDataMoveCreateRequest(ctx context.Context, vault
 // parameters - Trigger data move request
 // options - ClientBeginBMSTriggerDataMoveOptions contains the optional parameters for the Client.BeginBMSTriggerDataMove
 // method.
-func (client *Client) BeginBMSTriggerDataMove(ctx context.Context, vaultName string, resourceGroupName string, parameters TriggerDataMoveRequest, options *ClientBeginBMSTriggerDataMoveOptions) (ClientBMSTriggerDataMovePollerResponse, error) {
-	resp, err := client.bMSTriggerDataMove(ctx, vaultName, resourceGroupName, parameters, options)
-	if err != nil {
-		return ClientBMSTriggerDataMovePollerResponse{}, err
+func (client *Client) BeginBMSTriggerDataMove(ctx context.Context, vaultName string, resourceGroupName string, parameters TriggerDataMoveRequest, options *ClientBeginBMSTriggerDataMoveOptions) (*armruntime.Poller[ClientBMSTriggerDataMoveResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.bMSTriggerDataMove(ctx, vaultName, resourceGroupName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClientBMSTriggerDataMoveResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClientBMSTriggerDataMoveResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClientBMSTriggerDataMovePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("Client.BMSTriggerDataMove", "", resp, client.pl)
-	if err != nil {
-		return ClientBMSTriggerDataMovePollerResponse{}, err
-	}
-	result.Poller = &ClientBMSTriggerDataMovePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // BMSTriggerDataMove - Triggers Data Move Operation on target vault
@@ -237,7 +230,7 @@ func (client *Client) getOperationStatusCreateRequest(ctx context.Context, vault
 
 // getOperationStatusHandleResponse handles the GetOperationStatus response.
 func (client *Client) getOperationStatusHandleResponse(resp *http.Response) (ClientGetOperationStatusResponse, error) {
-	result := ClientGetOperationStatusResponse{RawResponse: resp}
+	result := ClientGetOperationStatusResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatus); err != nil {
 		return ClientGetOperationStatusResponse{}, err
 	}
@@ -250,22 +243,16 @@ func (client *Client) getOperationStatusHandleResponse(resp *http.Response) (Cli
 // resourceGroupName - The name of the resource group where the recovery services vault is present.
 // parameters - Move Resource Across Tiers Request
 // options - ClientBeginMoveRecoveryPointOptions contains the optional parameters for the Client.BeginMoveRecoveryPoint method.
-func (client *Client) BeginMoveRecoveryPoint(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters MoveRPAcrossTiersRequest, options *ClientBeginMoveRecoveryPointOptions) (ClientMoveRecoveryPointPollerResponse, error) {
-	resp, err := client.moveRecoveryPoint(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointID, parameters, options)
-	if err != nil {
-		return ClientMoveRecoveryPointPollerResponse{}, err
+func (client *Client) BeginMoveRecoveryPoint(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters MoveRPAcrossTiersRequest, options *ClientBeginMoveRecoveryPointOptions) (*armruntime.Poller[ClientMoveRecoveryPointResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.moveRecoveryPoint(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointID, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClientMoveRecoveryPointResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClientMoveRecoveryPointResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClientMoveRecoveryPointPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("Client.MoveRecoveryPoint", "", resp, client.pl)
-	if err != nil {
-		return ClientMoveRecoveryPointPollerResponse{}, err
-	}
-	result.Poller = &ClientMoveRecoveryPointPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // MoveRecoveryPoint - Move recovery point from one datastore to another store.

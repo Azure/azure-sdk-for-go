@@ -1,5 +1,384 @@
 # Release History
 
+## 0.4.0 (2022-04-11)
+### Breaking Changes
+
+- Function `*MaintenanceConfigurationsClient.ListByManagedCluster` return value(s) have been changed from `(*MaintenanceConfigurationsClientListByManagedClusterPager)` to `(*runtime.Pager[MaintenanceConfigurationsClientListByManagedClusterResponse])`
+- Function `*ManagedClustersClient.BeginCreateOrUpdate` return value(s) have been changed from `(ManagedClustersClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ManagedClustersClientCreateOrUpdateResponse], error)`
+- Function `NewMaintenanceConfigurationsClient` return value(s) have been changed from `(*MaintenanceConfigurationsClient)` to `(*MaintenanceConfigurationsClient, error)`
+- Function `*SnapshotsClient.ListByResourceGroup` return value(s) have been changed from `(*SnapshotsClientListByResourceGroupPager)` to `(*runtime.Pager[SnapshotsClientListByResourceGroupResponse])`
+- Function `*ManagedClustersClient.BeginDelete` return value(s) have been changed from `(ManagedClustersClientDeletePollerResponse, error)` to `(*armruntime.Poller[ManagedClustersClientDeleteResponse], error)`
+- Function `*ManagedClustersClient.ListByResourceGroup` return value(s) have been changed from `(*ManagedClustersClientListByResourceGroupPager)` to `(*runtime.Pager[ManagedClustersClientListByResourceGroupResponse])`
+- Function `NewPrivateLinkResourcesClient` return value(s) have been changed from `(*PrivateLinkResourcesClient)` to `(*PrivateLinkResourcesClient, error)`
+- Function `*ManagedClustersClient.BeginStop` return value(s) have been changed from `(ManagedClustersClientStopPollerResponse, error)` to `(*armruntime.Poller[ManagedClustersClientStopResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*ManagedClustersClient.BeginUpdateTags` return value(s) have been changed from `(ManagedClustersClientUpdateTagsPollerResponse, error)` to `(*armruntime.Poller[ManagedClustersClientUpdateTagsResponse], error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsClientListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsClientListResponse, error)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewSnapshotsClient` return value(s) have been changed from `(*SnapshotsClient)` to `(*SnapshotsClient, error)`
+- Function `*ManagedClustersClient.BeginRunCommand` return value(s) have been changed from `(ManagedClustersClientRunCommandPollerResponse, error)` to `(*armruntime.Poller[ManagedClustersClientRunCommandResponse], error)`
+- Function `*AgentPoolsClient.List` return value(s) have been changed from `(*AgentPoolsClientListPager)` to `(*runtime.Pager[AgentPoolsClientListResponse])`
+- Function `*ManagedClustersClient.BeginResetAADProfile` return value(s) have been changed from `(ManagedClustersClientResetAADProfilePollerResponse, error)` to `(*armruntime.Poller[ManagedClustersClientResetAADProfileResponse], error)`
+- Function `*AgentPoolsClient.BeginDelete` return value(s) have been changed from `(AgentPoolsClientDeletePollerResponse, error)` to `(*armruntime.Poller[AgentPoolsClientDeleteResponse], error)`
+- Function `*AgentPoolsClient.BeginUpgradeNodeImageVersion` return value(s) have been changed from `(AgentPoolsClientUpgradeNodeImageVersionPollerResponse, error)` to `(*armruntime.Poller[AgentPoolsClientUpgradeNodeImageVersionResponse], error)`
+- Function `*ManagedClustersClient.List` return value(s) have been changed from `(*ManagedClustersClientListPager)` to `(*runtime.Pager[ManagedClustersClientListResponse])`
+- Function `*SnapshotsClient.List` return value(s) have been changed from `(*SnapshotsClientListPager)` to `(*runtime.Pager[SnapshotsClientListResponse])`
+- Function `*ManagedClustersClient.BeginRotateClusterCertificates` return value(s) have been changed from `(ManagedClustersClientRotateClusterCertificatesPollerResponse, error)` to `(*armruntime.Poller[ManagedClustersClientRotateClusterCertificatesResponse], error)`
+- Function `NewAgentPoolsClient` return value(s) have been changed from `(*AgentPoolsClient)` to `(*AgentPoolsClient, error)`
+- Function `*ManagedClustersClient.ListOutboundNetworkDependenciesEndpoints` return value(s) have been changed from `(*ManagedClustersClientListOutboundNetworkDependenciesEndpointsPager)` to `(*runtime.Pager[ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse])`
+- Function `*ManagedClustersClient.BeginResetServicePrincipalProfile` return value(s) have been changed from `(ManagedClustersClientResetServicePrincipalProfilePollerResponse, error)` to `(*armruntime.Poller[ManagedClustersClientResetServicePrincipalProfileResponse], error)`
+- Function `NewPrivateEndpointConnectionsClient` return value(s) have been changed from `(*PrivateEndpointConnectionsClient)` to `(*PrivateEndpointConnectionsClient, error)`
+- Function `NewResolvePrivateLinkServiceIDClient` return value(s) have been changed from `(*ResolvePrivateLinkServiceIDClient)` to `(*ResolvePrivateLinkServiceIDClient, error)`
+- Function `NewManagedClustersClient` return value(s) have been changed from `(*ManagedClustersClient)` to `(*ManagedClustersClient, error)`
+- Function `*AgentPoolsClient.BeginCreateOrUpdate` return value(s) have been changed from `(AgentPoolsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[AgentPoolsClientCreateOrUpdateResponse], error)`
+- Function `*ManagedClustersClient.BeginStart` return value(s) have been changed from `(ManagedClustersClientStartPollerResponse, error)` to `(*armruntime.Poller[ManagedClustersClientStartResponse], error)`
+- Function `*ManagedClustersClientResetAADProfilePollerResponse.Resume` has been removed
+- Function `LoadBalancerSKU.ToPtr` has been removed
+- Function `*ManagedClustersClientRotateClusterCertificatesPoller.ResumeToken` has been removed
+- Function `OSType.ToPtr` has been removed
+- Function `ResourceIdentityType.ToPtr` has been removed
+- Function `AgentPoolType.ToPtr` has been removed
+- Function `*AgentPoolsClientUpgradeNodeImageVersionPoller.Poll` has been removed
+- Function `*ManagedClustersClientRunCommandPoller.Done` has been removed
+- Function `ManagedClusterPodIdentityProvisioningState.ToPtr` has been removed
+- Function `UpgradeChannel.ToPtr` has been removed
+- Function `*AgentPoolsClientDeletePoller.FinalResponse` has been removed
+- Function `*ManagedClustersClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `ScaleSetPriority.ToPtr` has been removed
+- Function `*ManagedClustersClientStopPoller.FinalResponse` has been removed
+- Function `*ManagedClustersClientStartPoller.Done` has been removed
+- Function `PublicNetworkAccess.ToPtr` has been removed
+- Function `*ManagedClustersClientResetServicePrincipalProfilePollerResponse.Resume` has been removed
+- Function `*ManagedClustersClientResetAADProfilePoller.Poll` has been removed
+- Function `Count.ToPtr` has been removed
+- Function `*ManagedClustersClientListPager.PageResponse` has been removed
+- Function `LicenseType.ToPtr` has been removed
+- Function `*ManagedClustersClientRotateClusterCertificatesPoller.Poll` has been removed
+- Function `*AgentPoolsClientListPager.NextPage` has been removed
+- Function `*ManagedClustersClientListPager.NextPage` has been removed
+- Function `*ManagedClustersClientListOutboundNetworkDependenciesEndpointsPager.PageResponse` has been removed
+- Function `ManagedClustersClientUpdateTagsPollerResponse.PollUntilDone` has been removed
+- Function `NetworkPlugin.ToPtr` has been removed
+- Function `GPUInstanceProfile.ToPtr` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.ResumeToken` has been removed
+- Function `Expander.ToPtr` has been removed
+- Function `OutboundType.ToPtr` has been removed
+- Function `*ManagedClustersClientStartPoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.Poll` has been removed
+- Function `*AgentPoolsClientUpgradeNodeImageVersionPoller.Done` has been removed
+- Function `*ManagedClustersClientUpdateTagsPoller.FinalResponse` has been removed
+- Function `*ManagedClustersClientRotateClusterCertificatesPollerResponse.Resume` has been removed
+- Function `AgentPoolMode.ToPtr` has been removed
+- Function `*AgentPoolsClientListPager.PageResponse` has been removed
+- Function `*AgentPoolsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `WorkloadRuntime.ToPtr` has been removed
+- Function `*AgentPoolsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ManagedClustersClientUpdateTagsPoller.Poll` has been removed
+- Function `*ManagedClustersClientListOutboundNetworkDependenciesEndpointsPager.NextPage` has been removed
+- Function `*ManagedClustersClientDeletePoller.Done` has been removed
+- Function `PrivateEndpointConnectionProvisioningState.ToPtr` has been removed
+- Function `*AgentPoolsClientUpgradeNodeImageVersionPollerResponse.Resume` has been removed
+- Function `*ManagedClustersClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ManagedClustersClientStartPoller.ResumeToken` has been removed
+- Function `*ManagedClustersClientDeletePoller.Poll` has been removed
+- Function `*ManagedClustersClientStopPoller.ResumeToken` has been removed
+- Function `ScaleSetEvictionPolicy.ToPtr` has been removed
+- Function `*AgentPoolsClientListPager.Err` has been removed
+- Function `*ManagedClustersClientListByResourceGroupPager.Err` has been removed
+- Function `ManagedClustersClientResetServicePrincipalProfilePollerResponse.PollUntilDone` has been removed
+- Function `*ManagedClustersClientCreateOrUpdatePoller.Done` has been removed
+- Function `*SnapshotsClientListPager.NextPage` has been removed
+- Function `*ManagedClustersClientDeletePoller.FinalResponse` has been removed
+- Function `*SnapshotsClientListPager.Err` has been removed
+- Function `ManagedClustersClientStartPollerResponse.PollUntilDone` has been removed
+- Function `*ManagedClustersClientStartPoller.FinalResponse` has been removed
+- Function `*ManagedClustersClientListOutboundNetworkDependenciesEndpointsPager.Err` has been removed
+- Function `OSSKU.ToPtr` has been removed
+- Function `AgentPoolsClientUpgradeNodeImageVersionPollerResponse.PollUntilDone` has been removed
+- Function `*ManagedClustersClientListByResourceGroupPager.PageResponse` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*ManagedClustersClientResetAADProfilePoller.FinalResponse` has been removed
+- Function `*ManagedClustersClientResetAADProfilePoller.Done` has been removed
+- Function `ManagedClustersClientRunCommandPollerResponse.PollUntilDone` has been removed
+- Function `*AgentPoolsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ManagedClustersClientResetAADProfilePoller.ResumeToken` has been removed
+- Function `*ManagedClustersClientResetServicePrincipalProfilePoller.FinalResponse` has been removed
+- Function `*ManagedClustersClientRunCommandPoller.ResumeToken` has been removed
+- Function `*ManagedClustersClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ManagedClustersClientRotateClusterCertificatesPoller.Done` has been removed
+- Function `*ManagedClustersClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*SnapshotsClientListByResourceGroupPager.NextPage` has been removed
+- Function `WeekDay.ToPtr` has been removed
+- Function `AgentPoolsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*MaintenanceConfigurationsClientListByManagedClusterPager.PageResponse` has been removed
+- Function `*ManagedClustersClientStartPollerResponse.Resume` has been removed
+- Function `ManagedClusterSKUTier.ToPtr` has been removed
+- Function `SnapshotType.ToPtr` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePollerResponse.Resume` has been removed
+- Function `*ManagedClustersClientStopPoller.Poll` has been removed
+- Function `ScaleDownMode.ToPtr` has been removed
+- Function `*ManagedClustersClientRotateClusterCertificatesPoller.FinalResponse` has been removed
+- Function `*ManagedClustersClientListPager.Err` has been removed
+- Function `*AgentPoolsClientDeletePoller.ResumeToken` has been removed
+- Function `ContainerServiceStorageProfileTypes.ToPtr` has been removed
+- Function `*AgentPoolsClientDeletePollerResponse.Resume` has been removed
+- Function `KubeletDiskType.ToPtr` has been removed
+- Function `ManagedClustersClientStopPollerResponse.PollUntilDone` has been removed
+- Function `ManagedClustersClientResetAADProfilePollerResponse.PollUntilDone` has been removed
+- Function `*ManagedClustersClientUpdateTagsPoller.ResumeToken` has been removed
+- Function `ManagedClustersClientRotateClusterCertificatesPollerResponse.PollUntilDone` has been removed
+- Function `*SnapshotsClientListByResourceGroupPager.Err` has been removed
+- Function `NetworkPolicy.ToPtr` has been removed
+- Function `ManagedClustersClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ExtendedLocationTypes.ToPtr` has been removed
+- Function `*SnapshotsClientListPager.PageResponse` has been removed
+- Function `*ManagedClustersClientStopPollerResponse.Resume` has been removed
+- Function `*SnapshotsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*ManagedClustersClientListByResourceGroupPager.NextPage` has been removed
+- Function `*ManagedClustersClientUpdateTagsPoller.Done` has been removed
+- Function `*AgentPoolsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ManagedClustersClientResetServicePrincipalProfilePoller.Poll` has been removed
+- Function `*ManagedClustersClientRunCommandPoller.Poll` has been removed
+- Function `*AgentPoolsClientDeletePoller.Poll` has been removed
+- Function `ContainerServiceVMSizeTypes.ToPtr` has been removed
+- Function `*AgentPoolsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ManagedClustersClientRunCommandPollerResponse.Resume` has been removed
+- Function `*ManagedClustersClientDeletePollerResponse.Resume` has been removed
+- Function `*MaintenanceConfigurationsClientListByManagedClusterPager.NextPage` has been removed
+- Function `*ManagedClustersClientRunCommandPoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.Done` has been removed
+- Function `Code.ToPtr` has been removed
+- Function `*MaintenanceConfigurationsClientListByManagedClusterPager.Err` has been removed
+- Function `AgentPoolsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.FinalResponse` has been removed
+- Function `IPFamily.ToPtr` has been removed
+- Function `*AgentPoolsClientUpgradeNodeImageVersionPoller.FinalResponse` has been removed
+- Function `*ManagedClustersClientUpdateTagsPollerResponse.Resume` has been removed
+- Function `PrivateEndpointConnectionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `OSDiskType.ToPtr` has been removed
+- Function `*ManagedClustersClientDeletePoller.ResumeToken` has been removed
+- Function `*ManagedClustersClientStopPoller.Done` has been removed
+- Function `ManagedClusterSKUName.ToPtr` has been removed
+- Function `ManagedClustersClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ManagedClustersClientResetServicePrincipalProfilePoller.ResumeToken` has been removed
+- Function `*ManagedClustersClientResetServicePrincipalProfilePoller.Done` has been removed
+- Function `NetworkMode.ToPtr` has been removed
+- Function `*AgentPoolsClientDeletePoller.Done` has been removed
+- Function `ConnectionStatus.ToPtr` has been removed
+- Function `*AgentPoolsClientUpgradeNodeImageVersionPoller.ResumeToken` has been removed
+- Struct `AgentPoolsClientCreateOrUpdatePoller` has been removed
+- Struct `AgentPoolsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `AgentPoolsClientCreateOrUpdateResult` has been removed
+- Struct `AgentPoolsClientDeletePoller` has been removed
+- Struct `AgentPoolsClientDeletePollerResponse` has been removed
+- Struct `AgentPoolsClientGetAvailableAgentPoolVersionsResult` has been removed
+- Struct `AgentPoolsClientGetResult` has been removed
+- Struct `AgentPoolsClientGetUpgradeProfileResult` has been removed
+- Struct `AgentPoolsClientListPager` has been removed
+- Struct `AgentPoolsClientListResult` has been removed
+- Struct `AgentPoolsClientUpgradeNodeImageVersionPoller` has been removed
+- Struct `AgentPoolsClientUpgradeNodeImageVersionPollerResponse` has been removed
+- Struct `AgentPoolsClientUpgradeNodeImageVersionResult` has been removed
+- Struct `MaintenanceConfigurationsClientCreateOrUpdateResult` has been removed
+- Struct `MaintenanceConfigurationsClientGetResult` has been removed
+- Struct `MaintenanceConfigurationsClientListByManagedClusterPager` has been removed
+- Struct `MaintenanceConfigurationsClientListByManagedClusterResult` has been removed
+- Struct `ManagedClusterOIDCIssuerProfile` has been removed
+- Struct `ManagedClustersClientCreateOrUpdatePoller` has been removed
+- Struct `ManagedClustersClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ManagedClustersClientCreateOrUpdateResult` has been removed
+- Struct `ManagedClustersClientDeletePoller` has been removed
+- Struct `ManagedClustersClientDeletePollerResponse` has been removed
+- Struct `ManagedClustersClientGetAccessProfileResult` has been removed
+- Struct `ManagedClustersClientGetCommandResultResult` has been removed
+- Struct `ManagedClustersClientGetOSOptionsResult` has been removed
+- Struct `ManagedClustersClientGetResult` has been removed
+- Struct `ManagedClustersClientGetUpgradeProfileResult` has been removed
+- Struct `ManagedClustersClientListByResourceGroupPager` has been removed
+- Struct `ManagedClustersClientListByResourceGroupResult` has been removed
+- Struct `ManagedClustersClientListClusterAdminCredentialsResult` has been removed
+- Struct `ManagedClustersClientListClusterMonitoringUserCredentialsResult` has been removed
+- Struct `ManagedClustersClientListClusterUserCredentialsResult` has been removed
+- Struct `ManagedClustersClientListOutboundNetworkDependenciesEndpointsPager` has been removed
+- Struct `ManagedClustersClientListOutboundNetworkDependenciesEndpointsResult` has been removed
+- Struct `ManagedClustersClientListPager` has been removed
+- Struct `ManagedClustersClientListResult` has been removed
+- Struct `ManagedClustersClientResetAADProfilePoller` has been removed
+- Struct `ManagedClustersClientResetAADProfilePollerResponse` has been removed
+- Struct `ManagedClustersClientResetServicePrincipalProfilePoller` has been removed
+- Struct `ManagedClustersClientResetServicePrincipalProfilePollerResponse` has been removed
+- Struct `ManagedClustersClientRotateClusterCertificatesPoller` has been removed
+- Struct `ManagedClustersClientRotateClusterCertificatesPollerResponse` has been removed
+- Struct `ManagedClustersClientRunCommandPoller` has been removed
+- Struct `ManagedClustersClientRunCommandPollerResponse` has been removed
+- Struct `ManagedClustersClientRunCommandResult` has been removed
+- Struct `ManagedClustersClientStartPoller` has been removed
+- Struct `ManagedClustersClientStartPollerResponse` has been removed
+- Struct `ManagedClustersClientStopPoller` has been removed
+- Struct `ManagedClustersClientStopPollerResponse` has been removed
+- Struct `ManagedClustersClientUpdateTagsPoller` has been removed
+- Struct `ManagedClustersClientUpdateTagsPollerResponse` has been removed
+- Struct `ManagedClustersClientUpdateTagsResult` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `PrivateEndpointConnectionsClientDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsClientDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientGetResult` has been removed
+- Struct `PrivateEndpointConnectionsClientListResult` has been removed
+- Struct `PrivateEndpointConnectionsClientUpdateResult` has been removed
+- Struct `PrivateLinkResourcesClientListResult` has been removed
+- Struct `ResolvePrivateLinkServiceIDClientPOSTResult` has been removed
+- Struct `SnapshotsClientCreateOrUpdateResult` has been removed
+- Struct `SnapshotsClientGetResult` has been removed
+- Struct `SnapshotsClientListByResourceGroupPager` has been removed
+- Struct `SnapshotsClientListByResourceGroupResult` has been removed
+- Struct `SnapshotsClientListPager` has been removed
+- Struct `SnapshotsClientListResult` has been removed
+- Struct `SnapshotsClientUpdateTagsResult` has been removed
+- Field `PrivateEndpointConnectionsClientListResult` of struct `PrivateEndpointConnectionsClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientListResponse` has been removed
+- Field `ManagedClustersClientListByResourceGroupResult` of struct `ManagedClustersClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ManagedClustersClientListByResourceGroupResponse` has been removed
+- Field `SnapshotsClientListByResourceGroupResult` of struct `SnapshotsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `SnapshotsClientListByResourceGroupResponse` has been removed
+- Field `AgentPoolsClientGetResult` of struct `AgentPoolsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AgentPoolsClientGetResponse` has been removed
+- Field `ManagedClustersClientGetResult` of struct `ManagedClustersClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedClustersClientGetResponse` has been removed
+- Field `CapacityReservationGroupID` of struct `ManagedClusterAgentPoolProfile` has been removed
+- Field `MessageOfTheDay` of struct `ManagedClusterAgentPoolProfile` has been removed
+- Field `AgentPoolsClientListResult` of struct `AgentPoolsClientListResponse` has been removed
+- Field `RawResponse` of struct `AgentPoolsClientListResponse` has been removed
+- Field `RawResponse` of struct `MaintenanceConfigurationsClientDeleteResponse` has been removed
+- Field `PrivateEndpointConnectionsClientUpdateResult` of struct `PrivateEndpointConnectionsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagedClustersClientResetAADProfileResponse` has been removed
+- Field `RawResponse` of struct `ManagedClustersClientStartResponse` has been removed
+- Field `ManagedClustersClientListOutboundNetworkDependenciesEndpointsResult` of struct `ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse` has been removed
+- Field `RawResponse` of struct `ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse` has been removed
+- Field `AgentPoolsClientGetAvailableAgentPoolVersionsResult` of struct `AgentPoolsClientGetAvailableAgentPoolVersionsResponse` has been removed
+- Field `RawResponse` of struct `AgentPoolsClientGetAvailableAgentPoolVersionsResponse` has been removed
+- Field `EnableNamespaceResources` of struct `ManagedClusterProperties` has been removed
+- Field `OidcIssuerProfile` of struct `ManagedClusterProperties` has been removed
+- Field `CurrentKubernetesVersion` of struct `ManagedClusterProperties` has been removed
+- Field `ManagedClustersClientRunCommandResult` of struct `ManagedClustersClientRunCommandResponse` has been removed
+- Field `RawResponse` of struct `ManagedClustersClientRunCommandResponse` has been removed
+- Field `RawResponse` of struct `ManagedClustersClientResetServicePrincipalProfileResponse` has been removed
+- Field `RawResponse` of struct `AgentPoolsClientDeleteResponse` has been removed
+- Field `SnapshotsClientListResult` of struct `SnapshotsClientListResponse` has been removed
+- Field `RawResponse` of struct `SnapshotsClientListResponse` has been removed
+- Field `AgentPoolsClientUpgradeNodeImageVersionResult` of struct `AgentPoolsClientUpgradeNodeImageVersionResponse` has been removed
+- Field `RawResponse` of struct `AgentPoolsClientUpgradeNodeImageVersionResponse` has been removed
+- Field `SnapshotsClientUpdateTagsResult` of struct `SnapshotsClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `SnapshotsClientUpdateTagsResponse` has been removed
+- Field `CapacityReservationGroupID` of struct `ManagedClusterAgentPoolProfileProperties` has been removed
+- Field `MessageOfTheDay` of struct `ManagedClusterAgentPoolProfileProperties` has been removed
+- Field `ManagedClustersClientGetOSOptionsResult` of struct `ManagedClustersClientGetOSOptionsResponse` has been removed
+- Field `RawResponse` of struct `ManagedClustersClientGetOSOptionsResponse` has been removed
+- Field `ManagedClustersClientGetUpgradeProfileResult` of struct `ManagedClustersClientGetUpgradeProfileResponse` has been removed
+- Field `RawResponse` of struct `ManagedClustersClientGetUpgradeProfileResponse` has been removed
+- Field `MaintenanceConfigurationsClientCreateOrUpdateResult` of struct `MaintenanceConfigurationsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `MaintenanceConfigurationsClientCreateOrUpdateResponse` has been removed
+- Field `ManagedClustersClientGetCommandResultResult` of struct `ManagedClustersClientGetCommandResultResponse` has been removed
+- Field `RawResponse` of struct `ManagedClustersClientGetCommandResultResponse` has been removed
+- Field `MaintenanceConfigurationsClientGetResult` of struct `MaintenanceConfigurationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `MaintenanceConfigurationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientDeleteResponse` has been removed
+- Field `ManagedClustersClientListClusterUserCredentialsResult` of struct `ManagedClustersClientListClusterUserCredentialsResponse` has been removed
+- Field `RawResponse` of struct `ManagedClustersClientListClusterUserCredentialsResponse` has been removed
+- Field `ManagedClustersClientListClusterMonitoringUserCredentialsResult` of struct `ManagedClustersClientListClusterMonitoringUserCredentialsResponse` has been removed
+- Field `RawResponse` of struct `ManagedClustersClientListClusterMonitoringUserCredentialsResponse` has been removed
+- Field `ManagedClustersClientListClusterAdminCredentialsResult` of struct `ManagedClustersClientListClusterAdminCredentialsResponse` has been removed
+- Field `RawResponse` of struct `ManagedClustersClientListClusterAdminCredentialsResponse` has been removed
+- Field `AgentPoolsClientCreateOrUpdateResult` of struct `AgentPoolsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `AgentPoolsClientCreateOrUpdateResponse` has been removed
+- Field `MaintenanceConfigurationsClientListByManagedClusterResult` of struct `MaintenanceConfigurationsClientListByManagedClusterResponse` has been removed
+- Field `RawResponse` of struct `MaintenanceConfigurationsClientListByManagedClusterResponse` has been removed
+- Field `RawResponse` of struct `SnapshotsClientDeleteResponse` has been removed
+- Field `ManagedClustersClientCreateOrUpdateResult` of struct `ManagedClustersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagedClustersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagedClustersClientStopResponse` has been removed
+- Field `ManagedClustersClientListResult` of struct `ManagedClustersClientListResponse` has been removed
+- Field `RawResponse` of struct `ManagedClustersClientListResponse` has been removed
+- Field `ResolvePrivateLinkServiceIDClientPOSTResult` of struct `ResolvePrivateLinkServiceIDClientPOSTResponse` has been removed
+- Field `RawResponse` of struct `ResolvePrivateLinkServiceIDClientPOSTResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `SnapshotsClientGetResult` of struct `SnapshotsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SnapshotsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedClustersClientRotateClusterCertificatesResponse` has been removed
+- Field `RawResponse` of struct `ManagedClustersClientDeleteResponse` has been removed
+- Field `ManagedClustersClientUpdateTagsResult` of struct `ManagedClustersClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `ManagedClustersClientUpdateTagsResponse` has been removed
+- Field `PrivateLinkResourcesClientListResult` of struct `PrivateLinkResourcesClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientListResponse` has been removed
+- Field `AgentPoolsClientGetUpgradeProfileResult` of struct `AgentPoolsClientGetUpgradeProfileResponse` has been removed
+- Field `RawResponse` of struct `AgentPoolsClientGetUpgradeProfileResponse` has been removed
+- Field `ManagedClustersClientGetAccessProfileResult` of struct `ManagedClustersClientGetAccessProfileResponse` has been removed
+- Field `RawResponse` of struct `ManagedClustersClientGetAccessProfileResponse` has been removed
+- Field `PrivateEndpointConnectionsClientGetResult` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `SnapshotsClientCreateOrUpdateResult` of struct `SnapshotsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SnapshotsClientCreateOrUpdateResponse` has been removed
+
+### Features Added
+
+- New const `FormatAzure`
+- New const `FormatExec`
+- New function `PossibleFormatValues() []Format`
+- New anonymous field `AgentPoolListResult` in struct `AgentPoolsClientListResponse`
+- New field `ResumeToken` in struct `AgentPoolsClientBeginUpgradeNodeImageVersionOptions`
+- New anonymous field `MaintenanceConfiguration` in struct `MaintenanceConfigurationsClientGetResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New field `ResumeToken` in struct `ManagedClustersClientBeginStopOptions`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsClientBeginDeleteOptions`
+- New anonymous field `ManagedClusterListResult` in struct `ManagedClustersClientListByResourceGroupResponse`
+- New anonymous field `ManagedCluster` in struct `ManagedClustersClientGetResponse`
+- New field `ResumeToken` in struct `ManagedClustersClientBeginRunCommandOptions`
+- New anonymous field `Snapshot` in struct `SnapshotsClientUpdateTagsResponse`
+- New anonymous field `ManagedCluster` in struct `ManagedClustersClientUpdateTagsResponse`
+- New field `ResumeToken` in struct `ManagedClustersClientBeginDeleteOptions`
+- New anonymous field `CredentialResults` in struct `ManagedClustersClientListClusterUserCredentialsResponse`
+- New anonymous field `PrivateLinkResource` in struct `ResolvePrivateLinkServiceIDClientPOSTResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientGetResponse`
+- New anonymous field `Snapshot` in struct `SnapshotsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `ManagedClustersClientBeginRotateClusterCertificatesOptions`
+- New anonymous field `ManagedCluster` in struct `ManagedClustersClientCreateOrUpdateResponse`
+- New anonymous field `Snapshot` in struct `SnapshotsClientGetResponse`
+- New field `ResumeToken` in struct `AgentPoolsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `ManagedClustersClientBeginResetServicePrincipalProfileOptions`
+- New field `ResumeToken` in struct `ManagedClustersClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `ManagedClustersClientBeginResetAADProfileOptions`
+- New anonymous field `MaintenanceConfiguration` in struct `MaintenanceConfigurationsClientCreateOrUpdateResponse`
+- New anonymous field `CredentialResults` in struct `ManagedClustersClientListClusterMonitoringUserCredentialsResponse`
+- New anonymous field `AgentPoolAvailableVersions` in struct `AgentPoolsClientGetAvailableAgentPoolVersionsResponse`
+- New anonymous field `AgentPool` in struct `AgentPoolsClientGetResponse`
+- New field `ResumeToken` in struct `ManagedClustersClientBeginStartOptions`
+- New anonymous field `PrivateEndpointConnectionListResult` in struct `PrivateEndpointConnectionsClientListResponse`
+- New anonymous field `SnapshotListResult` in struct `SnapshotsClientListResponse`
+- New field `Format` in struct `ManagedClustersClientListClusterUserCredentialsOptions`
+- New anonymous field `RunCommandResult` in struct `ManagedClustersClientGetCommandResultResponse`
+- New field `ResumeToken` in struct `AgentPoolsClientBeginDeleteOptions`
+- New anonymous field `OSOptionProfile` in struct `ManagedClustersClientGetOSOptionsResponse`
+- New anonymous field `ManagedClusterUpgradeProfile` in struct `ManagedClustersClientGetUpgradeProfileResponse`
+- New anonymous field `ManagedClusterListResult` in struct `ManagedClustersClientListResponse`
+- New anonymous field `ManagedClusterAccessProfile` in struct `ManagedClustersClientGetAccessProfileResponse`
+- New anonymous field `AgentPool` in struct `AgentPoolsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `ManagedClustersClientBeginUpdateTagsOptions`
+- New anonymous field `MaintenanceConfigurationListResult` in struct `MaintenanceConfigurationsClientListByManagedClusterResponse`
+- New anonymous field `RunCommandResult` in struct `ManagedClustersClientRunCommandResponse`
+- New anonymous field `AgentPool` in struct `AgentPoolsClientUpgradeNodeImageVersionResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientUpdateResponse`
+- New anonymous field `AgentPoolUpgradeProfile` in struct `AgentPoolsClientGetUpgradeProfileResponse`
+- New anonymous field `PrivateLinkResourcesListResult` in struct `PrivateLinkResourcesClientListResponse`
+- New field `SystemData` in struct `ManagedClusterAccessProfile`
+- New anonymous field `SnapshotListResult` in struct `SnapshotsClientListByResourceGroupResponse`
+- New anonymous field `CredentialResults` in struct `ManagedClustersClientListClusterAdminCredentialsResponse`
+- New anonymous field `OutboundEnvironmentEndpointCollection` in struct `ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse`
+- New field `SystemData` in struct `Resource`
+- New field `SystemData` in struct `ManagedCluster`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ResourceLinksClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewResourceLinksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ResourceLinksClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewResourceLinksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceLinksClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ResourceLinksClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a resource link between the specified resources.
@@ -90,7 +95,7 @@ func (client *ResourceLinksClient) createOrUpdateCreateRequest(ctx context.Conte
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ResourceLinksClient) createOrUpdateHandleResponse(resp *http.Response) (ResourceLinksClientCreateOrUpdateResponse, error) {
-	result := ResourceLinksClientCreateOrUpdateResponse{RawResponse: resp}
+	result := ResourceLinksClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceLink); err != nil {
 		return ResourceLinksClientCreateOrUpdateResponse{}, err
 	}
@@ -116,7 +121,7 @@ func (client *ResourceLinksClient) Delete(ctx context.Context, linkID string, op
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ResourceLinksClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ResourceLinksClientDeleteResponse{RawResponse: resp}, nil
+	return ResourceLinksClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -169,7 +174,7 @@ func (client *ResourceLinksClient) getCreateRequest(ctx context.Context, linkID 
 
 // getHandleResponse handles the Get response.
 func (client *ResourceLinksClient) getHandleResponse(resp *http.Response) (ResourceLinksClientGetResponse, error) {
-	result := ResourceLinksClientGetResponse{RawResponse: resp}
+	result := ResourceLinksClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceLink); err != nil {
 		return ResourceLinksClientGetResponse{}, err
 	}
@@ -183,16 +188,32 @@ func (client *ResourceLinksClient) getHandleResponse(resp *http.Response) (Resou
 // /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup.
 // options - ResourceLinksClientListAtSourceScopeOptions contains the optional parameters for the ResourceLinksClient.ListAtSourceScope
 // method.
-func (client *ResourceLinksClient) ListAtSourceScope(scope string, options *ResourceLinksClientListAtSourceScopeOptions) *ResourceLinksClientListAtSourceScopePager {
-	return &ResourceLinksClientListAtSourceScopePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listAtSourceScopeCreateRequest(ctx, scope, options)
+func (client *ResourceLinksClient) ListAtSourceScope(scope string, options *ResourceLinksClientListAtSourceScopeOptions) *runtime.Pager[ResourceLinksClientListAtSourceScopeResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ResourceLinksClientListAtSourceScopeResponse]{
+		More: func(page ResourceLinksClientListAtSourceScopeResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ResourceLinksClientListAtSourceScopeResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ResourceLinkResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ResourceLinksClientListAtSourceScopeResponse) (ResourceLinksClientListAtSourceScopeResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAtSourceScopeCreateRequest(ctx, scope, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ResourceLinksClientListAtSourceScopeResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ResourceLinksClientListAtSourceScopeResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ResourceLinksClientListAtSourceScopeResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAtSourceScopeHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listAtSourceScopeCreateRequest creates the ListAtSourceScope request.
@@ -215,7 +236,7 @@ func (client *ResourceLinksClient) listAtSourceScopeCreateRequest(ctx context.Co
 
 // listAtSourceScopeHandleResponse handles the ListAtSourceScope response.
 func (client *ResourceLinksClient) listAtSourceScopeHandleResponse(resp *http.Response) (ResourceLinksClientListAtSourceScopeResponse, error) {
-	result := ResourceLinksClientListAtSourceScopeResponse{RawResponse: resp}
+	result := ResourceLinksClientListAtSourceScopeResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceLinkResult); err != nil {
 		return ResourceLinksClientListAtSourceScopeResponse{}, err
 	}
@@ -226,16 +247,32 @@ func (client *ResourceLinksClient) listAtSourceScopeHandleResponse(resp *http.Re
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ResourceLinksClientListAtSubscriptionOptions contains the optional parameters for the ResourceLinksClient.ListAtSubscription
 // method.
-func (client *ResourceLinksClient) ListAtSubscription(options *ResourceLinksClientListAtSubscriptionOptions) *ResourceLinksClientListAtSubscriptionPager {
-	return &ResourceLinksClientListAtSubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listAtSubscriptionCreateRequest(ctx, options)
+func (client *ResourceLinksClient) ListAtSubscription(options *ResourceLinksClientListAtSubscriptionOptions) *runtime.Pager[ResourceLinksClientListAtSubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ResourceLinksClientListAtSubscriptionResponse]{
+		More: func(page ResourceLinksClientListAtSubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ResourceLinksClientListAtSubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ResourceLinkResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ResourceLinksClientListAtSubscriptionResponse) (ResourceLinksClientListAtSubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAtSubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ResourceLinksClientListAtSubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ResourceLinksClientListAtSubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ResourceLinksClientListAtSubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAtSubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listAtSubscriptionCreateRequest creates the ListAtSubscription request.
@@ -261,7 +298,7 @@ func (client *ResourceLinksClient) listAtSubscriptionCreateRequest(ctx context.C
 
 // listAtSubscriptionHandleResponse handles the ListAtSubscription response.
 func (client *ResourceLinksClient) listAtSubscriptionHandleResponse(resp *http.Response) (ResourceLinksClientListAtSubscriptionResponse, error) {
-	result := ResourceLinksClientListAtSubscriptionResponse{RawResponse: resp}
+	result := ResourceLinksClientListAtSubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceLinkResult); err != nil {
 		return ResourceLinksClientListAtSubscriptionResponse{}, err
 	}

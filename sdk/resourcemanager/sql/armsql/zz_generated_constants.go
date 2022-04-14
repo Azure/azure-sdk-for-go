@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armsql
 
 const (
 	moduleName    = "armsql"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 type AdministratorName string
@@ -26,11 +26,6 @@ func PossibleAdministratorNameValues() []AdministratorName {
 	}
 }
 
-// ToPtr returns a *AdministratorName pointing to the current value.
-func (c AdministratorName) ToPtr() *AdministratorName {
-	return &c
-}
-
 // AdministratorType - Type of the sever administrator.
 type AdministratorType string
 
@@ -43,11 +38,6 @@ func PossibleAdministratorTypeValues() []AdministratorType {
 	return []AdministratorType{
 		AdministratorTypeActiveDirectory,
 	}
-}
-
-// ToPtr returns a *AdministratorType pointing to the current value.
-func (c AdministratorType) ToPtr() *AdministratorType {
-	return &c
 }
 
 // AdvisorStatus - Gets the status of availability of this advisor to customers. Possible values are 'GA', 'PublicPreview',
@@ -71,11 +61,6 @@ func PossibleAdvisorStatusValues() []AdvisorStatus {
 	}
 }
 
-// ToPtr returns a *AdvisorStatus pointing to the current value.
-func (c AdvisorStatus) ToPtr() *AdvisorStatus {
-	return &c
-}
-
 type AggregationFunctionType string
 
 const (
@@ -97,11 +82,6 @@ func PossibleAggregationFunctionTypeValues() []AggregationFunctionType {
 	}
 }
 
-// ToPtr returns a *AggregationFunctionType pointing to the current value.
-func (c AggregationFunctionType) ToPtr() *AggregationFunctionType {
-	return &c
-}
-
 type AuthenticationName string
 
 const (
@@ -113,11 +93,6 @@ func PossibleAuthenticationNameValues() []AuthenticationName {
 	return []AuthenticationName{
 		AuthenticationNameDefault,
 	}
-}
-
-// ToPtr returns a *AuthenticationName pointing to the current value.
-func (c AuthenticationName) ToPtr() *AuthenticationName {
-	return &c
 }
 
 // AutoExecuteStatus - Gets the auto-execute status (whether to let the system execute the recommendations) of this advisor.
@@ -137,11 +112,6 @@ func PossibleAutoExecuteStatusValues() []AutoExecuteStatus {
 		AutoExecuteStatusDisabled,
 		AutoExecuteStatusDefault,
 	}
-}
-
-// ToPtr returns a *AutoExecuteStatus pointing to the current value.
-func (c AutoExecuteStatus) ToPtr() *AutoExecuteStatus {
-	return &c
 }
 
 // AutoExecuteStatusInheritedFrom - Gets the resource from which current value of auto-execute status is inherited. Auto-execute
@@ -166,11 +136,6 @@ func PossibleAutoExecuteStatusInheritedFromValues() []AutoExecuteStatusInherited
 		AutoExecuteStatusInheritedFromElasticPool,
 		AutoExecuteStatusInheritedFromDatabase,
 	}
-}
-
-// ToPtr returns a *AutoExecuteStatusInheritedFrom pointing to the current value.
-func (c AutoExecuteStatusInheritedFrom) ToPtr() *AutoExecuteStatusInheritedFrom {
-	return &c
 }
 
 // AutomaticTuningDisabledReason - Reason description if desired and actual state are different.
@@ -199,11 +164,6 @@ func PossibleAutomaticTuningDisabledReasonValues() []AutomaticTuningDisabledReas
 	}
 }
 
-// ToPtr returns a *AutomaticTuningDisabledReason pointing to the current value.
-func (c AutomaticTuningDisabledReason) ToPtr() *AutomaticTuningDisabledReason {
-	return &c
-}
-
 // AutomaticTuningMode - Automatic tuning desired state.
 type AutomaticTuningMode string
 
@@ -224,11 +184,6 @@ func PossibleAutomaticTuningModeValues() []AutomaticTuningMode {
 	}
 }
 
-// ToPtr returns a *AutomaticTuningMode pointing to the current value.
-func (c AutomaticTuningMode) ToPtr() *AutomaticTuningMode {
-	return &c
-}
-
 // AutomaticTuningOptionModeActual - Automatic tuning option actual state.
 type AutomaticTuningOptionModeActual string
 
@@ -243,11 +198,6 @@ func PossibleAutomaticTuningOptionModeActualValues() []AutomaticTuningOptionMode
 		AutomaticTuningOptionModeActualOff,
 		AutomaticTuningOptionModeActualOn,
 	}
-}
-
-// ToPtr returns a *AutomaticTuningOptionModeActual pointing to the current value.
-func (c AutomaticTuningOptionModeActual) ToPtr() *AutomaticTuningOptionModeActual {
-	return &c
 }
 
 // AutomaticTuningOptionModeDesired - Automatic tuning option desired state.
@@ -268,11 +218,6 @@ func PossibleAutomaticTuningOptionModeDesiredValues() []AutomaticTuningOptionMod
 	}
 }
 
-// ToPtr returns a *AutomaticTuningOptionModeDesired pointing to the current value.
-func (c AutomaticTuningOptionModeDesired) ToPtr() *AutomaticTuningOptionModeDesired {
-	return &c
-}
-
 // AutomaticTuningServerMode - Automatic tuning desired state.
 type AutomaticTuningServerMode string
 
@@ -291,11 +236,6 @@ func PossibleAutomaticTuningServerModeValues() []AutomaticTuningServerMode {
 	}
 }
 
-// ToPtr returns a *AutomaticTuningServerMode pointing to the current value.
-func (c AutomaticTuningServerMode) ToPtr() *AutomaticTuningServerMode {
-	return &c
-}
-
 // AutomaticTuningServerReason - Reason description if desired and actual state are different.
 type AutomaticTuningServerReason string
 
@@ -312,11 +252,6 @@ func PossibleAutomaticTuningServerReasonValues() []AutomaticTuningServerReason {
 		AutomaticTuningServerReasonDisabled,
 		AutomaticTuningServerReasonAutoConfigured,
 	}
-}
-
-// ToPtr returns a *AutomaticTuningServerReason pointing to the current value.
-func (c AutomaticTuningServerReason) ToPtr() *AutomaticTuningServerReason {
-	return &c
 }
 
 // BackupStorageRedundancy - The storage account type used to store backups for this database.
@@ -339,11 +274,6 @@ func PossibleBackupStorageRedundancyValues() []BackupStorageRedundancy {
 	}
 }
 
-// ToPtr returns a *BackupStorageRedundancy pointing to the current value.
-func (c BackupStorageRedundancy) ToPtr() *BackupStorageRedundancy {
-	return &c
-}
-
 // BlobAuditingPolicyState - Specifies the state of the audit. If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled
 // are required.
 type BlobAuditingPolicyState string
@@ -359,11 +289,6 @@ func PossibleBlobAuditingPolicyStateValues() []BlobAuditingPolicyState {
 		BlobAuditingPolicyStateEnabled,
 		BlobAuditingPolicyStateDisabled,
 	}
-}
-
-// ToPtr returns a *BlobAuditingPolicyState pointing to the current value.
-func (c BlobAuditingPolicyState) ToPtr() *BlobAuditingPolicyState {
-	return &c
 }
 
 type CapabilityGroup string
@@ -387,11 +312,6 @@ func PossibleCapabilityGroupValues() []CapabilityGroup {
 	}
 }
 
-// ToPtr returns a *CapabilityGroup pointing to the current value.
-func (c CapabilityGroup) ToPtr() *CapabilityGroup {
-	return &c
-}
-
 // CapabilityStatus - The status of the capability.
 type CapabilityStatus string
 
@@ -412,11 +332,6 @@ func PossibleCapabilityStatusValues() []CapabilityStatus {
 	}
 }
 
-// ToPtr returns a *CapabilityStatus pointing to the current value.
-func (c CapabilityStatus) ToPtr() *CapabilityStatus {
-	return &c
-}
-
 // CatalogCollationType - Collation of the metadata catalog.
 type CatalogCollationType string
 
@@ -431,11 +346,6 @@ func PossibleCatalogCollationTypeValues() []CatalogCollationType {
 		CatalogCollationTypeDATABASEDEFAULT,
 		CatalogCollationTypeSQLLatin1GeneralCP1CIAS,
 	}
-}
-
-// ToPtr returns a *CatalogCollationType pointing to the current value.
-func (c CatalogCollationType) ToPtr() *CatalogCollationType {
-	return &c
 }
 
 // CheckNameAvailabilityReason - The reason code explaining why the name is unavailable. Will be undefined if the name is
@@ -453,11 +363,6 @@ func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
 		CheckNameAvailabilityReasonInvalid,
 		CheckNameAvailabilityReasonAlreadyExists,
 	}
-}
-
-// ToPtr returns a *CheckNameAvailabilityReason pointing to the current value.
-func (c CheckNameAvailabilityReason) ToPtr() *CheckNameAvailabilityReason {
-	return &c
 }
 
 // ColumnDataType - The column data type.
@@ -540,11 +445,6 @@ func PossibleColumnDataTypeValues() []ColumnDataType {
 	}
 }
 
-// ToPtr returns a *ColumnDataType pointing to the current value.
-func (c ColumnDataType) ToPtr() *ColumnDataType {
-	return &c
-}
-
 type ConnectionPolicyName string
 
 const (
@@ -556,11 +456,6 @@ func PossibleConnectionPolicyNameValues() []ConnectionPolicyName {
 	return []ConnectionPolicyName{
 		ConnectionPolicyNameDefault,
 	}
-}
-
-// ToPtr returns a *ConnectionPolicyName pointing to the current value.
-func (c ConnectionPolicyName) ToPtr() *ConnectionPolicyName {
-	return &c
 }
 
 // CreateMode - Specifies the mode of database creation.
@@ -613,11 +508,6 @@ func PossibleCreateModeValues() []CreateMode {
 	}
 }
 
-// ToPtr returns a *CreateMode pointing to the current value.
-func (c CreateMode) ToPtr() *CreateMode {
-	return &c
-}
-
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -638,11 +528,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // DNSRefreshConfigurationPropertiesStatus - The status of the DNS refresh operation.
 type DNSRefreshConfigurationPropertiesStatus string
 
@@ -657,11 +542,6 @@ func PossibleDNSRefreshConfigurationPropertiesStatusValues() []DNSRefreshConfigu
 		DNSRefreshConfigurationPropertiesStatusFailed,
 		DNSRefreshConfigurationPropertiesStatusSucceeded,
 	}
-}
-
-// ToPtr returns a *DNSRefreshConfigurationPropertiesStatus pointing to the current value.
-func (c DNSRefreshConfigurationPropertiesStatus) ToPtr() *DNSRefreshConfigurationPropertiesStatus {
-	return &c
 }
 
 // DataMaskingFunction - The masking function that is used for the data masking rule.
@@ -688,11 +568,6 @@ func PossibleDataMaskingFunctionValues() []DataMaskingFunction {
 	}
 }
 
-// ToPtr returns a *DataMaskingFunction pointing to the current value.
-func (c DataMaskingFunction) ToPtr() *DataMaskingFunction {
-	return &c
-}
-
 // DataMaskingRuleState - The rule state. Used to delete a rule. To delete an existing rule, specify the schemaName, tableName,
 // columnName, maskingFunction, and specify ruleState as disabled. However, if the rule doesn't
 // already exist, the rule will be created with ruleState set to enabled, regardless of the provided value of ruleState.
@@ -711,11 +586,6 @@ func PossibleDataMaskingRuleStateValues() []DataMaskingRuleState {
 	}
 }
 
-// ToPtr returns a *DataMaskingRuleState pointing to the current value.
-func (c DataMaskingRuleState) ToPtr() *DataMaskingRuleState {
-	return &c
-}
-
 // DataMaskingState - The state of the data masking policy.
 type DataMaskingState string
 
@@ -732,11 +602,6 @@ func PossibleDataMaskingStateValues() []DataMaskingState {
 	}
 }
 
-// ToPtr returns a *DataMaskingState pointing to the current value.
-func (c DataMaskingState) ToPtr() *DataMaskingState {
-	return &c
-}
-
 type DataWarehouseUserActivityName string
 
 const (
@@ -748,11 +613,6 @@ func PossibleDataWarehouseUserActivityNameValues() []DataWarehouseUserActivityNa
 	return []DataWarehouseUserActivityName{
 		DataWarehouseUserActivityNameCurrent,
 	}
-}
-
-// ToPtr returns a *DataWarehouseUserActivityName pointing to the current value.
-func (c DataWarehouseUserActivityName) ToPtr() *DataWarehouseUserActivityName {
-	return &c
 }
 
 // DatabaseIdentityType - The identity type
@@ -769,11 +629,6 @@ func PossibleDatabaseIdentityTypeValues() []DatabaseIdentityType {
 		DatabaseIdentityTypeNone,
 		DatabaseIdentityTypeUserAssigned,
 	}
-}
-
-// ToPtr returns a *DatabaseIdentityType pointing to the current value.
-func (c DatabaseIdentityType) ToPtr() *DatabaseIdentityType {
-	return &c
 }
 
 // DatabaseLicenseType - The license type to apply for this database. LicenseIncluded if you need a license, or BasePrice
@@ -793,13 +648,9 @@ func PossibleDatabaseLicenseTypeValues() []DatabaseLicenseType {
 	}
 }
 
-// ToPtr returns a *DatabaseLicenseType pointing to the current value.
-func (c DatabaseLicenseType) ToPtr() *DatabaseLicenseType {
-	return &c
-}
-
 // DatabaseReadScale - The state of read-only routing. If enabled, connections that have application intent set to readonly
-// in their connection string may be routed to a readonly secondary replica in the same region.
+// in their connection string may be routed to a readonly secondary replica in the same region. Not
+// applicable to a Hyperscale database within an elastic pool.
 type DatabaseReadScale string
 
 const (
@@ -813,11 +664,6 @@ func PossibleDatabaseReadScaleValues() []DatabaseReadScale {
 		DatabaseReadScaleDisabled,
 		DatabaseReadScaleEnabled,
 	}
-}
-
-// ToPtr returns a *DatabaseReadScale pointing to the current value.
-func (c DatabaseReadScale) ToPtr() *DatabaseReadScale {
-	return &c
 }
 
 type DatabaseState string
@@ -835,11 +681,6 @@ func PossibleDatabaseStateValues() []DatabaseState {
 		DatabaseStateDeleted,
 		DatabaseStateLive,
 	}
-}
-
-// ToPtr returns a *DatabaseState pointing to the current value.
-func (c DatabaseState) ToPtr() *DatabaseState {
-	return &c
 }
 
 // DatabaseStatus - The status of the database.
@@ -902,11 +743,6 @@ func PossibleDatabaseStatusValues() []DatabaseStatus {
 	}
 }
 
-// ToPtr returns a *DatabaseStatus pointing to the current value.
-func (c DatabaseStatus) ToPtr() *DatabaseStatus {
-	return &c
-}
-
 // DayOfWeek - Day of maintenance window.
 type DayOfWeek string
 
@@ -933,11 +769,6 @@ func PossibleDayOfWeekValues() []DayOfWeek {
 	}
 }
 
-// ToPtr returns a *DayOfWeek pointing to the current value.
-func (c DayOfWeek) ToPtr() *DayOfWeek {
-	return &c
-}
-
 // DiffBackupIntervalInHours - The differential backup interval in hours. This is how many interval hours between each differential
 // backup will be supported. This is only applicable to live databases but not dropped databases.
 type DiffBackupIntervalInHours int32
@@ -955,11 +786,6 @@ func PossibleDiffBackupIntervalInHoursValues() []DiffBackupIntervalInHours {
 	}
 }
 
-// ToPtr returns a *DiffBackupIntervalInHours pointing to the current value.
-func (c DiffBackupIntervalInHours) ToPtr() *DiffBackupIntervalInHours {
-	return &c
-}
-
 // ElasticPoolLicenseType - The license type to apply for this elastic pool.
 type ElasticPoolLicenseType string
 
@@ -974,11 +800,6 @@ func PossibleElasticPoolLicenseTypeValues() []ElasticPoolLicenseType {
 		ElasticPoolLicenseTypeBasePrice,
 		ElasticPoolLicenseTypeLicenseIncluded,
 	}
-}
-
-// ToPtr returns a *ElasticPoolLicenseType pointing to the current value.
-func (c ElasticPoolLicenseType) ToPtr() *ElasticPoolLicenseType {
-	return &c
 }
 
 // ElasticPoolState - The state of the elastic pool.
@@ -999,11 +820,6 @@ func PossibleElasticPoolStateValues() []ElasticPoolState {
 	}
 }
 
-// ToPtr returns a *ElasticPoolState pointing to the current value.
-func (c ElasticPoolState) ToPtr() *ElasticPoolState {
-	return &c
-}
-
 type EncryptionProtectorName string
 
 const (
@@ -1015,11 +831,6 @@ func PossibleEncryptionProtectorNameValues() []EncryptionProtectorName {
 	return []EncryptionProtectorName{
 		EncryptionProtectorNameCurrent,
 	}
-}
-
-// ToPtr returns a *EncryptionProtectorName pointing to the current value.
-func (c EncryptionProtectorName) ToPtr() *EncryptionProtectorName {
-	return &c
 }
 
 // FailoverGroupReplicationRole - Local replication role of the failover group instance.
@@ -1038,11 +849,6 @@ func PossibleFailoverGroupReplicationRoleValues() []FailoverGroupReplicationRole
 	}
 }
 
-// ToPtr returns a *FailoverGroupReplicationRole pointing to the current value.
-func (c FailoverGroupReplicationRole) ToPtr() *FailoverGroupReplicationRole {
-	return &c
-}
-
 type GeoBackupPolicyName string
 
 const (
@@ -1054,11 +860,6 @@ func PossibleGeoBackupPolicyNameValues() []GeoBackupPolicyName {
 	return []GeoBackupPolicyName{
 		GeoBackupPolicyNameDefault,
 	}
-}
-
-// ToPtr returns a *GeoBackupPolicyName pointing to the current value.
-func (c GeoBackupPolicyName) ToPtr() *GeoBackupPolicyName {
-	return &c
 }
 
 // GeoBackupPolicyState - The state of the geo backup policy.
@@ -1075,11 +876,6 @@ func PossibleGeoBackupPolicyStateValues() []GeoBackupPolicyState {
 		GeoBackupPolicyStateDisabled,
 		GeoBackupPolicyStateEnabled,
 	}
-}
-
-// ToPtr returns a *GeoBackupPolicyState pointing to the current value.
-func (c GeoBackupPolicyState) ToPtr() *GeoBackupPolicyState {
-	return &c
 }
 
 // IdentityType - The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active
@@ -1103,11 +899,6 @@ func PossibleIdentityTypeValues() []IdentityType {
 	}
 }
 
-// ToPtr returns a *IdentityType pointing to the current value.
-func (c IdentityType) ToPtr() *IdentityType {
-	return &c
-}
-
 // ImplementationMethod - Gets the method in which this recommended action can be manually implemented. e.g., TSql, AzurePowerShell.
 type ImplementationMethod string
 
@@ -1124,11 +915,6 @@ func PossibleImplementationMethodValues() []ImplementationMethod {
 	}
 }
 
-// ToPtr returns a *ImplementationMethod pointing to the current value.
-func (c ImplementationMethod) ToPtr() *ImplementationMethod {
-	return &c
-}
-
 // InstanceFailoverGroupReplicationRole - Local replication role of the failover group instance.
 type InstanceFailoverGroupReplicationRole string
 
@@ -1143,11 +929,6 @@ func PossibleInstanceFailoverGroupReplicationRoleValues() []InstanceFailoverGrou
 		InstanceFailoverGroupReplicationRolePrimary,
 		InstanceFailoverGroupReplicationRoleSecondary,
 	}
-}
-
-// ToPtr returns a *InstanceFailoverGroupReplicationRole pointing to the current value.
-func (c InstanceFailoverGroupReplicationRole) ToPtr() *InstanceFailoverGroupReplicationRole {
-	return &c
 }
 
 // InstancePoolLicenseType - The license type. Possible values are 'LicenseIncluded' (price for SQL license is included) and
@@ -1167,11 +948,6 @@ func PossibleInstancePoolLicenseTypeValues() []InstancePoolLicenseType {
 	}
 }
 
-// ToPtr returns a *InstancePoolLicenseType pointing to the current value.
-func (c InstancePoolLicenseType) ToPtr() *InstancePoolLicenseType {
-	return &c
-}
-
 // IsRetryable - Gets whether the error could be ignored and recommended action could be retried. Possible values are: Yes/No
 type IsRetryable string
 
@@ -1186,11 +962,6 @@ func PossibleIsRetryableValues() []IsRetryable {
 		IsRetryableYes,
 		IsRetryableNo,
 	}
-}
-
-// ToPtr returns a *IsRetryable pointing to the current value.
-func (c IsRetryable) ToPtr() *IsRetryable {
-	return &c
 }
 
 // JobAgentState - The state of the job agent.
@@ -1213,11 +984,6 @@ func PossibleJobAgentStateValues() []JobAgentState {
 		JobAgentStateReady,
 		JobAgentStateUpdating,
 	}
-}
-
-// ToPtr returns a *JobAgentState pointing to the current value.
-func (c JobAgentState) ToPtr() *JobAgentState {
-	return &c
 }
 
 // JobExecutionLifecycle - The detailed state of the job execution.
@@ -1252,11 +1018,6 @@ func PossibleJobExecutionLifecycleValues() []JobExecutionLifecycle {
 	}
 }
 
-// ToPtr returns a *JobExecutionLifecycle pointing to the current value.
-func (c JobExecutionLifecycle) ToPtr() *JobExecutionLifecycle {
-	return &c
-}
-
 // JobScheduleType - Schedule interval type
 type JobScheduleType string
 
@@ -1273,11 +1034,6 @@ func PossibleJobScheduleTypeValues() []JobScheduleType {
 	}
 }
 
-// ToPtr returns a *JobScheduleType pointing to the current value.
-func (c JobScheduleType) ToPtr() *JobScheduleType {
-	return &c
-}
-
 // JobStepActionSource - The source of the action to execute.
 type JobStepActionSource string
 
@@ -1290,11 +1046,6 @@ func PossibleJobStepActionSourceValues() []JobStepActionSource {
 	return []JobStepActionSource{
 		JobStepActionSourceInline,
 	}
-}
-
-// ToPtr returns a *JobStepActionSource pointing to the current value.
-func (c JobStepActionSource) ToPtr() *JobStepActionSource {
-	return &c
 }
 
 // JobStepActionType - Type of action being executed by the job step.
@@ -1311,11 +1062,6 @@ func PossibleJobStepActionTypeValues() []JobStepActionType {
 	}
 }
 
-// ToPtr returns a *JobStepActionType pointing to the current value.
-func (c JobStepActionType) ToPtr() *JobStepActionType {
-	return &c
-}
-
 // JobStepOutputType - The output destination type.
 type JobStepOutputType string
 
@@ -1328,11 +1074,6 @@ func PossibleJobStepOutputTypeValues() []JobStepOutputType {
 	return []JobStepOutputType{
 		JobStepOutputTypeSQLDatabase,
 	}
-}
-
-// ToPtr returns a *JobStepOutputType pointing to the current value.
-func (c JobStepOutputType) ToPtr() *JobStepOutputType {
-	return &c
 }
 
 // JobTargetGroupMembershipType - Whether the target is included or excluded from the group.
@@ -1349,11 +1090,6 @@ func PossibleJobTargetGroupMembershipTypeValues() []JobTargetGroupMembershipType
 		JobTargetGroupMembershipTypeInclude,
 		JobTargetGroupMembershipTypeExclude,
 	}
-}
-
-// ToPtr returns a *JobTargetGroupMembershipType pointing to the current value.
-func (c JobTargetGroupMembershipType) ToPtr() *JobTargetGroupMembershipType {
-	return &c
 }
 
 // JobTargetType - The type of the target.
@@ -1378,11 +1114,6 @@ func PossibleJobTargetTypeValues() []JobTargetType {
 	}
 }
 
-// ToPtr returns a *JobTargetType pointing to the current value.
-func (c JobTargetType) ToPtr() *JobTargetType {
-	return &c
-}
-
 type LedgerDigestUploadsName string
 
 const (
@@ -1394,11 +1125,6 @@ func PossibleLedgerDigestUploadsNameValues() []LedgerDigestUploadsName {
 	return []LedgerDigestUploadsName{
 		LedgerDigestUploadsNameCurrent,
 	}
-}
-
-// ToPtr returns a *LedgerDigestUploadsName pointing to the current value.
-func (c LedgerDigestUploadsName) ToPtr() *LedgerDigestUploadsName {
-	return &c
 }
 
 // LedgerDigestUploadsState - Specifies the state of ledger digest upload.
@@ -1415,11 +1141,6 @@ func PossibleLedgerDigestUploadsStateValues() []LedgerDigestUploadsState {
 		LedgerDigestUploadsStateEnabled,
 		LedgerDigestUploadsStateDisabled,
 	}
-}
-
-// ToPtr returns a *LedgerDigestUploadsState pointing to the current value.
-func (c LedgerDigestUploadsState) ToPtr() *LedgerDigestUploadsState {
-	return &c
 }
 
 // LogSizeUnit - The units that the limit is expressed in.
@@ -1444,11 +1165,6 @@ func PossibleLogSizeUnitValues() []LogSizeUnit {
 	}
 }
 
-// ToPtr returns a *LogSizeUnit pointing to the current value.
-func (c LogSizeUnit) ToPtr() *LogSizeUnit {
-	return &c
-}
-
 type LongTermRetentionPolicyName string
 
 const (
@@ -1460,11 +1176,6 @@ func PossibleLongTermRetentionPolicyNameValues() []LongTermRetentionPolicyName {
 	return []LongTermRetentionPolicyName{
 		LongTermRetentionPolicyNameDefault,
 	}
-}
-
-// ToPtr returns a *LongTermRetentionPolicyName pointing to the current value.
-func (c LongTermRetentionPolicyName) ToPtr() *LongTermRetentionPolicyName {
-	return &c
 }
 
 // ManagedDatabaseCreateMode - Managed database create mode. PointInTimeRestore: Create a database by restoring a point in
@@ -1495,11 +1206,6 @@ func PossibleManagedDatabaseCreateModeValues() []ManagedDatabaseCreateMode {
 	}
 }
 
-// ToPtr returns a *ManagedDatabaseCreateMode pointing to the current value.
-func (c ManagedDatabaseCreateMode) ToPtr() *ManagedDatabaseCreateMode {
-	return &c
-}
-
 // ManagedDatabaseStatus - Status of the database.
 type ManagedDatabaseStatus string
 
@@ -1526,11 +1232,6 @@ func PossibleManagedDatabaseStatusValues() []ManagedDatabaseStatus {
 	}
 }
 
-// ToPtr returns a *ManagedDatabaseStatus pointing to the current value.
-func (c ManagedDatabaseStatus) ToPtr() *ManagedDatabaseStatus {
-	return &c
-}
-
 // ManagedInstanceAdministratorType - Type of the managed instance administrator.
 type ManagedInstanceAdministratorType string
 
@@ -1543,11 +1244,6 @@ func PossibleManagedInstanceAdministratorTypeValues() []ManagedInstanceAdministr
 	return []ManagedInstanceAdministratorType{
 		ManagedInstanceAdministratorTypeActiveDirectory,
 	}
-}
-
-// ToPtr returns a *ManagedInstanceAdministratorType pointing to the current value.
-func (c ManagedInstanceAdministratorType) ToPtr() *ManagedInstanceAdministratorType {
-	return &c
 }
 
 // ManagedInstanceLicenseType - The license type. Possible values are 'LicenseIncluded' (regular price inclusive of a new
@@ -1567,11 +1263,6 @@ func PossibleManagedInstanceLicenseTypeValues() []ManagedInstanceLicenseType {
 	}
 }
 
-// ToPtr returns a *ManagedInstanceLicenseType pointing to the current value.
-func (c ManagedInstanceLicenseType) ToPtr() *ManagedInstanceLicenseType {
-	return &c
-}
-
 type ManagedInstanceLongTermRetentionPolicyName string
 
 const (
@@ -1583,11 +1274,6 @@ func PossibleManagedInstanceLongTermRetentionPolicyNameValues() []ManagedInstanc
 	return []ManagedInstanceLongTermRetentionPolicyName{
 		ManagedInstanceLongTermRetentionPolicyNameDefault,
 	}
-}
-
-// ToPtr returns a *ManagedInstanceLongTermRetentionPolicyName pointing to the current value.
-func (c ManagedInstanceLongTermRetentionPolicyName) ToPtr() *ManagedInstanceLongTermRetentionPolicyName {
-	return &c
 }
 
 type ManagedInstancePropertiesProvisioningState string
@@ -1631,11 +1317,6 @@ func PossibleManagedInstancePropertiesProvisioningStateValues() []ManagedInstanc
 	}
 }
 
-// ToPtr returns a *ManagedInstancePropertiesProvisioningState pointing to the current value.
-func (c ManagedInstancePropertiesProvisioningState) ToPtr() *ManagedInstancePropertiesProvisioningState {
-	return &c
-}
-
 // ManagedInstanceProxyOverride - Connection type used for connecting to the instance.
 type ManagedInstanceProxyOverride string
 
@@ -1652,11 +1333,6 @@ func PossibleManagedInstanceProxyOverrideValues() []ManagedInstanceProxyOverride
 		ManagedInstanceProxyOverrideProxy,
 		ManagedInstanceProxyOverrideRedirect,
 	}
-}
-
-// ToPtr returns a *ManagedInstanceProxyOverride pointing to the current value.
-func (c ManagedInstanceProxyOverride) ToPtr() *ManagedInstanceProxyOverride {
-	return &c
 }
 
 // ManagedServerCreateMode - Specifies the mode of database creation.
@@ -1678,11 +1354,6 @@ func PossibleManagedServerCreateModeValues() []ManagedServerCreateMode {
 	}
 }
 
-// ToPtr returns a *ManagedServerCreateMode pointing to the current value.
-func (c ManagedServerCreateMode) ToPtr() *ManagedServerCreateMode {
-	return &c
-}
-
 type ManagedShortTermRetentionPolicyName string
 
 const (
@@ -1694,11 +1365,6 @@ func PossibleManagedShortTermRetentionPolicyNameValues() []ManagedShortTermReten
 	return []ManagedShortTermRetentionPolicyName{
 		ManagedShortTermRetentionPolicyNameDefault,
 	}
-}
-
-// ToPtr returns a *ManagedShortTermRetentionPolicyName pointing to the current value.
-func (c ManagedShortTermRetentionPolicyName) ToPtr() *ManagedShortTermRetentionPolicyName {
-	return &c
 }
 
 // ManagementOperationState - The operation state.
@@ -1725,11 +1391,6 @@ func PossibleManagementOperationStateValues() []ManagementOperationState {
 	}
 }
 
-// ToPtr returns a *ManagementOperationState pointing to the current value.
-func (c ManagementOperationState) ToPtr() *ManagementOperationState {
-	return &c
-}
-
 // MaxSizeUnit - The units that the limit is expressed in.
 type MaxSizeUnit string
 
@@ -1748,11 +1409,6 @@ func PossibleMaxSizeUnitValues() []MaxSizeUnit {
 		MaxSizeUnitPetabytes,
 		MaxSizeUnitTerabytes,
 	}
-}
-
-// ToPtr returns a *MaxSizeUnit pointing to the current value.
-func (c MaxSizeUnit) ToPtr() *MaxSizeUnit {
-	return &c
 }
 
 type MetricType string
@@ -1776,11 +1432,6 @@ func PossibleMetricTypeValues() []MetricType {
 	}
 }
 
-// ToPtr returns a *MetricType pointing to the current value.
-func (c MetricType) ToPtr() *MetricType {
-	return &c
-}
-
 // OperationMode - Operation Mode.
 type OperationMode string
 
@@ -1793,11 +1444,6 @@ func PossibleOperationModeValues() []OperationMode {
 	return []OperationMode{
 		OperationModePolybaseImport,
 	}
-}
-
-// ToPtr returns a *OperationMode pointing to the current value.
-func (c OperationMode) ToPtr() *OperationMode {
-	return &c
 }
 
 // OperationOrigin - The intended executor of the operation.
@@ -1816,11 +1462,6 @@ func PossibleOperationOriginValues() []OperationOrigin {
 	}
 }
 
-// ToPtr returns a *OperationOrigin pointing to the current value.
-func (c OperationOrigin) ToPtr() *OperationOrigin {
-	return &c
-}
-
 // PauseDelayTimeUnit - Unit of time that delay is expressed in
 type PauseDelayTimeUnit string
 
@@ -1833,11 +1474,6 @@ func PossiblePauseDelayTimeUnitValues() []PauseDelayTimeUnit {
 	return []PauseDelayTimeUnit{
 		PauseDelayTimeUnitMinutes,
 	}
-}
-
-// ToPtr returns a *PauseDelayTimeUnit pointing to the current value.
-func (c PauseDelayTimeUnit) ToPtr() *PauseDelayTimeUnit {
-	return &c
 }
 
 // PerformanceLevelUnit - Unit type used to measure performance level.
@@ -1854,11 +1490,6 @@ func PossiblePerformanceLevelUnitValues() []PerformanceLevelUnit {
 		PerformanceLevelUnitDTU,
 		PerformanceLevelUnitVCores,
 	}
-}
-
-// ToPtr returns a *PerformanceLevelUnit pointing to the current value.
-func (c PerformanceLevelUnit) ToPtr() *PerformanceLevelUnit {
-	return &c
 }
 
 // PrimaryAggregationType - The primary aggregation type defining how metric values are displayed.
@@ -1885,11 +1516,6 @@ func PossiblePrimaryAggregationTypeValues() []PrimaryAggregationType {
 	}
 }
 
-// ToPtr returns a *PrimaryAggregationType pointing to the current value.
-func (c PrimaryAggregationType) ToPtr() *PrimaryAggregationType {
-	return &c
-}
-
 // PrincipalType - Principal Type of the sever administrator.
 type PrincipalType string
 
@@ -1906,11 +1532,6 @@ func PossiblePrincipalTypeValues() []PrincipalType {
 		PrincipalTypeGroup,
 		PrincipalTypeUser,
 	}
-}
-
-// ToPtr returns a *PrincipalType pointing to the current value.
-func (c PrincipalType) ToPtr() *PrincipalType {
-	return &c
 }
 
 // PrivateEndpointProvisioningState - State of the private endpoint connection.
@@ -1935,11 +1556,6 @@ func PossiblePrivateEndpointProvisioningStateValues() []PrivateEndpointProvision
 	}
 }
 
-// ToPtr returns a *PrivateEndpointProvisioningState pointing to the current value.
-func (c PrivateEndpointProvisioningState) ToPtr() *PrivateEndpointProvisioningState {
-	return &c
-}
-
 // PrivateLinkServiceConnectionStateActionsRequire - The actions required for private link service connection.
 type PrivateLinkServiceConnectionStateActionsRequire string
 
@@ -1952,11 +1568,6 @@ func PossiblePrivateLinkServiceConnectionStateActionsRequireValues() []PrivateLi
 	return []PrivateLinkServiceConnectionStateActionsRequire{
 		PrivateLinkServiceConnectionStateActionsRequireNone,
 	}
-}
-
-// ToPtr returns a *PrivateLinkServiceConnectionStateActionsRequire pointing to the current value.
-func (c PrivateLinkServiceConnectionStateActionsRequire) ToPtr() *PrivateLinkServiceConnectionStateActionsRequire {
-	return &c
 }
 
 // PrivateLinkServiceConnectionStateStatus - The private link service connection status.
@@ -1977,11 +1588,6 @@ func PossiblePrivateLinkServiceConnectionStateStatusValues() []PrivateLinkServic
 		PrivateLinkServiceConnectionStateStatusPending,
 		PrivateLinkServiceConnectionStateStatusRejected,
 	}
-}
-
-// ToPtr returns a *PrivateLinkServiceConnectionStateStatus pointing to the current value.
-func (c PrivateLinkServiceConnectionStateStatus) ToPtr() *PrivateLinkServiceConnectionStateStatus {
-	return &c
 }
 
 // ProvisioningState - The ARM provisioning state of the job execution.
@@ -2006,11 +1612,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // QueryMetricUnitType - The unit of the metric.
 type QueryMetricUnitType string
 
@@ -2031,11 +1632,6 @@ func PossibleQueryMetricUnitTypeValues() []QueryMetricUnitType {
 	}
 }
 
-// ToPtr returns a *QueryMetricUnitType pointing to the current value.
-func (c QueryMetricUnitType) ToPtr() *QueryMetricUnitType {
-	return &c
-}
-
 // QueryTimeGrainType - Interval type (length).
 type QueryTimeGrainType string
 
@@ -2050,11 +1646,6 @@ func PossibleQueryTimeGrainTypeValues() []QueryTimeGrainType {
 		QueryTimeGrainTypeP1D,
 		QueryTimeGrainTypePT1H,
 	}
-}
-
-// ToPtr returns a *QueryTimeGrainType pointing to the current value.
-func (c QueryTimeGrainType) ToPtr() *QueryTimeGrainType {
-	return &c
 }
 
 // ReadOnlyEndpointFailoverPolicy - Failover policy of the read-only endpoint for the failover group.
@@ -2073,11 +1664,6 @@ func PossibleReadOnlyEndpointFailoverPolicyValues() []ReadOnlyEndpointFailoverPo
 	}
 }
 
-// ToPtr returns a *ReadOnlyEndpointFailoverPolicy pointing to the current value.
-func (c ReadOnlyEndpointFailoverPolicy) ToPtr() *ReadOnlyEndpointFailoverPolicy {
-	return &c
-}
-
 // ReadWriteEndpointFailoverPolicy - Failover policy of the read-write endpoint for the failover group. If failoverPolicy
 // is Automatic then failoverWithDataLossGracePeriodMinutes is required.
 type ReadWriteEndpointFailoverPolicy string
@@ -2093,11 +1679,6 @@ func PossibleReadWriteEndpointFailoverPolicyValues() []ReadWriteEndpointFailover
 		ReadWriteEndpointFailoverPolicyAutomatic,
 		ReadWriteEndpointFailoverPolicyManual,
 	}
-}
-
-// ToPtr returns a *ReadWriteEndpointFailoverPolicy pointing to the current value.
-func (c ReadWriteEndpointFailoverPolicy) ToPtr() *ReadWriteEndpointFailoverPolicy {
-	return &c
 }
 
 // RecommendedActionCurrentState - Current state the recommended action is in. Some commonly used states are: Active -> recommended
@@ -2148,11 +1729,6 @@ func PossibleRecommendedActionCurrentStateValues() []RecommendedActionCurrentSta
 	}
 }
 
-// ToPtr returns a *RecommendedActionCurrentState pointing to the current value.
-func (c RecommendedActionCurrentState) ToPtr() *RecommendedActionCurrentState {
-	return &c
-}
-
 // RecommendedActionInitiatedBy - Gets if approval for applying this recommended action was given by user/system.
 type RecommendedActionInitiatedBy string
 
@@ -2167,11 +1743,6 @@ func PossibleRecommendedActionInitiatedByValues() []RecommendedActionInitiatedBy
 		RecommendedActionInitiatedByUser,
 		RecommendedActionInitiatedBySystem,
 	}
-}
-
-// ToPtr returns a *RecommendedActionInitiatedBy pointing to the current value.
-func (c RecommendedActionInitiatedBy) ToPtr() *RecommendedActionInitiatedBy {
-	return &c
 }
 
 type RecommendedSensitivityLabelUpdateKind string
@@ -2189,11 +1760,6 @@ func PossibleRecommendedSensitivityLabelUpdateKindValues() []RecommendedSensitiv
 	}
 }
 
-// ToPtr returns a *RecommendedSensitivityLabelUpdateKind pointing to the current value.
-func (c RecommendedSensitivityLabelUpdateKind) ToPtr() *RecommendedSensitivityLabelUpdateKind {
-	return &c
-}
-
 type ReplicaType string
 
 const (
@@ -2207,11 +1773,6 @@ func PossibleReplicaTypeValues() []ReplicaType {
 		ReplicaTypePrimary,
 		ReplicaTypeReadableSecondary,
 	}
-}
-
-// ToPtr returns a *ReplicaType pointing to the current value.
-func (c ReplicaType) ToPtr() *ReplicaType {
-	return &c
 }
 
 // ReplicationLinkType - Link type (GEO, NAMED).
@@ -2230,9 +1791,20 @@ func PossibleReplicationLinkTypeValues() []ReplicationLinkType {
 	}
 }
 
-// ToPtr returns a *ReplicationLinkType pointing to the current value.
-func (c ReplicationLinkType) ToPtr() *ReplicationLinkType {
-	return &c
+// ReplicationMode - The replication mode of a distributed availability group. Parameter will be ignored during link creation.
+type ReplicationMode string
+
+const (
+	ReplicationModeAsync ReplicationMode = "Async"
+	ReplicationModeSync  ReplicationMode = "Sync"
+)
+
+// PossibleReplicationModeValues returns the possible values for the ReplicationMode const type.
+func PossibleReplicationModeValues() []ReplicationMode {
+	return []ReplicationMode{
+		ReplicationModeAsync,
+		ReplicationModeSync,
+	}
 }
 
 // ReplicationRole - Local replication role.
@@ -2257,11 +1829,6 @@ func PossibleReplicationRoleValues() []ReplicationRole {
 	}
 }
 
-// ToPtr returns a *ReplicationRole pointing to the current value.
-func (c ReplicationRole) ToPtr() *ReplicationRole {
-	return &c
-}
-
 // ReplicationState - Replication state (PENDING, SEEDING, CATCHUP, SUSPENDED).
 type ReplicationState string
 
@@ -2282,11 +1849,6 @@ func PossibleReplicationStateValues() []ReplicationState {
 	}
 }
 
-// ToPtr returns a *ReplicationState pointing to the current value.
-func (c ReplicationState) ToPtr() *ReplicationState {
-	return &c
-}
-
 type RestoreDetailsName string
 
 const (
@@ -2298,11 +1860,6 @@ func PossibleRestoreDetailsNameValues() []RestoreDetailsName {
 	return []RestoreDetailsName{
 		RestoreDetailsNameDefault,
 	}
-}
-
-// ToPtr returns a *RestoreDetailsName pointing to the current value.
-func (c RestoreDetailsName) ToPtr() *RestoreDetailsName {
-	return &c
 }
 
 // RestorePointType - The type of restore point
@@ -2321,11 +1878,6 @@ func PossibleRestorePointTypeValues() []RestorePointType {
 	}
 }
 
-// ToPtr returns a *RestorePointType pointing to the current value.
-func (c RestorePointType) ToPtr() *RestorePointType {
-	return &c
-}
-
 // SQLAgentConfigurationPropertiesState - The state of Sql Agent.
 type SQLAgentConfigurationPropertiesState string
 
@@ -2340,11 +1892,6 @@ func PossibleSQLAgentConfigurationPropertiesStateValues() []SQLAgentConfiguratio
 		SQLAgentConfigurationPropertiesStateDisabled,
 		SQLAgentConfigurationPropertiesStateEnabled,
 	}
-}
-
-// ToPtr returns a *SQLAgentConfigurationPropertiesState pointing to the current value.
-func (c SQLAgentConfigurationPropertiesState) ToPtr() *SQLAgentConfigurationPropertiesState {
-	return &c
 }
 
 // SampleName - The name of the sample schema to apply when creating this database.
@@ -2365,11 +1912,6 @@ func PossibleSampleNameValues() []SampleName {
 	}
 }
 
-// ToPtr returns a *SampleName pointing to the current value.
-func (c SampleName) ToPtr() *SampleName {
-	return &c
-}
-
 // SecondaryType - The secondary type of the database if it is a secondary. Valid values are Geo and Named.
 type SecondaryType string
 
@@ -2386,11 +1928,6 @@ func PossibleSecondaryTypeValues() []SecondaryType {
 	}
 }
 
-// ToPtr returns a *SecondaryType pointing to the current value.
-func (c SecondaryType) ToPtr() *SecondaryType {
-	return &c
-}
-
 type SecurityAlertPolicyName string
 
 const (
@@ -2402,11 +1939,6 @@ func PossibleSecurityAlertPolicyNameValues() []SecurityAlertPolicyName {
 	return []SecurityAlertPolicyName{
 		SecurityAlertPolicyNameDefault,
 	}
-}
-
-// ToPtr returns a *SecurityAlertPolicyName pointing to the current value.
-func (c SecurityAlertPolicyName) ToPtr() *SecurityAlertPolicyName {
-	return &c
 }
 
 // SecurityAlertPolicyState - Specifies the state of the policy, whether it is enabled or disabled or a policy has not been
@@ -2428,11 +1960,6 @@ func PossibleSecurityAlertPolicyStateValues() []SecurityAlertPolicyState {
 	}
 }
 
-// ToPtr returns a *SecurityAlertPolicyState pointing to the current value.
-func (c SecurityAlertPolicyState) ToPtr() *SecurityAlertPolicyState {
-	return &c
-}
-
 // SecurityAlertsPolicyState - Specifies the state of the policy, whether it is enabled or disabled or a policy has not been
 // applied yet on the specific database.
 type SecurityAlertsPolicyState string
@@ -2448,11 +1975,6 @@ func PossibleSecurityAlertsPolicyStateValues() []SecurityAlertsPolicyState {
 		SecurityAlertsPolicyStateEnabled,
 		SecurityAlertsPolicyStateDisabled,
 	}
-}
-
-// ToPtr returns a *SecurityAlertsPolicyState pointing to the current value.
-func (c SecurityAlertsPolicyState) ToPtr() *SecurityAlertsPolicyState {
-	return &c
 }
 
 // SecurityEventType - The type of the security event.
@@ -2471,11 +1993,6 @@ func PossibleSecurityEventTypeValues() []SecurityEventType {
 		SecurityEventTypeSQLInjectionVulnerability,
 		SecurityEventTypeSQLInjectionExploit,
 	}
-}
-
-// ToPtr returns a *SecurityEventType pointing to the current value.
-func (c SecurityEventType) ToPtr() *SecurityEventType {
-	return &c
 }
 
 type SensitivityLabelRank string
@@ -2499,11 +2016,6 @@ func PossibleSensitivityLabelRankValues() []SensitivityLabelRank {
 	}
 }
 
-// ToPtr returns a *SensitivityLabelRank pointing to the current value.
-func (c SensitivityLabelRank) ToPtr() *SensitivityLabelRank {
-	return &c
-}
-
 type SensitivityLabelSource string
 
 const (
@@ -2519,11 +2031,6 @@ func PossibleSensitivityLabelSourceValues() []SensitivityLabelSource {
 	}
 }
 
-// ToPtr returns a *SensitivityLabelSource pointing to the current value.
-func (c SensitivityLabelSource) ToPtr() *SensitivityLabelSource {
-	return &c
-}
-
 type SensitivityLabelUpdateKind string
 
 const (
@@ -2537,11 +2044,6 @@ func PossibleSensitivityLabelUpdateKindValues() []SensitivityLabelUpdateKind {
 		SensitivityLabelUpdateKindSet,
 		SensitivityLabelUpdateKindRemove,
 	}
-}
-
-// ToPtr returns a *SensitivityLabelUpdateKind pointing to the current value.
-func (c SensitivityLabelUpdateKind) ToPtr() *SensitivityLabelUpdateKind {
-	return &c
 }
 
 // ServerConnectionType - The server connection type.
@@ -2562,11 +2064,6 @@ func PossibleServerConnectionTypeValues() []ServerConnectionType {
 	}
 }
 
-// ToPtr returns a *ServerConnectionType pointing to the current value.
-func (c ServerConnectionType) ToPtr() *ServerConnectionType {
-	return &c
-}
-
 // ServerKeyType - The encryption protector type like 'ServiceManaged', 'AzureKeyVault'.
 type ServerKeyType string
 
@@ -2581,11 +2078,6 @@ func PossibleServerKeyTypeValues() []ServerKeyType {
 		ServerKeyTypeAzureKeyVault,
 		ServerKeyTypeServiceManaged,
 	}
-}
-
-// ToPtr returns a *ServerKeyType pointing to the current value.
-func (c ServerKeyType) ToPtr() *ServerKeyType {
-	return &c
 }
 
 // ServerNetworkAccessFlag - Whether or not public endpoint access is allowed for this server. Value is optional but if passed
@@ -2605,11 +2097,6 @@ func PossibleServerNetworkAccessFlagValues() []ServerNetworkAccessFlag {
 	}
 }
 
-// ToPtr returns a *ServerNetworkAccessFlag pointing to the current value.
-func (c ServerNetworkAccessFlag) ToPtr() *ServerNetworkAccessFlag {
-	return &c
-}
-
 type ServerTrustGroupPropertiesTrustScopesItem string
 
 const (
@@ -2623,11 +2110,6 @@ func PossibleServerTrustGroupPropertiesTrustScopesItemValues() []ServerTrustGrou
 		ServerTrustGroupPropertiesTrustScopesItemGlobalTransactions,
 		ServerTrustGroupPropertiesTrustScopesItemServiceBroker,
 	}
-}
-
-// ToPtr returns a *ServerTrustGroupPropertiesTrustScopesItem pointing to the current value.
-func (c ServerTrustGroupPropertiesTrustScopesItem) ToPtr() *ServerTrustGroupPropertiesTrustScopesItem {
-	return &c
 }
 
 // ServerWorkspaceFeature - Whether or not existing server has a workspace created and if it allows connection from workspace
@@ -2644,11 +2126,6 @@ func PossibleServerWorkspaceFeatureValues() []ServerWorkspaceFeature {
 		ServerWorkspaceFeatureConnected,
 		ServerWorkspaceFeatureDisconnected,
 	}
-}
-
-// ToPtr returns a *ServerWorkspaceFeature pointing to the current value.
-func (c ServerWorkspaceFeature) ToPtr() *ServerWorkspaceFeature {
-	return &c
 }
 
 // ServiceObjectiveName - The serviceLevelObjective for SLO usage metric.
@@ -2793,11 +2270,6 @@ func PossibleServiceObjectiveNameValues() []ServiceObjectiveName {
 	}
 }
 
-// ToPtr returns a *ServiceObjectiveName pointing to the current value.
-func (c ServiceObjectiveName) ToPtr() *ServiceObjectiveName {
-	return &c
-}
-
 // ServicePrincipalType - Service principal type.
 type ServicePrincipalType string
 
@@ -2814,11 +2286,6 @@ func PossibleServicePrincipalTypeValues() []ServicePrincipalType {
 	}
 }
 
-// ToPtr returns a *ServicePrincipalType pointing to the current value.
-func (c ServicePrincipalType) ToPtr() *ServicePrincipalType {
-	return &c
-}
-
 type ShortTermRetentionPolicyName string
 
 const (
@@ -2830,11 +2297,6 @@ func PossibleShortTermRetentionPolicyNameValues() []ShortTermRetentionPolicyName
 	return []ShortTermRetentionPolicyName{
 		ShortTermRetentionPolicyNameDefault,
 	}
-}
-
-// ToPtr returns a *ShortTermRetentionPolicyName pointing to the current value.
-func (c ShortTermRetentionPolicyName) ToPtr() *ShortTermRetentionPolicyName {
-	return &c
 }
 
 // StorageCapabilityStorageAccountType - The storage account type for the database's backups.
@@ -2855,11 +2317,6 @@ func PossibleStorageCapabilityStorageAccountTypeValues() []StorageCapabilityStor
 	}
 }
 
-// ToPtr returns a *StorageCapabilityStorageAccountType pointing to the current value.
-func (c StorageCapabilityStorageAccountType) ToPtr() *StorageCapabilityStorageAccountType {
-	return &c
-}
-
 // StorageKeyType - Storage key type.
 type StorageKeyType string
 
@@ -2874,11 +2331,6 @@ func PossibleStorageKeyTypeValues() []StorageKeyType {
 		StorageKeyTypeSharedAccessKey,
 		StorageKeyTypeStorageAccessKey,
 	}
-}
-
-// ToPtr returns a *StorageKeyType pointing to the current value.
-func (c StorageKeyType) ToPtr() *StorageKeyType {
-	return &c
 }
 
 // SyncAgentState - State of the sync agent.
@@ -2899,11 +2351,6 @@ func PossibleSyncAgentStateValues() []SyncAgentState {
 	}
 }
 
-// ToPtr returns a *SyncAgentState pointing to the current value.
-func (c SyncAgentState) ToPtr() *SyncAgentState {
-	return &c
-}
-
 // SyncConflictResolutionPolicy - Conflict resolution policy of the sync group.
 type SyncConflictResolutionPolicy string
 
@@ -2918,11 +2365,6 @@ func PossibleSyncConflictResolutionPolicyValues() []SyncConflictResolutionPolicy
 		SyncConflictResolutionPolicyHubWin,
 		SyncConflictResolutionPolicyMemberWin,
 	}
-}
-
-// ToPtr returns a *SyncConflictResolutionPolicy pointing to the current value.
-func (c SyncConflictResolutionPolicy) ToPtr() *SyncConflictResolutionPolicy {
-	return &c
 }
 
 // SyncDirection - Sync direction of the sync member.
@@ -2943,11 +2385,6 @@ func PossibleSyncDirectionValues() []SyncDirection {
 	}
 }
 
-// ToPtr returns a *SyncDirection pointing to the current value.
-func (c SyncDirection) ToPtr() *SyncDirection {
-	return &c
-}
-
 // SyncGroupLogType - Type of the sync group log.
 type SyncGroupLogType string
 
@@ -2966,11 +2403,6 @@ func PossibleSyncGroupLogTypeValues() []SyncGroupLogType {
 		SyncGroupLogTypeSuccess,
 		SyncGroupLogTypeWarning,
 	}
-}
-
-// ToPtr returns a *SyncGroupLogType pointing to the current value.
-func (c SyncGroupLogType) ToPtr() *SyncGroupLogType {
-	return &c
 }
 
 // SyncGroupState - Sync state of the sync group.
@@ -2995,11 +2427,6 @@ func PossibleSyncGroupStateValues() []SyncGroupState {
 	}
 }
 
-// ToPtr returns a *SyncGroupState pointing to the current value.
-func (c SyncGroupState) ToPtr() *SyncGroupState {
-	return &c
-}
-
 type SyncGroupsType string
 
 const (
@@ -3019,11 +2446,6 @@ func PossibleSyncGroupsTypeValues() []SyncGroupsType {
 	}
 }
 
-// ToPtr returns a *SyncGroupsType pointing to the current value.
-func (c SyncGroupsType) ToPtr() *SyncGroupsType {
-	return &c
-}
-
 // SyncMemberDbType - Type of the sync agent linked database.
 type SyncMemberDbType string
 
@@ -3038,11 +2460,6 @@ func PossibleSyncMemberDbTypeValues() []SyncMemberDbType {
 		SyncMemberDbTypeAzureSQLDatabase,
 		SyncMemberDbTypeSQLServerDatabase,
 	}
-}
-
-// ToPtr returns a *SyncMemberDbType pointing to the current value.
-func (c SyncMemberDbType) ToPtr() *SyncMemberDbType {
-	return &c
 }
 
 // SyncMemberState - Sync state of the sync member.
@@ -3093,11 +2510,6 @@ func PossibleSyncMemberStateValues() []SyncMemberState {
 	}
 }
 
-// ToPtr returns a *SyncMemberState pointing to the current value.
-func (c SyncMemberState) ToPtr() *SyncMemberState {
-	return &c
-}
-
 // TableTemporalType - The table temporal type.
 type TableTemporalType string
 
@@ -3116,11 +2528,6 @@ func PossibleTableTemporalTypeValues() []TableTemporalType {
 	}
 }
 
-// ToPtr returns a *TableTemporalType pointing to the current value.
-func (c TableTemporalType) ToPtr() *TableTemporalType {
-	return &c
-}
-
 type TransparentDataEncryptionName string
 
 const (
@@ -3132,11 +2539,6 @@ func PossibleTransparentDataEncryptionNameValues() []TransparentDataEncryptionNa
 	return []TransparentDataEncryptionName{
 		TransparentDataEncryptionNameCurrent,
 	}
-}
-
-// ToPtr returns a *TransparentDataEncryptionName pointing to the current value.
-func (c TransparentDataEncryptionName) ToPtr() *TransparentDataEncryptionName {
-	return &c
 }
 
 // TransparentDataEncryptionState - Specifies the state of the transparent data encryption.
@@ -3153,11 +2555,6 @@ func PossibleTransparentDataEncryptionStateValues() []TransparentDataEncryptionS
 		TransparentDataEncryptionStateEnabled,
 		TransparentDataEncryptionStateDisabled,
 	}
-}
-
-// ToPtr returns a *TransparentDataEncryptionState pointing to the current value.
-func (c TransparentDataEncryptionState) ToPtr() *TransparentDataEncryptionState {
-	return &c
 }
 
 // UnitDefinitionType - The unit of the metric.
@@ -3184,11 +2581,6 @@ func PossibleUnitDefinitionTypeValues() []UnitDefinitionType {
 	}
 }
 
-// ToPtr returns a *UnitDefinitionType pointing to the current value.
-func (c UnitDefinitionType) ToPtr() *UnitDefinitionType {
-	return &c
-}
-
 // UnitType - The unit of the metric.
 type UnitType string
 
@@ -3213,11 +2605,6 @@ func PossibleUnitTypeValues() []UnitType {
 	}
 }
 
-// ToPtr returns a *UnitType pointing to the current value.
-func (c UnitType) ToPtr() *UnitType {
-	return &c
-}
-
 type UpsertManagedServerOperationStepStatus string
 
 const (
@@ -3239,11 +2626,6 @@ func PossibleUpsertManagedServerOperationStepStatusValues() []UpsertManagedServe
 		UpsertManagedServerOperationStepStatusNotStarted,
 		UpsertManagedServerOperationStepStatusSlowedDown,
 	}
-}
-
-// ToPtr returns a *UpsertManagedServerOperationStepStatus pointing to the current value.
-func (c UpsertManagedServerOperationStepStatus) ToPtr() *UpsertManagedServerOperationStepStatus {
-	return &c
 }
 
 // VirtualNetworkRuleState - Virtual Network Rule State
@@ -3270,11 +2652,6 @@ func PossibleVirtualNetworkRuleStateValues() []VirtualNetworkRuleState {
 	}
 }
 
-// ToPtr returns a *VirtualNetworkRuleState pointing to the current value.
-func (c VirtualNetworkRuleState) ToPtr() *VirtualNetworkRuleState {
-	return &c
-}
-
 type VulnerabilityAssessmentName string
 
 const (
@@ -3286,11 +2663,6 @@ func PossibleVulnerabilityAssessmentNameValues() []VulnerabilityAssessmentName {
 	return []VulnerabilityAssessmentName{
 		VulnerabilityAssessmentNameDefault,
 	}
-}
-
-// ToPtr returns a *VulnerabilityAssessmentName pointing to the current value.
-func (c VulnerabilityAssessmentName) ToPtr() *VulnerabilityAssessmentName {
-	return &c
 }
 
 type VulnerabilityAssessmentPolicyBaselineName string
@@ -3306,11 +2678,6 @@ func PossibleVulnerabilityAssessmentPolicyBaselineNameValues() []VulnerabilityAs
 		VulnerabilityAssessmentPolicyBaselineNameMaster,
 		VulnerabilityAssessmentPolicyBaselineNameDefault,
 	}
-}
-
-// ToPtr returns a *VulnerabilityAssessmentPolicyBaselineName pointing to the current value.
-func (c VulnerabilityAssessmentPolicyBaselineName) ToPtr() *VulnerabilityAssessmentPolicyBaselineName {
-	return &c
 }
 
 // VulnerabilityAssessmentScanState - The scan status.
@@ -3333,11 +2700,6 @@ func PossibleVulnerabilityAssessmentScanStateValues() []VulnerabilityAssessmentS
 	}
 }
 
-// ToPtr returns a *VulnerabilityAssessmentScanState pointing to the current value.
-func (c VulnerabilityAssessmentScanState) ToPtr() *VulnerabilityAssessmentScanState {
-	return &c
-}
-
 // VulnerabilityAssessmentScanTriggerType - The scan trigger type.
 type VulnerabilityAssessmentScanTriggerType string
 
@@ -3352,9 +2714,4 @@ func PossibleVulnerabilityAssessmentScanTriggerTypeValues() []VulnerabilityAsses
 		VulnerabilityAssessmentScanTriggerTypeOnDemand,
 		VulnerabilityAssessmentScanTriggerTypeRecurring,
 	}
-}
-
-// ToPtr returns a *VulnerabilityAssessmentScanTriggerType pointing to the current value.
-func (c VulnerabilityAssessmentScanTriggerType) ToPtr() *VulnerabilityAssessmentScanTriggerType {
-	return &c
 }

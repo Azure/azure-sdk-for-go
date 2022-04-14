@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,15 +8,14 @@ package armkeyvault_test
 
 import (
 	"context"
+	"testing"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault"
 	"github.com/stretchr/testify/suite"
-	"testing"
-	"time"
 )
 
 type VaultsClientTestSuite struct {
@@ -57,38 +56,39 @@ func TestVaultsClient(t *testing.T) {
 
 func (testsuite *VaultsClientTestSuite) TestVaultsCRUD() {
 	// create vault
-	vaultsClient := armkeyvault.NewVaultsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	vaultsClient, err := armkeyvault.NewVaultsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	vaultName := "go-test-vault1"
 	vPollerResp, err := vaultsClient.BeginCreateOrUpdate(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
 		vaultName,
 		armkeyvault.VaultCreateOrUpdateParameters{
-			Location: to.StringPtr(testsuite.location),
+			Location: to.Ptr(testsuite.location),
 			Properties: &armkeyvault.VaultProperties{
 				SKU: &armkeyvault.SKU{
-					Family: armkeyvault.SKUFamilyA.ToPtr(),
-					Name:   armkeyvault.SKUNameStandard.ToPtr(),
+					Family: to.Ptr(armkeyvault.SKUFamilyA),
+					Name:   to.Ptr(armkeyvault.SKUNameStandard),
 				},
-				TenantID: to.StringPtr(testsuite.tenantID),
+				TenantID: to.Ptr(testsuite.tenantID),
 				AccessPolicies: []*armkeyvault.AccessPolicyEntry{
 					{
-						TenantID: to.StringPtr(testsuite.tenantID),
-						ObjectID: to.StringPtr(testsuite.objectID),
+						TenantID: to.Ptr(testsuite.tenantID),
+						ObjectID: to.Ptr(testsuite.objectID),
 						Permissions: &armkeyvault.Permissions{
 							Keys: []*armkeyvault.KeyPermissions{
-								armkeyvault.KeyPermissionsGet.ToPtr(),
-								armkeyvault.KeyPermissionsList.ToPtr(),
-								armkeyvault.KeyPermissionsCreate.ToPtr(),
+								to.Ptr(armkeyvault.KeyPermissionsGet),
+								to.Ptr(armkeyvault.KeyPermissionsList),
+								to.Ptr(armkeyvault.KeyPermissionsCreate),
 							},
 							Secrets: []*armkeyvault.SecretPermissions{
-								armkeyvault.SecretPermissionsGet.ToPtr(),
-								armkeyvault.SecretPermissionsList.ToPtr(),
+								to.Ptr(armkeyvault.SecretPermissionsGet),
+								to.Ptr(armkeyvault.SecretPermissionsList),
 							},
 							Certificates: []*armkeyvault.CertificatePermissions{
-								armkeyvault.CertificatePermissionsGet.ToPtr(),
-								armkeyvault.CertificatePermissionsList.ToPtr(),
-								armkeyvault.CertificatePermissionsCreate.ToPtr(),
+								to.Ptr(armkeyvault.CertificatePermissionsGet),
+								to.Ptr(armkeyvault.CertificatePermissionsList),
+								to.Ptr(armkeyvault.CertificatePermissionsCreate),
 							},
 						},
 					},
@@ -98,29 +98,16 @@ func (testsuite *VaultsClientTestSuite) TestVaultsCRUD() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	var vResp armkeyvault.VaultsClientCreateOrUpdateResponse
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		for {
-			_, err = vPollerResp.Poller.Poll(testsuite.ctx)
-			testsuite.Require().NoError(err)
-			if vPollerResp.Poller.Done() {
-				vResp, err = vPollerResp.Poller.FinalResponse(testsuite.ctx)
-				testsuite.Require().NoError(err)
-				break
-			}
-		}
-	} else {
-		vResp, err = vPollerResp.PollUntilDone(testsuite.ctx, 30*time.Second)
-		testsuite.Require().NoError(err)
-	}
+	vResp, err := testutil.PollForTest(testsuite.ctx, vPollerResp)
+	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(vaultName, *vResp.Name)
 
 	// create vault
 	check, err := vaultsClient.CheckNameAvailability(
 		testsuite.ctx,
 		armkeyvault.VaultCheckNameAvailabilityParameters{
-			Name: to.StringPtr(vaultName),
-			Type: to.StringPtr("Microsoft.KeyVault/vaults"),
+			Name: to.Ptr(vaultName),
+			Type: to.Ptr("Microsoft.KeyVault/vaults"),
 		},
 		nil,
 	)
@@ -139,7 +126,7 @@ func (testsuite *VaultsClientTestSuite) TestVaultsCRUD() {
 		vaultName,
 		armkeyvault.VaultPatchParameters{
 			Tags: map[string]*string{
-				"test": to.StringPtr("recording"),
+				"test": to.Ptr("recording"),
 			},
 		},
 		nil,
@@ -149,13 +136,11 @@ func (testsuite *VaultsClientTestSuite) TestVaultsCRUD() {
 
 	// list vault deleted
 	deletedPager := vaultsClient.ListDeleted(nil)
-	testsuite.Require().NoError(deletedPager.Err())
-	testsuite.Require().True(deletedPager.NextPage(testsuite.ctx))
+	testsuite.Require().True(deletedPager.More())
 
 	// delete vault
-	delResp, err := vaultsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, vaultName, nil)
+	_, err = vaultsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, vaultName, nil)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(200, delResp.RawResponse.StatusCode)
 
 	// get deleted vault
 	deletedResp, err := vaultsClient.GetDeleted(testsuite.ctx, vaultName, testsuite.location, nil)
@@ -165,20 +150,6 @@ func (testsuite *VaultsClientTestSuite) TestVaultsCRUD() {
 	// purge deleted vault
 	purgePollerResp, err := vaultsClient.BeginPurgeDeleted(testsuite.ctx, vaultName, testsuite.location, nil)
 	testsuite.Require().NoError(err)
-	var purgeResp armkeyvault.VaultsClientPurgeDeletedResponse
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		for {
-			_, err = purgePollerResp.Poller.Poll(testsuite.ctx)
-			testsuite.Require().NoError(err)
-			if purgePollerResp.Poller.Done() {
-				purgeResp, err = purgePollerResp.Poller.FinalResponse(testsuite.ctx)
-				testsuite.Require().NoError(err)
-				break
-			}
-		}
-	} else {
-		purgeResp, err = purgePollerResp.PollUntilDone(testsuite.ctx, 30*time.Second)
-		testsuite.Require().NoError(err)
-	}
-	testsuite.Require().Equal(200, purgeResp.RawResponse.StatusCode)
+	_, err = testutil.PollForTest(testsuite.ctx, purgePollerResp)
+	testsuite.Require().NoError(err)
 }

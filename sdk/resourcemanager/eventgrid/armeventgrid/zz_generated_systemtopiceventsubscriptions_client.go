@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type SystemTopicEventSubscriptionsClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSystemTopicEventSubscriptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SystemTopicEventSubscriptionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewSystemTopicEventSubscriptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SystemTopicEventSubscriptionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SystemTopicEventSubscriptionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Asynchronously creates or updates an event subscription with the specified parameters. Existing event
@@ -61,22 +66,16 @@ func NewSystemTopicEventSubscriptionsClient(subscriptionID string, credential az
 // eventSubscriptionInfo - Event subscription properties containing the destination and filter information.
 // options - SystemTopicEventSubscriptionsClientBeginCreateOrUpdateOptions contains the optional parameters for the SystemTopicEventSubscriptionsClient.BeginCreateOrUpdate
 // method.
-func (client *SystemTopicEventSubscriptionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, systemTopicName string, eventSubscriptionName string, eventSubscriptionInfo EventSubscription, options *SystemTopicEventSubscriptionsClientBeginCreateOrUpdateOptions) (SystemTopicEventSubscriptionsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, systemTopicName, eventSubscriptionName, eventSubscriptionInfo, options)
-	if err != nil {
-		return SystemTopicEventSubscriptionsClientCreateOrUpdatePollerResponse{}, err
+func (client *SystemTopicEventSubscriptionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, systemTopicName string, eventSubscriptionName string, eventSubscriptionInfo EventSubscription, options *SystemTopicEventSubscriptionsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[SystemTopicEventSubscriptionsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, systemTopicName, eventSubscriptionName, eventSubscriptionInfo, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SystemTopicEventSubscriptionsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SystemTopicEventSubscriptionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SystemTopicEventSubscriptionsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SystemTopicEventSubscriptionsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return SystemTopicEventSubscriptionsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &SystemTopicEventSubscriptionsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Asynchronously creates or updates an event subscription with the specified parameters. Existing event
@@ -121,13 +120,13 @@ func (client *SystemTopicEventSubscriptionsClient) createOrUpdateCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, eventSubscriptionInfo)
 }
 
-// BeginDelete - Delete an event subscription of a system topic.
+// BeginDelete - Delete an existing event subscription of a system topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription.
 // systemTopicName - Name of the system topic.
@@ -135,25 +134,19 @@ func (client *SystemTopicEventSubscriptionsClient) createOrUpdateCreateRequest(c
 // characters in length and use alphanumeric letters only.
 // options - SystemTopicEventSubscriptionsClientBeginDeleteOptions contains the optional parameters for the SystemTopicEventSubscriptionsClient.BeginDelete
 // method.
-func (client *SystemTopicEventSubscriptionsClient) BeginDelete(ctx context.Context, resourceGroupName string, systemTopicName string, eventSubscriptionName string, options *SystemTopicEventSubscriptionsClientBeginDeleteOptions) (SystemTopicEventSubscriptionsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, systemTopicName, eventSubscriptionName, options)
-	if err != nil {
-		return SystemTopicEventSubscriptionsClientDeletePollerResponse{}, err
+func (client *SystemTopicEventSubscriptionsClient) BeginDelete(ctx context.Context, resourceGroupName string, systemTopicName string, eventSubscriptionName string, options *SystemTopicEventSubscriptionsClientBeginDeleteOptions) (*armruntime.Poller[SystemTopicEventSubscriptionsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, systemTopicName, eventSubscriptionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SystemTopicEventSubscriptionsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SystemTopicEventSubscriptionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SystemTopicEventSubscriptionsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SystemTopicEventSubscriptionsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return SystemTopicEventSubscriptionsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &SystemTopicEventSubscriptionsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
-// Delete - Delete an event subscription of a system topic.
+// Delete - Delete an existing event subscription of a system topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SystemTopicEventSubscriptionsClient) deleteOperation(ctx context.Context, resourceGroupName string, systemTopicName string, eventSubscriptionName string, options *SystemTopicEventSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, systemTopicName, eventSubscriptionName, options)
@@ -194,7 +187,7 @@ func (client *SystemTopicEventSubscriptionsClient) deleteCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -246,7 +239,7 @@ func (client *SystemTopicEventSubscriptionsClient) getCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -254,7 +247,7 @@ func (client *SystemTopicEventSubscriptionsClient) getCreateRequest(ctx context.
 
 // getHandleResponse handles the Get response.
 func (client *SystemTopicEventSubscriptionsClient) getHandleResponse(resp *http.Response) (SystemTopicEventSubscriptionsClientGetResponse, error) {
-	result := SystemTopicEventSubscriptionsClientGetResponse{RawResponse: resp}
+	result := SystemTopicEventSubscriptionsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscription); err != nil {
 		return SystemTopicEventSubscriptionsClientGetResponse{}, err
 	}
@@ -308,7 +301,7 @@ func (client *SystemTopicEventSubscriptionsClient) getDeliveryAttributesCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -316,7 +309,7 @@ func (client *SystemTopicEventSubscriptionsClient) getDeliveryAttributesCreateRe
 
 // getDeliveryAttributesHandleResponse handles the GetDeliveryAttributes response.
 func (client *SystemTopicEventSubscriptionsClient) getDeliveryAttributesHandleResponse(resp *http.Response) (SystemTopicEventSubscriptionsClientGetDeliveryAttributesResponse, error) {
-	result := SystemTopicEventSubscriptionsClientGetDeliveryAttributesResponse{RawResponse: resp}
+	result := SystemTopicEventSubscriptionsClientGetDeliveryAttributesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeliveryAttributeListResult); err != nil {
 		return SystemTopicEventSubscriptionsClientGetDeliveryAttributesResponse{}, err
 	}
@@ -370,7 +363,7 @@ func (client *SystemTopicEventSubscriptionsClient) getFullURLCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -378,7 +371,7 @@ func (client *SystemTopicEventSubscriptionsClient) getFullURLCreateRequest(ctx c
 
 // getFullURLHandleResponse handles the GetFullURL response.
 func (client *SystemTopicEventSubscriptionsClient) getFullURLHandleResponse(resp *http.Response) (SystemTopicEventSubscriptionsClientGetFullURLResponse, error) {
-	result := SystemTopicEventSubscriptionsClientGetFullURLResponse{RawResponse: resp}
+	result := SystemTopicEventSubscriptionsClientGetFullURLResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionFullURL); err != nil {
 		return SystemTopicEventSubscriptionsClientGetFullURLResponse{}, err
 	}
@@ -391,16 +384,32 @@ func (client *SystemTopicEventSubscriptionsClient) getFullURLHandleResponse(resp
 // systemTopicName - Name of the system topic.
 // options - SystemTopicEventSubscriptionsClientListBySystemTopicOptions contains the optional parameters for the SystemTopicEventSubscriptionsClient.ListBySystemTopic
 // method.
-func (client *SystemTopicEventSubscriptionsClient) ListBySystemTopic(resourceGroupName string, systemTopicName string, options *SystemTopicEventSubscriptionsClientListBySystemTopicOptions) *SystemTopicEventSubscriptionsClientListBySystemTopicPager {
-	return &SystemTopicEventSubscriptionsClientListBySystemTopicPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySystemTopicCreateRequest(ctx, resourceGroupName, systemTopicName, options)
+func (client *SystemTopicEventSubscriptionsClient) ListBySystemTopic(resourceGroupName string, systemTopicName string, options *SystemTopicEventSubscriptionsClientListBySystemTopicOptions) *runtime.Pager[SystemTopicEventSubscriptionsClientListBySystemTopicResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SystemTopicEventSubscriptionsClientListBySystemTopicResponse]{
+		More: func(page SystemTopicEventSubscriptionsClientListBySystemTopicResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SystemTopicEventSubscriptionsClientListBySystemTopicResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.EventSubscriptionsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SystemTopicEventSubscriptionsClientListBySystemTopicResponse) (SystemTopicEventSubscriptionsClientListBySystemTopicResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySystemTopicCreateRequest(ctx, resourceGroupName, systemTopicName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SystemTopicEventSubscriptionsClientListBySystemTopicResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SystemTopicEventSubscriptionsClientListBySystemTopicResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SystemTopicEventSubscriptionsClientListBySystemTopicResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySystemTopicHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySystemTopicCreateRequest creates the ListBySystemTopic request.
@@ -423,7 +432,7 @@ func (client *SystemTopicEventSubscriptionsClient) listBySystemTopicCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -437,14 +446,14 @@ func (client *SystemTopicEventSubscriptionsClient) listBySystemTopicCreateReques
 
 // listBySystemTopicHandleResponse handles the ListBySystemTopic response.
 func (client *SystemTopicEventSubscriptionsClient) listBySystemTopicHandleResponse(resp *http.Response) (SystemTopicEventSubscriptionsClientListBySystemTopicResponse, error) {
-	result := SystemTopicEventSubscriptionsClientListBySystemTopicResponse{RawResponse: resp}
+	result := SystemTopicEventSubscriptionsClientListBySystemTopicResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
 		return SystemTopicEventSubscriptionsClientListBySystemTopicResponse{}, err
 	}
 	return result, nil
 }
 
-// BeginUpdate - Update event subscription of a system topic.
+// BeginUpdate - Update an existing event subscription of a system topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription.
 // systemTopicName - Name of the system topic.
@@ -453,25 +462,19 @@ func (client *SystemTopicEventSubscriptionsClient) listBySystemTopicHandleRespon
 // eventSubscriptionUpdateParameters - Updated event subscription information.
 // options - SystemTopicEventSubscriptionsClientBeginUpdateOptions contains the optional parameters for the SystemTopicEventSubscriptionsClient.BeginUpdate
 // method.
-func (client *SystemTopicEventSubscriptionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, systemTopicName string, eventSubscriptionName string, eventSubscriptionUpdateParameters EventSubscriptionUpdateParameters, options *SystemTopicEventSubscriptionsClientBeginUpdateOptions) (SystemTopicEventSubscriptionsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, systemTopicName, eventSubscriptionName, eventSubscriptionUpdateParameters, options)
-	if err != nil {
-		return SystemTopicEventSubscriptionsClientUpdatePollerResponse{}, err
+func (client *SystemTopicEventSubscriptionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, systemTopicName string, eventSubscriptionName string, eventSubscriptionUpdateParameters EventSubscriptionUpdateParameters, options *SystemTopicEventSubscriptionsClientBeginUpdateOptions) (*armruntime.Poller[SystemTopicEventSubscriptionsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, systemTopicName, eventSubscriptionName, eventSubscriptionUpdateParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SystemTopicEventSubscriptionsClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SystemTopicEventSubscriptionsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SystemTopicEventSubscriptionsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SystemTopicEventSubscriptionsClient.Update", "", resp, client.pl)
-	if err != nil {
-		return SystemTopicEventSubscriptionsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &SystemTopicEventSubscriptionsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
-// Update - Update event subscription of a system topic.
+// Update - Update an existing event subscription of a system topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SystemTopicEventSubscriptionsClient) update(ctx context.Context, resourceGroupName string, systemTopicName string, eventSubscriptionName string, eventSubscriptionUpdateParameters EventSubscriptionUpdateParameters, options *SystemTopicEventSubscriptionsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, systemTopicName, eventSubscriptionName, eventSubscriptionUpdateParameters, options)
@@ -512,7 +515,7 @@ func (client *SystemTopicEventSubscriptionsClient) updateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, eventSubscriptionUpdateParameters)

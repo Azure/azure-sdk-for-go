@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type BuildServiceBuilderClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewBuildServiceBuilderClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BuildServiceBuilderClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewBuildServiceBuilderClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BuildServiceBuilderClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &BuildServiceBuilderClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or update a KPack builder.
@@ -60,22 +65,18 @@ func NewBuildServiceBuilderClient(subscriptionID string, credential azcore.Token
 // builderResource - The target builder for the create or update operation
 // options - BuildServiceBuilderClientBeginCreateOrUpdateOptions contains the optional parameters for the BuildServiceBuilderClient.BeginCreateOrUpdate
 // method.
-func (client *BuildServiceBuilderClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, buildServiceName string, builderName string, builderResource BuilderResource, options *BuildServiceBuilderClientBeginCreateOrUpdateOptions) (BuildServiceBuilderClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, buildServiceName, builderName, builderResource, options)
-	if err != nil {
-		return BuildServiceBuilderClientCreateOrUpdatePollerResponse{}, err
+func (client *BuildServiceBuilderClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, buildServiceName string, builderName string, builderResource BuilderResource, options *BuildServiceBuilderClientBeginCreateOrUpdateOptions) (*armruntime.Poller[BuildServiceBuilderClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, buildServiceName, builderName, builderResource, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[BuildServiceBuilderClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[BuildServiceBuilderClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := BuildServiceBuilderClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("BuildServiceBuilderClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return BuildServiceBuilderClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &BuildServiceBuilderClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update a KPack builder.
@@ -123,7 +124,7 @@ func (client *BuildServiceBuilderClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, builderResource)
@@ -138,22 +139,18 @@ func (client *BuildServiceBuilderClient) createOrUpdateCreateRequest(ctx context
 // builderName - The name of the builder resource.
 // options - BuildServiceBuilderClientBeginDeleteOptions contains the optional parameters for the BuildServiceBuilderClient.BeginDelete
 // method.
-func (client *BuildServiceBuilderClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, buildServiceName string, builderName string, options *BuildServiceBuilderClientBeginDeleteOptions) (BuildServiceBuilderClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, buildServiceName, builderName, options)
-	if err != nil {
-		return BuildServiceBuilderClientDeletePollerResponse{}, err
+func (client *BuildServiceBuilderClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, buildServiceName string, builderName string, options *BuildServiceBuilderClientBeginDeleteOptions) (*armruntime.Poller[BuildServiceBuilderClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, buildServiceName, builderName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[BuildServiceBuilderClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[BuildServiceBuilderClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := BuildServiceBuilderClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("BuildServiceBuilderClient.Delete", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return BuildServiceBuilderClientDeletePollerResponse{}, err
-	}
-	result.Poller = &BuildServiceBuilderClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete a KPack builder.
@@ -201,7 +198,7 @@ func (client *BuildServiceBuilderClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -258,7 +255,7 @@ func (client *BuildServiceBuilderClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -266,7 +263,7 @@ func (client *BuildServiceBuilderClient) getCreateRequest(ctx context.Context, r
 
 // getHandleResponse handles the Get response.
 func (client *BuildServiceBuilderClient) getHandleResponse(resp *http.Response) (BuildServiceBuilderClientGetResponse, error) {
-	result := BuildServiceBuilderClientGetResponse{RawResponse: resp}
+	result := BuildServiceBuilderClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BuilderResource); err != nil {
 		return BuildServiceBuilderClientGetResponse{}, err
 	}
@@ -281,16 +278,32 @@ func (client *BuildServiceBuilderClient) getHandleResponse(resp *http.Response) 
 // buildServiceName - The name of the build service resource.
 // options - BuildServiceBuilderClientListOptions contains the optional parameters for the BuildServiceBuilderClient.List
 // method.
-func (client *BuildServiceBuilderClient) List(resourceGroupName string, serviceName string, buildServiceName string, options *BuildServiceBuilderClientListOptions) *BuildServiceBuilderClientListPager {
-	return &BuildServiceBuilderClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, serviceName, buildServiceName, options)
+func (client *BuildServiceBuilderClient) List(resourceGroupName string, serviceName string, buildServiceName string, options *BuildServiceBuilderClientListOptions) *runtime.Pager[BuildServiceBuilderClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[BuildServiceBuilderClientListResponse]{
+		More: func(page BuildServiceBuilderClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp BuildServiceBuilderClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.BuilderResourceCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *BuildServiceBuilderClientListResponse) (BuildServiceBuilderClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, serviceName, buildServiceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return BuildServiceBuilderClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return BuildServiceBuilderClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return BuildServiceBuilderClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -317,7 +330,7 @@ func (client *BuildServiceBuilderClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -325,7 +338,7 @@ func (client *BuildServiceBuilderClient) listCreateRequest(ctx context.Context, 
 
 // listHandleResponse handles the List response.
 func (client *BuildServiceBuilderClient) listHandleResponse(resp *http.Response) (BuildServiceBuilderClientListResponse, error) {
-	result := BuildServiceBuilderClientListResponse{RawResponse: resp}
+	result := BuildServiceBuilderClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BuilderResourceCollection); err != nil {
 		return BuildServiceBuilderClientListResponse{}, err
 	}

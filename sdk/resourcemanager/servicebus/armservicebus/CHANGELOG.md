@@ -1,5 +1,376 @@
 # Release History
 
+## 0.4.0 (2022-04-14)
+### Breaking Changes
+
+- Function `*NamespacesClient.BeginDelete` return value(s) have been changed from `(NamespacesClientDeletePollerResponse, error)` to `(*armruntime.Poller[NamespacesClientDeleteResponse], error)`
+- Function `*RulesClient.ListBySubscriptions` return value(s) have been changed from `(*RulesClientListBySubscriptionsPager)` to `(*runtime.Pager[RulesClientListBySubscriptionsResponse])`
+- Function `*NamespacesClient.List` return value(s) have been changed from `(*NamespacesClientListPager)` to `(*runtime.Pager[NamespacesClientListResponse])`
+- Function `*MigrationConfigsClient.List` return value(s) have been changed from `(*MigrationConfigsClientListPager)` to `(*runtime.Pager[MigrationConfigsClientListResponse])`
+- Function `NewMigrationConfigsClient` return value(s) have been changed from `(*MigrationConfigsClient)` to `(*MigrationConfigsClient, error)`
+- Function `NewPrivateLinkResourcesClient` return value(s) have been changed from `(*PrivateLinkResourcesClient)` to `(*PrivateLinkResourcesClient, error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewRulesClient` return value(s) have been changed from `(*RulesClient)` to `(*RulesClient, error)`
+- Function `NewDisasterRecoveryConfigsClient` return value(s) have been changed from `(*DisasterRecoveryConfigsClient)` to `(*DisasterRecoveryConfigsClient, error)`
+- Function `*DisasterRecoveryConfigsClient.ListAuthorizationRules` return value(s) have been changed from `(*DisasterRecoveryConfigsClientListAuthorizationRulesPager)` to `(*runtime.Pager[DisasterRecoveryConfigsClientListAuthorizationRulesResponse])`
+- Function `*NamespacesClient.ListByResourceGroup` return value(s) have been changed from `(*NamespacesClientListByResourceGroupPager)` to `(*runtime.Pager[NamespacesClientListByResourceGroupResponse])`
+- Function `*SubscriptionsClient.ListByTopic` return value(s) have been changed from `(*SubscriptionsClientListByTopicPager)` to `(*runtime.Pager[SubscriptionsClientListByTopicResponse])`
+- Function `*NamespacesClient.ListAuthorizationRules` return value(s) have been changed from `(*NamespacesClientListAuthorizationRulesPager)` to `(*runtime.Pager[NamespacesClientListAuthorizationRulesResponse])`
+- Function `*NamespacesClient.BeginCreateOrUpdate` return value(s) have been changed from `(NamespacesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[NamespacesClientCreateOrUpdateResponse], error)`
+- Function `NewTopicsClient` return value(s) have been changed from `(*TopicsClient)` to `(*TopicsClient, error)`
+- Function `NewQueuesClient` return value(s) have been changed from `(*QueuesClient)` to `(*QueuesClient, error)`
+- Function `*QueuesClient.ListByNamespace` return value(s) have been changed from `(*QueuesClientListByNamespacePager)` to `(*runtime.Pager[QueuesClientListByNamespaceResponse])`
+- Function `*TopicsClient.ListByNamespace` return value(s) have been changed from `(*TopicsClientListByNamespacePager)` to `(*runtime.Pager[TopicsClientListByNamespaceResponse])`
+- Function `*DisasterRecoveryConfigsClient.List` return value(s) have been changed from `(*DisasterRecoveryConfigsClientListPager)` to `(*runtime.Pager[DisasterRecoveryConfigsClientListResponse])`
+- Function `*MigrationConfigsClient.BeginCreateAndStartMigration` return value(s) have been changed from `(MigrationConfigsClientCreateAndStartMigrationPollerResponse, error)` to `(*armruntime.Poller[MigrationConfigsClientCreateAndStartMigrationResponse], error)`
+- Function `*NamespacesClient.ListNetworkRuleSets` return value(s) have been changed from `(*NamespacesClientListNetworkRuleSetsPager)` to `(*runtime.Pager[NamespacesClientListNetworkRuleSetsResponse])`
+- Function `NewPrivateEndpointConnectionsClient` return value(s) have been changed from `(*PrivateEndpointConnectionsClient)` to `(*PrivateEndpointConnectionsClient, error)`
+- Function `*PrivateEndpointConnectionsClient.List` return value(s) have been changed from `(*PrivateEndpointConnectionsClientListPager)` to `(*runtime.Pager[PrivateEndpointConnectionsClientListResponse])`
+- Function `NewNamespacesClient` return value(s) have been changed from `(*NamespacesClient)` to `(*NamespacesClient, error)`
+- Function `*TopicsClient.ListAuthorizationRules` return value(s) have been changed from `(*TopicsClientListAuthorizationRulesPager)` to `(*runtime.Pager[TopicsClientListAuthorizationRulesResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `NewSubscriptionsClient` return value(s) have been changed from `(*SubscriptionsClient)` to `(*SubscriptionsClient, error)`
+- Function `*QueuesClient.ListAuthorizationRules` return value(s) have been changed from `(*QueuesClientListAuthorizationRulesPager)` to `(*runtime.Pager[QueuesClientListAuthorizationRulesResponse])`
+- Type of `Operation.Properties` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*NamespacesClientListPager.NextPage` has been removed
+- Function `KeyType.ToPtr` has been removed
+- Function `*MigrationConfigsClientCreateAndStartMigrationPoller.Poll` has been removed
+- Function `ProvisioningStateDR.ToPtr` has been removed
+- Function `*MigrationConfigsClientCreateAndStartMigrationPoller.FinalResponse` has been removed
+- Function `UnavailableReason.ToPtr` has been removed
+- Function `*DisasterRecoveryConfigsClientListAuthorizationRulesPager.NextPage` has been removed
+- Function `*NamespacesClientDeletePollerResponse.Resume` has been removed
+- Function `EntityStatus.ToPtr` has been removed
+- Function `FilterType.ToPtr` has been removed
+- Function `*RulesClientListBySubscriptionsPager.PageResponse` has been removed
+- Function `PrivateEndpointConnectionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*DisasterRecoveryConfigsClientListPager.PageResponse` has been removed
+- Function `*NamespacesClientListByResourceGroupPager.NextPage` has been removed
+- Function `*TopicsClientListAuthorizationRulesPager.NextPage` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `NamespacesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*NamespacesClientListNetworkRuleSetsPager.Err` has been removed
+- Function `*MigrationConfigsClientCreateAndStartMigrationPollerResponse.Resume` has been removed
+- Function `*MigrationConfigsClientCreateAndStartMigrationPoller.Done` has been removed
+- Function `*QueuesClientListByNamespacePager.NextPage` has been removed
+- Function `ManagedServiceIdentityType.ToPtr` has been removed
+- Function `*NamespacesClientListNetworkRuleSetsPager.PageResponse` has been removed
+- Function `*DisasterRecoveryConfigsClientListAuthorizationRulesPager.Err` has been removed
+- Function `*NamespacesClientListPager.Err` has been removed
+- Function `*SubscriptionsClientListByTopicPager.PageResponse` has been removed
+- Function `AccessRights.ToPtr` has been removed
+- Function `*MigrationConfigsClientCreateAndStartMigrationPoller.ResumeToken` has been removed
+- Function `*NamespacesClientDeletePoller.Poll` has been removed
+- Function `*QueuesClientListByNamespacePager.PageResponse` has been removed
+- Function `*DisasterRecoveryConfigsClientListPager.NextPage` has been removed
+- Function `*NamespacesClientCreateOrUpdatePoller.Done` has been removed
+- Function `RoleDisasterRecovery.ToPtr` has been removed
+- Function `*TopicsClientListByNamespacePager.NextPage` has been removed
+- Function `*MigrationConfigsClientListPager.PageResponse` has been removed
+- Function `*RulesClientListBySubscriptionsPager.Err` has been removed
+- Function `PublicNetworkAccessFlag.ToPtr` has been removed
+- Function `*SubscriptionsClientListByTopicPager.NextPage` has been removed
+- Function `PrivateLinkConnectionStatus.ToPtr` has been removed
+- Function `*NamespacesClientListNetworkRuleSetsPager.NextPage` has been removed
+- Function `*NamespacesClientDeletePoller.ResumeToken` has been removed
+- Function `*TopicsClientListByNamespacePager.PageResponse` has been removed
+- Function `*NamespacesClientListAuthorizationRulesPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.FinalResponse` has been removed
+- Function `*NamespacesClientDeletePoller.FinalResponse` has been removed
+- Function `*NamespacesClientListAuthorizationRulesPager.PageResponse` has been removed
+- Function `*NamespacesClientDeletePoller.Done` has been removed
+- Function `*SubscriptionsClientListByTopicPager.Err` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.Done` has been removed
+- Function `*NamespacesClientListPager.PageResponse` has been removed
+- Function `*NamespacesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsClientListPager.Err` has been removed
+- Function `*TopicsClientListAuthorizationRulesPager.PageResponse` has been removed
+- Function `*QueuesClientListAuthorizationRulesPager.PageResponse` has been removed
+- Function `*QueuesClientListAuthorizationRulesPager.NextPage` has been removed
+- Function `DefaultAction.ToPtr` has been removed
+- Function `*MigrationConfigsClientListPager.NextPage` has been removed
+- Function `*QueuesClientListByNamespacePager.Err` has been removed
+- Function `MigrationConfigsClientCreateAndStartMigrationPollerResponse.PollUntilDone` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*NamespacesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `SKUName.ToPtr` has been removed
+- Function `*NamespacesClientListAuthorizationRulesPager.Err` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.Poll` has been removed
+- Function `EndPointProvisioningState.ToPtr` has been removed
+- Function `*TopicsClientListByNamespacePager.Err` has been removed
+- Function `*PrivateEndpointConnectionsClientListPager.PageResponse` has been removed
+- Function `*NamespacesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `NetworkRuleIPAction.ToPtr` has been removed
+- Function `*DisasterRecoveryConfigsClientListAuthorizationRulesPager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePollerResponse.Resume` has been removed
+- Function `NamespacesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsClientListPager.NextPage` has been removed
+- Function `*DisasterRecoveryConfigsClientListPager.Err` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*NamespacesClientListByResourceGroupPager.Err` has been removed
+- Function `*TopicsClientListAuthorizationRulesPager.Err` has been removed
+- Function `*QueuesClientListAuthorizationRulesPager.Err` has been removed
+- Function `MigrationConfigurationName.ToPtr` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `SKUTier.ToPtr` has been removed
+- Function `*NamespacesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*RulesClientListBySubscriptionsPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.ResumeToken` has been removed
+- Function `*MigrationConfigsClientListPager.Err` has been removed
+- Function `*NamespacesClientCreateOrUpdatePoller.Poll` has been removed
+- Struct `DisasterRecoveryConfigsClientCheckNameAvailabilityResult` has been removed
+- Struct `DisasterRecoveryConfigsClientCreateOrUpdateResult` has been removed
+- Struct `DisasterRecoveryConfigsClientGetAuthorizationRuleResult` has been removed
+- Struct `DisasterRecoveryConfigsClientGetResult` has been removed
+- Struct `DisasterRecoveryConfigsClientListAuthorizationRulesPager` has been removed
+- Struct `DisasterRecoveryConfigsClientListAuthorizationRulesResult` has been removed
+- Struct `DisasterRecoveryConfigsClientListKeysResult` has been removed
+- Struct `DisasterRecoveryConfigsClientListPager` has been removed
+- Struct `DisasterRecoveryConfigsClientListResult` has been removed
+- Struct `MigrationConfigsClientCreateAndStartMigrationPoller` has been removed
+- Struct `MigrationConfigsClientCreateAndStartMigrationPollerResponse` has been removed
+- Struct `MigrationConfigsClientCreateAndStartMigrationResult` has been removed
+- Struct `MigrationConfigsClientGetResult` has been removed
+- Struct `MigrationConfigsClientListPager` has been removed
+- Struct `MigrationConfigsClientListResult` has been removed
+- Struct `NamespacesClientCheckNameAvailabilityResult` has been removed
+- Struct `NamespacesClientCreateOrUpdateAuthorizationRuleResult` has been removed
+- Struct `NamespacesClientCreateOrUpdateNetworkRuleSetResult` has been removed
+- Struct `NamespacesClientCreateOrUpdatePoller` has been removed
+- Struct `NamespacesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `NamespacesClientCreateOrUpdateResult` has been removed
+- Struct `NamespacesClientDeletePoller` has been removed
+- Struct `NamespacesClientDeletePollerResponse` has been removed
+- Struct `NamespacesClientGetAuthorizationRuleResult` has been removed
+- Struct `NamespacesClientGetNetworkRuleSetResult` has been removed
+- Struct `NamespacesClientGetResult` has been removed
+- Struct `NamespacesClientListAuthorizationRulesPager` has been removed
+- Struct `NamespacesClientListAuthorizationRulesResult` has been removed
+- Struct `NamespacesClientListByResourceGroupPager` has been removed
+- Struct `NamespacesClientListByResourceGroupResult` has been removed
+- Struct `NamespacesClientListKeysResult` has been removed
+- Struct `NamespacesClientListNetworkRuleSetsPager` has been removed
+- Struct `NamespacesClientListNetworkRuleSetsResult` has been removed
+- Struct `NamespacesClientListPager` has been removed
+- Struct `NamespacesClientListResult` has been removed
+- Struct `NamespacesClientRegenerateKeysResult` has been removed
+- Struct `NamespacesClientUpdateResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `PrivateEndpointConnectionsClientCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionsClientDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsClientDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientGetResult` has been removed
+- Struct `PrivateEndpointConnectionsClientListPager` has been removed
+- Struct `PrivateEndpointConnectionsClientListResult` has been removed
+- Struct `PrivateLinkResourcesClientGetResult` has been removed
+- Struct `QueuesClientCreateOrUpdateAuthorizationRuleResult` has been removed
+- Struct `QueuesClientCreateOrUpdateResult` has been removed
+- Struct `QueuesClientGetAuthorizationRuleResult` has been removed
+- Struct `QueuesClientGetResult` has been removed
+- Struct `QueuesClientListAuthorizationRulesPager` has been removed
+- Struct `QueuesClientListAuthorizationRulesResult` has been removed
+- Struct `QueuesClientListByNamespacePager` has been removed
+- Struct `QueuesClientListByNamespaceResult` has been removed
+- Struct `QueuesClientListKeysResult` has been removed
+- Struct `QueuesClientRegenerateKeysResult` has been removed
+- Struct `RulesClientCreateOrUpdateResult` has been removed
+- Struct `RulesClientGetResult` has been removed
+- Struct `RulesClientListBySubscriptionsPager` has been removed
+- Struct `RulesClientListBySubscriptionsResult` has been removed
+- Struct `SubscriptionsClientCreateOrUpdateResult` has been removed
+- Struct `SubscriptionsClientGetResult` has been removed
+- Struct `SubscriptionsClientListByTopicPager` has been removed
+- Struct `SubscriptionsClientListByTopicResult` has been removed
+- Struct `TopicsClientCreateOrUpdateAuthorizationRuleResult` has been removed
+- Struct `TopicsClientCreateOrUpdateResult` has been removed
+- Struct `TopicsClientGetAuthorizationRuleResult` has been removed
+- Struct `TopicsClientGetResult` has been removed
+- Struct `TopicsClientListAuthorizationRulesPager` has been removed
+- Struct `TopicsClientListAuthorizationRulesResult` has been removed
+- Struct `TopicsClientListByNamespacePager` has been removed
+- Struct `TopicsClientListByNamespaceResult` has been removed
+- Struct `TopicsClientListKeysResult` has been removed
+- Struct `TopicsClientRegenerateKeysResult` has been removed
+- Field `DisasterRecoveryConfigsClientListResult` of struct `DisasterRecoveryConfigsClientListResponse` has been removed
+- Field `RawResponse` of struct `DisasterRecoveryConfigsClientListResponse` has been removed
+- Field `QueuesClientListAuthorizationRulesResult` of struct `QueuesClientListAuthorizationRulesResponse` has been removed
+- Field `RawResponse` of struct `QueuesClientListAuthorizationRulesResponse` has been removed
+- Field `TopicsClientCreateOrUpdateAuthorizationRuleResult` of struct `TopicsClientCreateOrUpdateAuthorizationRuleResponse` has been removed
+- Field `RawResponse` of struct `TopicsClientCreateOrUpdateAuthorizationRuleResponse` has been removed
+- Field `RulesClientGetResult` of struct `RulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `RulesClientGetResponse` has been removed
+- Field `DisasterRecoveryConfigsClientCheckNameAvailabilityResult` of struct `DisasterRecoveryConfigsClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `DisasterRecoveryConfigsClientCheckNameAvailabilityResponse` has been removed
+- Field `DisasterRecoveryConfigsClientListAuthorizationRulesResult` of struct `DisasterRecoveryConfigsClientListAuthorizationRulesResponse` has been removed
+- Field `RawResponse` of struct `DisasterRecoveryConfigsClientListAuthorizationRulesResponse` has been removed
+- Field `TopicsClientListAuthorizationRulesResult` of struct `TopicsClientListAuthorizationRulesResponse` has been removed
+- Field `RawResponse` of struct `TopicsClientListAuthorizationRulesResponse` has been removed
+- Field `NamespacesClientUpdateResult` of struct `NamespacesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientUpdateResponse` has been removed
+- Field `DisasterRecoveryConfigsClientGetAuthorizationRuleResult` of struct `DisasterRecoveryConfigsClientGetAuthorizationRuleResponse` has been removed
+- Field `RawResponse` of struct `DisasterRecoveryConfigsClientGetAuthorizationRuleResponse` has been removed
+- Field `QueuesClientRegenerateKeysResult` of struct `QueuesClientRegenerateKeysResponse` has been removed
+- Field `RawResponse` of struct `QueuesClientRegenerateKeysResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `MigrationConfigsClientCompleteMigrationResponse` has been removed
+- Field `RulesClientCreateOrUpdateResult` of struct `RulesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `RulesClientCreateOrUpdateResponse` has been removed
+- Field `NamespacesClientGetNetworkRuleSetResult` of struct `NamespacesClientGetNetworkRuleSetResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientGetNetworkRuleSetResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientDeleteAuthorizationRuleResponse` has been removed
+- Field `TopicsClientGetAuthorizationRuleResult` of struct `TopicsClientGetAuthorizationRuleResponse` has been removed
+- Field `RawResponse` of struct `TopicsClientGetAuthorizationRuleResponse` has been removed
+- Field `PrivateEndpointConnectionsClientListResult` of struct `PrivateEndpointConnectionsClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientListResponse` has been removed
+- Field `NamespacesClientCreateOrUpdateNetworkRuleSetResult` of struct `NamespacesClientCreateOrUpdateNetworkRuleSetResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientCreateOrUpdateNetworkRuleSetResponse` has been removed
+- Field `NamespacesClientListNetworkRuleSetsResult` of struct `NamespacesClientListNetworkRuleSetsResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientListNetworkRuleSetsResponse` has been removed
+- Field `NamespacesClientRegenerateKeysResult` of struct `NamespacesClientRegenerateKeysResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientRegenerateKeysResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `SubscriptionsClientCreateOrUpdateResult` of struct `SubscriptionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SubscriptionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `MigrationConfigsClientRevertResponse` has been removed
+- Field `RawResponse` of struct `QueuesClientDeleteResponse` has been removed
+- Field `QueuesClientCreateOrUpdateResult` of struct `QueuesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `QueuesClientCreateOrUpdateResponse` has been removed
+- Field `TopicsClientRegenerateKeysResult` of struct `TopicsClientRegenerateKeysResponse` has been removed
+- Field `RawResponse` of struct `TopicsClientRegenerateKeysResponse` has been removed
+- Field `PrivateEndpointConnectionsClientCreateOrUpdateResult` of struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `RulesClientDeleteResponse` has been removed
+- Field `TopicsClientListByNamespaceResult` of struct `TopicsClientListByNamespaceResponse` has been removed
+- Field `RawResponse` of struct `TopicsClientListByNamespaceResponse` has been removed
+- Field `NamespacesClientGetResult` of struct `NamespacesClientGetResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientGetResponse` has been removed
+- Field `NamespacesClientCheckNameAvailabilityResult` of struct `NamespacesClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientCheckNameAvailabilityResponse` has been removed
+- Field `QueuesClientGetResult` of struct `QueuesClientGetResponse` has been removed
+- Field `RawResponse` of struct `QueuesClientGetResponse` has been removed
+- Field `NamespacesClientCreateOrUpdateResult` of struct `NamespacesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientCreateOrUpdateResponse` has been removed
+- Field `NamespacesClientCreateOrUpdateAuthorizationRuleResult` of struct `NamespacesClientCreateOrUpdateAuthorizationRuleResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientCreateOrUpdateAuthorizationRuleResponse` has been removed
+- Field `QueuesClientCreateOrUpdateAuthorizationRuleResult` of struct `QueuesClientCreateOrUpdateAuthorizationRuleResponse` has been removed
+- Field `RawResponse` of struct `QueuesClientCreateOrUpdateAuthorizationRuleResponse` has been removed
+- Field `PrivateLinkResourcesClientGetResult` of struct `PrivateLinkResourcesClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientGetResponse` has been removed
+- Field `RawResponse` of struct `TopicsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `TopicsClientDeleteAuthorizationRuleResponse` has been removed
+- Field `SubscriptionsClientGetResult` of struct `SubscriptionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SubscriptionsClientGetResponse` has been removed
+- Field `MigrationConfigsClientCreateAndStartMigrationResult` of struct `MigrationConfigsClientCreateAndStartMigrationResponse` has been removed
+- Field `RawResponse` of struct `MigrationConfigsClientCreateAndStartMigrationResponse` has been removed
+- Field `NamespacesClientListKeysResult` of struct `NamespacesClientListKeysResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientListKeysResponse` has been removed
+- Field `RawResponse` of struct `DisasterRecoveryConfigsClientBreakPairingResponse` has been removed
+- Field `NamespacesClientListResult` of struct `NamespacesClientListResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientListResponse` has been removed
+- Field `DisasterRecoveryConfigsClientListKeysResult` of struct `DisasterRecoveryConfigsClientListKeysResponse` has been removed
+- Field `RawResponse` of struct `DisasterRecoveryConfigsClientListKeysResponse` has been removed
+- Field `TopicsClientCreateOrUpdateResult` of struct `TopicsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `TopicsClientCreateOrUpdateResponse` has been removed
+- Field `PrivateEndpointConnectionsClientGetResult` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `QueuesClientDeleteAuthorizationRuleResponse` has been removed
+- Field `NamespacesClientListByResourceGroupResult` of struct `NamespacesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `DisasterRecoveryConfigsClientFailOverResponse` has been removed
+- Field `TopicsClientGetResult` of struct `TopicsClientGetResponse` has been removed
+- Field `RawResponse` of struct `TopicsClientGetResponse` has been removed
+- Field `QueuesClientGetAuthorizationRuleResult` of struct `QueuesClientGetAuthorizationRuleResponse` has been removed
+- Field `RawResponse` of struct `QueuesClientGetAuthorizationRuleResponse` has been removed
+- Field `SubscriptionsClientListByTopicResult` of struct `SubscriptionsClientListByTopicResponse` has been removed
+- Field `RawResponse` of struct `SubscriptionsClientListByTopicResponse` has been removed
+- Field `RawResponse` of struct `DisasterRecoveryConfigsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `SubscriptionsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `MigrationConfigsClientDeleteResponse` has been removed
+- Field `RulesClientListBySubscriptionsResult` of struct `RulesClientListBySubscriptionsResponse` has been removed
+- Field `RawResponse` of struct `RulesClientListBySubscriptionsResponse` has been removed
+- Field `NamespacesClientGetAuthorizationRuleResult` of struct `NamespacesClientGetAuthorizationRuleResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientGetAuthorizationRuleResponse` has been removed
+- Field `NamespacesClientListAuthorizationRulesResult` of struct `NamespacesClientListAuthorizationRulesResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientListAuthorizationRulesResponse` has been removed
+- Field `TopicsClientListKeysResult` of struct `TopicsClientListKeysResponse` has been removed
+- Field `RawResponse` of struct `TopicsClientListKeysResponse` has been removed
+- Field `DisasterRecoveryConfigsClientGetResult` of struct `DisasterRecoveryConfigsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DisasterRecoveryConfigsClientGetResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientDeleteResponse` has been removed
+- Field `DisasterRecoveryConfigsClientCreateOrUpdateResult` of struct `DisasterRecoveryConfigsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DisasterRecoveryConfigsClientCreateOrUpdateResponse` has been removed
+- Field `MigrationConfigsClientListResult` of struct `MigrationConfigsClientListResponse` has been removed
+- Field `RawResponse` of struct `MigrationConfigsClientListResponse` has been removed
+- Field `MigrationConfigsClientGetResult` of struct `MigrationConfigsClientGetResponse` has been removed
+- Field `RawResponse` of struct `MigrationConfigsClientGetResponse` has been removed
+- Field `QueuesClientListByNamespaceResult` of struct `QueuesClientListByNamespaceResponse` has been removed
+- Field `RawResponse` of struct `QueuesClientListByNamespaceResponse` has been removed
+- Field `QueuesClientListKeysResult` of struct `QueuesClientListKeysResponse` has been removed
+- Field `RawResponse` of struct `QueuesClientListKeysResponse` has been removed
+
+### Features Added
+
+- New anonymous field `MigrationConfigListResult` in struct `MigrationConfigsClientListResponse`
+- New anonymous field `SBTopic` in struct `TopicsClientCreateOrUpdateResponse`
+- New anonymous field `SBNamespace` in struct `NamespacesClientCreateOrUpdateResponse`
+- New anonymous field `CheckNameAvailabilityResult` in struct `NamespacesClientCheckNameAvailabilityResponse`
+- New anonymous field `ArmDisasterRecoveryListResult` in struct `DisasterRecoveryConfigsClientListResponse`
+- New anonymous field `SBQueueListResult` in struct `QueuesClientListByNamespaceResponse`
+- New anonymous field `SBAuthorizationRule` in struct `QueuesClientCreateOrUpdateAuthorizationRuleResponse`
+- New anonymous field `SBTopicListResult` in struct `TopicsClientListByNamespaceResponse`
+- New anonymous field `SBAuthorizationRule` in struct `TopicsClientGetAuthorizationRuleResponse`
+- New anonymous field `SBAuthorizationRuleListResult` in struct `NamespacesClientListAuthorizationRulesResponse`
+- New field `ResumeToken` in struct `NamespacesClientBeginDeleteOptions`
+- New anonymous field `SBNamespace` in struct `NamespacesClientGetResponse`
+- New anonymous field `NetworkRuleSet` in struct `NamespacesClientCreateOrUpdateNetworkRuleSetResponse`
+- New anonymous field `AccessKeys` in struct `NamespacesClientListKeysResponse`
+- New anonymous field `SBAuthorizationRuleListResult` in struct `DisasterRecoveryConfigsClientListAuthorizationRulesResponse`
+- New anonymous field `SBQueue` in struct `QueuesClientGetResponse`
+- New anonymous field `SBAuthorizationRuleListResult` in struct `TopicsClientListAuthorizationRulesResponse`
+- New anonymous field `Rule` in struct `RulesClientGetResponse`
+- New anonymous field `AccessKeys` in struct `TopicsClientRegenerateKeysResponse`
+- New field `ResumeToken` in struct `NamespacesClientBeginCreateOrUpdateOptions`
+- New anonymous field `ArmDisasterRecovery` in struct `DisasterRecoveryConfigsClientGetResponse`
+- New anonymous field `SBQueue` in struct `QueuesClientCreateOrUpdateResponse`
+- New anonymous field `SBSubscription` in struct `SubscriptionsClientGetResponse`
+- New anonymous field `SBSubscription` in struct `SubscriptionsClientCreateOrUpdateResponse`
+- New anonymous field `SBNamespace` in struct `NamespacesClientUpdateResponse`
+- New field `ResumeToken` in struct `MigrationConfigsClientBeginCreateAndStartMigrationOptions`
+- New anonymous field `SBAuthorizationRule` in struct `DisasterRecoveryConfigsClientGetAuthorizationRuleResponse`
+- New anonymous field `MigrationConfigProperties` in struct `MigrationConfigsClientCreateAndStartMigrationResponse`
+- New anonymous field `SBAuthorizationRule` in struct `NamespacesClientCreateOrUpdateAuthorizationRuleResponse`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsClientBeginDeleteOptions`
+- New anonymous field `SBAuthorizationRuleListResult` in struct `QueuesClientListAuthorizationRulesResponse`
+- New anonymous field `PrivateLinkResourcesListResult` in struct `PrivateLinkResourcesClientGetResponse`
+- New anonymous field `NetworkRuleSet` in struct `NamespacesClientGetNetworkRuleSetResponse`
+- New anonymous field `SBAuthorizationRule` in struct `QueuesClientGetAuthorizationRuleResponse`
+- New anonymous field `SBNamespaceListResult` in struct `NamespacesClientListByResourceGroupResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `AccessKeys` in struct `DisasterRecoveryConfigsClientListKeysResponse`
+- New anonymous field `CheckNameAvailabilityResult` in struct `DisasterRecoveryConfigsClientCheckNameAvailabilityResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientGetResponse`
+- New anonymous field `AccessKeys` in struct `NamespacesClientRegenerateKeysResponse`
+- New anonymous field `Rule` in struct `RulesClientCreateOrUpdateResponse`
+- New anonymous field `NetworkRuleSetListResult` in struct `NamespacesClientListNetworkRuleSetsResponse`
+- New anonymous field `RuleListResult` in struct `RulesClientListBySubscriptionsResponse`
+- New anonymous field `SBNamespaceListResult` in struct `NamespacesClientListResponse`
+- New anonymous field `AccessKeys` in struct `QueuesClientRegenerateKeysResponse`
+- New anonymous field `SBTopic` in struct `TopicsClientGetResponse`
+- New anonymous field `MigrationConfigProperties` in struct `MigrationConfigsClientGetResponse`
+- New anonymous field `SBSubscriptionListResult` in struct `SubscriptionsClientListByTopicResponse`
+- New anonymous field `PrivateEndpointConnectionListResult` in struct `PrivateEndpointConnectionsClientListResponse`
+- New anonymous field `AccessKeys` in struct `TopicsClientListKeysResponse`
+- New anonymous field `AccessKeys` in struct `QueuesClientListKeysResponse`
+- New anonymous field `SBAuthorizationRule` in struct `TopicsClientCreateOrUpdateAuthorizationRuleResponse`
+- New anonymous field `ArmDisasterRecovery` in struct `DisasterRecoveryConfigsClientCreateOrUpdateResponse`
+- New anonymous field `SBAuthorizationRule` in struct `NamespacesClientGetAuthorizationRuleResponse`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

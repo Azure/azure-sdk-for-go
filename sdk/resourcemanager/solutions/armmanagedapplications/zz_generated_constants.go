@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armmanagedapplications
 
 const (
 	moduleName    = "armmanagedapplications"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -25,11 +25,6 @@ func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
 	}
-}
-
-// ToPtr returns a *ActionType pointing to the current value.
-func (c ActionType) ToPtr() *ActionType {
-	return &c
 }
 
 // ApplicationArtifactName - The managed application artifact name.
@@ -52,11 +47,6 @@ func PossibleApplicationArtifactNameValues() []ApplicationArtifactName {
 	}
 }
 
-// ToPtr returns a *ApplicationArtifactName pointing to the current value.
-func (c ApplicationArtifactName) ToPtr() *ApplicationArtifactName {
-	return &c
-}
-
 // ApplicationArtifactType - The managed application artifact type.
 type ApplicationArtifactType string
 
@@ -73,11 +63,6 @@ func PossibleApplicationArtifactTypeValues() []ApplicationArtifactType {
 		ApplicationArtifactTypeTemplate,
 		ApplicationArtifactTypeCustom,
 	}
-}
-
-// ToPtr returns a *ApplicationArtifactType pointing to the current value.
-func (c ApplicationArtifactType) ToPtr() *ApplicationArtifactType {
-	return &c
 }
 
 // ApplicationDefinitionArtifactName - The managed application artifact name.
@@ -100,11 +85,6 @@ func PossibleApplicationDefinitionArtifactNameValues() []ApplicationDefinitionAr
 	}
 }
 
-// ToPtr returns a *ApplicationDefinitionArtifactName pointing to the current value.
-func (c ApplicationDefinitionArtifactName) ToPtr() *ApplicationDefinitionArtifactName {
-	return &c
-}
-
 // ApplicationLockLevel - The managed application lock level.
 type ApplicationLockLevel string
 
@@ -123,11 +103,6 @@ func PossibleApplicationLockLevelValues() []ApplicationLockLevel {
 	}
 }
 
-// ToPtr returns a *ApplicationLockLevel pointing to the current value.
-func (c ApplicationLockLevel) ToPtr() *ApplicationLockLevel {
-	return &c
-}
-
 // ApplicationManagementMode - The management mode.
 type ApplicationManagementMode string
 
@@ -144,11 +119,6 @@ func PossibleApplicationManagementModeValues() []ApplicationManagementMode {
 		ApplicationManagementModeNotSpecified,
 		ApplicationManagementModeUnmanaged,
 	}
-}
-
-// ToPtr returns a *ApplicationManagementMode pointing to the current value.
-func (c ApplicationManagementMode) ToPtr() *ApplicationManagementMode {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -171,11 +141,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // DeploymentMode - The deployment mode.
 type DeploymentMode string
 
@@ -192,11 +157,6 @@ func PossibleDeploymentModeValues() []DeploymentMode {
 		DeploymentModeIncremental,
 		DeploymentModeNotSpecified,
 	}
-}
-
-// ToPtr returns a *DeploymentMode pointing to the current value.
-func (c DeploymentMode) ToPtr() *DeploymentMode {
-	return &c
 }
 
 // JitApprovalMode - The Jit approval mode.
@@ -217,11 +177,6 @@ func PossibleJitApprovalModeValues() []JitApprovalMode {
 	}
 }
 
-// ToPtr returns a *JitApprovalMode pointing to the current value.
-func (c JitApprovalMode) ToPtr() *JitApprovalMode {
-	return &c
-}
-
 // JitApproverType - The approver type.
 type JitApproverType string
 
@@ -236,11 +191,6 @@ func PossibleJitApproverTypeValues() []JitApproverType {
 		JitApproverTypeGroup,
 		JitApproverTypeUser,
 	}
-}
-
-// ToPtr returns a *JitApproverType pointing to the current value.
-func (c JitApproverType) ToPtr() *JitApproverType {
-	return &c
 }
 
 // JitRequestState - The JIT request state.
@@ -271,11 +221,6 @@ func PossibleJitRequestStateValues() []JitRequestState {
 	}
 }
 
-// ToPtr returns a *JitRequestState pointing to the current value.
-func (c JitRequestState) ToPtr() *JitRequestState {
-	return &c
-}
-
 // JitSchedulingType - The JIT request scheduling type.
 type JitSchedulingType string
 
@@ -292,11 +237,6 @@ func PossibleJitSchedulingTypeValues() []JitSchedulingType {
 		JitSchedulingTypeOnce,
 		JitSchedulingTypeRecurring,
 	}
-}
-
-// ToPtr returns a *JitSchedulingType pointing to the current value.
-func (c JitSchedulingType) ToPtr() *JitSchedulingType {
-	return &c
 }
 
 // Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
@@ -316,11 +256,6 @@ func PossibleOriginValues() []Origin {
 		OriginUser,
 		OriginUserSystem,
 	}
-}
-
-// ToPtr returns a *Origin pointing to the current value.
-func (c Origin) ToPtr() *Origin {
-	return &c
 }
 
 // ProvisioningState - Provisioning status of the managed application.
@@ -353,11 +288,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // ResourceIdentityType - The identity type.
 type ResourceIdentityType string
 
@@ -376,9 +306,4 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 		ResourceIdentityTypeSystemAssignedUserAssigned,
 		ResourceIdentityTypeNone,
 	}
-}
-
-// ToPtr returns a *ResourceIdentityType pointing to the current value.
-func (c ResourceIdentityType) ToPtr() *ResourceIdentityType {
-	return &c
 }

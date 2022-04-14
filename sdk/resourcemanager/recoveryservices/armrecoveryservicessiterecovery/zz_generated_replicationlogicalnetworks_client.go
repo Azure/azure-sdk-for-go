@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -37,22 +38,26 @@ type ReplicationLogicalNetworksClient struct {
 // subscriptionID - The subscription Id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewReplicationLogicalNetworksClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ReplicationLogicalNetworksClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewReplicationLogicalNetworksClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationLogicalNetworksClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ReplicationLogicalNetworksClient{
 		resourceName:      resourceName,
 		resourceGroupName: resourceGroupName,
 		subscriptionID:    subscriptionID,
-		host:              string(cp.Endpoint),
-		pl:                armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:              ep,
+		pl:                pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets the details of a logical network.
@@ -104,7 +109,7 @@ func (client *ReplicationLogicalNetworksClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -112,7 +117,7 @@ func (client *ReplicationLogicalNetworksClient) getCreateRequest(ctx context.Con
 
 // getHandleResponse handles the Get response.
 func (client *ReplicationLogicalNetworksClient) getHandleResponse(resp *http.Response) (ReplicationLogicalNetworksClientGetResponse, error) {
-	result := ReplicationLogicalNetworksClientGetResponse{RawResponse: resp}
+	result := ReplicationLogicalNetworksClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogicalNetwork); err != nil {
 		return ReplicationLogicalNetworksClientGetResponse{}, err
 	}
@@ -124,16 +129,32 @@ func (client *ReplicationLogicalNetworksClient) getHandleResponse(resp *http.Res
 // fabricName - Server Id.
 // options - ReplicationLogicalNetworksClientListByReplicationFabricsOptions contains the optional parameters for the ReplicationLogicalNetworksClient.ListByReplicationFabrics
 // method.
-func (client *ReplicationLogicalNetworksClient) ListByReplicationFabrics(fabricName string, options *ReplicationLogicalNetworksClientListByReplicationFabricsOptions) *ReplicationLogicalNetworksClientListByReplicationFabricsPager {
-	return &ReplicationLogicalNetworksClientListByReplicationFabricsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByReplicationFabricsCreateRequest(ctx, fabricName, options)
+func (client *ReplicationLogicalNetworksClient) ListByReplicationFabrics(fabricName string, options *ReplicationLogicalNetworksClientListByReplicationFabricsOptions) *runtime.Pager[ReplicationLogicalNetworksClientListByReplicationFabricsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ReplicationLogicalNetworksClientListByReplicationFabricsResponse]{
+		More: func(page ReplicationLogicalNetworksClientListByReplicationFabricsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ReplicationLogicalNetworksClientListByReplicationFabricsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.LogicalNetworkCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *ReplicationLogicalNetworksClientListByReplicationFabricsResponse) (ReplicationLogicalNetworksClientListByReplicationFabricsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByReplicationFabricsCreateRequest(ctx, fabricName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ReplicationLogicalNetworksClientListByReplicationFabricsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReplicationLogicalNetworksClientListByReplicationFabricsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReplicationLogicalNetworksClientListByReplicationFabricsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByReplicationFabricsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByReplicationFabricsCreateRequest creates the ListByReplicationFabrics request.
@@ -160,7 +181,7 @@ func (client *ReplicationLogicalNetworksClient) listByReplicationFabricsCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -168,7 +189,7 @@ func (client *ReplicationLogicalNetworksClient) listByReplicationFabricsCreateRe
 
 // listByReplicationFabricsHandleResponse handles the ListByReplicationFabrics response.
 func (client *ReplicationLogicalNetworksClient) listByReplicationFabricsHandleResponse(resp *http.Response) (ReplicationLogicalNetworksClientListByReplicationFabricsResponse, error) {
-	result := ReplicationLogicalNetworksClientListByReplicationFabricsResponse{RawResponse: resp}
+	result := ReplicationLogicalNetworksClientListByReplicationFabricsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogicalNetworkCollection); err != nil {
 		return ReplicationLogicalNetworksClientListByReplicationFabricsResponse{}, err
 	}

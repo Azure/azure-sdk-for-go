@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ClusterVersionsClient struct {
 // subscriptionID - The customer subscription identifier.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewClusterVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ClusterVersionsClient {
+func NewClusterVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClusterVersionsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ClusterVersionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets information about an available Service Fabric cluster code version.
@@ -97,7 +102,7 @@ func (client *ClusterVersionsClient) getCreateRequest(ctx context.Context, locat
 
 // getHandleResponse handles the Get response.
 func (client *ClusterVersionsClient) getHandleResponse(resp *http.Response) (ClusterVersionsClientGetResponse, error) {
-	result := ClusterVersionsClientGetResponse{RawResponse: resp}
+	result := ClusterVersionsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterCodeVersionsListResult); err != nil {
 		return ClusterVersionsClientGetResponse{}, err
 	}
@@ -158,7 +163,7 @@ func (client *ClusterVersionsClient) getByEnvironmentCreateRequest(ctx context.C
 
 // getByEnvironmentHandleResponse handles the GetByEnvironment response.
 func (client *ClusterVersionsClient) getByEnvironmentHandleResponse(resp *http.Response) (ClusterVersionsClientGetByEnvironmentResponse, error) {
-	result := ClusterVersionsClientGetByEnvironmentResponse{RawResponse: resp}
+	result := ClusterVersionsClientGetByEnvironmentResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterCodeVersionsListResult); err != nil {
 		return ClusterVersionsClientGetByEnvironmentResponse{}, err
 	}
@@ -208,7 +213,7 @@ func (client *ClusterVersionsClient) listCreateRequest(ctx context.Context, loca
 
 // listHandleResponse handles the List response.
 func (client *ClusterVersionsClient) listHandleResponse(resp *http.Response) (ClusterVersionsClientListResponse, error) {
-	result := ClusterVersionsClientListResponse{RawResponse: resp}
+	result := ClusterVersionsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterCodeVersionsListResult); err != nil {
 		return ClusterVersionsClientListResponse{}, err
 	}
@@ -264,7 +269,7 @@ func (client *ClusterVersionsClient) listByEnvironmentCreateRequest(ctx context.
 
 // listByEnvironmentHandleResponse handles the ListByEnvironment response.
 func (client *ClusterVersionsClient) listByEnvironmentHandleResponse(resp *http.Response) (ClusterVersionsClientListByEnvironmentResponse, error) {
-	result := ClusterVersionsClientListByEnvironmentResponse{RawResponse: resp}
+	result := ClusterVersionsClientListByEnvironmentResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterCodeVersionsListResult); err != nil {
 		return ClusterVersionsClientListByEnvironmentResponse{}, err
 	}

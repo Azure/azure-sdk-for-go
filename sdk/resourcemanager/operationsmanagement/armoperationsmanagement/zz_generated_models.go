@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -7,12 +7,6 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package armoperationsmanagement
-
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-)
 
 // ArmTemplateParameter - Parameter to pass to ARM template
 type ArmTemplateParameter struct {
@@ -68,13 +62,6 @@ type ManagementAssociationPropertiesList struct {
 	Value []*ManagementAssociation `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ManagementAssociationPropertiesList.
-func (m ManagementAssociationPropertiesList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", m.Value)
-	return json.Marshal(objectMap)
-}
-
 // ManagementAssociationsClientCreateOrUpdateOptions contains the optional parameters for the ManagementAssociationsClient.CreateOrUpdate
 // method.
 type ManagementAssociationsClientCreateOrUpdateOptions struct {
@@ -125,7 +112,7 @@ type ManagementConfigurationProperties struct {
 	ParentResourceType *string `json:"parentResourceType,omitempty"`
 
 	// REQUIRED; The Json object containing the ARM template to deploy
-	Template map[string]interface{} `json:"template,omitempty"`
+	Template interface{} `json:"template,omitempty"`
 
 	// The applicationId of the appliance for this Management.
 	ApplicationID *string `json:"applicationId,omitempty"`
@@ -134,28 +121,10 @@ type ManagementConfigurationProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ManagementConfigurationProperties.
-func (m ManagementConfigurationProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "applicationId", m.ApplicationID)
-	populate(objectMap, "parameters", m.Parameters)
-	populate(objectMap, "parentResourceType", m.ParentResourceType)
-	populate(objectMap, "provisioningState", m.ProvisioningState)
-	populate(objectMap, "template", m.Template)
-	return json.Marshal(objectMap)
-}
-
 // ManagementConfigurationPropertiesList - the list of ManagementConfiguration response
 type ManagementConfigurationPropertiesList struct {
 	// List of Management Configuration properties within the subscription.
 	Value []*ManagementConfiguration `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ManagementConfigurationPropertiesList.
-func (m ManagementConfigurationPropertiesList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", m.Value)
-	return json.Marshal(objectMap)
 }
 
 // ManagementConfigurationsClientCreateOrUpdateOptions contains the optional parameters for the ManagementConfigurationsClient.CreateOrUpdate
@@ -208,13 +177,6 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -244,30 +206,10 @@ type Solution struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Solution.
-func (s Solution) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "location", s.Location)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "plan", s.Plan)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "tags", s.Tags)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
 // SolutionPatch - The properties of a Solution that can be patched.
 type SolutionPatch struct {
 	// Resource tags
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SolutionPatch.
-func (s SolutionPatch) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tags", s.Tags)
-	return json.Marshal(objectMap)
 }
 
 // SolutionPlan - Plan for solution object supported by the OperationsManagement resource provider.
@@ -304,43 +246,29 @@ type SolutionProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SolutionProperties.
-func (s SolutionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "containedResources", s.ContainedResources)
-	populate(objectMap, "provisioningState", s.ProvisioningState)
-	populate(objectMap, "referencedResources", s.ReferencedResources)
-	populate(objectMap, "workspaceResourceId", s.WorkspaceResourceID)
-	return json.Marshal(objectMap)
-}
-
 // SolutionPropertiesList - the list of solution response
 type SolutionPropertiesList struct {
 	// List of solution properties within the subscription.
 	Value []*Solution `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SolutionPropertiesList.
-func (s SolutionPropertiesList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // SolutionsClientBeginCreateOrUpdateOptions contains the optional parameters for the SolutionsClient.BeginCreateOrUpdate
 // method.
 type SolutionsClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SolutionsClientBeginDeleteOptions contains the optional parameters for the SolutionsClient.BeginDelete method.
 type SolutionsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SolutionsClientBeginUpdateOptions contains the optional parameters for the SolutionsClient.BeginUpdate method.
 type SolutionsClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SolutionsClientGetOptions contains the optional parameters for the SolutionsClient.Get method.
@@ -357,14 +285,4 @@ type SolutionsClientListByResourceGroupOptions struct {
 // SolutionsClientListBySubscriptionOptions contains the optional parameters for the SolutionsClient.ListBySubscription method.
 type SolutionsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
 }

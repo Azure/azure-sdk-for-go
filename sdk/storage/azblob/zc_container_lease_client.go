@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -24,7 +27,7 @@ func (c *ContainerClient) NewContainerLeaseClient(leaseID *string) (*ContainerLe
 		if err != nil {
 			return nil, err
 		}
-		leaseID = to.StringPtr(generatedUuid.String())
+		leaseID = to.Ptr(generatedUuid.String())
 	}
 	return &ContainerLeaseClient{
 		ContainerClient: *c,

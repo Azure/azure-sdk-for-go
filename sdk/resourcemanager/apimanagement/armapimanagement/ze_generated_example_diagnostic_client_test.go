@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,140 +17,169 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement"
 )
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListDiagnostics.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListDiagnostics.json
 func ExampleDiagnosticClient_ListByService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewDiagnosticClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewDiagnosticClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByService("<resource-group-name>",
 		"<service-name>",
 		&armapimanagement.DiagnosticClientListByServiceOptions{Filter: nil,
 			Top:  nil,
 			Skip: nil,
 		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementHeadDiagnostic.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementHeadDiagnostic.json
 func ExampleDiagnosticClient_GetEntityTag() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewDiagnosticClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewDiagnosticClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.GetEntityTag(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		"<diagnostic-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetDiagnostic.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetDiagnostic.json
 func ExampleDiagnosticClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewDiagnosticClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewDiagnosticClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		"<diagnostic-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.DiagnosticClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateDiagnostic.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateDiagnostic.json
 func ExampleDiagnosticClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewDiagnosticClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewDiagnosticClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		"<diagnostic-id>",
 		armapimanagement.DiagnosticContract{
 			Properties: &armapimanagement.DiagnosticContractProperties{
-				AlwaysLog: armapimanagement.AlwaysLog("allErrors").ToPtr(),
+				AlwaysLog: to.Ptr(armapimanagement.AlwaysLogAllErrors),
 				Backend: &armapimanagement.PipelineDiagnosticSettings{
 					Response: &armapimanagement.HTTPMessageDiagnostic{
 						Body: &armapimanagement.BodyDiagnosticSettings{
-							Bytes: to.Int32Ptr(512),
+							Bytes: to.Ptr[int32](512),
 						},
 						Headers: []*string{
-							to.StringPtr("Content-type")},
+							to.Ptr("Content-type")},
 					},
 					Request: &armapimanagement.HTTPMessageDiagnostic{
 						Body: &armapimanagement.BodyDiagnosticSettings{
-							Bytes: to.Int32Ptr(512),
+							Bytes: to.Ptr[int32](512),
 						},
 						Headers: []*string{
-							to.StringPtr("Content-type")},
+							to.Ptr("Content-type")},
 					},
 				},
 				Frontend: &armapimanagement.PipelineDiagnosticSettings{
 					Response: &armapimanagement.HTTPMessageDiagnostic{
 						Body: &armapimanagement.BodyDiagnosticSettings{
-							Bytes: to.Int32Ptr(512),
+							Bytes: to.Ptr[int32](512),
 						},
 						Headers: []*string{
-							to.StringPtr("Content-type")},
+							to.Ptr("Content-type")},
 					},
 					Request: &armapimanagement.HTTPMessageDiagnostic{
 						Body: &armapimanagement.BodyDiagnosticSettings{
-							Bytes: to.Int32Ptr(512),
+							Bytes: to.Ptr[int32](512),
 						},
 						Headers: []*string{
-							to.StringPtr("Content-type")},
+							to.Ptr("Content-type")},
 					},
 				},
-				LoggerID: to.StringPtr("<logger-id>"),
+				LoggerID: to.Ptr("<logger-id>"),
 				Sampling: &armapimanagement.SamplingSettings{
-					Percentage:   to.Float64Ptr(50),
-					SamplingType: armapimanagement.SamplingType("fixed").ToPtr(),
+					Percentage:   to.Ptr[float64](50),
+					SamplingType: to.Ptr(armapimanagement.SamplingTypeFixed),
 				},
 			},
 		},
 		&armapimanagement.DiagnosticClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.DiagnosticClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateDiagnostic.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateDiagnostic.json
 func ExampleDiagnosticClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewDiagnosticClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewDiagnosticClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<service-name>",
@@ -158,61 +187,68 @@ func ExampleDiagnosticClient_Update() {
 		"<if-match>",
 		armapimanagement.DiagnosticContract{
 			Properties: &armapimanagement.DiagnosticContractProperties{
-				AlwaysLog: armapimanagement.AlwaysLog("allErrors").ToPtr(),
+				AlwaysLog: to.Ptr(armapimanagement.AlwaysLogAllErrors),
 				Backend: &armapimanagement.PipelineDiagnosticSettings{
 					Response: &armapimanagement.HTTPMessageDiagnostic{
 						Body: &armapimanagement.BodyDiagnosticSettings{
-							Bytes: to.Int32Ptr(512),
+							Bytes: to.Ptr[int32](512),
 						},
 						Headers: []*string{
-							to.StringPtr("Content-type")},
+							to.Ptr("Content-type")},
 					},
 					Request: &armapimanagement.HTTPMessageDiagnostic{
 						Body: &armapimanagement.BodyDiagnosticSettings{
-							Bytes: to.Int32Ptr(512),
+							Bytes: to.Ptr[int32](512),
 						},
 						Headers: []*string{
-							to.StringPtr("Content-type")},
+							to.Ptr("Content-type")},
 					},
 				},
 				Frontend: &armapimanagement.PipelineDiagnosticSettings{
 					Response: &armapimanagement.HTTPMessageDiagnostic{
 						Body: &armapimanagement.BodyDiagnosticSettings{
-							Bytes: to.Int32Ptr(512),
+							Bytes: to.Ptr[int32](512),
 						},
 						Headers: []*string{
-							to.StringPtr("Content-type")},
+							to.Ptr("Content-type")},
 					},
 					Request: &armapimanagement.HTTPMessageDiagnostic{
 						Body: &armapimanagement.BodyDiagnosticSettings{
-							Bytes: to.Int32Ptr(512),
+							Bytes: to.Ptr[int32](512),
 						},
 						Headers: []*string{
-							to.StringPtr("Content-type")},
+							to.Ptr("Content-type")},
 					},
 				},
-				LoggerID: to.StringPtr("<logger-id>"),
+				LoggerID: to.Ptr("<logger-id>"),
 				Sampling: &armapimanagement.SamplingSettings{
-					Percentage:   to.Float64Ptr(50),
-					SamplingType: armapimanagement.SamplingType("fixed").ToPtr(),
+					Percentage:   to.Ptr[float64](50),
+					SamplingType: to.Ptr(armapimanagement.SamplingTypeFixed),
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.DiagnosticClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementDeleteDiagnostic.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementDeleteDiagnostic.json
 func ExampleDiagnosticClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewDiagnosticClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewDiagnosticClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<service-name>",
@@ -220,6 +256,7 @@ func ExampleDiagnosticClient_Delete() {
 		"<if-match>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }

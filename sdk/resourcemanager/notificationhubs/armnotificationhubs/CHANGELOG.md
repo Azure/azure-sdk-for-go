@@ -1,5 +1,161 @@
 # Release History
 
+## 0.4.0 (2022-04-12)
+### Breaking Changes
+
+- Function `*Client.List` return value(s) have been changed from `(*ClientListPager)` to `(*runtime.Pager[ClientListResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*Client.ListAuthorizationRules` return value(s) have been changed from `(*ClientListAuthorizationRulesPager)` to `(*runtime.Pager[ClientListAuthorizationRulesResponse])`
+- Function `*NamespacesClient.ListAuthorizationRules` return value(s) have been changed from `(*NamespacesClientListAuthorizationRulesPager)` to `(*runtime.Pager[NamespacesClientListAuthorizationRulesResponse])`
+- Function `NewClient` return value(s) have been changed from `(*Client)` to `(*Client, error)`
+- Function `*NamespacesClient.List` return value(s) have been changed from `(*NamespacesClientListPager)` to `(*runtime.Pager[NamespacesClientListResponse])`
+- Function `NewNamespacesClient` return value(s) have been changed from `(*NamespacesClient)` to `(*NamespacesClient, error)`
+- Function `*NamespacesClient.ListAll` return value(s) have been changed from `(*NamespacesClientListAllPager)` to `(*runtime.Pager[NamespacesClientListAllResponse])`
+- Function `*NamespacesClient.BeginDelete` return value(s) have been changed from `(NamespacesClientDeletePollerResponse, error)` to `(*armruntime.Poller[NamespacesClientDeleteResponse], error)`
+- Type of `ClientDebugSendOptions.Parameters` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `DebugSendResult.Results` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*NamespacesClientListAuthorizationRulesPager.NextPage` has been removed
+- Function `*ClientListAuthorizationRulesPager.NextPage` has been removed
+- Function `NamespaceType.ToPtr` has been removed
+- Function `*ClientListPager.Err` has been removed
+- Function `*NamespacesClientListPager.Err` has been removed
+- Function `*NamespacesClientListPager.PageResponse` has been removed
+- Function `NamespacesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `AccessRights.ToPtr` has been removed
+- Function `*NamespacesClientListAllPager.Err` has been removed
+- Function `*ClientListAuthorizationRulesPager.Err` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*ClientListPager.PageResponse` has been removed
+- Function `*NamespacesClientDeletePoller.Done` has been removed
+- Function `*NamespacesClientListPager.NextPage` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*NamespacesClientListAuthorizationRulesPager.Err` has been removed
+- Function `*ClientListPager.NextPage` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*ClientListAuthorizationRulesPager.PageResponse` has been removed
+- Function `*NamespacesClientDeletePoller.FinalResponse` has been removed
+- Function `SKUName.ToPtr` has been removed
+- Function `*NamespacesClientListAuthorizationRulesPager.PageResponse` has been removed
+- Function `*NamespacesClientDeletePoller.ResumeToken` has been removed
+- Function `*NamespacesClientListAllPager.NextPage` has been removed
+- Function `*NamespacesClientDeletePollerResponse.Resume` has been removed
+- Function `*NamespacesClientListAllPager.PageResponse` has been removed
+- Function `*NamespacesClientDeletePoller.Poll` has been removed
+- Struct `ClientCheckNotificationHubAvailabilityResult` has been removed
+- Struct `ClientCreateOrUpdateAuthorizationRuleResult` has been removed
+- Struct `ClientCreateOrUpdateResult` has been removed
+- Struct `ClientDebugSendResult` has been removed
+- Struct `ClientGetAuthorizationRuleResult` has been removed
+- Struct `ClientGetPnsCredentialsResult` has been removed
+- Struct `ClientGetResult` has been removed
+- Struct `ClientListAuthorizationRulesPager` has been removed
+- Struct `ClientListAuthorizationRulesResult` has been removed
+- Struct `ClientListKeysResult` has been removed
+- Struct `ClientListPager` has been removed
+- Struct `ClientListResult` has been removed
+- Struct `ClientPatchResult` has been removed
+- Struct `ClientRegenerateKeysResult` has been removed
+- Struct `NamespacesClientCheckAvailabilityResult` has been removed
+- Struct `NamespacesClientCreateOrUpdateAuthorizationRuleResult` has been removed
+- Struct `NamespacesClientCreateOrUpdateResult` has been removed
+- Struct `NamespacesClientDeletePoller` has been removed
+- Struct `NamespacesClientDeletePollerResponse` has been removed
+- Struct `NamespacesClientGetAuthorizationRuleResult` has been removed
+- Struct `NamespacesClientGetResult` has been removed
+- Struct `NamespacesClientListAllPager` has been removed
+- Struct `NamespacesClientListAllResult` has been removed
+- Struct `NamespacesClientListAuthorizationRulesPager` has been removed
+- Struct `NamespacesClientListAuthorizationRulesResult` has been removed
+- Struct `NamespacesClientListKeysResult` has been removed
+- Struct `NamespacesClientListPager` has been removed
+- Struct `NamespacesClientListResult` has been removed
+- Struct `NamespacesClientPatchResult` has been removed
+- Struct `NamespacesClientRegenerateKeysResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Field `ClientGetResult` of struct `ClientGetResponse` has been removed
+- Field `RawResponse` of struct `ClientGetResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `ClientDebugSendResult` of struct `ClientDebugSendResponse` has been removed
+- Field `RawResponse` of struct `ClientDebugSendResponse` has been removed
+- Field `ClientRegenerateKeysResult` of struct `ClientRegenerateKeysResponse` has been removed
+- Field `RawResponse` of struct `ClientRegenerateKeysResponse` has been removed
+- Field `NamespacesClientListAllResult` of struct `NamespacesClientListAllResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientListAllResponse` has been removed
+- Field `NamespacesClientGetResult` of struct `NamespacesClientGetResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientGetResponse` has been removed
+- Field `ClientListAuthorizationRulesResult` of struct `ClientListAuthorizationRulesResponse` has been removed
+- Field `RawResponse` of struct `ClientListAuthorizationRulesResponse` has been removed
+- Field `RawResponse` of struct `ClientDeleteResponse` has been removed
+- Field `NamespacesClientListResult` of struct `NamespacesClientListResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientListResponse` has been removed
+- Field `ClientPatchResult` of struct `ClientPatchResponse` has been removed
+- Field `RawResponse` of struct `ClientPatchResponse` has been removed
+- Field `NamespacesClientPatchResult` of struct `NamespacesClientPatchResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientPatchResponse` has been removed
+- Field `RawResponse` of struct `ClientDeleteAuthorizationRuleResponse` has been removed
+- Field `NamespacesClientCheckAvailabilityResult` of struct `NamespacesClientCheckAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientCheckAvailabilityResponse` has been removed
+- Field `NamespacesClientRegenerateKeysResult` of struct `NamespacesClientRegenerateKeysResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientRegenerateKeysResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientDeleteResponse` has been removed
+- Field `NamespacesClientListAuthorizationRulesResult` of struct `NamespacesClientListAuthorizationRulesResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientListAuthorizationRulesResponse` has been removed
+- Field `ClientGetPnsCredentialsResult` of struct `ClientGetPnsCredentialsResponse` has been removed
+- Field `RawResponse` of struct `ClientGetPnsCredentialsResponse` has been removed
+- Field `NamespacesClientCreateOrUpdateAuthorizationRuleResult` of struct `NamespacesClientCreateOrUpdateAuthorizationRuleResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientCreateOrUpdateAuthorizationRuleResponse` has been removed
+- Field `ClientCreateOrUpdateResult` of struct `ClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ClientCreateOrUpdateResponse` has been removed
+- Field `ClientListResult` of struct `ClientListResponse` has been removed
+- Field `RawResponse` of struct `ClientListResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientDeleteAuthorizationRuleResponse` has been removed
+- Field `NamespacesClientGetAuthorizationRuleResult` of struct `NamespacesClientGetAuthorizationRuleResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientGetAuthorizationRuleResponse` has been removed
+- Field `ClientListKeysResult` of struct `ClientListKeysResponse` has been removed
+- Field `RawResponse` of struct `ClientListKeysResponse` has been removed
+- Field `NamespacesClientListKeysResult` of struct `NamespacesClientListKeysResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientListKeysResponse` has been removed
+- Field `ClientGetAuthorizationRuleResult` of struct `ClientGetAuthorizationRuleResponse` has been removed
+- Field `RawResponse` of struct `ClientGetAuthorizationRuleResponse` has been removed
+- Field `ClientCreateOrUpdateAuthorizationRuleResult` of struct `ClientCreateOrUpdateAuthorizationRuleResponse` has been removed
+- Field `RawResponse` of struct `ClientCreateOrUpdateAuthorizationRuleResponse` has been removed
+- Field `NamespacesClientCreateOrUpdateResult` of struct `NamespacesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientCreateOrUpdateResponse` has been removed
+- Field `ClientCheckNotificationHubAvailabilityResult` of struct `ClientCheckNotificationHubAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `ClientCheckNotificationHubAvailabilityResponse` has been removed
+
+### Features Added
+
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `CheckAvailabilityResult` in struct `ClientCheckNotificationHubAvailabilityResponse`
+- New anonymous field `SharedAccessAuthorizationRuleResource` in struct `NamespacesClientCreateOrUpdateAuthorizationRuleResponse`
+- New anonymous field `NamespaceResource` in struct `NamespacesClientCreateOrUpdateResponse`
+- New anonymous field `DebugSendResponse` in struct `ClientDebugSendResponse`
+- New anonymous field `NotificationHubResource` in struct `ClientCreateOrUpdateResponse`
+- New anonymous field `NamespaceListResult` in struct `NamespacesClientListAllResponse`
+- New anonymous field `SharedAccessAuthorizationRuleListResult` in struct `ClientListAuthorizationRulesResponse`
+- New anonymous field `SharedAccessAuthorizationRuleListResult` in struct `NamespacesClientListAuthorizationRulesResponse`
+- New anonymous field `NotificationHubResource` in struct `ClientGetResponse`
+- New field `ResumeToken` in struct `NamespacesClientBeginDeleteOptions`
+- New anonymous field `NamespaceResource` in struct `NamespacesClientPatchResponse`
+- New anonymous field `SharedAccessAuthorizationRuleResource` in struct `ClientGetAuthorizationRuleResponse`
+- New anonymous field `NamespaceListResult` in struct `NamespacesClientListResponse`
+- New anonymous field `ResourceListKeys` in struct `ClientRegenerateKeysResponse`
+- New anonymous field `ResourceListKeys` in struct `NamespacesClientRegenerateKeysResponse`
+- New anonymous field `SharedAccessAuthorizationRuleResource` in struct `NamespacesClientGetAuthorizationRuleResponse`
+- New anonymous field `NotificationHubResource` in struct `ClientPatchResponse`
+- New anonymous field `SharedAccessAuthorizationRuleResource` in struct `ClientCreateOrUpdateAuthorizationRuleResponse`
+- New anonymous field `ResourceListKeys` in struct `NamespacesClientListKeysResponse`
+- New anonymous field `CheckAvailabilityResult` in struct `NamespacesClientCheckAvailabilityResponse`
+- New anonymous field `ResourceListKeys` in struct `ClientListKeysResponse`
+- New anonymous field `NamespaceResource` in struct `NamespacesClientGetResponse`
+- New anonymous field `NotificationHubListResult` in struct `ClientListResponse`
+- New anonymous field `PnsCredentialsResource` in struct `ClientGetPnsCredentialsResponse`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

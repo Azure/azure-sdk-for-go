@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,21 +8,18 @@
 
 package armquota
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // ClientBeginCreateOrUpdateOptions contains the optional parameters for the Client.BeginCreateOrUpdate method.
 type ClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ClientBeginUpdateOptions contains the optional parameters for the Client.BeginUpdate method.
 type ClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ClientGetOptions contains the optional parameters for the Client.Get method.
@@ -53,13 +50,6 @@ type CreateGenericQuotaRequestParameters struct {
 	Value []*CurrentQuotaLimitBase `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CreateGenericQuotaRequestParameters.
-func (c CreateGenericQuotaRequestParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
-}
-
 // CurrentQuotaLimitBase - Quota limit.
 type CurrentQuotaLimitBase struct {
 	// Quota properties for the specified resource, based on the API called, Quotas or Usages.
@@ -73,16 +63,6 @@ type CurrentQuotaLimitBase struct {
 
 	// READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CurrentQuotaLimitBase.
-func (c CurrentQuotaLimitBase) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", c.ID)
-	populate(objectMap, "name", c.Name)
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "type", c.Type)
-	return json.Marshal(objectMap)
 }
 
 // CurrentUsagesBase - Resource usage.
@@ -121,9 +101,6 @@ type LimitJSONObject struct {
 	LimitObjectType *LimitType `json:"limitObjectType,omitempty"`
 }
 
-// GetLimitJSONObject implements the LimitJSONObjectClassification interface for type LimitJSONObject.
-func (l *LimitJSONObject) GetLimitJSONObject() *LimitJSONObject { return l }
-
 // LimitObject - The resource quota limit value.
 type LimitObject struct {
 	// REQUIRED; The limit object type.
@@ -136,48 +113,6 @@ type LimitObject struct {
 	LimitType *QuotaLimitTypes `json:"limitType,omitempty"`
 }
 
-// GetLimitJSONObject implements the LimitJSONObjectClassification interface for type LimitObject.
-func (l *LimitObject) GetLimitJSONObject() *LimitJSONObject {
-	return &LimitJSONObject{
-		LimitObjectType: l.LimitObjectType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type LimitObject.
-func (l LimitObject) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["limitObjectType"] = LimitTypeLimitValue
-	populate(objectMap, "limitType", l.LimitType)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type LimitObject.
-func (l *LimitObject) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "limitObjectType":
-			err = unpopulate(val, &l.LimitObjectType)
-			delete(rawMsg, key)
-		case "limitType":
-			err = unpopulate(val, &l.LimitType)
-			delete(rawMsg, key)
-		case "value":
-			err = unpopulate(val, &l.Value)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // Limits - Quota limits.
 type Limits struct {
 	// The URI used to fetch the next page of quota limits. When there are no more pages, this string is null.
@@ -187,14 +122,6 @@ type Limits struct {
 	Value []*CurrentQuotaLimitBase `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Limits.
-func (l Limits) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
-}
-
 // LimitsResponse - Quota limits request response.
 type LimitsResponse struct {
 	// The URI used to fetch the next page of quota limits. When there are no more pages, this is null.
@@ -202,14 +129,6 @@ type LimitsResponse struct {
 
 	// List of quota limits with the quota request status.
 	Value []*CurrentQuotaLimitBase `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type LimitsResponse.
-func (l LimitsResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
 }
 
 // OperationClientListOptions contains the optional parameters for the OperationClient.List method.
@@ -237,14 +156,6 @@ type OperationList struct {
 	Value    []*OperationResponse `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationList.
-func (o OperationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 type OperationResponse struct {
 	Display *OperationDisplay `json:"display,omitempty"`
 	Name    *string           `json:"name,omitempty"`
@@ -260,7 +171,7 @@ type Properties struct {
 	Name *ResourceName `json:"name,omitempty"`
 
 	// Additional properties for the specific resource provider.
-	Properties map[string]interface{} `json:"properties,omitempty"`
+	Properties interface{} `json:"properties,omitempty"`
 
 	// Resource type name.
 	ResourceType *string `json:"resourceType,omitempty"`
@@ -276,57 +187,6 @@ type Properties struct {
 	// READ-ONLY; The quota units, such as Count and Bytes. When requesting quota, use the unit value returned in the GET response
 	// in the request body of your PUT operation.
 	Unit *string `json:"unit,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Properties.
-func (p Properties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "isQuotaApplicable", p.IsQuotaApplicable)
-	populate(objectMap, "limit", p.Limit)
-	populate(objectMap, "name", p.Name)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "quotaPeriod", p.QuotaPeriod)
-	populate(objectMap, "resourceType", p.ResourceType)
-	populate(objectMap, "unit", p.Unit)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Properties.
-func (p *Properties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "isQuotaApplicable":
-			err = unpopulate(val, &p.IsQuotaApplicable)
-			delete(rawMsg, key)
-		case "limit":
-			p.Limit, err = unmarshalLimitJSONObjectClassification(val)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &p.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &p.Properties)
-			delete(rawMsg, key)
-		case "quotaPeriod":
-			err = unpopulate(val, &p.QuotaPeriod)
-			delete(rawMsg, key)
-		case "resourceType":
-			err = unpopulate(val, &p.ResourceType)
-			delete(rawMsg, key)
-		case "unit":
-			err = unpopulate(val, &p.Unit)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // RequestDetails - List of quota requests with details.
@@ -353,14 +213,6 @@ type RequestDetailsList struct {
 	Value []*RequestDetails `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RequestDetailsList.
-func (r RequestDetailsList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
 // RequestOneResourceProperties - Quota request.
 type RequestOneResourceProperties struct {
 	// Error details of the quota request.
@@ -373,7 +225,7 @@ type RequestOneResourceProperties struct {
 	Name *ResourceName `json:"name,omitempty"`
 
 	// Additional properties for the specific resource provider.
-	Properties map[string]interface{} `json:"properties,omitempty"`
+	Properties interface{} `json:"properties,omitempty"`
 
 	// Resource type name.
 	ResourceType *string `json:"resourceType,omitempty"`
@@ -401,77 +253,6 @@ type RequestOneResourceProperties struct {
 
 	// READ-ONLY; Quota request submission time. The date conforms to the following ISO 8601 standard format: yyyy-MM-ddTHH:mm:ssZ.
 	RequestSubmitTime *time.Time `json:"requestSubmitTime,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RequestOneResourceProperties.
-func (r RequestOneResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "currentValue", r.CurrentValue)
-	populate(objectMap, "error", r.Error)
-	populate(objectMap, "isQuotaApplicable", r.IsQuotaApplicable)
-	populate(objectMap, "limit", r.Limit)
-	populate(objectMap, "message", r.Message)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "properties", r.Properties)
-	populate(objectMap, "provisioningState", r.ProvisioningState)
-	populate(objectMap, "quotaPeriod", r.QuotaPeriod)
-	populateTimeRFC3339(objectMap, "requestSubmitTime", r.RequestSubmitTime)
-	populate(objectMap, "resourceType", r.ResourceType)
-	populate(objectMap, "unit", r.Unit)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RequestOneResourceProperties.
-func (r *RequestOneResourceProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "currentValue":
-			err = unpopulate(val, &r.CurrentValue)
-			delete(rawMsg, key)
-		case "error":
-			err = unpopulate(val, &r.Error)
-			delete(rawMsg, key)
-		case "isQuotaApplicable":
-			err = unpopulate(val, &r.IsQuotaApplicable)
-			delete(rawMsg, key)
-		case "limit":
-			err = unpopulate(val, &r.Limit)
-			delete(rawMsg, key)
-		case "message":
-			err = unpopulate(val, &r.Message)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &r.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &r.Properties)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &r.ProvisioningState)
-			delete(rawMsg, key)
-		case "quotaPeriod":
-			err = unpopulate(val, &r.QuotaPeriod)
-			delete(rawMsg, key)
-		case "requestSubmitTime":
-			err = unpopulateTimeRFC3339(val, &r.RequestSubmitTime)
-			delete(rawMsg, key)
-		case "resourceType":
-			err = unpopulate(val, &r.ResourceType)
-			delete(rawMsg, key)
-		case "unit":
-			err = unpopulate(val, &r.Unit)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // RequestOneResourceSubmitResponse - Quota request response.
@@ -508,49 +289,6 @@ type RequestProperties struct {
 	RequestSubmitTime *time.Time `json:"requestSubmitTime,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RequestProperties.
-func (r RequestProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "error", r.Error)
-	populate(objectMap, "message", r.Message)
-	populate(objectMap, "provisioningState", r.ProvisioningState)
-	populateTimeRFC3339(objectMap, "requestSubmitTime", r.RequestSubmitTime)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RequestProperties.
-func (r *RequestProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "error":
-			err = unpopulate(val, &r.Error)
-			delete(rawMsg, key)
-		case "message":
-			err = unpopulate(val, &r.Message)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &r.ProvisioningState)
-			delete(rawMsg, key)
-		case "requestSubmitTime":
-			err = unpopulateTimeRFC3339(val, &r.RequestSubmitTime)
-			delete(rawMsg, key)
-		case "value":
-			err = unpopulate(val, &r.Value)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // RequestStatusClientGetOptions contains the optional parameters for the RequestStatusClient.Get method.
 type RequestStatusClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -580,7 +318,7 @@ type RequestStatusDetails struct {
 	Name *ResourceName `json:"name,omitempty"`
 
 	// Additional properties for the specific resource provider.
-	Properties map[string]interface{} `json:"properties,omitempty"`
+	Properties interface{} `json:"properties,omitempty"`
 
 	// Resource type name.
 	ResourceType *string `json:"resourceType,omitempty"`
@@ -653,15 +391,6 @@ type ServiceError struct {
 	Details []*ServiceErrorDetail `json:"details,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ServiceError.
-func (s ServiceError) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", s.Code)
-	populate(objectMap, "details", s.Details)
-	populate(objectMap, "message", s.Message)
-	return json.Marshal(objectMap)
-}
-
 // ServiceErrorDetail - Error details.
 type ServiceErrorDetail struct {
 	// READ-ONLY; Error code.
@@ -696,57 +425,6 @@ type SubRequest struct {
 	SubRequestID *string `json:"subRequestId,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SubRequest.
-func (s SubRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "limit", s.Limit)
-	populate(objectMap, "message", s.Message)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "provisioningState", s.ProvisioningState)
-	populate(objectMap, "resourceType", s.ResourceType)
-	populate(objectMap, "subRequestId", s.SubRequestID)
-	populate(objectMap, "unit", s.Unit)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SubRequest.
-func (s *SubRequest) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "limit":
-			s.Limit, err = unmarshalLimitJSONObjectClassification(val)
-			delete(rawMsg, key)
-		case "message":
-			err = unpopulate(val, &s.Message)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &s.Name)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &s.ProvisioningState)
-			delete(rawMsg, key)
-		case "resourceType":
-			err = unpopulate(val, &s.ResourceType)
-			delete(rawMsg, key)
-		case "subRequestId":
-			err = unpopulate(val, &s.SubRequestID)
-			delete(rawMsg, key)
-		case "unit":
-			err = unpopulate(val, &s.Unit)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // UsagesClientGetOptions contains the optional parameters for the UsagesClient.Get method.
 type UsagesClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -766,14 +444,6 @@ type UsagesLimits struct {
 	Value []*CurrentUsagesBase `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type UsagesLimits.
-func (u UsagesLimits) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", u.NextLink)
-	populate(objectMap, "value", u.Value)
-	return json.Marshal(objectMap)
-}
-
 // UsagesObject - The resource usages value.
 type UsagesObject struct {
 	// REQUIRED; The usages value.
@@ -789,7 +459,7 @@ type UsagesProperties struct {
 	Name *ResourceName `json:"name,omitempty"`
 
 	// Additional properties for the specific resource provider.
-	Properties map[string]interface{} `json:"properties,omitempty"`
+	Properties interface{} `json:"properties,omitempty"`
 
 	// The name of the resource type.
 	ResourceType *string `json:"resourceType,omitempty"`
@@ -808,21 +478,4 @@ type UsagesProperties struct {
 	// READ-ONLY; The units for the quota usage, such as Count and Bytes. When requesting quota, use the unit value returned in
 	// the GET response in the request body of your PUT operation.
 	Unit *string `json:"unit,omitempty" azure:"ro"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

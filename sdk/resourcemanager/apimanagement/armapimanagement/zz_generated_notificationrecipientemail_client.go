@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type NotificationRecipientEmailClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewNotificationRecipientEmailClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *NotificationRecipientEmailClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewNotificationRecipientEmailClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NotificationRecipientEmailClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &NotificationRecipientEmailClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CheckEntityExists - Determine if Notification Recipient Email subscribed to the notification.
@@ -66,7 +71,7 @@ func (client *NotificationRecipientEmailClient) CheckEntityExists(ctx context.Co
 	if err != nil {
 		return NotificationRecipientEmailClientCheckEntityExistsResponse{}, err
 	}
-	result := NotificationRecipientEmailClientCheckEntityExistsResponse{RawResponse: resp}
+	result := NotificationRecipientEmailClientCheckEntityExistsResponse{}
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		result.Success = true
 	}
@@ -166,7 +171,7 @@ func (client *NotificationRecipientEmailClient) createOrUpdateCreateRequest(ctx 
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *NotificationRecipientEmailClient) createOrUpdateHandleResponse(resp *http.Response) (NotificationRecipientEmailClientCreateOrUpdateResponse, error) {
-	result := NotificationRecipientEmailClientCreateOrUpdateResponse{RawResponse: resp}
+	result := NotificationRecipientEmailClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecipientEmailContract); err != nil {
 		return NotificationRecipientEmailClientCreateOrUpdateResponse{}, err
 	}
@@ -193,7 +198,7 @@ func (client *NotificationRecipientEmailClient) Delete(ctx context.Context, reso
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return NotificationRecipientEmailClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return NotificationRecipientEmailClientDeleteResponse{RawResponse: resp}, nil
+	return NotificationRecipientEmailClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -284,7 +289,7 @@ func (client *NotificationRecipientEmailClient) listByNotificationCreateRequest(
 
 // listByNotificationHandleResponse handles the ListByNotification response.
 func (client *NotificationRecipientEmailClient) listByNotificationHandleResponse(resp *http.Response) (NotificationRecipientEmailClientListByNotificationResponse, error) {
-	result := NotificationRecipientEmailClientListByNotificationResponse{RawResponse: resp}
+	result := NotificationRecipientEmailClientListByNotificationResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecipientEmailCollection); err != nil {
 		return NotificationRecipientEmailClientListByNotificationResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ServiceReplicaClient struct {
 // subscriptionID - The customer subscription identifier
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewServiceReplicaClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServiceReplicaClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewServiceReplicaClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServiceReplicaClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ServiceReplicaClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets the information about the service replica with the given name. The information include the description and other
@@ -99,7 +104,7 @@ func (client *ServiceReplicaClient) getCreateRequest(ctx context.Context, resour
 
 // getHandleResponse handles the Get response.
 func (client *ServiceReplicaClient) getHandleResponse(resp *http.Response) (ServiceReplicaClientGetResponse, error) {
-	result := ServiceReplicaClientGetResponse{RawResponse: resp}
+	result := ServiceReplicaClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceReplicaDescription); err != nil {
 		return ServiceReplicaClientGetResponse{}, err
 	}
@@ -113,16 +118,32 @@ func (client *ServiceReplicaClient) getHandleResponse(resp *http.Response) (Serv
 // applicationResourceName - The identity of the application.
 // serviceResourceName - The identity of the service.
 // options - ServiceReplicaClientListOptions contains the optional parameters for the ServiceReplicaClient.List method.
-func (client *ServiceReplicaClient) List(resourceGroupName string, applicationResourceName string, serviceResourceName string, options *ServiceReplicaClientListOptions) *ServiceReplicaClientListPager {
-	return &ServiceReplicaClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, applicationResourceName, serviceResourceName, options)
+func (client *ServiceReplicaClient) List(resourceGroupName string, applicationResourceName string, serviceResourceName string, options *ServiceReplicaClientListOptions) *runtime.Pager[ServiceReplicaClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ServiceReplicaClientListResponse]{
+		More: func(page ServiceReplicaClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ServiceReplicaClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServiceReplicaDescriptionList.NextLink)
+		Fetcher: func(ctx context.Context, page *ServiceReplicaClientListResponse) (ServiceReplicaClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, applicationResourceName, serviceResourceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ServiceReplicaClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ServiceReplicaClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ServiceReplicaClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -151,7 +172,7 @@ func (client *ServiceReplicaClient) listCreateRequest(ctx context.Context, resou
 
 // listHandleResponse handles the List response.
 func (client *ServiceReplicaClient) listHandleResponse(resp *http.Response) (ServiceReplicaClientListResponse, error) {
-	result := ServiceReplicaClientListResponse{RawResponse: resp}
+	result := ServiceReplicaClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceReplicaDescriptionList); err != nil {
 		return ServiceReplicaClientListResponse{}, err
 	}

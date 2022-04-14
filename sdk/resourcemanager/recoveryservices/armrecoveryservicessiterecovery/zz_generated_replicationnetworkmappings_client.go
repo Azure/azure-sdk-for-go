@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -37,22 +38,26 @@ type ReplicationNetworkMappingsClient struct {
 // subscriptionID - The subscription Id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewReplicationNetworkMappingsClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ReplicationNetworkMappingsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewReplicationNetworkMappingsClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationNetworkMappingsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ReplicationNetworkMappingsClient{
 		resourceName:      resourceName,
 		resourceGroupName: resourceGroupName,
 		subscriptionID:    subscriptionID,
-		host:              string(cp.Endpoint),
-		pl:                armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:              ep,
+		pl:                pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreate - The operation to create an ASR network mapping.
@@ -63,22 +68,16 @@ func NewReplicationNetworkMappingsClient(resourceName string, resourceGroupName 
 // input - Create network mapping input.
 // options - ReplicationNetworkMappingsClientBeginCreateOptions contains the optional parameters for the ReplicationNetworkMappingsClient.BeginCreate
 // method.
-func (client *ReplicationNetworkMappingsClient) BeginCreate(ctx context.Context, fabricName string, networkName string, networkMappingName string, input CreateNetworkMappingInput, options *ReplicationNetworkMappingsClientBeginCreateOptions) (ReplicationNetworkMappingsClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, fabricName, networkName, networkMappingName, input, options)
-	if err != nil {
-		return ReplicationNetworkMappingsClientCreatePollerResponse{}, err
+func (client *ReplicationNetworkMappingsClient) BeginCreate(ctx context.Context, fabricName string, networkName string, networkMappingName string, input CreateNetworkMappingInput, options *ReplicationNetworkMappingsClientBeginCreateOptions) (*armruntime.Poller[ReplicationNetworkMappingsClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, fabricName, networkName, networkMappingName, input, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationNetworkMappingsClientCreateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationNetworkMappingsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationNetworkMappingsClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationNetworkMappingsClient.Create", "", resp, client.pl)
-	if err != nil {
-		return ReplicationNetworkMappingsClientCreatePollerResponse{}, err
-	}
-	result.Poller = &ReplicationNetworkMappingsClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - The operation to create an ASR network mapping.
@@ -130,7 +129,7 @@ func (client *ReplicationNetworkMappingsClient) createCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, input)
@@ -143,22 +142,16 @@ func (client *ReplicationNetworkMappingsClient) createCreateRequest(ctx context.
 // networkMappingName - ARM Resource Name for network mapping.
 // options - ReplicationNetworkMappingsClientBeginDeleteOptions contains the optional parameters for the ReplicationNetworkMappingsClient.BeginDelete
 // method.
-func (client *ReplicationNetworkMappingsClient) BeginDelete(ctx context.Context, fabricName string, networkName string, networkMappingName string, options *ReplicationNetworkMappingsClientBeginDeleteOptions) (ReplicationNetworkMappingsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, fabricName, networkName, networkMappingName, options)
-	if err != nil {
-		return ReplicationNetworkMappingsClientDeletePollerResponse{}, err
+func (client *ReplicationNetworkMappingsClient) BeginDelete(ctx context.Context, fabricName string, networkName string, networkMappingName string, options *ReplicationNetworkMappingsClientBeginDeleteOptions) (*armruntime.Poller[ReplicationNetworkMappingsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, fabricName, networkName, networkMappingName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationNetworkMappingsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationNetworkMappingsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationNetworkMappingsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationNetworkMappingsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return ReplicationNetworkMappingsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ReplicationNetworkMappingsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - The operation to delete a network mapping.
@@ -210,7 +203,7 @@ func (client *ReplicationNetworkMappingsClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -269,7 +262,7 @@ func (client *ReplicationNetworkMappingsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -277,7 +270,7 @@ func (client *ReplicationNetworkMappingsClient) getCreateRequest(ctx context.Con
 
 // getHandleResponse handles the Get response.
 func (client *ReplicationNetworkMappingsClient) getHandleResponse(resp *http.Response) (ReplicationNetworkMappingsClientGetResponse, error) {
-	result := ReplicationNetworkMappingsClientGetResponse{RawResponse: resp}
+	result := ReplicationNetworkMappingsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkMapping); err != nil {
 		return ReplicationNetworkMappingsClientGetResponse{}, err
 	}
@@ -288,16 +281,32 @@ func (client *ReplicationNetworkMappingsClient) getHandleResponse(resp *http.Res
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ReplicationNetworkMappingsClientListOptions contains the optional parameters for the ReplicationNetworkMappingsClient.List
 // method.
-func (client *ReplicationNetworkMappingsClient) List(options *ReplicationNetworkMappingsClientListOptions) *ReplicationNetworkMappingsClientListPager {
-	return &ReplicationNetworkMappingsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *ReplicationNetworkMappingsClient) List(options *ReplicationNetworkMappingsClientListOptions) *runtime.Pager[ReplicationNetworkMappingsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ReplicationNetworkMappingsClientListResponse]{
+		More: func(page ReplicationNetworkMappingsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ReplicationNetworkMappingsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.NetworkMappingCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *ReplicationNetworkMappingsClientListResponse) (ReplicationNetworkMappingsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ReplicationNetworkMappingsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReplicationNetworkMappingsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReplicationNetworkMappingsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -320,7 +329,7 @@ func (client *ReplicationNetworkMappingsClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -328,7 +337,7 @@ func (client *ReplicationNetworkMappingsClient) listCreateRequest(ctx context.Co
 
 // listHandleResponse handles the List response.
 func (client *ReplicationNetworkMappingsClient) listHandleResponse(resp *http.Response) (ReplicationNetworkMappingsClientListResponse, error) {
-	result := ReplicationNetworkMappingsClientListResponse{RawResponse: resp}
+	result := ReplicationNetworkMappingsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkMappingCollection); err != nil {
 		return ReplicationNetworkMappingsClientListResponse{}, err
 	}
@@ -341,16 +350,32 @@ func (client *ReplicationNetworkMappingsClient) listHandleResponse(resp *http.Re
 // networkName - Primary network name.
 // options - ReplicationNetworkMappingsClientListByReplicationNetworksOptions contains the optional parameters for the ReplicationNetworkMappingsClient.ListByReplicationNetworks
 // method.
-func (client *ReplicationNetworkMappingsClient) ListByReplicationNetworks(fabricName string, networkName string, options *ReplicationNetworkMappingsClientListByReplicationNetworksOptions) *ReplicationNetworkMappingsClientListByReplicationNetworksPager {
-	return &ReplicationNetworkMappingsClientListByReplicationNetworksPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByReplicationNetworksCreateRequest(ctx, fabricName, networkName, options)
+func (client *ReplicationNetworkMappingsClient) ListByReplicationNetworks(fabricName string, networkName string, options *ReplicationNetworkMappingsClientListByReplicationNetworksOptions) *runtime.Pager[ReplicationNetworkMappingsClientListByReplicationNetworksResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ReplicationNetworkMappingsClientListByReplicationNetworksResponse]{
+		More: func(page ReplicationNetworkMappingsClientListByReplicationNetworksResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ReplicationNetworkMappingsClientListByReplicationNetworksResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.NetworkMappingCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *ReplicationNetworkMappingsClientListByReplicationNetworksResponse) (ReplicationNetworkMappingsClientListByReplicationNetworksResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByReplicationNetworksCreateRequest(ctx, fabricName, networkName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ReplicationNetworkMappingsClientListByReplicationNetworksResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReplicationNetworkMappingsClientListByReplicationNetworksResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReplicationNetworkMappingsClientListByReplicationNetworksResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByReplicationNetworksHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByReplicationNetworksCreateRequest creates the ListByReplicationNetworks request.
@@ -381,7 +406,7 @@ func (client *ReplicationNetworkMappingsClient) listByReplicationNetworksCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -389,7 +414,7 @@ func (client *ReplicationNetworkMappingsClient) listByReplicationNetworksCreateR
 
 // listByReplicationNetworksHandleResponse handles the ListByReplicationNetworks response.
 func (client *ReplicationNetworkMappingsClient) listByReplicationNetworksHandleResponse(resp *http.Response) (ReplicationNetworkMappingsClientListByReplicationNetworksResponse, error) {
-	result := ReplicationNetworkMappingsClientListByReplicationNetworksResponse{RawResponse: resp}
+	result := ReplicationNetworkMappingsClientListByReplicationNetworksResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkMappingCollection); err != nil {
 		return ReplicationNetworkMappingsClientListByReplicationNetworksResponse{}, err
 	}
@@ -404,22 +429,16 @@ func (client *ReplicationNetworkMappingsClient) listByReplicationNetworksHandleR
 // input - Update network mapping input.
 // options - ReplicationNetworkMappingsClientBeginUpdateOptions contains the optional parameters for the ReplicationNetworkMappingsClient.BeginUpdate
 // method.
-func (client *ReplicationNetworkMappingsClient) BeginUpdate(ctx context.Context, fabricName string, networkName string, networkMappingName string, input UpdateNetworkMappingInput, options *ReplicationNetworkMappingsClientBeginUpdateOptions) (ReplicationNetworkMappingsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, fabricName, networkName, networkMappingName, input, options)
-	if err != nil {
-		return ReplicationNetworkMappingsClientUpdatePollerResponse{}, err
+func (client *ReplicationNetworkMappingsClient) BeginUpdate(ctx context.Context, fabricName string, networkName string, networkMappingName string, input UpdateNetworkMappingInput, options *ReplicationNetworkMappingsClientBeginUpdateOptions) (*armruntime.Poller[ReplicationNetworkMappingsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, fabricName, networkName, networkMappingName, input, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationNetworkMappingsClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationNetworkMappingsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationNetworkMappingsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationNetworkMappingsClient.Update", "", resp, client.pl)
-	if err != nil {
-		return ReplicationNetworkMappingsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &ReplicationNetworkMappingsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - The operation to update an ASR network mapping.
@@ -471,7 +490,7 @@ func (client *ReplicationNetworkMappingsClient) updateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, input)

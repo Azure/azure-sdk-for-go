@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,222 +19,302 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 )
 
-// x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBMongoDBDatabaseList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBDatabaseList.json
 func ExampleMongoDBResourcesClient_ListMongoDBDatabases() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
-	res, err := client.ListMongoDBDatabases(ctx,
-		"<resource-group-name>",
+	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	pager := client.ListMongoDBDatabases("<resource-group-name>",
 		"<account-name>",
 		nil)
-	if err != nil {
-		log.Fatal(err)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+			return
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
-	log.Printf("Response result: %#v\n", res.MongoDBResourcesClientListMongoDBDatabasesResult)
 }
 
-// x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBMongoDBDatabaseGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBDatabaseGet.json
 func ExampleMongoDBResourcesClient_GetMongoDBDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetMongoDBDatabase(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<database-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.MongoDBResourcesClientGetMongoDBDatabaseResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBMongoDBDatabaseCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBDatabaseCreateUpdate.json
 func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateUpdateMongoDBDatabase(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<database-name>",
 		armcosmos.MongoDBDatabaseCreateUpdateParameters{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Tags:     map[string]*string{},
 			Properties: &armcosmos.MongoDBDatabaseCreateUpdateProperties{
 				Options: &armcosmos.CreateUpdateOptions{},
 				Resource: &armcosmos.MongoDBDatabaseResource{
-					ID: to.StringPtr("<id>"),
+					ID: to.Ptr("<id>"),
 				},
 			},
 		},
-		nil)
+		&armcosmos.MongoDBResourcesClientBeginCreateUpdateMongoDBDatabaseOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.MongoDBResourcesClientCreateUpdateMongoDBDatabaseResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBMongoDBDatabaseDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBDatabaseDelete.json
 func ExampleMongoDBResourcesClient_BeginDeleteMongoDBDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDeleteMongoDBDatabase(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<database-name>",
-		nil)
+		&armcosmos.MongoDBResourcesClientBeginDeleteMongoDBDatabaseOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBMongoDBDatabaseThroughputGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBDatabaseThroughputGet.json
 func ExampleMongoDBResourcesClient_GetMongoDBDatabaseThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetMongoDBDatabaseThroughput(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<database-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.MongoDBResourcesClientGetMongoDBDatabaseThroughputResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBMongoDBDatabaseThroughputUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBDatabaseThroughputUpdate.json
 func ExampleMongoDBResourcesClient_BeginUpdateMongoDBDatabaseThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdateMongoDBDatabaseThroughput(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<database-name>",
 		armcosmos.ThroughputSettingsUpdateParameters{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Tags:     map[string]*string{},
 			Properties: &armcosmos.ThroughputSettingsUpdateProperties{
 				Resource: &armcosmos.ThroughputSettingsResource{
-					Throughput: to.Int32Ptr(400),
+					Throughput: to.Ptr[int32](400),
 				},
 			},
 		},
-		nil)
+		&armcosmos.MongoDBResourcesClientBeginUpdateMongoDBDatabaseThroughputOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.MongoDBResourcesClientUpdateMongoDBDatabaseThroughputResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBMongoDBDatabaseMigrateToAutoscale.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBDatabaseMigrateToAutoscale.json
 func ExampleMongoDBResourcesClient_BeginMigrateMongoDBDatabaseToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginMigrateMongoDBDatabaseToAutoscale(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<database-name>",
-		nil)
+		&armcosmos.MongoDBResourcesClientBeginMigrateMongoDBDatabaseToAutoscaleOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBMongoDBDatabaseMigrateToManualThroughput.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBDatabaseMigrateToManualThroughput.json
 func ExampleMongoDBResourcesClient_BeginMigrateMongoDBDatabaseToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginMigrateMongoDBDatabaseToManualThroughput(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<database-name>",
-		nil)
+		&armcosmos.MongoDBResourcesClientBeginMigrateMongoDBDatabaseToManualThroughputOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBMongoDBCollectionList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBCollectionList.json
 func ExampleMongoDBResourcesClient_ListMongoDBCollections() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
-	res, err := client.ListMongoDBCollections(ctx,
-		"<resource-group-name>",
+	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	pager := client.ListMongoDBCollections("<resource-group-name>",
 		"<account-name>",
 		"<database-name>",
 		nil)
-	if err != nil {
-		log.Fatal(err)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+			return
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
-	log.Printf("Response result: %#v\n", res.MongoDBResourcesClientListMongoDBCollectionsResult)
 }
 
-// x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBMongoDBCollectionGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBCollectionGet.json
 func ExampleMongoDBResourcesClient_GetMongoDBCollection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetMongoDBCollection(ctx,
 		"<resource-group-name>",
 		"<account-name>",
@@ -242,96 +322,154 @@ func ExampleMongoDBResourcesClient_GetMongoDBCollection() {
 		"<collection-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.MongoDBResourcesClientGetMongoDBCollectionResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBMongoDBCollectionCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBCollectionCreateUpdate.json
 func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBCollection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateUpdateMongoDBCollection(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<database-name>",
 		"<collection-name>",
 		armcosmos.MongoDBCollectionCreateUpdateParameters{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Tags:     map[string]*string{},
 			Properties: &armcosmos.MongoDBCollectionCreateUpdateProperties{
 				Options: &armcosmos.CreateUpdateOptions{},
 				Resource: &armcosmos.MongoDBCollectionResource{
-					ID: to.StringPtr("<id>"),
+					AnalyticalStorageTTL: to.Ptr[int32](500),
+					ID:                   to.Ptr("<id>"),
 					Indexes: []*armcosmos.MongoIndex{
 						{
 							Key: &armcosmos.MongoIndexKeys{
 								Keys: []*string{
-									to.StringPtr("_ts")},
+									to.Ptr("_ts")},
 							},
 							Options: &armcosmos.MongoIndexOptions{
-								ExpireAfterSeconds: to.Int32Ptr(100),
-								Unique:             to.BoolPtr(true),
+								ExpireAfterSeconds: to.Ptr[int32](100),
+								Unique:             to.Ptr(true),
 							},
 						},
 						{
 							Key: &armcosmos.MongoIndexKeys{
 								Keys: []*string{
-									to.StringPtr("_id")},
+									to.Ptr("_id")},
 							},
 						}},
 					ShardKey: map[string]*string{
-						"testKey": to.StringPtr("Hash"),
+						"testKey": to.Ptr("Hash"),
 					},
 				},
 			},
 		},
-		nil)
+		&armcosmos.MongoDBResourcesClientBeginCreateUpdateMongoDBCollectionOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.MongoDBResourcesClientCreateUpdateMongoDBCollectionResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBMongoDBCollectionDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBCollectionDelete.json
 func ExampleMongoDBResourcesClient_BeginDeleteMongoDBCollection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDeleteMongoDBCollection(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<database-name>",
 		"<collection-name>",
-		nil)
+		&armcosmos.MongoDBResourcesClientBeginDeleteMongoDBCollectionOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBMongoDBCollectionThroughputGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBCollectionPartitionMerge.json
+func ExampleMongoDBResourcesClient_BeginListMongoDBCollectionPartitionMerge() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+		return
+	}
+	ctx := context.Background()
+	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	poller, err := client.BeginListMongoDBCollectionPartitionMerge(ctx,
+		"<resource-group-name>",
+		"<account-name>",
+		"<database-name>",
+		"<collection-name>",
+		armcosmos.MergeParameters{
+			IsDryRun: to.Ptr(false),
+		},
+		&armcosmos.MongoDBResourcesClientBeginListMongoDBCollectionPartitionMergeOptions{ResumeToken: ""})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+		return
+	}
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+		return
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBCollectionThroughputGet.json
 func ExampleMongoDBResourcesClient_GetMongoDBCollectionThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetMongoDBCollectionThroughput(ctx,
 		"<resource-group-name>",
 		"<account-name>",
@@ -339,115 +477,414 @@ func ExampleMongoDBResourcesClient_GetMongoDBCollectionThroughput() {
 		"<collection-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.MongoDBResourcesClientGetMongoDBCollectionThroughputResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBMongoDBCollectionThroughputUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBCollectionThroughputUpdate.json
 func ExampleMongoDBResourcesClient_BeginUpdateMongoDBCollectionThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdateMongoDBCollectionThroughput(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<database-name>",
 		"<collection-name>",
 		armcosmos.ThroughputSettingsUpdateParameters{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Tags:     map[string]*string{},
 			Properties: &armcosmos.ThroughputSettingsUpdateProperties{
 				Resource: &armcosmos.ThroughputSettingsResource{
-					Throughput: to.Int32Ptr(400),
+					Throughput: to.Ptr[int32](400),
 				},
 			},
 		},
-		nil)
+		&armcosmos.MongoDBResourcesClientBeginUpdateMongoDBCollectionThroughputOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.MongoDBResourcesClientUpdateMongoDBCollectionThroughputResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBMongoDBCollectionMigrateToAutoscale.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBCollectionMigrateToAutoscale.json
 func ExampleMongoDBResourcesClient_BeginMigrateMongoDBCollectionToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginMigrateMongoDBCollectionToAutoscale(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<database-name>",
 		"<collection-name>",
-		nil)
+		&armcosmos.MongoDBResourcesClientBeginMigrateMongoDBCollectionToAutoscaleOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.MongoDBResourcesClientMigrateMongoDBCollectionToAutoscaleResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBMongoDBCollectionMigrateToManualThroughput.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBCollectionMigrateToManualThroughput.json
 func ExampleMongoDBResourcesClient_BeginMigrateMongoDBCollectionToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginMigrateMongoDBCollectionToManualThroughput(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<database-name>",
 		"<collection-name>",
-		nil)
+		&armcosmos.MongoDBResourcesClientBeginMigrateMongoDBCollectionToManualThroughputOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBMongoDBCollectionBackupInformation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBRoleDefinitionGet.json
+func ExampleMongoDBResourcesClient_GetMongoRoleDefinition() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+		return
+	}
+	ctx := context.Background()
+	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	res, err := client.GetMongoRoleDefinition(ctx,
+		"<mongo-role-definition-id>",
+		"<resource-group-name>",
+		"<account-name>",
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+		return
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBRoleDefinitionCreateUpdate.json
+func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoRoleDefinition() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+		return
+	}
+	ctx := context.Background()
+	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	poller, err := client.BeginCreateUpdateMongoRoleDefinition(ctx,
+		"<mongo-role-definition-id>",
+		"<resource-group-name>",
+		"<account-name>",
+		armcosmos.MongoRoleDefinitionCreateUpdateParameters{
+			Properties: &armcosmos.MongoRoleDefinitionResource{
+				DatabaseName: to.Ptr("<database-name>"),
+				Privileges: []*armcosmos.Privilege{
+					{
+						Actions: []*string{
+							to.Ptr("insert"),
+							to.Ptr("find")},
+						Resource: &armcosmos.PrivilegeResource{
+							Collection: to.Ptr("<collection>"),
+							Db:         to.Ptr("<db>"),
+						},
+					}},
+				RoleName: to.Ptr("<role-name>"),
+				Roles: []*armcosmos.Role{
+					{
+						Db:   to.Ptr("<db>"),
+						Role: to.Ptr("<role>"),
+					}},
+			},
+		},
+		&armcosmos.MongoDBResourcesClientBeginCreateUpdateMongoRoleDefinitionOptions{ResumeToken: ""})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+		return
+	}
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+		return
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBRoleDefinitionDelete.json
+func ExampleMongoDBResourcesClient_BeginDeleteMongoRoleDefinition() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+		return
+	}
+	ctx := context.Background()
+	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	poller, err := client.BeginDeleteMongoRoleDefinition(ctx,
+		"<mongo-role-definition-id>",
+		"<resource-group-name>",
+		"<account-name>",
+		&armcosmos.MongoDBResourcesClientBeginDeleteMongoRoleDefinitionOptions{ResumeToken: ""})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+		return
+	}
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+		return
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBRoleDefinitionList.json
+func ExampleMongoDBResourcesClient_ListMongoRoleDefinitions() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+		return
+	}
+	ctx := context.Background()
+	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	pager := client.ListMongoRoleDefinitions("<resource-group-name>",
+		"<account-name>",
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+			return
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBUserDefinitionGet.json
+func ExampleMongoDBResourcesClient_GetMongoUserDefinition() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+		return
+	}
+	ctx := context.Background()
+	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	res, err := client.GetMongoUserDefinition(ctx,
+		"<mongo-user-definition-id>",
+		"<resource-group-name>",
+		"<account-name>",
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+		return
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBUserDefinitionCreateUpdate.json
+func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoUserDefinition() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+		return
+	}
+	ctx := context.Background()
+	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	poller, err := client.BeginCreateUpdateMongoUserDefinition(ctx,
+		"<mongo-user-definition-id>",
+		"<resource-group-name>",
+		"<account-name>",
+		armcosmos.MongoUserDefinitionCreateUpdateParameters{
+			Properties: &armcosmos.MongoUserDefinitionResource{
+				CustomData:   to.Ptr("<custom-data>"),
+				DatabaseName: to.Ptr("<database-name>"),
+				Mechanisms:   to.Ptr("<mechanisms>"),
+				Password:     to.Ptr("<password>"),
+				Roles: []*armcosmos.Role{
+					{
+						Db:   to.Ptr("<db>"),
+						Role: to.Ptr("<role>"),
+					}},
+				UserName: to.Ptr("<user-name>"),
+			},
+		},
+		&armcosmos.MongoDBResourcesClientBeginCreateUpdateMongoUserDefinitionOptions{ResumeToken: ""})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+		return
+	}
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+		return
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBUserDefinitionDelete.json
+func ExampleMongoDBResourcesClient_BeginDeleteMongoUserDefinition() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+		return
+	}
+	ctx := context.Background()
+	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	poller, err := client.BeginDeleteMongoUserDefinition(ctx,
+		"<mongo-user-definition-id>",
+		"<resource-group-name>",
+		"<account-name>",
+		&armcosmos.MongoDBResourcesClientBeginDeleteMongoUserDefinitionOptions{ResumeToken: ""})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+		return
+	}
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+		return
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBUserDefinitionList.json
+func ExampleMongoDBResourcesClient_ListMongoUserDefinitions() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+		return
+	}
+	ctx := context.Background()
+	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	pager := client.ListMongoUserDefinitions("<resource-group-name>",
+		"<account-name>",
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+			return
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBCollectionBackupInformation.json
 func ExampleMongoDBResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginRetrieveContinuousBackupInformation(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<database-name>",
 		"<collection-name>",
 		armcosmos.ContinuousBackupRestoreLocation{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 		},
-		nil)
+		&armcosmos.MongoDBResourcesClientBeginRetrieveContinuousBackupInformationOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.MongoDBResourcesClientRetrieveContinuousBackupInformationResult)
+	// TODO: use response item
+	_ = res
 }

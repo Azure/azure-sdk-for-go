@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type PrivateLinkScopedResourcesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPrivateLinkScopedResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateLinkScopedResourcesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewPrivateLinkScopedResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkScopedResourcesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PrivateLinkScopedResourcesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Approve or reject a private endpoint connection with a given name.
@@ -56,22 +61,16 @@ func NewPrivateLinkScopedResourcesClient(subscriptionID string, credential azcor
 // name - The name of the scoped resource object.
 // options - PrivateLinkScopedResourcesClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateLinkScopedResourcesClient.BeginCreateOrUpdate
 // method.
-func (client *PrivateLinkScopedResourcesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, scopeName string, name string, parameters ScopedResource, options *PrivateLinkScopedResourcesClientBeginCreateOrUpdateOptions) (PrivateLinkScopedResourcesClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, scopeName, name, parameters, options)
-	if err != nil {
-		return PrivateLinkScopedResourcesClientCreateOrUpdatePollerResponse{}, err
+func (client *PrivateLinkScopedResourcesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, scopeName string, name string, parameters ScopedResource, options *PrivateLinkScopedResourcesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[PrivateLinkScopedResourcesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, scopeName, name, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[PrivateLinkScopedResourcesClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[PrivateLinkScopedResourcesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PrivateLinkScopedResourcesClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PrivateLinkScopedResourcesClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return PrivateLinkScopedResourcesClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &PrivateLinkScopedResourcesClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Approve or reject a private endpoint connection with a given name.
@@ -128,22 +127,16 @@ func (client *PrivateLinkScopedResourcesClient) createOrUpdateCreateRequest(ctx 
 // name - The name of the scoped resource object.
 // options - PrivateLinkScopedResourcesClientBeginDeleteOptions contains the optional parameters for the PrivateLinkScopedResourcesClient.BeginDelete
 // method.
-func (client *PrivateLinkScopedResourcesClient) BeginDelete(ctx context.Context, resourceGroupName string, scopeName string, name string, options *PrivateLinkScopedResourcesClientBeginDeleteOptions) (PrivateLinkScopedResourcesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, scopeName, name, options)
-	if err != nil {
-		return PrivateLinkScopedResourcesClientDeletePollerResponse{}, err
+func (client *PrivateLinkScopedResourcesClient) BeginDelete(ctx context.Context, resourceGroupName string, scopeName string, name string, options *PrivateLinkScopedResourcesClientBeginDeleteOptions) (*armruntime.Poller[PrivateLinkScopedResourcesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, scopeName, name, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[PrivateLinkScopedResourcesClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[PrivateLinkScopedResourcesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PrivateLinkScopedResourcesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PrivateLinkScopedResourcesClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return PrivateLinkScopedResourcesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &PrivateLinkScopedResourcesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a private endpoint connection with a given name.
@@ -246,7 +239,7 @@ func (client *PrivateLinkScopedResourcesClient) getCreateRequest(ctx context.Con
 
 // getHandleResponse handles the Get response.
 func (client *PrivateLinkScopedResourcesClient) getHandleResponse(resp *http.Response) (PrivateLinkScopedResourcesClientGetResponse, error) {
-	result := PrivateLinkScopedResourcesClientGetResponse{RawResponse: resp}
+	result := PrivateLinkScopedResourcesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScopedResource); err != nil {
 		return PrivateLinkScopedResourcesClientGetResponse{}, err
 	}
@@ -259,16 +252,32 @@ func (client *PrivateLinkScopedResourcesClient) getHandleResponse(resp *http.Res
 // scopeName - The name of the Azure Monitor PrivateLinkScope resource.
 // options - PrivateLinkScopedResourcesClientListByPrivateLinkScopeOptions contains the optional parameters for the PrivateLinkScopedResourcesClient.ListByPrivateLinkScope
 // method.
-func (client *PrivateLinkScopedResourcesClient) ListByPrivateLinkScope(resourceGroupName string, scopeName string, options *PrivateLinkScopedResourcesClientListByPrivateLinkScopeOptions) *PrivateLinkScopedResourcesClientListByPrivateLinkScopePager {
-	return &PrivateLinkScopedResourcesClientListByPrivateLinkScopePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByPrivateLinkScopeCreateRequest(ctx, resourceGroupName, scopeName, options)
+func (client *PrivateLinkScopedResourcesClient) ListByPrivateLinkScope(resourceGroupName string, scopeName string, options *PrivateLinkScopedResourcesClientListByPrivateLinkScopeOptions) *runtime.Pager[PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse]{
+		More: func(page PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ScopedResourceListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse) (PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByPrivateLinkScopeCreateRequest(ctx, resourceGroupName, scopeName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByPrivateLinkScopeHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByPrivateLinkScopeCreateRequest creates the ListByPrivateLinkScope request.
@@ -299,7 +308,7 @@ func (client *PrivateLinkScopedResourcesClient) listByPrivateLinkScopeCreateRequ
 
 // listByPrivateLinkScopeHandleResponse handles the ListByPrivateLinkScope response.
 func (client *PrivateLinkScopedResourcesClient) listByPrivateLinkScopeHandleResponse(resp *http.Response) (PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse, error) {
-	result := PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse{RawResponse: resp}
+	result := PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScopedResourceListResult); err != nil {
 		return PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse{}, err
 	}

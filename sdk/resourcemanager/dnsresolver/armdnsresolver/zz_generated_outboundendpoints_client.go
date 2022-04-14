@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type OutboundEndpointsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewOutboundEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OutboundEndpointsClient {
+func NewOutboundEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OutboundEndpointsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &OutboundEndpointsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates an outbound endpoint for a DNS resolver.
@@ -58,22 +63,16 @@ func NewOutboundEndpointsClient(subscriptionID string, credential azcore.TokenCr
 // parameters - Parameters supplied to the CreateOrUpdate operation.
 // options - OutboundEndpointsClientBeginCreateOrUpdateOptions contains the optional parameters for the OutboundEndpointsClient.BeginCreateOrUpdate
 // method.
-func (client *OutboundEndpointsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, dnsResolverName string, outboundEndpointName string, parameters OutboundEndpoint, options *OutboundEndpointsClientBeginCreateOrUpdateOptions) (OutboundEndpointsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, dnsResolverName, outboundEndpointName, parameters, options)
-	if err != nil {
-		return OutboundEndpointsClientCreateOrUpdatePollerResponse{}, err
+func (client *OutboundEndpointsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, dnsResolverName string, outboundEndpointName string, parameters OutboundEndpoint, options *OutboundEndpointsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[OutboundEndpointsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, dnsResolverName, outboundEndpointName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[OutboundEndpointsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[OutboundEndpointsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := OutboundEndpointsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("OutboundEndpointsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return OutboundEndpointsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &OutboundEndpointsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates an outbound endpoint for a DNS resolver.
@@ -136,22 +135,16 @@ func (client *OutboundEndpointsClient) createOrUpdateCreateRequest(ctx context.C
 // outboundEndpointName - The name of the outbound endpoint for the DNS resolver.
 // options - OutboundEndpointsClientBeginDeleteOptions contains the optional parameters for the OutboundEndpointsClient.BeginDelete
 // method.
-func (client *OutboundEndpointsClient) BeginDelete(ctx context.Context, resourceGroupName string, dnsResolverName string, outboundEndpointName string, options *OutboundEndpointsClientBeginDeleteOptions) (OutboundEndpointsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, dnsResolverName, outboundEndpointName, options)
-	if err != nil {
-		return OutboundEndpointsClientDeletePollerResponse{}, err
+func (client *OutboundEndpointsClient) BeginDelete(ctx context.Context, resourceGroupName string, dnsResolverName string, outboundEndpointName string, options *OutboundEndpointsClientBeginDeleteOptions) (*armruntime.Poller[OutboundEndpointsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, dnsResolverName, outboundEndpointName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[OutboundEndpointsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[OutboundEndpointsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := OutboundEndpointsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("OutboundEndpointsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return OutboundEndpointsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &OutboundEndpointsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes an outbound endpoint for a DNS resolver. WARNING: This operation cannot be undone.
@@ -257,7 +250,7 @@ func (client *OutboundEndpointsClient) getCreateRequest(ctx context.Context, res
 
 // getHandleResponse handles the Get response.
 func (client *OutboundEndpointsClient) getHandleResponse(resp *http.Response) (OutboundEndpointsClientGetResponse, error) {
-	result := OutboundEndpointsClientGetResponse{RawResponse: resp}
+	result := OutboundEndpointsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OutboundEndpoint); err != nil {
 		return OutboundEndpointsClientGetResponse{}, err
 	}
@@ -269,16 +262,32 @@ func (client *OutboundEndpointsClient) getHandleResponse(resp *http.Response) (O
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // dnsResolverName - The name of the DNS resolver.
 // options - OutboundEndpointsClientListOptions contains the optional parameters for the OutboundEndpointsClient.List method.
-func (client *OutboundEndpointsClient) List(resourceGroupName string, dnsResolverName string, options *OutboundEndpointsClientListOptions) *OutboundEndpointsClientListPager {
-	return &OutboundEndpointsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, dnsResolverName, options)
+func (client *OutboundEndpointsClient) List(resourceGroupName string, dnsResolverName string, options *OutboundEndpointsClientListOptions) *runtime.Pager[OutboundEndpointsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[OutboundEndpointsClientListResponse]{
+		More: func(page OutboundEndpointsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp OutboundEndpointsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.OutboundEndpointListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *OutboundEndpointsClientListResponse) (OutboundEndpointsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, dnsResolverName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return OutboundEndpointsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return OutboundEndpointsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return OutboundEndpointsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -312,7 +321,7 @@ func (client *OutboundEndpointsClient) listCreateRequest(ctx context.Context, re
 
 // listHandleResponse handles the List response.
 func (client *OutboundEndpointsClient) listHandleResponse(resp *http.Response) (OutboundEndpointsClientListResponse, error) {
-	result := OutboundEndpointsClientListResponse{RawResponse: resp}
+	result := OutboundEndpointsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OutboundEndpointListResult); err != nil {
 		return OutboundEndpointsClientListResponse{}, err
 	}
@@ -327,22 +336,16 @@ func (client *OutboundEndpointsClient) listHandleResponse(resp *http.Response) (
 // parameters - Parameters supplied to the Update operation.
 // options - OutboundEndpointsClientBeginUpdateOptions contains the optional parameters for the OutboundEndpointsClient.BeginUpdate
 // method.
-func (client *OutboundEndpointsClient) BeginUpdate(ctx context.Context, resourceGroupName string, dnsResolverName string, outboundEndpointName string, parameters OutboundEndpointPatch, options *OutboundEndpointsClientBeginUpdateOptions) (OutboundEndpointsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, dnsResolverName, outboundEndpointName, parameters, options)
-	if err != nil {
-		return OutboundEndpointsClientUpdatePollerResponse{}, err
+func (client *OutboundEndpointsClient) BeginUpdate(ctx context.Context, resourceGroupName string, dnsResolverName string, outboundEndpointName string, parameters OutboundEndpointPatch, options *OutboundEndpointsClientBeginUpdateOptions) (*armruntime.Poller[OutboundEndpointsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, dnsResolverName, outboundEndpointName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[OutboundEndpointsClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[OutboundEndpointsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := OutboundEndpointsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("OutboundEndpointsClient.Update", "", resp, client.pl)
-	if err != nil {
-		return OutboundEndpointsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &OutboundEndpointsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates an outbound endpoint for a DNS resolver.

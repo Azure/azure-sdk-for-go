@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armresourcegraph
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // ClientResourcesHistoryOptions contains the optional parameters for the Client.ResourcesHistory method.
 type ClientResourcesHistoryOptions struct {
@@ -23,6 +18,15 @@ type ClientResourcesHistoryOptions struct {
 // ClientResourcesOptions contains the optional parameters for the Client.Resources method.
 type ClientResourcesOptions struct {
 	// placeholder for future optional parameters
+}
+
+// Column - Query result column descriptor.
+type Column struct {
+	// REQUIRED; Column name.
+	Name *string `json:"name,omitempty"`
+
+	// REQUIRED; Column data type.
+	Type *ColumnDataType `json:"type,omitempty"`
 }
 
 // DateTimeInterval - An interval in time specifying the date and time for the inclusive start and exclusive end, i.e. [start,
@@ -37,35 +41,16 @@ type DateTimeInterval struct {
 	Start *time.Time `json:"start,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DateTimeInterval.
-func (d DateTimeInterval) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "end", d.End)
-	populateTimeRFC3339(objectMap, "start", d.Start)
-	return json.Marshal(objectMap)
-}
+// Error details.
+type Error struct {
+	// REQUIRED; Error code identifying the specific error.
+	Code *string `json:"code,omitempty"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DateTimeInterval.
-func (d *DateTimeInterval) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "end":
-			err = unpopulateTimeRFC3339(val, &d.End)
-			delete(rawMsg, key)
-		case "start":
-			err = unpopulateTimeRFC3339(val, &d.Start)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+	// REQUIRED; A human readable error message.
+	Message *string `json:"message,omitempty"`
+
+	// Error details
+	Details []*ErrorDetails `json:"details,omitempty"`
 }
 
 // ErrorDetails - Error details.
@@ -80,50 +65,10 @@ type ErrorDetails struct {
 	AdditionalProperties map[string]interface{}
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ErrorDetails.
-func (e ErrorDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "message", e.Message)
-	if e.AdditionalProperties != nil {
-		for key, val := range e.AdditionalProperties {
-			objectMap[key] = val
-		}
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ErrorDetails.
-func (e *ErrorDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "code":
-			err = unpopulate(val, &e.Code)
-			delete(rawMsg, key)
-		case "message":
-			err = unpopulate(val, &e.Message)
-			delete(rawMsg, key)
-		default:
-			if e.AdditionalProperties == nil {
-				e.AdditionalProperties = map[string]interface{}{}
-			}
-			if val != nil {
-				var aux interface{}
-				err = json.Unmarshal(val, &aux)
-				e.AdditionalProperties[key] = aux
-			}
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+// ErrorResponse - An error response from the API.
+type ErrorResponse struct {
+	// REQUIRED; Error information.
+	Error *Error `json:"error,omitempty"`
 }
 
 // FacetClassification provides polymorphic access to related types.
@@ -144,9 +89,6 @@ type Facet struct {
 	ResultType *string `json:"resultType,omitempty"`
 }
 
-// GetFacet implements the FacetClassification interface for type Facet.
-func (f *Facet) GetFacet() *Facet { return f }
-
 // FacetError - A facet whose execution resulted in an error.
 type FacetError struct {
 	// REQUIRED; An array containing detected facet errors with details.
@@ -157,49 +99,6 @@ type FacetError struct {
 
 	// REQUIRED; Result type
 	ResultType *string `json:"resultType,omitempty"`
-}
-
-// GetFacet implements the FacetClassification interface for type FacetError.
-func (f *FacetError) GetFacet() *Facet {
-	return &Facet{
-		Expression: f.Expression,
-		ResultType: f.ResultType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FacetError.
-func (f FacetError) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "errors", f.Errors)
-	populate(objectMap, "expression", f.Expression)
-	objectMap["resultType"] = "FacetError"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type FacetError.
-func (f *FacetError) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "errors":
-			err = unpopulate(val, &f.Errors)
-			delete(rawMsg, key)
-		case "expression":
-			err = unpopulate(val, &f.Expression)
-			delete(rawMsg, key)
-		case "resultType":
-			err = unpopulate(val, &f.ResultType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // FacetRequest - A request to compute additional statistics (facets) over the query results.
@@ -245,57 +144,6 @@ type FacetResult struct {
 	TotalRecords *int64 `json:"totalRecords,omitempty"`
 }
 
-// GetFacet implements the FacetClassification interface for type FacetResult.
-func (f *FacetResult) GetFacet() *Facet {
-	return &Facet{
-		Expression: f.Expression,
-		ResultType: f.ResultType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FacetResult.
-func (f FacetResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "count", f.Count)
-	populate(objectMap, "data", &f.Data)
-	populate(objectMap, "expression", f.Expression)
-	objectMap["resultType"] = "FacetResult"
-	populate(objectMap, "totalRecords", f.TotalRecords)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type FacetResult.
-func (f *FacetResult) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "count":
-			err = unpopulate(val, &f.Count)
-			delete(rawMsg, key)
-		case "data":
-			err = unpopulate(val, &f.Data)
-			delete(rawMsg, key)
-		case "expression":
-			err = unpopulate(val, &f.Expression)
-			delete(rawMsg, key)
-		case "resultType":
-			err = unpopulate(val, &f.ResultType)
-			delete(rawMsg, key)
-		case "totalRecords":
-			err = unpopulate(val, &f.TotalRecords)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // Operation - Resource Graph REST API operation definition.
 type Operation struct {
 	// Display metadata associated with the operation.
@@ -330,13 +178,6 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -358,17 +199,6 @@ type QueryRequest struct {
 
 	// Azure subscriptions against which to execute the query.
 	Subscriptions []*string `json:"subscriptions,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type QueryRequest.
-func (q QueryRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "facets", q.Facets)
-	populate(objectMap, "managementGroups", q.ManagementGroups)
-	populate(objectMap, "options", q.Options)
-	populate(objectMap, "query", q.Query)
-	populate(objectMap, "subscriptions", q.Subscriptions)
-	return json.Marshal(objectMap)
 }
 
 // QueryRequestOptions - The options for query evaluation
@@ -418,53 +248,6 @@ type QueryResponse struct {
 	SkipToken *string `json:"$skipToken,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type QueryResponse.
-func (q QueryResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "count", q.Count)
-	populate(objectMap, "data", &q.Data)
-	populate(objectMap, "facets", q.Facets)
-	populate(objectMap, "resultTruncated", q.ResultTruncated)
-	populate(objectMap, "$skipToken", q.SkipToken)
-	populate(objectMap, "totalRecords", q.TotalRecords)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type QueryResponse.
-func (q *QueryResponse) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "count":
-			err = unpopulate(val, &q.Count)
-			delete(rawMsg, key)
-		case "data":
-			err = unpopulate(val, &q.Data)
-			delete(rawMsg, key)
-		case "facets":
-			q.Facets, err = unmarshalFacetClassificationArray(val)
-			delete(rawMsg, key)
-		case "resultTruncated":
-			err = unpopulate(val, &q.ResultTruncated)
-			delete(rawMsg, key)
-		case "$skipToken":
-			err = unpopulate(val, &q.SkipToken)
-			delete(rawMsg, key)
-		case "totalRecords":
-			err = unpopulate(val, &q.TotalRecords)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ResourcesHistoryRequest - Describes a history request to be executed.
 type ResourcesHistoryRequest struct {
 	// Azure management groups against which to execute the query. Example: [ 'mg1', 'mg2' ]
@@ -478,16 +261,6 @@ type ResourcesHistoryRequest struct {
 
 	// Azure subscriptions against which to execute the query.
 	Subscriptions []*string `json:"subscriptions,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourcesHistoryRequest.
-func (r ResourcesHistoryRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "managementGroups", r.ManagementGroups)
-	populate(objectMap, "options", r.Options)
-	populate(objectMap, "query", r.Query)
-	populate(objectMap, "subscriptions", r.Subscriptions)
-	return json.Marshal(objectMap)
 }
 
 // ResourcesHistoryRequestOptions - The options for history request evaluation
@@ -509,19 +282,11 @@ type ResourcesHistoryRequestOptions struct {
 	Top *int32 `json:"$top,omitempty"`
 }
 
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
+// Table - Query output in tabular format.
+type Table struct {
+	// REQUIRED; Query result column descriptors.
+	Columns []*Column `json:"columns,omitempty"`
 
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
+	// REQUIRED; Query result rows.
+	Rows [][]interface{} `json:"rows,omitempty"`
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type CertificateClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewCertificateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CertificateClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewCertificateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CertificateClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &CertificateClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create a certificate.
@@ -105,7 +110,7 @@ func (client *CertificateClient) createOrUpdateCreateRequest(ctx context.Context
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *CertificateClient) createOrUpdateHandleResponse(resp *http.Response) (CertificateClientCreateOrUpdateResponse, error) {
-	result := CertificateClientCreateOrUpdateResponse{RawResponse: resp}
+	result := CertificateClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Certificate); err != nil {
 		return CertificateClientCreateOrUpdateResponse{}, err
 	}
@@ -130,7 +135,7 @@ func (client *CertificateClient) Delete(ctx context.Context, resourceGroupName s
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return CertificateClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return CertificateClientDeleteResponse{RawResponse: resp}, nil
+	return CertificateClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -216,7 +221,7 @@ func (client *CertificateClient) getCreateRequest(ctx context.Context, resourceG
 
 // getHandleResponse handles the Get response.
 func (client *CertificateClient) getHandleResponse(resp *http.Response) (CertificateClientGetResponse, error) {
-	result := CertificateClientGetResponse{RawResponse: resp}
+	result := CertificateClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Certificate); err != nil {
 		return CertificateClientGetResponse{}, err
 	}
@@ -229,16 +234,32 @@ func (client *CertificateClient) getHandleResponse(resp *http.Response) (Certifi
 // automationAccountName - The name of the automation account.
 // options - CertificateClientListByAutomationAccountOptions contains the optional parameters for the CertificateClient.ListByAutomationAccount
 // method.
-func (client *CertificateClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *CertificateClientListByAutomationAccountOptions) *CertificateClientListByAutomationAccountPager {
-	return &CertificateClientListByAutomationAccountPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
+func (client *CertificateClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *CertificateClientListByAutomationAccountOptions) *runtime.Pager[CertificateClientListByAutomationAccountResponse] {
+	return runtime.NewPager(runtime.PageProcessor[CertificateClientListByAutomationAccountResponse]{
+		More: func(page CertificateClientListByAutomationAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp CertificateClientListByAutomationAccountResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CertificateListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *CertificateClientListByAutomationAccountResponse) (CertificateClientListByAutomationAccountResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CertificateClientListByAutomationAccountResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CertificateClientListByAutomationAccountResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CertificateClientListByAutomationAccountResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByAutomationAccountHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
@@ -269,7 +290,7 @@ func (client *CertificateClient) listByAutomationAccountCreateRequest(ctx contex
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
 func (client *CertificateClient) listByAutomationAccountHandleResponse(resp *http.Response) (CertificateClientListByAutomationAccountResponse, error) {
-	result := CertificateClientListByAutomationAccountResponse{RawResponse: resp}
+	result := CertificateClientListByAutomationAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateListResult); err != nil {
 		return CertificateClientListByAutomationAccountResponse{}, err
 	}
@@ -330,7 +351,7 @@ func (client *CertificateClient) updateCreateRequest(ctx context.Context, resour
 
 // updateHandleResponse handles the Update response.
 func (client *CertificateClient) updateHandleResponse(resp *http.Response) (CertificateClientUpdateResponse, error) {
-	result := CertificateClientUpdateResponse{RawResponse: resp}
+	result := CertificateClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Certificate); err != nil {
 		return CertificateClientUpdateResponse{}, err
 	}

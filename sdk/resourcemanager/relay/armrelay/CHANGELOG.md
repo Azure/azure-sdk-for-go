@@ -1,5 +1,200 @@
 # Release History
 
+## 0.4.0 (2022-04-12)
+### Breaking Changes
+
+- Function `*NamespacesClient.BeginDelete` return value(s) have been changed from `(NamespacesClientDeletePollerResponse, error)` to `(*armruntime.Poller[NamespacesClientDeleteResponse], error)`
+- Function `*NamespacesClient.ListByResourceGroup` return value(s) have been changed from `(*NamespacesClientListByResourceGroupPager)` to `(*runtime.Pager[NamespacesClientListByResourceGroupResponse])`
+- Function `*NamespacesClient.ListAuthorizationRules` return value(s) have been changed from `(*NamespacesClientListAuthorizationRulesPager)` to `(*runtime.Pager[NamespacesClientListAuthorizationRulesResponse])`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*HybridConnectionsClient.ListAuthorizationRules` return value(s) have been changed from `(*HybridConnectionsClientListAuthorizationRulesPager)` to `(*runtime.Pager[HybridConnectionsClientListAuthorizationRulesResponse])`
+- Function `*NamespacesClient.List` return value(s) have been changed from `(*NamespacesClientListPager)` to `(*runtime.Pager[NamespacesClientListResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*WCFRelaysClient.ListAuthorizationRules` return value(s) have been changed from `(*WCFRelaysClientListAuthorizationRulesPager)` to `(*runtime.Pager[WCFRelaysClientListAuthorizationRulesResponse])`
+- Function `*HybridConnectionsClient.ListByNamespace` return value(s) have been changed from `(*HybridConnectionsClientListByNamespacePager)` to `(*runtime.Pager[HybridConnectionsClientListByNamespaceResponse])`
+- Function `*NamespacesClient.BeginCreateOrUpdate` return value(s) have been changed from `(NamespacesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[NamespacesClientCreateOrUpdateResponse], error)`
+- Function `NewNamespacesClient` return value(s) have been changed from `(*NamespacesClient)` to `(*NamespacesClient, error)`
+- Function `NewHybridConnectionsClient` return value(s) have been changed from `(*HybridConnectionsClient)` to `(*HybridConnectionsClient, error)`
+- Function `NewWCFRelaysClient` return value(s) have been changed from `(*WCFRelaysClient)` to `(*WCFRelaysClient, error)`
+- Function `*WCFRelaysClient.ListByNamespace` return value(s) have been changed from `(*WCFRelaysClientListByNamespacePager)` to `(*runtime.Pager[WCFRelaysClientListByNamespaceResponse])`
+- Function `*NamespacesClientCreateOrUpdatePoller.Done` has been removed
+- Function `AccessRights.ToPtr` has been removed
+- Function `*NamespacesClientListByResourceGroupPager.NextPage` has been removed
+- Function `*NamespacesClientDeletePoller.Done` has been removed
+- Function `*HybridConnectionsClientListByNamespacePager.Err` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*HybridConnectionsClientListAuthorizationRulesPager.PageResponse` has been removed
+- Function `*NamespacesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*NamespacesClientListAuthorizationRulesPager.PageResponse` has been removed
+- Function `*NamespacesClientDeletePoller.FinalResponse` has been removed
+- Function `*NamespacesClientDeletePoller.ResumeToken` has been removed
+- Function `*WCFRelaysClientListByNamespacePager.Err` has been removed
+- Function `*NamespacesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*WCFRelaysClientListAuthorizationRulesPager.Err` has been removed
+- Function `NamespacesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*HybridConnectionsClientListByNamespacePager.PageResponse` has been removed
+- Function `*NamespacesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*NamespacesClientListAuthorizationRulesPager.NextPage` has been removed
+- Function `*WCFRelaysClientListByNamespacePager.NextPage` has been removed
+- Function `*NamespacesClientDeletePollerResponse.Resume` has been removed
+- Function `*NamespacesClientListPager.Err` has been removed
+- Function `*NamespacesClientListPager.PageResponse` has been removed
+- Function `*NamespacesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*WCFRelaysClientListAuthorizationRulesPager.PageResponse` has been removed
+- Function `*WCFRelaysClientListByNamespacePager.PageResponse` has been removed
+- Function `*NamespacesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*NamespacesClientListPager.NextPage` has been removed
+- Function `Relaytype.ToPtr` has been removed
+- Function `UnavailableReason.ToPtr` has been removed
+- Function `NamespacesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ProvisioningStateEnum.ToPtr` has been removed
+- Function `*NamespacesClientListByResourceGroupPager.Err` has been removed
+- Function `*HybridConnectionsClientListAuthorizationRulesPager.Err` has been removed
+- Function `*HybridConnectionsClientListAuthorizationRulesPager.NextPage` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `KeyType.ToPtr` has been removed
+- Function `*WCFRelaysClientListAuthorizationRulesPager.NextPage` has been removed
+- Function `*HybridConnectionsClientListByNamespacePager.NextPage` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*NamespacesClientDeletePoller.Poll` has been removed
+- Function `*NamespacesClientListAuthorizationRulesPager.Err` has been removed
+- Struct `HybridConnectionsClientCreateOrUpdateAuthorizationRuleResult` has been removed
+- Struct `HybridConnectionsClientCreateOrUpdateResult` has been removed
+- Struct `HybridConnectionsClientGetAuthorizationRuleResult` has been removed
+- Struct `HybridConnectionsClientGetResult` has been removed
+- Struct `HybridConnectionsClientListAuthorizationRulesPager` has been removed
+- Struct `HybridConnectionsClientListAuthorizationRulesResult` has been removed
+- Struct `HybridConnectionsClientListByNamespacePager` has been removed
+- Struct `HybridConnectionsClientListByNamespaceResult` has been removed
+- Struct `HybridConnectionsClientListKeysResult` has been removed
+- Struct `HybridConnectionsClientRegenerateKeysResult` has been removed
+- Struct `NamespacesClientCheckNameAvailabilityResult` has been removed
+- Struct `NamespacesClientCreateOrUpdateAuthorizationRuleResult` has been removed
+- Struct `NamespacesClientCreateOrUpdatePoller` has been removed
+- Struct `NamespacesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `NamespacesClientCreateOrUpdateResult` has been removed
+- Struct `NamespacesClientDeletePoller` has been removed
+- Struct `NamespacesClientDeletePollerResponse` has been removed
+- Struct `NamespacesClientGetAuthorizationRuleResult` has been removed
+- Struct `NamespacesClientGetResult` has been removed
+- Struct `NamespacesClientListAuthorizationRulesPager` has been removed
+- Struct `NamespacesClientListAuthorizationRulesResult` has been removed
+- Struct `NamespacesClientListByResourceGroupPager` has been removed
+- Struct `NamespacesClientListByResourceGroupResult` has been removed
+- Struct `NamespacesClientListKeysResult` has been removed
+- Struct `NamespacesClientListPager` has been removed
+- Struct `NamespacesClientListResult` has been removed
+- Struct `NamespacesClientRegenerateKeysResult` has been removed
+- Struct `NamespacesClientUpdateResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `WCFRelaysClientCreateOrUpdateAuthorizationRuleResult` has been removed
+- Struct `WCFRelaysClientCreateOrUpdateResult` has been removed
+- Struct `WCFRelaysClientGetAuthorizationRuleResult` has been removed
+- Struct `WCFRelaysClientGetResult` has been removed
+- Struct `WCFRelaysClientListAuthorizationRulesPager` has been removed
+- Struct `WCFRelaysClientListAuthorizationRulesResult` has been removed
+- Struct `WCFRelaysClientListByNamespacePager` has been removed
+- Struct `WCFRelaysClientListByNamespaceResult` has been removed
+- Struct `WCFRelaysClientListKeysResult` has been removed
+- Struct `WCFRelaysClientRegenerateKeysResult` has been removed
+- Field `NamespacesClientCreateOrUpdateResult` of struct `NamespacesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientCreateOrUpdateResponse` has been removed
+- Field `HybridConnectionsClientGetResult` of struct `HybridConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `HybridConnectionsClientGetResponse` has been removed
+- Field `NamespacesClientGetResult` of struct `NamespacesClientGetResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientGetResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientDeleteAuthorizationRuleResponse` has been removed
+- Field `WCFRelaysClientGetAuthorizationRuleResult` of struct `WCFRelaysClientGetAuthorizationRuleResponse` has been removed
+- Field `RawResponse` of struct `WCFRelaysClientGetAuthorizationRuleResponse` has been removed
+- Field `WCFRelaysClientListAuthorizationRulesResult` of struct `WCFRelaysClientListAuthorizationRulesResponse` has been removed
+- Field `RawResponse` of struct `WCFRelaysClientListAuthorizationRulesResponse` has been removed
+- Field `NamespacesClientListKeysResult` of struct `NamespacesClientListKeysResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientListKeysResponse` has been removed
+- Field `RawResponse` of struct `WCFRelaysClientDeleteResponse` has been removed
+- Field `WCFRelaysClientListByNamespaceResult` of struct `WCFRelaysClientListByNamespaceResponse` has been removed
+- Field `RawResponse` of struct `WCFRelaysClientListByNamespaceResponse` has been removed
+- Field `WCFRelaysClientCreateOrUpdateAuthorizationRuleResult` of struct `WCFRelaysClientCreateOrUpdateAuthorizationRuleResponse` has been removed
+- Field `RawResponse` of struct `WCFRelaysClientCreateOrUpdateAuthorizationRuleResponse` has been removed
+- Field `RawResponse` of struct `HybridConnectionsClientDeleteAuthorizationRuleResponse` has been removed
+- Field `HybridConnectionsClientListKeysResult` of struct `HybridConnectionsClientListKeysResponse` has been removed
+- Field `RawResponse` of struct `HybridConnectionsClientListKeysResponse` has been removed
+- Field `WCFRelaysClientRegenerateKeysResult` of struct `WCFRelaysClientRegenerateKeysResponse` has been removed
+- Field `RawResponse` of struct `WCFRelaysClientRegenerateKeysResponse` has been removed
+- Field `HybridConnectionsClientGetAuthorizationRuleResult` of struct `HybridConnectionsClientGetAuthorizationRuleResponse` has been removed
+- Field `RawResponse` of struct `HybridConnectionsClientGetAuthorizationRuleResponse` has been removed
+- Field `HybridConnectionsClientRegenerateKeysResult` of struct `HybridConnectionsClientRegenerateKeysResponse` has been removed
+- Field `RawResponse` of struct `HybridConnectionsClientRegenerateKeysResponse` has been removed
+- Field `HybridConnectionsClientCreateOrUpdateResult` of struct `HybridConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `HybridConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `NamespacesClientListAuthorizationRulesResult` of struct `NamespacesClientListAuthorizationRulesResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientListAuthorizationRulesResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientDeleteResponse` has been removed
+- Field `NamespacesClientCreateOrUpdateAuthorizationRuleResult` of struct `NamespacesClientCreateOrUpdateAuthorizationRuleResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientCreateOrUpdateAuthorizationRuleResponse` has been removed
+- Field `NamespacesClientListResult` of struct `NamespacesClientListResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientListResponse` has been removed
+- Field `RawResponse` of struct `HybridConnectionsClientDeleteResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `WCFRelaysClientDeleteAuthorizationRuleResponse` has been removed
+- Field `HybridConnectionsClientListAuthorizationRulesResult` of struct `HybridConnectionsClientListAuthorizationRulesResponse` has been removed
+- Field `RawResponse` of struct `HybridConnectionsClientListAuthorizationRulesResponse` has been removed
+- Field `WCFRelaysClientListKeysResult` of struct `WCFRelaysClientListKeysResponse` has been removed
+- Field `RawResponse` of struct `WCFRelaysClientListKeysResponse` has been removed
+- Field `HybridConnectionsClientListByNamespaceResult` of struct `HybridConnectionsClientListByNamespaceResponse` has been removed
+- Field `RawResponse` of struct `HybridConnectionsClientListByNamespaceResponse` has been removed
+- Field `NamespacesClientRegenerateKeysResult` of struct `NamespacesClientRegenerateKeysResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientRegenerateKeysResponse` has been removed
+- Field `NamespacesClientListByResourceGroupResult` of struct `NamespacesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientListByResourceGroupResponse` has been removed
+- Field `HybridConnectionsClientCreateOrUpdateAuthorizationRuleResult` of struct `HybridConnectionsClientCreateOrUpdateAuthorizationRuleResponse` has been removed
+- Field `RawResponse` of struct `HybridConnectionsClientCreateOrUpdateAuthorizationRuleResponse` has been removed
+- Field `WCFRelaysClientGetResult` of struct `WCFRelaysClientGetResponse` has been removed
+- Field `RawResponse` of struct `WCFRelaysClientGetResponse` has been removed
+- Field `WCFRelaysClientCreateOrUpdateResult` of struct `WCFRelaysClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `WCFRelaysClientCreateOrUpdateResponse` has been removed
+- Field `NamespacesClientCheckNameAvailabilityResult` of struct `NamespacesClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientCheckNameAvailabilityResponse` has been removed
+- Field `NamespacesClientUpdateResult` of struct `NamespacesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientUpdateResponse` has been removed
+- Field `NamespacesClientGetAuthorizationRuleResult` of struct `NamespacesClientGetAuthorizationRuleResponse` has been removed
+- Field `RawResponse` of struct `NamespacesClientGetAuthorizationRuleResponse` has been removed
+
+### Features Added
+
+- New anonymous field `Namespace` in struct `NamespacesClientGetResponse`
+- New anonymous field `Namespace` in struct `NamespacesClientUpdateResponse`
+- New anonymous field `Namespace` in struct `NamespacesClientCreateOrUpdateResponse`
+- New anonymous field `AccessKeys` in struct `HybridConnectionsClientListKeysResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `WcfRelay` in struct `WCFRelaysClientGetResponse`
+- New anonymous field `AuthorizationRule` in struct `NamespacesClientGetAuthorizationRuleResponse`
+- New anonymous field `AuthorizationRule` in struct `WCFRelaysClientCreateOrUpdateAuthorizationRuleResponse`
+- New anonymous field `AuthorizationRule` in struct `WCFRelaysClientGetAuthorizationRuleResponse`
+- New field `ResumeToken` in struct `NamespacesClientBeginCreateOrUpdateOptions`
+- New anonymous field `WcfRelay` in struct `WCFRelaysClientCreateOrUpdateResponse`
+- New anonymous field `HybridConnection` in struct `HybridConnectionsClientCreateOrUpdateResponse`
+- New anonymous field `AuthorizationRuleListResult` in struct `WCFRelaysClientListAuthorizationRulesResponse`
+- New anonymous field `HybridConnectionListResult` in struct `HybridConnectionsClientListByNamespaceResponse`
+- New field `ResumeToken` in struct `NamespacesClientBeginDeleteOptions`
+- New anonymous field `AccessKeys` in struct `WCFRelaysClientListKeysResponse`
+- New anonymous field `NamespaceListResult` in struct `NamespacesClientListByResourceGroupResponse`
+- New anonymous field `HybridConnection` in struct `HybridConnectionsClientGetResponse`
+- New anonymous field `AuthorizationRule` in struct `HybridConnectionsClientCreateOrUpdateAuthorizationRuleResponse`
+- New anonymous field `AuthorizationRule` in struct `NamespacesClientCreateOrUpdateAuthorizationRuleResponse`
+- New anonymous field `AuthorizationRuleListResult` in struct `NamespacesClientListAuthorizationRulesResponse`
+- New anonymous field `CheckNameAvailabilityResult` in struct `NamespacesClientCheckNameAvailabilityResponse`
+- New anonymous field `AccessKeys` in struct `NamespacesClientListKeysResponse`
+- New anonymous field `AccessKeys` in struct `NamespacesClientRegenerateKeysResponse`
+- New anonymous field `NamespaceListResult` in struct `NamespacesClientListResponse`
+- New anonymous field `AccessKeys` in struct `HybridConnectionsClientRegenerateKeysResponse`
+- New anonymous field `WcfRelaysListResult` in struct `WCFRelaysClientListByNamespaceResponse`
+- New anonymous field `AuthorizationRuleListResult` in struct `HybridConnectionsClientListAuthorizationRulesResponse`
+- New anonymous field `AccessKeys` in struct `WCFRelaysClientRegenerateKeysResponse`
+- New anonymous field `AuthorizationRule` in struct `HybridConnectionsClientGetAuthorizationRuleResponse`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

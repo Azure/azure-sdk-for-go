@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ServiceObjectivesClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewServiceObjectivesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServiceObjectivesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewServiceObjectivesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServiceObjectivesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ServiceObjectivesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets a database service objective.
@@ -103,7 +108,7 @@ func (client *ServiceObjectivesClient) getCreateRequest(ctx context.Context, res
 
 // getHandleResponse handles the Get response.
 func (client *ServiceObjectivesClient) getHandleResponse(resp *http.Response) (ServiceObjectivesClientGetResponse, error) {
-	result := ServiceObjectivesClientGetResponse{RawResponse: resp}
+	result := ServiceObjectivesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceObjective); err != nil {
 		return ServiceObjectivesClientGetResponse{}, err
 	}
@@ -117,19 +122,26 @@ func (client *ServiceObjectivesClient) getHandleResponse(resp *http.Response) (S
 // serverName - The name of the server.
 // options - ServiceObjectivesClientListByServerOptions contains the optional parameters for the ServiceObjectivesClient.ListByServer
 // method.
-func (client *ServiceObjectivesClient) ListByServer(ctx context.Context, resourceGroupName string, serverName string, options *ServiceObjectivesClientListByServerOptions) (ServiceObjectivesClientListByServerResponse, error) {
-	req, err := client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
-	if err != nil {
-		return ServiceObjectivesClientListByServerResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ServiceObjectivesClientListByServerResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServiceObjectivesClientListByServerResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listByServerHandleResponse(resp)
+func (client *ServiceObjectivesClient) ListByServer(resourceGroupName string, serverName string, options *ServiceObjectivesClientListByServerOptions) *runtime.Pager[ServiceObjectivesClientListByServerResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ServiceObjectivesClientListByServerResponse]{
+		More: func(page ServiceObjectivesClientListByServerResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ServiceObjectivesClientListByServerResponse) (ServiceObjectivesClientListByServerResponse, error) {
+			req, err := client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+			if err != nil {
+				return ServiceObjectivesClientListByServerResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ServiceObjectivesClientListByServerResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ServiceObjectivesClientListByServerResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServerHandleResponse(resp)
+		},
+	})
 }
 
 // listByServerCreateRequest creates the ListByServer request.
@@ -160,7 +172,7 @@ func (client *ServiceObjectivesClient) listByServerCreateRequest(ctx context.Con
 
 // listByServerHandleResponse handles the ListByServer response.
 func (client *ServiceObjectivesClient) listByServerHandleResponse(resp *http.Response) (ServiceObjectivesClientListByServerResponse, error) {
-	result := ServiceObjectivesClientListByServerResponse{RawResponse: resp}
+	result := ServiceObjectivesClientListByServerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceObjectiveListResult); err != nil {
 		return ServiceObjectivesClientListByServerResponse{}, err
 	}

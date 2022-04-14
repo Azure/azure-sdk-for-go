@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -37,22 +38,26 @@ type ReplicationMigrationItemsClient struct {
 // subscriptionID - The subscription Id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewReplicationMigrationItemsClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ReplicationMigrationItemsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewReplicationMigrationItemsClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationMigrationItemsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ReplicationMigrationItemsClient{
 		resourceName:      resourceName,
 		resourceGroupName: resourceGroupName,
 		subscriptionID:    subscriptionID,
-		host:              string(cp.Endpoint),
-		pl:                armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:              ep,
+		pl:                pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreate - The operation to create an ASR migration item (enable migration).
@@ -63,22 +68,16 @@ func NewReplicationMigrationItemsClient(resourceName string, resourceGroupName s
 // input - Enable migration input.
 // options - ReplicationMigrationItemsClientBeginCreateOptions contains the optional parameters for the ReplicationMigrationItemsClient.BeginCreate
 // method.
-func (client *ReplicationMigrationItemsClient) BeginCreate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input EnableMigrationInput, options *ReplicationMigrationItemsClientBeginCreateOptions) (ReplicationMigrationItemsClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, fabricName, protectionContainerName, migrationItemName, input, options)
-	if err != nil {
-		return ReplicationMigrationItemsClientCreatePollerResponse{}, err
+func (client *ReplicationMigrationItemsClient) BeginCreate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input EnableMigrationInput, options *ReplicationMigrationItemsClientBeginCreateOptions) (*armruntime.Poller[ReplicationMigrationItemsClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, fabricName, protectionContainerName, migrationItemName, input, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationMigrationItemsClientCreateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationMigrationItemsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationMigrationItemsClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationMigrationItemsClient.Create", "", resp, client.pl)
-	if err != nil {
-		return ReplicationMigrationItemsClientCreatePollerResponse{}, err
-	}
-	result.Poller = &ReplicationMigrationItemsClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - The operation to create an ASR migration item (enable migration).
@@ -130,7 +129,7 @@ func (client *ReplicationMigrationItemsClient) createCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, input)
@@ -143,22 +142,16 @@ func (client *ReplicationMigrationItemsClient) createCreateRequest(ctx context.C
 // migrationItemName - Migration item name.
 // options - ReplicationMigrationItemsClientBeginDeleteOptions contains the optional parameters for the ReplicationMigrationItemsClient.BeginDelete
 // method.
-func (client *ReplicationMigrationItemsClient) BeginDelete(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, options *ReplicationMigrationItemsClientBeginDeleteOptions) (ReplicationMigrationItemsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, fabricName, protectionContainerName, migrationItemName, options)
-	if err != nil {
-		return ReplicationMigrationItemsClientDeletePollerResponse{}, err
+func (client *ReplicationMigrationItemsClient) BeginDelete(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, options *ReplicationMigrationItemsClientBeginDeleteOptions) (*armruntime.Poller[ReplicationMigrationItemsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, fabricName, protectionContainerName, migrationItemName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationMigrationItemsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationMigrationItemsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationMigrationItemsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationMigrationItemsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return ReplicationMigrationItemsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ReplicationMigrationItemsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - The operation to delete an ASR migration item.
@@ -210,7 +203,7 @@ func (client *ReplicationMigrationItemsClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	if options != nil && options.DeleteOption != nil {
 		reqQP.Set("deleteOption", *options.DeleteOption)
 	}
@@ -272,7 +265,7 @@ func (client *ReplicationMigrationItemsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -280,7 +273,7 @@ func (client *ReplicationMigrationItemsClient) getCreateRequest(ctx context.Cont
 
 // getHandleResponse handles the Get response.
 func (client *ReplicationMigrationItemsClient) getHandleResponse(resp *http.Response) (ReplicationMigrationItemsClientGetResponse, error) {
-	result := ReplicationMigrationItemsClientGetResponse{RawResponse: resp}
+	result := ReplicationMigrationItemsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MigrationItem); err != nil {
 		return ReplicationMigrationItemsClientGetResponse{}, err
 	}
@@ -291,16 +284,32 @@ func (client *ReplicationMigrationItemsClient) getHandleResponse(resp *http.Resp
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ReplicationMigrationItemsClientListOptions contains the optional parameters for the ReplicationMigrationItemsClient.List
 // method.
-func (client *ReplicationMigrationItemsClient) List(options *ReplicationMigrationItemsClientListOptions) *ReplicationMigrationItemsClientListPager {
-	return &ReplicationMigrationItemsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *ReplicationMigrationItemsClient) List(options *ReplicationMigrationItemsClientListOptions) *runtime.Pager[ReplicationMigrationItemsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ReplicationMigrationItemsClientListResponse]{
+		More: func(page ReplicationMigrationItemsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ReplicationMigrationItemsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.MigrationItemCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *ReplicationMigrationItemsClientListResponse) (ReplicationMigrationItemsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ReplicationMigrationItemsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReplicationMigrationItemsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReplicationMigrationItemsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -323,7 +332,7 @@ func (client *ReplicationMigrationItemsClient) listCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("skipToken", *options.SkipToken)
 	}
@@ -340,7 +349,7 @@ func (client *ReplicationMigrationItemsClient) listCreateRequest(ctx context.Con
 
 // listHandleResponse handles the List response.
 func (client *ReplicationMigrationItemsClient) listHandleResponse(resp *http.Response) (ReplicationMigrationItemsClientListResponse, error) {
-	result := ReplicationMigrationItemsClientListResponse{RawResponse: resp}
+	result := ReplicationMigrationItemsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MigrationItemCollection); err != nil {
 		return ReplicationMigrationItemsClientListResponse{}, err
 	}
@@ -353,16 +362,32 @@ func (client *ReplicationMigrationItemsClient) listHandleResponse(resp *http.Res
 // protectionContainerName - Protection container name.
 // options - ReplicationMigrationItemsClientListByReplicationProtectionContainersOptions contains the optional parameters
 // for the ReplicationMigrationItemsClient.ListByReplicationProtectionContainers method.
-func (client *ReplicationMigrationItemsClient) ListByReplicationProtectionContainers(fabricName string, protectionContainerName string, options *ReplicationMigrationItemsClientListByReplicationProtectionContainersOptions) *ReplicationMigrationItemsClientListByReplicationProtectionContainersPager {
-	return &ReplicationMigrationItemsClientListByReplicationProtectionContainersPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByReplicationProtectionContainersCreateRequest(ctx, fabricName, protectionContainerName, options)
+func (client *ReplicationMigrationItemsClient) ListByReplicationProtectionContainers(fabricName string, protectionContainerName string, options *ReplicationMigrationItemsClientListByReplicationProtectionContainersOptions) *runtime.Pager[ReplicationMigrationItemsClientListByReplicationProtectionContainersResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ReplicationMigrationItemsClientListByReplicationProtectionContainersResponse]{
+		More: func(page ReplicationMigrationItemsClientListByReplicationProtectionContainersResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ReplicationMigrationItemsClientListByReplicationProtectionContainersResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.MigrationItemCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *ReplicationMigrationItemsClientListByReplicationProtectionContainersResponse) (ReplicationMigrationItemsClientListByReplicationProtectionContainersResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByReplicationProtectionContainersCreateRequest(ctx, fabricName, protectionContainerName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ReplicationMigrationItemsClientListByReplicationProtectionContainersResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReplicationMigrationItemsClientListByReplicationProtectionContainersResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReplicationMigrationItemsClientListByReplicationProtectionContainersResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByReplicationProtectionContainersHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByReplicationProtectionContainersCreateRequest creates the ListByReplicationProtectionContainers request.
@@ -393,7 +418,7 @@ func (client *ReplicationMigrationItemsClient) listByReplicationProtectionContai
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("skipToken", *options.SkipToken)
 	}
@@ -410,7 +435,7 @@ func (client *ReplicationMigrationItemsClient) listByReplicationProtectionContai
 
 // listByReplicationProtectionContainersHandleResponse handles the ListByReplicationProtectionContainers response.
 func (client *ReplicationMigrationItemsClient) listByReplicationProtectionContainersHandleResponse(resp *http.Response) (ReplicationMigrationItemsClientListByReplicationProtectionContainersResponse, error) {
-	result := ReplicationMigrationItemsClientListByReplicationProtectionContainersResponse{RawResponse: resp}
+	result := ReplicationMigrationItemsClientListByReplicationProtectionContainersResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MigrationItemCollection); err != nil {
 		return ReplicationMigrationItemsClientListByReplicationProtectionContainersResponse{}, err
 	}
@@ -425,22 +450,16 @@ func (client *ReplicationMigrationItemsClient) listByReplicationProtectionContai
 // migrateInput - Migrate input.
 // options - ReplicationMigrationItemsClientBeginMigrateOptions contains the optional parameters for the ReplicationMigrationItemsClient.BeginMigrate
 // method.
-func (client *ReplicationMigrationItemsClient) BeginMigrate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, migrateInput MigrateInput, options *ReplicationMigrationItemsClientBeginMigrateOptions) (ReplicationMigrationItemsClientMigratePollerResponse, error) {
-	resp, err := client.migrate(ctx, fabricName, protectionContainerName, migrationItemName, migrateInput, options)
-	if err != nil {
-		return ReplicationMigrationItemsClientMigratePollerResponse{}, err
+func (client *ReplicationMigrationItemsClient) BeginMigrate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, migrateInput MigrateInput, options *ReplicationMigrationItemsClientBeginMigrateOptions) (*armruntime.Poller[ReplicationMigrationItemsClientMigrateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.migrate(ctx, fabricName, protectionContainerName, migrationItemName, migrateInput, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationMigrationItemsClientMigrateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationMigrationItemsClientMigrateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationMigrationItemsClientMigratePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationMigrationItemsClient.Migrate", "", resp, client.pl)
-	if err != nil {
-		return ReplicationMigrationItemsClientMigratePollerResponse{}, err
-	}
-	result.Poller = &ReplicationMigrationItemsClientMigratePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Migrate - The operation to initiate migration of the item.
@@ -492,7 +511,7 @@ func (client *ReplicationMigrationItemsClient) migrateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, migrateInput)
@@ -506,22 +525,16 @@ func (client *ReplicationMigrationItemsClient) migrateCreateRequest(ctx context.
 // input - Resync input.
 // options - ReplicationMigrationItemsClientBeginResyncOptions contains the optional parameters for the ReplicationMigrationItemsClient.BeginResync
 // method.
-func (client *ReplicationMigrationItemsClient) BeginResync(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input ResyncInput, options *ReplicationMigrationItemsClientBeginResyncOptions) (ReplicationMigrationItemsClientResyncPollerResponse, error) {
-	resp, err := client.resync(ctx, fabricName, protectionContainerName, migrationItemName, input, options)
-	if err != nil {
-		return ReplicationMigrationItemsClientResyncPollerResponse{}, err
+func (client *ReplicationMigrationItemsClient) BeginResync(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input ResyncInput, options *ReplicationMigrationItemsClientBeginResyncOptions) (*armruntime.Poller[ReplicationMigrationItemsClientResyncResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resync(ctx, fabricName, protectionContainerName, migrationItemName, input, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationMigrationItemsClientResyncResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationMigrationItemsClientResyncResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationMigrationItemsClientResyncPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationMigrationItemsClient.Resync", "", resp, client.pl)
-	if err != nil {
-		return ReplicationMigrationItemsClientResyncPollerResponse{}, err
-	}
-	result.Poller = &ReplicationMigrationItemsClientResyncPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Resync - The operation to resynchronize replication of an ASR migration item.
@@ -573,7 +586,7 @@ func (client *ReplicationMigrationItemsClient) resyncCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, input)
@@ -587,22 +600,16 @@ func (client *ReplicationMigrationItemsClient) resyncCreateRequest(ctx context.C
 // testMigrateInput - Test migrate input.
 // options - ReplicationMigrationItemsClientBeginTestMigrateOptions contains the optional parameters for the ReplicationMigrationItemsClient.BeginTestMigrate
 // method.
-func (client *ReplicationMigrationItemsClient) BeginTestMigrate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, testMigrateInput TestMigrateInput, options *ReplicationMigrationItemsClientBeginTestMigrateOptions) (ReplicationMigrationItemsClientTestMigratePollerResponse, error) {
-	resp, err := client.testMigrate(ctx, fabricName, protectionContainerName, migrationItemName, testMigrateInput, options)
-	if err != nil {
-		return ReplicationMigrationItemsClientTestMigratePollerResponse{}, err
+func (client *ReplicationMigrationItemsClient) BeginTestMigrate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, testMigrateInput TestMigrateInput, options *ReplicationMigrationItemsClientBeginTestMigrateOptions) (*armruntime.Poller[ReplicationMigrationItemsClientTestMigrateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.testMigrate(ctx, fabricName, protectionContainerName, migrationItemName, testMigrateInput, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationMigrationItemsClientTestMigrateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationMigrationItemsClientTestMigrateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationMigrationItemsClientTestMigratePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationMigrationItemsClient.TestMigrate", "", resp, client.pl)
-	if err != nil {
-		return ReplicationMigrationItemsClientTestMigratePollerResponse{}, err
-	}
-	result.Poller = &ReplicationMigrationItemsClientTestMigratePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // TestMigrate - The operation to initiate test migration of the item.
@@ -654,7 +661,7 @@ func (client *ReplicationMigrationItemsClient) testMigrateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, testMigrateInput)
@@ -668,22 +675,16 @@ func (client *ReplicationMigrationItemsClient) testMigrateCreateRequest(ctx cont
 // testMigrateCleanupInput - Test migrate cleanup input.
 // options - ReplicationMigrationItemsClientBeginTestMigrateCleanupOptions contains the optional parameters for the ReplicationMigrationItemsClient.BeginTestMigrateCleanup
 // method.
-func (client *ReplicationMigrationItemsClient) BeginTestMigrateCleanup(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, testMigrateCleanupInput TestMigrateCleanupInput, options *ReplicationMigrationItemsClientBeginTestMigrateCleanupOptions) (ReplicationMigrationItemsClientTestMigrateCleanupPollerResponse, error) {
-	resp, err := client.testMigrateCleanup(ctx, fabricName, protectionContainerName, migrationItemName, testMigrateCleanupInput, options)
-	if err != nil {
-		return ReplicationMigrationItemsClientTestMigrateCleanupPollerResponse{}, err
+func (client *ReplicationMigrationItemsClient) BeginTestMigrateCleanup(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, testMigrateCleanupInput TestMigrateCleanupInput, options *ReplicationMigrationItemsClientBeginTestMigrateCleanupOptions) (*armruntime.Poller[ReplicationMigrationItemsClientTestMigrateCleanupResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.testMigrateCleanup(ctx, fabricName, protectionContainerName, migrationItemName, testMigrateCleanupInput, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationMigrationItemsClientTestMigrateCleanupResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationMigrationItemsClientTestMigrateCleanupResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationMigrationItemsClientTestMigrateCleanupPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationMigrationItemsClient.TestMigrateCleanup", "", resp, client.pl)
-	if err != nil {
-		return ReplicationMigrationItemsClientTestMigrateCleanupPollerResponse{}, err
-	}
-	result.Poller = &ReplicationMigrationItemsClientTestMigrateCleanupPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // TestMigrateCleanup - The operation to initiate test migrate cleanup.
@@ -735,7 +736,7 @@ func (client *ReplicationMigrationItemsClient) testMigrateCleanupCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, testMigrateCleanupInput)
@@ -749,22 +750,16 @@ func (client *ReplicationMigrationItemsClient) testMigrateCleanupCreateRequest(c
 // input - Update migration item input.
 // options - ReplicationMigrationItemsClientBeginUpdateOptions contains the optional parameters for the ReplicationMigrationItemsClient.BeginUpdate
 // method.
-func (client *ReplicationMigrationItemsClient) BeginUpdate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input UpdateMigrationItemInput, options *ReplicationMigrationItemsClientBeginUpdateOptions) (ReplicationMigrationItemsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, fabricName, protectionContainerName, migrationItemName, input, options)
-	if err != nil {
-		return ReplicationMigrationItemsClientUpdatePollerResponse{}, err
+func (client *ReplicationMigrationItemsClient) BeginUpdate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input UpdateMigrationItemInput, options *ReplicationMigrationItemsClientBeginUpdateOptions) (*armruntime.Poller[ReplicationMigrationItemsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, fabricName, protectionContainerName, migrationItemName, input, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationMigrationItemsClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationMigrationItemsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationMigrationItemsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationMigrationItemsClient.Update", "", resp, client.pl)
-	if err != nil {
-		return ReplicationMigrationItemsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &ReplicationMigrationItemsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - The operation to update the recovery settings of an ASR migration item.
@@ -816,7 +811,7 @@ func (client *ReplicationMigrationItemsClient) updateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, input)

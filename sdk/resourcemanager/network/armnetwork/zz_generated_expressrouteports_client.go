@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type ExpressRoutePortsClient struct {
 // ID forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewExpressRoutePortsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ExpressRoutePortsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewExpressRoutePortsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExpressRoutePortsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ExpressRoutePortsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates the specified ExpressRoutePort resource.
@@ -57,22 +62,18 @@ func NewExpressRoutePortsClient(subscriptionID string, credential azcore.TokenCr
 // parameters - Parameters supplied to the create ExpressRoutePort operation.
 // options - ExpressRoutePortsClientBeginCreateOrUpdateOptions contains the optional parameters for the ExpressRoutePortsClient.BeginCreateOrUpdate
 // method.
-func (client *ExpressRoutePortsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, expressRoutePortName string, parameters ExpressRoutePort, options *ExpressRoutePortsClientBeginCreateOrUpdateOptions) (ExpressRoutePortsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, expressRoutePortName, parameters, options)
-	if err != nil {
-		return ExpressRoutePortsClientCreateOrUpdatePollerResponse{}, err
+func (client *ExpressRoutePortsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, expressRoutePortName string, parameters ExpressRoutePort, options *ExpressRoutePortsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ExpressRoutePortsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, expressRoutePortName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ExpressRoutePortsClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ExpressRoutePortsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ExpressRoutePortsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ExpressRoutePortsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return ExpressRoutePortsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ExpressRoutePortsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates the specified ExpressRoutePort resource.
@@ -124,22 +125,18 @@ func (client *ExpressRoutePortsClient) createOrUpdateCreateRequest(ctx context.C
 // expressRoutePortName - The name of the ExpressRoutePort resource.
 // options - ExpressRoutePortsClientBeginDeleteOptions contains the optional parameters for the ExpressRoutePortsClient.BeginDelete
 // method.
-func (client *ExpressRoutePortsClient) BeginDelete(ctx context.Context, resourceGroupName string, expressRoutePortName string, options *ExpressRoutePortsClientBeginDeleteOptions) (ExpressRoutePortsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, expressRoutePortName, options)
-	if err != nil {
-		return ExpressRoutePortsClientDeletePollerResponse{}, err
+func (client *ExpressRoutePortsClient) BeginDelete(ctx context.Context, resourceGroupName string, expressRoutePortName string, options *ExpressRoutePortsClientBeginDeleteOptions) (*armruntime.Poller[ExpressRoutePortsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, expressRoutePortName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ExpressRoutePortsClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ExpressRoutePortsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ExpressRoutePortsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ExpressRoutePortsClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return ExpressRoutePortsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ExpressRoutePortsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified ExpressRoutePort resource.
@@ -235,7 +232,7 @@ func (client *ExpressRoutePortsClient) generateLOACreateRequest(ctx context.Cont
 
 // generateLOAHandleResponse handles the GenerateLOA response.
 func (client *ExpressRoutePortsClient) generateLOAHandleResponse(resp *http.Response) (ExpressRoutePortsClientGenerateLOAResponse, error) {
-	result := ExpressRoutePortsClientGenerateLOAResponse{RawResponse: resp}
+	result := ExpressRoutePortsClientGenerateLOAResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GenerateExpressRoutePortsLOAResult); err != nil {
 		return ExpressRoutePortsClientGenerateLOAResponse{}, err
 	}
@@ -290,7 +287,7 @@ func (client *ExpressRoutePortsClient) getCreateRequest(ctx context.Context, res
 
 // getHandleResponse handles the Get response.
 func (client *ExpressRoutePortsClient) getHandleResponse(resp *http.Response) (ExpressRoutePortsClientGetResponse, error) {
-	result := ExpressRoutePortsClientGetResponse{RawResponse: resp}
+	result := ExpressRoutePortsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRoutePort); err != nil {
 		return ExpressRoutePortsClientGetResponse{}, err
 	}
@@ -300,16 +297,32 @@ func (client *ExpressRoutePortsClient) getHandleResponse(resp *http.Response) (E
 // List - List all the ExpressRoutePort resources in the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ExpressRoutePortsClientListOptions contains the optional parameters for the ExpressRoutePortsClient.List method.
-func (client *ExpressRoutePortsClient) List(options *ExpressRoutePortsClientListOptions) *ExpressRoutePortsClientListPager {
-	return &ExpressRoutePortsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *ExpressRoutePortsClient) List(options *ExpressRoutePortsClientListOptions) *runtime.Pager[ExpressRoutePortsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ExpressRoutePortsClientListResponse]{
+		More: func(page ExpressRoutePortsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ExpressRoutePortsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ExpressRoutePortListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ExpressRoutePortsClientListResponse) (ExpressRoutePortsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ExpressRoutePortsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ExpressRoutePortsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ExpressRoutePortsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -332,7 +345,7 @@ func (client *ExpressRoutePortsClient) listCreateRequest(ctx context.Context, op
 
 // listHandleResponse handles the List response.
 func (client *ExpressRoutePortsClient) listHandleResponse(resp *http.Response) (ExpressRoutePortsClientListResponse, error) {
-	result := ExpressRoutePortsClientListResponse{RawResponse: resp}
+	result := ExpressRoutePortsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRoutePortListResult); err != nil {
 		return ExpressRoutePortsClientListResponse{}, err
 	}
@@ -344,16 +357,32 @@ func (client *ExpressRoutePortsClient) listHandleResponse(resp *http.Response) (
 // resourceGroupName - The name of the resource group.
 // options - ExpressRoutePortsClientListByResourceGroupOptions contains the optional parameters for the ExpressRoutePortsClient.ListByResourceGroup
 // method.
-func (client *ExpressRoutePortsClient) ListByResourceGroup(resourceGroupName string, options *ExpressRoutePortsClientListByResourceGroupOptions) *ExpressRoutePortsClientListByResourceGroupPager {
-	return &ExpressRoutePortsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *ExpressRoutePortsClient) ListByResourceGroup(resourceGroupName string, options *ExpressRoutePortsClientListByResourceGroupOptions) *runtime.Pager[ExpressRoutePortsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ExpressRoutePortsClientListByResourceGroupResponse]{
+		More: func(page ExpressRoutePortsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ExpressRoutePortsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ExpressRoutePortListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ExpressRoutePortsClientListByResourceGroupResponse) (ExpressRoutePortsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ExpressRoutePortsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ExpressRoutePortsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ExpressRoutePortsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -380,7 +409,7 @@ func (client *ExpressRoutePortsClient) listByResourceGroupCreateRequest(ctx cont
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *ExpressRoutePortsClient) listByResourceGroupHandleResponse(resp *http.Response) (ExpressRoutePortsClientListByResourceGroupResponse, error) {
-	result := ExpressRoutePortsClientListByResourceGroupResponse{RawResponse: resp}
+	result := ExpressRoutePortsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRoutePortListResult); err != nil {
 		return ExpressRoutePortsClientListByResourceGroupResponse{}, err
 	}
@@ -437,7 +466,7 @@ func (client *ExpressRoutePortsClient) updateTagsCreateRequest(ctx context.Conte
 
 // updateTagsHandleResponse handles the UpdateTags response.
 func (client *ExpressRoutePortsClient) updateTagsHandleResponse(resp *http.Response) (ExpressRoutePortsClientUpdateTagsResponse, error) {
-	result := ExpressRoutePortsClientUpdateTagsResponse{RawResponse: resp}
+	result := ExpressRoutePortsClientUpdateTagsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRoutePort); err != nil {
 		return ExpressRoutePortsClientUpdateTagsResponse{}, err
 	}

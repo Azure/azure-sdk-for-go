@@ -1,5 +1,295 @@
 # Release History
 
+## 0.4.0 (2022-04-13)
+### Breaking Changes
+
+- Function `*CustomDomainsClient.BeginDelete` return value(s) have been changed from `(CustomDomainsClientDeletePollerResponse, error)` to `(*armruntime.Poller[CustomDomainsClientDeleteResponse], error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*Client.BeginRestart` return value(s) have been changed from `(ClientRestartPollerResponse, error)` to `(*armruntime.Poller[ClientRestartResponse], error)`
+- Function `*CustomCertificatesClient.List` return value(s) have been changed from `(*CustomCertificatesClientListPager)` to `(*runtime.Pager[CustomCertificatesClientListResponse])`
+- Function `*CustomDomainsClient.List` return value(s) have been changed from `(*CustomDomainsClientListPager)` to `(*runtime.Pager[CustomDomainsClientListResponse])`
+- Function `NewCustomDomainsClient` return value(s) have been changed from `(*CustomDomainsClient)` to `(*CustomDomainsClient, error)`
+- Function `*SharedPrivateLinkResourcesClient.List` return value(s) have been changed from `(*SharedPrivateLinkResourcesClientListPager)` to `(*runtime.Pager[SharedPrivateLinkResourcesClientListResponse])`
+- Function `*Client.BeginDelete` return value(s) have been changed from `(ClientDeletePollerResponse, error)` to `(*armruntime.Poller[ClientDeleteResponse], error)`
+- Function `*CustomCertificatesClient.BeginCreateOrUpdate` return value(s) have been changed from `(CustomCertificatesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[CustomCertificatesClientCreateOrUpdateResponse], error)`
+- Function `NewCustomCertificatesClient` return value(s) have been changed from `(*CustomCertificatesClient)` to `(*CustomCertificatesClient, error)`
+- Function `*Client.BeginUpdate` return value(s) have been changed from `(ClientUpdatePollerResponse, error)` to `(*armruntime.Poller[ClientUpdateResponse], error)`
+- Function `*CustomDomainsClient.BeginCreateOrUpdate` return value(s) have been changed from `(CustomDomainsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[CustomDomainsClientCreateOrUpdateResponse], error)`
+- Function `*SharedPrivateLinkResourcesClient.BeginDelete` return value(s) have been changed from `(SharedPrivateLinkResourcesClientDeletePollerResponse, error)` to `(*armruntime.Poller[SharedPrivateLinkResourcesClientDeleteResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.List` return value(s) have been changed from `(*PrivateEndpointConnectionsClientListPager)` to `(*runtime.Pager[PrivateEndpointConnectionsClientListResponse])`
+- Function `*Client.BeginRegenerateKey` return value(s) have been changed from `(ClientRegenerateKeyPollerResponse, error)` to `(*armruntime.Poller[ClientRegenerateKeyResponse], error)`
+- Function `*UsagesClient.List` return value(s) have been changed from `(*UsagesClientListPager)` to `(*runtime.Pager[UsagesClientListResponse])`
+- Function `NewSharedPrivateLinkResourcesClient` return value(s) have been changed from `(*SharedPrivateLinkResourcesClient)` to `(*SharedPrivateLinkResourcesClient, error)`
+- Function `*Client.ListBySubscription` return value(s) have been changed from `(*ClientListBySubscriptionPager)` to `(*runtime.Pager[ClientListBySubscriptionResponse])`
+- Function `*PrivateLinkResourcesClient.List` return value(s) have been changed from `(*PrivateLinkResourcesClientListPager)` to `(*runtime.Pager[PrivateLinkResourcesClientListResponse])`
+- Function `NewPrivateLinkResourcesClient` return value(s) have been changed from `(*PrivateLinkResourcesClient)` to `(*PrivateLinkResourcesClient, error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*Client.ListByResourceGroup` return value(s) have been changed from `(*ClientListByResourceGroupPager)` to `(*runtime.Pager[ClientListByResourceGroupResponse])`
+- Function `NewClient` return value(s) have been changed from `(*Client)` to `(*Client, error)`
+- Function `*Client.BeginCreateOrUpdate` return value(s) have been changed from `(ClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ClientCreateOrUpdateResponse], error)`
+- Function `*SharedPrivateLinkResourcesClient.BeginCreateOrUpdate` return value(s) have been changed from `(SharedPrivateLinkResourcesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[SharedPrivateLinkResourcesClientCreateOrUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `NewUsagesClient` return value(s) have been changed from `(*UsagesClient)` to `(*UsagesClient, error)`
+- Function `NewPrivateEndpointConnectionsClient` return value(s) have been changed from `(*PrivateEndpointConnectionsClient)` to `(*PrivateEndpointConnectionsClient, error)`
+- Function `*PrivateEndpointConnectionsClientListPager.NextPage` has been removed
+- Function `*PrivateLinkResourcesClientListPager.Err` has been removed
+- Function `*UsagesClientListPager.PageResponse` has been removed
+- Function `UpstreamAuthType.ToPtr` has been removed
+- Function `*CustomDomainsClientDeletePoller.Done` has been removed
+- Function `*ClientRestartPollerResponse.Resume` has been removed
+- Function `*ClientRegenerateKeyPoller.FinalResponse` has been removed
+- Function `*ClientRegenerateKeyPoller.Poll` has been removed
+- Function `*ClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ClientUpdatePoller.Poll` has been removed
+- Function `*CustomDomainsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `ClientRestartPollerResponse.PollUntilDone` has been removed
+- Function `*CustomDomainsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.FinalResponse` has been removed
+- Function `*ClientUpdatePoller.ResumeToken` has been removed
+- Function `*ClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*ClientUpdatePoller.Done` has been removed
+- Function `*SharedPrivateLinkResourcesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*CustomCertificatesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*CustomCertificatesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*CustomDomainsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ClientRegenerateKeyPollerResponse.Resume` has been removed
+- Function `*ClientListBySubscriptionPager.Err` has been removed
+- Function `SignalRSKUTier.ToPtr` has been removed
+- Function `ClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*SharedPrivateLinkResourcesClientDeletePoller.FinalResponse` has been removed
+- Function `ACLAction.ToPtr` has been removed
+- Function `*CustomCertificatesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*SharedPrivateLinkResourcesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*CustomCertificatesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*CustomCertificatesClientListPager.Err` has been removed
+- Function `*PrivateLinkResourcesClientListPager.NextPage` has been removed
+- Function `*ClientRestartPoller.Done` has been removed
+- Function `SignalRRequestType.ToPtr` has been removed
+- Function `*CustomDomainsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePollerResponse.Resume` has been removed
+- Function `*UsagesClientListPager.NextPage` has been removed
+- Function `*CustomCertificatesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateLinkResourcesClientListPager.PageResponse` has been removed
+- Function `*ClientRegenerateKeyPoller.ResumeToken` has been removed
+- Function `*ClientRestartPoller.FinalResponse` has been removed
+- Function `*UsagesClientListPager.Err` has been removed
+- Function `*CustomDomainsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ClientDeletePoller.Poll` has been removed
+- Function `*SharedPrivateLinkResourcesClientDeletePoller.ResumeToken` has been removed
+- Function `CustomDomainsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsClientListPager.Err` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.ResumeToken` has been removed
+- Function `*ClientDeletePoller.Done` has been removed
+- Function `*SharedPrivateLinkResourcesClientListPager.Err` has been removed
+- Function `*ClientListByResourceGroupPager.PageResponse` has been removed
+- Function `FeatureFlags.ToPtr` has been removed
+- Function `PrivateEndpointConnectionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.Done` has been removed
+- Function `*CustomCertificatesClientListPager.PageResponse` has been removed
+- Function `ServiceKind.ToPtr` has been removed
+- Function `*CustomCertificatesClientListPager.NextPage` has been removed
+- Function `*CustomDomainsClientDeletePoller.ResumeToken` has been removed
+- Function `*ClientDeletePoller.ResumeToken` has been removed
+- Function `*CustomDomainsClientDeletePoller.FinalResponse` has been removed
+- Function `*CustomDomainsClientListPager.PageResponse` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*ClientCreateOrUpdatePoller.Done` has been removed
+- Function `*CustomDomainsClientDeletePollerResponse.Resume` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `*CustomDomainsClientListPager.NextPage` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*ClientDeletePoller.FinalResponse` has been removed
+- Function `SharedPrivateLinkResourceStatus.ToPtr` has been removed
+- Function `*ClientDeletePollerResponse.Resume` has been removed
+- Function `*SharedPrivateLinkResourcesClientDeletePoller.Done` has been removed
+- Function `ClientRegenerateKeyPollerResponse.PollUntilDone` has been removed
+- Function `*ClientRestartPoller.Poll` has been removed
+- Function `CustomDomainsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ClientUpdatePoller.FinalResponse` has been removed
+- Function `*CustomDomainsClientDeletePoller.Poll` has been removed
+- Function `*ClientRegenerateKeyPoller.Done` has been removed
+- Function `CustomCertificatesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SharedPrivateLinkResourcesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*CustomDomainsClientListPager.Err` has been removed
+- Function `ClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ClientCreateOrUpdatePoller.Poll` has been removed
+- Function `KeyType.ToPtr` has been removed
+- Function `SharedPrivateLinkResourcesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `SharedPrivateLinkResourcesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsClientListPager.PageResponse` has been removed
+- Function `*SharedPrivateLinkResourcesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ClientListBySubscriptionPager.NextPage` has been removed
+- Function `*ClientListByResourceGroupPager.NextPage` has been removed
+- Function `ClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*SharedPrivateLinkResourcesClientDeletePoller.Poll` has been removed
+- Function `*ClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ClientUpdatePollerResponse.Resume` has been removed
+- Function `*SharedPrivateLinkResourcesClientListPager.NextPage` has been removed
+- Function `*SharedPrivateLinkResourcesClientListPager.PageResponse` has been removed
+- Function `ScaleType.ToPtr` has been removed
+- Function `*ClientListByResourceGroupPager.Err` has been removed
+- Function `ManagedIdentityType.ToPtr` has been removed
+- Function `*ClientRestartPoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.Poll` has been removed
+- Function `PrivateLinkServiceConnectionStatus.ToPtr` has been removed
+- Function `*SharedPrivateLinkResourcesClientDeletePollerResponse.Resume` has been removed
+- Function `*SharedPrivateLinkResourcesClientCreateOrUpdatePoller.Done` has been removed
+- Struct `ClientCheckNameAvailabilityResult` has been removed
+- Struct `ClientCreateOrUpdatePoller` has been removed
+- Struct `ClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ClientCreateOrUpdateResult` has been removed
+- Struct `ClientDeletePoller` has been removed
+- Struct `ClientDeletePollerResponse` has been removed
+- Struct `ClientGetResult` has been removed
+- Struct `ClientListByResourceGroupPager` has been removed
+- Struct `ClientListByResourceGroupResult` has been removed
+- Struct `ClientListBySubscriptionPager` has been removed
+- Struct `ClientListBySubscriptionResult` has been removed
+- Struct `ClientListKeysResult` has been removed
+- Struct `ClientListSKUsResult` has been removed
+- Struct `ClientRegenerateKeyPoller` has been removed
+- Struct `ClientRegenerateKeyPollerResponse` has been removed
+- Struct `ClientRegenerateKeyResult` has been removed
+- Struct `ClientRestartPoller` has been removed
+- Struct `ClientRestartPollerResponse` has been removed
+- Struct `ClientUpdatePoller` has been removed
+- Struct `ClientUpdatePollerResponse` has been removed
+- Struct `ClientUpdateResult` has been removed
+- Struct `CustomCertificatesClientCreateOrUpdatePoller` has been removed
+- Struct `CustomCertificatesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `CustomCertificatesClientCreateOrUpdateResult` has been removed
+- Struct `CustomCertificatesClientGetResult` has been removed
+- Struct `CustomCertificatesClientListPager` has been removed
+- Struct `CustomCertificatesClientListResult` has been removed
+- Struct `CustomDomainsClientCreateOrUpdatePoller` has been removed
+- Struct `CustomDomainsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `CustomDomainsClientCreateOrUpdateResult` has been removed
+- Struct `CustomDomainsClientDeletePoller` has been removed
+- Struct `CustomDomainsClientDeletePollerResponse` has been removed
+- Struct `CustomDomainsClientGetResult` has been removed
+- Struct `CustomDomainsClientListPager` has been removed
+- Struct `CustomDomainsClientListResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `PrivateEndpointConnectionsClientDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsClientDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientGetResult` has been removed
+- Struct `PrivateEndpointConnectionsClientListPager` has been removed
+- Struct `PrivateEndpointConnectionsClientListResult` has been removed
+- Struct `PrivateEndpointConnectionsClientUpdateResult` has been removed
+- Struct `PrivateLinkResourcesClientListPager` has been removed
+- Struct `PrivateLinkResourcesClientListResult` has been removed
+- Struct `SharedPrivateLinkResourcesClientCreateOrUpdatePoller` has been removed
+- Struct `SharedPrivateLinkResourcesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `SharedPrivateLinkResourcesClientCreateOrUpdateResult` has been removed
+- Struct `SharedPrivateLinkResourcesClientDeletePoller` has been removed
+- Struct `SharedPrivateLinkResourcesClientDeletePollerResponse` has been removed
+- Struct `SharedPrivateLinkResourcesClientGetResult` has been removed
+- Struct `SharedPrivateLinkResourcesClientListPager` has been removed
+- Struct `SharedPrivateLinkResourcesClientListResult` has been removed
+- Struct `UsagesClientListPager` has been removed
+- Struct `UsagesClientListResult` has been removed
+- Field `SharedPrivateLinkResourcesClientCreateOrUpdateResult` of struct `SharedPrivateLinkResourcesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SharedPrivateLinkResourcesClientCreateOrUpdateResponse` has been removed
+- Field `ClientCheckNameAvailabilityResult` of struct `ClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `ClientCheckNameAvailabilityResponse` has been removed
+- Field `CustomDomainsClientListResult` of struct `CustomDomainsClientListResponse` has been removed
+- Field `RawResponse` of struct `CustomDomainsClientListResponse` has been removed
+- Field `ClientGetResult` of struct `ClientGetResponse` has been removed
+- Field `RawResponse` of struct `ClientGetResponse` has been removed
+- Field `PrivateLinkResourcesClientListResult` of struct `PrivateLinkResourcesClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientListResponse` has been removed
+- Field `ClientListKeysResult` of struct `ClientListKeysResponse` has been removed
+- Field `RawResponse` of struct `ClientListKeysResponse` has been removed
+- Field `PrivateEndpointConnectionsClientGetResult` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `ClientUpdateResult` of struct `ClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ClientUpdateResponse` has been removed
+- Field `ClientListSKUsResult` of struct `ClientListSKUsResponse` has been removed
+- Field `RawResponse` of struct `ClientListSKUsResponse` has been removed
+- Field `ClientCreateOrUpdateResult` of struct `ClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ClientCreateOrUpdateResponse` has been removed
+- Field `ClientListByResourceGroupResult` of struct `ClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ClientListByResourceGroupResponse` has been removed
+- Field `CustomCertificatesClientListResult` of struct `CustomCertificatesClientListResponse` has been removed
+- Field `RawResponse` of struct `CustomCertificatesClientListResponse` has been removed
+- Field `RawResponse` of struct `CustomCertificatesClientDeleteResponse` has been removed
+- Field `SharedPrivateLinkResourcesClientListResult` of struct `SharedPrivateLinkResourcesClientListResponse` has been removed
+- Field `RawResponse` of struct `SharedPrivateLinkResourcesClientListResponse` has been removed
+- Field `ClientRegenerateKeyResult` of struct `ClientRegenerateKeyResponse` has been removed
+- Field `RawResponse` of struct `ClientRegenerateKeyResponse` has been removed
+- Field `RawResponse` of struct `ClientDeleteResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `PrivateEndpointConnectionsClientListResult` of struct `PrivateEndpointConnectionsClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientListResponse` has been removed
+- Field `PrivateEndpointConnectionsClientUpdateResult` of struct `PrivateEndpointConnectionsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientUpdateResponse` has been removed
+- Field `CustomCertificatesClientCreateOrUpdateResult` of struct `CustomCertificatesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `CustomCertificatesClientCreateOrUpdateResponse` has been removed
+- Field `CustomDomainsClientGetResult` of struct `CustomDomainsClientGetResponse` has been removed
+- Field `RawResponse` of struct `CustomDomainsClientGetResponse` has been removed
+- Field `UsagesClientListResult` of struct `UsagesClientListResponse` has been removed
+- Field `RawResponse` of struct `UsagesClientListResponse` has been removed
+- Field `CustomDomainsClientCreateOrUpdateResult` of struct `CustomDomainsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `CustomDomainsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `CustomDomainsClientDeleteResponse` has been removed
+- Field `CustomCertificatesClientGetResult` of struct `CustomCertificatesClientGetResponse` has been removed
+- Field `RawResponse` of struct `CustomCertificatesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ClientRestartResponse` has been removed
+- Field `RawResponse` of struct `SharedPrivateLinkResourcesClientDeleteResponse` has been removed
+- Field `SharedPrivateLinkResourcesClientGetResult` of struct `SharedPrivateLinkResourcesClientGetResponse` has been removed
+- Field `RawResponse` of struct `SharedPrivateLinkResourcesClientGetResponse` has been removed
+- Field `ClientListBySubscriptionResult` of struct `ClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `ClientListBySubscriptionResponse` has been removed
+
+### Features Added
+
+- New function `ErrorDetail.MarshalJSON() ([]byte, error)`
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorDetail`
+- New struct `ErrorResponse`
+- New anonymous field `CustomDomain` in struct `CustomDomainsClientGetResponse`
+- New anonymous field `ResourceInfoList` in struct `ClientListByResourceGroupResponse`
+- New anonymous field `CustomDomainList` in struct `CustomDomainsClientListResponse`
+- New field `ResumeToken` in struct `ClientBeginRegenerateKeyOptions`
+- New field `ResumeToken` in struct `CustomDomainsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `CustomCertificatesClientBeginCreateOrUpdateOptions`
+- New anonymous field `OperationList` in struct `OperationsClientListResponse`
+- New anonymous field `ResourceInfoList` in struct `ClientListBySubscriptionResponse`
+- New field `ResumeToken` in struct `CustomDomainsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `SharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions`
+- New anonymous field `Keys` in struct `ClientListKeysResponse`
+- New field `ResumeToken` in struct `SharedPrivateLinkResourcesClientBeginDeleteOptions`
+- New anonymous field `ResourceInfo` in struct `ClientGetResponse`
+- New anonymous field `ResourceInfo` in struct `ClientUpdateResponse`
+- New anonymous field `PrivateEndpointConnectionList` in struct `PrivateEndpointConnectionsClientListResponse`
+- New field `ResumeToken` in struct `ClientBeginUpdateOptions`
+- New field `ResumeToken` in struct `ClientBeginRestartOptions`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientGetResponse`
+- New anonymous field `Keys` in struct `ClientRegenerateKeyResponse`
+- New anonymous field `SharedPrivateLinkResourceList` in struct `SharedPrivateLinkResourcesClientListResponse`
+- New anonymous field `UsageList` in struct `UsagesClientListResponse`
+- New anonymous field `CustomCertificate` in struct `CustomCertificatesClientGetResponse`
+- New anonymous field `CustomDomain` in struct `CustomDomainsClientCreateOrUpdateResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientUpdateResponse`
+- New anonymous field `CustomCertificate` in struct `CustomCertificatesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `ClientBeginCreateOrUpdateOptions`
+- New anonymous field `ResourceInfo` in struct `ClientCreateOrUpdateResponse`
+- New anonymous field `SharedPrivateLinkResource` in struct `SharedPrivateLinkResourcesClientCreateOrUpdateResponse`
+- New anonymous field `CustomCertificateList` in struct `CustomCertificatesClientListResponse`
+- New anonymous field `SharedPrivateLinkResource` in struct `SharedPrivateLinkResourcesClientGetResponse`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsClientBeginDeleteOptions`
+- New anonymous field `SKUList` in struct `ClientListSKUsResponse`
+- New field `ResumeToken` in struct `ClientBeginDeleteOptions`
+- New anonymous field `NameAvailability` in struct `ClientCheckNameAvailabilityResponse`
+- New anonymous field `PrivateLinkResourceList` in struct `PrivateLinkResourcesClientListResponse`
+
+
 ## 0.3.0 (2022-04-04)
 ### Features Added
 

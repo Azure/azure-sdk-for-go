@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type HubsClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewHubsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *HubsClient {
+func NewHubsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HubsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &HubsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or update a hub setting.
@@ -59,22 +64,16 @@ func NewHubsClient(subscriptionID string, credential azcore.TokenCredential, opt
 // parameters - The resource of WebPubSubHub and its properties
 // options - HubsClientBeginCreateOrUpdateOptions contains the optional parameters for the HubsClient.BeginCreateOrUpdate
 // method.
-func (client *HubsClient) BeginCreateOrUpdate(ctx context.Context, hubName string, resourceGroupName string, resourceName string, parameters Hub, options *HubsClientBeginCreateOrUpdateOptions) (HubsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, hubName, resourceGroupName, resourceName, parameters, options)
-	if err != nil {
-		return HubsClientCreateOrUpdatePollerResponse{}, err
+func (client *HubsClient) BeginCreateOrUpdate(ctx context.Context, hubName string, resourceGroupName string, resourceName string, parameters Hub, options *HubsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[HubsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, hubName, resourceGroupName, resourceName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[HubsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[HubsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := HubsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("HubsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return HubsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &HubsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update a hub setting.
@@ -131,22 +130,16 @@ func (client *HubsClient) createOrUpdateCreateRequest(ctx context.Context, hubNa
 // Resource Manager API or the portal.
 // resourceName - The name of the resource.
 // options - HubsClientBeginDeleteOptions contains the optional parameters for the HubsClient.BeginDelete method.
-func (client *HubsClient) BeginDelete(ctx context.Context, hubName string, resourceGroupName string, resourceName string, options *HubsClientBeginDeleteOptions) (HubsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, hubName, resourceGroupName, resourceName, options)
-	if err != nil {
-		return HubsClientDeletePollerResponse{}, err
+func (client *HubsClient) BeginDelete(ctx context.Context, hubName string, resourceGroupName string, resourceName string, options *HubsClientBeginDeleteOptions) (*armruntime.Poller[HubsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, hubName, resourceGroupName, resourceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[HubsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[HubsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := HubsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("HubsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return HubsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &HubsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete a hub setting.
@@ -250,7 +243,7 @@ func (client *HubsClient) getCreateRequest(ctx context.Context, hubName string, 
 
 // getHandleResponse handles the Get response.
 func (client *HubsClient) getHandleResponse(resp *http.Response) (HubsClientGetResponse, error) {
-	result := HubsClientGetResponse{RawResponse: resp}
+	result := HubsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Hub); err != nil {
 		return HubsClientGetResponse{}, err
 	}
@@ -263,16 +256,32 @@ func (client *HubsClient) getHandleResponse(resp *http.Response) (HubsClientGetR
 // Resource Manager API or the portal.
 // resourceName - The name of the resource.
 // options - HubsClientListOptions contains the optional parameters for the HubsClient.List method.
-func (client *HubsClient) List(resourceGroupName string, resourceName string, options *HubsClientListOptions) *HubsClientListPager {
-	return &HubsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
+func (client *HubsClient) List(resourceGroupName string, resourceName string, options *HubsClientListOptions) *runtime.Pager[HubsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[HubsClientListResponse]{
+		More: func(page HubsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp HubsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.HubList.NextLink)
+		Fetcher: func(ctx context.Context, page *HubsClientListResponse) (HubsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return HubsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return HubsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return HubsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -303,7 +312,7 @@ func (client *HubsClient) listCreateRequest(ctx context.Context, resourceGroupNa
 
 // listHandleResponse handles the List response.
 func (client *HubsClient) listHandleResponse(resp *http.Response) (HubsClientListResponse, error) {
-	result := HubsClientListResponse{RawResponse: resp}
+	result := HubsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HubList); err != nil {
 		return HubsClientListResponse{}, err
 	}

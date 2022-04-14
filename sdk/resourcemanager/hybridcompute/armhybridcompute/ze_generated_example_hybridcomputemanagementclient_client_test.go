@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,33 +19,40 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute"
 )
 
-// x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2021-06-10-preview/examples/Extensions_Upgrade.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2021-12-10-preview/examples/Extensions_Upgrade.json
 func ExampleManagementClient_BeginUpgradeExtensions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armhybridcompute.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armhybridcompute.NewManagementClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpgradeExtensions(ctx,
 		"<resource-group-name>",
 		"<machine-name>",
 		armhybridcompute.MachineExtensionUpgrade{
 			ExtensionTargets: map[string]*armhybridcompute.ExtensionTargetProperties{
 				"Microsoft.Azure.Monitoring": {
-					TargetVersion: to.StringPtr("<target-version>"),
+					TargetVersion: to.Ptr("<target-version>"),
 				},
 				"Microsoft.Compute.CustomScriptExtension": {
-					TargetVersion: to.StringPtr("<target-version>"),
+					TargetVersion: to.Ptr("<target-version>"),
 				},
 			},
 		},
-		nil)
+		&armhybridcompute.ManagementClientBeginUpgradeExtensionsOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }

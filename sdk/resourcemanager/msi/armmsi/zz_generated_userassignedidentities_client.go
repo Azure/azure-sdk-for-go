@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,10 +14,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -33,20 +35,24 @@ type UserAssignedIdentitiesClient struct {
 // subscriptionID - The Id of the Subscription to which the identity belongs.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewUserAssignedIdentitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *UserAssignedIdentitiesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewUserAssignedIdentitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UserAssignedIdentitiesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &UserAssignedIdentitiesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create or update an identity in the specified subscription and resource group.
@@ -91,7 +97,7 @@ func (client *UserAssignedIdentitiesClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-11-30")
+	reqQP.Set("api-version", "2021-09-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -99,7 +105,7 @@ func (client *UserAssignedIdentitiesClient) createOrUpdateCreateRequest(ctx cont
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *UserAssignedIdentitiesClient) createOrUpdateHandleResponse(resp *http.Response) (UserAssignedIdentitiesClientCreateOrUpdateResponse, error) {
-	result := UserAssignedIdentitiesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := UserAssignedIdentitiesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Identity); err != nil {
 		return UserAssignedIdentitiesClientCreateOrUpdateResponse{}, err
 	}
@@ -124,7 +130,7 @@ func (client *UserAssignedIdentitiesClient) Delete(ctx context.Context, resource
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return UserAssignedIdentitiesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return UserAssignedIdentitiesClientDeleteResponse{RawResponse: resp}, nil
+	return UserAssignedIdentitiesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -147,7 +153,7 @@ func (client *UserAssignedIdentitiesClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-11-30")
+	reqQP.Set("api-version", "2021-09-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -194,7 +200,7 @@ func (client *UserAssignedIdentitiesClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-11-30")
+	reqQP.Set("api-version", "2021-09-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -202,9 +208,93 @@ func (client *UserAssignedIdentitiesClient) getCreateRequest(ctx context.Context
 
 // getHandleResponse handles the Get response.
 func (client *UserAssignedIdentitiesClient) getHandleResponse(resp *http.Response) (UserAssignedIdentitiesClientGetResponse, error) {
-	result := UserAssignedIdentitiesClientGetResponse{RawResponse: resp}
+	result := UserAssignedIdentitiesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Identity); err != nil {
 		return UserAssignedIdentitiesClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// ListAssociatedResources - Lists the associated resources for this identity.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Resource Group to which the identity belongs.
+// resourceName - The name of the identity resource.
+// options - UserAssignedIdentitiesClientListAssociatedResourcesOptions contains the optional parameters for the UserAssignedIdentitiesClient.ListAssociatedResources
+// method.
+func (client *UserAssignedIdentitiesClient) ListAssociatedResources(resourceGroupName string, resourceName string, options *UserAssignedIdentitiesClientListAssociatedResourcesOptions) *runtime.Pager[UserAssignedIdentitiesClientListAssociatedResourcesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[UserAssignedIdentitiesClientListAssociatedResourcesResponse]{
+		More: func(page UserAssignedIdentitiesClientListAssociatedResourcesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *UserAssignedIdentitiesClientListAssociatedResourcesResponse) (UserAssignedIdentitiesClientListAssociatedResourcesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAssociatedResourcesCreateRequest(ctx, resourceGroupName, resourceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return UserAssignedIdentitiesClientListAssociatedResourcesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return UserAssignedIdentitiesClientListAssociatedResourcesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return UserAssignedIdentitiesClientListAssociatedResourcesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAssociatedResourcesHandleResponse(resp)
+		},
+	})
+}
+
+// listAssociatedResourcesCreateRequest creates the ListAssociatedResources request.
+func (client *UserAssignedIdentitiesClient) listAssociatedResourcesCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *UserAssignedIdentitiesClientListAssociatedResourcesOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}/listAssociatedResources"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	if options != nil && options.Orderby != nil {
+		reqQP.Set("$orderby", *options.Orderby)
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	if options != nil && options.Skip != nil {
+		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
+	}
+	if options != nil && options.Skiptoken != nil {
+		reqQP.Set("$skiptoken", *options.Skiptoken)
+	}
+	reqQP.Set("api-version", "2021-09-30-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// listAssociatedResourcesHandleResponse handles the ListAssociatedResources response.
+func (client *UserAssignedIdentitiesClient) listAssociatedResourcesHandleResponse(resp *http.Response) (UserAssignedIdentitiesClientListAssociatedResourcesResponse, error) {
+	result := UserAssignedIdentitiesClientListAssociatedResourcesResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AssociatedResourcesListResult); err != nil {
+		return UserAssignedIdentitiesClientListAssociatedResourcesResponse{}, err
 	}
 	return result, nil
 }
@@ -214,16 +304,32 @@ func (client *UserAssignedIdentitiesClient) getHandleResponse(resp *http.Respons
 // resourceGroupName - The name of the Resource Group to which the identity belongs.
 // options - UserAssignedIdentitiesClientListByResourceGroupOptions contains the optional parameters for the UserAssignedIdentitiesClient.ListByResourceGroup
 // method.
-func (client *UserAssignedIdentitiesClient) ListByResourceGroup(resourceGroupName string, options *UserAssignedIdentitiesClientListByResourceGroupOptions) *UserAssignedIdentitiesClientListByResourceGroupPager {
-	return &UserAssignedIdentitiesClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *UserAssignedIdentitiesClient) ListByResourceGroup(resourceGroupName string, options *UserAssignedIdentitiesClientListByResourceGroupOptions) *runtime.Pager[UserAssignedIdentitiesClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[UserAssignedIdentitiesClientListByResourceGroupResponse]{
+		More: func(page UserAssignedIdentitiesClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp UserAssignedIdentitiesClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.UserAssignedIdentitiesListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *UserAssignedIdentitiesClientListByResourceGroupResponse) (UserAssignedIdentitiesClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return UserAssignedIdentitiesClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return UserAssignedIdentitiesClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return UserAssignedIdentitiesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -242,7 +348,7 @@ func (client *UserAssignedIdentitiesClient) listByResourceGroupCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-11-30")
+	reqQP.Set("api-version", "2021-09-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -250,7 +356,7 @@ func (client *UserAssignedIdentitiesClient) listByResourceGroupCreateRequest(ctx
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *UserAssignedIdentitiesClient) listByResourceGroupHandleResponse(resp *http.Response) (UserAssignedIdentitiesClientListByResourceGroupResponse, error) {
-	result := UserAssignedIdentitiesClientListByResourceGroupResponse{RawResponse: resp}
+	result := UserAssignedIdentitiesClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserAssignedIdentitiesListResult); err != nil {
 		return UserAssignedIdentitiesClientListByResourceGroupResponse{}, err
 	}
@@ -261,16 +367,32 @@ func (client *UserAssignedIdentitiesClient) listByResourceGroupHandleResponse(re
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - UserAssignedIdentitiesClientListBySubscriptionOptions contains the optional parameters for the UserAssignedIdentitiesClient.ListBySubscription
 // method.
-func (client *UserAssignedIdentitiesClient) ListBySubscription(options *UserAssignedIdentitiesClientListBySubscriptionOptions) *UserAssignedIdentitiesClientListBySubscriptionPager {
-	return &UserAssignedIdentitiesClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *UserAssignedIdentitiesClient) ListBySubscription(options *UserAssignedIdentitiesClientListBySubscriptionOptions) *runtime.Pager[UserAssignedIdentitiesClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[UserAssignedIdentitiesClientListBySubscriptionResponse]{
+		More: func(page UserAssignedIdentitiesClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp UserAssignedIdentitiesClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.UserAssignedIdentitiesListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *UserAssignedIdentitiesClientListBySubscriptionResponse) (UserAssignedIdentitiesClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return UserAssignedIdentitiesClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return UserAssignedIdentitiesClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return UserAssignedIdentitiesClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -285,7 +407,7 @@ func (client *UserAssignedIdentitiesClient) listBySubscriptionCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-11-30")
+	reqQP.Set("api-version", "2021-09-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -293,7 +415,7 @@ func (client *UserAssignedIdentitiesClient) listBySubscriptionCreateRequest(ctx 
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *UserAssignedIdentitiesClient) listBySubscriptionHandleResponse(resp *http.Response) (UserAssignedIdentitiesClientListBySubscriptionResponse, error) {
-	result := UserAssignedIdentitiesClientListBySubscriptionResponse{RawResponse: resp}
+	result := UserAssignedIdentitiesClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserAssignedIdentitiesListResult); err != nil {
 		return UserAssignedIdentitiesClientListBySubscriptionResponse{}, err
 	}
@@ -342,7 +464,7 @@ func (client *UserAssignedIdentitiesClient) updateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-11-30")
+	reqQP.Set("api-version", "2021-09-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -350,7 +472,7 @@ func (client *UserAssignedIdentitiesClient) updateCreateRequest(ctx context.Cont
 
 // updateHandleResponse handles the Update response.
 func (client *UserAssignedIdentitiesClient) updateHandleResponse(resp *http.Response) (UserAssignedIdentitiesClientUpdateResponse, error) {
-	result := UserAssignedIdentitiesClientUpdateResponse{RawResponse: resp}
+	result := UserAssignedIdentitiesClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Identity); err != nil {
 		return UserAssignedIdentitiesClientUpdateResponse{}, err
 	}

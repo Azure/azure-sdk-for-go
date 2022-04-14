@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type PrefixesClient struct {
 // subscriptionID - The Azure subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPrefixesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrefixesClient {
+func NewPrefixesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrefixesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PrefixesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates a new prefix with the specified name under the given subscription, resource group and peering
@@ -96,7 +101,7 @@ func (client *PrefixesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, peeringServicePrefix)
@@ -104,7 +109,7 @@ func (client *PrefixesClient) createOrUpdateCreateRequest(ctx context.Context, r
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *PrefixesClient) createOrUpdateHandleResponse(resp *http.Response) (PrefixesClientCreateOrUpdateResponse, error) {
-	result := PrefixesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := PrefixesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServicePrefix); err != nil {
 		return PrefixesClientCreateOrUpdateResponse{}, err
 	}
@@ -129,7 +134,7 @@ func (client *PrefixesClient) Delete(ctx context.Context, resourceGroupName stri
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return PrefixesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return PrefixesClientDeleteResponse{RawResponse: resp}, nil
+	return PrefixesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -156,7 +161,7 @@ func (client *PrefixesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -210,7 +215,7 @@ func (client *PrefixesClient) getCreateRequest(ctx context.Context, resourceGrou
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -218,7 +223,7 @@ func (client *PrefixesClient) getCreateRequest(ctx context.Context, resourceGrou
 
 // getHandleResponse handles the Get response.
 func (client *PrefixesClient) getHandleResponse(resp *http.Response) (PrefixesClientGetResponse, error) {
-	result := PrefixesClientGetResponse{RawResponse: resp}
+	result := PrefixesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServicePrefix); err != nil {
 		return PrefixesClientGetResponse{}, err
 	}
@@ -231,16 +236,32 @@ func (client *PrefixesClient) getHandleResponse(resp *http.Response) (PrefixesCl
 // peeringServiceName - The name of the peering service.
 // options - PrefixesClientListByPeeringServiceOptions contains the optional parameters for the PrefixesClient.ListByPeeringService
 // method.
-func (client *PrefixesClient) ListByPeeringService(resourceGroupName string, peeringServiceName string, options *PrefixesClientListByPeeringServiceOptions) *PrefixesClientListByPeeringServicePager {
-	return &PrefixesClientListByPeeringServicePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByPeeringServiceCreateRequest(ctx, resourceGroupName, peeringServiceName, options)
+func (client *PrefixesClient) ListByPeeringService(resourceGroupName string, peeringServiceName string, options *PrefixesClientListByPeeringServiceOptions) *runtime.Pager[PrefixesClientListByPeeringServiceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PrefixesClientListByPeeringServiceResponse]{
+		More: func(page PrefixesClientListByPeeringServiceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PrefixesClientListByPeeringServiceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServicePrefixListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PrefixesClientListByPeeringServiceResponse) (PrefixesClientListByPeeringServiceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByPeeringServiceCreateRequest(ctx, resourceGroupName, peeringServiceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PrefixesClientListByPeeringServiceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PrefixesClientListByPeeringServiceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PrefixesClientListByPeeringServiceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByPeeringServiceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByPeeringServiceCreateRequest creates the ListByPeeringService request.
@@ -266,7 +287,7 @@ func (client *PrefixesClient) listByPeeringServiceCreateRequest(ctx context.Cont
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -274,7 +295,7 @@ func (client *PrefixesClient) listByPeeringServiceCreateRequest(ctx context.Cont
 
 // listByPeeringServiceHandleResponse handles the ListByPeeringService response.
 func (client *PrefixesClient) listByPeeringServiceHandleResponse(resp *http.Response) (PrefixesClientListByPeeringServiceResponse, error) {
-	result := PrefixesClientListByPeeringServiceResponse{RawResponse: resp}
+	result := PrefixesClientListByPeeringServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServicePrefixListResult); err != nil {
 		return PrefixesClientListByPeeringServiceResponse{}, err
 	}

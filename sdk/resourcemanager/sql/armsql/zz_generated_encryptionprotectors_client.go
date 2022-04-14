@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type EncryptionProtectorsClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewEncryptionProtectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *EncryptionProtectorsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewEncryptionProtectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EncryptionProtectorsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &EncryptionProtectorsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Updates an existing encryption protector.
@@ -58,22 +63,16 @@ func NewEncryptionProtectorsClient(subscriptionID string, credential azcore.Toke
 // parameters - The requested encryption protector resource state.
 // options - EncryptionProtectorsClientBeginCreateOrUpdateOptions contains the optional parameters for the EncryptionProtectorsClient.BeginCreateOrUpdate
 // method.
-func (client *EncryptionProtectorsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, encryptionProtectorName EncryptionProtectorName, parameters EncryptionProtector, options *EncryptionProtectorsClientBeginCreateOrUpdateOptions) (EncryptionProtectorsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, encryptionProtectorName, parameters, options)
-	if err != nil {
-		return EncryptionProtectorsClientCreateOrUpdatePollerResponse{}, err
+func (client *EncryptionProtectorsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, encryptionProtectorName EncryptionProtectorName, parameters EncryptionProtector, options *EncryptionProtectorsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[EncryptionProtectorsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, encryptionProtectorName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[EncryptionProtectorsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[EncryptionProtectorsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := EncryptionProtectorsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("EncryptionProtectorsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return EncryptionProtectorsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &EncryptionProtectorsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Updates an existing encryption protector.
@@ -178,7 +177,7 @@ func (client *EncryptionProtectorsClient) getCreateRequest(ctx context.Context, 
 
 // getHandleResponse handles the Get response.
 func (client *EncryptionProtectorsClient) getHandleResponse(resp *http.Response) (EncryptionProtectorsClientGetResponse, error) {
-	result := EncryptionProtectorsClientGetResponse{RawResponse: resp}
+	result := EncryptionProtectorsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EncryptionProtector); err != nil {
 		return EncryptionProtectorsClientGetResponse{}, err
 	}
@@ -192,16 +191,32 @@ func (client *EncryptionProtectorsClient) getHandleResponse(resp *http.Response)
 // serverName - The name of the server.
 // options - EncryptionProtectorsClientListByServerOptions contains the optional parameters for the EncryptionProtectorsClient.ListByServer
 // method.
-func (client *EncryptionProtectorsClient) ListByServer(resourceGroupName string, serverName string, options *EncryptionProtectorsClientListByServerOptions) *EncryptionProtectorsClientListByServerPager {
-	return &EncryptionProtectorsClientListByServerPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+func (client *EncryptionProtectorsClient) ListByServer(resourceGroupName string, serverName string, options *EncryptionProtectorsClientListByServerOptions) *runtime.Pager[EncryptionProtectorsClientListByServerResponse] {
+	return runtime.NewPager(runtime.PageProcessor[EncryptionProtectorsClientListByServerResponse]{
+		More: func(page EncryptionProtectorsClientListByServerResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp EncryptionProtectorsClientListByServerResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.EncryptionProtectorListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *EncryptionProtectorsClientListByServerResponse) (EncryptionProtectorsClientListByServerResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return EncryptionProtectorsClientListByServerResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return EncryptionProtectorsClientListByServerResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return EncryptionProtectorsClientListByServerResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServerHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByServerCreateRequest creates the ListByServer request.
@@ -232,7 +247,7 @@ func (client *EncryptionProtectorsClient) listByServerCreateRequest(ctx context.
 
 // listByServerHandleResponse handles the ListByServer response.
 func (client *EncryptionProtectorsClient) listByServerHandleResponse(resp *http.Response) (EncryptionProtectorsClientListByServerResponse, error) {
-	result := EncryptionProtectorsClientListByServerResponse{RawResponse: resp}
+	result := EncryptionProtectorsClientListByServerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EncryptionProtectorListResult); err != nil {
 		return EncryptionProtectorsClientListByServerResponse{}, err
 	}
@@ -247,22 +262,16 @@ func (client *EncryptionProtectorsClient) listByServerHandleResponse(resp *http.
 // encryptionProtectorName - The name of the encryption protector to be updated.
 // options - EncryptionProtectorsClientBeginRevalidateOptions contains the optional parameters for the EncryptionProtectorsClient.BeginRevalidate
 // method.
-func (client *EncryptionProtectorsClient) BeginRevalidate(ctx context.Context, resourceGroupName string, serverName string, encryptionProtectorName EncryptionProtectorName, options *EncryptionProtectorsClientBeginRevalidateOptions) (EncryptionProtectorsClientRevalidatePollerResponse, error) {
-	resp, err := client.revalidate(ctx, resourceGroupName, serverName, encryptionProtectorName, options)
-	if err != nil {
-		return EncryptionProtectorsClientRevalidatePollerResponse{}, err
+func (client *EncryptionProtectorsClient) BeginRevalidate(ctx context.Context, resourceGroupName string, serverName string, encryptionProtectorName EncryptionProtectorName, options *EncryptionProtectorsClientBeginRevalidateOptions) (*armruntime.Poller[EncryptionProtectorsClientRevalidateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.revalidate(ctx, resourceGroupName, serverName, encryptionProtectorName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[EncryptionProtectorsClientRevalidateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[EncryptionProtectorsClientRevalidateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := EncryptionProtectorsClientRevalidatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("EncryptionProtectorsClient.Revalidate", "", resp, client.pl)
-	if err != nil {
-		return EncryptionProtectorsClientRevalidatePollerResponse{}, err
-	}
-	result.Poller = &EncryptionProtectorsClientRevalidatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Revalidate - Revalidates an existing encryption protector.

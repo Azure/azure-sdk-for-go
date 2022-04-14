@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armmonitor
 
 const (
 	moduleName    = "armmonitor"
-	moduleVersion = "v0.4.1"
+	moduleVersion = "v0.5.0"
 )
 
 // AggregationType - the aggregation type of the metric.
@@ -37,11 +37,6 @@ func PossibleAggregationTypeValues() []AggregationType {
 	}
 }
 
-// ToPtr returns a *AggregationType pointing to the current value.
-func (c AggregationType) ToPtr() *AggregationType {
-	return &c
-}
-
 // AggregationTypeEnum - the criteria time aggregation types.
 type AggregationTypeEnum string
 
@@ -62,11 +57,6 @@ func PossibleAggregationTypeEnumValues() []AggregationTypeEnum {
 		AggregationTypeEnumMinimum,
 		AggregationTypeEnumTotal,
 	}
-}
-
-// ToPtr returns a *AggregationTypeEnum pointing to the current value.
-func (c AggregationTypeEnum) ToPtr() *AggregationTypeEnum {
-	return &c
 }
 
 // AlertSeverity - Severity Level of Alert
@@ -91,11 +81,6 @@ func PossibleAlertSeverityValues() []AlertSeverity {
 	}
 }
 
-// ToPtr returns a *AlertSeverity pointing to the current value.
-func (c AlertSeverity) ToPtr() *AlertSeverity {
-	return &c
-}
-
 // BaselineSensitivity - the sensitivity of the baseline.
 type BaselineSensitivity string
 
@@ -114,11 +99,6 @@ func PossibleBaselineSensitivityValues() []BaselineSensitivity {
 	}
 }
 
-// ToPtr returns a *BaselineSensitivity pointing to the current value.
-func (c BaselineSensitivity) ToPtr() *BaselineSensitivity {
-	return &c
-}
-
 // CategoryType - The type of the diagnostic settings category.
 type CategoryType string
 
@@ -133,11 +113,6 @@ func PossibleCategoryTypeValues() []CategoryType {
 		CategoryTypeMetrics,
 		CategoryTypeLogs,
 	}
-}
-
-// ToPtr returns a *CategoryType pointing to the current value.
-func (c CategoryType) ToPtr() *CategoryType {
-	return &c
 }
 
 // ComparisonOperationType - the operator that is used to compare the metric data and the threshold.
@@ -164,11 +139,6 @@ func PossibleComparisonOperationTypeValues() []ComparisonOperationType {
 	}
 }
 
-// ToPtr returns a *ComparisonOperationType pointing to the current value.
-func (c ComparisonOperationType) ToPtr() *ComparisonOperationType {
-	return &c
-}
-
 // ConditionOperator - Operators allowed in the rule condition.
 type ConditionOperator string
 
@@ -187,11 +157,6 @@ func PossibleConditionOperatorValues() []ConditionOperator {
 		ConditionOperatorLessThan,
 		ConditionOperatorLessThanOrEqual,
 	}
-}
-
-// ToPtr returns a *ConditionOperator pointing to the current value.
-func (c ConditionOperator) ToPtr() *ConditionOperator {
-	return &c
 }
 
 // ConditionalOperator - Result Condition Evaluation criteria.
@@ -216,11 +181,6 @@ func PossibleConditionalOperatorValues() []ConditionalOperator {
 	}
 }
 
-// ToPtr returns a *ConditionalOperator pointing to the current value.
-func (c ConditionalOperator) ToPtr() *ConditionalOperator {
-	return &c
-}
-
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -241,11 +201,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // CriterionType - Specifies the type of threshold criteria
 type CriterionType string
 
@@ -260,11 +215,6 @@ func PossibleCriterionTypeValues() []CriterionType {
 		CriterionTypeDynamicThresholdCriterion,
 		CriterionTypeStaticThresholdCriterion,
 	}
-}
-
-// ToPtr returns a *CriterionType pointing to the current value.
-func (c CriterionType) ToPtr() *CriterionType {
-	return &c
 }
 
 // DataStatus - The status of VM Insights data from the resource. When reported as present the data array will contain information
@@ -284,11 +234,6 @@ func PossibleDataStatusValues() []DataStatus {
 	}
 }
 
-// ToPtr returns a *DataStatus pointing to the current value.
-func (c DataStatus) ToPtr() *DataStatus {
-	return &c
-}
-
 // DynamicThresholdOperator - The operator used to compare the metric value against the threshold.
 type DynamicThresholdOperator string
 
@@ -305,11 +250,6 @@ func PossibleDynamicThresholdOperatorValues() []DynamicThresholdOperator {
 		DynamicThresholdOperatorGreaterThan,
 		DynamicThresholdOperatorLessThan,
 	}
-}
-
-// ToPtr returns a *DynamicThresholdOperator pointing to the current value.
-func (c DynamicThresholdOperator) ToPtr() *DynamicThresholdOperator {
-	return &c
 }
 
 // DynamicThresholdSensitivity - The extent of deviation required to trigger an alert. This will affect how tight the threshold
@@ -331,11 +271,6 @@ func PossibleDynamicThresholdSensitivityValues() []DynamicThresholdSensitivity {
 	}
 }
 
-// ToPtr returns a *DynamicThresholdSensitivity pointing to the current value.
-func (c DynamicThresholdSensitivity) ToPtr() *DynamicThresholdSensitivity {
-	return &c
-}
-
 // Enabled - The flag which indicates whether the Log Search rule is enabled. Value should be true or false
 type Enabled string
 
@@ -350,11 +285,6 @@ func PossibleEnabledValues() []Enabled {
 		EnabledFalse,
 		EnabledTrue,
 	}
-}
-
-// ToPtr returns a *Enabled pointing to the current value.
-func (c Enabled) ToPtr() *Enabled {
-	return &c
 }
 
 // EventLevel - the event level
@@ -379,9 +309,30 @@ func PossibleEventLevelValues() []EventLevel {
 	}
 }
 
-// ToPtr returns a *EventLevel pointing to the current value.
-func (c EventLevel) ToPtr() *EventLevel {
-	return &c
+// KnownColumnDefinitionType - The type of the column data.
+type KnownColumnDefinitionType string
+
+const (
+	KnownColumnDefinitionTypeBoolean  KnownColumnDefinitionType = "boolean"
+	KnownColumnDefinitionTypeDatetime KnownColumnDefinitionType = "datetime"
+	KnownColumnDefinitionTypeDynamic  KnownColumnDefinitionType = "dynamic"
+	KnownColumnDefinitionTypeInt      KnownColumnDefinitionType = "int"
+	KnownColumnDefinitionTypeLong     KnownColumnDefinitionType = "long"
+	KnownColumnDefinitionTypeReal     KnownColumnDefinitionType = "real"
+	KnownColumnDefinitionTypeString   KnownColumnDefinitionType = "string"
+)
+
+// PossibleKnownColumnDefinitionTypeValues returns the possible values for the KnownColumnDefinitionType const type.
+func PossibleKnownColumnDefinitionTypeValues() []KnownColumnDefinitionType {
+	return []KnownColumnDefinitionType{
+		KnownColumnDefinitionTypeBoolean,
+		KnownColumnDefinitionTypeDatetime,
+		KnownColumnDefinitionTypeDynamic,
+		KnownColumnDefinitionTypeInt,
+		KnownColumnDefinitionTypeLong,
+		KnownColumnDefinitionTypeReal,
+		KnownColumnDefinitionTypeString,
+	}
 }
 
 // KnownDataCollectionEndpointProvisioningState - The resource provisioning state. This property is READ-ONLY.
@@ -406,11 +357,6 @@ func PossibleKnownDataCollectionEndpointProvisioningStateValues() []KnownDataCol
 	}
 }
 
-// ToPtr returns a *KnownDataCollectionEndpointProvisioningState pointing to the current value.
-func (c KnownDataCollectionEndpointProvisioningState) ToPtr() *KnownDataCollectionEndpointProvisioningState {
-	return &c
-}
-
 // KnownDataCollectionEndpointResourceKind - The kind of the resource.
 type KnownDataCollectionEndpointResourceKind string
 
@@ -425,11 +371,6 @@ func PossibleKnownDataCollectionEndpointResourceKindValues() []KnownDataCollecti
 		KnownDataCollectionEndpointResourceKindLinux,
 		KnownDataCollectionEndpointResourceKindWindows,
 	}
-}
-
-// ToPtr returns a *KnownDataCollectionEndpointResourceKind pointing to the current value.
-func (c KnownDataCollectionEndpointResourceKind) ToPtr() *KnownDataCollectionEndpointResourceKind {
-	return &c
 }
 
 // KnownDataCollectionRuleAssociationProvisioningState - The resource provisioning state.
@@ -454,11 +395,6 @@ func PossibleKnownDataCollectionRuleAssociationProvisioningStateValues() []Known
 	}
 }
 
-// ToPtr returns a *KnownDataCollectionRuleAssociationProvisioningState pointing to the current value.
-func (c KnownDataCollectionRuleAssociationProvisioningState) ToPtr() *KnownDataCollectionRuleAssociationProvisioningState {
-	return &c
-}
-
 // KnownDataCollectionRuleProvisioningState - The resource provisioning state.
 type KnownDataCollectionRuleProvisioningState string
 
@@ -481,11 +417,6 @@ func PossibleKnownDataCollectionRuleProvisioningStateValues() []KnownDataCollect
 	}
 }
 
-// ToPtr returns a *KnownDataCollectionRuleProvisioningState pointing to the current value.
-func (c KnownDataCollectionRuleProvisioningState) ToPtr() *KnownDataCollectionRuleProvisioningState {
-	return &c
-}
-
 // KnownDataCollectionRuleResourceKind - The kind of the resource.
 type KnownDataCollectionRuleResourceKind string
 
@@ -500,11 +431,6 @@ func PossibleKnownDataCollectionRuleResourceKindValues() []KnownDataCollectionRu
 		KnownDataCollectionRuleResourceKindLinux,
 		KnownDataCollectionRuleResourceKindWindows,
 	}
-}
-
-// ToPtr returns a *KnownDataCollectionRuleResourceKind pointing to the current value.
-func (c KnownDataCollectionRuleResourceKind) ToPtr() *KnownDataCollectionRuleResourceKind {
-	return &c
 }
 
 type KnownDataFlowStreams string
@@ -528,11 +454,6 @@ func PossibleKnownDataFlowStreamsValues() []KnownDataFlowStreams {
 	}
 }
 
-// ToPtr returns a *KnownDataFlowStreams pointing to the current value.
-func (c KnownDataFlowStreams) ToPtr() *KnownDataFlowStreams {
-	return &c
-}
-
 type KnownExtensionDataSourceStreams string
 
 const (
@@ -554,9 +475,48 @@ func PossibleKnownExtensionDataSourceStreamsValues() []KnownExtensionDataSourceS
 	}
 }
 
-// ToPtr returns a *KnownExtensionDataSourceStreams pointing to the current value.
-func (c KnownExtensionDataSourceStreams) ToPtr() *KnownExtensionDataSourceStreams {
-	return &c
+// KnownLogFileTextSettingsRecordStartTimestampFormat - One of the supported timestamp formats
+type KnownLogFileTextSettingsRecordStartTimestampFormat string
+
+const (
+	KnownLogFileTextSettingsRecordStartTimestampFormatDdMMMYyyyHHMmSsZzz KnownLogFileTextSettingsRecordStartTimestampFormat = "dd/MMM/yyyy:HH:mm:ss zzz"
+	KnownLogFileTextSettingsRecordStartTimestampFormatDdMMyyHHMmSs       KnownLogFileTextSettingsRecordStartTimestampFormat = "ddMMyy HH:mm:ss"
+	KnownLogFileTextSettingsRecordStartTimestampFormatISO8601            KnownLogFileTextSettingsRecordStartTimestampFormat = "ISO 8601"
+	KnownLogFileTextSettingsRecordStartTimestampFormatMDYYYYHHMMSSAMPM   KnownLogFileTextSettingsRecordStartTimestampFormat = "M/D/YYYY HH:MM:SS AM/PM"
+	KnownLogFileTextSettingsRecordStartTimestampFormatMMMDHhMmSs         KnownLogFileTextSettingsRecordStartTimestampFormat = "MMM d hh:mm:ss"
+	KnownLogFileTextSettingsRecordStartTimestampFormatMonDDYYYYHHMMSS    KnownLogFileTextSettingsRecordStartTimestampFormat = "Mon DD, YYYY HH:MM:SS"
+	KnownLogFileTextSettingsRecordStartTimestampFormatYYYYMMDDHHMMSS     KnownLogFileTextSettingsRecordStartTimestampFormat = "YYYY-MM-DD HH:MM:SS"
+	KnownLogFileTextSettingsRecordStartTimestampFormatYyMMddHHMmSs       KnownLogFileTextSettingsRecordStartTimestampFormat = "yyMMdd HH:mm:ss"
+	KnownLogFileTextSettingsRecordStartTimestampFormatYyyyMMDdTHHMmSsK   KnownLogFileTextSettingsRecordStartTimestampFormat = "yyyy-MM-ddTHH:mm:ssK"
+)
+
+// PossibleKnownLogFileTextSettingsRecordStartTimestampFormatValues returns the possible values for the KnownLogFileTextSettingsRecordStartTimestampFormat const type.
+func PossibleKnownLogFileTextSettingsRecordStartTimestampFormatValues() []KnownLogFileTextSettingsRecordStartTimestampFormat {
+	return []KnownLogFileTextSettingsRecordStartTimestampFormat{
+		KnownLogFileTextSettingsRecordStartTimestampFormatDdMMMYyyyHHMmSsZzz,
+		KnownLogFileTextSettingsRecordStartTimestampFormatDdMMyyHHMmSs,
+		KnownLogFileTextSettingsRecordStartTimestampFormatISO8601,
+		KnownLogFileTextSettingsRecordStartTimestampFormatMDYYYYHHMMSSAMPM,
+		KnownLogFileTextSettingsRecordStartTimestampFormatMMMDHhMmSs,
+		KnownLogFileTextSettingsRecordStartTimestampFormatMonDDYYYYHHMMSS,
+		KnownLogFileTextSettingsRecordStartTimestampFormatYYYYMMDDHHMMSS,
+		KnownLogFileTextSettingsRecordStartTimestampFormatYyMMddHHMmSs,
+		KnownLogFileTextSettingsRecordStartTimestampFormatYyyyMMDdTHHMmSsK,
+	}
+}
+
+// KnownLogFilesDataSourceFormat - The data format of the log files
+type KnownLogFilesDataSourceFormat string
+
+const (
+	KnownLogFilesDataSourceFormatText KnownLogFilesDataSourceFormat = "text"
+)
+
+// PossibleKnownLogFilesDataSourceFormatValues returns the possible values for the KnownLogFilesDataSourceFormat const type.
+func PossibleKnownLogFilesDataSourceFormatValues() []KnownLogFilesDataSourceFormat {
+	return []KnownLogFilesDataSourceFormat{
+		KnownLogFilesDataSourceFormatText,
+	}
 }
 
 type KnownPerfCounterDataSourceStreams string
@@ -574,11 +534,6 @@ func PossibleKnownPerfCounterDataSourceStreamsValues() []KnownPerfCounterDataSou
 	}
 }
 
-// ToPtr returns a *KnownPerfCounterDataSourceStreams pointing to the current value.
-func (c KnownPerfCounterDataSourceStreams) ToPtr() *KnownPerfCounterDataSourceStreams {
-	return &c
-}
-
 // KnownPublicNetworkAccessOptions - The configuration to set whether network access from public internet to the endpoints
 // are allowed.
 type KnownPublicNetworkAccessOptions string
@@ -594,11 +549,6 @@ func PossibleKnownPublicNetworkAccessOptionsValues() []KnownPublicNetworkAccessO
 		KnownPublicNetworkAccessOptionsDisabled,
 		KnownPublicNetworkAccessOptionsEnabled,
 	}
-}
-
-// ToPtr returns a *KnownPublicNetworkAccessOptions pointing to the current value.
-func (c KnownPublicNetworkAccessOptions) ToPtr() *KnownPublicNetworkAccessOptions {
-	return &c
 }
 
 type KnownSyslogDataSourceFacilityNames string
@@ -654,11 +604,6 @@ func PossibleKnownSyslogDataSourceFacilityNamesValues() []KnownSyslogDataSourceF
 	}
 }
 
-// ToPtr returns a *KnownSyslogDataSourceFacilityNames pointing to the current value.
-func (c KnownSyslogDataSourceFacilityNames) ToPtr() *KnownSyslogDataSourceFacilityNames {
-	return &c
-}
-
 type KnownSyslogDataSourceLogLevels string
 
 const (
@@ -688,11 +633,6 @@ func PossibleKnownSyslogDataSourceLogLevelsValues() []KnownSyslogDataSourceLogLe
 	}
 }
 
-// ToPtr returns a *KnownSyslogDataSourceLogLevels pointing to the current value.
-func (c KnownSyslogDataSourceLogLevels) ToPtr() *KnownSyslogDataSourceLogLevels {
-	return &c
-}
-
 type KnownSyslogDataSourceStreams string
 
 const (
@@ -704,11 +644,6 @@ func PossibleKnownSyslogDataSourceStreamsValues() []KnownSyslogDataSourceStreams
 	return []KnownSyslogDataSourceStreams{
 		KnownSyslogDataSourceStreamsMicrosoftSyslog,
 	}
-}
-
-// ToPtr returns a *KnownSyslogDataSourceStreams pointing to the current value.
-func (c KnownSyslogDataSourceStreams) ToPtr() *KnownSyslogDataSourceStreams {
-	return &c
 }
 
 type KnownWindowsEventLogDataSourceStreams string
@@ -724,11 +659,6 @@ func PossibleKnownWindowsEventLogDataSourceStreamsValues() []KnownWindowsEventLo
 		KnownWindowsEventLogDataSourceStreamsMicrosoftEvent,
 		KnownWindowsEventLogDataSourceStreamsMicrosoftWindowsEvent,
 	}
-}
-
-// ToPtr returns a *KnownWindowsEventLogDataSourceStreams pointing to the current value.
-func (c KnownWindowsEventLogDataSourceStreams) ToPtr() *KnownWindowsEventLogDataSourceStreams {
-	return &c
 }
 
 // MetricClass - The class of the metric.
@@ -753,11 +683,6 @@ func PossibleMetricClassValues() []MetricClass {
 	}
 }
 
-// ToPtr returns a *MetricClass pointing to the current value.
-func (c MetricClass) ToPtr() *MetricClass {
-	return &c
-}
-
 // MetricStatisticType - the metric statistic type. How the metrics from multiple instances are combined.
 type MetricStatisticType string
 
@@ -780,11 +705,6 @@ func PossibleMetricStatisticTypeValues() []MetricStatisticType {
 	}
 }
 
-// ToPtr returns a *MetricStatisticType pointing to the current value.
-func (c MetricStatisticType) ToPtr() *MetricStatisticType {
-	return &c
-}
-
 // MetricTriggerType - Metric Trigger Evaluation Type
 type MetricTriggerType string
 
@@ -799,11 +719,6 @@ func PossibleMetricTriggerTypeValues() []MetricTriggerType {
 		MetricTriggerTypeConsecutive,
 		MetricTriggerTypeTotal,
 	}
-}
-
-// ToPtr returns a *MetricTriggerType pointing to the current value.
-func (c MetricTriggerType) ToPtr() *MetricTriggerType {
-	return &c
 }
 
 // MetricUnit - The unit of the metric.
@@ -844,11 +759,6 @@ func PossibleMetricUnitValues() []MetricUnit {
 	}
 }
 
-// ToPtr returns a *MetricUnit pointing to the current value.
-func (c MetricUnit) ToPtr() *MetricUnit {
-	return &c
-}
-
 // NamespaceClassification - Kind of namespace
 type NamespaceClassification string
 
@@ -865,11 +775,6 @@ func PossibleNamespaceClassificationValues() []NamespaceClassification {
 		NamespaceClassificationPlatform,
 		NamespaceClassificationQos,
 	}
-}
-
-// ToPtr returns a *NamespaceClassification pointing to the current value.
-func (c NamespaceClassification) ToPtr() *NamespaceClassification {
-	return &c
 }
 
 // Odatatype - specifies the type of the alert criteria.
@@ -890,11 +795,6 @@ func PossibleOdatatypeValues() []Odatatype {
 	}
 }
 
-// ToPtr returns a *Odatatype pointing to the current value.
-func (c Odatatype) ToPtr() *Odatatype {
-	return &c
-}
-
 // OnboardingStatus - The onboarding status for the resource. Note that, a higher level scope, e.g., resource group or subscription,
 // is considered onboarded if at least one resource under it is onboarded.
 type OnboardingStatus string
@@ -912,11 +812,6 @@ func PossibleOnboardingStatusValues() []OnboardingStatus {
 		OnboardingStatusOnboarded,
 		OnboardingStatusUnknown,
 	}
-}
-
-// ToPtr returns a *OnboardingStatus pointing to the current value.
-func (c OnboardingStatus) ToPtr() *OnboardingStatus {
-	return &c
 }
 
 // Operator - the criteria operator.
@@ -943,11 +838,6 @@ func PossibleOperatorValues() []Operator {
 	}
 }
 
-// ToPtr returns a *Operator pointing to the current value.
-func (c Operator) ToPtr() *Operator {
-	return &c
-}
-
 // ProvisioningState - Provisioning state of the scheduled query rule
 type ProvisioningState string
 
@@ -968,11 +858,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // QueryType - Set value to 'ResultAccount'
 type QueryType string
 
@@ -985,11 +870,6 @@ func PossibleQueryTypeValues() []QueryType {
 	return []QueryType{
 		QueryTypeResultCount,
 	}
-}
-
-// ToPtr returns a *QueryType pointing to the current value.
-func (c QueryType) ToPtr() *QueryType {
-	return &c
 }
 
 // ReceiverStatus - Indicates the status of the receiver. Receivers that are not Enabled will not receive any communications.
@@ -1008,11 +888,6 @@ func PossibleReceiverStatusValues() []ReceiverStatus {
 		ReceiverStatusEnabled,
 		ReceiverStatusDisabled,
 	}
-}
-
-// ToPtr returns a *ReceiverStatus pointing to the current value.
-func (c ReceiverStatus) ToPtr() *ReceiverStatus {
-	return &c
 }
 
 // RecurrenceFrequency - the recurrence frequency. How often the schedule profile should take effect. This value must be Week,
@@ -1045,11 +920,6 @@ func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
 	}
 }
 
-// ToPtr returns a *RecurrenceFrequency pointing to the current value.
-func (c RecurrenceFrequency) ToPtr() *RecurrenceFrequency {
-	return &c
-}
-
 type ResultType string
 
 const (
@@ -1063,11 +933,6 @@ func PossibleResultTypeValues() []ResultType {
 		ResultTypeData,
 		ResultTypeMetadata,
 	}
-}
-
-// ToPtr returns a *ResultType pointing to the current value.
-func (c ResultType) ToPtr() *ResultType {
-	return &c
 }
 
 // ScaleDirection - the scale direction. Whether the scaling action increases or decreases the number of instances.
@@ -1088,11 +953,6 @@ func PossibleScaleDirectionValues() []ScaleDirection {
 	}
 }
 
-// ToPtr returns a *ScaleDirection pointing to the current value.
-func (c ScaleDirection) ToPtr() *ScaleDirection {
-	return &c
-}
-
 // ScaleRuleMetricDimensionOperationType - the dimension operator. Only 'Equals' and 'NotEquals' are supported. 'Equals' being
 // equal to any of the values. 'NotEquals' being not equal to all of the values
 type ScaleRuleMetricDimensionOperationType string
@@ -1108,11 +968,6 @@ func PossibleScaleRuleMetricDimensionOperationTypeValues() []ScaleRuleMetricDime
 		ScaleRuleMetricDimensionOperationTypeEquals,
 		ScaleRuleMetricDimensionOperationTypeNotEquals,
 	}
-}
-
-// ToPtr returns a *ScaleRuleMetricDimensionOperationType pointing to the current value.
-func (c ScaleRuleMetricDimensionOperationType) ToPtr() *ScaleRuleMetricDimensionOperationType {
-	return &c
 }
 
 // ScaleType - the type of action that should occur when the scale rule fires.
@@ -1135,11 +990,6 @@ func PossibleScaleTypeValues() []ScaleType {
 	}
 }
 
-// ToPtr returns a *ScaleType pointing to the current value.
-func (c ScaleType) ToPtr() *ScaleType {
-	return &c
-}
-
 // TimeAggregationOperator - Aggregation operators allowed in a rule.
 type TimeAggregationOperator string
 
@@ -1160,11 +1010,6 @@ func PossibleTimeAggregationOperatorValues() []TimeAggregationOperator {
 		TimeAggregationOperatorTotal,
 		TimeAggregationOperatorLast,
 	}
-}
-
-// ToPtr returns a *TimeAggregationOperator pointing to the current value.
-func (c TimeAggregationOperator) ToPtr() *TimeAggregationOperator {
-	return &c
 }
 
 // TimeAggregationType - time aggregation type. How the data that is collected should be combined over time. The default value
@@ -1190,9 +1035,4 @@ func PossibleTimeAggregationTypeValues() []TimeAggregationType {
 		TimeAggregationTypeCount,
 		TimeAggregationTypeLast,
 	}
-}
-
-// ToPtr returns a *TimeAggregationType pointing to the current value.
-func (c TimeAggregationType) ToPtr() *TimeAggregationType {
-	return &c
 }

@@ -1,5 +1,103 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `*ProviderInstancesClient.BeginDelete` return value(s) have been changed from `(ProviderInstancesClientDeletePollerResponse, error)` to `(*armruntime.Poller[ProviderInstancesClientDeleteResponse], error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `NewProviderInstancesClient` return value(s) have been changed from `(*ProviderInstancesClient)` to `(*ProviderInstancesClient, error)`
+- Function `*SapMonitorsClient.List` return value(s) have been changed from `(*SapMonitorsClientListPager)` to `(*runtime.Pager[SapMonitorsClientListResponse])`
+- Function `*ProviderInstancesClient.List` return value(s) have been changed from `(*ProviderInstancesClientListPager)` to `(*runtime.Pager[ProviderInstancesClientListResponse])`
+- Function `NewSapMonitorsClient` return value(s) have been changed from `(*SapMonitorsClient)` to `(*SapMonitorsClient, error)`
+- Function `*ProviderInstancesClient.BeginCreate` return value(s) have been changed from `(ProviderInstancesClientCreatePollerResponse, error)` to `(*armruntime.Poller[ProviderInstancesClientCreateResponse], error)`
+- Function `*SapMonitorsClient.BeginCreate` return value(s) have been changed from `(SapMonitorsClientCreatePollerResponse, error)` to `(*armruntime.Poller[SapMonitorsClientCreateResponse], error)`
+- Function `*SapMonitorsClient.BeginDelete` return value(s) have been changed from `(SapMonitorsClientDeletePollerResponse, error)` to `(*armruntime.Poller[SapMonitorsClientDeleteResponse], error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsClientListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsClientListResponse, error)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*ProviderInstancesClientDeletePollerResponse.Resume` has been removed
+- Function `*ProviderInstancesClientListPager.Err` has been removed
+- Function `*SapMonitorsClientCreatePoller.Poll` has been removed
+- Function `*ProviderInstancesClientCreatePoller.FinalResponse` has been removed
+- Function `*ProviderInstancesClientDeletePoller.FinalResponse` has been removed
+- Function `*SapMonitorsClientDeletePoller.ResumeToken` has been removed
+- Function `*SapMonitorsClientDeletePoller.FinalResponse` has been removed
+- Function `*SapMonitorsClientListPager.PageResponse` has been removed
+- Function `SapMonitorsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ProviderInstancesClientDeletePoller.Poll` has been removed
+- Function `*SapMonitorsClientDeletePollerResponse.Resume` has been removed
+- Function `*ProviderInstancesClientListPager.NextPage` has been removed
+- Function `*ProviderInstancesClientCreatePollerResponse.Resume` has been removed
+- Function `*SapMonitorsClientListPager.NextPage` has been removed
+- Function `*ProviderInstancesClientDeletePoller.Done` has been removed
+- Function `*SapMonitorsClientCreatePoller.Done` has been removed
+- Function `*SapMonitorsClientCreatePoller.ResumeToken` has been removed
+- Function `SapMonitorsClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `ProviderInstancesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ProviderInstancesClientCreatePoller.Poll` has been removed
+- Function `*SapMonitorsClientCreatePoller.FinalResponse` has been removed
+- Function `*ProviderInstancesClientDeletePoller.ResumeToken` has been removed
+- Function `ProviderInstancesClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*SapMonitorsClientListPager.Err` has been removed
+- Function `*SapMonitorsClientDeletePoller.Done` has been removed
+- Function `HanaProvisioningStatesEnum.ToPtr` has been removed
+- Function `*ProviderInstancesClientCreatePoller.ResumeToken` has been removed
+- Function `*SapMonitorsClientCreatePollerResponse.Resume` has been removed
+- Function `*ProviderInstancesClientCreatePoller.Done` has been removed
+- Function `*SapMonitorsClientDeletePoller.Poll` has been removed
+- Function `*ProviderInstancesClientListPager.PageResponse` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `ProviderInstancesClientCreatePoller` has been removed
+- Struct `ProviderInstancesClientCreatePollerResponse` has been removed
+- Struct `ProviderInstancesClientCreateResult` has been removed
+- Struct `ProviderInstancesClientDeletePoller` has been removed
+- Struct `ProviderInstancesClientDeletePollerResponse` has been removed
+- Struct `ProviderInstancesClientGetResult` has been removed
+- Struct `ProviderInstancesClientListPager` has been removed
+- Struct `ProviderInstancesClientListResult` has been removed
+- Struct `SapMonitorsClientCreatePoller` has been removed
+- Struct `SapMonitorsClientCreatePollerResponse` has been removed
+- Struct `SapMonitorsClientCreateResult` has been removed
+- Struct `SapMonitorsClientDeletePoller` has been removed
+- Struct `SapMonitorsClientDeletePollerResponse` has been removed
+- Struct `SapMonitorsClientGetResult` has been removed
+- Struct `SapMonitorsClientListPager` has been removed
+- Struct `SapMonitorsClientListResult` has been removed
+- Struct `SapMonitorsClientUpdateResult` has been removed
+- Field `SapMonitorsClientGetResult` of struct `SapMonitorsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SapMonitorsClientGetResponse` has been removed
+- Field `SapMonitorsClientCreateResult` of struct `SapMonitorsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `SapMonitorsClientCreateResponse` has been removed
+- Field `SapMonitorsClientUpdateResult` of struct `SapMonitorsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `SapMonitorsClientUpdateResponse` has been removed
+- Field `SapMonitorsClientListResult` of struct `SapMonitorsClientListResponse` has been removed
+- Field `RawResponse` of struct `SapMonitorsClientListResponse` has been removed
+- Field `ProviderInstancesClientCreateResult` of struct `ProviderInstancesClientCreateResponse` has been removed
+- Field `RawResponse` of struct `ProviderInstancesClientCreateResponse` has been removed
+- Field `ProviderInstancesClientListResult` of struct `ProviderInstancesClientListResponse` has been removed
+- Field `RawResponse` of struct `ProviderInstancesClientListResponse` has been removed
+- Field `RawResponse` of struct `ProviderInstancesClientDeleteResponse` has been removed
+- Field `ProviderInstancesClientGetResult` of struct `ProviderInstancesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ProviderInstancesClientGetResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `SapMonitorsClientDeleteResponse` has been removed
+
+### Features Added
+
+- New field `ResumeToken` in struct `ProviderInstancesClientBeginDeleteOptions`
+- New anonymous field `SapMonitor` in struct `SapMonitorsClientUpdateResponse`
+- New anonymous field `ProviderInstance` in struct `ProviderInstancesClientCreateResponse`
+- New anonymous field `SapMonitor` in struct `SapMonitorsClientGetResponse`
+- New anonymous field `SapMonitor` in struct `SapMonitorsClientCreateResponse`
+- New anonymous field `OperationList` in struct `OperationsClientListResponse`
+- New anonymous field `SapMonitorListResult` in struct `SapMonitorsClientListResponse`
+- New field `ResumeToken` in struct `SapMonitorsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `SapMonitorsClientBeginCreateOptions`
+- New anonymous field `ProviderInstanceListResult` in struct `ProviderInstancesClientListResponse`
+- New anonymous field `ProviderInstance` in struct `ProviderInstancesClientGetResponse`
+- New field `ResumeToken` in struct `ProviderInstancesClientBeginCreateOptions`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

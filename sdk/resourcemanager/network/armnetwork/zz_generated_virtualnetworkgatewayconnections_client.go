@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type VirtualNetworkGatewayConnectionsClient struct {
 // ID forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewVirtualNetworkGatewayConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualNetworkGatewayConnectionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewVirtualNetworkGatewayConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualNetworkGatewayConnectionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &VirtualNetworkGatewayConnectionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a virtual network gateway connection in the specified resource group.
@@ -57,22 +62,18 @@ func NewVirtualNetworkGatewayConnectionsClient(subscriptionID string, credential
 // parameters - Parameters supplied to the create or update virtual network gateway connection operation.
 // options - VirtualNetworkGatewayConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualNetworkGatewayConnectionsClient.BeginCreateOrUpdate
 // method.
-func (client *VirtualNetworkGatewayConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters VirtualNetworkGatewayConnection, options *VirtualNetworkGatewayConnectionsClientBeginCreateOrUpdateOptions) (VirtualNetworkGatewayConnectionsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, parameters, options)
-	if err != nil {
-		return VirtualNetworkGatewayConnectionsClientCreateOrUpdatePollerResponse{}, err
+func (client *VirtualNetworkGatewayConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters VirtualNetworkGatewayConnection, options *VirtualNetworkGatewayConnectionsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[VirtualNetworkGatewayConnectionsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualNetworkGatewayConnectionsClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[VirtualNetworkGatewayConnectionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VirtualNetworkGatewayConnectionsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VirtualNetworkGatewayConnectionsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return VirtualNetworkGatewayConnectionsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &VirtualNetworkGatewayConnectionsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a virtual network gateway connection in the specified resource group.
@@ -124,22 +125,18 @@ func (client *VirtualNetworkGatewayConnectionsClient) createOrUpdateCreateReques
 // virtualNetworkGatewayConnectionName - The name of the virtual network gateway connection.
 // options - VirtualNetworkGatewayConnectionsClientBeginDeleteOptions contains the optional parameters for the VirtualNetworkGatewayConnectionsClient.BeginDelete
 // method.
-func (client *VirtualNetworkGatewayConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsClientBeginDeleteOptions) (VirtualNetworkGatewayConnectionsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, options)
-	if err != nil {
-		return VirtualNetworkGatewayConnectionsClientDeletePollerResponse{}, err
+func (client *VirtualNetworkGatewayConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsClientBeginDeleteOptions) (*armruntime.Poller[VirtualNetworkGatewayConnectionsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualNetworkGatewayConnectionsClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[VirtualNetworkGatewayConnectionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VirtualNetworkGatewayConnectionsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VirtualNetworkGatewayConnectionsClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return VirtualNetworkGatewayConnectionsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &VirtualNetworkGatewayConnectionsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified virtual network Gateway connection.
@@ -234,7 +231,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) getCreateRequest(ctx conte
 
 // getHandleResponse handles the Get response.
 func (client *VirtualNetworkGatewayConnectionsClient) getHandleResponse(resp *http.Response) (VirtualNetworkGatewayConnectionsClientGetResponse, error) {
-	result := VirtualNetworkGatewayConnectionsClientGetResponse{RawResponse: resp}
+	result := VirtualNetworkGatewayConnectionsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkGatewayConnection); err != nil {
 		return VirtualNetworkGatewayConnectionsClientGetResponse{}, err
 	}
@@ -247,22 +244,18 @@ func (client *VirtualNetworkGatewayConnectionsClient) getHandleResponse(resp *ht
 // virtualNetworkGatewayConnectionName - The name of the virtual network gateway Connection.
 // options - VirtualNetworkGatewayConnectionsClientBeginGetIkeSasOptions contains the optional parameters for the VirtualNetworkGatewayConnectionsClient.BeginGetIkeSas
 // method.
-func (client *VirtualNetworkGatewayConnectionsClient) BeginGetIkeSas(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsClientBeginGetIkeSasOptions) (VirtualNetworkGatewayConnectionsClientGetIkeSasPollerResponse, error) {
-	resp, err := client.getIkeSas(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, options)
-	if err != nil {
-		return VirtualNetworkGatewayConnectionsClientGetIkeSasPollerResponse{}, err
+func (client *VirtualNetworkGatewayConnectionsClient) BeginGetIkeSas(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsClientBeginGetIkeSasOptions) (*armruntime.Poller[VirtualNetworkGatewayConnectionsClientGetIkeSasResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.getIkeSas(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualNetworkGatewayConnectionsClientGetIkeSasResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[VirtualNetworkGatewayConnectionsClientGetIkeSasResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VirtualNetworkGatewayConnectionsClientGetIkeSasPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VirtualNetworkGatewayConnectionsClient.GetIkeSas", "location", resp, client.pl)
-	if err != nil {
-		return VirtualNetworkGatewayConnectionsClientGetIkeSasPollerResponse{}, err
-	}
-	result.Poller = &VirtualNetworkGatewayConnectionsClientGetIkeSasPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // GetIkeSas - Lists IKE Security Associations for the virtual network gateway connection in the specified resource group.
@@ -358,7 +351,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) getSharedKeyCreateRequest(
 
 // getSharedKeyHandleResponse handles the GetSharedKey response.
 func (client *VirtualNetworkGatewayConnectionsClient) getSharedKeyHandleResponse(resp *http.Response) (VirtualNetworkGatewayConnectionsClientGetSharedKeyResponse, error) {
-	result := VirtualNetworkGatewayConnectionsClientGetSharedKeyResponse{RawResponse: resp}
+	result := VirtualNetworkGatewayConnectionsClientGetSharedKeyResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionSharedKey); err != nil {
 		return VirtualNetworkGatewayConnectionsClientGetSharedKeyResponse{}, err
 	}
@@ -370,16 +363,32 @@ func (client *VirtualNetworkGatewayConnectionsClient) getSharedKeyHandleResponse
 // resourceGroupName - The name of the resource group.
 // options - VirtualNetworkGatewayConnectionsClientListOptions contains the optional parameters for the VirtualNetworkGatewayConnectionsClient.List
 // method.
-func (client *VirtualNetworkGatewayConnectionsClient) List(resourceGroupName string, options *VirtualNetworkGatewayConnectionsClientListOptions) *VirtualNetworkGatewayConnectionsClientListPager {
-	return &VirtualNetworkGatewayConnectionsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, options)
+func (client *VirtualNetworkGatewayConnectionsClient) List(resourceGroupName string, options *VirtualNetworkGatewayConnectionsClientListOptions) *runtime.Pager[VirtualNetworkGatewayConnectionsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[VirtualNetworkGatewayConnectionsClientListResponse]{
+		More: func(page VirtualNetworkGatewayConnectionsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp VirtualNetworkGatewayConnectionsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.VirtualNetworkGatewayConnectionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *VirtualNetworkGatewayConnectionsClientListResponse) (VirtualNetworkGatewayConnectionsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return VirtualNetworkGatewayConnectionsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return VirtualNetworkGatewayConnectionsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return VirtualNetworkGatewayConnectionsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -406,7 +415,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) listCreateRequest(ctx cont
 
 // listHandleResponse handles the List response.
 func (client *VirtualNetworkGatewayConnectionsClient) listHandleResponse(resp *http.Response) (VirtualNetworkGatewayConnectionsClientListResponse, error) {
-	result := VirtualNetworkGatewayConnectionsClientListResponse{RawResponse: resp}
+	result := VirtualNetworkGatewayConnectionsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkGatewayConnectionListResult); err != nil {
 		return VirtualNetworkGatewayConnectionsClientListResponse{}, err
 	}
@@ -419,22 +428,18 @@ func (client *VirtualNetworkGatewayConnectionsClient) listHandleResponse(resp *h
 // virtualNetworkGatewayConnectionName - The name of the virtual network gateway Connection.
 // options - VirtualNetworkGatewayConnectionsClientBeginResetConnectionOptions contains the optional parameters for the VirtualNetworkGatewayConnectionsClient.BeginResetConnection
 // method.
-func (client *VirtualNetworkGatewayConnectionsClient) BeginResetConnection(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsClientBeginResetConnectionOptions) (VirtualNetworkGatewayConnectionsClientResetConnectionPollerResponse, error) {
-	resp, err := client.resetConnection(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, options)
-	if err != nil {
-		return VirtualNetworkGatewayConnectionsClientResetConnectionPollerResponse{}, err
+func (client *VirtualNetworkGatewayConnectionsClient) BeginResetConnection(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsClientBeginResetConnectionOptions) (*armruntime.Poller[VirtualNetworkGatewayConnectionsClientResetConnectionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resetConnection(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualNetworkGatewayConnectionsClientResetConnectionResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[VirtualNetworkGatewayConnectionsClientResetConnectionResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VirtualNetworkGatewayConnectionsClientResetConnectionPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VirtualNetworkGatewayConnectionsClient.ResetConnection", "location", resp, client.pl)
-	if err != nil {
-		return VirtualNetworkGatewayConnectionsClientResetConnectionPollerResponse{}, err
-	}
-	result.Poller = &VirtualNetworkGatewayConnectionsClientResetConnectionPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // ResetConnection - Resets the virtual network gateway connection specified.
@@ -490,22 +495,18 @@ func (client *VirtualNetworkGatewayConnectionsClient) resetConnectionCreateReque
 // resource provider.
 // options - VirtualNetworkGatewayConnectionsClientBeginResetSharedKeyOptions contains the optional parameters for the VirtualNetworkGatewayConnectionsClient.BeginResetSharedKey
 // method.
-func (client *VirtualNetworkGatewayConnectionsClient) BeginResetSharedKey(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionResetSharedKey, options *VirtualNetworkGatewayConnectionsClientBeginResetSharedKeyOptions) (VirtualNetworkGatewayConnectionsClientResetSharedKeyPollerResponse, error) {
-	resp, err := client.resetSharedKey(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, parameters, options)
-	if err != nil {
-		return VirtualNetworkGatewayConnectionsClientResetSharedKeyPollerResponse{}, err
+func (client *VirtualNetworkGatewayConnectionsClient) BeginResetSharedKey(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionResetSharedKey, options *VirtualNetworkGatewayConnectionsClientBeginResetSharedKeyOptions) (*armruntime.Poller[VirtualNetworkGatewayConnectionsClientResetSharedKeyResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resetSharedKey(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualNetworkGatewayConnectionsClientResetSharedKeyResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[VirtualNetworkGatewayConnectionsClientResetSharedKeyResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VirtualNetworkGatewayConnectionsClientResetSharedKeyPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VirtualNetworkGatewayConnectionsClient.ResetSharedKey", "location", resp, client.pl)
-	if err != nil {
-		return VirtualNetworkGatewayConnectionsClientResetSharedKeyPollerResponse{}, err
-	}
-	result.Poller = &VirtualNetworkGatewayConnectionsClientResetSharedKeyPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // ResetSharedKey - The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection
@@ -563,22 +564,18 @@ func (client *VirtualNetworkGatewayConnectionsClient) resetSharedKeyCreateReques
 // resource provider.
 // options - VirtualNetworkGatewayConnectionsClientBeginSetSharedKeyOptions contains the optional parameters for the VirtualNetworkGatewayConnectionsClient.BeginSetSharedKey
 // method.
-func (client *VirtualNetworkGatewayConnectionsClient) BeginSetSharedKey(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionSharedKey, options *VirtualNetworkGatewayConnectionsClientBeginSetSharedKeyOptions) (VirtualNetworkGatewayConnectionsClientSetSharedKeyPollerResponse, error) {
-	resp, err := client.setSharedKey(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, parameters, options)
-	if err != nil {
-		return VirtualNetworkGatewayConnectionsClientSetSharedKeyPollerResponse{}, err
+func (client *VirtualNetworkGatewayConnectionsClient) BeginSetSharedKey(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionSharedKey, options *VirtualNetworkGatewayConnectionsClientBeginSetSharedKeyOptions) (*armruntime.Poller[VirtualNetworkGatewayConnectionsClientSetSharedKeyResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.setSharedKey(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualNetworkGatewayConnectionsClientSetSharedKeyResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[VirtualNetworkGatewayConnectionsClientSetSharedKeyResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VirtualNetworkGatewayConnectionsClientSetSharedKeyPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VirtualNetworkGatewayConnectionsClient.SetSharedKey", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return VirtualNetworkGatewayConnectionsClientSetSharedKeyPollerResponse{}, err
-	}
-	result.Poller = &VirtualNetworkGatewayConnectionsClientSetSharedKeyPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // SetSharedKey - The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared
@@ -632,22 +629,18 @@ func (client *VirtualNetworkGatewayConnectionsClient) setSharedKeyCreateRequest(
 // virtualNetworkGatewayConnectionName - The name of the virtual network gateway connection.
 // options - VirtualNetworkGatewayConnectionsClientBeginStartPacketCaptureOptions contains the optional parameters for the
 // VirtualNetworkGatewayConnectionsClient.BeginStartPacketCapture method.
-func (client *VirtualNetworkGatewayConnectionsClient) BeginStartPacketCapture(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsClientBeginStartPacketCaptureOptions) (VirtualNetworkGatewayConnectionsClientStartPacketCapturePollerResponse, error) {
-	resp, err := client.startPacketCapture(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, options)
-	if err != nil {
-		return VirtualNetworkGatewayConnectionsClientStartPacketCapturePollerResponse{}, err
+func (client *VirtualNetworkGatewayConnectionsClient) BeginStartPacketCapture(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsClientBeginStartPacketCaptureOptions) (*armruntime.Poller[VirtualNetworkGatewayConnectionsClientStartPacketCaptureResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.startPacketCapture(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualNetworkGatewayConnectionsClientStartPacketCaptureResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[VirtualNetworkGatewayConnectionsClientStartPacketCaptureResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VirtualNetworkGatewayConnectionsClientStartPacketCapturePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VirtualNetworkGatewayConnectionsClient.StartPacketCapture", "location", resp, client.pl)
-	if err != nil {
-		return VirtualNetworkGatewayConnectionsClientStartPacketCapturePollerResponse{}, err
-	}
-	result.Poller = &VirtualNetworkGatewayConnectionsClientStartPacketCapturePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // StartPacketCapture - Starts packet capture on virtual network gateway connection in the specified resource group.
@@ -703,22 +696,18 @@ func (client *VirtualNetworkGatewayConnectionsClient) startPacketCaptureCreateRe
 // parameters - Virtual network gateway packet capture parameters supplied to stop packet capture on gateway connection.
 // options - VirtualNetworkGatewayConnectionsClientBeginStopPacketCaptureOptions contains the optional parameters for the
 // VirtualNetworkGatewayConnectionsClient.BeginStopPacketCapture method.
-func (client *VirtualNetworkGatewayConnectionsClient) BeginStopPacketCapture(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters VPNPacketCaptureStopParameters, options *VirtualNetworkGatewayConnectionsClientBeginStopPacketCaptureOptions) (VirtualNetworkGatewayConnectionsClientStopPacketCapturePollerResponse, error) {
-	resp, err := client.stopPacketCapture(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, parameters, options)
-	if err != nil {
-		return VirtualNetworkGatewayConnectionsClientStopPacketCapturePollerResponse{}, err
+func (client *VirtualNetworkGatewayConnectionsClient) BeginStopPacketCapture(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters VPNPacketCaptureStopParameters, options *VirtualNetworkGatewayConnectionsClientBeginStopPacketCaptureOptions) (*armruntime.Poller[VirtualNetworkGatewayConnectionsClientStopPacketCaptureResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.stopPacketCapture(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualNetworkGatewayConnectionsClientStopPacketCaptureResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[VirtualNetworkGatewayConnectionsClientStopPacketCaptureResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VirtualNetworkGatewayConnectionsClientStopPacketCapturePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VirtualNetworkGatewayConnectionsClient.StopPacketCapture", "location", resp, client.pl)
-	if err != nil {
-		return VirtualNetworkGatewayConnectionsClientStopPacketCapturePollerResponse{}, err
-	}
-	result.Poller = &VirtualNetworkGatewayConnectionsClientStopPacketCapturePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // StopPacketCapture - Stops packet capture on virtual network gateway connection in the specified resource group.
@@ -771,22 +760,18 @@ func (client *VirtualNetworkGatewayConnectionsClient) stopPacketCaptureCreateReq
 // parameters - Parameters supplied to update virtual network gateway connection tags.
 // options - VirtualNetworkGatewayConnectionsClientBeginUpdateTagsOptions contains the optional parameters for the VirtualNetworkGatewayConnectionsClient.BeginUpdateTags
 // method.
-func (client *VirtualNetworkGatewayConnectionsClient) BeginUpdateTags(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters TagsObject, options *VirtualNetworkGatewayConnectionsClientBeginUpdateTagsOptions) (VirtualNetworkGatewayConnectionsClientUpdateTagsPollerResponse, error) {
-	resp, err := client.updateTags(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, parameters, options)
-	if err != nil {
-		return VirtualNetworkGatewayConnectionsClientUpdateTagsPollerResponse{}, err
+func (client *VirtualNetworkGatewayConnectionsClient) BeginUpdateTags(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters TagsObject, options *VirtualNetworkGatewayConnectionsClientBeginUpdateTagsOptions) (*armruntime.Poller[VirtualNetworkGatewayConnectionsClientUpdateTagsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateTags(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualNetworkGatewayConnectionsClientUpdateTagsResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[VirtualNetworkGatewayConnectionsClientUpdateTagsResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VirtualNetworkGatewayConnectionsClientUpdateTagsPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VirtualNetworkGatewayConnectionsClient.UpdateTags", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return VirtualNetworkGatewayConnectionsClientUpdateTagsPollerResponse{}, err
-	}
-	result.Poller = &VirtualNetworkGatewayConnectionsClientUpdateTagsPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // UpdateTags - Updates a virtual network gateway connection tags.

@@ -1,5 +1,647 @@
 # Release History
 
+## 0.5.0 (2022-04-12)
+### Breaking Changes
+
+- Function `*TransformsClient.List` return value(s) have been changed from `(*TransformsClientListPager)` to `(*runtime.Pager[TransformsClientListResponse])`
+- Function `*LiveEventsClient.BeginDelete` return value(s) have been changed from `(LiveEventsClientDeletePollerResponse, error)` to `(*armruntime.Poller[LiveEventsClientDeleteResponse], error)`
+- Function `NewStreamingEndpointsClient` return value(s) have been changed from `(*StreamingEndpointsClient)` to `(*StreamingEndpointsClient, error)`
+- Function `*StreamingEndpointsClient.BeginDelete` return value(s) have been changed from `(StreamingEndpointsClientDeletePollerResponse, error)` to `(*armruntime.Poller[StreamingEndpointsClientDeleteResponse], error)`
+- Function `*StreamingEndpointsClient.BeginCreate` return value(s) have been changed from `(StreamingEndpointsClientCreatePollerResponse, error)` to `(*armruntime.Poller[StreamingEndpointsClientCreateResponse], error)`
+- Function `*LiveEventsClient.BeginStop` return value(s) have been changed from `(LiveEventsClientStopPollerResponse, error)` to `(*armruntime.Poller[LiveEventsClientStopResponse], error)`
+- Function `*LiveEventsClient.BeginAllocate` return value(s) have been changed from `(LiveEventsClientAllocatePollerResponse, error)` to `(*armruntime.Poller[LiveEventsClientAllocateResponse], error)`
+- Function `NewClient` return value(s) have been changed from `(*Client)` to `(*Client, error)`
+- Function `NewAssetsClient` return value(s) have been changed from `(*AssetsClient)` to `(*AssetsClient, error)`
+- Function `NewTransformsClient` return value(s) have been changed from `(*TransformsClient)` to `(*TransformsClient, error)`
+- Function `*LiveOutputsClient.BeginDelete` return value(s) have been changed from `(LiveOutputsClientDeletePollerResponse, error)` to `(*armruntime.Poller[LiveOutputsClientDeleteResponse], error)`
+- Function `NewPrivateLinkResourcesClient` return value(s) have been changed from `(*PrivateLinkResourcesClient)` to `(*PrivateLinkResourcesClient, error)`
+- Function `NewStreamingPoliciesClient` return value(s) have been changed from `(*StreamingPoliciesClient)` to `(*StreamingPoliciesClient, error)`
+- Function `*StreamingEndpointsClient.BeginStart` return value(s) have been changed from `(StreamingEndpointsClientStartPollerResponse, error)` to `(*armruntime.Poller[StreamingEndpointsClientStartResponse], error)`
+- Function `*TracksClient.BeginUpdate` return value(s) have been changed from `(TracksClientUpdatePollerResponse, error)` to `(*armruntime.Poller[TracksClientUpdateResponse], error)`
+- Function `*StreamingPoliciesClient.List` return value(s) have been changed from `(*StreamingPoliciesClientListPager)` to `(*runtime.Pager[StreamingPoliciesClientListResponse])`
+- Function `NewAccountFiltersClient` return value(s) have been changed from `(*AccountFiltersClient)` to `(*AccountFiltersClient, error)`
+- Function `*LiveOutputsClient.BeginCreate` return value(s) have been changed from `(LiveOutputsClientCreatePollerResponse, error)` to `(*armruntime.Poller[LiveOutputsClientCreateResponse], error)`
+- Function `*StreamingEndpointsClient.BeginUpdate` return value(s) have been changed from `(StreamingEndpointsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[StreamingEndpointsClientUpdateResponse], error)`
+- Function `*LiveOutputsClient.List` return value(s) have been changed from `(*LiveOutputsClientListPager)` to `(*runtime.Pager[LiveOutputsClientListResponse])`
+- Function `NewJobsClient` return value(s) have been changed from `(*JobsClient)` to `(*JobsClient, error)`
+- Function `NewLiveOutputsClient` return value(s) have been changed from `(*LiveOutputsClient)` to `(*LiveOutputsClient, error)`
+- Function `*LiveEventsClient.BeginStart` return value(s) have been changed from `(LiveEventsClientStartPollerResponse, error)` to `(*armruntime.Poller[LiveEventsClientStartResponse], error)`
+- Function `*StreamingEndpointsClient.BeginScale` return value(s) have been changed from `(StreamingEndpointsClientScalePollerResponse, error)` to `(*armruntime.Poller[StreamingEndpointsClientScaleResponse], error)`
+- Function `NewLiveEventsClient` return value(s) have been changed from `(*LiveEventsClient)` to `(*LiveEventsClient, error)`
+- Function `*StreamingLocatorsClient.List` return value(s) have been changed from `(*StreamingLocatorsClientListPager)` to `(*runtime.Pager[StreamingLocatorsClientListResponse])`
+- Function `*AssetFiltersClient.List` return value(s) have been changed from `(*AssetFiltersClientListPager)` to `(*runtime.Pager[AssetFiltersClientListResponse])`
+- Function `*Client.ListBySubscription` return value(s) have been changed from `(*ClientListBySubscriptionPager)` to `(*runtime.Pager[ClientListBySubscriptionResponse])`
+- Function `*StreamingEndpointsClient.List` return value(s) have been changed from `(*StreamingEndpointsClientListPager)` to `(*runtime.Pager[StreamingEndpointsClientListResponse])`
+- Function `NewTracksClient` return value(s) have been changed from `(*TracksClient)` to `(*TracksClient, error)`
+- Function `*TracksClient.BeginDelete` return value(s) have been changed from `(TracksClientDeletePollerResponse, error)` to `(*armruntime.Poller[TracksClientDeleteResponse], error)`
+- Function `*LiveEventsClient.BeginUpdate` return value(s) have been changed from `(LiveEventsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[LiveEventsClientUpdateResponse], error)`
+- Function `*AssetsClient.List` return value(s) have been changed from `(*AssetsClientListPager)` to `(*runtime.Pager[AssetsClientListResponse])`
+- Function `*JobsClient.List` return value(s) have been changed from `(*JobsClientListPager)` to `(*runtime.Pager[JobsClientListResponse])`
+- Function `*ContentKeyPoliciesClient.List` return value(s) have been changed from `(*ContentKeyPoliciesClientListPager)` to `(*runtime.Pager[ContentKeyPoliciesClientListResponse])`
+- Function `*LiveEventsClient.BeginCreate` return value(s) have been changed from `(LiveEventsClientCreatePollerResponse, error)` to `(*armruntime.Poller[LiveEventsClientCreateResponse], error)`
+- Function `NewAssetFiltersClient` return value(s) have been changed from `(*AssetFiltersClient)` to `(*AssetFiltersClient, error)`
+- Function `*AccountFiltersClient.List` return value(s) have been changed from `(*AccountFiltersClientListPager)` to `(*runtime.Pager[AccountFiltersClientListResponse])`
+- Function `*TracksClient.BeginCreateOrUpdate` return value(s) have been changed from `(TracksClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[TracksClientCreateOrUpdateResponse], error)`
+- Function `*TracksClient.BeginUpdateTrackData` return value(s) have been changed from `(TracksClientUpdateTrackDataPollerResponse, error)` to `(*armruntime.Poller[TracksClientUpdateTrackDataResponse], error)`
+- Function `NewStreamingLocatorsClient` return value(s) have been changed from `(*StreamingLocatorsClient)` to `(*StreamingLocatorsClient, error)`
+- Function `*StreamingEndpointsClient.BeginStop` return value(s) have been changed from `(StreamingEndpointsClientStopPollerResponse, error)` to `(*armruntime.Poller[StreamingEndpointsClientStopResponse], error)`
+- Function `*Client.List` return value(s) have been changed from `(*ClientListPager)` to `(*runtime.Pager[ClientListResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*TracksClient.List` parameter(s) have been changed from `(context.Context, string, string, string, *TracksClientListOptions)` to `(string, string, string, *TracksClientListOptions)`
+- Function `*TracksClient.List` return value(s) have been changed from `(TracksClientListResponse, error)` to `(*runtime.Pager[TracksClientListResponse])`
+- Function `NewOperationResultsClient` return value(s) have been changed from `(*OperationResultsClient)` to `(*OperationResultsClient, error)`
+- Function `NewLocationsClient` return value(s) have been changed from `(*LocationsClient)` to `(*LocationsClient, error)`
+- Function `NewPrivateEndpointConnectionsClient` return value(s) have been changed from `(*PrivateEndpointConnectionsClient)` to `(*PrivateEndpointConnectionsClient, error)`
+- Function `*LiveEventsClient.BeginReset` return value(s) have been changed from `(LiveEventsClientResetPollerResponse, error)` to `(*armruntime.Poller[LiveEventsClientResetResponse], error)`
+- Function `*LiveEventsClient.List` return value(s) have been changed from `(*LiveEventsClientListPager)` to `(*runtime.Pager[LiveEventsClientListResponse])`
+- Function `NewContentKeyPoliciesClient` return value(s) have been changed from `(*ContentKeyPoliciesClient)` to `(*ContentKeyPoliciesClient, error)`
+- Function `NewOperationStatusesClient` return value(s) have been changed from `(*OperationStatusesClient)` to `(*OperationStatusesClient, error)`
+- Function `JobErrorCategory.ToPtr` has been removed
+- Function `*StreamingEndpointsClientCreatePoller.ResumeToken` has been removed
+- Function `*TracksClientDeletePoller.FinalResponse` has been removed
+- Function `*LiveOutputsClientDeletePollerResponse.Resume` has been removed
+- Function `*ClientListBySubscriptionPager.NextPage` has been removed
+- Function `LiveEventsClientResetPollerResponse.PollUntilDone` has been removed
+- Function `*StreamingEndpointsClientScalePoller.ResumeToken` has been removed
+- Function `*LiveOutputsClientListPager.PageResponse` has been removed
+- Function `*StreamingPoliciesClientListPager.Err` has been removed
+- Function `StreamingLocatorContentKeyType.ToPtr` has been removed
+- Function `*LiveEventsClientStartPoller.Done` has been removed
+- Function `TracksClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `TrackPropertyType.ToPtr` has been removed
+- Function `*StreamingEndpointsClientScalePoller.Done` has been removed
+- Function `*LiveEventsClientResetPoller.Done` has been removed
+- Function `*TracksClientUpdatePoller.ResumeToken` has been removed
+- Function `Rotation.ToPtr` has been removed
+- Function `*StreamingPoliciesClientListPager.PageResponse` has been removed
+- Function `*ContentKeyPoliciesClientListPager.PageResponse` has been removed
+- Function `*LiveEventsClientResetPoller.FinalResponse` has been removed
+- Function `*LiveEventsClientDeletePoller.ResumeToken` has been removed
+- Function `LiveEventInputProtocol.ToPtr` has been removed
+- Function `MetricAggregationType.ToPtr` has been removed
+- Function `*LiveEventsClientStopPoller.Done` has been removed
+- Function `*LiveEventsClientUpdatePoller.Done` has been removed
+- Function `*TracksClientUpdatePoller.Done` has been removed
+- Function `*StreamingEndpointsClientUpdatePoller.Poll` has been removed
+- Function `*LiveEventsClientAllocatePoller.Done` has been removed
+- Function `ContentKeyPolicyPlayReadyUnknownOutputPassingOption.ToPtr` has been removed
+- Function `*StreamingEndpointsClientStopPollerResponse.Resume` has been removed
+- Function `StreamingEndpointsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ClientListBySubscriptionPager.Err` has been removed
+- Function `*StreamingEndpointsClientScalePoller.Poll` has been removed
+- Function `LiveEventEncodingType.ToPtr` has been removed
+- Function `*LiveOutputsClientDeletePoller.FinalResponse` has been removed
+- Function `FilterTrackPropertyCompareOperation.ToPtr` has been removed
+- Function `*StreamingEndpointsClientStopPoller.FinalResponse` has been removed
+- Function `*TracksClientDeletePoller.Done` has been removed
+- Function `StreamingEndpointsClientStartPollerResponse.PollUntilDone` has been removed
+- Function `*AccountFiltersClientListPager.Err` has been removed
+- Function `*LiveEventsClientCreatePoller.ResumeToken` has been removed
+- Function `JobRetry.ToPtr` has been removed
+- Function `*LiveEventsClientResetPoller.Poll` has been removed
+- Function `*StreamingEndpointsClientStartPollerResponse.Resume` has been removed
+- Function `*AssetsClientListPager.NextPage` has been removed
+- Function `*TransformsClientListPager.Err` has been removed
+- Function `*TracksClientDeletePollerResponse.Resume` has been removed
+- Function `*LiveEventsClientCreatePoller.FinalResponse` has been removed
+- Function `*LiveEventsClientDeletePollerResponse.Resume` has been removed
+- Function `TracksClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `PrivateEndpointServiceConnectionStatus.ToPtr` has been removed
+- Function `*AssetFiltersClientListPager.NextPage` has been removed
+- Function `MetricUnit.ToPtr` has been removed
+- Function `OnErrorType.ToPtr` has been removed
+- Function `PrivateEndpointConnectionProvisioningState.ToPtr` has been removed
+- Function `*LiveOutputsClientDeletePoller.Done` has been removed
+- Function `LiveEventResourceState.ToPtr` has been removed
+- Function `ContentKeyPolicyFairPlayRentalAndLeaseKeyType.ToPtr` has been removed
+- Function `*LiveOutputsClientDeletePoller.Poll` has been removed
+- Function `StreamingEndpointsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*LiveEventsClientStartPoller.Poll` has been removed
+- Function `DefaultAction.ToPtr` has been removed
+- Function `*AssetFiltersClientListPager.Err` has been removed
+- Function `*StreamingEndpointsClientStartPoller.Done` has been removed
+- Function `*LiveEventsClientUpdatePoller.ResumeToken` has been removed
+- Function `EntropyMode.ToPtr` has been removed
+- Function `*StreamingLocatorsClientListPager.Err` has been removed
+- Function `*LiveEventsClientResetPoller.ResumeToken` has been removed
+- Function `*TracksClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*TracksClientUpdatePoller.Poll` has been removed
+- Function `*JobsClientListPager.NextPage` has been removed
+- Function `LiveEventsClientAllocatePollerResponse.PollUntilDone` has been removed
+- Function `StreamingEndpointsClientScalePollerResponse.PollUntilDone` has been removed
+- Function `*StreamingEndpointsClientUpdatePoller.ResumeToken` has been removed
+- Function `*ContentKeyPoliciesClientListPager.Err` has been removed
+- Function `*TracksClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*StreamingEndpointsClientCreatePollerResponse.Resume` has been removed
+- Function `StreamingPolicyStreamingProtocol.ToPtr` has been removed
+- Function `AssetStorageEncryptionFormat.ToPtr` has been removed
+- Function `H264RateControlMode.ToPtr` has been removed
+- Function `*StreamingEndpointsClientListPager.PageResponse` has been removed
+- Function `TracksClientUpdateTrackDataPollerResponse.PollUntilDone` has been removed
+- Function `*StreamingEndpointsClientListPager.NextPage` has been removed
+- Function `*LiveEventsClientUpdatePoller.FinalResponse` has been removed
+- Function `EncoderNamedPreset.ToPtr` has been removed
+- Function `EncryptionScheme.ToPtr` has been removed
+- Function `TracksClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*LiveEventsClientAllocatePollerResponse.Resume` has been removed
+- Function `AudioAnalysisMode.ToPtr` has been removed
+- Function `LiveEventsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*StreamingEndpointsClientDeletePoller.Poll` has been removed
+- Function `*StreamingEndpointsClientListPager.Err` has been removed
+- Function `*StreamingEndpointsClientDeletePoller.Done` has been removed
+- Function `PublicNetworkAccess.ToPtr` has been removed
+- Function `StorageAuthentication.ToPtr` has been removed
+- Function `*StreamingEndpointsClientCreatePoller.FinalResponse` has been removed
+- Function `AccountEncryptionKeyType.ToPtr` has been removed
+- Function `DeinterlaceMode.ToPtr` has been removed
+- Function `*ClientListPager.NextPage` has been removed
+- Function `*LiveEventsClientDeletePoller.Poll` has been removed
+- Function `*AccountFiltersClientListPager.NextPage` has been removed
+- Function `InterleaveOutput.ToPtr` has been removed
+- Function `*AssetFiltersClientListPager.PageResponse` has been removed
+- Function `StreamOptionsFlag.ToPtr` has been removed
+- Function `*ClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*TracksClientUpdatePoller.FinalResponse` has been removed
+- Function `*StreamingEndpointsClientStopPoller.Done` has been removed
+- Function `*LiveEventsClientAllocatePoller.FinalResponse` has been removed
+- Function `H264VideoProfile.ToPtr` has been removed
+- Function `*TracksClientUpdateTrackDataPoller.Poll` has been removed
+- Function `*ClientListPager.Err` has been removed
+- Function `*AssetsClientListPager.Err` has been removed
+- Function `*ContentKeyPoliciesClientListPager.NextPage` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*LiveEventsClientStopPoller.FinalResponse` has been removed
+- Function `*StreamingEndpointsClientUpdatePoller.Done` has been removed
+- Function `*StreamingEndpointsClientUpdatePoller.FinalResponse` has been removed
+- Function `*LiveEventsClientCreatePoller.Done` has been removed
+- Function `*TracksClientDeletePoller.Poll` has been removed
+- Function `DeinterlaceParity.ToPtr` has been removed
+- Function `*StreamingEndpointsClientDeletePollerResponse.Resume` has been removed
+- Function `*StreamingEndpointsClientStopPoller.ResumeToken` has been removed
+- Function `StreamingEndpointsClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*TracksClientDeletePoller.ResumeToken` has been removed
+- Function `*LiveEventsClientCreatePollerResponse.Resume` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `*LiveEventsClientStartPoller.FinalResponse` has been removed
+- Function `StreamingEndpointResourceState.ToPtr` has been removed
+- Function `*StreamingEndpointsClientDeletePoller.ResumeToken` has been removed
+- Function `StreamingEndpointsClientStopPollerResponse.PollUntilDone` has been removed
+- Function `H265Complexity.ToPtr` has been removed
+- Function `ChannelMapping.ToPtr` has been removed
+- Function `*LiveOutputsClientCreatePoller.Poll` has been removed
+- Function `*LiveEventsClientListPager.PageResponse` has been removed
+- Function `*StreamingEndpointsClientCreatePoller.Poll` has been removed
+- Function `*LiveEventsClientListPager.NextPage` has been removed
+- Function `ContentKeyPolicyRestrictionTokenType.ToPtr` has been removed
+- Function `AttributeFilter.ToPtr` has been removed
+- Function `BlurType.ToPtr` has been removed
+- Function `StretchMode.ToPtr` has been removed
+- Function `StorageAccountType.ToPtr` has been removed
+- Function `LiveEventsClientStopPollerResponse.PollUntilDone` has been removed
+- Function `*TracksClientUpdateTrackDataPoller.ResumeToken` has been removed
+- Function `TrackPropertyCompareOperation.ToPtr` has been removed
+- Function `*TracksClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*LiveEventsClientStopPollerResponse.Resume` has been removed
+- Function `*LiveOutputsClientCreatePoller.FinalResponse` has been removed
+- Function `*StreamingLocatorsClientListPager.NextPage` has been removed
+- Function `*StreamingEndpointsClientStartPoller.FinalResponse` has been removed
+- Function `LiveOutputsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*LiveEventsClientAllocatePoller.ResumeToken` has been removed
+- Function `LiveEventsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `LiveEventsClientStartPollerResponse.PollUntilDone` has been removed
+- Function `TrackAttribute.ToPtr` has been removed
+- Function `ContentKeyPolicyPlayReadyLicenseType.ToPtr` has been removed
+- Function `*StreamingEndpointsClientStopPoller.Poll` has been removed
+- Function `FaceRedactorMode.ToPtr` has been removed
+- Function `*LiveEventsClientStopPoller.ResumeToken` has been removed
+- Function `VideoSyncMode.ToPtr` has been removed
+- Function `*LiveEventsClientStartPollerResponse.Resume` has been removed
+- Function `ContentKeyPolicyPlayReadyContentType.ToPtr` has been removed
+- Function `*StreamingPoliciesClientListPager.NextPage` has been removed
+- Function `*StreamingEndpointsClientScalePollerResponse.Resume` has been removed
+- Function `JobErrorCode.ToPtr` has been removed
+- Function `*JobsClientListPager.PageResponse` has been removed
+- Function `*StreamingEndpointsClientStartPoller.ResumeToken` has been removed
+- Function `*AssetsClientListPager.PageResponse` has been removed
+- Function `*AccountFiltersClientListPager.PageResponse` has been removed
+- Function `*TracksClientUpdateTrackDataPoller.FinalResponse` has been removed
+- Function `*LiveEventsClientUpdatePoller.Poll` has been removed
+- Function `AnalysisResolution.ToPtr` has been removed
+- Function `*TracksClientUpdateTrackDataPoller.Done` has been removed
+- Function `*LiveOutputsClientListPager.Err` has been removed
+- Function `*TracksClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `JobState.ToPtr` has been removed
+- Function `*LiveOutputsClientListPager.NextPage` has been removed
+- Function `*StreamingEndpointsClientDeletePoller.FinalResponse` has been removed
+- Function `FilterTrackPropertyType.ToPtr` has been removed
+- Function `*LiveOutputsClientDeletePoller.ResumeToken` has been removed
+- Function `ActionType.ToPtr` has been removed
+- Function `*TracksClientUpdateTrackDataPollerResponse.Resume` has been removed
+- Function `*LiveEventsClientResetPollerResponse.Resume` has been removed
+- Function `*TracksClientCreateOrUpdatePoller.Done` has been removed
+- Function `*StreamingEndpointsClientScalePoller.FinalResponse` has been removed
+- Function `*LiveEventsClientDeletePoller.FinalResponse` has been removed
+- Function `*StreamingEndpointsClientUpdatePollerResponse.Resume` has been removed
+- Function `AacAudioProfile.ToPtr` has been removed
+- Function `Visibility.ToPtr` has been removed
+- Function `*LiveEventsClientStopPoller.Poll` has been removed
+- Function `*LiveEventsClientAllocatePoller.Poll` has been removed
+- Function `*LiveEventsClientDeletePoller.Done` has been removed
+- Function `LiveOutputsClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*ClientListPager.PageResponse` has been removed
+- Function `H264Complexity.ToPtr` has been removed
+- Function `*JobsClientListPager.Err` has been removed
+- Function `*LiveEventsClientUpdatePollerResponse.Resume` has been removed
+- Function `Priority.ToPtr` has been removed
+- Function `*LiveOutputsClientCreatePoller.ResumeToken` has been removed
+- Function `*TracksClientUpdatePollerResponse.Resume` has been removed
+- Function `AssetContainerPermission.ToPtr` has been removed
+- Function `*LiveOutputsClientCreatePollerResponse.Resume` has been removed
+- Function `LiveEventsClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*LiveEventsClientCreatePoller.Poll` has been removed
+- Function `*LiveEventsClientListPager.Err` has been removed
+- Function `H265VideoProfile.ToPtr` has been removed
+- Function `*LiveEventsClientStartPoller.ResumeToken` has been removed
+- Function `*StreamingLocatorsClientListPager.PageResponse` has been removed
+- Function `*StreamingEndpointsClientCreatePoller.Done` has been removed
+- Function `*TransformsClientListPager.NextPage` has been removed
+- Function `InsightsType.ToPtr` has been removed
+- Function `*StreamingEndpointsClientStartPoller.Poll` has been removed
+- Function `Complexity.ToPtr` has been removed
+- Function `*LiveOutputsClientCreatePoller.Done` has been removed
+- Function `LiveOutputResourceState.ToPtr` has been removed
+- Function `*TransformsClientListPager.PageResponse` has been removed
+- Struct `AccountFiltersClientCreateOrUpdateResult` has been removed
+- Struct `AccountFiltersClientGetResult` has been removed
+- Struct `AccountFiltersClientListPager` has been removed
+- Struct `AccountFiltersClientListResult` has been removed
+- Struct `AccountFiltersClientUpdateResult` has been removed
+- Struct `AssetFiltersClientCreateOrUpdateResult` has been removed
+- Struct `AssetFiltersClientGetResult` has been removed
+- Struct `AssetFiltersClientListPager` has been removed
+- Struct `AssetFiltersClientListResult` has been removed
+- Struct `AssetFiltersClientUpdateResult` has been removed
+- Struct `AssetsClientCreateOrUpdateResult` has been removed
+- Struct `AssetsClientGetEncryptionKeyResult` has been removed
+- Struct `AssetsClientGetResult` has been removed
+- Struct `AssetsClientListContainerSasResult` has been removed
+- Struct `AssetsClientListPager` has been removed
+- Struct `AssetsClientListResult` has been removed
+- Struct `AssetsClientListStreamingLocatorsResult` has been removed
+- Struct `AssetsClientUpdateResult` has been removed
+- Struct `ClientCreateOrUpdateResult` has been removed
+- Struct `ClientGetResult` has been removed
+- Struct `ClientListBySubscriptionPager` has been removed
+- Struct `ClientListBySubscriptionResult` has been removed
+- Struct `ClientListEdgePoliciesResult` has been removed
+- Struct `ClientListPager` has been removed
+- Struct `ClientListResult` has been removed
+- Struct `ClientUpdateResult` has been removed
+- Struct `ContentKeyPoliciesClientCreateOrUpdateResult` has been removed
+- Struct `ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsResult` has been removed
+- Struct `ContentKeyPoliciesClientGetResult` has been removed
+- Struct `ContentKeyPoliciesClientListPager` has been removed
+- Struct `ContentKeyPoliciesClientListResult` has been removed
+- Struct `ContentKeyPoliciesClientUpdateResult` has been removed
+- Struct `JobsClientCreateResult` has been removed
+- Struct `JobsClientGetResult` has been removed
+- Struct `JobsClientListPager` has been removed
+- Struct `JobsClientListResult` has been removed
+- Struct `JobsClientUpdateResult` has been removed
+- Struct `LiveEventsClientAllocatePoller` has been removed
+- Struct `LiveEventsClientAllocatePollerResponse` has been removed
+- Struct `LiveEventsClientCreatePoller` has been removed
+- Struct `LiveEventsClientCreatePollerResponse` has been removed
+- Struct `LiveEventsClientCreateResult` has been removed
+- Struct `LiveEventsClientDeletePoller` has been removed
+- Struct `LiveEventsClientDeletePollerResponse` has been removed
+- Struct `LiveEventsClientGetResult` has been removed
+- Struct `LiveEventsClientListPager` has been removed
+- Struct `LiveEventsClientListResult` has been removed
+- Struct `LiveEventsClientResetPoller` has been removed
+- Struct `LiveEventsClientResetPollerResponse` has been removed
+- Struct `LiveEventsClientStartPoller` has been removed
+- Struct `LiveEventsClientStartPollerResponse` has been removed
+- Struct `LiveEventsClientStopPoller` has been removed
+- Struct `LiveEventsClientStopPollerResponse` has been removed
+- Struct `LiveEventsClientUpdatePoller` has been removed
+- Struct `LiveEventsClientUpdatePollerResponse` has been removed
+- Struct `LiveEventsClientUpdateResult` has been removed
+- Struct `LiveOutputsClientCreatePoller` has been removed
+- Struct `LiveOutputsClientCreatePollerResponse` has been removed
+- Struct `LiveOutputsClientCreateResult` has been removed
+- Struct `LiveOutputsClientDeletePoller` has been removed
+- Struct `LiveOutputsClientDeletePollerResponse` has been removed
+- Struct `LiveOutputsClientGetResult` has been removed
+- Struct `LiveOutputsClientListPager` has been removed
+- Struct `LiveOutputsClientListResult` has been removed
+- Struct `LocationsClientCheckNameAvailabilityResult` has been removed
+- Struct `OperationResultsClientGetResult` has been removed
+- Struct `OperationStatusesClientGetResult` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `PrivateEndpointConnectionsClientCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionsClientGetResult` has been removed
+- Struct `PrivateEndpointConnectionsClientListResult` has been removed
+- Struct `PrivateLinkResourcesClientGetResult` has been removed
+- Struct `PrivateLinkResourcesClientListResult` has been removed
+- Struct `StreamingEndpointsClientCreatePoller` has been removed
+- Struct `StreamingEndpointsClientCreatePollerResponse` has been removed
+- Struct `StreamingEndpointsClientCreateResult` has been removed
+- Struct `StreamingEndpointsClientDeletePoller` has been removed
+- Struct `StreamingEndpointsClientDeletePollerResponse` has been removed
+- Struct `StreamingEndpointsClientGetResult` has been removed
+- Struct `StreamingEndpointsClientListPager` has been removed
+- Struct `StreamingEndpointsClientListResult` has been removed
+- Struct `StreamingEndpointsClientSKUsResult` has been removed
+- Struct `StreamingEndpointsClientScalePoller` has been removed
+- Struct `StreamingEndpointsClientScalePollerResponse` has been removed
+- Struct `StreamingEndpointsClientStartPoller` has been removed
+- Struct `StreamingEndpointsClientStartPollerResponse` has been removed
+- Struct `StreamingEndpointsClientStopPoller` has been removed
+- Struct `StreamingEndpointsClientStopPollerResponse` has been removed
+- Struct `StreamingEndpointsClientUpdatePoller` has been removed
+- Struct `StreamingEndpointsClientUpdatePollerResponse` has been removed
+- Struct `StreamingEndpointsClientUpdateResult` has been removed
+- Struct `StreamingLocatorsClientCreateResult` has been removed
+- Struct `StreamingLocatorsClientGetResult` has been removed
+- Struct `StreamingLocatorsClientListContentKeysResult` has been removed
+- Struct `StreamingLocatorsClientListPager` has been removed
+- Struct `StreamingLocatorsClientListPathsResult` has been removed
+- Struct `StreamingLocatorsClientListResult` has been removed
+- Struct `StreamingPoliciesClientCreateResult` has been removed
+- Struct `StreamingPoliciesClientGetResult` has been removed
+- Struct `StreamingPoliciesClientListPager` has been removed
+- Struct `StreamingPoliciesClientListResult` has been removed
+- Struct `TracksClientCreateOrUpdatePoller` has been removed
+- Struct `TracksClientCreateOrUpdatePollerResponse` has been removed
+- Struct `TracksClientCreateOrUpdateResult` has been removed
+- Struct `TracksClientDeletePoller` has been removed
+- Struct `TracksClientDeletePollerResponse` has been removed
+- Struct `TracksClientGetResult` has been removed
+- Struct `TracksClientListResult` has been removed
+- Struct `TracksClientUpdatePoller` has been removed
+- Struct `TracksClientUpdatePollerResponse` has been removed
+- Struct `TracksClientUpdateResult` has been removed
+- Struct `TracksClientUpdateTrackDataPoller` has been removed
+- Struct `TracksClientUpdateTrackDataPollerResponse` has been removed
+- Struct `TransformsClientCreateOrUpdateResult` has been removed
+- Struct `TransformsClientGetResult` has been removed
+- Struct `TransformsClientListPager` has been removed
+- Struct `TransformsClientListResult` has been removed
+- Struct `TransformsClientUpdateResult` has been removed
+- Field `AssetFiltersClientUpdateResult` of struct `AssetFiltersClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `AssetFiltersClientUpdateResponse` has been removed
+- Field `AssetsClientGetEncryptionKeyResult` of struct `AssetsClientGetEncryptionKeyResponse` has been removed
+- Field `RawResponse` of struct `AssetsClientGetEncryptionKeyResponse` has been removed
+- Field `RawResponse` of struct `LiveEventsClientStartResponse` has been removed
+- Field `LocationsClientCheckNameAvailabilityResult` of struct `LocationsClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `LocationsClientCheckNameAvailabilityResponse` has been removed
+- Field `ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsResult` of struct `ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsResponse` has been removed
+- Field `RawResponse` of struct `ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsResponse` has been removed
+- Field `PrivateEndpointConnectionsClientListResult` of struct `PrivateEndpointConnectionsClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientListResponse` has been removed
+- Field `RawResponse` of struct `JobsClientDeleteResponse` has been removed
+- Field `StreamingLocatorsClientGetResult` of struct `StreamingLocatorsClientGetResponse` has been removed
+- Field `RawResponse` of struct `StreamingLocatorsClientGetResponse` has been removed
+- Field `TracksClientUpdateResult` of struct `TracksClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `TracksClientUpdateResponse` has been removed
+- Field `ClientListEdgePoliciesResult` of struct `ClientListEdgePoliciesResponse` has been removed
+- Field `RawResponse` of struct `ClientListEdgePoliciesResponse` has been removed
+- Field `LiveEventsClientListResult` of struct `LiveEventsClientListResponse` has been removed
+- Field `RawResponse` of struct `LiveEventsClientListResponse` has been removed
+- Field `StreamingLocatorsClientCreateResult` of struct `StreamingLocatorsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `StreamingLocatorsClientCreateResponse` has been removed
+- Field `OperationStatusesClientGetResult` of struct `OperationStatusesClientGetResponse` has been removed
+- Field `RawResponse` of struct `OperationStatusesClientGetResponse` has been removed
+- Field `RawResponse` of struct `StreamingEndpointsClientDeleteResponse` has been removed
+- Field `AssetsClientListStreamingLocatorsResult` of struct `AssetsClientListStreamingLocatorsResponse` has been removed
+- Field `RawResponse` of struct `AssetsClientListStreamingLocatorsResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `PrivateLinkResourcesClientGetResult` of struct `PrivateLinkResourcesClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientGetResponse` has been removed
+- Field `ContentKeyPoliciesClientCreateOrUpdateResult` of struct `ContentKeyPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ContentKeyPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ClientSyncStorageKeysResponse` has been removed
+- Field `ContentKeyPoliciesClientGetResult` of struct `ContentKeyPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ContentKeyPoliciesClientGetResponse` has been removed
+- Field `AssetsClientListResult` of struct `AssetsClientListResponse` has been removed
+- Field `RawResponse` of struct `AssetsClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientDeleteResponse` has been removed
+- Field `OperationResultsClientGetResult` of struct `OperationResultsClientGetResponse` has been removed
+- Field `RawResponse` of struct `OperationResultsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AssetsClientDeleteResponse` has been removed
+- Field `ContentKeyPoliciesClientListResult` of struct `ContentKeyPoliciesClientListResponse` has been removed
+- Field `RawResponse` of struct `ContentKeyPoliciesClientListResponse` has been removed
+- Field `RawResponse` of struct `AccountFiltersClientDeleteResponse` has been removed
+- Field `StreamingPoliciesClientListResult` of struct `StreamingPoliciesClientListResponse` has been removed
+- Field `RawResponse` of struct `StreamingPoliciesClientListResponse` has been removed
+- Field `RawResponse` of struct `LiveEventsClientStopResponse` has been removed
+- Field `StreamingEndpointsClientGetResult` of struct `StreamingEndpointsClientGetResponse` has been removed
+- Field `RawResponse` of struct `StreamingEndpointsClientGetResponse` has been removed
+- Field `RawResponse` of struct `StreamingLocatorsClientDeleteResponse` has been removed
+- Field `JobsClientUpdateResult` of struct `JobsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `JobsClientUpdateResponse` has been removed
+- Field `LiveOutputsClientGetResult` of struct `LiveOutputsClientGetResponse` has been removed
+- Field `RawResponse` of struct `LiveOutputsClientGetResponse` has been removed
+- Field `ClientListResult` of struct `ClientListResponse` has been removed
+- Field `RawResponse` of struct `ClientListResponse` has been removed
+- Field `AssetFiltersClientListResult` of struct `AssetFiltersClientListResponse` has been removed
+- Field `RawResponse` of struct `AssetFiltersClientListResponse` has been removed
+- Field `LiveOutputsClientCreateResult` of struct `LiveOutputsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `LiveOutputsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `TransformsClientDeleteResponse` has been removed
+- Field `LiveEventsClientGetResult` of struct `LiveEventsClientGetResponse` has been removed
+- Field `RawResponse` of struct `LiveEventsClientGetResponse` has been removed
+- Field `TransformsClientGetResult` of struct `TransformsClientGetResponse` has been removed
+- Field `RawResponse` of struct `TransformsClientGetResponse` has been removed
+- Field `ClientListBySubscriptionResult` of struct `ClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `ClientListBySubscriptionResponse` has been removed
+- Field `StreamingLocatorsClientListContentKeysResult` of struct `StreamingLocatorsClientListContentKeysResponse` has been removed
+- Field `RawResponse` of struct `StreamingLocatorsClientListContentKeysResponse` has been removed
+- Field `RawResponse` of struct `ContentKeyPoliciesClientDeleteResponse` has been removed
+- Field `JobsClientListResult` of struct `JobsClientListResponse` has been removed
+- Field `RawResponse` of struct `JobsClientListResponse` has been removed
+- Field `TransformsClientCreateOrUpdateResult` of struct `TransformsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `TransformsClientCreateOrUpdateResponse` has been removed
+- Field `LiveEventsClientUpdateResult` of struct `LiveEventsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `LiveEventsClientUpdateResponse` has been removed
+- Field `TracksClientGetResult` of struct `TracksClientGetResponse` has been removed
+- Field `RawResponse` of struct `TracksClientGetResponse` has been removed
+- Field `RawResponse` of struct `LiveEventsClientResetResponse` has been removed
+- Field `StreamingPoliciesClientCreateResult` of struct `StreamingPoliciesClientCreateResponse` has been removed
+- Field `RawResponse` of struct `StreamingPoliciesClientCreateResponse` has been removed
+- Field `TracksClientListResult` of struct `TracksClientListResponse` has been removed
+- Field `RawResponse` of struct `TracksClientListResponse` has been removed
+- Field `StreamingLocatorsClientListPathsResult` of struct `StreamingLocatorsClientListPathsResponse` has been removed
+- Field `RawResponse` of struct `StreamingLocatorsClientListPathsResponse` has been removed
+- Field `ClientGetResult` of struct `ClientGetResponse` has been removed
+- Field `RawResponse` of struct `ClientGetResponse` has been removed
+- Field `AccountFiltersClientCreateOrUpdateResult` of struct `AccountFiltersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `AccountFiltersClientCreateOrUpdateResponse` has been removed
+- Field `StreamingLocatorsClientListResult` of struct `StreamingLocatorsClientListResponse` has been removed
+- Field `RawResponse` of struct `StreamingLocatorsClientListResponse` has been removed
+- Field `PrivateEndpointConnectionsClientCreateOrUpdateResult` of struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `StreamingEndpointsClientCreateResult` of struct `StreamingEndpointsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `StreamingEndpointsClientCreateResponse` has been removed
+- Field `TransformsClientListResult` of struct `TransformsClientListResponse` has been removed
+- Field `RawResponse` of struct `TransformsClientListResponse` has been removed
+- Field `JobsClientCreateResult` of struct `JobsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `JobsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `TracksClientDeleteResponse` has been removed
+- Field `ClientCreateOrUpdateResult` of struct `ClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ClientCreateOrUpdateResponse` has been removed
+- Field `PrivateLinkResourcesClientListResult` of struct `PrivateLinkResourcesClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientListResponse` has been removed
+- Field `ContentKeyPoliciesClientUpdateResult` of struct `ContentKeyPoliciesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ContentKeyPoliciesClientUpdateResponse` has been removed
+- Field `AssetFiltersClientCreateOrUpdateResult` of struct `AssetFiltersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `AssetFiltersClientCreateOrUpdateResponse` has been removed
+- Field `AssetsClientGetResult` of struct `AssetsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AssetsClientGetResponse` has been removed
+- Field `RawResponse` of struct `StreamingEndpointsClientScaleResponse` has been removed
+- Field `StreamingEndpointsClientUpdateResult` of struct `StreamingEndpointsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `StreamingEndpointsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `LiveEventsClientAllocateResponse` has been removed
+- Field `StreamingPoliciesClientGetResult` of struct `StreamingPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `StreamingPoliciesClientGetResponse` has been removed
+- Field `AccountFiltersClientGetResult` of struct `AccountFiltersClientGetResponse` has been removed
+- Field `RawResponse` of struct `AccountFiltersClientGetResponse` has been removed
+- Field `JobsClientGetResult` of struct `JobsClientGetResponse` has been removed
+- Field `RawResponse` of struct `JobsClientGetResponse` has been removed
+- Field `LiveOutputsClientListResult` of struct `LiveOutputsClientListResponse` has been removed
+- Field `RawResponse` of struct `LiveOutputsClientListResponse` has been removed
+- Field `AssetFiltersClientGetResult` of struct `AssetFiltersClientGetResponse` has been removed
+- Field `RawResponse` of struct `AssetFiltersClientGetResponse` has been removed
+- Field `RawResponse` of struct `TracksClientUpdateTrackDataResponse` has been removed
+- Field `RawResponse` of struct `StreamingEndpointsClientStopResponse` has been removed
+- Field `TransformsClientUpdateResult` of struct `TransformsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `TransformsClientUpdateResponse` has been removed
+- Field `LiveEventsClientCreateResult` of struct `LiveEventsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `LiveEventsClientCreateResponse` has been removed
+- Field `StreamingEndpointsClientListResult` of struct `StreamingEndpointsClientListResponse` has been removed
+- Field `RawResponse` of struct `StreamingEndpointsClientListResponse` has been removed
+- Field `ClientUpdateResult` of struct `ClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `StreamingEndpointsClientStartResponse` has been removed
+- Field `RawResponse` of struct `StreamingPoliciesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `JobsClientCancelJobResponse` has been removed
+- Field `AssetsClientUpdateResult` of struct `AssetsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `AssetsClientUpdateResponse` has been removed
+- Field `AssetsClientCreateOrUpdateResult` of struct `AssetsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `AssetsClientCreateOrUpdateResponse` has been removed
+- Field `AssetsClientListContainerSasResult` of struct `AssetsClientListContainerSasResponse` has been removed
+- Field `RawResponse` of struct `AssetsClientListContainerSasResponse` has been removed
+- Field `PrivateEndpointConnectionsClientGetResult` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `LiveEventsClientDeleteResponse` has been removed
+- Field `TracksClientCreateOrUpdateResult` of struct `TracksClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `TracksClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `AssetFiltersClientDeleteResponse` has been removed
+- Field `AccountFiltersClientListResult` of struct `AccountFiltersClientListResponse` has been removed
+- Field `RawResponse` of struct `AccountFiltersClientListResponse` has been removed
+- Field `AccountFiltersClientUpdateResult` of struct `AccountFiltersClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `AccountFiltersClientUpdateResponse` has been removed
+- Field `StreamingEndpointsClientSKUsResult` of struct `StreamingEndpointsClientSKUsResponse` has been removed
+- Field `RawResponse` of struct `StreamingEndpointsClientSKUsResponse` has been removed
+- Field `RawResponse` of struct `LiveOutputsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `ClientDeleteResponse` has been removed
+
+### Features Added
+
+- New struct `ErrorResponse`
+- New anonymous field `LiveOutput` in struct `LiveOutputsClientGetResponse`
+- New anonymous field `AssetFilter` in struct `AssetFiltersClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `StreamingEndpointsClientBeginCreateOptions`
+- New anonymous field `StreamingPolicyCollection` in struct `StreamingPoliciesClientListResponse`
+- New anonymous field `AssetTrack` in struct `OperationResultsClientGetResponse`
+- New field `AzureAsyncOperation` in struct `OperationResultsClientGetResponse`
+- New field `Location` in struct `OperationResultsClientGetResponse`
+- New field `RetryAfter` in struct `OperationResultsClientGetResponse`
+- New anonymous field `MediaServiceCollection` in struct `ClientListResponse`
+- New anonymous field `ListStreamingLocatorsResponse` in struct `AssetsClientListStreamingLocatorsResponse`
+- New anonymous field `MediaService` in struct `ClientGetResponse`
+- New anonymous field `StreamingLocator` in struct `StreamingLocatorsClientGetResponse`
+- New field `ResumeToken` in struct `LiveEventsClientBeginCreateOptions`
+- New anonymous field `StreamingEndpoint` in struct `StreamingEndpointsClientCreateResponse`
+- New field `ResumeToken` in struct `StreamingEndpointsClientBeginUpdateOptions`
+- New field `ResumeToken` in struct `LiveOutputsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `LiveEventsClientBeginStartOptions`
+- New field `ResumeToken` in struct `TracksClientBeginUpdateOptions`
+- New anonymous field `ContentKeyPolicyCollection` in struct `ContentKeyPoliciesClientListResponse`
+- New anonymous field `StreamingPolicy` in struct `StreamingPoliciesClientGetResponse`
+- New anonymous field `AccountFilter` in struct `AccountFiltersClientCreateOrUpdateResponse`
+- New anonymous field `MediaServiceCollection` in struct `ClientListBySubscriptionResponse`
+- New anonymous field `ListPathsResponse` in struct `StreamingLocatorsClientListPathsResponse`
+- New anonymous field `ListContentKeysResponse` in struct `StreamingLocatorsClientListContentKeysResponse`
+- New anonymous field `PrivateEndpointConnectionListResult` in struct `PrivateEndpointConnectionsClientListResponse`
+- New anonymous field `LiveEvent` in struct `LiveEventsClientUpdateResponse`
+- New anonymous field `StreamingEndpointListResult` in struct `StreamingEndpointsClientListResponse`
+- New anonymous field `EntityNameAvailabilityCheckOutput` in struct `LocationsClientCheckNameAvailabilityResponse`
+- New anonymous field `StreamingEndpoint` in struct `StreamingEndpointsClientUpdateResponse`
+- New field `ResumeToken` in struct `LiveEventsClientBeginStopOptions`
+- New anonymous field `StreamingLocator` in struct `StreamingLocatorsClientCreateResponse`
+- New anonymous field `StreamingLocatorCollection` in struct `StreamingLocatorsClientListResponse`
+- New anonymous field `LiveEventListResult` in struct `LiveEventsClientListResponse`
+- New anonymous field `LiveEvent` in struct `LiveEventsClientGetResponse`
+- New field `ResumeToken` in struct `LiveEventsClientBeginUpdateOptions`
+- New field `ResumeToken` in struct `StreamingEndpointsClientBeginScaleOptions`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientGetResponse`
+- New anonymous field `StreamingEndpoint` in struct `StreamingEndpointsClientGetResponse`
+- New anonymous field `ContentKeyPolicy` in struct `ContentKeyPoliciesClientCreateOrUpdateResponse`
+- New anonymous field `AssetCollection` in struct `AssetsClientListResponse`
+- New anonymous field `AssetFilter` in struct `AssetFiltersClientUpdateResponse`
+- New anonymous field `StorageEncryptedAssetDecryptionData` in struct `AssetsClientGetEncryptionKeyResponse`
+- New anonymous field `MediaService` in struct `ClientUpdateResponse`
+- New field `ResumeToken` in struct `TracksClientBeginDeleteOptions`
+- New anonymous field `ContentKeyPolicyProperties` in struct `ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsResponse`
+- New field `ResumeToken` in struct `LiveEventsClientBeginResetOptions`
+- New anonymous field `OperationCollection` in struct `OperationsClientListResponse`
+- New anonymous field `PrivateLinkResourceListResult` in struct `PrivateLinkResourcesClientListResponse`
+- New field `ResumeToken` in struct `StreamingEndpointsClientBeginStartOptions`
+- New field `ResumeToken` in struct `LiveOutputsClientBeginCreateOptions`
+- New anonymous field `StreamingEndpointSKUInfoListResult` in struct `StreamingEndpointsClientSKUsResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse`
+- New anonymous field `LiveOutput` in struct `LiveOutputsClientCreateResponse`
+- New field `ResumeToken` in struct `LiveEventsClientBeginDeleteOptions`
+- New anonymous field `PrivateLinkResource` in struct `PrivateLinkResourcesClientGetResponse`
+- New anonymous field `MediaService` in struct `ClientCreateOrUpdateResponse`
+- New anonymous field `LiveEvent` in struct `LiveEventsClientCreateResponse`
+- New field `ResumeToken` in struct `StreamingEndpointsClientBeginStopOptions`
+- New anonymous field `LiveOutputListResult` in struct `LiveOutputsClientListResponse`
+- New anonymous field `AccountFilter` in struct `AccountFiltersClientUpdateResponse`
+- New anonymous field `AssetTrack` in struct `TracksClientGetResponse`
+- New anonymous field `Transform` in struct `TransformsClientCreateOrUpdateResponse`
+- New anonymous field `AccountFilterCollection` in struct `AccountFiltersClientListResponse`
+- New anonymous field `TransformCollection` in struct `TransformsClientListResponse`
+- New anonymous field `AssetContainerSas` in struct `AssetsClientListContainerSasResponse`
+- New field `ResumeToken` in struct `TracksClientBeginCreateOrUpdateOptions`
+- New anonymous field `AssetTrack` in struct `TracksClientUpdateResponse`
+- New field `ResumeToken` in struct `StreamingEndpointsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `LiveEventsClientBeginAllocateOptions`
+- New anonymous field `Asset` in struct `AssetsClientUpdateResponse`
+- New anonymous field `JobCollection` in struct `JobsClientListResponse`
+- New anonymous field `Job` in struct `JobsClientGetResponse`
+- New anonymous field `Transform` in struct `TransformsClientUpdateResponse`
+- New anonymous field `AssetTrackCollection` in struct `TracksClientListResponse`
+- New anonymous field `Job` in struct `JobsClientUpdateResponse`
+- New anonymous field `ContentKeyPolicy` in struct `ContentKeyPoliciesClientUpdateResponse`
+- New anonymous field `EdgePolicies` in struct `ClientListEdgePoliciesResponse`
+- New anonymous field `StreamingPolicy` in struct `StreamingPoliciesClientCreateResponse`
+- New anonymous field `Job` in struct `JobsClientCreateResponse`
+- New anonymous field `AssetFilterCollection` in struct `AssetFiltersClientListResponse`
+- New anonymous field `AssetFilter` in struct `AssetFiltersClientGetResponse`
+- New anonymous field `Transform` in struct `TransformsClientGetResponse`
+- New anonymous field `Asset` in struct `AssetsClientGetResponse`
+- New anonymous field `Asset` in struct `AssetsClientCreateOrUpdateResponse`
+- New anonymous field `AssetTrackOperationStatus` in struct `OperationStatusesClientGetResponse`
+- New anonymous field `ContentKeyPolicy` in struct `ContentKeyPoliciesClientGetResponse`
+- New anonymous field `AssetTrack` in struct `TracksClientCreateOrUpdateResponse`
+- New anonymous field `AccountFilter` in struct `AccountFiltersClientGetResponse`
+- New field `ResumeToken` in struct `TracksClientBeginUpdateTrackDataOptions`
+
+
 ## 0.4.0 (2022-04-04)
 ### Breaking Changes
 

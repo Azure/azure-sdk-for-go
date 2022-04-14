@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armstorageimportexport
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // BitLockerKeysClientListOptions contains the optional parameters for the BitLockerKeysClient.List method.
 type BitLockerKeysClientListOptions struct {
@@ -111,24 +106,13 @@ type ErrorResponseError struct {
 	Details []*ErrorResponseErrorDetailsItem `json:"details,omitempty"`
 
 	// Inner error object if present.
-	Innererror map[string]interface{} `json:"innererror,omitempty"`
+	Innererror interface{} `json:"innererror,omitempty"`
 
 	// Provides information about the error message.
 	Message *string `json:"message,omitempty"`
 
 	// Provides information about the error target.
 	Target *string `json:"target,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorResponseError.
-func (e ErrorResponseError) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "innererror", e.Innererror)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
 }
 
 type ErrorResponseErrorDetailsItem struct {
@@ -163,25 +147,10 @@ type ExportBlobList struct {
 	BlobPathPrefix []*string `json:"blobPathPrefix,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ExportBlobList.
-func (e ExportBlobList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "blobPath", e.BlobPath)
-	populate(objectMap, "blobPathPrefix", e.BlobPathPrefix)
-	return json.Marshal(objectMap)
-}
-
 // GetBitLockerKeysResponse - GetBitLockerKeys response
 type GetBitLockerKeysResponse struct {
 	// drive status
 	Value []*DriveBitLockerKey `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type GetBitLockerKeysResponse.
-func (g GetBitLockerKeysResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", g.Value)
-	return json.Marshal(objectMap)
 }
 
 // IdentityDetails - Specifies the identity properties.
@@ -259,30 +228,6 @@ type JobDetails struct {
 	StorageAccountID *string `json:"storageAccountId,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type JobDetails.
-func (j JobDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "backupDriveManifest", j.BackupDriveManifest)
-	populate(objectMap, "cancelRequested", j.CancelRequested)
-	populate(objectMap, "deliveryPackage", j.DeliveryPackage)
-	populate(objectMap, "diagnosticsPath", j.DiagnosticsPath)
-	populate(objectMap, "driveList", j.DriveList)
-	populate(objectMap, "encryptionKey", j.EncryptionKey)
-	populate(objectMap, "export", j.Export)
-	populate(objectMap, "incompleteBlobListUri", j.IncompleteBlobListURI)
-	populate(objectMap, "jobType", j.JobType)
-	populate(objectMap, "logLevel", j.LogLevel)
-	populate(objectMap, "percentComplete", j.PercentComplete)
-	populate(objectMap, "provisioningState", j.ProvisioningState)
-	populate(objectMap, "returnAddress", j.ReturnAddress)
-	populate(objectMap, "returnPackage", j.ReturnPackage)
-	populate(objectMap, "returnShipping", j.ReturnShipping)
-	populate(objectMap, "shippingInformation", j.ShippingInformation)
-	populate(objectMap, "state", j.State)
-	populate(objectMap, "storageAccountId", j.StorageAccountID)
-	return json.Marshal(objectMap)
-}
-
 // JobResponse - Contains the job information.
 type JobResponse struct {
 	// Specifies the job identity details
@@ -295,7 +240,7 @@ type JobResponse struct {
 	Properties *JobDetails `json:"properties,omitempty"`
 
 	// Specifies the tags that are assigned to the job.
-	Tags map[string]interface{} `json:"tags,omitempty"`
+	Tags interface{} `json:"tags,omitempty"`
 
 	// READ-ONLY; Specifies the resource identifier of the job.
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -356,25 +301,10 @@ type ListJobsResponse struct {
 	Value []*JobResponse `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ListJobsResponse.
-func (l ListJobsResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
-}
-
 // ListOperationsResponse - List operations response
 type ListOperationsResponse struct {
 	// operations
 	Value []*Operation `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ListOperationsResponse.
-func (l ListOperationsResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
 }
 
 // Location - Provides information about an Azure data center location.
@@ -430,23 +360,6 @@ type LocationProperties struct {
 	SupportedCarriers []*string `json:"supportedCarriers,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LocationProperties.
-func (l LocationProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalShippingInformation", l.AdditionalShippingInformation)
-	populate(objectMap, "alternateLocations", l.AlternateLocations)
-	populate(objectMap, "city", l.City)
-	populate(objectMap, "countryOrRegion", l.CountryOrRegion)
-	populate(objectMap, "phone", l.Phone)
-	populate(objectMap, "postalCode", l.PostalCode)
-	populate(objectMap, "recipientName", l.RecipientName)
-	populate(objectMap, "stateOrProvince", l.StateOrProvince)
-	populate(objectMap, "streetAddress1", l.StreetAddress1)
-	populate(objectMap, "streetAddress2", l.StreetAddress2)
-	populate(objectMap, "supportedCarriers", l.SupportedCarriers)
-	return json.Marshal(objectMap)
-}
-
 // LocationsClientGetOptions contains the optional parameters for the LocationsClient.Get method.
 type LocationsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -460,13 +373,6 @@ type LocationsClientListOptions struct {
 type LocationsResponse struct {
 	// locations
 	Value []*Location `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type LocationsResponse.
-func (l LocationsResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
 }
 
 // Operation - Describes a supported operation by the Storage Import/Export job API.
@@ -521,7 +427,7 @@ type PutJobParameters struct {
 	Properties *JobDetails `json:"properties,omitempty"`
 
 	// Specifies the tags that will be assigned to the job.
-	Tags map[string]interface{} `json:"tags,omitempty"`
+	Tags interface{} `json:"tags,omitempty"`
 }
 
 // ReturnAddress - Specifies the return address information for the job.
@@ -614,68 +520,13 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // UpdateJobParameters - Update Job parameters
 type UpdateJobParameters struct {
 	// Specifies the properties of a UpdateJob.
 	Properties *UpdateJobParametersProperties `json:"properties,omitempty"`
 
 	// Specifies the tags that will be assigned to the job
-	Tags map[string]interface{} `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type UpdateJobParameters.
-func (u UpdateJobParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", u.Properties)
-	populate(objectMap, "tags", u.Tags)
-	return json.Marshal(objectMap)
+	Tags interface{} `json:"tags,omitempty"`
 }
 
 // UpdateJobParametersProperties - Specifies the properties of a UpdateJob.
@@ -705,35 +556,4 @@ type UpdateJobParametersProperties struct {
 	// The ReturnAddress and DeliveryPackage properties must have been set
 	// either in this request or in a previous request, otherwise the request will fail.
 	State *string `json:"state,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type UpdateJobParametersProperties.
-func (u UpdateJobParametersProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "backupDriveManifest", u.BackupDriveManifest)
-	populate(objectMap, "cancelRequested", u.CancelRequested)
-	populate(objectMap, "deliveryPackage", u.DeliveryPackage)
-	populate(objectMap, "driveList", u.DriveList)
-	populate(objectMap, "logLevel", u.LogLevel)
-	populate(objectMap, "returnAddress", u.ReturnAddress)
-	populate(objectMap, "returnShipping", u.ReturnShipping)
-	populate(objectMap, "state", u.State)
-	return json.Marshal(objectMap)
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

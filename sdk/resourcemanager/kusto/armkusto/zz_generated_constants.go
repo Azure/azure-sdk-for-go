@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armkusto
 
 const (
 	moduleName    = "armkusto"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // AzureSKUName - SKU name.
@@ -23,20 +23,39 @@ const (
 	AzureSKUNameStandardD12V2         AzureSKUName = "Standard_D12_v2"
 	AzureSKUNameStandardD13V2         AzureSKUName = "Standard_D13_v2"
 	AzureSKUNameStandardD14V2         AzureSKUName = "Standard_D14_v2"
+	AzureSKUNameStandardD16DV5        AzureSKUName = "Standard_D16d_v5"
+	AzureSKUNameStandardD32DV4        AzureSKUName = "Standard_D32d_v4"
+	AzureSKUNameStandardD32DV5        AzureSKUName = "Standard_D32d_v5"
 	AzureSKUNameStandardDS13V21TBPS   AzureSKUName = "Standard_DS13_v2+1TB_PS"
 	AzureSKUNameStandardDS13V22TBPS   AzureSKUName = "Standard_DS13_v2+2TB_PS"
 	AzureSKUNameStandardDS14V23TBPS   AzureSKUName = "Standard_DS14_v2+3TB_PS"
 	AzureSKUNameStandardDS14V24TBPS   AzureSKUName = "Standard_DS14_v2+4TB_PS"
 	AzureSKUNameStandardE16AV4        AzureSKUName = "Standard_E16a_v4"
+	AzureSKUNameStandardE16AdsV5      AzureSKUName = "Standard_E16ads_v5"
 	AzureSKUNameStandardE16AsV43TBPS  AzureSKUName = "Standard_E16as_v4+3TB_PS"
 	AzureSKUNameStandardE16AsV44TBPS  AzureSKUName = "Standard_E16as_v4+4TB_PS"
+	AzureSKUNameStandardE16AsV53TBPS  AzureSKUName = "Standard_E16as_v5+3TB_PS"
+	AzureSKUNameStandardE16AsV54TBPS  AzureSKUName = "Standard_E16as_v5+4TB_PS"
+	AzureSKUNameStandardE16SV43TBPS   AzureSKUName = "Standard_E16s_v4+3TB_PS"
+	AzureSKUNameStandardE16SV44TBPS   AzureSKUName = "Standard_E16s_v4+4TB_PS"
+	AzureSKUNameStandardE16SV53TBPS   AzureSKUName = "Standard_E16s_v5+3TB_PS"
+	AzureSKUNameStandardE16SV54TBPS   AzureSKUName = "Standard_E16s_v5+4TB_PS"
 	AzureSKUNameStandardE2AV4         AzureSKUName = "Standard_E2a_v4"
+	AzureSKUNameStandardE2AdsV5       AzureSKUName = "Standard_E2ads_v5"
 	AzureSKUNameStandardE4AV4         AzureSKUName = "Standard_E4a_v4"
+	AzureSKUNameStandardE4AdsV5       AzureSKUName = "Standard_E4ads_v5"
 	AzureSKUNameStandardE64IV3        AzureSKUName = "Standard_E64i_v3"
 	AzureSKUNameStandardE80IDsV4      AzureSKUName = "Standard_E80ids_v4"
 	AzureSKUNameStandardE8AV4         AzureSKUName = "Standard_E8a_v4"
+	AzureSKUNameStandardE8AdsV5       AzureSKUName = "Standard_E8ads_v5"
 	AzureSKUNameStandardE8AsV41TBPS   AzureSKUName = "Standard_E8as_v4+1TB_PS"
 	AzureSKUNameStandardE8AsV42TBPS   AzureSKUName = "Standard_E8as_v4+2TB_PS"
+	AzureSKUNameStandardE8AsV51TBPS   AzureSKUName = "Standard_E8as_v5+1TB_PS"
+	AzureSKUNameStandardE8AsV52TBPS   AzureSKUName = "Standard_E8as_v5+2TB_PS"
+	AzureSKUNameStandardE8SV41TBPS    AzureSKUName = "Standard_E8s_v4+1TB_PS"
+	AzureSKUNameStandardE8SV42TBPS    AzureSKUName = "Standard_E8s_v4+2TB_PS"
+	AzureSKUNameStandardE8SV51TBPS    AzureSKUName = "Standard_E8s_v5+1TB_PS"
+	AzureSKUNameStandardE8SV52TBPS    AzureSKUName = "Standard_E8s_v5+2TB_PS"
 	AzureSKUNameStandardL16S          AzureSKUName = "Standard_L16s"
 	AzureSKUNameStandardL16SV2        AzureSKUName = "Standard_L16s_v2"
 	AzureSKUNameStandardL4S           AzureSKUName = "Standard_L4s"
@@ -53,31 +72,45 @@ func PossibleAzureSKUNameValues() []AzureSKUName {
 		AzureSKUNameStandardD12V2,
 		AzureSKUNameStandardD13V2,
 		AzureSKUNameStandardD14V2,
+		AzureSKUNameStandardD16DV5,
+		AzureSKUNameStandardD32DV4,
+		AzureSKUNameStandardD32DV5,
 		AzureSKUNameStandardDS13V21TBPS,
 		AzureSKUNameStandardDS13V22TBPS,
 		AzureSKUNameStandardDS14V23TBPS,
 		AzureSKUNameStandardDS14V24TBPS,
 		AzureSKUNameStandardE16AV4,
+		AzureSKUNameStandardE16AdsV5,
 		AzureSKUNameStandardE16AsV43TBPS,
 		AzureSKUNameStandardE16AsV44TBPS,
+		AzureSKUNameStandardE16AsV53TBPS,
+		AzureSKUNameStandardE16AsV54TBPS,
+		AzureSKUNameStandardE16SV43TBPS,
+		AzureSKUNameStandardE16SV44TBPS,
+		AzureSKUNameStandardE16SV53TBPS,
+		AzureSKUNameStandardE16SV54TBPS,
 		AzureSKUNameStandardE2AV4,
+		AzureSKUNameStandardE2AdsV5,
 		AzureSKUNameStandardE4AV4,
+		AzureSKUNameStandardE4AdsV5,
 		AzureSKUNameStandardE64IV3,
 		AzureSKUNameStandardE80IDsV4,
 		AzureSKUNameStandardE8AV4,
+		AzureSKUNameStandardE8AdsV5,
 		AzureSKUNameStandardE8AsV41TBPS,
 		AzureSKUNameStandardE8AsV42TBPS,
+		AzureSKUNameStandardE8AsV51TBPS,
+		AzureSKUNameStandardE8AsV52TBPS,
+		AzureSKUNameStandardE8SV41TBPS,
+		AzureSKUNameStandardE8SV42TBPS,
+		AzureSKUNameStandardE8SV51TBPS,
+		AzureSKUNameStandardE8SV52TBPS,
 		AzureSKUNameStandardL16S,
 		AzureSKUNameStandardL16SV2,
 		AzureSKUNameStandardL4S,
 		AzureSKUNameStandardL8S,
 		AzureSKUNameStandardL8SV2,
 	}
-}
-
-// ToPtr returns a *AzureSKUName pointing to the current value.
-func (c AzureSKUName) ToPtr() *AzureSKUName {
-	return &c
 }
 
 // AzureSKUTier - SKU tier.
@@ -94,11 +127,6 @@ func PossibleAzureSKUTierValues() []AzureSKUTier {
 		AzureSKUTierBasic,
 		AzureSKUTierStandard,
 	}
-}
-
-// ToPtr returns a *AzureSKUTier pointing to the current value.
-func (c AzureSKUTier) ToPtr() *AzureSKUTier {
-	return &c
 }
 
 // AzureScaleType - Scale type.
@@ -119,11 +147,6 @@ func PossibleAzureScaleTypeValues() []AzureScaleType {
 	}
 }
 
-// ToPtr returns a *AzureScaleType pointing to the current value.
-func (c AzureScaleType) ToPtr() *AzureScaleType {
-	return &c
-}
-
 // BlobStorageEventType - The name of blob storage event type to process.
 type BlobStorageEventType string
 
@@ -138,11 +161,6 @@ func PossibleBlobStorageEventTypeValues() []BlobStorageEventType {
 		BlobStorageEventTypeMicrosoftStorageBlobCreated,
 		BlobStorageEventTypeMicrosoftStorageBlobRenamed,
 	}
-}
-
-// ToPtr returns a *BlobStorageEventType pointing to the current value.
-func (c BlobStorageEventType) ToPtr() *BlobStorageEventType {
-	return &c
 }
 
 // ClusterNetworkAccessFlag - Whether or not to restrict outbound network access. Value is optional but if passed in, must
@@ -162,11 +180,6 @@ func PossibleClusterNetworkAccessFlagValues() []ClusterNetworkAccessFlag {
 	}
 }
 
-// ToPtr returns a *ClusterNetworkAccessFlag pointing to the current value.
-func (c ClusterNetworkAccessFlag) ToPtr() *ClusterNetworkAccessFlag {
-	return &c
-}
-
 // ClusterPrincipalRole - Cluster principal role.
 type ClusterPrincipalRole string
 
@@ -183,11 +196,6 @@ func PossibleClusterPrincipalRoleValues() []ClusterPrincipalRole {
 	}
 }
 
-// ToPtr returns a *ClusterPrincipalRole pointing to the current value.
-func (c ClusterPrincipalRole) ToPtr() *ClusterPrincipalRole {
-	return &c
-}
-
 // Compression - The compression type
 type Compression string
 
@@ -202,11 +210,6 @@ func PossibleCompressionValues() []Compression {
 		CompressionGZip,
 		CompressionNone,
 	}
-}
-
-// ToPtr returns a *Compression pointing to the current value.
-func (c Compression) ToPtr() *Compression {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -229,11 +232,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // DataConnectionKind - Kind of the endpoint for the data connection
 type DataConnectionKind string
 
@@ -250,11 +248,6 @@ func PossibleDataConnectionKindValues() []DataConnectionKind {
 		DataConnectionKindEventHub,
 		DataConnectionKindIotHub,
 	}
-}
-
-// ToPtr returns a *DataConnectionKind pointing to the current value.
-func (c DataConnectionKind) ToPtr() *DataConnectionKind {
-	return &c
 }
 
 // DatabasePrincipalRole - Database principal role.
@@ -281,11 +274,6 @@ func PossibleDatabasePrincipalRoleValues() []DatabasePrincipalRole {
 	}
 }
 
-// ToPtr returns a *DatabasePrincipalRole pointing to the current value.
-func (c DatabasePrincipalRole) ToPtr() *DatabasePrincipalRole {
-	return &c
-}
-
 // DatabasePrincipalType - Database principal type.
 type DatabasePrincipalType string
 
@@ -304,9 +292,21 @@ func PossibleDatabasePrincipalTypeValues() []DatabasePrincipalType {
 	}
 }
 
-// ToPtr returns a *DatabasePrincipalType pointing to the current value.
-func (c DatabasePrincipalType) ToPtr() *DatabasePrincipalType {
-	return &c
+// DatabaseRouting - Indication for database routing information from the data connection, by default only database routing
+// information is allowed
+type DatabaseRouting string
+
+const (
+	DatabaseRoutingMulti  DatabaseRouting = "Multi"
+	DatabaseRoutingSingle DatabaseRouting = "Single"
+)
+
+// PossibleDatabaseRoutingValues returns the possible values for the DatabaseRouting const type.
+func PossibleDatabaseRoutingValues() []DatabaseRouting {
+	return []DatabaseRouting{
+		DatabaseRoutingMulti,
+		DatabaseRoutingSingle,
+	}
 }
 
 // DefaultPrincipalsModificationKind - The default principals modification kind
@@ -327,11 +327,6 @@ func PossibleDefaultPrincipalsModificationKindValues() []DefaultPrincipalsModifi
 	}
 }
 
-// ToPtr returns a *DefaultPrincipalsModificationKind pointing to the current value.
-func (c DefaultPrincipalsModificationKind) ToPtr() *DefaultPrincipalsModificationKind {
-	return &c
-}
-
 // EngineType - The engine type
 type EngineType string
 
@@ -346,11 +341,6 @@ func PossibleEngineTypeValues() []EngineType {
 		EngineTypeV2,
 		EngineTypeV3,
 	}
-}
-
-// ToPtr returns a *EngineType pointing to the current value.
-func (c EngineType) ToPtr() *EngineType {
-	return &c
 }
 
 // EventGridDataFormat - The data format of the message. Optionally the data format can be added to each message.
@@ -397,11 +387,6 @@ func PossibleEventGridDataFormatValues() []EventGridDataFormat {
 	}
 }
 
-// ToPtr returns a *EventGridDataFormat pointing to the current value.
-func (c EventGridDataFormat) ToPtr() *EventGridDataFormat {
-	return &c
-}
-
 // EventHubDataFormat - The data format of the message. Optionally the data format can be added to each message.
 type EventHubDataFormat string
 
@@ -446,11 +431,6 @@ func PossibleEventHubDataFormatValues() []EventHubDataFormat {
 	}
 }
 
-// ToPtr returns a *EventHubDataFormat pointing to the current value.
-func (c EventHubDataFormat) ToPtr() *EventHubDataFormat {
-	return &c
-}
-
 // IdentityType - The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created
 // identity and a set of user-assigned identities. The type 'None' will remove all
 // identities.
@@ -471,11 +451,6 @@ func PossibleIdentityTypeValues() []IdentityType {
 		IdentityTypeSystemAssignedUserAssigned,
 		IdentityTypeUserAssigned,
 	}
-}
-
-// ToPtr returns a *IdentityType pointing to the current value.
-func (c IdentityType) ToPtr() *IdentityType {
-	return &c
 }
 
 // IotHubDataFormat - The data format of the message. Optionally the data format can be added to each message.
@@ -522,11 +497,6 @@ func PossibleIotHubDataFormatValues() []IotHubDataFormat {
 	}
 }
 
-// ToPtr returns a *IotHubDataFormat pointing to the current value.
-func (c IotHubDataFormat) ToPtr() *IotHubDataFormat {
-	return &c
-}
-
 // Kind - Kind of the database
 type Kind string
 
@@ -543,11 +513,6 @@ func PossibleKindValues() []Kind {
 	}
 }
 
-// ToPtr returns a *Kind pointing to the current value.
-func (c Kind) ToPtr() *Kind {
-	return &c
-}
-
 // LanguageExtensionName - Language extension that can run within KQL query.
 type LanguageExtensionName string
 
@@ -562,11 +527,6 @@ func PossibleLanguageExtensionNameValues() []LanguageExtensionName {
 		LanguageExtensionNamePYTHON,
 		LanguageExtensionNameR,
 	}
-}
-
-// ToPtr returns a *LanguageExtensionName pointing to the current value.
-func (c LanguageExtensionName) ToPtr() *LanguageExtensionName {
-	return &c
 }
 
 // PrincipalType - Principal type.
@@ -587,11 +547,6 @@ func PossiblePrincipalTypeValues() []PrincipalType {
 	}
 }
 
-// ToPtr returns a *PrincipalType pointing to the current value.
-func (c PrincipalType) ToPtr() *PrincipalType {
-	return &c
-}
-
 // PrincipalsModificationKind - The principals modification kind of the database
 type PrincipalsModificationKind string
 
@@ -608,11 +563,6 @@ func PossiblePrincipalsModificationKindValues() []PrincipalsModificationKind {
 		PrincipalsModificationKindReplace,
 		PrincipalsModificationKindUnion,
 	}
-}
-
-// ToPtr returns a *PrincipalsModificationKind pointing to the current value.
-func (c PrincipalsModificationKind) ToPtr() *PrincipalsModificationKind {
-	return &c
 }
 
 // ProvisioningState - The provisioned state of the resource.
@@ -639,9 +589,20 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
+// PublicIPType - Indicates what public IP type to create - IPv4 (default), or DualStack (both IPv4 and IPv6)
+type PublicIPType string
+
+const (
+	PublicIPTypeDualStack PublicIPType = "DualStack"
+	PublicIPTypeIPv4      PublicIPType = "IPv4"
+)
+
+// PossiblePublicIPTypeValues returns the possible values for the PublicIPType const type.
+func PossiblePublicIPTypeValues() []PublicIPType {
+	return []PublicIPType{
+		PublicIPTypeDualStack,
+		PublicIPTypeIPv4,
+	}
 }
 
 // PublicNetworkAccess - Public network access to the cluster is enabled by default. When disabled, only private endpoint
@@ -661,11 +622,6 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	}
 }
 
-// ToPtr returns a *PublicNetworkAccess pointing to the current value.
-func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
-	return &c
-}
-
 // Reason - Message providing the reason why the given name is invalid.
 type Reason string
 
@@ -680,11 +636,6 @@ func PossibleReasonValues() []Reason {
 		ReasonAlreadyExists,
 		ReasonInvalid,
 	}
-}
-
-// ToPtr returns a *Reason pointing to the current value.
-func (c Reason) ToPtr() *Reason {
-	return &c
 }
 
 // State - The state of the resource.
@@ -717,11 +668,6 @@ func PossibleStateValues() []State {
 	}
 }
 
-// ToPtr returns a *State pointing to the current value.
-func (c State) ToPtr() *State {
-	return &c
-}
-
 // Status - The status of operation.
 type Status string
 
@@ -742,11 +688,6 @@ func PossibleStatusValues() []Status {
 	}
 }
 
-// ToPtr returns a *Status pointing to the current value.
-func (c Status) ToPtr() *Status {
-	return &c
-}
-
 // Type - The type of resource, for instance Microsoft.Kusto/clusters/databases.
 type Type string
 
@@ -761,9 +702,4 @@ func PossibleTypeValues() []Type {
 		TypeMicrosoftKustoClustersDatabases,
 		TypeMicrosoftKustoClustersAttachedDatabaseConfigurations,
 	}
-}
-
-// ToPtr returns a *Type pointing to the current value.
-func (c Type) ToPtr() *Type {
-	return &c
 }

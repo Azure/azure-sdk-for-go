@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type MetadataClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewMetadataClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MetadataClient {
+func NewMetadataClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MetadataClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &MetadataClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Create a Metadata.
@@ -96,7 +101,7 @@ func (client *MetadataClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, metadata)
@@ -104,7 +109,7 @@ func (client *MetadataClient) createCreateRequest(ctx context.Context, resourceG
 
 // createHandleResponse handles the Create response.
 func (client *MetadataClient) createHandleResponse(resp *http.Response) (MetadataClientCreateResponse, error) {
-	result := MetadataClientCreateResponse{RawResponse: resp}
+	result := MetadataClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetadataModel); err != nil {
 		return MetadataClientCreateResponse{}, err
 	}
@@ -129,7 +134,7 @@ func (client *MetadataClient) Delete(ctx context.Context, resourceGroupName stri
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return MetadataClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return MetadataClientDeleteResponse{RawResponse: resp}, nil
+	return MetadataClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -156,7 +161,7 @@ func (client *MetadataClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -207,7 +212,7 @@ func (client *MetadataClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -215,7 +220,7 @@ func (client *MetadataClient) getCreateRequest(ctx context.Context, resourceGrou
 
 // getHandleResponse handles the Get response.
 func (client *MetadataClient) getHandleResponse(resp *http.Response) (MetadataClientGetResponse, error) {
-	result := MetadataClientGetResponse{RawResponse: resp}
+	result := MetadataClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetadataModel); err != nil {
 		return MetadataClientGetResponse{}, err
 	}
@@ -227,16 +232,32 @@ func (client *MetadataClient) getHandleResponse(resp *http.Response) (MetadataCl
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - MetadataClientListOptions contains the optional parameters for the MetadataClient.List method.
-func (client *MetadataClient) List(resourceGroupName string, workspaceName string, options *MetadataClientListOptions) *MetadataClientListPager {
-	return &MetadataClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
+func (client *MetadataClient) List(resourceGroupName string, workspaceName string, options *MetadataClientListOptions) *runtime.Pager[MetadataClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[MetadataClientListResponse]{
+		More: func(page MetadataClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp MetadataClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.MetadataList.NextLink)
+		Fetcher: func(ctx context.Context, page *MetadataClientListResponse) (MetadataClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return MetadataClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return MetadataClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return MetadataClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -259,7 +280,7 @@ func (client *MetadataClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -279,7 +300,7 @@ func (client *MetadataClient) listCreateRequest(ctx context.Context, resourceGro
 
 // listHandleResponse handles the List response.
 func (client *MetadataClient) listHandleResponse(resp *http.Response) (MetadataClientListResponse, error) {
-	result := MetadataClientListResponse{RawResponse: resp}
+	result := MetadataClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetadataList); err != nil {
 		return MetadataClientListResponse{}, err
 	}
@@ -332,7 +353,7 @@ func (client *MetadataClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, metadataPatch)
@@ -340,7 +361,7 @@ func (client *MetadataClient) updateCreateRequest(ctx context.Context, resourceG
 
 // updateHandleResponse handles the Update response.
 func (client *MetadataClient) updateHandleResponse(resp *http.Response) (MetadataClientUpdateResponse, error) {
-	result := MetadataClientUpdateResponse{RawResponse: resp}
+	result := MetadataClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetadataModel); err != nil {
 		return MetadataClientUpdateResponse{}, err
 	}

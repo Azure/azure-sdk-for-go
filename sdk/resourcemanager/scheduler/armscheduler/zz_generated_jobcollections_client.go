@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type JobCollectionsClient struct {
 // subscriptionID - The subscription id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewJobCollectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *JobCollectionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewJobCollectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobCollectionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &JobCollectionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Provisions a new job collection or updates an existing job collection.
@@ -99,7 +104,7 @@ func (client *JobCollectionsClient) createOrUpdateCreateRequest(ctx context.Cont
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *JobCollectionsClient) createOrUpdateHandleResponse(resp *http.Response) (JobCollectionsClientCreateOrUpdateResponse, error) {
-	result := JobCollectionsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := JobCollectionsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobCollectionDefinition); err != nil {
 		return JobCollectionsClientCreateOrUpdateResponse{}, err
 	}
@@ -112,22 +117,16 @@ func (client *JobCollectionsClient) createOrUpdateHandleResponse(resp *http.Resp
 // jobCollectionName - The job collection name.
 // options - JobCollectionsClientBeginDeleteOptions contains the optional parameters for the JobCollectionsClient.BeginDelete
 // method.
-func (client *JobCollectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, jobCollectionName string, options *JobCollectionsClientBeginDeleteOptions) (JobCollectionsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, jobCollectionName, options)
-	if err != nil {
-		return JobCollectionsClientDeletePollerResponse{}, err
+func (client *JobCollectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, jobCollectionName string, options *JobCollectionsClientBeginDeleteOptions) (*armruntime.Poller[JobCollectionsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, jobCollectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[JobCollectionsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[JobCollectionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := JobCollectionsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("JobCollectionsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return JobCollectionsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &JobCollectionsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a job collection.
@@ -178,22 +177,16 @@ func (client *JobCollectionsClient) deleteCreateRequest(ctx context.Context, res
 // jobCollectionName - The job collection name.
 // options - JobCollectionsClientBeginDisableOptions contains the optional parameters for the JobCollectionsClient.BeginDisable
 // method.
-func (client *JobCollectionsClient) BeginDisable(ctx context.Context, resourceGroupName string, jobCollectionName string, options *JobCollectionsClientBeginDisableOptions) (JobCollectionsClientDisablePollerResponse, error) {
-	resp, err := client.disable(ctx, resourceGroupName, jobCollectionName, options)
-	if err != nil {
-		return JobCollectionsClientDisablePollerResponse{}, err
+func (client *JobCollectionsClient) BeginDisable(ctx context.Context, resourceGroupName string, jobCollectionName string, options *JobCollectionsClientBeginDisableOptions) (*armruntime.Poller[JobCollectionsClientDisableResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.disable(ctx, resourceGroupName, jobCollectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[JobCollectionsClientDisableResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[JobCollectionsClientDisableResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := JobCollectionsClientDisablePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("JobCollectionsClient.Disable", "", resp, client.pl)
-	if err != nil {
-		return JobCollectionsClientDisablePollerResponse{}, err
-	}
-	result.Poller = &JobCollectionsClientDisablePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Disable - Disables all of the jobs in the job collection.
@@ -244,22 +237,16 @@ func (client *JobCollectionsClient) disableCreateRequest(ctx context.Context, re
 // jobCollectionName - The job collection name.
 // options - JobCollectionsClientBeginEnableOptions contains the optional parameters for the JobCollectionsClient.BeginEnable
 // method.
-func (client *JobCollectionsClient) BeginEnable(ctx context.Context, resourceGroupName string, jobCollectionName string, options *JobCollectionsClientBeginEnableOptions) (JobCollectionsClientEnablePollerResponse, error) {
-	resp, err := client.enable(ctx, resourceGroupName, jobCollectionName, options)
-	if err != nil {
-		return JobCollectionsClientEnablePollerResponse{}, err
+func (client *JobCollectionsClient) BeginEnable(ctx context.Context, resourceGroupName string, jobCollectionName string, options *JobCollectionsClientBeginEnableOptions) (*armruntime.Poller[JobCollectionsClientEnableResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.enable(ctx, resourceGroupName, jobCollectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[JobCollectionsClientEnableResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[JobCollectionsClientEnableResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := JobCollectionsClientEnablePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("JobCollectionsClient.Enable", "", resp, client.pl)
-	if err != nil {
-		return JobCollectionsClientEnablePollerResponse{}, err
-	}
-	result.Poller = &JobCollectionsClientEnablePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Enable - Enables all of the jobs in the job collection.
@@ -352,7 +339,7 @@ func (client *JobCollectionsClient) getCreateRequest(ctx context.Context, resour
 
 // getHandleResponse handles the Get response.
 func (client *JobCollectionsClient) getHandleResponse(resp *http.Response) (JobCollectionsClientGetResponse, error) {
-	result := JobCollectionsClientGetResponse{RawResponse: resp}
+	result := JobCollectionsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobCollectionDefinition); err != nil {
 		return JobCollectionsClientGetResponse{}, err
 	}
@@ -364,16 +351,32 @@ func (client *JobCollectionsClient) getHandleResponse(resp *http.Response) (JobC
 // resourceGroupName - The resource group name.
 // options - JobCollectionsClientListByResourceGroupOptions contains the optional parameters for the JobCollectionsClient.ListByResourceGroup
 // method.
-func (client *JobCollectionsClient) ListByResourceGroup(resourceGroupName string, options *JobCollectionsClientListByResourceGroupOptions) *JobCollectionsClientListByResourceGroupPager {
-	return &JobCollectionsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *JobCollectionsClient) ListByResourceGroup(resourceGroupName string, options *JobCollectionsClientListByResourceGroupOptions) *runtime.Pager[JobCollectionsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[JobCollectionsClientListByResourceGroupResponse]{
+		More: func(page JobCollectionsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp JobCollectionsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobCollectionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *JobCollectionsClientListByResourceGroupResponse) (JobCollectionsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return JobCollectionsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return JobCollectionsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return JobCollectionsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -400,7 +403,7 @@ func (client *JobCollectionsClient) listByResourceGroupCreateRequest(ctx context
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *JobCollectionsClient) listByResourceGroupHandleResponse(resp *http.Response) (JobCollectionsClientListByResourceGroupResponse, error) {
-	result := JobCollectionsClientListByResourceGroupResponse{RawResponse: resp}
+	result := JobCollectionsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobCollectionListResult); err != nil {
 		return JobCollectionsClientListByResourceGroupResponse{}, err
 	}
@@ -411,16 +414,32 @@ func (client *JobCollectionsClient) listByResourceGroupHandleResponse(resp *http
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - JobCollectionsClientListBySubscriptionOptions contains the optional parameters for the JobCollectionsClient.ListBySubscription
 // method.
-func (client *JobCollectionsClient) ListBySubscription(options *JobCollectionsClientListBySubscriptionOptions) *JobCollectionsClientListBySubscriptionPager {
-	return &JobCollectionsClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *JobCollectionsClient) ListBySubscription(options *JobCollectionsClientListBySubscriptionOptions) *runtime.Pager[JobCollectionsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[JobCollectionsClientListBySubscriptionResponse]{
+		More: func(page JobCollectionsClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp JobCollectionsClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobCollectionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *JobCollectionsClientListBySubscriptionResponse) (JobCollectionsClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return JobCollectionsClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return JobCollectionsClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return JobCollectionsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -443,7 +462,7 @@ func (client *JobCollectionsClient) listBySubscriptionCreateRequest(ctx context.
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *JobCollectionsClient) listBySubscriptionHandleResponse(resp *http.Response) (JobCollectionsClientListBySubscriptionResponse, error) {
-	result := JobCollectionsClientListBySubscriptionResponse{RawResponse: resp}
+	result := JobCollectionsClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobCollectionListResult); err != nil {
 		return JobCollectionsClientListBySubscriptionResponse{}, err
 	}
@@ -499,7 +518,7 @@ func (client *JobCollectionsClient) patchCreateRequest(ctx context.Context, reso
 
 // patchHandleResponse handles the Patch response.
 func (client *JobCollectionsClient) patchHandleResponse(resp *http.Response) (JobCollectionsClientPatchResponse, error) {
-	result := JobCollectionsClientPatchResponse{RawResponse: resp}
+	result := JobCollectionsClientPatchResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobCollectionDefinition); err != nil {
 		return JobCollectionsClientPatchResponse{}, err
 	}

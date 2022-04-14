@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,8 +10,28 @@ package armmanagedservices
 
 const (
 	moduleName    = "armmanagedservices"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
+
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
+	}
+}
 
 // MultiFactorAuthProvider - The multi-factor authorization provider to be used for just-in-time access requests.
 type MultiFactorAuthProvider string
@@ -27,11 +47,6 @@ func PossibleMultiFactorAuthProviderValues() []MultiFactorAuthProvider {
 		MultiFactorAuthProviderAzure,
 		MultiFactorAuthProviderNone,
 	}
-}
-
-// ToPtr returns a *MultiFactorAuthProvider pointing to the current value.
-func (c MultiFactorAuthProvider) ToPtr() *MultiFactorAuthProvider {
-	return &c
 }
 
 // ProvisioningState - The current provisioning state of the registration definition.
@@ -68,9 +83,4 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateSucceeded,
 		ProvisioningStateUpdating,
 	}
-}
-
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
 }

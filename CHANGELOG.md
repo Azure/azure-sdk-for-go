@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v63.2.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2020-10-01/authorization`
+- `github.com/Azure/azure-sdk-for-go/services/azureadexternalidentities/mgmt/2021-04-01/azureadexternalidentities`
+- `github.com/Azure/azure-sdk-for-go/services/redisenterprise/mgmt/2022-01-01/redisenterprise`
+
 ## `v63.1.0`
 
 ### New Packages

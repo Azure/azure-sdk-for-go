@@ -1,5 +1,171 @@
 # Release History
 
+## 0.3.0 (2022-04-13)
+### Breaking Changes
+
+- Function `NewLinkerClient` return value(s) have been changed from `(*LinkerClient)` to `(*LinkerClient, error)`
+- Function `*LinkerClient.List` return value(s) have been changed from `(*LinkerClientListPager)` to `(*runtime.Pager[LinkerClientListResponse])`
+- Function `*LinkerClient.BeginUpdate` return value(s) have been changed from `(LinkerClientUpdatePollerResponse, error)` to `(*armruntime.Poller[LinkerClientUpdateResponse], error)`
+- Function `*LinkerClient.BeginCreateOrUpdate` return value(s) have been changed from `(LinkerClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[LinkerClientCreateOrUpdateResponse], error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*LinkerClient.BeginDelete` return value(s) have been changed from `(LinkerClientDeletePollerResponse, error)` to `(*armruntime.Poller[LinkerClientDeleteResponse], error)`
+- Function `*LinkerClient.BeginValidate` return value(s) have been changed from `(LinkerClientValidatePollerResponse, error)` to `(*armruntime.Poller[LinkerClientValidateResponse], error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Const `LinkerStatusNotHealthy` has been removed
+- Const `LinkerStatusHealthy` has been removed
+- Function `LinkerClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*LinkerClientUpdatePoller.ResumeToken` has been removed
+- Function `*LinkerClientUpdatePoller.FinalResponse` has been removed
+- Function `*LinkerClientValidatePoller.ResumeToken` has been removed
+- Function `*LinkerClientDeletePoller.ResumeToken` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*LinkerClientValidatePoller.Poll` has been removed
+- Function `*LinkerClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*LinkerClientDeletePoller.FinalResponse` has been removed
+- Function `ClientType.ToPtr` has been removed
+- Function `LinkerClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `Origin.ToPtr` has been removed
+- Function `*LinkerClientListPager.NextPage` has been removed
+- Function `*LinkerClientValidatePollerResponse.Resume` has been removed
+- Function `ActionType.ToPtr` has been removed
+- Function `*LinkerClientUpdatePoller.Done` has been removed
+- Function `*LinkerClientUpdatePollerResponse.Resume` has been removed
+- Function `*LinkerClientDeletePoller.Poll` has been removed
+- Function `*LinkerClientDeletePollerResponse.Resume` has been removed
+- Function `*LinkerClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*LinkerClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*LinkerClientCreateOrUpdatePoller.Done` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*LinkerClientListPager.Err` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*LinkerClientDeletePoller.Done` has been removed
+- Function `AuthType.ToPtr` has been removed
+- Function `*LinkerClientValidatePoller.Done` has been removed
+- Function `*LinkerClientUpdatePoller.Poll` has been removed
+- Function `LinkerClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*LinkerClientValidatePoller.FinalResponse` has been removed
+- Function `*LinkerClientListPager.PageResponse` has been removed
+- Function `LinkerClientValidatePollerResponse.PollUntilDone` has been removed
+- Function `PossibleLinkerStatusValues` has been removed
+- Function `*LinkerClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `LinkerStatus.ToPtr` has been removed
+- Struct `LinkerClientCreateOrUpdatePoller` has been removed
+- Struct `LinkerClientCreateOrUpdatePollerResponse` has been removed
+- Struct `LinkerClientCreateOrUpdateResult` has been removed
+- Struct `LinkerClientDeletePoller` has been removed
+- Struct `LinkerClientDeletePollerResponse` has been removed
+- Struct `LinkerClientGetResult` has been removed
+- Struct `LinkerClientListConfigurationsResult` has been removed
+- Struct `LinkerClientListPager` has been removed
+- Struct `LinkerClientListResult` has been removed
+- Struct `LinkerClientUpdatePoller` has been removed
+- Struct `LinkerClientUpdatePollerResponse` has been removed
+- Struct `LinkerClientUpdateResult` has been removed
+- Struct `LinkerClientValidatePoller` has been removed
+- Struct `LinkerClientValidatePollerResponse` has been removed
+- Struct `LinkerClientValidateResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Field `LinkerStatus` of struct `ValidateResult` has been removed
+- Field `Name` of struct `ValidateResult` has been removed
+- Field `Reason` of struct `ValidateResult` has been removed
+- Field `LinkerClientUpdateResult` of struct `LinkerClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `LinkerClientUpdateResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `LinkerClientListConfigurationsResult` of struct `LinkerClientListConfigurationsResponse` has been removed
+- Field `RawResponse` of struct `LinkerClientListConfigurationsResponse` has been removed
+- Field `TargetID` of struct `LinkerProperties` has been removed
+- Field `RawResponse` of struct `LinkerClientDeleteResponse` has been removed
+- Field `Secret` of struct `SecretAuthInfo` has been removed
+- Field `LinkerClientValidateResult` of struct `LinkerClientValidateResponse` has been removed
+- Field `RawResponse` of struct `LinkerClientValidateResponse` has been removed
+- Field `LinkerClientGetResult` of struct `LinkerClientGetResponse` has been removed
+- Field `RawResponse` of struct `LinkerClientGetResponse` has been removed
+- Field `LinkerClientCreateOrUpdateResult` of struct `LinkerClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `LinkerClientCreateOrUpdateResponse` has been removed
+- Field `LinkerClientListResult` of struct `LinkerClientListResponse` has been removed
+- Field `RawResponse` of struct `LinkerClientListResponse` has been removed
+
+### Features Added
+
+- New const `VNetSolutionTypeServiceEndpoint`
+- New const `VNetSolutionTypePrivateLink`
+- New const `SecretTypeRawValue`
+- New const `SecretTypeKeyVaultSecretReference`
+- New const `TypeConfluentSchemaRegistry`
+- New const `ValidationItemResultSuccess`
+- New const `TypeKeyVault`
+- New const `TypeConfluentBootstrapServer`
+- New const `SecretTypeKeyVaultSecretURI`
+- New const `TypeAzureResource`
+- New const `ValidationItemResultFailed`
+- New const `ValidationItemResultWarning`
+- New function `*TargetServiceBase.GetTargetServiceBase() *TargetServiceBase`
+- New function `*ConfluentSchemaRegistry.GetTargetServiceBase() *TargetServiceBase`
+- New function `PossibleTypeValues() []Type`
+- New function `*ValueSecretInfo.UnmarshalJSON([]byte) error`
+- New function `*KeyVaultSecretReferenceSecretInfo.UnmarshalJSON([]byte) error`
+- New function `*KeyVaultSecretReferenceSecretInfo.GetSecretInfoBase() *SecretInfoBase`
+- New function `*AzureKeyVaultProperties.UnmarshalJSON([]byte) error`
+- New function `*KeyVaultSecretURISecretInfo.UnmarshalJSON([]byte) error`
+- New function `*SecretInfoBase.GetSecretInfoBase() *SecretInfoBase`
+- New function `ConfluentBootstrapServer.MarshalJSON() ([]byte, error)`
+- New function `KeyVaultSecretReferenceSecretInfo.MarshalJSON() ([]byte, error)`
+- New function `*ConfluentBootstrapServer.UnmarshalJSON([]byte) error`
+- New function `AzureResource.MarshalJSON() ([]byte, error)`
+- New function `*AzureResourcePropertiesBase.GetAzureResourcePropertiesBase() *AzureResourcePropertiesBase`
+- New function `ConfluentSchemaRegistry.MarshalJSON() ([]byte, error)`
+- New function `KeyVaultSecretURISecretInfo.MarshalJSON() ([]byte, error)`
+- New function `*AzureResource.UnmarshalJSON([]byte) error`
+- New function `PossibleSecretTypeValues() []SecretType`
+- New function `*AzureResource.GetTargetServiceBase() *TargetServiceBase`
+- New function `PossibleVNetSolutionTypeValues() []VNetSolutionType`
+- New function `PossibleValidationItemResultValues() []ValidationItemResult`
+- New function `*AzureKeyVaultProperties.GetAzureResourcePropertiesBase() *AzureResourcePropertiesBase`
+- New function `ValueSecretInfo.MarshalJSON() ([]byte, error)`
+- New function `AzureKeyVaultProperties.MarshalJSON() ([]byte, error)`
+- New function `*KeyVaultSecretURISecretInfo.GetSecretInfoBase() *SecretInfoBase`
+- New function `*ConfluentBootstrapServer.GetTargetServiceBase() *TargetServiceBase`
+- New function `*ConfluentSchemaRegistry.UnmarshalJSON([]byte) error`
+- New function `*ValueSecretInfo.GetSecretInfoBase() *SecretInfoBase`
+- New struct `AzureKeyVaultProperties`
+- New struct `AzureResource`
+- New struct `AzureResourcePropertiesBase`
+- New struct `ConfluentBootstrapServer`
+- New struct `ConfluentSchemaRegistry`
+- New struct `KeyVaultSecretReferenceSecretInfo`
+- New struct `KeyVaultSecretURISecretInfo`
+- New struct `SecretInfoBase`
+- New struct `SecretStore`
+- New struct `TargetServiceBase`
+- New struct `VNetSolution`
+- New struct `ValidationResultItem`
+- New struct `ValueSecretInfo`
+- New field `SecretInfo` in struct `SecretAuthInfo`
+- New field `ResumeToken` in struct `LinkerClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `LinkerClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `LinkerClientBeginUpdateOptions`
+- New anonymous field `LinkerResource` in struct `LinkerClientUpdateResponse`
+- New anonymous field `LinkerResource` in struct `LinkerClientCreateOrUpdateResponse`
+- New anonymous field `LinkerList` in struct `LinkerClientListResponse`
+- New anonymous field `SourceConfigurationResult` in struct `LinkerClientListConfigurationsResponse`
+- New field `SourceID` in struct `ValidateResult`
+- New field `ValidationDetail` in struct `ValidateResult`
+- New field `IsConnectionAvailable` in struct `ValidateResult`
+- New field `LinkerName` in struct `ValidateResult`
+- New field `ResumeToken` in struct `LinkerClientBeginValidateOptions`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New field `VNetSolution` in struct `LinkerProperties`
+- New field `Scope` in struct `LinkerProperties`
+- New field `SecretStore` in struct `LinkerProperties`
+- New field `TargetService` in struct `LinkerProperties`
+- New anonymous field `LinkerResource` in struct `LinkerClientGetResponse`
+- New anonymous field `ValidateResult` in struct `LinkerClientValidateResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

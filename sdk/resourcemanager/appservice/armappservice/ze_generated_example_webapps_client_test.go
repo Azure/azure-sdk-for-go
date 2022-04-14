@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,346 +19,455 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice"
 )
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListPublishingCredentialsPolicies.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListPublishingCredentialsPolicies.json
 func ExampleWebAppsClient_ListBasicPublishingCredentialsPolicies() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListBasicPublishingCredentialsPolicies("<resource-group-name>",
 		"<name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetPublishingCredentialsPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetPublishingCredentialsPolicy.json
 func ExampleWebAppsClient_GetFtpAllowed() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetFtpAllowed(ctx,
 		"<resource-group-name>",
 		"<name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientGetFtpAllowedResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/UpdatePublishingCredentialsPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/UpdatePublishingCredentialsPolicy.json
 func ExampleWebAppsClient_UpdateFtpAllowed() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.UpdateFtpAllowed(ctx,
 		"<resource-group-name>",
 		"<name>",
 		armappservice.CsmPublishingCredentialsPoliciesEntity{
 			Properties: &armappservice.CsmPublishingCredentialsPoliciesEntityProperties{
-				Allow: to.BoolPtr(true),
+				Allow: to.Ptr(true),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientUpdateFtpAllowedResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetPublishingCredentialsPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetPublishingCredentialsPolicy.json
 func ExampleWebAppsClient_GetScmAllowed() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetScmAllowed(ctx,
 		"<resource-group-name>",
 		"<name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientGetScmAllowedResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/UpdatePublishingCredentialsPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/UpdatePublishingCredentialsPolicy.json
 func ExampleWebAppsClient_UpdateScmAllowed() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.UpdateScmAllowed(ctx,
 		"<resource-group-name>",
 		"<name>",
 		armappservice.CsmPublishingCredentialsPoliciesEntity{
 			Properties: &armappservice.CsmPublishingCredentialsPoliciesEntityProperties{
-				Allow: to.BoolPtr(true),
+				Allow: to.Ptr(true),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientUpdateScmAllowedResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetKeyVaultReferencesForAppSettings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetKeyVaultReferencesForAppSettings.json
 func ExampleWebAppsClient_GetAppSettingsKeyVaultReferences() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.GetAppSettingsKeyVaultReferences("<resource-group-name>",
 		"<name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetKeyVaultReferencesForAppSetting.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetKeyVaultReferencesForAppSetting.json
 func ExampleWebAppsClient_GetAppSettingKeyVaultReference() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetAppSettingKeyVaultReference(ctx,
 		"<resource-group-name>",
 		"<name>",
 		"<app-setting-key>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientGetAppSettingKeyVaultReferenceResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetSiteInstanceInfo.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetSiteInstanceInfo.json
 func ExampleWebAppsClient_GetInstanceInfo() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetInstanceInfo(ctx,
 		"<resource-group-name>",
 		"<name>",
 		"<instance-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientGetInstanceInfoResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListSlotBackups.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListSlotBackups.json
 func ExampleWebAppsClient_ListSiteBackups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListSiteBackups("<resource-group-name>",
 		"<name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetWebSiteNetworkTraceOperation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetWebSiteNetworkTraceOperation.json
 func ExampleWebAppsClient_GetNetworkTraceOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetNetworkTraceOperation(ctx,
 		"<resource-group-name>",
 		"<name>",
 		"<operation-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientGetNetworkTraceOperationResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/StartWebSiteNetworkTraceOperation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/StartWebSiteNetworkTraceOperation.json
 func ExampleWebAppsClient_BeginStartWebSiteNetworkTraceOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginStartWebSiteNetworkTraceOperation(ctx,
 		"<resource-group-name>",
 		"<name>",
-		&armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationOptions{DurationInSeconds: to.Int32Ptr(60),
+		&armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationOptions{DurationInSeconds: to.Ptr[int32](60),
 			MaxFrameLength: nil,
 			SasURL:         nil,
+			ResumeToken:    "",
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientStartWebSiteNetworkTraceOperationResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/StopWebSiteNetworkTrace.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/StopWebSiteNetworkTrace.json
 func ExampleWebAppsClient_StopWebSiteNetworkTrace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.StopWebSiteNetworkTrace(ctx,
 		"<resource-group-name>",
 		"<name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetWebSiteNetworkTraces.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetWebSiteNetworkTraces.json
 func ExampleWebAppsClient_GetNetworkTraces() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetNetworkTraces(ctx,
 		"<resource-group-name>",
 		"<name>",
 		"<operation-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientGetNetworkTracesResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetWebSiteNetworkTraceOperation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetWebSiteNetworkTraceOperation.json
 func ExampleWebAppsClient_GetNetworkTraceOperationV2() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetNetworkTraceOperationV2(ctx,
 		"<resource-group-name>",
 		"<name>",
 		"<operation-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientGetNetworkTraceOperationV2Result)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetWebSiteNetworkTraces.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetWebSiteNetworkTraces.json
 func ExampleWebAppsClient_GetNetworkTracesV2() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetNetworkTracesV2(ctx,
 		"<resource-group-name>",
 		"<name>",
 		"<operation-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientGetNetworkTracesV2Result)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetSitePrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetSitePrivateEndpointConnection.json
 func ExampleWebAppsClient_GetPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetPrivateEndpointConnection(ctx,
 		"<resource-group-name>",
 		"<name>",
 		"<private-endpoint-connection-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientGetPrivateEndpointConnectionResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ApproveRejectSitePrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ApproveRejectSitePrivateEndpointConnection.json
 func ExampleWebAppsClient_BeginApproveOrRejectPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginApproveOrRejectPrivateEndpointConnection(ctx,
 		"<resource-group-name>",
 		"<name>",
@@ -366,210 +475,269 @@ func ExampleWebAppsClient_BeginApproveOrRejectPrivateEndpointConnection() {
 		armappservice.PrivateLinkConnectionApprovalRequestResource{
 			Properties: &armappservice.PrivateLinkConnectionApprovalRequest{
 				PrivateLinkServiceConnectionState: &armappservice.PrivateLinkConnectionState{
-					Description:     to.StringPtr("<description>"),
-					ActionsRequired: to.StringPtr("<actions-required>"),
-					Status:          to.StringPtr("<status>"),
+					Description:     to.Ptr("<description>"),
+					ActionsRequired: to.Ptr("<actions-required>"),
+					Status:          to.Ptr("<status>"),
 				},
 			},
 		},
-		nil)
+		&armappservice.WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientApproveOrRejectPrivateEndpointConnectionResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/DeleteSitePrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/DeleteSitePrivateEndpointConnection.json
 func ExampleWebAppsClient_BeginDeletePrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDeletePrivateEndpointConnection(ctx,
 		"<resource-group-name>",
 		"<name>",
 		"<private-endpoint-connection-name>",
-		nil)
+		&armappservice.WebAppsClientBeginDeletePrivateEndpointConnectionOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientDeletePrivateEndpointConnectionResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetSitePrivateLinkResources.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetSitePrivateLinkResources.json
 func ExampleWebAppsClient_GetPrivateLinkResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetPrivateLinkResources(ctx,
 		"<resource-group-name>",
 		"<name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientGetPrivateLinkResourcesResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListPublishingCredentialsPoliciesSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListPublishingCredentialsPoliciesSlot.json
 func ExampleWebAppsClient_ListBasicPublishingCredentialsPoliciesSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListBasicPublishingCredentialsPoliciesSlot("<resource-group-name>",
 		"<name>",
 		"<slot>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetPublishingCredentialsPolicySlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetPublishingCredentialsPolicySlot.json
 func ExampleWebAppsClient_GetFtpAllowedSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetFtpAllowedSlot(ctx,
 		"<resource-group-name>",
 		"<name>",
 		"<slot>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientGetFtpAllowedSlotResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/UpdatePublishingCredentialsPolicySlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/UpdatePublishingCredentialsPolicySlot.json
 func ExampleWebAppsClient_UpdateFtpAllowedSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.UpdateFtpAllowedSlot(ctx,
 		"<resource-group-name>",
 		"<name>",
 		"<slot>",
 		armappservice.CsmPublishingCredentialsPoliciesEntity{
 			Properties: &armappservice.CsmPublishingCredentialsPoliciesEntityProperties{
-				Allow: to.BoolPtr(true),
+				Allow: to.Ptr(true),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientUpdateFtpAllowedSlotResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetPublishingCredentialsPolicySlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetPublishingCredentialsPolicySlot.json
 func ExampleWebAppsClient_GetScmAllowedSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetScmAllowedSlot(ctx,
 		"<resource-group-name>",
 		"<name>",
 		"<slot>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientGetScmAllowedSlotResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/UpdatePublishingCredentialsPolicySlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/UpdatePublishingCredentialsPolicySlot.json
 func ExampleWebAppsClient_UpdateScmAllowedSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.UpdateScmAllowedSlot(ctx,
 		"<resource-group-name>",
 		"<name>",
 		"<slot>",
 		armappservice.CsmPublishingCredentialsPoliciesEntity{
 			Properties: &armappservice.CsmPublishingCredentialsPoliciesEntityProperties{
-				Allow: to.BoolPtr(true),
+				Allow: to.Ptr(true),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientUpdateScmAllowedSlotResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetKeyVaultReferencesForAppSettingsSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetKeyVaultReferencesForAppSettingsSlot.json
 func ExampleWebAppsClient_GetAppSettingsKeyVaultReferencesSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.GetAppSettingsKeyVaultReferencesSlot("<resource-group-name>",
 		"<name>",
 		"<slot>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetKeyVaultReferencesForAppSettingSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetKeyVaultReferencesForAppSettingSlot.json
 func ExampleWebAppsClient_GetAppSettingKeyVaultReferenceSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetAppSettingKeyVaultReferenceSlot(ctx,
 		"<resource-group-name>",
 		"<name>",
@@ -577,19 +745,26 @@ func ExampleWebAppsClient_GetAppSettingKeyVaultReferenceSlot() {
 		"<slot>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientGetAppSettingKeyVaultReferenceSlotResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetSiteInstanceInfo.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetSiteInstanceInfo.json
 func ExampleWebAppsClient_GetInstanceInfoSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetInstanceInfoSlot(ctx,
 		"<resource-group-name>",
 		"<name>",
@@ -597,45 +772,56 @@ func ExampleWebAppsClient_GetInstanceInfoSlot() {
 		"<slot>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientGetInstanceInfoSlotResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListSlotBackups.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListSlotBackups.json
 func ExampleWebAppsClient_ListSiteBackupsSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListSiteBackupsSlot("<resource-group-name>",
 		"<name>",
 		"<slot>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetWebSiteNetworkTraceOperation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetWebSiteNetworkTraceOperation.json
 func ExampleWebAppsClient_GetNetworkTraceOperationSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetNetworkTraceOperationSlot(ctx,
 		"<resource-group-name>",
 		"<name>",
@@ -643,63 +829,85 @@ func ExampleWebAppsClient_GetNetworkTraceOperationSlot() {
 		"<slot>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientGetNetworkTraceOperationSlotResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/StartWebSiteNetworkTraceOperation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/StartWebSiteNetworkTraceOperation.json
 func ExampleWebAppsClient_BeginStartWebSiteNetworkTraceOperationSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginStartWebSiteNetworkTraceOperationSlot(ctx,
 		"<resource-group-name>",
 		"<name>",
 		"<slot>",
-		&armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationSlotOptions{DurationInSeconds: to.Int32Ptr(60),
+		&armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationSlotOptions{DurationInSeconds: to.Ptr[int32](60),
 			MaxFrameLength: nil,
 			SasURL:         nil,
+			ResumeToken:    "",
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientStartWebSiteNetworkTraceOperationSlotResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/StopWebSiteNetworkTrace.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/StopWebSiteNetworkTrace.json
 func ExampleWebAppsClient_StopWebSiteNetworkTraceSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.StopWebSiteNetworkTraceSlot(ctx,
 		"<resource-group-name>",
 		"<name>",
 		"<slot>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetWebSiteNetworkTraces.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetWebSiteNetworkTraces.json
 func ExampleWebAppsClient_GetNetworkTracesSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetNetworkTracesSlot(ctx,
 		"<resource-group-name>",
 		"<name>",
@@ -707,19 +915,26 @@ func ExampleWebAppsClient_GetNetworkTracesSlot() {
 		"<slot>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientGetNetworkTracesSlotResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetWebSiteNetworkTraceOperation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetWebSiteNetworkTraceOperation.json
 func ExampleWebAppsClient_GetNetworkTraceOperationSlotV2() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetNetworkTraceOperationSlotV2(ctx,
 		"<resource-group-name>",
 		"<name>",
@@ -727,19 +942,26 @@ func ExampleWebAppsClient_GetNetworkTraceOperationSlotV2() {
 		"<slot>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientGetNetworkTraceOperationSlotV2Result)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetWebSiteNetworkTraces.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetWebSiteNetworkTraces.json
 func ExampleWebAppsClient_GetNetworkTracesSlotV2() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetNetworkTracesSlotV2(ctx,
 		"<resource-group-name>",
 		"<name>",
@@ -747,19 +969,26 @@ func ExampleWebAppsClient_GetNetworkTracesSlotV2() {
 		"<slot>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientGetNetworkTracesSlotV2Result)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetSitePrivateEndpointConnectionSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetSitePrivateEndpointConnectionSlot.json
 func ExampleWebAppsClient_GetPrivateEndpointConnectionSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetPrivateEndpointConnectionSlot(ctx,
 		"<resource-group-name>",
 		"<name>",
@@ -767,19 +996,26 @@ func ExampleWebAppsClient_GetPrivateEndpointConnectionSlot() {
 		"<slot>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientGetPrivateEndpointConnectionSlotResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ApproveRejectSitePrivateEndpointConnectionSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ApproveRejectSitePrivateEndpointConnectionSlot.json
 func ExampleWebAppsClient_BeginApproveOrRejectPrivateEndpointConnectionSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginApproveOrRejectPrivateEndpointConnectionSlot(ctx,
 		"<resource-group-name>",
 		"<name>",
@@ -788,148 +1024,196 @@ func ExampleWebAppsClient_BeginApproveOrRejectPrivateEndpointConnectionSlot() {
 		armappservice.PrivateLinkConnectionApprovalRequestResource{
 			Properties: &armappservice.PrivateLinkConnectionApprovalRequest{
 				PrivateLinkServiceConnectionState: &armappservice.PrivateLinkConnectionState{
-					Description:     to.StringPtr("<description>"),
-					ActionsRequired: to.StringPtr("<actions-required>"),
-					Status:          to.StringPtr("<status>"),
+					Description:     to.Ptr("<description>"),
+					ActionsRequired: to.Ptr("<actions-required>"),
+					Status:          to.Ptr("<status>"),
 				},
 			},
 		},
-		nil)
+		&armappservice.WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionSlotOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/DeleteSitePrivateEndpointConnectionSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/DeleteSitePrivateEndpointConnectionSlot.json
 func ExampleWebAppsClient_BeginDeletePrivateEndpointConnectionSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDeletePrivateEndpointConnectionSlot(ctx,
 		"<resource-group-name>",
 		"<name>",
 		"<private-endpoint-connection-name>",
 		"<slot>",
-		nil)
+		&armappservice.WebAppsClientBeginDeletePrivateEndpointConnectionSlotOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientDeletePrivateEndpointConnectionSlotResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetSitePrivateLinkResourcesSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetSitePrivateLinkResourcesSlot.json
 func ExampleWebAppsClient_GetPrivateLinkResourcesSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetPrivateLinkResourcesSlot(ctx,
 		"<resource-group-name>",
 		"<name>",
 		"<slot>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientGetPrivateLinkResourcesSlotResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/StartWebSiteNetworkTraceOperation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/StartWebSiteNetworkTraceOperation.json
 func ExampleWebAppsClient_BeginStartNetworkTraceSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginStartNetworkTraceSlot(ctx,
 		"<resource-group-name>",
 		"<name>",
 		"<slot>",
-		&armappservice.WebAppsClientBeginStartNetworkTraceSlotOptions{DurationInSeconds: to.Int32Ptr(60),
+		&armappservice.WebAppsClientBeginStartNetworkTraceSlotOptions{DurationInSeconds: to.Ptr[int32](60),
 			MaxFrameLength: nil,
 			SasURL:         nil,
+			ResumeToken:    "",
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientStartNetworkTraceSlotResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/StopWebSiteNetworkTrace.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/StopWebSiteNetworkTrace.json
 func ExampleWebAppsClient_StopNetworkTraceSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.StopNetworkTraceSlot(ctx,
 		"<resource-group-name>",
 		"<name>",
 		"<slot>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/StartWebSiteNetworkTraceOperation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/StartWebSiteNetworkTraceOperation.json
 func ExampleWebAppsClient_BeginStartNetworkTrace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginStartNetworkTrace(ctx,
 		"<resource-group-name>",
 		"<name>",
-		&armappservice.WebAppsClientBeginStartNetworkTraceOptions{DurationInSeconds: to.Int32Ptr(60),
+		&armappservice.WebAppsClientBeginStartNetworkTraceOptions{DurationInSeconds: to.Ptr[int32](60),
 			MaxFrameLength: nil,
 			SasURL:         nil,
+			ResumeToken:    "",
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.WebAppsClientStartNetworkTraceResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/StopWebSiteNetworkTrace.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/StopWebSiteNetworkTrace.json
 func ExampleWebAppsClient_StopNetworkTrace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.StopNetworkTrace(ctx,
 		"<resource-group-name>",
 		"<name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }

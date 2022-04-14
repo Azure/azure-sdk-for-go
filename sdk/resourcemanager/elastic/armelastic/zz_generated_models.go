@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,12 +16,7 @@
 
 package armelastic
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // CloudDeployment - Details of the user's elastic deployment associated with the monitor resource.
 type CloudDeployment struct {
@@ -112,16 +107,6 @@ type ErrorResponseBody struct {
 	Target *string `json:"target,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ErrorResponseBody.
-func (e ErrorResponseBody) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
-}
-
 // FilteringTag - The definition of a filtering tag. Filtering tags are used for capturing resources and include/exclude them
 // from being monitored.
 type FilteringTag struct {
@@ -163,16 +148,6 @@ type LogRules struct {
 
 	// Flag specifying if subscription logs should be sent for the Monitor resource.
 	SendSubscriptionLogs *bool `json:"sendSubscriptionLogs,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type LogRules.
-func (l LogRules) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "filteringTags", l.FilteringTags)
-	populate(objectMap, "sendAadLogs", l.SendAADLogs)
-	populate(objectMap, "sendActivityLogs", l.SendActivityLogs)
-	populate(objectMap, "sendSubscriptionLogs", l.SendSubscriptionLogs)
-	return json.Marshal(objectMap)
 }
 
 // MonitorProperties - Properties specific to the monitor resource.
@@ -226,21 +201,6 @@ type MonitorResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MonitorResource.
-func (m MonitorResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", m.ID)
-	populate(objectMap, "identity", m.Identity)
-	populate(objectMap, "location", m.Location)
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "properties", m.Properties)
-	populate(objectMap, "sku", m.SKU)
-	populate(objectMap, "systemData", m.SystemData)
-	populate(objectMap, "tags", m.Tags)
-	populate(objectMap, "type", m.Type)
-	return json.Marshal(objectMap)
-}
-
 // MonitorResourceListResponse - Response of a list operation.
 type MonitorResourceListResponse struct {
 	// Link to the next set of results, if any.
@@ -250,25 +210,10 @@ type MonitorResourceListResponse struct {
 	Value []*MonitorResource `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MonitorResourceListResponse.
-func (m MonitorResourceListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", m.NextLink)
-	populate(objectMap, "value", m.Value)
-	return json.Marshal(objectMap)
-}
-
 // MonitorResourceUpdateParameters - Monitor resource update parameters.
 type MonitorResourceUpdateParameters struct {
 	// elastic monitor resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MonitorResourceUpdateParameters.
-func (m MonitorResourceUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tags", m.Tags)
-	return json.Marshal(objectMap)
 }
 
 // MonitoredResource - The properties of a resource currently being monitored by the Elastic monitor resource.
@@ -290,14 +235,6 @@ type MonitoredResourceListResponse struct {
 
 	// Results of a list operation.
 	Value []*MonitoredResource `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MonitoredResourceListResponse.
-func (m MonitoredResourceListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", m.NextLink)
-	populate(objectMap, "value", m.Value)
-	return json.Marshal(objectMap)
 }
 
 // MonitoredResourcesClientListOptions contains the optional parameters for the MonitoredResourcesClient.List method.
@@ -332,14 +269,6 @@ type MonitoringTagRulesListResponse struct {
 	Value []*MonitoringTagRules `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MonitoringTagRulesListResponse.
-func (m MonitoringTagRulesListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", m.NextLink)
-	populate(objectMap, "value", m.Value)
-	return json.Marshal(objectMap)
-}
-
 // MonitoringTagRulesProperties - Definition of the properties for a TagRules resource.
 type MonitoringTagRulesProperties struct {
 	// Rules for sending logs.
@@ -353,11 +282,14 @@ type MonitoringTagRulesProperties struct {
 type MonitorsClientBeginCreateOptions struct {
 	// Elastic monitor resource model
 	Body *MonitorResource
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // MonitorsClientBeginDeleteOptions contains the optional parameters for the MonitorsClient.BeginDelete method.
 type MonitorsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // MonitorsClientGetOptions contains the optional parameters for the MonitorsClient.Get method.
@@ -403,14 +335,6 @@ type OperationListResult struct {
 
 	// List of operations supported by the Microsoft.Elastic provider.
 	Value []*OperationResult `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 // OperationResult - A Microsoft.Elastic REST API operation.
@@ -475,56 +399,10 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TagRulesClientBeginDeleteOptions contains the optional parameters for the TagRulesClient.BeginDelete method.
 type TagRulesClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // TagRulesClientCreateOrUpdateOptions contains the optional parameters for the TagRulesClient.CreateOrUpdate method.
@@ -590,14 +468,6 @@ type VMHostListResponse struct {
 	Value []*VMResources `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VMHostListResponse.
-func (v VMHostListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", v.NextLink)
-	populate(objectMap, "value", v.Value)
-	return json.Marshal(objectMap)
-}
-
 // VMIngestionClientDetailsOptions contains the optional parameters for the VMIngestionClient.Details method.
 type VMIngestionClientDetailsOptions struct {
 	// placeholder for future optional parameters
@@ -616,21 +486,4 @@ type VMIngestionDetailsResponse struct {
 type VMResources struct {
 	// The ARM id of the VM resource.
 	VMResourceID *string `json:"vmResourceId,omitempty"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

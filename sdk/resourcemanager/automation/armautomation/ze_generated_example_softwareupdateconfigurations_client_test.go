@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,14 +19,19 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation"
 )
 
-// x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/softwareUpdateConfiguration/createSoftwareUpdateConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/softwareUpdateConfiguration/createSoftwareUpdateConfiguration.json
 func ExampleSoftwareUpdateConfigurationsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armautomation.NewSoftwareUpdateConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewSoftwareUpdateConfigurationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Create(ctx,
 		"<resource-group-name>",
 		"<automation-account-name>",
@@ -36,131 +41,151 @@ func ExampleSoftwareUpdateConfigurationsClient_Create() {
 				ScheduleInfo: &armautomation.SUCScheduleProperties{
 					AdvancedSchedule: &armautomation.AdvancedSchedule{
 						WeekDays: []*string{
-							to.StringPtr("Monday"),
-							to.StringPtr("Thursday")},
+							to.Ptr("Monday"),
+							to.Ptr("Thursday")},
 					},
-					ExpiryTime: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-09T11:22:57+00:00"); return t }()),
-					Frequency:  armautomation.ScheduleFrequency("Hour").ToPtr(),
-					Interval:   to.Int64Ptr(1),
-					StartTime:  to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-19T12:22:57+00:00"); return t }()),
-					TimeZone:   to.StringPtr("<time-zone>"),
+					ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-09T11:22:57+00:00"); return t }()),
+					Frequency:  to.Ptr(armautomation.ScheduleFrequencyHour),
+					Interval:   to.Ptr[int64](1),
+					StartTime:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-19T12:22:57+00:00"); return t }()),
+					TimeZone:   to.Ptr("<time-zone>"),
 				},
 				Tasks: &armautomation.SoftwareUpdateConfigurationTasks{
 					PostTask: &armautomation.TaskProperties{
-						Source: to.StringPtr("<source>"),
+						Source: to.Ptr("<source>"),
 					},
 					PreTask: &armautomation.TaskProperties{
 						Parameters: map[string]*string{
-							"COMPUTERNAME": to.StringPtr("Computer1"),
+							"COMPUTERNAME": to.Ptr("Computer1"),
 						},
-						Source: to.StringPtr("<source>"),
+						Source: to.Ptr("<source>"),
 					},
 				},
 				UpdateConfiguration: &armautomation.UpdateConfiguration{
 					AzureVirtualMachines: []*string{
-						to.StringPtr("/subscriptions/5ae68d89-69a4-454f-b5ce-e443cc4e0067/resourceGroups/myresources/providers/Microsoft.Compute/virtualMachines/vm-01"),
-						to.StringPtr("/subscriptions/5ae68d89-69a4-454f-b5ce-e443cc4e0067/resourceGroups/myresources/providers/Microsoft.Compute/virtualMachines/vm-02"),
-						to.StringPtr("/subscriptions/5ae68d89-69a4-454f-b5ce-e443cc4e0067/resourceGroups/myresources/providers/Microsoft.Compute/virtualMachines/vm-03")},
-					Duration: to.StringPtr("<duration>"),
+						to.Ptr("/subscriptions/5ae68d89-69a4-454f-b5ce-e443cc4e0067/resourceGroups/myresources/providers/Microsoft.Compute/virtualMachines/vm-01"),
+						to.Ptr("/subscriptions/5ae68d89-69a4-454f-b5ce-e443cc4e0067/resourceGroups/myresources/providers/Microsoft.Compute/virtualMachines/vm-02"),
+						to.Ptr("/subscriptions/5ae68d89-69a4-454f-b5ce-e443cc4e0067/resourceGroups/myresources/providers/Microsoft.Compute/virtualMachines/vm-03")},
+					Duration: to.Ptr("<duration>"),
 					NonAzureComputerNames: []*string{
-						to.StringPtr("box1.contoso.com"),
-						to.StringPtr("box2.contoso.com")},
-					OperatingSystem: armautomation.OperatingSystemTypeWindows.ToPtr(),
+						to.Ptr("box1.contoso.com"),
+						to.Ptr("box2.contoso.com")},
+					OperatingSystem: to.Ptr(armautomation.OperatingSystemTypeWindows),
 					Targets: &armautomation.TargetProperties{
 						AzureQueries: []*armautomation.AzureQueryProperties{
 							{
 								Locations: []*string{
-									to.StringPtr("Japan East"),
-									to.StringPtr("UK South")},
+									to.Ptr("Japan East"),
+									to.Ptr("UK South")},
 								Scope: []*string{
-									to.StringPtr("/subscriptions/5ae68d89-69a4-454f-b5ce-e443cc4e0067/resourceGroups/myresources"),
-									to.StringPtr("/subscriptions/5ae68d89-69a4-454f-b5ce-e443cc4e0067")},
+									to.Ptr("/subscriptions/5ae68d89-69a4-454f-b5ce-e443cc4e0067/resourceGroups/myresources"),
+									to.Ptr("/subscriptions/5ae68d89-69a4-454f-b5ce-e443cc4e0067")},
 								TagSettings: &armautomation.TagSettingsProperties{
-									FilterOperator: armautomation.TagOperatorsAll.ToPtr(),
+									FilterOperator: to.Ptr(armautomation.TagOperatorsAll),
 									Tags: map[string][]*string{
 										"tag1": {
-											to.StringPtr("tag1Value1"),
-											to.StringPtr("tag1Value2"),
-											to.StringPtr("tag1Value3")},
+											to.Ptr("tag1Value1"),
+											to.Ptr("tag1Value2"),
+											to.Ptr("tag1Value3")},
 										"tag2": {
-											to.StringPtr("tag2Value1"),
-											to.StringPtr("tag2Value2"),
-											to.StringPtr("tag2Value3")},
+											to.Ptr("tag2Value1"),
+											to.Ptr("tag2Value2"),
+											to.Ptr("tag2Value3")},
 									},
 								},
 							}},
 						NonAzureQueries: []*armautomation.NonAzureQueryProperties{
 							{
-								FunctionAlias: to.StringPtr("<function-alias>"),
-								WorkspaceID:   to.StringPtr("<workspace-id>"),
+								FunctionAlias: to.Ptr("<function-alias>"),
+								WorkspaceID:   to.Ptr("<workspace-id>"),
 							},
 							{
-								FunctionAlias: to.StringPtr("<function-alias>"),
-								WorkspaceID:   to.StringPtr("<workspace-id>"),
+								FunctionAlias: to.Ptr("<function-alias>"),
+								WorkspaceID:   to.Ptr("<workspace-id>"),
 							}},
 					},
 					Windows: &armautomation.WindowsProperties{
 						ExcludedKbNumbers: []*string{
-							to.StringPtr("168934"),
-							to.StringPtr("168973")},
-						IncludedUpdateClassifications: armautomation.WindowsUpdateClasses("Critical").ToPtr(),
-						RebootSetting:                 to.StringPtr("<reboot-setting>"),
+							to.Ptr("168934"),
+							to.Ptr("168973")},
+						IncludedUpdateClassifications: to.Ptr(armautomation.WindowsUpdateClassesCritical),
+						RebootSetting:                 to.Ptr("<reboot-setting>"),
 					},
 				},
 			},
 		},
 		&armautomation.SoftwareUpdateConfigurationsClientCreateOptions{ClientRequestID: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.SoftwareUpdateConfigurationsClientCreateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/softwareUpdateConfiguration/getSoftwareUpdateConfigurationByName.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/softwareUpdateConfiguration/getSoftwareUpdateConfigurationByName.json
 func ExampleSoftwareUpdateConfigurationsClient_GetByName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armautomation.NewSoftwareUpdateConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewSoftwareUpdateConfigurationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetByName(ctx,
 		"<resource-group-name>",
 		"<automation-account-name>",
 		"<software-update-configuration-name>",
 		&armautomation.SoftwareUpdateConfigurationsClientGetByNameOptions{ClientRequestID: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.SoftwareUpdateConfigurationsClientGetByNameResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/softwareUpdateConfiguration/deleteSoftwareUpdateConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/softwareUpdateConfiguration/deleteSoftwareUpdateConfiguration.json
 func ExampleSoftwareUpdateConfigurationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armautomation.NewSoftwareUpdateConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewSoftwareUpdateConfigurationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<automation-account-name>",
 		"<software-update-configuration-name>",
 		&armautomation.SoftwareUpdateConfigurationsClientDeleteOptions{ClientRequestID: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/softwareUpdateConfiguration/listSoftwareUpdateConfigurations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/softwareUpdateConfiguration/listSoftwareUpdateConfigurations.json
 func ExampleSoftwareUpdateConfigurationsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armautomation.NewSoftwareUpdateConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewSoftwareUpdateConfigurationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<automation-account-name>",
@@ -168,7 +193,9 @@ func ExampleSoftwareUpdateConfigurationsClient_List() {
 			Filter: nil,
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.SoftwareUpdateConfigurationsClientListResult)
+	// TODO: use response item
+	_ = res
 }

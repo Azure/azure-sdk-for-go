@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ServiceClient struct {
 // subscriptionID - The Subscription Id
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewServiceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServiceClient {
+func NewServiceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServiceClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ServiceClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // ListAvailableSKUsByResourceGroup - This method provides the list of available skus for the given subscription, resource
@@ -57,16 +62,32 @@ func NewServiceClient(subscriptionID string, credential azcore.TokenCredential, 
 // availableSKURequest - Filters for showing the available skus.
 // options - ServiceClientListAvailableSKUsByResourceGroupOptions contains the optional parameters for the ServiceClient.ListAvailableSKUsByResourceGroup
 // method.
-func (client *ServiceClient) ListAvailableSKUsByResourceGroup(resourceGroupName string, location string, availableSKURequest AvailableSKURequest, options *ServiceClientListAvailableSKUsByResourceGroupOptions) *ServiceClientListAvailableSKUsByResourceGroupPager {
-	return &ServiceClientListAvailableSKUsByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listAvailableSKUsByResourceGroupCreateRequest(ctx, resourceGroupName, location, availableSKURequest, options)
+func (client *ServiceClient) ListAvailableSKUsByResourceGroup(resourceGroupName string, location string, availableSKURequest AvailableSKURequest, options *ServiceClientListAvailableSKUsByResourceGroupOptions) *runtime.Pager[ServiceClientListAvailableSKUsByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ServiceClientListAvailableSKUsByResourceGroupResponse]{
+		More: func(page ServiceClientListAvailableSKUsByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ServiceClientListAvailableSKUsByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AvailableSKUsResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ServiceClientListAvailableSKUsByResourceGroupResponse) (ServiceClientListAvailableSKUsByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAvailableSKUsByResourceGroupCreateRequest(ctx, resourceGroupName, location, availableSKURequest, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ServiceClientListAvailableSKUsByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ServiceClientListAvailableSKUsByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ServiceClientListAvailableSKUsByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAvailableSKUsByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listAvailableSKUsByResourceGroupCreateRequest creates the ListAvailableSKUsByResourceGroup request.
@@ -89,7 +110,7 @@ func (client *ServiceClient) listAvailableSKUsByResourceGroupCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, availableSKURequest)
@@ -97,7 +118,7 @@ func (client *ServiceClient) listAvailableSKUsByResourceGroupCreateRequest(ctx c
 
 // listAvailableSKUsByResourceGroupHandleResponse handles the ListAvailableSKUsByResourceGroup response.
 func (client *ServiceClient) listAvailableSKUsByResourceGroupHandleResponse(resp *http.Response) (ServiceClientListAvailableSKUsByResourceGroupResponse, error) {
-	result := ServiceClientListAvailableSKUsByResourceGroupResponse{RawResponse: resp}
+	result := ServiceClientListAvailableSKUsByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailableSKUsResult); err != nil {
 		return ServiceClientListAvailableSKUsByResourceGroupResponse{}, err
 	}
@@ -141,7 +162,7 @@ func (client *ServiceClient) regionConfigurationCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, regionConfigurationRequest)
@@ -149,7 +170,7 @@ func (client *ServiceClient) regionConfigurationCreateRequest(ctx context.Contex
 
 // regionConfigurationHandleResponse handles the RegionConfiguration response.
 func (client *ServiceClient) regionConfigurationHandleResponse(resp *http.Response) (ServiceClientRegionConfigurationResponse, error) {
-	result := ServiceClientRegionConfigurationResponse{RawResponse: resp}
+	result := ServiceClientRegionConfigurationResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegionConfigurationResponse); err != nil {
 		return ServiceClientRegionConfigurationResponse{}, err
 	}
@@ -199,7 +220,7 @@ func (client *ServiceClient) regionConfigurationByResourceGroupCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, regionConfigurationRequest)
@@ -207,7 +228,7 @@ func (client *ServiceClient) regionConfigurationByResourceGroupCreateRequest(ctx
 
 // regionConfigurationByResourceGroupHandleResponse handles the RegionConfigurationByResourceGroup response.
 func (client *ServiceClient) regionConfigurationByResourceGroupHandleResponse(resp *http.Response) (ServiceClientRegionConfigurationByResourceGroupResponse, error) {
-	result := ServiceClientRegionConfigurationByResourceGroupResponse{RawResponse: resp}
+	result := ServiceClientRegionConfigurationByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegionConfigurationResponse); err != nil {
 		return ServiceClientRegionConfigurationByResourceGroupResponse{}, err
 	}
@@ -251,7 +272,7 @@ func (client *ServiceClient) validateAddressCreateRequest(ctx context.Context, l
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, validateAddress)
@@ -259,7 +280,7 @@ func (client *ServiceClient) validateAddressCreateRequest(ctx context.Context, l
 
 // validateAddressHandleResponse handles the ValidateAddress response.
 func (client *ServiceClient) validateAddressHandleResponse(resp *http.Response) (ServiceClientValidateAddressResponse, error) {
-	result := ServiceClientValidateAddressResponse{RawResponse: resp}
+	result := ServiceClientValidateAddressResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AddressValidationOutput); err != nil {
 		return ServiceClientValidateAddressResponse{}, err
 	}
@@ -302,7 +323,7 @@ func (client *ServiceClient) validateInputsCreateRequest(ctx context.Context, lo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, validationRequest)
@@ -310,7 +331,7 @@ func (client *ServiceClient) validateInputsCreateRequest(ctx context.Context, lo
 
 // validateInputsHandleResponse handles the ValidateInputs response.
 func (client *ServiceClient) validateInputsHandleResponse(resp *http.Response) (ServiceClientValidateInputsResponse, error) {
-	result := ServiceClientValidateInputsResponse{RawResponse: resp}
+	result := ServiceClientValidateInputsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ValidationResponse); err != nil {
 		return ServiceClientValidateInputsResponse{}, err
 	}
@@ -359,7 +380,7 @@ func (client *ServiceClient) validateInputsByResourceGroupCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, validationRequest)
@@ -367,7 +388,7 @@ func (client *ServiceClient) validateInputsByResourceGroupCreateRequest(ctx cont
 
 // validateInputsByResourceGroupHandleResponse handles the ValidateInputsByResourceGroup response.
 func (client *ServiceClient) validateInputsByResourceGroupHandleResponse(resp *http.Response) (ServiceClientValidateInputsByResourceGroupResponse, error) {
-	result := ServiceClientValidateInputsByResourceGroupResponse{RawResponse: resp}
+	result := ServiceClientValidateInputsByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ValidationResponse); err != nil {
 		return ServiceClientValidateInputsByResourceGroupResponse{}, err
 	}

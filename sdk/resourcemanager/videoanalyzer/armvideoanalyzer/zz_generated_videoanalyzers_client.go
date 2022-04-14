@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type VideoAnalyzersClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewVideoAnalyzersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VideoAnalyzersClient {
+func NewVideoAnalyzersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VideoAnalyzersClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &VideoAnalyzersClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or update an instance of a Video Analyzer account
@@ -56,22 +61,16 @@ func NewVideoAnalyzersClient(subscriptionID string, credential azcore.TokenCrede
 // parameters - The request parameters
 // options - VideoAnalyzersClientBeginCreateOrUpdateOptions contains the optional parameters for the VideoAnalyzersClient.BeginCreateOrUpdate
 // method.
-func (client *VideoAnalyzersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, parameters VideoAnalyzer, options *VideoAnalyzersClientBeginCreateOrUpdateOptions) (VideoAnalyzersClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, accountName, parameters, options)
-	if err != nil {
-		return VideoAnalyzersClientCreateOrUpdatePollerResponse{}, err
+func (client *VideoAnalyzersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, parameters VideoAnalyzer, options *VideoAnalyzersClientBeginCreateOrUpdateOptions) (*armruntime.Poller[VideoAnalyzersClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, accountName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[VideoAnalyzersClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[VideoAnalyzersClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VideoAnalyzersClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VideoAnalyzersClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return VideoAnalyzersClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &VideoAnalyzersClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update an instance of a Video Analyzer account
@@ -134,7 +133,7 @@ func (client *VideoAnalyzersClient) Delete(ctx context.Context, resourceGroupNam
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return VideoAnalyzersClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return VideoAnalyzersClientDeleteResponse{RawResponse: resp}, nil
+	return VideoAnalyzersClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -211,7 +210,7 @@ func (client *VideoAnalyzersClient) getCreateRequest(ctx context.Context, resour
 
 // getHandleResponse handles the Get response.
 func (client *VideoAnalyzersClient) getHandleResponse(resp *http.Response) (VideoAnalyzersClientGetResponse, error) {
-	result := VideoAnalyzersClientGetResponse{RawResponse: resp}
+	result := VideoAnalyzersClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VideoAnalyzer); err != nil {
 		return VideoAnalyzersClientGetResponse{}, err
 	}
@@ -261,7 +260,7 @@ func (client *VideoAnalyzersClient) listCreateRequest(ctx context.Context, resou
 
 // listHandleResponse handles the List response.
 func (client *VideoAnalyzersClient) listHandleResponse(resp *http.Response) (VideoAnalyzersClientListResponse, error) {
-	result := VideoAnalyzersClientListResponse{RawResponse: resp}
+	result := VideoAnalyzersClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Collection); err != nil {
 		return VideoAnalyzersClientListResponse{}, err
 	}
@@ -307,7 +306,7 @@ func (client *VideoAnalyzersClient) listBySubscriptionCreateRequest(ctx context.
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *VideoAnalyzersClient) listBySubscriptionHandleResponse(resp *http.Response) (VideoAnalyzersClientListBySubscriptionResponse, error) {
-	result := VideoAnalyzersClientListBySubscriptionResponse{RawResponse: resp}
+	result := VideoAnalyzersClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Collection); err != nil {
 		return VideoAnalyzersClientListBySubscriptionResponse{}, err
 	}
@@ -321,22 +320,16 @@ func (client *VideoAnalyzersClient) listBySubscriptionHandleResponse(resp *http.
 // parameters - The request parameters
 // options - VideoAnalyzersClientBeginUpdateOptions contains the optional parameters for the VideoAnalyzersClient.BeginUpdate
 // method.
-func (client *VideoAnalyzersClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, parameters Update, options *VideoAnalyzersClientBeginUpdateOptions) (VideoAnalyzersClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, accountName, parameters, options)
-	if err != nil {
-		return VideoAnalyzersClientUpdatePollerResponse{}, err
+func (client *VideoAnalyzersClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, parameters Update, options *VideoAnalyzersClientBeginUpdateOptions) (*armruntime.Poller[VideoAnalyzersClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, accountName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[VideoAnalyzersClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[VideoAnalyzersClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VideoAnalyzersClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VideoAnalyzersClient.Update", "", resp, client.pl)
-	if err != nil {
-		return VideoAnalyzersClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &VideoAnalyzersClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates an existing instance of Video Analyzer account

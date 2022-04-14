@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,19 +32,23 @@ type BudgetsClient struct {
 // NewBudgetsClient creates a new instance of BudgetsClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewBudgetsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *BudgetsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewBudgetsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*BudgetsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &BudgetsClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - The operation to create or update a budget. You can optionally provide an eTag if desired as a form of
@@ -98,7 +103,7 @@ func (client *BudgetsClient) createOrUpdateCreateRequest(ctx context.Context, sc
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *BudgetsClient) createOrUpdateHandleResponse(resp *http.Response) (BudgetsClientCreateOrUpdateResponse, error) {
-	result := BudgetsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := BudgetsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Budget); err != nil {
 		return BudgetsClientCreateOrUpdateResponse{}, err
 	}
@@ -130,7 +135,7 @@ func (client *BudgetsClient) Delete(ctx context.Context, scope string, budgetNam
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return BudgetsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return BudgetsClientDeleteResponse{RawResponse: resp}, nil
+	return BudgetsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -201,7 +206,7 @@ func (client *BudgetsClient) getCreateRequest(ctx context.Context, scope string,
 
 // getHandleResponse handles the Get response.
 func (client *BudgetsClient) getHandleResponse(resp *http.Response) (BudgetsClientGetResponse, error) {
-	result := BudgetsClientGetResponse{RawResponse: resp}
+	result := BudgetsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Budget); err != nil {
 		return BudgetsClientGetResponse{}, err
 	}
@@ -220,16 +225,32 @@ func (client *BudgetsClient) getHandleResponse(resp *http.Response) (BudgetsClie
 // for billingProfile scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}'
 // for invoiceSection scope.
 // options - BudgetsClientListOptions contains the optional parameters for the BudgetsClient.List method.
-func (client *BudgetsClient) List(scope string, options *BudgetsClientListOptions) *BudgetsClientListPager {
-	return &BudgetsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, scope, options)
+func (client *BudgetsClient) List(scope string, options *BudgetsClientListOptions) *runtime.Pager[BudgetsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[BudgetsClientListResponse]{
+		More: func(page BudgetsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp BudgetsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.BudgetsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *BudgetsClientListResponse) (BudgetsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, scope, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return BudgetsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return BudgetsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return BudgetsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -249,7 +270,7 @@ func (client *BudgetsClient) listCreateRequest(ctx context.Context, scope string
 
 // listHandleResponse handles the List response.
 func (client *BudgetsClient) listHandleResponse(resp *http.Response) (BudgetsClientListResponse, error) {
-	result := BudgetsClientListResponse{RawResponse: resp}
+	result := BudgetsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BudgetsListResult); err != nil {
 		return BudgetsClientListResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type WorkloadGroupsClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewWorkloadGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkloadGroupsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewWorkloadGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkloadGroupsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &WorkloadGroupsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a workload group.
@@ -59,22 +64,16 @@ func NewWorkloadGroupsClient(subscriptionID string, credential azcore.TokenCrede
 // parameters - The requested workload group state.
 // options - WorkloadGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the WorkloadGroupsClient.BeginCreateOrUpdate
 // method.
-func (client *WorkloadGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, parameters WorkloadGroup, options *WorkloadGroupsClientBeginCreateOrUpdateOptions) (WorkloadGroupsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, databaseName, workloadGroupName, parameters, options)
-	if err != nil {
-		return WorkloadGroupsClientCreateOrUpdatePollerResponse{}, err
+func (client *WorkloadGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, parameters WorkloadGroup, options *WorkloadGroupsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[WorkloadGroupsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, databaseName, workloadGroupName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[WorkloadGroupsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[WorkloadGroupsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := WorkloadGroupsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("WorkloadGroupsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return WorkloadGroupsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &WorkloadGroupsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a workload group.
@@ -137,22 +136,16 @@ func (client *WorkloadGroupsClient) createOrUpdateCreateRequest(ctx context.Cont
 // workloadGroupName - The name of the workload group to delete.
 // options - WorkloadGroupsClientBeginDeleteOptions contains the optional parameters for the WorkloadGroupsClient.BeginDelete
 // method.
-func (client *WorkloadGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, options *WorkloadGroupsClientBeginDeleteOptions) (WorkloadGroupsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, databaseName, workloadGroupName, options)
-	if err != nil {
-		return WorkloadGroupsClientDeletePollerResponse{}, err
+func (client *WorkloadGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, options *WorkloadGroupsClientBeginDeleteOptions) (*armruntime.Poller[WorkloadGroupsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, databaseName, workloadGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[WorkloadGroupsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[WorkloadGroupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := WorkloadGroupsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("WorkloadGroupsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return WorkloadGroupsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &WorkloadGroupsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a workload group.
@@ -264,7 +257,7 @@ func (client *WorkloadGroupsClient) getCreateRequest(ctx context.Context, resour
 
 // getHandleResponse handles the Get response.
 func (client *WorkloadGroupsClient) getHandleResponse(resp *http.Response) (WorkloadGroupsClientGetResponse, error) {
-	result := WorkloadGroupsClientGetResponse{RawResponse: resp}
+	result := WorkloadGroupsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadGroup); err != nil {
 		return WorkloadGroupsClientGetResponse{}, err
 	}
@@ -279,16 +272,32 @@ func (client *WorkloadGroupsClient) getHandleResponse(resp *http.Response) (Work
 // databaseName - The name of the database.
 // options - WorkloadGroupsClientListByDatabaseOptions contains the optional parameters for the WorkloadGroupsClient.ListByDatabase
 // method.
-func (client *WorkloadGroupsClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *WorkloadGroupsClientListByDatabaseOptions) *WorkloadGroupsClientListByDatabasePager {
-	return &WorkloadGroupsClientListByDatabasePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
+func (client *WorkloadGroupsClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *WorkloadGroupsClientListByDatabaseOptions) *runtime.Pager[WorkloadGroupsClientListByDatabaseResponse] {
+	return runtime.NewPager(runtime.PageProcessor[WorkloadGroupsClientListByDatabaseResponse]{
+		More: func(page WorkloadGroupsClientListByDatabaseResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp WorkloadGroupsClientListByDatabaseResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.WorkloadGroupListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *WorkloadGroupsClientListByDatabaseResponse) (WorkloadGroupsClientListByDatabaseResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return WorkloadGroupsClientListByDatabaseResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WorkloadGroupsClientListByDatabaseResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WorkloadGroupsClientListByDatabaseResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByDatabaseHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
@@ -323,7 +332,7 @@ func (client *WorkloadGroupsClient) listByDatabaseCreateRequest(ctx context.Cont
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
 func (client *WorkloadGroupsClient) listByDatabaseHandleResponse(resp *http.Response) (WorkloadGroupsClientListByDatabaseResponse, error) {
-	result := WorkloadGroupsClientListByDatabaseResponse{RawResponse: resp}
+	result := WorkloadGroupsClientListByDatabaseResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadGroupListResult); err != nil {
 		return WorkloadGroupsClientListByDatabaseResponse{}, err
 	}

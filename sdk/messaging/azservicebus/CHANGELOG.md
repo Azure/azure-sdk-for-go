@@ -4,6 +4,10 @@
 
 ### Features Added
 
+- Exported log.Event constants for azservicebus. This will maek them easier to
+  discover and they are also documented. The text of log messages themselves 
+  are not guaranteed to be stable. (#TBD)
+
 ### Breaking Changes
 
 ### Bugs Fixed

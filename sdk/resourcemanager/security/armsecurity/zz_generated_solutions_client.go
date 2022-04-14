@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,39 +27,41 @@ import (
 type SolutionsClient struct {
 	host           string
 	subscriptionID string
-	ascLocation    string
 	pl             runtime.Pipeline
 }
 
 // NewSolutionsClient creates a new instance of SolutionsClient with the specified values.
 // subscriptionID - Azure subscription ID
-// ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSolutionsClient(subscriptionID string, ascLocation string, credential azcore.TokenCredential, options *arm.ClientOptions) *SolutionsClient {
+func NewSolutionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SolutionsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SolutionsClient{
 		subscriptionID: subscriptionID,
-		ascLocation:    ascLocation,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets a specific Security Solution.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // securitySolutionName - Name of security solution.
 // options - SolutionsClientGetOptions contains the optional parameters for the SolutionsClient.Get method.
-func (client *SolutionsClient) Get(ctx context.Context, resourceGroupName string, securitySolutionName string, options *SolutionsClientGetOptions) (SolutionsClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, resourceGroupName, securitySolutionName, options)
+func (client *SolutionsClient) Get(ctx context.Context, resourceGroupName string, ascLocation string, securitySolutionName string, options *SolutionsClientGetOptions) (SolutionsClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, ascLocation, securitySolutionName, options)
 	if err != nil {
 		return SolutionsClientGetResponse{}, err
 	}
@@ -73,7 +76,7 @@ func (client *SolutionsClient) Get(ctx context.Context, resourceGroupName string
 }
 
 // getCreateRequest creates the Get request.
-func (client *SolutionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, securitySolutionName string, options *SolutionsClientGetOptions) (*policy.Request, error) {
+func (client *SolutionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, securitySolutionName string, options *SolutionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/securitySolutions/{securitySolutionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -83,10 +86,10 @@ func (client *SolutionsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if client.ascLocation == "" {
-		return nil, errors.New("parameter client.ascLocation cannot be empty")
+	if ascLocation == "" {
+		return nil, errors.New("parameter ascLocation cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(client.ascLocation))
+	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
 	if securitySolutionName == "" {
 		return nil, errors.New("parameter securitySolutionName cannot be empty")
 	}
@@ -104,7 +107,7 @@ func (client *SolutionsClient) getCreateRequest(ctx context.Context, resourceGro
 
 // getHandleResponse handles the Get response.
 func (client *SolutionsClient) getHandleResponse(resp *http.Response) (SolutionsClientGetResponse, error) {
-	result := SolutionsClientGetResponse{RawResponse: resp}
+	result := SolutionsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Solution); err != nil {
 		return SolutionsClientGetResponse{}, err
 	}
@@ -114,16 +117,32 @@ func (client *SolutionsClient) getHandleResponse(resp *http.Response) (Solutions
 // List - Gets a list of Security Solutions for the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SolutionsClientListOptions contains the optional parameters for the SolutionsClient.List method.
-func (client *SolutionsClient) List(options *SolutionsClientListOptions) *SolutionsClientListPager {
-	return &SolutionsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *SolutionsClient) List(options *SolutionsClientListOptions) *runtime.Pager[SolutionsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SolutionsClientListResponse]{
+		More: func(page SolutionsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SolutionsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SolutionList.NextLink)
+		Fetcher: func(ctx context.Context, page *SolutionsClientListResponse) (SolutionsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SolutionsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SolutionsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SolutionsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -146,7 +165,7 @@ func (client *SolutionsClient) listCreateRequest(ctx context.Context, options *S
 
 // listHandleResponse handles the List response.
 func (client *SolutionsClient) listHandleResponse(resp *http.Response) (SolutionsClientListResponse, error) {
-	result := SolutionsClientListResponse{RawResponse: resp}
+	result := SolutionsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SolutionList); err != nil {
 		return SolutionsClientListResponse{}, err
 	}

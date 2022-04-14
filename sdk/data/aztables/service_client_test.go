@@ -8,6 +8,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
@@ -28,6 +29,10 @@ func TestServiceErrorsServiceClient(t *testing.T) {
 			// Create a duplicate table to produce an error
 			_, err = service.CreateTable(ctx, tableName, nil)
 			require.Error(t, err)
+			var httpErr *azcore.ResponseError
+			require.ErrorAs(t, err, &httpErr)
+			require.Equal(t, string(TableAlreadyExists), httpErr.ErrorCode)
+			require.Contains(t, PossibleTableErrorCodeValues(), TableErrorCode(httpErr.ErrorCode))
 
 			_, err = service.DeleteTable(ctx, tableName, nil)
 			require.NoError(t, err)
@@ -352,6 +357,9 @@ func TestSetTooManyCors(t *testing.T) {
 
 	_, err := service.SetProperties(ctx, props, nil)
 	require.Error(t, err)
+	var httpErr *azcore.ResponseError
+	require.ErrorAs(t, err, &httpErr)
+	require.Contains(t, PossibleTableErrorCodeValues(), TableErrorCode(httpErr.ErrorCode))
 }
 
 func TestRetentionTooLong(t *testing.T) {
@@ -371,6 +379,9 @@ func TestRetentionTooLong(t *testing.T) {
 
 	_, err := service.SetProperties(ctx, props, nil)
 	require.Error(t, err)
+	var httpErr *azcore.ResponseError
+	require.ErrorAs(t, err, &httpErr)
+	require.Contains(t, PossibleTableErrorCodeValues(), TableErrorCode(httpErr.ErrorCode))
 }
 
 func TestGetAccountSASToken(t *testing.T) {

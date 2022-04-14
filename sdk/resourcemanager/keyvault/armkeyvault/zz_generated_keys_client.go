@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type KeysClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *KeysClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*KeysClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &KeysClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateIfNotExist - Creates the first version of a new key if it does not exist. If it already exists, then the existing
@@ -106,7 +111,7 @@ func (client *KeysClient) createIfNotExistCreateRequest(ctx context.Context, res
 
 // createIfNotExistHandleResponse handles the CreateIfNotExist response.
 func (client *KeysClient) createIfNotExistHandleResponse(resp *http.Response) (KeysClientCreateIfNotExistResponse, error) {
-	result := KeysClientCreateIfNotExistResponse{RawResponse: resp}
+	result := KeysClientCreateIfNotExistResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Key); err != nil {
 		return KeysClientCreateIfNotExistResponse{}, err
 	}
@@ -166,7 +171,7 @@ func (client *KeysClient) getCreateRequest(ctx context.Context, resourceGroupNam
 
 // getHandleResponse handles the Get response.
 func (client *KeysClient) getHandleResponse(resp *http.Response) (KeysClientGetResponse, error) {
-	result := KeysClientGetResponse{RawResponse: resp}
+	result := KeysClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Key); err != nil {
 		return KeysClientGetResponse{}, err
 	}
@@ -231,7 +236,7 @@ func (client *KeysClient) getVersionCreateRequest(ctx context.Context, resourceG
 
 // getVersionHandleResponse handles the GetVersion response.
 func (client *KeysClient) getVersionHandleResponse(resp *http.Response) (KeysClientGetVersionResponse, error) {
-	result := KeysClientGetVersionResponse{RawResponse: resp}
+	result := KeysClientGetVersionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Key); err != nil {
 		return KeysClientGetVersionResponse{}, err
 	}
@@ -243,16 +248,32 @@ func (client *KeysClient) getVersionHandleResponse(resp *http.Response) (KeysCli
 // resourceGroupName - The name of the resource group which contains the specified key vault.
 // vaultName - The name of the vault which contains the keys to be retrieved.
 // options - KeysClientListOptions contains the optional parameters for the KeysClient.List method.
-func (client *KeysClient) List(resourceGroupName string, vaultName string, options *KeysClientListOptions) *KeysClientListPager {
-	return &KeysClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, vaultName, options)
+func (client *KeysClient) List(resourceGroupName string, vaultName string, options *KeysClientListOptions) *runtime.Pager[KeysClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[KeysClientListResponse]{
+		More: func(page KeysClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp KeysClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.KeyListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *KeysClientListResponse) (KeysClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, vaultName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return KeysClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return KeysClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return KeysClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -283,7 +304,7 @@ func (client *KeysClient) listCreateRequest(ctx context.Context, resourceGroupNa
 
 // listHandleResponse handles the List response.
 func (client *KeysClient) listHandleResponse(resp *http.Response) (KeysClientListResponse, error) {
-	result := KeysClientListResponse{RawResponse: resp}
+	result := KeysClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyListResult); err != nil {
 		return KeysClientListResponse{}, err
 	}
@@ -296,16 +317,32 @@ func (client *KeysClient) listHandleResponse(resp *http.Response) (KeysClientLis
 // vaultName - The name of the vault which contains the key versions to be retrieved.
 // keyName - The name of the key versions to be retrieved.
 // options - KeysClientListVersionsOptions contains the optional parameters for the KeysClient.ListVersions method.
-func (client *KeysClient) ListVersions(resourceGroupName string, vaultName string, keyName string, options *KeysClientListVersionsOptions) *KeysClientListVersionsPager {
-	return &KeysClientListVersionsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listVersionsCreateRequest(ctx, resourceGroupName, vaultName, keyName, options)
+func (client *KeysClient) ListVersions(resourceGroupName string, vaultName string, keyName string, options *KeysClientListVersionsOptions) *runtime.Pager[KeysClientListVersionsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[KeysClientListVersionsResponse]{
+		More: func(page KeysClientListVersionsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp KeysClientListVersionsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.KeyListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *KeysClientListVersionsResponse) (KeysClientListVersionsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listVersionsCreateRequest(ctx, resourceGroupName, vaultName, keyName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return KeysClientListVersionsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return KeysClientListVersionsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return KeysClientListVersionsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listVersionsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listVersionsCreateRequest creates the ListVersions request.
@@ -340,7 +377,7 @@ func (client *KeysClient) listVersionsCreateRequest(ctx context.Context, resourc
 
 // listVersionsHandleResponse handles the ListVersions response.
 func (client *KeysClient) listVersionsHandleResponse(resp *http.Response) (KeysClientListVersionsResponse, error) {
-	result := KeysClientListVersionsResponse{RawResponse: resp}
+	result := KeysClientListVersionsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyListResult); err != nil {
 		return KeysClientListVersionsResponse{}, err
 	}

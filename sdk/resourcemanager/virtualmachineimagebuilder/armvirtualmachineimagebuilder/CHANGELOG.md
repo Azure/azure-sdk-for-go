@@ -1,5 +1,128 @@
 # Release History
 
+## 0.3.0 (2022-04-13)
+### Breaking Changes
+
+- Function `*VirtualMachineImageTemplatesClient.BeginCancel` return value(s) have been changed from `(VirtualMachineImageTemplatesClientCancelPollerResponse, error)` to `(*armruntime.Poller[VirtualMachineImageTemplatesClientCancelResponse], error)`
+- Function `*VirtualMachineImageTemplatesClient.ListRunOutputs` return value(s) have been changed from `(*VirtualMachineImageTemplatesClientListRunOutputsPager)` to `(*runtime.Pager[VirtualMachineImageTemplatesClientListRunOutputsResponse])`
+- Function `*VirtualMachineImageTemplatesClient.List` return value(s) have been changed from `(*VirtualMachineImageTemplatesClientListPager)` to `(*runtime.Pager[VirtualMachineImageTemplatesClientListResponse])`
+- Function `*VirtualMachineImageTemplatesClient.BeginRun` return value(s) have been changed from `(VirtualMachineImageTemplatesClientRunPollerResponse, error)` to `(*armruntime.Poller[VirtualMachineImageTemplatesClientRunResponse], error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `NewVirtualMachineImageTemplatesClient` return value(s) have been changed from `(*VirtualMachineImageTemplatesClient)` to `(*VirtualMachineImageTemplatesClient, error)`
+- Function `*VirtualMachineImageTemplatesClient.BeginUpdate` return value(s) have been changed from `(VirtualMachineImageTemplatesClientUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineImageTemplatesClientUpdateResponse], error)`
+- Function `*VirtualMachineImageTemplatesClient.BeginDelete` return value(s) have been changed from `(VirtualMachineImageTemplatesClientDeletePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineImageTemplatesClientDeleteResponse], error)`
+- Function `*VirtualMachineImageTemplatesClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualMachineImageTemplatesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineImageTemplatesClientCreateOrUpdateResponse], error)`
+- Function `*VirtualMachineImageTemplatesClient.ListByResourceGroup` return value(s) have been changed from `(*VirtualMachineImageTemplatesClientListByResourceGroupPager)` to `(*runtime.Pager[VirtualMachineImageTemplatesClientListByResourceGroupResponse])`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Type of `Operation.Properties` has been changed from `map[string]interface{}` to `interface{}`
+- Function `RunState.ToPtr` has been removed
+- Function `VirtualMachineImageTemplatesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineImageTemplatesClientRunPoller.Done` has been removed
+- Function `*VirtualMachineImageTemplatesClientCancelPoller.Poll` has been removed
+- Function `*VirtualMachineImageTemplatesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualMachineImageTemplatesClientListPager.NextPage` has been removed
+- Function `VirtualMachineImageTemplatesClientCancelPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineImageTemplatesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*VirtualMachineImageTemplatesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*VirtualMachineImageTemplatesClientListPager.Err` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*VirtualMachineImageTemplatesClientUpdatePollerResponse.Resume` has been removed
+- Function `VirtualMachineImageTemplatesClientRunPollerResponse.PollUntilDone` has been removed
+- Function `ResourceIdentityType.ToPtr` has been removed
+- Function `*VirtualMachineImageTemplatesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineImageTemplatesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VirtualMachineImageTemplatesClientUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachineImageTemplatesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineImageTemplatesClientListByResourceGroupPager.NextPage` has been removed
+- Function `*VirtualMachineImageTemplatesClientRunPoller.FinalResponse` has been removed
+- Function `*VirtualMachineImageTemplatesClientUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineImageTemplatesClientDeletePollerResponse.Resume` has been removed
+- Function `ProvisioningErrorCode.ToPtr` has been removed
+- Function `*VirtualMachineImageTemplatesClientListRunOutputsPager.PageResponse` has been removed
+- Function `*VirtualMachineImageTemplatesClientDeletePoller.Poll` has been removed
+- Function `*VirtualMachineImageTemplatesClientRunPoller.Poll` has been removed
+- Function `*VirtualMachineImageTemplatesClientListRunOutputsPager.Err` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `SharedImageStorageAccountType.ToPtr` has been removed
+- Function `*VirtualMachineImageTemplatesClientDeletePoller.Done` has been removed
+- Function `*VirtualMachineImageTemplatesClientUpdatePoller.Poll` has been removed
+- Function `VirtualMachineImageTemplatesClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineImageTemplatesClientListByResourceGroupPager.Err` has been removed
+- Function `*VirtualMachineImageTemplatesClientListPager.PageResponse` has been removed
+- Function `VirtualMachineImageTemplatesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `RunSubState.ToPtr` has been removed
+- Function `*VirtualMachineImageTemplatesClientDeletePoller.FinalResponse` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*VirtualMachineImageTemplatesClientRunPoller.ResumeToken` has been removed
+- Function `*VirtualMachineImageTemplatesClientListRunOutputsPager.NextPage` has been removed
+- Function `*VirtualMachineImageTemplatesClientCancelPoller.Done` has been removed
+- Function `*VirtualMachineImageTemplatesClientCancelPoller.FinalResponse` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `*VirtualMachineImageTemplatesClientDeletePoller.ResumeToken` has been removed
+- Function `*VirtualMachineImageTemplatesClientCancelPollerResponse.Resume` has been removed
+- Function `*VirtualMachineImageTemplatesClientUpdatePoller.Done` has been removed
+- Function `*VirtualMachineImageTemplatesClientCancelPoller.ResumeToken` has been removed
+- Function `*VirtualMachineImageTemplatesClientRunPollerResponse.Resume` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `VirtualMachineImageTemplatesClientCancelPoller` has been removed
+- Struct `VirtualMachineImageTemplatesClientCancelPollerResponse` has been removed
+- Struct `VirtualMachineImageTemplatesClientCreateOrUpdatePoller` has been removed
+- Struct `VirtualMachineImageTemplatesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualMachineImageTemplatesClientCreateOrUpdateResult` has been removed
+- Struct `VirtualMachineImageTemplatesClientDeletePoller` has been removed
+- Struct `VirtualMachineImageTemplatesClientDeletePollerResponse` has been removed
+- Struct `VirtualMachineImageTemplatesClientGetResult` has been removed
+- Struct `VirtualMachineImageTemplatesClientGetRunOutputResult` has been removed
+- Struct `VirtualMachineImageTemplatesClientListByResourceGroupPager` has been removed
+- Struct `VirtualMachineImageTemplatesClientListByResourceGroupResult` has been removed
+- Struct `VirtualMachineImageTemplatesClientListPager` has been removed
+- Struct `VirtualMachineImageTemplatesClientListResult` has been removed
+- Struct `VirtualMachineImageTemplatesClientListRunOutputsPager` has been removed
+- Struct `VirtualMachineImageTemplatesClientListRunOutputsResult` has been removed
+- Struct `VirtualMachineImageTemplatesClientRunPoller` has been removed
+- Struct `VirtualMachineImageTemplatesClientRunPollerResponse` has been removed
+- Struct `VirtualMachineImageTemplatesClientUpdatePoller` has been removed
+- Struct `VirtualMachineImageTemplatesClientUpdatePollerResponse` has been removed
+- Struct `VirtualMachineImageTemplatesClientUpdateResult` has been removed
+- Field `VirtualMachineImageTemplatesClientGetResult` of struct `VirtualMachineImageTemplatesClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineImageTemplatesClientGetResponse` has been removed
+- Field `VirtualMachineImageTemplatesClientCreateOrUpdateResult` of struct `VirtualMachineImageTemplatesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineImageTemplatesClientCreateOrUpdateResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `VirtualMachineImageTemplatesClientListByResourceGroupResult` of struct `VirtualMachineImageTemplatesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineImageTemplatesClientListByResourceGroupResponse` has been removed
+- Field `VirtualMachineImageTemplatesClientGetRunOutputResult` of struct `VirtualMachineImageTemplatesClientGetRunOutputResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineImageTemplatesClientGetRunOutputResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineImageTemplatesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineImageTemplatesClientRunResponse` has been removed
+- Field `VirtualMachineImageTemplatesClientUpdateResult` of struct `VirtualMachineImageTemplatesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineImageTemplatesClientUpdateResponse` has been removed
+- Field `VirtualMachineImageTemplatesClientListRunOutputsResult` of struct `VirtualMachineImageTemplatesClientListRunOutputsResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineImageTemplatesClientListRunOutputsResponse` has been removed
+- Field `VirtualMachineImageTemplatesClientListResult` of struct `VirtualMachineImageTemplatesClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineImageTemplatesClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineImageTemplatesClientCancelResponse` has been removed
+
+### Features Added
+
+- New anonymous field `ImageTemplate` in struct `VirtualMachineImageTemplatesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `VirtualMachineImageTemplatesClientBeginDeleteOptions`
+- New anonymous field `ImageTemplate` in struct `VirtualMachineImageTemplatesClientUpdateResponse`
+- New anonymous field `ImageTemplateListResult` in struct `VirtualMachineImageTemplatesClientListResponse`
+- New field `ResumeToken` in struct `VirtualMachineImageTemplatesClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `VirtualMachineImageTemplatesClientBeginRunOptions`
+- New anonymous field `ImageTemplate` in struct `VirtualMachineImageTemplatesClientGetResponse`
+- New anonymous field `ImageTemplateListResult` in struct `VirtualMachineImageTemplatesClientListByResourceGroupResponse`
+- New anonymous field `RunOutputCollection` in struct `VirtualMachineImageTemplatesClientListRunOutputsResponse`
+- New anonymous field `RunOutput` in struct `VirtualMachineImageTemplatesClientGetRunOutputResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New field `ResumeToken` in struct `VirtualMachineImageTemplatesClientBeginUpdateOptions`
+- New field `ResumeToken` in struct `VirtualMachineImageTemplatesClientBeginCancelOptions`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

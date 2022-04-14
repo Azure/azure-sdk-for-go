@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type MobileNetworksClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewMobileNetworksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MobileNetworksClient {
+func NewMobileNetworksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MobileNetworksClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &MobileNetworksClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a mobile network.
@@ -56,22 +61,18 @@ func NewMobileNetworksClient(subscriptionID string, credential azcore.TokenCrede
 // parameters - Parameters supplied to the create or update mobile network operation.
 // options - MobileNetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the MobileNetworksClient.BeginCreateOrUpdate
 // method.
-func (client *MobileNetworksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, mobileNetworkName string, parameters MobileNetwork, options *MobileNetworksClientBeginCreateOrUpdateOptions) (MobileNetworksClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, mobileNetworkName, parameters, options)
-	if err != nil {
-		return MobileNetworksClientCreateOrUpdatePollerResponse{}, err
+func (client *MobileNetworksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, mobileNetworkName string, parameters MobileNetwork, options *MobileNetworksClientBeginCreateOrUpdateOptions) (*armruntime.Poller[MobileNetworksClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, mobileNetworkName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[MobileNetworksClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[MobileNetworksClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := MobileNetworksClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("MobileNetworksClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return MobileNetworksClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &MobileNetworksClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a mobile network.
@@ -123,22 +124,18 @@ func (client *MobileNetworksClient) createOrUpdateCreateRequest(ctx context.Cont
 // mobileNetworkName - The name of the mobile network.
 // options - MobileNetworksClientBeginDeleteOptions contains the optional parameters for the MobileNetworksClient.BeginDelete
 // method.
-func (client *MobileNetworksClient) BeginDelete(ctx context.Context, resourceGroupName string, mobileNetworkName string, options *MobileNetworksClientBeginDeleteOptions) (MobileNetworksClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, mobileNetworkName, options)
-	if err != nil {
-		return MobileNetworksClientDeletePollerResponse{}, err
+func (client *MobileNetworksClient) BeginDelete(ctx context.Context, resourceGroupName string, mobileNetworkName string, options *MobileNetworksClientBeginDeleteOptions) (*armruntime.Poller[MobileNetworksClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, mobileNetworkName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[MobileNetworksClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[MobileNetworksClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := MobileNetworksClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("MobileNetworksClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return MobileNetworksClientDeletePollerResponse{}, err
-	}
-	result.Poller = &MobileNetworksClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified mobile network.
@@ -232,7 +229,7 @@ func (client *MobileNetworksClient) getCreateRequest(ctx context.Context, resour
 
 // getHandleResponse handles the Get response.
 func (client *MobileNetworksClient) getHandleResponse(resp *http.Response) (MobileNetworksClientGetResponse, error) {
-	result := MobileNetworksClientGetResponse{RawResponse: resp}
+	result := MobileNetworksClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MobileNetwork); err != nil {
 		return MobileNetworksClientGetResponse{}, err
 	}
@@ -244,16 +241,32 @@ func (client *MobileNetworksClient) getHandleResponse(resp *http.Response) (Mobi
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - MobileNetworksClientListByResourceGroupOptions contains the optional parameters for the MobileNetworksClient.ListByResourceGroup
 // method.
-func (client *MobileNetworksClient) ListByResourceGroup(resourceGroupName string, options *MobileNetworksClientListByResourceGroupOptions) *MobileNetworksClientListByResourceGroupPager {
-	return &MobileNetworksClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *MobileNetworksClient) ListByResourceGroup(resourceGroupName string, options *MobileNetworksClientListByResourceGroupOptions) *runtime.Pager[MobileNetworksClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[MobileNetworksClientListByResourceGroupResponse]{
+		More: func(page MobileNetworksClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp MobileNetworksClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *MobileNetworksClientListByResourceGroupResponse) (MobileNetworksClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return MobileNetworksClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return MobileNetworksClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return MobileNetworksClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -280,7 +293,7 @@ func (client *MobileNetworksClient) listByResourceGroupCreateRequest(ctx context
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *MobileNetworksClient) listByResourceGroupHandleResponse(resp *http.Response) (MobileNetworksClientListByResourceGroupResponse, error) {
-	result := MobileNetworksClientListByResourceGroupResponse{RawResponse: resp}
+	result := MobileNetworksClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
 		return MobileNetworksClientListByResourceGroupResponse{}, err
 	}
@@ -291,16 +304,32 @@ func (client *MobileNetworksClient) listByResourceGroupHandleResponse(resp *http
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - MobileNetworksClientListBySubscriptionOptions contains the optional parameters for the MobileNetworksClient.ListBySubscription
 // method.
-func (client *MobileNetworksClient) ListBySubscription(options *MobileNetworksClientListBySubscriptionOptions) *MobileNetworksClientListBySubscriptionPager {
-	return &MobileNetworksClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *MobileNetworksClient) ListBySubscription(options *MobileNetworksClientListBySubscriptionOptions) *runtime.Pager[MobileNetworksClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[MobileNetworksClientListBySubscriptionResponse]{
+		More: func(page MobileNetworksClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp MobileNetworksClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *MobileNetworksClientListBySubscriptionResponse) (MobileNetworksClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return MobileNetworksClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return MobileNetworksClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return MobileNetworksClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -323,7 +352,7 @@ func (client *MobileNetworksClient) listBySubscriptionCreateRequest(ctx context.
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *MobileNetworksClient) listBySubscriptionHandleResponse(resp *http.Response) (MobileNetworksClientListBySubscriptionResponse, error) {
-	result := MobileNetworksClientListBySubscriptionResponse{RawResponse: resp}
+	result := MobileNetworksClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
 		return MobileNetworksClientListBySubscriptionResponse{}, err
 	}
@@ -336,22 +365,18 @@ func (client *MobileNetworksClient) listBySubscriptionHandleResponse(resp *http.
 // mobileNetworkName - The name of the mobile network.
 // options - MobileNetworksClientBeginListSimIDsOptions contains the optional parameters for the MobileNetworksClient.BeginListSimIDs
 // method.
-func (client *MobileNetworksClient) BeginListSimIDs(ctx context.Context, resourceGroupName string, mobileNetworkName string, options *MobileNetworksClientBeginListSimIDsOptions) (MobileNetworksClientListSimIDsPollerResponse, error) {
-	resp, err := client.listSimIDs(ctx, resourceGroupName, mobileNetworkName, options)
-	if err != nil {
-		return MobileNetworksClientListSimIDsPollerResponse{}, err
+func (client *MobileNetworksClient) BeginListSimIDs(ctx context.Context, resourceGroupName string, mobileNetworkName string, options *MobileNetworksClientBeginListSimIDsOptions) (*armruntime.Poller[MobileNetworksClientListSimIDsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.listSimIDs(ctx, resourceGroupName, mobileNetworkName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[MobileNetworksClientListSimIDsResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[MobileNetworksClientListSimIDsResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := MobileNetworksClientListSimIDsPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("MobileNetworksClient.ListSimIDs", "location", resp, client.pl)
-	if err != nil {
-		return MobileNetworksClientListSimIDsPollerResponse{}, err
-	}
-	result.Poller = &MobileNetworksClientListSimIDsPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // ListSimIDs - List sim ids under a mobile network.
@@ -447,7 +472,7 @@ func (client *MobileNetworksClient) updateTagsCreateRequest(ctx context.Context,
 
 // updateTagsHandleResponse handles the UpdateTags response.
 func (client *MobileNetworksClient) updateTagsHandleResponse(resp *http.Response) (MobileNetworksClientUpdateTagsResponse, error) {
-	result := MobileNetworksClientUpdateTagsResponse{RawResponse: resp}
+	result := MobileNetworksClientUpdateTagsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MobileNetwork); err != nil {
 		return MobileNetworksClientUpdateTagsResponse{}, err
 	}

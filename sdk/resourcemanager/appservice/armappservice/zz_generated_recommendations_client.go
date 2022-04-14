@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type RecommendationsClient struct {
 // subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewRecommendationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RecommendationsClient {
+func NewRecommendationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RecommendationsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &RecommendationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // DisableAllForHostingEnvironment - Description for Disable all recommendations for an app.
@@ -68,7 +73,7 @@ func (client *RecommendationsClient) DisableAllForHostingEnvironment(ctx context
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return RecommendationsClientDisableAllForHostingEnvironmentResponse{}, runtime.NewResponseError(resp)
 	}
-	return RecommendationsClientDisableAllForHostingEnvironmentResponse{RawResponse: resp}, nil
+	return RecommendationsClientDisableAllForHostingEnvironmentResponse{}, nil
 }
 
 // disableAllForHostingEnvironmentCreateRequest creates the DisableAllForHostingEnvironment request.
@@ -116,7 +121,7 @@ func (client *RecommendationsClient) DisableAllForWebApp(ctx context.Context, re
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return RecommendationsClientDisableAllForWebAppResponse{}, runtime.NewResponseError(resp)
 	}
-	return RecommendationsClientDisableAllForWebAppResponse{RawResponse: resp}, nil
+	return RecommendationsClientDisableAllForWebAppResponse{}, nil
 }
 
 // disableAllForWebAppCreateRequest creates the DisableAllForWebApp request.
@@ -164,7 +169,7 @@ func (client *RecommendationsClient) DisableRecommendationForHostingEnvironment(
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return RecommendationsClientDisableRecommendationForHostingEnvironmentResponse{}, runtime.NewResponseError(resp)
 	}
-	return RecommendationsClientDisableRecommendationForHostingEnvironmentResponse{RawResponse: resp}, nil
+	return RecommendationsClientDisableRecommendationForHostingEnvironmentResponse{}, nil
 }
 
 // disableRecommendationForHostingEnvironmentCreateRequest creates the DisableRecommendationForHostingEnvironment request.
@@ -217,7 +222,7 @@ func (client *RecommendationsClient) DisableRecommendationForSite(ctx context.Co
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return RecommendationsClientDisableRecommendationForSiteResponse{}, runtime.NewResponseError(resp)
 	}
-	return RecommendationsClientDisableRecommendationForSiteResponse{RawResponse: resp}, nil
+	return RecommendationsClientDisableRecommendationForSiteResponse{}, nil
 }
 
 // disableRecommendationForSiteCreateRequest creates the DisableRecommendationForSite request.
@@ -268,7 +273,7 @@ func (client *RecommendationsClient) DisableRecommendationForSubscription(ctx co
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return RecommendationsClientDisableRecommendationForSubscriptionResponse{}, runtime.NewResponseError(resp)
 	}
-	return RecommendationsClientDisableRecommendationForSubscriptionResponse{RawResponse: resp}, nil
+	return RecommendationsClientDisableRecommendationForSubscriptionResponse{}, nil
 }
 
 // disableRecommendationForSubscriptionCreateRequest creates the DisableRecommendationForSubscription request.
@@ -353,7 +358,7 @@ func (client *RecommendationsClient) getRuleDetailsByHostingEnvironmentCreateReq
 
 // getRuleDetailsByHostingEnvironmentHandleResponse handles the GetRuleDetailsByHostingEnvironment response.
 func (client *RecommendationsClient) getRuleDetailsByHostingEnvironmentHandleResponse(resp *http.Response) (RecommendationsClientGetRuleDetailsByHostingEnvironmentResponse, error) {
-	result := RecommendationsClientGetRuleDetailsByHostingEnvironmentResponse{RawResponse: resp}
+	result := RecommendationsClientGetRuleDetailsByHostingEnvironmentResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationRule); err != nil {
 		return RecommendationsClientGetRuleDetailsByHostingEnvironmentResponse{}, err
 	}
@@ -420,7 +425,7 @@ func (client *RecommendationsClient) getRuleDetailsByWebAppCreateRequest(ctx con
 
 // getRuleDetailsByWebAppHandleResponse handles the GetRuleDetailsByWebApp response.
 func (client *RecommendationsClient) getRuleDetailsByWebAppHandleResponse(resp *http.Response) (RecommendationsClientGetRuleDetailsByWebAppResponse, error) {
-	result := RecommendationsClientGetRuleDetailsByWebAppResponse{RawResponse: resp}
+	result := RecommendationsClientGetRuleDetailsByWebAppResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationRule); err != nil {
 		return RecommendationsClientGetRuleDetailsByWebAppResponse{}, err
 	}
@@ -430,16 +435,32 @@ func (client *RecommendationsClient) getRuleDetailsByWebAppHandleResponse(resp *
 // List - Description for List all recommendations for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - RecommendationsClientListOptions contains the optional parameters for the RecommendationsClient.List method.
-func (client *RecommendationsClient) List(options *RecommendationsClientListOptions) *RecommendationsClientListPager {
-	return &RecommendationsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *RecommendationsClient) List(options *RecommendationsClientListOptions) *runtime.Pager[RecommendationsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RecommendationsClientListResponse]{
+		More: func(page RecommendationsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RecommendationsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RecommendationCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *RecommendationsClientListResponse) (RecommendationsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RecommendationsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RecommendationsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RecommendationsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -470,7 +491,7 @@ func (client *RecommendationsClient) listCreateRequest(ctx context.Context, opti
 
 // listHandleResponse handles the List response.
 func (client *RecommendationsClient) listHandleResponse(resp *http.Response) (RecommendationsClientListResponse, error) {
-	result := RecommendationsClientListResponse{RawResponse: resp}
+	result := RecommendationsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationCollection); err != nil {
 		return RecommendationsClientListResponse{}, err
 	}
@@ -484,16 +505,32 @@ func (client *RecommendationsClient) listHandleResponse(resp *http.Response) (Re
 // hostingEnvironmentName - Name of the hosting environment.
 // options - RecommendationsClientListHistoryForHostingEnvironmentOptions contains the optional parameters for the RecommendationsClient.ListHistoryForHostingEnvironment
 // method.
-func (client *RecommendationsClient) ListHistoryForHostingEnvironment(resourceGroupName string, hostingEnvironmentName string, options *RecommendationsClientListHistoryForHostingEnvironmentOptions) *RecommendationsClientListHistoryForHostingEnvironmentPager {
-	return &RecommendationsClientListHistoryForHostingEnvironmentPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listHistoryForHostingEnvironmentCreateRequest(ctx, resourceGroupName, hostingEnvironmentName, options)
+func (client *RecommendationsClient) ListHistoryForHostingEnvironment(resourceGroupName string, hostingEnvironmentName string, options *RecommendationsClientListHistoryForHostingEnvironmentOptions) *runtime.Pager[RecommendationsClientListHistoryForHostingEnvironmentResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RecommendationsClientListHistoryForHostingEnvironmentResponse]{
+		More: func(page RecommendationsClientListHistoryForHostingEnvironmentResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RecommendationsClientListHistoryForHostingEnvironmentResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RecommendationCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *RecommendationsClientListHistoryForHostingEnvironmentResponse) (RecommendationsClientListHistoryForHostingEnvironmentResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listHistoryForHostingEnvironmentCreateRequest(ctx, resourceGroupName, hostingEnvironmentName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RecommendationsClientListHistoryForHostingEnvironmentResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RecommendationsClientListHistoryForHostingEnvironmentResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RecommendationsClientListHistoryForHostingEnvironmentResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHistoryForHostingEnvironmentHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listHistoryForHostingEnvironmentCreateRequest creates the ListHistoryForHostingEnvironment request.
@@ -532,7 +569,7 @@ func (client *RecommendationsClient) listHistoryForHostingEnvironmentCreateReque
 
 // listHistoryForHostingEnvironmentHandleResponse handles the ListHistoryForHostingEnvironment response.
 func (client *RecommendationsClient) listHistoryForHostingEnvironmentHandleResponse(resp *http.Response) (RecommendationsClientListHistoryForHostingEnvironmentResponse, error) {
-	result := RecommendationsClientListHistoryForHostingEnvironmentResponse{RawResponse: resp}
+	result := RecommendationsClientListHistoryForHostingEnvironmentResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationCollection); err != nil {
 		return RecommendationsClientListHistoryForHostingEnvironmentResponse{}, err
 	}
@@ -545,16 +582,32 @@ func (client *RecommendationsClient) listHistoryForHostingEnvironmentHandleRespo
 // siteName - Name of the app.
 // options - RecommendationsClientListHistoryForWebAppOptions contains the optional parameters for the RecommendationsClient.ListHistoryForWebApp
 // method.
-func (client *RecommendationsClient) ListHistoryForWebApp(resourceGroupName string, siteName string, options *RecommendationsClientListHistoryForWebAppOptions) *RecommendationsClientListHistoryForWebAppPager {
-	return &RecommendationsClientListHistoryForWebAppPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listHistoryForWebAppCreateRequest(ctx, resourceGroupName, siteName, options)
+func (client *RecommendationsClient) ListHistoryForWebApp(resourceGroupName string, siteName string, options *RecommendationsClientListHistoryForWebAppOptions) *runtime.Pager[RecommendationsClientListHistoryForWebAppResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RecommendationsClientListHistoryForWebAppResponse]{
+		More: func(page RecommendationsClientListHistoryForWebAppResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RecommendationsClientListHistoryForWebAppResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RecommendationCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *RecommendationsClientListHistoryForWebAppResponse) (RecommendationsClientListHistoryForWebAppResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listHistoryForWebAppCreateRequest(ctx, resourceGroupName, siteName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RecommendationsClientListHistoryForWebAppResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RecommendationsClientListHistoryForWebAppResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RecommendationsClientListHistoryForWebAppResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHistoryForWebAppHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listHistoryForWebAppCreateRequest creates the ListHistoryForWebApp request.
@@ -593,7 +646,7 @@ func (client *RecommendationsClient) listHistoryForWebAppCreateRequest(ctx conte
 
 // listHistoryForWebAppHandleResponse handles the ListHistoryForWebApp response.
 func (client *RecommendationsClient) listHistoryForWebAppHandleResponse(resp *http.Response) (RecommendationsClientListHistoryForWebAppResponse, error) {
-	result := RecommendationsClientListHistoryForWebAppResponse{RawResponse: resp}
+	result := RecommendationsClientListHistoryForWebAppResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationCollection); err != nil {
 		return RecommendationsClientListHistoryForWebAppResponse{}, err
 	}
@@ -606,16 +659,32 @@ func (client *RecommendationsClient) listHistoryForWebAppHandleResponse(resp *ht
 // hostingEnvironmentName - Name of the app.
 // options - RecommendationsClientListRecommendedRulesForHostingEnvironmentOptions contains the optional parameters for the
 // RecommendationsClient.ListRecommendedRulesForHostingEnvironment method.
-func (client *RecommendationsClient) ListRecommendedRulesForHostingEnvironment(resourceGroupName string, hostingEnvironmentName string, options *RecommendationsClientListRecommendedRulesForHostingEnvironmentOptions) *RecommendationsClientListRecommendedRulesForHostingEnvironmentPager {
-	return &RecommendationsClientListRecommendedRulesForHostingEnvironmentPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listRecommendedRulesForHostingEnvironmentCreateRequest(ctx, resourceGroupName, hostingEnvironmentName, options)
+func (client *RecommendationsClient) ListRecommendedRulesForHostingEnvironment(resourceGroupName string, hostingEnvironmentName string, options *RecommendationsClientListRecommendedRulesForHostingEnvironmentOptions) *runtime.Pager[RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse]{
+		More: func(page RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RecommendationCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse) (RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listRecommendedRulesForHostingEnvironmentCreateRequest(ctx, resourceGroupName, hostingEnvironmentName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listRecommendedRulesForHostingEnvironmentHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listRecommendedRulesForHostingEnvironmentCreateRequest creates the ListRecommendedRulesForHostingEnvironment request.
@@ -654,7 +723,7 @@ func (client *RecommendationsClient) listRecommendedRulesForHostingEnvironmentCr
 
 // listRecommendedRulesForHostingEnvironmentHandleResponse handles the ListRecommendedRulesForHostingEnvironment response.
 func (client *RecommendationsClient) listRecommendedRulesForHostingEnvironmentHandleResponse(resp *http.Response) (RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse, error) {
-	result := RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse{RawResponse: resp}
+	result := RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationCollection); err != nil {
 		return RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse{}, err
 	}
@@ -667,16 +736,32 @@ func (client *RecommendationsClient) listRecommendedRulesForHostingEnvironmentHa
 // siteName - Name of the app.
 // options - RecommendationsClientListRecommendedRulesForWebAppOptions contains the optional parameters for the RecommendationsClient.ListRecommendedRulesForWebApp
 // method.
-func (client *RecommendationsClient) ListRecommendedRulesForWebApp(resourceGroupName string, siteName string, options *RecommendationsClientListRecommendedRulesForWebAppOptions) *RecommendationsClientListRecommendedRulesForWebAppPager {
-	return &RecommendationsClientListRecommendedRulesForWebAppPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listRecommendedRulesForWebAppCreateRequest(ctx, resourceGroupName, siteName, options)
+func (client *RecommendationsClient) ListRecommendedRulesForWebApp(resourceGroupName string, siteName string, options *RecommendationsClientListRecommendedRulesForWebAppOptions) *runtime.Pager[RecommendationsClientListRecommendedRulesForWebAppResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RecommendationsClientListRecommendedRulesForWebAppResponse]{
+		More: func(page RecommendationsClientListRecommendedRulesForWebAppResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RecommendationsClientListRecommendedRulesForWebAppResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RecommendationCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *RecommendationsClientListRecommendedRulesForWebAppResponse) (RecommendationsClientListRecommendedRulesForWebAppResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listRecommendedRulesForWebAppCreateRequest(ctx, resourceGroupName, siteName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RecommendationsClientListRecommendedRulesForWebAppResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RecommendationsClientListRecommendedRulesForWebAppResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RecommendationsClientListRecommendedRulesForWebAppResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listRecommendedRulesForWebAppHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listRecommendedRulesForWebAppCreateRequest creates the ListRecommendedRulesForWebApp request.
@@ -715,7 +800,7 @@ func (client *RecommendationsClient) listRecommendedRulesForWebAppCreateRequest(
 
 // listRecommendedRulesForWebAppHandleResponse handles the ListRecommendedRulesForWebApp response.
 func (client *RecommendationsClient) listRecommendedRulesForWebAppHandleResponse(resp *http.Response) (RecommendationsClientListRecommendedRulesForWebAppResponse, error) {
-	result := RecommendationsClientListRecommendedRulesForWebAppResponse{RawResponse: resp}
+	result := RecommendationsClientListRecommendedRulesForWebAppResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationCollection); err != nil {
 		return RecommendationsClientListRecommendedRulesForWebAppResponse{}, err
 	}
@@ -738,7 +823,7 @@ func (client *RecommendationsClient) ResetAllFilters(ctx context.Context, option
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return RecommendationsClientResetAllFiltersResponse{}, runtime.NewResponseError(resp)
 	}
-	return RecommendationsClientResetAllFiltersResponse{RawResponse: resp}, nil
+	return RecommendationsClientResetAllFiltersResponse{}, nil
 }
 
 // resetAllFiltersCreateRequest creates the ResetAllFilters request.
@@ -777,7 +862,7 @@ func (client *RecommendationsClient) ResetAllFiltersForHostingEnvironment(ctx co
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return RecommendationsClientResetAllFiltersForHostingEnvironmentResponse{}, runtime.NewResponseError(resp)
 	}
-	return RecommendationsClientResetAllFiltersForHostingEnvironmentResponse{RawResponse: resp}, nil
+	return RecommendationsClientResetAllFiltersForHostingEnvironmentResponse{}, nil
 }
 
 // resetAllFiltersForHostingEnvironmentCreateRequest creates the ResetAllFiltersForHostingEnvironment request.
@@ -825,7 +910,7 @@ func (client *RecommendationsClient) ResetAllFiltersForWebApp(ctx context.Contex
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return RecommendationsClientResetAllFiltersForWebAppResponse{}, runtime.NewResponseError(resp)
 	}
-	return RecommendationsClientResetAllFiltersForWebAppResponse{RawResponse: resp}, nil
+	return RecommendationsClientResetAllFiltersForWebAppResponse{}, nil
 }
 
 // resetAllFiltersForWebAppCreateRequest creates the ResetAllFiltersForWebApp request.

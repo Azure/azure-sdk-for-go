@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type LedgerClient struct {
 // subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewLedgerClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LedgerClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewLedgerClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LedgerClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &LedgerClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreate - Creates a Confidential Ledger with the specified ledger parameters.
@@ -55,22 +60,18 @@ func NewLedgerClient(subscriptionID string, credential azcore.TokenCredential, o
 // ledgerName - Name of the Confidential Ledger
 // confidentialLedger - Confidential Ledger Create Request Body
 // options - LedgerClientBeginCreateOptions contains the optional parameters for the LedgerClient.BeginCreate method.
-func (client *LedgerClient) BeginCreate(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger ConfidentialLedger, options *LedgerClientBeginCreateOptions) (LedgerClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, ledgerName, confidentialLedger, options)
-	if err != nil {
-		return LedgerClientCreatePollerResponse{}, err
+func (client *LedgerClient) BeginCreate(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger ConfidentialLedger, options *LedgerClientBeginCreateOptions) (*armruntime.Poller[LedgerClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, ledgerName, confidentialLedger, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[LedgerClientCreateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[LedgerClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := LedgerClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("LedgerClient.Create", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return LedgerClientCreatePollerResponse{}, err
-	}
-	result.Poller = &LedgerClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Creates a Confidential Ledger with the specified ledger parameters.
@@ -121,22 +122,16 @@ func (client *LedgerClient) createCreateRequest(ctx context.Context, resourceGro
 // resourceGroupName - The name of the resource group.
 // ledgerName - Name of the Confidential Ledger
 // options - LedgerClientBeginDeleteOptions contains the optional parameters for the LedgerClient.BeginDelete method.
-func (client *LedgerClient) BeginDelete(ctx context.Context, resourceGroupName string, ledgerName string, options *LedgerClientBeginDeleteOptions) (LedgerClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, ledgerName, options)
-	if err != nil {
-		return LedgerClientDeletePollerResponse{}, err
+func (client *LedgerClient) BeginDelete(ctx context.Context, resourceGroupName string, ledgerName string, options *LedgerClientBeginDeleteOptions) (*armruntime.Poller[LedgerClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, ledgerName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[LedgerClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[LedgerClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := LedgerClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("LedgerClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return LedgerClientDeletePollerResponse{}, err
-	}
-	result.Poller = &LedgerClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes an existing Confidential Ledger.
@@ -230,7 +225,7 @@ func (client *LedgerClient) getCreateRequest(ctx context.Context, resourceGroupN
 
 // getHandleResponse handles the Get response.
 func (client *LedgerClient) getHandleResponse(resp *http.Response) (LedgerClientGetResponse, error) {
-	result := LedgerClientGetResponse{RawResponse: resp}
+	result := LedgerClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfidentialLedger); err != nil {
 		return LedgerClientGetResponse{}, err
 	}
@@ -242,16 +237,32 @@ func (client *LedgerClient) getHandleResponse(resp *http.Response) (LedgerClient
 // resourceGroupName - The name of the resource group.
 // options - LedgerClientListByResourceGroupOptions contains the optional parameters for the LedgerClient.ListByResourceGroup
 // method.
-func (client *LedgerClient) ListByResourceGroup(resourceGroupName string, options *LedgerClientListByResourceGroupOptions) *LedgerClientListByResourceGroupPager {
-	return &LedgerClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *LedgerClient) ListByResourceGroup(resourceGroupName string, options *LedgerClientListByResourceGroupOptions) *runtime.Pager[LedgerClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[LedgerClientListByResourceGroupResponse]{
+		More: func(page LedgerClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp LedgerClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.List.NextLink)
+		Fetcher: func(ctx context.Context, page *LedgerClientListByResourceGroupResponse) (LedgerClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return LedgerClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return LedgerClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return LedgerClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -281,7 +292,7 @@ func (client *LedgerClient) listByResourceGroupCreateRequest(ctx context.Context
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *LedgerClient) listByResourceGroupHandleResponse(resp *http.Response) (LedgerClientListByResourceGroupResponse, error) {
-	result := LedgerClientListByResourceGroupResponse{RawResponse: resp}
+	result := LedgerClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.List); err != nil {
 		return LedgerClientListByResourceGroupResponse{}, err
 	}
@@ -292,16 +303,32 @@ func (client *LedgerClient) listByResourceGroupHandleResponse(resp *http.Respons
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - LedgerClientListBySubscriptionOptions contains the optional parameters for the LedgerClient.ListBySubscription
 // method.
-func (client *LedgerClient) ListBySubscription(options *LedgerClientListBySubscriptionOptions) *LedgerClientListBySubscriptionPager {
-	return &LedgerClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *LedgerClient) ListBySubscription(options *LedgerClientListBySubscriptionOptions) *runtime.Pager[LedgerClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[LedgerClientListBySubscriptionResponse]{
+		More: func(page LedgerClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp LedgerClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.List.NextLink)
+		Fetcher: func(ctx context.Context, page *LedgerClientListBySubscriptionResponse) (LedgerClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return LedgerClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return LedgerClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return LedgerClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -327,7 +354,7 @@ func (client *LedgerClient) listBySubscriptionCreateRequest(ctx context.Context,
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *LedgerClient) listBySubscriptionHandleResponse(resp *http.Response) (LedgerClientListBySubscriptionResponse, error) {
-	result := LedgerClientListBySubscriptionResponse{RawResponse: resp}
+	result := LedgerClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.List); err != nil {
 		return LedgerClientListBySubscriptionResponse{}, err
 	}
@@ -340,22 +367,16 @@ func (client *LedgerClient) listBySubscriptionHandleResponse(resp *http.Response
 // ledgerName - Name of the Confidential Ledger
 // confidentialLedger - Confidential Ledger request body for Updating Ledger
 // options - LedgerClientBeginUpdateOptions contains the optional parameters for the LedgerClient.BeginUpdate method.
-func (client *LedgerClient) BeginUpdate(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger ConfidentialLedger, options *LedgerClientBeginUpdateOptions) (LedgerClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, ledgerName, confidentialLedger, options)
-	if err != nil {
-		return LedgerClientUpdatePollerResponse{}, err
+func (client *LedgerClient) BeginUpdate(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger ConfidentialLedger, options *LedgerClientBeginUpdateOptions) (*armruntime.Poller[LedgerClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, ledgerName, confidentialLedger, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[LedgerClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[LedgerClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := LedgerClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("LedgerClient.Update", "", resp, client.pl)
-	if err != nil {
-		return LedgerClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &LedgerClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates properties of Confidential Ledger

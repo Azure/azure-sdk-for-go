@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -7,12 +7,6 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package armpowerbiembedded
-
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-)
 
 type AzureSKU struct {
 	// REQUIRED; SKU name
@@ -50,15 +44,6 @@ type CreateWorkspaceCollectionRequest struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CreateWorkspaceCollectionRequest.
-func (c CreateWorkspaceCollectionRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "location", c.Location)
-	populate(objectMap, "sku", c.SKU)
-	populate(objectMap, "tags", c.Tags)
-	return json.Marshal(objectMap)
-}
-
 type Display struct {
 	// The localized friendly description for the operation as shown to the user. This description should be thorough, yet concise.
 	// It will be used in tool-tips and detailed views.
@@ -90,16 +75,6 @@ type Error struct {
 	Target  *string        `json:"target,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Error.
-func (e Error) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
-}
-
 type ErrorDetail struct {
 	Code    *string `json:"code,omitempty"`
 	Message *string `json:"message,omitempty"`
@@ -119,14 +94,6 @@ type MigrateWorkspaceCollectionRequest struct {
 	TargetResourceGroup *string `json:"targetResourceGroup,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MigrateWorkspaceCollectionRequest.
-func (m MigrateWorkspaceCollectionRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "resources", m.Resources)
-	populate(objectMap, "targetResourceGroup", m.TargetResourceGroup)
-	return json.Marshal(objectMap)
-}
-
 type Operation struct {
 	Display *Display `json:"display,omitempty"`
 
@@ -139,26 +106,11 @@ type OperationList struct {
 	Value []*Operation `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationList.
-func (o OperationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 type UpdateWorkspaceCollectionRequest struct {
 	SKU *AzureSKU `json:"sku,omitempty"`
 
 	// Dictionary of
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type UpdateWorkspaceCollectionRequest.
-func (u UpdateWorkspaceCollectionRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "sku", u.SKU)
-	populate(objectMap, "tags", u.Tags)
-	return json.Marshal(objectMap)
 }
 
 type Workspace struct {
@@ -169,7 +121,7 @@ type Workspace struct {
 	Name *string `json:"name,omitempty"`
 
 	// Property bag
-	Properties map[string]interface{} `json:"properties,omitempty"`
+	Properties interface{} `json:"properties,omitempty"`
 
 	// Resource type
 	Type *string `json:"type,omitempty"`
@@ -186,27 +138,14 @@ type WorkspaceCollection struct {
 	Name *string `json:"name,omitempty"`
 
 	// Properties
-	Properties map[string]interface{} `json:"properties,omitempty"`
-	SKU        *AzureSKU              `json:"sku,omitempty"`
+	Properties interface{} `json:"properties,omitempty"`
+	SKU        *AzureSKU   `json:"sku,omitempty"`
 
 	// Dictionary of
 	Tags map[string]*string `json:"tags,omitempty"`
 
 	// Resource type
 	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type WorkspaceCollection.
-func (w WorkspaceCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", w.ID)
-	populate(objectMap, "location", w.Location)
-	populate(objectMap, "name", w.Name)
-	populate(objectMap, "properties", w.Properties)
-	populate(objectMap, "sku", w.SKU)
-	populate(objectMap, "tags", w.Tags)
-	populate(objectMap, "type", w.Type)
-	return json.Marshal(objectMap)
 }
 
 type WorkspaceCollectionAccessKey struct {
@@ -226,17 +165,11 @@ type WorkspaceCollectionList struct {
 	Value []*WorkspaceCollection `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WorkspaceCollectionList.
-func (w WorkspaceCollectionList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", w.Value)
-	return json.Marshal(objectMap)
-}
-
 // WorkspaceCollectionsClientBeginDeleteOptions contains the optional parameters for the WorkspaceCollectionsClient.BeginDelete
 // method.
 type WorkspaceCollectionsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // WorkspaceCollectionsClientCheckNameAvailabilityOptions contains the optional parameters for the WorkspaceCollectionsClient.CheckNameAvailability
@@ -294,24 +227,7 @@ type WorkspaceList struct {
 	Value []*Workspace `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WorkspaceList.
-func (w WorkspaceList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", w.Value)
-	return json.Marshal(objectMap)
-}
-
 // WorkspacesClientListOptions contains the optional parameters for the WorkspacesClient.List method.
 type WorkspacesClientListOptions struct {
 	// placeholder for future optional parameters
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
 }

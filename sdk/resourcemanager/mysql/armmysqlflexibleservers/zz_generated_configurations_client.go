@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ConfigurationsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ConfigurationsClient {
+func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ConfigurationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginBatchUpdate - Update a list of configurations in a given server.
@@ -56,22 +61,18 @@ func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCrede
 // parameters - The parameters for updating a list of server configuration.
 // options - ConfigurationsClientBeginBatchUpdateOptions contains the optional parameters for the ConfigurationsClient.BeginBatchUpdate
 // method.
-func (client *ConfigurationsClient) BeginBatchUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters ConfigurationListForBatchUpdate, options *ConfigurationsClientBeginBatchUpdateOptions) (ConfigurationsClientBatchUpdatePollerResponse, error) {
-	resp, err := client.batchUpdate(ctx, resourceGroupName, serverName, parameters, options)
-	if err != nil {
-		return ConfigurationsClientBatchUpdatePollerResponse{}, err
+func (client *ConfigurationsClient) BeginBatchUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters ConfigurationListForBatchUpdate, options *ConfigurationsClientBeginBatchUpdateOptions) (*armruntime.Poller[ConfigurationsClientBatchUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.batchUpdate(ctx, resourceGroupName, serverName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ConfigurationsClientBatchUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ConfigurationsClientBatchUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ConfigurationsClientBatchUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ConfigurationsClient.BatchUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return ConfigurationsClientBatchUpdatePollerResponse{}, err
-	}
-	result.Poller = &ConfigurationsClientBatchUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // BatchUpdate - Update a list of configurations in a given server.
@@ -170,7 +171,7 @@ func (client *ConfigurationsClient) getCreateRequest(ctx context.Context, resour
 
 // getHandleResponse handles the Get response.
 func (client *ConfigurationsClient) getHandleResponse(resp *http.Response) (ConfigurationsClientGetResponse, error) {
-	result := ConfigurationsClientGetResponse{RawResponse: resp}
+	result := ConfigurationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Configuration); err != nil {
 		return ConfigurationsClientGetResponse{}, err
 	}
@@ -183,16 +184,32 @@ func (client *ConfigurationsClient) getHandleResponse(resp *http.Response) (Conf
 // serverName - The name of the server.
 // options - ConfigurationsClientListByServerOptions contains the optional parameters for the ConfigurationsClient.ListByServer
 // method.
-func (client *ConfigurationsClient) ListByServer(resourceGroupName string, serverName string, options *ConfigurationsClientListByServerOptions) *ConfigurationsClientListByServerPager {
-	return &ConfigurationsClientListByServerPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+func (client *ConfigurationsClient) ListByServer(resourceGroupName string, serverName string, options *ConfigurationsClientListByServerOptions) *runtime.Pager[ConfigurationsClientListByServerResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ConfigurationsClientListByServerResponse]{
+		More: func(page ConfigurationsClientListByServerResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ConfigurationsClientListByServerResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ConfigurationListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ConfigurationsClientListByServerResponse) (ConfigurationsClientListByServerResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ConfigurationsClientListByServerResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ConfigurationsClientListByServerResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ConfigurationsClientListByServerResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServerHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByServerCreateRequest creates the ListByServer request.
@@ -223,7 +240,7 @@ func (client *ConfigurationsClient) listByServerCreateRequest(ctx context.Contex
 
 // listByServerHandleResponse handles the ListByServer response.
 func (client *ConfigurationsClient) listByServerHandleResponse(resp *http.Response) (ConfigurationsClientListByServerResponse, error) {
-	result := ConfigurationsClientListByServerResponse{RawResponse: resp}
+	result := ConfigurationsClientListByServerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationListResult); err != nil {
 		return ConfigurationsClientListByServerResponse{}, err
 	}
@@ -238,22 +255,16 @@ func (client *ConfigurationsClient) listByServerHandleResponse(resp *http.Respon
 // parameters - The required parameters for updating a server configuration.
 // options - ConfigurationsClientBeginUpdateOptions contains the optional parameters for the ConfigurationsClient.BeginUpdate
 // method.
-func (client *ConfigurationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverName string, configurationName string, parameters Configuration, options *ConfigurationsClientBeginUpdateOptions) (ConfigurationsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, serverName, configurationName, parameters, options)
-	if err != nil {
-		return ConfigurationsClientUpdatePollerResponse{}, err
+func (client *ConfigurationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverName string, configurationName string, parameters Configuration, options *ConfigurationsClientBeginUpdateOptions) (*armruntime.Poller[ConfigurationsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, serverName, configurationName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ConfigurationsClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ConfigurationsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ConfigurationsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ConfigurationsClient.Update", "", resp, client.pl)
-	if err != nil {
-		return ConfigurationsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &ConfigurationsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates a configuration of a server.

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type TagClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewTagClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TagClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewTagClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TagClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &TagClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // AssignToAPI - Assign tag to the Api.
@@ -110,7 +115,7 @@ func (client *TagClient) assignToAPICreateRequest(ctx context.Context, resourceG
 
 // assignToAPIHandleResponse handles the AssignToAPI response.
 func (client *TagClient) assignToAPIHandleResponse(resp *http.Response) (TagClientAssignToAPIResponse, error) {
-	result := TagClientAssignToAPIResponse{RawResponse: resp}
+	result := TagClientAssignToAPIResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -184,7 +189,7 @@ func (client *TagClient) assignToOperationCreateRequest(ctx context.Context, res
 
 // assignToOperationHandleResponse handles the AssignToOperation response.
 func (client *TagClient) assignToOperationHandleResponse(resp *http.Response) (TagClientAssignToOperationResponse, error) {
-	result := TagClientAssignToOperationResponse{RawResponse: resp}
+	result := TagClientAssignToOperationResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagContract); err != nil {
 		return TagClientAssignToOperationResponse{}, err
 	}
@@ -249,7 +254,7 @@ func (client *TagClient) assignToProductCreateRequest(ctx context.Context, resou
 
 // assignToProductHandleResponse handles the AssignToProduct response.
 func (client *TagClient) assignToProductHandleResponse(resp *http.Response) (TagClientAssignToProductResponse, error) {
-	result := TagClientAssignToProductResponse{RawResponse: resp}
+	result := TagClientAssignToProductResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagContract); err != nil {
 		return TagClientAssignToProductResponse{}, err
 	}
@@ -313,7 +318,7 @@ func (client *TagClient) createOrUpdateCreateRequest(ctx context.Context, resour
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *TagClient) createOrUpdateHandleResponse(resp *http.Response) (TagClientCreateOrUpdateResponse, error) {
-	result := TagClientCreateOrUpdateResponse{RawResponse: resp}
+	result := TagClientCreateOrUpdateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -343,7 +348,7 @@ func (client *TagClient) Delete(ctx context.Context, resourceGroupName string, s
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return TagClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return TagClientDeleteResponse{RawResponse: resp}, nil
+	return TagClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -397,7 +402,7 @@ func (client *TagClient) DetachFromAPI(ctx context.Context, resourceGroupName st
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return TagClientDetachFromAPIResponse{}, runtime.NewResponseError(resp)
 	}
-	return TagClientDetachFromAPIResponse{RawResponse: resp}, nil
+	return TagClientDetachFromAPIResponse{}, nil
 }
 
 // detachFromAPICreateRequest creates the DetachFromAPI request.
@@ -455,7 +460,7 @@ func (client *TagClient) DetachFromOperation(ctx context.Context, resourceGroupN
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return TagClientDetachFromOperationResponse{}, runtime.NewResponseError(resp)
 	}
-	return TagClientDetachFromOperationResponse{RawResponse: resp}, nil
+	return TagClientDetachFromOperationResponse{}, nil
 }
 
 // detachFromOperationCreateRequest creates the DetachFromOperation request.
@@ -515,7 +520,7 @@ func (client *TagClient) DetachFromProduct(ctx context.Context, resourceGroupNam
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return TagClientDetachFromProductResponse{}, runtime.NewResponseError(resp)
 	}
-	return TagClientDetachFromProductResponse{RawResponse: resp}, nil
+	return TagClientDetachFromProductResponse{}, nil
 }
 
 // detachFromProductCreateRequest creates the DetachFromProduct request.
@@ -605,7 +610,7 @@ func (client *TagClient) getCreateRequest(ctx context.Context, resourceGroupName
 
 // getHandleResponse handles the Get response.
 func (client *TagClient) getHandleResponse(resp *http.Response) (TagClientGetResponse, error) {
-	result := TagClientGetResponse{RawResponse: resp}
+	result := TagClientGetResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -674,7 +679,7 @@ func (client *TagClient) getByAPICreateRequest(ctx context.Context, resourceGrou
 
 // getByAPIHandleResponse handles the GetByAPI response.
 func (client *TagClient) getByAPIHandleResponse(resp *http.Response) (TagClientGetByAPIResponse, error) {
-	result := TagClientGetByAPIResponse{RawResponse: resp}
+	result := TagClientGetByAPIResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -748,7 +753,7 @@ func (client *TagClient) getByOperationCreateRequest(ctx context.Context, resour
 
 // getByOperationHandleResponse handles the GetByOperation response.
 func (client *TagClient) getByOperationHandleResponse(resp *http.Response) (TagClientGetByOperationResponse, error) {
-	result := TagClientGetByOperationResponse{RawResponse: resp}
+	result := TagClientGetByOperationResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -816,7 +821,7 @@ func (client *TagClient) getByProductCreateRequest(ctx context.Context, resource
 
 // getByProductHandleResponse handles the GetByProduct response.
 func (client *TagClient) getByProductHandleResponse(resp *http.Response) (TagClientGetByProductResponse, error) {
-	result := TagClientGetByProductResponse{RawResponse: resp}
+	result := TagClientGetByProductResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -875,7 +880,7 @@ func (client *TagClient) getEntityStateCreateRequest(ctx context.Context, resour
 
 // getEntityStateHandleResponse handles the GetEntityState response.
 func (client *TagClient) getEntityStateHandleResponse(resp *http.Response) (TagClientGetEntityStateResponse, error) {
-	result := TagClientGetEntityStateResponse{RawResponse: resp}
+	result := TagClientGetEntityStateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -940,7 +945,7 @@ func (client *TagClient) getEntityStateByAPICreateRequest(ctx context.Context, r
 
 // getEntityStateByAPIHandleResponse handles the GetEntityStateByAPI response.
 func (client *TagClient) getEntityStateByAPIHandleResponse(resp *http.Response) (TagClientGetEntityStateByAPIResponse, error) {
-	result := TagClientGetEntityStateByAPIResponse{RawResponse: resp}
+	result := TagClientGetEntityStateByAPIResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -1011,7 +1016,7 @@ func (client *TagClient) getEntityStateByOperationCreateRequest(ctx context.Cont
 
 // getEntityStateByOperationHandleResponse handles the GetEntityStateByOperation response.
 func (client *TagClient) getEntityStateByOperationHandleResponse(resp *http.Response) (TagClientGetEntityStateByOperationResponse, error) {
-	result := TagClientGetEntityStateByOperationResponse{RawResponse: resp}
+	result := TagClientGetEntityStateByOperationResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -1076,7 +1081,7 @@ func (client *TagClient) getEntityStateByProductCreateRequest(ctx context.Contex
 
 // getEntityStateByProductHandleResponse handles the GetEntityStateByProduct response.
 func (client *TagClient) getEntityStateByProductHandleResponse(resp *http.Response) (TagClientGetEntityStateByProductResponse, error) {
-	result := TagClientGetEntityStateByProductResponse{RawResponse: resp}
+	result := TagClientGetEntityStateByProductResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -1093,16 +1098,32 @@ func (client *TagClient) getEntityStateByProductHandleResponse(resp *http.Respon
 // apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
 // ;rev=n as a suffix where n is the revision number.
 // options - TagClientListByAPIOptions contains the optional parameters for the TagClient.ListByAPI method.
-func (client *TagClient) ListByAPI(resourceGroupName string, serviceName string, apiID string, options *TagClientListByAPIOptions) *TagClientListByAPIPager {
-	return &TagClientListByAPIPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByAPICreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
+func (client *TagClient) ListByAPI(resourceGroupName string, serviceName string, apiID string, options *TagClientListByAPIOptions) *runtime.Pager[TagClientListByAPIResponse] {
+	return runtime.NewPager(runtime.PageProcessor[TagClientListByAPIResponse]{
+		More: func(page TagClientListByAPIResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp TagClientListByAPIResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.TagCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *TagClientListByAPIResponse) (TagClientListByAPIResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByAPICreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return TagClientListByAPIResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return TagClientListByAPIResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return TagClientListByAPIResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByAPIHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByAPICreateRequest creates the ListByAPI request.
@@ -1146,7 +1167,7 @@ func (client *TagClient) listByAPICreateRequest(ctx context.Context, resourceGro
 
 // listByAPIHandleResponse handles the ListByAPI response.
 func (client *TagClient) listByAPIHandleResponse(resp *http.Response) (TagClientListByAPIResponse, error) {
-	result := TagClientListByAPIResponse{RawResponse: resp}
+	result := TagClientListByAPIResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagCollection); err != nil {
 		return TagClientListByAPIResponse{}, err
 	}
@@ -1161,16 +1182,32 @@ func (client *TagClient) listByAPIHandleResponse(resp *http.Response) (TagClient
 // ;rev=n as a suffix where n is the revision number.
 // operationID - Operation identifier within an API. Must be unique in the current API Management service instance.
 // options - TagClientListByOperationOptions contains the optional parameters for the TagClient.ListByOperation method.
-func (client *TagClient) ListByOperation(resourceGroupName string, serviceName string, apiID string, operationID string, options *TagClientListByOperationOptions) *TagClientListByOperationPager {
-	return &TagClientListByOperationPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByOperationCreateRequest(ctx, resourceGroupName, serviceName, apiID, operationID, options)
+func (client *TagClient) ListByOperation(resourceGroupName string, serviceName string, apiID string, operationID string, options *TagClientListByOperationOptions) *runtime.Pager[TagClientListByOperationResponse] {
+	return runtime.NewPager(runtime.PageProcessor[TagClientListByOperationResponse]{
+		More: func(page TagClientListByOperationResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp TagClientListByOperationResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.TagCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *TagClientListByOperationResponse) (TagClientListByOperationResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByOperationCreateRequest(ctx, resourceGroupName, serviceName, apiID, operationID, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return TagClientListByOperationResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return TagClientListByOperationResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return TagClientListByOperationResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByOperationHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByOperationCreateRequest creates the ListByOperation request.
@@ -1218,7 +1255,7 @@ func (client *TagClient) listByOperationCreateRequest(ctx context.Context, resou
 
 // listByOperationHandleResponse handles the ListByOperation response.
 func (client *TagClient) listByOperationHandleResponse(resp *http.Response) (TagClientListByOperationResponse, error) {
-	result := TagClientListByOperationResponse{RawResponse: resp}
+	result := TagClientListByOperationResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagCollection); err != nil {
 		return TagClientListByOperationResponse{}, err
 	}
@@ -1231,16 +1268,32 @@ func (client *TagClient) listByOperationHandleResponse(resp *http.Response) (Tag
 // serviceName - The name of the API Management service.
 // productID - Product identifier. Must be unique in the current API Management service instance.
 // options - TagClientListByProductOptions contains the optional parameters for the TagClient.ListByProduct method.
-func (client *TagClient) ListByProduct(resourceGroupName string, serviceName string, productID string, options *TagClientListByProductOptions) *TagClientListByProductPager {
-	return &TagClientListByProductPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByProductCreateRequest(ctx, resourceGroupName, serviceName, productID, options)
+func (client *TagClient) ListByProduct(resourceGroupName string, serviceName string, productID string, options *TagClientListByProductOptions) *runtime.Pager[TagClientListByProductResponse] {
+	return runtime.NewPager(runtime.PageProcessor[TagClientListByProductResponse]{
+		More: func(page TagClientListByProductResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp TagClientListByProductResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.TagCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *TagClientListByProductResponse) (TagClientListByProductResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByProductCreateRequest(ctx, resourceGroupName, serviceName, productID, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return TagClientListByProductResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return TagClientListByProductResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return TagClientListByProductResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByProductHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByProductCreateRequest creates the ListByProduct request.
@@ -1284,7 +1337,7 @@ func (client *TagClient) listByProductCreateRequest(ctx context.Context, resourc
 
 // listByProductHandleResponse handles the ListByProduct response.
 func (client *TagClient) listByProductHandleResponse(resp *http.Response) (TagClientListByProductResponse, error) {
-	result := TagClientListByProductResponse{RawResponse: resp}
+	result := TagClientListByProductResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagCollection); err != nil {
 		return TagClientListByProductResponse{}, err
 	}
@@ -1296,16 +1349,32 @@ func (client *TagClient) listByProductHandleResponse(resp *http.Response) (TagCl
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - TagClientListByServiceOptions contains the optional parameters for the TagClient.ListByService method.
-func (client *TagClient) ListByService(resourceGroupName string, serviceName string, options *TagClientListByServiceOptions) *TagClientListByServicePager {
-	return &TagClientListByServicePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+func (client *TagClient) ListByService(resourceGroupName string, serviceName string, options *TagClientListByServiceOptions) *runtime.Pager[TagClientListByServiceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[TagClientListByServiceResponse]{
+		More: func(page TagClientListByServiceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp TagClientListByServiceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.TagCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *TagClientListByServiceResponse) (TagClientListByServiceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return TagClientListByServiceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return TagClientListByServiceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return TagClientListByServiceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServiceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByServiceCreateRequest creates the ListByService request.
@@ -1348,7 +1417,7 @@ func (client *TagClient) listByServiceCreateRequest(ctx context.Context, resourc
 
 // listByServiceHandleResponse handles the ListByService response.
 func (client *TagClient) listByServiceHandleResponse(resp *http.Response) (TagClientListByServiceResponse, error) {
-	result := TagClientListByServiceResponse{RawResponse: resp}
+	result := TagClientListByServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagCollection); err != nil {
 		return TagClientListByServiceResponse{}, err
 	}
@@ -1412,7 +1481,7 @@ func (client *TagClient) updateCreateRequest(ctx context.Context, resourceGroupN
 
 // updateHandleResponse handles the Update response.
 func (client *TagClient) updateHandleResponse(resp *http.Response) (TagClientUpdateResponse, error) {
-	result := TagClientUpdateResponse{RawResponse: resp}
+	result := TagClientUpdateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}

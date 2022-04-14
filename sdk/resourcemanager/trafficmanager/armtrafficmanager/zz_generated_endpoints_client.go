@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type EndpointsClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *EndpointsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EndpointsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &EndpointsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create or update a Traffic Manager endpoint.
@@ -59,7 +64,7 @@ func NewEndpointsClient(subscriptionID string, credential azcore.TokenCredential
 // parameters - The Traffic Manager endpoint parameters supplied to the CreateOrUpdate operation.
 // options - EndpointsClientCreateOrUpdateOptions contains the optional parameters for the EndpointsClient.CreateOrUpdate
 // method.
-func (client *EndpointsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, profileName string, endpointType string, endpointName string, parameters Endpoint, options *EndpointsClientCreateOrUpdateOptions) (EndpointsClientCreateOrUpdateResponse, error) {
+func (client *EndpointsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, profileName string, endpointType EndpointType, endpointName string, parameters Endpoint, options *EndpointsClientCreateOrUpdateOptions) (EndpointsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, profileName, endpointType, endpointName, parameters, options)
 	if err != nil {
 		return EndpointsClientCreateOrUpdateResponse{}, err
@@ -75,7 +80,7 @@ func (client *EndpointsClient) CreateOrUpdate(ctx context.Context, resourceGroup
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *EndpointsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointType string, endpointName string, parameters Endpoint, options *EndpointsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *EndpointsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointType EndpointType, endpointName string, parameters Endpoint, options *EndpointsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -88,7 +93,7 @@ func (client *EndpointsClient) createOrUpdateCreateRequest(ctx context.Context, 
 	if endpointType == "" {
 		return nil, errors.New("parameter endpointType cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{endpointType}", url.PathEscape(endpointType))
+	urlPath = strings.ReplaceAll(urlPath, "{endpointType}", url.PathEscape(string(endpointType)))
 	if endpointName == "" {
 		return nil, errors.New("parameter endpointName cannot be empty")
 	}
@@ -110,7 +115,7 @@ func (client *EndpointsClient) createOrUpdateCreateRequest(ctx context.Context, 
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *EndpointsClient) createOrUpdateHandleResponse(resp *http.Response) (EndpointsClientCreateOrUpdateResponse, error) {
-	result := EndpointsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := EndpointsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Endpoint); err != nil {
 		return EndpointsClientCreateOrUpdateResponse{}, err
 	}
@@ -124,7 +129,7 @@ func (client *EndpointsClient) createOrUpdateHandleResponse(resp *http.Response)
 // endpointType - The type of the Traffic Manager endpoint to be deleted.
 // endpointName - The name of the Traffic Manager endpoint to be deleted.
 // options - EndpointsClientDeleteOptions contains the optional parameters for the EndpointsClient.Delete method.
-func (client *EndpointsClient) Delete(ctx context.Context, resourceGroupName string, profileName string, endpointType string, endpointName string, options *EndpointsClientDeleteOptions) (EndpointsClientDeleteResponse, error) {
+func (client *EndpointsClient) Delete(ctx context.Context, resourceGroupName string, profileName string, endpointType EndpointType, endpointName string, options *EndpointsClientDeleteOptions) (EndpointsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, profileName, endpointType, endpointName, options)
 	if err != nil {
 		return EndpointsClientDeleteResponse{}, err
@@ -140,7 +145,7 @@ func (client *EndpointsClient) Delete(ctx context.Context, resourceGroupName str
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *EndpointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointType string, endpointName string, options *EndpointsClientDeleteOptions) (*policy.Request, error) {
+func (client *EndpointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointType EndpointType, endpointName string, options *EndpointsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -153,7 +158,7 @@ func (client *EndpointsClient) deleteCreateRequest(ctx context.Context, resource
 	if endpointType == "" {
 		return nil, errors.New("parameter endpointType cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{endpointType}", url.PathEscape(endpointType))
+	urlPath = strings.ReplaceAll(urlPath, "{endpointType}", url.PathEscape(string(endpointType)))
 	if endpointName == "" {
 		return nil, errors.New("parameter endpointName cannot be empty")
 	}
@@ -175,7 +180,7 @@ func (client *EndpointsClient) deleteCreateRequest(ctx context.Context, resource
 
 // deleteHandleResponse handles the Delete response.
 func (client *EndpointsClient) deleteHandleResponse(resp *http.Response) (EndpointsClientDeleteResponse, error) {
-	result := EndpointsClientDeleteResponse{RawResponse: resp}
+	result := EndpointsClientDeleteResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeleteOperationResult); err != nil {
 		return EndpointsClientDeleteResponse{}, err
 	}
@@ -189,7 +194,7 @@ func (client *EndpointsClient) deleteHandleResponse(resp *http.Response) (Endpoi
 // endpointType - The type of the Traffic Manager endpoint.
 // endpointName - The name of the Traffic Manager endpoint.
 // options - EndpointsClientGetOptions contains the optional parameters for the EndpointsClient.Get method.
-func (client *EndpointsClient) Get(ctx context.Context, resourceGroupName string, profileName string, endpointType string, endpointName string, options *EndpointsClientGetOptions) (EndpointsClientGetResponse, error) {
+func (client *EndpointsClient) Get(ctx context.Context, resourceGroupName string, profileName string, endpointType EndpointType, endpointName string, options *EndpointsClientGetOptions) (EndpointsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, profileName, endpointType, endpointName, options)
 	if err != nil {
 		return EndpointsClientGetResponse{}, err
@@ -205,7 +210,7 @@ func (client *EndpointsClient) Get(ctx context.Context, resourceGroupName string
 }
 
 // getCreateRequest creates the Get request.
-func (client *EndpointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointType string, endpointName string, options *EndpointsClientGetOptions) (*policy.Request, error) {
+func (client *EndpointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointType EndpointType, endpointName string, options *EndpointsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -218,7 +223,7 @@ func (client *EndpointsClient) getCreateRequest(ctx context.Context, resourceGro
 	if endpointType == "" {
 		return nil, errors.New("parameter endpointType cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{endpointType}", url.PathEscape(endpointType))
+	urlPath = strings.ReplaceAll(urlPath, "{endpointType}", url.PathEscape(string(endpointType)))
 	if endpointName == "" {
 		return nil, errors.New("parameter endpointName cannot be empty")
 	}
@@ -240,7 +245,7 @@ func (client *EndpointsClient) getCreateRequest(ctx context.Context, resourceGro
 
 // getHandleResponse handles the Get response.
 func (client *EndpointsClient) getHandleResponse(resp *http.Response) (EndpointsClientGetResponse, error) {
-	result := EndpointsClientGetResponse{RawResponse: resp}
+	result := EndpointsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Endpoint); err != nil {
 		return EndpointsClientGetResponse{}, err
 	}
@@ -255,7 +260,7 @@ func (client *EndpointsClient) getHandleResponse(resp *http.Response) (Endpoints
 // endpointName - The name of the Traffic Manager endpoint to be updated.
 // parameters - The Traffic Manager endpoint parameters supplied to the Update operation.
 // options - EndpointsClientUpdateOptions contains the optional parameters for the EndpointsClient.Update method.
-func (client *EndpointsClient) Update(ctx context.Context, resourceGroupName string, profileName string, endpointType string, endpointName string, parameters Endpoint, options *EndpointsClientUpdateOptions) (EndpointsClientUpdateResponse, error) {
+func (client *EndpointsClient) Update(ctx context.Context, resourceGroupName string, profileName string, endpointType EndpointType, endpointName string, parameters Endpoint, options *EndpointsClientUpdateOptions) (EndpointsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, endpointType, endpointName, parameters, options)
 	if err != nil {
 		return EndpointsClientUpdateResponse{}, err
@@ -271,7 +276,7 @@ func (client *EndpointsClient) Update(ctx context.Context, resourceGroupName str
 }
 
 // updateCreateRequest creates the Update request.
-func (client *EndpointsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointType string, endpointName string, parameters Endpoint, options *EndpointsClientUpdateOptions) (*policy.Request, error) {
+func (client *EndpointsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointType EndpointType, endpointName string, parameters Endpoint, options *EndpointsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -284,7 +289,7 @@ func (client *EndpointsClient) updateCreateRequest(ctx context.Context, resource
 	if endpointType == "" {
 		return nil, errors.New("parameter endpointType cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{endpointType}", url.PathEscape(endpointType))
+	urlPath = strings.ReplaceAll(urlPath, "{endpointType}", url.PathEscape(string(endpointType)))
 	if endpointName == "" {
 		return nil, errors.New("parameter endpointName cannot be empty")
 	}
@@ -306,7 +311,7 @@ func (client *EndpointsClient) updateCreateRequest(ctx context.Context, resource
 
 // updateHandleResponse handles the Update response.
 func (client *EndpointsClient) updateHandleResponse(resp *http.Response) (EndpointsClientUpdateResponse, error) {
-	result := EndpointsClientUpdateResponse{RawResponse: resp}
+	result := EndpointsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Endpoint); err != nil {
 		return EndpointsClientUpdateResponse{}, err
 	}

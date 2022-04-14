@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ServerKeysClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewServerKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerKeysClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewServerKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServerKeysClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ServerKeysClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a server key.
@@ -61,22 +66,16 @@ func NewServerKeysClient(subscriptionID string, credential azcore.TokenCredentia
 // parameters - The requested server key resource state.
 // options - ServerKeysClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerKeysClient.BeginCreateOrUpdate
 // method.
-func (client *ServerKeysClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, keyName string, parameters ServerKey, options *ServerKeysClientBeginCreateOrUpdateOptions) (ServerKeysClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, keyName, parameters, options)
-	if err != nil {
-		return ServerKeysClientCreateOrUpdatePollerResponse{}, err
+func (client *ServerKeysClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, keyName string, parameters ServerKey, options *ServerKeysClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ServerKeysClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, keyName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ServerKeysClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServerKeysClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServerKeysClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServerKeysClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return ServerKeysClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ServerKeysClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a server key.
@@ -133,22 +132,16 @@ func (client *ServerKeysClient) createOrUpdateCreateRequest(ctx context.Context,
 // serverName - The name of the server.
 // keyName - The name of the server key to be deleted.
 // options - ServerKeysClientBeginDeleteOptions contains the optional parameters for the ServerKeysClient.BeginDelete method.
-func (client *ServerKeysClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, keyName string, options *ServerKeysClientBeginDeleteOptions) (ServerKeysClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, keyName, options)
-	if err != nil {
-		return ServerKeysClientDeletePollerResponse{}, err
+func (client *ServerKeysClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, keyName string, options *ServerKeysClientBeginDeleteOptions) (*armruntime.Poller[ServerKeysClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, keyName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ServerKeysClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServerKeysClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServerKeysClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServerKeysClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return ServerKeysClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ServerKeysClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the server key with the given name.
@@ -251,7 +244,7 @@ func (client *ServerKeysClient) getCreateRequest(ctx context.Context, resourceGr
 
 // getHandleResponse handles the Get response.
 func (client *ServerKeysClient) getHandleResponse(resp *http.Response) (ServerKeysClientGetResponse, error) {
-	result := ServerKeysClientGetResponse{RawResponse: resp}
+	result := ServerKeysClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerKey); err != nil {
 		return ServerKeysClientGetResponse{}, err
 	}
@@ -264,16 +257,32 @@ func (client *ServerKeysClient) getHandleResponse(resp *http.Response) (ServerKe
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - ServerKeysClientListByServerOptions contains the optional parameters for the ServerKeysClient.ListByServer method.
-func (client *ServerKeysClient) ListByServer(resourceGroupName string, serverName string, options *ServerKeysClientListByServerOptions) *ServerKeysClientListByServerPager {
-	return &ServerKeysClientListByServerPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+func (client *ServerKeysClient) ListByServer(resourceGroupName string, serverName string, options *ServerKeysClientListByServerOptions) *runtime.Pager[ServerKeysClientListByServerResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ServerKeysClientListByServerResponse]{
+		More: func(page ServerKeysClientListByServerResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ServerKeysClientListByServerResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServerKeyListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ServerKeysClientListByServerResponse) (ServerKeysClientListByServerResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ServerKeysClientListByServerResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ServerKeysClientListByServerResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ServerKeysClientListByServerResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServerHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByServerCreateRequest creates the ListByServer request.
@@ -304,7 +313,7 @@ func (client *ServerKeysClient) listByServerCreateRequest(ctx context.Context, r
 
 // listByServerHandleResponse handles the ListByServer response.
 func (client *ServerKeysClient) listByServerHandleResponse(resp *http.Response) (ServerKeysClientListByServerResponse, error) {
-	result := ServerKeysClientListByServerResponse{RawResponse: resp}
+	result := ServerKeysClientListByServerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerKeyListResult); err != nil {
 		return ServerKeysClientListByServerResponse{}, err
 	}

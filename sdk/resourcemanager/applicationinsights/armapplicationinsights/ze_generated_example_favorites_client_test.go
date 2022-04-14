@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,14 +17,19 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights"
 )
 
-// x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/FavoritesList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/FavoritesList.json
 func ExampleFavoritesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapplicationinsights.NewFavoritesClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewFavoritesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
@@ -34,106 +39,135 @@ func ExampleFavoritesClient_List() {
 			Tags:            []string{},
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.FavoritesClientListResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/FavoriteGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/FavoriteGet.json
 func ExampleFavoritesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapplicationinsights.NewFavoritesClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewFavoritesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		"<favorite-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.FavoritesClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/FavoriteAdd.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/FavoriteAdd.json
 func ExampleFavoritesClient_Add() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapplicationinsights.NewFavoritesClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewFavoritesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Add(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		"<favorite-id>",
 		armapplicationinsights.ComponentFavorite{
-			Config:                  to.StringPtr("<config>"),
-			FavoriteID:              to.StringPtr("<favorite-id>"),
-			FavoriteType:            armapplicationinsights.FavoriteTypeShared.ToPtr(),
-			IsGeneratedFromTemplate: to.BoolPtr(false),
-			Name:                    to.StringPtr("<name>"),
+			Config:                  to.Ptr("<config>"),
+			FavoriteID:              to.Ptr("<favorite-id>"),
+			FavoriteType:            to.Ptr(armapplicationinsights.FavoriteTypeShared),
+			IsGeneratedFromTemplate: to.Ptr(false),
+			Name:                    to.Ptr("<name>"),
 			Tags: []*string{
-				to.StringPtr("TagSample01"),
-				to.StringPtr("TagSample02")},
-			Version: to.StringPtr("<version>"),
+				to.Ptr("TagSample01"),
+				to.Ptr("TagSample02")},
+			Version: to.Ptr("<version>"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.FavoritesClientAddResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/FavoriteUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/FavoriteUpdate.json
 func ExampleFavoritesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapplicationinsights.NewFavoritesClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewFavoritesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		"<favorite-id>",
 		armapplicationinsights.ComponentFavorite{
-			Config:                  to.StringPtr("<config>"),
-			FavoriteID:              to.StringPtr("<favorite-id>"),
-			FavoriteType:            armapplicationinsights.FavoriteTypeShared.ToPtr(),
-			IsGeneratedFromTemplate: to.BoolPtr(false),
-			Name:                    to.StringPtr("<name>"),
+			Config:                  to.Ptr("<config>"),
+			FavoriteID:              to.Ptr("<favorite-id>"),
+			FavoriteType:            to.Ptr(armapplicationinsights.FavoriteTypeShared),
+			IsGeneratedFromTemplate: to.Ptr(false),
+			Name:                    to.Ptr("<name>"),
 			Tags: []*string{
-				to.StringPtr("TagSample01"),
-				to.StringPtr("TagSample02"),
-				to.StringPtr("TagSample03")},
-			TimeModified: to.StringPtr("<time-modified>"),
-			Version:      to.StringPtr("<version>"),
+				to.Ptr("TagSample01"),
+				to.Ptr("TagSample02"),
+				to.Ptr("TagSample03")},
+			TimeModified: to.Ptr("<time-modified>"),
+			Version:      to.Ptr("<version>"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.FavoritesClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/FavoriteDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/FavoriteDelete.json
 func ExampleFavoritesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapplicationinsights.NewFavoritesClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewFavoritesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		"<favorite-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type IngestionSettingsClient struct {
 // subscriptionID - Azure subscription ID
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewIngestionSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IngestionSettingsClient {
+func NewIngestionSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IngestionSettingsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &IngestionSettingsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Create setting for ingesting security data and logs to correlate with resources associated with the subscription.
@@ -94,7 +99,7 @@ func (client *IngestionSettingsClient) createCreateRequest(ctx context.Context, 
 
 // createHandleResponse handles the Create response.
 func (client *IngestionSettingsClient) createHandleResponse(resp *http.Response) (IngestionSettingsClientCreateResponse, error) {
-	result := IngestionSettingsClientCreateResponse{RawResponse: resp}
+	result := IngestionSettingsClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IngestionSetting); err != nil {
 		return IngestionSettingsClientCreateResponse{}, err
 	}
@@ -118,7 +123,7 @@ func (client *IngestionSettingsClient) Delete(ctx context.Context, ingestionSett
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return IngestionSettingsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return IngestionSettingsClientDeleteResponse{RawResponse: resp}, nil
+	return IngestionSettingsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -186,7 +191,7 @@ func (client *IngestionSettingsClient) getCreateRequest(ctx context.Context, ing
 
 // getHandleResponse handles the Get response.
 func (client *IngestionSettingsClient) getHandleResponse(resp *http.Response) (IngestionSettingsClientGetResponse, error) {
-	result := IngestionSettingsClientGetResponse{RawResponse: resp}
+	result := IngestionSettingsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IngestionSetting); err != nil {
 		return IngestionSettingsClientGetResponse{}, err
 	}
@@ -196,16 +201,32 @@ func (client *IngestionSettingsClient) getHandleResponse(resp *http.Response) (I
 // List - Settings for ingesting security data and logs to correlate with resources associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - IngestionSettingsClientListOptions contains the optional parameters for the IngestionSettingsClient.List method.
-func (client *IngestionSettingsClient) List(options *IngestionSettingsClientListOptions) *IngestionSettingsClientListPager {
-	return &IngestionSettingsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *IngestionSettingsClient) List(options *IngestionSettingsClientListOptions) *runtime.Pager[IngestionSettingsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[IngestionSettingsClientListResponse]{
+		More: func(page IngestionSettingsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp IngestionSettingsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.IngestionSettingList.NextLink)
+		Fetcher: func(ctx context.Context, page *IngestionSettingsClientListResponse) (IngestionSettingsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return IngestionSettingsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return IngestionSettingsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return IngestionSettingsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -228,7 +249,7 @@ func (client *IngestionSettingsClient) listCreateRequest(ctx context.Context, op
 
 // listHandleResponse handles the List response.
 func (client *IngestionSettingsClient) listHandleResponse(resp *http.Response) (IngestionSettingsClientListResponse, error) {
-	result := IngestionSettingsClientListResponse{RawResponse: resp}
+	result := IngestionSettingsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IngestionSettingList); err != nil {
 		return IngestionSettingsClientListResponse{}, err
 	}
@@ -279,7 +300,7 @@ func (client *IngestionSettingsClient) listConnectionStringsCreateRequest(ctx co
 
 // listConnectionStringsHandleResponse handles the ListConnectionStrings response.
 func (client *IngestionSettingsClient) listConnectionStringsHandleResponse(resp *http.Response) (IngestionSettingsClientListConnectionStringsResponse, error) {
-	result := IngestionSettingsClientListConnectionStringsResponse{RawResponse: resp}
+	result := IngestionSettingsClientListConnectionStringsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionStrings); err != nil {
 		return IngestionSettingsClientListConnectionStringsResponse{}, err
 	}
@@ -330,7 +351,7 @@ func (client *IngestionSettingsClient) listTokensCreateRequest(ctx context.Conte
 
 // listTokensHandleResponse handles the ListTokens response.
 func (client *IngestionSettingsClient) listTokensHandleResponse(resp *http.Response) (IngestionSettingsClientListTokensResponse, error) {
-	result := IngestionSettingsClientListTokensResponse{RawResponse: resp}
+	result := IngestionSettingsClientListTokensResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IngestionSettingToken); err != nil {
 		return IngestionSettingsClientListTokensResponse{}, err
 	}

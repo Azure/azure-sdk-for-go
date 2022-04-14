@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,97 +17,121 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
 )
 
-// x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/GetListConnectorSubscription_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/GetListConnectorSubscription_example.json
 func ExampleAccountConnectorsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurity.NewAccountConnectorsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAccountConnectorsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/GetConnectorSubscription_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/GetConnectorSubscription_example.json
 func ExampleAccountConnectorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurity.NewAccountConnectorsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAccountConnectorsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<connector-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AccountConnectorsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/CreateUpdateAwsAssumeRoleConnectorSubscription_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/CreateUpdateAwsAssumeRoleConnectorSubscription_example.json
 func ExampleAccountConnectorsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurity.NewAccountConnectorsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAccountConnectorsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<connector-name>",
 		armsecurity.ConnectorSetting{
 			Properties: &armsecurity.ConnectorSettingProperties{
 				AuthenticationDetails: &armsecurity.AwAssumeRoleAuthenticationDetailsProperties{
-					AuthenticationType: armsecurity.AuthenticationType("awsAssumeRole").ToPtr(),
-					AwsAssumeRoleArn:   to.StringPtr("<aws-assume-role-arn>"),
-					AwsExternalID:      to.StringPtr("<aws-external-id>"),
+					AuthenticationType: to.Ptr(armsecurity.AuthenticationTypeAwsAssumeRole),
+					AwsAssumeRoleArn:   to.Ptr("<aws-assume-role-arn>"),
+					AwsExternalID:      to.Ptr("<aws-external-id>"),
 				},
 				HybridComputeSettings: &armsecurity.HybridComputeSettingsProperties{
-					AutoProvision: armsecurity.AutoProvision("On").ToPtr(),
+					AutoProvision: to.Ptr(armsecurity.AutoProvisionOn),
 					ProxyServer: &armsecurity.ProxyServerProperties{
-						IP:   to.StringPtr("<ip>"),
-						Port: to.StringPtr("<port>"),
+						IP:   to.Ptr("<ip>"),
+						Port: to.Ptr("<port>"),
 					},
-					Region:            to.StringPtr("<region>"),
-					ResourceGroupName: to.StringPtr("<resource-group-name>"),
+					Region:            to.Ptr("<region>"),
+					ResourceGroupName: to.Ptr("<resource-group-name>"),
 					ServicePrincipal: &armsecurity.ServicePrincipalProperties{
-						ApplicationID: to.StringPtr("<application-id>"),
-						Secret:        to.StringPtr("<secret>"),
+						ApplicationID: to.Ptr("<application-id>"),
+						Secret:        to.Ptr("<secret>"),
 					},
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AccountConnectorsClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/DeleteConnectorSubscription_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/DeleteConnectorSubscription_example.json
 func ExampleAccountConnectorsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurity.NewAccountConnectorsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAccountConnectorsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<connector-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }

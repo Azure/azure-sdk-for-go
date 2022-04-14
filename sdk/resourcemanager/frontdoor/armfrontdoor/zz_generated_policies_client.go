@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type PoliciesClient struct {
 // ID forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PoliciesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PoliciesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PoliciesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or update policy with specified rule set name within a resource group.
@@ -57,22 +62,16 @@ func NewPoliciesClient(subscriptionID string, credential azcore.TokenCredential,
 // parameters - Policy to be created.
 // options - PoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the PoliciesClient.BeginCreateOrUpdate
 // method.
-func (client *PoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, policyName string, parameters WebApplicationFirewallPolicy, options *PoliciesClientBeginCreateOrUpdateOptions) (PoliciesClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, policyName, parameters, options)
-	if err != nil {
-		return PoliciesClientCreateOrUpdatePollerResponse{}, err
+func (client *PoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, policyName string, parameters WebApplicationFirewallPolicy, options *PoliciesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[PoliciesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, policyName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[PoliciesClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[PoliciesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PoliciesClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PoliciesClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return PoliciesClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &PoliciesClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update policy with specified rule set name within a resource group.
@@ -123,22 +122,16 @@ func (client *PoliciesClient) createOrUpdateCreateRequest(ctx context.Context, r
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // policyName - The name of the Web Application Firewall Policy.
 // options - PoliciesClientBeginDeleteOptions contains the optional parameters for the PoliciesClient.BeginDelete method.
-func (client *PoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, policyName string, options *PoliciesClientBeginDeleteOptions) (PoliciesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, policyName, options)
-	if err != nil {
-		return PoliciesClientDeletePollerResponse{}, err
+func (client *PoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, policyName string, options *PoliciesClientBeginDeleteOptions) (*armruntime.Poller[PoliciesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, policyName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[PoliciesClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[PoliciesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PoliciesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PoliciesClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return PoliciesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &PoliciesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes Policy
@@ -231,7 +224,7 @@ func (client *PoliciesClient) getCreateRequest(ctx context.Context, resourceGrou
 
 // getHandleResponse handles the Get response.
 func (client *PoliciesClient) getHandleResponse(resp *http.Response) (PoliciesClientGetResponse, error) {
-	result := PoliciesClientGetResponse{RawResponse: resp}
+	result := PoliciesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebApplicationFirewallPolicy); err != nil {
 		return PoliciesClientGetResponse{}, err
 	}
@@ -242,16 +235,32 @@ func (client *PoliciesClient) getHandleResponse(resp *http.Response) (PoliciesCl
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // options - PoliciesClientListOptions contains the optional parameters for the PoliciesClient.List method.
-func (client *PoliciesClient) List(resourceGroupName string, options *PoliciesClientListOptions) *PoliciesClientListPager {
-	return &PoliciesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, options)
+func (client *PoliciesClient) List(resourceGroupName string, options *PoliciesClientListOptions) *runtime.Pager[PoliciesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PoliciesClientListResponse]{
+		More: func(page PoliciesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PoliciesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.WebApplicationFirewallPolicyList.NextLink)
+		Fetcher: func(ctx context.Context, page *PoliciesClientListResponse) (PoliciesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PoliciesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PoliciesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PoliciesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -278,7 +287,7 @@ func (client *PoliciesClient) listCreateRequest(ctx context.Context, resourceGro
 
 // listHandleResponse handles the List response.
 func (client *PoliciesClient) listHandleResponse(resp *http.Response) (PoliciesClientListResponse, error) {
-	result := PoliciesClientListResponse{RawResponse: resp}
+	result := PoliciesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebApplicationFirewallPolicyList); err != nil {
 		return PoliciesClientListResponse{}, err
 	}

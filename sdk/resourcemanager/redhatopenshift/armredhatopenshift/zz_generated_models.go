@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -7,12 +7,6 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package armredhatopenshift
-
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-)
 
 // APIServerProfile represents an API server profile.
 type APIServerProfile struct {
@@ -45,16 +39,6 @@ type CloudErrorBody struct {
 
 	// The target of the particular error. For example, the name of the property in error.
 	Target *string `json:"target,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CloudErrorBody.
-func (c CloudErrorBody) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", c.Code)
-	populate(objectMap, "details", c.Details)
-	populate(objectMap, "message", c.Message)
-	populate(objectMap, "target", c.Target)
-	return json.Marshal(objectMap)
 }
 
 // ClusterProfile represents a cluster profile.
@@ -144,18 +128,6 @@ type OpenShiftCluster struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OpenShiftCluster.
-func (o OpenShiftCluster) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", o.ID)
-	populate(objectMap, "location", o.Location)
-	populate(objectMap, "name", o.Name)
-	populate(objectMap, "properties", o.Properties)
-	populate(objectMap, "tags", o.Tags)
-	populate(objectMap, "type", o.Type)
-	return json.Marshal(objectMap)
-}
-
 // OpenShiftClusterCredentials represents an OpenShift cluster's credentials
 type OpenShiftClusterCredentials struct {
 	// The password for the kubeadmin user
@@ -172,14 +144,6 @@ type OpenShiftClusterList struct {
 
 	// The list of OpenShift clusters.
 	Value []*OpenShiftCluster `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OpenShiftClusterList.
-func (o OpenShiftClusterList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 // OpenShiftClusterProperties represents an OpenShift cluster's properties.
@@ -212,21 +176,6 @@ type OpenShiftClusterProperties struct {
 	WorkerProfiles []*WorkerProfile `json:"workerProfiles,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OpenShiftClusterProperties.
-func (o OpenShiftClusterProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "apiserverProfile", o.ApiserverProfile)
-	populate(objectMap, "clusterProfile", o.ClusterProfile)
-	populate(objectMap, "consoleProfile", o.ConsoleProfile)
-	populate(objectMap, "ingressProfiles", o.IngressProfiles)
-	populate(objectMap, "masterProfile", o.MasterProfile)
-	populate(objectMap, "networkProfile", o.NetworkProfile)
-	populate(objectMap, "provisioningState", o.ProvisioningState)
-	populate(objectMap, "servicePrincipalProfile", o.ServicePrincipalProfile)
-	populate(objectMap, "workerProfiles", o.WorkerProfiles)
-	return json.Marshal(objectMap)
-}
-
 // OpenShiftClusterUpdate - OpenShiftCluster represents an Azure Red Hat OpenShift cluster.
 type OpenShiftClusterUpdate struct {
 	// The cluster properties.
@@ -236,30 +185,25 @@ type OpenShiftClusterUpdate struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OpenShiftClusterUpdate.
-func (o OpenShiftClusterUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", o.Properties)
-	populate(objectMap, "tags", o.Tags)
-	return json.Marshal(objectMap)
-}
-
 // OpenShiftClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the OpenShiftClustersClient.BeginCreateOrUpdate
 // method.
 type OpenShiftClustersClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // OpenShiftClustersClientBeginDeleteOptions contains the optional parameters for the OpenShiftClustersClient.BeginDelete
 // method.
 type OpenShiftClustersClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // OpenShiftClustersClientBeginUpdateOptions contains the optional parameters for the OpenShiftClustersClient.BeginUpdate
 // method.
 type OpenShiftClustersClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // OpenShiftClustersClientGetOptions contains the optional parameters for the OpenShiftClustersClient.Get method.
@@ -303,14 +247,6 @@ type OperationList struct {
 
 	// List of operations supported by the resource provider.
 	Value []*Operation `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationList.
-func (o OperationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
@@ -358,17 +294,6 @@ type TrackedResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
-func (t TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "tags", t.Tags)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
 // WorkerProfile represents a worker profile.
 type WorkerProfile struct {
 	// The number of worker VMs. Must be between 3 and 20 (immutable).
@@ -385,14 +310,4 @@ type WorkerProfile struct {
 
 	// The size of the worker VMs (immutable).
 	VMSize *VMSize `json:"vmSize,omitempty"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
 }

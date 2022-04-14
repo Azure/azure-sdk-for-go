@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ScriptCmdletsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewScriptCmdletsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ScriptCmdletsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewScriptCmdletsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScriptCmdletsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ScriptCmdletsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Return information about a script cmdlet resource in a specific package on a private cloud
@@ -107,7 +112,7 @@ func (client *ScriptCmdletsClient) getCreateRequest(ctx context.Context, resourc
 
 // getHandleResponse handles the Get response.
 func (client *ScriptCmdletsClient) getHandleResponse(resp *http.Response) (ScriptCmdletsClientGetResponse, error) {
-	result := ScriptCmdletsClientGetResponse{RawResponse: resp}
+	result := ScriptCmdletsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScriptCmdlet); err != nil {
 		return ScriptCmdletsClientGetResponse{}, err
 	}
@@ -120,16 +125,32 @@ func (client *ScriptCmdletsClient) getHandleResponse(resp *http.Response) (Scrip
 // privateCloudName - Name of the private cloud
 // scriptPackageName - Name of the script package in the private cloud
 // options - ScriptCmdletsClientListOptions contains the optional parameters for the ScriptCmdletsClient.List method.
-func (client *ScriptCmdletsClient) List(resourceGroupName string, privateCloudName string, scriptPackageName string, options *ScriptCmdletsClientListOptions) *ScriptCmdletsClientListPager {
-	return &ScriptCmdletsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, privateCloudName, scriptPackageName, options)
+func (client *ScriptCmdletsClient) List(resourceGroupName string, privateCloudName string, scriptPackageName string, options *ScriptCmdletsClientListOptions) *runtime.Pager[ScriptCmdletsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ScriptCmdletsClientListResponse]{
+		More: func(page ScriptCmdletsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ScriptCmdletsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ScriptCmdletsList.NextLink)
+		Fetcher: func(ctx context.Context, page *ScriptCmdletsClientListResponse) (ScriptCmdletsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, privateCloudName, scriptPackageName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ScriptCmdletsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ScriptCmdletsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ScriptCmdletsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -164,7 +185,7 @@ func (client *ScriptCmdletsClient) listCreateRequest(ctx context.Context, resour
 
 // listHandleResponse handles the List response.
 func (client *ScriptCmdletsClient) listHandleResponse(resp *http.Response) (ScriptCmdletsClientListResponse, error) {
-	result := ScriptCmdletsClientListResponse{RawResponse: resp}
+	result := ScriptCmdletsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScriptCmdletsList); err != nil {
 		return ScriptCmdletsClientListResponse{}, err
 	}

@@ -265,10 +265,20 @@ func toGeneratedAccessPolicy(a *AccessPolicy) *generated.AccessPolicy {
 		return nil
 	}
 
+	expiry := a.Expiry
+	if expiry != nil {
+		expiry = to.Ptr(expiry.UTC())
+	}
+
+	start := a.Start
+	if start != nil {
+		start = to.Ptr(start.UTC())
+	}
+
 	return &generated.AccessPolicy{
-		Expiry:     a.Expiry,
+		Expiry:     expiry,
 		Permission: a.Permission,
-		Start:      a.Start,
+		Start:      start,
 	}
 }
 
@@ -315,8 +325,8 @@ const (
 	GeoReplicationStatusUnavailable GeoReplicationStatus = "unavailable"
 )
 
-// PossibleGeoReplicationStatusTypeValues returns the possible values for the GeoReplicationStatusType const type.
-func PossibleGeoReplicationStatusTypeValues() []GeoReplicationStatus {
+// PossibleGeoReplicationStatusValues returns the possible values for the GeoReplicationStatus const type.
+func PossibleGeoReplicationStatusValues() []GeoReplicationStatus {
 	return []GeoReplicationStatus{
 		GeoReplicationStatusBootstrap,
 		GeoReplicationStatusLive,

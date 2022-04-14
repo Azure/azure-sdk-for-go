@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,24 +17,31 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
 )
 
-// x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/Validate_Secret.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/Validate_Secret.json
 func ExampleValidateClient_Secret() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcdn.NewValidateClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewValidateClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Secret(ctx,
 		armcdn.ValidateSecretInput{
 			SecretSource: &armcdn.ResourceReference{
-				ID: to.StringPtr("<id>"),
+				ID: to.Ptr("<id>"),
 			},
-			SecretType: armcdn.SecretType("CustomerCertificate").ToPtr(),
+			SecretType: to.Ptr(armcdn.SecretTypeCustomerCertificate),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ValidateClientSecretResult)
+	// TODO: use response item
+	_ = res
 }

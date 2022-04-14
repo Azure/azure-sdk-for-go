@@ -1,5 +1,256 @@
 # Release History
 
+## 0.4.0 (2022-04-14)
+### Breaking Changes
+
+- Function `*AssignmentsClient.List` return value(s) have been changed from `(*AssignmentsClientListPager)` to `(*runtime.Pager[AssignmentsClientListResponse])`
+- Function `*SetDefinitionsClient.ListBuiltIn` return value(s) have been changed from `(*SetDefinitionsClientListBuiltInPager)` to `(*runtime.Pager[SetDefinitionsClientListBuiltInResponse])`
+- Function `NewDefinitionsClient` return value(s) have been changed from `(*DefinitionsClient)` to `(*DefinitionsClient, error)`
+- Function `*AssignmentsClient.ListForManagementGroup` return value(s) have been changed from `(*AssignmentsClientListForManagementGroupPager)` to `(*runtime.Pager[AssignmentsClientListForManagementGroupResponse])`
+- Function `*ExemptionsClient.ListForResourceGroup` return value(s) have been changed from `(*ExemptionsClientListForResourceGroupPager)` to `(*runtime.Pager[ExemptionsClientListForResourceGroupResponse])`
+- Function `*DefinitionsClient.ListByManagementGroup` return value(s) have been changed from `(*DefinitionsClientListByManagementGroupPager)` to `(*runtime.Pager[DefinitionsClientListByManagementGroupResponse])`
+- Function `*ExemptionsClient.ListForResource` return value(s) have been changed from `(*ExemptionsClientListForResourcePager)` to `(*runtime.Pager[ExemptionsClientListForResourceResponse])`
+- Function `NewAssignmentsClient` return value(s) have been changed from `(*AssignmentsClient)` to `(*AssignmentsClient, error)`
+- Function `*AssignmentsClient.ListForResource` return value(s) have been changed from `(*AssignmentsClientListForResourcePager)` to `(*runtime.Pager[AssignmentsClientListForResourceResponse])`
+- Function `*SetDefinitionsClient.ListByManagementGroup` return value(s) have been changed from `(*SetDefinitionsClientListByManagementGroupPager)` to `(*runtime.Pager[SetDefinitionsClientListByManagementGroupResponse])`
+- Function `NewSetDefinitionsClient` return value(s) have been changed from `(*SetDefinitionsClient)` to `(*SetDefinitionsClient, error)`
+- Function `*DataPolicyManifestsClient.List` return value(s) have been changed from `(*DataPolicyManifestsClientListPager)` to `(*runtime.Pager[DataPolicyManifestsClientListResponse])`
+- Function `*DefinitionsClient.List` return value(s) have been changed from `(*DefinitionsClientListPager)` to `(*runtime.Pager[DefinitionsClientListResponse])`
+- Function `*DefinitionsClient.ListBuiltIn` return value(s) have been changed from `(*DefinitionsClientListBuiltInPager)` to `(*runtime.Pager[DefinitionsClientListBuiltInResponse])`
+- Function `NewExemptionsClient` return value(s) have been changed from `(*ExemptionsClient)` to `(*ExemptionsClient, error)`
+- Function `NewDataPolicyManifestsClient` return value(s) have been changed from `(*DataPolicyManifestsClient)` to `(*DataPolicyManifestsClient, error)`
+- Function `*SetDefinitionsClient.List` return value(s) have been changed from `(*SetDefinitionsClientListPager)` to `(*runtime.Pager[SetDefinitionsClientListResponse])`
+- Function `*AssignmentsClient.ListForResourceGroup` return value(s) have been changed from `(*AssignmentsClientListForResourceGroupPager)` to `(*runtime.Pager[AssignmentsClientListForResourceGroupResponse])`
+- Function `*ExemptionsClient.List` return value(s) have been changed from `(*ExemptionsClientListPager)` to `(*runtime.Pager[ExemptionsClientListResponse])`
+- Function `*ExemptionsClient.ListForManagementGroup` return value(s) have been changed from `(*ExemptionsClientListForManagementGroupPager)` to `(*runtime.Pager[ExemptionsClientListForManagementGroupResponse])`
+- Function `*ExemptionsClientListForResourcePager.Err` has been removed
+- Function `*SetDefinitionsClientListPager.PageResponse` has been removed
+- Function `*AssignmentsClientListPager.NextPage` has been removed
+- Function `*DefinitionsClientListBuiltInPager.PageResponse` has been removed
+- Function `AliasPathAttributes.ToPtr` has been removed
+- Function `*DefinitionsClientListByManagementGroupPager.NextPage` has been removed
+- Function `*SetDefinitionsClientListByManagementGroupPager.Err` has been removed
+- Function `*AssignmentsClientListForResourcePager.Err` has been removed
+- Function `*ExemptionsClientListForResourcePager.NextPage` has been removed
+- Function `*AssignmentsClientListForResourceGroupPager.PageResponse` has been removed
+- Function `AliasPathTokenType.ToPtr` has been removed
+- Function `ParameterType.ToPtr` has been removed
+- Function `*ExemptionsClientListForResourceGroupPager.Err` has been removed
+- Function `ResourceIdentityType.ToPtr` has been removed
+- Function `*ExemptionsClientListForResourceGroupPager.PageResponse` has been removed
+- Function `*ExemptionsClientListForManagementGroupPager.Err` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*DataPolicyManifestsClientListPager.PageResponse` has been removed
+- Function `AliasType.ToPtr` has been removed
+- Function `EnforcementMode.ToPtr` has been removed
+- Function `*ExemptionsClientListForResourcePager.PageResponse` has been removed
+- Function `AliasPatternType.ToPtr` has been removed
+- Function `*ExemptionsClientListForManagementGroupPager.NextPage` has been removed
+- Function `*SetDefinitionsClientListByManagementGroupPager.PageResponse` has been removed
+- Function `*DefinitionsClientListBuiltInPager.Err` has been removed
+- Function `ExemptionCategory.ToPtr` has been removed
+- Function `*AssignmentsClientListForResourceGroupPager.NextPage` has been removed
+- Function `*DataPolicyManifestsClientListPager.Err` has been removed
+- Function `*AssignmentsClientListForResourceGroupPager.Err` has been removed
+- Function `*SetDefinitionsClientListByManagementGroupPager.NextPage` has been removed
+- Function `*AssignmentsClientListForManagementGroupPager.PageResponse` has been removed
+- Function `*AssignmentsClientListPager.Err` has been removed
+- Function `*ExemptionsClientListPager.PageResponse` has been removed
+- Function `*ExemptionsClientListPager.Err` has been removed
+- Function `*AssignmentsClientListForResourcePager.NextPage` has been removed
+- Function `*ExemptionsClientListForResourceGroupPager.NextPage` has been removed
+- Function `*AssignmentsClientListPager.PageResponse` has been removed
+- Function `PolicyType.ToPtr` has been removed
+- Function `*SetDefinitionsClientListPager.NextPage` has been removed
+- Function `*DefinitionsClientListPager.PageResponse` has been removed
+- Function `*DefinitionsClientListByManagementGroupPager.Err` has been removed
+- Function `*ExemptionsClientListForManagementGroupPager.PageResponse` has been removed
+- Function `*DefinitionsClientListPager.NextPage` has been removed
+- Function `*DefinitionsClientListBuiltInPager.NextPage` has been removed
+- Function `*AssignmentsClientListForManagementGroupPager.NextPage` has been removed
+- Function `*DefinitionsClientListPager.Err` has been removed
+- Function `*SetDefinitionsClientListPager.Err` has been removed
+- Function `*AssignmentsClientListForManagementGroupPager.Err` has been removed
+- Function `*DefinitionsClientListByManagementGroupPager.PageResponse` has been removed
+- Function `*DataPolicyManifestsClientListPager.NextPage` has been removed
+- Function `*ExemptionsClientListPager.NextPage` has been removed
+- Function `*SetDefinitionsClientListBuiltInPager.NextPage` has been removed
+- Function `*AssignmentsClientListForResourcePager.PageResponse` has been removed
+- Function `*SetDefinitionsClientListBuiltInPager.Err` has been removed
+- Function `*SetDefinitionsClientListBuiltInPager.PageResponse` has been removed
+- Struct `AssignmentsClientCreateByIDResult` has been removed
+- Struct `AssignmentsClientCreateResult` has been removed
+- Struct `AssignmentsClientDeleteByIDResult` has been removed
+- Struct `AssignmentsClientDeleteResult` has been removed
+- Struct `AssignmentsClientGetByIDResult` has been removed
+- Struct `AssignmentsClientGetResult` has been removed
+- Struct `AssignmentsClientListForManagementGroupPager` has been removed
+- Struct `AssignmentsClientListForManagementGroupResult` has been removed
+- Struct `AssignmentsClientListForResourceGroupPager` has been removed
+- Struct `AssignmentsClientListForResourceGroupResult` has been removed
+- Struct `AssignmentsClientListForResourcePager` has been removed
+- Struct `AssignmentsClientListForResourceResult` has been removed
+- Struct `AssignmentsClientListPager` has been removed
+- Struct `AssignmentsClientListResult` has been removed
+- Struct `AssignmentsClientUpdateByIDResult` has been removed
+- Struct `AssignmentsClientUpdateResult` has been removed
+- Struct `DataPolicyManifestsClientGetByPolicyModeResult` has been removed
+- Struct `DataPolicyManifestsClientListPager` has been removed
+- Struct `DataPolicyManifestsClientListResult` has been removed
+- Struct `DefinitionsClientCreateOrUpdateAtManagementGroupResult` has been removed
+- Struct `DefinitionsClientCreateOrUpdateResult` has been removed
+- Struct `DefinitionsClientGetAtManagementGroupResult` has been removed
+- Struct `DefinitionsClientGetBuiltInResult` has been removed
+- Struct `DefinitionsClientGetResult` has been removed
+- Struct `DefinitionsClientListBuiltInPager` has been removed
+- Struct `DefinitionsClientListBuiltInResult` has been removed
+- Struct `DefinitionsClientListByManagementGroupPager` has been removed
+- Struct `DefinitionsClientListByManagementGroupResult` has been removed
+- Struct `DefinitionsClientListPager` has been removed
+- Struct `DefinitionsClientListResult` has been removed
+- Struct `ExemptionsClientCreateOrUpdateResult` has been removed
+- Struct `ExemptionsClientGetResult` has been removed
+- Struct `ExemptionsClientListForManagementGroupPager` has been removed
+- Struct `ExemptionsClientListForManagementGroupResult` has been removed
+- Struct `ExemptionsClientListForResourceGroupPager` has been removed
+- Struct `ExemptionsClientListForResourceGroupResult` has been removed
+- Struct `ExemptionsClientListForResourcePager` has been removed
+- Struct `ExemptionsClientListForResourceResult` has been removed
+- Struct `ExemptionsClientListPager` has been removed
+- Struct `ExemptionsClientListResult` has been removed
+- Struct `SetDefinitionsClientCreateOrUpdateAtManagementGroupResult` has been removed
+- Struct `SetDefinitionsClientCreateOrUpdateResult` has been removed
+- Struct `SetDefinitionsClientGetAtManagementGroupResult` has been removed
+- Struct `SetDefinitionsClientGetBuiltInResult` has been removed
+- Struct `SetDefinitionsClientGetResult` has been removed
+- Struct `SetDefinitionsClientListBuiltInPager` has been removed
+- Struct `SetDefinitionsClientListBuiltInResult` has been removed
+- Struct `SetDefinitionsClientListByManagementGroupPager` has been removed
+- Struct `SetDefinitionsClientListByManagementGroupResult` has been removed
+- Struct `SetDefinitionsClientListPager` has been removed
+- Struct `SetDefinitionsClientListResult` has been removed
+- Field `DefinitionsClientGetResult` of struct `DefinitionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DefinitionsClientGetResponse` has been removed
+- Field `SetDefinitionsClientListByManagementGroupResult` of struct `SetDefinitionsClientListByManagementGroupResponse` has been removed
+- Field `RawResponse` of struct `SetDefinitionsClientListByManagementGroupResponse` has been removed
+- Field `AssignmentsClientCreateResult` of struct `AssignmentsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `AssignmentsClientCreateResponse` has been removed
+- Field `AssignmentsClientUpdateResult` of struct `AssignmentsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `AssignmentsClientUpdateResponse` has been removed
+- Field `ExemptionsClientListForResourceResult` of struct `ExemptionsClientListForResourceResponse` has been removed
+- Field `RawResponse` of struct `ExemptionsClientListForResourceResponse` has been removed
+- Field `SetDefinitionsClientGetAtManagementGroupResult` of struct `SetDefinitionsClientGetAtManagementGroupResponse` has been removed
+- Field `RawResponse` of struct `SetDefinitionsClientGetAtManagementGroupResponse` has been removed
+- Field `AssignmentsClientUpdateByIDResult` of struct `AssignmentsClientUpdateByIDResponse` has been removed
+- Field `RawResponse` of struct `AssignmentsClientUpdateByIDResponse` has been removed
+- Field `RawResponse` of struct `SetDefinitionsClientDeleteResponse` has been removed
+- Field `AssignmentsClientListForManagementGroupResult` of struct `AssignmentsClientListForManagementGroupResponse` has been removed
+- Field `RawResponse` of struct `AssignmentsClientListForManagementGroupResponse` has been removed
+- Field `SetDefinitionsClientGetResult` of struct `SetDefinitionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SetDefinitionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ExemptionsClientDeleteResponse` has been removed
+- Field `DataPolicyManifestsClientGetByPolicyModeResult` of struct `DataPolicyManifestsClientGetByPolicyModeResponse` has been removed
+- Field `RawResponse` of struct `DataPolicyManifestsClientGetByPolicyModeResponse` has been removed
+- Field `DataPolicyManifestsClientListResult` of struct `DataPolicyManifestsClientListResponse` has been removed
+- Field `RawResponse` of struct `DataPolicyManifestsClientListResponse` has been removed
+- Field `ExemptionsClientGetResult` of struct `ExemptionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ExemptionsClientGetResponse` has been removed
+- Field `ExemptionsClientListForManagementGroupResult` of struct `ExemptionsClientListForManagementGroupResponse` has been removed
+- Field `RawResponse` of struct `ExemptionsClientListForManagementGroupResponse` has been removed
+- Field `AssignmentsClientListForResourceResult` of struct `AssignmentsClientListForResourceResponse` has been removed
+- Field `RawResponse` of struct `AssignmentsClientListForResourceResponse` has been removed
+- Field `ExemptionsClientListResult` of struct `ExemptionsClientListResponse` has been removed
+- Field `RawResponse` of struct `ExemptionsClientListResponse` has been removed
+- Field `DefinitionsClientCreateOrUpdateAtManagementGroupResult` of struct `DefinitionsClientCreateOrUpdateAtManagementGroupResponse` has been removed
+- Field `RawResponse` of struct `DefinitionsClientCreateOrUpdateAtManagementGroupResponse` has been removed
+- Field `SetDefinitionsClientListBuiltInResult` of struct `SetDefinitionsClientListBuiltInResponse` has been removed
+- Field `RawResponse` of struct `SetDefinitionsClientListBuiltInResponse` has been removed
+- Field `AssignmentsClientGetResult` of struct `AssignmentsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AssignmentsClientGetResponse` has been removed
+- Field `AssignmentsClientListForResourceGroupResult` of struct `AssignmentsClientListForResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `AssignmentsClientListForResourceGroupResponse` has been removed
+- Field `DefinitionsClientListByManagementGroupResult` of struct `DefinitionsClientListByManagementGroupResponse` has been removed
+- Field `RawResponse` of struct `DefinitionsClientListByManagementGroupResponse` has been removed
+- Field `AssignmentsClientListResult` of struct `AssignmentsClientListResponse` has been removed
+- Field `RawResponse` of struct `AssignmentsClientListResponse` has been removed
+- Field `AssignmentsClientCreateByIDResult` of struct `AssignmentsClientCreateByIDResponse` has been removed
+- Field `RawResponse` of struct `AssignmentsClientCreateByIDResponse` has been removed
+- Field `AssignmentsClientGetByIDResult` of struct `AssignmentsClientGetByIDResponse` has been removed
+- Field `RawResponse` of struct `AssignmentsClientGetByIDResponse` has been removed
+- Field `DefinitionsClientListResult` of struct `DefinitionsClientListResponse` has been removed
+- Field `RawResponse` of struct `DefinitionsClientListResponse` has been removed
+- Field `SetDefinitionsClientListResult` of struct `SetDefinitionsClientListResponse` has been removed
+- Field `RawResponse` of struct `SetDefinitionsClientListResponse` has been removed
+- Field `AssignmentsClientDeleteResult` of struct `AssignmentsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `AssignmentsClientDeleteResponse` has been removed
+- Field `AssignmentsClientDeleteByIDResult` of struct `AssignmentsClientDeleteByIDResponse` has been removed
+- Field `RawResponse` of struct `AssignmentsClientDeleteByIDResponse` has been removed
+- Field `ExemptionsClientCreateOrUpdateResult` of struct `ExemptionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ExemptionsClientCreateOrUpdateResponse` has been removed
+- Field `SetDefinitionsClientCreateOrUpdateResult` of struct `SetDefinitionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SetDefinitionsClientCreateOrUpdateResponse` has been removed
+- Field `DefinitionsClientGetBuiltInResult` of struct `DefinitionsClientGetBuiltInResponse` has been removed
+- Field `RawResponse` of struct `DefinitionsClientGetBuiltInResponse` has been removed
+- Field `SetDefinitionsClientCreateOrUpdateAtManagementGroupResult` of struct `SetDefinitionsClientCreateOrUpdateAtManagementGroupResponse` has been removed
+- Field `RawResponse` of struct `SetDefinitionsClientCreateOrUpdateAtManagementGroupResponse` has been removed
+- Field `RawResponse` of struct `SetDefinitionsClientDeleteAtManagementGroupResponse` has been removed
+- Field `DefinitionsClientListBuiltInResult` of struct `DefinitionsClientListBuiltInResponse` has been removed
+- Field `RawResponse` of struct `DefinitionsClientListBuiltInResponse` has been removed
+- Field `RawResponse` of struct `DefinitionsClientDeleteAtManagementGroupResponse` has been removed
+- Field `SetDefinitionsClientGetBuiltInResult` of struct `SetDefinitionsClientGetBuiltInResponse` has been removed
+- Field `RawResponse` of struct `SetDefinitionsClientGetBuiltInResponse` has been removed
+- Field `ExemptionsClientListForResourceGroupResult` of struct `ExemptionsClientListForResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ExemptionsClientListForResourceGroupResponse` has been removed
+- Field `DefinitionsClientCreateOrUpdateResult` of struct `DefinitionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DefinitionsClientCreateOrUpdateResponse` has been removed
+- Field `DefinitionsClientGetAtManagementGroupResult` of struct `DefinitionsClientGetAtManagementGroupResponse` has been removed
+- Field `RawResponse` of struct `DefinitionsClientGetAtManagementGroupResponse` has been removed
+- Field `RawResponse` of struct `DefinitionsClientDeleteResponse` has been removed
+
+### Features Added
+
+- New function `ErrorResponse.MarshalJSON() ([]byte, error)`
+- New struct `CloudError`
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorResponse`
+- New anonymous field `Assignment` in struct `AssignmentsClientCreateResponse`
+- New anonymous field `DefinitionListResult` in struct `DefinitionsClientListResponse`
+- New anonymous field `SetDefinition` in struct `SetDefinitionsClientCreateOrUpdateAtManagementGroupResponse`
+- New anonymous field `Exemption` in struct `ExemptionsClientCreateOrUpdateResponse`
+- New anonymous field `DefinitionListResult` in struct `DefinitionsClientListBuiltInResponse`
+- New anonymous field `AssignmentListResult` in struct `AssignmentsClientListForResourceGroupResponse`
+- New anonymous field `Definition` in struct `DefinitionsClientGetBuiltInResponse`
+- New anonymous field `SetDefinition` in struct `SetDefinitionsClientGetBuiltInResponse`
+- New anonymous field `DefinitionListResult` in struct `DefinitionsClientListByManagementGroupResponse`
+- New anonymous field `AssignmentListResult` in struct `AssignmentsClientListResponse`
+- New anonymous field `Assignment` in struct `AssignmentsClientCreateByIDResponse`
+- New anonymous field `Assignment` in struct `AssignmentsClientGetResponse`
+- New anonymous field `ExemptionListResult` in struct `ExemptionsClientListForResourceGroupResponse`
+- New anonymous field `Definition` in struct `DefinitionsClientCreateOrUpdateResponse`
+- New anonymous field `DataPolicyManifestListResult` in struct `DataPolicyManifestsClientListResponse`
+- New anonymous field `Assignment` in struct `AssignmentsClientUpdateResponse`
+- New anonymous field `SetDefinition` in struct `SetDefinitionsClientCreateOrUpdateResponse`
+- New anonymous field `Assignment` in struct `AssignmentsClientGetByIDResponse`
+- New anonymous field `DataPolicyManifest` in struct `DataPolicyManifestsClientGetByPolicyModeResponse`
+- New anonymous field `ExemptionListResult` in struct `ExemptionsClientListForResourceResponse`
+- New anonymous field `SetDefinition` in struct `SetDefinitionsClientGetResponse`
+- New anonymous field `Definition` in struct `DefinitionsClientGetResponse`
+- New anonymous field `ExemptionListResult` in struct `ExemptionsClientListResponse`
+- New anonymous field `Definition` in struct `DefinitionsClientCreateOrUpdateAtManagementGroupResponse`
+- New anonymous field `SetDefinitionListResult` in struct `SetDefinitionsClientListByManagementGroupResponse`
+- New anonymous field `AssignmentListResult` in struct `AssignmentsClientListForResourceResponse`
+- New anonymous field `Assignment` in struct `AssignmentsClientUpdateByIDResponse`
+- New anonymous field `Exemption` in struct `ExemptionsClientGetResponse`
+- New anonymous field `SetDefinitionListResult` in struct `SetDefinitionsClientListResponse`
+- New anonymous field `SetDefinition` in struct `SetDefinitionsClientGetAtManagementGroupResponse`
+- New anonymous field `Assignment` in struct `AssignmentsClientDeleteByIDResponse`
+- New anonymous field `AssignmentListResult` in struct `AssignmentsClientListForManagementGroupResponse`
+- New anonymous field `SetDefinitionListResult` in struct `SetDefinitionsClientListBuiltInResponse`
+- New anonymous field `Assignment` in struct `AssignmentsClientDeleteResponse`
+- New anonymous field `Definition` in struct `DefinitionsClientGetAtManagementGroupResponse`
+- New anonymous field `ExemptionListResult` in struct `ExemptionsClientListForManagementGroupResponse`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

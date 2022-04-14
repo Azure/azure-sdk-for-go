@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type SharedGalleryImagesClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSharedGalleryImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SharedGalleryImagesClient {
+func NewSharedGalleryImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SharedGalleryImagesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SharedGalleryImagesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Get a shared gallery image by subscription id or tenant id.
@@ -103,7 +108,7 @@ func (client *SharedGalleryImagesClient) getCreateRequest(ctx context.Context, l
 
 // getHandleResponse handles the Get response.
 func (client *SharedGalleryImagesClient) getHandleResponse(resp *http.Response) (SharedGalleryImagesClientGetResponse, error) {
-	result := SharedGalleryImagesClientGetResponse{RawResponse: resp}
+	result := SharedGalleryImagesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedGalleryImage); err != nil {
 		return SharedGalleryImagesClientGetResponse{}, err
 	}
@@ -116,16 +121,32 @@ func (client *SharedGalleryImagesClient) getHandleResponse(resp *http.Response) 
 // galleryUniqueName - The unique name of the Shared Gallery.
 // options - SharedGalleryImagesClientListOptions contains the optional parameters for the SharedGalleryImagesClient.List
 // method.
-func (client *SharedGalleryImagesClient) List(location string, galleryUniqueName string, options *SharedGalleryImagesClientListOptions) *SharedGalleryImagesClientListPager {
-	return &SharedGalleryImagesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, location, galleryUniqueName, options)
+func (client *SharedGalleryImagesClient) List(location string, galleryUniqueName string, options *SharedGalleryImagesClientListOptions) *runtime.Pager[SharedGalleryImagesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SharedGalleryImagesClientListResponse]{
+		More: func(page SharedGalleryImagesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SharedGalleryImagesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SharedGalleryImageList.NextLink)
+		Fetcher: func(ctx context.Context, page *SharedGalleryImagesClientListResponse) (SharedGalleryImagesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, location, galleryUniqueName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SharedGalleryImagesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SharedGalleryImagesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SharedGalleryImagesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -159,7 +180,7 @@ func (client *SharedGalleryImagesClient) listCreateRequest(ctx context.Context, 
 
 // listHandleResponse handles the List response.
 func (client *SharedGalleryImagesClient) listHandleResponse(resp *http.Response) (SharedGalleryImagesClientListResponse, error) {
-	result := SharedGalleryImagesClientListResponse{RawResponse: resp}
+	result := SharedGalleryImagesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedGalleryImageList); err != nil {
 		return SharedGalleryImagesClientListResponse{}, err
 	}

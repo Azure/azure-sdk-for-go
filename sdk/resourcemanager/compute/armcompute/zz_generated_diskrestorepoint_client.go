@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type DiskRestorePointClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDiskRestorePointClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DiskRestorePointClient {
+func NewDiskRestorePointClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DiskRestorePointClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DiskRestorePointClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Get disk restorePoint resource
@@ -108,7 +113,7 @@ func (client *DiskRestorePointClient) getCreateRequest(ctx context.Context, reso
 
 // getHandleResponse handles the Get response.
 func (client *DiskRestorePointClient) getHandleResponse(resp *http.Response) (DiskRestorePointClientGetResponse, error) {
-	result := DiskRestorePointClientGetResponse{RawResponse: resp}
+	result := DiskRestorePointClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiskRestorePoint); err != nil {
 		return DiskRestorePointClientGetResponse{}, err
 	}
@@ -124,22 +129,18 @@ func (client *DiskRestorePointClient) getHandleResponse(resp *http.Response) (Di
 // grantAccessData - Access data object supplied in the body of the get disk access operation.
 // options - DiskRestorePointClientBeginGrantAccessOptions contains the optional parameters for the DiskRestorePointClient.BeginGrantAccess
 // method.
-func (client *DiskRestorePointClient) BeginGrantAccess(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, grantAccessData GrantAccessData, options *DiskRestorePointClientBeginGrantAccessOptions) (DiskRestorePointClientGrantAccessPollerResponse, error) {
-	resp, err := client.grantAccess(ctx, resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, grantAccessData, options)
-	if err != nil {
-		return DiskRestorePointClientGrantAccessPollerResponse{}, err
+func (client *DiskRestorePointClient) BeginGrantAccess(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, grantAccessData GrantAccessData, options *DiskRestorePointClientBeginGrantAccessOptions) (*armruntime.Poller[DiskRestorePointClientGrantAccessResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.grantAccess(ctx, resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, grantAccessData, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[DiskRestorePointClientGrantAccessResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[DiskRestorePointClientGrantAccessResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DiskRestorePointClientGrantAccessPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DiskRestorePointClient.GrantAccess", "location", resp, client.pl)
-	if err != nil {
-		return DiskRestorePointClientGrantAccessPollerResponse{}, err
-	}
-	result.Poller = &DiskRestorePointClientGrantAccessPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // GrantAccess - Grants access to a diskRestorePoint.
@@ -200,16 +201,32 @@ func (client *DiskRestorePointClient) grantAccessCreateRequest(ctx context.Conte
 // vmRestorePointName - The name of the vm restore point that the disk disk restore point belongs.
 // options - DiskRestorePointClientListByRestorePointOptions contains the optional parameters for the DiskRestorePointClient.ListByRestorePoint
 // method.
-func (client *DiskRestorePointClient) ListByRestorePoint(resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, options *DiskRestorePointClientListByRestorePointOptions) *DiskRestorePointClientListByRestorePointPager {
-	return &DiskRestorePointClientListByRestorePointPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByRestorePointCreateRequest(ctx, resourceGroupName, restorePointCollectionName, vmRestorePointName, options)
+func (client *DiskRestorePointClient) ListByRestorePoint(resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, options *DiskRestorePointClientListByRestorePointOptions) *runtime.Pager[DiskRestorePointClientListByRestorePointResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DiskRestorePointClientListByRestorePointResponse]{
+		More: func(page DiskRestorePointClientListByRestorePointResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DiskRestorePointClientListByRestorePointResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DiskRestorePointList.NextLink)
+		Fetcher: func(ctx context.Context, page *DiskRestorePointClientListByRestorePointResponse) (DiskRestorePointClientListByRestorePointResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByRestorePointCreateRequest(ctx, resourceGroupName, restorePointCollectionName, vmRestorePointName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DiskRestorePointClientListByRestorePointResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DiskRestorePointClientListByRestorePointResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DiskRestorePointClientListByRestorePointResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByRestorePointHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByRestorePointCreateRequest creates the ListByRestorePoint request.
@@ -244,7 +261,7 @@ func (client *DiskRestorePointClient) listByRestorePointCreateRequest(ctx contex
 
 // listByRestorePointHandleResponse handles the ListByRestorePoint response.
 func (client *DiskRestorePointClient) listByRestorePointHandleResponse(resp *http.Response) (DiskRestorePointClientListByRestorePointResponse, error) {
-	result := DiskRestorePointClientListByRestorePointResponse{RawResponse: resp}
+	result := DiskRestorePointClientListByRestorePointResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiskRestorePointList); err != nil {
 		return DiskRestorePointClientListByRestorePointResponse{}, err
 	}
@@ -259,22 +276,18 @@ func (client *DiskRestorePointClient) listByRestorePointHandleResponse(resp *htt
 // diskRestorePointName - The name of the disk restore point created.
 // options - DiskRestorePointClientBeginRevokeAccessOptions contains the optional parameters for the DiskRestorePointClient.BeginRevokeAccess
 // method.
-func (client *DiskRestorePointClient) BeginRevokeAccess(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, options *DiskRestorePointClientBeginRevokeAccessOptions) (DiskRestorePointClientRevokeAccessPollerResponse, error) {
-	resp, err := client.revokeAccess(ctx, resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, options)
-	if err != nil {
-		return DiskRestorePointClientRevokeAccessPollerResponse{}, err
+func (client *DiskRestorePointClient) BeginRevokeAccess(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, options *DiskRestorePointClientBeginRevokeAccessOptions) (*armruntime.Poller[DiskRestorePointClientRevokeAccessResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.revokeAccess(ctx, resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[DiskRestorePointClientRevokeAccessResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[DiskRestorePointClientRevokeAccessResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DiskRestorePointClientRevokeAccessPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DiskRestorePointClient.RevokeAccess", "location", resp, client.pl)
-	if err != nil {
-		return DiskRestorePointClientRevokeAccessPollerResponse{}, err
-	}
-	result.Poller = &DiskRestorePointClientRevokeAccessPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // RevokeAccess - Revokes access to a diskRestorePoint.

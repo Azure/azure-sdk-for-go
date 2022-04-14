@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,93 +17,119 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement"
 )
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementHeadSignUpSettings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementHeadSignUpSettings.json
 func ExampleSignUpSettingsClient_GetEntityTag() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewSignUpSettingsClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewSignUpSettingsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.GetEntityTag(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementPortalSettingsGetSignUp.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementPortalSettingsGetSignUp.json
 func ExampleSignUpSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewSignUpSettingsClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewSignUpSettingsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.SignUpSettingsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementPortalSettingsUpdateSignUp.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementPortalSettingsUpdateSignUp.json
 func ExampleSignUpSettingsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewSignUpSettingsClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewSignUpSettingsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Update(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		"<if-match>",
 		armapimanagement.PortalSignupSettings{
 			Properties: &armapimanagement.PortalSignupSettingsProperties{
-				Enabled: to.BoolPtr(true),
+				Enabled: to.Ptr(true),
 				TermsOfService: &armapimanagement.TermsOfServiceProperties{
-					ConsentRequired: to.BoolPtr(true),
-					Enabled:         to.BoolPtr(true),
-					Text:            to.StringPtr("<text>"),
+					ConsentRequired: to.Ptr(true),
+					Enabled:         to.Ptr(true),
+					Text:            to.Ptr("<text>"),
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementPortalSettingsPutSignUp.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementPortalSettingsPutSignUp.json
 func ExampleSignUpSettingsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewSignUpSettingsClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewSignUpSettingsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		armapimanagement.PortalSignupSettings{
 			Properties: &armapimanagement.PortalSignupSettingsProperties{
-				Enabled: to.BoolPtr(true),
+				Enabled: to.Ptr(true),
 				TermsOfService: &armapimanagement.TermsOfServiceProperties{
-					ConsentRequired: to.BoolPtr(true),
-					Enabled:         to.BoolPtr(true),
-					Text:            to.StringPtr("<text>"),
+					ConsentRequired: to.Ptr(true),
+					Enabled:         to.Ptr(true),
+					Text:            to.Ptr("<text>"),
 				},
 			},
 		},
-		&armapimanagement.SignUpSettingsClientCreateOrUpdateOptions{IfMatch: to.StringPtr("<if-match>")})
+		&armapimanagement.SignUpSettingsClientCreateOrUpdateOptions{IfMatch: to.Ptr("<if-match>")})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.SignUpSettingsClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }

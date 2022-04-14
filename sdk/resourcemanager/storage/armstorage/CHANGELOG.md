@@ -1,5 +1,565 @@
 # Release History
 
+## 0.5.0 (2022-04-14)
+### Breaking Changes
+
+- Function `NewObjectReplicationPoliciesClient` return value(s) have been changed from `(*ObjectReplicationPoliciesClient)` to `(*ObjectReplicationPoliciesClient, error)`
+- Function `*EncryptionScopesClient.List` return value(s) have been changed from `(*EncryptionScopesClientListPager)` to `(*runtime.Pager[EncryptionScopesClientListResponse])`
+- Function `*AccountsClient.BeginCreate` return value(s) have been changed from `(AccountsClientCreatePollerResponse, error)` to `(*armruntime.Poller[AccountsClientCreateResponse], error)`
+- Function `NewFileServicesClient` return value(s) have been changed from `(*FileServicesClient)` to `(*FileServicesClient, error)`
+- Function `NewPrivateEndpointConnectionsClient` return value(s) have been changed from `(*PrivateEndpointConnectionsClient)` to `(*PrivateEndpointConnectionsClient, error)`
+- Function `NewQueueServicesClient` return value(s) have been changed from `(*QueueServicesClient)` to `(*QueueServicesClient, error)`
+- Function `NewAccountsClient` return value(s) have been changed from `(*AccountsClient)` to `(*AccountsClient, error)`
+- Function `NewBlobInventoryPoliciesClient` return value(s) have been changed from `(*BlobInventoryPoliciesClient)` to `(*BlobInventoryPoliciesClient, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsClientListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsClientListResponse, error)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewUsagesClient` return value(s) have been changed from `(*UsagesClient)` to `(*UsagesClient, error)`
+- Function `NewBlobContainersClient` return value(s) have been changed from `(*BlobContainersClient)` to `(*BlobContainersClient, error)`
+- Function `*TableClient.List` return value(s) have been changed from `(*TableClientListPager)` to `(*runtime.Pager[TableClientListResponse])`
+- Function `NewDeletedAccountsClient` return value(s) have been changed from `(*DeletedAccountsClient)` to `(*DeletedAccountsClient, error)`
+- Function `*ObjectReplicationPoliciesClient.List` parameter(s) have been changed from `(context.Context, string, string, *ObjectReplicationPoliciesClientListOptions)` to `(string, string, *ObjectReplicationPoliciesClientListOptions)`
+- Function `*ObjectReplicationPoliciesClient.List` return value(s) have been changed from `(ObjectReplicationPoliciesClientListResponse, error)` to `(*runtime.Pager[ObjectReplicationPoliciesClientListResponse])`
+- Function `NewTableServicesClient` return value(s) have been changed from `(*TableServicesClient)` to `(*TableServicesClient, error)`
+- Function `NewQueueClient` return value(s) have been changed from `(*QueueClient)` to `(*QueueClient, error)`
+- Function `*PrivateEndpointConnectionsClient.List` parameter(s) have been changed from `(context.Context, string, string, *PrivateEndpointConnectionsClientListOptions)` to `(string, string, *PrivateEndpointConnectionsClientListOptions)`
+- Function `*PrivateEndpointConnectionsClient.List` return value(s) have been changed from `(PrivateEndpointConnectionsClientListResponse, error)` to `(*runtime.Pager[PrivateEndpointConnectionsClientListResponse])`
+- Function `*LocalUsersClient.List` parameter(s) have been changed from `(context.Context, string, string, *LocalUsersClientListOptions)` to `(string, string, *LocalUsersClientListOptions)`
+- Function `*LocalUsersClient.List` return value(s) have been changed from `(LocalUsersClientListResponse, error)` to `(*runtime.Pager[LocalUsersClientListResponse])`
+- Function `NewEncryptionScopesClient` return value(s) have been changed from `(*EncryptionScopesClient)` to `(*EncryptionScopesClient, error)`
+- Function `*FileSharesClient.List` return value(s) have been changed from `(*FileSharesClientListPager)` to `(*runtime.Pager[FileSharesClientListResponse])`
+- Function `*AccountsClient.BeginHierarchicalNamespaceMigration` return value(s) have been changed from `(AccountsClientHierarchicalNamespaceMigrationPollerResponse, error)` to `(*armruntime.Poller[AccountsClientHierarchicalNamespaceMigrationResponse], error)`
+- Function `*AccountsClient.BeginFailover` return value(s) have been changed from `(AccountsClientFailoverPollerResponse, error)` to `(*armruntime.Poller[AccountsClientFailoverResponse], error)`
+- Function `*QueueClient.List` return value(s) have been changed from `(*QueueClientListPager)` to `(*runtime.Pager[QueueClientListResponse])`
+- Function `NewPrivateLinkResourcesClient` return value(s) have been changed from `(*PrivateLinkResourcesClient)` to `(*PrivateLinkResourcesClient, error)`
+- Function `NewLocalUsersClient` return value(s) have been changed from `(*LocalUsersClient)` to `(*LocalUsersClient, error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `NewBlobServicesClient` return value(s) have been changed from `(*BlobServicesClient)` to `(*BlobServicesClient, error)`
+- Function `*DeletedAccountsClient.List` return value(s) have been changed from `(*DeletedAccountsClientListPager)` to `(*runtime.Pager[DeletedAccountsClientListResponse])`
+- Function `*BlobContainersClient.BeginObjectLevelWorm` return value(s) have been changed from `(BlobContainersClientObjectLevelWormPollerResponse, error)` to `(*armruntime.Poller[BlobContainersClientObjectLevelWormResponse], error)`
+- Function `*BlobInventoryPoliciesClient.List` parameter(s) have been changed from `(context.Context, string, string, *BlobInventoryPoliciesClientListOptions)` to `(string, string, *BlobInventoryPoliciesClientListOptions)`
+- Function `*BlobInventoryPoliciesClient.List` return value(s) have been changed from `(BlobInventoryPoliciesClientListResponse, error)` to `(*runtime.Pager[BlobInventoryPoliciesClientListResponse])`
+- Function `*BlobContainersClient.List` return value(s) have been changed from `(*BlobContainersClientListPager)` to `(*runtime.Pager[BlobContainersClientListResponse])`
+- Function `*SKUsClient.List` parameter(s) have been changed from `(context.Context, *SKUsClientListOptions)` to `(*SKUsClientListOptions)`
+- Function `*SKUsClient.List` return value(s) have been changed from `(SKUsClientListResponse, error)` to `(*runtime.Pager[SKUsClientListResponse])`
+- Function `*UsagesClient.ListByLocation` parameter(s) have been changed from `(context.Context, string, *UsagesClientListByLocationOptions)` to `(string, *UsagesClientListByLocationOptions)`
+- Function `*UsagesClient.ListByLocation` return value(s) have been changed from `(UsagesClientListByLocationResponse, error)` to `(*runtime.Pager[UsagesClientListByLocationResponse])`
+- Function `NewSKUsClient` return value(s) have been changed from `(*SKUsClient)` to `(*SKUsClient, error)`
+- Function `*AccountsClient.List` return value(s) have been changed from `(*AccountsClientListPager)` to `(*runtime.Pager[AccountsClientListResponse])`
+- Function `*AccountsClient.BeginAbortHierarchicalNamespaceMigration` return value(s) have been changed from `(AccountsClientAbortHierarchicalNamespaceMigrationPollerResponse, error)` to `(*armruntime.Poller[AccountsClientAbortHierarchicalNamespaceMigrationResponse], error)`
+- Function `*AccountsClient.ListByResourceGroup` return value(s) have been changed from `(*AccountsClientListByResourceGroupPager)` to `(*runtime.Pager[AccountsClientListByResourceGroupResponse])`
+- Function `NewManagementPoliciesClient` return value(s) have been changed from `(*ManagementPoliciesClient)` to `(*ManagementPoliciesClient, error)`
+- Function `*BlobServicesClient.List` parameter(s) have been changed from `(context.Context, string, string, *BlobServicesClientListOptions)` to `(string, string, *BlobServicesClientListOptions)`
+- Function `*BlobServicesClient.List` return value(s) have been changed from `(BlobServicesClientListResponse, error)` to `(*runtime.Pager[BlobServicesClientListResponse])`
+- Function `NewFileSharesClient` return value(s) have been changed from `(*FileSharesClient)` to `(*FileSharesClient, error)`
+- Function `*AccountsClient.BeginRestoreBlobRanges` return value(s) have been changed from `(AccountsClientRestoreBlobRangesPollerResponse, error)` to `(*armruntime.Poller[AccountsClientRestoreBlobRangesResponse], error)`
+- Function `NewTableClient` return value(s) have been changed from `(*TableClient)` to `(*TableClient, error)`
+- Function `BlobInventoryPolicyName.ToPtr` has been removed
+- Function `*AccountsClientFailoverPoller.Poll` has been removed
+- Function `RootSquashType.ToPtr` has been removed
+- Function `AccountStatus.ToPtr` has been removed
+- Function `Format.ToPtr` has been removed
+- Function `AccountsClientAbortHierarchicalNamespaceMigrationPollerResponse.PollUntilDone` has been removed
+- Function `EnabledProtocols.ToPtr` has been removed
+- Function `ListContainersInclude.ToPtr` has been removed
+- Function `Name.ToPtr` has been removed
+- Function `*TableClientListPager.PageResponse` has been removed
+- Function `PublicAccess.ToPtr` has been removed
+- Function `*BlobContainersClientListPager.NextPage` has been removed
+- Function `AccountsClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*BlobContainersClientObjectLevelWormPoller.FinalResponse` has been removed
+- Function `*AccountsClientFailoverPoller.ResumeToken` has been removed
+- Function `PublicNetworkAccess.ToPtr` has been removed
+- Function `*AccountsClientHierarchicalNamespaceMigrationPoller.Poll` has been removed
+- Function `InventoryRuleType.ToPtr` has been removed
+- Function `Services.ToPtr` has been removed
+- Function `*AccountsClientRestoreBlobRangesPollerResponse.Resume` has been removed
+- Function `Permissions.ToPtr` has been removed
+- Function `HTTPProtocol.ToPtr` has been removed
+- Function `LeaseDuration.ToPtr` has been removed
+- Function `*AccountsClientCreatePoller.FinalResponse` has been removed
+- Function `AllowedCopyScope.ToPtr` has been removed
+- Function `PrivateEndpointConnectionProvisioningState.ToPtr` has been removed
+- Function `*AccountsClientHierarchicalNamespaceMigrationPoller.ResumeToken` has been removed
+- Function `*AccountsClientRestoreBlobRangesPoller.Poll` has been removed
+- Function `*AccountsClientCreatePoller.Done` has been removed
+- Function `RuleType.ToPtr` has been removed
+- Function `BlobContainersClientObjectLevelWormPollerResponse.PollUntilDone` has been removed
+- Function `*FileSharesClientListPager.PageResponse` has been removed
+- Function `*BlobContainersClientListPager.PageResponse` has been removed
+- Function `*AccountsClientRestoreBlobRangesPoller.Done` has been removed
+- Function `MigrationState.ToPtr` has been removed
+- Function `LargeFileSharesState.ToPtr` has been removed
+- Function `LeaseState.ToPtr` has been removed
+- Function `LeaseContainerRequestAction.ToPtr` has been removed
+- Function `*AccountsClientRestoreBlobRangesPoller.FinalResponse` has been removed
+- Function `*AccountsClientListPager.Err` has been removed
+- Function `ReasonCode.ToPtr` has been removed
+- Function `*QueueClientListPager.PageResponse` has been removed
+- Function `UsageUnit.ToPtr` has been removed
+- Function `*TableClientListPager.NextPage` has been removed
+- Function `DirectoryServiceOptions.ToPtr` has been removed
+- Function `AccountsClientFailoverPollerResponse.PollUntilDone` has been removed
+- Function `LeaseStatus.ToPtr` has been removed
+- Function `EncryptionScopeState.ToPtr` has been removed
+- Function `*FileSharesClientListPager.NextPage` has been removed
+- Function `*AccountsClientListByResourceGroupPager.NextPage` has been removed
+- Function `AccountsClientHierarchicalNamespaceMigrationPollerResponse.PollUntilDone` has been removed
+- Function `SignedResource.ToPtr` has been removed
+- Function `SKUName.ToPtr` has been removed
+- Function `*TableClientListPager.Err` has been removed
+- Function `ImmutabilityPolicyUpdateType.ToPtr` has been removed
+- Function `ImmutabilityPolicyState.ToPtr` has been removed
+- Function `*AccountsClientCreatePollerResponse.Resume` has been removed
+- Function `*AccountsClientCreatePoller.ResumeToken` has been removed
+- Function `SignedResourceTypes.ToPtr` has been removed
+- Function `DefaultSharePermission.ToPtr` has been removed
+- Function `*BlobContainersClientObjectLevelWormPoller.Done` has been removed
+- Function `PrivateEndpointServiceConnectionStatus.ToPtr` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `IdentityType.ToPtr` has been removed
+- Function `*AccountsClientRestoreBlobRangesPoller.ResumeToken` has been removed
+- Function `KeyType.ToPtr` has been removed
+- Function `*AccountsClientListPager.PageResponse` has been removed
+- Function `ManagementPolicyName.ToPtr` has been removed
+- Function `Bypass.ToPtr` has been removed
+- Function `ShareAccessTier.ToPtr` has been removed
+- Function `*EncryptionScopesClientListPager.NextPage` has been removed
+- Function `*AccountsClientAbortHierarchicalNamespaceMigrationPollerResponse.Resume` has been removed
+- Function `*AccountsClientListByResourceGroupPager.Err` has been removed
+- Function `GeoReplicationStatus.ToPtr` has been removed
+- Function `*AccountsClientAbortHierarchicalNamespaceMigrationPoller.ResumeToken` has been removed
+- Function `*QueueClientListPager.Err` has been removed
+- Function `*FileSharesClientListPager.Err` has been removed
+- Function `*AccountsClientHierarchicalNamespaceMigrationPoller.FinalResponse` has been removed
+- Function `BlobRestoreProgressStatus.ToPtr` has been removed
+- Function `*DeletedAccountsClientListPager.PageResponse` has been removed
+- Function `*AccountsClientHierarchicalNamespaceMigrationPollerResponse.Resume` has been removed
+- Function `*AccountsClientAbortHierarchicalNamespaceMigrationPoller.FinalResponse` has been removed
+- Function `KeySource.ToPtr` has been removed
+- Function `*AccountsClientAbortHierarchicalNamespaceMigrationPoller.Poll` has been removed
+- Function `*AccountsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*BlobContainersClientListPager.Err` has been removed
+- Function `*DeletedAccountsClientListPager.Err` has been removed
+- Function `CorsRuleAllowedMethodsItem.ToPtr` has been removed
+- Function `AccountImmutabilityPolicyState.ToPtr` has been removed
+- Function `*AccountsClientHierarchicalNamespaceMigrationPoller.Done` has been removed
+- Function `AccountsClientRestoreBlobRangesPollerResponse.PollUntilDone` has been removed
+- Function `AccessTier.ToPtr` has been removed
+- Function `*DeletedAccountsClientListPager.NextPage` has been removed
+- Function `ObjectType.ToPtr` has been removed
+- Function `KeyPermission.ToPtr` has been removed
+- Function `ExpirationAction.ToPtr` has been removed
+- Function `SKUTier.ToPtr` has been removed
+- Function `*AccountsClientListPager.NextPage` has been removed
+- Function `*QueueClientListPager.NextPage` has been removed
+- Function `EncryptionScopeSource.ToPtr` has been removed
+- Function `Reason.ToPtr` has been removed
+- Function `State.ToPtr` has been removed
+- Function `Schedule.ToPtr` has been removed
+- Function `*AccountsClientFailoverPollerResponse.Resume` has been removed
+- Function `StorageAccountExpand.ToPtr` has been removed
+- Function `*BlobContainersClientObjectLevelWormPollerResponse.Resume` has been removed
+- Function `ActiveDirectoryPropertiesAccountType.ToPtr` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*EncryptionScopesClientListPager.Err` has been removed
+- Function `MinimumTLSVersion.ToPtr` has been removed
+- Function `*AccountsClientFailoverPoller.Done` has been removed
+- Function `Kind.ToPtr` has been removed
+- Function `ExtendedLocationTypes.ToPtr` has been removed
+- Function `*BlobContainersClientObjectLevelWormPoller.ResumeToken` has been removed
+- Function `LeaseShareAction.ToPtr` has been removed
+- Function `RoutingChoice.ToPtr` has been removed
+- Function `*EncryptionScopesClientListPager.PageResponse` has been removed
+- Function `*AccountsClientFailoverPoller.FinalResponse` has been removed
+- Function `*AccountsClientCreatePoller.Poll` has been removed
+- Function `*AccountsClientAbortHierarchicalNamespaceMigrationPoller.Done` has been removed
+- Function `DefaultAction.ToPtr` has been removed
+- Function `*BlobContainersClientObjectLevelWormPoller.Poll` has been removed
+- Struct `AccountsClientAbortHierarchicalNamespaceMigrationPoller` has been removed
+- Struct `AccountsClientAbortHierarchicalNamespaceMigrationPollerResponse` has been removed
+- Struct `AccountsClientCheckNameAvailabilityResult` has been removed
+- Struct `AccountsClientCreatePoller` has been removed
+- Struct `AccountsClientCreatePollerResponse` has been removed
+- Struct `AccountsClientCreateResult` has been removed
+- Struct `AccountsClientFailoverPoller` has been removed
+- Struct `AccountsClientFailoverPollerResponse` has been removed
+- Struct `AccountsClientGetPropertiesResult` has been removed
+- Struct `AccountsClientHierarchicalNamespaceMigrationPoller` has been removed
+- Struct `AccountsClientHierarchicalNamespaceMigrationPollerResponse` has been removed
+- Struct `AccountsClientListAccountSASResult` has been removed
+- Struct `AccountsClientListByResourceGroupPager` has been removed
+- Struct `AccountsClientListByResourceGroupResult` has been removed
+- Struct `AccountsClientListKeysResult` has been removed
+- Struct `AccountsClientListPager` has been removed
+- Struct `AccountsClientListResult` has been removed
+- Struct `AccountsClientListServiceSASResult` has been removed
+- Struct `AccountsClientRegenerateKeyResult` has been removed
+- Struct `AccountsClientRestoreBlobRangesPoller` has been removed
+- Struct `AccountsClientRestoreBlobRangesPollerResponse` has been removed
+- Struct `AccountsClientRestoreBlobRangesResult` has been removed
+- Struct `AccountsClientUpdateResult` has been removed
+- Struct `BlobContainersClientClearLegalHoldResult` has been removed
+- Struct `BlobContainersClientCreateOrUpdateImmutabilityPolicyResult` has been removed
+- Struct `BlobContainersClientCreateResult` has been removed
+- Struct `BlobContainersClientDeleteImmutabilityPolicyResult` has been removed
+- Struct `BlobContainersClientExtendImmutabilityPolicyResult` has been removed
+- Struct `BlobContainersClientGetImmutabilityPolicyResult` has been removed
+- Struct `BlobContainersClientGetResult` has been removed
+- Struct `BlobContainersClientLeaseResult` has been removed
+- Struct `BlobContainersClientListPager` has been removed
+- Struct `BlobContainersClientListResult` has been removed
+- Struct `BlobContainersClientLockImmutabilityPolicyResult` has been removed
+- Struct `BlobContainersClientObjectLevelWormPoller` has been removed
+- Struct `BlobContainersClientObjectLevelWormPollerResponse` has been removed
+- Struct `BlobContainersClientSetLegalHoldResult` has been removed
+- Struct `BlobContainersClientUpdateResult` has been removed
+- Struct `BlobInventoryPoliciesClientCreateOrUpdateResult` has been removed
+- Struct `BlobInventoryPoliciesClientGetResult` has been removed
+- Struct `BlobInventoryPoliciesClientListResult` has been removed
+- Struct `BlobServicesClientGetServicePropertiesResult` has been removed
+- Struct `BlobServicesClientListResult` has been removed
+- Struct `BlobServicesClientSetServicePropertiesResult` has been removed
+- Struct `DeletedAccountsClientGetResult` has been removed
+- Struct `DeletedAccountsClientListPager` has been removed
+- Struct `DeletedAccountsClientListResult` has been removed
+- Struct `EncryptionScopesClientGetResult` has been removed
+- Struct `EncryptionScopesClientListPager` has been removed
+- Struct `EncryptionScopesClientListResult` has been removed
+- Struct `EncryptionScopesClientPatchResult` has been removed
+- Struct `EncryptionScopesClientPutResult` has been removed
+- Struct `FileServicesClientGetServicePropertiesResult` has been removed
+- Struct `FileServicesClientListResult` has been removed
+- Struct `FileServicesClientSetServicePropertiesResult` has been removed
+- Struct `FileSharesClientCreateResult` has been removed
+- Struct `FileSharesClientGetResult` has been removed
+- Struct `FileSharesClientLeaseResult` has been removed
+- Struct `FileSharesClientListPager` has been removed
+- Struct `FileSharesClientListResult` has been removed
+- Struct `FileSharesClientUpdateResult` has been removed
+- Struct `LocalUsersClientCreateOrUpdateResult` has been removed
+- Struct `LocalUsersClientGetResult` has been removed
+- Struct `LocalUsersClientListKeysResult` has been removed
+- Struct `LocalUsersClientListResult` has been removed
+- Struct `LocalUsersClientRegeneratePasswordResult` has been removed
+- Struct `ManagementPoliciesClientCreateOrUpdateResult` has been removed
+- Struct `ManagementPoliciesClientGetResult` has been removed
+- Struct `ObjectReplicationPoliciesClientCreateOrUpdateResult` has been removed
+- Struct `ObjectReplicationPoliciesClientGetResult` has been removed
+- Struct `ObjectReplicationPoliciesClientListResult` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `PrivateEndpointConnectionsClientGetResult` has been removed
+- Struct `PrivateEndpointConnectionsClientListResult` has been removed
+- Struct `PrivateEndpointConnectionsClientPutResult` has been removed
+- Struct `PrivateLinkResourcesClientListByStorageAccountResult` has been removed
+- Struct `QueueClientCreateResult` has been removed
+- Struct `QueueClientGetResult` has been removed
+- Struct `QueueClientListPager` has been removed
+- Struct `QueueClientListResult` has been removed
+- Struct `QueueClientUpdateResult` has been removed
+- Struct `QueueServicesClientGetServicePropertiesResult` has been removed
+- Struct `QueueServicesClientListResult` has been removed
+- Struct `QueueServicesClientSetServicePropertiesResult` has been removed
+- Struct `SKUsClientListResult` has been removed
+- Struct `TableClientCreateResult` has been removed
+- Struct `TableClientGetResult` has been removed
+- Struct `TableClientListPager` has been removed
+- Struct `TableClientListResult` has been removed
+- Struct `TableClientUpdateResult` has been removed
+- Struct `TableServicesClientGetServicePropertiesResult` has been removed
+- Struct `TableServicesClientListResult` has been removed
+- Struct `TableServicesClientSetServicePropertiesResult` has been removed
+- Struct `UsagesClientListByLocationResult` has been removed
+- Field `TableClientCreateResult` of struct `TableClientCreateResponse` has been removed
+- Field `RawResponse` of struct `TableClientCreateResponse` has been removed
+- Field `AccountsClientRestoreBlobRangesResult` of struct `AccountsClientRestoreBlobRangesResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientRestoreBlobRangesResponse` has been removed
+- Field `BlobContainersClientUpdateResult` of struct `BlobContainersClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `BlobContainersClientUpdateResponse` has been removed
+- Field `FileSharesClientListResult` of struct `FileSharesClientListResponse` has been removed
+- Field `RawResponse` of struct `FileSharesClientListResponse` has been removed
+- Field `BlobContainersClientLeaseResult` of struct `BlobContainersClientLeaseResponse` has been removed
+- Field `RawResponse` of struct `BlobContainersClientLeaseResponse` has been removed
+- Field `BlobContainersClientListResult` of struct `BlobContainersClientListResponse` has been removed
+- Field `RawResponse` of struct `BlobContainersClientListResponse` has been removed
+- Field `BlobServicesClientGetServicePropertiesResult` of struct `BlobServicesClientGetServicePropertiesResponse` has been removed
+- Field `RawResponse` of struct `BlobServicesClientGetServicePropertiesResponse` has been removed
+- Field `RawResponse` of struct `BlobInventoryPoliciesClientDeleteResponse` has been removed
+- Field `EncryptionScopesClientPutResult` of struct `EncryptionScopesClientPutResponse` has been removed
+- Field `RawResponse` of struct `EncryptionScopesClientPutResponse` has been removed
+- Field `ObjectReplicationPoliciesClientListResult` of struct `ObjectReplicationPoliciesClientListResponse` has been removed
+- Field `RawResponse` of struct `ObjectReplicationPoliciesClientListResponse` has been removed
+- Field `AccountsClientListAccountSASResult` of struct `AccountsClientListAccountSASResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientListAccountSASResponse` has been removed
+- Field `TableServicesClientGetServicePropertiesResult` of struct `TableServicesClientGetServicePropertiesResponse` has been removed
+- Field `RawResponse` of struct `TableServicesClientGetServicePropertiesResponse` has been removed
+- Field `BlobContainersClientLockImmutabilityPolicyResult` of struct `BlobContainersClientLockImmutabilityPolicyResponse` has been removed
+- Field `RawResponse` of struct `BlobContainersClientLockImmutabilityPolicyResponse` has been removed
+- Field `QueueClientGetResult` of struct `QueueClientGetResponse` has been removed
+- Field `RawResponse` of struct `QueueClientGetResponse` has been removed
+- Field `BlobContainersClientSetLegalHoldResult` of struct `BlobContainersClientSetLegalHoldResponse` has been removed
+- Field `RawResponse` of struct `BlobContainersClientSetLegalHoldResponse` has been removed
+- Field `DeletedAccountsClientGetResult` of struct `DeletedAccountsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DeletedAccountsClientGetResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `BlobInventoryPoliciesClientListResult` of struct `BlobInventoryPoliciesClientListResponse` has been removed
+- Field `RawResponse` of struct `BlobInventoryPoliciesClientListResponse` has been removed
+- Field `EncryptionScopesClientListResult` of struct `EncryptionScopesClientListResponse` has been removed
+- Field `RawResponse` of struct `EncryptionScopesClientListResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientFailoverResponse` has been removed
+- Field `TableServicesClientSetServicePropertiesResult` of struct `TableServicesClientSetServicePropertiesResponse` has been removed
+- Field `RawResponse` of struct `TableServicesClientSetServicePropertiesResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientRevokeUserDelegationKeysResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `TableClientDeleteResponse` has been removed
+- Field `FileServicesClientSetServicePropertiesResult` of struct `FileServicesClientSetServicePropertiesResponse` has been removed
+- Field `RawResponse` of struct `FileServicesClientSetServicePropertiesResponse` has been removed
+- Field `FileServicesClientListResult` of struct `FileServicesClientListResponse` has been removed
+- Field `RawResponse` of struct `FileServicesClientListResponse` has been removed
+- Field `AccountsClientRegenerateKeyResult` of struct `AccountsClientRegenerateKeyResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientRegenerateKeyResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientDeleteResponse` has been removed
+- Field `AccountsClientListServiceSASResult` of struct `AccountsClientListServiceSASResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientListServiceSASResponse` has been removed
+- Field `PrivateEndpointConnectionsClientPutResult` of struct `PrivateEndpointConnectionsClientPutResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientPutResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientAbortHierarchicalNamespaceMigrationResponse` has been removed
+- Field `BlobInventoryPoliciesClientCreateOrUpdateResult` of struct `BlobInventoryPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `BlobInventoryPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `FileSharesClientLeaseResult` of struct `FileSharesClientLeaseResponse` has been removed
+- Field `RawResponse` of struct `FileSharesClientLeaseResponse` has been removed
+- Field `ManagementPoliciesClientGetResult` of struct `ManagementPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagementPoliciesClientGetResponse` has been removed
+- Field `QueueServicesClientGetServicePropertiesResult` of struct `QueueServicesClientGetServicePropertiesResponse` has been removed
+- Field `RawResponse` of struct `QueueServicesClientGetServicePropertiesResponse` has been removed
+- Field `ManagementPoliciesClientCreateOrUpdateResult` of struct `ManagementPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagementPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `BlobContainersClientGetResult` of struct `BlobContainersClientGetResponse` has been removed
+- Field `RawResponse` of struct `BlobContainersClientGetResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientHierarchicalNamespaceMigrationResponse` has been removed
+- Field `TableClientUpdateResult` of struct `TableClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `TableClientUpdateResponse` has been removed
+- Field `EncryptionScopesClientGetResult` of struct `EncryptionScopesClientGetResponse` has been removed
+- Field `RawResponse` of struct `EncryptionScopesClientGetResponse` has been removed
+- Field `LocalUsersClientRegeneratePasswordResult` of struct `LocalUsersClientRegeneratePasswordResponse` has been removed
+- Field `RawResponse` of struct `LocalUsersClientRegeneratePasswordResponse` has been removed
+- Field `AccountsClientListKeysResult` of struct `AccountsClientListKeysResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientListKeysResponse` has been removed
+- Field `LocalUsersClientCreateOrUpdateResult` of struct `LocalUsersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `LocalUsersClientCreateOrUpdateResponse` has been removed
+- Field `PrivateEndpointConnectionsClientGetResult` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `AccountsClientGetPropertiesResult` of struct `AccountsClientGetPropertiesResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientGetPropertiesResponse` has been removed
+- Field `AccountsClientCheckNameAvailabilityResult` of struct `AccountsClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientCheckNameAvailabilityResponse` has been removed
+- Field `QueueServicesClientSetServicePropertiesResult` of struct `QueueServicesClientSetServicePropertiesResponse` has been removed
+- Field `RawResponse` of struct `QueueServicesClientSetServicePropertiesResponse` has been removed
+- Field `DeletedAccountsClientListResult` of struct `DeletedAccountsClientListResponse` has been removed
+- Field `RawResponse` of struct `DeletedAccountsClientListResponse` has been removed
+- Field `TableServicesClientListResult` of struct `TableServicesClientListResponse` has been removed
+- Field `RawResponse` of struct `TableServicesClientListResponse` has been removed
+- Field `QueueClientListResult` of struct `QueueClientListResponse` has been removed
+- Field `RawResponse` of struct `QueueClientListResponse` has been removed
+- Field `BlobInventoryPoliciesClientGetResult` of struct `BlobInventoryPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `BlobInventoryPoliciesClientGetResponse` has been removed
+- Field `AccountsClientUpdateResult` of struct `AccountsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientUpdateResponse` has been removed
+- Field `UsagesClientListByLocationResult` of struct `UsagesClientListByLocationResponse` has been removed
+- Field `RawResponse` of struct `UsagesClientListByLocationResponse` has been removed
+- Field `QueueClientUpdateResult` of struct `QueueClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `QueueClientUpdateResponse` has been removed
+- Field `LocalUsersClientGetResult` of struct `LocalUsersClientGetResponse` has been removed
+- Field `RawResponse` of struct `LocalUsersClientGetResponse` has been removed
+- Field `LocalUsersClientListResult` of struct `LocalUsersClientListResponse` has been removed
+- Field `RawResponse` of struct `LocalUsersClientListResponse` has been removed
+- Field `ObjectReplicationPoliciesClientGetResult` of struct `ObjectReplicationPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ObjectReplicationPoliciesClientGetResponse` has been removed
+- Field `LocalUsersClientListKeysResult` of struct `LocalUsersClientListKeysResponse` has been removed
+- Field `RawResponse` of struct `LocalUsersClientListKeysResponse` has been removed
+- Field `RawResponse` of struct `FileSharesClientDeleteResponse` has been removed
+- Field `BlobContainersClientCreateResult` of struct `BlobContainersClientCreateResponse` has been removed
+- Field `RawResponse` of struct `BlobContainersClientCreateResponse` has been removed
+- Field `PrivateEndpointConnectionsClientListResult` of struct `PrivateEndpointConnectionsClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientListResponse` has been removed
+- Field `BlobServicesClientSetServicePropertiesResult` of struct `BlobServicesClientSetServicePropertiesResponse` has been removed
+- Field `RawResponse` of struct `BlobServicesClientSetServicePropertiesResponse` has been removed
+- Field `RawResponse` of struct `ObjectReplicationPoliciesClientDeleteResponse` has been removed
+- Field `TableClientListResult` of struct `TableClientListResponse` has been removed
+- Field `RawResponse` of struct `TableClientListResponse` has been removed
+- Field `BlobServicesClientListResult` of struct `BlobServicesClientListResponse` has been removed
+- Field `RawResponse` of struct `BlobServicesClientListResponse` has been removed
+- Field `QueueServicesClientListResult` of struct `QueueServicesClientListResponse` has been removed
+- Field `RawResponse` of struct `QueueServicesClientListResponse` has been removed
+- Field `AccountsClientListResult` of struct `AccountsClientListResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientListResponse` has been removed
+- Field `PrivateLinkResourcesClientListByStorageAccountResult` of struct `PrivateLinkResourcesClientListByStorageAccountResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientListByStorageAccountResponse` has been removed
+- Field `BlobContainersClientExtendImmutabilityPolicyResult` of struct `BlobContainersClientExtendImmutabilityPolicyResponse` has been removed
+- Field `RawResponse` of struct `BlobContainersClientExtendImmutabilityPolicyResponse` has been removed
+- Field `RawResponse` of struct `BlobContainersClientObjectLevelWormResponse` has been removed
+- Field `RawResponse` of struct `QueueClientDeleteResponse` has been removed
+- Field `AccountsClientCreateResult` of struct `AccountsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientCreateResponse` has been removed
+- Field `AccountsClientListByResourceGroupResult` of struct `AccountsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientListByResourceGroupResponse` has been removed
+- Field `ObjectReplicationPoliciesClientCreateOrUpdateResult` of struct `ObjectReplicationPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ObjectReplicationPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagementPoliciesClientDeleteResponse` has been removed
+- Field `BlobContainersClientClearLegalHoldResult` of struct `BlobContainersClientClearLegalHoldResponse` has been removed
+- Field `RawResponse` of struct `BlobContainersClientClearLegalHoldResponse` has been removed
+- Field `FileSharesClientUpdateResult` of struct `FileSharesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `FileSharesClientUpdateResponse` has been removed
+- Field `FileSharesClientGetResult` of struct `FileSharesClientGetResponse` has been removed
+- Field `RawResponse` of struct `FileSharesClientGetResponse` has been removed
+- Field `BlobContainersClientDeleteImmutabilityPolicyResult` of struct `BlobContainersClientDeleteImmutabilityPolicyResponse` has been removed
+- Field `RawResponse` of struct `BlobContainersClientDeleteImmutabilityPolicyResponse` has been removed
+- Field `RawResponse` of struct `FileSharesClientRestoreResponse` has been removed
+- Field `EncryptionScopesClientPatchResult` of struct `EncryptionScopesClientPatchResponse` has been removed
+- Field `RawResponse` of struct `EncryptionScopesClientPatchResponse` has been removed
+- Field `SKUsClientListResult` of struct `SKUsClientListResponse` has been removed
+- Field `RawResponse` of struct `SKUsClientListResponse` has been removed
+- Field `BlobContainersClientGetImmutabilityPolicyResult` of struct `BlobContainersClientGetImmutabilityPolicyResponse` has been removed
+- Field `RawResponse` of struct `BlobContainersClientGetImmutabilityPolicyResponse` has been removed
+- Field `TableClientGetResult` of struct `TableClientGetResponse` has been removed
+- Field `RawResponse` of struct `TableClientGetResponse` has been removed
+- Field `FileSharesClientCreateResult` of struct `FileSharesClientCreateResponse` has been removed
+- Field `RawResponse` of struct `FileSharesClientCreateResponse` has been removed
+- Field `RawResponse` of struct `BlobContainersClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `LocalUsersClientDeleteResponse` has been removed
+- Field `FileServicesClientGetServicePropertiesResult` of struct `FileServicesClientGetServicePropertiesResponse` has been removed
+- Field `RawResponse` of struct `FileServicesClientGetServicePropertiesResponse` has been removed
+- Field `QueueClientCreateResult` of struct `QueueClientCreateResponse` has been removed
+- Field `RawResponse` of struct `QueueClientCreateResponse` has been removed
+- Field `BlobContainersClientCreateOrUpdateImmutabilityPolicyResult` of struct `BlobContainersClientCreateOrUpdateImmutabilityPolicyResponse` has been removed
+- Field `RawResponse` of struct `BlobContainersClientCreateOrUpdateImmutabilityPolicyResponse` has been removed
+
+### Features Added
+
+- New const `CorsRuleAllowedMethodsItemPATCH`
+- New const `SKUConversionStatusFailed`
+- New const `DNSEndpointTypeStandard`
+- New const `DNSEndpointTypeAzureDNSZone`
+- New const `SKUConversionStatusInProgress`
+- New const `AccessTierPremium`
+- New const `SKUConversionStatusSucceeded`
+- New function `TableAccessPolicy.MarshalJSON() ([]byte, error)`
+- New function `Table.MarshalJSON() ([]byte, error)`
+- New function `CloudErrorBody.MarshalJSON() ([]byte, error)`
+- New function `*TableAccessPolicy.UnmarshalJSON([]byte) error`
+- New function `TableProperties.MarshalJSON() ([]byte, error)`
+- New function `PossibleSKUConversionStatusValues() []SKUConversionStatus`
+- New function `PossibleDNSEndpointTypeValues() []DNSEndpointType`
+- New struct `AccountSKUConversionStatus`
+- New struct `CloudError`
+- New struct `CloudErrorBody`
+- New struct `ErrorResponse`
+- New struct `ErrorResponseBody`
+- New struct `TableAccessPolicy`
+- New struct `TableSignedIdentifier`
+- New field `StorageAccountSKUConversionStatus` in struct `AccountProperties`
+- New field `DNSEndpointType` in struct `AccountProperties`
+- New anonymous field `Queue` in struct `QueueClientCreateResponse`
+- New anonymous field `ImmutabilityPolicy` in struct `BlobContainersClientExtendImmutabilityPolicyResponse`
+- New field `ETag` in struct `BlobContainersClientExtendImmutabilityPolicyResponse`
+- New anonymous field `BlobServiceProperties` in struct `BlobServicesClientSetServicePropertiesResponse`
+- New anonymous field `Account` in struct `AccountsClientGetPropertiesResponse`
+- New anonymous field `FileServiceProperties` in struct `FileServicesClientGetServicePropertiesResponse`
+- New anonymous field `ListAccountSasResponse` in struct `AccountsClientListAccountSASResponse`
+- New anonymous field `UsageListResult` in struct `UsagesClientListByLocationResponse`
+- New anonymous field `ObjectReplicationPolicy` in struct `ObjectReplicationPoliciesClientGetResponse`
+- New anonymous field `Table` in struct `TableClientCreateResponse`
+- New anonymous field `LocalUserRegeneratePasswordResult` in struct `LocalUsersClientRegeneratePasswordResponse`
+- New anonymous field `EncryptionScope` in struct `EncryptionScopesClientGetResponse`
+- New field `ResumeToken` in struct `AccountsClientBeginHierarchicalNamespaceMigrationOptions`
+- New anonymous field `DeletedAccountListResult` in struct `DeletedAccountsClientListResponse`
+- New anonymous field `FileServiceProperties` in struct `FileServicesClientSetServicePropertiesResponse`
+- New field `DNSEndpointType` in struct `AccountPropertiesUpdateParameters`
+- New anonymous field `BlobServiceProperties` in struct `BlobServicesClientGetServicePropertiesResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `ImmutabilityPolicy` in struct `BlobContainersClientDeleteImmutabilityPolicyResponse`
+- New field `ETag` in struct `BlobContainersClientDeleteImmutabilityPolicyResponse`
+- New anonymous field `BlobInventoryPolicy` in struct `BlobInventoryPoliciesClientCreateOrUpdateResponse`
+- New anonymous field `Account` in struct `AccountsClientUpdateResponse`
+- New anonymous field `EncryptionScope` in struct `EncryptionScopesClientPutResponse`
+- New field `DNSEndpointType` in struct `AccountPropertiesCreateParameters`
+- New anonymous field `LocalUser` in struct `LocalUsersClientCreateOrUpdateResponse`
+- New anonymous field `ListBlobInventoryPolicy` in struct `BlobInventoryPoliciesClientListResponse`
+- New anonymous field `ManagementPolicy` in struct `ManagementPoliciesClientCreateOrUpdateResponse`
+- New anonymous field `ListContainerItems` in struct `BlobContainersClientListResponse`
+- New anonymous field `FileServiceItems` in struct `FileServicesClientListResponse`
+- New anonymous field `FileShare` in struct `FileSharesClientCreateResponse`
+- New anonymous field `QueueServiceProperties` in struct `QueueServicesClientGetServicePropertiesResponse`
+- New anonymous field `LegalHold` in struct `BlobContainersClientSetLegalHoldResponse`
+- New field `ResumeToken` in struct `AccountsClientBeginAbortHierarchicalNamespaceMigrationOptions`
+- New anonymous field `AccountListResult` in struct `AccountsClientListResponse`
+- New anonymous field `ManagementPolicy` in struct `ManagementPoliciesClientGetResponse`
+- New anonymous field `BlobServiceItems` in struct `BlobServicesClientListResponse`
+- New anonymous field `ListTableServices` in struct `TableServicesClientListResponse`
+- New field `AllowPermanentDelete` in struct `DeleteRetentionPolicy`
+- New anonymous field `PrivateEndpointConnectionListResult` in struct `PrivateEndpointConnectionsClientListResponse`
+- New field `ResumeToken` in struct `AccountsClientBeginRestoreBlobRangesOptions`
+- New anonymous field `AccountListKeysResult` in struct `AccountsClientRegenerateKeyResponse`
+- New anonymous field `BlobContainer` in struct `BlobContainersClientCreateResponse`
+- New anonymous field `BlobInventoryPolicy` in struct `BlobInventoryPoliciesClientGetResponse`
+- New anonymous field `LocalUserKeys` in struct `LocalUsersClientListKeysResponse`
+- New field `ResumeToken` in struct `AccountsClientBeginCreateOptions`
+- New anonymous field `LegalHold` in struct `BlobContainersClientClearLegalHoldResponse`
+- New anonymous field `QueueServiceProperties` in struct `QueueServicesClientSetServicePropertiesResponse`
+- New anonymous field `AccountListResult` in struct `AccountsClientListByResourceGroupResponse`
+- New anonymous field `ObjectReplicationPolicy` in struct `ObjectReplicationPoliciesClientCreateOrUpdateResponse`
+- New anonymous field `ObjectReplicationPolicies` in struct `ObjectReplicationPoliciesClientListResponse`
+- New field `ResumeToken` in struct `AccountsClientBeginFailoverOptions`
+- New anonymous field `EncryptionScopeListResult` in struct `EncryptionScopesClientListResponse`
+- New anonymous field `LeaseShareResponse` in struct `FileSharesClientLeaseResponse`
+- New field `ETag` in struct `FileSharesClientLeaseResponse`
+- New field `Parameters` in struct `TableClientCreateOptions`
+- New anonymous field `SKUListResult` in struct `SKUsClientListResponse`
+- New anonymous field `CheckNameAvailabilityResult` in struct `AccountsClientCheckNameAvailabilityResponse`
+- New anonymous field `Table` in struct `TableClientGetResponse`
+- New anonymous field `Queue` in struct `QueueClientGetResponse`
+- New field `ExcludePrefix` in struct `BlobInventoryPolicyFilter`
+- New field `IncludeDeleted` in struct `BlobInventoryPolicyFilter`
+- New field `CurrentVersionedKeyExpirationTimestamp` in struct `KeyVaultProperties`
+- New anonymous field `DeletedAccount` in struct `DeletedAccountsClientGetResponse`
+- New anonymous field `FileShare` in struct `FileSharesClientUpdateResponse`
+- New anonymous field `BlobContainer` in struct `BlobContainersClientGetResponse`
+- New anonymous field `ImmutabilityPolicy` in struct `BlobContainersClientLockImmutabilityPolicyResponse`
+- New field `ETag` in struct `BlobContainersClientLockImmutabilityPolicyResponse`
+- New anonymous field `PrivateLinkResourceListResult` in struct `PrivateLinkResourcesClientListByStorageAccountResponse`
+- New anonymous field `AccountListKeysResult` in struct `AccountsClientListKeysResponse`
+- New field `DaysAfterLastTierChangeGreaterThan` in struct `DateAfterCreation`
+- New anonymous field `LeaseContainerResponse` in struct `BlobContainersClientLeaseResponse`
+- New anonymous field `Account` in struct `AccountsClientCreateResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientGetResponse`
+- New field `DaysAfterCreationGreaterThan` in struct `DateAfterModification`
+- New field `DaysAfterLastTierChangeGreaterThan` in struct `DateAfterModification`
+- New field `ResumeToken` in struct `BlobContainersClientBeginObjectLevelWormOptions`
+- New field `Parameters` in struct `TableClientUpdateOptions`
+- New field `SignedIdentifiers` in struct `TableProperties`
+- New anonymous field `ListQueueServices` in struct `QueueServicesClientListResponse`
+- New anonymous field `TableServiceProperties` in struct `TableServicesClientSetServicePropertiesResponse`
+- New anonymous field `FileShare` in struct `FileSharesClientGetResponse`
+- New anonymous field `ImmutabilityPolicy` in struct `BlobContainersClientGetImmutabilityPolicyResponse`
+- New field `ETag` in struct `BlobContainersClientGetImmutabilityPolicyResponse`
+- New anonymous field `FileShareItems` in struct `FileSharesClientListResponse`
+- New anonymous field `LocalUsers` in struct `LocalUsersClientListResponse`
+- New anonymous field `ListServiceSasResponse` in struct `AccountsClientListServiceSASResponse`
+- New anonymous field `Table` in struct `TableClientUpdateResponse`
+- New anonymous field `BlobContainer` in struct `BlobContainersClientUpdateResponse`
+- New anonymous field `ListTableResource` in struct `TableClientListResponse`
+- New anonymous field `LocalUser` in struct `LocalUsersClientGetResponse`
+- New anonymous field `TableServiceProperties` in struct `TableServicesClientGetServicePropertiesResponse`
+- New field `Destination` in struct `BlobInventoryPolicySchema`
+- New anonymous field `ImmutabilityPolicy` in struct `BlobContainersClientCreateOrUpdateImmutabilityPolicyResponse`
+- New field `ETag` in struct `BlobContainersClientCreateOrUpdateImmutabilityPolicyResponse`
+- New anonymous field `EncryptionScope` in struct `EncryptionScopesClientPatchResponse`
+- New anonymous field `ListQueueResource` in struct `QueueClientListResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientPutResponse`
+- New anonymous field `Queue` in struct `QueueClientUpdateResponse`
+- New anonymous field `BlobRestoreStatus` in struct `AccountsClientRestoreBlobRangesResponse`
+
+
 ## 0.4.1 (2022-02-22)
 
 ### Other Changes

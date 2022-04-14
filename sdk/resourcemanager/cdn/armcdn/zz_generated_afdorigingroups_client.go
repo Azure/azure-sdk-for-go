@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type AFDOriginGroupsClient struct {
 // subscriptionID - Azure Subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAFDOriginGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AFDOriginGroupsClient {
+func NewAFDOriginGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AFDOriginGroupsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AFDOriginGroupsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreate - Creates a new origin group within the specified profile.
@@ -58,22 +63,18 @@ func NewAFDOriginGroupsClient(subscriptionID string, credential azcore.TokenCred
 // originGroup - Origin group properties
 // options - AFDOriginGroupsClientBeginCreateOptions contains the optional parameters for the AFDOriginGroupsClient.BeginCreate
 // method.
-func (client *AFDOriginGroupsClient) BeginCreate(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originGroup AFDOriginGroup, options *AFDOriginGroupsClientBeginCreateOptions) (AFDOriginGroupsClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, profileName, originGroupName, originGroup, options)
-	if err != nil {
-		return AFDOriginGroupsClientCreatePollerResponse{}, err
+func (client *AFDOriginGroupsClient) BeginCreate(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originGroup AFDOriginGroup, options *AFDOriginGroupsClientBeginCreateOptions) (*armruntime.Poller[AFDOriginGroupsClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, profileName, originGroupName, originGroup, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[AFDOriginGroupsClientCreateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[AFDOriginGroupsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := AFDOriginGroupsClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("AFDOriginGroupsClient.Create", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return AFDOriginGroupsClientCreatePollerResponse{}, err
-	}
-	result.Poller = &AFDOriginGroupsClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Creates a new origin group within the specified profile.
@@ -131,22 +132,18 @@ func (client *AFDOriginGroupsClient) createCreateRequest(ctx context.Context, re
 // originGroupName - Name of the origin group which is unique within the profile.
 // options - AFDOriginGroupsClientBeginDeleteOptions contains the optional parameters for the AFDOriginGroupsClient.BeginDelete
 // method.
-func (client *AFDOriginGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, options *AFDOriginGroupsClientBeginDeleteOptions) (AFDOriginGroupsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, profileName, originGroupName, options)
-	if err != nil {
-		return AFDOriginGroupsClientDeletePollerResponse{}, err
+func (client *AFDOriginGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, options *AFDOriginGroupsClientBeginDeleteOptions) (*armruntime.Poller[AFDOriginGroupsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, profileName, originGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[AFDOriginGroupsClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[AFDOriginGroupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := AFDOriginGroupsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("AFDOriginGroupsClient.Delete", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return AFDOriginGroupsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &AFDOriginGroupsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes an existing origin group within a profile.
@@ -250,7 +247,7 @@ func (client *AFDOriginGroupsClient) getCreateRequest(ctx context.Context, resou
 
 // getHandleResponse handles the Get response.
 func (client *AFDOriginGroupsClient) getHandleResponse(resp *http.Response) (AFDOriginGroupsClientGetResponse, error) {
-	result := AFDOriginGroupsClientGetResponse{RawResponse: resp}
+	result := AFDOriginGroupsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AFDOriginGroup); err != nil {
 		return AFDOriginGroupsClientGetResponse{}, err
 	}
@@ -264,16 +261,32 @@ func (client *AFDOriginGroupsClient) getHandleResponse(resp *http.Response) (AFD
 // group.
 // options - AFDOriginGroupsClientListByProfileOptions contains the optional parameters for the AFDOriginGroupsClient.ListByProfile
 // method.
-func (client *AFDOriginGroupsClient) ListByProfile(resourceGroupName string, profileName string, options *AFDOriginGroupsClientListByProfileOptions) *AFDOriginGroupsClientListByProfilePager {
-	return &AFDOriginGroupsClientListByProfilePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByProfileCreateRequest(ctx, resourceGroupName, profileName, options)
+func (client *AFDOriginGroupsClient) ListByProfile(resourceGroupName string, profileName string, options *AFDOriginGroupsClientListByProfileOptions) *runtime.Pager[AFDOriginGroupsClientListByProfileResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AFDOriginGroupsClientListByProfileResponse]{
+		More: func(page AFDOriginGroupsClientListByProfileResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AFDOriginGroupsClientListByProfileResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AFDOriginGroupListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AFDOriginGroupsClientListByProfileResponse) (AFDOriginGroupsClientListByProfileResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByProfileCreateRequest(ctx, resourceGroupName, profileName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AFDOriginGroupsClientListByProfileResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AFDOriginGroupsClientListByProfileResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AFDOriginGroupsClientListByProfileResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByProfileHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByProfileCreateRequest creates the ListByProfile request.
@@ -304,7 +317,7 @@ func (client *AFDOriginGroupsClient) listByProfileCreateRequest(ctx context.Cont
 
 // listByProfileHandleResponse handles the ListByProfile response.
 func (client *AFDOriginGroupsClient) listByProfileHandleResponse(resp *http.Response) (AFDOriginGroupsClientListByProfileResponse, error) {
-	result := AFDOriginGroupsClientListByProfileResponse{RawResponse: resp}
+	result := AFDOriginGroupsClientListByProfileResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AFDOriginGroupListResult); err != nil {
 		return AFDOriginGroupsClientListByProfileResponse{}, err
 	}
@@ -319,16 +332,32 @@ func (client *AFDOriginGroupsClient) listByProfileHandleResponse(resp *http.Resp
 // originGroupName - Name of the origin group which is unique within the endpoint.
 // options - AFDOriginGroupsClientListResourceUsageOptions contains the optional parameters for the AFDOriginGroupsClient.ListResourceUsage
 // method.
-func (client *AFDOriginGroupsClient) ListResourceUsage(resourceGroupName string, profileName string, originGroupName string, options *AFDOriginGroupsClientListResourceUsageOptions) *AFDOriginGroupsClientListResourceUsagePager {
-	return &AFDOriginGroupsClientListResourceUsagePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listResourceUsageCreateRequest(ctx, resourceGroupName, profileName, originGroupName, options)
+func (client *AFDOriginGroupsClient) ListResourceUsage(resourceGroupName string, profileName string, originGroupName string, options *AFDOriginGroupsClientListResourceUsageOptions) *runtime.Pager[AFDOriginGroupsClientListResourceUsageResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AFDOriginGroupsClientListResourceUsageResponse]{
+		More: func(page AFDOriginGroupsClientListResourceUsageResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AFDOriginGroupsClientListResourceUsageResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.UsagesListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AFDOriginGroupsClientListResourceUsageResponse) (AFDOriginGroupsClientListResourceUsageResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listResourceUsageCreateRequest(ctx, resourceGroupName, profileName, originGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AFDOriginGroupsClientListResourceUsageResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AFDOriginGroupsClientListResourceUsageResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AFDOriginGroupsClientListResourceUsageResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listResourceUsageHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listResourceUsageCreateRequest creates the ListResourceUsage request.
@@ -363,7 +392,7 @@ func (client *AFDOriginGroupsClient) listResourceUsageCreateRequest(ctx context.
 
 // listResourceUsageHandleResponse handles the ListResourceUsage response.
 func (client *AFDOriginGroupsClient) listResourceUsageHandleResponse(resp *http.Response) (AFDOriginGroupsClientListResourceUsageResponse, error) {
-	result := AFDOriginGroupsClientListResourceUsageResponse{RawResponse: resp}
+	result := AFDOriginGroupsClientListResourceUsageResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UsagesListResult); err != nil {
 		return AFDOriginGroupsClientListResourceUsageResponse{}, err
 	}
@@ -379,22 +408,18 @@ func (client *AFDOriginGroupsClient) listResourceUsageHandleResponse(resp *http.
 // originGroupUpdateProperties - Origin group properties
 // options - AFDOriginGroupsClientBeginUpdateOptions contains the optional parameters for the AFDOriginGroupsClient.BeginUpdate
 // method.
-func (client *AFDOriginGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originGroupUpdateProperties AFDOriginGroupUpdateParameters, options *AFDOriginGroupsClientBeginUpdateOptions) (AFDOriginGroupsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, profileName, originGroupName, originGroupUpdateProperties, options)
-	if err != nil {
-		return AFDOriginGroupsClientUpdatePollerResponse{}, err
+func (client *AFDOriginGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originGroupUpdateProperties AFDOriginGroupUpdateParameters, options *AFDOriginGroupsClientBeginUpdateOptions) (*armruntime.Poller[AFDOriginGroupsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, profileName, originGroupName, originGroupUpdateProperties, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[AFDOriginGroupsClientUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[AFDOriginGroupsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := AFDOriginGroupsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("AFDOriginGroupsClient.Update", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return AFDOriginGroupsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &AFDOriginGroupsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates an existing origin group within a profile.

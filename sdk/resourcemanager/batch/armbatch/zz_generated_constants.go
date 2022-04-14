@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armbatch
 
 const (
 	moduleName    = "armbatch"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // AccountKeyType - The type of account key to regenerate.
@@ -29,11 +29,6 @@ func PossibleAccountKeyTypeValues() []AccountKeyType {
 		AccountKeyTypePrimary,
 		AccountKeyTypeSecondary,
 	}
-}
-
-// ToPtr returns a *AccountKeyType pointing to the current value.
-func (c AccountKeyType) ToPtr() *AccountKeyType {
-	return &c
 }
 
 // AllocationState - Whether the pool is resizing.
@@ -60,11 +55,6 @@ func PossibleAllocationStateValues() []AllocationState {
 	}
 }
 
-// ToPtr returns a *AllocationState pointing to the current value.
-func (c AllocationState) ToPtr() *AllocationState {
-	return &c
-}
-
 // AuthenticationMode - The authentication mode for the Batch account.
 type AuthenticationMode string
 
@@ -86,11 +76,6 @@ func PossibleAuthenticationModeValues() []AuthenticationMode {
 	}
 }
 
-// ToPtr returns a *AuthenticationMode pointing to the current value.
-func (c AuthenticationMode) ToPtr() *AuthenticationMode {
-	return &c
-}
-
 // AutoStorageAuthenticationMode - The authentication mode which the Batch service will use to manage the auto-storage account.
 type AutoStorageAuthenticationMode string
 
@@ -109,11 +94,6 @@ func PossibleAutoStorageAuthenticationModeValues() []AutoStorageAuthenticationMo
 		AutoStorageAuthenticationModeStorageKeys,
 		AutoStorageAuthenticationModeBatchAccountManagedIdentity,
 	}
-}
-
-// ToPtr returns a *AutoStorageAuthenticationMode pointing to the current value.
-func (c AutoStorageAuthenticationMode) ToPtr() *AutoStorageAuthenticationMode {
-	return &c
 }
 
 // AutoUserScope - The default value is Pool. If the pool is running Windows a value of Task should be specified if stricter
@@ -137,11 +117,6 @@ func PossibleAutoUserScopeValues() []AutoUserScope {
 	}
 }
 
-// ToPtr returns a *AutoUserScope pointing to the current value.
-func (c AutoUserScope) ToPtr() *AutoUserScope {
-	return &c
-}
-
 // CachingType - The type of caching to enable for the disk.
 type CachingType string
 
@@ -163,11 +138,6 @@ func PossibleCachingTypeValues() []CachingType {
 	}
 }
 
-// ToPtr returns a *CachingType pointing to the current value.
-func (c CachingType) ToPtr() *CachingType {
-	return &c
-}
-
 // CertificateFormat - The format of the certificate - either Pfx or Cer. If omitted, the default is Pfx.
 type CertificateFormat string
 
@@ -184,11 +154,6 @@ func PossibleCertificateFormatValues() []CertificateFormat {
 		CertificateFormatPfx,
 		CertificateFormatCer,
 	}
-}
-
-// ToPtr returns a *CertificateFormat pointing to the current value.
-func (c CertificateFormat) ToPtr() *CertificateFormat {
-	return &c
 }
 
 type CertificateProvisioningState string
@@ -216,11 +181,6 @@ func PossibleCertificateProvisioningStateValues() []CertificateProvisioningState
 	}
 }
 
-// ToPtr returns a *CertificateProvisioningState pointing to the current value.
-func (c CertificateProvisioningState) ToPtr() *CertificateProvisioningState {
-	return &c
-}
-
 // CertificateStoreLocation - The default value is currentUser. This property is applicable only for pools configured with
 // Windows nodes (that is, created with cloudServiceConfiguration, or with virtualMachineConfiguration using a
 // Windows image reference). For Linux compute nodes, the certificates are stored in a directory inside the task working directory
@@ -245,11 +205,6 @@ func PossibleCertificateStoreLocationValues() []CertificateStoreLocation {
 	}
 }
 
-// ToPtr returns a *CertificateStoreLocation pointing to the current value.
-func (c CertificateStoreLocation) ToPtr() *CertificateStoreLocation {
-	return &c
-}
-
 type CertificateVisibility string
 
 const (
@@ -271,11 +226,6 @@ func PossibleCertificateVisibilityValues() []CertificateVisibility {
 		CertificateVisibilityTask,
 		CertificateVisibilityRemoteUser,
 	}
-}
-
-// ToPtr returns a *CertificateVisibility pointing to the current value.
-func (c CertificateVisibility) ToPtr() *CertificateVisibility {
-	return &c
 }
 
 // ComputeNodeDeallocationOption - Determines what to do with a node and its running task(s) after it has been selected for
@@ -307,11 +257,6 @@ func PossibleComputeNodeDeallocationOptionValues() []ComputeNodeDeallocationOpti
 	}
 }
 
-// ToPtr returns a *ComputeNodeDeallocationOption pointing to the current value.
-func (c ComputeNodeDeallocationOption) ToPtr() *ComputeNodeDeallocationOption {
-	return &c
-}
-
 // ComputeNodeFillType - How tasks should be distributed across compute nodes.
 type ComputeNodeFillType string
 
@@ -329,11 +274,6 @@ func PossibleComputeNodeFillTypeValues() []ComputeNodeFillType {
 		ComputeNodeFillTypeSpread,
 		ComputeNodeFillTypePack,
 	}
-}
-
-// ToPtr returns a *ComputeNodeFillType pointing to the current value.
-func (c ComputeNodeFillType) ToPtr() *ComputeNodeFillType {
-	return &c
 }
 
 // ContainerWorkingDirectory - A flag to indicate where the container task working directory is. The default is 'taskWorkingDirectory'.
@@ -356,11 +296,6 @@ func PossibleContainerWorkingDirectoryValues() []ContainerWorkingDirectory {
 	}
 }
 
-// ToPtr returns a *ContainerWorkingDirectory pointing to the current value.
-func (c ContainerWorkingDirectory) ToPtr() *ContainerWorkingDirectory {
-	return &c
-}
-
 // DiskEncryptionTarget - If omitted, no disks on the compute nodes in the pool will be encrypted.
 type DiskEncryptionTarget string
 
@@ -380,9 +315,23 @@ func PossibleDiskEncryptionTargetValues() []DiskEncryptionTarget {
 	}
 }
 
-// ToPtr returns a *DiskEncryptionTarget pointing to the current value.
-func (c DiskEncryptionTarget) ToPtr() *DiskEncryptionTarget {
-	return &c
+// DynamicVNetAssignmentScope - The scope of dynamic vnet assignment.
+type DynamicVNetAssignmentScope string
+
+const (
+	// DynamicVNetAssignmentScopeNone - No dynamic VNet assignment is enabled.
+	DynamicVNetAssignmentScopeNone DynamicVNetAssignmentScope = "none"
+	// DynamicVNetAssignmentScopeJob - Dynamic VNet assignment is done per-job. Don't use this option unless your batch account
+	// has been approved to use this feature.
+	DynamicVNetAssignmentScopeJob DynamicVNetAssignmentScope = "job"
+)
+
+// PossibleDynamicVNetAssignmentScopeValues returns the possible values for the DynamicVNetAssignmentScope const type.
+func PossibleDynamicVNetAssignmentScopeValues() []DynamicVNetAssignmentScope {
+	return []DynamicVNetAssignmentScope{
+		DynamicVNetAssignmentScopeNone,
+		DynamicVNetAssignmentScopeJob,
+	}
 }
 
 // ElevationLevel - The elevation level of the user.
@@ -401,11 +350,6 @@ func PossibleElevationLevelValues() []ElevationLevel {
 		ElevationLevelNonAdmin,
 		ElevationLevelAdmin,
 	}
-}
-
-// ToPtr returns a *ElevationLevel pointing to the current value.
-func (c ElevationLevel) ToPtr() *ElevationLevel {
-	return &c
 }
 
 // IPAddressProvisioningType - The provisioning type for Public IP Addresses for the Batch Pool.
@@ -430,11 +374,6 @@ func PossibleIPAddressProvisioningTypeValues() []IPAddressProvisioningType {
 	}
 }
 
-// ToPtr returns a *IPAddressProvisioningType pointing to the current value.
-func (c IPAddressProvisioningType) ToPtr() *IPAddressProvisioningType {
-	return &c
-}
-
 // InboundEndpointProtocol - The protocol of the endpoint.
 type InboundEndpointProtocol string
 
@@ -451,11 +390,6 @@ func PossibleInboundEndpointProtocolValues() []InboundEndpointProtocol {
 		InboundEndpointProtocolTCP,
 		InboundEndpointProtocolUDP,
 	}
-}
-
-// ToPtr returns a *InboundEndpointProtocol pointing to the current value.
-func (c InboundEndpointProtocol) ToPtr() *InboundEndpointProtocol {
-	return &c
 }
 
 // InterNodeCommunicationState - This imposes restrictions on which nodes can be assigned to the pool. Enabling this value
@@ -478,11 +412,6 @@ func PossibleInterNodeCommunicationStateValues() []InterNodeCommunicationState {
 	}
 }
 
-// ToPtr returns a *InterNodeCommunicationState pointing to the current value.
-func (c InterNodeCommunicationState) ToPtr() *InterNodeCommunicationState {
-	return &c
-}
-
 // KeySource - Type of the key source.
 type KeySource string
 
@@ -501,11 +430,6 @@ func PossibleKeySourceValues() []KeySource {
 		KeySourceMicrosoftBatch,
 		KeySourceMicrosoftKeyVault,
 	}
-}
-
-// ToPtr returns a *KeySource pointing to the current value.
-func (c KeySource) ToPtr() *KeySource {
-	return &c
 }
 
 // LoginMode - Specifies login mode for the user. The default value for VirtualMachineConfiguration pools is interactive mode
@@ -529,11 +453,6 @@ func PossibleLoginModeValues() []LoginMode {
 	}
 }
 
-// ToPtr returns a *LoginMode pointing to the current value.
-func (c LoginMode) ToPtr() *LoginMode {
-	return &c
-}
-
 // NameAvailabilityReason - Gets the reason that a Batch account name could not be used. The Reason element is only returned
 // if NameAvailable is false.
 type NameAvailabilityReason string
@@ -551,11 +470,6 @@ func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
 		NameAvailabilityReasonInvalid,
 		NameAvailabilityReasonAlreadyExists,
 	}
-}
-
-// ToPtr returns a *NameAvailabilityReason pointing to the current value.
-func (c NameAvailabilityReason) ToPtr() *NameAvailabilityReason {
-	return &c
 }
 
 // NetworkSecurityGroupRuleAccess - The action that should be taken for a specified IP address, subnet range or tag.
@@ -576,11 +490,6 @@ func PossibleNetworkSecurityGroupRuleAccessValues() []NetworkSecurityGroupRuleAc
 	}
 }
 
-// ToPtr returns a *NetworkSecurityGroupRuleAccess pointing to the current value.
-func (c NetworkSecurityGroupRuleAccess) ToPtr() *NetworkSecurityGroupRuleAccess {
-	return &c
-}
-
 // NodePlacementPolicyType - The default value is regional.
 type NodePlacementPolicyType string
 
@@ -597,11 +506,6 @@ func PossibleNodePlacementPolicyTypeValues() []NodePlacementPolicyType {
 		NodePlacementPolicyTypeRegional,
 		NodePlacementPolicyTypeZonal,
 	}
-}
-
-// ToPtr returns a *NodePlacementPolicyType pointing to the current value.
-func (c NodePlacementPolicyType) ToPtr() *NodePlacementPolicyType {
-	return &c
 }
 
 // PackageState - The current state of the application package.
@@ -622,11 +526,6 @@ func PossiblePackageStateValues() []PackageState {
 	}
 }
 
-// ToPtr returns a *PackageState pointing to the current value.
-func (c PackageState) ToPtr() *PackageState {
-	return &c
-}
-
 // PoolAllocationMode - The allocation mode for creating pools in the Batch account.
 type PoolAllocationMode string
 
@@ -643,11 +542,6 @@ func PossiblePoolAllocationModeValues() []PoolAllocationMode {
 		PoolAllocationModeBatchService,
 		PoolAllocationModeUserSubscription,
 	}
-}
-
-// ToPtr returns a *PoolAllocationMode pointing to the current value.
-func (c PoolAllocationMode) ToPtr() *PoolAllocationMode {
-	return &c
 }
 
 // PoolIdentityType - The type of identity used for the Batch Pool.
@@ -669,11 +563,6 @@ func PossiblePoolIdentityTypeValues() []PoolIdentityType {
 	}
 }
 
-// ToPtr returns a *PoolIdentityType pointing to the current value.
-func (c PoolIdentityType) ToPtr() *PoolIdentityType {
-	return &c
-}
-
 // PoolProvisioningState - The current state of the pool.
 type PoolProvisioningState string
 
@@ -690,11 +579,6 @@ func PossiblePoolProvisioningStateValues() []PoolProvisioningState {
 		PoolProvisioningStateSucceeded,
 		PoolProvisioningStateDeleting,
 	}
-}
-
-// ToPtr returns a *PoolProvisioningState pointing to the current value.
-func (c PoolProvisioningState) ToPtr() *PoolProvisioningState {
-	return &c
 }
 
 // PrivateEndpointConnectionProvisioningState - The provisioning state of the private endpoint connection.
@@ -719,11 +603,6 @@ func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpoin
 		PrivateEndpointConnectionProvisioningStateUpdating,
 		PrivateEndpointConnectionProvisioningStateFailed,
 	}
-}
-
-// ToPtr returns a *PrivateEndpointConnectionProvisioningState pointing to the current value.
-func (c PrivateEndpointConnectionProvisioningState) ToPtr() *PrivateEndpointConnectionProvisioningState {
-	return &c
 }
 
 // PrivateLinkServiceConnectionStatus - The status of the Batch private endpoint connection
@@ -752,11 +631,6 @@ func PossiblePrivateLinkServiceConnectionStatusValues() []PrivateLinkServiceConn
 		PrivateLinkServiceConnectionStatusRejected,
 		PrivateLinkServiceConnectionStatusDisconnected,
 	}
-}
-
-// ToPtr returns a *PrivateLinkServiceConnectionStatus pointing to the current value.
-func (c PrivateLinkServiceConnectionStatus) ToPtr() *PrivateLinkServiceConnectionStatus {
-	return &c
 }
 
 // ProvisioningState - The provisioned state of the resource
@@ -789,11 +663,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // PublicNetworkAccessType - The network access type for operating on the resources in the Batch account.
 type PublicNetworkAccessType string
 
@@ -811,11 +680,6 @@ func PossiblePublicNetworkAccessTypeValues() []PublicNetworkAccessType {
 		PublicNetworkAccessTypeEnabled,
 		PublicNetworkAccessTypeDisabled,
 	}
-}
-
-// ToPtr returns a *PublicNetworkAccessType pointing to the current value.
-func (c PublicNetworkAccessType) ToPtr() *PublicNetworkAccessType {
-	return &c
 }
 
 // ResourceIdentityType - The type of identity used for the Batch account.
@@ -840,11 +704,6 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	}
 }
 
-// ToPtr returns a *ResourceIdentityType pointing to the current value.
-func (c ResourceIdentityType) ToPtr() *ResourceIdentityType {
-	return &c
-}
-
 // StorageAccountType - The storage account type for use in creating data disks.
 type StorageAccountType string
 
@@ -861,9 +720,4 @@ func PossibleStorageAccountTypeValues() []StorageAccountType {
 		StorageAccountTypeStandardLRS,
 		StorageAccountTypePremiumLRS,
 	}
-}
-
-// ToPtr returns a *StorageAccountType pointing to the current value.
-func (c StorageAccountType) ToPtr() *StorageAccountType {
-	return &c
 }

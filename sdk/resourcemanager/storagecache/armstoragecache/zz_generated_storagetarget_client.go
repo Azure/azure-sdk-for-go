@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type StorageTargetClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewStorageTargetClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *StorageTargetClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewStorageTargetClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StorageTargetClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &StorageTargetClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginFlush - Tells the cache to write all dirty data to the Storage Target's backend storage. Client requests to this storage
@@ -58,22 +63,18 @@ func NewStorageTargetClient(subscriptionID string, credential azcore.TokenCreden
 // storageTargetName - Name of Storage Target.
 // options - StorageTargetClientBeginFlushOptions contains the optional parameters for the StorageTargetClient.BeginFlush
 // method.
-func (client *StorageTargetClient) BeginFlush(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginFlushOptions) (StorageTargetClientFlushPollerResponse, error) {
-	resp, err := client.flush(ctx, resourceGroupName, cacheName, storageTargetName, options)
-	if err != nil {
-		return StorageTargetClientFlushPollerResponse{}, err
+func (client *StorageTargetClient) BeginFlush(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginFlushOptions) (*armruntime.Poller[StorageTargetClientFlushResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.flush(ctx, resourceGroupName, cacheName, storageTargetName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[StorageTargetClientFlushResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[StorageTargetClientFlushResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := StorageTargetClientFlushPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("StorageTargetClient.Flush", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return StorageTargetClientFlushPollerResponse{}, err
-	}
-	result.Poller = &StorageTargetClientFlushPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Flush - Tells the cache to write all dirty data to the Storage Target's backend storage. Client requests to this storage
@@ -118,7 +119,77 @@ func (client *StorageTargetClient) flushCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2022-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// BeginInvalidate - Invalidate all cached data for a storage target. Cached files are discarded and fetched from the back
+// end on the next request.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Target resource group.
+// cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// storageTargetName - Name of Storage Target.
+// options - StorageTargetClientBeginInvalidateOptions contains the optional parameters for the StorageTargetClient.BeginInvalidate
+// method.
+func (client *StorageTargetClient) BeginInvalidate(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginInvalidateOptions) (*armruntime.Poller[StorageTargetClientInvalidateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.invalidate(ctx, resourceGroupName, cacheName, storageTargetName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[StorageTargetClientInvalidateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[StorageTargetClientInvalidateResponse](options.ResumeToken, client.pl, nil)
+	}
+}
+
+// Invalidate - Invalidate all cached data for a storage target. Cached files are discarded and fetched from the back end
+// on the next request.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *StorageTargetClient) invalidate(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginInvalidateOptions) (*http.Response, error) {
+	req, err := client.invalidateCreateRequest(ctx, resourceGroupName, cacheName, storageTargetName, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// invalidateCreateRequest creates the Invalidate request.
+func (client *StorageTargetClient) invalidateCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginInvalidateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}/invalidate"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if cacheName == "" {
+		return nil, errors.New("parameter cacheName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{cacheName}", url.PathEscape(cacheName))
+	if storageTargetName == "" {
+		return nil, errors.New("parameter storageTargetName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{storageTargetName}", url.PathEscape(storageTargetName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -131,22 +202,18 @@ func (client *StorageTargetClient) flushCreateRequest(ctx context.Context, resou
 // storageTargetName - Name of Storage Target.
 // options - StorageTargetClientBeginResumeOptions contains the optional parameters for the StorageTargetClient.BeginResume
 // method.
-func (client *StorageTargetClient) BeginResume(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginResumeOptions) (StorageTargetClientResumePollerResponse, error) {
-	resp, err := client.resume(ctx, resourceGroupName, cacheName, storageTargetName, options)
-	if err != nil {
-		return StorageTargetClientResumePollerResponse{}, err
+func (client *StorageTargetClient) BeginResume(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginResumeOptions) (*armruntime.Poller[StorageTargetClientResumeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resume(ctx, resourceGroupName, cacheName, storageTargetName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[StorageTargetClientResumeResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[StorageTargetClientResumeResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := StorageTargetClientResumePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("StorageTargetClient.Resume", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return StorageTargetClientResumePollerResponse{}, err
-	}
-	result.Poller = &StorageTargetClientResumePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Resume - Resumes client access to a previously suspended storage target.
@@ -190,7 +257,7 @@ func (client *StorageTargetClient) resumeCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -203,22 +270,18 @@ func (client *StorageTargetClient) resumeCreateRequest(ctx context.Context, reso
 // storageTargetName - Name of Storage Target.
 // options - StorageTargetClientBeginSuspendOptions contains the optional parameters for the StorageTargetClient.BeginSuspend
 // method.
-func (client *StorageTargetClient) BeginSuspend(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginSuspendOptions) (StorageTargetClientSuspendPollerResponse, error) {
-	resp, err := client.suspend(ctx, resourceGroupName, cacheName, storageTargetName, options)
-	if err != nil {
-		return StorageTargetClientSuspendPollerResponse{}, err
+func (client *StorageTargetClient) BeginSuspend(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginSuspendOptions) (*armruntime.Poller[StorageTargetClientSuspendResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.suspend(ctx, resourceGroupName, cacheName, storageTargetName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[StorageTargetClientSuspendResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[StorageTargetClientSuspendResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := StorageTargetClientSuspendPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("StorageTargetClient.Suspend", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return StorageTargetClientSuspendPollerResponse{}, err
-	}
-	result.Poller = &StorageTargetClientSuspendPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Suspend - Suspends client access to a storage target.
@@ -262,7 +325,7 @@ func (client *StorageTargetClient) suspendCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil

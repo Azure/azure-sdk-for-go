@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
@@ -224,6 +225,8 @@ func TestBatchError(t *testing.T) {
 
 			_, err = client.SubmitTransaction(ctx, batch, nil)
 			require.Error(t, err)
+			var httpErr *azcore.ResponseError
+			require.ErrorAs(t, err, &httpErr)
 		})
 	}
 }
@@ -263,6 +266,8 @@ func TestBatchErrorHandleResponse(t *testing.T) {
 			// Sending a batch with two entities on the same row returns an error
 			_, err = client.SubmitTransaction(ctx, batch, nil)
 			require.Error(t, err)
+			var httpErr *azcore.ResponseError
+			require.ErrorAs(t, err, &httpErr)
 		})
 	}
 }
@@ -368,6 +373,9 @@ func TestBatchComplex(t *testing.T) {
 
 			_, err = client.GetEntity(ctx, edmEntity3.PartitionKey, edmEntity3.RowKey, nil)
 			require.Error(t, err)
+			var httpErr *azcore.ResponseError
+			require.ErrorAs(t, err, &httpErr)
+			require.Equal(t, string(ResourceNotFound), httpErr.ErrorCode)
 		})
 	}
 }

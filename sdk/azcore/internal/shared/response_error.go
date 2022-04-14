@@ -59,6 +59,13 @@ func extractErrorCodeJSON(body []byte) string {
 			return ""
 		}
 		rawObj = unwrapped
+	} else if wrapped, ok := rawObj["odata.error"]; ok {
+		// check if this a wrapped odata error, i.e. { "odata.error": { ... } }
+		unwrapped, ok := wrapped.(map[string]any)
+		if !ok {
+			return ""
+		}
+		rawObj = unwrapped
 	}
 
 	// now check for the error code
@@ -75,7 +82,7 @@ func extractErrorCodeJSON(body []byte) string {
 
 func extractErrorCodeXML(body []byte) string {
 	// regular expression is much easier than dealing with the XML parser
-	rx := regexp.MustCompile(`<[c|C]ode>\s*(\w+)\s*<\/[c|C]ode>`)
+	rx := regexp.MustCompile(`<(?:\w+:)?[c|C]ode>\s*(\w+)\s*<\/(?:\w+:)?[c|C]ode>`)
 	res := rx.FindStringSubmatch(string(body))
 	if len(res) != 2 {
 		return ""

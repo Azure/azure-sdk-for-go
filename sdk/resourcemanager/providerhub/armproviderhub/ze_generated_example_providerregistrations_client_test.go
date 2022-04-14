@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,116 +19,148 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub"
 )
 
-// x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/ProviderRegistrations_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/ProviderRegistrations_Get.json
 func ExampleProviderRegistrationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armproviderhub.NewProviderRegistrationsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewProviderRegistrationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<provider-namespace>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ProviderRegistrationsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/ProviderRegistrations_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/ProviderRegistrations_CreateOrUpdate.json
 func ExampleProviderRegistrationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armproviderhub.NewProviderRegistrationsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewProviderRegistrationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<provider-namespace>",
 		armproviderhub.ProviderRegistration{
 			Properties: &armproviderhub.ProviderRegistrationProperties{
 				Capabilities: []*armproviderhub.ResourceProviderCapabilities{
 					{
-						Effect:  armproviderhub.ResourceProviderCapabilitiesEffect("Allow").ToPtr(),
-						QuotaID: to.StringPtr("<quota-id>"),
+						Effect:  to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
+						QuotaID: to.Ptr("<quota-id>"),
 					},
 					{
-						Effect:  armproviderhub.ResourceProviderCapabilitiesEffect("Allow").ToPtr(),
-						QuotaID: to.StringPtr("<quota-id>"),
+						Effect:  to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
+						QuotaID: to.Ptr("<quota-id>"),
 					}},
 				Management: &armproviderhub.ResourceProviderManifestPropertiesManagement{
-					IncidentContactEmail:   to.StringPtr("<incident-contact-email>"),
-					IncidentRoutingService: to.StringPtr("<incident-routing-service>"),
-					IncidentRoutingTeam:    to.StringPtr("<incident-routing-team>"),
+					IncidentContactEmail:   to.Ptr("<incident-contact-email>"),
+					IncidentRoutingService: to.Ptr("<incident-routing-service>"),
+					IncidentRoutingTeam:    to.Ptr("<incident-routing-team>"),
 				},
-				ProviderType:    armproviderhub.ResourceProviderType("Internal").ToPtr(),
-				ProviderVersion: to.StringPtr("<provider-version>"),
+				ProviderType:    to.Ptr(armproviderhub.ResourceProviderTypeInternal),
+				ProviderVersion: to.Ptr("<provider-version>"),
 			},
 		},
-		nil)
+		&armproviderhub.ProviderRegistrationsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ProviderRegistrationsClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/ProviderRegistrations_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/ProviderRegistrations_Delete.json
 func ExampleProviderRegistrationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armproviderhub.NewProviderRegistrationsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewProviderRegistrationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<provider-namespace>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/ProviderRegistrations_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/ProviderRegistrations_List.json
 func ExampleProviderRegistrationsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armproviderhub.NewProviderRegistrationsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewProviderRegistrationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/ProviderRegistrations_GenerateOperations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/ProviderRegistrations_GenerateOperations.json
 func ExampleProviderRegistrationsClient_GenerateOperations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armproviderhub.NewProviderRegistrationsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewProviderRegistrationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GenerateOperations(ctx,
 		"<provider-namespace>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ProviderRegistrationsClientGenerateOperationsResult)
+	// TODO: use response item
+	_ = res
 }

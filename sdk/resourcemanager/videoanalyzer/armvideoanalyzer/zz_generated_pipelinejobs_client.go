@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type PipelineJobsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPipelineJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PipelineJobsClient {
+func NewPipelineJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PipelineJobsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PipelineJobsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCancel - Cancels a pipeline job with the given name.
@@ -57,22 +62,16 @@ func NewPipelineJobsClient(subscriptionID string, credential azcore.TokenCredent
 // pipelineJobName - The pipeline job name.
 // options - PipelineJobsClientBeginCancelOptions contains the optional parameters for the PipelineJobsClient.BeginCancel
 // method.
-func (client *PipelineJobsClient) BeginCancel(ctx context.Context, resourceGroupName string, accountName string, pipelineJobName string, options *PipelineJobsClientBeginCancelOptions) (PipelineJobsClientCancelPollerResponse, error) {
-	resp, err := client.cancel(ctx, resourceGroupName, accountName, pipelineJobName, options)
-	if err != nil {
-		return PipelineJobsClientCancelPollerResponse{}, err
+func (client *PipelineJobsClient) BeginCancel(ctx context.Context, resourceGroupName string, accountName string, pipelineJobName string, options *PipelineJobsClientBeginCancelOptions) (*armruntime.Poller[PipelineJobsClientCancelResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.cancel(ctx, resourceGroupName, accountName, pipelineJobName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[PipelineJobsClientCancelResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[PipelineJobsClientCancelResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PipelineJobsClientCancelPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PipelineJobsClient.Cancel", "", resp, client.pl)
-	if err != nil {
-		return PipelineJobsClientCancelPollerResponse{}, err
-	}
-	result.Poller = &PipelineJobsClientCancelPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Cancel - Cancels a pipeline job with the given name.
@@ -177,7 +176,7 @@ func (client *PipelineJobsClient) createOrUpdateCreateRequest(ctx context.Contex
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *PipelineJobsClient) createOrUpdateHandleResponse(resp *http.Response) (PipelineJobsClientCreateOrUpdateResponse, error) {
-	result := PipelineJobsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := PipelineJobsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PipelineJob); err != nil {
 		return PipelineJobsClientCreateOrUpdateResponse{}, err
 	}
@@ -202,7 +201,7 @@ func (client *PipelineJobsClient) Delete(ctx context.Context, resourceGroupName 
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return PipelineJobsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return PipelineJobsClientDeleteResponse{RawResponse: resp}, nil
+	return PipelineJobsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -289,7 +288,7 @@ func (client *PipelineJobsClient) getCreateRequest(ctx context.Context, resource
 
 // getHandleResponse handles the Get response.
 func (client *PipelineJobsClient) getHandleResponse(resp *http.Response) (PipelineJobsClientGetResponse, error) {
-	result := PipelineJobsClientGetResponse{RawResponse: resp}
+	result := PipelineJobsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PipelineJob); err != nil {
 		return PipelineJobsClientGetResponse{}, err
 	}
@@ -301,16 +300,32 @@ func (client *PipelineJobsClient) getHandleResponse(resp *http.Response) (Pipeli
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // options - PipelineJobsClientListOptions contains the optional parameters for the PipelineJobsClient.List method.
-func (client *PipelineJobsClient) List(resourceGroupName string, accountName string, options *PipelineJobsClientListOptions) *PipelineJobsClientListPager {
-	return &PipelineJobsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+func (client *PipelineJobsClient) List(resourceGroupName string, accountName string, options *PipelineJobsClientListOptions) *runtime.Pager[PipelineJobsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PipelineJobsClientListResponse]{
+		More: func(page PipelineJobsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PipelineJobsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PipelineJobCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *PipelineJobsClientListResponse) (PipelineJobsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PipelineJobsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PipelineJobsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PipelineJobsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -347,7 +362,7 @@ func (client *PipelineJobsClient) listCreateRequest(ctx context.Context, resourc
 
 // listHandleResponse handles the List response.
 func (client *PipelineJobsClient) listHandleResponse(resp *http.Response) (PipelineJobsClientListResponse, error) {
-	result := PipelineJobsClientListResponse{RawResponse: resp}
+	result := PipelineJobsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PipelineJobCollection); err != nil {
 		return PipelineJobsClientListResponse{}, err
 	}
@@ -408,7 +423,7 @@ func (client *PipelineJobsClient) updateCreateRequest(ctx context.Context, resou
 
 // updateHandleResponse handles the Update response.
 func (client *PipelineJobsClient) updateHandleResponse(resp *http.Response) (PipelineJobsClientUpdateResponse, error) {
-	result := PipelineJobsClientUpdateResponse{RawResponse: resp}
+	result := PipelineJobsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PipelineJob); err != nil {
 		return PipelineJobsClientUpdateResponse{}, err
 	}

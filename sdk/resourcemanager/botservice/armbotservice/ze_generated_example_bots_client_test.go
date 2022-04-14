@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,208 +17,250 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice"
 )
 
-// x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/CreateBot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/CreateBot.json
 func ExampleBotsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armbotservice.NewBotsClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewBotsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Create(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		armbotservice.Bot{
-			Etag:     to.StringPtr("<etag>"),
-			Kind:     armbotservice.Kind("sdk").ToPtr(),
-			Location: to.StringPtr("<location>"),
+			Etag:     to.Ptr("<etag>"),
+			Kind:     to.Ptr(armbotservice.KindSdk),
+			Location: to.Ptr("<location>"),
 			SKU: &armbotservice.SKU{
-				Name: armbotservice.SKUName("S1").ToPtr(),
+				Name: to.Ptr(armbotservice.SKUNameS1),
 			},
 			Tags: map[string]*string{
-				"tag1": to.StringPtr("value1"),
-				"tag2": to.StringPtr("value2"),
+				"tag1": to.Ptr("value1"),
+				"tag2": to.Ptr("value2"),
 			},
 			Properties: &armbotservice.BotProperties{
-				Description:                       to.StringPtr("<description>"),
-				CmekKeyVaultURL:                   to.StringPtr("<cmek-key-vault-url>"),
-				DeveloperAppInsightKey:            to.StringPtr("<developer-app-insight-key>"),
-				DeveloperAppInsightsAPIKey:        to.StringPtr("<developer-app-insights-apikey>"),
-				DeveloperAppInsightsApplicationID: to.StringPtr("<developer-app-insights-application-id>"),
-				DisableLocalAuth:                  to.BoolPtr(true),
-				DisplayName:                       to.StringPtr("<display-name>"),
-				Endpoint:                          to.StringPtr("<endpoint>"),
-				IconURL:                           to.StringPtr("<icon-url>"),
-				IsCmekEnabled:                     to.BoolPtr(true),
+				Description:                       to.Ptr("<description>"),
+				CmekKeyVaultURL:                   to.Ptr("<cmek-key-vault-url>"),
+				DeveloperAppInsightKey:            to.Ptr("<developer-app-insight-key>"),
+				DeveloperAppInsightsAPIKey:        to.Ptr("<developer-app-insights-apikey>"),
+				DeveloperAppInsightsApplicationID: to.Ptr("<developer-app-insights-application-id>"),
+				DisableLocalAuth:                  to.Ptr(true),
+				DisplayName:                       to.Ptr("<display-name>"),
+				Endpoint:                          to.Ptr("<endpoint>"),
+				IconURL:                           to.Ptr("<icon-url>"),
+				IsCmekEnabled:                     to.Ptr(true),
 				LuisAppIDs: []*string{
-					to.StringPtr("luisappid1"),
-					to.StringPtr("luisappid2")},
-				LuisKey:                     to.StringPtr("<luis-key>"),
-				MsaAppID:                    to.StringPtr("<msa-app-id>"),
-				MsaAppMSIResourceID:         to.StringPtr("<msa-app-msiresource-id>"),
-				MsaAppTenantID:              to.StringPtr("<msa-app-tenant-id>"),
-				MsaAppType:                  armbotservice.MsaAppType("UserAssignedMSI").ToPtr(),
-				PublicNetworkAccess:         armbotservice.PublicNetworkAccess("Enabled").ToPtr(),
-				SchemaTransformationVersion: to.StringPtr("<schema-transformation-version>"),
+					to.Ptr("luisappid1"),
+					to.Ptr("luisappid2")},
+				LuisKey:                     to.Ptr("<luis-key>"),
+				MsaAppID:                    to.Ptr("<msa-app-id>"),
+				MsaAppMSIResourceID:         to.Ptr("<msa-app-msiresource-id>"),
+				MsaAppTenantID:              to.Ptr("<msa-app-tenant-id>"),
+				MsaAppType:                  to.Ptr(armbotservice.MsaAppTypeUserAssignedMSI),
+				PublicNetworkAccess:         to.Ptr(armbotservice.PublicNetworkAccessEnabled),
+				SchemaTransformationVersion: to.Ptr("<schema-transformation-version>"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BotsClientCreateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/UpdateBot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/UpdateBot.json
 func ExampleBotsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armbotservice.NewBotsClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewBotsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		armbotservice.Bot{
-			Etag:     to.StringPtr("<etag>"),
-			Kind:     armbotservice.Kind("sdk").ToPtr(),
-			Location: to.StringPtr("<location>"),
+			Etag:     to.Ptr("<etag>"),
+			Kind:     to.Ptr(armbotservice.KindSdk),
+			Location: to.Ptr("<location>"),
 			SKU: &armbotservice.SKU{
-				Name: armbotservice.SKUName("S1").ToPtr(),
+				Name: to.Ptr(armbotservice.SKUNameS1),
 			},
 			Tags: map[string]*string{
-				"tag1": to.StringPtr("value1"),
-				"tag2": to.StringPtr("value2"),
+				"tag1": to.Ptr("value1"),
+				"tag2": to.Ptr("value2"),
 			},
 			Properties: &armbotservice.BotProperties{
-				Description:                       to.StringPtr("<description>"),
-				CmekKeyVaultURL:                   to.StringPtr("<cmek-key-vault-url>"),
-				DeveloperAppInsightKey:            to.StringPtr("<developer-app-insight-key>"),
-				DeveloperAppInsightsAPIKey:        to.StringPtr("<developer-app-insights-apikey>"),
-				DeveloperAppInsightsApplicationID: to.StringPtr("<developer-app-insights-application-id>"),
-				DisableLocalAuth:                  to.BoolPtr(true),
-				DisplayName:                       to.StringPtr("<display-name>"),
-				Endpoint:                          to.StringPtr("<endpoint>"),
-				IconURL:                           to.StringPtr("<icon-url>"),
-				IsCmekEnabled:                     to.BoolPtr(true),
+				Description:                       to.Ptr("<description>"),
+				CmekKeyVaultURL:                   to.Ptr("<cmek-key-vault-url>"),
+				DeveloperAppInsightKey:            to.Ptr("<developer-app-insight-key>"),
+				DeveloperAppInsightsAPIKey:        to.Ptr("<developer-app-insights-apikey>"),
+				DeveloperAppInsightsApplicationID: to.Ptr("<developer-app-insights-application-id>"),
+				DisableLocalAuth:                  to.Ptr(true),
+				DisplayName:                       to.Ptr("<display-name>"),
+				Endpoint:                          to.Ptr("<endpoint>"),
+				IconURL:                           to.Ptr("<icon-url>"),
+				IsCmekEnabled:                     to.Ptr(true),
 				LuisAppIDs: []*string{
-					to.StringPtr("luisappid1"),
-					to.StringPtr("luisappid2")},
-				LuisKey:                     to.StringPtr("<luis-key>"),
-				MsaAppID:                    to.StringPtr("<msa-app-id>"),
-				MsaAppMSIResourceID:         to.StringPtr("<msa-app-msiresource-id>"),
-				MsaAppTenantID:              to.StringPtr("<msa-app-tenant-id>"),
-				MsaAppType:                  armbotservice.MsaAppType("UserAssignedMSI").ToPtr(),
-				PublicNetworkAccess:         armbotservice.PublicNetworkAccess("Enabled").ToPtr(),
-				SchemaTransformationVersion: to.StringPtr("<schema-transformation-version>"),
+					to.Ptr("luisappid1"),
+					to.Ptr("luisappid2")},
+				LuisKey:                     to.Ptr("<luis-key>"),
+				MsaAppID:                    to.Ptr("<msa-app-id>"),
+				MsaAppMSIResourceID:         to.Ptr("<msa-app-msiresource-id>"),
+				MsaAppTenantID:              to.Ptr("<msa-app-tenant-id>"),
+				MsaAppType:                  to.Ptr(armbotservice.MsaAppTypeUserAssignedMSI),
+				PublicNetworkAccess:         to.Ptr(armbotservice.PublicNetworkAccessEnabled),
+				SchemaTransformationVersion: to.Ptr("<schema-transformation-version>"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BotsClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/DeleteBot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/DeleteBot.json
 func ExampleBotsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armbotservice.NewBotsClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewBotsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/GetBot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/GetBot.json
 func ExampleBotsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armbotservice.NewBotsClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewBotsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BotsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/ListBotsByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/ListBotsByResourceGroup.json
 func ExampleBotsClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armbotservice.NewBotsClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewBotsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/ListBotsBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/ListBotsBySubscription.json
 func ExampleBotsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armbotservice.NewBotsClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewBotsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/CheckNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/CheckNameAvailability.json
 func ExampleBotsClient_GetCheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armbotservice.NewBotsClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewBotsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetCheckNameAvailability(ctx,
 		armbotservice.CheckNameAvailabilityRequestBody{
-			Name: to.StringPtr("<name>"),
-			Type: to.StringPtr("<type>"),
+			Name: to.Ptr("<name>"),
+			Type: to.Ptr("<type>"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BotsClientGetCheckNameAvailabilityResult)
+	// TODO: use response item
+	_ = res
 }

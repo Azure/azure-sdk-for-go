@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type AccessPoliciesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAccessPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AccessPoliciesClient {
+func NewAccessPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessPoliciesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AccessPoliciesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates a new access policy resource or updates an existing one with the given name.
@@ -105,7 +110,7 @@ func (client *AccessPoliciesClient) createOrUpdateCreateRequest(ctx context.Cont
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *AccessPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (AccessPoliciesClientCreateOrUpdateResponse, error) {
-	result := AccessPoliciesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := AccessPoliciesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessPolicyEntity); err != nil {
 		return AccessPoliciesClientCreateOrUpdateResponse{}, err
 	}
@@ -130,7 +135,7 @@ func (client *AccessPoliciesClient) Delete(ctx context.Context, resourceGroupNam
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return AccessPoliciesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return AccessPoliciesClientDeleteResponse{RawResponse: resp}, nil
+	return AccessPoliciesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -216,7 +221,7 @@ func (client *AccessPoliciesClient) getCreateRequest(ctx context.Context, resour
 
 // getHandleResponse handles the Get response.
 func (client *AccessPoliciesClient) getHandleResponse(resp *http.Response) (AccessPoliciesClientGetResponse, error) {
-	result := AccessPoliciesClientGetResponse{RawResponse: resp}
+	result := AccessPoliciesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessPolicyEntity); err != nil {
 		return AccessPoliciesClientGetResponse{}, err
 	}
@@ -228,16 +233,32 @@ func (client *AccessPoliciesClient) getHandleResponse(resp *http.Response) (Acce
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // options - AccessPoliciesClientListOptions contains the optional parameters for the AccessPoliciesClient.List method.
-func (client *AccessPoliciesClient) List(resourceGroupName string, accountName string, options *AccessPoliciesClientListOptions) *AccessPoliciesClientListPager {
-	return &AccessPoliciesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+func (client *AccessPoliciesClient) List(resourceGroupName string, accountName string, options *AccessPoliciesClientListOptions) *runtime.Pager[AccessPoliciesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AccessPoliciesClientListResponse]{
+		More: func(page AccessPoliciesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AccessPoliciesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AccessPolicyEntityCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *AccessPoliciesClientListResponse) (AccessPoliciesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AccessPoliciesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AccessPoliciesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AccessPoliciesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -271,7 +292,7 @@ func (client *AccessPoliciesClient) listCreateRequest(ctx context.Context, resou
 
 // listHandleResponse handles the List response.
 func (client *AccessPoliciesClient) listHandleResponse(resp *http.Response) (AccessPoliciesClientListResponse, error) {
-	result := AccessPoliciesClientListResponse{RawResponse: resp}
+	result := AccessPoliciesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessPolicyEntityCollection); err != nil {
 		return AccessPoliciesClientListResponse{}, err
 	}
@@ -332,7 +353,7 @@ func (client *AccessPoliciesClient) updateCreateRequest(ctx context.Context, res
 
 // updateHandleResponse handles the Update response.
 func (client *AccessPoliciesClient) updateHandleResponse(resp *http.Response) (AccessPoliciesClientUpdateResponse, error) {
-	result := AccessPoliciesClientUpdateResponse{RawResponse: resp}
+	result := AccessPoliciesClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessPolicyEntity); err != nil {
 		return AccessPoliciesClientUpdateResponse{}, err
 	}

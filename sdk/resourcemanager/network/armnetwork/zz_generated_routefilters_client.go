@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type RouteFiltersClient struct {
 // ID forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewRouteFiltersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RouteFiltersClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewRouteFiltersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RouteFiltersClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &RouteFiltersClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a route filter in a specified resource group.
@@ -57,22 +62,18 @@ func NewRouteFiltersClient(subscriptionID string, credential azcore.TokenCredent
 // routeFilterParameters - Parameters supplied to the create or update route filter operation.
 // options - RouteFiltersClientBeginCreateOrUpdateOptions contains the optional parameters for the RouteFiltersClient.BeginCreateOrUpdate
 // method.
-func (client *RouteFiltersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, routeFilterName string, routeFilterParameters RouteFilter, options *RouteFiltersClientBeginCreateOrUpdateOptions) (RouteFiltersClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, routeFilterName, routeFilterParameters, options)
-	if err != nil {
-		return RouteFiltersClientCreateOrUpdatePollerResponse{}, err
+func (client *RouteFiltersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, routeFilterName string, routeFilterParameters RouteFilter, options *RouteFiltersClientBeginCreateOrUpdateOptions) (*armruntime.Poller[RouteFiltersClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, routeFilterName, routeFilterParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[RouteFiltersClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[RouteFiltersClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := RouteFiltersClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("RouteFiltersClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return RouteFiltersClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &RouteFiltersClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a route filter in a specified resource group.
@@ -124,22 +125,18 @@ func (client *RouteFiltersClient) createOrUpdateCreateRequest(ctx context.Contex
 // routeFilterName - The name of the route filter.
 // options - RouteFiltersClientBeginDeleteOptions contains the optional parameters for the RouteFiltersClient.BeginDelete
 // method.
-func (client *RouteFiltersClient) BeginDelete(ctx context.Context, resourceGroupName string, routeFilterName string, options *RouteFiltersClientBeginDeleteOptions) (RouteFiltersClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, routeFilterName, options)
-	if err != nil {
-		return RouteFiltersClientDeletePollerResponse{}, err
+func (client *RouteFiltersClient) BeginDelete(ctx context.Context, resourceGroupName string, routeFilterName string, options *RouteFiltersClientBeginDeleteOptions) (*armruntime.Poller[RouteFiltersClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, routeFilterName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[RouteFiltersClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[RouteFiltersClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := RouteFiltersClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("RouteFiltersClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return RouteFiltersClientDeletePollerResponse{}, err
-	}
-	result.Poller = &RouteFiltersClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified route filter.
@@ -236,7 +233,7 @@ func (client *RouteFiltersClient) getCreateRequest(ctx context.Context, resource
 
 // getHandleResponse handles the Get response.
 func (client *RouteFiltersClient) getHandleResponse(resp *http.Response) (RouteFiltersClientGetResponse, error) {
-	result := RouteFiltersClientGetResponse{RawResponse: resp}
+	result := RouteFiltersClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RouteFilter); err != nil {
 		return RouteFiltersClientGetResponse{}, err
 	}
@@ -246,16 +243,32 @@ func (client *RouteFiltersClient) getHandleResponse(resp *http.Response) (RouteF
 // List - Gets all route filters in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - RouteFiltersClientListOptions contains the optional parameters for the RouteFiltersClient.List method.
-func (client *RouteFiltersClient) List(options *RouteFiltersClientListOptions) *RouteFiltersClientListPager {
-	return &RouteFiltersClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *RouteFiltersClient) List(options *RouteFiltersClientListOptions) *runtime.Pager[RouteFiltersClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RouteFiltersClientListResponse]{
+		More: func(page RouteFiltersClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RouteFiltersClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RouteFilterListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *RouteFiltersClientListResponse) (RouteFiltersClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RouteFiltersClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RouteFiltersClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RouteFiltersClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -278,7 +291,7 @@ func (client *RouteFiltersClient) listCreateRequest(ctx context.Context, options
 
 // listHandleResponse handles the List response.
 func (client *RouteFiltersClient) listHandleResponse(resp *http.Response) (RouteFiltersClientListResponse, error) {
-	result := RouteFiltersClientListResponse{RawResponse: resp}
+	result := RouteFiltersClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RouteFilterListResult); err != nil {
 		return RouteFiltersClientListResponse{}, err
 	}
@@ -290,16 +303,32 @@ func (client *RouteFiltersClient) listHandleResponse(resp *http.Response) (Route
 // resourceGroupName - The name of the resource group.
 // options - RouteFiltersClientListByResourceGroupOptions contains the optional parameters for the RouteFiltersClient.ListByResourceGroup
 // method.
-func (client *RouteFiltersClient) ListByResourceGroup(resourceGroupName string, options *RouteFiltersClientListByResourceGroupOptions) *RouteFiltersClientListByResourceGroupPager {
-	return &RouteFiltersClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *RouteFiltersClient) ListByResourceGroup(resourceGroupName string, options *RouteFiltersClientListByResourceGroupOptions) *runtime.Pager[RouteFiltersClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RouteFiltersClientListByResourceGroupResponse]{
+		More: func(page RouteFiltersClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RouteFiltersClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RouteFilterListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *RouteFiltersClientListByResourceGroupResponse) (RouteFiltersClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RouteFiltersClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RouteFiltersClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RouteFiltersClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -326,7 +355,7 @@ func (client *RouteFiltersClient) listByResourceGroupCreateRequest(ctx context.C
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *RouteFiltersClient) listByResourceGroupHandleResponse(resp *http.Response) (RouteFiltersClientListByResourceGroupResponse, error) {
-	result := RouteFiltersClientListByResourceGroupResponse{RawResponse: resp}
+	result := RouteFiltersClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RouteFilterListResult); err != nil {
 		return RouteFiltersClientListByResourceGroupResponse{}, err
 	}
@@ -382,7 +411,7 @@ func (client *RouteFiltersClient) updateTagsCreateRequest(ctx context.Context, r
 
 // updateTagsHandleResponse handles the UpdateTags response.
 func (client *RouteFiltersClient) updateTagsHandleResponse(resp *http.Response) (RouteFiltersClientUpdateTagsResponse, error) {
-	result := RouteFiltersClientUpdateTagsResponse{RawResponse: resp}
+	result := RouteFiltersClientUpdateTagsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RouteFilter); err != nil {
 		return RouteFiltersClientUpdateTagsResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armiothub
 
 const (
 	moduleName    = "armiothub"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 // AccessRights - The permissions assigned to the shared access policy.
@@ -55,11 +55,6 @@ func PossibleAccessRightsValues() []AccessRights {
 	}
 }
 
-// ToPtr returns a *AccessRights pointing to the current value.
-func (c AccessRights) ToPtr() *AccessRights {
-	return &c
-}
-
 // AuthenticationType - Specifies authentication type being used for connecting to the storage account.
 type AuthenticationType string
 
@@ -74,11 +69,6 @@ func PossibleAuthenticationTypeValues() []AuthenticationType {
 		AuthenticationTypeIdentityBased,
 		AuthenticationTypeKeyBased,
 	}
-}
-
-// ToPtr returns a *AuthenticationType pointing to the current value.
-func (c AuthenticationType) ToPtr() *AuthenticationType {
-	return &c
 }
 
 // Capabilities - The capabilities and features enabled for the IoT hub.
@@ -97,9 +87,24 @@ func PossibleCapabilitiesValues() []Capabilities {
 	}
 }
 
-// ToPtr returns a *Capabilities pointing to the current value.
-func (c Capabilities) ToPtr() *Capabilities {
-	return &c
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
+	}
 }
 
 // DefaultAction - Default Action for Network Rule Set
@@ -116,11 +121,6 @@ func PossibleDefaultActionValues() []DefaultAction {
 		DefaultActionAllow,
 		DefaultActionDeny,
 	}
-}
-
-// ToPtr returns a *DefaultAction pointing to the current value.
-func (c DefaultAction) ToPtr() *DefaultAction {
-	return &c
 }
 
 // EndpointHealthStatus - Health statuses have following meanings. The 'healthy' status shows that the endpoint is accepting
@@ -152,11 +152,6 @@ func PossibleEndpointHealthStatusValues() []EndpointHealthStatus {
 	}
 }
 
-// ToPtr returns a *EndpointHealthStatus pointing to the current value.
-func (c EndpointHealthStatus) ToPtr() *EndpointHealthStatus {
-	return &c
-}
-
 // IPFilterActionType - The desired action for requests captured by this rule.
 type IPFilterActionType string
 
@@ -171,11 +166,6 @@ func PossibleIPFilterActionTypeValues() []IPFilterActionType {
 		IPFilterActionTypeAccept,
 		IPFilterActionTypeReject,
 	}
-}
-
-// ToPtr returns a *IPFilterActionType pointing to the current value.
-func (c IPFilterActionType) ToPtr() *IPFilterActionType {
-	return &c
 }
 
 // IotHubNameUnavailabilityReason - The reason for unavailability.
@@ -194,11 +184,6 @@ func PossibleIotHubNameUnavailabilityReasonValues() []IotHubNameUnavailabilityRe
 	}
 }
 
-// ToPtr returns a *IotHubNameUnavailabilityReason pointing to the current value.
-func (c IotHubNameUnavailabilityReason) ToPtr() *IotHubNameUnavailabilityReason {
-	return &c
-}
-
 // IotHubReplicaRoleType - The role of the region, can be either primary or secondary. The primary region is where the IoT
 // hub is currently provisioned. The secondary region is the Azure disaster recovery (DR) paired region and
 // also the region where the IoT hub can failover to.
@@ -215,11 +200,6 @@ func PossibleIotHubReplicaRoleTypeValues() []IotHubReplicaRoleType {
 		IotHubReplicaRoleTypePrimary,
 		IotHubReplicaRoleTypeSecondary,
 	}
-}
-
-// ToPtr returns a *IotHubReplicaRoleType pointing to the current value.
-func (c IotHubReplicaRoleType) ToPtr() *IotHubReplicaRoleType {
-	return &c
 }
 
 // IotHubSKU - The name of the SKU.
@@ -248,11 +228,6 @@ func PossibleIotHubSKUValues() []IotHubSKU {
 	}
 }
 
-// ToPtr returns a *IotHubSKU pointing to the current value.
-func (c IotHubSKU) ToPtr() *IotHubSKU {
-	return &c
-}
-
 // IotHubSKUTier - The billing tier for the IoT hub.
 type IotHubSKUTier string
 
@@ -271,11 +246,6 @@ func PossibleIotHubSKUTierValues() []IotHubSKUTier {
 	}
 }
 
-// ToPtr returns a *IotHubSKUTier pointing to the current value.
-func (c IotHubSKUTier) ToPtr() *IotHubSKUTier {
-	return &c
-}
-
 // IotHubScaleType - The type of the scaling enabled.
 type IotHubScaleType string
 
@@ -292,11 +262,6 @@ func PossibleIotHubScaleTypeValues() []IotHubScaleType {
 		IotHubScaleTypeManual,
 		IotHubScaleTypeNone,
 	}
-}
-
-// ToPtr returns a *IotHubScaleType pointing to the current value.
-func (c IotHubScaleType) ToPtr() *IotHubScaleType {
-	return &c
 }
 
 // JobStatus - The status of the job.
@@ -321,11 +286,6 @@ func PossibleJobStatusValues() []JobStatus {
 		JobStatusFailed,
 		JobStatusCancelled,
 	}
-}
-
-// ToPtr returns a *JobStatus pointing to the current value.
-func (c JobStatus) ToPtr() *JobStatus {
-	return &c
 }
 
 // JobType - The type of the job.
@@ -360,11 +320,6 @@ func PossibleJobTypeValues() []JobType {
 	}
 }
 
-// ToPtr returns a *JobType pointing to the current value.
-func (c JobType) ToPtr() *JobType {
-	return &c
-}
-
 // NetworkRuleIPAction - IP Filter Action
 type NetworkRuleIPAction string
 
@@ -377,11 +332,6 @@ func PossibleNetworkRuleIPActionValues() []NetworkRuleIPAction {
 	return []NetworkRuleIPAction{
 		NetworkRuleIPActionAllow,
 	}
-}
-
-// ToPtr returns a *NetworkRuleIPAction pointing to the current value.
-func (c NetworkRuleIPAction) ToPtr() *NetworkRuleIPAction {
-	return &c
 }
 
 // PrivateLinkServiceConnectionStatus - The status of a private endpoint connection
@@ -404,11 +354,6 @@ func PossiblePrivateLinkServiceConnectionStatusValues() []PrivateLinkServiceConn
 	}
 }
 
-// ToPtr returns a *PrivateLinkServiceConnectionStatus pointing to the current value.
-func (c PrivateLinkServiceConnectionStatus) ToPtr() *PrivateLinkServiceConnectionStatus {
-	return &c
-}
-
 // PublicNetworkAccess - Whether requests from Public Network are allowed
 type PublicNetworkAccess string
 
@@ -425,12 +370,7 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	}
 }
 
-// ToPtr returns a *PublicNetworkAccess pointing to the current value.
-func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
-	return &c
-}
-
-// ResourceIdentityType - The type of identity used for the resource. The type 'SystemAssigned,UserAssigned' includes both
+// ResourceIdentityType - The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both
 // an implicitly created identity and a set of user assigned identities. The type 'None' will remove any
 // identities from the service.
 type ResourceIdentityType string
@@ -452,11 +392,6 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	}
 }
 
-// ToPtr returns a *ResourceIdentityType pointing to the current value.
-func (c ResourceIdentityType) ToPtr() *ResourceIdentityType {
-	return &c
-}
-
 // RouteErrorSeverity - Severity of the route error
 type RouteErrorSeverity string
 
@@ -473,11 +408,6 @@ func PossibleRouteErrorSeverityValues() []RouteErrorSeverity {
 	}
 }
 
-// ToPtr returns a *RouteErrorSeverity pointing to the current value.
-func (c RouteErrorSeverity) ToPtr() *RouteErrorSeverity {
-	return &c
-}
-
 // RoutingSource - The source that the routing rule is to be applied to, such as DeviceMessages.
 type RoutingSource string
 
@@ -486,9 +416,7 @@ const (
 	RoutingSourceDeviceJobLifecycleEvents    RoutingSource = "DeviceJobLifecycleEvents"
 	RoutingSourceDeviceLifecycleEvents       RoutingSource = "DeviceLifecycleEvents"
 	RoutingSourceDeviceMessages              RoutingSource = "DeviceMessages"
-	RoutingSourceDigitalTwinChangeEvents     RoutingSource = "DigitalTwinChangeEvents"
 	RoutingSourceInvalid                     RoutingSource = "Invalid"
-	RoutingSourceMqttBrokerMessages          RoutingSource = "MqttBrokerMessages"
 	RoutingSourceTwinChangeEvents            RoutingSource = "TwinChangeEvents"
 )
 
@@ -499,16 +427,9 @@ func PossibleRoutingSourceValues() []RoutingSource {
 		RoutingSourceDeviceJobLifecycleEvents,
 		RoutingSourceDeviceLifecycleEvents,
 		RoutingSourceDeviceMessages,
-		RoutingSourceDigitalTwinChangeEvents,
 		RoutingSourceInvalid,
-		RoutingSourceMqttBrokerMessages,
 		RoutingSourceTwinChangeEvents,
 	}
-}
-
-// ToPtr returns a *RoutingSource pointing to the current value.
-func (c RoutingSource) ToPtr() *RoutingSource {
-	return &c
 }
 
 // RoutingStorageContainerPropertiesEncoding - Encoding that is used to serialize messages to blobs. Supported values are
@@ -530,11 +451,6 @@ func PossibleRoutingStorageContainerPropertiesEncodingValues() []RoutingStorageC
 	}
 }
 
-// ToPtr returns a *RoutingStorageContainerPropertiesEncoding pointing to the current value.
-func (c RoutingStorageContainerPropertiesEncoding) ToPtr() *RoutingStorageContainerPropertiesEncoding {
-	return &c
-}
-
 // TestResultStatus - Result of testing route
 type TestResultStatus string
 
@@ -551,9 +467,4 @@ func PossibleTestResultStatusValues() []TestResultStatus {
 		TestResultStatusTrue,
 		TestResultStatusUndefined,
 	}
-}
-
-// ToPtr returns a *TestResultStatus pointing to the current value.
-func (c TestResultStatus) ToPtr() *TestResultStatus {
-	return &c
 }

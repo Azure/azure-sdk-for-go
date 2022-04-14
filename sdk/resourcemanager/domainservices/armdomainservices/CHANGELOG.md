@@ -1,5 +1,162 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `*Client.ListByResourceGroup` return value(s) have been changed from `(*ClientListByResourceGroupPager)` to `(*runtime.Pager[ClientListByResourceGroupResponse])`
+- Function `NewOuContainerOperationsClient` return value(s) have been changed from `(*OuContainerOperationsClient)` to `(*OuContainerOperationsClient, error)`
+- Function `*Client.BeginUpdate` return value(s) have been changed from `(ClientUpdatePollerResponse, error)` to `(*armruntime.Poller[ClientUpdateResponse], error)`
+- Function `*Client.BeginCreateOrUpdate` return value(s) have been changed from `(ClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ClientCreateOrUpdateResponse], error)`
+- Function `*Client.BeginDelete` return value(s) have been changed from `(ClientDeletePollerResponse, error)` to `(*armruntime.Poller[ClientDeleteResponse], error)`
+- Function `*OuContainerOperationsClient.List` return value(s) have been changed from `(*OuContainerOperationsClientListPager)` to `(*runtime.Pager[OuContainerOperationsClientListResponse])`
+- Function `NewClient` return value(s) have been changed from `(*Client)` to `(*Client, error)`
+- Function `*OuContainerClient.List` return value(s) have been changed from `(*OuContainerClientListPager)` to `(*runtime.Pager[OuContainerClientListResponse])`
+- Function `NewDomainServiceOperationsClient` return value(s) have been changed from `(*DomainServiceOperationsClient)` to `(*DomainServiceOperationsClient, error)`
+- Function `*OuContainerClient.BeginCreate` return value(s) have been changed from `(OuContainerClientCreatePollerResponse, error)` to `(*armruntime.Poller[OuContainerClientCreateResponse], error)`
+- Function `*OuContainerClient.BeginUpdate` return value(s) have been changed from `(OuContainerClientUpdatePollerResponse, error)` to `(*armruntime.Poller[OuContainerClientUpdateResponse], error)`
+- Function `*Client.List` return value(s) have been changed from `(*ClientListPager)` to `(*runtime.Pager[ClientListResponse])`
+- Function `*DomainServiceOperationsClient.List` return value(s) have been changed from `(*DomainServiceOperationsClientListPager)` to `(*runtime.Pager[DomainServiceOperationsClientListResponse])`
+- Function `NewOuContainerClient` return value(s) have been changed from `(*OuContainerClient)` to `(*OuContainerClient, error)`
+- Function `*OuContainerClient.BeginDelete` return value(s) have been changed from `(OuContainerClientDeletePollerResponse, error)` to `(*armruntime.Poller[OuContainerClientDeleteResponse], error)`
+- Function `*DomainServiceOperationsClientListPager.Err` has been removed
+- Function `OuContainerClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*ClientListPager.Err` has been removed
+- Function `TLSV1.ToPtr` has been removed
+- Function `*ClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ClientUpdatePoller.ResumeToken` has been removed
+- Function `*OuContainerOperationsClientListPager.NextPage` has been removed
+- Function `*ClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `NotifyGlobalAdmins.ToPtr` has been removed
+- Function `*OuContainerClientCreatePoller.Done` has been removed
+- Function `*ClientCreateOrUpdatePoller.Done` has been removed
+- Function `*OuContainerClientUpdatePollerResponse.Resume` has been removed
+- Function `*DomainServiceOperationsClientListPager.PageResponse` has been removed
+- Function `KerberosRc4Encryption.ToPtr` has been removed
+- Function `*OuContainerClientCreatePoller.Poll` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*ClientDeletePoller.Done` has been removed
+- Function `*OuContainerOperationsClientListPager.Err` has been removed
+- Function `*ClientDeletePoller.ResumeToken` has been removed
+- Function `*OuContainerClientListPager.Err` has been removed
+- Function `ClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*OuContainerClientUpdatePoller.ResumeToken` has been removed
+- Function `NtlmV1.ToPtr` has been removed
+- Function `*ClientDeletePoller.Poll` has been removed
+- Function `KerberosArmoring.ToPtr` has been removed
+- Function `*ClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ClientUpdatePoller.FinalResponse` has been removed
+- Function `*ClientUpdatePoller.Poll` has been removed
+- Function `*OuContainerClientCreatePollerResponse.Resume` has been removed
+- Function `*ClientListByResourceGroupPager.NextPage` has been removed
+- Function `*ClientListPager.NextPage` has been removed
+- Function `*OuContainerClientListPager.NextPage` has been removed
+- Function `*OuContainerClientDeletePoller.ResumeToken` has been removed
+- Function `ClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*OuContainerClientDeletePoller.Done` has been removed
+- Function `*ClientListByResourceGroupPager.PageResponse` has been removed
+- Function `SyncKerberosPasswords.ToPtr` has been removed
+- Function `Status.ToPtr` has been removed
+- Function `*OuContainerClientCreatePoller.ResumeToken` has been removed
+- Function `*ClientListPager.PageResponse` has been removed
+- Function `SyncOnPremPasswords.ToPtr` has been removed
+- Function `*OuContainerClientDeletePollerResponse.Resume` has been removed
+- Function `NotifyDcAdmins.ToPtr` has been removed
+- Function `*OuContainerClientDeletePoller.Poll` has been removed
+- Function `*ClientUpdatePollerResponse.Resume` has been removed
+- Function `*ClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*OuContainerClientUpdatePoller.Poll` has been removed
+- Function `*OuContainerClientUpdatePoller.FinalResponse` has been removed
+- Function `OuContainerClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `SyncNtlmPasswords.ToPtr` has been removed
+- Function `*ClientDeletePoller.FinalResponse` has been removed
+- Function `OuContainerClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ClientUpdatePoller.Done` has been removed
+- Function `*ClientDeletePollerResponse.Resume` has been removed
+- Function `FilteredSync.ToPtr` has been removed
+- Function `ClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DomainServiceOperationsClientListPager.NextPage` has been removed
+- Function `*OuContainerClientUpdatePoller.Done` has been removed
+- Function `*OuContainerClientCreatePoller.FinalResponse` has been removed
+- Function `*OuContainerClientListPager.PageResponse` has been removed
+- Function `*ClientListByResourceGroupPager.Err` has been removed
+- Function `*OuContainerOperationsClientListPager.PageResponse` has been removed
+- Function `*OuContainerClientDeletePoller.FinalResponse` has been removed
+- Function `ExternalAccess.ToPtr` has been removed
+- Function `Ldaps.ToPtr` has been removed
+- Struct `ClientCreateOrUpdatePoller` has been removed
+- Struct `ClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ClientCreateOrUpdateResult` has been removed
+- Struct `ClientDeletePoller` has been removed
+- Struct `ClientDeletePollerResponse` has been removed
+- Struct `ClientGetResult` has been removed
+- Struct `ClientListByResourceGroupPager` has been removed
+- Struct `ClientListByResourceGroupResult` has been removed
+- Struct `ClientListPager` has been removed
+- Struct `ClientListResult` has been removed
+- Struct `ClientUpdatePoller` has been removed
+- Struct `ClientUpdatePollerResponse` has been removed
+- Struct `ClientUpdateResult` has been removed
+- Struct `DomainServiceOperationsClientListPager` has been removed
+- Struct `DomainServiceOperationsClientListResult` has been removed
+- Struct `OuContainerClientCreatePoller` has been removed
+- Struct `OuContainerClientCreatePollerResponse` has been removed
+- Struct `OuContainerClientCreateResult` has been removed
+- Struct `OuContainerClientDeletePoller` has been removed
+- Struct `OuContainerClientDeletePollerResponse` has been removed
+- Struct `OuContainerClientGetResult` has been removed
+- Struct `OuContainerClientListPager` has been removed
+- Struct `OuContainerClientListResult` has been removed
+- Struct `OuContainerClientUpdatePoller` has been removed
+- Struct `OuContainerClientUpdatePollerResponse` has been removed
+- Struct `OuContainerClientUpdateResult` has been removed
+- Struct `OuContainerOperationsClientListPager` has been removed
+- Struct `OuContainerOperationsClientListResult` has been removed
+- Field `OuContainerClientListResult` of struct `OuContainerClientListResponse` has been removed
+- Field `RawResponse` of struct `OuContainerClientListResponse` has been removed
+- Field `OuContainerClientGetResult` of struct `OuContainerClientGetResponse` has been removed
+- Field `RawResponse` of struct `OuContainerClientGetResponse` has been removed
+- Field `ClientUpdateResult` of struct `ClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ClientUpdateResponse` has been removed
+- Field `ClientCreateOrUpdateResult` of struct `ClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ClientCreateOrUpdateResponse` has been removed
+- Field `OuContainerOperationsClientListResult` of struct `OuContainerOperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OuContainerOperationsClientListResponse` has been removed
+- Field `OuContainerClientCreateResult` of struct `OuContainerClientCreateResponse` has been removed
+- Field `RawResponse` of struct `OuContainerClientCreateResponse` has been removed
+- Field `RawResponse` of struct `OuContainerClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `ClientDeleteResponse` has been removed
+- Field `ClientGetResult` of struct `ClientGetResponse` has been removed
+- Field `RawResponse` of struct `ClientGetResponse` has been removed
+- Field `OuContainerClientUpdateResult` of struct `OuContainerClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `OuContainerClientUpdateResponse` has been removed
+- Field `ClientListResult` of struct `ClientListResponse` has been removed
+- Field `RawResponse` of struct `ClientListResponse` has been removed
+- Field `DomainServiceOperationsClientListResult` of struct `DomainServiceOperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `DomainServiceOperationsClientListResponse` has been removed
+- Field `ClientListByResourceGroupResult` of struct `ClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ClientListByResourceGroupResponse` has been removed
+
+### Features Added
+
+- New anonymous field `OuContainer` in struct `OuContainerClientGetResponse`
+- New field `ResumeToken` in struct `OuContainerClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `OuContainerClientBeginCreateOptions`
+- New field `ResumeToken` in struct `ClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `OuContainerClientBeginUpdateOptions`
+- New anonymous field `OperationEntityListResult` in struct `OuContainerOperationsClientListResponse`
+- New anonymous field `DomainServiceListResult` in struct `ClientListResponse`
+- New anonymous field `OuContainerListResult` in struct `OuContainerClientListResponse`
+- New field `ResumeToken` in struct `ClientBeginCreateOrUpdateOptions`
+- New anonymous field `DomainService` in struct `ClientCreateOrUpdateResponse`
+- New anonymous field `OuContainer` in struct `OuContainerClientUpdateResponse`
+- New anonymous field `OperationEntityListResult` in struct `DomainServiceOperationsClientListResponse`
+- New anonymous field `DomainServiceListResult` in struct `ClientListByResourceGroupResponse`
+- New anonymous field `OuContainer` in struct `OuContainerClientCreateResponse`
+- New anonymous field `DomainService` in struct `ClientUpdateResponse`
+- New anonymous field `DomainService` in struct `ClientGetResponse`
+- New field `ResumeToken` in struct `ClientBeginUpdateOptions`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

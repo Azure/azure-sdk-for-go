@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,41 +32,41 @@ type OperationClient struct {
 // NewOperationClient creates a new instance of OperationClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewOperationClient(credential azcore.TokenCredential, options *arm.ClientOptions) *OperationClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewOperationClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &OperationClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginGet - Gets information about the specified operation progress.
 // If the operation fails it returns an *azcore.ResponseError type.
 // operationID - the operation Id parameter.
 // options - OperationClientBeginGetOptions contains the optional parameters for the OperationClient.BeginGet method.
-func (client *OperationClient) BeginGet(ctx context.Context, operationID string, options *OperationClientBeginGetOptions) (OperationClientGetPollerResponse, error) {
-	resp, err := client.get(ctx, operationID, options)
-	if err != nil {
-		return OperationClientGetPollerResponse{}, err
+func (client *OperationClient) BeginGet(ctx context.Context, operationID string, options *OperationClientBeginGetOptions) (*armruntime.Poller[OperationClientGetResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.get(ctx, operationID, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[OperationClientGetResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[OperationClientGetResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := OperationClientGetPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("OperationClient.Get", "location", resp, client.pl)
-	if err != nil {
-		return OperationClientGetPollerResponse{}, err
-	}
-	result.Poller = &OperationClientGetPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Get - Gets information about the specified operation progress.

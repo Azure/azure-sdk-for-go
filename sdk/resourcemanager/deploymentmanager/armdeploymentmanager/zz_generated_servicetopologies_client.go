@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type ServiceTopologiesClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewServiceTopologiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServiceTopologiesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewServiceTopologiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServiceTopologiesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ServiceTopologiesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Synchronously creates a new service topology or updates an existing service topology.
@@ -100,7 +105,7 @@ func (client *ServiceTopologiesClient) createOrUpdateCreateRequest(ctx context.C
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ServiceTopologiesClient) createOrUpdateHandleResponse(resp *http.Response) (ServiceTopologiesClientCreateOrUpdateResponse, error) {
-	result := ServiceTopologiesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := ServiceTopologiesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceTopologyResource); err != nil {
 		return ServiceTopologiesClientCreateOrUpdateResponse{}, err
 	}
@@ -125,7 +130,7 @@ func (client *ServiceTopologiesClient) Delete(ctx context.Context, resourceGroup
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ServiceTopologiesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ServiceTopologiesClientDeleteResponse{RawResponse: resp}, nil
+	return ServiceTopologiesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -202,7 +207,7 @@ func (client *ServiceTopologiesClient) getCreateRequest(ctx context.Context, res
 
 // getHandleResponse handles the Get response.
 func (client *ServiceTopologiesClient) getHandleResponse(resp *http.Response) (ServiceTopologiesClientGetResponse, error) {
-	result := ServiceTopologiesClientGetResponse{RawResponse: resp}
+	result := ServiceTopologiesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceTopologyResource); err != nil {
 		return ServiceTopologiesClientGetResponse{}, err
 	}
@@ -252,7 +257,7 @@ func (client *ServiceTopologiesClient) listCreateRequest(ctx context.Context, re
 
 // listHandleResponse handles the List response.
 func (client *ServiceTopologiesClient) listHandleResponse(resp *http.Response) (ServiceTopologiesClientListResponse, error) {
-	result := ServiceTopologiesClientListResponse{RawResponse: resp}
+	result := ServiceTopologiesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceTopologyResourceArray); err != nil {
 		return ServiceTopologiesClientListResponse{}, err
 	}

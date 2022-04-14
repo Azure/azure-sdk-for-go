@@ -1,5 +1,139 @@
 # Release History
 
+## 0.3.0 (2022-04-12)
+### Breaking Changes
+
+- Function `*MarketplaceRegistrationDefinitionsWithoutScopeClient.List` return value(s) have been changed from `(*MarketplaceRegistrationDefinitionsWithoutScopeClientListPager)` to `(*runtime.Pager[MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse])`
+- Function `*RegistrationAssignmentsClient.BeginDelete` return value(s) have been changed from `(RegistrationAssignmentsClientDeletePollerResponse, error)` to `(*armruntime.Poller[RegistrationAssignmentsClientDeleteResponse], error)`
+- Function `NewRegistrationDefinitionsClient` return value(s) have been changed from `(*RegistrationDefinitionsClient)` to `(*RegistrationDefinitionsClient, error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*RegistrationAssignmentsClient.List` return value(s) have been changed from `(*RegistrationAssignmentsClientListPager)` to `(*runtime.Pager[RegistrationAssignmentsClientListResponse])`
+- Function `*MarketplaceRegistrationDefinitionsClient.List` return value(s) have been changed from `(*MarketplaceRegistrationDefinitionsClientListPager)` to `(*runtime.Pager[MarketplaceRegistrationDefinitionsClientListResponse])`
+- Function `*RegistrationDefinitionsClient.List` return value(s) have been changed from `(*RegistrationDefinitionsClientListPager)` to `(*runtime.Pager[RegistrationDefinitionsClientListResponse])`
+- Function `NewMarketplaceRegistrationDefinitionsWithoutScopeClient` return value(s) have been changed from `(*MarketplaceRegistrationDefinitionsWithoutScopeClient)` to `(*MarketplaceRegistrationDefinitionsWithoutScopeClient, error)`
+- Function `*RegistrationDefinitionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(RegistrationDefinitionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[RegistrationDefinitionsClientCreateOrUpdateResponse], error)`
+- Function `NewRegistrationAssignmentsClient` return value(s) have been changed from `(*RegistrationAssignmentsClient)` to `(*RegistrationAssignmentsClient, error)`
+- Function `*RegistrationAssignmentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(RegistrationAssignmentsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[RegistrationAssignmentsClientCreateOrUpdateResponse], error)`
+- Function `NewMarketplaceRegistrationDefinitionsClient` return value(s) have been changed from `(*MarketplaceRegistrationDefinitionsClient)` to `(*MarketplaceRegistrationDefinitionsClient, error)`
+- Function `*RegistrationAssignmentsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*RegistrationDefinitionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `RegistrationDefinitionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*MarketplaceRegistrationDefinitionsClientListPager.NextPage` has been removed
+- Function `*RegistrationDefinitionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*RegistrationAssignmentsClientDeletePoller.Done` has been removed
+- Function `*RegistrationDefinitionsClientListPager.NextPage` has been removed
+- Function `*RegistrationDefinitionsClientListPager.Err` has been removed
+- Function `*MarketplaceRegistrationDefinitionsWithoutScopeClientListPager.NextPage` has been removed
+- Function `*MarketplaceRegistrationDefinitionsClientListPager.PageResponse` has been removed
+- Function `*RegistrationAssignmentsClientDeletePoller.Poll` has been removed
+- Function `*MarketplaceRegistrationDefinitionsWithoutScopeClientListPager.Err` has been removed
+- Function `*RegistrationAssignmentsClientDeletePoller.ResumeToken` has been removed
+- Function `*MarketplaceRegistrationDefinitionsWithoutScopeClientListPager.PageResponse` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `*RegistrationAssignmentsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `MultiFactorAuthProvider.ToPtr` has been removed
+- Function `*RegistrationAssignmentsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*RegistrationAssignmentsClientListPager.NextPage` has been removed
+- Function `*RegistrationAssignmentsClientDeletePoller.FinalResponse` has been removed
+- Function `*RegistrationAssignmentsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*RegistrationDefinitionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*RegistrationDefinitionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `RegistrationAssignmentsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*RegistrationAssignmentsClientListPager.Err` has been removed
+- Function `*RegistrationDefinitionsClientListPager.PageResponse` has been removed
+- Function `*RegistrationAssignmentsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*RegistrationDefinitionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*RegistrationAssignmentsClientDeletePollerResponse.Resume` has been removed
+- Function `RegistrationAssignmentsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*MarketplaceRegistrationDefinitionsClientListPager.Err` has been removed
+- Function `*RegistrationAssignmentsClientListPager.PageResponse` has been removed
+- Struct `MarketplaceRegistrationDefinitionsClientGetResult` has been removed
+- Struct `MarketplaceRegistrationDefinitionsClientListPager` has been removed
+- Struct `MarketplaceRegistrationDefinitionsClientListResult` has been removed
+- Struct `MarketplaceRegistrationDefinitionsWithoutScopeClientGetResult` has been removed
+- Struct `MarketplaceRegistrationDefinitionsWithoutScopeClientListPager` has been removed
+- Struct `MarketplaceRegistrationDefinitionsWithoutScopeClientListResult` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `RegistrationAssignmentsClientCreateOrUpdatePoller` has been removed
+- Struct `RegistrationAssignmentsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `RegistrationAssignmentsClientCreateOrUpdateResult` has been removed
+- Struct `RegistrationAssignmentsClientDeletePoller` has been removed
+- Struct `RegistrationAssignmentsClientDeletePollerResponse` has been removed
+- Struct `RegistrationAssignmentsClientGetResult` has been removed
+- Struct `RegistrationAssignmentsClientListPager` has been removed
+- Struct `RegistrationAssignmentsClientListResult` has been removed
+- Struct `RegistrationDefinitionsClientCreateOrUpdatePoller` has been removed
+- Struct `RegistrationDefinitionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `RegistrationDefinitionsClientCreateOrUpdateResult` has been removed
+- Struct `RegistrationDefinitionsClientGetResult` has been removed
+- Struct `RegistrationDefinitionsClientListPager` has been removed
+- Struct `RegistrationDefinitionsClientListResult` has been removed
+- Field `RegistrationDefinitionsClientListResult` of struct `RegistrationDefinitionsClientListResponse` has been removed
+- Field `RawResponse` of struct `RegistrationDefinitionsClientListResponse` has been removed
+- Field `RawResponse` of struct `RegistrationDefinitionsClientDeleteResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `RegistrationAssignmentsClientGetResult` of struct `RegistrationAssignmentsClientGetResponse` has been removed
+- Field `RawResponse` of struct `RegistrationAssignmentsClientGetResponse` has been removed
+- Field `RegistrationAssignmentsClientCreateOrUpdateResult` of struct `RegistrationAssignmentsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `RegistrationAssignmentsClientCreateOrUpdateResponse` has been removed
+- Field `MarketplaceRegistrationDefinitionsClientListResult` of struct `MarketplaceRegistrationDefinitionsClientListResponse` has been removed
+- Field `RawResponse` of struct `MarketplaceRegistrationDefinitionsClientListResponse` has been removed
+- Field `RegistrationAssignmentsClientListResult` of struct `RegistrationAssignmentsClientListResponse` has been removed
+- Field `RawResponse` of struct `RegistrationAssignmentsClientListResponse` has been removed
+- Field `RegistrationDefinitionsClientCreateOrUpdateResult` of struct `RegistrationDefinitionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `RegistrationDefinitionsClientCreateOrUpdateResponse` has been removed
+- Field `RegistrationDefinitionsClientGetResult` of struct `RegistrationDefinitionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `RegistrationDefinitionsClientGetResponse` has been removed
+- Field `MarketplaceRegistrationDefinitionsWithoutScopeClientListResult` of struct `MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse` has been removed
+- Field `RawResponse` of struct `MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse` has been removed
+- Field `MarketplaceRegistrationDefinitionsClientGetResult` of struct `MarketplaceRegistrationDefinitionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `MarketplaceRegistrationDefinitionsClientGetResponse` has been removed
+- Field `MarketplaceRegistrationDefinitionsWithoutScopeClientGetResult` of struct `MarketplaceRegistrationDefinitionsWithoutScopeClientGetResponse` has been removed
+- Field `RawResponse` of struct `MarketplaceRegistrationDefinitionsWithoutScopeClientGetResponse` has been removed
+- Field `RawResponse` of struct `RegistrationAssignmentsClientDeleteResponse` has been removed
+
+### Features Added
+
+- New const `CreatedByTypeUser`
+- New const `CreatedByTypeKey`
+- New const `CreatedByTypeManagedIdentity`
+- New const `CreatedByTypeApplication`
+- New function `timeRFC3339.MarshalJSON() ([]byte, error)`
+- New function `*timeRFC3339.UnmarshalText([]byte) error`
+- New function `PossibleCreatedByTypeValues() []CreatedByType`
+- New function `*OperationsWithScopeClient.List(context.Context, string, *OperationsWithScopeClientListOptions) (OperationsWithScopeClientListResponse, error)`
+- New function `timeRFC3339.MarshalText() ([]byte, error)`
+- New function `*timeRFC3339.Parse(string) error`
+- New function `*SystemData.UnmarshalJSON([]byte) error`
+- New function `*timeRFC3339.UnmarshalJSON([]byte) error`
+- New function `NewOperationsWithScopeClient(azcore.TokenCredential, *arm.ClientOptions) (*OperationsWithScopeClient, error)`
+- New function `SystemData.MarshalJSON() ([]byte, error)`
+- New struct `OperationsWithScopeClient`
+- New struct `OperationsWithScopeClientListOptions`
+- New struct `OperationsWithScopeClientListResponse`
+- New struct `SystemData`
+- New field `SystemData` in struct `RegistrationAssignmentPropertiesRegistrationDefinition`
+- New anonymous field `RegistrationAssignment` in struct `RegistrationAssignmentsClientGetResponse`
+- New anonymous field `RegistrationDefinition` in struct `RegistrationDefinitionsClientGetResponse`
+- New field `SystemData` in struct `RegistrationDefinition`
+- New anonymous field `MarketplaceRegistrationDefinitionList` in struct `MarketplaceRegistrationDefinitionsClientListResponse`
+- New field `ResumeToken` in struct `RegistrationAssignmentsClientBeginDeleteOptions`
+- New anonymous field `RegistrationAssignment` in struct `RegistrationAssignmentsClientCreateOrUpdateResponse`
+- New anonymous field `MarketplaceRegistrationDefinitionList` in struct `MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse`
+- New anonymous field `MarketplaceRegistrationDefinition` in struct `MarketplaceRegistrationDefinitionsClientGetResponse`
+- New field `ResumeToken` in struct `RegistrationDefinitionsClientBeginCreateOrUpdateOptions`
+- New anonymous field `OperationList` in struct `OperationsClientListResponse`
+- New field `Filter` in struct `RegistrationDefinitionsClientListOptions`
+- New anonymous field `RegistrationDefinition` in struct `RegistrationDefinitionsClientCreateOrUpdateResponse`
+- New anonymous field `RegistrationAssignmentList` in struct `RegistrationAssignmentsClientListResponse`
+- New anonymous field `RegistrationDefinitionList` in struct `RegistrationDefinitionsClientListResponse`
+- New field `ResumeToken` in struct `RegistrationAssignmentsClientBeginCreateOrUpdateOptions`
+- New anonymous field `MarketplaceRegistrationDefinition` in struct `MarketplaceRegistrationDefinitionsWithoutScopeClientGetResponse`
+- New field `SystemData` in struct `RegistrationAssignment`
+- New field `Filter` in struct `RegistrationAssignmentsClientListOptions`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armdatafactory
 
 const (
 	moduleName    = "armdatafactory"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.4.0"
 )
 
 type AmazonRdsForOraclePartitionOption string
@@ -28,11 +28,6 @@ func PossibleAmazonRdsForOraclePartitionOptionValues() []AmazonRdsForOracleParti
 		AmazonRdsForOraclePartitionOptionNone,
 		AmazonRdsForOraclePartitionOptionPhysicalPartitionsOfTable,
 	}
-}
-
-// ToPtr returns a *AmazonRdsForOraclePartitionOption pointing to the current value.
-func (c AmazonRdsForOraclePartitionOption) ToPtr() *AmazonRdsForOraclePartitionOption {
-	return &c
 }
 
 type AvroCompressionCodec string
@@ -54,11 +49,6 @@ func PossibleAvroCompressionCodecValues() []AvroCompressionCodec {
 		AvroCompressionCodecSnappy,
 		AvroCompressionCodecXz,
 	}
-}
-
-// ToPtr returns a *AvroCompressionCodec pointing to the current value.
-func (c AvroCompressionCodec) ToPtr() *AvroCompressionCodec {
-	return &c
 }
 
 // AzureFunctionActivityMethod - The list of HTTP methods supported by a AzureFunctionActivity.
@@ -87,11 +77,6 @@ func PossibleAzureFunctionActivityMethodValues() []AzureFunctionActivityMethod {
 	}
 }
 
-// ToPtr returns a *AzureFunctionActivityMethod pointing to the current value.
-func (c AzureFunctionActivityMethod) ToPtr() *AzureFunctionActivityMethod {
-	return &c
-}
-
 // AzureSearchIndexWriteBehaviorType - Specify the write behavior when upserting documents into Azure Search Index.
 type AzureSearchIndexWriteBehaviorType string
 
@@ -108,11 +93,6 @@ func PossibleAzureSearchIndexWriteBehaviorTypeValues() []AzureSearchIndexWriteBe
 	}
 }
 
-// ToPtr returns a *AzureSearchIndexWriteBehaviorType pointing to the current value.
-func (c AzureSearchIndexWriteBehaviorType) ToPtr() *AzureSearchIndexWriteBehaviorType {
-	return &c
-}
-
 type BlobEventTypes string
 
 const (
@@ -126,11 +106,6 @@ func PossibleBlobEventTypesValues() []BlobEventTypes {
 		BlobEventTypesMicrosoftStorageBlobCreated,
 		BlobEventTypesMicrosoftStorageBlobDeleted,
 	}
-}
-
-// ToPtr returns a *BlobEventTypes pointing to the current value.
-func (c BlobEventTypes) ToPtr() *BlobEventTypes {
-	return &c
 }
 
 // CassandraSourceReadConsistencyLevels - The consistency level specifies how many Cassandra servers must respond to a read
@@ -168,11 +143,6 @@ func PossibleCassandraSourceReadConsistencyLevelsValues() []CassandraSourceReadC
 	}
 }
 
-// ToPtr returns a *CassandraSourceReadConsistencyLevels pointing to the current value.
-func (c CassandraSourceReadConsistencyLevels) ToPtr() *CassandraSourceReadConsistencyLevels {
-	return &c
-}
-
 // CompressionCodec - All available compressionCodec values.
 type CompressionCodec string
 
@@ -205,11 +175,6 @@ func PossibleCompressionCodecValues() []CompressionCodec {
 	}
 }
 
-// ToPtr returns a *CompressionCodec pointing to the current value.
-func (c CompressionCodec) ToPtr() *CompressionCodec {
-	return &c
-}
-
 // CopyBehaviorType - All available types of copy behavior.
 type CopyBehaviorType string
 
@@ -228,11 +193,6 @@ func PossibleCopyBehaviorTypeValues() []CopyBehaviorType {
 	}
 }
 
-// ToPtr returns a *CopyBehaviorType pointing to the current value.
-func (c CopyBehaviorType) ToPtr() *CopyBehaviorType {
-	return &c
-}
-
 // CosmosDbConnectionMode - The connection mode used to access CosmosDB account. Type: string (or Expression with resultType
 // string).
 type CosmosDbConnectionMode string
@@ -248,11 +208,6 @@ func PossibleCosmosDbConnectionModeValues() []CosmosDbConnectionMode {
 		CosmosDbConnectionModeDirect,
 		CosmosDbConnectionModeGateway,
 	}
-}
-
-// ToPtr returns a *CosmosDbConnectionMode pointing to the current value.
-func (c CosmosDbConnectionMode) ToPtr() *CosmosDbConnectionMode {
-	return &c
 }
 
 // CosmosDbServicePrincipalCredentialType - The service principal credential type to use in Server-To-Server authentication.
@@ -273,11 +228,6 @@ func PossibleCosmosDbServicePrincipalCredentialTypeValues() []CosmosDbServicePri
 	}
 }
 
-// ToPtr returns a *CosmosDbServicePrincipalCredentialType pointing to the current value.
-func (c CosmosDbServicePrincipalCredentialType) ToPtr() *CosmosDbServicePrincipalCredentialType {
-	return &c
-}
-
 // CredentialReferenceType - Credential reference type.
 type CredentialReferenceType string
 
@@ -290,11 +240,6 @@ func PossibleCredentialReferenceTypeValues() []CredentialReferenceType {
 	return []CredentialReferenceType{
 		CredentialReferenceTypeCredentialReference,
 	}
-}
-
-// ToPtr returns a *CredentialReferenceType pointing to the current value.
-func (c CredentialReferenceType) ToPtr() *CredentialReferenceType {
-	return &c
 }
 
 // DataFlowComputeType - Compute type of the cluster which will execute data flow job.
@@ -315,11 +260,6 @@ func PossibleDataFlowComputeTypeValues() []DataFlowComputeType {
 	}
 }
 
-// ToPtr returns a *DataFlowComputeType pointing to the current value.
-func (c DataFlowComputeType) ToPtr() *DataFlowComputeType {
-	return &c
-}
-
 // DataFlowDebugCommandType - The command type.
 type DataFlowDebugCommandType string
 
@@ -338,11 +278,6 @@ func PossibleDataFlowDebugCommandTypeValues() []DataFlowDebugCommandType {
 	}
 }
 
-// ToPtr returns a *DataFlowDebugCommandType pointing to the current value.
-func (c DataFlowDebugCommandType) ToPtr() *DataFlowDebugCommandType {
-	return &c
-}
-
 // DataFlowReferenceType - Data flow reference type.
 type DataFlowReferenceType string
 
@@ -355,11 +290,6 @@ func PossibleDataFlowReferenceTypeValues() []DataFlowReferenceType {
 	return []DataFlowReferenceType{
 		DataFlowReferenceTypeDataFlowReference,
 	}
-}
-
-// ToPtr returns a *DataFlowReferenceType pointing to the current value.
-func (c DataFlowReferenceType) ToPtr() *DataFlowReferenceType {
-	return &c
 }
 
 // DatasetCompressionLevel - All available compression levels.
@@ -378,11 +308,6 @@ func PossibleDatasetCompressionLevelValues() []DatasetCompressionLevel {
 	}
 }
 
-// ToPtr returns a *DatasetCompressionLevel pointing to the current value.
-func (c DatasetCompressionLevel) ToPtr() *DatasetCompressionLevel {
-	return &c
-}
-
 // DatasetReferenceType - Dataset reference type.
 type DatasetReferenceType string
 
@@ -395,11 +320,6 @@ func PossibleDatasetReferenceTypeValues() []DatasetReferenceType {
 	return []DatasetReferenceType{
 		DatasetReferenceTypeDatasetReference,
 	}
-}
-
-// ToPtr returns a *DatasetReferenceType pointing to the current value.
-func (c DatasetReferenceType) ToPtr() *DatasetReferenceType {
-	return &c
 }
 
 // DayOfWeek - The days of the week.
@@ -428,11 +348,6 @@ func PossibleDayOfWeekValues() []DayOfWeek {
 	}
 }
 
-// ToPtr returns a *DayOfWeek pointing to the current value.
-func (c DayOfWeek) ToPtr() *DayOfWeek {
-	return &c
-}
-
 type DaysOfWeek string
 
 const (
@@ -458,11 +373,6 @@ func PossibleDaysOfWeekValues() []DaysOfWeek {
 	}
 }
 
-// ToPtr returns a *DaysOfWeek pointing to the current value.
-func (c DaysOfWeek) ToPtr() *DaysOfWeek {
-	return &c
-}
-
 // Db2AuthenticationType - AuthenticationType to be used for connection. It is mutually exclusive with connectionString property.
 type Db2AuthenticationType string
 
@@ -475,11 +385,6 @@ func PossibleDb2AuthenticationTypeValues() []Db2AuthenticationType {
 	return []Db2AuthenticationType{
 		Db2AuthenticationTypeBasic,
 	}
-}
-
-// ToPtr returns a *Db2AuthenticationType pointing to the current value.
-func (c Db2AuthenticationType) ToPtr() *Db2AuthenticationType {
-	return &c
 }
 
 type DependencyCondition string
@@ -501,11 +406,6 @@ func PossibleDependencyConditionValues() []DependencyCondition {
 	}
 }
 
-// ToPtr returns a *DependencyCondition pointing to the current value.
-func (c DependencyCondition) ToPtr() *DependencyCondition {
-	return &c
-}
-
 // DynamicsAuthenticationType - All available dynamicsAuthenticationType values.
 type DynamicsAuthenticationType string
 
@@ -524,11 +424,6 @@ func PossibleDynamicsAuthenticationTypeValues() []DynamicsAuthenticationType {
 	}
 }
 
-// ToPtr returns a *DynamicsAuthenticationType pointing to the current value.
-func (c DynamicsAuthenticationType) ToPtr() *DynamicsAuthenticationType {
-	return &c
-}
-
 // DynamicsDeploymentType - All available dynamicsDeploymentType values.
 type DynamicsDeploymentType string
 
@@ -545,11 +440,6 @@ func PossibleDynamicsDeploymentTypeValues() []DynamicsDeploymentType {
 	}
 }
 
-// ToPtr returns a *DynamicsDeploymentType pointing to the current value.
-func (c DynamicsDeploymentType) ToPtr() *DynamicsDeploymentType {
-	return &c
-}
-
 // DynamicsSinkWriteBehavior - Defines values for DynamicsSinkWriteBehavior.
 type DynamicsSinkWriteBehavior string
 
@@ -562,11 +452,6 @@ func PossibleDynamicsSinkWriteBehaviorValues() []DynamicsSinkWriteBehavior {
 	return []DynamicsSinkWriteBehavior{
 		DynamicsSinkWriteBehaviorUpsert,
 	}
-}
-
-// ToPtr returns a *DynamicsSinkWriteBehavior pointing to the current value.
-func (c DynamicsSinkWriteBehavior) ToPtr() *DynamicsSinkWriteBehavior {
-	return &c
 }
 
 // EventSubscriptionStatus - Event Subscription Status.
@@ -591,11 +476,6 @@ func PossibleEventSubscriptionStatusValues() []EventSubscriptionStatus {
 	}
 }
 
-// ToPtr returns a *EventSubscriptionStatus pointing to the current value.
-func (c EventSubscriptionStatus) ToPtr() *EventSubscriptionStatus {
-	return &c
-}
-
 // ExpressionType - Expression type.
 type ExpressionType string
 
@@ -608,11 +488,6 @@ func PossibleExpressionTypeValues() []ExpressionType {
 	return []ExpressionType{
 		ExpressionTypeExpression,
 	}
-}
-
-// ToPtr returns a *ExpressionType pointing to the current value.
-func (c ExpressionType) ToPtr() *ExpressionType {
-	return &c
 }
 
 // FactoryIdentityType - The identity type.
@@ -633,11 +508,6 @@ func PossibleFactoryIdentityTypeValues() []FactoryIdentityType {
 	}
 }
 
-// ToPtr returns a *FactoryIdentityType pointing to the current value.
-func (c FactoryIdentityType) ToPtr() *FactoryIdentityType {
-	return &c
-}
-
 // FtpAuthenticationType - The authentication type to be used to connect to the FTP server.
 type FtpAuthenticationType string
 
@@ -652,11 +522,6 @@ func PossibleFtpAuthenticationTypeValues() []FtpAuthenticationType {
 		FtpAuthenticationTypeAnonymous,
 		FtpAuthenticationTypeBasic,
 	}
-}
-
-// ToPtr returns a *FtpAuthenticationType pointing to the current value.
-func (c FtpAuthenticationType) ToPtr() *FtpAuthenticationType {
-	return &c
 }
 
 // GlobalParameterType - Global Parameter type.
@@ -683,11 +548,6 @@ func PossibleGlobalParameterTypeValues() []GlobalParameterType {
 	}
 }
 
-// ToPtr returns a *GlobalParameterType pointing to the current value.
-func (c GlobalParameterType) ToPtr() *GlobalParameterType {
-	return &c
-}
-
 // GoogleAdWordsAuthenticationType - The OAuth 2.0 authentication mechanism used for authentication. ServiceAuthentication
 // can only be used on self-hosted IR.
 type GoogleAdWordsAuthenticationType string
@@ -703,11 +563,6 @@ func PossibleGoogleAdWordsAuthenticationTypeValues() []GoogleAdWordsAuthenticati
 		GoogleAdWordsAuthenticationTypeServiceAuthentication,
 		GoogleAdWordsAuthenticationTypeUserAuthentication,
 	}
-}
-
-// ToPtr returns a *GoogleAdWordsAuthenticationType pointing to the current value.
-func (c GoogleAdWordsAuthenticationType) ToPtr() *GoogleAdWordsAuthenticationType {
-	return &c
 }
 
 // GoogleBigQueryAuthenticationType - The OAuth 2.0 authentication mechanism used for authentication. ServiceAuthentication
@@ -727,11 +582,6 @@ func PossibleGoogleBigQueryAuthenticationTypeValues() []GoogleBigQueryAuthentica
 	}
 }
 
-// ToPtr returns a *GoogleBigQueryAuthenticationType pointing to the current value.
-func (c GoogleBigQueryAuthenticationType) ToPtr() *GoogleBigQueryAuthenticationType {
-	return &c
-}
-
 // HBaseAuthenticationType - The authentication mechanism to use to connect to the HBase server.
 type HBaseAuthenticationType string
 
@@ -746,11 +596,6 @@ func PossibleHBaseAuthenticationTypeValues() []HBaseAuthenticationType {
 		HBaseAuthenticationTypeAnonymous,
 		HBaseAuthenticationTypeBasic,
 	}
-}
-
-// ToPtr returns a *HBaseAuthenticationType pointing to the current value.
-func (c HBaseAuthenticationType) ToPtr() *HBaseAuthenticationType {
-	return &c
 }
 
 // HDInsightActivityDebugInfoOption - The HDInsightActivityDebugInfoOption settings to use.
@@ -769,11 +614,6 @@ func PossibleHDInsightActivityDebugInfoOptionValues() []HDInsightActivityDebugIn
 		HDInsightActivityDebugInfoOptionFailure,
 		HDInsightActivityDebugInfoOptionNone,
 	}
-}
-
-// ToPtr returns a *HDInsightActivityDebugInfoOption pointing to the current value.
-func (c HDInsightActivityDebugInfoOption) ToPtr() *HDInsightActivityDebugInfoOption {
-	return &c
 }
 
 // HTTPAuthenticationType - The authentication type to be used to connect to the HTTP server.
@@ -798,11 +638,6 @@ func PossibleHTTPAuthenticationTypeValues() []HTTPAuthenticationType {
 	}
 }
 
-// ToPtr returns a *HTTPAuthenticationType pointing to the current value.
-func (c HTTPAuthenticationType) ToPtr() *HTTPAuthenticationType {
-	return &c
-}
-
 // HdiNodeTypes - All available HdiNodeTypes values.
 type HdiNodeTypes string
 
@@ -819,11 +654,6 @@ func PossibleHdiNodeTypesValues() []HdiNodeTypes {
 		HdiNodeTypesWorkernode,
 		HdiNodeTypesZookeeper,
 	}
-}
-
-// ToPtr returns a *HdiNodeTypes pointing to the current value.
-func (c HdiNodeTypes) ToPtr() *HdiNodeTypes {
-	return &c
 }
 
 // HiveAuthenticationType - The authentication method used to access the Hive server.
@@ -846,11 +676,6 @@ func PossibleHiveAuthenticationTypeValues() []HiveAuthenticationType {
 	}
 }
 
-// ToPtr returns a *HiveAuthenticationType pointing to the current value.
-func (c HiveAuthenticationType) ToPtr() *HiveAuthenticationType {
-	return &c
-}
-
 // HiveServerType - The type of Hive server.
 type HiveServerType string
 
@@ -867,11 +692,6 @@ func PossibleHiveServerTypeValues() []HiveServerType {
 		HiveServerTypeHiveServer2,
 		HiveServerTypeHiveThriftServer,
 	}
-}
-
-// ToPtr returns a *HiveServerType pointing to the current value.
-func (c HiveServerType) ToPtr() *HiveServerType {
-	return &c
 }
 
 // HiveThriftTransportProtocol - The transport protocol to use in the Thrift layer.
@@ -892,11 +712,6 @@ func PossibleHiveThriftTransportProtocolValues() []HiveThriftTransportProtocol {
 	}
 }
 
-// ToPtr returns a *HiveThriftTransportProtocol pointing to the current value.
-func (c HiveThriftTransportProtocol) ToPtr() *HiveThriftTransportProtocol {
-	return &c
-}
-
 // ImpalaAuthenticationType - The authentication type to use.
 type ImpalaAuthenticationType string
 
@@ -915,11 +730,6 @@ func PossibleImpalaAuthenticationTypeValues() []ImpalaAuthenticationType {
 	}
 }
 
-// ToPtr returns a *ImpalaAuthenticationType pointing to the current value.
-func (c ImpalaAuthenticationType) ToPtr() *ImpalaAuthenticationType {
-	return &c
-}
-
 // IntegrationRuntimeAuthKeyName - The name of the authentication key to regenerate.
 type IntegrationRuntimeAuthKeyName string
 
@@ -934,11 +744,6 @@ func PossibleIntegrationRuntimeAuthKeyNameValues() []IntegrationRuntimeAuthKeyNa
 		IntegrationRuntimeAuthKeyNameAuthKey1,
 		IntegrationRuntimeAuthKeyNameAuthKey2,
 	}
-}
-
-// ToPtr returns a *IntegrationRuntimeAuthKeyName pointing to the current value.
-func (c IntegrationRuntimeAuthKeyName) ToPtr() *IntegrationRuntimeAuthKeyName {
-	return &c
 }
 
 // IntegrationRuntimeAutoUpdate - The state of integration runtime auto update.
@@ -957,11 +762,6 @@ func PossibleIntegrationRuntimeAutoUpdateValues() []IntegrationRuntimeAutoUpdate
 	}
 }
 
-// ToPtr returns a *IntegrationRuntimeAutoUpdate pointing to the current value.
-func (c IntegrationRuntimeAutoUpdate) ToPtr() *IntegrationRuntimeAutoUpdate {
-	return &c
-}
-
 // IntegrationRuntimeEdition - The edition for the SSIS Integration Runtime
 type IntegrationRuntimeEdition string
 
@@ -978,11 +778,6 @@ func PossibleIntegrationRuntimeEditionValues() []IntegrationRuntimeEdition {
 	}
 }
 
-// ToPtr returns a *IntegrationRuntimeEdition pointing to the current value.
-func (c IntegrationRuntimeEdition) ToPtr() *IntegrationRuntimeEdition {
-	return &c
-}
-
 // IntegrationRuntimeEntityReferenceType - The type of this referenced entity.
 type IntegrationRuntimeEntityReferenceType string
 
@@ -997,11 +792,6 @@ func PossibleIntegrationRuntimeEntityReferenceTypeValues() []IntegrationRuntimeE
 		IntegrationRuntimeEntityReferenceTypeIntegrationRuntimeReference,
 		IntegrationRuntimeEntityReferenceTypeLinkedServiceReference,
 	}
-}
-
-// ToPtr returns a *IntegrationRuntimeEntityReferenceType pointing to the current value.
-func (c IntegrationRuntimeEntityReferenceType) ToPtr() *IntegrationRuntimeEntityReferenceType {
-	return &c
 }
 
 // IntegrationRuntimeInternalChannelEncryptionMode - It is used to set the encryption mode for node-node communication channel
@@ -1023,11 +813,6 @@ func PossibleIntegrationRuntimeInternalChannelEncryptionModeValues() []Integrati
 	}
 }
 
-// ToPtr returns a *IntegrationRuntimeInternalChannelEncryptionMode pointing to the current value.
-func (c IntegrationRuntimeInternalChannelEncryptionMode) ToPtr() *IntegrationRuntimeInternalChannelEncryptionMode {
-	return &c
-}
-
 // IntegrationRuntimeLicenseType - License type for bringing your own license scenario.
 type IntegrationRuntimeLicenseType string
 
@@ -1044,11 +829,6 @@ func PossibleIntegrationRuntimeLicenseTypeValues() []IntegrationRuntimeLicenseTy
 	}
 }
 
-// ToPtr returns a *IntegrationRuntimeLicenseType pointing to the current value.
-func (c IntegrationRuntimeLicenseType) ToPtr() *IntegrationRuntimeLicenseType {
-	return &c
-}
-
 // IntegrationRuntimeReferenceType - Type of integration runtime.
 type IntegrationRuntimeReferenceType string
 
@@ -1061,11 +841,6 @@ func PossibleIntegrationRuntimeReferenceTypeValues() []IntegrationRuntimeReferen
 	return []IntegrationRuntimeReferenceType{
 		IntegrationRuntimeReferenceTypeIntegrationRuntimeReference,
 	}
-}
-
-// ToPtr returns a *IntegrationRuntimeReferenceType pointing to the current value.
-func (c IntegrationRuntimeReferenceType) ToPtr() *IntegrationRuntimeReferenceType {
-	return &c
 }
 
 // IntegrationRuntimeSsisCatalogPricingTier - The pricing tier for the catalog database. The valid values could be found in
@@ -1087,11 +862,6 @@ func PossibleIntegrationRuntimeSsisCatalogPricingTierValues() []IntegrationRunti
 		IntegrationRuntimeSsisCatalogPricingTierPremiumRS,
 		IntegrationRuntimeSsisCatalogPricingTierStandard,
 	}
-}
-
-// ToPtr returns a *IntegrationRuntimeSsisCatalogPricingTier pointing to the current value.
-func (c IntegrationRuntimeSsisCatalogPricingTier) ToPtr() *IntegrationRuntimeSsisCatalogPricingTier {
-	return &c
 }
 
 // IntegrationRuntimeState - The state of integration runtime.
@@ -1126,11 +896,6 @@ func PossibleIntegrationRuntimeStateValues() []IntegrationRuntimeState {
 	}
 }
 
-// ToPtr returns a *IntegrationRuntimeState pointing to the current value.
-func (c IntegrationRuntimeState) ToPtr() *IntegrationRuntimeState {
-	return &c
-}
-
 // IntegrationRuntimeType - The type of integration runtime.
 type IntegrationRuntimeType string
 
@@ -1145,11 +910,6 @@ func PossibleIntegrationRuntimeTypeValues() []IntegrationRuntimeType {
 		IntegrationRuntimeTypeManaged,
 		IntegrationRuntimeTypeSelfHosted,
 	}
-}
-
-// ToPtr returns a *IntegrationRuntimeType pointing to the current value.
-func (c IntegrationRuntimeType) ToPtr() *IntegrationRuntimeType {
-	return &c
 }
 
 // IntegrationRuntimeUpdateResult - The result of the last integration runtime node update.
@@ -1170,11 +930,6 @@ func PossibleIntegrationRuntimeUpdateResultValues() []IntegrationRuntimeUpdateRe
 	}
 }
 
-// ToPtr returns a *IntegrationRuntimeUpdateResult pointing to the current value.
-func (c IntegrationRuntimeUpdateResult) ToPtr() *IntegrationRuntimeUpdateResult {
-	return &c
-}
-
 // JSONFormatFilePattern - JSON format file pattern. A property of JsonFormat.
 type JSONFormatFilePattern string
 
@@ -1189,11 +944,6 @@ func PossibleJSONFormatFilePatternValues() []JSONFormatFilePattern {
 		JSONFormatFilePatternArrayOfObjects,
 		JSONFormatFilePatternSetOfObjects,
 	}
-}
-
-// ToPtr returns a *JSONFormatFilePattern pointing to the current value.
-func (c JSONFormatFilePattern) ToPtr() *JSONFormatFilePattern {
-	return &c
 }
 
 // JSONWriteFilePattern - All available filePatterns.
@@ -1212,11 +962,6 @@ func PossibleJSONWriteFilePatternValues() []JSONWriteFilePattern {
 	}
 }
 
-// ToPtr returns a *JSONWriteFilePattern pointing to the current value.
-func (c JSONWriteFilePattern) ToPtr() *JSONWriteFilePattern {
-	return &c
-}
-
 // LinkedServiceReferenceType - Linked service reference type.
 type LinkedServiceReferenceType string
 
@@ -1229,11 +974,6 @@ func PossibleLinkedServiceReferenceTypeValues() []LinkedServiceReferenceType {
 	return []LinkedServiceReferenceType{
 		LinkedServiceReferenceTypeLinkedServiceReference,
 	}
-}
-
-// ToPtr returns a *LinkedServiceReferenceType pointing to the current value.
-func (c LinkedServiceReferenceType) ToPtr() *LinkedServiceReferenceType {
-	return &c
 }
 
 // ManagedIntegrationRuntimeNodeStatus - The managed integration runtime node status.
@@ -1256,11 +996,6 @@ func PossibleManagedIntegrationRuntimeNodeStatusValues() []ManagedIntegrationRun
 	}
 }
 
-// ToPtr returns a *ManagedIntegrationRuntimeNodeStatus pointing to the current value.
-func (c ManagedIntegrationRuntimeNodeStatus) ToPtr() *ManagedIntegrationRuntimeNodeStatus {
-	return &c
-}
-
 // ManagedVirtualNetworkReferenceType - Managed Virtual Network reference type.
 type ManagedVirtualNetworkReferenceType string
 
@@ -1273,11 +1008,6 @@ func PossibleManagedVirtualNetworkReferenceTypeValues() []ManagedVirtualNetworkR
 	return []ManagedVirtualNetworkReferenceType{
 		ManagedVirtualNetworkReferenceTypeManagedVirtualNetworkReference,
 	}
-}
-
-// ToPtr returns a *ManagedVirtualNetworkReferenceType pointing to the current value.
-func (c ManagedVirtualNetworkReferenceType) ToPtr() *ManagedVirtualNetworkReferenceType {
-	return &c
 }
 
 // MongoDbAuthenticationType - The authentication type to be used to connect to the MongoDB database.
@@ -1294,11 +1024,6 @@ func PossibleMongoDbAuthenticationTypeValues() []MongoDbAuthenticationType {
 		MongoDbAuthenticationTypeAnonymous,
 		MongoDbAuthenticationTypeBasic,
 	}
-}
-
-// ToPtr returns a *MongoDbAuthenticationType pointing to the current value.
-func (c MongoDbAuthenticationType) ToPtr() *MongoDbAuthenticationType {
-	return &c
 }
 
 // NetezzaPartitionOption - The partition mechanism that will be used for Netezza read in parallel.
@@ -1319,11 +1044,6 @@ func PossibleNetezzaPartitionOptionValues() []NetezzaPartitionOption {
 	}
 }
 
-// ToPtr returns a *NetezzaPartitionOption pointing to the current value.
-func (c NetezzaPartitionOption) ToPtr() *NetezzaPartitionOption {
-	return &c
-}
-
 // ODataAADServicePrincipalCredentialType - Specify the credential type (key or cert) is used for service principal.
 type ODataAADServicePrincipalCredentialType string
 
@@ -1338,11 +1058,6 @@ func PossibleODataAADServicePrincipalCredentialTypeValues() []ODataAADServicePri
 		ODataAADServicePrincipalCredentialTypeServicePrincipalCert,
 		ODataAADServicePrincipalCredentialTypeServicePrincipalKey,
 	}
-}
-
-// ToPtr returns a *ODataAADServicePrincipalCredentialType pointing to the current value.
-func (c ODataAADServicePrincipalCredentialType) ToPtr() *ODataAADServicePrincipalCredentialType {
-	return &c
 }
 
 // ODataAuthenticationType - Type of authentication used to connect to the OData service.
@@ -1367,11 +1082,6 @@ func PossibleODataAuthenticationTypeValues() []ODataAuthenticationType {
 	}
 }
 
-// ToPtr returns a *ODataAuthenticationType pointing to the current value.
-func (c ODataAuthenticationType) ToPtr() *ODataAuthenticationType {
-	return &c
-}
-
 // OraclePartitionOption - The partition mechanism that will be used for Oracle read in parallel.
 type OraclePartitionOption string
 
@@ -1388,11 +1098,6 @@ func PossibleOraclePartitionOptionValues() []OraclePartitionOption {
 		OraclePartitionOptionNone,
 		OraclePartitionOptionPhysicalPartitionsOfTable,
 	}
-}
-
-// ToPtr returns a *OraclePartitionOption pointing to the current value.
-func (c OraclePartitionOption) ToPtr() *OraclePartitionOption {
-	return &c
 }
 
 type OrcCompressionCodec string
@@ -1412,11 +1117,6 @@ func PossibleOrcCompressionCodecValues() []OrcCompressionCodec {
 		OrcCompressionCodecSnappy,
 		OrcCompressionCodecZlib,
 	}
-}
-
-// ToPtr returns a *OrcCompressionCodec pointing to the current value.
-func (c OrcCompressionCodec) ToPtr() *OrcCompressionCodec {
-	return &c
 }
 
 // ParameterType - Parameter type.
@@ -1445,11 +1145,6 @@ func PossibleParameterTypeValues() []ParameterType {
 	}
 }
 
-// ToPtr returns a *ParameterType pointing to the current value.
-func (c ParameterType) ToPtr() *ParameterType {
-	return &c
-}
-
 // PhoenixAuthenticationType - The authentication mechanism used to connect to the Phoenix server.
 type PhoenixAuthenticationType string
 
@@ -1468,11 +1163,6 @@ func PossiblePhoenixAuthenticationTypeValues() []PhoenixAuthenticationType {
 	}
 }
 
-// ToPtr returns a *PhoenixAuthenticationType pointing to the current value.
-func (c PhoenixAuthenticationType) ToPtr() *PhoenixAuthenticationType {
-	return &c
-}
-
 // PipelineReferenceType - Pipeline reference type.
 type PipelineReferenceType string
 
@@ -1485,11 +1175,6 @@ func PossiblePipelineReferenceTypeValues() []PipelineReferenceType {
 	return []PipelineReferenceType{
 		PipelineReferenceTypePipelineReference,
 	}
-}
-
-// ToPtr returns a *PipelineReferenceType pointing to the current value.
-func (c PipelineReferenceType) ToPtr() *PipelineReferenceType {
-	return &c
 }
 
 // PolybaseSettingsRejectType - Indicates whether the RejectValue property is specified as a literal value or a percentage.
@@ -1508,11 +1193,6 @@ func PossiblePolybaseSettingsRejectTypeValues() []PolybaseSettingsRejectType {
 	}
 }
 
-// ToPtr returns a *PolybaseSettingsRejectType pointing to the current value.
-func (c PolybaseSettingsRejectType) ToPtr() *PolybaseSettingsRejectType {
-	return &c
-}
-
 // PrestoAuthenticationType - The authentication mechanism used to connect to the Presto server.
 type PrestoAuthenticationType string
 
@@ -1529,11 +1209,6 @@ func PossiblePrestoAuthenticationTypeValues() []PrestoAuthenticationType {
 	}
 }
 
-// ToPtr returns a *PrestoAuthenticationType pointing to the current value.
-func (c PrestoAuthenticationType) ToPtr() *PrestoAuthenticationType {
-	return &c
-}
-
 // PublicNetworkAccess - Whether or not public network access is allowed for the data factory.
 type PublicNetworkAccess string
 
@@ -1548,11 +1223,6 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
 	}
-}
-
-// ToPtr returns a *PublicNetworkAccess pointing to the current value.
-func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
-	return &c
 }
 
 // RecurrenceFrequency - Enumerates possible frequency option for the schedule trigger.
@@ -1581,11 +1251,6 @@ func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
 	}
 }
 
-// ToPtr returns a *RecurrenceFrequency pointing to the current value.
-func (c RecurrenceFrequency) ToPtr() *RecurrenceFrequency {
-	return &c
-}
-
 // RestServiceAuthenticationType - Type of authentication used to connect to the REST service.
 type RestServiceAuthenticationType string
 
@@ -1604,11 +1269,6 @@ func PossibleRestServiceAuthenticationTypeValues() []RestServiceAuthenticationTy
 		RestServiceAuthenticationTypeBasic,
 		RestServiceAuthenticationTypeManagedServiceIdentity,
 	}
-}
-
-// ToPtr returns a *RestServiceAuthenticationType pointing to the current value.
-func (c RestServiceAuthenticationType) ToPtr() *RestServiceAuthenticationType {
-	return &c
 }
 
 // RunQueryFilterOperand - Parameter name to be used for filter. The allowed operands to query pipeline runs are PipelineName,
@@ -1649,11 +1309,6 @@ func PossibleRunQueryFilterOperandValues() []RunQueryFilterOperand {
 	}
 }
 
-// ToPtr returns a *RunQueryFilterOperand pointing to the current value.
-func (c RunQueryFilterOperand) ToPtr() *RunQueryFilterOperand {
-	return &c
-}
-
 // RunQueryFilterOperator - Operator to be used for filter.
 type RunQueryFilterOperator string
 
@@ -1674,11 +1329,6 @@ func PossibleRunQueryFilterOperatorValues() []RunQueryFilterOperator {
 	}
 }
 
-// ToPtr returns a *RunQueryFilterOperator pointing to the current value.
-func (c RunQueryFilterOperator) ToPtr() *RunQueryFilterOperator {
-	return &c
-}
-
 // RunQueryOrder - Sorting order of the parameter.
 type RunQueryOrder string
 
@@ -1693,11 +1343,6 @@ func PossibleRunQueryOrderValues() []RunQueryOrder {
 		RunQueryOrderASC,
 		RunQueryOrderDESC,
 	}
-}
-
-// ToPtr returns a *RunQueryOrder pointing to the current value.
-func (c RunQueryOrder) ToPtr() *RunQueryOrder {
-	return &c
 }
 
 // RunQueryOrderByField - Parameter name to be used for order by. The allowed parameters to order by for pipeline runs are
@@ -1732,11 +1377,6 @@ func PossibleRunQueryOrderByFieldValues() []RunQueryOrderByField {
 	}
 }
 
-// ToPtr returns a *RunQueryOrderByField pointing to the current value.
-func (c RunQueryOrderByField) ToPtr() *RunQueryOrderByField {
-	return &c
-}
-
 // SQLAlwaysEncryptedAkvAuthType - Sql always encrypted AKV authentication type. Type: string (or Expression with resultType
 // string).
 type SQLAlwaysEncryptedAkvAuthType string
@@ -1756,11 +1396,6 @@ func PossibleSQLAlwaysEncryptedAkvAuthTypeValues() []SQLAlwaysEncryptedAkvAuthTy
 	}
 }
 
-// ToPtr returns a *SQLAlwaysEncryptedAkvAuthType pointing to the current value.
-func (c SQLAlwaysEncryptedAkvAuthType) ToPtr() *SQLAlwaysEncryptedAkvAuthType {
-	return &c
-}
-
 // SQLDWWriteBehaviorEnum - Specify the write behavior when copying data into sql dw.
 type SQLDWWriteBehaviorEnum string
 
@@ -1775,11 +1410,6 @@ func PossibleSQLDWWriteBehaviorEnumValues() []SQLDWWriteBehaviorEnum {
 		SQLDWWriteBehaviorEnumInsert,
 		SQLDWWriteBehaviorEnumUpsert,
 	}
-}
-
-// ToPtr returns a *SQLDWWriteBehaviorEnum pointing to the current value.
-func (c SQLDWWriteBehaviorEnum) ToPtr() *SQLDWWriteBehaviorEnum {
-	return &c
 }
 
 // SQLPartitionOption - The partition mechanism that will be used for Sql read in parallel.
@@ -1800,11 +1430,6 @@ func PossibleSQLPartitionOptionValues() []SQLPartitionOption {
 	}
 }
 
-// ToPtr returns a *SQLPartitionOption pointing to the current value.
-func (c SQLPartitionOption) ToPtr() *SQLPartitionOption {
-	return &c
-}
-
 // SQLWriteBehaviorEnum - Specify the write behavior when copying data into sql.
 type SQLWriteBehaviorEnum string
 
@@ -1823,11 +1448,6 @@ func PossibleSQLWriteBehaviorEnumValues() []SQLWriteBehaviorEnum {
 	}
 }
 
-// ToPtr returns a *SQLWriteBehaviorEnum pointing to the current value.
-func (c SQLWriteBehaviorEnum) ToPtr() *SQLWriteBehaviorEnum {
-	return &c
-}
-
 // SalesforceSinkWriteBehavior - The write behavior for the operation. Default is Insert.
 type SalesforceSinkWriteBehavior string
 
@@ -1842,11 +1462,6 @@ func PossibleSalesforceSinkWriteBehaviorValues() []SalesforceSinkWriteBehavior {
 		SalesforceSinkWriteBehaviorInsert,
 		SalesforceSinkWriteBehaviorUpsert,
 	}
-}
-
-// ToPtr returns a *SalesforceSinkWriteBehavior pointing to the current value.
-func (c SalesforceSinkWriteBehavior) ToPtr() *SalesforceSinkWriteBehavior {
-	return &c
 }
 
 // SalesforceSourceReadBehavior - The read behavior for the operation. Default is Query.
@@ -1865,11 +1480,6 @@ func PossibleSalesforceSourceReadBehaviorValues() []SalesforceSourceReadBehavior
 	}
 }
 
-// ToPtr returns a *SalesforceSourceReadBehavior pointing to the current value.
-func (c SalesforceSourceReadBehavior) ToPtr() *SalesforceSourceReadBehavior {
-	return &c
-}
-
 // SapCloudForCustomerSinkWriteBehavior - The write behavior for the operation. Default is 'Insert'.
 type SapCloudForCustomerSinkWriteBehavior string
 
@@ -1884,11 +1494,6 @@ func PossibleSapCloudForCustomerSinkWriteBehaviorValues() []SapCloudForCustomerS
 		SapCloudForCustomerSinkWriteBehaviorInsert,
 		SapCloudForCustomerSinkWriteBehaviorUpdate,
 	}
-}
-
-// ToPtr returns a *SapCloudForCustomerSinkWriteBehavior pointing to the current value.
-func (c SapCloudForCustomerSinkWriteBehavior) ToPtr() *SapCloudForCustomerSinkWriteBehavior {
-	return &c
 }
 
 // SapHanaAuthenticationType - The authentication type to be used to connect to the SAP HANA server.
@@ -1907,11 +1512,6 @@ func PossibleSapHanaAuthenticationTypeValues() []SapHanaAuthenticationType {
 	}
 }
 
-// ToPtr returns a *SapHanaAuthenticationType pointing to the current value.
-func (c SapHanaAuthenticationType) ToPtr() *SapHanaAuthenticationType {
-	return &c
-}
-
 // SapHanaPartitionOption - The partition mechanism that will be used for SAP HANA read in parallel.
 type SapHanaPartitionOption string
 
@@ -1928,11 +1528,6 @@ func PossibleSapHanaPartitionOptionValues() []SapHanaPartitionOption {
 		SapHanaPartitionOptionPhysicalPartitionsOfTable,
 		SapHanaPartitionOptionSapHanaDynamicRange,
 	}
-}
-
-// ToPtr returns a *SapHanaPartitionOption pointing to the current value.
-func (c SapHanaPartitionOption) ToPtr() *SapHanaPartitionOption {
-	return &c
 }
 
 // SapTablePartitionOption - The partition mechanism that will be used for SAP table read in parallel.
@@ -1959,11 +1554,6 @@ func PossibleSapTablePartitionOptionValues() []SapTablePartitionOption {
 	}
 }
 
-// ToPtr returns a *SapTablePartitionOption pointing to the current value.
-func (c SapTablePartitionOption) ToPtr() *SapTablePartitionOption {
-	return &c
-}
-
 // ScriptActivityLogDestination - The destination of logs. Type: string.
 type ScriptActivityLogDestination string
 
@@ -1978,11 +1568,6 @@ func PossibleScriptActivityLogDestinationValues() []ScriptActivityLogDestination
 		ScriptActivityLogDestinationActivityOutput,
 		ScriptActivityLogDestinationExternalStore,
 	}
-}
-
-// ToPtr returns a *ScriptActivityLogDestination pointing to the current value.
-func (c ScriptActivityLogDestination) ToPtr() *ScriptActivityLogDestination {
-	return &c
 }
 
 // ScriptActivityParameterDirection - The direction of the parameter.
@@ -2001,11 +1586,6 @@ func PossibleScriptActivityParameterDirectionValues() []ScriptActivityParameterD
 		ScriptActivityParameterDirectionInputOutput,
 		ScriptActivityParameterDirectionOutput,
 	}
-}
-
-// ToPtr returns a *ScriptActivityParameterDirection pointing to the current value.
-func (c ScriptActivityParameterDirection) ToPtr() *ScriptActivityParameterDirection {
-	return &c
 }
 
 // ScriptActivityParameterType - The type of the parameter.
@@ -2044,11 +1624,6 @@ func PossibleScriptActivityParameterTypeValues() []ScriptActivityParameterType {
 	}
 }
 
-// ToPtr returns a *ScriptActivityParameterType pointing to the current value.
-func (c ScriptActivityParameterType) ToPtr() *ScriptActivityParameterType {
-	return &c
-}
-
 // ScriptType - The type of the query. Type: string.
 type ScriptType string
 
@@ -2063,11 +1638,6 @@ func PossibleScriptTypeValues() []ScriptType {
 		ScriptTypeNonQuery,
 		ScriptTypeQuery,
 	}
-}
-
-// ToPtr returns a *ScriptType pointing to the current value.
-func (c ScriptType) ToPtr() *ScriptType {
-	return &c
 }
 
 // SelfHostedIntegrationRuntimeNodeStatus - Status of the integration runtime node.
@@ -2096,11 +1666,6 @@ func PossibleSelfHostedIntegrationRuntimeNodeStatusValues() []SelfHostedIntegrat
 	}
 }
 
-// ToPtr returns a *SelfHostedIntegrationRuntimeNodeStatus pointing to the current value.
-func (c SelfHostedIntegrationRuntimeNodeStatus) ToPtr() *SelfHostedIntegrationRuntimeNodeStatus {
-	return &c
-}
-
 // ServiceNowAuthenticationType - The authentication type to use.
 type ServiceNowAuthenticationType string
 
@@ -2115,11 +1680,6 @@ func PossibleServiceNowAuthenticationTypeValues() []ServiceNowAuthenticationType
 		ServiceNowAuthenticationTypeBasic,
 		ServiceNowAuthenticationTypeOAuth2,
 	}
-}
-
-// ToPtr returns a *ServiceNowAuthenticationType pointing to the current value.
-func (c ServiceNowAuthenticationType) ToPtr() *ServiceNowAuthenticationType {
-	return &c
 }
 
 // ServicePrincipalCredentialType - All available servicePrincipalCredentialType values.
@@ -2138,11 +1698,6 @@ func PossibleServicePrincipalCredentialTypeValues() []ServicePrincipalCredential
 	}
 }
 
-// ToPtr returns a *ServicePrincipalCredentialType pointing to the current value.
-func (c ServicePrincipalCredentialType) ToPtr() *ServicePrincipalCredentialType {
-	return &c
-}
-
 // SftpAuthenticationType - The authentication type to be used to connect to the FTP server.
 type SftpAuthenticationType string
 
@@ -2159,11 +1714,6 @@ func PossibleSftpAuthenticationTypeValues() []SftpAuthenticationType {
 		SftpAuthenticationTypeMultiFactor,
 		SftpAuthenticationTypeSSHPublicKey,
 	}
-}
-
-// ToPtr returns a *SftpAuthenticationType pointing to the current value.
-func (c SftpAuthenticationType) ToPtr() *SftpAuthenticationType {
-	return &c
 }
 
 // SparkAuthenticationType - The authentication method used to access the Spark server.
@@ -2186,11 +1736,6 @@ func PossibleSparkAuthenticationTypeValues() []SparkAuthenticationType {
 	}
 }
 
-// ToPtr returns a *SparkAuthenticationType pointing to the current value.
-func (c SparkAuthenticationType) ToPtr() *SparkAuthenticationType {
-	return &c
-}
-
 // SparkServerType - The type of Spark server.
 type SparkServerType string
 
@@ -2207,11 +1752,6 @@ func PossibleSparkServerTypeValues() []SparkServerType {
 		SparkServerTypeSharkServer2,
 		SparkServerTypeSparkThriftServer,
 	}
-}
-
-// ToPtr returns a *SparkServerType pointing to the current value.
-func (c SparkServerType) ToPtr() *SparkServerType {
-	return &c
 }
 
 // SparkThriftTransportProtocol - The transport protocol to use in the Thrift layer.
@@ -2232,11 +1772,6 @@ func PossibleSparkThriftTransportProtocolValues() []SparkThriftTransportProtocol
 	}
 }
 
-// ToPtr returns a *SparkThriftTransportProtocol pointing to the current value.
-func (c SparkThriftTransportProtocol) ToPtr() *SparkThriftTransportProtocol {
-	return &c
-}
-
 // SsisLogLocationType - The type of SSIS log location.
 type SsisLogLocationType string
 
@@ -2249,11 +1784,6 @@ func PossibleSsisLogLocationTypeValues() []SsisLogLocationType {
 	return []SsisLogLocationType{
 		SsisLogLocationTypeFile,
 	}
-}
-
-// ToPtr returns a *SsisLogLocationType pointing to the current value.
-func (c SsisLogLocationType) ToPtr() *SsisLogLocationType {
-	return &c
 }
 
 // SsisObjectMetadataType - The type of SSIS object metadata.
@@ -2276,11 +1806,6 @@ func PossibleSsisObjectMetadataTypeValues() []SsisObjectMetadataType {
 	}
 }
 
-// ToPtr returns a *SsisObjectMetadataType pointing to the current value.
-func (c SsisObjectMetadataType) ToPtr() *SsisObjectMetadataType {
-	return &c
-}
-
 // SsisPackageLocationType - The type of SSIS package location.
 type SsisPackageLocationType string
 
@@ -2299,11 +1824,6 @@ func PossibleSsisPackageLocationTypeValues() []SsisPackageLocationType {
 		SsisPackageLocationTypePackageStore,
 		SsisPackageLocationTypeSSISDB,
 	}
-}
-
-// ToPtr returns a *SsisPackageLocationType pointing to the current value.
-func (c SsisPackageLocationType) ToPtr() *SsisPackageLocationType {
-	return &c
 }
 
 // StoredProcedureParameterType - Stored procedure parameter type.
@@ -2332,11 +1852,6 @@ func PossibleStoredProcedureParameterTypeValues() []StoredProcedureParameterType
 	}
 }
 
-// ToPtr returns a *StoredProcedureParameterType pointing to the current value.
-func (c StoredProcedureParameterType) ToPtr() *StoredProcedureParameterType {
-	return &c
-}
-
 // SybaseAuthenticationType - AuthenticationType to be used for connection.
 type SybaseAuthenticationType string
 
@@ -2351,11 +1866,6 @@ func PossibleSybaseAuthenticationTypeValues() []SybaseAuthenticationType {
 		SybaseAuthenticationTypeBasic,
 		SybaseAuthenticationTypeWindows,
 	}
-}
-
-// ToPtr returns a *SybaseAuthenticationType pointing to the current value.
-func (c SybaseAuthenticationType) ToPtr() *SybaseAuthenticationType {
-	return &c
 }
 
 // TeamDeskAuthenticationType - The authentication type to use.
@@ -2374,11 +1884,6 @@ func PossibleTeamDeskAuthenticationTypeValues() []TeamDeskAuthenticationType {
 	}
 }
 
-// ToPtr returns a *TeamDeskAuthenticationType pointing to the current value.
-func (c TeamDeskAuthenticationType) ToPtr() *TeamDeskAuthenticationType {
-	return &c
-}
-
 // TeradataAuthenticationType - AuthenticationType to be used for connection.
 type TeradataAuthenticationType string
 
@@ -2393,11 +1898,6 @@ func PossibleTeradataAuthenticationTypeValues() []TeradataAuthenticationType {
 		TeradataAuthenticationTypeBasic,
 		TeradataAuthenticationTypeWindows,
 	}
-}
-
-// ToPtr returns a *TeradataAuthenticationType pointing to the current value.
-func (c TeradataAuthenticationType) ToPtr() *TeradataAuthenticationType {
-	return &c
 }
 
 // TeradataPartitionOption - The partition mechanism that will be used for teradata read in parallel.
@@ -2418,11 +1918,6 @@ func PossibleTeradataPartitionOptionValues() []TeradataPartitionOption {
 	}
 }
 
-// ToPtr returns a *TeradataPartitionOption pointing to the current value.
-func (c TeradataPartitionOption) ToPtr() *TeradataPartitionOption {
-	return &c
-}
-
 // TriggerReferenceType - Trigger reference type.
 type TriggerReferenceType string
 
@@ -2435,11 +1930,6 @@ func PossibleTriggerReferenceTypeValues() []TriggerReferenceType {
 	return []TriggerReferenceType{
 		TriggerReferenceTypeTriggerReference,
 	}
-}
-
-// ToPtr returns a *TriggerReferenceType pointing to the current value.
-func (c TriggerReferenceType) ToPtr() *TriggerReferenceType {
-	return &c
 }
 
 // TriggerRunStatus - Trigger run status.
@@ -2460,11 +1950,6 @@ func PossibleTriggerRunStatusValues() []TriggerRunStatus {
 	}
 }
 
-// ToPtr returns a *TriggerRunStatus pointing to the current value.
-func (c TriggerRunStatus) ToPtr() *TriggerRunStatus {
-	return &c
-}
-
 // TriggerRuntimeState - Enumerates possible state of Triggers.
 type TriggerRuntimeState string
 
@@ -2481,11 +1966,6 @@ func PossibleTriggerRuntimeStateValues() []TriggerRuntimeState {
 		TriggerRuntimeStateStarted,
 		TriggerRuntimeStateStopped,
 	}
-}
-
-// ToPtr returns a *TriggerRuntimeState pointing to the current value.
-func (c TriggerRuntimeState) ToPtr() *TriggerRuntimeState {
-	return &c
 }
 
 // TumblingWindowFrequency - Enumerates possible frequency option for the tumbling window trigger.
@@ -2506,11 +1986,6 @@ func PossibleTumblingWindowFrequencyValues() []TumblingWindowFrequency {
 	}
 }
 
-// ToPtr returns a *TumblingWindowFrequency pointing to the current value.
-func (c TumblingWindowFrequency) ToPtr() *TumblingWindowFrequency {
-	return &c
-}
-
 // VariableType - Variable type.
 type VariableType string
 
@@ -2527,11 +2002,6 @@ func PossibleVariableTypeValues() []VariableType {
 		VariableTypeBool,
 		VariableTypeString,
 	}
-}
-
-// ToPtr returns a *VariableType pointing to the current value.
-func (c VariableType) ToPtr() *VariableType {
-	return &c
 }
 
 // WebActivityMethod - The list of HTTP methods supported by a WebActivity.
@@ -2554,11 +2024,6 @@ func PossibleWebActivityMethodValues() []WebActivityMethod {
 	}
 }
 
-// ToPtr returns a *WebActivityMethod pointing to the current value.
-func (c WebActivityMethod) ToPtr() *WebActivityMethod {
-	return &c
-}
-
 // WebAuthenticationType - Type of authentication used to connect to the web table source.
 type WebAuthenticationType string
 
@@ -2577,11 +2042,6 @@ func PossibleWebAuthenticationTypeValues() []WebAuthenticationType {
 	}
 }
 
-// ToPtr returns a *WebAuthenticationType pointing to the current value.
-func (c WebAuthenticationType) ToPtr() *WebAuthenticationType {
-	return &c
-}
-
 // WebHookActivityMethod - The list of HTTP methods supported by a WebHook activity.
 type WebHookActivityMethod string
 
@@ -2594,11 +2054,6 @@ func PossibleWebHookActivityMethodValues() []WebHookActivityMethod {
 	return []WebHookActivityMethod{
 		WebHookActivityMethodPOST,
 	}
-}
-
-// ToPtr returns a *WebHookActivityMethod pointing to the current value.
-func (c WebHookActivityMethod) ToPtr() *WebHookActivityMethod {
-	return &c
 }
 
 // ZendeskAuthenticationType - The authentication type to use.
@@ -2615,9 +2070,4 @@ func PossibleZendeskAuthenticationTypeValues() []ZendeskAuthenticationType {
 		ZendeskAuthenticationTypeBasic,
 		ZendeskAuthenticationTypeToken,
 	}
-}
-
-// ToPtr returns a *ZendeskAuthenticationType pointing to the current value.
-func (c ZendeskAuthenticationType) ToPtr() *ZendeskAuthenticationType {
-	return &c
 }

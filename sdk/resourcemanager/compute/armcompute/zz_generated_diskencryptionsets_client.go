@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type DiskEncryptionSetsClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDiskEncryptionSetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DiskEncryptionSetsClient {
+func NewDiskEncryptionSetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DiskEncryptionSetsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DiskEncryptionSetsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a disk encryption set
@@ -59,22 +64,16 @@ func NewDiskEncryptionSetsClient(subscriptionID string, credential azcore.TokenC
 // diskEncryptionSet - disk encryption set object supplied in the body of the Put disk encryption set operation.
 // options - DiskEncryptionSetsClientBeginCreateOrUpdateOptions contains the optional parameters for the DiskEncryptionSetsClient.BeginCreateOrUpdate
 // method.
-func (client *DiskEncryptionSetsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet DiskEncryptionSet, options *DiskEncryptionSetsClientBeginCreateOrUpdateOptions) (DiskEncryptionSetsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, diskEncryptionSetName, diskEncryptionSet, options)
-	if err != nil {
-		return DiskEncryptionSetsClientCreateOrUpdatePollerResponse{}, err
+func (client *DiskEncryptionSetsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet DiskEncryptionSet, options *DiskEncryptionSetsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[DiskEncryptionSetsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, diskEncryptionSetName, diskEncryptionSet, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DiskEncryptionSetsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DiskEncryptionSetsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DiskEncryptionSetsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DiskEncryptionSetsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return DiskEncryptionSetsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &DiskEncryptionSetsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a disk encryption set
@@ -128,22 +127,16 @@ func (client *DiskEncryptionSetsClient) createOrUpdateCreateRequest(ctx context.
 // name length is 80 characters.
 // options - DiskEncryptionSetsClientBeginDeleteOptions contains the optional parameters for the DiskEncryptionSetsClient.BeginDelete
 // method.
-func (client *DiskEncryptionSetsClient) BeginDelete(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, options *DiskEncryptionSetsClientBeginDeleteOptions) (DiskEncryptionSetsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, diskEncryptionSetName, options)
-	if err != nil {
-		return DiskEncryptionSetsClientDeletePollerResponse{}, err
+func (client *DiskEncryptionSetsClient) BeginDelete(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, options *DiskEncryptionSetsClientBeginDeleteOptions) (*armruntime.Poller[DiskEncryptionSetsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, diskEncryptionSetName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DiskEncryptionSetsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DiskEncryptionSetsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DiskEncryptionSetsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DiskEncryptionSetsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return DiskEncryptionSetsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &DiskEncryptionSetsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a disk encryption set.
@@ -239,7 +232,7 @@ func (client *DiskEncryptionSetsClient) getCreateRequest(ctx context.Context, re
 
 // getHandleResponse handles the Get response.
 func (client *DiskEncryptionSetsClient) getHandleResponse(resp *http.Response) (DiskEncryptionSetsClientGetResponse, error) {
-	result := DiskEncryptionSetsClientGetResponse{RawResponse: resp}
+	result := DiskEncryptionSetsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiskEncryptionSet); err != nil {
 		return DiskEncryptionSetsClientGetResponse{}, err
 	}
@@ -249,16 +242,32 @@ func (client *DiskEncryptionSetsClient) getHandleResponse(resp *http.Response) (
 // List - Lists all the disk encryption sets under a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DiskEncryptionSetsClientListOptions contains the optional parameters for the DiskEncryptionSetsClient.List method.
-func (client *DiskEncryptionSetsClient) List(options *DiskEncryptionSetsClientListOptions) *DiskEncryptionSetsClientListPager {
-	return &DiskEncryptionSetsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *DiskEncryptionSetsClient) List(options *DiskEncryptionSetsClientListOptions) *runtime.Pager[DiskEncryptionSetsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DiskEncryptionSetsClientListResponse]{
+		More: func(page DiskEncryptionSetsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DiskEncryptionSetsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DiskEncryptionSetList.NextLink)
+		Fetcher: func(ctx context.Context, page *DiskEncryptionSetsClientListResponse) (DiskEncryptionSetsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DiskEncryptionSetsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DiskEncryptionSetsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DiskEncryptionSetsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -281,7 +290,7 @@ func (client *DiskEncryptionSetsClient) listCreateRequest(ctx context.Context, o
 
 // listHandleResponse handles the List response.
 func (client *DiskEncryptionSetsClient) listHandleResponse(resp *http.Response) (DiskEncryptionSetsClientListResponse, error) {
-	result := DiskEncryptionSetsClientListResponse{RawResponse: resp}
+	result := DiskEncryptionSetsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiskEncryptionSetList); err != nil {
 		return DiskEncryptionSetsClientListResponse{}, err
 	}
@@ -296,16 +305,32 @@ func (client *DiskEncryptionSetsClient) listHandleResponse(resp *http.Response) 
 // name length is 80 characters.
 // options - DiskEncryptionSetsClientListAssociatedResourcesOptions contains the optional parameters for the DiskEncryptionSetsClient.ListAssociatedResources
 // method.
-func (client *DiskEncryptionSetsClient) ListAssociatedResources(resourceGroupName string, diskEncryptionSetName string, options *DiskEncryptionSetsClientListAssociatedResourcesOptions) *DiskEncryptionSetsClientListAssociatedResourcesPager {
-	return &DiskEncryptionSetsClientListAssociatedResourcesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listAssociatedResourcesCreateRequest(ctx, resourceGroupName, diskEncryptionSetName, options)
+func (client *DiskEncryptionSetsClient) ListAssociatedResources(resourceGroupName string, diskEncryptionSetName string, options *DiskEncryptionSetsClientListAssociatedResourcesOptions) *runtime.Pager[DiskEncryptionSetsClientListAssociatedResourcesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DiskEncryptionSetsClientListAssociatedResourcesResponse]{
+		More: func(page DiskEncryptionSetsClientListAssociatedResourcesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DiskEncryptionSetsClientListAssociatedResourcesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ResourceURIList.NextLink)
+		Fetcher: func(ctx context.Context, page *DiskEncryptionSetsClientListAssociatedResourcesResponse) (DiskEncryptionSetsClientListAssociatedResourcesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAssociatedResourcesCreateRequest(ctx, resourceGroupName, diskEncryptionSetName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DiskEncryptionSetsClientListAssociatedResourcesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DiskEncryptionSetsClientListAssociatedResourcesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DiskEncryptionSetsClientListAssociatedResourcesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAssociatedResourcesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listAssociatedResourcesCreateRequest creates the ListAssociatedResources request.
@@ -336,7 +361,7 @@ func (client *DiskEncryptionSetsClient) listAssociatedResourcesCreateRequest(ctx
 
 // listAssociatedResourcesHandleResponse handles the ListAssociatedResources response.
 func (client *DiskEncryptionSetsClient) listAssociatedResourcesHandleResponse(resp *http.Response) (DiskEncryptionSetsClientListAssociatedResourcesResponse, error) {
-	result := DiskEncryptionSetsClientListAssociatedResourcesResponse{RawResponse: resp}
+	result := DiskEncryptionSetsClientListAssociatedResourcesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceURIList); err != nil {
 		return DiskEncryptionSetsClientListAssociatedResourcesResponse{}, err
 	}
@@ -348,16 +373,32 @@ func (client *DiskEncryptionSetsClient) listAssociatedResourcesHandleResponse(re
 // resourceGroupName - The name of the resource group.
 // options - DiskEncryptionSetsClientListByResourceGroupOptions contains the optional parameters for the DiskEncryptionSetsClient.ListByResourceGroup
 // method.
-func (client *DiskEncryptionSetsClient) ListByResourceGroup(resourceGroupName string, options *DiskEncryptionSetsClientListByResourceGroupOptions) *DiskEncryptionSetsClientListByResourceGroupPager {
-	return &DiskEncryptionSetsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *DiskEncryptionSetsClient) ListByResourceGroup(resourceGroupName string, options *DiskEncryptionSetsClientListByResourceGroupOptions) *runtime.Pager[DiskEncryptionSetsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DiskEncryptionSetsClientListByResourceGroupResponse]{
+		More: func(page DiskEncryptionSetsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DiskEncryptionSetsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DiskEncryptionSetList.NextLink)
+		Fetcher: func(ctx context.Context, page *DiskEncryptionSetsClientListByResourceGroupResponse) (DiskEncryptionSetsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DiskEncryptionSetsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DiskEncryptionSetsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DiskEncryptionSetsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -384,7 +425,7 @@ func (client *DiskEncryptionSetsClient) listByResourceGroupCreateRequest(ctx con
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *DiskEncryptionSetsClient) listByResourceGroupHandleResponse(resp *http.Response) (DiskEncryptionSetsClientListByResourceGroupResponse, error) {
-	result := DiskEncryptionSetsClientListByResourceGroupResponse{RawResponse: resp}
+	result := DiskEncryptionSetsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiskEncryptionSetList); err != nil {
 		return DiskEncryptionSetsClientListByResourceGroupResponse{}, err
 	}
@@ -400,22 +441,16 @@ func (client *DiskEncryptionSetsClient) listByResourceGroupHandleResponse(resp *
 // diskEncryptionSet - disk encryption set object supplied in the body of the Patch disk encryption set operation.
 // options - DiskEncryptionSetsClientBeginUpdateOptions contains the optional parameters for the DiskEncryptionSetsClient.BeginUpdate
 // method.
-func (client *DiskEncryptionSetsClient) BeginUpdate(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet DiskEncryptionSetUpdate, options *DiskEncryptionSetsClientBeginUpdateOptions) (DiskEncryptionSetsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, diskEncryptionSetName, diskEncryptionSet, options)
-	if err != nil {
-		return DiskEncryptionSetsClientUpdatePollerResponse{}, err
+func (client *DiskEncryptionSetsClient) BeginUpdate(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet DiskEncryptionSetUpdate, options *DiskEncryptionSetsClientBeginUpdateOptions) (*armruntime.Poller[DiskEncryptionSetsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, diskEncryptionSetName, diskEncryptionSet, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DiskEncryptionSetsClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DiskEncryptionSetsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DiskEncryptionSetsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DiskEncryptionSetsClient.Update", "", resp, client.pl)
-	if err != nil {
-		return DiskEncryptionSetsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &DiskEncryptionSetsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates (patches) a disk encryption set.

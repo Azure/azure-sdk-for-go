@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -5,10 +8,11 @@ package azblob
 
 import (
 	"context"
+	"io"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"io"
 )
 
 const (
@@ -151,7 +155,7 @@ func (bb *BlockBlobClient) CommitBlockList(ctx context.Context, base64BlockIDs [
 	// this is a code smell in the generated code
 	blockIds := make([]*string, len(base64BlockIDs))
 	for k, v := range base64BlockIDs {
-		blockIds[k] = to.StringPtr(v)
+		blockIds[k] = to.Ptr(v)
 	}
 
 	resp, err := bb.client.CommitBlockList(ctx, BlockLookupList{

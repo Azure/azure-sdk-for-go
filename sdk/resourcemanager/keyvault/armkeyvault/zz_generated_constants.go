@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armkeyvault
 
 const (
 	moduleName    = "armkeyvault"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 type AccessPolicyUpdateKind string
@@ -30,11 +30,6 @@ func PossibleAccessPolicyUpdateKindValues() []AccessPolicyUpdateKind {
 	}
 }
 
-// ToPtr returns a *AccessPolicyUpdateKind pointing to the current value.
-func (c AccessPolicyUpdateKind) ToPtr() *AccessPolicyUpdateKind {
-	return &c
-}
-
 // ActionsRequired - A message indicating if changes on the service provider require any updates on the consumer.
 type ActionsRequired string
 
@@ -47,11 +42,6 @@ func PossibleActionsRequiredValues() []ActionsRequired {
 	return []ActionsRequired{
 		ActionsRequiredNone,
 	}
-}
-
-// ToPtr returns a *ActionsRequired pointing to the current value.
-func (c ActionsRequired) ToPtr() *ActionsRequired {
-	return &c
 }
 
 type CertificatePermissions string
@@ -99,11 +89,6 @@ func PossibleCertificatePermissionsValues() []CertificatePermissions {
 	}
 }
 
-// ToPtr returns a *CertificatePermissions pointing to the current value.
-func (c CertificatePermissions) ToPtr() *CertificatePermissions {
-	return &c
-}
-
 // CreateMode - The vault's create mode to indicate whether the vault need to be recovered or not.
 type CreateMode string
 
@@ -118,11 +103,6 @@ func PossibleCreateModeValues() []CreateMode {
 		CreateModeRecover,
 		CreateModeDefault,
 	}
-}
-
-// ToPtr returns a *CreateMode pointing to the current value.
-func (c CreateMode) ToPtr() *CreateMode {
-	return &c
 }
 
 // DeletionRecoveryLevel - The deletion recovery level currently in effect for the object. If it contains 'Purgeable', then
@@ -147,11 +127,6 @@ func PossibleDeletionRecoveryLevelValues() []DeletionRecoveryLevel {
 	}
 }
 
-// ToPtr returns a *DeletionRecoveryLevel pointing to the current value.
-func (c DeletionRecoveryLevel) ToPtr() *DeletionRecoveryLevel {
-	return &c
-}
-
 // IdentityType - The type of identity.
 type IdentityType string
 
@@ -172,11 +147,6 @@ func PossibleIdentityTypeValues() []IdentityType {
 	}
 }
 
-// ToPtr returns a *IdentityType pointing to the current value.
-func (c IdentityType) ToPtr() *IdentityType {
-	return &c
-}
-
 // JSONWebKeyCurveName - The elliptic curve name. For valid values, see JsonWebKeyCurveName.
 type JSONWebKeyCurveName string
 
@@ -195,11 +165,6 @@ func PossibleJSONWebKeyCurveNameValues() []JSONWebKeyCurveName {
 		JSONWebKeyCurveNameP384,
 		JSONWebKeyCurveNameP521,
 	}
-}
-
-// ToPtr returns a *JSONWebKeyCurveName pointing to the current value.
-func (c JSONWebKeyCurveName) ToPtr() *JSONWebKeyCurveName {
-	return &c
 }
 
 // JSONWebKeyOperation - The permitted JSON web key operations of the key. For more information, see JsonWebKeyOperation.
@@ -230,11 +195,6 @@ func PossibleJSONWebKeyOperationValues() []JSONWebKeyOperation {
 	}
 }
 
-// ToPtr returns a *JSONWebKeyOperation pointing to the current value.
-func (c JSONWebKeyOperation) ToPtr() *JSONWebKeyOperation {
-	return &c
-}
-
 // JSONWebKeyType - The type of the key. For valid values, see JsonWebKeyType.
 type JSONWebKeyType string
 
@@ -253,11 +213,6 @@ func PossibleJSONWebKeyTypeValues() []JSONWebKeyType {
 		JSONWebKeyTypeRSA,
 		JSONWebKeyTypeRSAHSM,
 	}
-}
-
-// ToPtr returns a *JSONWebKeyType pointing to the current value.
-func (c JSONWebKeyType) ToPtr() *JSONWebKeyType {
-	return &c
 }
 
 type KeyPermissions string
@@ -313,11 +268,6 @@ func PossibleKeyPermissionsValues() []KeyPermissions {
 	}
 }
 
-// ToPtr returns a *KeyPermissions pointing to the current value.
-func (c KeyPermissions) ToPtr() *KeyPermissions {
-	return &c
-}
-
 // KeyRotationPolicyActionType - The type of action.
 type KeyRotationPolicyActionType string
 
@@ -334,11 +284,6 @@ func PossibleKeyRotationPolicyActionTypeValues() []KeyRotationPolicyActionType {
 	}
 }
 
-// ToPtr returns a *KeyRotationPolicyActionType pointing to the current value.
-func (c KeyRotationPolicyActionType) ToPtr() *KeyRotationPolicyActionType {
-	return &c
-}
-
 // ManagedHsmSKUFamily - SKU Family of the managed HSM Pool
 type ManagedHsmSKUFamily string
 
@@ -351,11 +296,6 @@ func PossibleManagedHsmSKUFamilyValues() []ManagedHsmSKUFamily {
 	return []ManagedHsmSKUFamily{
 		ManagedHsmSKUFamilyB,
 	}
-}
-
-// ToPtr returns a *ManagedHsmSKUFamily pointing to the current value.
-func (c ManagedHsmSKUFamily) ToPtr() *ManagedHsmSKUFamily {
-	return &c
 }
 
 // ManagedHsmSKUName - SKU of the managed HSM Pool
@@ -372,11 +312,6 @@ func PossibleManagedHsmSKUNameValues() []ManagedHsmSKUName {
 		ManagedHsmSKUNameStandardB1,
 		ManagedHsmSKUNameCustomB32,
 	}
-}
-
-// ToPtr returns a *ManagedHsmSKUName pointing to the current value.
-func (c ManagedHsmSKUName) ToPtr() *ManagedHsmSKUName {
-	return &c
 }
 
 // NetworkRuleAction - The default action when no rule from ipRules and from virtualNetworkRules match. This is only used
@@ -396,11 +331,6 @@ func PossibleNetworkRuleActionValues() []NetworkRuleAction {
 	}
 }
 
-// ToPtr returns a *NetworkRuleAction pointing to the current value.
-func (c NetworkRuleAction) ToPtr() *NetworkRuleAction {
-	return &c
-}
-
 // NetworkRuleBypassOptions - Tells what traffic can bypass network rules. This can be 'AzureServices' or 'None'. If not specified
 // the default is 'AzureServices'.
 type NetworkRuleBypassOptions string
@@ -416,11 +346,6 @@ func PossibleNetworkRuleBypassOptionsValues() []NetworkRuleBypassOptions {
 		NetworkRuleBypassOptionsAzureServices,
 		NetworkRuleBypassOptionsNone,
 	}
-}
-
-// ToPtr returns a *NetworkRuleBypassOptions pointing to the current value.
-func (c NetworkRuleBypassOptions) ToPtr() *NetworkRuleBypassOptions {
-	return &c
 }
 
 // PrivateEndpointConnectionProvisioningState - The current provisioning state.
@@ -447,11 +372,6 @@ func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpoin
 	}
 }
 
-// ToPtr returns a *PrivateEndpointConnectionProvisioningState pointing to the current value.
-func (c PrivateEndpointConnectionProvisioningState) ToPtr() *PrivateEndpointConnectionProvisioningState {
-	return &c
-}
-
 // PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
 type PrivateEndpointServiceConnectionStatus string
 
@@ -470,11 +390,6 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 		PrivateEndpointServiceConnectionStatusPending,
 		PrivateEndpointServiceConnectionStatusRejected,
 	}
-}
-
-// ToPtr returns a *PrivateEndpointServiceConnectionStatus pointing to the current value.
-func (c PrivateEndpointServiceConnectionStatus) ToPtr() *PrivateEndpointServiceConnectionStatus {
-	return &c
 }
 
 // ProvisioningState - Provisioning state.
@@ -513,11 +428,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // PublicNetworkAccess - Control permission for data plane traffic coming from public networks while private endpoint is enabled.
 type PublicNetworkAccess string
 
@@ -532,11 +442,6 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
 	}
-}
-
-// ToPtr returns a *PublicNetworkAccess pointing to the current value.
-func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
-	return &c
 }
 
 // Reason - The reason that a vault name could not be used. The Reason element is only returned if NameAvailable is false.
@@ -555,11 +460,6 @@ func PossibleReasonValues() []Reason {
 	}
 }
 
-// ToPtr returns a *Reason pointing to the current value.
-func (c Reason) ToPtr() *Reason {
-	return &c
-}
-
 // SKUFamily - SKU family name
 type SKUFamily string
 
@@ -572,11 +472,6 @@ func PossibleSKUFamilyValues() []SKUFamily {
 	return []SKUFamily{
 		SKUFamilyA,
 	}
-}
-
-// ToPtr returns a *SKUFamily pointing to the current value.
-func (c SKUFamily) ToPtr() *SKUFamily {
-	return &c
 }
 
 // SKUName - SKU name to specify whether the key vault is a standard vault or a premium vault.
@@ -593,11 +488,6 @@ func PossibleSKUNameValues() []SKUName {
 		SKUNameStandard,
 		SKUNamePremium,
 	}
-}
-
-// ToPtr returns a *SKUName pointing to the current value.
-func (c SKUName) ToPtr() *SKUName {
-	return &c
 }
 
 type SecretPermissions string
@@ -627,11 +517,6 @@ func PossibleSecretPermissionsValues() []SecretPermissions {
 		SecretPermissionsRestore,
 		SecretPermissionsSet,
 	}
-}
-
-// ToPtr returns a *SecretPermissions pointing to the current value.
-func (c SecretPermissions) ToPtr() *SecretPermissions {
-	return &c
 }
 
 type StoragePermissions string
@@ -675,11 +560,6 @@ func PossibleStoragePermissionsValues() []StoragePermissions {
 	}
 }
 
-// ToPtr returns a *StoragePermissions pointing to the current value.
-func (c StoragePermissions) ToPtr() *StoragePermissions {
-	return &c
-}
-
 // VaultProvisioningState - Provisioning state of the vault.
 type VaultProvisioningState string
 
@@ -694,9 +574,4 @@ func PossibleVaultProvisioningStateValues() []VaultProvisioningState {
 		VaultProvisioningStateRegisteringDNS,
 		VaultProvisioningStateSucceeded,
 	}
-}
-
-// ToPtr returns a *VaultProvisioningState pointing to the current value.
-func (c VaultProvisioningState) ToPtr() *VaultProvisioningState {
-	return &c
 }

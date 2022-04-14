@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type DataCollectionRuleAssociationsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDataCollectionRuleAssociationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DataCollectionRuleAssociationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewDataCollectionRuleAssociationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataCollectionRuleAssociationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DataCollectionRuleAssociationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Creates or updates an association.
@@ -83,7 +88,7 @@ func (client *DataCollectionRuleAssociationsClient) createCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.Body != nil {
@@ -94,7 +99,7 @@ func (client *DataCollectionRuleAssociationsClient) createCreateRequest(ctx cont
 
 // createHandleResponse handles the Create response.
 func (client *DataCollectionRuleAssociationsClient) createHandleResponse(resp *http.Response) (DataCollectionRuleAssociationsClientCreateResponse, error) {
-	result := DataCollectionRuleAssociationsClientCreateResponse{RawResponse: resp}
+	result := DataCollectionRuleAssociationsClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionRuleAssociationProxyOnlyResource); err != nil {
 		return DataCollectionRuleAssociationsClientCreateResponse{}, err
 	}
@@ -119,7 +124,7 @@ func (client *DataCollectionRuleAssociationsClient) Delete(ctx context.Context, 
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return DataCollectionRuleAssociationsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return DataCollectionRuleAssociationsClientDeleteResponse{RawResponse: resp}, nil
+	return DataCollectionRuleAssociationsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -135,7 +140,7 @@ func (client *DataCollectionRuleAssociationsClient) deleteCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -175,7 +180,7 @@ func (client *DataCollectionRuleAssociationsClient) getCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -183,9 +188,78 @@ func (client *DataCollectionRuleAssociationsClient) getCreateRequest(ctx context
 
 // getHandleResponse handles the Get response.
 func (client *DataCollectionRuleAssociationsClient) getHandleResponse(resp *http.Response) (DataCollectionRuleAssociationsClientGetResponse, error) {
-	result := DataCollectionRuleAssociationsClientGetResponse{RawResponse: resp}
+	result := DataCollectionRuleAssociationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionRuleAssociationProxyOnlyResource); err != nil {
 		return DataCollectionRuleAssociationsClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// ListByDataCollectionEndpoint - Lists associations for the specified data collection endpoint.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
+// options - DataCollectionRuleAssociationsClientListByDataCollectionEndpointOptions contains the optional parameters for
+// the DataCollectionRuleAssociationsClient.ListByDataCollectionEndpoint method.
+func (client *DataCollectionRuleAssociationsClient) ListByDataCollectionEndpoint(resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionRuleAssociationsClientListByDataCollectionEndpointOptions) *runtime.Pager[DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse]{
+		More: func(page DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse) (DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByDataCollectionEndpointCreateRequest(ctx, resourceGroupName, dataCollectionEndpointName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByDataCollectionEndpointHandleResponse(resp)
+		},
+	})
+}
+
+// listByDataCollectionEndpointCreateRequest creates the ListByDataCollectionEndpoint request.
+func (client *DataCollectionRuleAssociationsClient) listByDataCollectionEndpointCreateRequest(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionRuleAssociationsClientListByDataCollectionEndpointOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionEndpoints/{dataCollectionEndpointName}/associations"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if dataCollectionEndpointName == "" {
+		return nil, errors.New("parameter dataCollectionEndpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{dataCollectionEndpointName}", url.PathEscape(dataCollectionEndpointName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-09-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// listByDataCollectionEndpointHandleResponse handles the ListByDataCollectionEndpoint response.
+func (client *DataCollectionRuleAssociationsClient) listByDataCollectionEndpointHandleResponse(resp *http.Response) (DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse, error) {
+	result := DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionRuleAssociationProxyOnlyResourceListResult); err != nil {
+		return DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse{}, err
 	}
 	return result, nil
 }
@@ -195,16 +269,32 @@ func (client *DataCollectionRuleAssociationsClient) getHandleResponse(resp *http
 // resourceURI - The identifier of the resource.
 // options - DataCollectionRuleAssociationsClientListByResourceOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.ListByResource
 // method.
-func (client *DataCollectionRuleAssociationsClient) ListByResource(resourceURI string, options *DataCollectionRuleAssociationsClientListByResourceOptions) *DataCollectionRuleAssociationsClientListByResourcePager {
-	return &DataCollectionRuleAssociationsClientListByResourcePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceCreateRequest(ctx, resourceURI, options)
+func (client *DataCollectionRuleAssociationsClient) ListByResource(resourceURI string, options *DataCollectionRuleAssociationsClientListByResourceOptions) *runtime.Pager[DataCollectionRuleAssociationsClientListByResourceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DataCollectionRuleAssociationsClientListByResourceResponse]{
+		More: func(page DataCollectionRuleAssociationsClientListByResourceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DataCollectionRuleAssociationsClientListByResourceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DataCollectionRuleAssociationProxyOnlyResourceListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DataCollectionRuleAssociationsClientListByResourceResponse) (DataCollectionRuleAssociationsClientListByResourceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceCreateRequest(ctx, resourceURI, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DataCollectionRuleAssociationsClientListByResourceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DataCollectionRuleAssociationsClientListByResourceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DataCollectionRuleAssociationsClientListByResourceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceCreateRequest creates the ListByResource request.
@@ -216,7 +306,7 @@ func (client *DataCollectionRuleAssociationsClient) listByResourceCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -224,7 +314,7 @@ func (client *DataCollectionRuleAssociationsClient) listByResourceCreateRequest(
 
 // listByResourceHandleResponse handles the ListByResource response.
 func (client *DataCollectionRuleAssociationsClient) listByResourceHandleResponse(resp *http.Response) (DataCollectionRuleAssociationsClientListByResourceResponse, error) {
-	result := DataCollectionRuleAssociationsClientListByResourceResponse{RawResponse: resp}
+	result := DataCollectionRuleAssociationsClientListByResourceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionRuleAssociationProxyOnlyResourceListResult); err != nil {
 		return DataCollectionRuleAssociationsClientListByResourceResponse{}, err
 	}
@@ -237,16 +327,32 @@ func (client *DataCollectionRuleAssociationsClient) listByResourceHandleResponse
 // dataCollectionRuleName - The name of the data collection rule. The name is case insensitive.
 // options - DataCollectionRuleAssociationsClientListByRuleOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.ListByRule
 // method.
-func (client *DataCollectionRuleAssociationsClient) ListByRule(resourceGroupName string, dataCollectionRuleName string, options *DataCollectionRuleAssociationsClientListByRuleOptions) *DataCollectionRuleAssociationsClientListByRulePager {
-	return &DataCollectionRuleAssociationsClientListByRulePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByRuleCreateRequest(ctx, resourceGroupName, dataCollectionRuleName, options)
+func (client *DataCollectionRuleAssociationsClient) ListByRule(resourceGroupName string, dataCollectionRuleName string, options *DataCollectionRuleAssociationsClientListByRuleOptions) *runtime.Pager[DataCollectionRuleAssociationsClientListByRuleResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DataCollectionRuleAssociationsClientListByRuleResponse]{
+		More: func(page DataCollectionRuleAssociationsClientListByRuleResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DataCollectionRuleAssociationsClientListByRuleResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DataCollectionRuleAssociationProxyOnlyResourceListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DataCollectionRuleAssociationsClientListByRuleResponse) (DataCollectionRuleAssociationsClientListByRuleResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByRuleCreateRequest(ctx, resourceGroupName, dataCollectionRuleName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DataCollectionRuleAssociationsClientListByRuleResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DataCollectionRuleAssociationsClientListByRuleResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DataCollectionRuleAssociationsClientListByRuleResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByRuleHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByRuleCreateRequest creates the ListByRule request.
@@ -269,7 +375,7 @@ func (client *DataCollectionRuleAssociationsClient) listByRuleCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -277,7 +383,7 @@ func (client *DataCollectionRuleAssociationsClient) listByRuleCreateRequest(ctx 
 
 // listByRuleHandleResponse handles the ListByRule response.
 func (client *DataCollectionRuleAssociationsClient) listByRuleHandleResponse(resp *http.Response) (DataCollectionRuleAssociationsClientListByRuleResponse, error) {
-	result := DataCollectionRuleAssociationsClientListByRuleResponse{RawResponse: resp}
+	result := DataCollectionRuleAssociationsClientListByRuleResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionRuleAssociationProxyOnlyResourceListResult); err != nil {
 		return DataCollectionRuleAssociationsClientListByRuleResponse{}, err
 	}

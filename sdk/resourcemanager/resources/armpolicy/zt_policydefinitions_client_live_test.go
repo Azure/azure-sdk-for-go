@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,13 +8,14 @@ package armpolicy_test
 
 import (
 	"context"
+	"testing"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy"
 	"github.com/stretchr/testify/suite"
-	"testing"
 )
 
 type PolicyDefinitionsClientTestSuite struct {
@@ -53,27 +54,28 @@ func TestPolicyDefinitionsClient(t *testing.T) {
 func (testsuite *PolicyDefinitionsClientTestSuite) TestPolicyDefinitionsCRUD() {
 	// create policy definition
 	policyDefinitionName := "go-test-definition"
-	policyDefinitionsClient := armpolicy.NewDefinitionsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	policyDefinitionsClient, err := armpolicy.NewDefinitionsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	cResp, err := policyDefinitionsClient.CreateOrUpdate(
 		testsuite.ctx,
 		policyDefinitionName,
 		armpolicy.Definition{
 			Properties: &armpolicy.DefinitionProperties{
-				PolicyType:  armpolicy.PolicyTypeCustom.ToPtr(),
-				Description: to.StringPtr("test case"),
+				PolicyType:  to.Ptr(armpolicy.PolicyTypeCustom),
+				Description: to.Ptr("test case"),
 				Parameters: map[string]*armpolicy.ParameterDefinitionsValue{
 					"prefix": {
-						Type: armpolicy.ParameterTypeString.ToPtr(),
+						Type: to.Ptr(armpolicy.ParameterTypeString),
 						Metadata: &armpolicy.ParameterDefinitionsValueMetadata{
-							Description: to.StringPtr("prefix description"),
-							DisplayName: to.StringPtr("test case prefix"),
+							Description: to.Ptr("prefix description"),
+							DisplayName: to.Ptr("test case prefix"),
 						},
 					},
 					"suffix": {
-						Type: armpolicy.ParameterTypeString.ToPtr(),
+						Type: to.Ptr(armpolicy.ParameterTypeString),
 						Metadata: &armpolicy.ParameterDefinitionsValueMetadata{
-							Description: to.StringPtr("suffix description"),
-							DisplayName: to.StringPtr("test case suffix"),
+							Description: to.Ptr("suffix description"),
+							DisplayName: to.Ptr("test case suffix"),
 						},
 					},
 				},
@@ -102,16 +104,13 @@ func (testsuite *PolicyDefinitionsClientTestSuite) TestPolicyDefinitionsCRUD() {
 
 	// list policy definition
 	list := policyDefinitionsClient.List(nil)
-	testsuite.Require().NoError(list.Err())
-	testsuite.Require().True(list.NextPage(testsuite.ctx))
+	testsuite.Require().True(list.More())
 
 	// list policy definition
 	listBuiltIn := policyDefinitionsClient.ListBuiltIn(nil)
-	testsuite.Require().NoError(listBuiltIn.Err())
-	testsuite.Require().True(listBuiltIn.NextPage(testsuite.ctx))
+	testsuite.Require().True(listBuiltIn.More())
 
 	// delete policy definition
-	delResp, err := policyDefinitionsClient.Delete(testsuite.ctx, policyDefinitionName, nil)
+	_, err = policyDefinitionsClient.Delete(testsuite.ctx, policyDefinitionName, nil)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(200, delResp.RawResponse.StatusCode)
 }

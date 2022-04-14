@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armpowerbidedicated
 
 const (
 	moduleName    = "armpowerbidedicated"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // CapacityProvisioningState - The current deployment state of PowerBI Dedicated resource. The provisioningState is to indicate
@@ -50,11 +50,6 @@ func PossibleCapacityProvisioningStateValues() []CapacityProvisioningState {
 	}
 }
 
-// ToPtr returns a *CapacityProvisioningState pointing to the current value.
-func (c CapacityProvisioningState) ToPtr() *CapacityProvisioningState {
-	return &c
-}
-
 // CapacitySKUTier - The name of the Azure pricing tier to which the SKU applies.
 type CapacitySKUTier string
 
@@ -71,11 +66,6 @@ func PossibleCapacitySKUTierValues() []CapacitySKUTier {
 		CapacitySKUTierPBIEAzure,
 		CapacitySKUTierPremium,
 	}
-}
-
-// ToPtr returns a *CapacitySKUTier pointing to the current value.
-func (c CapacitySKUTier) ToPtr() *CapacitySKUTier {
-	return &c
 }
 
 // IdentityType - The type of identity that created/modified the resource.
@@ -98,11 +88,6 @@ func PossibleIdentityTypeValues() []IdentityType {
 	}
 }
 
-// ToPtr returns a *IdentityType pointing to the current value.
-func (c IdentityType) ToPtr() *IdentityType {
-	return &c
-}
-
 // Mode - Specifies the generation of the Power BI Embedded capacity. If no value is specified, the default value 'Gen2' is
 // used. Learn More
 // [https://docs.microsoft.com/power-bi/developer/embedded/power-bi-embedded-generation-2]
@@ -119,11 +104,6 @@ func PossibleModeValues() []Mode {
 		ModeGen1,
 		ModeGen2,
 	}
-}
-
-// ToPtr returns a *Mode pointing to the current value.
-func (c Mode) ToPtr() *Mode {
-	return &c
 }
 
 // State - The current state of PowerBI Dedicated resource. The state is to indicate more states outside of resource provisioning.
@@ -162,11 +142,6 @@ func PossibleStateValues() []State {
 	}
 }
 
-// ToPtr returns a *State pointing to the current value.
-func (c State) ToPtr() *State {
-	return &c
-}
-
 // VCoreProvisioningState - The current deployment state of an auto scale v-core resource. The provisioningState is to indicate
 // states for resource provisioning.
 type VCoreProvisioningState string
@@ -182,11 +157,6 @@ func PossibleVCoreProvisioningStateValues() []VCoreProvisioningState {
 	}
 }
 
-// ToPtr returns a *VCoreProvisioningState pointing to the current value.
-func (c VCoreProvisioningState) ToPtr() *VCoreProvisioningState {
-	return &c
-}
-
 // VCoreSKUTier - The name of the Azure pricing tier to which the SKU applies.
 type VCoreSKUTier string
 
@@ -199,9 +169,4 @@ func PossibleVCoreSKUTierValues() []VCoreSKUTier {
 	return []VCoreSKUTier{
 		VCoreSKUTierAutoScale,
 	}
-}
-
-// ToPtr returns a *VCoreSKUTier pointing to the current value.
-func (c VCoreSKUTier) ToPtr() *VCoreSKUTier {
-	return &c
 }

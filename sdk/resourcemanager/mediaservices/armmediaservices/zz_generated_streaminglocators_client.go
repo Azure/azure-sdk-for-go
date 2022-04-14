@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type StreamingLocatorsClient struct {
 // subscriptionID - The unique identifier for a Microsoft Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewStreamingLocatorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *StreamingLocatorsClient {
+func NewStreamingLocatorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StreamingLocatorsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &StreamingLocatorsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Create a Streaming Locator in the Media Services account
@@ -105,7 +110,7 @@ func (client *StreamingLocatorsClient) createCreateRequest(ctx context.Context, 
 
 // createHandleResponse handles the Create response.
 func (client *StreamingLocatorsClient) createHandleResponse(resp *http.Response) (StreamingLocatorsClientCreateResponse, error) {
-	result := StreamingLocatorsClientCreateResponse{RawResponse: resp}
+	result := StreamingLocatorsClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StreamingLocator); err != nil {
 		return StreamingLocatorsClientCreateResponse{}, err
 	}
@@ -131,7 +136,7 @@ func (client *StreamingLocatorsClient) Delete(ctx context.Context, resourceGroup
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return StreamingLocatorsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return StreamingLocatorsClientDeleteResponse{RawResponse: resp}, nil
+	return StreamingLocatorsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -217,7 +222,7 @@ func (client *StreamingLocatorsClient) getCreateRequest(ctx context.Context, res
 
 // getHandleResponse handles the Get response.
 func (client *StreamingLocatorsClient) getHandleResponse(resp *http.Response) (StreamingLocatorsClientGetResponse, error) {
-	result := StreamingLocatorsClientGetResponse{RawResponse: resp}
+	result := StreamingLocatorsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StreamingLocator); err != nil {
 		return StreamingLocatorsClientGetResponse{}, err
 	}
@@ -229,16 +234,32 @@ func (client *StreamingLocatorsClient) getHandleResponse(resp *http.Response) (S
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // options - StreamingLocatorsClientListOptions contains the optional parameters for the StreamingLocatorsClient.List method.
-func (client *StreamingLocatorsClient) List(resourceGroupName string, accountName string, options *StreamingLocatorsClientListOptions) *StreamingLocatorsClientListPager {
-	return &StreamingLocatorsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+func (client *StreamingLocatorsClient) List(resourceGroupName string, accountName string, options *StreamingLocatorsClientListOptions) *runtime.Pager[StreamingLocatorsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[StreamingLocatorsClientListResponse]{
+		More: func(page StreamingLocatorsClientListResponse) bool {
+			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp StreamingLocatorsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.StreamingLocatorCollection.ODataNextLink)
+		Fetcher: func(ctx context.Context, page *StreamingLocatorsClientListResponse) (StreamingLocatorsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.ODataNextLink)
+			}
+			if err != nil {
+				return StreamingLocatorsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return StreamingLocatorsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return StreamingLocatorsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -278,7 +299,7 @@ func (client *StreamingLocatorsClient) listCreateRequest(ctx context.Context, re
 
 // listHandleResponse handles the List response.
 func (client *StreamingLocatorsClient) listHandleResponse(resp *http.Response) (StreamingLocatorsClientListResponse, error) {
-	result := StreamingLocatorsClientListResponse{RawResponse: resp}
+	result := StreamingLocatorsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StreamingLocatorCollection); err != nil {
 		return StreamingLocatorsClientListResponse{}, err
 	}
@@ -339,7 +360,7 @@ func (client *StreamingLocatorsClient) listContentKeysCreateRequest(ctx context.
 
 // listContentKeysHandleResponse handles the ListContentKeys response.
 func (client *StreamingLocatorsClient) listContentKeysHandleResponse(resp *http.Response) (StreamingLocatorsClientListContentKeysResponse, error) {
-	result := StreamingLocatorsClientListContentKeysResponse{RawResponse: resp}
+	result := StreamingLocatorsClientListContentKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListContentKeysResponse); err != nil {
 		return StreamingLocatorsClientListContentKeysResponse{}, err
 	}
@@ -400,7 +421,7 @@ func (client *StreamingLocatorsClient) listPathsCreateRequest(ctx context.Contex
 
 // listPathsHandleResponse handles the ListPaths response.
 func (client *StreamingLocatorsClient) listPathsHandleResponse(resp *http.Response) (StreamingLocatorsClientListPathsResponse, error) {
-	result := StreamingLocatorsClientListPathsResponse{RawResponse: resp}
+	result := StreamingLocatorsClientListPathsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListPathsResponse); err != nil {
 		return StreamingLocatorsClientListPathsResponse{}, err
 	}

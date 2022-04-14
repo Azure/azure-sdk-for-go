@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type WCFRelaysClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewWCFRelaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WCFRelaysClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewWCFRelaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WCFRelaysClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &WCFRelaysClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a WCF relay. This operation is idempotent.
@@ -105,7 +110,7 @@ func (client *WCFRelaysClient) createOrUpdateCreateRequest(ctx context.Context, 
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *WCFRelaysClient) createOrUpdateHandleResponse(resp *http.Response) (WCFRelaysClientCreateOrUpdateResponse, error) {
-	result := WCFRelaysClientCreateOrUpdateResponse{RawResponse: resp}
+	result := WCFRelaysClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WcfRelay); err != nil {
 		return WCFRelaysClientCreateOrUpdateResponse{}, err
 	}
@@ -172,7 +177,7 @@ func (client *WCFRelaysClient) createOrUpdateAuthorizationRuleCreateRequest(ctx 
 
 // createOrUpdateAuthorizationRuleHandleResponse handles the CreateOrUpdateAuthorizationRule response.
 func (client *WCFRelaysClient) createOrUpdateAuthorizationRuleHandleResponse(resp *http.Response) (WCFRelaysClientCreateOrUpdateAuthorizationRuleResponse, error) {
-	result := WCFRelaysClientCreateOrUpdateAuthorizationRuleResponse{RawResponse: resp}
+	result := WCFRelaysClientCreateOrUpdateAuthorizationRuleResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRule); err != nil {
 		return WCFRelaysClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
@@ -197,7 +202,7 @@ func (client *WCFRelaysClient) Delete(ctx context.Context, resourceGroupName str
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return WCFRelaysClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return WCFRelaysClientDeleteResponse{RawResponse: resp}, nil
+	return WCFRelaysClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -250,7 +255,7 @@ func (client *WCFRelaysClient) DeleteAuthorizationRule(ctx context.Context, reso
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return WCFRelaysClientDeleteAuthorizationRuleResponse{}, runtime.NewResponseError(resp)
 	}
-	return WCFRelaysClientDeleteAuthorizationRuleResponse{RawResponse: resp}, nil
+	return WCFRelaysClientDeleteAuthorizationRuleResponse{}, nil
 }
 
 // deleteAuthorizationRuleCreateRequest creates the DeleteAuthorizationRule request.
@@ -340,7 +345,7 @@ func (client *WCFRelaysClient) getCreateRequest(ctx context.Context, resourceGro
 
 // getHandleResponse handles the Get response.
 func (client *WCFRelaysClient) getHandleResponse(resp *http.Response) (WCFRelaysClientGetResponse, error) {
-	result := WCFRelaysClientGetResponse{RawResponse: resp}
+	result := WCFRelaysClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WcfRelay); err != nil {
 		return WCFRelaysClientGetResponse{}, err
 	}
@@ -406,7 +411,7 @@ func (client *WCFRelaysClient) getAuthorizationRuleCreateRequest(ctx context.Con
 
 // getAuthorizationRuleHandleResponse handles the GetAuthorizationRule response.
 func (client *WCFRelaysClient) getAuthorizationRuleHandleResponse(resp *http.Response) (WCFRelaysClientGetAuthorizationRuleResponse, error) {
-	result := WCFRelaysClientGetAuthorizationRuleResponse{RawResponse: resp}
+	result := WCFRelaysClientGetAuthorizationRuleResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRule); err != nil {
 		return WCFRelaysClientGetAuthorizationRuleResponse{}, err
 	}
@@ -420,16 +425,32 @@ func (client *WCFRelaysClient) getAuthorizationRuleHandleResponse(resp *http.Res
 // relayName - The relay name.
 // options - WCFRelaysClientListAuthorizationRulesOptions contains the optional parameters for the WCFRelaysClient.ListAuthorizationRules
 // method.
-func (client *WCFRelaysClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, relayName string, options *WCFRelaysClientListAuthorizationRulesOptions) *WCFRelaysClientListAuthorizationRulesPager {
-	return &WCFRelaysClientListAuthorizationRulesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, relayName, options)
+func (client *WCFRelaysClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, relayName string, options *WCFRelaysClientListAuthorizationRulesOptions) *runtime.Pager[WCFRelaysClientListAuthorizationRulesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[WCFRelaysClientListAuthorizationRulesResponse]{
+		More: func(page WCFRelaysClientListAuthorizationRulesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp WCFRelaysClientListAuthorizationRulesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AuthorizationRuleListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *WCFRelaysClientListAuthorizationRulesResponse) (WCFRelaysClientListAuthorizationRulesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, relayName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return WCFRelaysClientListAuthorizationRulesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WCFRelaysClientListAuthorizationRulesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WCFRelaysClientListAuthorizationRulesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAuthorizationRulesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listAuthorizationRulesCreateRequest creates the ListAuthorizationRules request.
@@ -464,7 +485,7 @@ func (client *WCFRelaysClient) listAuthorizationRulesCreateRequest(ctx context.C
 
 // listAuthorizationRulesHandleResponse handles the ListAuthorizationRules response.
 func (client *WCFRelaysClient) listAuthorizationRulesHandleResponse(resp *http.Response) (WCFRelaysClientListAuthorizationRulesResponse, error) {
-	result := WCFRelaysClientListAuthorizationRulesResponse{RawResponse: resp}
+	result := WCFRelaysClientListAuthorizationRulesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRuleListResult); err != nil {
 		return WCFRelaysClientListAuthorizationRulesResponse{}, err
 	}
@@ -477,16 +498,32 @@ func (client *WCFRelaysClient) listAuthorizationRulesHandleResponse(resp *http.R
 // namespaceName - The namespace name
 // options - WCFRelaysClientListByNamespaceOptions contains the optional parameters for the WCFRelaysClient.ListByNamespace
 // method.
-func (client *WCFRelaysClient) ListByNamespace(resourceGroupName string, namespaceName string, options *WCFRelaysClientListByNamespaceOptions) *WCFRelaysClientListByNamespacePager {
-	return &WCFRelaysClientListByNamespacePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByNamespaceCreateRequest(ctx, resourceGroupName, namespaceName, options)
+func (client *WCFRelaysClient) ListByNamespace(resourceGroupName string, namespaceName string, options *WCFRelaysClientListByNamespaceOptions) *runtime.Pager[WCFRelaysClientListByNamespaceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[WCFRelaysClientListByNamespaceResponse]{
+		More: func(page WCFRelaysClientListByNamespaceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp WCFRelaysClientListByNamespaceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.WcfRelaysListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *WCFRelaysClientListByNamespaceResponse) (WCFRelaysClientListByNamespaceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByNamespaceCreateRequest(ctx, resourceGroupName, namespaceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return WCFRelaysClientListByNamespaceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WCFRelaysClientListByNamespaceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WCFRelaysClientListByNamespaceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByNamespaceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByNamespaceCreateRequest creates the ListByNamespace request.
@@ -517,7 +554,7 @@ func (client *WCFRelaysClient) listByNamespaceCreateRequest(ctx context.Context,
 
 // listByNamespaceHandleResponse handles the ListByNamespace response.
 func (client *WCFRelaysClient) listByNamespaceHandleResponse(resp *http.Response) (WCFRelaysClientListByNamespaceResponse, error) {
-	result := WCFRelaysClientListByNamespaceResponse{RawResponse: resp}
+	result := WCFRelaysClientListByNamespaceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WcfRelaysListResult); err != nil {
 		return WCFRelaysClientListByNamespaceResponse{}, err
 	}
@@ -582,7 +619,7 @@ func (client *WCFRelaysClient) listKeysCreateRequest(ctx context.Context, resour
 
 // listKeysHandleResponse handles the ListKeys response.
 func (client *WCFRelaysClient) listKeysHandleResponse(resp *http.Response) (WCFRelaysClientListKeysResponse, error) {
-	result := WCFRelaysClientListKeysResponse{RawResponse: resp}
+	result := WCFRelaysClientListKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
 		return WCFRelaysClientListKeysResponse{}, err
 	}
@@ -649,7 +686,7 @@ func (client *WCFRelaysClient) regenerateKeysCreateRequest(ctx context.Context, 
 
 // regenerateKeysHandleResponse handles the RegenerateKeys response.
 func (client *WCFRelaysClient) regenerateKeysHandleResponse(resp *http.Response) (WCFRelaysClientRegenerateKeysResponse, error) {
-	result := WCFRelaysClientRegenerateKeysResponse{RawResponse: resp}
+	result := WCFRelaysClientRegenerateKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
 		return WCFRelaysClientRegenerateKeysResponse{}, err
 	}

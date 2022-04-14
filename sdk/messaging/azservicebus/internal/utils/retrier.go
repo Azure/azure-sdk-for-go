@@ -36,7 +36,7 @@ func (rf *RetryFnArgs) ResetAttempts() {
 
 // Retry runs a standard retry loop. It executes your passed in fn as the body of the loop.
 // It returns if it exceeds the number of configured retry options or if 'isFatal' returns true.
-func Retry(ctx context.Context, name string, fn func(ctx context.Context, args *RetryFnArgs) error, isFatalFn func(err error) bool, o RetryOptions) error {
+func Retry(ctx context.Context, eventName log.Event, operation string, fn func(ctx context.Context, args *RetryFnArgs) error, isFatalFn func(err error) bool, o RetryOptions) error {
 	if isFatalFn == nil {
 		panic("isFatalFn is nil, errors would panic")
 	}
@@ -49,7 +49,7 @@ func Retry(ctx context.Context, name string, fn func(ctx context.Context, args *
 	for i := int32(0); i <= ro.MaxRetries; i++ {
 		if i > 0 {
 			sleep := calcDelay(ro, i)
-			log.Writef(EventRetry, "(%s) Attempt %d sleeping for %s", name, i, sleep)
+			log.Writef(eventName, "(%s) Retry attempt %d sleeping for %s", operation, i, sleep)
 			time.Sleep(sleep)
 		}
 
@@ -60,7 +60,7 @@ func Retry(ctx context.Context, name string, fn func(ctx context.Context, args *
 		err = fn(ctx, &args)
 
 		if args.resetAttempts {
-			log.Writef(EventRetry, "(%s) Resetting attempts", name)
+			log.Writef(eventName, "(%s) Resetting retry attempts", operation)
 
 			// it looks weird, but we're doing -1 here because the post-increment
 			// will set it back to 0, which is what we want - go back to the 0th
@@ -73,13 +73,13 @@ func Retry(ctx context.Context, name string, fn func(ctx context.Context, args *
 		if err != nil {
 			if isFatalFn(err) {
 				if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
-					log.Writef(EventRetry, "(%s) Attempt %d was cancelled, stopping: %s", name, i, err.Error())
+					log.Writef(eventName, "(%s) Retry attempt %d was cancelled, stopping: %s", operation, i, err.Error())
 				} else {
-					log.Writef(EventRetry, "(%s) Attempt %d returned non-retryable error: %s", name, i, err.Error())
+					log.Writef(eventName, "(%s) Retry attempt %d returned non-retryable error: %s", operation, i, err.Error())
 				}
 				return err
 			} else {
-				log.Writef(EventRetry, "(%s) Attempt %d returned retryable error: %s", name, i, err.Error())
+				log.Writef(eventName, "(%s) Retry attempt %d returned retryable error: %s", operation, i, err.Error())
 			}
 
 			continue

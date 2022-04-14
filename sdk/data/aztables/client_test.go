@@ -6,6 +6,7 @@ package aztables
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"os"
@@ -31,6 +32,10 @@ func TestServiceErrors(t *testing.T) {
 			// Create a duplicate table to produce an error
 			_, err := client.CreateTable(ctx, nil)
 			require.Error(t, err)
+			var httpErr *azcore.ResponseError
+			require.ErrorAs(t, err, &httpErr)
+			require.Equal(t, string(TableAlreadyExists), httpErr.ErrorCode)
+			require.Contains(t, PossibleTableErrorCodeValues(), TableErrorCode(httpErr.ErrorCode))
 		})
 	}
 }
@@ -122,6 +127,9 @@ func TestDeleteEntityWithETag(t *testing.T) {
 
 			_, err = client.DeleteEntity(ctx, simpleEntity2.PartitionKey, simpleEntity2.RowKey, &DeleteEntityOptions{IfMatch: &oldETag})
 			require.Error(t, err)
+			var httpErr *azcore.ResponseError
+			require.ErrorAs(t, err, &httpErr)
+			require.Contains(t, PossibleTableErrorCodeValues(), TableErrorCode(httpErr.ErrorCode))
 
 			_, err = client.DeleteEntity(ctx, simpleEntity.PartitionKey, simpleEntity.RowKey, &DeleteEntityOptions{IfMatch: &oldETag})
 			require.NoError(t, err)
@@ -198,6 +206,10 @@ func TestMergeEntityDoesNotExist(t *testing.T) {
 
 			_, updateErr := client.UpdateEntity(ctx, marshalled, &UpdateEntityOptions{UpdateMode: UpdateModeMerge})
 			require.Error(t, updateErr)
+			var httpErr *azcore.ResponseError
+			require.ErrorAs(t, updateErr, &httpErr)
+			require.Equal(t, string(ResourceNotFound), httpErr.ErrorCode)
+			require.Contains(t, PossibleTableErrorCodeValues(), TableErrorCode(httpErr.ErrorCode))
 		})
 	}
 }
@@ -213,7 +225,7 @@ func TestInsertEntity(t *testing.T) {
 			marshalled, err := json.Marshal(entityToCreate)
 			require.NoError(t, err)
 
-			_, err = client.UpsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: UpdateModeReplace})
+			_, err = client.UpsertEntity(ctx, marshalled, &UpsertEntityOptions{UpdateMode: UpdateModeReplace})
 			require.NoError(t, err)
 
 			filter := "RowKey eq '1'"
@@ -235,7 +247,7 @@ func TestInsertEntity(t *testing.T) {
 			require.NoError(t, err)
 
 			// 4. Replace Entity with "bool"-less entity
-			_, err = client.UpsertEntity(ctx, reMarshalled, &InsertEntityOptions{UpdateMode: UpdateModeReplace})
+			_, err = client.UpsertEntity(ctx, reMarshalled, &UpsertEntityOptions{UpdateMode: UpdateModeReplace})
 			require.Nil(t, err)
 
 			// 5. Query for new entity
@@ -270,10 +282,10 @@ func TestInsertEntityTwice(t *testing.T) {
 			marshalled, err := json.Marshal(entityToCreate)
 			require.NoError(t, err)
 
-			_, err = client.UpsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: UpdateModeReplace})
+			_, err = client.UpsertEntity(ctx, marshalled, &UpsertEntityOptions{UpdateMode: UpdateModeReplace})
 			require.NoError(t, err)
 
-			_, err = client.UpsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: UpdateModeReplace})
+			_, err = client.UpsertEntity(ctx, marshalled, &UpsertEntityOptions{UpdateMode: UpdateModeReplace})
 			require.NoError(t, err)
 		})
 	}
@@ -550,10 +562,15 @@ func TestAzurite(t *testing.T) {
 	require.Equal(t, 1, count)
 }
 
-type fakeTokenCred struct{}
+type fakeTokenCred struct {
+	valid bool
+}
 
 func (f fakeTokenCred) GetToken(ctx context.Context, options policy.TokenRequestOptions) (*azcore.AccessToken, error) {
-	return &azcore.AccessToken{Token: "token", ExpiresOn: time.Date(2042, 1, 1, 1, 1, 1, 1, time.UTC)}, nil
+	if f.valid {
+		return &azcore.AccessToken{Token: "token", ExpiresOn: time.Date(2042, 1, 1, 1, 1, 1, 1, time.UTC)}, nil
+	}
+	return nil, errors.New("sending nil token")
 }
 
 func TestMultiTenantAuth(t *testing.T) {
@@ -567,7 +584,7 @@ func TestMultiTenantAuth(t *testing.T) {
 	}()
 
 	if recording.GetRecordMode() == "playback" {
-		cred = fakeTokenCred{}
+		cred = fakeTokenCred{valid: true}
 	} else {
 		cred, err = azidentity.NewClientSecretCredential(
 			os.Getenv("AZTABLES_TENANT_ID"),

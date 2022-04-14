@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type PrivateCloudsClient struct {
 // subscriptionID - The subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPrivateCloudsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateCloudsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewPrivateCloudsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateCloudsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PrivateCloudsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Returns private cloud by its name
@@ -97,7 +102,7 @@ func (client *PrivateCloudsClient) getCreateRequest(ctx context.Context, pcName 
 
 // getHandleResponse handles the Get response.
 func (client *PrivateCloudsClient) getHandleResponse(resp *http.Response) (PrivateCloudsClientGetResponse, error) {
-	result := PrivateCloudsClientGetResponse{RawResponse: resp}
+	result := PrivateCloudsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateCloud); err != nil {
 		return PrivateCloudsClientGetResponse{}, err
 	}
@@ -108,16 +113,32 @@ func (client *PrivateCloudsClient) getHandleResponse(resp *http.Response) (Priva
 // If the operation fails it returns an *azcore.ResponseError type.
 // regionID - The region Id (westus, eastus)
 // options - PrivateCloudsClientListOptions contains the optional parameters for the PrivateCloudsClient.List method.
-func (client *PrivateCloudsClient) List(regionID string, options *PrivateCloudsClientListOptions) *PrivateCloudsClientListPager {
-	return &PrivateCloudsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, regionID, options)
+func (client *PrivateCloudsClient) List(regionID string, options *PrivateCloudsClientListOptions) *runtime.Pager[PrivateCloudsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PrivateCloudsClientListResponse]{
+		More: func(page PrivateCloudsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PrivateCloudsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateCloudList.NextLink)
+		Fetcher: func(ctx context.Context, page *PrivateCloudsClientListResponse) (PrivateCloudsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, regionID, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PrivateCloudsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PrivateCloudsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PrivateCloudsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -144,7 +165,7 @@ func (client *PrivateCloudsClient) listCreateRequest(ctx context.Context, region
 
 // listHandleResponse handles the List response.
 func (client *PrivateCloudsClient) listHandleResponse(resp *http.Response) (PrivateCloudsClientListResponse, error) {
-	result := PrivateCloudsClientListResponse{RawResponse: resp}
+	result := PrivateCloudsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateCloudList); err != nil {
 		return PrivateCloudsClientListResponse{}, err
 	}

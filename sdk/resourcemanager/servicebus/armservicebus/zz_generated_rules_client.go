@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type RulesClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RulesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RulesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &RulesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates a new rule and updates an existing rule
@@ -115,7 +120,7 @@ func (client *RulesClient) createOrUpdateCreateRequest(ctx context.Context, reso
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *RulesClient) createOrUpdateHandleResponse(resp *http.Response) (RulesClientCreateOrUpdateResponse, error) {
-	result := RulesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := RulesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Rule); err != nil {
 		return RulesClientCreateOrUpdateResponse{}, err
 	}
@@ -142,7 +147,7 @@ func (client *RulesClient) Delete(ctx context.Context, resourceGroupName string,
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return RulesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return RulesClientDeleteResponse{RawResponse: resp}, nil
+	return RulesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -246,7 +251,7 @@ func (client *RulesClient) getCreateRequest(ctx context.Context, resourceGroupNa
 
 // getHandleResponse handles the Get response.
 func (client *RulesClient) getHandleResponse(resp *http.Response) (RulesClientGetResponse, error) {
-	result := RulesClientGetResponse{RawResponse: resp}
+	result := RulesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Rule); err != nil {
 		return RulesClientGetResponse{}, err
 	}
@@ -261,16 +266,32 @@ func (client *RulesClient) getHandleResponse(resp *http.Response) (RulesClientGe
 // subscriptionName - The subscription name.
 // options - RulesClientListBySubscriptionsOptions contains the optional parameters for the RulesClient.ListBySubscriptions
 // method.
-func (client *RulesClient) ListBySubscriptions(resourceGroupName string, namespaceName string, topicName string, subscriptionName string, options *RulesClientListBySubscriptionsOptions) *RulesClientListBySubscriptionsPager {
-	return &RulesClientListBySubscriptionsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionsCreateRequest(ctx, resourceGroupName, namespaceName, topicName, subscriptionName, options)
+func (client *RulesClient) ListBySubscriptions(resourceGroupName string, namespaceName string, topicName string, subscriptionName string, options *RulesClientListBySubscriptionsOptions) *runtime.Pager[RulesClientListBySubscriptionsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RulesClientListBySubscriptionsResponse]{
+		More: func(page RulesClientListBySubscriptionsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RulesClientListBySubscriptionsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RuleListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *RulesClientListBySubscriptionsResponse) (RulesClientListBySubscriptionsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionsCreateRequest(ctx, resourceGroupName, namespaceName, topicName, subscriptionName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RulesClientListBySubscriptionsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RulesClientListBySubscriptionsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RulesClientListBySubscriptionsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionsCreateRequest creates the ListBySubscriptions request.
@@ -315,7 +336,7 @@ func (client *RulesClient) listBySubscriptionsCreateRequest(ctx context.Context,
 
 // listBySubscriptionsHandleResponse handles the ListBySubscriptions response.
 func (client *RulesClient) listBySubscriptionsHandleResponse(resp *http.Response) (RulesClientListBySubscriptionsResponse, error) {
-	result := RulesClientListBySubscriptionsResponse{RawResponse: resp}
+	result := RulesClientListBySubscriptionsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RuleListResult); err != nil {
 		return RulesClientListBySubscriptionsResponse{}, err
 	}

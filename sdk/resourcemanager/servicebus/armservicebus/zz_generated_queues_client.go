@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type QueuesClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewQueuesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *QueuesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewQueuesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*QueuesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &QueuesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a Service Bus queue. This operation is idempotent.
@@ -105,7 +110,7 @@ func (client *QueuesClient) createOrUpdateCreateRequest(ctx context.Context, res
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *QueuesClient) createOrUpdateHandleResponse(resp *http.Response) (QueuesClientCreateOrUpdateResponse, error) {
-	result := QueuesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := QueuesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBQueue); err != nil {
 		return QueuesClientCreateOrUpdateResponse{}, err
 	}
@@ -172,7 +177,7 @@ func (client *QueuesClient) createOrUpdateAuthorizationRuleCreateRequest(ctx con
 
 // createOrUpdateAuthorizationRuleHandleResponse handles the CreateOrUpdateAuthorizationRule response.
 func (client *QueuesClient) createOrUpdateAuthorizationRuleHandleResponse(resp *http.Response) (QueuesClientCreateOrUpdateAuthorizationRuleResponse, error) {
-	result := QueuesClientCreateOrUpdateAuthorizationRuleResponse{RawResponse: resp}
+	result := QueuesClientCreateOrUpdateAuthorizationRuleResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBAuthorizationRule); err != nil {
 		return QueuesClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
@@ -197,7 +202,7 @@ func (client *QueuesClient) Delete(ctx context.Context, resourceGroupName string
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return QueuesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return QueuesClientDeleteResponse{RawResponse: resp}, nil
+	return QueuesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -250,7 +255,7 @@ func (client *QueuesClient) DeleteAuthorizationRule(ctx context.Context, resourc
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return QueuesClientDeleteAuthorizationRuleResponse{}, runtime.NewResponseError(resp)
 	}
-	return QueuesClientDeleteAuthorizationRuleResponse{RawResponse: resp}, nil
+	return QueuesClientDeleteAuthorizationRuleResponse{}, nil
 }
 
 // deleteAuthorizationRuleCreateRequest creates the DeleteAuthorizationRule request.
@@ -340,7 +345,7 @@ func (client *QueuesClient) getCreateRequest(ctx context.Context, resourceGroupN
 
 // getHandleResponse handles the Get response.
 func (client *QueuesClient) getHandleResponse(resp *http.Response) (QueuesClientGetResponse, error) {
-	result := QueuesClientGetResponse{RawResponse: resp}
+	result := QueuesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBQueue); err != nil {
 		return QueuesClientGetResponse{}, err
 	}
@@ -406,7 +411,7 @@ func (client *QueuesClient) getAuthorizationRuleCreateRequest(ctx context.Contex
 
 // getAuthorizationRuleHandleResponse handles the GetAuthorizationRule response.
 func (client *QueuesClient) getAuthorizationRuleHandleResponse(resp *http.Response) (QueuesClientGetAuthorizationRuleResponse, error) {
-	result := QueuesClientGetAuthorizationRuleResponse{RawResponse: resp}
+	result := QueuesClientGetAuthorizationRuleResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBAuthorizationRule); err != nil {
 		return QueuesClientGetAuthorizationRuleResponse{}, err
 	}
@@ -420,16 +425,32 @@ func (client *QueuesClient) getAuthorizationRuleHandleResponse(resp *http.Respon
 // queueName - The queue name.
 // options - QueuesClientListAuthorizationRulesOptions contains the optional parameters for the QueuesClient.ListAuthorizationRules
 // method.
-func (client *QueuesClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, queueName string, options *QueuesClientListAuthorizationRulesOptions) *QueuesClientListAuthorizationRulesPager {
-	return &QueuesClientListAuthorizationRulesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, queueName, options)
+func (client *QueuesClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, queueName string, options *QueuesClientListAuthorizationRulesOptions) *runtime.Pager[QueuesClientListAuthorizationRulesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[QueuesClientListAuthorizationRulesResponse]{
+		More: func(page QueuesClientListAuthorizationRulesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp QueuesClientListAuthorizationRulesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SBAuthorizationRuleListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *QueuesClientListAuthorizationRulesResponse) (QueuesClientListAuthorizationRulesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, queueName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return QueuesClientListAuthorizationRulesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return QueuesClientListAuthorizationRulesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return QueuesClientListAuthorizationRulesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAuthorizationRulesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listAuthorizationRulesCreateRequest creates the ListAuthorizationRules request.
@@ -464,7 +485,7 @@ func (client *QueuesClient) listAuthorizationRulesCreateRequest(ctx context.Cont
 
 // listAuthorizationRulesHandleResponse handles the ListAuthorizationRules response.
 func (client *QueuesClient) listAuthorizationRulesHandleResponse(resp *http.Response) (QueuesClientListAuthorizationRulesResponse, error) {
-	result := QueuesClientListAuthorizationRulesResponse{RawResponse: resp}
+	result := QueuesClientListAuthorizationRulesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBAuthorizationRuleListResult); err != nil {
 		return QueuesClientListAuthorizationRulesResponse{}, err
 	}
@@ -476,16 +497,32 @@ func (client *QueuesClient) listAuthorizationRulesHandleResponse(resp *http.Resp
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // options - QueuesClientListByNamespaceOptions contains the optional parameters for the QueuesClient.ListByNamespace method.
-func (client *QueuesClient) ListByNamespace(resourceGroupName string, namespaceName string, options *QueuesClientListByNamespaceOptions) *QueuesClientListByNamespacePager {
-	return &QueuesClientListByNamespacePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByNamespaceCreateRequest(ctx, resourceGroupName, namespaceName, options)
+func (client *QueuesClient) ListByNamespace(resourceGroupName string, namespaceName string, options *QueuesClientListByNamespaceOptions) *runtime.Pager[QueuesClientListByNamespaceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[QueuesClientListByNamespaceResponse]{
+		More: func(page QueuesClientListByNamespaceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp QueuesClientListByNamespaceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SBQueueListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *QueuesClientListByNamespaceResponse) (QueuesClientListByNamespaceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByNamespaceCreateRequest(ctx, resourceGroupName, namespaceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return QueuesClientListByNamespaceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return QueuesClientListByNamespaceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return QueuesClientListByNamespaceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByNamespaceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByNamespaceCreateRequest creates the ListByNamespace request.
@@ -522,7 +559,7 @@ func (client *QueuesClient) listByNamespaceCreateRequest(ctx context.Context, re
 
 // listByNamespaceHandleResponse handles the ListByNamespace response.
 func (client *QueuesClient) listByNamespaceHandleResponse(resp *http.Response) (QueuesClientListByNamespaceResponse, error) {
-	result := QueuesClientListByNamespaceResponse{RawResponse: resp}
+	result := QueuesClientListByNamespaceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBQueueListResult); err != nil {
 		return QueuesClientListByNamespaceResponse{}, err
 	}
@@ -587,7 +624,7 @@ func (client *QueuesClient) listKeysCreateRequest(ctx context.Context, resourceG
 
 // listKeysHandleResponse handles the ListKeys response.
 func (client *QueuesClient) listKeysHandleResponse(resp *http.Response) (QueuesClientListKeysResponse, error) {
-	result := QueuesClientListKeysResponse{RawResponse: resp}
+	result := QueuesClientListKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
 		return QueuesClientListKeysResponse{}, err
 	}
@@ -653,7 +690,7 @@ func (client *QueuesClient) regenerateKeysCreateRequest(ctx context.Context, res
 
 // regenerateKeysHandleResponse handles the RegenerateKeys response.
 func (client *QueuesClient) regenerateKeysHandleResponse(resp *http.Response) (QueuesClientRegenerateKeysResponse, error) {
-	result := QueuesClientRegenerateKeysResponse{RawResponse: resp}
+	result := QueuesClientRegenerateKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
 		return QueuesClientRegenerateKeysResponse{}, err
 	}

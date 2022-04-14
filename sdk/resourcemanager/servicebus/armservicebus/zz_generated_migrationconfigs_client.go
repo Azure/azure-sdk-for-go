@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type MigrationConfigsClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewMigrationConfigsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MigrationConfigsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewMigrationConfigsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MigrationConfigsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &MigrationConfigsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CompleteMigration - This operation Completes Migration of entities by pointing the connection strings to Premium namespace
@@ -71,7 +76,7 @@ func (client *MigrationConfigsClient) CompleteMigration(ctx context.Context, res
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return MigrationConfigsClientCompleteMigrationResponse{}, runtime.NewResponseError(resp)
 	}
-	return MigrationConfigsClientCompleteMigrationResponse{RawResponse: resp}, nil
+	return MigrationConfigsClientCompleteMigrationResponse{}, nil
 }
 
 // completeMigrationCreateRequest creates the CompleteMigration request.
@@ -113,22 +118,16 @@ func (client *MigrationConfigsClient) completeMigrationCreateRequest(ctx context
 // parameters - Parameters required to create Migration Configuration
 // options - MigrationConfigsClientBeginCreateAndStartMigrationOptions contains the optional parameters for the MigrationConfigsClient.BeginCreateAndStartMigration
 // method.
-func (client *MigrationConfigsClient) BeginCreateAndStartMigration(ctx context.Context, resourceGroupName string, namespaceName string, configName MigrationConfigurationName, parameters MigrationConfigProperties, options *MigrationConfigsClientBeginCreateAndStartMigrationOptions) (MigrationConfigsClientCreateAndStartMigrationPollerResponse, error) {
-	resp, err := client.createAndStartMigration(ctx, resourceGroupName, namespaceName, configName, parameters, options)
-	if err != nil {
-		return MigrationConfigsClientCreateAndStartMigrationPollerResponse{}, err
+func (client *MigrationConfigsClient) BeginCreateAndStartMigration(ctx context.Context, resourceGroupName string, namespaceName string, configName MigrationConfigurationName, parameters MigrationConfigProperties, options *MigrationConfigsClientBeginCreateAndStartMigrationOptions) (*armruntime.Poller[MigrationConfigsClientCreateAndStartMigrationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createAndStartMigration(ctx, resourceGroupName, namespaceName, configName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[MigrationConfigsClientCreateAndStartMigrationResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[MigrationConfigsClientCreateAndStartMigrationResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := MigrationConfigsClientCreateAndStartMigrationPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("MigrationConfigsClient.CreateAndStartMigration", "", resp, client.pl)
-	if err != nil {
-		return MigrationConfigsClientCreateAndStartMigrationPollerResponse{}, err
-	}
-	result.Poller = &MigrationConfigsClientCreateAndStartMigrationPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateAndStartMigration - Creates Migration configuration and starts migration of entities from Standard to Premium namespace
@@ -196,7 +195,7 @@ func (client *MigrationConfigsClient) Delete(ctx context.Context, resourceGroupN
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return MigrationConfigsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return MigrationConfigsClientDeleteResponse{RawResponse: resp}, nil
+	return MigrationConfigsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -282,7 +281,7 @@ func (client *MigrationConfigsClient) getCreateRequest(ctx context.Context, reso
 
 // getHandleResponse handles the Get response.
 func (client *MigrationConfigsClient) getHandleResponse(resp *http.Response) (MigrationConfigsClientGetResponse, error) {
-	result := MigrationConfigsClientGetResponse{RawResponse: resp}
+	result := MigrationConfigsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MigrationConfigProperties); err != nil {
 		return MigrationConfigsClientGetResponse{}, err
 	}
@@ -294,16 +293,32 @@ func (client *MigrationConfigsClient) getHandleResponse(resp *http.Response) (Mi
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // options - MigrationConfigsClientListOptions contains the optional parameters for the MigrationConfigsClient.List method.
-func (client *MigrationConfigsClient) List(resourceGroupName string, namespaceName string, options *MigrationConfigsClientListOptions) *MigrationConfigsClientListPager {
-	return &MigrationConfigsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, namespaceName, options)
+func (client *MigrationConfigsClient) List(resourceGroupName string, namespaceName string, options *MigrationConfigsClientListOptions) *runtime.Pager[MigrationConfigsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[MigrationConfigsClientListResponse]{
+		More: func(page MigrationConfigsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp MigrationConfigsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.MigrationConfigListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *MigrationConfigsClientListResponse) (MigrationConfigsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, namespaceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return MigrationConfigsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return MigrationConfigsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return MigrationConfigsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -334,7 +349,7 @@ func (client *MigrationConfigsClient) listCreateRequest(ctx context.Context, res
 
 // listHandleResponse handles the List response.
 func (client *MigrationConfigsClient) listHandleResponse(resp *http.Response) (MigrationConfigsClientListResponse, error) {
-	result := MigrationConfigsClientListResponse{RawResponse: resp}
+	result := MigrationConfigsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MigrationConfigListResult); err != nil {
 		return MigrationConfigsClientListResponse{}, err
 	}
@@ -359,7 +374,7 @@ func (client *MigrationConfigsClient) Revert(ctx context.Context, resourceGroupN
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return MigrationConfigsClientRevertResponse{}, runtime.NewResponseError(resp)
 	}
-	return MigrationConfigsClientRevertResponse{RawResponse: resp}, nil
+	return MigrationConfigsClientRevertResponse{}, nil
 }
 
 // revertCreateRequest creates the Revert request.

@@ -1,5 +1,52 @@
 # Release History
 
+## 0.3.0 (2022-04-14)
+### Breaking Changes
+
+- Function `NewResourceLinksClient` return value(s) have been changed from `(*ResourceLinksClient)` to `(*ResourceLinksClient, error)`
+- Function `*ResourceLinksClient.ListAtSourceScope` return value(s) have been changed from `(*ResourceLinksClientListAtSourceScopePager)` to `(*runtime.Pager[ResourceLinksClientListAtSourceScopeResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*ResourceLinksClient.ListAtSubscription` return value(s) have been changed from `(*ResourceLinksClientListAtSubscriptionPager)` to `(*runtime.Pager[ResourceLinksClientListAtSubscriptionResponse])`
+- Type of `ResourceLink.Type` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*ResourceLinksClientListAtSourceScopePager.NextPage` has been removed
+- Function `*ResourceLinksClientListAtSubscriptionPager.Err` has been removed
+- Function `*ResourceLinksClientListAtSubscriptionPager.PageResponse` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*ResourceLinksClientListAtSourceScopePager.Err` has been removed
+- Function `*ResourceLinksClientListAtSourceScopePager.PageResponse` has been removed
+- Function `*ResourceLinksClientListAtSubscriptionPager.NextPage` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `ResourceLinksClientCreateOrUpdateResult` has been removed
+- Struct `ResourceLinksClientGetResult` has been removed
+- Struct `ResourceLinksClientListAtSourceScopePager` has been removed
+- Struct `ResourceLinksClientListAtSourceScopeResult` has been removed
+- Struct `ResourceLinksClientListAtSubscriptionPager` has been removed
+- Struct `ResourceLinksClientListAtSubscriptionResult` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `ResourceLinksClientCreateOrUpdateResult` of struct `ResourceLinksClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ResourceLinksClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ResourceLinksClientDeleteResponse` has been removed
+- Field `ResourceLinksClientListAtSubscriptionResult` of struct `ResourceLinksClientListAtSubscriptionResponse` has been removed
+- Field `RawResponse` of struct `ResourceLinksClientListAtSubscriptionResponse` has been removed
+- Field `ResourceLinksClientGetResult` of struct `ResourceLinksClientGetResponse` has been removed
+- Field `RawResponse` of struct `ResourceLinksClientGetResponse` has been removed
+- Field `ResourceLinksClientListAtSourceScopeResult` of struct `ResourceLinksClientListAtSourceScopeResponse` has been removed
+- Field `RawResponse` of struct `ResourceLinksClientListAtSourceScopeResponse` has been removed
+
+### Features Added
+
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `ResourceLinkResult` in struct `ResourceLinksClientListAtSourceScopeResponse`
+- New anonymous field `ResourceLink` in struct `ResourceLinksClientCreateOrUpdateResponse`
+- New anonymous field `ResourceLinkResult` in struct `ResourceLinksClientListAtSubscriptionResponse`
+- New anonymous field `ResourceLink` in struct `ResourceLinksClientGetResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

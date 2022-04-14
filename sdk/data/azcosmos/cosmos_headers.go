@@ -25,6 +25,7 @@ const (
 	cosmosHeaderEnableScanInQuery                  string = "x-ms-documentdb-force-query-scan"
 	cosmosHeaderMaxItemCount                       string = "x-ms-max-item-count"
 	cosmosHeaderContinuationToken                  string = "x-ms-continuation"
+	cosmosHeaderPopulateIndexMetrics               string = "x-ms-documentdb-populatequerymetrics"
 	headerXmsDate                                  string = "x-ms-date"
 	headerAuthorization                            string = "Authorization"
 	headerContentType                              string = "Content-Type"

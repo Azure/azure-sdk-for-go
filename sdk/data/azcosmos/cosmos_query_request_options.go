@@ -19,7 +19,7 @@ type QueryOptions struct {
 	// Consistency can only be relaxed.
 	ConsistencyLevel *ConsistencyLevel
 	// PopulateIndexMetrics is used to obtain the index metrics to understand how the query engine used existing indexes and how it could use potential new indexes.
-	// Please note that this options will incur overhead, so it should be enabled only when debugging slow queries.
+	// Please note that this options will incur overhead, so it should be enabled only when debugging slow queries and not in production.
 	PopulateIndexMetrics bool
 	// ResponseContinuationTokenLimitInKb is used to limit the length of continuation token in the query response. Valid values are >= 0.
 	ResponseContinuationTokenLimitInKb int
@@ -51,6 +51,10 @@ func (options *QueryOptions) toHeaders() *map[string]string {
 
 	if options.EnableScanInQuery {
 		headers[cosmosHeaderEnableScanInQuery] = "true"
+	}
+
+	if options.PopulateIndexMetrics {
+		headers[cosmosHeaderPopulateIndexMetrics] = "true"
 	}
 
 	return &headers

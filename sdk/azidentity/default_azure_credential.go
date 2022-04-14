@@ -54,7 +54,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 	}
 
 	o := &ManagedIdentityCredentialOptions{ClientOptions: options.ClientOptions}
-	if ID, ok := os.LookupEnv("AZURE_CLIENT_ID"); ok {
+	if ID, ok := os.LookupEnv(azureClientID); ok {
 		o.ID = ClientID(ID)
 	}
 	msiCred, err := NewManagedIdentityCredential(o)

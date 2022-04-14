@@ -7,6 +7,8 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Include XML header when marshalling XML content.
+* Handle XML namespaces when searching for error code.
 
 ### Other Changes
 

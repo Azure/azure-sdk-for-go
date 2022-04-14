@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ApplicationDefinitionsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewApplicationDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ApplicationDefinitionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewApplicationDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationDefinitionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ApplicationDefinitionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates a new managed application definition.
@@ -56,22 +61,16 @@ func NewApplicationDefinitionsClient(subscriptionID string, credential azcore.To
 // parameters - Parameters supplied to the create or update an managed application definition.
 // options - ApplicationDefinitionsClientBeginCreateOrUpdateOptions contains the optional parameters for the ApplicationDefinitionsClient.BeginCreateOrUpdate
 // method.
-func (client *ApplicationDefinitionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, applicationDefinitionName string, parameters ApplicationDefinition, options *ApplicationDefinitionsClientBeginCreateOrUpdateOptions) (ApplicationDefinitionsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, applicationDefinitionName, parameters, options)
-	if err != nil {
-		return ApplicationDefinitionsClientCreateOrUpdatePollerResponse{}, err
+func (client *ApplicationDefinitionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, applicationDefinitionName string, parameters ApplicationDefinition, options *ApplicationDefinitionsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ApplicationDefinitionsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, applicationDefinitionName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ApplicationDefinitionsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ApplicationDefinitionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ApplicationDefinitionsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ApplicationDefinitionsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return ApplicationDefinitionsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ApplicationDefinitionsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates a new managed application definition.
@@ -124,22 +123,16 @@ func (client *ApplicationDefinitionsClient) createOrUpdateCreateRequest(ctx cont
 // parameters - Parameters supplied to the create or update a managed application definition.
 // options - ApplicationDefinitionsClientBeginCreateOrUpdateByIDOptions contains the optional parameters for the ApplicationDefinitionsClient.BeginCreateOrUpdateByID
 // method.
-func (client *ApplicationDefinitionsClient) BeginCreateOrUpdateByID(ctx context.Context, resourceGroupName string, applicationDefinitionName string, parameters ApplicationDefinition, options *ApplicationDefinitionsClientBeginCreateOrUpdateByIDOptions) (ApplicationDefinitionsClientCreateOrUpdateByIDPollerResponse, error) {
-	resp, err := client.createOrUpdateByID(ctx, resourceGroupName, applicationDefinitionName, parameters, options)
-	if err != nil {
-		return ApplicationDefinitionsClientCreateOrUpdateByIDPollerResponse{}, err
+func (client *ApplicationDefinitionsClient) BeginCreateOrUpdateByID(ctx context.Context, resourceGroupName string, applicationDefinitionName string, parameters ApplicationDefinition, options *ApplicationDefinitionsClientBeginCreateOrUpdateByIDOptions) (*armruntime.Poller[ApplicationDefinitionsClientCreateOrUpdateByIDResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdateByID(ctx, resourceGroupName, applicationDefinitionName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ApplicationDefinitionsClientCreateOrUpdateByIDResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ApplicationDefinitionsClientCreateOrUpdateByIDResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ApplicationDefinitionsClientCreateOrUpdateByIDPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ApplicationDefinitionsClient.CreateOrUpdateByID", "", resp, client.pl)
-	if err != nil {
-		return ApplicationDefinitionsClientCreateOrUpdateByIDPollerResponse{}, err
-	}
-	result.Poller = &ApplicationDefinitionsClientCreateOrUpdateByIDPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdateByID - Creates a new managed application definition.
@@ -191,22 +184,16 @@ func (client *ApplicationDefinitionsClient) createOrUpdateByIDCreateRequest(ctx 
 // applicationDefinitionName - The name of the managed application definition to delete.
 // options - ApplicationDefinitionsClientBeginDeleteOptions contains the optional parameters for the ApplicationDefinitionsClient.BeginDelete
 // method.
-func (client *ApplicationDefinitionsClient) BeginDelete(ctx context.Context, resourceGroupName string, applicationDefinitionName string, options *ApplicationDefinitionsClientBeginDeleteOptions) (ApplicationDefinitionsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, applicationDefinitionName, options)
-	if err != nil {
-		return ApplicationDefinitionsClientDeletePollerResponse{}, err
+func (client *ApplicationDefinitionsClient) BeginDelete(ctx context.Context, resourceGroupName string, applicationDefinitionName string, options *ApplicationDefinitionsClientBeginDeleteOptions) (*armruntime.Poller[ApplicationDefinitionsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, applicationDefinitionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ApplicationDefinitionsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ApplicationDefinitionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ApplicationDefinitionsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ApplicationDefinitionsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return ApplicationDefinitionsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ApplicationDefinitionsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the managed application definition.
@@ -258,22 +245,16 @@ func (client *ApplicationDefinitionsClient) deleteCreateRequest(ctx context.Cont
 // applicationDefinitionName - The name of the managed application definition.
 // options - ApplicationDefinitionsClientBeginDeleteByIDOptions contains the optional parameters for the ApplicationDefinitionsClient.BeginDeleteByID
 // method.
-func (client *ApplicationDefinitionsClient) BeginDeleteByID(ctx context.Context, resourceGroupName string, applicationDefinitionName string, options *ApplicationDefinitionsClientBeginDeleteByIDOptions) (ApplicationDefinitionsClientDeleteByIDPollerResponse, error) {
-	resp, err := client.deleteByID(ctx, resourceGroupName, applicationDefinitionName, options)
-	if err != nil {
-		return ApplicationDefinitionsClientDeleteByIDPollerResponse{}, err
+func (client *ApplicationDefinitionsClient) BeginDeleteByID(ctx context.Context, resourceGroupName string, applicationDefinitionName string, options *ApplicationDefinitionsClientBeginDeleteByIDOptions) (*armruntime.Poller[ApplicationDefinitionsClientDeleteByIDResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteByID(ctx, resourceGroupName, applicationDefinitionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ApplicationDefinitionsClientDeleteByIDResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ApplicationDefinitionsClientDeleteByIDResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ApplicationDefinitionsClientDeleteByIDPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ApplicationDefinitionsClient.DeleteByID", "", resp, client.pl)
-	if err != nil {
-		return ApplicationDefinitionsClientDeleteByIDPollerResponse{}, err
-	}
-	result.Poller = &ApplicationDefinitionsClientDeleteByIDPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DeleteByID - Deletes the managed application definition.
@@ -368,7 +349,7 @@ func (client *ApplicationDefinitionsClient) getCreateRequest(ctx context.Context
 
 // getHandleResponse handles the Get response.
 func (client *ApplicationDefinitionsClient) getHandleResponse(resp *http.Response) (ApplicationDefinitionsClientGetResponse, error) {
-	result := ApplicationDefinitionsClientGetResponse{RawResponse: resp}
+	result := ApplicationDefinitionsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationDefinition); err != nil {
 		return ApplicationDefinitionsClientGetResponse{}, err
 	}
@@ -424,7 +405,7 @@ func (client *ApplicationDefinitionsClient) getByIDCreateRequest(ctx context.Con
 
 // getByIDHandleResponse handles the GetByID response.
 func (client *ApplicationDefinitionsClient) getByIDHandleResponse(resp *http.Response) (ApplicationDefinitionsClientGetByIDResponse, error) {
-	result := ApplicationDefinitionsClientGetByIDResponse{RawResponse: resp}
+	result := ApplicationDefinitionsClientGetByIDResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationDefinition); err != nil {
 		return ApplicationDefinitionsClientGetByIDResponse{}, err
 	}
@@ -436,16 +417,32 @@ func (client *ApplicationDefinitionsClient) getByIDHandleResponse(resp *http.Res
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ApplicationDefinitionsClientListByResourceGroupOptions contains the optional parameters for the ApplicationDefinitionsClient.ListByResourceGroup
 // method.
-func (client *ApplicationDefinitionsClient) ListByResourceGroup(resourceGroupName string, options *ApplicationDefinitionsClientListByResourceGroupOptions) *ApplicationDefinitionsClientListByResourceGroupPager {
-	return &ApplicationDefinitionsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *ApplicationDefinitionsClient) ListByResourceGroup(resourceGroupName string, options *ApplicationDefinitionsClientListByResourceGroupOptions) *runtime.Pager[ApplicationDefinitionsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ApplicationDefinitionsClientListByResourceGroupResponse]{
+		More: func(page ApplicationDefinitionsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ApplicationDefinitionsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ApplicationDefinitionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ApplicationDefinitionsClientListByResourceGroupResponse) (ApplicationDefinitionsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ApplicationDefinitionsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ApplicationDefinitionsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ApplicationDefinitionsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -472,7 +469,7 @@ func (client *ApplicationDefinitionsClient) listByResourceGroupCreateRequest(ctx
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *ApplicationDefinitionsClient) listByResourceGroupHandleResponse(resp *http.Response) (ApplicationDefinitionsClientListByResourceGroupResponse, error) {
-	result := ApplicationDefinitionsClientListByResourceGroupResponse{RawResponse: resp}
+	result := ApplicationDefinitionsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationDefinitionListResult); err != nil {
 		return ApplicationDefinitionsClientListByResourceGroupResponse{}, err
 	}

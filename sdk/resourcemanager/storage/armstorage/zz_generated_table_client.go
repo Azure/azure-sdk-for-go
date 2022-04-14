@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type TableClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewTableClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TableClient {
+func NewTableClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TableClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &TableClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Creates a new table with the specified table name, under the specified account.
@@ -96,15 +101,18 @@ func (client *TableClient) createCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
+	if options != nil && options.Parameters != nil {
+		return req, runtime.MarshalAsJSON(req, *options.Parameters)
+	}
 	return req, nil
 }
 
 // createHandleResponse handles the Create response.
 func (client *TableClient) createHandleResponse(resp *http.Response) (TableClientCreateResponse, error) {
-	result := TableClientCreateResponse{RawResponse: resp}
+	result := TableClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Table); err != nil {
 		return TableClientCreateResponse{}, err
 	}
@@ -131,7 +139,7 @@ func (client *TableClient) Delete(ctx context.Context, resourceGroupName string,
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return TableClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return TableClientDeleteResponse{RawResponse: resp}, nil
+	return TableClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -158,7 +166,7 @@ func (client *TableClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -211,7 +219,7 @@ func (client *TableClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -219,7 +227,7 @@ func (client *TableClient) getCreateRequest(ctx context.Context, resourceGroupNa
 
 // getHandleResponse handles the Get response.
 func (client *TableClient) getHandleResponse(resp *http.Response) (TableClientGetResponse, error) {
-	result := TableClientGetResponse{RawResponse: resp}
+	result := TableClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Table); err != nil {
 		return TableClientGetResponse{}, err
 	}
@@ -232,16 +240,32 @@ func (client *TableClient) getHandleResponse(resp *http.Response) (TableClientGe
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
 // options - TableClientListOptions contains the optional parameters for the TableClient.List method.
-func (client *TableClient) List(resourceGroupName string, accountName string, options *TableClientListOptions) *TableClientListPager {
-	return &TableClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+func (client *TableClient) List(resourceGroupName string, accountName string, options *TableClientListOptions) *runtime.Pager[TableClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[TableClientListResponse]{
+		More: func(page TableClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp TableClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListTableResource.NextLink)
+		Fetcher: func(ctx context.Context, page *TableClientListResponse) (TableClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return TableClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return TableClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return TableClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -264,7 +288,7 @@ func (client *TableClient) listCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -272,7 +296,7 @@ func (client *TableClient) listCreateRequest(ctx context.Context, resourceGroupN
 
 // listHandleResponse handles the List response.
 func (client *TableClient) listHandleResponse(resp *http.Response) (TableClientListResponse, error) {
-	result := TableClientListResponse{RawResponse: resp}
+	result := TableClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListTableResource); err != nil {
 		return TableClientListResponse{}, err
 	}
@@ -326,15 +350,18 @@ func (client *TableClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
+	if options != nil && options.Parameters != nil {
+		return req, runtime.MarshalAsJSON(req, *options.Parameters)
+	}
 	return req, nil
 }
 
 // updateHandleResponse handles the Update response.
 func (client *TableClient) updateHandleResponse(resp *http.Response) (TableClientUpdateResponse, error) {
-	result := TableClientUpdateResponse{RawResponse: resp}
+	result := TableClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Table); err != nil {
 		return TableClientUpdateResponse{}, err
 	}

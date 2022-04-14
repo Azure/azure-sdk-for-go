@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armmanagedapplications
 
 const (
 	moduleName    = "armmanagedapplications"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // ApplicationArtifactType - The managed application artifact type.
@@ -29,11 +29,6 @@ func PossibleApplicationArtifactTypeValues() []ApplicationArtifactType {
 	}
 }
 
-// ToPtr returns a *ApplicationArtifactType pointing to the current value.
-func (c ApplicationArtifactType) ToPtr() *ApplicationArtifactType {
-	return &c
-}
-
 // ApplicationLockLevel - The managed application lock level.
 type ApplicationLockLevel string
 
@@ -50,11 +45,6 @@ func PossibleApplicationLockLevelValues() []ApplicationLockLevel {
 		ApplicationLockLevelReadOnly,
 		ApplicationLockLevelNone,
 	}
-}
-
-// ToPtr returns a *ApplicationLockLevel pointing to the current value.
-func (c ApplicationLockLevel) ToPtr() *ApplicationLockLevel {
-	return &c
 }
 
 // ProvisioningState - Provisioning status of the managed application.
@@ -89,9 +79,4 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateSucceeded,
 		ProvisioningStateUpdating,
 	}
-}
-
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
 }

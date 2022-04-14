@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type EncryptionScopesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewEncryptionScopesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *EncryptionScopesClient {
+func NewEncryptionScopesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EncryptionScopesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &EncryptionScopesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Returns the properties for the specified encryption scope.
@@ -97,7 +102,7 @@ func (client *EncryptionScopesClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -105,7 +110,7 @@ func (client *EncryptionScopesClient) getCreateRequest(ctx context.Context, reso
 
 // getHandleResponse handles the Get response.
 func (client *EncryptionScopesClient) getHandleResponse(resp *http.Response) (EncryptionScopesClientGetResponse, error) {
-	result := EncryptionScopesClientGetResponse{RawResponse: resp}
+	result := EncryptionScopesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EncryptionScope); err != nil {
 		return EncryptionScopesClientGetResponse{}, err
 	}
@@ -118,16 +123,32 @@ func (client *EncryptionScopesClient) getHandleResponse(resp *http.Response) (En
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
 // options - EncryptionScopesClientListOptions contains the optional parameters for the EncryptionScopesClient.List method.
-func (client *EncryptionScopesClient) List(resourceGroupName string, accountName string, options *EncryptionScopesClientListOptions) *EncryptionScopesClientListPager {
-	return &EncryptionScopesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+func (client *EncryptionScopesClient) List(resourceGroupName string, accountName string, options *EncryptionScopesClientListOptions) *runtime.Pager[EncryptionScopesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[EncryptionScopesClientListResponse]{
+		More: func(page EncryptionScopesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp EncryptionScopesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.EncryptionScopeListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *EncryptionScopesClientListResponse) (EncryptionScopesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return EncryptionScopesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return EncryptionScopesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return EncryptionScopesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -150,7 +171,7 @@ func (client *EncryptionScopesClient) listCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -158,7 +179,7 @@ func (client *EncryptionScopesClient) listCreateRequest(ctx context.Context, res
 
 // listHandleResponse handles the List response.
 func (client *EncryptionScopesClient) listHandleResponse(resp *http.Response) (EncryptionScopesClientListResponse, error) {
-	result := EncryptionScopesClientListResponse{RawResponse: resp}
+	result := EncryptionScopesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EncryptionScopeListResult); err != nil {
 		return EncryptionScopesClientListResponse{}, err
 	}
@@ -215,7 +236,7 @@ func (client *EncryptionScopesClient) patchCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, encryptionScope)
@@ -223,7 +244,7 @@ func (client *EncryptionScopesClient) patchCreateRequest(ctx context.Context, re
 
 // patchHandleResponse handles the Patch response.
 func (client *EncryptionScopesClient) patchHandleResponse(resp *http.Response) (EncryptionScopesClientPatchResponse, error) {
-	result := EncryptionScopesClientPatchResponse{RawResponse: resp}
+	result := EncryptionScopesClientPatchResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EncryptionScope); err != nil {
 		return EncryptionScopesClientPatchResponse{}, err
 	}
@@ -281,7 +302,7 @@ func (client *EncryptionScopesClient) putCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, encryptionScope)
@@ -289,7 +310,7 @@ func (client *EncryptionScopesClient) putCreateRequest(ctx context.Context, reso
 
 // putHandleResponse handles the Put response.
 func (client *EncryptionScopesClient) putHandleResponse(resp *http.Response) (EncryptionScopesClientPutResponse, error) {
-	result := EncryptionScopesClientPutResponse{RawResponse: resp}
+	result := EncryptionScopesClientPutResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EncryptionScope); err != nil {
 		return EncryptionScopesClientPutResponse{}, err
 	}

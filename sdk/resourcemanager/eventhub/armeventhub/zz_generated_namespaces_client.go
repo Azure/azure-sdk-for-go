@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type NamespacesClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewNamespacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *NamespacesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewNamespacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NamespacesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &NamespacesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CheckNameAvailability - Check the give Namespace name availability.
@@ -90,7 +95,7 @@ func (client *NamespacesClient) checkNameAvailabilityCreateRequest(ctx context.C
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
 func (client *NamespacesClient) checkNameAvailabilityHandleResponse(resp *http.Response) (NamespacesClientCheckNameAvailabilityResponse, error) {
-	result := NamespacesClientCheckNameAvailabilityResponse{RawResponse: resp}
+	result := NamespacesClientCheckNameAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResult); err != nil {
 		return NamespacesClientCheckNameAvailabilityResponse{}, err
 	}
@@ -105,22 +110,16 @@ func (client *NamespacesClient) checkNameAvailabilityHandleResponse(resp *http.R
 // parameters - Parameters for creating a namespace resource.
 // options - NamespacesClientBeginCreateOrUpdateOptions contains the optional parameters for the NamespacesClient.BeginCreateOrUpdate
 // method.
-func (client *NamespacesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, parameters EHNamespace, options *NamespacesClientBeginCreateOrUpdateOptions) (NamespacesClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, namespaceName, parameters, options)
-	if err != nil {
-		return NamespacesClientCreateOrUpdatePollerResponse{}, err
+func (client *NamespacesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, parameters EHNamespace, options *NamespacesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[NamespacesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, namespaceName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[NamespacesClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[NamespacesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := NamespacesClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("NamespacesClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return NamespacesClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &NamespacesClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This operation
@@ -222,7 +221,7 @@ func (client *NamespacesClient) createOrUpdateAuthorizationRuleCreateRequest(ctx
 
 // createOrUpdateAuthorizationRuleHandleResponse handles the CreateOrUpdateAuthorizationRule response.
 func (client *NamespacesClient) createOrUpdateAuthorizationRuleHandleResponse(resp *http.Response) (NamespacesClientCreateOrUpdateAuthorizationRuleResponse, error) {
-	result := NamespacesClientCreateOrUpdateAuthorizationRuleResponse{RawResponse: resp}
+	result := NamespacesClientCreateOrUpdateAuthorizationRuleResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRule); err != nil {
 		return NamespacesClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
@@ -279,7 +278,7 @@ func (client *NamespacesClient) createOrUpdateNetworkRuleSetCreateRequest(ctx co
 
 // createOrUpdateNetworkRuleSetHandleResponse handles the CreateOrUpdateNetworkRuleSet response.
 func (client *NamespacesClient) createOrUpdateNetworkRuleSetHandleResponse(resp *http.Response) (NamespacesClientCreateOrUpdateNetworkRuleSetResponse, error) {
-	result := NamespacesClientCreateOrUpdateNetworkRuleSetResponse{RawResponse: resp}
+	result := NamespacesClientCreateOrUpdateNetworkRuleSetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkRuleSet); err != nil {
 		return NamespacesClientCreateOrUpdateNetworkRuleSetResponse{}, err
 	}
@@ -291,22 +290,16 @@ func (client *NamespacesClient) createOrUpdateNetworkRuleSetHandleResponse(resp 
 // resourceGroupName - Name of the resource group within the azure subscription.
 // namespaceName - The Namespace name
 // options - NamespacesClientBeginDeleteOptions contains the optional parameters for the NamespacesClient.BeginDelete method.
-func (client *NamespacesClient) BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesClientBeginDeleteOptions) (NamespacesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, namespaceName, options)
-	if err != nil {
-		return NamespacesClientDeletePollerResponse{}, err
+func (client *NamespacesClient) BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesClientBeginDeleteOptions) (*armruntime.Poller[NamespacesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, namespaceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[NamespacesClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[NamespacesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := NamespacesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("NamespacesClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return NamespacesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &NamespacesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes an existing namespace. This operation also removes all associated resources under the namespace.
@@ -371,7 +364,7 @@ func (client *NamespacesClient) DeleteAuthorizationRule(ctx context.Context, res
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return NamespacesClientDeleteAuthorizationRuleResponse{}, runtime.NewResponseError(resp)
 	}
-	return NamespacesClientDeleteAuthorizationRuleResponse{RawResponse: resp}, nil
+	return NamespacesClientDeleteAuthorizationRuleResponse{}, nil
 }
 
 // deleteAuthorizationRuleCreateRequest creates the DeleteAuthorizationRule request.
@@ -452,7 +445,7 @@ func (client *NamespacesClient) getCreateRequest(ctx context.Context, resourceGr
 
 // getHandleResponse handles the Get response.
 func (client *NamespacesClient) getHandleResponse(resp *http.Response) (NamespacesClientGetResponse, error) {
-	result := NamespacesClientGetResponse{RawResponse: resp}
+	result := NamespacesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EHNamespace); err != nil {
 		return NamespacesClientGetResponse{}, err
 	}
@@ -513,7 +506,7 @@ func (client *NamespacesClient) getAuthorizationRuleCreateRequest(ctx context.Co
 
 // getAuthorizationRuleHandleResponse handles the GetAuthorizationRule response.
 func (client *NamespacesClient) getAuthorizationRuleHandleResponse(resp *http.Response) (NamespacesClientGetAuthorizationRuleResponse, error) {
-	result := NamespacesClientGetAuthorizationRuleResponse{RawResponse: resp}
+	result := NamespacesClientGetAuthorizationRuleResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRule); err != nil {
 		return NamespacesClientGetAuthorizationRuleResponse{}, err
 	}
@@ -569,7 +562,7 @@ func (client *NamespacesClient) getNetworkRuleSetCreateRequest(ctx context.Conte
 
 // getNetworkRuleSetHandleResponse handles the GetNetworkRuleSet response.
 func (client *NamespacesClient) getNetworkRuleSetHandleResponse(resp *http.Response) (NamespacesClientGetNetworkRuleSetResponse, error) {
-	result := NamespacesClientGetNetworkRuleSetResponse{RawResponse: resp}
+	result := NamespacesClientGetNetworkRuleSetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkRuleSet); err != nil {
 		return NamespacesClientGetNetworkRuleSetResponse{}, err
 	}
@@ -579,16 +572,32 @@ func (client *NamespacesClient) getNetworkRuleSetHandleResponse(resp *http.Respo
 // List - Lists all the available Namespaces within a subscription, irrespective of the resource groups.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - NamespacesClientListOptions contains the optional parameters for the NamespacesClient.List method.
-func (client *NamespacesClient) List(options *NamespacesClientListOptions) *NamespacesClientListPager {
-	return &NamespacesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *NamespacesClient) List(options *NamespacesClientListOptions) *runtime.Pager[NamespacesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[NamespacesClientListResponse]{
+		More: func(page NamespacesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp NamespacesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.EHNamespaceListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *NamespacesClientListResponse) (NamespacesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return NamespacesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return NamespacesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return NamespacesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -611,7 +620,7 @@ func (client *NamespacesClient) listCreateRequest(ctx context.Context, options *
 
 // listHandleResponse handles the List response.
 func (client *NamespacesClient) listHandleResponse(resp *http.Response) (NamespacesClientListResponse, error) {
-	result := NamespacesClientListResponse{RawResponse: resp}
+	result := NamespacesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EHNamespaceListResult); err != nil {
 		return NamespacesClientListResponse{}, err
 	}
@@ -624,16 +633,32 @@ func (client *NamespacesClient) listHandleResponse(resp *http.Response) (Namespa
 // namespaceName - The Namespace name
 // options - NamespacesClientListAuthorizationRulesOptions contains the optional parameters for the NamespacesClient.ListAuthorizationRules
 // method.
-func (client *NamespacesClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, options *NamespacesClientListAuthorizationRulesOptions) *NamespacesClientListAuthorizationRulesPager {
-	return &NamespacesClientListAuthorizationRulesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, options)
+func (client *NamespacesClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, options *NamespacesClientListAuthorizationRulesOptions) *runtime.Pager[NamespacesClientListAuthorizationRulesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[NamespacesClientListAuthorizationRulesResponse]{
+		More: func(page NamespacesClientListAuthorizationRulesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp NamespacesClientListAuthorizationRulesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AuthorizationRuleListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *NamespacesClientListAuthorizationRulesResponse) (NamespacesClientListAuthorizationRulesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return NamespacesClientListAuthorizationRulesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return NamespacesClientListAuthorizationRulesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return NamespacesClientListAuthorizationRulesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAuthorizationRulesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listAuthorizationRulesCreateRequest creates the ListAuthorizationRules request.
@@ -664,7 +689,7 @@ func (client *NamespacesClient) listAuthorizationRulesCreateRequest(ctx context.
 
 // listAuthorizationRulesHandleResponse handles the ListAuthorizationRules response.
 func (client *NamespacesClient) listAuthorizationRulesHandleResponse(resp *http.Response) (NamespacesClientListAuthorizationRulesResponse, error) {
-	result := NamespacesClientListAuthorizationRulesResponse{RawResponse: resp}
+	result := NamespacesClientListAuthorizationRulesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRuleListResult); err != nil {
 		return NamespacesClientListAuthorizationRulesResponse{}, err
 	}
@@ -676,16 +701,32 @@ func (client *NamespacesClient) listAuthorizationRulesHandleResponse(resp *http.
 // resourceGroupName - Name of the resource group within the azure subscription.
 // options - NamespacesClientListByResourceGroupOptions contains the optional parameters for the NamespacesClient.ListByResourceGroup
 // method.
-func (client *NamespacesClient) ListByResourceGroup(resourceGroupName string, options *NamespacesClientListByResourceGroupOptions) *NamespacesClientListByResourceGroupPager {
-	return &NamespacesClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *NamespacesClient) ListByResourceGroup(resourceGroupName string, options *NamespacesClientListByResourceGroupOptions) *runtime.Pager[NamespacesClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[NamespacesClientListByResourceGroupResponse]{
+		More: func(page NamespacesClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp NamespacesClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.EHNamespaceListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *NamespacesClientListByResourceGroupResponse) (NamespacesClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return NamespacesClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return NamespacesClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return NamespacesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -712,7 +753,7 @@ func (client *NamespacesClient) listByResourceGroupCreateRequest(ctx context.Con
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *NamespacesClient) listByResourceGroupHandleResponse(resp *http.Response) (NamespacesClientListByResourceGroupResponse, error) {
-	result := NamespacesClientListByResourceGroupResponse{RawResponse: resp}
+	result := NamespacesClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EHNamespaceListResult); err != nil {
 		return NamespacesClientListByResourceGroupResponse{}, err
 	}
@@ -772,7 +813,7 @@ func (client *NamespacesClient) listKeysCreateRequest(ctx context.Context, resou
 
 // listKeysHandleResponse handles the ListKeys response.
 func (client *NamespacesClient) listKeysHandleResponse(resp *http.Response) (NamespacesClientListKeysResponse, error) {
-	result := NamespacesClientListKeysResponse{RawResponse: resp}
+	result := NamespacesClientListKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
 		return NamespacesClientListKeysResponse{}, err
 	}
@@ -828,7 +869,7 @@ func (client *NamespacesClient) listNetworkRuleSetCreateRequest(ctx context.Cont
 
 // listNetworkRuleSetHandleResponse handles the ListNetworkRuleSet response.
 func (client *NamespacesClient) listNetworkRuleSetHandleResponse(resp *http.Response) (NamespacesClientListNetworkRuleSetResponse, error) {
-	result := NamespacesClientListNetworkRuleSetResponse{RawResponse: resp}
+	result := NamespacesClientListNetworkRuleSetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkRuleSetListResult); err != nil {
 		return NamespacesClientListNetworkRuleSetResponse{}, err
 	}
@@ -890,7 +931,7 @@ func (client *NamespacesClient) regenerateKeysCreateRequest(ctx context.Context,
 
 // regenerateKeysHandleResponse handles the RegenerateKeys response.
 func (client *NamespacesClient) regenerateKeysHandleResponse(resp *http.Response) (NamespacesClientRegenerateKeysResponse, error) {
-	result := NamespacesClientRegenerateKeysResponse{RawResponse: resp}
+	result := NamespacesClientRegenerateKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
 		return NamespacesClientRegenerateKeysResponse{}, err
 	}
@@ -947,7 +988,7 @@ func (client *NamespacesClient) updateCreateRequest(ctx context.Context, resourc
 
 // updateHandleResponse handles the Update response.
 func (client *NamespacesClient) updateHandleResponse(resp *http.Response) (NamespacesClientUpdateResponse, error) {
-	result := NamespacesClientUpdateResponse{RawResponse: resp}
+	result := NamespacesClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EHNamespace); err != nil {
 		return NamespacesClientUpdateResponse{}, err
 	}

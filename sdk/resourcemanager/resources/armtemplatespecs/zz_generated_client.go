@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type Client struct {
 // subscriptionID - Subscription Id which forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *Client {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &Client{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a Template Spec.
@@ -98,7 +103,7 @@ func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceG
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *Client) createOrUpdateHandleResponse(resp *http.Response) (ClientCreateOrUpdateResponse, error) {
-	result := ClientCreateOrUpdateResponse{RawResponse: resp}
+	result := ClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TemplateSpec); err != nil {
 		return ClientCreateOrUpdateResponse{}, err
 	}
@@ -122,7 +127,7 @@ func (client *Client) Delete(ctx context.Context, resourceGroupName string, temp
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ClientDeleteResponse{RawResponse: resp}, nil
+	return ClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -202,7 +207,7 @@ func (client *Client) getCreateRequest(ctx context.Context, resourceGroupName st
 
 // getHandleResponse handles the Get response.
 func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse, error) {
-	result := ClientGetResponse{RawResponse: resp}
+	result := ClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TemplateSpec); err != nil {
 		return ClientGetResponse{}, err
 	}
@@ -213,16 +218,32 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ClientListByResourceGroupOptions contains the optional parameters for the Client.ListByResourceGroup method.
-func (client *Client) ListByResourceGroup(resourceGroupName string, options *ClientListByResourceGroupOptions) *ClientListByResourceGroupPager {
-	return &ClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *Client) ListByResourceGroup(resourceGroupName string, options *ClientListByResourceGroupOptions) *runtime.Pager[ClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ClientListByResourceGroupResponse]{
+		More: func(page ClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ClientListByResourceGroupResponse) (ClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -252,7 +273,7 @@ func (client *Client) listByResourceGroupCreateRequest(ctx context.Context, reso
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *Client) listByResourceGroupHandleResponse(resp *http.Response) (ClientListByResourceGroupResponse, error) {
-	result := ClientListByResourceGroupResponse{RawResponse: resp}
+	result := ClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
 		return ClientListByResourceGroupResponse{}, err
 	}
@@ -262,16 +283,32 @@ func (client *Client) listByResourceGroupHandleResponse(resp *http.Response) (Cl
 // ListBySubscription - Lists all the Template Specs within the specified subscriptions.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ClientListBySubscriptionOptions contains the optional parameters for the Client.ListBySubscription method.
-func (client *Client) ListBySubscription(options *ClientListBySubscriptionOptions) *ClientListBySubscriptionPager {
-	return &ClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *Client) ListBySubscription(options *ClientListBySubscriptionOptions) *runtime.Pager[ClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ClientListBySubscriptionResponse]{
+		More: func(page ClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ClientListBySubscriptionResponse) (ClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -297,7 +334,7 @@ func (client *Client) listBySubscriptionCreateRequest(ctx context.Context, optio
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *Client) listBySubscriptionHandleResponse(resp *http.Response) (ClientListBySubscriptionResponse, error) {
-	result := ClientListBySubscriptionResponse{RawResponse: resp}
+	result := ClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
 		return ClientListBySubscriptionResponse{}, err
 	}
@@ -355,7 +392,7 @@ func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName
 
 // updateHandleResponse handles the Update response.
 func (client *Client) updateHandleResponse(resp *http.Response) (ClientUpdateResponse, error) {
-	result := ClientUpdateResponse{RawResponse: resp}
+	result := ClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TemplateSpec); err != nil {
 		return ClientUpdateResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -28,35 +29,55 @@ type AuthorizationOperationsClient struct {
 // NewAuthorizationOperationsClient creates a new instance of AuthorizationOperationsClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAuthorizationOperationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *AuthorizationOperationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAuthorizationOperationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AuthorizationOperationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AuthorizationOperationsClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - Lists all of the available Microsoft.Authorization REST API operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AuthorizationOperationsClientListOptions contains the optional parameters for the AuthorizationOperationsClient.List
 // method.
-func (client *AuthorizationOperationsClient) List(options *AuthorizationOperationsClientListOptions) *AuthorizationOperationsClientListPager {
-	return &AuthorizationOperationsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *AuthorizationOperationsClient) List(options *AuthorizationOperationsClientListOptions) *runtime.Pager[AuthorizationOperationsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AuthorizationOperationsClientListResponse]{
+		More: func(page AuthorizationOperationsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AuthorizationOperationsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.OperationListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AuthorizationOperationsClientListResponse) (AuthorizationOperationsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AuthorizationOperationsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AuthorizationOperationsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AuthorizationOperationsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -75,7 +96,7 @@ func (client *AuthorizationOperationsClient) listCreateRequest(ctx context.Conte
 
 // listHandleResponse handles the List response.
 func (client *AuthorizationOperationsClient) listHandleResponse(resp *http.Response) (AuthorizationOperationsClientListResponse, error) {
-	result := AuthorizationOperationsClientListResponse{RawResponse: resp}
+	result := AuthorizationOperationsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationListResult); err != nil {
 		return AuthorizationOperationsClientListResponse{}, err
 	}

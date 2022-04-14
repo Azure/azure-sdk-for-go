@@ -1,5 +1,99 @@
 # Release History
 
+## 0.3.0 (2022-04-14)
+### Breaking Changes
+
+- Function `*ManagementLocksClient.ListAtResourceGroupLevel` return value(s) have been changed from `(*ManagementLocksClientListAtResourceGroupLevelPager)` to `(*runtime.Pager[ManagementLocksClientListAtResourceGroupLevelResponse])`
+- Function `NewAuthorizationOperationsClient` return value(s) have been changed from `(*AuthorizationOperationsClient)` to `(*AuthorizationOperationsClient, error)`
+- Function `*ManagementLocksClient.ListAtResourceLevel` return value(s) have been changed from `(*ManagementLocksClientListAtResourceLevelPager)` to `(*runtime.Pager[ManagementLocksClientListAtResourceLevelResponse])`
+- Function `*ManagementLocksClient.ListAtSubscriptionLevel` return value(s) have been changed from `(*ManagementLocksClientListAtSubscriptionLevelPager)` to `(*runtime.Pager[ManagementLocksClientListAtSubscriptionLevelResponse])`
+- Function `*AuthorizationOperationsClient.List` return value(s) have been changed from `(*AuthorizationOperationsClientListPager)` to `(*runtime.Pager[AuthorizationOperationsClientListResponse])`
+- Function `NewManagementLocksClient` return value(s) have been changed from `(*ManagementLocksClient)` to `(*ManagementLocksClient, error)`
+- Function `*ManagementLocksClient.ListByScope` return value(s) have been changed from `(*ManagementLocksClientListByScopePager)` to `(*runtime.Pager[ManagementLocksClientListByScopeResponse])`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*ManagementLocksClientListAtSubscriptionLevelPager.NextPage` has been removed
+- Function `*ManagementLocksClientListByScopePager.Err` has been removed
+- Function `*AuthorizationOperationsClientListPager.Err` has been removed
+- Function `*AuthorizationOperationsClientListPager.PageResponse` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*ManagementLocksClientListAtResourceLevelPager.NextPage` has been removed
+- Function `*ManagementLocksClientListAtResourceGroupLevelPager.Err` has been removed
+- Function `*ManagementLocksClientListAtSubscriptionLevelPager.PageResponse` has been removed
+- Function `*ManagementLocksClientListAtResourceLevelPager.PageResponse` has been removed
+- Function `*AuthorizationOperationsClientListPager.NextPage` has been removed
+- Function `*ManagementLocksClientListAtSubscriptionLevelPager.Err` has been removed
+- Function `*ManagementLocksClientListAtResourceGroupLevelPager.NextPage` has been removed
+- Function `*ManagementLocksClientListByScopePager.PageResponse` has been removed
+- Function `LockLevel.ToPtr` has been removed
+- Function `*ManagementLocksClientListByScopePager.NextPage` has been removed
+- Function `*ManagementLocksClientListAtResourceLevelPager.Err` has been removed
+- Function `*ManagementLocksClientListAtResourceGroupLevelPager.PageResponse` has been removed
+- Struct `AuthorizationOperationsClientListPager` has been removed
+- Struct `AuthorizationOperationsClientListResult` has been removed
+- Struct `ManagementLocksClientCreateOrUpdateAtResourceGroupLevelResult` has been removed
+- Struct `ManagementLocksClientCreateOrUpdateAtResourceLevelResult` has been removed
+- Struct `ManagementLocksClientCreateOrUpdateAtSubscriptionLevelResult` has been removed
+- Struct `ManagementLocksClientCreateOrUpdateByScopeResult` has been removed
+- Struct `ManagementLocksClientGetAtResourceGroupLevelResult` has been removed
+- Struct `ManagementLocksClientGetAtResourceLevelResult` has been removed
+- Struct `ManagementLocksClientGetAtSubscriptionLevelResult` has been removed
+- Struct `ManagementLocksClientGetByScopeResult` has been removed
+- Struct `ManagementLocksClientListAtResourceGroupLevelPager` has been removed
+- Struct `ManagementLocksClientListAtResourceGroupLevelResult` has been removed
+- Struct `ManagementLocksClientListAtResourceLevelPager` has been removed
+- Struct `ManagementLocksClientListAtResourceLevelResult` has been removed
+- Struct `ManagementLocksClientListAtSubscriptionLevelPager` has been removed
+- Struct `ManagementLocksClientListAtSubscriptionLevelResult` has been removed
+- Struct `ManagementLocksClientListByScopePager` has been removed
+- Struct `ManagementLocksClientListByScopeResult` has been removed
+- Field `ManagementLocksClientCreateOrUpdateAtResourceLevelResult` of struct `ManagementLocksClientCreateOrUpdateAtResourceLevelResponse` has been removed
+- Field `RawResponse` of struct `ManagementLocksClientCreateOrUpdateAtResourceLevelResponse` has been removed
+- Field `RawResponse` of struct `ManagementLocksClientDeleteAtResourceGroupLevelResponse` has been removed
+- Field `ManagementLocksClientCreateOrUpdateByScopeResult` of struct `ManagementLocksClientCreateOrUpdateByScopeResponse` has been removed
+- Field `RawResponse` of struct `ManagementLocksClientCreateOrUpdateByScopeResponse` has been removed
+- Field `ManagementLocksClientListAtResourceGroupLevelResult` of struct `ManagementLocksClientListAtResourceGroupLevelResponse` has been removed
+- Field `RawResponse` of struct `ManagementLocksClientListAtResourceGroupLevelResponse` has been removed
+- Field `ManagementLocksClientCreateOrUpdateAtSubscriptionLevelResult` of struct `ManagementLocksClientCreateOrUpdateAtSubscriptionLevelResponse` has been removed
+- Field `RawResponse` of struct `ManagementLocksClientCreateOrUpdateAtSubscriptionLevelResponse` has been removed
+- Field `ManagementLocksClientGetAtResourceLevelResult` of struct `ManagementLocksClientGetAtResourceLevelResponse` has been removed
+- Field `RawResponse` of struct `ManagementLocksClientGetAtResourceLevelResponse` has been removed
+- Field `ManagementLocksClientGetAtSubscriptionLevelResult` of struct `ManagementLocksClientGetAtSubscriptionLevelResponse` has been removed
+- Field `RawResponse` of struct `ManagementLocksClientGetAtSubscriptionLevelResponse` has been removed
+- Field `ManagementLocksClientGetByScopeResult` of struct `ManagementLocksClientGetByScopeResponse` has been removed
+- Field `RawResponse` of struct `ManagementLocksClientGetByScopeResponse` has been removed
+- Field `ManagementLocksClientGetAtResourceGroupLevelResult` of struct `ManagementLocksClientGetAtResourceGroupLevelResponse` has been removed
+- Field `RawResponse` of struct `ManagementLocksClientGetAtResourceGroupLevelResponse` has been removed
+- Field `ManagementLocksClientListByScopeResult` of struct `ManagementLocksClientListByScopeResponse` has been removed
+- Field `RawResponse` of struct `ManagementLocksClientListByScopeResponse` has been removed
+- Field `RawResponse` of struct `ManagementLocksClientDeleteAtResourceLevelResponse` has been removed
+- Field `AuthorizationOperationsClientListResult` of struct `AuthorizationOperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `AuthorizationOperationsClientListResponse` has been removed
+- Field `ManagementLocksClientListAtSubscriptionLevelResult` of struct `ManagementLocksClientListAtSubscriptionLevelResponse` has been removed
+- Field `RawResponse` of struct `ManagementLocksClientListAtSubscriptionLevelResponse` has been removed
+- Field `ManagementLocksClientListAtResourceLevelResult` of struct `ManagementLocksClientListAtResourceLevelResponse` has been removed
+- Field `RawResponse` of struct `ManagementLocksClientListAtResourceLevelResponse` has been removed
+- Field `ManagementLocksClientCreateOrUpdateAtResourceGroupLevelResult` of struct `ManagementLocksClientCreateOrUpdateAtResourceGroupLevelResponse` has been removed
+- Field `RawResponse` of struct `ManagementLocksClientCreateOrUpdateAtResourceGroupLevelResponse` has been removed
+- Field `RawResponse` of struct `ManagementLocksClientDeleteAtSubscriptionLevelResponse` has been removed
+- Field `RawResponse` of struct `ManagementLocksClientDeleteByScopeResponse` has been removed
+
+### Features Added
+
+- New anonymous field `ManagementLockObject` in struct `ManagementLocksClientCreateOrUpdateAtResourceLevelResponse`
+- New anonymous field `ManagementLockObject` in struct `ManagementLocksClientGetAtResourceLevelResponse`
+- New anonymous field `ManagementLockListResult` in struct `ManagementLocksClientListAtResourceGroupLevelResponse`
+- New anonymous field `ManagementLockObject` in struct `ManagementLocksClientCreateOrUpdateAtResourceGroupLevelResponse`
+- New anonymous field `ManagementLockObject` in struct `ManagementLocksClientGetAtSubscriptionLevelResponse`
+- New anonymous field `ManagementLockObject` in struct `ManagementLocksClientCreateOrUpdateAtSubscriptionLevelResponse`
+- New anonymous field `ManagementLockListResult` in struct `ManagementLocksClientListByScopeResponse`
+- New anonymous field `ManagementLockListResult` in struct `ManagementLocksClientListAtResourceLevelResponse`
+- New anonymous field `ManagementLockObject` in struct `ManagementLocksClientGetAtResourceGroupLevelResponse`
+- New anonymous field `ManagementLockListResult` in struct `ManagementLocksClientListAtSubscriptionLevelResponse`
+- New anonymous field `ManagementLockObject` in struct `ManagementLocksClientCreateOrUpdateByScopeResponse`
+- New anonymous field `ManagementLockObject` in struct `ManagementLocksClientGetByScopeResponse`
+- New anonymous field `OperationListResult` in struct `AuthorizationOperationsClientListResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

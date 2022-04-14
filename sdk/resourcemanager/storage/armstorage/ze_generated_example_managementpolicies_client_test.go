@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,133 +17,153 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 )
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountGetManagementPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountGetManagementPolicy.json
 func ExampleManagementPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewManagementPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewManagementPoliciesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<account-name>",
-		armstorage.ManagementPolicyName("default"),
+		armstorage.ManagementPolicyNameDefault,
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ManagementPoliciesClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountSetManagementPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountSetManagementPolicy.json
 func ExampleManagementPoliciesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewManagementPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewManagementPoliciesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<account-name>",
-		armstorage.ManagementPolicyName("default"),
+		armstorage.ManagementPolicyNameDefault,
 		armstorage.ManagementPolicy{
 			Properties: &armstorage.ManagementPolicyProperties{
 				Policy: &armstorage.ManagementPolicySchema{
 					Rules: []*armstorage.ManagementPolicyRule{
 						{
-							Name: to.StringPtr("<name>"),
-							Type: armstorage.RuleType("Lifecycle").ToPtr(),
+							Name: to.Ptr("<name>"),
+							Type: to.Ptr(armstorage.RuleTypeLifecycle),
 							Definition: &armstorage.ManagementPolicyDefinition{
 								Actions: &armstorage.ManagementPolicyAction{
 									BaseBlob: &armstorage.ManagementPolicyBaseBlob{
 										Delete: &armstorage.DateAfterModification{
-											DaysAfterModificationGreaterThan: to.Float32Ptr(1000),
+											DaysAfterModificationGreaterThan: to.Ptr[float32](1000),
 										},
 										TierToArchive: &armstorage.DateAfterModification{
-											DaysAfterModificationGreaterThan: to.Float32Ptr(90),
+											DaysAfterModificationGreaterThan: to.Ptr[float32](90),
 										},
 										TierToCool: &armstorage.DateAfterModification{
-											DaysAfterModificationGreaterThan: to.Float32Ptr(30),
+											DaysAfterModificationGreaterThan: to.Ptr[float32](30),
 										},
 									},
 									Snapshot: &armstorage.ManagementPolicySnapShot{
 										Delete: &armstorage.DateAfterCreation{
-											DaysAfterCreationGreaterThan: to.Float32Ptr(30),
+											DaysAfterCreationGreaterThan: to.Ptr[float32](30),
 										},
 									},
 								},
 								Filters: &armstorage.ManagementPolicyFilter{
 									BlobTypes: []*string{
-										to.StringPtr("blockBlob")},
+										to.Ptr("blockBlob")},
 									PrefixMatch: []*string{
-										to.StringPtr("olcmtestcontainer1")},
+										to.Ptr("olcmtestcontainer1")},
 								},
 							},
-							Enabled: to.BoolPtr(true),
+							Enabled: to.Ptr(true),
 						},
 						{
-							Name: to.StringPtr("<name>"),
-							Type: armstorage.RuleType("Lifecycle").ToPtr(),
+							Name: to.Ptr("<name>"),
+							Type: to.Ptr(armstorage.RuleTypeLifecycle),
 							Definition: &armstorage.ManagementPolicyDefinition{
 								Actions: &armstorage.ManagementPolicyAction{
 									BaseBlob: &armstorage.ManagementPolicyBaseBlob{
 										Delete: &armstorage.DateAfterModification{
-											DaysAfterModificationGreaterThan: to.Float32Ptr(1000),
+											DaysAfterModificationGreaterThan: to.Ptr[float32](1000),
 										},
 										TierToArchive: &armstorage.DateAfterModification{
-											DaysAfterModificationGreaterThan: to.Float32Ptr(90),
+											DaysAfterModificationGreaterThan: to.Ptr[float32](90),
 										},
 										TierToCool: &armstorage.DateAfterModification{
-											DaysAfterModificationGreaterThan: to.Float32Ptr(30),
+											DaysAfterModificationGreaterThan: to.Ptr[float32](30),
 										},
 									},
 								},
 								Filters: &armstorage.ManagementPolicyFilter{
 									BlobIndexMatch: []*armstorage.TagFilter{
 										{
-											Name:  to.StringPtr("<name>"),
-											Op:    to.StringPtr("<op>"),
-											Value: to.StringPtr("<value>"),
+											Name:  to.Ptr("<name>"),
+											Op:    to.Ptr("<op>"),
+											Value: to.Ptr("<value>"),
 										},
 										{
-											Name:  to.StringPtr("<name>"),
-											Op:    to.StringPtr("<op>"),
-											Value: to.StringPtr("<value>"),
+											Name:  to.Ptr("<name>"),
+											Op:    to.Ptr("<op>"),
+											Value: to.Ptr("<value>"),
 										}},
 									BlobTypes: []*string{
-										to.StringPtr("blockBlob")},
+										to.Ptr("blockBlob")},
 									PrefixMatch: []*string{
-										to.StringPtr("olcmtestcontainer2")},
+										to.Ptr("olcmtestcontainer2")},
 								},
 							},
-							Enabled: to.BoolPtr(true),
+							Enabled: to.Ptr(true),
 						}},
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ManagementPoliciesClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountDeleteManagementPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountDeleteManagementPolicy.json
 func ExampleManagementPoliciesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewManagementPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewManagementPoliciesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<account-name>",
-		armstorage.ManagementPolicyName("default"),
+		armstorage.ManagementPolicyNameDefault,
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,15 +8,14 @@ package armstorage_test
 
 import (
 	"context"
+	"testing"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 	"github.com/stretchr/testify/suite"
-	"testing"
-	"time"
 )
 
 type StorageAccountsClientTestSuite struct {
@@ -54,7 +53,8 @@ func TestStorageAccountsClient(t *testing.T) {
 
 func (testsuite *StorageAccountsClientTestSuite) TestStorageAccountsCRUD() {
 	// create storage account
-	storageAccountsClient := armstorage.NewAccountsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	storageAccountsClient, err := armstorage.NewAccountsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	scName := "gotestaccount"
 	pollerResp, err := storageAccountsClient.BeginCreate(
 		testsuite.ctx,
@@ -62,56 +62,43 @@ func (testsuite *StorageAccountsClientTestSuite) TestStorageAccountsCRUD() {
 		scName,
 		armstorage.AccountCreateParameters{
 			SKU: &armstorage.SKU{
-				Name: armstorage.SKUNameStandardGRS.ToPtr(),
+				Name: to.Ptr(armstorage.SKUNameStandardGRS),
 			},
-			Kind:     armstorage.KindStorageV2.ToPtr(),
-			Location: to.StringPtr(testsuite.location),
+			Kind:     to.Ptr(armstorage.KindStorageV2),
+			Location: to.Ptr(testsuite.location),
 			Properties: &armstorage.AccountPropertiesCreateParameters{
 				Encryption: &armstorage.Encryption{
 					Services: &armstorage.EncryptionServices{
 						File: &armstorage.EncryptionService{
-							KeyType: armstorage.KeyTypeAccount.ToPtr(),
-							Enabled: to.BoolPtr(true),
+							KeyType: to.Ptr(armstorage.KeyTypeAccount),
+							Enabled: to.Ptr(true),
 						},
 						Blob: &armstorage.EncryptionService{
-							KeyType: armstorage.KeyTypeAccount.ToPtr(),
-							Enabled: to.BoolPtr(true),
+							KeyType: to.Ptr(armstorage.KeyTypeAccount),
+							Enabled: to.Ptr(true),
 						},
 					},
-					KeySource: armstorage.KeySourceMicrosoftStorage.ToPtr(),
+					KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
 				},
 			},
 			Tags: map[string]*string{
-				"key1": to.StringPtr("value1"),
-				"key2": to.StringPtr("value2"),
+				"key1": to.Ptr("value1"),
+				"key2": to.Ptr("value2"),
 			},
 		},
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	var resp armstorage.AccountsClientCreateResponse
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		for {
-			_, err = pollerResp.Poller.Poll(testsuite.ctx)
-			testsuite.Require().NoError(err)
-			if pollerResp.Poller.Done() {
-				resp, err = pollerResp.Poller.FinalResponse(testsuite.ctx)
-				testsuite.Require().NoError(err)
-				break
-			}
-		}
-	} else {
-		resp, err = pollerResp.PollUntilDone(testsuite.ctx, 30*time.Second)
-		testsuite.Require().NoError(err)
-	}
+	resp, err := testutil.PollForTest(testsuite.ctx, pollerResp)
+	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(scName, *resp.Name)
 
 	// check name availability
 	check, err := storageAccountsClient.CheckNameAvailability(
 		testsuite.ctx,
 		armstorage.AccountCheckNameAvailabilityParameters{
-			Name: to.StringPtr(scName),
-			Type: to.StringPtr("Microsoft.Storage/storageAccounts"),
+			Name: to.Ptr(scName),
+			Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 		},
 		nil,
 	)
@@ -126,20 +113,20 @@ func (testsuite *StorageAccountsClientTestSuite) TestStorageAccountsCRUD() {
 		armstorage.AccountUpdateParameters{
 			Properties: &armstorage.AccountPropertiesUpdateParameters{
 				NetworkRuleSet: &armstorage.NetworkRuleSet{
-					DefaultAction: armstorage.DefaultActionAllow.ToPtr(),
+					DefaultAction: to.Ptr(armstorage.DefaultActionAllow),
 				},
 				Encryption: &armstorage.Encryption{
 					Services: &armstorage.EncryptionServices{
 						File: &armstorage.EncryptionService{
-							KeyType: armstorage.KeyTypeAccount.ToPtr(),
-							Enabled: to.BoolPtr(true),
+							KeyType: to.Ptr(armstorage.KeyTypeAccount),
+							Enabled: to.Ptr(true),
 						},
 						Blob: &armstorage.EncryptionService{
-							KeyType: armstorage.KeyTypeAccount.ToPtr(),
-							Enabled: to.BoolPtr(true),
+							KeyType: to.Ptr(armstorage.KeyTypeAccount),
+							Enabled: to.Ptr(true),
 						},
 					},
-					KeySource: armstorage.KeySourceMicrosoftStorage.ToPtr(),
+					KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
 				},
 			},
 		},
@@ -155,13 +142,11 @@ func (testsuite *StorageAccountsClientTestSuite) TestStorageAccountsCRUD() {
 
 	// list
 	listPager := storageAccountsClient.List(nil)
-	testsuite.Require().NoError(listPager.Err())
-	testsuite.Require().True(listPager.NextPage(testsuite.ctx))
+	testsuite.Require().True(listPager.More())
 
 	// list by resource group
 	listByResourceGroup := storageAccountsClient.ListByResourceGroup(testsuite.resourceGroupName, nil)
-	testsuite.Require().NoError(listByResourceGroup.Err())
-	testsuite.Require().True(listByResourceGroup.NextPage(testsuite.ctx))
+	testsuite.Require().True(listByResourceGroup.More())
 
 	// list keys
 	keys, err := storageAccountsClient.ListKeys(testsuite.ctx, testsuite.resourceGroupName, scName, nil)
@@ -169,9 +154,8 @@ func (testsuite *StorageAccountsClientTestSuite) TestStorageAccountsCRUD() {
 	testsuite.Require().Greater(len(keys.Keys), 1)
 
 	// revoke user delegation keys
-	revokeResp, err := storageAccountsClient.RevokeUserDelegationKeys(testsuite.ctx, testsuite.resourceGroupName, scName, nil)
+	_, err = storageAccountsClient.RevokeUserDelegationKeys(testsuite.ctx, testsuite.resourceGroupName, scName, nil)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(200, revokeResp.RawResponse.StatusCode)
 
 	// regenerate key
 	regResp, err := storageAccountsClient.RegenerateKey(
@@ -179,7 +163,7 @@ func (testsuite *StorageAccountsClientTestSuite) TestStorageAccountsCRUD() {
 		testsuite.resourceGroupName,
 		scName,
 		armstorage.AccountRegenerateKeyParameters{
-			KeyName: to.StringPtr("key2"),
+			KeyName: to.Ptr("key2"),
 		},
 		nil,
 	)
@@ -187,7 +171,6 @@ func (testsuite *StorageAccountsClientTestSuite) TestStorageAccountsCRUD() {
 	testsuite.Require().Less(1, len(regResp.Keys))
 
 	// delete
-	delResp, err := storageAccountsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, scName, nil)
+	_, err = storageAccountsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, scName, nil)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(200, delResp.RawResponse.StatusCode)
 }

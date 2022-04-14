@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armdeploymentscripts
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // AzureCliScript - Object model for the Azure CLI script.
 type AzureCliScript struct {
@@ -43,79 +38,6 @@ type AzureCliScript struct {
 
 	// READ-ONLY; Type of this resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetDeploymentScript implements the DeploymentScriptClassification interface for type AzureCliScript.
-func (a *AzureCliScript) GetDeploymentScript() *DeploymentScript {
-	return &DeploymentScript{
-		Identity:   a.Identity,
-		Location:   a.Location,
-		Tags:       a.Tags,
-		Kind:       a.Kind,
-		SystemData: a.SystemData,
-		ID:         a.ID,
-		Name:       a.Name,
-		Type:       a.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AzureCliScript.
-func (a AzureCliScript) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	populate(objectMap, "identity", a.Identity)
-	objectMap["kind"] = ScriptTypeAzureCLI
-	populate(objectMap, "location", a.Location)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "tags", a.Tags)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AzureCliScript.
-func (a *AzureCliScript) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &a.ID)
-			delete(rawMsg, key)
-		case "identity":
-			err = unpopulate(val, &a.Identity)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &a.Kind)
-			delete(rawMsg, key)
-		case "location":
-			err = unpopulate(val, &a.Location)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &a.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &a.SystemData)
-			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, &a.Tags)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // AzureCliScriptProperties - Properties of the Azure CLI script object.
@@ -169,27 +91,6 @@ type AzureCliScriptProperties struct {
 	Status *ScriptStatus `json:"status,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AzureCliScriptProperties.
-func (a AzureCliScriptProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "arguments", a.Arguments)
-	populate(objectMap, "azCliVersion", a.AzCliVersion)
-	populate(objectMap, "cleanupPreference", a.CleanupPreference)
-	populate(objectMap, "containerSettings", a.ContainerSettings)
-	populate(objectMap, "environmentVariables", a.EnvironmentVariables)
-	populate(objectMap, "forceUpdateTag", a.ForceUpdateTag)
-	populate(objectMap, "outputs", a.Outputs)
-	populate(objectMap, "primaryScriptUri", a.PrimaryScriptURI)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	populate(objectMap, "retentionInterval", a.RetentionInterval)
-	populate(objectMap, "scriptContent", a.ScriptContent)
-	populate(objectMap, "status", a.Status)
-	populate(objectMap, "storageAccountSettings", a.StorageAccountSettings)
-	populate(objectMap, "supportingScriptUris", a.SupportingScriptUris)
-	populate(objectMap, "timeout", a.Timeout)
-	return json.Marshal(objectMap)
-}
-
 // AzurePowerShellScript - Object model for the Azure PowerShell script.
 type AzurePowerShellScript struct {
 	// REQUIRED; Type of the script.
@@ -218,79 +119,6 @@ type AzurePowerShellScript struct {
 
 	// READ-ONLY; Type of this resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetDeploymentScript implements the DeploymentScriptClassification interface for type AzurePowerShellScript.
-func (a *AzurePowerShellScript) GetDeploymentScript() *DeploymentScript {
-	return &DeploymentScript{
-		Identity:   a.Identity,
-		Location:   a.Location,
-		Tags:       a.Tags,
-		Kind:       a.Kind,
-		SystemData: a.SystemData,
-		ID:         a.ID,
-		Name:       a.Name,
-		Type:       a.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AzurePowerShellScript.
-func (a AzurePowerShellScript) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	populate(objectMap, "identity", a.Identity)
-	objectMap["kind"] = ScriptTypeAzurePowerShell
-	populate(objectMap, "location", a.Location)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "tags", a.Tags)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AzurePowerShellScript.
-func (a *AzurePowerShellScript) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &a.ID)
-			delete(rawMsg, key)
-		case "identity":
-			err = unpopulate(val, &a.Identity)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &a.Kind)
-			delete(rawMsg, key)
-		case "location":
-			err = unpopulate(val, &a.Location)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &a.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &a.SystemData)
-			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, &a.Tags)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // AzurePowerShellScriptProperties - Properties of the Azure PowerShell script object.
@@ -344,27 +172,6 @@ type AzurePowerShellScriptProperties struct {
 	Status *ScriptStatus `json:"status,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AzurePowerShellScriptProperties.
-func (a AzurePowerShellScriptProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "arguments", a.Arguments)
-	populate(objectMap, "azPowerShellVersion", a.AzPowerShellVersion)
-	populate(objectMap, "cleanupPreference", a.CleanupPreference)
-	populate(objectMap, "containerSettings", a.ContainerSettings)
-	populate(objectMap, "environmentVariables", a.EnvironmentVariables)
-	populate(objectMap, "forceUpdateTag", a.ForceUpdateTag)
-	populate(objectMap, "outputs", a.Outputs)
-	populate(objectMap, "primaryScriptUri", a.PrimaryScriptURI)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	populate(objectMap, "retentionInterval", a.RetentionInterval)
-	populate(objectMap, "scriptContent", a.ScriptContent)
-	populate(objectMap, "status", a.Status)
-	populate(objectMap, "storageAccountSettings", a.StorageAccountSettings)
-	populate(objectMap, "supportingScriptUris", a.SupportingScriptUris)
-	populate(objectMap, "timeout", a.Timeout)
-	return json.Marshal(objectMap)
-}
-
 // AzureResourceBase - Common properties for all Azure resources.
 type AzureResourceBase struct {
 	// READ-ONLY; String Id used to locate any resource on Azure.
@@ -379,7 +186,8 @@ type AzureResourceBase struct {
 
 // ClientBeginCreateOptions contains the optional parameters for the Client.BeginCreate method.
 type ClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ClientDeleteOptions contains the optional parameters for the Client.Delete method.
@@ -471,23 +279,6 @@ type DeploymentScript struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetDeploymentScript implements the DeploymentScriptClassification interface for type DeploymentScript.
-func (d *DeploymentScript) GetDeploymentScript() *DeploymentScript { return d }
-
-// MarshalJSON implements the json.Marshaller interface for type DeploymentScript.
-func (d DeploymentScript) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", d.ID)
-	populate(objectMap, "identity", d.Identity)
-	objectMap["kind"] = d.Kind
-	populate(objectMap, "location", d.Location)
-	populate(objectMap, "name", d.Name)
-	populate(objectMap, "systemData", d.SystemData)
-	populate(objectMap, "tags", d.Tags)
-	populate(objectMap, "type", d.Type)
-	return json.Marshal(objectMap)
-}
-
 // DeploymentScriptListResult - List of deployment scripts.
 type DeploymentScriptListResult struct {
 	// An array of deployment scripts.
@@ -495,37 +286,6 @@ type DeploymentScriptListResult struct {
 
 	// READ-ONLY; The URL to use for getting the next set of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DeploymentScriptListResult.
-func (d DeploymentScriptListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DeploymentScriptListResult.
-func (d *DeploymentScriptListResult) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "nextLink":
-			err = unpopulate(val, &d.NextLink)
-			delete(rawMsg, key)
-		case "value":
-			d.Value, err = unmarshalDeploymentScriptClassificationArray(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // DeploymentScriptPropertiesBase - Common properties for the deployment script.
@@ -549,18 +309,6 @@ type DeploymentScriptPropertiesBase struct {
 	Status *ScriptStatus `json:"status,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DeploymentScriptPropertiesBase.
-func (d DeploymentScriptPropertiesBase) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "cleanupPreference", d.CleanupPreference)
-	populate(objectMap, "containerSettings", d.ContainerSettings)
-	populate(objectMap, "outputs", d.Outputs)
-	populate(objectMap, "provisioningState", d.ProvisioningState)
-	populate(objectMap, "status", d.Status)
-	populate(objectMap, "storageAccountSettings", d.StorageAccountSettings)
-	return json.Marshal(objectMap)
-}
-
 // DeploymentScriptUpdateParameter - Deployment script parameters to be updated.
 type DeploymentScriptUpdateParameter struct {
 	// Resource tags to be updated.
@@ -576,16 +324,6 @@ type DeploymentScriptUpdateParameter struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DeploymentScriptUpdateParameter.
-func (d DeploymentScriptUpdateParameter) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", d.ID)
-	populate(objectMap, "name", d.Name)
-	populate(objectMap, "tags", d.Tags)
-	populate(objectMap, "type", d.Type)
-	return json.Marshal(objectMap)
-}
-
 // EnvironmentVariable - The environment variable to pass to the script in the container instance.
 type EnvironmentVariable struct {
 	// REQUIRED; The name of the environment variable.
@@ -596,6 +334,13 @@ type EnvironmentVariable struct {
 
 	// The value of the environment variable.
 	Value *string `json:"value,omitempty"`
+}
+
+// Error - Deployment scripts error response.
+type Error struct {
+	// Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows
+	// the OData error response format.)
+	Error *ErrorResponse `json:"error,omitempty"`
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
@@ -626,17 +371,6 @@ type ErrorResponse struct {
 	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ErrorResponse.
-func (e ErrorResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
-}
-
 // LogProperties - Script log properties.
 type LogProperties struct {
 	// READ-ONLY; Script execution logs in text format.
@@ -654,15 +388,6 @@ type ManagedServiceIdentity struct {
 
 	// READ-ONLY; ID of the Azure Active Directory.
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ManagedServiceIdentity.
-func (m ManagedServiceIdentity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tenantId", m.TenantID)
-	populate(objectMap, "type", m.Type)
-	populate(objectMap, "userAssignedIdentities", m.UserAssignedIdentities)
-	return json.Marshal(objectMap)
 }
 
 // ScriptConfigurationBase - Common configuration settings for both Azure PowerShell and Azure CLI scripts.
@@ -695,20 +420,6 @@ type ScriptConfigurationBase struct {
 	Timeout *string `json:"timeout,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ScriptConfigurationBase.
-func (s ScriptConfigurationBase) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "arguments", s.Arguments)
-	populate(objectMap, "environmentVariables", s.EnvironmentVariables)
-	populate(objectMap, "forceUpdateTag", s.ForceUpdateTag)
-	populate(objectMap, "primaryScriptUri", s.PrimaryScriptURI)
-	populate(objectMap, "retentionInterval", s.RetentionInterval)
-	populate(objectMap, "scriptContent", s.ScriptContent)
-	populate(objectMap, "supportingScriptUris", s.SupportingScriptUris)
-	populate(objectMap, "timeout", s.Timeout)
-	return json.Marshal(objectMap)
-}
-
 // ScriptLog - Script execution log object.
 type ScriptLog struct {
 	// Script log properties.
@@ -730,13 +441,6 @@ type ScriptLogsList struct {
 	Value []*ScriptLog `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ScriptLogsList.
-func (s ScriptLogsList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // ScriptStatus - Generic object modeling results of script execution.
 type ScriptStatus struct {
 	// Error that is relayed from the script execution.
@@ -756,53 +460,6 @@ type ScriptStatus struct {
 
 	// READ-ONLY; Storage account resource Id.
 	StorageAccountID *string `json:"storageAccountId,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ScriptStatus.
-func (s ScriptStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "containerInstanceId", s.ContainerInstanceID)
-	populateTimeRFC3339(objectMap, "endTime", s.EndTime)
-	populate(objectMap, "error", s.Error)
-	populateTimeRFC3339(objectMap, "expirationTime", s.ExpirationTime)
-	populateTimeRFC3339(objectMap, "startTime", s.StartTime)
-	populate(objectMap, "storageAccountId", s.StorageAccountID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ScriptStatus.
-func (s *ScriptStatus) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "containerInstanceId":
-			err = unpopulate(val, &s.ContainerInstanceID)
-			delete(rawMsg, key)
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &s.EndTime)
-			delete(rawMsg, key)
-		case "error":
-			err = unpopulate(val, &s.Error)
-			delete(rawMsg, key)
-		case "expirationTime":
-			err = unpopulateTimeRFC3339(val, &s.ExpirationTime)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &s.StartTime)
-			delete(rawMsg, key)
-		case "storageAccountId":
-			err = unpopulate(val, &s.StorageAccountID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // StorageAccountConfiguration - Settings to use an existing storage account. Valid storage account kinds are: Storage, StorageV2
@@ -836,53 +493,6 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // UserAssignedIdentity - User-assigned managed identity.
 type UserAssignedIdentity struct {
 	// READ-ONLY; Client App Id associated with this identity.
@@ -890,21 +500,4 @@ type UserAssignedIdentity struct {
 
 	// READ-ONLY; Azure Active Directory principal ID associated with this identity.
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

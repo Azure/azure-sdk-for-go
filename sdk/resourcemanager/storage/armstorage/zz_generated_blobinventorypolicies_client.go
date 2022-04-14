@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type BlobInventoryPoliciesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewBlobInventoryPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BlobInventoryPoliciesClient {
+func NewBlobInventoryPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BlobInventoryPoliciesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &BlobInventoryPoliciesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Sets the blob inventory policy to the specified storage account.
@@ -97,7 +102,7 @@ func (client *BlobInventoryPoliciesClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, properties)
@@ -105,7 +110,7 @@ func (client *BlobInventoryPoliciesClient) createOrUpdateCreateRequest(ctx conte
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *BlobInventoryPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (BlobInventoryPoliciesClientCreateOrUpdateResponse, error) {
-	result := BlobInventoryPoliciesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := BlobInventoryPoliciesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BlobInventoryPolicy); err != nil {
 		return BlobInventoryPoliciesClientCreateOrUpdateResponse{}, err
 	}
@@ -132,7 +137,7 @@ func (client *BlobInventoryPoliciesClient) Delete(ctx context.Context, resourceG
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return BlobInventoryPoliciesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return BlobInventoryPoliciesClientDeleteResponse{RawResponse: resp}, nil
+	return BlobInventoryPoliciesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -159,7 +164,7 @@ func (client *BlobInventoryPoliciesClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -212,7 +217,7 @@ func (client *BlobInventoryPoliciesClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -220,7 +225,7 @@ func (client *BlobInventoryPoliciesClient) getCreateRequest(ctx context.Context,
 
 // getHandleResponse handles the Get response.
 func (client *BlobInventoryPoliciesClient) getHandleResponse(resp *http.Response) (BlobInventoryPoliciesClientGetResponse, error) {
-	result := BlobInventoryPoliciesClientGetResponse{RawResponse: resp}
+	result := BlobInventoryPoliciesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BlobInventoryPolicy); err != nil {
 		return BlobInventoryPoliciesClientGetResponse{}, err
 	}
@@ -234,19 +239,26 @@ func (client *BlobInventoryPoliciesClient) getHandleResponse(resp *http.Response
 // 3 and 24 characters in length and use numbers and lower-case letters only.
 // options - BlobInventoryPoliciesClientListOptions contains the optional parameters for the BlobInventoryPoliciesClient.List
 // method.
-func (client *BlobInventoryPoliciesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *BlobInventoryPoliciesClientListOptions) (BlobInventoryPoliciesClientListResponse, error) {
-	req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
-	if err != nil {
-		return BlobInventoryPoliciesClientListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return BlobInventoryPoliciesClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BlobInventoryPoliciesClientListResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listHandleResponse(resp)
+func (client *BlobInventoryPoliciesClient) List(resourceGroupName string, accountName string, options *BlobInventoryPoliciesClientListOptions) *runtime.Pager[BlobInventoryPoliciesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[BlobInventoryPoliciesClientListResponse]{
+		More: func(page BlobInventoryPoliciesClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *BlobInventoryPoliciesClientListResponse) (BlobInventoryPoliciesClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+			if err != nil {
+				return BlobInventoryPoliciesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return BlobInventoryPoliciesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return BlobInventoryPoliciesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -269,7 +281,7 @@ func (client *BlobInventoryPoliciesClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -277,7 +289,7 @@ func (client *BlobInventoryPoliciesClient) listCreateRequest(ctx context.Context
 
 // listHandleResponse handles the List response.
 func (client *BlobInventoryPoliciesClient) listHandleResponse(resp *http.Response) (BlobInventoryPoliciesClientListResponse, error) {
-	result := BlobInventoryPoliciesClientListResponse{RawResponse: resp}
+	result := BlobInventoryPoliciesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListBlobInventoryPolicy); err != nil {
 		return BlobInventoryPoliciesClientListResponse{}, err
 	}

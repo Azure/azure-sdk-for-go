@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,139 +17,173 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 )
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountGetBlobInventoryPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountGetBlobInventoryPolicy.json
 func ExampleBlobInventoryPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewBlobInventoryPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobInventoryPoliciesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<account-name>",
-		armstorage.BlobInventoryPolicyName("default"),
+		armstorage.BlobInventoryPolicyNameDefault,
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BlobInventoryPoliciesClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountSetBlobInventoryPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountSetBlobInventoryPolicy.json
 func ExampleBlobInventoryPoliciesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewBlobInventoryPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobInventoryPoliciesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<account-name>",
-		armstorage.BlobInventoryPolicyName("default"),
+		armstorage.BlobInventoryPolicyNameDefault,
 		armstorage.BlobInventoryPolicy{
 			Properties: &armstorage.BlobInventoryPolicyProperties{
 				Policy: &armstorage.BlobInventoryPolicySchema{
-					Type:    armstorage.InventoryRuleType("Inventory").ToPtr(),
-					Enabled: to.BoolPtr(true),
+					Type:    to.Ptr(armstorage.InventoryRuleTypeInventory),
+					Enabled: to.Ptr(true),
 					Rules: []*armstorage.BlobInventoryPolicyRule{
 						{
-							Name: to.StringPtr("<name>"),
+							Name: to.Ptr("<name>"),
 							Definition: &armstorage.BlobInventoryPolicyDefinition{
-								Format: armstorage.Format("Csv").ToPtr(),
+								Format: to.Ptr(armstorage.FormatCSV),
 								Filters: &armstorage.BlobInventoryPolicyFilter{
 									BlobTypes: []*string{
-										to.StringPtr("blockBlob"),
-										to.StringPtr("appendBlob"),
-										to.StringPtr("pageBlob")},
-									IncludeBlobVersions: to.BoolPtr(true),
-									IncludeSnapshots:    to.BoolPtr(true),
+										to.Ptr("blockBlob"),
+										to.Ptr("appendBlob"),
+										to.Ptr("pageBlob")},
+									ExcludePrefix: []*string{
+										to.Ptr("excludeprefix1"),
+										to.Ptr("excludeprefix2")},
+									IncludeBlobVersions: to.Ptr(true),
+									IncludeSnapshots:    to.Ptr(true),
 									PrefixMatch: []*string{
-										to.StringPtr("inventoryprefix1"),
-										to.StringPtr("inventoryprefix2")},
+										to.Ptr("inventoryprefix1"),
+										to.Ptr("inventoryprefix2")},
 								},
-								ObjectType: armstorage.ObjectType("Blob").ToPtr(),
-								Schedule:   armstorage.Schedule("Daily").ToPtr(),
+								ObjectType: to.Ptr(armstorage.ObjectTypeBlob),
+								Schedule:   to.Ptr(armstorage.ScheduleDaily),
 								SchemaFields: []*string{
-									to.StringPtr("Name"),
-									to.StringPtr("Creation-Time"),
-									to.StringPtr("Last-Modified"),
-									to.StringPtr("Content-Length"),
-									to.StringPtr("Content-MD5"),
-									to.StringPtr("BlobType"),
-									to.StringPtr("AccessTier"),
-									to.StringPtr("AccessTierChangeTime"),
-									to.StringPtr("Snapshot"),
-									to.StringPtr("VersionId"),
-									to.StringPtr("IsCurrentVersion"),
-									to.StringPtr("Metadata")},
+									to.Ptr("Name"),
+									to.Ptr("Creation-Time"),
+									to.Ptr("Last-Modified"),
+									to.Ptr("Content-Length"),
+									to.Ptr("Content-MD5"),
+									to.Ptr("BlobType"),
+									to.Ptr("AccessTier"),
+									to.Ptr("AccessTierChangeTime"),
+									to.Ptr("Snapshot"),
+									to.Ptr("VersionId"),
+									to.Ptr("IsCurrentVersion"),
+									to.Ptr("Metadata")},
 							},
-							Destination: to.StringPtr("<destination>"),
-							Enabled:     to.BoolPtr(true),
+							Destination: to.Ptr("<destination>"),
+							Enabled:     to.Ptr(true),
 						},
 						{
-							Name: to.StringPtr("<name>"),
+							Name: to.Ptr("<name>"),
 							Definition: &armstorage.BlobInventoryPolicyDefinition{
-								Format:     armstorage.Format("Parquet").ToPtr(),
-								ObjectType: armstorage.ObjectType("Container").ToPtr(),
-								Schedule:   armstorage.Schedule("Weekly").ToPtr(),
+								Format:     to.Ptr(armstorage.FormatParquet),
+								ObjectType: to.Ptr(armstorage.ObjectTypeContainer),
+								Schedule:   to.Ptr(armstorage.ScheduleWeekly),
 								SchemaFields: []*string{
-									to.StringPtr("Name"),
-									to.StringPtr("Last-Modified"),
-									to.StringPtr("Metadata"),
-									to.StringPtr("LeaseStatus"),
-									to.StringPtr("LeaseState"),
-									to.StringPtr("LeaseDuration"),
-									to.StringPtr("PublicAccess"),
-									to.StringPtr("HasImmutabilityPolicy"),
-									to.StringPtr("HasLegalHold")},
+									to.Ptr("Name"),
+									to.Ptr("Last-Modified"),
+									to.Ptr("Metadata"),
+									to.Ptr("LeaseStatus"),
+									to.Ptr("LeaseState"),
+									to.Ptr("LeaseDuration"),
+									to.Ptr("PublicAccess"),
+									to.Ptr("HasImmutabilityPolicy"),
+									to.Ptr("HasLegalHold")},
 							},
-							Destination: to.StringPtr("<destination>"),
-							Enabled:     to.BoolPtr(true),
+							Destination: to.Ptr("<destination>"),
+							Enabled:     to.Ptr(true),
 						}},
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BlobInventoryPoliciesClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountDeleteBlobInventoryPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountDeleteBlobInventoryPolicy.json
 func ExampleBlobInventoryPoliciesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewBlobInventoryPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobInventoryPoliciesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<account-name>",
-		armstorage.BlobInventoryPolicyName("default"),
+		armstorage.BlobInventoryPolicyNameDefault,
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountListBlobInventoryPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountListBlobInventoryPolicy.json
 func ExampleBlobInventoryPoliciesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewBlobInventoryPoliciesClient("<subscription-id>", cred, nil)
-	res, err := client.List(ctx,
-		"<resource-group-name>",
+	client, err := armstorage.NewBlobInventoryPoliciesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	pager := client.List("<resource-group-name>",
 		"<account-name>",
 		nil)
-	if err != nil {
-		log.Fatal(err)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+			return
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
-	log.Printf("Response result: %#v\n", res.BlobInventoryPoliciesClientListResult)
 }

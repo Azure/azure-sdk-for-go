@@ -1,5 +1,60 @@
 # Release History
 
+## 0.3.0 (2022-04-14)
+### Breaking Changes
+
+- Function `*TenantsClient.List` return value(s) have been changed from `(*TenantsClientListPager)` to `(*runtime.Pager[TenantsClientListResponse])`
+- Function `NewClient` return value(s) have been changed from `(*Client)` to `(*Client, error)`
+- Function `*Client.ListLocations` parameter(s) have been changed from `(context.Context, string, *ClientListLocationsOptions)` to `(string, *ClientListLocationsOptions)`
+- Function `*Client.ListLocations` return value(s) have been changed from `(ClientListLocationsResponse, error)` to `(*runtime.Pager[ClientListLocationsResponse])`
+- Function `*Client.List` return value(s) have been changed from `(*ClientListPager)` to `(*runtime.Pager[ClientListResponse])`
+- Function `NewSubscriptionClient` return value(s) have been changed from `(*SubscriptionClient)` to `(*SubscriptionClient, error)`
+- Function `NewTenantsClient` return value(s) have been changed from `(*TenantsClient)` to `(*TenantsClient, error)`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Function `ResourceNameStatus.ToPtr` has been removed
+- Function `RegionType.ToPtr` has been removed
+- Function `*ClientListPager.Err` has been removed
+- Function `RegionCategory.ToPtr` has been removed
+- Function `SubscriptionState.ToPtr` has been removed
+- Function `TenantCategory.ToPtr` has been removed
+- Function `*TenantsClientListPager.NextPage` has been removed
+- Function `*TenantsClientListPager.PageResponse` has been removed
+- Function `*ClientListPager.NextPage` has been removed
+- Function `*TenantsClientListPager.Err` has been removed
+- Function `SpendingLimit.ToPtr` has been removed
+- Function `*ClientListPager.PageResponse` has been removed
+- Function `LocationType.ToPtr` has been removed
+- Struct `ClientCheckZonePeersResult` has been removed
+- Struct `ClientGetResult` has been removed
+- Struct `ClientListLocationsResult` has been removed
+- Struct `ClientListPager` has been removed
+- Struct `ClientListResult` has been removed
+- Struct `SubscriptionClientCheckResourceNameResult` has been removed
+- Struct `TenantsClientListPager` has been removed
+- Struct `TenantsClientListResult` has been removed
+- Field `ClientListResult` of struct `ClientListResponse` has been removed
+- Field `RawResponse` of struct `ClientListResponse` has been removed
+- Field `ClientCheckZonePeersResult` of struct `ClientCheckZonePeersResponse` has been removed
+- Field `RawResponse` of struct `ClientCheckZonePeersResponse` has been removed
+- Field `ClientGetResult` of struct `ClientGetResponse` has been removed
+- Field `RawResponse` of struct `ClientGetResponse` has been removed
+- Field `TenantsClientListResult` of struct `TenantsClientListResponse` has been removed
+- Field `RawResponse` of struct `TenantsClientListResponse` has been removed
+- Field `ClientListLocationsResult` of struct `ClientListLocationsResponse` has been removed
+- Field `RawResponse` of struct `ClientListLocationsResponse` has been removed
+- Field `SubscriptionClientCheckResourceNameResult` of struct `SubscriptionClientCheckResourceNameResponse` has been removed
+- Field `RawResponse` of struct `SubscriptionClientCheckResourceNameResponse` has been removed
+
+### Features Added
+
+- New anonymous field `Subscription` in struct `ClientGetResponse`
+- New anonymous field `CheckZonePeersResult` in struct `ClientCheckZonePeersResponse`
+- New anonymous field `TenantListResult` in struct `TenantsClientListResponse`
+- New anonymous field `SubscriptionListResult` in struct `ClientListResponse`
+- New anonymous field `LocationListResult` in struct `ClientListLocationsResponse`
+- New anonymous field `CheckResourceNameResult` in struct `SubscriptionClientCheckResourceNameResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

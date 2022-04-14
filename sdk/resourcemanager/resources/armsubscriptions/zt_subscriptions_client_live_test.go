@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,13 +8,14 @@ package armsubscriptions_test
 
 import (
 	"context"
+	"testing"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions"
 	"github.com/stretchr/testify/suite"
-	"testing"
 )
 
 type SubscriptionsClientTestSuite struct {
@@ -52,26 +53,26 @@ func TestSubscriptionsClient(t *testing.T) {
 
 func (testsuite *SubscriptionsClientTestSuite) TestSubscriptionsCRUD() {
 	// get
-	subscriptionsClient := armsubscriptions.NewClient(testsuite.cred, testsuite.options)
-	resp, err := subscriptionsClient.Get(testsuite.ctx, testsuite.subscriptionID, nil)
+	subscriptionsClient, err := armsubscriptions.NewClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(testsuite.subscriptionID, *resp.SubscriptionID)
+	_, err = subscriptionsClient.Get(testsuite.ctx, testsuite.subscriptionID, nil)
+	testsuite.Require().NoError(err)
 
 	// list
 	list := subscriptionsClient.List(nil)
-	testsuite.Require().NoError(list.Err())
+	testsuite.Require().True(list.More())
 
 	// list locations
-	listLocations, err := subscriptionsClient.ListLocations(testsuite.ctx, testsuite.subscriptionID, nil)
-	testsuite.Require().NoError(err)
-	testsuite.Require().Greater(len(listLocations.Value), 0)
+	listLocations := subscriptionsClient.ListLocations(testsuite.subscriptionID, nil)
+	testsuite.Require().True(listLocations.More())
 
 	// check resource
-	subscriptionClient := armsubscriptions.NewSubscriptionClient(testsuite.cred, testsuite.options)
+	subscriptionClient, err := armsubscriptions.NewSubscriptionClient(testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	resourceName, err := subscriptionClient.CheckResourceName(context.Background(), &armsubscriptions.SubscriptionClientCheckResourceNameOptions{
 		ResourceNameDefinition: &armsubscriptions.ResourceName{
-			Name: to.StringPtr("go-test-subnet"),
-			Type: to.StringPtr("Microsoft.Compute"),
+			Name: to.Ptr("go-test-subnet"),
+			Type: to.Ptr("Microsoft.Compute"),
 		},
 	})
 	testsuite.Require().NoError(err)

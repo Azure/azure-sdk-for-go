@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type QueueClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewQueueClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *QueueClient {
+func NewQueueClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*QueueClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &QueueClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Creates a new queue with the specified queue name, under the specified account.
@@ -98,7 +103,7 @@ func (client *QueueClient) createCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, queue)
@@ -106,7 +111,7 @@ func (client *QueueClient) createCreateRequest(ctx context.Context, resourceGrou
 
 // createHandleResponse handles the Create response.
 func (client *QueueClient) createHandleResponse(resp *http.Response) (QueueClientCreateResponse, error) {
-	result := QueueClientCreateResponse{RawResponse: resp}
+	result := QueueClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Queue); err != nil {
 		return QueueClientCreateResponse{}, err
 	}
@@ -134,7 +139,7 @@ func (client *QueueClient) Delete(ctx context.Context, resourceGroupName string,
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return QueueClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return QueueClientDeleteResponse{RawResponse: resp}, nil
+	return QueueClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -161,7 +166,7 @@ func (client *QueueClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -215,7 +220,7 @@ func (client *QueueClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -223,7 +228,7 @@ func (client *QueueClient) getCreateRequest(ctx context.Context, resourceGroupNa
 
 // getHandleResponse handles the Get response.
 func (client *QueueClient) getHandleResponse(resp *http.Response) (QueueClientGetResponse, error) {
-	result := QueueClientGetResponse{RawResponse: resp}
+	result := QueueClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Queue); err != nil {
 		return QueueClientGetResponse{}, err
 	}
@@ -236,16 +241,32 @@ func (client *QueueClient) getHandleResponse(resp *http.Response) (QueueClientGe
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
 // options - QueueClientListOptions contains the optional parameters for the QueueClient.List method.
-func (client *QueueClient) List(resourceGroupName string, accountName string, options *QueueClientListOptions) *QueueClientListPager {
-	return &QueueClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+func (client *QueueClient) List(resourceGroupName string, accountName string, options *QueueClientListOptions) *runtime.Pager[QueueClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[QueueClientListResponse]{
+		More: func(page QueueClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp QueueClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListQueueResource.NextLink)
+		Fetcher: func(ctx context.Context, page *QueueClientListResponse) (QueueClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return QueueClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return QueueClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return QueueClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -268,7 +289,7 @@ func (client *QueueClient) listCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	if options != nil && options.Maxpagesize != nil {
 		reqQP.Set("$maxpagesize", *options.Maxpagesize)
 	}
@@ -282,7 +303,7 @@ func (client *QueueClient) listCreateRequest(ctx context.Context, resourceGroupN
 
 // listHandleResponse handles the List response.
 func (client *QueueClient) listHandleResponse(resp *http.Response) (QueueClientListResponse, error) {
-	result := QueueClientListResponse{RawResponse: resp}
+	result := QueueClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListQueueResource); err != nil {
 		return QueueClientListResponse{}, err
 	}
@@ -338,7 +359,7 @@ func (client *QueueClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, queue)
@@ -346,7 +367,7 @@ func (client *QueueClient) updateCreateRequest(ctx context.Context, resourceGrou
 
 // updateHandleResponse handles the Update response.
 func (client *QueueClient) updateHandleResponse(resp *http.Response) (QueueClientUpdateResponse, error) {
-	result := QueueClientUpdateResponse{RawResponse: resp}
+	result := QueueClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Queue); err != nil {
 		return QueueClientUpdateResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type ManagedHsmsClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewManagedHsmsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedHsmsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewManagedHsmsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedHsmsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ManagedHsmsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or update a managed HSM Pool in the specified subscription.
@@ -58,22 +63,16 @@ func NewManagedHsmsClient(subscriptionID string, credential azcore.TokenCredenti
 // parameters - Parameters to create or update the managed HSM Pool
 // options - ManagedHsmsClientBeginCreateOrUpdateOptions contains the optional parameters for the ManagedHsmsClient.BeginCreateOrUpdate
 // method.
-func (client *ManagedHsmsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, name string, parameters ManagedHsm, options *ManagedHsmsClientBeginCreateOrUpdateOptions) (ManagedHsmsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, name, parameters, options)
-	if err != nil {
-		return ManagedHsmsClientCreateOrUpdatePollerResponse{}, err
+func (client *ManagedHsmsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, name string, parameters ManagedHsm, options *ManagedHsmsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ManagedHsmsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, name, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ManagedHsmsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ManagedHsmsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ManagedHsmsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ManagedHsmsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return ManagedHsmsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ManagedHsmsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update a managed HSM Pool in the specified subscription.
@@ -124,22 +123,16 @@ func (client *ManagedHsmsClient) createOrUpdateCreateRequest(ctx context.Context
 // resourceGroupName - Name of the resource group that contains the managed HSM pool.
 // name - The name of the managed HSM Pool to delete
 // options - ManagedHsmsClientBeginDeleteOptions contains the optional parameters for the ManagedHsmsClient.BeginDelete method.
-func (client *ManagedHsmsClient) BeginDelete(ctx context.Context, resourceGroupName string, name string, options *ManagedHsmsClientBeginDeleteOptions) (ManagedHsmsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, name, options)
-	if err != nil {
-		return ManagedHsmsClientDeletePollerResponse{}, err
+func (client *ManagedHsmsClient) BeginDelete(ctx context.Context, resourceGroupName string, name string, options *ManagedHsmsClientBeginDeleteOptions) (*armruntime.Poller[ManagedHsmsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, name, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ManagedHsmsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ManagedHsmsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ManagedHsmsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ManagedHsmsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return ManagedHsmsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ManagedHsmsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified managed HSM Pool.
@@ -233,7 +226,7 @@ func (client *ManagedHsmsClient) getCreateRequest(ctx context.Context, resourceG
 
 // getHandleResponse handles the Get response.
 func (client *ManagedHsmsClient) getHandleResponse(resp *http.Response) (ManagedHsmsClientGetResponse, error) {
-	result := ManagedHsmsClientGetResponse{RawResponse: resp}
+	result := ManagedHsmsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedHsm); err != nil {
 		return ManagedHsmsClientGetResponse{}, err
 	}
@@ -288,7 +281,7 @@ func (client *ManagedHsmsClient) getDeletedCreateRequest(ctx context.Context, na
 
 // getDeletedHandleResponse handles the GetDeleted response.
 func (client *ManagedHsmsClient) getDeletedHandleResponse(resp *http.Response) (ManagedHsmsClientGetDeletedResponse, error) {
-	result := ManagedHsmsClientGetDeletedResponse{RawResponse: resp}
+	result := ManagedHsmsClientGetDeletedResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedManagedHsm); err != nil {
 		return ManagedHsmsClientGetDeletedResponse{}, err
 	}
@@ -301,16 +294,32 @@ func (client *ManagedHsmsClient) getDeletedHandleResponse(resp *http.Response) (
 // resourceGroupName - Name of the resource group that contains the managed HSM pool.
 // options - ManagedHsmsClientListByResourceGroupOptions contains the optional parameters for the ManagedHsmsClient.ListByResourceGroup
 // method.
-func (client *ManagedHsmsClient) ListByResourceGroup(resourceGroupName string, options *ManagedHsmsClientListByResourceGroupOptions) *ManagedHsmsClientListByResourceGroupPager {
-	return &ManagedHsmsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *ManagedHsmsClient) ListByResourceGroup(resourceGroupName string, options *ManagedHsmsClientListByResourceGroupOptions) *runtime.Pager[ManagedHsmsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ManagedHsmsClientListByResourceGroupResponse]{
+		More: func(page ManagedHsmsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ManagedHsmsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedHsmListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ManagedHsmsClientListByResourceGroupResponse) (ManagedHsmsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ManagedHsmsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ManagedHsmsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ManagedHsmsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -340,7 +349,7 @@ func (client *ManagedHsmsClient) listByResourceGroupCreateRequest(ctx context.Co
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *ManagedHsmsClient) listByResourceGroupHandleResponse(resp *http.Response) (ManagedHsmsClientListByResourceGroupResponse, error) {
-	result := ManagedHsmsClientListByResourceGroupResponse{RawResponse: resp}
+	result := ManagedHsmsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedHsmListResult); err != nil {
 		return ManagedHsmsClientListByResourceGroupResponse{}, err
 	}
@@ -351,16 +360,32 @@ func (client *ManagedHsmsClient) listByResourceGroupHandleResponse(resp *http.Re
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ManagedHsmsClientListBySubscriptionOptions contains the optional parameters for the ManagedHsmsClient.ListBySubscription
 // method.
-func (client *ManagedHsmsClient) ListBySubscription(options *ManagedHsmsClientListBySubscriptionOptions) *ManagedHsmsClientListBySubscriptionPager {
-	return &ManagedHsmsClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *ManagedHsmsClient) ListBySubscription(options *ManagedHsmsClientListBySubscriptionOptions) *runtime.Pager[ManagedHsmsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ManagedHsmsClientListBySubscriptionResponse]{
+		More: func(page ManagedHsmsClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ManagedHsmsClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedHsmListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ManagedHsmsClientListBySubscriptionResponse) (ManagedHsmsClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ManagedHsmsClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ManagedHsmsClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ManagedHsmsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -386,7 +411,7 @@ func (client *ManagedHsmsClient) listBySubscriptionCreateRequest(ctx context.Con
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *ManagedHsmsClient) listBySubscriptionHandleResponse(resp *http.Response) (ManagedHsmsClientListBySubscriptionResponse, error) {
-	result := ManagedHsmsClientListBySubscriptionResponse{RawResponse: resp}
+	result := ManagedHsmsClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedHsmListResult); err != nil {
 		return ManagedHsmsClientListBySubscriptionResponse{}, err
 	}
@@ -396,16 +421,32 @@ func (client *ManagedHsmsClient) listBySubscriptionHandleResponse(resp *http.Res
 // ListDeleted - The List operation gets information about the deleted managed HSMs associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ManagedHsmsClientListDeletedOptions contains the optional parameters for the ManagedHsmsClient.ListDeleted method.
-func (client *ManagedHsmsClient) ListDeleted(options *ManagedHsmsClientListDeletedOptions) *ManagedHsmsClientListDeletedPager {
-	return &ManagedHsmsClientListDeletedPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listDeletedCreateRequest(ctx, options)
+func (client *ManagedHsmsClient) ListDeleted(options *ManagedHsmsClientListDeletedOptions) *runtime.Pager[ManagedHsmsClientListDeletedResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ManagedHsmsClientListDeletedResponse]{
+		More: func(page ManagedHsmsClientListDeletedResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ManagedHsmsClientListDeletedResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeletedManagedHsmListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ManagedHsmsClientListDeletedResponse) (ManagedHsmsClientListDeletedResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listDeletedCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ManagedHsmsClientListDeletedResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ManagedHsmsClientListDeletedResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ManagedHsmsClientListDeletedResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listDeletedHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listDeletedCreateRequest creates the ListDeleted request.
@@ -428,7 +469,7 @@ func (client *ManagedHsmsClient) listDeletedCreateRequest(ctx context.Context, o
 
 // listDeletedHandleResponse handles the ListDeleted response.
 func (client *ManagedHsmsClient) listDeletedHandleResponse(resp *http.Response) (ManagedHsmsClientListDeletedResponse, error) {
-	result := ManagedHsmsClientListDeletedResponse{RawResponse: resp}
+	result := ManagedHsmsClientListDeletedResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedManagedHsmListResult); err != nil {
 		return ManagedHsmsClientListDeletedResponse{}, err
 	}
@@ -441,22 +482,16 @@ func (client *ManagedHsmsClient) listDeletedHandleResponse(resp *http.Response) 
 // location - The location of the soft-deleted managed HSM.
 // options - ManagedHsmsClientBeginPurgeDeletedOptions contains the optional parameters for the ManagedHsmsClient.BeginPurgeDeleted
 // method.
-func (client *ManagedHsmsClient) BeginPurgeDeleted(ctx context.Context, name string, location string, options *ManagedHsmsClientBeginPurgeDeletedOptions) (ManagedHsmsClientPurgeDeletedPollerResponse, error) {
-	resp, err := client.purgeDeleted(ctx, name, location, options)
-	if err != nil {
-		return ManagedHsmsClientPurgeDeletedPollerResponse{}, err
+func (client *ManagedHsmsClient) BeginPurgeDeleted(ctx context.Context, name string, location string, options *ManagedHsmsClientBeginPurgeDeletedOptions) (*armruntime.Poller[ManagedHsmsClientPurgeDeletedResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.purgeDeleted(ctx, name, location, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ManagedHsmsClientPurgeDeletedResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ManagedHsmsClientPurgeDeletedResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ManagedHsmsClientPurgeDeletedPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ManagedHsmsClient.PurgeDeleted", "", resp, client.pl)
-	if err != nil {
-		return ManagedHsmsClientPurgeDeletedPollerResponse{}, err
-	}
-	result.Poller = &ManagedHsmsClientPurgeDeletedPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // PurgeDeleted - Permanently deletes the specified managed HSM.
@@ -508,22 +543,16 @@ func (client *ManagedHsmsClient) purgeDeletedCreateRequest(ctx context.Context, 
 // name - Name of the managed HSM Pool
 // parameters - Parameters to patch the managed HSM Pool
 // options - ManagedHsmsClientBeginUpdateOptions contains the optional parameters for the ManagedHsmsClient.BeginUpdate method.
-func (client *ManagedHsmsClient) BeginUpdate(ctx context.Context, resourceGroupName string, name string, parameters ManagedHsm, options *ManagedHsmsClientBeginUpdateOptions) (ManagedHsmsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, name, parameters, options)
-	if err != nil {
-		return ManagedHsmsClientUpdatePollerResponse{}, err
+func (client *ManagedHsmsClient) BeginUpdate(ctx context.Context, resourceGroupName string, name string, parameters ManagedHsm, options *ManagedHsmsClientBeginUpdateOptions) (*armruntime.Poller[ManagedHsmsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, name, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ManagedHsmsClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ManagedHsmsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ManagedHsmsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ManagedHsmsClient.Update", "", resp, client.pl)
-	if err != nil {
-		return ManagedHsmsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &ManagedHsmsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Update a managed HSM Pool in the specified subscription.

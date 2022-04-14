@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,15 +8,14 @@ package armstorage_test
 
 import (
 	"context"
+	"testing"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 	"github.com/stretchr/testify/suite"
-	"testing"
-	"time"
 )
 
 type EncryptionScopesClientTestSuite struct {
@@ -54,7 +53,8 @@ func TestEncryptionScopesClient(t *testing.T) {
 
 func (testsuite *EncryptionScopesClientTestSuite) TestEncryptionScopesCRUD() {
 	// create storage account
-	storageAccountsClient := armstorage.NewAccountsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	storageAccountsClient, err := armstorage.NewAccountsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	scName := "gotestaccount2"
 	pollerResp, err := storageAccountsClient.BeginCreate(
 		testsuite.ctx,
@@ -62,52 +62,40 @@ func (testsuite *EncryptionScopesClientTestSuite) TestEncryptionScopesCRUD() {
 		scName,
 		armstorage.AccountCreateParameters{
 			SKU: &armstorage.SKU{
-				Name: armstorage.SKUNameStandardGRS.ToPtr(),
+				Name: to.Ptr(armstorage.SKUNameStandardGRS),
 			},
-			Kind:     armstorage.KindStorageV2.ToPtr(),
-			Location: to.StringPtr(testsuite.location),
+			Kind:     to.Ptr(armstorage.KindStorageV2),
+			Location: to.Ptr(testsuite.location),
 			Properties: &armstorage.AccountPropertiesCreateParameters{
 				Encryption: &armstorage.Encryption{
 					Services: &armstorage.EncryptionServices{
 						File: &armstorage.EncryptionService{
-							KeyType: armstorage.KeyTypeAccount.ToPtr(),
-							Enabled: to.BoolPtr(true),
+							KeyType: to.Ptr(armstorage.KeyTypeAccount),
+							Enabled: to.Ptr(true),
 						},
 						Blob: &armstorage.EncryptionService{
-							KeyType: armstorage.KeyTypeAccount.ToPtr(),
-							Enabled: to.BoolPtr(true),
+							KeyType: to.Ptr(armstorage.KeyTypeAccount),
+							Enabled: to.Ptr(true),
 						},
 					},
-					KeySource: armstorage.KeySourceMicrosoftStorage.ToPtr(),
+					KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
 				},
 			},
 			Tags: map[string]*string{
-				"key1": to.StringPtr("value1"),
-				"key2": to.StringPtr("value2"),
+				"key1": to.Ptr("value1"),
+				"key2": to.Ptr("value2"),
 			},
 		},
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	var resp armstorage.AccountsClientCreateResponse
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		for {
-			_, err = pollerResp.Poller.Poll(testsuite.ctx)
-			testsuite.Require().NoError(err)
-			if pollerResp.Poller.Done() {
-				resp, err = pollerResp.Poller.FinalResponse(testsuite.ctx)
-				testsuite.Require().NoError(err)
-				break
-			}
-		}
-	} else {
-		resp, err = pollerResp.PollUntilDone(testsuite.ctx, 30*time.Second)
-		testsuite.Require().NoError(err)
-	}
+	resp, err := testutil.PollForTest(testsuite.ctx, pollerResp)
+	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(scName, *resp.Name)
 
 	// put file services
-	encryptionScopesClient := armstorage.NewEncryptionScopesClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	encryptionScopesClient, err := armstorage.NewEncryptionScopesClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	encryptionScopeName := "go-test-encryption"
 	putResp, err := encryptionScopesClient.Put(
 		testsuite.ctx,
@@ -116,8 +104,8 @@ func (testsuite *EncryptionScopesClientTestSuite) TestEncryptionScopesCRUD() {
 		encryptionScopeName,
 		armstorage.EncryptionScope{
 			EncryptionScopeProperties: &armstorage.EncryptionScopeProperties{
-				Source: armstorage.EncryptionScopeSourceMicrosoftStorage.ToPtr(),
-				State:  armstorage.EncryptionScopeStateEnabled.ToPtr(),
+				Source: to.Ptr(armstorage.EncryptionScopeSourceMicrosoftStorage),
+				State:  to.Ptr(armstorage.EncryptionScopeStateEnabled),
 			},
 		},
 		nil,
@@ -132,8 +120,7 @@ func (testsuite *EncryptionScopesClientTestSuite) TestEncryptionScopesCRUD() {
 
 	// list
 	listPager := encryptionScopesClient.List(testsuite.resourceGroupName, scName, nil)
-	testsuite.Require().NoError(err)
-	testsuite.Require().True(listPager.NextPage(testsuite.ctx))
+	testsuite.Require().True(listPager.More())
 
 	// patch
 	patchResp, err := encryptionScopesClient.Patch(
@@ -143,8 +130,8 @@ func (testsuite *EncryptionScopesClientTestSuite) TestEncryptionScopesCRUD() {
 		encryptionScopeName,
 		armstorage.EncryptionScope{
 			EncryptionScopeProperties: &armstorage.EncryptionScopeProperties{
-				Source: armstorage.EncryptionScopeSourceMicrosoftStorage.ToPtr(),
-				State:  armstorage.EncryptionScopeStateEnabled.ToPtr(),
+				Source: to.Ptr(armstorage.EncryptionScopeSourceMicrosoftStorage),
+				State:  to.Ptr(armstorage.EncryptionScopeStateEnabled),
 			},
 		},
 		nil,

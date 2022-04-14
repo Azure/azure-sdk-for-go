@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,15 +8,14 @@ package armstorage_test
 
 import (
 	"context"
+	"testing"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 	"github.com/stretchr/testify/suite"
-	"testing"
-	"time"
 )
 
 type BlobContainersClientTestSuite struct {
@@ -54,7 +53,8 @@ func TestBlobContainersClient(t *testing.T) {
 
 func (testsuite *BlobContainersClientTestSuite) TestBlobContainersCRUD() {
 	// create storage account
-	storageAccountsClient := armstorage.NewAccountsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	storageAccountsClient, err := armstorage.NewAccountsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	scName := "gotestaccount1"
 	pollerResp, err := storageAccountsClient.BeginCreate(
 		testsuite.ctx,
@@ -62,52 +62,40 @@ func (testsuite *BlobContainersClientTestSuite) TestBlobContainersCRUD() {
 		scName,
 		armstorage.AccountCreateParameters{
 			SKU: &armstorage.SKU{
-				Name: armstorage.SKUNameStandardGRS.ToPtr(),
+				Name: to.Ptr(armstorage.SKUNameStandardGRS),
 			},
-			Kind:     armstorage.KindStorageV2.ToPtr(),
-			Location: to.StringPtr(testsuite.location),
+			Kind:     to.Ptr(armstorage.KindStorageV2),
+			Location: to.Ptr(testsuite.location),
 			Properties: &armstorage.AccountPropertiesCreateParameters{
 				Encryption: &armstorage.Encryption{
 					Services: &armstorage.EncryptionServices{
 						File: &armstorage.EncryptionService{
-							KeyType: armstorage.KeyTypeAccount.ToPtr(),
-							Enabled: to.BoolPtr(true),
+							KeyType: to.Ptr(armstorage.KeyTypeAccount),
+							Enabled: to.Ptr(true),
 						},
 						Blob: &armstorage.EncryptionService{
-							KeyType: armstorage.KeyTypeAccount.ToPtr(),
-							Enabled: to.BoolPtr(true),
+							KeyType: to.Ptr(armstorage.KeyTypeAccount),
+							Enabled: to.Ptr(true),
 						},
 					},
-					KeySource: armstorage.KeySourceMicrosoftStorage.ToPtr(),
+					KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
 				},
 			},
 			Tags: map[string]*string{
-				"key1": to.StringPtr("value1"),
-				"key2": to.StringPtr("value2"),
+				"key1": to.Ptr("value1"),
+				"key2": to.Ptr("value2"),
 			},
 		},
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	var resp armstorage.AccountsClientCreateResponse
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		for {
-			_, err = pollerResp.Poller.Poll(testsuite.ctx)
-			testsuite.Require().NoError(err)
-			if pollerResp.Poller.Done() {
-				resp, err = pollerResp.Poller.FinalResponse(testsuite.ctx)
-				testsuite.Require().NoError(err)
-				break
-			}
-		}
-	} else {
-		resp, err = pollerResp.PollUntilDone(testsuite.ctx, 30*time.Second)
-		testsuite.Require().NoError(err)
-	}
+	resp, err := testutil.PollForTest(testsuite.ctx, pollerResp)
+	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(scName, *resp.Name)
 
 	// put container
-	blobContainersClient := armstorage.NewBlobContainersClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	blobContainersClient, err := armstorage.NewBlobContainersClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	blobContainerName := "go-test-container"
 	blobResp, err := blobContainersClient.Create(testsuite.ctx, testsuite.resourceGroupName, scName, blobContainerName, armstorage.BlobContainer{}, nil)
 	testsuite.Require().NoError(err)
@@ -121,9 +109,9 @@ func (testsuite *BlobContainersClientTestSuite) TestBlobContainersCRUD() {
 		blobContainerName,
 		armstorage.BlobContainer{
 			ContainerProperties: &armstorage.ContainerProperties{
-				PublicAccess: armstorage.PublicAccessContainer.ToPtr(),
+				PublicAccess: to.Ptr(armstorage.PublicAccessContainer),
 				Metadata: map[string]*string{
-					"metadata": to.StringPtr("true"),
+					"metadata": to.Ptr("true"),
 				},
 			},
 		},
@@ -139,8 +127,7 @@ func (testsuite *BlobContainersClientTestSuite) TestBlobContainersCRUD() {
 
 	// list
 	listPager := blobContainersClient.List(testsuite.resourceGroupName, scName, nil)
-	testsuite.Require().NoError(listPager.Err())
-	testsuite.Require().True(listPager.NextPage(testsuite.ctx))
+	testsuite.Require().True(listPager.More())
 
 	// clear legal hold
 	holdResp, err := blobContainersClient.ClearLegalHold(
@@ -150,9 +137,9 @@ func (testsuite *BlobContainersClientTestSuite) TestBlobContainersCRUD() {
 		blobContainerName,
 		armstorage.LegalHold{
 			Tags: []*string{
-				to.StringPtr("tag1"),
-				to.StringPtr("tag2"),
-				to.StringPtr("tag3"),
+				to.Ptr("tag1"),
+				to.Ptr("tag2"),
+				to.Ptr("tag3"),
 			},
 		},
 		nil,
@@ -168,13 +155,12 @@ func (testsuite *BlobContainersClientTestSuite) TestBlobContainersCRUD() {
 		blobContainerName,
 		&armstorage.BlobContainersClientLeaseOptions{
 			Parameters: &armstorage.LeaseContainerRequest{
-				Action:        armstorage.LeaseContainerRequestActionAcquire.ToPtr(),
-				LeaseDuration: to.Int32Ptr(-1),
+				Action:        to.Ptr(armstorage.LeaseContainerRequestActionAcquire),
+				LeaseDuration: to.Ptr[int32](-1),
 			},
 		},
 	)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(200, leaseResp.RawResponse.StatusCode)
 
 	// break lease
 	breakResp, err := blobContainersClient.Lease(
@@ -184,7 +170,7 @@ func (testsuite *BlobContainersClientTestSuite) TestBlobContainersCRUD() {
 		blobContainerName,
 		&armstorage.BlobContainersClientLeaseOptions{
 			Parameters: &armstorage.LeaseContainerRequest{
-				Action:  armstorage.LeaseContainerRequestActionBreak.ToPtr(),
+				Action:  to.Ptr(armstorage.LeaseContainerRequestActionBreak),
 				LeaseID: leaseResp.LeaseID,
 			},
 		},
@@ -193,7 +179,6 @@ func (testsuite *BlobContainersClientTestSuite) TestBlobContainersCRUD() {
 	testsuite.Require().Equal("0", *breakResp.LeaseTimeSeconds)
 
 	// delete
-	delResp, err := blobContainersClient.Delete(testsuite.ctx, testsuite.resourceGroupName, scName, blobContainerName, nil)
+	_, err = blobContainersClient.Delete(testsuite.ctx, testsuite.resourceGroupName, scName, blobContainerName, nil)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(200, delResp.RawResponse.StatusCode)
 }

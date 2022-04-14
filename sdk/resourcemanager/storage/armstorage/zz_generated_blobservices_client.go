@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type BlobServicesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewBlobServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BlobServicesClient {
+func NewBlobServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BlobServicesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &BlobServicesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // GetServiceProperties - Gets the properties of a storage account’s Blob service, including properties for Storage Analytics
@@ -93,7 +98,7 @@ func (client *BlobServicesClient) getServicePropertiesCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -101,7 +106,7 @@ func (client *BlobServicesClient) getServicePropertiesCreateRequest(ctx context.
 
 // getServicePropertiesHandleResponse handles the GetServiceProperties response.
 func (client *BlobServicesClient) getServicePropertiesHandleResponse(resp *http.Response) (BlobServicesClientGetServicePropertiesResponse, error) {
-	result := BlobServicesClientGetServicePropertiesResponse{RawResponse: resp}
+	result := BlobServicesClientGetServicePropertiesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BlobServiceProperties); err != nil {
 		return BlobServicesClientGetServicePropertiesResponse{}, err
 	}
@@ -114,19 +119,26 @@ func (client *BlobServicesClient) getServicePropertiesHandleResponse(resp *http.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
 // options - BlobServicesClientListOptions contains the optional parameters for the BlobServicesClient.List method.
-func (client *BlobServicesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *BlobServicesClientListOptions) (BlobServicesClientListResponse, error) {
-	req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
-	if err != nil {
-		return BlobServicesClientListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return BlobServicesClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BlobServicesClientListResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listHandleResponse(resp)
+func (client *BlobServicesClient) List(resourceGroupName string, accountName string, options *BlobServicesClientListOptions) *runtime.Pager[BlobServicesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[BlobServicesClientListResponse]{
+		More: func(page BlobServicesClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *BlobServicesClientListResponse) (BlobServicesClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+			if err != nil {
+				return BlobServicesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return BlobServicesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return BlobServicesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -149,7 +161,7 @@ func (client *BlobServicesClient) listCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -157,7 +169,7 @@ func (client *BlobServicesClient) listCreateRequest(ctx context.Context, resourc
 
 // listHandleResponse handles the List response.
 func (client *BlobServicesClient) listHandleResponse(resp *http.Response) (BlobServicesClientListResponse, error) {
-	result := BlobServicesClientListResponse{RawResponse: resp}
+	result := BlobServicesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BlobServiceItems); err != nil {
 		return BlobServicesClientListResponse{}, err
 	}
@@ -210,7 +222,7 @@ func (client *BlobServicesClient) setServicePropertiesCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -218,7 +230,7 @@ func (client *BlobServicesClient) setServicePropertiesCreateRequest(ctx context.
 
 // setServicePropertiesHandleResponse handles the SetServiceProperties response.
 func (client *BlobServicesClient) setServicePropertiesHandleResponse(resp *http.Response) (BlobServicesClientSetServicePropertiesResponse, error) {
-	result := BlobServicesClientSetServicePropertiesResponse{RawResponse: resp}
+	result := BlobServicesClientSetServicePropertiesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BlobServiceProperties); err != nil {
 		return BlobServicesClientSetServicePropertiesResponse{}, err
 	}

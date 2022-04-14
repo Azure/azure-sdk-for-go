@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -32,19 +33,23 @@ type Client struct {
 // NewClient creates a new instance of Client with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) *Client {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &Client{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // CheckZonePeers - Compares a subscriptions logical zone mapping
@@ -87,7 +92,7 @@ func (client *Client) checkZonePeersCreateRequest(ctx context.Context, subscript
 
 // checkZonePeersHandleResponse handles the CheckZonePeers response.
 func (client *Client) checkZonePeersHandleResponse(resp *http.Response) (ClientCheckZonePeersResponse, error) {
-	result := ClientCheckZonePeersResponse{RawResponse: resp}
+	result := ClientCheckZonePeersResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckZonePeersResult); err != nil {
 		return ClientCheckZonePeersResponse{}, err
 	}
@@ -133,7 +138,7 @@ func (client *Client) getCreateRequest(ctx context.Context, subscriptionID strin
 
 // getHandleResponse handles the Get response.
 func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse, error) {
-	result := ClientGetResponse{RawResponse: resp}
+	result := ClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Subscription); err != nil {
 		return ClientGetResponse{}, err
 	}
@@ -143,16 +148,32 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 // List - Gets all subscriptions for a tenant.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ClientListOptions contains the optional parameters for the Client.List method.
-func (client *Client) List(options *ClientListOptions) *ClientListPager {
-	return &ClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *Client) List(options *ClientListOptions) *runtime.Pager[ClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ClientListResponse]{
+		More: func(page ClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SubscriptionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ClientListResponse) (ClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -171,7 +192,7 @@ func (client *Client) listCreateRequest(ctx context.Context, options *ClientList
 
 // listHandleResponse handles the List response.
 func (client *Client) listHandleResponse(resp *http.Response) (ClientListResponse, error) {
-	result := ClientListResponse{RawResponse: resp}
+	result := ClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionListResult); err != nil {
 		return ClientListResponse{}, err
 	}
@@ -183,19 +204,26 @@ func (client *Client) listHandleResponse(resp *http.Response) (ClientListRespons
 // If the operation fails it returns an *azcore.ResponseError type.
 // subscriptionID - The ID of the target subscription.
 // options - ClientListLocationsOptions contains the optional parameters for the Client.ListLocations method.
-func (client *Client) ListLocations(ctx context.Context, subscriptionID string, options *ClientListLocationsOptions) (ClientListLocationsResponse, error) {
-	req, err := client.listLocationsCreateRequest(ctx, subscriptionID, options)
-	if err != nil {
-		return ClientListLocationsResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ClientListLocationsResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClientListLocationsResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listLocationsHandleResponse(resp)
+func (client *Client) ListLocations(subscriptionID string, options *ClientListLocationsOptions) *runtime.Pager[ClientListLocationsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ClientListLocationsResponse]{
+		More: func(page ClientListLocationsResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ClientListLocationsResponse) (ClientListLocationsResponse, error) {
+			req, err := client.listLocationsCreateRequest(ctx, subscriptionID, options)
+			if err != nil {
+				return ClientListLocationsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClientListLocationsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClientListLocationsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listLocationsHandleResponse(resp)
+		},
+	})
 }
 
 // listLocationsCreateRequest creates the ListLocations request.
@@ -221,7 +249,7 @@ func (client *Client) listLocationsCreateRequest(ctx context.Context, subscripti
 
 // listLocationsHandleResponse handles the ListLocations response.
 func (client *Client) listLocationsHandleResponse(resp *http.Response) (ClientListLocationsResponse, error) {
-	result := ClientListLocationsResponse{RawResponse: resp}
+	result := ClientListLocationsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LocationListResult); err != nil {
 		return ClientListLocationsResponse{}, err
 	}

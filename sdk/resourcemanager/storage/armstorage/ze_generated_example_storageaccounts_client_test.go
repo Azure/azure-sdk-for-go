@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,112 +19,145 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 )
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountCheckNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountCheckNameAvailability.json
 func ExampleAccountsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CheckNameAvailability(ctx,
 		armstorage.AccountCheckNameAvailabilityParameters{
-			Name: to.StringPtr("<name>"),
-			Type: to.StringPtr("<type>"),
+			Name: to.Ptr("<name>"),
+			Type: to.Ptr("<type>"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AccountsClientCheckNameAvailabilityResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/NfsV3AccountCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/NfsV3AccountCreate.json
 func ExampleAccountsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreate(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		armstorage.AccountCreateParameters{
-			Kind:     armstorage.Kind("BlockBlobStorage").ToPtr(),
-			Location: to.StringPtr("<location>"),
+			Kind:     to.Ptr(armstorage.KindBlockBlobStorage),
+			Location: to.Ptr("<location>"),
 			Properties: &armstorage.AccountPropertiesCreateParameters{
-				IsHnsEnabled: to.BoolPtr(true),
-				EnableNfsV3:  to.BoolPtr(true),
+				IsHnsEnabled: to.Ptr(true),
+				EnableNfsV3:  to.Ptr(true),
 				NetworkRuleSet: &armstorage.NetworkRuleSet{
-					Bypass:        armstorage.Bypass("AzureServices").ToPtr(),
-					DefaultAction: armstorage.DefaultActionAllow.ToPtr(),
+					Bypass:        to.Ptr(armstorage.BypassAzureServices),
+					DefaultAction: to.Ptr(armstorage.DefaultActionAllow),
 					IPRules:       []*armstorage.IPRule{},
 					VirtualNetworkRules: []*armstorage.VirtualNetworkRule{
 						{
-							VirtualNetworkResourceID: to.StringPtr("<virtual-network-resource-id>"),
+							VirtualNetworkResourceID: to.Ptr("<virtual-network-resource-id>"),
 						}},
 				},
-				EnableHTTPSTrafficOnly: to.BoolPtr(false),
+				EnableHTTPSTrafficOnly: to.Ptr(false),
 			},
 			SKU: &armstorage.SKU{
-				Name: armstorage.SKUName("Premium_LRS").ToPtr(),
+				Name: to.Ptr(armstorage.SKUNamePremiumLRS),
 			},
 		},
-		nil)
+		&armstorage.AccountsClientBeginCreateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AccountsClientCreateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountDelete.json
 func ExampleAccountsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountGetProperties.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountGetAsyncSkuConversionStatus.json
 func ExampleAccountsClient_GetProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetProperties(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		&armstorage.AccountsClientGetPropertiesOptions{Expand: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AccountsClientGetPropertiesResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountEnableAD.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountEnableAD.json
 func ExampleAccountsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<account-name>",
@@ -132,274 +165,347 @@ func ExampleAccountsClient_Update() {
 			Properties: &armstorage.AccountPropertiesUpdateParameters{
 				AzureFilesIdentityBasedAuthentication: &armstorage.AzureFilesIdentityBasedAuthentication{
 					ActiveDirectoryProperties: &armstorage.ActiveDirectoryProperties{
-						AccountType:       armstorage.ActiveDirectoryPropertiesAccountType("User").ToPtr(),
-						AzureStorageSid:   to.StringPtr("<azure-storage-sid>"),
-						DomainGUID:        to.StringPtr("<domain-guid>"),
-						DomainName:        to.StringPtr("<domain-name>"),
-						DomainSid:         to.StringPtr("<domain-sid>"),
-						ForestName:        to.StringPtr("<forest-name>"),
-						NetBiosDomainName: to.StringPtr("<net-bios-domain-name>"),
-						SamAccountName:    to.StringPtr("<sam-account-name>"),
+						AccountType:       to.Ptr(armstorage.ActiveDirectoryPropertiesAccountTypeUser),
+						AzureStorageSid:   to.Ptr("<azure-storage-sid>"),
+						DomainGUID:        to.Ptr("<domain-guid>"),
+						DomainName:        to.Ptr("<domain-name>"),
+						DomainSid:         to.Ptr("<domain-sid>"),
+						ForestName:        to.Ptr("<forest-name>"),
+						NetBiosDomainName: to.Ptr("<net-bios-domain-name>"),
+						SamAccountName:    to.Ptr("<sam-account-name>"),
 					},
-					DirectoryServiceOptions: armstorage.DirectoryServiceOptions("AD").ToPtr(),
+					DirectoryServiceOptions: to.Ptr(armstorage.DirectoryServiceOptionsAD),
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AccountsClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountList.json
 func ExampleAccountsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountListByResourceGroup.json
 func ExampleAccountsClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountListKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountListKeys.json
 func ExampleAccountsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ListKeys(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		&armstorage.AccountsClientListKeysOptions{Expand: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AccountsClientListKeysResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountRegenerateKerbKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountRegenerateKerbKey.json
 func ExampleAccountsClient_RegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.RegenerateKey(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		armstorage.AccountRegenerateKeyParameters{
-			KeyName: to.StringPtr("<key-name>"),
+			KeyName: to.Ptr("<key-name>"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AccountsClientRegenerateKeyResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountListAccountSAS.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountListAccountSAS.json
 func ExampleAccountsClient_ListAccountSAS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ListAccountSAS(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		armstorage.AccountSasParameters{
-			KeyToSign:              to.StringPtr("<key-to-sign>"),
-			SharedAccessExpiryTime: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T11:42:03.1567373Z"); return t }()),
-			Permissions:            armstorage.Permissions("r").ToPtr(),
-			Protocols:              armstorage.HTTPProtocolHTTPSHTTP.ToPtr(),
-			ResourceTypes:          armstorage.SignedResourceTypes("s").ToPtr(),
-			Services:               armstorage.Services("b").ToPtr(),
-			SharedAccessStartTime:  to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T10:42:03.1567373Z"); return t }()),
+			KeyToSign:              to.Ptr("<key-to-sign>"),
+			SharedAccessExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T11:42:03.1567373Z"); return t }()),
+			Permissions:            to.Ptr(armstorage.PermissionsR),
+			Protocols:              to.Ptr(armstorage.HTTPProtocolHTTPSHTTP),
+			ResourceTypes:          to.Ptr(armstorage.SignedResourceTypesS),
+			Services:               to.Ptr(armstorage.ServicesB),
+			SharedAccessStartTime:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T10:42:03.1567373Z"); return t }()),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AccountsClientListAccountSASResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountListServiceSAS.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountListServiceSAS.json
 func ExampleAccountsClient_ListServiceSAS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ListServiceSAS(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		armstorage.ServiceSasParameters{
-			CanonicalizedResource:  to.StringPtr("<canonicalized-resource>"),
-			SharedAccessExpiryTime: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T11:32:48.8457197Z"); return t }()),
-			Permissions:            armstorage.Permissions("l").ToPtr(),
-			Resource:               armstorage.SignedResource("c").ToPtr(),
+			CanonicalizedResource:  to.Ptr("<canonicalized-resource>"),
+			SharedAccessExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T11:32:48.8457197Z"); return t }()),
+			Permissions:            to.Ptr(armstorage.PermissionsL),
+			Resource:               to.Ptr(armstorage.SignedResourceC),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AccountsClientListServiceSASResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountFailover.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountFailover.json
 func ExampleAccountsClient_BeginFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginFailover(ctx,
 		"<resource-group-name>",
 		"<account-name>",
-		nil)
+		&armstorage.AccountsClientBeginFailoverOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountHierarchicalNamespaceMigration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountHierarchicalNamespaceMigration.json
 func ExampleAccountsClient_BeginHierarchicalNamespaceMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginHierarchicalNamespaceMigration(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<request-type>",
-		nil)
+		&armstorage.AccountsClientBeginHierarchicalNamespaceMigrationOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountAbortHierarchicalNamespaceMigration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountAbortHierarchicalNamespaceMigration.json
 func ExampleAccountsClient_BeginAbortHierarchicalNamespaceMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginAbortHierarchicalNamespaceMigration(ctx,
 		"<resource-group-name>",
 		"<account-name>",
-		nil)
+		&armstorage.AccountsClientBeginAbortHierarchicalNamespaceMigrationOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/BlobRangesRestore.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/BlobRangesRestore.json
 func ExampleAccountsClient_BeginRestoreBlobRanges() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginRestoreBlobRanges(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		armstorage.BlobRestoreParameters{
 			BlobRanges: []*armstorage.BlobRestoreRange{
 				{
-					EndRange:   to.StringPtr("<end-range>"),
-					StartRange: to.StringPtr("<start-range>"),
+					EndRange:   to.Ptr("<end-range>"),
+					StartRange: to.Ptr("<start-range>"),
 				},
 				{
-					EndRange:   to.StringPtr("<end-range>"),
-					StartRange: to.StringPtr("<start-range>"),
+					EndRange:   to.Ptr("<end-range>"),
+					StartRange: to.Ptr("<start-range>"),
 				}},
-			TimeToRestore: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-20T15:30:00.0000000Z"); return t }()),
+			TimeToRestore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-20T15:30:00.0000000Z"); return t }()),
 		},
-		nil)
+		&armstorage.AccountsClientBeginRestoreBlobRangesOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AccountsClientRestoreBlobRangesResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountRevokeUserDelegationKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountRevokeUserDelegationKeys.json
 func ExampleAccountsClient_RevokeUserDelegationKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.RevokeUserDelegationKeys(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }

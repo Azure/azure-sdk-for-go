@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armfeatures
 
 const (
 	moduleName    = "armfeatures"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // SubscriptionFeatureRegistrationApprovalType - The feature approval type.
@@ -29,11 +29,6 @@ func PossibleSubscriptionFeatureRegistrationApprovalTypeValues() []SubscriptionF
 		SubscriptionFeatureRegistrationApprovalTypeAutoApproval,
 		SubscriptionFeatureRegistrationApprovalTypeNotSpecified,
 	}
-}
-
-// ToPtr returns a *SubscriptionFeatureRegistrationApprovalType pointing to the current value.
-func (c SubscriptionFeatureRegistrationApprovalType) ToPtr() *SubscriptionFeatureRegistrationApprovalType {
-	return &c
 }
 
 // SubscriptionFeatureRegistrationState - The state.
@@ -60,9 +55,4 @@ func PossibleSubscriptionFeatureRegistrationStateValues() []SubscriptionFeatureR
 		SubscriptionFeatureRegistrationStateUnregistered,
 		SubscriptionFeatureRegistrationStateUnregistering,
 	}
-}
-
-// ToPtr returns a *SubscriptionFeatureRegistrationState pointing to the current value.
-func (c SubscriptionFeatureRegistrationState) ToPtr() *SubscriptionFeatureRegistrationState {
-	return &c
 }

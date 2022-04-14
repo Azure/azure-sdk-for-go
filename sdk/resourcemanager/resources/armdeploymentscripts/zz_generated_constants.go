@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armdeploymentscripts
 
 const (
 	moduleName    = "armdeploymentscripts"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 // CleanupOptions - The clean up preference when the script execution gets in a terminal state. Default setting is 'Always'.
@@ -29,11 +29,6 @@ func PossibleCleanupOptionsValues() []CleanupOptions {
 		CleanupOptionsOnExpiration,
 		CleanupOptionsOnSuccess,
 	}
-}
-
-// ToPtr returns a *CleanupOptions pointing to the current value.
-func (c CleanupOptions) ToPtr() *CleanupOptions {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -56,11 +51,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // ManagedServiceIdentityType - Type of the managed identity.
 type ManagedServiceIdentityType string
 
@@ -73,11 +63,6 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 	return []ManagedServiceIdentityType{
 		ManagedServiceIdentityTypeUserAssigned,
 	}
-}
-
-// ToPtr returns a *ManagedServiceIdentityType pointing to the current value.
-func (c ManagedServiceIdentityType) ToPtr() *ManagedServiceIdentityType {
-	return &c
 }
 
 // ScriptProvisioningState - State of the script execution. This only appears in the response.
@@ -104,11 +89,6 @@ func PossibleScriptProvisioningStateValues() []ScriptProvisioningState {
 	}
 }
 
-// ToPtr returns a *ScriptProvisioningState pointing to the current value.
-func (c ScriptProvisioningState) ToPtr() *ScriptProvisioningState {
-	return &c
-}
-
 // ScriptType - Type of the script.
 type ScriptType string
 
@@ -123,9 +103,4 @@ func PossibleScriptTypeValues() []ScriptType {
 		ScriptTypeAzureCLI,
 		ScriptTypeAzurePowerShell,
 	}
-}
-
-// ToPtr returns a *ScriptType pointing to the current value.
-func (c ScriptType) ToPtr() *ScriptType {
-	return &c
 }

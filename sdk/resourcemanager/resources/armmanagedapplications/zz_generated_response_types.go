@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,521 +8,92 @@
 
 package armmanagedapplications
 
-import (
-	"context"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"net/http"
-	"time"
-)
-
 // ApplicationClientListOperationsResponse contains the response from method ApplicationClient.ListOperations.
 type ApplicationClientListOperationsResponse struct {
-	ApplicationClientListOperationsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplicationClientListOperationsResult contains the result from method ApplicationClient.ListOperations.
-type ApplicationClientListOperationsResult struct {
 	OperationListResult
-}
-
-// ApplicationDefinitionsClientCreateOrUpdateByIDPollerResponse contains the response from method ApplicationDefinitionsClient.CreateOrUpdateByID.
-type ApplicationDefinitionsClientCreateOrUpdateByIDPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *ApplicationDefinitionsClientCreateOrUpdateByIDPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ApplicationDefinitionsClientCreateOrUpdateByIDPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ApplicationDefinitionsClientCreateOrUpdateByIDResponse, error) {
-	respType := ApplicationDefinitionsClientCreateOrUpdateByIDResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ApplicationDefinition)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a ApplicationDefinitionsClientCreateOrUpdateByIDPollerResponse from the provided client and resume token.
-func (l *ApplicationDefinitionsClientCreateOrUpdateByIDPollerResponse) Resume(ctx context.Context, client *ApplicationDefinitionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ApplicationDefinitionsClient.CreateOrUpdateByID", token, client.pl)
-	if err != nil {
-		return err
-	}
-	poller := &ApplicationDefinitionsClientCreateOrUpdateByIDPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
 }
 
 // ApplicationDefinitionsClientCreateOrUpdateByIDResponse contains the response from method ApplicationDefinitionsClient.CreateOrUpdateByID.
 type ApplicationDefinitionsClientCreateOrUpdateByIDResponse struct {
-	ApplicationDefinitionsClientCreateOrUpdateByIDResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplicationDefinitionsClientCreateOrUpdateByIDResult contains the result from method ApplicationDefinitionsClient.CreateOrUpdateByID.
-type ApplicationDefinitionsClientCreateOrUpdateByIDResult struct {
 	ApplicationDefinition
-}
-
-// ApplicationDefinitionsClientCreateOrUpdatePollerResponse contains the response from method ApplicationDefinitionsClient.CreateOrUpdate.
-type ApplicationDefinitionsClientCreateOrUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *ApplicationDefinitionsClientCreateOrUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ApplicationDefinitionsClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ApplicationDefinitionsClientCreateOrUpdateResponse, error) {
-	respType := ApplicationDefinitionsClientCreateOrUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ApplicationDefinition)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a ApplicationDefinitionsClientCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *ApplicationDefinitionsClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *ApplicationDefinitionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ApplicationDefinitionsClient.CreateOrUpdate", token, client.pl)
-	if err != nil {
-		return err
-	}
-	poller := &ApplicationDefinitionsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
 }
 
 // ApplicationDefinitionsClientCreateOrUpdateResponse contains the response from method ApplicationDefinitionsClient.CreateOrUpdate.
 type ApplicationDefinitionsClientCreateOrUpdateResponse struct {
-	ApplicationDefinitionsClientCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplicationDefinitionsClientCreateOrUpdateResult contains the result from method ApplicationDefinitionsClient.CreateOrUpdate.
-type ApplicationDefinitionsClientCreateOrUpdateResult struct {
 	ApplicationDefinition
-}
-
-// ApplicationDefinitionsClientDeleteByIDPollerResponse contains the response from method ApplicationDefinitionsClient.DeleteByID.
-type ApplicationDefinitionsClientDeleteByIDPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *ApplicationDefinitionsClientDeleteByIDPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ApplicationDefinitionsClientDeleteByIDPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ApplicationDefinitionsClientDeleteByIDResponse, error) {
-	respType := ApplicationDefinitionsClientDeleteByIDResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a ApplicationDefinitionsClientDeleteByIDPollerResponse from the provided client and resume token.
-func (l *ApplicationDefinitionsClientDeleteByIDPollerResponse) Resume(ctx context.Context, client *ApplicationDefinitionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ApplicationDefinitionsClient.DeleteByID", token, client.pl)
-	if err != nil {
-		return err
-	}
-	poller := &ApplicationDefinitionsClientDeleteByIDPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
 }
 
 // ApplicationDefinitionsClientDeleteByIDResponse contains the response from method ApplicationDefinitionsClient.DeleteByID.
 type ApplicationDefinitionsClientDeleteByIDResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplicationDefinitionsClientDeletePollerResponse contains the response from method ApplicationDefinitionsClient.Delete.
-type ApplicationDefinitionsClientDeletePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *ApplicationDefinitionsClientDeletePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ApplicationDefinitionsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ApplicationDefinitionsClientDeleteResponse, error) {
-	respType := ApplicationDefinitionsClientDeleteResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a ApplicationDefinitionsClientDeletePollerResponse from the provided client and resume token.
-func (l *ApplicationDefinitionsClientDeletePollerResponse) Resume(ctx context.Context, client *ApplicationDefinitionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ApplicationDefinitionsClient.Delete", token, client.pl)
-	if err != nil {
-		return err
-	}
-	poller := &ApplicationDefinitionsClientDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
+	// placeholder for future response values
 }
 
 // ApplicationDefinitionsClientDeleteResponse contains the response from method ApplicationDefinitionsClient.Delete.
 type ApplicationDefinitionsClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // ApplicationDefinitionsClientGetByIDResponse contains the response from method ApplicationDefinitionsClient.GetByID.
 type ApplicationDefinitionsClientGetByIDResponse struct {
-	ApplicationDefinitionsClientGetByIDResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplicationDefinitionsClientGetByIDResult contains the result from method ApplicationDefinitionsClient.GetByID.
-type ApplicationDefinitionsClientGetByIDResult struct {
 	ApplicationDefinition
 }
 
 // ApplicationDefinitionsClientGetResponse contains the response from method ApplicationDefinitionsClient.Get.
 type ApplicationDefinitionsClientGetResponse struct {
-	ApplicationDefinitionsClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplicationDefinitionsClientGetResult contains the result from method ApplicationDefinitionsClient.Get.
-type ApplicationDefinitionsClientGetResult struct {
 	ApplicationDefinition
 }
 
 // ApplicationDefinitionsClientListByResourceGroupResponse contains the response from method ApplicationDefinitionsClient.ListByResourceGroup.
 type ApplicationDefinitionsClientListByResourceGroupResponse struct {
-	ApplicationDefinitionsClientListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplicationDefinitionsClientListByResourceGroupResult contains the result from method ApplicationDefinitionsClient.ListByResourceGroup.
-type ApplicationDefinitionsClientListByResourceGroupResult struct {
 	ApplicationDefinitionListResult
-}
-
-// ApplicationsClientCreateOrUpdateByIDPollerResponse contains the response from method ApplicationsClient.CreateOrUpdateByID.
-type ApplicationsClientCreateOrUpdateByIDPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *ApplicationsClientCreateOrUpdateByIDPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ApplicationsClientCreateOrUpdateByIDPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ApplicationsClientCreateOrUpdateByIDResponse, error) {
-	respType := ApplicationsClientCreateOrUpdateByIDResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Application)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a ApplicationsClientCreateOrUpdateByIDPollerResponse from the provided client and resume token.
-func (l *ApplicationsClientCreateOrUpdateByIDPollerResponse) Resume(ctx context.Context, client *ApplicationsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ApplicationsClient.CreateOrUpdateByID", token, client.pl)
-	if err != nil {
-		return err
-	}
-	poller := &ApplicationsClientCreateOrUpdateByIDPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
 }
 
 // ApplicationsClientCreateOrUpdateByIDResponse contains the response from method ApplicationsClient.CreateOrUpdateByID.
 type ApplicationsClientCreateOrUpdateByIDResponse struct {
-	ApplicationsClientCreateOrUpdateByIDResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplicationsClientCreateOrUpdateByIDResult contains the result from method ApplicationsClient.CreateOrUpdateByID.
-type ApplicationsClientCreateOrUpdateByIDResult struct {
 	Application
-}
-
-// ApplicationsClientCreateOrUpdatePollerResponse contains the response from method ApplicationsClient.CreateOrUpdate.
-type ApplicationsClientCreateOrUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *ApplicationsClientCreateOrUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ApplicationsClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ApplicationsClientCreateOrUpdateResponse, error) {
-	respType := ApplicationsClientCreateOrUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Application)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a ApplicationsClientCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *ApplicationsClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *ApplicationsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ApplicationsClient.CreateOrUpdate", token, client.pl)
-	if err != nil {
-		return err
-	}
-	poller := &ApplicationsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
 }
 
 // ApplicationsClientCreateOrUpdateResponse contains the response from method ApplicationsClient.CreateOrUpdate.
 type ApplicationsClientCreateOrUpdateResponse struct {
-	ApplicationsClientCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplicationsClientCreateOrUpdateResult contains the result from method ApplicationsClient.CreateOrUpdate.
-type ApplicationsClientCreateOrUpdateResult struct {
 	Application
-}
-
-// ApplicationsClientDeleteByIDPollerResponse contains the response from method ApplicationsClient.DeleteByID.
-type ApplicationsClientDeleteByIDPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *ApplicationsClientDeleteByIDPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ApplicationsClientDeleteByIDPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ApplicationsClientDeleteByIDResponse, error) {
-	respType := ApplicationsClientDeleteByIDResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a ApplicationsClientDeleteByIDPollerResponse from the provided client and resume token.
-func (l *ApplicationsClientDeleteByIDPollerResponse) Resume(ctx context.Context, client *ApplicationsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ApplicationsClient.DeleteByID", token, client.pl)
-	if err != nil {
-		return err
-	}
-	poller := &ApplicationsClientDeleteByIDPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
 }
 
 // ApplicationsClientDeleteByIDResponse contains the response from method ApplicationsClient.DeleteByID.
 type ApplicationsClientDeleteByIDResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplicationsClientDeletePollerResponse contains the response from method ApplicationsClient.Delete.
-type ApplicationsClientDeletePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *ApplicationsClientDeletePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ApplicationsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ApplicationsClientDeleteResponse, error) {
-	respType := ApplicationsClientDeleteResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a ApplicationsClientDeletePollerResponse from the provided client and resume token.
-func (l *ApplicationsClientDeletePollerResponse) Resume(ctx context.Context, client *ApplicationsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ApplicationsClient.Delete", token, client.pl)
-	if err != nil {
-		return err
-	}
-	poller := &ApplicationsClientDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
+	// placeholder for future response values
 }
 
 // ApplicationsClientDeleteResponse contains the response from method ApplicationsClient.Delete.
 type ApplicationsClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // ApplicationsClientGetByIDResponse contains the response from method ApplicationsClient.GetByID.
 type ApplicationsClientGetByIDResponse struct {
-	ApplicationsClientGetByIDResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplicationsClientGetByIDResult contains the result from method ApplicationsClient.GetByID.
-type ApplicationsClientGetByIDResult struct {
 	Application
 }
 
 // ApplicationsClientGetResponse contains the response from method ApplicationsClient.Get.
 type ApplicationsClientGetResponse struct {
-	ApplicationsClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplicationsClientGetResult contains the result from method ApplicationsClient.Get.
-type ApplicationsClientGetResult struct {
 	Application
 }
 
 // ApplicationsClientListByResourceGroupResponse contains the response from method ApplicationsClient.ListByResourceGroup.
 type ApplicationsClientListByResourceGroupResponse struct {
-	ApplicationsClientListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplicationsClientListByResourceGroupResult contains the result from method ApplicationsClient.ListByResourceGroup.
-type ApplicationsClientListByResourceGroupResult struct {
 	ApplicationListResult
 }
 
 // ApplicationsClientListBySubscriptionResponse contains the response from method ApplicationsClient.ListBySubscription.
 type ApplicationsClientListBySubscriptionResponse struct {
-	ApplicationsClientListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplicationsClientListBySubscriptionResult contains the result from method ApplicationsClient.ListBySubscription.
-type ApplicationsClientListBySubscriptionResult struct {
 	ApplicationListResult
 }
 
 // ApplicationsClientUpdateByIDResponse contains the response from method ApplicationsClient.UpdateByID.
 type ApplicationsClientUpdateByIDResponse struct {
-	ApplicationsClientUpdateByIDResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplicationsClientUpdateByIDResult contains the result from method ApplicationsClient.UpdateByID.
-type ApplicationsClientUpdateByIDResult struct {
 	Application
 }
 
 // ApplicationsClientUpdateResponse contains the response from method ApplicationsClient.Update.
 type ApplicationsClientUpdateResponse struct {
-	ApplicationsClientUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplicationsClientUpdateResult contains the result from method ApplicationsClient.Update.
-type ApplicationsClientUpdateResult struct {
 	Application
 }

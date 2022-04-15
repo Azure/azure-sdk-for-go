@@ -64,7 +64,9 @@ func ExampleClient_CreateDatabase() {
 	databaseProperties := azcosmos.DatabaseProperties{ID: "databaseName"}
 	databaseResponse, err := client.CreateDatabase(context.Background(), databaseProperties, nil)
 	if err != nil {
-		panic(err)
+		var responseErr *azcore.ResponseError
+		errors.As(err, &responseErr)
+		panic(responseErr)
 	}
 
 	fmt.Printf("Database created. ActivityId %s", databaseResponse.ActivityID)
@@ -107,7 +109,9 @@ func ExampleDatabaseClient_CreateContainer() {
 
 	resp, err := database.CreateContainer(context.Background(), properties, &azcosmos.CreateContainerOptions{ThroughputProperties: &throughput})
 	if err != nil {
-		panic(err)
+		var responseErr *azcore.ResponseError
+		errors.As(err, &responseErr)
+		panic(responseErr)
 	}
 
 	fmt.Printf("Container created. ActivityId %s", resp.ActivityID)
@@ -154,7 +158,9 @@ func ExampleContainerClient_ReplaceThroughput() {
 	newScale := azcosmos.NewManualThroughputProperties(500)
 	replaceThroughputResponse, err := container.ReplaceThroughput(context.Background(), newScale, nil)
 	if err != nil {
-		panic(err)
+		var responseErr *azcore.ResponseError
+		errors.As(err, &responseErr)
+		panic(responseErr)
 	}
 
 	fmt.Printf("Throughput updated. ActivityId %s", replaceThroughputResponse.ActivityID)
@@ -202,7 +208,9 @@ func ExampleContainerClient_Replace() {
 	// Replace container properties
 	replaceResponse, err := container.Replace(context.Background(), *containerResponse.ContainerProperties, nil)
 	if err != nil {
-		panic(err)
+		var responseErr *azcore.ResponseError
+		errors.As(err, &responseErr)
+		panic(responseErr)
 	}
 
 	fmt.Printf("Container updated. ActivityId %s", replaceResponse.ActivityID)
@@ -249,7 +257,9 @@ func ExampleContainerClient_CreateItem() {
 
 	itemResponse, err := container.CreateItem(context.Background(), pk, marshalled, nil)
 	if err != nil {
-		panic(err)
+		var responseErr *azcore.ResponseError
+		errors.As(err, &responseErr)
+		panic(responseErr)
 	}
 
 	fmt.Printf("Item created. ActivityId %s consuming %v RU", itemResponse.ActivityID, itemResponse.RequestCharge)
@@ -286,7 +296,9 @@ func ExampleContainerClient_ReadItem() {
 	id := "anId"
 	itemResponse, err := container.ReadItem(context.Background(), pk, id, nil)
 	if err != nil {
-		panic(err)
+		var responseErr *azcore.ResponseError
+		errors.As(err, &responseErr)
+		panic(responseErr)
 	}
 
 	var itemResponseBody map[string]string
@@ -347,7 +359,9 @@ func ExampleContainerClient_ReplaceItem() {
 
 	itemResponse, err = container.ReplaceItem(context.Background(), pk, id, marshalledReplace, nil)
 	if err != nil {
-		panic(err)
+		var responseErr *azcore.ResponseError
+		errors.As(err, &responseErr)
+		panic(responseErr)
 	}
 
 	fmt.Printf("Item replaced. ActivityId %s consuming %v RU", itemResponse.ActivityID, itemResponse.RequestCharge)
@@ -384,7 +398,9 @@ func ExampleContainerClient_DeleteItem() {
 	id := "anId"
 	itemResponse, err := container.DeleteItem(context.Background(), pk, id, nil)
 	if err != nil {
-		panic(err)
+		var responseErr *azcore.ResponseError
+		errors.As(err, &responseErr)
+		panic(responseErr)
 	}
 
 	fmt.Printf("Item deleted. ActivityId %s consuming %v RU", itemResponse.ActivityID, itemResponse.RequestCharge)
@@ -440,7 +456,9 @@ func ExampleContainerClient_ReadItem_sessionConsistency() {
 	// In another client, maintain the session by passing the session token
 	itemResponse, err = container.ReadItem(context.Background(), pk, id, &azcosmos.ItemOptions{SessionToken: itemSessionToken})
 	if err != nil {
-		panic(err)
+		var responseErr *azcore.ResponseError
+		errors.As(err, &responseErr)
+		panic(responseErr)
 	}
 
 	fmt.Printf("Item read. ActivityId %s consuming %v RU", itemResponse.ActivityID, itemResponse.RequestCharge)
@@ -542,7 +560,9 @@ func ExampleContainerClient_QueryItemsByPartitionKey() {
 	for queryPager.More() {
 		queryResponse, err := queryPager.NextPage(context.Background())
 		if err != nil {
-			panic(err)
+			var responseErr *azcore.ResponseError
+			errors.As(err, &responseErr)
+			panic(responseErr)
 		}
 
 		for _, item := range queryResponse.Items {

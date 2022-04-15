@@ -10,7 +10,7 @@ package armaad
 
 const (
 	moduleName    = "armaad"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.4.0"
 )
 
 // PrivateEndpointConnectionProvisioningState - The current provisioning state.

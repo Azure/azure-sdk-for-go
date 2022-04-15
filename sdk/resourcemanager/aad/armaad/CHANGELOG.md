@@ -1,5 +1,21 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*PrivateEndpointConnectionsClient.ListByPolicyName` has been removed
+- Function `*PrivateLinkForAzureAdClient.List` has been removed
+- Function `*PrivateLinkForAzureAdClient.ListBySubscription` has been removed
+- Function `*PrivateLinkResourcesClient.ListByPrivateLinkPolicy` has been removed
+
+### Features Added
+
+- New function `*PrivateEndpointConnectionsClient.NewListByPolicyNamePager(string, string, *PrivateEndpointConnectionsClientListByPolicyNameOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByPolicyNameResponse]`
+- New function `*PrivateLinkForAzureAdClient.NewListPager(string, *PrivateLinkForAzureAdClientListOptions) *runtime.Pager[PrivateLinkForAzureAdClientListResponse]`
+- New function `*PrivateLinkResourcesClient.NewListByPrivateLinkPolicyPager(string, string, *PrivateLinkResourcesClientListByPrivateLinkPolicyOptions) *runtime.Pager[PrivateLinkResourcesClientListByPrivateLinkPolicyResponse]`
+- New function `*PrivateLinkForAzureAdClient.NewListBySubscriptionPager(*PrivateLinkForAzureAdClientListBySubscriptionOptions) *runtime.Pager[PrivateLinkForAzureAdClientListBySubscriptionResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

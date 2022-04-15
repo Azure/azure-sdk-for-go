@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azureactivedirectory/resource-manager/Microsoft.Aadiam/stable/2020-03-01/examples/AzureADPrivateEndpointConnectionsList.json
-func ExamplePrivateEndpointConnectionsClient_ListByPolicyName() {
+func ExamplePrivateEndpointConnectionsClient_NewListByPolicyNamePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExamplePrivateEndpointConnectionsClient_ListByPolicyName() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByPolicyName("<resource-group-name>",
+	pager := client.NewListByPolicyNamePager("<resource-group-name>",
 		"<policy-name>",
 		nil)
 	for pager.More() {

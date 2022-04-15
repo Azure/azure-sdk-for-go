@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azureactivedirectory/resource-manager/Microsoft.Aadiam/stable/2020-03-01/examples/AzureADPrivateLinkResourceListGet.json
-func ExamplePrivateLinkResourcesClient_ListByPrivateLinkPolicy() {
+func ExamplePrivateLinkResourcesClient_NewListByPrivateLinkPolicyPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExamplePrivateLinkResourcesClient_ListByPrivateLinkPolicy() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByPrivateLinkPolicy("<resource-group-name>",
+	pager := client.NewListByPrivateLinkPolicyPager("<resource-group-name>",
 		"<policy-name>",
 		nil)
 	for pager.More() {

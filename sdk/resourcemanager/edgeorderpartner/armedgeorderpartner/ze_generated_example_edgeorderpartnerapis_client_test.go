@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorderpartner/resource-manager/Microsoft.EdgeOrderPartner/preview/2020-12-01-preview/examples/ListOperationsPartner.json
-func ExampleAPISClient_ListOperationsPartner() {
+func ExampleAPISClient_NewListOperationsPartnerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleAPISClient_ListOperationsPartner() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListOperationsPartner(nil)
+	pager := client.NewListOperationsPartnerPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -111,7 +111,7 @@ func ExampleAPISClient_ManageLink() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorderpartner/resource-manager/Microsoft.EdgeOrderPartner/preview/2020-12-01-preview/examples/SearchInventories.json
-func ExampleAPISClient_SearchInventories() {
+func ExampleAPISClient_NewSearchInventoriesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -123,7 +123,7 @@ func ExampleAPISClient_SearchInventories() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.SearchInventories(armedgeorderpartner.SearchInventoriesRequest{
+	pager := client.NewSearchInventoriesPager(armedgeorderpartner.SearchInventoriesRequest{
 		FamilyIdentifier: to.Ptr("<family-identifier>"),
 		SerialNumber:     to.Ptr("<serial-number>"),
 	},

@@ -230,14 +230,14 @@ func (client *ComputePoliciesClient) getHandleResponse(resp *http.Response) (Com
 	return result, nil
 }
 
-// ListByAccount - Lists the Data Lake Analytics compute policies within the specified Data Lake Analytics account. An account
-// supports, at most, 50 policies
+// NewListByAccountPager - Lists the Data Lake Analytics compute policies within the specified Data Lake Analytics account.
+// An account supports, at most, 50 policies
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Analytics account.
 // options - ComputePoliciesClientListByAccountOptions contains the optional parameters for the ComputePoliciesClient.ListByAccount
 // method.
-func (client *ComputePoliciesClient) ListByAccount(resourceGroupName string, accountName string, options *ComputePoliciesClientListByAccountOptions) *runtime.Pager[ComputePoliciesClientListByAccountResponse] {
+func (client *ComputePoliciesClient) NewListByAccountPager(resourceGroupName string, accountName string, options *ComputePoliciesClientListByAccountOptions) *runtime.Pager[ComputePoliciesClientListByAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ComputePoliciesClientListByAccountResponse]{
 		More: func(page ComputePoliciesClientListByAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

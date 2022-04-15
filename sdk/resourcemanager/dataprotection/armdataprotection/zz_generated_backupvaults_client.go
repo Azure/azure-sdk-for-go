@@ -274,12 +274,12 @@ func (client *BackupVaultsClient) getHandleResponse(resp *http.Response) (Backup
 	return result, nil
 }
 
-// GetInResourceGroup - Returns resource collection belonging to a resource group.
+// NewGetInResourceGroupPager - Returns resource collection belonging to a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group where the backup vault is present.
 // options - BackupVaultsClientGetInResourceGroupOptions contains the optional parameters for the BackupVaultsClient.GetInResourceGroup
 // method.
-func (client *BackupVaultsClient) GetInResourceGroup(resourceGroupName string, options *BackupVaultsClientGetInResourceGroupOptions) *runtime.Pager[BackupVaultsClientGetInResourceGroupResponse] {
+func (client *BackupVaultsClient) NewGetInResourceGroupPager(resourceGroupName string, options *BackupVaultsClientGetInResourceGroupOptions) *runtime.Pager[BackupVaultsClientGetInResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BackupVaultsClientGetInResourceGroupResponse]{
 		More: func(page BackupVaultsClientGetInResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -338,11 +338,11 @@ func (client *BackupVaultsClient) getInResourceGroupHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// GetInSubscription - Returns resource collection belonging to a subscription.
+// NewGetInSubscriptionPager - Returns resource collection belonging to a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - BackupVaultsClientGetInSubscriptionOptions contains the optional parameters for the BackupVaultsClient.GetInSubscription
 // method.
-func (client *BackupVaultsClient) GetInSubscription(options *BackupVaultsClientGetInSubscriptionOptions) *runtime.Pager[BackupVaultsClientGetInSubscriptionResponse] {
+func (client *BackupVaultsClient) NewGetInSubscriptionPager(options *BackupVaultsClientGetInSubscriptionOptions) *runtime.Pager[BackupVaultsClientGetInSubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BackupVaultsClientGetInSubscriptionResponse]{
 		More: func(page BackupVaultsClientGetInSubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

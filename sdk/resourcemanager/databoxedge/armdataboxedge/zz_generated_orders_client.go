@@ -231,13 +231,13 @@ func (client *OrdersClient) getHandleResponse(resp *http.Response) (OrdersClient
 	return result, nil
 }
 
-// ListByDataBoxEdgeDevice - Lists all the orders related to a Data Box Edge/Data Box Gateway device.
+// NewListByDataBoxEdgeDevicePager - Lists all the orders related to a Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
 // deviceName - The device name.
 // resourceGroupName - The resource group name.
 // options - OrdersClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the OrdersClient.ListByDataBoxEdgeDevice
 // method.
-func (client *OrdersClient) ListByDataBoxEdgeDevice(deviceName string, resourceGroupName string, options *OrdersClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[OrdersClientListByDataBoxEdgeDeviceResponse] {
+func (client *OrdersClient) NewListByDataBoxEdgeDevicePager(deviceName string, resourceGroupName string, options *OrdersClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[OrdersClientListByDataBoxEdgeDeviceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[OrdersClientListByDataBoxEdgeDeviceResponse]{
 		More: func(page OrdersClientListByDataBoxEdgeDeviceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

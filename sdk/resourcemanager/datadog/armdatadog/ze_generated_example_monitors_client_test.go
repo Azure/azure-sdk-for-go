@@ -67,7 +67,7 @@ func ExampleMonitorsClient_SetDefaultKey() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/Hosts_List.json
-func ExampleMonitorsClient_ListHosts() {
+func ExampleMonitorsClient_NewListHostsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -79,7 +79,7 @@ func ExampleMonitorsClient_ListHosts() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListHosts("<resource-group-name>",
+	pager := client.NewListHostsPager("<resource-group-name>",
 		"<monitor-name>",
 		nil)
 	for pager.More() {
@@ -96,7 +96,7 @@ func ExampleMonitorsClient_ListHosts() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/LinkedResources_List.json
-func ExampleMonitorsClient_ListLinkedResources() {
+func ExampleMonitorsClient_NewListLinkedResourcesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -108,7 +108,7 @@ func ExampleMonitorsClient_ListLinkedResources() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListLinkedResources("<resource-group-name>",
+	pager := client.NewListLinkedResourcesPager("<resource-group-name>",
 		"<monitor-name>",
 		nil)
 	for pager.More() {
@@ -125,7 +125,7 @@ func ExampleMonitorsClient_ListLinkedResources() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/MonitoredResources_List.json
-func ExampleMonitorsClient_ListMonitoredResources() {
+func ExampleMonitorsClient_NewListMonitoredResourcesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -137,7 +137,7 @@ func ExampleMonitorsClient_ListMonitoredResources() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListMonitoredResources("<resource-group-name>",
+	pager := client.NewListMonitoredResourcesPager("<resource-group-name>",
 		"<monitor-name>",
 		nil)
 	for pager.More() {
@@ -154,7 +154,7 @@ func ExampleMonitorsClient_ListMonitoredResources() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/Monitors_List.json
-func ExampleMonitorsClient_List() {
+func ExampleMonitorsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -166,7 +166,7 @@ func ExampleMonitorsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(nil)
+	pager := client.NewListPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -181,7 +181,7 @@ func ExampleMonitorsClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/Monitors_ListByResourceGroup.json
-func ExampleMonitorsClient_ListByResourceGroup() {
+func ExampleMonitorsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -193,7 +193,7 @@ func ExampleMonitorsClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

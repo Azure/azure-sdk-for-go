@@ -246,13 +246,13 @@ func (client *VNetPeeringClient) getHandleResponse(resp *http.Response) (VNetPee
 	return result, nil
 }
 
-// ListByWorkspace - Lists the workspace vNet Peerings.
+// NewListByWorkspacePager - Lists the workspace vNet Peerings.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - VNetPeeringClientListByWorkspaceOptions contains the optional parameters for the VNetPeeringClient.ListByWorkspace
 // method.
-func (client *VNetPeeringClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *VNetPeeringClientListByWorkspaceOptions) *runtime.Pager[VNetPeeringClientListByWorkspaceResponse] {
+func (client *VNetPeeringClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *VNetPeeringClientListByWorkspaceOptions) *runtime.Pager[VNetPeeringClientListByWorkspaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VNetPeeringClientListByWorkspaceResponse]{
 		More: func(page VNetPeeringClientListByWorkspaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

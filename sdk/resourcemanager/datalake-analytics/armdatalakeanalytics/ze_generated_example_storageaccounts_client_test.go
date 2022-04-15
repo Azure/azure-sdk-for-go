@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datalake-analytics/resource-manager/Microsoft.DataLakeAnalytics/preview/2019-11-01-preview/examples/StorageAccounts_ListByAccount.json
-func ExampleStorageAccountsClient_ListByAccount() {
+func ExampleStorageAccountsClient_NewListByAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleStorageAccountsClient_ListByAccount() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByAccount("<resource-group-name>",
+	pager := client.NewListByAccountPager("<resource-group-name>",
 		"<account-name>",
 		&armdatalakeanalytics.StorageAccountsClientListByAccountOptions{Filter: to.Ptr("<filter>"),
 			Top:     to.Ptr[int32](1),
@@ -163,7 +163,7 @@ func ExampleStorageAccountsClient_Delete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datalake-analytics/resource-manager/Microsoft.DataLakeAnalytics/preview/2019-11-01-preview/examples/StorageAccounts_ListStorageContainers.json
-func ExampleStorageAccountsClient_ListStorageContainers() {
+func ExampleStorageAccountsClient_NewListStorageContainersPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -175,7 +175,7 @@ func ExampleStorageAccountsClient_ListStorageContainers() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListStorageContainers("<resource-group-name>",
+	pager := client.NewListStorageContainersPager("<resource-group-name>",
 		"<account-name>",
 		"<storage-account-name>",
 		nil)
@@ -220,7 +220,7 @@ func ExampleStorageAccountsClient_GetStorageContainer() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datalake-analytics/resource-manager/Microsoft.DataLakeAnalytics/preview/2019-11-01-preview/examples/StorageAccounts_ListSasTokens.json
-func ExampleStorageAccountsClient_ListSasTokens() {
+func ExampleStorageAccountsClient_NewListSasTokensPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -232,7 +232,7 @@ func ExampleStorageAccountsClient_ListSasTokens() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListSasTokens("<resource-group-name>",
+	pager := client.NewListSasTokensPager("<resource-group-name>",
 		"<account-name>",
 		"<storage-account-name>",
 		"<container-name>",

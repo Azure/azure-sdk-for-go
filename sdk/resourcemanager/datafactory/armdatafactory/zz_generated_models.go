@@ -988,6 +988,42 @@ type AmazonS3ReadSettings struct {
 	WildcardFolderPath interface{} `json:"wildcardFolderPath,omitempty"`
 }
 
+// AppFiguresLinkedService - Linked service for AppFigures.
+type AppFiguresLinkedService struct {
+	// REQUIRED; Type of linked service.
+	Type *string `json:"type,omitempty"`
+
+	// REQUIRED; AppFigures linked service properties.
+	TypeProperties *AppFiguresLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]interface{}
+
+	// List of tags that can be used for describing the linked service.
+	Annotations []interface{} `json:"annotations,omitempty"`
+
+	// The integration runtime reference.
+	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
+
+	// Linked service description.
+	Description *string `json:"description,omitempty"`
+
+	// Parameters for linked service.
+	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// AppFiguresLinkedServiceTypeProperties - AppFigures linked service type properties.
+type AppFiguresLinkedServiceTypeProperties struct {
+	// REQUIRED; The client key for the AppFigures source.
+	ClientKey SecretBaseClassification `json:"clientKey,omitempty"`
+
+	// REQUIRED; The password of the AppFigures source.
+	Password SecretBaseClassification `json:"password,omitempty"`
+
+	// REQUIRED; The username of the Appfigures source.
+	UserName interface{} `json:"userName,omitempty"`
+}
+
 // AppendVariableActivity - Append value for a Variable of type Array.
 type AppendVariableActivity struct {
 	// REQUIRED; Activity name.
@@ -1025,6 +1061,40 @@ type AppendVariableActivityTypeProperties struct {
 type ArmIDWrapper struct {
 	// READ-ONLY
 	ID *string `json:"id,omitempty" azure:"ro"`
+}
+
+// AsanaLinkedService - Linked service for Asana.
+type AsanaLinkedService struct {
+	// REQUIRED; Type of linked service.
+	Type *string `json:"type,omitempty"`
+
+	// REQUIRED; Asana linked service properties.
+	TypeProperties *AsanaLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]interface{}
+
+	// List of tags that can be used for describing the linked service.
+	Annotations []interface{} `json:"annotations,omitempty"`
+
+	// The integration runtime reference.
+	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
+
+	// Linked service description.
+	Description *string `json:"description,omitempty"`
+
+	// Parameters for linked service.
+	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// AsanaLinkedServiceTypeProperties - Asana linked service type properties.
+type AsanaLinkedServiceTypeProperties struct {
+	// REQUIRED; The api token for the Asana source.
+	APIToken SecretBaseClassification `json:"apiToken,omitempty"`
+
+	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
+	// Type: string (or Expression with resultType string).
+	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
 }
 
 // AvroDataset - Avro dataset.
@@ -6697,6 +6767,40 @@ type DatasetsClientListByFactoryOptions struct {
 	// placeholder for future optional parameters
 }
 
+// DataworldLinkedService - Linked service for Dataworld.
+type DataworldLinkedService struct {
+	// REQUIRED; Type of linked service.
+	Type *string `json:"type,omitempty"`
+
+	// REQUIRED; Dataworld linked service properties.
+	TypeProperties *DataworldLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]interface{}
+
+	// List of tags that can be used for describing the linked service.
+	Annotations []interface{} `json:"annotations,omitempty"`
+
+	// The integration runtime reference.
+	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
+
+	// Linked service description.
+	Description *string `json:"description,omitempty"`
+
+	// Parameters for linked service.
+	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// DataworldLinkedServiceTypeProperties - Dataworld linked service type properties.
+type DataworldLinkedServiceTypeProperties struct {
+	// REQUIRED; The api token for the Dataworld source.
+	APIToken SecretBaseClassification `json:"apiToken,omitempty"`
+
+	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
+	// Type: string (or Expression with resultType string).
+	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+}
+
 // Db2LinkedService - Linked service for DB2 data source.
 type Db2LinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -12278,27 +12382,28 @@ type LinkedIntegrationRuntimeType struct {
 // Call the interface's GetLinkedService() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *AmazonMWSLinkedService, *AmazonRdsForOracleLinkedService, *AmazonRdsForSQLServerLinkedService, *AmazonRedshiftLinkedService,
-// - *AmazonS3CompatibleLinkedService, *AmazonS3LinkedService, *AzureBatchLinkedService, *AzureBlobFSLinkedService, *AzureBlobStorageLinkedService,
-// - *AzureDataExplorerLinkedService, *AzureDataLakeAnalyticsLinkedService, *AzureDataLakeStoreLinkedService, *AzureDatabricksDeltaLakeLinkedService,
-// - *AzureDatabricksLinkedService, *AzureFileStorageLinkedService, *AzureFunctionLinkedService, *AzureKeyVaultLinkedService,
-// - *AzureMLLinkedService, *AzureMLServiceLinkedService, *AzureMariaDBLinkedService, *AzureMySQLLinkedService, *AzurePostgreSQLLinkedService,
-// - *AzureSQLDWLinkedService, *AzureSQLDatabaseLinkedService, *AzureSQLMILinkedService, *AzureSearchLinkedService, *AzureStorageLinkedService,
-// - *AzureTableStorageLinkedService, *CassandraLinkedService, *CommonDataServiceForAppsLinkedService, *ConcurLinkedService,
-// - *CosmosDbLinkedService, *CosmosDbMongoDbAPILinkedService, *CouchbaseLinkedService, *CustomDataSourceLinkedService, *Db2LinkedService,
-// - *DrillLinkedService, *DynamicsAXLinkedService, *DynamicsCrmLinkedService, *DynamicsLinkedService, *EloquaLinkedService,
-// - *FileServerLinkedService, *FtpServerLinkedService, *GoogleAdWordsLinkedService, *GoogleBigQueryLinkedService, *GoogleCloudStorageLinkedService,
-// - *GreenplumLinkedService, *HBaseLinkedService, *HDInsightLinkedService, *HDInsightOnDemandLinkedService, *HTTPLinkedService,
-// - *HdfsLinkedService, *HiveLinkedService, *HubspotLinkedService, *ImpalaLinkedService, *InformixLinkedService, *JiraLinkedService,
-// - *LinkedService, *MagentoLinkedService, *MariaDBLinkedService, *MarketoLinkedService, *MicrosoftAccessLinkedService, *MongoDbAtlasLinkedService,
-// - *MongoDbLinkedService, *MongoDbV2LinkedService, *MySQLLinkedService, *NetezzaLinkedService, *ODataLinkedService, *OdbcLinkedService,
-// - *Office365LinkedService, *OracleCloudStorageLinkedService, *OracleLinkedService, *OracleServiceCloudLinkedService, *PaypalLinkedService,
-// - *PhoenixLinkedService, *PostgreSQLLinkedService, *PrestoLinkedService, *QuickBooksLinkedService, *QuickbaseLinkedService,
-// - *ResponsysLinkedService, *RestServiceLinkedService, *SQLServerLinkedService, *SalesforceLinkedService, *SalesforceMarketingCloudLinkedService,
-// - *SalesforceServiceCloudLinkedService, *SapBWLinkedService, *SapCloudForCustomerLinkedService, *SapEccLinkedService, *SapHanaLinkedService,
-// - *SapOpenHubLinkedService, *SapTableLinkedService, *ServiceNowLinkedService, *SftpServerLinkedService, *SharePointOnlineListLinkedService,
-// - *ShopifyLinkedService, *SmartsheetLinkedService, *SnowflakeLinkedService, *SparkLinkedService, *SquareLinkedService,
-// - *SybaseLinkedService, *TeamDeskLinkedService, *TeradataLinkedService, *VerticaLinkedService, *WebLinkedService, *XeroLinkedService,
-// - *ZendeskLinkedService, *ZohoLinkedService
+// - *AmazonS3CompatibleLinkedService, *AmazonS3LinkedService, *AppFiguresLinkedService, *AsanaLinkedService, *AzureBatchLinkedService,
+// - *AzureBlobFSLinkedService, *AzureBlobStorageLinkedService, *AzureDataExplorerLinkedService, *AzureDataLakeAnalyticsLinkedService,
+// - *AzureDataLakeStoreLinkedService, *AzureDatabricksDeltaLakeLinkedService, *AzureDatabricksLinkedService, *AzureFileStorageLinkedService,
+// - *AzureFunctionLinkedService, *AzureKeyVaultLinkedService, *AzureMLLinkedService, *AzureMLServiceLinkedService, *AzureMariaDBLinkedService,
+// - *AzureMySQLLinkedService, *AzurePostgreSQLLinkedService, *AzureSQLDWLinkedService, *AzureSQLDatabaseLinkedService, *AzureSQLMILinkedService,
+// - *AzureSearchLinkedService, *AzureStorageLinkedService, *AzureTableStorageLinkedService, *CassandraLinkedService, *CommonDataServiceForAppsLinkedService,
+// - *ConcurLinkedService, *CosmosDbLinkedService, *CosmosDbMongoDbAPILinkedService, *CouchbaseLinkedService, *CustomDataSourceLinkedService,
+// - *DataworldLinkedService, *Db2LinkedService, *DrillLinkedService, *DynamicsAXLinkedService, *DynamicsCrmLinkedService,
+// - *DynamicsLinkedService, *EloquaLinkedService, *FileServerLinkedService, *FtpServerLinkedService, *GoogleAdWordsLinkedService,
+// - *GoogleBigQueryLinkedService, *GoogleCloudStorageLinkedService, *GreenplumLinkedService, *HBaseLinkedService, *HDInsightLinkedService,
+// - *HDInsightOnDemandLinkedService, *HTTPLinkedService, *HdfsLinkedService, *HiveLinkedService, *HubspotLinkedService, *ImpalaLinkedService,
+// - *InformixLinkedService, *JiraLinkedService, *LinkedService, *MagentoLinkedService, *MariaDBLinkedService, *MarketoLinkedService,
+// - *MicrosoftAccessLinkedService, *MongoDbAtlasLinkedService, *MongoDbLinkedService, *MongoDbV2LinkedService, *MySQLLinkedService,
+// - *NetezzaLinkedService, *ODataLinkedService, *OdbcLinkedService, *Office365LinkedService, *OracleCloudStorageLinkedService,
+// - *OracleLinkedService, *OracleServiceCloudLinkedService, *PaypalLinkedService, *PhoenixLinkedService, *PostgreSQLLinkedService,
+// - *PrestoLinkedService, *QuickBooksLinkedService, *QuickbaseLinkedService, *ResponsysLinkedService, *RestServiceLinkedService,
+// - *SQLServerLinkedService, *SalesforceLinkedService, *SalesforceMarketingCloudLinkedService, *SalesforceServiceCloudLinkedService,
+// - *SapBWLinkedService, *SapCloudForCustomerLinkedService, *SapEccLinkedService, *SapHanaLinkedService, *SapOpenHubLinkedService,
+// - *SapTableLinkedService, *ServiceNowLinkedService, *SftpServerLinkedService, *SharePointOnlineListLinkedService, *ShopifyLinkedService,
+// - *SmartsheetLinkedService, *SnowflakeLinkedService, *SparkLinkedService, *SquareLinkedService, *SybaseLinkedService, *TeamDeskLinkedService,
+// - *TeradataLinkedService, *TwilioLinkedService, *VerticaLinkedService, *WebLinkedService, *XeroLinkedService, *ZendeskLinkedService,
+// - *ZohoLinkedService
 type LinkedServiceClassification interface {
 	// GetLinkedService returns the LinkedService content of the underlying type.
 	GetLinkedService() *LinkedService
@@ -21572,6 +21677,39 @@ type TumblingWindowTriggerTypeProperties struct {
 
 	// Retry policy that will be applied for failed pipeline runs.
 	RetryPolicy *RetryPolicy `json:"retryPolicy,omitempty"`
+}
+
+// TwilioLinkedService - Linked service for Twilio.
+type TwilioLinkedService struct {
+	// REQUIRED; Type of linked service.
+	Type *string `json:"type,omitempty"`
+
+	// REQUIRED; Twilio linked service properties.
+	TypeProperties *TwilioLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]interface{}
+
+	// List of tags that can be used for describing the linked service.
+	Annotations []interface{} `json:"annotations,omitempty"`
+
+	// The integration runtime reference.
+	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
+
+	// Linked service description.
+	Description *string `json:"description,omitempty"`
+
+	// Parameters for linked service.
+	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// TwilioLinkedServiceTypeProperties - Twilio linked service type properties.
+type TwilioLinkedServiceTypeProperties struct {
+	// REQUIRED; The auth token of Twilio service.
+	Password SecretBaseClassification `json:"password,omitempty"`
+
+	// REQUIRED; The Account SID of Twilio service.
+	UserName interface{} `json:"userName,omitempty"`
 }
 
 // TypeConversionSettings - Type conversion settings

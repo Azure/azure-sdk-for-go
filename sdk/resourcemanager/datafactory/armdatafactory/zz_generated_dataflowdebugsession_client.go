@@ -283,13 +283,13 @@ func (client *DataFlowDebugSessionClient) executeCommandCreateRequest(ctx contex
 	return req, runtime.MarshalAsJSON(req, request)
 }
 
-// QueryByFactory - Query all active data flow debug sessions.
+// NewQueryByFactoryPager - Query all active data flow debug sessions.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // options - DataFlowDebugSessionClientQueryByFactoryOptions contains the optional parameters for the DataFlowDebugSessionClient.QueryByFactory
 // method.
-func (client *DataFlowDebugSessionClient) QueryByFactory(resourceGroupName string, factoryName string, options *DataFlowDebugSessionClientQueryByFactoryOptions) *runtime.Pager[DataFlowDebugSessionClientQueryByFactoryResponse] {
+func (client *DataFlowDebugSessionClient) NewQueryByFactoryPager(resourceGroupName string, factoryName string, options *DataFlowDebugSessionClientQueryByFactoryOptions) *runtime.Pager[DataFlowDebugSessionClientQueryByFactoryResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DataFlowDebugSessionClientQueryByFactoryResponse]{
 		More: func(page DataFlowDebugSessionClientQueryByFactoryResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

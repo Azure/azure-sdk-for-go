@@ -224,14 +224,14 @@ func (client *DataLakeStoreAccountsClient) getHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListByAccount - Gets the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account. The
-// response includes a link to the next page, if any.
+// NewListByAccountPager - Gets the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account.
+// The response includes a link to the next page, if any.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Analytics account.
 // options - DataLakeStoreAccountsClientListByAccountOptions contains the optional parameters for the DataLakeStoreAccountsClient.ListByAccount
 // method.
-func (client *DataLakeStoreAccountsClient) ListByAccount(resourceGroupName string, accountName string, options *DataLakeStoreAccountsClientListByAccountOptions) *runtime.Pager[DataLakeStoreAccountsClientListByAccountResponse] {
+func (client *DataLakeStoreAccountsClient) NewListByAccountPager(resourceGroupName string, accountName string, options *DataLakeStoreAccountsClientListByAccountOptions) *runtime.Pager[DataLakeStoreAccountsClientListByAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DataLakeStoreAccountsClientListByAccountResponse]{
 		More: func(page DataLakeStoreAccountsClientListByAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

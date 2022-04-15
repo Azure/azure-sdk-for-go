@@ -233,13 +233,13 @@ func (client *LinkedServicesClient) getHandleResponse(resp *http.Response) (Link
 	return result, nil
 }
 
-// ListByFactory - Lists linked services.
+// NewListByFactoryPager - Lists linked services.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // options - LinkedServicesClientListByFactoryOptions contains the optional parameters for the LinkedServicesClient.ListByFactory
 // method.
-func (client *LinkedServicesClient) ListByFactory(resourceGroupName string, factoryName string, options *LinkedServicesClientListByFactoryOptions) *runtime.Pager[LinkedServicesClientListByFactoryResponse] {
+func (client *LinkedServicesClient) NewListByFactoryPager(resourceGroupName string, factoryName string, options *LinkedServicesClientListByFactoryOptions) *runtime.Pager[LinkedServicesClientListByFactoryResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LinkedServicesClientListByFactoryResponse]{
 		More: func(page LinkedServicesClientListByFactoryResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2021-12-01/examples/JobsList.json
-func ExampleJobsClient_List() {
+func ExampleJobsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleJobsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(&armdatabox.JobsClientListOptions{SkipToken: nil})
+	pager := client.NewListPager(&armdatabox.JobsClientListOptions{SkipToken: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -76,7 +76,7 @@ func ExampleJobsClient_MarkDevicesShipped() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2021-12-01/examples/JobsListByResourceGroup.json
-func ExampleJobsClient_ListByResourceGroup() {
+func ExampleJobsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -88,7 +88,7 @@ func ExampleJobsClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		&armdatabox.JobsClientListByResourceGroupOptions{SkipToken: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -334,7 +334,7 @@ func ExampleJobsClient_Cancel() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2021-12-01/examples/JobsListCredentials.json
-func ExampleJobsClient_ListCredentials() {
+func ExampleJobsClient_NewListCredentialsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -346,7 +346,7 @@ func ExampleJobsClient_ListCredentials() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListCredentials("<resource-group-name>",
+	pager := client.NewListCredentialsPager("<resource-group-name>",
 		"<job-name>",
 		nil)
 	for pager.More() {

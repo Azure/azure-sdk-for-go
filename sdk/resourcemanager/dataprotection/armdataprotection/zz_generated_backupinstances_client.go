@@ -378,12 +378,12 @@ func (client *BackupInstancesClient) getBackupInstanceOperationResultHandleRespo
 	return result, nil
 }
 
-// List - Gets a backup instances belonging to a backup vault
+// NewListPager - Gets a backup instances belonging to a backup vault
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group where the backup vault is present.
 // vaultName - The name of the backup vault.
 // options - BackupInstancesClientListOptions contains the optional parameters for the BackupInstancesClient.List method.
-func (client *BackupInstancesClient) List(resourceGroupName string, vaultName string, options *BackupInstancesClientListOptions) *runtime.Pager[BackupInstancesClientListResponse] {
+func (client *BackupInstancesClient) NewListPager(resourceGroupName string, vaultName string, options *BackupInstancesClientListOptions) *runtime.Pager[BackupInstancesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BackupInstancesClientListResponse]{
 		More: func(page BackupInstancesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

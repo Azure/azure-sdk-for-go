@@ -247,13 +247,13 @@ func (client *UsersClient) getHandleResponse(resp *http.Response) (UsersClientGe
 	return result, nil
 }
 
-// ListByDataBoxEdgeDevice - Gets all the users registered on a Data Box Edge/Data Box Gateway device.
+// NewListByDataBoxEdgeDevicePager - Gets all the users registered on a Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
 // deviceName - The device name.
 // resourceGroupName - The resource group name.
 // options - UsersClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the UsersClient.ListByDataBoxEdgeDevice
 // method.
-func (client *UsersClient) ListByDataBoxEdgeDevice(deviceName string, resourceGroupName string, options *UsersClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[UsersClientListByDataBoxEdgeDeviceResponse] {
+func (client *UsersClient) NewListByDataBoxEdgeDevicePager(deviceName string, resourceGroupName string, options *UsersClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[UsersClientListByDataBoxEdgeDeviceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[UsersClientListByDataBoxEdgeDeviceResponse]{
 		More: func(page UsersClientListByDataBoxEdgeDeviceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

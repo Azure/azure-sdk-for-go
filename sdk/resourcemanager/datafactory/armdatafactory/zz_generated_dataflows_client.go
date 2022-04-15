@@ -233,12 +233,12 @@ func (client *DataFlowsClient) getHandleResponse(resp *http.Response) (DataFlows
 	return result, nil
 }
 
-// ListByFactory - Lists data flows.
+// NewListByFactoryPager - Lists data flows.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // options - DataFlowsClientListByFactoryOptions contains the optional parameters for the DataFlowsClient.ListByFactory method.
-func (client *DataFlowsClient) ListByFactory(resourceGroupName string, factoryName string, options *DataFlowsClientListByFactoryOptions) *runtime.Pager[DataFlowsClientListByFactoryResponse] {
+func (client *DataFlowsClient) NewListByFactoryPager(resourceGroupName string, factoryName string, options *DataFlowsClientListByFactoryOptions) *runtime.Pager[DataFlowsClientListByFactoryResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DataFlowsClientListByFactoryResponse]{
 		More: func(page DataFlowsClientListByFactoryResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

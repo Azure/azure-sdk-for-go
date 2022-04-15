@@ -41,7 +41,7 @@ func ExampleLocationsClient_GetCapability() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datalake-store/resource-manager/Microsoft.DataLakeStore/stable/2016-11-01/examples/Locations_GetUsage.json
-func ExampleLocationsClient_GetUsage() {
+func ExampleLocationsClient_NewGetUsagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -53,7 +53,7 @@ func ExampleLocationsClient_GetUsage() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.GetUsage("<location>",
+	pager := client.NewGetUsagePager("<location>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

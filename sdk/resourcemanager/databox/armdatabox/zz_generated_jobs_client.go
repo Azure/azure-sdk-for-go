@@ -343,10 +343,10 @@ func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsClientGetR
 	return result, nil
 }
 
-// List - Lists all the jobs available under the subscription.
+// NewListPager - Lists all the jobs available under the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - JobsClientListOptions contains the optional parameters for the JobsClient.List method.
-func (client *JobsClient) List(options *JobsClientListOptions) *runtime.Pager[JobsClientListResponse] {
+func (client *JobsClient) NewListPager(options *JobsClientListOptions) *runtime.Pager[JobsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[JobsClientListResponse]{
 		More: func(page JobsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -404,12 +404,12 @@ func (client *JobsClient) listHandleResponse(resp *http.Response) (JobsClientLis
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all the jobs available under the given resource group.
+// NewListByResourceGroupPager - Lists all the jobs available under the given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The Resource Group Name
 // options - JobsClientListByResourceGroupOptions contains the optional parameters for the JobsClient.ListByResourceGroup
 // method.
-func (client *JobsClient) ListByResourceGroup(resourceGroupName string, options *JobsClientListByResourceGroupOptions) *runtime.Pager[JobsClientListByResourceGroupResponse] {
+func (client *JobsClient) NewListByResourceGroupPager(resourceGroupName string, options *JobsClientListByResourceGroupOptions) *runtime.Pager[JobsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[JobsClientListByResourceGroupResponse]{
 		More: func(page JobsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -471,13 +471,13 @@ func (client *JobsClient) listByResourceGroupHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListCredentials - This method gets the unencrypted secrets related to the job.
+// NewListCredentialsPager - This method gets the unencrypted secrets related to the job.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The Resource Group Name
 // jobName - The name of the job Resource within the specified resource group. job names must be between 3 and 24 characters
 // in length and use any alphanumeric and underscore only
 // options - JobsClientListCredentialsOptions contains the optional parameters for the JobsClient.ListCredentials method.
-func (client *JobsClient) ListCredentials(resourceGroupName string, jobName string, options *JobsClientListCredentialsOptions) *runtime.Pager[JobsClientListCredentialsResponse] {
+func (client *JobsClient) NewListCredentialsPager(resourceGroupName string, jobName string, options *JobsClientListCredentialsOptions) *runtime.Pager[JobsClientListCredentialsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[JobsClientListCredentialsResponse]{
 		More: func(page JobsClientListCredentialsResponse) bool {
 			return false

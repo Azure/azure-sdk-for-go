@@ -248,13 +248,13 @@ func (client *StorageAccountCredentialsClient) getHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListByDataBoxEdgeDevice - Gets all the storage account credentials in a Data Box Edge/Data Box Gateway device.
+// NewListByDataBoxEdgeDevicePager - Gets all the storage account credentials in a Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
 // deviceName - The device name.
 // resourceGroupName - The resource group name.
 // options - StorageAccountCredentialsClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the StorageAccountCredentialsClient.ListByDataBoxEdgeDevice
 // method.
-func (client *StorageAccountCredentialsClient) ListByDataBoxEdgeDevice(deviceName string, resourceGroupName string, options *StorageAccountCredentialsClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[StorageAccountCredentialsClientListByDataBoxEdgeDeviceResponse] {
+func (client *StorageAccountCredentialsClient) NewListByDataBoxEdgeDevicePager(deviceName string, resourceGroupName string, options *StorageAccountCredentialsClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[StorageAccountCredentialsClientListByDataBoxEdgeDeviceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[StorageAccountCredentialsClientListByDataBoxEdgeDeviceResponse]{
 		More: func(page StorageAccountCredentialsClientListByDataBoxEdgeDeviceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

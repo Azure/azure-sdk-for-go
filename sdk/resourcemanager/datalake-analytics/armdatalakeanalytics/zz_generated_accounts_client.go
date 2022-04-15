@@ -286,11 +286,11 @@ func (client *AccountsClient) getHandleResponse(resp *http.Response) (AccountsCl
 	return result, nil
 }
 
-// List - Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link
-// to the next page, if any.
+// NewListPager - Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes
+// a link to the next page, if any.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AccountsClientListOptions contains the optional parameters for the AccountsClient.List method.
-func (client *AccountsClient) List(options *AccountsClientListOptions) *runtime.Pager[AccountsClientListResponse] {
+func (client *AccountsClient) NewListPager(options *AccountsClientListOptions) *runtime.Pager[AccountsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccountsClientListResponse]{
 		More: func(page AccountsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -363,13 +363,13 @@ func (client *AccountsClient) listHandleResponse(resp *http.Response) (AccountsC
 	return result, nil
 }
 
-// ListByResourceGroup - Gets the first page of Data Lake Analytics accounts, if any, within a specific resource group. This
-// includes a link to the next page, if any.
+// NewListByResourceGroupPager - Gets the first page of Data Lake Analytics accounts, if any, within a specific resource group.
+// This includes a link to the next page, if any.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the Azure resource group.
 // options - AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.ListByResourceGroup
 // method.
-func (client *AccountsClient) ListByResourceGroup(resourceGroupName string, options *AccountsClientListByResourceGroupOptions) *runtime.Pager[AccountsClientListByResourceGroupResponse] {
+func (client *AccountsClient) NewListByResourceGroupPager(resourceGroupName string, options *AccountsClientListByResourceGroupOptions) *runtime.Pager[AccountsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccountsClientListByResourceGroupResponse]{
 		More: func(page AccountsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

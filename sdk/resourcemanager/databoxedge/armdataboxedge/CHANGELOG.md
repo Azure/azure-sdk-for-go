@@ -1,5 +1,47 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*AvailableSKUsClient.List` has been removed
+- Function `*ContainersClient.ListByStorageAccount` has been removed
+- Function `*RolesClient.ListByDataBoxEdgeDevice` has been removed
+- Function `*OrdersClient.ListByDataBoxEdgeDevice` has been removed
+- Function `*DevicesClient.ListBySubscription` has been removed
+- Function `*NodesClient.ListByDataBoxEdgeDevice` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*SharesClient.ListByDataBoxEdgeDevice` has been removed
+- Function `*DevicesClient.ListByResourceGroup` has been removed
+- Function `*UsersClient.ListByDataBoxEdgeDevice` has been removed
+- Function `*AlertsClient.ListByDataBoxEdgeDevice` has been removed
+- Function `*StorageAccountCredentialsClient.ListByDataBoxEdgeDevice` has been removed
+- Function `*AddonsClient.ListByRole` has been removed
+- Function `*MonitoringConfigClient.List` has been removed
+- Function `*StorageAccountsClient.ListByDataBoxEdgeDevice` has been removed
+- Function `*BandwidthSchedulesClient.ListByDataBoxEdgeDevice` has been removed
+- Function `*TriggersClient.ListByDataBoxEdgeDevice` has been removed
+
+### Features Added
+
+- New function `*DevicesClient.NewListByResourceGroupPager(string, *DevicesClientListByResourceGroupOptions) *runtime.Pager[DevicesClientListByResourceGroupResponse]`
+- New function `*NodesClient.NewListByDataBoxEdgeDevicePager(string, string, *NodesClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[NodesClientListByDataBoxEdgeDeviceResponse]`
+- New function `*StorageAccountsClient.NewListByDataBoxEdgeDevicePager(string, string, *StorageAccountsClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[StorageAccountsClientListByDataBoxEdgeDeviceResponse]`
+- New function `*TriggersClient.NewListByDataBoxEdgeDevicePager(string, string, *TriggersClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[TriggersClientListByDataBoxEdgeDeviceResponse]`
+- New function `*DevicesClient.NewListBySubscriptionPager(*DevicesClientListBySubscriptionOptions) *runtime.Pager[DevicesClientListBySubscriptionResponse]`
+- New function `*UsersClient.NewListByDataBoxEdgeDevicePager(string, string, *UsersClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[UsersClientListByDataBoxEdgeDeviceResponse]`
+- New function `*AvailableSKUsClient.NewListPager(*AvailableSKUsClientListOptions) *runtime.Pager[AvailableSKUsClientListResponse]`
+- New function `*StorageAccountCredentialsClient.NewListByDataBoxEdgeDevicePager(string, string, *StorageAccountCredentialsClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[StorageAccountCredentialsClientListByDataBoxEdgeDeviceResponse]`
+- New function `*MonitoringConfigClient.NewListPager(string, string, string, *MonitoringConfigClientListOptions) *runtime.Pager[MonitoringConfigClientListResponse]`
+- New function `*OrdersClient.NewListByDataBoxEdgeDevicePager(string, string, *OrdersClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[OrdersClientListByDataBoxEdgeDeviceResponse]`
+- New function `*RolesClient.NewListByDataBoxEdgeDevicePager(string, string, *RolesClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[RolesClientListByDataBoxEdgeDeviceResponse]`
+- New function `*AlertsClient.NewListByDataBoxEdgeDevicePager(string, string, *AlertsClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[AlertsClientListByDataBoxEdgeDeviceResponse]`
+- New function `*ContainersClient.NewListByStorageAccountPager(string, string, string, *ContainersClientListByStorageAccountOptions) *runtime.Pager[ContainersClientListByStorageAccountResponse]`
+- New function `*AddonsClient.NewListByRolePager(string, string, string, *AddonsClientListByRoleOptions) *runtime.Pager[AddonsClientListByRoleResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*BandwidthSchedulesClient.NewListByDataBoxEdgeDevicePager(string, string, *BandwidthSchedulesClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[BandwidthSchedulesClientListByDataBoxEdgeDeviceResponse]`
+- New function `*SharesClient.NewListByDataBoxEdgeDevicePager(string, string, *SharesClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[SharesClientListByDataBoxEdgeDeviceResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

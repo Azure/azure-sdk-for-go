@@ -54,13 +54,13 @@ func NewNodesClient(subscriptionID string, credential azcore.TokenCredential, op
 	return client, nil
 }
 
-// ListByDataBoxEdgeDevice - Gets all the nodes currently configured under this Data Box Edge device
+// NewListByDataBoxEdgeDevicePager - Gets all the nodes currently configured under this Data Box Edge device
 // If the operation fails it returns an *azcore.ResponseError type.
 // deviceName - The device name.
 // resourceGroupName - The resource group name.
 // options - NodesClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the NodesClient.ListByDataBoxEdgeDevice
 // method.
-func (client *NodesClient) ListByDataBoxEdgeDevice(deviceName string, resourceGroupName string, options *NodesClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[NodesClientListByDataBoxEdgeDeviceResponse] {
+func (client *NodesClient) NewListByDataBoxEdgeDevicePager(deviceName string, resourceGroupName string, options *NodesClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[NodesClientListByDataBoxEdgeDeviceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[NodesClientListByDataBoxEdgeDeviceResponse]{
 		More: func(page NodesClientListByDataBoxEdgeDeviceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

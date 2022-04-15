@@ -177,12 +177,12 @@ func (client *TagRulesClient) getHandleResponse(resp *http.Response) (TagRulesCl
 	return result, nil
 }
 
-// List - List the tag rules for a given monitor resource.
+// NewListPager - List the tag rules for a given monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // options - TagRulesClientListOptions contains the optional parameters for the TagRulesClient.List method.
-func (client *TagRulesClient) List(resourceGroupName string, monitorName string, options *TagRulesClientListOptions) *runtime.Pager[TagRulesClientListResponse] {
+func (client *TagRulesClient) NewListPager(resourceGroupName string, monitorName string, options *TagRulesClientListOptions) *runtime.Pager[TagRulesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TagRulesClientListResponse]{
 		More: func(page TagRulesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -54,15 +54,15 @@ func NewServiceClient(subscriptionID string, credential azcore.TokenCredential, 
 	return client, nil
 }
 
-// ListAvailableSKUsByResourceGroup - This method provides the list of available skus for the given subscription, resource
-// group and location.
+// NewListAvailableSKUsByResourceGroupPager - This method provides the list of available skus for the given subscription,
+// resource group and location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The Resource Group Name
 // location - The location of the resource
 // availableSKURequest - Filters for showing the available skus.
 // options - ServiceClientListAvailableSKUsByResourceGroupOptions contains the optional parameters for the ServiceClient.ListAvailableSKUsByResourceGroup
 // method.
-func (client *ServiceClient) ListAvailableSKUsByResourceGroup(resourceGroupName string, location string, availableSKURequest AvailableSKURequest, options *ServiceClientListAvailableSKUsByResourceGroupOptions) *runtime.Pager[ServiceClientListAvailableSKUsByResourceGroupResponse] {
+func (client *ServiceClient) NewListAvailableSKUsByResourceGroupPager(resourceGroupName string, location string, availableSKURequest AvailableSKURequest, options *ServiceClientListAvailableSKUsByResourceGroupOptions) *runtime.Pager[ServiceClientListAvailableSKUsByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServiceClientListAvailableSKUsByResourceGroupResponse]{
 		More: func(page ServiceClientListAvailableSKUsByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -384,10 +384,10 @@ func (client *FactoriesClient) getGitHubAccessTokenHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// List - Lists factories under the specified subscription.
+// NewListPager - Lists factories under the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - FactoriesClientListOptions contains the optional parameters for the FactoriesClient.List method.
-func (client *FactoriesClient) List(options *FactoriesClientListOptions) *runtime.Pager[FactoriesClientListResponse] {
+func (client *FactoriesClient) NewListPager(options *FactoriesClientListOptions) *runtime.Pager[FactoriesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[FactoriesClientListResponse]{
 		More: func(page FactoriesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -442,12 +442,12 @@ func (client *FactoriesClient) listHandleResponse(resp *http.Response) (Factorie
 	return result, nil
 }
 
-// ListByResourceGroup - Lists factories.
+// NewListByResourceGroupPager - Lists factories.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // options - FactoriesClientListByResourceGroupOptions contains the optional parameters for the FactoriesClient.ListByResourceGroup
 // method.
-func (client *FactoriesClient) ListByResourceGroup(resourceGroupName string, options *FactoriesClientListByResourceGroupOptions) *runtime.Pager[FactoriesClientListByResourceGroupResponse] {
+func (client *FactoriesClient) NewListByResourceGroupPager(resourceGroupName string, options *FactoriesClientListByResourceGroupOptions) *runtime.Pager[FactoriesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[FactoriesClientListByResourceGroupResponse]{
 		More: func(page FactoriesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

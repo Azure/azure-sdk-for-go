@@ -1,5 +1,25 @@
 # Release History
 
+## 0.5.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*PrivateEndpointConnectionsClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*PrivateLinkResourcesClient.List` has been removed
+- Function `*VNetPeeringClient.ListByWorkspace` has been removed
+- Function `*WorkspacesClient.ListByResourceGroup` has been removed
+- Function `*WorkspacesClient.ListBySubscription` has been removed
+
+### Features Added
+
+- New function `*PrivateLinkResourcesClient.NewListPager(string, string, *PrivateLinkResourcesClientListOptions) *runtime.Pager[PrivateLinkResourcesClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*PrivateEndpointConnectionsClient.NewListPager(string, string, *PrivateEndpointConnectionsClientListOptions) *runtime.Pager[PrivateEndpointConnectionsClientListResponse]`
+- New function `*VNetPeeringClient.NewListByWorkspacePager(string, string, *VNetPeeringClientListByWorkspaceOptions) *runtime.Pager[VNetPeeringClientListByWorkspaceResponse]`
+- New function `*WorkspacesClient.NewListByResourceGroupPager(string, *WorkspacesClientListByResourceGroupOptions) *runtime.Pager[WorkspacesClientListByResourceGroupResponse]`
+- New function `*WorkspacesClient.NewListBySubscriptionPager(*WorkspacesClientListBySubscriptionOptions) *runtime.Pager[WorkspacesClientListBySubscriptionResponse]`
+
+
 ## 0.4.0 (2022-04-11)
 ### Breaking Changes
 

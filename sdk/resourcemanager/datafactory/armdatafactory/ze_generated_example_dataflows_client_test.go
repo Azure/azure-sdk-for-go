@@ -133,7 +133,7 @@ func ExampleDataFlowsClient_Delete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlows_ListByFactory.json
-func ExampleDataFlowsClient_ListByFactory() {
+func ExampleDataFlowsClient_NewListByFactoryPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -145,7 +145,7 @@ func ExampleDataFlowsClient_ListByFactory() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByFactory("<resource-group-name>",
+	pager := client.NewListByFactoryPager("<resource-group-name>",
 		"<factory-name>",
 		nil)
 	for pager.More() {

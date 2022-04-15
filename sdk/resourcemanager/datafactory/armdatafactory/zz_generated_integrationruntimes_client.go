@@ -542,13 +542,13 @@ func (client *IntegrationRuntimesClient) listAuthKeysHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListByFactory - Lists integration runtimes.
+// NewListByFactoryPager - Lists integration runtimes.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // options - IntegrationRuntimesClientListByFactoryOptions contains the optional parameters for the IntegrationRuntimesClient.ListByFactory
 // method.
-func (client *IntegrationRuntimesClient) ListByFactory(resourceGroupName string, factoryName string, options *IntegrationRuntimesClientListByFactoryOptions) *runtime.Pager[IntegrationRuntimesClientListByFactoryResponse] {
+func (client *IntegrationRuntimesClient) NewListByFactoryPager(resourceGroupName string, factoryName string, options *IntegrationRuntimesClientListByFactoryOptions) *runtime.Pager[IntegrationRuntimesClientListByFactoryResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IntegrationRuntimesClientListByFactoryResponse]{
 		More: func(page IntegrationRuntimesClientListByFactoryResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

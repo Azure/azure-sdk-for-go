@@ -246,13 +246,13 @@ func (client *TriggersClient) getHandleResponse(resp *http.Response) (TriggersCl
 	return result, nil
 }
 
-// ListByDataBoxEdgeDevice - Lists all the triggers configured in the device.
+// NewListByDataBoxEdgeDevicePager - Lists all the triggers configured in the device.
 // If the operation fails it returns an *azcore.ResponseError type.
 // deviceName - The device name.
 // resourceGroupName - The resource group name.
 // options - TriggersClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the TriggersClient.ListByDataBoxEdgeDevice
 // method.
-func (client *TriggersClient) ListByDataBoxEdgeDevice(deviceName string, resourceGroupName string, options *TriggersClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[TriggersClientListByDataBoxEdgeDeviceResponse] {
+func (client *TriggersClient) NewListByDataBoxEdgeDevicePager(deviceName string, resourceGroupName string, options *TriggersClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[TriggersClientListByDataBoxEdgeDeviceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TriggersClientListByDataBoxEdgeDeviceResponse]{
 		More: func(page TriggersClientListByDataBoxEdgeDeviceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

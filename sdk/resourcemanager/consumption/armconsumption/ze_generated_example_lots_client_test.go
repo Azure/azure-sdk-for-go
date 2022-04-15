@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/LotsListByBillingProfile.json
-func ExampleLotsClient_ListByBillingProfile() {
+func ExampleLotsClient_NewListByBillingProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleLotsClient_ListByBillingProfile() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByBillingProfile("<billing-account-id>",
+	pager := client.NewListByBillingProfilePager("<billing-account-id>",
 		"<billing-profile-id>",
 		nil)
 	for pager.More() {
@@ -46,7 +46,7 @@ func ExampleLotsClient_ListByBillingProfile() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/LotsListByBillingAccount.json
-func ExampleLotsClient_ListByBillingAccount() {
+func ExampleLotsClient_NewListByBillingAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -58,7 +58,7 @@ func ExampleLotsClient_ListByBillingAccount() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByBillingAccount("<billing-account-id>",
+	pager := client.NewListByBillingAccountPager("<billing-account-id>",
 		&armconsumption.LotsClientListByBillingAccountOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -74,7 +74,7 @@ func ExampleLotsClient_ListByBillingAccount() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/LotsListByCustomer.json
-func ExampleLotsClient_ListByCustomer() {
+func ExampleLotsClient_NewListByCustomerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -86,7 +86,7 @@ func ExampleLotsClient_ListByCustomer() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByCustomer("<billing-account-id>",
+	pager := client.NewListByCustomerPager("<billing-account-id>",
 		"<customer-id>",
 		&armconsumption.LotsClientListByCustomerOptions{Filter: nil})
 	for pager.More() {

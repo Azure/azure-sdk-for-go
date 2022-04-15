@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/ReservationSummariesDaily.json
-func ExampleReservationsSummariesClient_ListByReservationOrder() {
+func ExampleReservationsSummariesClient_NewListByReservationOrderPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleReservationsSummariesClient_ListByReservationOrder() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByReservationOrder("<reservation-order-id>",
+	pager := client.NewListByReservationOrderPager("<reservation-order-id>",
 		armconsumption.DatagrainDailyGrain,
 		&armconsumption.ReservationsSummariesClientListByReservationOrderOptions{Filter: to.Ptr("<filter>")})
 	for pager.More() {
@@ -47,7 +47,7 @@ func ExampleReservationsSummariesClient_ListByReservationOrder() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/ReservationSummariesDailyWithReservationId.json
-func ExampleReservationsSummariesClient_ListByReservationOrderAndReservation() {
+func ExampleReservationsSummariesClient_NewListByReservationOrderAndReservationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -59,7 +59,7 @@ func ExampleReservationsSummariesClient_ListByReservationOrderAndReservation() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByReservationOrderAndReservation("<reservation-order-id>",
+	pager := client.NewListByReservationOrderAndReservationPager("<reservation-order-id>",
 		"<reservation-id>",
 		armconsumption.DatagrainDailyGrain,
 		&armconsumption.ReservationsSummariesClientListByReservationOrderAndReservationOptions{Filter: to.Ptr("<filter>")})
@@ -77,7 +77,7 @@ func ExampleReservationsSummariesClient_ListByReservationOrderAndReservation() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/ReservationSummariesDailyWithBillingAccountId.json
-func ExampleReservationsSummariesClient_List() {
+func ExampleReservationsSummariesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -89,7 +89,7 @@ func ExampleReservationsSummariesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<scope>",
+	pager := client.NewListPager("<scope>",
 		armconsumption.DatagrainDailyGrain,
 		&armconsumption.ReservationsSummariesClientListOptions{StartDate: nil,
 			EndDate:            nil,

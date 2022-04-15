@@ -1,5 +1,49 @@
 # Release History
 
+## 0.5.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*ReservationsDetailsClient.ListByReservationOrder` has been removed
+- Function `*MarketplacesClient.List` has been removed
+- Function `*ReservationTransactionsClient.List` has been removed
+- Function `*ReservationsSummariesClient.ListByReservationOrder` has been removed
+- Function `*ReservationRecommendationsClient.List` has been removed
+- Function `*BudgetsClient.List` has been removed
+- Function `*ReservationTransactionsClient.ListByBillingProfile` has been removed
+- Function `*LotsClient.ListByBillingProfile` has been removed
+- Function `*ReservationsSummariesClient.ListByReservationOrderAndReservation` has been removed
+- Function `*UsageDetailsClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*ReservationsDetailsClient.ListByReservationOrderAndReservation` has been removed
+- Function `*ReservationsSummariesClient.List` has been removed
+- Function `*EventsClient.ListByBillingProfile` has been removed
+- Function `*LotsClient.ListByBillingAccount` has been removed
+- Function `*ReservationsDetailsClient.List` has been removed
+- Function `*LotsClient.ListByCustomer` has been removed
+- Function `*EventsClient.ListByBillingAccount` has been removed
+
+### Features Added
+
+- New function `*ReservationsSummariesClient.NewListByReservationOrderPager(string, Datagrain, *ReservationsSummariesClientListByReservationOrderOptions) *runtime.Pager[ReservationsSummariesClientListByReservationOrderResponse]`
+- New function `*LotsClient.NewListByCustomerPager(string, string, *LotsClientListByCustomerOptions) *runtime.Pager[LotsClientListByCustomerResponse]`
+- New function `*ReservationsDetailsClient.NewListByReservationOrderAndReservationPager(string, string, string, *ReservationsDetailsClientListByReservationOrderAndReservationOptions) *runtime.Pager[ReservationsDetailsClientListByReservationOrderAndReservationResponse]`
+- New function `*ReservationTransactionsClient.NewListPager(string, *ReservationTransactionsClientListOptions) *runtime.Pager[ReservationTransactionsClientListResponse]`
+- New function `*ReservationsDetailsClient.NewListPager(string, *ReservationsDetailsClientListOptions) *runtime.Pager[ReservationsDetailsClientListResponse]`
+- New function `*ReservationRecommendationsClient.NewListPager(string, *ReservationRecommendationsClientListOptions) *runtime.Pager[ReservationRecommendationsClientListResponse]`
+- New function `*ReservationTransactionsClient.NewListByBillingProfilePager(string, string, *ReservationTransactionsClientListByBillingProfileOptions) *runtime.Pager[ReservationTransactionsClientListByBillingProfileResponse]`
+- New function `*ReservationsSummariesClient.NewListByReservationOrderAndReservationPager(string, string, Datagrain, *ReservationsSummariesClientListByReservationOrderAndReservationOptions) *runtime.Pager[ReservationsSummariesClientListByReservationOrderAndReservationResponse]`
+- New function `*ReservationsSummariesClient.NewListPager(string, Datagrain, *ReservationsSummariesClientListOptions) *runtime.Pager[ReservationsSummariesClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*MarketplacesClient.NewListPager(string, *MarketplacesClientListOptions) *runtime.Pager[MarketplacesClientListResponse]`
+- New function `*LotsClient.NewListByBillingProfilePager(string, string, *LotsClientListByBillingProfileOptions) *runtime.Pager[LotsClientListByBillingProfileResponse]`
+- New function `*UsageDetailsClient.NewListPager(string, *UsageDetailsClientListOptions) *runtime.Pager[UsageDetailsClientListResponse]`
+- New function `*BudgetsClient.NewListPager(string, *BudgetsClientListOptions) *runtime.Pager[BudgetsClientListResponse]`
+- New function `*LotsClient.NewListByBillingAccountPager(string, *LotsClientListByBillingAccountOptions) *runtime.Pager[LotsClientListByBillingAccountResponse]`
+- New function `*EventsClient.NewListByBillingProfilePager(string, string, string, string, *EventsClientListByBillingProfileOptions) *runtime.Pager[EventsClientListByBillingProfileResponse]`
+- New function `*EventsClient.NewListByBillingAccountPager(string, *EventsClientListByBillingAccountOptions) *runtime.Pager[EventsClientListByBillingAccountResponse]`
+- New function `*ReservationsDetailsClient.NewListByReservationOrderPager(string, string, *ReservationsDetailsClientListByReservationOrderOptions) *runtime.Pager[ReservationsDetailsClientListByReservationOrderResponse]`
+
+
 ## 0.4.0 (2022-04-11)
 ### Breaking Changes
 

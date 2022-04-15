@@ -51,13 +51,13 @@ func NewEventsClient(credential azcore.TokenCredential, options *arm.ClientOptio
 	return client, nil
 }
 
-// ListByBillingAccount - Lists the events that decrements Azure credits or Microsoft Azure consumption commitment for a billing
-// account or a billing profile for a given start and end date.
+// NewListByBillingAccountPager - Lists the events that decrements Azure credits or Microsoft Azure consumption commitment
+// for a billing account or a billing profile for a given start and end date.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountID - BillingAccount ID
 // options - EventsClientListByBillingAccountOptions contains the optional parameters for the EventsClient.ListByBillingAccount
 // method.
-func (client *EventsClient) ListByBillingAccount(billingAccountID string, options *EventsClientListByBillingAccountOptions) *runtime.Pager[EventsClientListByBillingAccountResponse] {
+func (client *EventsClient) NewListByBillingAccountPager(billingAccountID string, options *EventsClientListByBillingAccountOptions) *runtime.Pager[EventsClientListByBillingAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EventsClientListByBillingAccountResponse]{
 		More: func(page EventsClientListByBillingAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -115,8 +115,8 @@ func (client *EventsClient) listByBillingAccountHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListByBillingProfile - Lists the events that decrements Azure credits or Microsoft Azure consumption commitment for a billing
-// account or a billing profile for a given start and end date.
+// NewListByBillingProfilePager - Lists the events that decrements Azure credits or Microsoft Azure consumption commitment
+// for a billing account or a billing profile for a given start and end date.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountID - BillingAccount ID
 // billingProfileID - Azure Billing Profile ID.
@@ -124,7 +124,7 @@ func (client *EventsClient) listByBillingAccountHandleResponse(resp *http.Respon
 // endDate - End date
 // options - EventsClientListByBillingProfileOptions contains the optional parameters for the EventsClient.ListByBillingProfile
 // method.
-func (client *EventsClient) ListByBillingProfile(billingAccountID string, billingProfileID string, startDate string, endDate string, options *EventsClientListByBillingProfileOptions) *runtime.Pager[EventsClientListByBillingProfileResponse] {
+func (client *EventsClient) NewListByBillingProfilePager(billingAccountID string, billingProfileID string, startDate string, endDate string, options *EventsClientListByBillingProfileOptions) *runtime.Pager[EventsClientListByBillingProfileResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EventsClientListByBillingProfileResponse]{
 		More: func(page EventsClientListByBillingProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

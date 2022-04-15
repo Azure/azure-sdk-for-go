@@ -49,7 +49,7 @@ func NewReservationRecommendationsClient(credential azcore.TokenCredential, opti
 	return client, nil
 }
 
-// List - List of recommendations for purchasing reserved instances.
+// NewListPager - List of recommendations for purchasing reserved instances.
 // If the operation fails it returns an *azcore.ResponseError type.
 // scope - The scope associated with reservation recommendations operations. This includes '/subscriptions/{subscriptionId}/'
 // for subscription scope,
@@ -59,7 +59,7 @@ func NewReservationRecommendationsClient(credential azcore.TokenCredential, opti
 // scope
 // options - ReservationRecommendationsClientListOptions contains the optional parameters for the ReservationRecommendationsClient.List
 // method.
-func (client *ReservationRecommendationsClient) List(scope string, options *ReservationRecommendationsClientListOptions) *runtime.Pager[ReservationRecommendationsClientListResponse] {
+func (client *ReservationRecommendationsClient) NewListPager(scope string, options *ReservationRecommendationsClientListOptions) *runtime.Pager[ReservationRecommendationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReservationRecommendationsClientListResponse]{
 		More: func(page ReservationRecommendationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

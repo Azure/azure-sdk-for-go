@@ -318,12 +318,12 @@ func (client *UsersClient) inviteCreateRequest(ctx context.Context, resourceGrou
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
-// ListByLab - Returns a list of all users for a lab.
+// NewListByLabPager - Returns a list of all users for a lab.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
 // options - UsersClientListByLabOptions contains the optional parameters for the UsersClient.ListByLab method.
-func (client *UsersClient) ListByLab(resourceGroupName string, labName string, options *UsersClientListByLabOptions) *runtime.Pager[UsersClientListByLabResponse] {
+func (client *UsersClient) NewListByLabPager(resourceGroupName string, labName string, options *UsersClientListByLabOptions) *runtime.Pager[UsersClientListByLabResponse] {
 	return runtime.NewPager(runtime.PageProcessor[UsersClientListByLabResponse]{
 		More: func(page UsersClientListByLabResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

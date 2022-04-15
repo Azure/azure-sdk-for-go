@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Schedules/listSchedule.json
-func ExampleSchedulesClient_ListByLab() {
+func ExampleSchedulesClient_NewListByLabPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleSchedulesClient_ListByLab() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByLab("<resource-group-name>",
+	pager := client.NewListByLabPager("<resource-group-name>",
 		"<lab-name>",
 		&armlabservices.SchedulesClientListByLabOptions{Filter: nil})
 	for pager.More() {

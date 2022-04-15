@@ -235,12 +235,12 @@ func (client *LabsClient) getHandleResponse(resp *http.Response) (LabsClientGetR
 	return result, nil
 }
 
-// ListByResourceGroup - Returns a list of all labs in a resource group.
+// NewListByResourceGroupPager - Returns a list of all labs in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - LabsClientListByResourceGroupOptions contains the optional parameters for the LabsClient.ListByResourceGroup
 // method.
-func (client *LabsClient) ListByResourceGroup(resourceGroupName string, options *LabsClientListByResourceGroupOptions) *runtime.Pager[LabsClientListByResourceGroupResponse] {
+func (client *LabsClient) NewListByResourceGroupPager(resourceGroupName string, options *LabsClientListByResourceGroupOptions) *runtime.Pager[LabsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LabsClientListByResourceGroupResponse]{
 		More: func(page LabsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -299,10 +299,10 @@ func (client *LabsClient) listByResourceGroupHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListBySubscription - Returns a list of all labs for a subscription.
+// NewListBySubscriptionPager - Returns a list of all labs for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - LabsClientListBySubscriptionOptions contains the optional parameters for the LabsClient.ListBySubscription method.
-func (client *LabsClient) ListBySubscription(options *LabsClientListBySubscriptionOptions) *runtime.Pager[LabsClientListBySubscriptionResponse] {
+func (client *LabsClient) NewListBySubscriptionPager(options *LabsClientListBySubscriptionOptions) *runtime.Pager[LabsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LabsClientListBySubscriptionResponse]{
 		More: func(page LabsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

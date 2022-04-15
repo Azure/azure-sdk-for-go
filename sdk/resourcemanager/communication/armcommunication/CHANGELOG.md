@@ -1,5 +1,19 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*ServiceClient.ListByResourceGroup` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*ServiceClient.ListBySubscription` has been removed
+
+### Features Added
+
+- New function `*ServiceClient.NewListBySubscriptionPager(*ServiceClientListBySubscriptionOptions) *runtime.Pager[ServiceClientListBySubscriptionResponse]`
+- New function `*ServiceClient.NewListByResourceGroupPager(string, *ServiceClientListByResourceGroupOptions) *runtime.Pager[ServiceClientListByResourceGroupResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

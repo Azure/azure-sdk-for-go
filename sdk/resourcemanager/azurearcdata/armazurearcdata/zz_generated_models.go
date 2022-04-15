@@ -35,6 +35,12 @@ type ActiveDirectoryConnectorDomainDetails struct {
 
 	// NETBIOS name of the Active Directory domain.
 	NetbiosDomainName *string `json:"netbiosDomainName,omitempty"`
+
+	// The distinguished name of the Active Directory Organizational Unit.
+	OuDistinguishedName *string `json:"ouDistinguishedName,omitempty"`
+
+	// The service account provisioning mode for this Active Directory connector.
+	ServiceAccountProvisioning *AccountProvisioningMode `json:"serviceAccountProvisioning,omitempty"`
 }
 
 // ActiveDirectoryConnectorListResult - A list of active directory connectors
@@ -50,6 +56,9 @@ type ActiveDirectoryConnectorListResult struct {
 type ActiveDirectoryConnectorProperties struct {
 	// REQUIRED; null
 	Spec *ActiveDirectoryConnectorSpec `json:"spec,omitempty"`
+
+	// Username and password for domain service account authentication.
+	DomainServiceAccountLoginInformation *BasicLoginInformation `json:"domainServiceAccountLoginInformation,omitempty"`
 
 	// null
 	Status *ActiveDirectoryConnectorStatus `json:"status,omitempty"`

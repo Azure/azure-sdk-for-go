@@ -234,10 +234,10 @@ func (client *SQLServerInstancesClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// List - List sqlServerInstance resources in the subscription
+// NewListPager - List sqlServerInstance resources in the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SQLServerInstancesClientListOptions contains the optional parameters for the SQLServerInstancesClient.List method.
-func (client *SQLServerInstancesClient) List(options *SQLServerInstancesClientListOptions) *runtime.Pager[SQLServerInstancesClientListResponse] {
+func (client *SQLServerInstancesClient) NewListPager(options *SQLServerInstancesClientListOptions) *runtime.Pager[SQLServerInstancesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLServerInstancesClientListResponse]{
 		More: func(page SQLServerInstancesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -292,12 +292,12 @@ func (client *SQLServerInstancesClient) listHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListByResourceGroup - Gets all sqlServerInstances in a resource group.
+// NewListByResourceGroupPager - Gets all sqlServerInstances in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the Azure resource group
 // options - SQLServerInstancesClientListByResourceGroupOptions contains the optional parameters for the SQLServerInstancesClient.ListByResourceGroup
 // method.
-func (client *SQLServerInstancesClient) ListByResourceGroup(resourceGroupName string, options *SQLServerInstancesClientListByResourceGroupOptions) *runtime.Pager[SQLServerInstancesClientListByResourceGroupResponse] {
+func (client *SQLServerInstancesClient) NewListByResourceGroupPager(resourceGroupName string, options *SQLServerInstancesClientListByResourceGroupOptions) *runtime.Pager[SQLServerInstancesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLServerInstancesClientListByResourceGroupResponse]{
 		More: func(page SQLServerInstancesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

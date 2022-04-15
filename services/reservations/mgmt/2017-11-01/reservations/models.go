@@ -717,7 +717,7 @@ type OrderProperties struct {
 	OriginalQuantity *int32 `json:"originalQuantity,omitempty"`
 	// Term - Possible values include: 'P1Y', 'P3Y'
 	Term Term `json:"term,omitempty"`
-	// ProvisioningState - Possible values include: 'ProvisioningState1Creating', 'ProvisioningState1PendingResourceHold', 'ProvisioningState1ConfirmedResourceHold', 'ProvisioningState1PendingBilling', 'ProvisioningState1ConfirmedBilling', 'ProvisioningState1Created', 'ProvisioningState1Succeeded', 'ProvisioningState1Cancelled', 'ProvisioningState1Expired', 'ProvisioningState1BillingFailed', 'ProvisioningState1Failed', 'ProvisioningState1Split', 'ProvisioningState1Merged'
+	// ProvisioningState - Possible values include: 'ProvisioningState1Creating', 'ProvisioningState1PendingResourceHold', 'ProvisioningState1ConfirmedResourceHold', 'ProvisioningState1PendingBilling', 'ProvisioningState1ConfirmedBilling', 'ProvisioningState1Created', 'ProvisioningState1Succeeded', 'ProvisioningState1Cancelled', 'ProvisioningState1Expired', 'ProvisioningState1BillingFailed', 'ProvisioningState1Failed', 'ProvisioningState1Split', 'ProvisioningState1Merged', 'ProvisioningState1Processing'
 	ProvisioningState    ProvisioningState1 `json:"provisioningState,omitempty"`
 	ReservationsProperty *[]Response        `json:"reservations,omitempty"`
 }
@@ -861,7 +861,7 @@ type Properties struct {
 	AppliedScopeType AppliedScopeType `json:"appliedScopeType,omitempty"`
 	// Quantity - Quantity of the SKUs that are part of the Reservation.
 	Quantity *int32 `json:"quantity,omitempty"`
-	// ProvisioningState - Possible values include: 'Creating', 'PendingResourceHold', 'ConfirmedResourceHold', 'PendingBilling', 'ConfirmedBilling', 'Created', 'Succeeded', 'Cancelled', 'Expired', 'BillingFailed', 'Failed', 'Split', 'Merged'
+	// ProvisioningState - Possible values include: 'Creating', 'PendingResourceHold', 'ConfirmedResourceHold', 'PendingBilling', 'ConfirmedBilling', 'Created', 'Succeeded', 'Cancelled', 'Expired', 'BillingFailed', 'Failed', 'Split', 'Merged', 'Processing'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// EffectiveDateTime - DateTime of the Reservation starting when this version is effective from.
 	EffectiveDateTime *date.Time `json:"effectiveDateTime,omitempty"`

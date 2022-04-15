@@ -48,11 +48,11 @@ func NewOuContainerOperationsClient(credential azcore.TokenCredential, options *
 	return client, nil
 }
 
-// List - Lists all the available OuContainer operations.
+// NewListPager - Lists all the available OuContainer operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - OuContainerOperationsClientListOptions contains the optional parameters for the OuContainerOperationsClient.List
 // method.
-func (client *OuContainerOperationsClient) List(options *OuContainerOperationsClientListOptions) *runtime.Pager[OuContainerOperationsClientListResponse] {
+func (client *OuContainerOperationsClient) NewListPager(options *OuContainerOperationsClientListOptions) *runtime.Pager[OuContainerOperationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[OuContainerOperationsClientListResponse]{
 		More: func(page OuContainerOperationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

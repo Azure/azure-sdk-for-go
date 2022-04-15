@@ -1,5 +1,31 @@
 # Release History
 
+## 0.6.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*ResourceSKUsClient.List` has been removed
+- Function `*AccountsClient.List` has been removed
+- Function `*AccountsClient.ListByResourceGroup` has been removed
+- Function `*CommitmentPlansClient.List` has been removed
+- Function `*DeletedAccountsClient.List` has been removed
+- Function `*AccountsClient.ListModels` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*CommitmentTiersClient.List` has been removed
+- Function `*DeploymentsClient.List` has been removed
+
+### Features Added
+
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*AccountsClient.NewListPager(*AccountsClientListOptions) *runtime.Pager[AccountsClientListResponse]`
+- New function `*CommitmentTiersClient.NewListPager(string, *CommitmentTiersClientListOptions) *runtime.Pager[CommitmentTiersClientListResponse]`
+- New function `*DeletedAccountsClient.NewListPager(*DeletedAccountsClientListOptions) *runtime.Pager[DeletedAccountsClientListResponse]`
+- New function `*AccountsClient.NewListByResourceGroupPager(string, *AccountsClientListByResourceGroupOptions) *runtime.Pager[AccountsClientListByResourceGroupResponse]`
+- New function `*CommitmentPlansClient.NewListPager(string, string, *CommitmentPlansClientListOptions) *runtime.Pager[CommitmentPlansClientListResponse]`
+- New function `*ResourceSKUsClient.NewListPager(*ResourceSKUsClientListOptions) *runtime.Pager[ResourceSKUsClientListResponse]`
+- New function `*AccountsClient.NewListModelsPager(string, string, *AccountsClientListModelsOptions) *runtime.Pager[AccountsClientListModelsResponse]`
+- New function `*DeploymentsClient.NewListPager(string, string, *DeploymentsClientListOptions) *runtime.Pager[DeploymentsClientListResponse]`
+
+
 ## 0.5.0 (2022-04-11)
 ### Breaking Changes
 

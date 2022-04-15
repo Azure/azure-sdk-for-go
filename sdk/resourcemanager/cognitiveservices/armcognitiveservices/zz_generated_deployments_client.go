@@ -246,12 +246,12 @@ func (client *DeploymentsClient) getHandleResponse(resp *http.Response) (Deploym
 	return result, nil
 }
 
-// List - Gets the deployments associated with the Cognitive Services account.
+// NewListPager - Gets the deployments associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The name of Cognitive Services account.
 // options - DeploymentsClientListOptions contains the optional parameters for the DeploymentsClient.List method.
-func (client *DeploymentsClient) List(resourceGroupName string, accountName string, options *DeploymentsClientListOptions) *runtime.Pager[DeploymentsClientListResponse] {
+func (client *DeploymentsClient) NewListPager(resourceGroupName string, accountName string, options *DeploymentsClientListOptions) *runtime.Pager[DeploymentsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DeploymentsClientListResponse]{
 		More: func(page DeploymentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

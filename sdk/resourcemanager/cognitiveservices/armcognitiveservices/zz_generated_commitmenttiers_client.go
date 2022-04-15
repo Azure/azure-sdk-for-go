@@ -54,11 +54,11 @@ func NewCommitmentTiersClient(subscriptionID string, credential azcore.TokenCred
 	return client, nil
 }
 
-// List - List Commitment Tiers.
+// NewListPager - List Commitment Tiers.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - Resource location.
 // options - CommitmentTiersClientListOptions contains the optional parameters for the CommitmentTiersClient.List method.
-func (client *CommitmentTiersClient) List(location string, options *CommitmentTiersClientListOptions) *runtime.Pager[CommitmentTiersClientListResponse] {
+func (client *CommitmentTiersClient) NewListPager(location string, options *CommitmentTiersClientListOptions) *runtime.Pager[CommitmentTiersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CommitmentTiersClientListResponse]{
 		More: func(page CommitmentTiersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

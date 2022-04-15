@@ -105,11 +105,11 @@ func (client *LocationsClient) getCapabilityHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// GetUsage - Gets the current usage count and the limit for the resources of the location under the subscription.
+// NewGetUsagePager - Gets the current usage count and the limit for the resources of the location under the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - The resource location without whitespace.
 // options - LocationsClientGetUsageOptions contains the optional parameters for the LocationsClient.GetUsage method.
-func (client *LocationsClient) GetUsage(location string, options *LocationsClientGetUsageOptions) *runtime.Pager[LocationsClientGetUsageResponse] {
+func (client *LocationsClient) NewGetUsagePager(location string, options *LocationsClientGetUsageOptions) *runtime.Pager[LocationsClientGetUsageResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LocationsClientGetUsageResponse]{
 		More: func(page LocationsClientGetUsageResponse) bool {
 			return false

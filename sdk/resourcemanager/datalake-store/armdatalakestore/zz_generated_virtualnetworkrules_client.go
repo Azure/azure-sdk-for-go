@@ -229,13 +229,13 @@ func (client *VirtualNetworkRulesClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListByAccount - Lists the Data Lake Store virtual network rules within the specified Data Lake Store account.
+// NewListByAccountPager - Lists the Data Lake Store virtual network rules within the specified Data Lake Store account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Store account.
 // options - VirtualNetworkRulesClientListByAccountOptions contains the optional parameters for the VirtualNetworkRulesClient.ListByAccount
 // method.
-func (client *VirtualNetworkRulesClient) ListByAccount(resourceGroupName string, accountName string, options *VirtualNetworkRulesClientListByAccountOptions) *runtime.Pager[VirtualNetworkRulesClientListByAccountResponse] {
+func (client *VirtualNetworkRulesClient) NewListByAccountPager(resourceGroupName string, accountName string, options *VirtualNetworkRulesClientListByAccountOptions) *runtime.Pager[VirtualNetworkRulesClientListByAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualNetworkRulesClientListByAccountResponse]{
 		More: func(page VirtualNetworkRulesClientListByAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -185,7 +185,7 @@ func ExamplePrivateLinkServicesForM365SecurityCenterClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/m365securityandcompliance/resource-manager/Microsoft.M365SecurityAndCompliance/preview/2021-03-25-preview/examples/SecurityCenterServiceList.json
-func ExamplePrivateLinkServicesForM365SecurityCenterClient_List() {
+func ExamplePrivateLinkServicesForM365SecurityCenterClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -197,7 +197,7 @@ func ExamplePrivateLinkServicesForM365SecurityCenterClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(nil)
+	pager := client.NewListPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -212,7 +212,7 @@ func ExamplePrivateLinkServicesForM365SecurityCenterClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/m365securityandcompliance/resource-manager/Microsoft.M365SecurityAndCompliance/preview/2021-03-25-preview/examples/SecurityCenterServiceListByResourceGroup.json
-func ExamplePrivateLinkServicesForM365SecurityCenterClient_ListByResourceGroup() {
+func ExamplePrivateLinkServicesForM365SecurityCenterClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -224,7 +224,7 @@ func ExamplePrivateLinkServicesForM365SecurityCenterClient_ListByResourceGroup()
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

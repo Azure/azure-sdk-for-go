@@ -1,5 +1,19 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*LoadTestsClient.ListByResourceGroup` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*LoadTestsClient.ListBySubscription` has been removed
+
+### Features Added
+
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*LoadTestsClient.NewListByResourceGroupPager(string, *LoadTestsClientListByResourceGroupOptions) *runtime.Pager[LoadTestsClientListByResourceGroupResponse]`
+- New function `*LoadTestsClient.NewListBySubscriptionPager(*LoadTestsClientListBySubscriptionOptions) *runtime.Pager[LoadTestsClientListBySubscriptionResponse]`
+
+
 ## 0.3.0 (2022-04-12)
 ### Breaking Changes
 

@@ -229,13 +229,13 @@ func (client *IntegrationAccountAssembliesClient) getHandleResponse(resp *http.R
 	return result, nil
 }
 
-// List - List the assemblies for an integration account.
+// NewListPager - List the assemblies for an integration account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // options - IntegrationAccountAssembliesClientListOptions contains the optional parameters for the IntegrationAccountAssembliesClient.List
 // method.
-func (client *IntegrationAccountAssembliesClient) List(resourceGroupName string, integrationAccountName string, options *IntegrationAccountAssembliesClientListOptions) *runtime.Pager[IntegrationAccountAssembliesClientListResponse] {
+func (client *IntegrationAccountAssembliesClient) NewListPager(resourceGroupName string, integrationAccountName string, options *IntegrationAccountAssembliesClientListOptions) *runtime.Pager[IntegrationAccountAssembliesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IntegrationAccountAssembliesClientListResponse]{
 		More: func(page IntegrationAccountAssembliesClientListResponse) bool {
 			return false

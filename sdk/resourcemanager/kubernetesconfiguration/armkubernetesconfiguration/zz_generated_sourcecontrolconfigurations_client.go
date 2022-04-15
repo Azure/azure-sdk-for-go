@@ -275,7 +275,7 @@ func (client *SourceControlConfigurationsClient) getHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// List - List all Source Control Configurations.
+// NewListPager - List all Source Control Configurations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // clusterRp - The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes, Microsoft.HybridContainerService.
@@ -283,7 +283,7 @@ func (client *SourceControlConfigurationsClient) getHandleResponse(resp *http.Re
 // clusterName - The name of the kubernetes cluster.
 // options - SourceControlConfigurationsClientListOptions contains the optional parameters for the SourceControlConfigurationsClient.List
 // method.
-func (client *SourceControlConfigurationsClient) List(resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, options *SourceControlConfigurationsClientListOptions) *runtime.Pager[SourceControlConfigurationsClientListResponse] {
+func (client *SourceControlConfigurationsClient) NewListPager(resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, options *SourceControlConfigurationsClientListOptions) *runtime.Pager[SourceControlConfigurationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SourceControlConfigurationsClientListResponse]{
 		More: func(page SourceControlConfigurationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

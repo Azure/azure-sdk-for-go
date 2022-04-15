@@ -135,10 +135,10 @@ func (testsuite *KeysClientTestSuite) TestKeysCRUD() {
 	testsuite.Require().Equal(keyName, *getResp.Name)
 
 	// list
-	list := keysClient.List(testsuite.resourceGroupName, vaultName, nil)
+	list := keysClient.NewListPager(testsuite.resourceGroupName, vaultName, nil)
 	testsuite.Require().True(list.More())
 
 	// list versions
-	listVersions := keysClient.ListVersions(testsuite.resourceGroupName, vaultName, keyName, nil)
+	listVersions := keysClient.NewListVersionsPager(testsuite.resourceGroupName, vaultName, keyName, nil)
 	testsuite.Require().True(listVersions.More())
 }

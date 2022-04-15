@@ -54,13 +54,14 @@ func NewMonitorClient(subscriptionID string, credential azcore.TokenCredential, 
 	return client, nil
 }
 
-// ListVMHostUpdate - Sending request to update the collection when Logz.io agent has been installed on a VM for a given monitor.
+// NewListVMHostUpdatePager - Sending request to update the collection when Logz.io agent has been installed on a VM for a
+// given monitor.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // options - MonitorClientListVMHostUpdateOptions contains the optional parameters for the MonitorClient.ListVMHostUpdate
 // method.
-func (client *MonitorClient) ListVMHostUpdate(resourceGroupName string, monitorName string, options *MonitorClientListVMHostUpdateOptions) *runtime.Pager[MonitorClientListVMHostUpdateResponse] {
+func (client *MonitorClient) NewListVMHostUpdatePager(resourceGroupName string, monitorName string, options *MonitorClientListVMHostUpdateOptions) *runtime.Pager[MonitorClientListVMHostUpdateResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MonitorClientListVMHostUpdateResponse]{
 		More: func(page MonitorClientListVMHostUpdateResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -126,12 +127,12 @@ func (client *MonitorClient) listVMHostUpdateHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListVMHosts - List the compute resources currently being monitored by the Logz main account resource.
+// NewListVMHostsPager - List the compute resources currently being monitored by the Logz main account resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // options - MonitorClientListVMHostsOptions contains the optional parameters for the MonitorClient.ListVMHosts method.
-func (client *MonitorClient) ListVMHosts(resourceGroupName string, monitorName string, options *MonitorClientListVMHostsOptions) *runtime.Pager[MonitorClientListVMHostsResponse] {
+func (client *MonitorClient) NewListVMHostsPager(resourceGroupName string, monitorName string, options *MonitorClientListVMHostsOptions) *runtime.Pager[MonitorClientListVMHostsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MonitorClientListVMHostsResponse]{
 		More: func(page MonitorClientListVMHostsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -181,13 +181,13 @@ func (client *IntegrationServiceEnvironmentManagedApisClient) getHandleResponse(
 	return result, nil
 }
 
-// List - Gets the integration service environment managed Apis.
+// NewListPager - Gets the integration service environment managed Apis.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroup - The resource group.
 // integrationServiceEnvironmentName - The integration service environment name.
 // options - IntegrationServiceEnvironmentManagedApisClientListOptions contains the optional parameters for the IntegrationServiceEnvironmentManagedApisClient.List
 // method.
-func (client *IntegrationServiceEnvironmentManagedApisClient) List(resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentManagedApisClientListOptions) *runtime.Pager[IntegrationServiceEnvironmentManagedApisClientListResponse] {
+func (client *IntegrationServiceEnvironmentManagedApisClient) NewListPager(resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentManagedApisClientListOptions) *runtime.Pager[IntegrationServiceEnvironmentManagedApisClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IntegrationServiceEnvironmentManagedApisClientListResponse]{
 		More: func(page IntegrationServiceEnvironmentManagedApisClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

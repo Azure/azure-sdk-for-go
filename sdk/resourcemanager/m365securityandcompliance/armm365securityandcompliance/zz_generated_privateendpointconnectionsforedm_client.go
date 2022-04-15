@@ -252,13 +252,13 @@ func (client *PrivateEndpointConnectionsForEDMClient) getHandleResponse(resp *ht
 	return result, nil
 }
 
-// ListByService - Lists all private endpoint connections for a service.
+// NewListByServicePager - Lists all private endpoint connections for a service.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the service instance.
 // resourceName - The name of the service instance.
 // options - PrivateEndpointConnectionsForEDMClientListByServiceOptions contains the optional parameters for the PrivateEndpointConnectionsForEDMClient.ListByService
 // method.
-func (client *PrivateEndpointConnectionsForEDMClient) ListByService(resourceGroupName string, resourceName string, options *PrivateEndpointConnectionsForEDMClientListByServiceOptions) *runtime.Pager[PrivateEndpointConnectionsForEDMClientListByServiceResponse] {
+func (client *PrivateEndpointConnectionsForEDMClient) NewListByServicePager(resourceGroupName string, resourceName string, options *PrivateEndpointConnectionsForEDMClientListByServiceOptions) *runtime.Pager[PrivateEndpointConnectionsForEDMClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionsForEDMClientListByServiceResponse]{
 		More: func(page PrivateEndpointConnectionsForEDMClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

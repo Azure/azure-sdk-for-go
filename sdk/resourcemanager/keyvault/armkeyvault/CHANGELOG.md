@@ -1,5 +1,39 @@
 # Release History
 
+## 0.5.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*MHSMPrivateEndpointConnectionsClient.ListByResource` has been removed
+- Function `*ManagedHsmsClient.ListDeleted` has been removed
+- Function `*VaultsClient.ListDeleted` has been removed
+- Function `*VaultsClient.ListByResourceGroup` has been removed
+- Function `*PrivateEndpointConnectionsClient.ListByResource` has been removed
+- Function `*VaultsClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*SecretsClient.List` has been removed
+- Function `*ManagedHsmsClient.ListByResourceGroup` has been removed
+- Function `*KeysClient.List` has been removed
+- Function `*ManagedHsmsClient.ListBySubscription` has been removed
+- Function `*KeysClient.ListVersions` has been removed
+- Function `*VaultsClient.ListBySubscription` has been removed
+
+### Features Added
+
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*VaultsClient.NewListDeletedPager(*VaultsClientListDeletedOptions) *runtime.Pager[VaultsClientListDeletedResponse]`
+- New function `*VaultsClient.NewListPager(*VaultsClientListOptions) *runtime.Pager[VaultsClientListResponse]`
+- New function `*SecretsClient.NewListPager(string, string, *SecretsClientListOptions) *runtime.Pager[SecretsClientListResponse]`
+- New function `*KeysClient.NewListVersionsPager(string, string, string, *KeysClientListVersionsOptions) *runtime.Pager[KeysClientListVersionsResponse]`
+- New function `*ManagedHsmsClient.NewListBySubscriptionPager(*ManagedHsmsClientListBySubscriptionOptions) *runtime.Pager[ManagedHsmsClientListBySubscriptionResponse]`
+- New function `*ManagedHsmsClient.NewListByResourceGroupPager(string, *ManagedHsmsClientListByResourceGroupOptions) *runtime.Pager[ManagedHsmsClientListByResourceGroupResponse]`
+- New function `*PrivateEndpointConnectionsClient.NewListByResourcePager(string, string, *PrivateEndpointConnectionsClientListByResourceOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByResourceResponse]`
+- New function `*KeysClient.NewListPager(string, string, *KeysClientListOptions) *runtime.Pager[KeysClientListResponse]`
+- New function `*MHSMPrivateEndpointConnectionsClient.NewListByResourcePager(string, string, *MHSMPrivateEndpointConnectionsClientListByResourceOptions) *runtime.Pager[MHSMPrivateEndpointConnectionsClientListByResourceResponse]`
+- New function `*VaultsClient.NewListBySubscriptionPager(*VaultsClientListBySubscriptionOptions) *runtime.Pager[VaultsClientListBySubscriptionResponse]`
+- New function `*ManagedHsmsClient.NewListDeletedPager(*ManagedHsmsClientListDeletedOptions) *runtime.Pager[ManagedHsmsClientListDeletedResponse]`
+- New function `*VaultsClient.NewListByResourceGroupPager(string, *VaultsClientListByResourceGroupOptions) *runtime.Pager[VaultsClientListByResourceGroupResponse]`
+
+
 ## 0.4.0 (2022-04-14)
 ### Breaking Changes
 

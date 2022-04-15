@@ -362,12 +362,12 @@ func (client *WorkflowsClient) getHandleResponse(resp *http.Response) (Workflows
 	return result, nil
 }
 
-// ListByResourceGroup - Gets a list of workflows by resource group.
+// NewListByResourceGroupPager - Gets a list of workflows by resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // options - WorkflowsClientListByResourceGroupOptions contains the optional parameters for the WorkflowsClient.ListByResourceGroup
 // method.
-func (client *WorkflowsClient) ListByResourceGroup(resourceGroupName string, options *WorkflowsClientListByResourceGroupOptions) *runtime.Pager[WorkflowsClientListByResourceGroupResponse] {
+func (client *WorkflowsClient) NewListByResourceGroupPager(resourceGroupName string, options *WorkflowsClientListByResourceGroupOptions) *runtime.Pager[WorkflowsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkflowsClientListByResourceGroupResponse]{
 		More: func(page WorkflowsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -432,11 +432,11 @@ func (client *WorkflowsClient) listByResourceGroupHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListBySubscription - Gets a list of workflows by subscription.
+// NewListBySubscriptionPager - Gets a list of workflows by subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - WorkflowsClientListBySubscriptionOptions contains the optional parameters for the WorkflowsClient.ListBySubscription
 // method.
-func (client *WorkflowsClient) ListBySubscription(options *WorkflowsClientListBySubscriptionOptions) *runtime.Pager[WorkflowsClientListBySubscriptionResponse] {
+func (client *WorkflowsClient) NewListBySubscriptionPager(options *WorkflowsClientListBySubscriptionOptions) *runtime.Pager[WorkflowsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkflowsClientListBySubscriptionResponse]{
 		More: func(page WorkflowsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -324,13 +324,13 @@ func (client *ScriptsClient) getHandleResponse(resp *http.Response) (ScriptsClie
 	return result, nil
 }
 
-// ListByDatabase - Returns the list of database scripts for given database.
+// NewListByDatabasePager - Returns the list of database scripts for given database.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group containing the Kusto cluster.
 // clusterName - The name of the Kusto cluster.
 // databaseName - The name of the database in the Kusto cluster.
 // options - ScriptsClientListByDatabaseOptions contains the optional parameters for the ScriptsClient.ListByDatabase method.
-func (client *ScriptsClient) ListByDatabase(resourceGroupName string, clusterName string, databaseName string, options *ScriptsClientListByDatabaseOptions) *runtime.Pager[ScriptsClientListByDatabaseResponse] {
+func (client *ScriptsClient) NewListByDatabasePager(resourceGroupName string, clusterName string, databaseName string, options *ScriptsClientListByDatabaseOptions) *runtime.Pager[ScriptsClientListByDatabaseResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ScriptsClientListByDatabaseResponse]{
 		More: func(page ScriptsClientListByDatabaseResponse) bool {
 			return false

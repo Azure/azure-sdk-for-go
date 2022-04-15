@@ -283,14 +283,14 @@ func (client *ExtensionsClient) getHandleResponse(resp *http.Response) (Extensio
 	return result, nil
 }
 
-// List - List all Extensions in the cluster.
+// NewListPager - List all Extensions in the cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // clusterRp - The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes, Microsoft.HybridContainerService.
 // clusterResourceName - The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters, provisionedClusters.
 // clusterName - The name of the kubernetes cluster.
 // options - ExtensionsClientListOptions contains the optional parameters for the ExtensionsClient.List method.
-func (client *ExtensionsClient) List(resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, options *ExtensionsClientListOptions) *runtime.Pager[ExtensionsClientListResponse] {
+func (client *ExtensionsClient) NewListPager(resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, options *ExtensionsClientListOptions) *runtime.Pager[ExtensionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ExtensionsClientListResponse]{
 		More: func(page ExtensionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

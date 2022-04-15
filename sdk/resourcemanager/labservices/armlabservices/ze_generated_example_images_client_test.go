@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Images/listImages.json
-func ExampleImagesClient_ListByLabPlan() {
+func ExampleImagesClient_NewListByLabPlanPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleImagesClient_ListByLabPlan() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByLabPlan("<resource-group-name>",
+	pager := client.NewListByLabPlanPager("<resource-group-name>",
 		"<lab-plan-name>",
 		&armlabservices.ImagesClientListByLabPlanOptions{Filter: nil})
 	for pager.More() {

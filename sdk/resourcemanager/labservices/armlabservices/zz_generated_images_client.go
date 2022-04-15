@@ -177,13 +177,13 @@ func (client *ImagesClient) getHandleResponse(resp *http.Response) (ImagesClient
 	return result, nil
 }
 
-// ListByLabPlan - Gets all images from galleries attached to a lab plan.
+// NewListByLabPlanPager - Gets all images from galleries attached to a lab plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // labPlanName - The name of the lab plan that uniquely identifies it within containing resource group. Used in resource URIs
 // and in UI.
 // options - ImagesClientListByLabPlanOptions contains the optional parameters for the ImagesClient.ListByLabPlan method.
-func (client *ImagesClient) ListByLabPlan(resourceGroupName string, labPlanName string, options *ImagesClientListByLabPlanOptions) *runtime.Pager[ImagesClientListByLabPlanResponse] {
+func (client *ImagesClient) NewListByLabPlanPager(resourceGroupName string, labPlanName string, options *ImagesClientListByLabPlanOptions) *runtime.Pager[ImagesClientListByLabPlanResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ImagesClientListByLabPlanResponse]{
 		More: func(page ImagesClientListByLabPlanResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

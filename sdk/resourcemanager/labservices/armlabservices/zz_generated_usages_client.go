@@ -54,11 +54,11 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 	return client, nil
 }
 
-// ListByLocation - Returns list of usage per SKU family for the specified subscription in the specified region.
+// NewListByLocationPager - Returns list of usage per SKU family for the specified subscription in the specified region.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - The location name.
 // options - UsagesClientListByLocationOptions contains the optional parameters for the UsagesClient.ListByLocation method.
-func (client *UsagesClient) ListByLocation(location string, options *UsagesClientListByLocationOptions) *runtime.Pager[UsagesClientListByLocationResponse] {
+func (client *UsagesClient) NewListByLocationPager(location string, options *UsagesClientListByLocationOptions) *runtime.Pager[UsagesClientListByLocationResponse] {
 	return runtime.NewPager(runtime.PageProcessor[UsagesClientListByLocationResponse]{
 		More: func(page UsagesClientListByLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

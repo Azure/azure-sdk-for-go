@@ -183,14 +183,14 @@ func (client *MHSMPrivateEndpointConnectionsClient) getHandleResponse(resp *http
 	return result, nil
 }
 
-// ListByResource - The List operation gets information about the private endpoint connections associated with the managed
-// HSM Pool.
+// NewListByResourcePager - The List operation gets information about the private endpoint connections associated with the
+// managed HSM Pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group that contains the managed HSM pool.
 // name - Name of the managed HSM Pool
 // options - MHSMPrivateEndpointConnectionsClientListByResourceOptions contains the optional parameters for the MHSMPrivateEndpointConnectionsClient.ListByResource
 // method.
-func (client *MHSMPrivateEndpointConnectionsClient) ListByResource(resourceGroupName string, name string, options *MHSMPrivateEndpointConnectionsClientListByResourceOptions) *runtime.Pager[MHSMPrivateEndpointConnectionsClientListByResourceResponse] {
+func (client *MHSMPrivateEndpointConnectionsClient) NewListByResourcePager(resourceGroupName string, name string, options *MHSMPrivateEndpointConnectionsClientListByResourceOptions) *runtime.Pager[MHSMPrivateEndpointConnectionsClientListByResourceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MHSMPrivateEndpointConnectionsClientListByResourceResponse]{
 		More: func(page MHSMPrivateEndpointConnectionsClientListByResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

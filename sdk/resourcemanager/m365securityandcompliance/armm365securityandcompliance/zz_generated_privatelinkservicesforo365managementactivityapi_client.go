@@ -237,11 +237,11 @@ func (client *PrivateLinkServicesForO365ManagementActivityAPIClient) getHandleRe
 	return result, nil
 }
 
-// List - Get all the privateLinkServicesForO365ManagementActivityAPI instances in a subscription.
+// NewListPager - Get all the privateLinkServicesForO365ManagementActivityAPI instances in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PrivateLinkServicesForO365ManagementActivityAPIClientListOptions contains the optional parameters for the PrivateLinkServicesForO365ManagementActivityAPIClient.List
 // method.
-func (client *PrivateLinkServicesForO365ManagementActivityAPIClient) List(options *PrivateLinkServicesForO365ManagementActivityAPIClientListOptions) *runtime.Pager[PrivateLinkServicesForO365ManagementActivityAPIClientListResponse] {
+func (client *PrivateLinkServicesForO365ManagementActivityAPIClient) NewListPager(options *PrivateLinkServicesForO365ManagementActivityAPIClientListOptions) *runtime.Pager[PrivateLinkServicesForO365ManagementActivityAPIClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesForO365ManagementActivityAPIClientListResponse]{
 		More: func(page PrivateLinkServicesForO365ManagementActivityAPIClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -296,12 +296,12 @@ func (client *PrivateLinkServicesForO365ManagementActivityAPIClient) listHandleR
 	return result, nil
 }
 
-// ListByResourceGroup - Get all the service instances in a resource group.
+// NewListByResourceGroupPager - Get all the service instances in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the service instance.
 // options - PrivateLinkServicesForO365ManagementActivityAPIClientListByResourceGroupOptions contains the optional parameters
 // for the PrivateLinkServicesForO365ManagementActivityAPIClient.ListByResourceGroup method.
-func (client *PrivateLinkServicesForO365ManagementActivityAPIClient) ListByResourceGroup(resourceGroupName string, options *PrivateLinkServicesForO365ManagementActivityAPIClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkServicesForO365ManagementActivityAPIClientListByResourceGroupResponse] {
+func (client *PrivateLinkServicesForO365ManagementActivityAPIClient) NewListByResourceGroupPager(resourceGroupName string, options *PrivateLinkServicesForO365ManagementActivityAPIClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkServicesForO365ManagementActivityAPIClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesForO365ManagementActivityAPIClientListByResourceGroupResponse]{
 		More: func(page PrivateLinkServicesForO365ManagementActivityAPIClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

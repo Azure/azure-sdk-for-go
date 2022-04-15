@@ -365,12 +365,12 @@ func (client *DatabasesClient) getHandleResponse(resp *http.Response) (Databases
 	return result, nil
 }
 
-// ListByCluster - Returns the list of databases of the given Kusto cluster.
+// NewListByClusterPager - Returns the list of databases of the given Kusto cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group containing the Kusto cluster.
 // clusterName - The name of the Kusto cluster.
 // options - DatabasesClientListByClusterOptions contains the optional parameters for the DatabasesClient.ListByCluster method.
-func (client *DatabasesClient) ListByCluster(resourceGroupName string, clusterName string, options *DatabasesClientListByClusterOptions) *runtime.Pager[DatabasesClientListByClusterResponse] {
+func (client *DatabasesClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *DatabasesClientListByClusterOptions) *runtime.Pager[DatabasesClientListByClusterResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DatabasesClientListByClusterResponse]{
 		More: func(page DatabasesClientListByClusterResponse) bool {
 			return false
@@ -427,14 +427,14 @@ func (client *DatabasesClient) listByClusterHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListPrincipals - Returns a list of database principals of the given Kusto cluster and database.
+// NewListPrincipalsPager - Returns a list of database principals of the given Kusto cluster and database.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group containing the Kusto cluster.
 // clusterName - The name of the Kusto cluster.
 // databaseName - The name of the database in the Kusto cluster.
 // options - DatabasesClientListPrincipalsOptions contains the optional parameters for the DatabasesClient.ListPrincipals
 // method.
-func (client *DatabasesClient) ListPrincipals(resourceGroupName string, clusterName string, databaseName string, options *DatabasesClientListPrincipalsOptions) *runtime.Pager[DatabasesClientListPrincipalsResponse] {
+func (client *DatabasesClient) NewListPrincipalsPager(resourceGroupName string, clusterName string, databaseName string, options *DatabasesClientListPrincipalsOptions) *runtime.Pager[DatabasesClientListPrincipalsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DatabasesClientListPrincipalsResponse]{
 		More: func(page DatabasesClientListPrincipalsResponse) bool {
 			return false

@@ -112,7 +112,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/keyvault/resource-manager/Microsoft.KeyVault/preview/2021-11-01-preview/examples/listPrivateEndpointConnection.json
-func ExamplePrivateEndpointConnectionsClient_ListByResource() {
+func ExamplePrivateEndpointConnectionsClient_NewListByResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -124,7 +124,7 @@ func ExamplePrivateEndpointConnectionsClient_ListByResource() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResource("<resource-group-name>",
+	pager := client.NewListByResourcePager("<resource-group-name>",
 		"<vault-name>",
 		nil)
 	for pager.More() {

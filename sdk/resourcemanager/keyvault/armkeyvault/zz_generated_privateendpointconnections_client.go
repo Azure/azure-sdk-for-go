@@ -183,13 +183,14 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListByResource - The List operation gets information about the private endpoint connections associated with the vault.
+// NewListByResourcePager - The List operation gets information about the private endpoint connections associated with the
+// vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group that contains the key vault.
 // vaultName - The name of the key vault.
 // options - PrivateEndpointConnectionsClientListByResourceOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByResource
 // method.
-func (client *PrivateEndpointConnectionsClient) ListByResource(resourceGroupName string, vaultName string, options *PrivateEndpointConnectionsClientListByResourceOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByResourceResponse] {
+func (client *PrivateEndpointConnectionsClient) NewListByResourcePager(resourceGroupName string, vaultName string, options *PrivateEndpointConnectionsClientListByResourceOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByResourceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionsClientListByResourceResponse]{
 		More: func(page PrivateEndpointConnectionsClientListByResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

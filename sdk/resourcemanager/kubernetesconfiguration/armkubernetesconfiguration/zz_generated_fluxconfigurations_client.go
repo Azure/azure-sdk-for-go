@@ -287,14 +287,14 @@ func (client *FluxConfigurationsClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// List - List all Flux Configurations.
+// NewListPager - List all Flux Configurations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // clusterRp - The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes, Microsoft.HybridContainerService.
 // clusterResourceName - The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters, provisionedClusters.
 // clusterName - The name of the kubernetes cluster.
 // options - FluxConfigurationsClientListOptions contains the optional parameters for the FluxConfigurationsClient.List method.
-func (client *FluxConfigurationsClient) List(resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, options *FluxConfigurationsClientListOptions) *runtime.Pager[FluxConfigurationsClientListResponse] {
+func (client *FluxConfigurationsClient) NewListPager(resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, options *FluxConfigurationsClientListOptions) *runtime.Pager[FluxConfigurationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[FluxConfigurationsClientListResponse]{
 		More: func(page FluxConfigurationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

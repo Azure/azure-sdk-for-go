@@ -1,5 +1,73 @@
 # Release History
 
+## 0.5.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*IntegrationAccountsClient.ListBySubscription` has been removed
+- Function `*IntegrationServiceEnvironmentsClient.ListByResourceGroup` has been removed
+- Function `*IntegrationServiceEnvironmentSKUsClient.List` has been removed
+- Function `*WorkflowsClient.ListBySubscription` has been removed
+- Function `*WorkflowRunActionRepetitionsClient.ListExpressionTraces` has been removed
+- Function `*WorkflowRunActionsClient.ListExpressionTraces` has been removed
+- Function `*IntegrationAccountMapsClient.List` has been removed
+- Function `*IntegrationServiceEnvironmentManagedApisClient.List` has been removed
+- Function `*IntegrationAccountAgreementsClient.List` has been removed
+- Function `*IntegrationAccountsClient.ListKeyVaultKeys` has been removed
+- Function `*IntegrationAccountBatchConfigurationsClient.List` has been removed
+- Function `*WorkflowsClient.ListByResourceGroup` has been removed
+- Function `*WorkflowRunActionRequestHistoriesClient.List` has been removed
+- Function `*IntegrationAccountSchemasClient.List` has been removed
+- Function `*WorkflowTriggerHistoriesClient.List` has been removed
+- Function `*IntegrationServiceEnvironmentsClient.ListBySubscription` has been removed
+- Function `*WorkflowTriggersClient.List` has been removed
+- Function `*WorkflowRunsClient.List` has been removed
+- Function `*IntegrationServiceEnvironmentManagedAPIOperationsClient.List` has been removed
+- Function `*WorkflowRunActionRepetitionsRequestHistoriesClient.List` has been removed
+- Function `*WorkflowVersionsClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*IntegrationAccountsClient.ListByResourceGroup` has been removed
+- Function `*WorkflowRunActionRepetitionsClient.List` has been removed
+- Function `*WorkflowRunActionScopeRepetitionsClient.List` has been removed
+- Function `*IntegrationAccountCertificatesClient.List` has been removed
+- Function `*WorkflowRunActionsClient.List` has been removed
+- Function `*IntegrationAccountAssembliesClient.List` has been removed
+- Function `*IntegrationAccountSessionsClient.List` has been removed
+- Function `*IntegrationAccountPartnersClient.List` has been removed
+
+### Features Added
+
+- New function `*IntegrationAccountSessionsClient.NewListPager(string, string, *IntegrationAccountSessionsClientListOptions) *runtime.Pager[IntegrationAccountSessionsClientListResponse]`
+- New function `*IntegrationAccountSchemasClient.NewListPager(string, string, *IntegrationAccountSchemasClientListOptions) *runtime.Pager[IntegrationAccountSchemasClientListResponse]`
+- New function `*WorkflowRunActionRequestHistoriesClient.NewListPager(string, string, string, string, *WorkflowRunActionRequestHistoriesClientListOptions) *runtime.Pager[WorkflowRunActionRequestHistoriesClientListResponse]`
+- New function `*IntegrationAccountCertificatesClient.NewListPager(string, string, *IntegrationAccountCertificatesClientListOptions) *runtime.Pager[IntegrationAccountCertificatesClientListResponse]`
+- New function `*WorkflowRunActionRepetitionsClient.NewListPager(string, string, string, string, *WorkflowRunActionRepetitionsClientListOptions) *runtime.Pager[WorkflowRunActionRepetitionsClientListResponse]`
+- New function `*WorkflowTriggersClient.NewListPager(string, string, *WorkflowTriggersClientListOptions) *runtime.Pager[WorkflowTriggersClientListResponse]`
+- New function `*WorkflowRunActionRepetitionsClient.NewListExpressionTracesPager(string, string, string, string, string, *WorkflowRunActionRepetitionsClientListExpressionTracesOptions) *runtime.Pager[WorkflowRunActionRepetitionsClientListExpressionTracesResponse]`
+- New function `*WorkflowsClient.NewListBySubscriptionPager(*WorkflowsClientListBySubscriptionOptions) *runtime.Pager[WorkflowsClientListBySubscriptionResponse]`
+- New function `*IntegrationServiceEnvironmentSKUsClient.NewListPager(string, string, *IntegrationServiceEnvironmentSKUsClientListOptions) *runtime.Pager[IntegrationServiceEnvironmentSKUsClientListResponse]`
+- New function `*IntegrationAccountAgreementsClient.NewListPager(string, string, *IntegrationAccountAgreementsClientListOptions) *runtime.Pager[IntegrationAccountAgreementsClientListResponse]`
+- New function `*IntegrationAccountsClient.NewListKeyVaultKeysPager(string, string, ListKeyVaultKeysDefinition, *IntegrationAccountsClientListKeyVaultKeysOptions) *runtime.Pager[IntegrationAccountsClientListKeyVaultKeysResponse]`
+- New function `*WorkflowVersionsClient.NewListPager(string, string, *WorkflowVersionsClientListOptions) *runtime.Pager[WorkflowVersionsClientListResponse]`
+- New function `*WorkflowRunActionsClient.NewListPager(string, string, string, *WorkflowRunActionsClientListOptions) *runtime.Pager[WorkflowRunActionsClientListResponse]`
+- New function `*WorkflowsClient.NewListByResourceGroupPager(string, *WorkflowsClientListByResourceGroupOptions) *runtime.Pager[WorkflowsClientListByResourceGroupResponse]`
+- New function `*IntegrationServiceEnvironmentManagedApisClient.NewListPager(string, string, *IntegrationServiceEnvironmentManagedApisClientListOptions) *runtime.Pager[IntegrationServiceEnvironmentManagedApisClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*IntegrationAccountBatchConfigurationsClient.NewListPager(string, string, *IntegrationAccountBatchConfigurationsClientListOptions) *runtime.Pager[IntegrationAccountBatchConfigurationsClientListResponse]`
+- New function `*IntegrationAccountsClient.NewListByResourceGroupPager(string, *IntegrationAccountsClientListByResourceGroupOptions) *runtime.Pager[IntegrationAccountsClientListByResourceGroupResponse]`
+- New function `*WorkflowRunActionsClient.NewListExpressionTracesPager(string, string, string, string, *WorkflowRunActionsClientListExpressionTracesOptions) *runtime.Pager[WorkflowRunActionsClientListExpressionTracesResponse]`
+- New function `*IntegrationAccountAssembliesClient.NewListPager(string, string, *IntegrationAccountAssembliesClientListOptions) *runtime.Pager[IntegrationAccountAssembliesClientListResponse]`
+- New function `*IntegrationServiceEnvironmentsClient.NewListBySubscriptionPager(*IntegrationServiceEnvironmentsClientListBySubscriptionOptions) *runtime.Pager[IntegrationServiceEnvironmentsClientListBySubscriptionResponse]`
+- New function `*WorkflowRunActionRepetitionsRequestHistoriesClient.NewListPager(string, string, string, string, string, *WorkflowRunActionRepetitionsRequestHistoriesClientListOptions) *runtime.Pager[WorkflowRunActionRepetitionsRequestHistoriesClientListResponse]`
+- New function `*IntegrationAccountsClient.NewListBySubscriptionPager(*IntegrationAccountsClientListBySubscriptionOptions) *runtime.Pager[IntegrationAccountsClientListBySubscriptionResponse]`
+- New function `*WorkflowRunActionScopeRepetitionsClient.NewListPager(string, string, string, string, *WorkflowRunActionScopeRepetitionsClientListOptions) *runtime.Pager[WorkflowRunActionScopeRepetitionsClientListResponse]`
+- New function `*IntegrationAccountPartnersClient.NewListPager(string, string, *IntegrationAccountPartnersClientListOptions) *runtime.Pager[IntegrationAccountPartnersClientListResponse]`
+- New function `*IntegrationAccountMapsClient.NewListPager(string, string, *IntegrationAccountMapsClientListOptions) *runtime.Pager[IntegrationAccountMapsClientListResponse]`
+- New function `*IntegrationServiceEnvironmentManagedAPIOperationsClient.NewListPager(string, string, string, *IntegrationServiceEnvironmentManagedAPIOperationsClientListOptions) *runtime.Pager[IntegrationServiceEnvironmentManagedAPIOperationsClientListResponse]`
+- New function `*IntegrationServiceEnvironmentsClient.NewListByResourceGroupPager(string, *IntegrationServiceEnvironmentsClientListByResourceGroupOptions) *runtime.Pager[IntegrationServiceEnvironmentsClientListByResourceGroupResponse]`
+- New function `*WorkflowTriggerHistoriesClient.NewListPager(string, string, string, *WorkflowTriggerHistoriesClientListOptions) *runtime.Pager[WorkflowTriggerHistoriesClientListResponse]`
+- New function `*WorkflowRunsClient.NewListPager(string, string, *WorkflowRunsClientListOptions) *runtime.Pager[WorkflowRunsClientListResponse]`
+
+
 ## 0.4.0 (2022-04-12)
 ### Breaking Changes
 

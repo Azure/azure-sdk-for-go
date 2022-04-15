@@ -174,11 +174,11 @@ func (client *PrivateLinkServicesForEDMUploadClient) getHandleResponse(resp *htt
 	return result, nil
 }
 
-// List - Get all the privateLinkServicesForEDMUpload instances in a subscription.
+// NewListPager - Get all the privateLinkServicesForEDMUpload instances in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PrivateLinkServicesForEDMUploadClientListOptions contains the optional parameters for the PrivateLinkServicesForEDMUploadClient.List
 // method.
-func (client *PrivateLinkServicesForEDMUploadClient) List(options *PrivateLinkServicesForEDMUploadClientListOptions) *runtime.Pager[PrivateLinkServicesForEDMUploadClientListResponse] {
+func (client *PrivateLinkServicesForEDMUploadClient) NewListPager(options *PrivateLinkServicesForEDMUploadClientListOptions) *runtime.Pager[PrivateLinkServicesForEDMUploadClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesForEDMUploadClientListResponse]{
 		More: func(page PrivateLinkServicesForEDMUploadClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -233,12 +233,12 @@ func (client *PrivateLinkServicesForEDMUploadClient) listHandleResponse(resp *ht
 	return result, nil
 }
 
-// ListByResourceGroup - Get all the service instances in a resource group.
+// NewListByResourceGroupPager - Get all the service instances in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the service instance.
 // options - PrivateLinkServicesForEDMUploadClientListByResourceGroupOptions contains the optional parameters for the PrivateLinkServicesForEDMUploadClient.ListByResourceGroup
 // method.
-func (client *PrivateLinkServicesForEDMUploadClient) ListByResourceGroup(resourceGroupName string, options *PrivateLinkServicesForEDMUploadClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkServicesForEDMUploadClientListByResourceGroupResponse] {
+func (client *PrivateLinkServicesForEDMUploadClient) NewListByResourceGroupPager(resourceGroupName string, options *PrivateLinkServicesForEDMUploadClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkServicesForEDMUploadClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesForEDMUploadClientListByResourceGroupResponse]{
 		More: func(page PrivateLinkServicesForEDMUploadClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

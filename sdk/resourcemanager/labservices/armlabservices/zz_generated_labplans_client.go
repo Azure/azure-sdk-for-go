@@ -240,12 +240,12 @@ func (client *LabPlansClient) getHandleResponse(resp *http.Response) (LabPlansCl
 	return result, nil
 }
 
-// ListByResourceGroup - Returns a list of all lab plans for a subscription and resource group.
+// NewListByResourceGroupPager - Returns a list of all lab plans for a subscription and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - LabPlansClientListByResourceGroupOptions contains the optional parameters for the LabPlansClient.ListByResourceGroup
 // method.
-func (client *LabPlansClient) ListByResourceGroup(resourceGroupName string, options *LabPlansClientListByResourceGroupOptions) *runtime.Pager[LabPlansClientListByResourceGroupResponse] {
+func (client *LabPlansClient) NewListByResourceGroupPager(resourceGroupName string, options *LabPlansClientListByResourceGroupOptions) *runtime.Pager[LabPlansClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LabPlansClientListByResourceGroupResponse]{
 		More: func(page LabPlansClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -304,11 +304,11 @@ func (client *LabPlansClient) listByResourceGroupHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListBySubscription - Returns a list of all lab plans within a subscription
+// NewListBySubscriptionPager - Returns a list of all lab plans within a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - LabPlansClientListBySubscriptionOptions contains the optional parameters for the LabPlansClient.ListBySubscription
 // method.
-func (client *LabPlansClient) ListBySubscription(options *LabPlansClientListBySubscriptionOptions) *runtime.Pager[LabPlansClientListBySubscriptionResponse] {
+func (client *LabPlansClient) NewListBySubscriptionPager(options *LabPlansClientListBySubscriptionOptions) *runtime.Pager[LabPlansClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LabPlansClientListBySubscriptionResponse]{
 		More: func(page LabPlansClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -243,12 +243,12 @@ func (client *KeysClient) getVersionHandleResponse(resp *http.Response) (KeysCli
 	return result, nil
 }
 
-// List - Lists the keys in the specified key vault.
+// NewListPager - Lists the keys in the specified key vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group which contains the specified key vault.
 // vaultName - The name of the vault which contains the keys to be retrieved.
 // options - KeysClientListOptions contains the optional parameters for the KeysClient.List method.
-func (client *KeysClient) List(resourceGroupName string, vaultName string, options *KeysClientListOptions) *runtime.Pager[KeysClientListResponse] {
+func (client *KeysClient) NewListPager(resourceGroupName string, vaultName string, options *KeysClientListOptions) *runtime.Pager[KeysClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[KeysClientListResponse]{
 		More: func(page KeysClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -311,13 +311,13 @@ func (client *KeysClient) listHandleResponse(resp *http.Response) (KeysClientLis
 	return result, nil
 }
 
-// ListVersions - Lists the versions of the specified key in the specified key vault.
+// NewListVersionsPager - Lists the versions of the specified key in the specified key vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group which contains the specified key vault.
 // vaultName - The name of the vault which contains the key versions to be retrieved.
 // keyName - The name of the key versions to be retrieved.
 // options - KeysClientListVersionsOptions contains the optional parameters for the KeysClient.ListVersions method.
-func (client *KeysClient) ListVersions(resourceGroupName string, vaultName string, keyName string, options *KeysClientListVersionsOptions) *runtime.Pager[KeysClientListVersionsResponse] {
+func (client *KeysClient) NewListVersionsPager(resourceGroupName string, vaultName string, keyName string, options *KeysClientListVersionsOptions) *runtime.Pager[KeysClientListVersionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[KeysClientListVersionsResponse]{
 		More: func(page KeysClientListVersionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

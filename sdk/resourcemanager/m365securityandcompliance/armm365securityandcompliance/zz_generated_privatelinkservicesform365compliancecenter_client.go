@@ -237,11 +237,11 @@ func (client *PrivateLinkServicesForM365ComplianceCenterClient) getHandleRespons
 	return result, nil
 }
 
-// List - Get all the privateLinkServicesForM365ComplianceCenter instances in a subscription.
+// NewListPager - Get all the privateLinkServicesForM365ComplianceCenter instances in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PrivateLinkServicesForM365ComplianceCenterClientListOptions contains the optional parameters for the PrivateLinkServicesForM365ComplianceCenterClient.List
 // method.
-func (client *PrivateLinkServicesForM365ComplianceCenterClient) List(options *PrivateLinkServicesForM365ComplianceCenterClientListOptions) *runtime.Pager[PrivateLinkServicesForM365ComplianceCenterClientListResponse] {
+func (client *PrivateLinkServicesForM365ComplianceCenterClient) NewListPager(options *PrivateLinkServicesForM365ComplianceCenterClientListOptions) *runtime.Pager[PrivateLinkServicesForM365ComplianceCenterClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesForM365ComplianceCenterClientListResponse]{
 		More: func(page PrivateLinkServicesForM365ComplianceCenterClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -296,12 +296,12 @@ func (client *PrivateLinkServicesForM365ComplianceCenterClient) listHandleRespon
 	return result, nil
 }
 
-// ListByResourceGroup - Get all the service instances in a resource group.
+// NewListByResourceGroupPager - Get all the service instances in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the service instance.
 // options - PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupOptions contains the optional parameters for
 // the PrivateLinkServicesForM365ComplianceCenterClient.ListByResourceGroup method.
-func (client *PrivateLinkServicesForM365ComplianceCenterClient) ListByResourceGroup(resourceGroupName string, options *PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupResponse] {
+func (client *PrivateLinkServicesForM365ComplianceCenterClient) NewListByResourceGroupPager(resourceGroupName string, options *PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupResponse]{
 		More: func(page PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

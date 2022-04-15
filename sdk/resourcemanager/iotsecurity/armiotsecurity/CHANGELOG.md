@@ -1,5 +1,21 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*DeviceGroupsClient.List` has been removed
+- Function `*LocationsClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*DevicesClient.List` has been removed
+
+### Features Added
+
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*DevicesClient.NewListPager(string, *DevicesClientListOptions) *runtime.Pager[DevicesClientListResponse]`
+- New function `*LocationsClient.NewListPager(*LocationsClientListOptions) *runtime.Pager[LocationsClientListResponse]`
+- New function `*DeviceGroupsClient.NewListPager(*DeviceGroupsClientListOptions) *runtime.Pager[DeviceGroupsClientListResponse]`
+
+
 ## 0.3.0 (2022-04-12)
 ### Breaking Changes
 

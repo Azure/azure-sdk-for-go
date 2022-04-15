@@ -326,14 +326,14 @@ func (client *DatabasePrincipalAssignmentsClient) getHandleResponse(resp *http.R
 	return result, nil
 }
 
-// List - Lists all Kusto cluster database principalAssignments.
+// NewListPager - Lists all Kusto cluster database principalAssignments.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group containing the Kusto cluster.
 // clusterName - The name of the Kusto cluster.
 // databaseName - The name of the database in the Kusto cluster.
 // options - DatabasePrincipalAssignmentsClientListOptions contains the optional parameters for the DatabasePrincipalAssignmentsClient.List
 // method.
-func (client *DatabasePrincipalAssignmentsClient) List(resourceGroupName string, clusterName string, databaseName string, options *DatabasePrincipalAssignmentsClientListOptions) *runtime.Pager[DatabasePrincipalAssignmentsClientListResponse] {
+func (client *DatabasePrincipalAssignmentsClient) NewListPager(resourceGroupName string, clusterName string, databaseName string, options *DatabasePrincipalAssignmentsClientListOptions) *runtime.Pager[DatabasePrincipalAssignmentsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DatabasePrincipalAssignmentsClientListResponse]{
 		More: func(page DatabasePrincipalAssignmentsClientListResponse) bool {
 			return false

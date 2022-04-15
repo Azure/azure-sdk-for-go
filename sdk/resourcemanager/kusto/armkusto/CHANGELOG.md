@@ -1,5 +1,49 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*DatabasePrincipalAssignmentsClient.List` has been removed
+- Function `*DatabasesClient.ListPrincipals` has been removed
+- Function `*DatabasesClient.ListByCluster` has been removed
+- Function `*ScriptsClient.ListByDatabase` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*AttachedDatabaseConfigurationsClient.ListByCluster` has been removed
+- Function `*ManagedPrivateEndpointsClient.List` has been removed
+- Function `*ClustersClient.List` has been removed
+- Function `*ClustersClient.ListSKUs` has been removed
+- Function `*ClustersClient.ListSKUsByResource` has been removed
+- Function `*ClustersClient.ListLanguageExtensions` has been removed
+- Function `*ClusterPrincipalAssignmentsClient.List` has been removed
+- Function `*ClustersClient.ListOutboundNetworkDependenciesEndpoints` has been removed
+- Function `*PrivateEndpointConnectionsClient.List` has been removed
+- Function `*ClustersClient.ListFollowerDatabases` has been removed
+- Function `*DataConnectionsClient.ListByDatabase` has been removed
+- Function `*PrivateLinkResourcesClient.List` has been removed
+- Function `*ClustersClient.ListByResourceGroup` has been removed
+
+### Features Added
+
+- New function `*PrivateLinkResourcesClient.NewListPager(string, string, *PrivateLinkResourcesClientListOptions) *runtime.Pager[PrivateLinkResourcesClientListResponse]`
+- New function `*ScriptsClient.NewListByDatabasePager(string, string, string, *ScriptsClientListByDatabaseOptions) *runtime.Pager[ScriptsClientListByDatabaseResponse]`
+- New function `*ClustersClient.NewListLanguageExtensionsPager(string, string, *ClustersClientListLanguageExtensionsOptions) *runtime.Pager[ClustersClientListLanguageExtensionsResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*ClustersClient.NewListPager(*ClustersClientListOptions) *runtime.Pager[ClustersClientListResponse]`
+- New function `*ClusterPrincipalAssignmentsClient.NewListPager(string, string, *ClusterPrincipalAssignmentsClientListOptions) *runtime.Pager[ClusterPrincipalAssignmentsClientListResponse]`
+- New function `*ClustersClient.NewListSKUsPager(*ClustersClientListSKUsOptions) *runtime.Pager[ClustersClientListSKUsResponse]`
+- New function `*PrivateEndpointConnectionsClient.NewListPager(string, string, *PrivateEndpointConnectionsClientListOptions) *runtime.Pager[PrivateEndpointConnectionsClientListResponse]`
+- New function `*ClustersClient.NewListOutboundNetworkDependenciesEndpointsPager(string, string, *ClustersClientListOutboundNetworkDependenciesEndpointsOptions) *runtime.Pager[ClustersClientListOutboundNetworkDependenciesEndpointsResponse]`
+- New function `*AttachedDatabaseConfigurationsClient.NewListByClusterPager(string, string, *AttachedDatabaseConfigurationsClientListByClusterOptions) *runtime.Pager[AttachedDatabaseConfigurationsClientListByClusterResponse]`
+- New function `*ClustersClient.NewListFollowerDatabasesPager(string, string, *ClustersClientListFollowerDatabasesOptions) *runtime.Pager[ClustersClientListFollowerDatabasesResponse]`
+- New function `*ManagedPrivateEndpointsClient.NewListPager(string, string, *ManagedPrivateEndpointsClientListOptions) *runtime.Pager[ManagedPrivateEndpointsClientListResponse]`
+- New function `*DataConnectionsClient.NewListByDatabasePager(string, string, string, *DataConnectionsClientListByDatabaseOptions) *runtime.Pager[DataConnectionsClientListByDatabaseResponse]`
+- New function `*DatabasesClient.NewListByClusterPager(string, string, *DatabasesClientListByClusterOptions) *runtime.Pager[DatabasesClientListByClusterResponse]`
+- New function `*DatabasesClient.NewListPrincipalsPager(string, string, string, *DatabasesClientListPrincipalsOptions) *runtime.Pager[DatabasesClientListPrincipalsResponse]`
+- New function `*DatabasePrincipalAssignmentsClient.NewListPager(string, string, string, *DatabasePrincipalAssignmentsClientListOptions) *runtime.Pager[DatabasePrincipalAssignmentsClientListResponse]`
+- New function `*ClustersClient.NewListByResourceGroupPager(string, *ClustersClientListByResourceGroupOptions) *runtime.Pager[ClustersClientListByResourceGroupResponse]`
+- New function `*ClustersClient.NewListSKUsByResourcePager(string, string, *ClustersClientListSKUsByResourceOptions) *runtime.Pager[ClustersClientListSKUsByResourceResponse]`
+
+
 ## 0.3.0 (2022-04-12)
 ### Breaking Changes
 

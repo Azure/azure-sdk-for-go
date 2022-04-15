@@ -19,7 +19,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/logz/resource-manager/Microsoft.Logz/stable/2020-10-01/examples/SubAccount_ListByResourceGroup.json
-func ExampleSubAccountClient_List() {
+func ExampleSubAccountClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -31,7 +31,7 @@ func ExampleSubAccountClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-group-name>",
+	pager := client.NewListPager("<resource-group-name>",
 		"<monitor-name>",
 		nil)
 	for pager.More() {
@@ -162,7 +162,7 @@ func ExampleSubAccountClient_Update() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/logz/resource-manager/Microsoft.Logz/stable/2020-10-01/examples/SubAccount_MonitoredResources_List.json
-func ExampleSubAccountClient_ListMonitoredResources() {
+func ExampleSubAccountClient_NewListMonitoredResourcesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -174,7 +174,7 @@ func ExampleSubAccountClient_ListMonitoredResources() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListMonitoredResources("<resource-group-name>",
+	pager := client.NewListMonitoredResourcesPager("<resource-group-name>",
 		"<monitor-name>",
 		"<sub-account-name>",
 		nil)
@@ -218,7 +218,7 @@ func ExampleSubAccountClient_VMHostPayload() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/logz/resource-manager/Microsoft.Logz/stable/2020-10-01/examples/SubAccount_VMHosts_List.json
-func ExampleSubAccountClient_ListVMHosts() {
+func ExampleSubAccountClient_NewListVMHostsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -230,7 +230,7 @@ func ExampleSubAccountClient_ListVMHosts() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListVMHosts("<resource-group-name>",
+	pager := client.NewListVMHostsPager("<resource-group-name>",
 		"<monitor-name>",
 		"<sub-account-name>",
 		nil)

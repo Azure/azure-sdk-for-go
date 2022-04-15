@@ -1,11 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package internal
+package exported
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 )
 
 // NOTE: these are publicly exported via type-aliasing in azservicebus/log.go
@@ -23,5 +22,5 @@ const (
 	EventSender log.Event = "azsb.Sender"
 
 	// EventAdmin is used for operations in the azservicebus/admin.Client
-	EventAdmin log.Event = atom.EventAdmin
+	EventAdmin log.Event = "azsb.Admin"
 )

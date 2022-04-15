@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 )
 
 // EventRetry is the name for retry events
@@ -36,12 +37,12 @@ func (rf *RetryFnArgs) ResetAttempts() {
 
 // Retry runs a standard retry loop. It executes your passed in fn as the body of the loop.
 // It returns if it exceeds the number of configured retry options or if 'isFatal' returns true.
-func Retry(ctx context.Context, eventName log.Event, operation string, fn func(ctx context.Context, args *RetryFnArgs) error, isFatalFn func(err error) bool, o RetryOptions) error {
+func Retry(ctx context.Context, eventName log.Event, operation string, fn func(ctx context.Context, args *RetryFnArgs) error, isFatalFn func(err error) bool, o exported.RetryOptions) error {
 	if isFatalFn == nil {
 		panic("isFatalFn is nil, errors would panic")
 	}
 
-	var ro RetryOptions = o
+	var ro exported.RetryOptions = o
 	setDefaults(&ro)
 
 	var err error
@@ -91,25 +92,7 @@ func Retry(ctx context.Context, eventName log.Event, operation string, fn func(c
 	return err
 }
 
-// RetryOptions represent the options for retries.
-type RetryOptions struct {
-	// MaxRetries specifies the maximum number of attempts a failed operation will be retried
-	// before producing an error.
-	// The default value is three.  A value less than zero means one try and no retries.
-	MaxRetries int32
-
-	// RetryDelay specifies the initial amount of delay to use before retrying an operation.
-	// The delay increases exponentially with each retry up to the maximum specified by MaxRetryDelay.
-	// The default value is four seconds.  A value less than zero means no delay between retries.
-	RetryDelay time.Duration
-
-	// MaxRetryDelay specifies the maximum delay allowed before retrying an operation.
-	// Typically the value is greater than or equal to the value specified in RetryDelay.
-	// The default Value is 120 seconds.  A value less than zero means there is no cap.
-	MaxRetryDelay time.Duration
-}
-
-func setDefaults(o *RetryOptions) {
+func setDefaults(o *exported.RetryOptions) {
 	if o.MaxRetries == 0 {
 		o.MaxRetries = 3
 	} else if o.MaxRetries < 0 {
@@ -129,7 +112,7 @@ func setDefaults(o *RetryOptions) {
 }
 
 // (adapted from from azcore/policy_retry)
-func calcDelay(o RetryOptions, try int32) time.Duration {
+func calcDelay(o exported.RetryOptions, try int32) time.Duration {
 	if try == 0 {
 		return 0
 	}

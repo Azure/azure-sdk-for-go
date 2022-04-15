@@ -10,7 +10,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/go-amqp"
 )
 
@@ -328,7 +327,7 @@ func newReceivedMessage(amqpMsg *amqp.Message) *ReceivedMessage {
 		if err == nil {
 			msg.LockToken = *(*amqp.UUID)(lockToken)
 		} else {
-			log.Writef(internal.EventReceiver, "msg.DeliveryTag could not be converted into a UUID: %s", err.Error())
+			log.Writef(EventReceiver, "msg.DeliveryTag could not be converted into a UUID: %s", err.Error())
 		}
 	}
 

@@ -20,7 +20,7 @@ type (
 		queueOrTopic   string
 		cleanupOnClose func()
 		links          internal.AMQPLinks
-		retryOptions   utils.RetryOptions
+		retryOptions   RetryOptions
 	}
 )
 
@@ -73,7 +73,7 @@ func (s *Sender) SendMessage(ctx context.Context, message *Message, options *Sen
 		defer span.End()
 
 		return lwid.Sender.Send(ctx, message.toAMQPMessage())
-	}, utils.RetryOptions(s.retryOptions))
+	}, RetryOptions(s.retryOptions))
 }
 
 // SendMessageBatchOptions contains optional parameters for the SendMessageBatch function.
@@ -89,7 +89,7 @@ func (s *Sender) SendMessageBatch(ctx context.Context, batch *MessageBatch, opti
 		defer span.End()
 
 		return lwid.Sender.Send(ctx, batch.toAMQPMessage())
-	}, utils.RetryOptions(s.retryOptions))
+	}, RetryOptions(s.retryOptions))
 }
 
 // ScheduleMessagesOptions contains optional parameters for the ScheduleMessages function.
@@ -174,7 +174,7 @@ func newSender(args newSenderArgs, retryOptions RetryOptions) (*Sender, error) {
 	sender := &Sender{
 		queueOrTopic:   args.queueOrTopic,
 		cleanupOnClose: args.cleanupOnClose,
-		retryOptions:   utils.RetryOptions(retryOptions),
+		retryOptions:   RetryOptions(retryOptions),
 	}
 
 	sender.links = args.ns.NewAMQPLinks(args.queueOrTopic, sender.createSenderLink, internal.GetRecoveryKind)

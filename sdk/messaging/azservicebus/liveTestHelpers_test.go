@@ -91,7 +91,7 @@ func peekSingleMessageForTest(t *testing.T, receiver *Receiver) *ReceivedMessage
 		}
 	}, func(err error) bool {
 		return false
-	}, utils.RetryOptions{})
+	}, RetryOptions{})
 
 	require.NoError(t, err)
 

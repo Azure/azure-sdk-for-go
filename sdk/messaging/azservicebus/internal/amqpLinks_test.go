@@ -12,13 +12,14 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
 
-var retryOptionsOnlyOnce = utils.RetryOptions{
+var retryOptionsOnlyOnce = exported.RetryOptions{
 	MaxRetries: 0,
 }
 
@@ -333,7 +334,7 @@ func TestAMQPLinksRetry(t *testing.T) {
 	err = links.Retry(context.Background(), log.Event("NotUsed"), "NotUsed", func(ctx context.Context, lwid *LinksWithID, args *utils.RetryFnArgs) error {
 		// force recoveries
 		return amqp.ErrConnClosed
-	}, utils.RetryOptions{
+	}, exported.RetryOptions{
 		MaxRetries: 2,
 		// note: omitting MaxRetries just to give a sanity check that
 		// we do setDefaults() before we run.
@@ -622,7 +623,7 @@ func TestAMQPLinksRetriesUnit(t *testing.T) {
 			err := links.Retry(context.Background(), log.Event("NotUsed"), "NotUsed", func(ctx context.Context, lwid *LinksWithID, args *utils.RetryFnArgs) error {
 				attempts = append(attempts, args.I)
 				return testData.Err
-			}, utils.RetryOptions{
+			}, exported.RetryOptions{
 				RetryDelay: time.Millisecond,
 			})
 

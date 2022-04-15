@@ -18,7 +18,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/sbauth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
@@ -28,10 +28,9 @@ import (
 )
 
 const (
-	serviceBusSchema           = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
-	atomSchema                 = "http://www.w3.org/2005/Atom"
-	applicationXML             = "application/xml"
-	EventAdmin       log.Event = "azsb.Admin"
+	serviceBusSchema = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+	atomSchema       = "http://www.w3.org/2005/Atom"
+	applicationXML   = "application/xml"
 )
 
 type (
@@ -48,7 +47,7 @@ type (
 		Host          string
 		mwStack       []MiddlewareFunc
 		version       string
-		retryOptions  utils.RetryOptions
+		retryOptions  exported.RetryOptions
 	}
 
 	// BaseEntityDescription provides common fields which are part of Queues, Topics and Subscriptions
@@ -185,7 +184,7 @@ func NewEntityManagerWithConnectionString(connectionString string, version strin
 }
 
 // NewEntityManager creates an entity manager using a TokenCredential.
-func NewEntityManager(ns string, tokenCredential azcore.TokenCredential, version string, retryOptions utils.RetryOptions) (EntityManager, error) {
+func NewEntityManager(ns string, tokenCredential azcore.TokenCredential, version string, retryOptions exported.RetryOptions) (EntityManager, error) {
 	return &entityManager{
 		Host:          fmt.Sprintf("https://%s/", ns),
 		version:       version,
@@ -247,7 +246,7 @@ func (em *entityManager) Delete(ctx context.Context, entityPath string, mw ...Mi
 func (em *entityManager) execute(ctx context.Context, method string, entityPath string, body io.Reader, mw ...MiddlewareFunc) (*http.Response, error) {
 	var finalResp *http.Response
 
-	err := utils.Retry(ctx, EventAdmin, fmt.Sprintf("%s %s", method, entityPath), func(ctx context.Context, args *utils.RetryFnArgs) error {
+	err := utils.Retry(ctx, exported.EventAdmin, fmt.Sprintf("%s %s", method, entityPath), func(ctx context.Context, args *utils.RetryFnArgs) error {
 		ctx, span := em.startSpanFromContext(ctx, "sb.ATOM.Execute")
 		defer span.End()
 

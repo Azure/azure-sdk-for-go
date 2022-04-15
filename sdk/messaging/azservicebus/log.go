@@ -3,21 +3,21 @@
 
 package azservicebus
 
-import "github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+import "github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 
 const (
 	// EventConn is used whenever we create a connection or any links (ie: receivers, senders).
-	EventConn = internal.EventConn
+	EventConn = exported.EventConn
 
 	// EventAuth is used when we're doing authentication/claims negotiation.
-	EventAuth = internal.EventAuth
+	EventAuth = exported.EventAuth
 
 	// EventReceiver represents operations that happen on Receivers.
-	EventReceiver = internal.EventReceiver
+	EventReceiver = exported.EventReceiver
 
 	// EventSender represents operations that happen on Senders.
-	EventSender = internal.EventSender
+	EventSender = exported.EventSender
 
 	// EventAdmin is used for operations in the azservicebus/admin.Client
-	EventAdmin = internal.EventAdmin
+	EventAdmin = exported.EventAdmin
 )

@@ -11,7 +11,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
@@ -357,7 +356,7 @@ func TestReceiverOptions(t *testing.T) {
 	require.NoError(t, applyReceiverOptions(receiver, e, &ReceiverOptions{
 		ReceiveMode: ReceiveModeReceiveAndDelete,
 		SubQueue:    SubQueueTransfer,
-		retryOptions: utils.RetryOptions{
+		retryOptions: RetryOptions{
 			MaxRetries: 101,
 		},
 	}))

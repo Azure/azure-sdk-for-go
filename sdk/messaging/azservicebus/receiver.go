@@ -12,6 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
 	"github.com/devigned/tab"
@@ -19,15 +20,15 @@ import (
 
 // ReceiveMode represents the lock style to use for a receiver - either
 // `PeekLock` or `ReceiveAndDelete`
-type ReceiveMode = internal.ReceiveMode
+type ReceiveMode = exported.ReceiveMode
 
 const (
 	// ReceiveModePeekLock will lock messages as they are received and can be settled
 	// using the Receiver's (Complete|Abandon|DeadLetter|Defer)Message
 	// functions.
-	ReceiveModePeekLock ReceiveMode = internal.PeekLock
+	ReceiveModePeekLock ReceiveMode = exported.PeekLock
 	// ReceiveModeReceiveAndDelete will delete messages as they are received.
-	ReceiveModeReceiveAndDelete ReceiveMode = internal.ReceiveAndDelete
+	ReceiveModeReceiveAndDelete ReceiveMode = exported.ReceiveAndDelete
 )
 
 // SubQueue allows you to target a subqueue of a queue or subscription.
@@ -47,7 +48,7 @@ type Receiver struct {
 	entityPath  string
 
 	settler        settler
-	retryOptions   utils.RetryOptions
+	retryOptions   RetryOptions
 	cleanupOnClose func()
 
 	lastPeekedSequenceNumber int64
@@ -81,7 +82,7 @@ type ReceiverOptions struct {
 	// of the queue or subscription.
 	SubQueue SubQueue
 
-	retryOptions utils.RetryOptions
+	retryOptions RetryOptions
 }
 
 const defaultLinkRxBuffer = 2048
@@ -225,7 +226,7 @@ func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers 
 		}
 
 		return nil
-	}, utils.RetryOptions(r.retryOptions))
+	}, r.retryOptions)
 
 	if err != nil {
 		return nil, err
@@ -345,7 +346,7 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 	err := r.amqpLinks.Retry(ctx, EventReceiver, "receiveMessages.getlinks", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		linksWithID = lwid
 		return nil
-	}, utils.RetryOptions(r.retryOptions))
+	}, r.retryOptions)
 
 	if err != nil {
 		return nil, err
@@ -357,10 +358,10 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 				// if the user cancelled any of the "cleanup" operations then the link
 				// is an indeterminate state and should just be closed. It'll get recreated
 				// on the next operation.
-				log.Writef(internal.EventReceiver, "Closing link due to cancellation")
+				log.Writef(EventReceiver, "Closing link due to cancellation")
 				_ = r.amqpLinks.Close(context.Background(), false)
 			} else {
-				log.Writef(internal.EventReceiver, "Closing link/connection (potentially) for error %v", err)
+				log.Writef(EventReceiver, "Closing link/connection (potentially) for error %v", err)
 				_ = r.amqpLinks.CloseIfNeeded(context.Background(), err)
 			}
 		}

@@ -240,12 +240,12 @@ func (client *SharesClient) getHandleResponse(resp *http.Response) (SharesClient
 	return result, nil
 }
 
-// ListByAccount - List shares in an account
+// NewListByAccountPager - List shares in an account
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // options - SharesClientListByAccountOptions contains the optional parameters for the SharesClient.ListByAccount method.
-func (client *SharesClient) ListByAccount(resourceGroupName string, accountName string, options *SharesClientListByAccountOptions) *runtime.Pager[SharesClientListByAccountResponse] {
+func (client *SharesClient) NewListByAccountPager(resourceGroupName string, accountName string, options *SharesClientListByAccountOptions) *runtime.Pager[SharesClientListByAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SharesClientListByAccountResponse]{
 		More: func(page SharesClientListByAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -317,7 +317,7 @@ func (client *SharesClient) listByAccountHandleResponse(resp *http.Response) (Sh
 	return result, nil
 }
 
-// ListSynchronizationDetails - List synchronization details
+// NewListSynchronizationDetailsPager - List synchronization details
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
@@ -325,7 +325,7 @@ func (client *SharesClient) listByAccountHandleResponse(resp *http.Response) (Sh
 // shareSynchronization - Share Synchronization payload.
 // options - SharesClientListSynchronizationDetailsOptions contains the optional parameters for the SharesClient.ListSynchronizationDetails
 // method.
-func (client *SharesClient) ListSynchronizationDetails(resourceGroupName string, accountName string, shareName string, shareSynchronization ShareSynchronization, options *SharesClientListSynchronizationDetailsOptions) *runtime.Pager[SharesClientListSynchronizationDetailsResponse] {
+func (client *SharesClient) NewListSynchronizationDetailsPager(resourceGroupName string, accountName string, shareName string, shareSynchronization ShareSynchronization, options *SharesClientListSynchronizationDetailsOptions) *runtime.Pager[SharesClientListSynchronizationDetailsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SharesClientListSynchronizationDetailsResponse]{
 		More: func(page SharesClientListSynchronizationDetailsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -401,14 +401,14 @@ func (client *SharesClient) listSynchronizationDetailsHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListSynchronizations - List synchronizations of a share
+// NewListSynchronizationsPager - List synchronizations of a share
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareName - The name of the share.
 // options - SharesClientListSynchronizationsOptions contains the optional parameters for the SharesClient.ListSynchronizations
 // method.
-func (client *SharesClient) ListSynchronizations(resourceGroupName string, accountName string, shareName string, options *SharesClientListSynchronizationsOptions) *runtime.Pager[SharesClientListSynchronizationsResponse] {
+func (client *SharesClient) NewListSynchronizationsPager(resourceGroupName string, accountName string, shareName string, options *SharesClientListSynchronizationsOptions) *runtime.Pager[SharesClientListSynchronizationsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SharesClientListSynchronizationsResponse]{
 		More: func(page SharesClientListSynchronizationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

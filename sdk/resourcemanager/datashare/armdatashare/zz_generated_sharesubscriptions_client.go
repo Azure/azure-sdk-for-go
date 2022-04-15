@@ -311,13 +311,13 @@ func (client *ShareSubscriptionsClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// ListByAccount - List share subscriptions in an account
+// NewListByAccountPager - List share subscriptions in an account
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // options - ShareSubscriptionsClientListByAccountOptions contains the optional parameters for the ShareSubscriptionsClient.ListByAccount
 // method.
-func (client *ShareSubscriptionsClient) ListByAccount(resourceGroupName string, accountName string, options *ShareSubscriptionsClientListByAccountOptions) *runtime.Pager[ShareSubscriptionsClientListByAccountResponse] {
+func (client *ShareSubscriptionsClient) NewListByAccountPager(resourceGroupName string, accountName string, options *ShareSubscriptionsClientListByAccountOptions) *runtime.Pager[ShareSubscriptionsClientListByAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ShareSubscriptionsClientListByAccountResponse]{
 		More: func(page ShareSubscriptionsClientListByAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -389,14 +389,14 @@ func (client *ShareSubscriptionsClient) listByAccountHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListSourceShareSynchronizationSettings - Get synchronization settings set on a share
+// NewListSourceShareSynchronizationSettingsPager - Get synchronization settings set on a share
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareSubscriptionName - The name of the shareSubscription.
 // options - ShareSubscriptionsClientListSourceShareSynchronizationSettingsOptions contains the optional parameters for the
 // ShareSubscriptionsClient.ListSourceShareSynchronizationSettings method.
-func (client *ShareSubscriptionsClient) ListSourceShareSynchronizationSettings(resourceGroupName string, accountName string, shareSubscriptionName string, options *ShareSubscriptionsClientListSourceShareSynchronizationSettingsOptions) *runtime.Pager[ShareSubscriptionsClientListSourceShareSynchronizationSettingsResponse] {
+func (client *ShareSubscriptionsClient) NewListSourceShareSynchronizationSettingsPager(resourceGroupName string, accountName string, shareSubscriptionName string, options *ShareSubscriptionsClientListSourceShareSynchronizationSettingsOptions) *runtime.Pager[ShareSubscriptionsClientListSourceShareSynchronizationSettingsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ShareSubscriptionsClientListSourceShareSynchronizationSettingsResponse]{
 		More: func(page ShareSubscriptionsClientListSourceShareSynchronizationSettingsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -466,7 +466,7 @@ func (client *ShareSubscriptionsClient) listSourceShareSynchronizationSettingsHa
 	return result, nil
 }
 
-// ListSynchronizationDetails - List synchronization details
+// NewListSynchronizationDetailsPager - List synchronization details
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
@@ -474,7 +474,7 @@ func (client *ShareSubscriptionsClient) listSourceShareSynchronizationSettingsHa
 // shareSubscriptionSynchronization - Share Subscription Synchronization payload.
 // options - ShareSubscriptionsClientListSynchronizationDetailsOptions contains the optional parameters for the ShareSubscriptionsClient.ListSynchronizationDetails
 // method.
-func (client *ShareSubscriptionsClient) ListSynchronizationDetails(resourceGroupName string, accountName string, shareSubscriptionName string, shareSubscriptionSynchronization ShareSubscriptionSynchronization, options *ShareSubscriptionsClientListSynchronizationDetailsOptions) *runtime.Pager[ShareSubscriptionsClientListSynchronizationDetailsResponse] {
+func (client *ShareSubscriptionsClient) NewListSynchronizationDetailsPager(resourceGroupName string, accountName string, shareSubscriptionName string, shareSubscriptionSynchronization ShareSubscriptionSynchronization, options *ShareSubscriptionsClientListSynchronizationDetailsOptions) *runtime.Pager[ShareSubscriptionsClientListSynchronizationDetailsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ShareSubscriptionsClientListSynchronizationDetailsResponse]{
 		More: func(page ShareSubscriptionsClientListSynchronizationDetailsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -550,14 +550,14 @@ func (client *ShareSubscriptionsClient) listSynchronizationDetailsHandleResponse
 	return result, nil
 }
 
-// ListSynchronizations - List synchronizations of a share subscription
+// NewListSynchronizationsPager - List synchronizations of a share subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareSubscriptionName - The name of the share subscription.
 // options - ShareSubscriptionsClientListSynchronizationsOptions contains the optional parameters for the ShareSubscriptionsClient.ListSynchronizations
 // method.
-func (client *ShareSubscriptionsClient) ListSynchronizations(resourceGroupName string, accountName string, shareSubscriptionName string, options *ShareSubscriptionsClientListSynchronizationsOptions) *runtime.Pager[ShareSubscriptionsClientListSynchronizationsResponse] {
+func (client *ShareSubscriptionsClient) NewListSynchronizationsPager(resourceGroupName string, accountName string, shareSubscriptionName string, options *ShareSubscriptionsClientListSynchronizationsOptions) *runtime.Pager[ShareSubscriptionsClientListSynchronizationsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ShareSubscriptionsClientListSynchronizationsResponse]{
 		More: func(page ShareSubscriptionsClientListSynchronizationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

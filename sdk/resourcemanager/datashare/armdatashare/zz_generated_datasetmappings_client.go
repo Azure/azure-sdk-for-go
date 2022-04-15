@@ -241,14 +241,14 @@ func (client *DataSetMappingsClient) getHandleResponse(resp *http.Response) (Dat
 	return result, nil
 }
 
-// ListByShareSubscription - List DataSetMappings in a share subscription
+// NewListByShareSubscriptionPager - List DataSetMappings in a share subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareSubscriptionName - The name of the share subscription.
 // options - DataSetMappingsClientListByShareSubscriptionOptions contains the optional parameters for the DataSetMappingsClient.ListByShareSubscription
 // method.
-func (client *DataSetMappingsClient) ListByShareSubscription(resourceGroupName string, accountName string, shareSubscriptionName string, options *DataSetMappingsClientListByShareSubscriptionOptions) *runtime.Pager[DataSetMappingsClientListByShareSubscriptionResponse] {
+func (client *DataSetMappingsClient) NewListByShareSubscriptionPager(resourceGroupName string, accountName string, shareSubscriptionName string, options *DataSetMappingsClientListByShareSubscriptionOptions) *runtime.Pager[DataSetMappingsClientListByShareSubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DataSetMappingsClientListByShareSubscriptionResponse]{
 		More: func(page DataSetMappingsClientListByShareSubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

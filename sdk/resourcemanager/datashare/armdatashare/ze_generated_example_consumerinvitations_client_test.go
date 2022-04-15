@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ConsumerInvitations_ListInvitations.json
-func ExampleConsumerInvitationsClient_ListInvitations() {
+func ExampleConsumerInvitationsClient_NewListInvitationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleConsumerInvitationsClient_ListInvitations() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListInvitations(&armdatashare.ConsumerInvitationsClientListInvitationsOptions{SkipToken: nil})
+	pager := client.NewListInvitationsPager(&armdatashare.ConsumerInvitationsClientListInvitationsOptions{SkipToken: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

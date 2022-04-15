@@ -105,7 +105,7 @@ func ExampleInvitationsClient_Delete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Invitations_ListByShare.json
-func ExampleInvitationsClient_ListByShare() {
+func ExampleInvitationsClient_NewListBySharePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -117,7 +117,7 @@ func ExampleInvitationsClient_ListByShare() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByShare("<resource-group-name>",
+	pager := client.NewListBySharePager("<resource-group-name>",
 		"<account-name>",
 		"<share-name>",
 		&armdatashare.InvitationsClientListByShareOptions{SkipToken: nil,

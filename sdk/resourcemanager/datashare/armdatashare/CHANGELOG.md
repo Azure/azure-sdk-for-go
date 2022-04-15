@@ -1,5 +1,49 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*SharesClient.ListSynchronizations` has been removed
+- Function `*DataSetsClient.ListByShare` has been removed
+- Function `*SharesClient.ListSynchronizationDetails` has been removed
+- Function `*ConsumerInvitationsClient.ListInvitations` has been removed
+- Function `*ShareSubscriptionsClient.ListSourceShareSynchronizationSettings` has been removed
+- Function `*SynchronizationSettingsClient.ListByShare` has been removed
+- Function `*DataSetMappingsClient.ListByShareSubscription` has been removed
+- Function `*ProviderShareSubscriptionsClient.ListByShare` has been removed
+- Function `*AccountsClient.ListBySubscription` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*ShareSubscriptionsClient.ListSynchronizations` has been removed
+- Function `*ConsumerSourceDataSetsClient.ListByShareSubscription` has been removed
+- Function `*TriggersClient.ListByShareSubscription` has been removed
+- Function `*ShareSubscriptionsClient.ListSynchronizationDetails` has been removed
+- Function `*ShareSubscriptionsClient.ListByAccount` has been removed
+- Function `*SharesClient.ListByAccount` has been removed
+- Function `*AccountsClient.ListByResourceGroup` has been removed
+- Function `*InvitationsClient.ListByShare` has been removed
+
+### Features Added
+
+- New function `*DataSetMappingsClient.NewListByShareSubscriptionPager(string, string, string, *DataSetMappingsClientListByShareSubscriptionOptions) *runtime.Pager[DataSetMappingsClientListByShareSubscriptionResponse]`
+- New function `*SharesClient.NewListByAccountPager(string, string, *SharesClientListByAccountOptions) *runtime.Pager[SharesClientListByAccountResponse]`
+- New function `*TriggersClient.NewListByShareSubscriptionPager(string, string, string, *TriggersClientListByShareSubscriptionOptions) *runtime.Pager[TriggersClientListByShareSubscriptionResponse]`
+- New function `*ConsumerSourceDataSetsClient.NewListByShareSubscriptionPager(string, string, string, *ConsumerSourceDataSetsClientListByShareSubscriptionOptions) *runtime.Pager[ConsumerSourceDataSetsClientListByShareSubscriptionResponse]`
+- New function `*InvitationsClient.NewListBySharePager(string, string, string, *InvitationsClientListByShareOptions) *runtime.Pager[InvitationsClientListByShareResponse]`
+- New function `*DataSetsClient.NewListBySharePager(string, string, string, *DataSetsClientListByShareOptions) *runtime.Pager[DataSetsClientListByShareResponse]`
+- New function `*AccountsClient.NewListByResourceGroupPager(string, *AccountsClientListByResourceGroupOptions) *runtime.Pager[AccountsClientListByResourceGroupResponse]`
+- New function `*ShareSubscriptionsClient.NewListSynchronizationDetailsPager(string, string, string, ShareSubscriptionSynchronization, *ShareSubscriptionsClientListSynchronizationDetailsOptions) *runtime.Pager[ShareSubscriptionsClientListSynchronizationDetailsResponse]`
+- New function `*ShareSubscriptionsClient.NewListSourceShareSynchronizationSettingsPager(string, string, string, *ShareSubscriptionsClientListSourceShareSynchronizationSettingsOptions) *runtime.Pager[ShareSubscriptionsClientListSourceShareSynchronizationSettingsResponse]`
+- New function `*AccountsClient.NewListBySubscriptionPager(*AccountsClientListBySubscriptionOptions) *runtime.Pager[AccountsClientListBySubscriptionResponse]`
+- New function `*SharesClient.NewListSynchronizationDetailsPager(string, string, string, ShareSynchronization, *SharesClientListSynchronizationDetailsOptions) *runtime.Pager[SharesClientListSynchronizationDetailsResponse]`
+- New function `*SharesClient.NewListSynchronizationsPager(string, string, string, *SharesClientListSynchronizationsOptions) *runtime.Pager[SharesClientListSynchronizationsResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*ConsumerInvitationsClient.NewListInvitationsPager(*ConsumerInvitationsClientListInvitationsOptions) *runtime.Pager[ConsumerInvitationsClientListInvitationsResponse]`
+- New function `*SynchronizationSettingsClient.NewListBySharePager(string, string, string, *SynchronizationSettingsClientListByShareOptions) *runtime.Pager[SynchronizationSettingsClientListByShareResponse]`
+- New function `*ProviderShareSubscriptionsClient.NewListBySharePager(string, string, string, *ProviderShareSubscriptionsClientListByShareOptions) *runtime.Pager[ProviderShareSubscriptionsClientListByShareResponse]`
+- New function `*ShareSubscriptionsClient.NewListByAccountPager(string, string, *ShareSubscriptionsClientListByAccountOptions) *runtime.Pager[ShareSubscriptionsClientListByAccountResponse]`
+- New function `*ShareSubscriptionsClient.NewListSynchronizationsPager(string, string, string, *ShareSubscriptionsClientListSynchronizationsOptions) *runtime.Pager[ShareSubscriptionsClientListSynchronizationsResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

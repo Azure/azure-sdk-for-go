@@ -114,7 +114,7 @@ func ExampleDataSetsClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/DataSets_ListByShare.json
-func ExampleDataSetsClient_ListByShare() {
+func ExampleDataSetsClient_NewListBySharePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -126,7 +126,7 @@ func ExampleDataSetsClient_ListByShare() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByShare("<resource-group-name>",
+	pager := client.NewListBySharePager("<resource-group-name>",
 		"<account-name>",
 		"<share-name>",
 		&armdatashare.DataSetsClientListByShareOptions{SkipToken: nil,

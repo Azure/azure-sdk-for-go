@@ -187,14 +187,14 @@ func (client *ProviderShareSubscriptionsClient) getByShareHandleResponse(resp *h
 	return result, nil
 }
 
-// ListByShare - List share subscriptions in a provider share
+// NewListBySharePager - List share subscriptions in a provider share
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareName - The name of the share.
 // options - ProviderShareSubscriptionsClientListByShareOptions contains the optional parameters for the ProviderShareSubscriptionsClient.ListByShare
 // method.
-func (client *ProviderShareSubscriptionsClient) ListByShare(resourceGroupName string, accountName string, shareName string, options *ProviderShareSubscriptionsClientListByShareOptions) *runtime.Pager[ProviderShareSubscriptionsClientListByShareResponse] {
+func (client *ProviderShareSubscriptionsClient) NewListBySharePager(resourceGroupName string, accountName string, shareName string, options *ProviderShareSubscriptionsClientListByShareOptions) *runtime.Pager[ProviderShareSubscriptionsClientListByShareResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProviderShareSubscriptionsClientListByShareResponse]{
 		More: func(page ProviderShareSubscriptionsClientListByShareResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -241,13 +241,13 @@ func (client *InvitationsClient) getHandleResponse(resp *http.Response) (Invitat
 	return result, nil
 }
 
-// ListByShare - List invitations in a share
+// NewListBySharePager - List invitations in a share
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareName - The name of the share.
 // options - InvitationsClientListByShareOptions contains the optional parameters for the InvitationsClient.ListByShare method.
-func (client *InvitationsClient) ListByShare(resourceGroupName string, accountName string, shareName string, options *InvitationsClientListByShareOptions) *runtime.Pager[InvitationsClientListByShareResponse] {
+func (client *InvitationsClient) NewListBySharePager(resourceGroupName string, accountName string, shareName string, options *InvitationsClientListByShareOptions) *runtime.Pager[InvitationsClientListByShareResponse] {
 	return runtime.NewPager(runtime.PageProcessor[InvitationsClientListByShareResponse]{
 		More: func(page InvitationsClientListByShareResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -113,7 +113,7 @@ func ExampleSynchronizationSettingsClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/SynchronizationSettings_ListByShare.json
-func ExampleSynchronizationSettingsClient_ListByShare() {
+func ExampleSynchronizationSettingsClient_NewListBySharePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -125,7 +125,7 @@ func ExampleSynchronizationSettingsClient_ListByShare() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByShare("<resource-group-name>",
+	pager := client.NewListBySharePager("<resource-group-name>",
 		"<account-name>",
 		"<share-name>",
 		&armdatashare.SynchronizationSettingsClientListByShareOptions{SkipToken: nil})

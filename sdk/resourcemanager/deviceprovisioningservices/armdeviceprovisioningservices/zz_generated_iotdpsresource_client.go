@@ -604,12 +604,12 @@ func (client *IotDpsResourceClient) getPrivateLinkResourcesHandleResponse(resp *
 	return result, nil
 }
 
-// ListByResourceGroup - Get a list of all provisioning services in the given resource group.
+// NewListByResourceGroupPager - Get a list of all provisioning services in the given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Resource group identifier.
 // options - IotDpsResourceClientListByResourceGroupOptions contains the optional parameters for the IotDpsResourceClient.ListByResourceGroup
 // method.
-func (client *IotDpsResourceClient) ListByResourceGroup(resourceGroupName string, options *IotDpsResourceClientListByResourceGroupOptions) *runtime.Pager[IotDpsResourceClientListByResourceGroupResponse] {
+func (client *IotDpsResourceClient) NewListByResourceGroupPager(resourceGroupName string, options *IotDpsResourceClientListByResourceGroupOptions) *runtime.Pager[IotDpsResourceClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IotDpsResourceClientListByResourceGroupResponse]{
 		More: func(page IotDpsResourceClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -668,11 +668,11 @@ func (client *IotDpsResourceClient) listByResourceGroupHandleResponse(resp *http
 	return result, nil
 }
 
-// ListBySubscription - List all the provisioning services for a given subscription id.
+// NewListBySubscriptionPager - List all the provisioning services for a given subscription id.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - IotDpsResourceClientListBySubscriptionOptions contains the optional parameters for the IotDpsResourceClient.ListBySubscription
 // method.
-func (client *IotDpsResourceClient) ListBySubscription(options *IotDpsResourceClientListBySubscriptionOptions) *runtime.Pager[IotDpsResourceClientListBySubscriptionResponse] {
+func (client *IotDpsResourceClient) NewListBySubscriptionPager(options *IotDpsResourceClientListBySubscriptionOptions) *runtime.Pager[IotDpsResourceClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IotDpsResourceClientListBySubscriptionResponse]{
 		More: func(page IotDpsResourceClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -727,12 +727,12 @@ func (client *IotDpsResourceClient) listBySubscriptionHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListKeys - List the primary and secondary keys for a provisioning service.
+// NewListKeysPager - List the primary and secondary keys for a provisioning service.
 // If the operation fails it returns an *azcore.ResponseError type.
 // provisioningServiceName - The provisioning service name to get the shared access keys for.
 // resourceGroupName - resource group name
 // options - IotDpsResourceClientListKeysOptions contains the optional parameters for the IotDpsResourceClient.ListKeys method.
-func (client *IotDpsResourceClient) ListKeys(provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientListKeysOptions) *runtime.Pager[IotDpsResourceClientListKeysResponse] {
+func (client *IotDpsResourceClient) NewListKeysPager(provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientListKeysOptions) *runtime.Pager[IotDpsResourceClientListKeysResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IotDpsResourceClientListKeysResponse]{
 		More: func(page IotDpsResourceClientListKeysResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -968,13 +968,13 @@ func (client *IotDpsResourceClient) listPrivateLinkResourcesHandleResponse(resp 
 	return result, nil
 }
 
-// ListValidSKUs - Gets the list of valid SKUs and tiers for a provisioning service.
+// NewListValidSKUsPager - Gets the list of valid SKUs and tiers for a provisioning service.
 // If the operation fails it returns an *azcore.ResponseError type.
 // provisioningServiceName - Name of provisioning service.
 // resourceGroupName - Name of resource group.
 // options - IotDpsResourceClientListValidSKUsOptions contains the optional parameters for the IotDpsResourceClient.ListValidSKUs
 // method.
-func (client *IotDpsResourceClient) ListValidSKUs(provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientListValidSKUsOptions) *runtime.Pager[IotDpsResourceClientListValidSKUsResponse] {
+func (client *IotDpsResourceClient) NewListValidSKUsPager(provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientListValidSKUsOptions) *runtime.Pager[IotDpsResourceClientListValidSKUsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IotDpsResourceClientListValidSKUsResponse]{
 		More: func(page IotDpsResourceClientListValidSKUsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

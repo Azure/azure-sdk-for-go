@@ -54,11 +54,11 @@ func NewProviderClient(subscriptionID string, credential azcore.TokenCredential,
 	return client, nil
 }
 
-// GetAvailableStacks - Description for Get available application frameworks and their versions
+// NewGetAvailableStacksPager - Description for Get available application frameworks and their versions
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ProviderClientGetAvailableStacksOptions contains the optional parameters for the ProviderClient.GetAvailableStacks
 // method.
-func (client *ProviderClient) GetAvailableStacks(options *ProviderClientGetAvailableStacksOptions) *runtime.Pager[ProviderClientGetAvailableStacksResponse] {
+func (client *ProviderClient) NewGetAvailableStacksPager(options *ProviderClientGetAvailableStacksOptions) *runtime.Pager[ProviderClientGetAvailableStacksResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProviderClientGetAvailableStacksResponse]{
 		More: func(page ProviderClientGetAvailableStacksResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -112,11 +112,11 @@ func (client *ProviderClient) getAvailableStacksHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// GetAvailableStacksOnPrem - Description for Get available application frameworks and their versions
+// NewGetAvailableStacksOnPremPager - Description for Get available application frameworks and their versions
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ProviderClientGetAvailableStacksOnPremOptions contains the optional parameters for the ProviderClient.GetAvailableStacksOnPrem
 // method.
-func (client *ProviderClient) GetAvailableStacksOnPrem(options *ProviderClientGetAvailableStacksOnPremOptions) *runtime.Pager[ProviderClientGetAvailableStacksOnPremResponse] {
+func (client *ProviderClient) NewGetAvailableStacksOnPremPager(options *ProviderClientGetAvailableStacksOnPremOptions) *runtime.Pager[ProviderClientGetAvailableStacksOnPremResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProviderClientGetAvailableStacksOnPremResponse]{
 		More: func(page ProviderClientGetAvailableStacksOnPremResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -174,11 +174,11 @@ func (client *ProviderClient) getAvailableStacksOnPremHandleResponse(resp *http.
 	return result, nil
 }
 
-// GetFunctionAppStacks - Description for Get available Function app frameworks and their versions
+// NewGetFunctionAppStacksPager - Description for Get available Function app frameworks and their versions
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ProviderClientGetFunctionAppStacksOptions contains the optional parameters for the ProviderClient.GetFunctionAppStacks
 // method.
-func (client *ProviderClient) GetFunctionAppStacks(options *ProviderClientGetFunctionAppStacksOptions) *runtime.Pager[ProviderClientGetFunctionAppStacksResponse] {
+func (client *ProviderClient) NewGetFunctionAppStacksPager(options *ProviderClientGetFunctionAppStacksOptions) *runtime.Pager[ProviderClientGetFunctionAppStacksResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProviderClientGetFunctionAppStacksResponse]{
 		More: func(page ProviderClientGetFunctionAppStacksResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -232,12 +232,13 @@ func (client *ProviderClient) getFunctionAppStacksHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// GetFunctionAppStacksForLocation - Description for Get available Function app frameworks and their versions for location
+// NewGetFunctionAppStacksForLocationPager - Description for Get available Function app frameworks and their versions for
+// location
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - Function App stack location.
 // options - ProviderClientGetFunctionAppStacksForLocationOptions contains the optional parameters for the ProviderClient.GetFunctionAppStacksForLocation
 // method.
-func (client *ProviderClient) GetFunctionAppStacksForLocation(location string, options *ProviderClientGetFunctionAppStacksForLocationOptions) *runtime.Pager[ProviderClientGetFunctionAppStacksForLocationResponse] {
+func (client *ProviderClient) NewGetFunctionAppStacksForLocationPager(location string, options *ProviderClientGetFunctionAppStacksForLocationOptions) *runtime.Pager[ProviderClientGetFunctionAppStacksForLocationResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProviderClientGetFunctionAppStacksForLocationResponse]{
 		More: func(page ProviderClientGetFunctionAppStacksForLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -295,11 +296,11 @@ func (client *ProviderClient) getFunctionAppStacksForLocationHandleResponse(resp
 	return result, nil
 }
 
-// GetWebAppStacks - Description for Get available Web app frameworks and their versions
+// NewGetWebAppStacksPager - Description for Get available Web app frameworks and their versions
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ProviderClientGetWebAppStacksOptions contains the optional parameters for the ProviderClient.GetWebAppStacks
 // method.
-func (client *ProviderClient) GetWebAppStacks(options *ProviderClientGetWebAppStacksOptions) *runtime.Pager[ProviderClientGetWebAppStacksResponse] {
+func (client *ProviderClient) NewGetWebAppStacksPager(options *ProviderClientGetWebAppStacksOptions) *runtime.Pager[ProviderClientGetWebAppStacksResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProviderClientGetWebAppStacksResponse]{
 		More: func(page ProviderClientGetWebAppStacksResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -353,12 +354,12 @@ func (client *ProviderClient) getWebAppStacksHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// GetWebAppStacksForLocation - Description for Get available Web app frameworks and their versions for location
+// NewGetWebAppStacksForLocationPager - Description for Get available Web app frameworks and their versions for location
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - Web App stack location.
 // options - ProviderClientGetWebAppStacksForLocationOptions contains the optional parameters for the ProviderClient.GetWebAppStacksForLocation
 // method.
-func (client *ProviderClient) GetWebAppStacksForLocation(location string, options *ProviderClientGetWebAppStacksForLocationOptions) *runtime.Pager[ProviderClientGetWebAppStacksForLocationResponse] {
+func (client *ProviderClient) NewGetWebAppStacksForLocationPager(location string, options *ProviderClientGetWebAppStacksForLocationOptions) *runtime.Pager[ProviderClientGetWebAppStacksForLocationResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProviderClientGetWebAppStacksForLocationResponse]{
 		More: func(page ProviderClientGetWebAppStacksForLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -416,11 +417,11 @@ func (client *ProviderClient) getWebAppStacksForLocationHandleResponse(resp *htt
 	return result, nil
 }
 
-// ListOperations - Description for Gets all available operations for the Microsoft.Web resource provider. Also exposes resource
-// metric definitions
+// NewListOperationsPager - Description for Gets all available operations for the Microsoft.Web resource provider. Also exposes
+// resource metric definitions
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ProviderClientListOperationsOptions contains the optional parameters for the ProviderClient.ListOperations method.
-func (client *ProviderClient) ListOperations(options *ProviderClientListOperationsOptions) *runtime.Pager[ProviderClientListOperationsResponse] {
+func (client *ProviderClient) NewListOperationsPager(options *ProviderClientListOperationsOptions) *runtime.Pager[ProviderClientListOperationsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProviderClientListOperationsResponse]{
 		More: func(page ProviderClientListOperationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

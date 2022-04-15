@@ -706,14 +706,14 @@ func (client *EnvironmentsClient) getDiagnosticsItemHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// GetInboundNetworkDependenciesEndpoints - Description for Get the network endpoints of all inbound dependencies of an App
-// Service Environment.
+// NewGetInboundNetworkDependenciesEndpointsPager - Description for Get the network endpoints of all inbound dependencies
+// of an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientGetInboundNetworkDependenciesEndpointsOptions contains the optional parameters for the EnvironmentsClient.GetInboundNetworkDependenciesEndpoints
 // method.
-func (client *EnvironmentsClient) GetInboundNetworkDependenciesEndpoints(resourceGroupName string, name string, options *EnvironmentsClientGetInboundNetworkDependenciesEndpointsOptions) *runtime.Pager[EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse] {
+func (client *EnvironmentsClient) NewGetInboundNetworkDependenciesEndpointsPager(resourceGroupName string, name string, options *EnvironmentsClientGetInboundNetworkDependenciesEndpointsOptions) *runtime.Pager[EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse]{
 		More: func(page EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -832,14 +832,14 @@ func (client *EnvironmentsClient) getMultiRolePoolHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// GetOutboundNetworkDependenciesEndpoints - Description for Get the network endpoints of all outbound dependencies of an
-// App Service Environment.
+// NewGetOutboundNetworkDependenciesEndpointsPager - Description for Get the network endpoints of all outbound dependencies
+// of an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientGetOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the EnvironmentsClient.GetOutboundNetworkDependenciesEndpoints
 // method.
-func (client *EnvironmentsClient) GetOutboundNetworkDependenciesEndpoints(resourceGroupName string, name string, options *EnvironmentsClientGetOutboundNetworkDependenciesEndpointsOptions) *runtime.Pager[EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse] {
+func (client *EnvironmentsClient) NewGetOutboundNetworkDependenciesEndpointsPager(resourceGroupName string, name string, options *EnvironmentsClientGetOutboundNetworkDependenciesEndpointsOptions) *runtime.Pager[EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse]{
 		More: func(page EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -963,13 +963,14 @@ func (client *EnvironmentsClient) getPrivateEndpointConnectionHandleResponse(res
 	return result, nil
 }
 
-// GetPrivateEndpointConnectionList - Description for Gets the list of private endpoints associated with a hosting environment
+// NewGetPrivateEndpointConnectionListPager - Description for Gets the list of private endpoints associated with a hosting
+// environment
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientGetPrivateEndpointConnectionListOptions contains the optional parameters for the EnvironmentsClient.GetPrivateEndpointConnectionList
 // method.
-func (client *EnvironmentsClient) GetPrivateEndpointConnectionList(resourceGroupName string, name string, options *EnvironmentsClientGetPrivateEndpointConnectionListOptions) *runtime.Pager[EnvironmentsClientGetPrivateEndpointConnectionListResponse] {
+func (client *EnvironmentsClient) NewGetPrivateEndpointConnectionListPager(resourceGroupName string, name string, options *EnvironmentsClientGetPrivateEndpointConnectionListOptions) *runtime.Pager[EnvironmentsClientGetPrivateEndpointConnectionListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientGetPrivateEndpointConnectionListResponse]{
 		More: func(page EnvironmentsClientGetPrivateEndpointConnectionListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1204,10 +1205,10 @@ func (client *EnvironmentsClient) getWorkerPoolHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// List - Description for Get all App Service Environments for a subscription.
+// NewListPager - Description for Get all App Service Environments for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - EnvironmentsClientListOptions contains the optional parameters for the EnvironmentsClient.List method.
-func (client *EnvironmentsClient) List(options *EnvironmentsClientListOptions) *runtime.Pager[EnvironmentsClientListResponse] {
+func (client *EnvironmentsClient) NewListPager(options *EnvironmentsClientListOptions) *runtime.Pager[EnvironmentsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListResponse]{
 		More: func(page EnvironmentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1262,13 +1263,13 @@ func (client *EnvironmentsClient) listHandleResponse(resp *http.Response) (Envir
 	return result, nil
 }
 
-// ListAppServicePlans - Description for Get all App Service plans in an App Service Environment.
+// NewListAppServicePlansPager - Description for Get all App Service plans in an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientListAppServicePlansOptions contains the optional parameters for the EnvironmentsClient.ListAppServicePlans
 // method.
-func (client *EnvironmentsClient) ListAppServicePlans(resourceGroupName string, name string, options *EnvironmentsClientListAppServicePlansOptions) *runtime.Pager[EnvironmentsClientListAppServicePlansResponse] {
+func (client *EnvironmentsClient) NewListAppServicePlansPager(resourceGroupName string, name string, options *EnvironmentsClientListAppServicePlansOptions) *runtime.Pager[EnvironmentsClientListAppServicePlansResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListAppServicePlansResponse]{
 		More: func(page EnvironmentsClientListAppServicePlansResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1331,12 +1332,12 @@ func (client *EnvironmentsClient) listAppServicePlansHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListByResourceGroup - Description for Get all App Service Environments in a resource group.
+// NewListByResourceGroupPager - Description for Get all App Service Environments in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // options - EnvironmentsClientListByResourceGroupOptions contains the optional parameters for the EnvironmentsClient.ListByResourceGroup
 // method.
-func (client *EnvironmentsClient) ListByResourceGroup(resourceGroupName string, options *EnvironmentsClientListByResourceGroupOptions) *runtime.Pager[EnvironmentsClientListByResourceGroupResponse] {
+func (client *EnvironmentsClient) NewListByResourceGroupPager(resourceGroupName string, options *EnvironmentsClientListByResourceGroupOptions) *runtime.Pager[EnvironmentsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListByResourceGroupResponse]{
 		More: func(page EnvironmentsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1395,13 +1396,13 @@ func (client *EnvironmentsClient) listByResourceGroupHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListCapacities - Description for Get the used, available, and total worker capacity an App Service Environment.
+// NewListCapacitiesPager - Description for Get the used, available, and total worker capacity an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientListCapacitiesOptions contains the optional parameters for the EnvironmentsClient.ListCapacities
 // method.
-func (client *EnvironmentsClient) ListCapacities(resourceGroupName string, name string, options *EnvironmentsClientListCapacitiesOptions) *runtime.Pager[EnvironmentsClientListCapacitiesResponse] {
+func (client *EnvironmentsClient) NewListCapacitiesPager(resourceGroupName string, name string, options *EnvironmentsClientListCapacitiesOptions) *runtime.Pager[EnvironmentsClientListCapacitiesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListCapacitiesResponse]{
 		More: func(page EnvironmentsClientListCapacitiesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1520,13 +1521,14 @@ func (client *EnvironmentsClient) listDiagnosticsHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListMultiRoleMetricDefinitions - Description for Get metric definitions for a multi-role pool of an App Service Environment.
+// NewListMultiRoleMetricDefinitionsPager - Description for Get metric definitions for a multi-role pool of an App Service
+// Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientListMultiRoleMetricDefinitionsOptions contains the optional parameters for the EnvironmentsClient.ListMultiRoleMetricDefinitions
 // method.
-func (client *EnvironmentsClient) ListMultiRoleMetricDefinitions(resourceGroupName string, name string, options *EnvironmentsClientListMultiRoleMetricDefinitionsOptions) *runtime.Pager[EnvironmentsClientListMultiRoleMetricDefinitionsResponse] {
+func (client *EnvironmentsClient) NewListMultiRoleMetricDefinitionsPager(resourceGroupName string, name string, options *EnvironmentsClientListMultiRoleMetricDefinitionsOptions) *runtime.Pager[EnvironmentsClientListMultiRoleMetricDefinitionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListMultiRoleMetricDefinitionsResponse]{
 		More: func(page EnvironmentsClientListMultiRoleMetricDefinitionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1589,15 +1591,15 @@ func (client *EnvironmentsClient) listMultiRoleMetricDefinitionsHandleResponse(r
 	return result, nil
 }
 
-// ListMultiRolePoolInstanceMetricDefinitions - Description for Get metric definitions for a specific instance of a multi-role
-// pool of an App Service Environment.
+// NewListMultiRolePoolInstanceMetricDefinitionsPager - Description for Get metric definitions for a specific instance of
+// a multi-role pool of an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // instance - Name of the instance in the multi-role pool.
 // options - EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsOptions contains the optional parameters for the
 // EnvironmentsClient.ListMultiRolePoolInstanceMetricDefinitions method.
-func (client *EnvironmentsClient) ListMultiRolePoolInstanceMetricDefinitions(resourceGroupName string, name string, instance string, options *EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsOptions) *runtime.Pager[EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsResponse] {
+func (client *EnvironmentsClient) NewListMultiRolePoolInstanceMetricDefinitionsPager(resourceGroupName string, name string, instance string, options *EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsOptions) *runtime.Pager[EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsResponse]{
 		More: func(page EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1664,13 +1666,13 @@ func (client *EnvironmentsClient) listMultiRolePoolInstanceMetricDefinitionsHand
 	return result, nil
 }
 
-// ListMultiRolePoolSKUs - Description for Get available SKUs for scaling a multi-role pool.
+// NewListMultiRolePoolSKUsPager - Description for Get available SKUs for scaling a multi-role pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientListMultiRolePoolSKUsOptions contains the optional parameters for the EnvironmentsClient.ListMultiRolePoolSKUs
 // method.
-func (client *EnvironmentsClient) ListMultiRolePoolSKUs(resourceGroupName string, name string, options *EnvironmentsClientListMultiRolePoolSKUsOptions) *runtime.Pager[EnvironmentsClientListMultiRolePoolSKUsResponse] {
+func (client *EnvironmentsClient) NewListMultiRolePoolSKUsPager(resourceGroupName string, name string, options *EnvironmentsClientListMultiRolePoolSKUsOptions) *runtime.Pager[EnvironmentsClientListMultiRolePoolSKUsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListMultiRolePoolSKUsResponse]{
 		More: func(page EnvironmentsClientListMultiRolePoolSKUsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1733,13 +1735,13 @@ func (client *EnvironmentsClient) listMultiRolePoolSKUsHandleResponse(resp *http
 	return result, nil
 }
 
-// ListMultiRolePools - Description for Get all multi-role pools.
+// NewListMultiRolePoolsPager - Description for Get all multi-role pools.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientListMultiRolePoolsOptions contains the optional parameters for the EnvironmentsClient.ListMultiRolePools
 // method.
-func (client *EnvironmentsClient) ListMultiRolePools(resourceGroupName string, name string, options *EnvironmentsClientListMultiRolePoolsOptions) *runtime.Pager[EnvironmentsClientListMultiRolePoolsResponse] {
+func (client *EnvironmentsClient) NewListMultiRolePoolsPager(resourceGroupName string, name string, options *EnvironmentsClientListMultiRolePoolsOptions) *runtime.Pager[EnvironmentsClientListMultiRolePoolsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListMultiRolePoolsResponse]{
 		More: func(page EnvironmentsClientListMultiRolePoolsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1802,13 +1804,13 @@ func (client *EnvironmentsClient) listMultiRolePoolsHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListMultiRoleUsages - Description for Get usage metrics for a multi-role pool of an App Service Environment.
+// NewListMultiRoleUsagesPager - Description for Get usage metrics for a multi-role pool of an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientListMultiRoleUsagesOptions contains the optional parameters for the EnvironmentsClient.ListMultiRoleUsages
 // method.
-func (client *EnvironmentsClient) ListMultiRoleUsages(resourceGroupName string, name string, options *EnvironmentsClientListMultiRoleUsagesOptions) *runtime.Pager[EnvironmentsClientListMultiRoleUsagesResponse] {
+func (client *EnvironmentsClient) NewListMultiRoleUsagesPager(resourceGroupName string, name string, options *EnvironmentsClientListMultiRoleUsagesOptions) *runtime.Pager[EnvironmentsClientListMultiRoleUsagesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListMultiRoleUsagesResponse]{
 		More: func(page EnvironmentsClientListMultiRoleUsagesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1927,12 +1929,12 @@ func (client *EnvironmentsClient) listOperationsHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListUsages - Description for Get global usage metrics of an App Service Environment.
+// NewListUsagesPager - Description for Get global usage metrics of an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientListUsagesOptions contains the optional parameters for the EnvironmentsClient.ListUsages method.
-func (client *EnvironmentsClient) ListUsages(resourceGroupName string, name string, options *EnvironmentsClientListUsagesOptions) *runtime.Pager[EnvironmentsClientListUsagesResponse] {
+func (client *EnvironmentsClient) NewListUsagesPager(resourceGroupName string, name string, options *EnvironmentsClientListUsagesOptions) *runtime.Pager[EnvironmentsClientListUsagesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListUsagesResponse]{
 		More: func(page EnvironmentsClientListUsagesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -2000,13 +2002,13 @@ func (client *EnvironmentsClient) listUsagesHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListWebApps - Description for Get all apps in an App Service Environment.
+// NewListWebAppsPager - Description for Get all apps in an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientListWebAppsOptions contains the optional parameters for the EnvironmentsClient.ListWebApps
 // method.
-func (client *EnvironmentsClient) ListWebApps(resourceGroupName string, name string, options *EnvironmentsClientListWebAppsOptions) *runtime.Pager[EnvironmentsClientListWebAppsResponse] {
+func (client *EnvironmentsClient) NewListWebAppsPager(resourceGroupName string, name string, options *EnvironmentsClientListWebAppsOptions) *runtime.Pager[EnvironmentsClientListWebAppsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListWebAppsResponse]{
 		More: func(page EnvironmentsClientListWebAppsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -2072,14 +2074,14 @@ func (client *EnvironmentsClient) listWebAppsHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListWebWorkerMetricDefinitions - Description for Get metric definitions for a worker pool of an App Service Environment.
+// NewListWebWorkerMetricDefinitionsPager - Description for Get metric definitions for a worker pool of an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // workerPoolName - Name of the worker pool.
 // options - EnvironmentsClientListWebWorkerMetricDefinitionsOptions contains the optional parameters for the EnvironmentsClient.ListWebWorkerMetricDefinitions
 // method.
-func (client *EnvironmentsClient) ListWebWorkerMetricDefinitions(resourceGroupName string, name string, workerPoolName string, options *EnvironmentsClientListWebWorkerMetricDefinitionsOptions) *runtime.Pager[EnvironmentsClientListWebWorkerMetricDefinitionsResponse] {
+func (client *EnvironmentsClient) NewListWebWorkerMetricDefinitionsPager(resourceGroupName string, name string, workerPoolName string, options *EnvironmentsClientListWebWorkerMetricDefinitionsOptions) *runtime.Pager[EnvironmentsClientListWebWorkerMetricDefinitionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListWebWorkerMetricDefinitionsResponse]{
 		More: func(page EnvironmentsClientListWebWorkerMetricDefinitionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -2146,14 +2148,14 @@ func (client *EnvironmentsClient) listWebWorkerMetricDefinitionsHandleResponse(r
 	return result, nil
 }
 
-// ListWebWorkerUsages - Description for Get usage metrics for a worker pool of an App Service Environment.
+// NewListWebWorkerUsagesPager - Description for Get usage metrics for a worker pool of an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // workerPoolName - Name of the worker pool.
 // options - EnvironmentsClientListWebWorkerUsagesOptions contains the optional parameters for the EnvironmentsClient.ListWebWorkerUsages
 // method.
-func (client *EnvironmentsClient) ListWebWorkerUsages(resourceGroupName string, name string, workerPoolName string, options *EnvironmentsClientListWebWorkerUsagesOptions) *runtime.Pager[EnvironmentsClientListWebWorkerUsagesResponse] {
+func (client *EnvironmentsClient) NewListWebWorkerUsagesPager(resourceGroupName string, name string, workerPoolName string, options *EnvironmentsClientListWebWorkerUsagesOptions) *runtime.Pager[EnvironmentsClientListWebWorkerUsagesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListWebWorkerUsagesResponse]{
 		More: func(page EnvironmentsClientListWebWorkerUsagesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -2220,8 +2222,8 @@ func (client *EnvironmentsClient) listWebWorkerUsagesHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListWorkerPoolInstanceMetricDefinitions - Description for Get metric definitions for a specific instance of a worker pool
-// of an App Service Environment.
+// NewListWorkerPoolInstanceMetricDefinitionsPager - Description for Get metric definitions for a specific instance of a worker
+// pool of an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -2229,7 +2231,7 @@ func (client *EnvironmentsClient) listWebWorkerUsagesHandleResponse(resp *http.R
 // instance - Name of the instance in the worker pool.
 // options - EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsOptions contains the optional parameters for the EnvironmentsClient.ListWorkerPoolInstanceMetricDefinitions
 // method.
-func (client *EnvironmentsClient) ListWorkerPoolInstanceMetricDefinitions(resourceGroupName string, name string, workerPoolName string, instance string, options *EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsOptions) *runtime.Pager[EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsResponse] {
+func (client *EnvironmentsClient) NewListWorkerPoolInstanceMetricDefinitionsPager(resourceGroupName string, name string, workerPoolName string, instance string, options *EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsOptions) *runtime.Pager[EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsResponse]{
 		More: func(page EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -2300,14 +2302,14 @@ func (client *EnvironmentsClient) listWorkerPoolInstanceMetricDefinitionsHandleR
 	return result, nil
 }
 
-// ListWorkerPoolSKUs - Description for Get available SKUs for scaling a worker pool.
+// NewListWorkerPoolSKUsPager - Description for Get available SKUs for scaling a worker pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // workerPoolName - Name of the worker pool.
 // options - EnvironmentsClientListWorkerPoolSKUsOptions contains the optional parameters for the EnvironmentsClient.ListWorkerPoolSKUs
 // method.
-func (client *EnvironmentsClient) ListWorkerPoolSKUs(resourceGroupName string, name string, workerPoolName string, options *EnvironmentsClientListWorkerPoolSKUsOptions) *runtime.Pager[EnvironmentsClientListWorkerPoolSKUsResponse] {
+func (client *EnvironmentsClient) NewListWorkerPoolSKUsPager(resourceGroupName string, name string, workerPoolName string, options *EnvironmentsClientListWorkerPoolSKUsOptions) *runtime.Pager[EnvironmentsClientListWorkerPoolSKUsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListWorkerPoolSKUsResponse]{
 		More: func(page EnvironmentsClientListWorkerPoolSKUsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -2374,13 +2376,13 @@ func (client *EnvironmentsClient) listWorkerPoolSKUsHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListWorkerPools - Description for Get all worker pools of an App Service Environment.
+// NewListWorkerPoolsPager - Description for Get all worker pools of an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientListWorkerPoolsOptions contains the optional parameters for the EnvironmentsClient.ListWorkerPools
 // method.
-func (client *EnvironmentsClient) ListWorkerPools(resourceGroupName string, name string, options *EnvironmentsClientListWorkerPoolsOptions) *runtime.Pager[EnvironmentsClientListWorkerPoolsResponse] {
+func (client *EnvironmentsClient) NewListWorkerPoolsPager(resourceGroupName string, name string, options *EnvironmentsClientListWorkerPoolsOptions) *runtime.Pager[EnvironmentsClientListWorkerPoolsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListWorkerPoolsResponse]{
 		More: func(page EnvironmentsClientListWorkerPoolsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

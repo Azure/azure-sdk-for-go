@@ -1,5 +1,43 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*WorkItemConfigurationsClient.List` has been removed
+- Function `*WorkbooksClient.RevisionsList` has been removed
+- Function `*ComponentsClient.List` has been removed
+- Function `*WorkbookTemplatesClient.ListByResourceGroup` has been removed
+- Function `*WebTestLocationsClient.List` has been removed
+- Function `*WebTestsClient.List` has been removed
+- Function `*WebTestsClient.ListByResourceGroup` has been removed
+- Function `*MyWorkbooksClient.ListBySubscription` has been removed
+- Function `*WorkbooksClient.ListByResourceGroup` has been removed
+- Function `*APIKeysClient.List` has been removed
+- Function `*ComponentsClient.ListByResourceGroup` has been removed
+- Function `*MyWorkbooksClient.ListByResourceGroup` has been removed
+- Function `*AnnotationsClient.List` has been removed
+- Function `*WorkbooksClient.ListBySubscription` has been removed
+- Function `*WebTestsClient.ListByComponent` has been removed
+
+### Features Added
+
+- New function `*WorkbooksClient.NewRevisionsListPager(string, string, *WorkbooksClientRevisionsListOptions) *runtime.Pager[WorkbooksClientRevisionsListResponse]`
+- New function `*WorkItemConfigurationsClient.NewListPager(string, string, *WorkItemConfigurationsClientListOptions) *runtime.Pager[WorkItemConfigurationsClientListResponse]`
+- New function `*WorkbooksClient.NewListBySubscriptionPager(CategoryType, *WorkbooksClientListBySubscriptionOptions) *runtime.Pager[WorkbooksClientListBySubscriptionResponse]`
+- New function `*MyWorkbooksClient.NewListByResourceGroupPager(string, CategoryType, *MyWorkbooksClientListByResourceGroupOptions) *runtime.Pager[MyWorkbooksClientListByResourceGroupResponse]`
+- New function `*ComponentsClient.NewListPager(*ComponentsClientListOptions) *runtime.Pager[ComponentsClientListResponse]`
+- New function `*AnnotationsClient.NewListPager(string, string, string, string, *AnnotationsClientListOptions) *runtime.Pager[AnnotationsClientListResponse]`
+- New function `*WorkbooksClient.NewListByResourceGroupPager(string, CategoryType, *WorkbooksClientListByResourceGroupOptions) *runtime.Pager[WorkbooksClientListByResourceGroupResponse]`
+- New function `*APIKeysClient.NewListPager(string, string, *APIKeysClientListOptions) *runtime.Pager[APIKeysClientListResponse]`
+- New function `*WebTestsClient.NewListPager(*WebTestsClientListOptions) *runtime.Pager[WebTestsClientListResponse]`
+- New function `*ComponentsClient.NewListByResourceGroupPager(string, *ComponentsClientListByResourceGroupOptions) *runtime.Pager[ComponentsClientListByResourceGroupResponse]`
+- New function `*WorkbookTemplatesClient.NewListByResourceGroupPager(string, *WorkbookTemplatesClientListByResourceGroupOptions) *runtime.Pager[WorkbookTemplatesClientListByResourceGroupResponse]`
+- New function `*WebTestLocationsClient.NewListPager(string, string, *WebTestLocationsClientListOptions) *runtime.Pager[WebTestLocationsClientListResponse]`
+- New function `*WebTestsClient.NewListByResourceGroupPager(string, *WebTestsClientListByResourceGroupOptions) *runtime.Pager[WebTestsClientListByResourceGroupResponse]`
+- New function `*MyWorkbooksClient.NewListBySubscriptionPager(CategoryType, *MyWorkbooksClientListBySubscriptionOptions) *runtime.Pager[MyWorkbooksClientListBySubscriptionResponse]`
+- New function `*WebTestsClient.NewListByComponentPager(string, string, *WebTestsClientListByComponentOptions) *runtime.Pager[WebTestsClientListByComponentResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

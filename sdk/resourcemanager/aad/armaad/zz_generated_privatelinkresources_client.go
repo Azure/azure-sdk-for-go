@@ -115,13 +115,13 @@ func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListByPrivateLinkPolicy - Gets the private link resources that need to be created for a policy of AzureAD.
+// NewListByPrivateLinkPolicyPager - Gets the private link resources that need to be created for a policy of AzureAD.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure resource group.
 // policyName - The name of the private link policy in Azure AD.
 // options - PrivateLinkResourcesClientListByPrivateLinkPolicyOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByPrivateLinkPolicy
 // method.
-func (client *PrivateLinkResourcesClient) ListByPrivateLinkPolicy(resourceGroupName string, policyName string, options *PrivateLinkResourcesClientListByPrivateLinkPolicyOptions) *runtime.Pager[PrivateLinkResourcesClientListByPrivateLinkPolicyResponse] {
+func (client *PrivateLinkResourcesClient) NewListByPrivateLinkPolicyPager(resourceGroupName string, policyName string, options *PrivateLinkResourcesClientListByPrivateLinkPolicyOptions) *runtime.Pager[PrivateLinkResourcesClientListByPrivateLinkPolicyResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkResourcesClientListByPrivateLinkPolicyResponse]{
 		More: func(page PrivateLinkResourcesClientListByPrivateLinkPolicyResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

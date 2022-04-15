@@ -302,13 +302,13 @@ func (client *AuthorizationServerClient) getEntityTagHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListByService - Lists a collection of authorization servers defined within a service instance.
+// NewListByServicePager - Lists a collection of authorization servers defined within a service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - AuthorizationServerClientListByServiceOptions contains the optional parameters for the AuthorizationServerClient.ListByService
 // method.
-func (client *AuthorizationServerClient) ListByService(resourceGroupName string, serviceName string, options *AuthorizationServerClientListByServiceOptions) *runtime.Pager[AuthorizationServerClientListByServiceResponse] {
+func (client *AuthorizationServerClient) NewListByServicePager(resourceGroupName string, serviceName string, options *AuthorizationServerClientListByServiceOptions) *runtime.Pager[AuthorizationServerClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AuthorizationServerClientListByServiceResponse]{
 		More: func(page AuthorizationServerClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

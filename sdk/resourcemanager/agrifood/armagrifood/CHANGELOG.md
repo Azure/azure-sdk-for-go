@@ -1,5 +1,23 @@
 # Release History
 
+## 0.5.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*FarmBeatsExtensionsClient.List` has been removed
+- Function `*ExtensionsClient.ListByFarmBeats` has been removed
+- Function `*FarmBeatsModelsClient.ListBySubscription` has been removed
+- Function `*FarmBeatsModelsClient.ListByResourceGroup` has been removed
+- Function `*OperationsClient.List` has been removed
+
+### Features Added
+
+- New function `*FarmBeatsModelsClient.NewListByResourceGroupPager(string, *FarmBeatsModelsClientListByResourceGroupOptions) *runtime.Pager[FarmBeatsModelsClientListByResourceGroupResponse]`
+- New function `*FarmBeatsExtensionsClient.NewListPager(*FarmBeatsExtensionsClientListOptions) *runtime.Pager[FarmBeatsExtensionsClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*ExtensionsClient.NewListByFarmBeatsPager(string, string, *ExtensionsClientListByFarmBeatsOptions) *runtime.Pager[ExtensionsClientListByFarmBeatsResponse]`
+- New function `*FarmBeatsModelsClient.NewListBySubscriptionPager(*FarmBeatsModelsClientListBySubscriptionOptions) *runtime.Pager[FarmBeatsModelsClientListBySubscriptionResponse]`
+
+
 ## 0.4.0 (2022-04-11)
 ### Breaking Changes
 

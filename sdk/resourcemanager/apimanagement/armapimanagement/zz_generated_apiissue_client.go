@@ -322,13 +322,13 @@ func (client *APIIssueClient) getEntityTagHandleResponse(resp *http.Response) (A
 	return result, nil
 }
 
-// ListByService - Lists all issues associated with the specified API.
+// NewListByServicePager - Lists all issues associated with the specified API.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // apiID - API identifier. Must be unique in the current API Management service instance.
 // options - APIIssueClientListByServiceOptions contains the optional parameters for the APIIssueClient.ListByService method.
-func (client *APIIssueClient) ListByService(resourceGroupName string, serviceName string, apiID string, options *APIIssueClientListByServiceOptions) *runtime.Pager[APIIssueClientListByServiceResponse] {
+func (client *APIIssueClient) NewListByServicePager(resourceGroupName string, serviceName string, apiID string, options *APIIssueClientListByServiceOptions) *runtime.Pager[APIIssueClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[APIIssueClientListByServiceResponse]{
 		More: func(page APIIssueClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

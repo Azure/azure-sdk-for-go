@@ -98,11 +98,11 @@ func (client *FarmBeatsExtensionsClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// List - Get list of farmBeats extension.
+// NewListPager - Get list of farmBeats extension.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - FarmBeatsExtensionsClientListOptions contains the optional parameters for the FarmBeatsExtensionsClient.List
 // method.
-func (client *FarmBeatsExtensionsClient) List(options *FarmBeatsExtensionsClientListOptions) *runtime.Pager[FarmBeatsExtensionsClientListResponse] {
+func (client *FarmBeatsExtensionsClient) NewListPager(options *FarmBeatsExtensionsClientListOptions) *runtime.Pager[FarmBeatsExtensionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[FarmBeatsExtensionsClientListResponse]{
 		More: func(page FarmBeatsExtensionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

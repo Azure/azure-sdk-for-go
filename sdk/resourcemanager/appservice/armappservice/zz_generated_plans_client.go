@@ -766,10 +766,10 @@ func (client *PlansClient) getVnetGatewayHandleResponse(resp *http.Response) (Pl
 	return result, nil
 }
 
-// List - Description for Get all App Service plans for a subscription.
+// NewListPager - Description for Get all App Service plans for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PlansClientListOptions contains the optional parameters for the PlansClient.List method.
-func (client *PlansClient) List(options *PlansClientListOptions) *runtime.Pager[PlansClientListResponse] {
+func (client *PlansClient) NewListPager(options *PlansClientListOptions) *runtime.Pager[PlansClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PlansClientListResponse]{
 		More: func(page PlansClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -827,12 +827,12 @@ func (client *PlansClient) listHandleResponse(resp *http.Response) (PlansClientL
 	return result, nil
 }
 
-// ListByResourceGroup - Description for Get all App Service plans in a resource group.
+// NewListByResourceGroupPager - Description for Get all App Service plans in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // options - PlansClientListByResourceGroupOptions contains the optional parameters for the PlansClient.ListByResourceGroup
 // method.
-func (client *PlansClient) ListByResourceGroup(resourceGroupName string, options *PlansClientListByResourceGroupOptions) *runtime.Pager[PlansClientListByResourceGroupResponse] {
+func (client *PlansClient) NewListByResourceGroupPager(resourceGroupName string, options *PlansClientListByResourceGroupOptions) *runtime.Pager[PlansClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PlansClientListByResourceGroupResponse]{
 		More: func(page PlansClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1012,13 +1012,13 @@ func (client *PlansClient) listHybridConnectionKeysHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListHybridConnections - Description for Retrieve all Hybrid Connections in use in an App Service plan.
+// NewListHybridConnectionsPager - Description for Retrieve all Hybrid Connections in use in an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
 // options - PlansClientListHybridConnectionsOptions contains the optional parameters for the PlansClient.ListHybridConnections
 // method.
-func (client *PlansClient) ListHybridConnections(resourceGroupName string, name string, options *PlansClientListHybridConnectionsOptions) *runtime.Pager[PlansClientListHybridConnectionsResponse] {
+func (client *PlansClient) NewListHybridConnectionsPager(resourceGroupName string, name string, options *PlansClientListHybridConnectionsOptions) *runtime.Pager[PlansClientListHybridConnectionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PlansClientListHybridConnectionsResponse]{
 		More: func(page PlansClientListHybridConnectionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1141,12 +1141,12 @@ func (client *PlansClient) listRoutesForVnetHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListUsages - Description for Gets server farm usage information
+// NewListUsagesPager - Description for Gets server farm usage information
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of App Service Plan
 // options - PlansClientListUsagesOptions contains the optional parameters for the PlansClient.ListUsages method.
-func (client *PlansClient) ListUsages(resourceGroupName string, name string, options *PlansClientListUsagesOptions) *runtime.Pager[PlansClientListUsagesResponse] {
+func (client *PlansClient) NewListUsagesPager(resourceGroupName string, name string, options *PlansClientListUsagesOptions) *runtime.Pager[PlansClientListUsagesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PlansClientListUsagesResponse]{
 		More: func(page PlansClientListUsagesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1269,12 +1269,12 @@ func (client *PlansClient) listVnetsHandleResponse(resp *http.Response) (PlansCl
 	return result, nil
 }
 
-// ListWebApps - Description for Get all apps associated with an App Service plan.
+// NewListWebAppsPager - Description for Get all apps associated with an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
 // options - PlansClientListWebAppsOptions contains the optional parameters for the PlansClient.ListWebApps method.
-func (client *PlansClient) ListWebApps(resourceGroupName string, name string, options *PlansClientListWebAppsOptions) *runtime.Pager[PlansClientListWebAppsResponse] {
+func (client *PlansClient) NewListWebAppsPager(resourceGroupName string, name string, options *PlansClientListWebAppsOptions) *runtime.Pager[PlansClientListWebAppsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PlansClientListWebAppsResponse]{
 		More: func(page PlansClientListWebAppsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1348,7 +1348,7 @@ func (client *PlansClient) listWebAppsHandleResponse(resp *http.Response) (Plans
 	return result, nil
 }
 
-// ListWebAppsByHybridConnection - Description for Get all apps that use a Hybrid Connection in an App Service Plan.
+// NewListWebAppsByHybridConnectionPager - Description for Get all apps that use a Hybrid Connection in an App Service Plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
@@ -1356,7 +1356,7 @@ func (client *PlansClient) listWebAppsHandleResponse(resp *http.Response) (Plans
 // relayName - Name of the Hybrid Connection relay.
 // options - PlansClientListWebAppsByHybridConnectionOptions contains the optional parameters for the PlansClient.ListWebAppsByHybridConnection
 // method.
-func (client *PlansClient) ListWebAppsByHybridConnection(resourceGroupName string, name string, namespaceName string, relayName string, options *PlansClientListWebAppsByHybridConnectionOptions) *runtime.Pager[PlansClientListWebAppsByHybridConnectionResponse] {
+func (client *PlansClient) NewListWebAppsByHybridConnectionPager(resourceGroupName string, name string, namespaceName string, relayName string, options *PlansClientListWebAppsByHybridConnectionOptions) *runtime.Pager[PlansClientListWebAppsByHybridConnectionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PlansClientListWebAppsByHybridConnectionResponse]{
 		More: func(page PlansClientListWebAppsByHybridConnectionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

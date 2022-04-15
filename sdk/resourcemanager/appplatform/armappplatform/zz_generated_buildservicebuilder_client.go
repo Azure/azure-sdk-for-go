@@ -270,7 +270,7 @@ func (client *BuildServiceBuilderClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// List - List KPack builders result.
+// NewListPager - List KPack builders result.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -278,7 +278,7 @@ func (client *BuildServiceBuilderClient) getHandleResponse(resp *http.Response) 
 // buildServiceName - The name of the build service resource.
 // options - BuildServiceBuilderClientListOptions contains the optional parameters for the BuildServiceBuilderClient.List
 // method.
-func (client *BuildServiceBuilderClient) List(resourceGroupName string, serviceName string, buildServiceName string, options *BuildServiceBuilderClientListOptions) *runtime.Pager[BuildServiceBuilderClientListResponse] {
+func (client *BuildServiceBuilderClient) NewListPager(resourceGroupName string, serviceName string, buildServiceName string, options *BuildServiceBuilderClientListOptions) *runtime.Pager[BuildServiceBuilderClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BuildServiceBuilderClientListResponse]{
 		More: func(page BuildServiceBuilderClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

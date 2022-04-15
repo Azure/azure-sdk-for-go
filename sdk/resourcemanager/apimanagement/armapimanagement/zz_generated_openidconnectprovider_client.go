@@ -303,13 +303,13 @@ func (client *OpenIDConnectProviderClient) getEntityTagHandleResponse(resp *http
 	return result, nil
 }
 
-// ListByService - Lists of all the OpenId Connect Providers.
+// NewListByServicePager - Lists of all the OpenId Connect Providers.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - OpenIDConnectProviderClientListByServiceOptions contains the optional parameters for the OpenIDConnectProviderClient.ListByService
 // method.
-func (client *OpenIDConnectProviderClient) ListByService(resourceGroupName string, serviceName string, options *OpenIDConnectProviderClientListByServiceOptions) *runtime.Pager[OpenIDConnectProviderClientListByServiceResponse] {
+func (client *OpenIDConnectProviderClient) NewListByServicePager(resourceGroupName string, serviceName string, options *OpenIDConnectProviderClientListByServiceOptions) *runtime.Pager[OpenIDConnectProviderClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[OpenIDConnectProviderClientListByServiceResponse]{
 		More: func(page OpenIDConnectProviderClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

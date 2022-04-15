@@ -320,8 +320,8 @@ func (client *APIReleaseClient) getEntityTagHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListByService - Lists all releases of an API. An API release is created when making an API Revision current. Releases are
-// also used to rollback to previous revisions. Results will be paged and can be constrained by
+// NewListByServicePager - Lists all releases of an API. An API release is created when making an API Revision current. Releases
+// are also used to rollback to previous revisions. Results will be paged and can be constrained by
 // the $top and $skip parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
@@ -329,7 +329,7 @@ func (client *APIReleaseClient) getEntityTagHandleResponse(resp *http.Response) 
 // apiID - API identifier. Must be unique in the current API Management service instance.
 // options - APIReleaseClientListByServiceOptions contains the optional parameters for the APIReleaseClient.ListByService
 // method.
-func (client *APIReleaseClient) ListByService(resourceGroupName string, serviceName string, apiID string, options *APIReleaseClientListByServiceOptions) *runtime.Pager[APIReleaseClientListByServiceResponse] {
+func (client *APIReleaseClient) NewListByServicePager(resourceGroupName string, serviceName string, apiID string, options *APIReleaseClientListByServiceOptions) *runtime.Pager[APIReleaseClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[APIReleaseClientListByServiceResponse]{
 		More: func(page APIReleaseClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

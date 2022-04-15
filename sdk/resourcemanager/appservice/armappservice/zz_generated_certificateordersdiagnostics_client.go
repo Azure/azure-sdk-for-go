@@ -126,14 +126,14 @@ func (client *CertificateOrdersDiagnosticsClient) getAppServiceCertificateOrderD
 	return result, nil
 }
 
-// ListAppServiceCertificateOrderDetectorResponse - Description for Microsoft.CertificateRegistration to get the list of detectors
-// for this RP.
+// NewListAppServiceCertificateOrderDetectorResponsePager - Description for Microsoft.CertificateRegistration to get the list
+// of detectors for this RP.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // certificateOrderName - The certificate order name for which the response is needed.
 // options - CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseOptions contains the optional
 // parameters for the CertificateOrdersDiagnosticsClient.ListAppServiceCertificateOrderDetectorResponse method.
-func (client *CertificateOrdersDiagnosticsClient) ListAppServiceCertificateOrderDetectorResponse(resourceGroupName string, certificateOrderName string, options *CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseOptions) *runtime.Pager[CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse] {
+func (client *CertificateOrdersDiagnosticsClient) NewListAppServiceCertificateOrderDetectorResponsePager(resourceGroupName string, certificateOrderName string, options *CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseOptions) *runtime.Pager[CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse]{
 		More: func(page CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

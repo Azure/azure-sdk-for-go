@@ -305,13 +305,13 @@ func (client *GlobalSchemaClient) getEntityTagHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListByService - Lists a collection of schemas registered with service instance.
+// NewListByServicePager - Lists a collection of schemas registered with service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - GlobalSchemaClientListByServiceOptions contains the optional parameters for the GlobalSchemaClient.ListByService
 // method.
-func (client *GlobalSchemaClient) ListByService(resourceGroupName string, serviceName string, options *GlobalSchemaClientListByServiceOptions) *runtime.Pager[GlobalSchemaClientListByServiceResponse] {
+func (client *GlobalSchemaClient) NewListByServicePager(resourceGroupName string, serviceName string, options *GlobalSchemaClientListByServiceOptions) *runtime.Pager[GlobalSchemaClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[GlobalSchemaClientListByServiceResponse]{
 		More: func(page GlobalSchemaClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

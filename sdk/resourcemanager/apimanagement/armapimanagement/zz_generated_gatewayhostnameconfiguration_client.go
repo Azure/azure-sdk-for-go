@@ -326,7 +326,7 @@ func (client *GatewayHostnameConfigurationClient) getEntityTagHandleResponse(res
 	return result, nil
 }
 
-// ListByService - Lists the collection of hostname configurations for the specified gateway.
+// NewListByServicePager - Lists the collection of hostname configurations for the specified gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
@@ -334,7 +334,7 @@ func (client *GatewayHostnameConfigurationClient) getEntityTagHandleResponse(res
 // 'managed'
 // options - GatewayHostnameConfigurationClientListByServiceOptions contains the optional parameters for the GatewayHostnameConfigurationClient.ListByService
 // method.
-func (client *GatewayHostnameConfigurationClient) ListByService(resourceGroupName string, serviceName string, gatewayID string, options *GatewayHostnameConfigurationClientListByServiceOptions) *runtime.Pager[GatewayHostnameConfigurationClientListByServiceResponse] {
+func (client *GatewayHostnameConfigurationClient) NewListByServicePager(resourceGroupName string, serviceName string, gatewayID string, options *GatewayHostnameConfigurationClientListByServiceOptions) *runtime.Pager[GatewayHostnameConfigurationClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[GatewayHostnameConfigurationClientListByServiceResponse]{
 		More: func(page GatewayHostnameConfigurationClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

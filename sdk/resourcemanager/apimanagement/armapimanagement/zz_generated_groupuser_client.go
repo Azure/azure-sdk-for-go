@@ -234,13 +234,13 @@ func (client *GroupUserClient) deleteCreateRequest(ctx context.Context, resource
 	return req, nil
 }
 
-// List - Lists a collection of user entities associated with the group.
+// NewListPager - Lists a collection of user entities associated with the group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // groupID - Group identifier. Must be unique in the current API Management service instance.
 // options - GroupUserClientListOptions contains the optional parameters for the GroupUserClient.List method.
-func (client *GroupUserClient) List(resourceGroupName string, serviceName string, groupID string, options *GroupUserClientListOptions) *runtime.Pager[GroupUserClientListResponse] {
+func (client *GroupUserClient) NewListPager(resourceGroupName string, serviceName string, groupID string, options *GroupUserClientListOptions) *runtime.Pager[GroupUserClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[GroupUserClientListResponse]{
 		More: func(page GroupUserClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -300,13 +300,13 @@ func (client *DiagnosticClient) getEntityTagHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListByService - Lists all diagnostics of the API Management service instance.
+// NewListByServicePager - Lists all diagnostics of the API Management service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - DiagnosticClientListByServiceOptions contains the optional parameters for the DiagnosticClient.ListByService
 // method.
-func (client *DiagnosticClient) ListByService(resourceGroupName string, serviceName string, options *DiagnosticClientListByServiceOptions) *runtime.Pager[DiagnosticClientListByServiceResponse] {
+func (client *DiagnosticClient) NewListByServicePager(resourceGroupName string, serviceName string, options *DiagnosticClientListByServiceOptions) *runtime.Pager[DiagnosticClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DiagnosticClientListByServiceResponse]{
 		More: func(page DiagnosticClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

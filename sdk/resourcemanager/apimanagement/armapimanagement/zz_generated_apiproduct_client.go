@@ -56,13 +56,13 @@ func NewAPIProductClient(subscriptionID string, credential azcore.TokenCredentia
 	return client, nil
 }
 
-// ListByApis - Lists all Products, which the API is part of.
+// NewListByApisPager - Lists all Products, which the API is part of.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // apiID - API identifier. Must be unique in the current API Management service instance.
 // options - APIProductClientListByApisOptions contains the optional parameters for the APIProductClient.ListByApis method.
-func (client *APIProductClient) ListByApis(resourceGroupName string, serviceName string, apiID string, options *APIProductClientListByApisOptions) *runtime.Pager[APIProductClientListByApisResponse] {
+func (client *APIProductClient) NewListByApisPager(resourceGroupName string, serviceName string, apiID string, options *APIProductClientListByApisOptions) *runtime.Pager[APIProductClientListByApisResponse] {
 	return runtime.NewPager(runtime.PageProcessor[APIProductClientListByApisResponse]{
 		More: func(page APIProductClientListByApisResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

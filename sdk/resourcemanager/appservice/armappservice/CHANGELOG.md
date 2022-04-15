@@ -1,5 +1,313 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*DiagnosticsClient.ListSiteAnalysesSlot` has been removed
+- Function `*RecommendationsClient.ListHistoryForWebApp` has been removed
+- Function `*DeletedWebAppsClient.List` has been removed
+- Function `*WebAppsClient.ListSnapshotsSlot` has been removed
+- Function `*WebAppsClient.ListInstanceProcessThreads` has been removed
+- Function `*DiagnosticsClient.ListSiteDetectors` has been removed
+- Function `*StaticSitesClient.GetUserProvidedFunctionAppsForStaticSite` has been removed
+- Function `*KubeEnvironmentsClient.ListByResourceGroup` has been removed
+- Function `*WebAppsClient.List` has been removed
+- Function `*WebAppsClient.ListBasicPublishingCredentialsPolicies` has been removed
+- Function `*WebAppsClient.ListSiteExtensions` has been removed
+- Function `*EnvironmentsClient.ListMultiRolePools` has been removed
+- Function `*WebAppsClient.ListHostNameBindingsSlot` has been removed
+- Function `*RecommendationsClient.ListRecommendedRulesForWebApp` has been removed
+- Function `*EnvironmentsClient.ListUsages` has been removed
+- Function `*WebAppsClient.ListFunctions` has been removed
+- Function `*PlansClient.ListByResourceGroup` has been removed
+- Function `*EnvironmentsClient.ListWorkerPoolSKUs` has been removed
+- Function `*WebAppsClient.ListConfigurationsSlot` has been removed
+- Function `*ProviderClient.ListOperations` has been removed
+- Function `*WebAppsClient.GetPrivateEndpointConnectionListSlot` has been removed
+- Function `*WebAppsClient.ListProcessesSlot` has been removed
+- Function `*WebAppsClient.ListInstanceProcessThreadsSlot` has been removed
+- Function `*WebAppsClient.ListTriggeredWebJobHistory` has been removed
+- Function `*ProviderClient.GetFunctionAppStacks` has been removed
+- Function `*WebAppsClient.ListSlotDifferencesSlot` has been removed
+- Function `*KubeEnvironmentsClient.ListBySubscription` has been removed
+- Function `*WebAppsClient.ListInstanceProcessModules` has been removed
+- Function `*WebAppsClient.ListWebJobsSlot` has been removed
+- Function `*WebAppsClient.ListPerfMonCounters` has been removed
+- Function `*WebSiteManagementClient.ListPremierAddOnOffers` has been removed
+- Function `*CertificateOrdersDiagnosticsClient.ListAppServiceCertificateOrderDetectorResponse` has been removed
+- Function `*WebAppsClient.ListSiteBackupsSlot` has been removed
+- Function `*WebAppsClient.ListProcessModules` has been removed
+- Function `*RecommendationsClient.ListRecommendedRulesForHostingEnvironment` has been removed
+- Function `*EnvironmentsClient.ListWebApps` has been removed
+- Function `*EnvironmentsClient.ListMultiRoleUsages` has been removed
+- Function `*EnvironmentsClient.GetPrivateEndpointConnectionList` has been removed
+- Function `*StaticSitesClient.ListStaticSiteUsers` has been removed
+- Function `*ProviderClient.GetFunctionAppStacksForLocation` has been removed
+- Function `*ResourceHealthMetadataClient.List` has been removed
+- Function `*PlansClient.ListWebApps` has been removed
+- Function `*WebAppsClient.ListSnapshots` has been removed
+- Function `*WebAppsClient.ListInstanceIdentifiers` has been removed
+- Function `*DomainRegistrationProviderClient.ListOperations` has been removed
+- Function `*CertificateRegistrationProviderClient.ListOperations` has been removed
+- Function `*EnvironmentsClient.ListWebWorkerMetricDefinitions` has been removed
+- Function `*DiagnosticsClient.ListSiteDiagnosticCategoriesSlot` has been removed
+- Function `*WebAppsClient.ListSlots` has been removed
+- Function `*EnvironmentsClient.ListWorkerPoolInstanceMetricDefinitions` has been removed
+- Function `*ContainerAppsClient.ListBySubscription` has been removed
+- Function `*DiagnosticsClient.ListSiteAnalyses` has been removed
+- Function `*DomainsClient.List` has been removed
+- Function `*ResourceHealthMetadataClient.ListBySiteSlot` has been removed
+- Function `*WebAppsClient.ListPublicCertificatesSlot` has been removed
+- Function `*EnvironmentsClient.ListAppServicePlans` has been removed
+- Function `*WebAppsClient.ListInstanceProcesses` has been removed
+- Function `*WebAppsClient.GetSiteConnectionStringKeyVaultReferences` has been removed
+- Function `*WebAppsClient.ListDeployments` has been removed
+- Function `*CertificateOrdersClient.ListCertificates` has been removed
+- Function `*WebAppsClient.ListTriggeredWebJobsSlot` has been removed
+- Function `*WebAppsClient.ListUsagesSlot` has been removed
+- Function `*WebAppsClient.ListByResourceGroup` has been removed
+- Function `*WebSiteManagementClient.ListCustomHostNameSites` has been removed
+- Function `*WebAppsClient.ListDomainOwnershipIdentifiers` has been removed
+- Function `*PlansClient.ListUsages` has been removed
+- Function `*WebAppsClient.ListPublicCertificates` has been removed
+- Function `*WebAppsClient.ListConfigurationSnapshotInfoSlot` has been removed
+- Function `*WebAppsClient.ListProcesses` has been removed
+- Function `*EnvironmentsClient.ListMultiRoleMetricDefinitions` has been removed
+- Function `*TopLevelDomainsClient.List` has been removed
+- Function `*CertificatesClient.List` has been removed
+- Function `*ProviderClient.GetWebAppStacksForLocation` has been removed
+- Function `*ResourceHealthMetadataClient.ListByResourceGroup` has been removed
+- Function `*ProviderClient.GetAvailableStacksOnPrem` has been removed
+- Function `*WebAppsClient.ListInstanceProcessesSlot` has been removed
+- Function `*WebSiteManagementClient.ListSiteIdentifiersAssignedToHostName` has been removed
+- Function `*WebAppsClient.ListDomainOwnershipIdentifiersSlot` has been removed
+- Function `*DomainsClient.ListOwnershipIdentifiers` has been removed
+- Function `*EnvironmentsClient.ListCapacities` has been removed
+- Function `*ProviderClient.GetAvailableStacks` has been removed
+- Function `*WebAppsClient.GetSiteConnectionStringKeyVaultReferencesSlot` has been removed
+- Function `*WebAppsClient.ListContinuousWebJobsSlot` has been removed
+- Function `*WebAppsClient.ListInstanceFunctionsSlot` has been removed
+- Function `*StaticSitesClient.GetStaticSitesByResourceGroup` has been removed
+- Function `*PlansClient.List` has been removed
+- Function `*WebAppsClient.ListBackupsSlot` has been removed
+- Function `*WebAppsClient.ListProcessThreadsSlot` has been removed
+- Function `*ContainerAppsClient.ListByResourceGroup` has been removed
+- Function `*EnvironmentsClient.ListMultiRolePoolSKUs` has been removed
+- Function `*TopLevelDomainsClient.ListAgreements` has been removed
+- Function `*WebAppsClient.ListProcessThreads` has been removed
+- Function `*CertificateOrdersClient.ListByResourceGroup` has been removed
+- Function `*ResourceHealthMetadataClient.ListBySite` has been removed
+- Function `*WebAppsClient.ListUsages` has been removed
+- Function `*DeletedWebAppsClient.ListByLocation` has been removed
+- Function `*DiagnosticsClient.ListHostingEnvironmentDetectorResponses` has been removed
+- Function `*WebAppsClient.ListConfigurationSnapshotInfo` has been removed
+- Function `*StaticSitesClient.GetUserProvidedFunctionAppsForStaticSiteBuild` has been removed
+- Function `*WebAppsClient.ListProcessModulesSlot` has been removed
+- Function `*WebAppsClient.ListSiteExtensionsSlot` has been removed
+- Function `*WebSiteManagementClient.ListSourceControls` has been removed
+- Function `*PlansClient.ListWebAppsByHybridConnection` has been removed
+- Function `*StaticSitesClient.GetStaticSiteBuilds` has been removed
+- Function `*DomainsClient.ListByResourceGroup` has been removed
+- Function `*EnvironmentsClient.ListWebWorkerUsages` has been removed
+- Function `*EnvironmentsClient.GetInboundNetworkDependenciesEndpoints` has been removed
+- Function `*RecommendationsClient.ListHistoryForHostingEnvironment` has been removed
+- Function `*WebAppsClient.ListInstanceIdentifiersSlot` has been removed
+- Function `*WebAppsClient.ListSnapshotsFromDRSecondary` has been removed
+- Function `*PlansClient.ListHybridConnections` has been removed
+- Function `*DiagnosticsClient.ListSiteDetectorResponsesSlot` has been removed
+- Function `*CertificateOrdersClient.List` has been removed
+- Function `*EnvironmentsClient.List` has been removed
+- Function `*WebAppsClient.GetAppSettingsKeyVaultReferencesSlot` has been removed
+- Function `*EnvironmentsClient.GetOutboundNetworkDependenciesEndpoints` has been removed
+- Function `*StaticSitesClient.GetPrivateEndpointConnectionList` has been removed
+- Function `*WebAppsClient.GetPrivateEndpointConnectionList` has been removed
+- Function `*WebAppsClient.ListSlotDifferencesFromProduction` has been removed
+- Function `*ContainerAppsRevisionsClient.ListRevisions` has been removed
+- Function `*EnvironmentsClient.ListWorkerPools` has been removed
+- Function `*WebAppsClient.ListSnapshotsFromDRSecondarySlot` has been removed
+- Function `*StaticSitesClient.ListStaticSiteFunctions` has been removed
+- Function `*DiagnosticsClient.ListSiteDetectorsSlot` has been removed
+- Function `*WebSiteManagementClient.ListBillingMeters` has been removed
+- Function `*WebAppsClient.ListConfigurations` has been removed
+- Function `*EnvironmentsClient.ListByResourceGroup` has been removed
+- Function `*ProviderClient.GetWebAppStacks` has been removed
+- Function `*StaticSitesClient.ListStaticSiteBuildFunctions` has been removed
+- Function `*WebAppsClient.ListInstanceProcessModulesSlot` has been removed
+- Function `*WebAppsClient.ListBasicPublishingCredentialsPoliciesSlot` has been removed
+- Function `*WebAppsClient.GetAppSettingsKeyVaultReferences` has been removed
+- Function `*RecommendationsClient.List` has been removed
+- Function `*WebSiteManagementClient.ListGeoRegions` has been removed
+- Function `*WebAppsClient.ListTriggeredWebJobHistorySlot` has been removed
+- Function `*WebAppsClient.ListTriggeredWebJobs` has been removed
+- Function `*WebAppsClient.ListSiteBackups` has been removed
+- Function `*WebAppsClient.ListHostNameBindings` has been removed
+- Function `*WebAppsClient.ListPerfMonCountersSlot` has been removed
+- Function `*StaticSitesClient.List` has been removed
+- Function `*EnvironmentsClient.ListMultiRolePoolInstanceMetricDefinitions` has been removed
+- Function `*WebAppsClient.ListBackups` has been removed
+- Function `*WebAppsClient.ListContinuousWebJobs` has been removed
+- Function `*WebAppsClient.ListWebJobs` has been removed
+- Function `*DiagnosticsClient.ListSiteDiagnosticCategories` has been removed
+- Function `*WebAppsClient.ListDeploymentsSlot` has been removed
+- Function `*StaticSitesClient.ListStaticSiteCustomDomains` has been removed
+- Function `*CertificatesClient.ListByResourceGroup` has been removed
+- Function `*DomainsClient.ListRecommendations` has been removed
+- Function `*DiagnosticsClient.ListSiteDetectorResponses` has been removed
+
+### Features Added
+
+- New function `*WebAppsClient.NewListContinuousWebJobsSlotPager(string, string, string, *WebAppsClientListContinuousWebJobsSlotOptions) *runtime.Pager[WebAppsClientListContinuousWebJobsSlotResponse]`
+- New function `*WebAppsClient.NewListPerfMonCountersPager(string, string, *WebAppsClientListPerfMonCountersOptions) *runtime.Pager[WebAppsClientListPerfMonCountersResponse]`
+- New function `*WebAppsClient.NewListInstanceFunctionsSlotPager(string, string, string, *WebAppsClientListInstanceFunctionsSlotOptions) *runtime.Pager[WebAppsClientListInstanceFunctionsSlotResponse]`
+- New function `*PlansClient.NewListWebAppsPager(string, string, *PlansClientListWebAppsOptions) *runtime.Pager[PlansClientListWebAppsResponse]`
+- New function `*WebAppsClient.NewListProcessThreadsPager(string, string, string, *WebAppsClientListProcessThreadsOptions) *runtime.Pager[WebAppsClientListProcessThreadsResponse]`
+- New function `*EnvironmentsClient.NewListByResourceGroupPager(string, *EnvironmentsClientListByResourceGroupOptions) *runtime.Pager[EnvironmentsClientListByResourceGroupResponse]`
+- New function `*WebAppsClient.NewListSnapshotsSlotPager(string, string, string, *WebAppsClientListSnapshotsSlotOptions) *runtime.Pager[WebAppsClientListSnapshotsSlotResponse]`
+- New function `*EnvironmentsClient.NewListAppServicePlansPager(string, string, *EnvironmentsClientListAppServicePlansOptions) *runtime.Pager[EnvironmentsClientListAppServicePlansResponse]`
+- New function `*WebAppsClient.NewListSnapshotsPager(string, string, *WebAppsClientListSnapshotsOptions) *runtime.Pager[WebAppsClientListSnapshotsResponse]`
+- New function `*DomainsClient.NewListPager(*DomainsClientListOptions) *runtime.Pager[DomainsClientListResponse]`
+- New function `*WebSiteManagementClient.NewListSiteIdentifiersAssignedToHostNamePager(NameIdentifier, *WebSiteManagementClientListSiteIdentifiersAssignedToHostNameOptions) *runtime.Pager[WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse]`
+- New function `*WebSiteManagementClient.NewListCustomHostNameSitesPager(*WebSiteManagementClientListCustomHostNameSitesOptions) *runtime.Pager[WebSiteManagementClientListCustomHostNameSitesResponse]`
+- New function `*ContainerAppsClient.NewListBySubscriptionPager(*ContainerAppsClientListBySubscriptionOptions) *runtime.Pager[ContainerAppsClientListBySubscriptionResponse]`
+- New function `*ProviderClient.NewGetWebAppStacksPager(*ProviderClientGetWebAppStacksOptions) *runtime.Pager[ProviderClientGetWebAppStacksResponse]`
+- New function `*EnvironmentsClient.NewGetOutboundNetworkDependenciesEndpointsPager(string, string, *EnvironmentsClientGetOutboundNetworkDependenciesEndpointsOptions) *runtime.Pager[EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse]`
+- New function `*WebAppsClient.NewListConfigurationSnapshotInfoPager(string, string, *WebAppsClientListConfigurationSnapshotInfoOptions) *runtime.Pager[WebAppsClientListConfigurationSnapshotInfoResponse]`
+- New function `*PlansClient.NewListByResourceGroupPager(string, *PlansClientListByResourceGroupOptions) *runtime.Pager[PlansClientListByResourceGroupResponse]`
+- New function `*WebAppsClient.NewListPublicCertificatesSlotPager(string, string, string, *WebAppsClientListPublicCertificatesSlotOptions) *runtime.Pager[WebAppsClientListPublicCertificatesSlotResponse]`
+- New function `*WebAppsClient.NewListPager(*WebAppsClientListOptions) *runtime.Pager[WebAppsClientListResponse]`
+- New function `*WebAppsClient.NewListBackupsPager(string, string, *WebAppsClientListBackupsOptions) *runtime.Pager[WebAppsClientListBackupsResponse]`
+- New function `*ContainerAppsClient.NewListByResourceGroupPager(string, *ContainerAppsClientListByResourceGroupOptions) *runtime.Pager[ContainerAppsClientListByResourceGroupResponse]`
+- New function `*WebAppsClient.NewListInstanceProcessModulesSlotPager(string, string, string, string, string, *WebAppsClientListInstanceProcessModulesSlotOptions) *runtime.Pager[WebAppsClientListInstanceProcessModulesSlotResponse]`
+- New function `*TopLevelDomainsClient.NewListAgreementsPager(string, TopLevelDomainAgreementOption, *TopLevelDomainsClientListAgreementsOptions) *runtime.Pager[TopLevelDomainsClientListAgreementsResponse]`
+- New function `*WebAppsClient.NewListTriggeredWebJobsSlotPager(string, string, string, *WebAppsClientListTriggeredWebJobsSlotOptions) *runtime.Pager[WebAppsClientListTriggeredWebJobsSlotResponse]`
+- New function `*KubeEnvironmentsClient.NewListBySubscriptionPager(*KubeEnvironmentsClientListBySubscriptionOptions) *runtime.Pager[KubeEnvironmentsClientListBySubscriptionResponse]`
+- New function `*StaticSitesClient.NewListStaticSiteCustomDomainsPager(string, string, *StaticSitesClientListStaticSiteCustomDomainsOptions) *runtime.Pager[StaticSitesClientListStaticSiteCustomDomainsResponse]`
+- New function `*StaticSitesClient.NewGetStaticSiteBuildsPager(string, string, *StaticSitesClientGetStaticSiteBuildsOptions) *runtime.Pager[StaticSitesClientGetStaticSiteBuildsResponse]`
+- New function `*EnvironmentsClient.NewListWorkerPoolsPager(string, string, *EnvironmentsClientListWorkerPoolsOptions) *runtime.Pager[EnvironmentsClientListWorkerPoolsResponse]`
+- New function `*WebAppsClient.NewListProcessesPager(string, string, *WebAppsClientListProcessesOptions) *runtime.Pager[WebAppsClientListProcessesResponse]`
+- New function `*WebAppsClient.NewListSiteExtensionsSlotPager(string, string, string, *WebAppsClientListSiteExtensionsSlotOptions) *runtime.Pager[WebAppsClientListSiteExtensionsSlotResponse]`
+- New function `*ResourceHealthMetadataClient.NewListBySiteSlotPager(string, string, string, *ResourceHealthMetadataClientListBySiteSlotOptions) *runtime.Pager[ResourceHealthMetadataClientListBySiteSlotResponse]`
+- New function `*EnvironmentsClient.NewListMultiRoleUsagesPager(string, string, *EnvironmentsClientListMultiRoleUsagesOptions) *runtime.Pager[EnvironmentsClientListMultiRoleUsagesResponse]`
+- New function `*WebAppsClient.NewListInstanceProcessesPager(string, string, string, *WebAppsClientListInstanceProcessesOptions) *runtime.Pager[WebAppsClientListInstanceProcessesResponse]`
+- New function `*DomainRegistrationProviderClient.NewListOperationsPager(*DomainRegistrationProviderClientListOperationsOptions) *runtime.Pager[DomainRegistrationProviderClientListOperationsResponse]`
+- New function `*WebAppsClient.NewListFunctionsPager(string, string, *WebAppsClientListFunctionsOptions) *runtime.Pager[WebAppsClientListFunctionsResponse]`
+- New function `*WebAppsClient.NewListTriggeredWebJobHistorySlotPager(string, string, string, string, *WebAppsClientListTriggeredWebJobHistorySlotOptions) *runtime.Pager[WebAppsClientListTriggeredWebJobHistorySlotResponse]`
+- New function `*WebAppsClient.NewListConfigurationsPager(string, string, *WebAppsClientListConfigurationsOptions) *runtime.Pager[WebAppsClientListConfigurationsResponse]`
+- New function `*StaticSitesClient.NewListStaticSiteFunctionsPager(string, string, *StaticSitesClientListStaticSiteFunctionsOptions) *runtime.Pager[StaticSitesClientListStaticSiteFunctionsResponse]`
+- New function `*EnvironmentsClient.NewGetPrivateEndpointConnectionListPager(string, string, *EnvironmentsClientGetPrivateEndpointConnectionListOptions) *runtime.Pager[EnvironmentsClientGetPrivateEndpointConnectionListResponse]`
+- New function `*StaticSitesClient.NewGetUserProvidedFunctionAppsForStaticSiteBuildPager(string, string, string, *StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildOptions) *runtime.Pager[StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResponse]`
+- New function `*WebAppsClient.NewListHostNameBindingsPager(string, string, *WebAppsClientListHostNameBindingsOptions) *runtime.Pager[WebAppsClientListHostNameBindingsResponse]`
+- New function `*ContainerAppsRevisionsClient.NewListRevisionsPager(string, string, *ContainerAppsRevisionsClientListRevisionsOptions) *runtime.Pager[ContainerAppsRevisionsClientListRevisionsResponse]`
+- New function `*PlansClient.NewListHybridConnectionsPager(string, string, *PlansClientListHybridConnectionsOptions) *runtime.Pager[PlansClientListHybridConnectionsResponse]`
+- New function `*WebSiteManagementClient.NewListPremierAddOnOffersPager(*WebSiteManagementClientListPremierAddOnOffersOptions) *runtime.Pager[WebSiteManagementClientListPremierAddOnOffersResponse]`
+- New function `*ProviderClient.NewListOperationsPager(*ProviderClientListOperationsOptions) *runtime.Pager[ProviderClientListOperationsResponse]`
+- New function `*DiagnosticsClient.NewListSiteDiagnosticCategoriesPager(string, string, *DiagnosticsClientListSiteDiagnosticCategoriesOptions) *runtime.Pager[DiagnosticsClientListSiteDiagnosticCategoriesResponse]`
+- New function `*WebAppsClient.NewListSiteBackupsPager(string, string, *WebAppsClientListSiteBackupsOptions) *runtime.Pager[WebAppsClientListSiteBackupsResponse]`
+- New function `*DomainsClient.NewListByResourceGroupPager(string, *DomainsClientListByResourceGroupOptions) *runtime.Pager[DomainsClientListByResourceGroupResponse]`
+- New function `*WebAppsClient.NewListWebJobsPager(string, string, *WebAppsClientListWebJobsOptions) *runtime.Pager[WebAppsClientListWebJobsResponse]`
+- New function `*WebAppsClient.NewGetPrivateEndpointConnectionListPager(string, string, *WebAppsClientGetPrivateEndpointConnectionListOptions) *runtime.Pager[WebAppsClientGetPrivateEndpointConnectionListResponse]`
+- New function `*WebAppsClient.NewListDeploymentsPager(string, string, *WebAppsClientListDeploymentsOptions) *runtime.Pager[WebAppsClientListDeploymentsResponse]`
+- New function `*ResourceHealthMetadataClient.NewListPager(*ResourceHealthMetadataClientListOptions) *runtime.Pager[ResourceHealthMetadataClientListResponse]`
+- New function `*ResourceHealthMetadataClient.NewListBySitePager(string, string, *ResourceHealthMetadataClientListBySiteOptions) *runtime.Pager[ResourceHealthMetadataClientListBySiteResponse]`
+- New function `*CertificateOrdersClient.NewListPager(*CertificateOrdersClientListOptions) *runtime.Pager[CertificateOrdersClientListResponse]`
+- New function `*WebAppsClient.NewListHostNameBindingsSlotPager(string, string, string, *WebAppsClientListHostNameBindingsSlotOptions) *runtime.Pager[WebAppsClientListHostNameBindingsSlotResponse]`
+- New function `*CertificateOrdersClient.NewListByResourceGroupPager(string, *CertificateOrdersClientListByResourceGroupOptions) *runtime.Pager[CertificateOrdersClientListByResourceGroupResponse]`
+- New function `*EnvironmentsClient.NewListWorkerPoolInstanceMetricDefinitionsPager(string, string, string, string, *EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsOptions) *runtime.Pager[EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsResponse]`
+- New function `*WebAppsClient.NewListInstanceProcessThreadsPager(string, string, string, string, *WebAppsClientListInstanceProcessThreadsOptions) *runtime.Pager[WebAppsClientListInstanceProcessThreadsResponse]`
+- New function `*ProviderClient.NewGetFunctionAppStacksForLocationPager(string, *ProviderClientGetFunctionAppStacksForLocationOptions) *runtime.Pager[ProviderClientGetFunctionAppStacksForLocationResponse]`
+- New function `*WebAppsClient.NewListPublicCertificatesPager(string, string, *WebAppsClientListPublicCertificatesOptions) *runtime.Pager[WebAppsClientListPublicCertificatesResponse]`
+- New function `*WebAppsClient.NewListContinuousWebJobsPager(string, string, *WebAppsClientListContinuousWebJobsOptions) *runtime.Pager[WebAppsClientListContinuousWebJobsResponse]`
+- New function `*DiagnosticsClient.NewListHostingEnvironmentDetectorResponsesPager(string, string, *DiagnosticsClientListHostingEnvironmentDetectorResponsesOptions) *runtime.Pager[DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse]`
+- New function `*WebAppsClient.NewListProcessModulesPager(string, string, string, *WebAppsClientListProcessModulesOptions) *runtime.Pager[WebAppsClientListProcessModulesResponse]`
+- New function `*DeletedWebAppsClient.NewListByLocationPager(string, *DeletedWebAppsClientListByLocationOptions) *runtime.Pager[DeletedWebAppsClientListByLocationResponse]`
+- New function `*WebAppsClient.NewListBackupsSlotPager(string, string, string, *WebAppsClientListBackupsSlotOptions) *runtime.Pager[WebAppsClientListBackupsSlotResponse]`
+- New function `*WebAppsClient.NewListDomainOwnershipIdentifiersSlotPager(string, string, string, *WebAppsClientListDomainOwnershipIdentifiersSlotOptions) *runtime.Pager[WebAppsClientListDomainOwnershipIdentifiersSlotResponse]`
+- New function `*EnvironmentsClient.NewListUsagesPager(string, string, *EnvironmentsClientListUsagesOptions) *runtime.Pager[EnvironmentsClientListUsagesResponse]`
+- New function `*WebAppsClient.NewListSlotDifferencesFromProductionPager(string, string, CsmSlotEntity, *WebAppsClientListSlotDifferencesFromProductionOptions) *runtime.Pager[WebAppsClientListSlotDifferencesFromProductionResponse]`
+- New function `*DiagnosticsClient.NewListSiteDetectorResponsesSlotPager(string, string, string, *DiagnosticsClientListSiteDetectorResponsesSlotOptions) *runtime.Pager[DiagnosticsClientListSiteDetectorResponsesSlotResponse]`
+- New function `*WebAppsClient.NewListSiteBackupsSlotPager(string, string, string, *WebAppsClientListSiteBackupsSlotOptions) *runtime.Pager[WebAppsClientListSiteBackupsSlotResponse]`
+- New function `*WebAppsClient.NewListInstanceIdentifiersSlotPager(string, string, string, *WebAppsClientListInstanceIdentifiersSlotOptions) *runtime.Pager[WebAppsClientListInstanceIdentifiersSlotResponse]`
+- New function `*WebSiteManagementClient.NewListSourceControlsPager(*WebSiteManagementClientListSourceControlsOptions) *runtime.Pager[WebSiteManagementClientListSourceControlsResponse]`
+- New function `*CertificatesClient.NewListByResourceGroupPager(string, *CertificatesClientListByResourceGroupOptions) *runtime.Pager[CertificatesClientListByResourceGroupResponse]`
+- New function `*WebAppsClient.NewListSlotDifferencesSlotPager(string, string, string, CsmSlotEntity, *WebAppsClientListSlotDifferencesSlotOptions) *runtime.Pager[WebAppsClientListSlotDifferencesSlotResponse]`
+- New function `*StaticSitesClient.NewGetStaticSitesByResourceGroupPager(string, *StaticSitesClientGetStaticSitesByResourceGroupOptions) *runtime.Pager[StaticSitesClientGetStaticSitesByResourceGroupResponse]`
+- New function `*EnvironmentsClient.NewListMultiRoleMetricDefinitionsPager(string, string, *EnvironmentsClientListMultiRoleMetricDefinitionsOptions) *runtime.Pager[EnvironmentsClientListMultiRoleMetricDefinitionsResponse]`
+- New function `*EnvironmentsClient.NewListWebAppsPager(string, string, *EnvironmentsClientListWebAppsOptions) *runtime.Pager[EnvironmentsClientListWebAppsResponse]`
+- New function `*WebAppsClient.NewListDeploymentsSlotPager(string, string, string, *WebAppsClientListDeploymentsSlotOptions) *runtime.Pager[WebAppsClientListDeploymentsSlotResponse]`
+- New function `*WebAppsClient.NewListSnapshotsFromDRSecondaryPager(string, string, *WebAppsClientListSnapshotsFromDRSecondaryOptions) *runtime.Pager[WebAppsClientListSnapshotsFromDRSecondaryResponse]`
+- New function `*WebAppsClient.NewListSlotsPager(string, string, *WebAppsClientListSlotsOptions) *runtime.Pager[WebAppsClientListSlotsResponse]`
+- New function `*EnvironmentsClient.NewListMultiRolePoolSKUsPager(string, string, *EnvironmentsClientListMultiRolePoolSKUsOptions) *runtime.Pager[EnvironmentsClientListMultiRolePoolSKUsResponse]`
+- New function `*EnvironmentsClient.NewListPager(*EnvironmentsClientListOptions) *runtime.Pager[EnvironmentsClientListResponse]`
+- New function `*WebAppsClient.NewGetPrivateEndpointConnectionListSlotPager(string, string, string, *WebAppsClientGetPrivateEndpointConnectionListSlotOptions) *runtime.Pager[WebAppsClientGetPrivateEndpointConnectionListSlotResponse]`
+- New function `*ProviderClient.NewGetWebAppStacksForLocationPager(string, *ProviderClientGetWebAppStacksForLocationOptions) *runtime.Pager[ProviderClientGetWebAppStacksForLocationResponse]`
+- New function `*RecommendationsClient.NewListHistoryForWebAppPager(string, string, *RecommendationsClientListHistoryForWebAppOptions) *runtime.Pager[RecommendationsClientListHistoryForWebAppResponse]`
+- New function `*DiagnosticsClient.NewListSiteDetectorsSlotPager(string, string, string, string, *DiagnosticsClientListSiteDetectorsSlotOptions) *runtime.Pager[DiagnosticsClientListSiteDetectorsSlotResponse]`
+- New function `*StaticSitesClient.NewListStaticSiteBuildFunctionsPager(string, string, string, *StaticSitesClientListStaticSiteBuildFunctionsOptions) *runtime.Pager[StaticSitesClientListStaticSiteBuildFunctionsResponse]`
+- New function `*EnvironmentsClient.NewGetInboundNetworkDependenciesEndpointsPager(string, string, *EnvironmentsClientGetInboundNetworkDependenciesEndpointsOptions) *runtime.Pager[EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse]`
+- New function `*PlansClient.NewListPager(*PlansClientListOptions) *runtime.Pager[PlansClientListResponse]`
+- New function `*ProviderClient.NewGetAvailableStacksPager(*ProviderClientGetAvailableStacksOptions) *runtime.Pager[ProviderClientGetAvailableStacksResponse]`
+- New function `*WebAppsClient.NewGetAppSettingsKeyVaultReferencesPager(string, string, *WebAppsClientGetAppSettingsKeyVaultReferencesOptions) *runtime.Pager[WebAppsClientGetAppSettingsKeyVaultReferencesResponse]`
+- New function `*WebAppsClient.NewListConfigurationsSlotPager(string, string, string, *WebAppsClientListConfigurationsSlotOptions) *runtime.Pager[WebAppsClientListConfigurationsSlotResponse]`
+- New function `*DomainsClient.NewListOwnershipIdentifiersPager(string, string, *DomainsClientListOwnershipIdentifiersOptions) *runtime.Pager[DomainsClientListOwnershipIdentifiersResponse]`
+- New function `*EnvironmentsClient.NewListWorkerPoolSKUsPager(string, string, string, *EnvironmentsClientListWorkerPoolSKUsOptions) *runtime.Pager[EnvironmentsClientListWorkerPoolSKUsResponse]`
+- New function `*EnvironmentsClient.NewListWebWorkerMetricDefinitionsPager(string, string, string, *EnvironmentsClientListWebWorkerMetricDefinitionsOptions) *runtime.Pager[EnvironmentsClientListWebWorkerMetricDefinitionsResponse]`
+- New function `*WebAppsClient.NewListTriggeredWebJobHistoryPager(string, string, string, *WebAppsClientListTriggeredWebJobHistoryOptions) *runtime.Pager[WebAppsClientListTriggeredWebJobHistoryResponse]`
+- New function `*WebAppsClient.NewListBasicPublishingCredentialsPoliciesPager(string, string, *WebAppsClientListBasicPublishingCredentialsPoliciesOptions) *runtime.Pager[WebAppsClientListBasicPublishingCredentialsPoliciesResponse]`
+- New function `*WebAppsClient.NewListInstanceIdentifiersPager(string, string, *WebAppsClientListInstanceIdentifiersOptions) *runtime.Pager[WebAppsClientListInstanceIdentifiersResponse]`
+- New function `*CertificateOrdersClient.NewListCertificatesPager(string, string, *CertificateOrdersClientListCertificatesOptions) *runtime.Pager[CertificateOrdersClientListCertificatesResponse]`
+- New function `*RecommendationsClient.NewListRecommendedRulesForWebAppPager(string, string, *RecommendationsClientListRecommendedRulesForWebAppOptions) *runtime.Pager[RecommendationsClientListRecommendedRulesForWebAppResponse]`
+- New function `*WebAppsClient.NewListSnapshotsFromDRSecondarySlotPager(string, string, string, *WebAppsClientListSnapshotsFromDRSecondarySlotOptions) *runtime.Pager[WebAppsClientListSnapshotsFromDRSecondarySlotResponse]`
+- New function `*ResourceHealthMetadataClient.NewListByResourceGroupPager(string, *ResourceHealthMetadataClientListByResourceGroupOptions) *runtime.Pager[ResourceHealthMetadataClientListByResourceGroupResponse]`
+- New function `*StaticSitesClient.NewGetPrivateEndpointConnectionListPager(string, string, *StaticSitesClientGetPrivateEndpointConnectionListOptions) *runtime.Pager[StaticSitesClientGetPrivateEndpointConnectionListResponse]`
+- New function `*RecommendationsClient.NewListPager(*RecommendationsClientListOptions) *runtime.Pager[RecommendationsClientListResponse]`
+- New function `*WebAppsClient.NewGetSiteConnectionStringKeyVaultReferencesSlotPager(string, string, string, *WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotOptions) *runtime.Pager[WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResponse]`
+- New function `*WebAppsClient.NewListProcessThreadsSlotPager(string, string, string, string, *WebAppsClientListProcessThreadsSlotOptions) *runtime.Pager[WebAppsClientListProcessThreadsSlotResponse]`
+- New function `*StaticSitesClient.NewListPager(*StaticSitesClientListOptions) *runtime.Pager[StaticSitesClientListResponse]`
+- New function `*PlansClient.NewListWebAppsByHybridConnectionPager(string, string, string, string, *PlansClientListWebAppsByHybridConnectionOptions) *runtime.Pager[PlansClientListWebAppsByHybridConnectionResponse]`
+- New function `*RecommendationsClient.NewListRecommendedRulesForHostingEnvironmentPager(string, string, *RecommendationsClientListRecommendedRulesForHostingEnvironmentOptions) *runtime.Pager[RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse]`
+- New function `*WebAppsClient.NewGetAppSettingsKeyVaultReferencesSlotPager(string, string, string, *WebAppsClientGetAppSettingsKeyVaultReferencesSlotOptions) *runtime.Pager[WebAppsClientGetAppSettingsKeyVaultReferencesSlotResponse]`
+- New function `*WebAppsClient.NewListSiteExtensionsPager(string, string, *WebAppsClientListSiteExtensionsOptions) *runtime.Pager[WebAppsClientListSiteExtensionsResponse]`
+- New function `*ProviderClient.NewGetAvailableStacksOnPremPager(*ProviderClientGetAvailableStacksOnPremOptions) *runtime.Pager[ProviderClientGetAvailableStacksOnPremResponse]`
+- New function `*EnvironmentsClient.NewListMultiRolePoolsPager(string, string, *EnvironmentsClientListMultiRolePoolsOptions) *runtime.Pager[EnvironmentsClientListMultiRolePoolsResponse]`
+- New function `*EnvironmentsClient.NewListCapacitiesPager(string, string, *EnvironmentsClientListCapacitiesOptions) *runtime.Pager[EnvironmentsClientListCapacitiesResponse]`
+- New function `*DiagnosticsClient.NewListSiteAnalysesSlotPager(string, string, string, string, *DiagnosticsClientListSiteAnalysesSlotOptions) *runtime.Pager[DiagnosticsClientListSiteAnalysesSlotResponse]`
+- New function `*WebAppsClient.NewListProcessesSlotPager(string, string, string, *WebAppsClientListProcessesSlotOptions) *runtime.Pager[WebAppsClientListProcessesSlotResponse]`
+- New function `*RecommendationsClient.NewListHistoryForHostingEnvironmentPager(string, string, *RecommendationsClientListHistoryForHostingEnvironmentOptions) *runtime.Pager[RecommendationsClientListHistoryForHostingEnvironmentResponse]`
+- New function `*WebAppsClient.NewListPerfMonCountersSlotPager(string, string, string, *WebAppsClientListPerfMonCountersSlotOptions) *runtime.Pager[WebAppsClientListPerfMonCountersSlotResponse]`
+- New function `*WebSiteManagementClient.NewListGeoRegionsPager(*WebSiteManagementClientListGeoRegionsOptions) *runtime.Pager[WebSiteManagementClientListGeoRegionsResponse]`
+- New function `*CertificateOrdersDiagnosticsClient.NewListAppServiceCertificateOrderDetectorResponsePager(string, string, *CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseOptions) *runtime.Pager[CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse]`
+- New function `*WebSiteManagementClient.NewListBillingMetersPager(*WebSiteManagementClientListBillingMetersOptions) *runtime.Pager[WebSiteManagementClientListBillingMetersResponse]`
+- New function `*StaticSitesClient.NewListStaticSiteUsersPager(string, string, string, *StaticSitesClientListStaticSiteUsersOptions) *runtime.Pager[StaticSitesClientListStaticSiteUsersResponse]`
+- New function `*WebAppsClient.NewListInstanceProcessModulesPager(string, string, string, string, *WebAppsClientListInstanceProcessModulesOptions) *runtime.Pager[WebAppsClientListInstanceProcessModulesResponse]`
+- New function `*CertificatesClient.NewListPager(*CertificatesClientListOptions) *runtime.Pager[CertificatesClientListResponse]`
+- New function `*EnvironmentsClient.NewListWebWorkerUsagesPager(string, string, string, *EnvironmentsClientListWebWorkerUsagesOptions) *runtime.Pager[EnvironmentsClientListWebWorkerUsagesResponse]`
+- New function `*PlansClient.NewListUsagesPager(string, string, *PlansClientListUsagesOptions) *runtime.Pager[PlansClientListUsagesResponse]`
+- New function `*DiagnosticsClient.NewListSiteAnalysesPager(string, string, string, *DiagnosticsClientListSiteAnalysesOptions) *runtime.Pager[DiagnosticsClientListSiteAnalysesResponse]`
+- New function `*StaticSitesClient.NewGetUserProvidedFunctionAppsForStaticSitePager(string, string, *StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteOptions) *runtime.Pager[StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResponse]`
+- New function `*WebAppsClient.NewListInstanceProcessesSlotPager(string, string, string, string, *WebAppsClientListInstanceProcessesSlotOptions) *runtime.Pager[WebAppsClientListInstanceProcessesSlotResponse]`
+- New function `*WebAppsClient.NewListTriggeredWebJobsPager(string, string, *WebAppsClientListTriggeredWebJobsOptions) *runtime.Pager[WebAppsClientListTriggeredWebJobsResponse]`
+- New function `*WebAppsClient.NewListConfigurationSnapshotInfoSlotPager(string, string, string, *WebAppsClientListConfigurationSnapshotInfoSlotOptions) *runtime.Pager[WebAppsClientListConfigurationSnapshotInfoSlotResponse]`
+- New function `*WebAppsClient.NewListBasicPublishingCredentialsPoliciesSlotPager(string, string, string, *WebAppsClientListBasicPublishingCredentialsPoliciesSlotOptions) *runtime.Pager[WebAppsClientListBasicPublishingCredentialsPoliciesSlotResponse]`
+- New function `*DomainsClient.NewListRecommendationsPager(DomainRecommendationSearchParameters, *DomainsClientListRecommendationsOptions) *runtime.Pager[DomainsClientListRecommendationsResponse]`
+- New function `*DiagnosticsClient.NewListSiteDetectorsPager(string, string, string, *DiagnosticsClientListSiteDetectorsOptions) *runtime.Pager[DiagnosticsClientListSiteDetectorsResponse]`
+- New function `*TopLevelDomainsClient.NewListPager(*TopLevelDomainsClientListOptions) *runtime.Pager[TopLevelDomainsClientListResponse]`
+- New function `*ProviderClient.NewGetFunctionAppStacksPager(*ProviderClientGetFunctionAppStacksOptions) *runtime.Pager[ProviderClientGetFunctionAppStacksResponse]`
+- New function `*WebAppsClient.NewListProcessModulesSlotPager(string, string, string, string, *WebAppsClientListProcessModulesSlotOptions) *runtime.Pager[WebAppsClientListProcessModulesSlotResponse]`
+- New function `*WebAppsClient.NewGetSiteConnectionStringKeyVaultReferencesPager(string, string, *WebAppsClientGetSiteConnectionStringKeyVaultReferencesOptions) *runtime.Pager[WebAppsClientGetSiteConnectionStringKeyVaultReferencesResponse]`
+- New function `*CertificateRegistrationProviderClient.NewListOperationsPager(*CertificateRegistrationProviderClientListOperationsOptions) *runtime.Pager[CertificateRegistrationProviderClientListOperationsResponse]`
+- New function `*WebAppsClient.NewListDomainOwnershipIdentifiersPager(string, string, *WebAppsClientListDomainOwnershipIdentifiersOptions) *runtime.Pager[WebAppsClientListDomainOwnershipIdentifiersResponse]`
+- New function `*WebAppsClient.NewListByResourceGroupPager(string, *WebAppsClientListByResourceGroupOptions) *runtime.Pager[WebAppsClientListByResourceGroupResponse]`
+- New function `*KubeEnvironmentsClient.NewListByResourceGroupPager(string, *KubeEnvironmentsClientListByResourceGroupOptions) *runtime.Pager[KubeEnvironmentsClientListByResourceGroupResponse]`
+- New function `*DeletedWebAppsClient.NewListPager(*DeletedWebAppsClientListOptions) *runtime.Pager[DeletedWebAppsClientListResponse]`
+- New function `*DiagnosticsClient.NewListSiteDetectorResponsesPager(string, string, *DiagnosticsClientListSiteDetectorResponsesOptions) *runtime.Pager[DiagnosticsClientListSiteDetectorResponsesResponse]`
+- New function `*EnvironmentsClient.NewListMultiRolePoolInstanceMetricDefinitionsPager(string, string, string, *EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsOptions) *runtime.Pager[EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsResponse]`
+- New function `*WebAppsClient.NewListWebJobsSlotPager(string, string, string, *WebAppsClientListWebJobsSlotOptions) *runtime.Pager[WebAppsClientListWebJobsSlotResponse]`
+- New function `*WebAppsClient.NewListInstanceProcessThreadsSlotPager(string, string, string, string, string, *WebAppsClientListInstanceProcessThreadsSlotOptions) *runtime.Pager[WebAppsClientListInstanceProcessThreadsSlotResponse]`
+- New function `*WebAppsClient.NewListUsagesPager(string, string, *WebAppsClientListUsagesOptions) *runtime.Pager[WebAppsClientListUsagesResponse]`
+- New function `*DiagnosticsClient.NewListSiteDiagnosticCategoriesSlotPager(string, string, string, *DiagnosticsClientListSiteDiagnosticCategoriesSlotOptions) *runtime.Pager[DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse]`
+- New function `*WebAppsClient.NewListUsagesSlotPager(string, string, string, *WebAppsClientListUsagesSlotOptions) *runtime.Pager[WebAppsClientListUsagesSlotResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

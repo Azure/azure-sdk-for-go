@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListApiOperationTags.json
-func ExampleTagClient_ListByOperation() {
+func ExampleTagClient_NewListByOperationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleTagClient_ListByOperation() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByOperation("<resource-group-name>",
+	pager := client.NewListByOperationPager("<resource-group-name>",
 		"<service-name>",
 		"<api-id>",
 		"<operation-id>",
@@ -160,7 +160,7 @@ func ExampleTagClient_DetachFromOperation() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListProductTags.json
-func ExampleTagClient_ListByProduct() {
+func ExampleTagClient_NewListByProductPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -172,7 +172,7 @@ func ExampleTagClient_ListByProduct() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByProduct("<resource-group-name>",
+	pager := client.NewListByProductPager("<resource-group-name>",
 		"<service-name>",
 		"<product-id>",
 		&armapimanagement.TagClientListByProductOptions{Filter: nil,
@@ -297,7 +297,7 @@ func ExampleTagClient_DetachFromProduct() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListTags.json
-func ExampleTagClient_ListByService() {
+func ExampleTagClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -309,7 +309,7 @@ func ExampleTagClient_ListByService() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByService("<resource-group-name>",
+	pager := client.NewListByServicePager("<resource-group-name>",
 		"<service-name>",
 		&armapimanagement.TagClientListByServiceOptions{Filter: nil,
 			Top:   nil,

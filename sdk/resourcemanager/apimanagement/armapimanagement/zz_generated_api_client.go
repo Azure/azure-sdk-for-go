@@ -310,12 +310,12 @@ func (client *APIClient) getEntityTagHandleResponse(resp *http.Response) (APICli
 	return result, nil
 }
 
-// ListByService - Lists all APIs of the API Management service instance.
+// NewListByServicePager - Lists all APIs of the API Management service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - APIClientListByServiceOptions contains the optional parameters for the APIClient.ListByService method.
-func (client *APIClient) ListByService(resourceGroupName string, serviceName string, options *APIClientListByServiceOptions) *runtime.Pager[APIClientListByServiceResponse] {
+func (client *APIClient) NewListByServicePager(resourceGroupName string, serviceName string, options *APIClientListByServiceOptions) *runtime.Pager[APIClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[APIClientListByServiceResponse]{
 		More: func(page APIClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -393,12 +393,12 @@ func (client *APIClient) listByServiceHandleResponse(resp *http.Response) (APICl
 	return result, nil
 }
 
-// ListByTags - Lists a collection of apis associated with tags.
+// NewListByTagsPager - Lists a collection of apis associated with tags.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - APIClientListByTagsOptions contains the optional parameters for the APIClient.ListByTags method.
-func (client *APIClient) ListByTags(resourceGroupName string, serviceName string, options *APIClientListByTagsOptions) *runtime.Pager[APIClientListByTagsResponse] {
+func (client *APIClient) NewListByTagsPager(resourceGroupName string, serviceName string, options *APIClientListByTagsOptions) *runtime.Pager[APIClientListByTagsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[APIClientListByTagsResponse]{
 		More: func(page APIClientListByTagsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

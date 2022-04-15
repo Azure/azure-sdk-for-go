@@ -129,7 +129,7 @@ func ExampleFarmBeatsModelsClient_Delete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/agrifood/resource-manager/Microsoft.AgFoodPlatform/preview/2020-05-12-preview/examples/FarmBeatsModels_ListBySubscription.json
-func ExampleFarmBeatsModelsClient_ListBySubscription() {
+func ExampleFarmBeatsModelsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -141,7 +141,7 @@ func ExampleFarmBeatsModelsClient_ListBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription(&armagrifood.FarmBeatsModelsClientListBySubscriptionOptions{MaxPageSize: nil,
+	pager := client.NewListBySubscriptionPager(&armagrifood.FarmBeatsModelsClientListBySubscriptionOptions{MaxPageSize: nil,
 		SkipToken: nil,
 	})
 	for pager.More() {
@@ -158,7 +158,7 @@ func ExampleFarmBeatsModelsClient_ListBySubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/agrifood/resource-manager/Microsoft.AgFoodPlatform/preview/2020-05-12-preview/examples/FarmBeatsModels_ListByResourceGroup.json
-func ExampleFarmBeatsModelsClient_ListByResourceGroup() {
+func ExampleFarmBeatsModelsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -170,7 +170,7 @@ func ExampleFarmBeatsModelsClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		&armagrifood.FarmBeatsModelsClientListByResourceGroupOptions{MaxPageSize: nil,
 			SkipToken: nil,
 		})

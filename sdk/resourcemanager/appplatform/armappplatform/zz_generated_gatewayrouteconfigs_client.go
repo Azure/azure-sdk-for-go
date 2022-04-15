@@ -272,7 +272,7 @@ func (client *GatewayRouteConfigsClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// List - Handle requests to list all Spring Cloud Gateway route configs.
+// NewListPager - Handle requests to list all Spring Cloud Gateway route configs.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -280,7 +280,7 @@ func (client *GatewayRouteConfigsClient) getHandleResponse(resp *http.Response) 
 // gatewayName - The name of Spring Cloud Gateway.
 // options - GatewayRouteConfigsClientListOptions contains the optional parameters for the GatewayRouteConfigsClient.List
 // method.
-func (client *GatewayRouteConfigsClient) List(resourceGroupName string, serviceName string, gatewayName string, options *GatewayRouteConfigsClientListOptions) *runtime.Pager[GatewayRouteConfigsClientListResponse] {
+func (client *GatewayRouteConfigsClient) NewListPager(resourceGroupName string, serviceName string, gatewayName string, options *GatewayRouteConfigsClientListOptions) *runtime.Pager[GatewayRouteConfigsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[GatewayRouteConfigsClientListResponse]{
 		More: func(page GatewayRouteConfigsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

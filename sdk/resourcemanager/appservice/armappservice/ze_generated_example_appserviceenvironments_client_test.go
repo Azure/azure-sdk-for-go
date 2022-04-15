@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetInboundNetworkDependenciesEndpoints.json
-func ExampleEnvironmentsClient_GetInboundNetworkDependenciesEndpoints() {
+func ExampleEnvironmentsClient_NewGetInboundNetworkDependenciesEndpointsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleEnvironmentsClient_GetInboundNetworkDependenciesEndpoints() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.GetInboundNetworkDependenciesEndpoints("<resource-group-name>",
+	pager := client.NewGetInboundNetworkDependenciesEndpointsPager("<resource-group-name>",
 		"<name>",
 		nil)
 	for pager.More() {
@@ -46,7 +46,7 @@ func ExampleEnvironmentsClient_GetInboundNetworkDependenciesEndpoints() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetOutboundNetworkDependenciesEndpoints.json
-func ExampleEnvironmentsClient_GetOutboundNetworkDependenciesEndpoints() {
+func ExampleEnvironmentsClient_NewGetOutboundNetworkDependenciesEndpointsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -58,7 +58,7 @@ func ExampleEnvironmentsClient_GetOutboundNetworkDependenciesEndpoints() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.GetOutboundNetworkDependenciesEndpoints("<resource-group-name>",
+	pager := client.NewGetOutboundNetworkDependenciesEndpointsPager("<resource-group-name>",
 		"<name>",
 		nil)
 	for pager.More() {

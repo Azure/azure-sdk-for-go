@@ -341,7 +341,7 @@ func (client *APIIssueCommentClient) getEntityTagHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListByService - Lists all comments for the Issue associated with the specified API.
+// NewListByServicePager - Lists all comments for the Issue associated with the specified API.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
@@ -349,7 +349,7 @@ func (client *APIIssueCommentClient) getEntityTagHandleResponse(resp *http.Respo
 // issueID - Issue identifier. Must be unique in the current API Management service instance.
 // options - APIIssueCommentClientListByServiceOptions contains the optional parameters for the APIIssueCommentClient.ListByService
 // method.
-func (client *APIIssueCommentClient) ListByService(resourceGroupName string, serviceName string, apiID string, issueID string, options *APIIssueCommentClientListByServiceOptions) *runtime.Pager[APIIssueCommentClientListByServiceResponse] {
+func (client *APIIssueCommentClient) NewListByServicePager(resourceGroupName string, serviceName string, apiID string, issueID string, options *APIIssueCommentClientListByServiceOptions) *runtime.Pager[APIIssueCommentClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[APIIssueCommentClientListByServiceResponse]{
 		More: func(page APIIssueCommentClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

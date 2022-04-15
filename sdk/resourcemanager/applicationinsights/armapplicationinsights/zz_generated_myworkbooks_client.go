@@ -216,13 +216,13 @@ func (client *MyWorkbooksClient) getHandleResponse(resp *http.Response) (MyWorkb
 	return result, nil
 }
 
-// ListByResourceGroup - Get all private workbooks defined within a specified resource group and category.
+// NewListByResourceGroupPager - Get all private workbooks defined within a specified resource group and category.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // category - Category of workbook to return.
 // options - MyWorkbooksClientListByResourceGroupOptions contains the optional parameters for the MyWorkbooksClient.ListByResourceGroup
 // method.
-func (client *MyWorkbooksClient) ListByResourceGroup(resourceGroupName string, category CategoryType, options *MyWorkbooksClientListByResourceGroupOptions) *runtime.Pager[MyWorkbooksClientListByResourceGroupResponse] {
+func (client *MyWorkbooksClient) NewListByResourceGroupPager(resourceGroupName string, category CategoryType, options *MyWorkbooksClientListByResourceGroupOptions) *runtime.Pager[MyWorkbooksClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MyWorkbooksClientListByResourceGroupResponse]{
 		More: func(page MyWorkbooksClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -291,12 +291,12 @@ func (client *MyWorkbooksClient) listByResourceGroupHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListBySubscription - Get all private workbooks defined within a specified subscription and category.
+// NewListBySubscriptionPager - Get all private workbooks defined within a specified subscription and category.
 // If the operation fails it returns an *azcore.ResponseError type.
 // category - Category of workbook to return.
 // options - MyWorkbooksClientListBySubscriptionOptions contains the optional parameters for the MyWorkbooksClient.ListBySubscription
 // method.
-func (client *MyWorkbooksClient) ListBySubscription(category CategoryType, options *MyWorkbooksClientListBySubscriptionOptions) *runtime.Pager[MyWorkbooksClientListBySubscriptionResponse] {
+func (client *MyWorkbooksClient) NewListBySubscriptionPager(category CategoryType, options *MyWorkbooksClientListBySubscriptionOptions) *runtime.Pager[MyWorkbooksClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MyWorkbooksClientListBySubscriptionResponse]{
 		More: func(page MyWorkbooksClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

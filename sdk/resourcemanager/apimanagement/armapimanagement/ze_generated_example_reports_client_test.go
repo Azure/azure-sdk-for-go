@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetReportsByUser.json
-func ExampleReportsClient_ListByUser() {
+func ExampleReportsClient_NewListByUserPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleReportsClient_ListByUser() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByUser("<resource-group-name>",
+	pager := client.NewListByUserPager("<resource-group-name>",
 		"<service-name>",
 		"<filter>",
 		&armapimanagement.ReportsClientListByUserOptions{Top: nil,
@@ -50,7 +50,7 @@ func ExampleReportsClient_ListByUser() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetReportsByOperation.json
-func ExampleReportsClient_ListByOperation() {
+func ExampleReportsClient_NewListByOperationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -62,7 +62,7 @@ func ExampleReportsClient_ListByOperation() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByOperation("<resource-group-name>",
+	pager := client.NewListByOperationPager("<resource-group-name>",
 		"<service-name>",
 		"<filter>",
 		&armapimanagement.ReportsClientListByOperationOptions{Top: nil,
@@ -83,7 +83,7 @@ func ExampleReportsClient_ListByOperation() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetReportsByProduct.json
-func ExampleReportsClient_ListByProduct() {
+func ExampleReportsClient_NewListByProductPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -95,7 +95,7 @@ func ExampleReportsClient_ListByProduct() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByProduct("<resource-group-name>",
+	pager := client.NewListByProductPager("<resource-group-name>",
 		"<service-name>",
 		"<filter>",
 		&armapimanagement.ReportsClientListByProductOptions{Top: nil,
@@ -116,7 +116,7 @@ func ExampleReportsClient_ListByProduct() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetReportsByGeo.json
-func ExampleReportsClient_ListByGeo() {
+func ExampleReportsClient_NewListByGeoPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -128,7 +128,7 @@ func ExampleReportsClient_ListByGeo() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByGeo("<resource-group-name>",
+	pager := client.NewListByGeoPager("<resource-group-name>",
 		"<service-name>",
 		"<filter>",
 		&armapimanagement.ReportsClientListByGeoOptions{Top: nil,
@@ -148,7 +148,7 @@ func ExampleReportsClient_ListByGeo() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetReportsBySubscription.json
-func ExampleReportsClient_ListBySubscription() {
+func ExampleReportsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -160,7 +160,7 @@ func ExampleReportsClient_ListBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription("<resource-group-name>",
+	pager := client.NewListBySubscriptionPager("<resource-group-name>",
 		"<service-name>",
 		"<filter>",
 		&armapimanagement.ReportsClientListBySubscriptionOptions{Top: nil,
@@ -181,7 +181,7 @@ func ExampleReportsClient_ListBySubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetReportsByTime.json
-func ExampleReportsClient_ListByTime() {
+func ExampleReportsClient_NewListByTimePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -193,7 +193,7 @@ func ExampleReportsClient_ListByTime() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByTime("<resource-group-name>",
+	pager := client.NewListByTimePager("<resource-group-name>",
 		"<service-name>",
 		"<filter>",
 		"<interval>",
@@ -215,7 +215,7 @@ func ExampleReportsClient_ListByTime() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetReportsByRequest.json
-func ExampleReportsClient_ListByRequest() {
+func ExampleReportsClient_NewListByRequestPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -227,7 +227,7 @@ func ExampleReportsClient_ListByRequest() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByRequest("<resource-group-name>",
+	pager := client.NewListByRequestPager("<resource-group-name>",
 		"<service-name>",
 		"<filter>",
 		&armapimanagement.ReportsClientListByRequestOptions{Top: nil,

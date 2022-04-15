@@ -248,13 +248,13 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListByPolicyName - Lists all Private Endpoint Connections for the given policy.
+// NewListByPolicyNamePager - Lists all Private Endpoint Connections for the given policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure resource group.
 // policyName - The name of the private link policy in Azure AD.
 // options - PrivateEndpointConnectionsClientListByPolicyNameOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByPolicyName
 // method.
-func (client *PrivateEndpointConnectionsClient) ListByPolicyName(resourceGroupName string, policyName string, options *PrivateEndpointConnectionsClientListByPolicyNameOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByPolicyNameResponse] {
+func (client *PrivateEndpointConnectionsClient) NewListByPolicyNamePager(resourceGroupName string, policyName string, options *PrivateEndpointConnectionsClientListByPolicyNameOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByPolicyNameResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionsClientListByPolicyNameResponse]{
 		More: func(page PrivateEndpointConnectionsClientListByPolicyNameResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

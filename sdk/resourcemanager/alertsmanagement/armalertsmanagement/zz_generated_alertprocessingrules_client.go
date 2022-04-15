@@ -229,12 +229,12 @@ func (client *AlertProcessingRulesClient) getByNameHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListByResourceGroup - List all alert processing rules in a resource group.
+// NewListByResourceGroupPager - List all alert processing rules in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Resource group name where the resource is created.
 // options - AlertProcessingRulesClientListByResourceGroupOptions contains the optional parameters for the AlertProcessingRulesClient.ListByResourceGroup
 // method.
-func (client *AlertProcessingRulesClient) ListByResourceGroup(resourceGroupName string, options *AlertProcessingRulesClientListByResourceGroupOptions) *runtime.Pager[AlertProcessingRulesClientListByResourceGroupResponse] {
+func (client *AlertProcessingRulesClient) NewListByResourceGroupPager(resourceGroupName string, options *AlertProcessingRulesClientListByResourceGroupOptions) *runtime.Pager[AlertProcessingRulesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AlertProcessingRulesClientListByResourceGroupResponse]{
 		More: func(page AlertProcessingRulesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -296,11 +296,11 @@ func (client *AlertProcessingRulesClient) listByResourceGroupHandleResponse(resp
 	return result, nil
 }
 
-// ListBySubscription - List all alert processing rules in a subscription.
+// NewListBySubscriptionPager - List all alert processing rules in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AlertProcessingRulesClientListBySubscriptionOptions contains the optional parameters for the AlertProcessingRulesClient.ListBySubscription
 // method.
-func (client *AlertProcessingRulesClient) ListBySubscription(options *AlertProcessingRulesClientListBySubscriptionOptions) *runtime.Pager[AlertProcessingRulesClientListBySubscriptionResponse] {
+func (client *AlertProcessingRulesClient) NewListBySubscriptionPager(options *AlertProcessingRulesClientListBySubscriptionOptions) *runtime.Pager[AlertProcessingRulesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AlertProcessingRulesClientListBySubscriptionResponse]{
 		More: func(page AlertProcessingRulesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -111,11 +111,11 @@ func (client *DeletedServicesClient) getByNameHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListBySubscription - Lists all soft-deleted services available for undelete for the given subscription.
+// NewListBySubscriptionPager - Lists all soft-deleted services available for undelete for the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DeletedServicesClientListBySubscriptionOptions contains the optional parameters for the DeletedServicesClient.ListBySubscription
 // method.
-func (client *DeletedServicesClient) ListBySubscription(options *DeletedServicesClientListBySubscriptionOptions) *runtime.Pager[DeletedServicesClientListBySubscriptionResponse] {
+func (client *DeletedServicesClient) NewListBySubscriptionPager(options *DeletedServicesClientListBySubscriptionOptions) *runtime.Pager[DeletedServicesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DeletedServicesClientListBySubscriptionResponse]{
 		More: func(page DeletedServicesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

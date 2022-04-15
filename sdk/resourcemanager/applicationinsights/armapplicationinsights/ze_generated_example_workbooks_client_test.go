@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbooksList2.json
-func ExampleWorkbooksClient_ListBySubscription() {
+func ExampleWorkbooksClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleWorkbooksClient_ListBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription(armapplicationinsights.CategoryTypeWorkbook,
+	pager := client.NewListBySubscriptionPager(armapplicationinsights.CategoryTypeWorkbook,
 		&armapplicationinsights.WorkbooksClientListBySubscriptionOptions{Tags: []string{},
 			CanFetchContent: nil,
 		})
@@ -48,7 +48,7 @@ func ExampleWorkbooksClient_ListBySubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbooksList.json
-func ExampleWorkbooksClient_ListByResourceGroup() {
+func ExampleWorkbooksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -60,7 +60,7 @@ func ExampleWorkbooksClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		armapplicationinsights.CategoryTypeWorkbook,
 		&armapplicationinsights.WorkbooksClientListByResourceGroupOptions{Tags: []string{},
 			SourceID:        to.Ptr("<source-id>"),
@@ -192,7 +192,7 @@ func ExampleWorkbooksClient_Update() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookRevisionsList.json
-func ExampleWorkbooksClient_RevisionsList() {
+func ExampleWorkbooksClient_NewRevisionsListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -204,7 +204,7 @@ func ExampleWorkbooksClient_RevisionsList() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.RevisionsList("<resource-group-name>",
+	pager := client.NewRevisionsListPager("<resource-group-name>",
 		"<resource-name>",
 		nil)
 	for pager.More() {

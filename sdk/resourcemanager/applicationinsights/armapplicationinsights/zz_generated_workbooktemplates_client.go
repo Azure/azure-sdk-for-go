@@ -213,12 +213,12 @@ func (client *WorkbookTemplatesClient) getHandleResponse(resp *http.Response) (W
 	return result, nil
 }
 
-// ListByResourceGroup - Get all Workbook templates defined within a specified resource group.
+// NewListByResourceGroupPager - Get all Workbook templates defined within a specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - WorkbookTemplatesClientListByResourceGroupOptions contains the optional parameters for the WorkbookTemplatesClient.ListByResourceGroup
 // method.
-func (client *WorkbookTemplatesClient) ListByResourceGroup(resourceGroupName string, options *WorkbookTemplatesClientListByResourceGroupOptions) *runtime.Pager[WorkbookTemplatesClientListByResourceGroupResponse] {
+func (client *WorkbookTemplatesClient) NewListByResourceGroupPager(resourceGroupName string, options *WorkbookTemplatesClientListByResourceGroupOptions) *runtime.Pager[WorkbookTemplatesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkbookTemplatesClientListByResourceGroupResponse]{
 		More: func(page WorkbookTemplatesClientListByResourceGroupResponse) bool {
 			return false

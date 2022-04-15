@@ -1,5 +1,23 @@
 # Release History
 
+## 0.5.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*AlertProcessingRulesClient.ListByResourceGroup` has been removed
+- Function `*AlertProcessingRulesClient.ListBySubscription` has been removed
+- Function `*AlertsClient.GetAll` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*SmartGroupsClient.GetAll` has been removed
+
+### Features Added
+
+- New function `*SmartGroupsClient.NewGetAllPager(*SmartGroupsClientGetAllOptions) *runtime.Pager[SmartGroupsClientGetAllResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*AlertProcessingRulesClient.NewListBySubscriptionPager(*AlertProcessingRulesClientListBySubscriptionOptions) *runtime.Pager[AlertProcessingRulesClientListBySubscriptionResponse]`
+- New function `*AlertsClient.NewGetAllPager(*AlertsClientGetAllOptions) *runtime.Pager[AlertsClientGetAllResponse]`
+- New function `*AlertProcessingRulesClient.NewListByResourceGroupPager(string, *AlertProcessingRulesClientListByResourceGroupOptions) *runtime.Pager[AlertProcessingRulesClientListByResourceGroupResponse]`
+
+
 ## 0.4.0 (2022-04-11)
 ### Breaking Changes
 

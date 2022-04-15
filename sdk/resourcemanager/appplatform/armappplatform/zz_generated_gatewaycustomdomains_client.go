@@ -271,7 +271,7 @@ func (client *GatewayCustomDomainsClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// List - Handle requests to list all Spring Cloud Gateway custom domains.
+// NewListPager - Handle requests to list all Spring Cloud Gateway custom domains.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -279,7 +279,7 @@ func (client *GatewayCustomDomainsClient) getHandleResponse(resp *http.Response)
 // gatewayName - The name of Spring Cloud Gateway.
 // options - GatewayCustomDomainsClientListOptions contains the optional parameters for the GatewayCustomDomainsClient.List
 // method.
-func (client *GatewayCustomDomainsClient) List(resourceGroupName string, serviceName string, gatewayName string, options *GatewayCustomDomainsClientListOptions) *runtime.Pager[GatewayCustomDomainsClientListResponse] {
+func (client *GatewayCustomDomainsClient) NewListPager(resourceGroupName string, serviceName string, gatewayName string, options *GatewayCustomDomainsClientListOptions) *runtime.Pager[GatewayCustomDomainsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[GatewayCustomDomainsClientListResponse]{
 		More: func(page GatewayCustomDomainsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

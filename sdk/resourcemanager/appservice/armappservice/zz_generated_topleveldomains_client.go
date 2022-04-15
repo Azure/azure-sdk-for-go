@@ -104,10 +104,10 @@ func (client *TopLevelDomainsClient) getHandleResponse(resp *http.Response) (Top
 	return result, nil
 }
 
-// List - Description for Get all top-level domains supported for registration.
+// NewListPager - Description for Get all top-level domains supported for registration.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - TopLevelDomainsClientListOptions contains the optional parameters for the TopLevelDomainsClient.List method.
-func (client *TopLevelDomainsClient) List(options *TopLevelDomainsClientListOptions) *runtime.Pager[TopLevelDomainsClientListResponse] {
+func (client *TopLevelDomainsClient) NewListPager(options *TopLevelDomainsClientListOptions) *runtime.Pager[TopLevelDomainsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TopLevelDomainsClientListResponse]{
 		More: func(page TopLevelDomainsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -162,13 +162,13 @@ func (client *TopLevelDomainsClient) listHandleResponse(resp *http.Response) (To
 	return result, nil
 }
 
-// ListAgreements - Description for Gets all legal agreements that user needs to accept before purchasing a domain.
+// NewListAgreementsPager - Description for Gets all legal agreements that user needs to accept before purchasing a domain.
 // If the operation fails it returns an *azcore.ResponseError type.
 // name - Name of the top-level domain.
 // agreementOption - Domain agreement options.
 // options - TopLevelDomainsClientListAgreementsOptions contains the optional parameters for the TopLevelDomainsClient.ListAgreements
 // method.
-func (client *TopLevelDomainsClient) ListAgreements(name string, agreementOption TopLevelDomainAgreementOption, options *TopLevelDomainsClientListAgreementsOptions) *runtime.Pager[TopLevelDomainsClientListAgreementsResponse] {
+func (client *TopLevelDomainsClient) NewListAgreementsPager(name string, agreementOption TopLevelDomainAgreementOption, options *TopLevelDomainsClientListAgreementsOptions) *runtime.Pager[TopLevelDomainsClientListAgreementsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TopLevelDomainsClientListAgreementsResponse]{
 		More: func(page TopLevelDomainsClientListAgreementsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

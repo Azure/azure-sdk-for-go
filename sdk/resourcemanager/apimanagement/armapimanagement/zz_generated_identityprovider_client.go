@@ -300,13 +300,13 @@ func (client *IdentityProviderClient) getEntityTagHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListByService - Lists a collection of Identity Provider configured in the specified service instance.
+// NewListByServicePager - Lists a collection of Identity Provider configured in the specified service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - IdentityProviderClientListByServiceOptions contains the optional parameters for the IdentityProviderClient.ListByService
 // method.
-func (client *IdentityProviderClient) ListByService(resourceGroupName string, serviceName string, options *IdentityProviderClientListByServiceOptions) *runtime.Pager[IdentityProviderClientListByServiceResponse] {
+func (client *IdentityProviderClient) NewListByServicePager(resourceGroupName string, serviceName string, options *IdentityProviderClientListByServiceOptions) *runtime.Pager[IdentityProviderClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IdentityProviderClientListByServiceResponse]{
 		More: func(page IdentityProviderClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

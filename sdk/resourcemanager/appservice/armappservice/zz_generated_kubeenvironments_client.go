@@ -232,12 +232,12 @@ func (client *KubeEnvironmentsClient) getHandleResponse(resp *http.Response) (Ku
 	return result, nil
 }
 
-// ListByResourceGroup - Description for Get all the Kubernetes Environments in a resource group.
+// NewListByResourceGroupPager - Description for Get all the Kubernetes Environments in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // options - KubeEnvironmentsClientListByResourceGroupOptions contains the optional parameters for the KubeEnvironmentsClient.ListByResourceGroup
 // method.
-func (client *KubeEnvironmentsClient) ListByResourceGroup(resourceGroupName string, options *KubeEnvironmentsClientListByResourceGroupOptions) *runtime.Pager[KubeEnvironmentsClientListByResourceGroupResponse] {
+func (client *KubeEnvironmentsClient) NewListByResourceGroupPager(resourceGroupName string, options *KubeEnvironmentsClientListByResourceGroupOptions) *runtime.Pager[KubeEnvironmentsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[KubeEnvironmentsClientListByResourceGroupResponse]{
 		More: func(page KubeEnvironmentsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -296,11 +296,11 @@ func (client *KubeEnvironmentsClient) listByResourceGroupHandleResponse(resp *ht
 	return result, nil
 }
 
-// ListBySubscription - Description for Get all Kubernetes Environments for a subscription.
+// NewListBySubscriptionPager - Description for Get all Kubernetes Environments for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - KubeEnvironmentsClientListBySubscriptionOptions contains the optional parameters for the KubeEnvironmentsClient.ListBySubscription
 // method.
-func (client *KubeEnvironmentsClient) ListBySubscription(options *KubeEnvironmentsClientListBySubscriptionOptions) *runtime.Pager[KubeEnvironmentsClientListBySubscriptionResponse] {
+func (client *KubeEnvironmentsClient) NewListBySubscriptionPager(options *KubeEnvironmentsClientListBySubscriptionOptions) *runtime.Pager[KubeEnvironmentsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[KubeEnvironmentsClientListBySubscriptionResponse]{
 		More: func(page KubeEnvironmentsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -1,5 +1,151 @@
 # Release History
 
+## 0.5.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*ProductAPIClient.ListByProduct` has been removed
+- Function `*ServiceClient.List` has been removed
+- Function `*ServiceSKUsClient.ListAvailableServiceSKUs` has been removed
+- Function `*TagClient.ListByOperation` has been removed
+- Function `*ProductClient.ListByService` has been removed
+- Function `*APIIssueAttachmentClient.ListByService` has been removed
+- Function `*APITagDescriptionClient.ListByService` has been removed
+- Function `*APIRevisionClient.ListByService` has been removed
+- Function `*SKUsClient.List` has been removed
+- Function `*GroupUserClient.List` has been removed
+- Function `*LoggerClient.ListByService` has been removed
+- Function `*NotificationClient.ListByService` has been removed
+- Function `*UserSubscriptionClient.List` has been removed
+- Function `*ServiceClient.ListByResourceGroup` has been removed
+- Function `*ContentItemClient.ListByService` has been removed
+- Function `*AuthorizationServerClient.ListByService` has been removed
+- Function `*OperationClient.ListByTags` has been removed
+- Function `*EmailTemplateClient.ListByService` has been removed
+- Function `*ReportsClient.ListByAPI` has been removed
+- Function `*RegionClient.ListByService` has been removed
+- Function `*CertificateClient.ListByService` has been removed
+- Function `*UserIdentitiesClient.List` has been removed
+- Function `*APIProductClient.ListByApis` has been removed
+- Function `*TagClient.ListByAPI` has been removed
+- Function `*GatewayAPIClient.ListByService` has been removed
+- Function `*TenantAccessClient.ListByService` has been removed
+- Function `*APIVersionSetClient.ListByService` has been removed
+- Function `*GlobalSchemaClient.ListByService` has been removed
+- Function `*BackendClient.ListByService` has been removed
+- Function `*CacheClient.ListByService` has been removed
+- Function `*ContentTypeClient.ListByService` has been removed
+- Function `*DeletedServicesClient.ListBySubscription` has been removed
+- Function `*ReportsClient.ListByOperation` has been removed
+- Function `*APIIssueCommentClient.ListByService` has been removed
+- Function `*ReportsClient.ListByUser` has been removed
+- Function `*ProductSubscriptionsClient.List` has been removed
+- Function `*ReportsClient.ListByProduct` has been removed
+- Function `*GroupClient.ListByService` has been removed
+- Function `*APIClient.ListByService` has been removed
+- Function `*PortalRevisionClient.ListByService` has been removed
+- Function `*ProductClient.ListByTags` has been removed
+- Function `*UserClient.ListByService` has been removed
+- Function `*APIReleaseClient.ListByService` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*GatewayClient.ListByService` has been removed
+- Function `*APIClient.ListByTags` has been removed
+- Function `*IdentityProviderClient.ListByService` has been removed
+- Function `*TenantSettingsClient.ListByService` has been removed
+- Function `*APISchemaClient.ListByAPI` has been removed
+- Function `*ReportsClient.ListByGeo` has been removed
+- Function `*APIIssueClient.ListByService` has been removed
+- Function `*ReportsClient.ListBySubscription` has been removed
+- Function `*DiagnosticClient.ListByService` has been removed
+- Function `*OpenIDConnectProviderClient.ListByService` has been removed
+- Function `*ReportsClient.ListByRequest` has been removed
+- Function `*PrivateEndpointConnectionClient.ListByService` has been removed
+- Function `*TagClient.ListByProduct` has been removed
+- Function `*TagResourceClient.ListByService` has been removed
+- Function `*GatewayCertificateAuthorityClient.ListByService` has been removed
+- Function `*APIDiagnosticClient.ListByService` has been removed
+- Function `*ReportsClient.ListByTime` has been removed
+- Function `*SubscriptionClient.List` has been removed
+- Function `*ProductGroupClient.ListByProduct` has been removed
+- Function `*APIOperationClient.ListByAPI` has been removed
+- Function `*GatewayHostnameConfigurationClient.ListByService` has been removed
+- Function `*UserGroupClient.List` has been removed
+- Function `*IssueClient.ListByService` has been removed
+- Function `*NamedValueClient.ListByService` has been removed
+- Function `*TagClient.ListByService` has been removed
+
+### Features Added
+
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*APITagDescriptionClient.NewListByServicePager(string, string, string, *APITagDescriptionClientListByServiceOptions) *runtime.Pager[APITagDescriptionClientListByServiceResponse]`
+- New function `*TagClient.NewListByAPIPager(string, string, string, *TagClientListByAPIOptions) *runtime.Pager[TagClientListByAPIResponse]`
+- New function `*TagClient.NewListByOperationPager(string, string, string, string, *TagClientListByOperationOptions) *runtime.Pager[TagClientListByOperationResponse]`
+- New function `*ProductGroupClient.NewListByProductPager(string, string, string, *ProductGroupClientListByProductOptions) *runtime.Pager[ProductGroupClientListByProductResponse]`
+- New function `*ReportsClient.NewListByGeoPager(string, string, string, *ReportsClientListByGeoOptions) *runtime.Pager[ReportsClientListByGeoResponse]`
+- New function `*PrivateEndpointConnectionClient.NewListByServicePager(string, string, *PrivateEndpointConnectionClientListByServiceOptions) *runtime.Pager[PrivateEndpointConnectionClientListByServiceResponse]`
+- New function `*UserIdentitiesClient.NewListPager(string, string, string, *UserIdentitiesClientListOptions) *runtime.Pager[UserIdentitiesClientListResponse]`
+- New function `*IssueClient.NewListByServicePager(string, string, *IssueClientListByServiceOptions) *runtime.Pager[IssueClientListByServiceResponse]`
+- New function `*ContentTypeClient.NewListByServicePager(string, string, *ContentTypeClientListByServiceOptions) *runtime.Pager[ContentTypeClientListByServiceResponse]`
+- New function `*NamedValueClient.NewListByServicePager(string, string, *NamedValueClientListByServiceOptions) *runtime.Pager[NamedValueClientListByServiceResponse]`
+- New function `*AuthorizationServerClient.NewListByServicePager(string, string, *AuthorizationServerClientListByServiceOptions) *runtime.Pager[AuthorizationServerClientListByServiceResponse]`
+- New function `*APIIssueAttachmentClient.NewListByServicePager(string, string, string, string, *APIIssueAttachmentClientListByServiceOptions) *runtime.Pager[APIIssueAttachmentClientListByServiceResponse]`
+- New function `*ReportsClient.NewListByAPIPager(string, string, string, *ReportsClientListByAPIOptions) *runtime.Pager[ReportsClientListByAPIResponse]`
+- New function `*ReportsClient.NewListByProductPager(string, string, string, *ReportsClientListByProductOptions) *runtime.Pager[ReportsClientListByProductResponse]`
+- New function `*SubscriptionClient.NewListPager(string, string, *SubscriptionClientListOptions) *runtime.Pager[SubscriptionClientListResponse]`
+- New function `*SKUsClient.NewListPager(*SKUsClientListOptions) *runtime.Pager[SKUsClientListResponse]`
+- New function `*ServiceClient.NewListPager(*ServiceClientListOptions) *runtime.Pager[ServiceClientListResponse]`
+- New function `*TagClient.NewListByProductPager(string, string, string, *TagClientListByProductOptions) *runtime.Pager[TagClientListByProductResponse]`
+- New function `*IdentityProviderClient.NewListByServicePager(string, string, *IdentityProviderClientListByServiceOptions) *runtime.Pager[IdentityProviderClientListByServiceResponse]`
+- New function `*TagResourceClient.NewListByServicePager(string, string, *TagResourceClientListByServiceOptions) *runtime.Pager[TagResourceClientListByServiceResponse]`
+- New function `*EmailTemplateClient.NewListByServicePager(string, string, *EmailTemplateClientListByServiceOptions) *runtime.Pager[EmailTemplateClientListByServiceResponse]`
+- New function `*GroupUserClient.NewListPager(string, string, string, *GroupUserClientListOptions) *runtime.Pager[GroupUserClientListResponse]`
+- New function `*ProductClient.NewListByTagsPager(string, string, *ProductClientListByTagsOptions) *runtime.Pager[ProductClientListByTagsResponse]`
+- New function `*APIRevisionClient.NewListByServicePager(string, string, string, *APIRevisionClientListByServiceOptions) *runtime.Pager[APIRevisionClientListByServiceResponse]`
+- New function `*ReportsClient.NewListByTimePager(string, string, string, string, *ReportsClientListByTimeOptions) *runtime.Pager[ReportsClientListByTimeResponse]`
+- New function `*TagClient.NewListByServicePager(string, string, *TagClientListByServiceOptions) *runtime.Pager[TagClientListByServiceResponse]`
+- New function `*GatewayCertificateAuthorityClient.NewListByServicePager(string, string, string, *GatewayCertificateAuthorityClientListByServiceOptions) *runtime.Pager[GatewayCertificateAuthorityClientListByServiceResponse]`
+- New function `*GlobalSchemaClient.NewListByServicePager(string, string, *GlobalSchemaClientListByServiceOptions) *runtime.Pager[GlobalSchemaClientListByServiceResponse]`
+- New function `*APISchemaClient.NewListByAPIPager(string, string, string, *APISchemaClientListByAPIOptions) *runtime.Pager[APISchemaClientListByAPIResponse]`
+- New function `*NotificationClient.NewListByServicePager(string, string, *NotificationClientListByServiceOptions) *runtime.Pager[NotificationClientListByServiceResponse]`
+- New function `*ContentItemClient.NewListByServicePager(string, string, string, *ContentItemClientListByServiceOptions) *runtime.Pager[ContentItemClientListByServiceResponse]`
+- New function `*DeletedServicesClient.NewListBySubscriptionPager(*DeletedServicesClientListBySubscriptionOptions) *runtime.Pager[DeletedServicesClientListBySubscriptionResponse]`
+- New function `*PortalRevisionClient.NewListByServicePager(string, string, *PortalRevisionClientListByServiceOptions) *runtime.Pager[PortalRevisionClientListByServiceResponse]`
+- New function `*ProductSubscriptionsClient.NewListPager(string, string, string, *ProductSubscriptionsClientListOptions) *runtime.Pager[ProductSubscriptionsClientListResponse]`
+- New function `*GatewayAPIClient.NewListByServicePager(string, string, string, *GatewayAPIClientListByServiceOptions) *runtime.Pager[GatewayAPIClientListByServiceResponse]`
+- New function `*ServiceClient.NewListByResourceGroupPager(string, *ServiceClientListByResourceGroupOptions) *runtime.Pager[ServiceClientListByResourceGroupResponse]`
+- New function `*ReportsClient.NewListByUserPager(string, string, string, *ReportsClientListByUserOptions) *runtime.Pager[ReportsClientListByUserResponse]`
+- New function `*TenantAccessClient.NewListByServicePager(string, string, *TenantAccessClientListByServiceOptions) *runtime.Pager[TenantAccessClientListByServiceResponse]`
+- New function `*APIOperationClient.NewListByAPIPager(string, string, string, *APIOperationClientListByAPIOptions) *runtime.Pager[APIOperationClientListByAPIResponse]`
+- New function `*RegionClient.NewListByServicePager(string, string, *RegionClientListByServiceOptions) *runtime.Pager[RegionClientListByServiceResponse]`
+- New function `*ProductAPIClient.NewListByProductPager(string, string, string, *ProductAPIClientListByProductOptions) *runtime.Pager[ProductAPIClientListByProductResponse]`
+- New function `*APIClient.NewListByTagsPager(string, string, *APIClientListByTagsOptions) *runtime.Pager[APIClientListByTagsResponse]`
+- New function `*APIIssueClient.NewListByServicePager(string, string, string, *APIIssueClientListByServiceOptions) *runtime.Pager[APIIssueClientListByServiceResponse]`
+- New function `*ReportsClient.NewListByOperationPager(string, string, string, *ReportsClientListByOperationOptions) *runtime.Pager[ReportsClientListByOperationResponse]`
+- New function `*UserSubscriptionClient.NewListPager(string, string, string, *UserSubscriptionClientListOptions) *runtime.Pager[UserSubscriptionClientListResponse]`
+- New function `*CertificateClient.NewListByServicePager(string, string, *CertificateClientListByServiceOptions) *runtime.Pager[CertificateClientListByServiceResponse]`
+- New function `*UserGroupClient.NewListPager(string, string, string, *UserGroupClientListOptions) *runtime.Pager[UserGroupClientListResponse]`
+- New function `*UserClient.NewListByServicePager(string, string, *UserClientListByServiceOptions) *runtime.Pager[UserClientListByServiceResponse]`
+- New function `*BackendClient.NewListByServicePager(string, string, *BackendClientListByServiceOptions) *runtime.Pager[BackendClientListByServiceResponse]`
+- New function `*GatewayClient.NewListByServicePager(string, string, *GatewayClientListByServiceOptions) *runtime.Pager[GatewayClientListByServiceResponse]`
+- New function `*APIReleaseClient.NewListByServicePager(string, string, string, *APIReleaseClientListByServiceOptions) *runtime.Pager[APIReleaseClientListByServiceResponse]`
+- New function `*TenantSettingsClient.NewListByServicePager(string, string, *TenantSettingsClientListByServiceOptions) *runtime.Pager[TenantSettingsClientListByServiceResponse]`
+- New function `*ReportsClient.NewListBySubscriptionPager(string, string, string, *ReportsClientListBySubscriptionOptions) *runtime.Pager[ReportsClientListBySubscriptionResponse]`
+- New function `*APIVersionSetClient.NewListByServicePager(string, string, *APIVersionSetClientListByServiceOptions) *runtime.Pager[APIVersionSetClientListByServiceResponse]`
+- New function `*OpenIDConnectProviderClient.NewListByServicePager(string, string, *OpenIDConnectProviderClientListByServiceOptions) *runtime.Pager[OpenIDConnectProviderClientListByServiceResponse]`
+- New function `*CacheClient.NewListByServicePager(string, string, *CacheClientListByServiceOptions) *runtime.Pager[CacheClientListByServiceResponse]`
+- New function `*APIClient.NewListByServicePager(string, string, *APIClientListByServiceOptions) *runtime.Pager[APIClientListByServiceResponse]`
+- New function `*GatewayHostnameConfigurationClient.NewListByServicePager(string, string, string, *GatewayHostnameConfigurationClientListByServiceOptions) *runtime.Pager[GatewayHostnameConfigurationClientListByServiceResponse]`
+- New function `*ServiceSKUsClient.NewListAvailableServiceSKUsPager(string, string, *ServiceSKUsClientListAvailableServiceSKUsOptions) *runtime.Pager[ServiceSKUsClientListAvailableServiceSKUsResponse]`
+- New function `*APIIssueCommentClient.NewListByServicePager(string, string, string, string, *APIIssueCommentClientListByServiceOptions) *runtime.Pager[APIIssueCommentClientListByServiceResponse]`
+- New function `*LoggerClient.NewListByServicePager(string, string, *LoggerClientListByServiceOptions) *runtime.Pager[LoggerClientListByServiceResponse]`
+- New function `*DiagnosticClient.NewListByServicePager(string, string, *DiagnosticClientListByServiceOptions) *runtime.Pager[DiagnosticClientListByServiceResponse]`
+- New function `*ProductClient.NewListByServicePager(string, string, *ProductClientListByServiceOptions) *runtime.Pager[ProductClientListByServiceResponse]`
+- New function `*OperationClient.NewListByTagsPager(string, string, string, *OperationClientListByTagsOptions) *runtime.Pager[OperationClientListByTagsResponse]`
+- New function `*APIDiagnosticClient.NewListByServicePager(string, string, string, *APIDiagnosticClientListByServiceOptions) *runtime.Pager[APIDiagnosticClientListByServiceResponse]`
+- New function `*GroupClient.NewListByServicePager(string, string, *GroupClientListByServiceOptions) *runtime.Pager[GroupClientListByServiceResponse]`
+- New function `*APIProductClient.NewListByApisPager(string, string, string, *APIProductClientListByApisOptions) *runtime.Pager[APIProductClientListByApisResponse]`
+- New function `*ReportsClient.NewListByRequestPager(string, string, string, *ReportsClientListByRequestOptions) *runtime.Pager[ReportsClientListByRequestResponse]`
+
+
 ## 0.4.0 (2022-04-11)
 ### Breaking Changes
 

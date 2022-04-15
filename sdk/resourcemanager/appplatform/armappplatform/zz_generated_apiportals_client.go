@@ -254,13 +254,13 @@ func (client *APIPortalsClient) getHandleResponse(resp *http.Response) (APIPorta
 	return result, nil
 }
 
-// List - Handles requests to list all resources in a Service.
+// NewListPager - Handles requests to list all resources in a Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
 // options - APIPortalsClientListOptions contains the optional parameters for the APIPortalsClient.List method.
-func (client *APIPortalsClient) List(resourceGroupName string, serviceName string, options *APIPortalsClientListOptions) *runtime.Pager[APIPortalsClientListResponse] {
+func (client *APIPortalsClient) NewListPager(resourceGroupName string, serviceName string, options *APIPortalsClientListOptions) *runtime.Pager[APIPortalsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[APIPortalsClientListResponse]{
 		More: func(page APIPortalsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

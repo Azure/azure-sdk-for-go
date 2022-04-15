@@ -398,10 +398,10 @@ func (client *CertificateOrdersClient) getCertificateHandleResponse(resp *http.R
 	return result, nil
 }
 
-// List - Description for List all certificate orders in a subscription.
+// NewListPager - Description for List all certificate orders in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - CertificateOrdersClientListOptions contains the optional parameters for the CertificateOrdersClient.List method.
-func (client *CertificateOrdersClient) List(options *CertificateOrdersClientListOptions) *runtime.Pager[CertificateOrdersClientListResponse] {
+func (client *CertificateOrdersClient) NewListPager(options *CertificateOrdersClientListOptions) *runtime.Pager[CertificateOrdersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CertificateOrdersClientListResponse]{
 		More: func(page CertificateOrdersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -456,12 +456,12 @@ func (client *CertificateOrdersClient) listHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// ListByResourceGroup - Description for Get certificate orders in a resource group.
+// NewListByResourceGroupPager - Description for Get certificate orders in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // options - CertificateOrdersClientListByResourceGroupOptions contains the optional parameters for the CertificateOrdersClient.ListByResourceGroup
 // method.
-func (client *CertificateOrdersClient) ListByResourceGroup(resourceGroupName string, options *CertificateOrdersClientListByResourceGroupOptions) *runtime.Pager[CertificateOrdersClientListByResourceGroupResponse] {
+func (client *CertificateOrdersClient) NewListByResourceGroupPager(resourceGroupName string, options *CertificateOrdersClientListByResourceGroupOptions) *runtime.Pager[CertificateOrdersClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CertificateOrdersClientListByResourceGroupResponse]{
 		More: func(page CertificateOrdersClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -520,13 +520,13 @@ func (client *CertificateOrdersClient) listByResourceGroupHandleResponse(resp *h
 	return result, nil
 }
 
-// ListCertificates - Description for List all certificates associated with a certificate order.
+// NewListCertificatesPager - Description for List all certificates associated with a certificate order.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // certificateOrderName - Name of the certificate order.
 // options - CertificateOrdersClientListCertificatesOptions contains the optional parameters for the CertificateOrdersClient.ListCertificates
 // method.
-func (client *CertificateOrdersClient) ListCertificates(resourceGroupName string, certificateOrderName string, options *CertificateOrdersClientListCertificatesOptions) *runtime.Pager[CertificateOrdersClientListCertificatesResponse] {
+func (client *CertificateOrdersClient) NewListCertificatesPager(resourceGroupName string, certificateOrderName string, options *CertificateOrdersClientListCertificatesOptions) *runtime.Pager[CertificateOrdersClientListCertificatesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CertificateOrdersClientListCertificatesResponse]{
 		More: func(page CertificateOrdersClientListCertificatesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

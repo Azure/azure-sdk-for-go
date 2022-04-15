@@ -255,13 +255,13 @@ func (client *CertificatesClient) getHandleResponse(resp *http.Response) (Certif
 	return result, nil
 }
 
-// List - List all the certificates of one user.
+// NewListPager - List all the certificates of one user.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
 // options - CertificatesClientListOptions contains the optional parameters for the CertificatesClient.List method.
-func (client *CertificatesClient) List(resourceGroupName string, serviceName string, options *CertificatesClientListOptions) *runtime.Pager[CertificatesClientListResponse] {
+func (client *CertificatesClient) NewListPager(resourceGroupName string, serviceName string, options *CertificatesClientListOptions) *runtime.Pager[CertificatesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CertificatesClientListResponse]{
 		More: func(page CertificatesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -226,13 +226,13 @@ func (client *BotConnectionClient) getHandleResponse(resp *http.Response) (BotCo
 	return result, nil
 }
 
-// ListByBotService - Returns all the Connection Settings registered to a particular BotService resource
+// NewListByBotServicePager - Returns all the Connection Settings registered to a particular BotService resource
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the Bot resource group in the user subscription.
 // resourceName - The name of the Bot resource.
 // options - BotConnectionClientListByBotServiceOptions contains the optional parameters for the BotConnectionClient.ListByBotService
 // method.
-func (client *BotConnectionClient) ListByBotService(resourceGroupName string, resourceName string, options *BotConnectionClientListByBotServiceOptions) *runtime.Pager[BotConnectionClientListByBotServiceResponse] {
+func (client *BotConnectionClient) NewListByBotServicePager(resourceGroupName string, resourceName string, options *BotConnectionClientListByBotServiceOptions) *runtime.Pager[BotConnectionClientListByBotServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BotConnectionClientListByBotServiceResponse]{
 		More: func(page BotConnectionClientListByBotServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

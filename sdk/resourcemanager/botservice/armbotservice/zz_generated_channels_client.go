@@ -226,13 +226,13 @@ func (client *ChannelsClient) getHandleResponse(resp *http.Response) (ChannelsCl
 	return result, nil
 }
 
-// ListByResourceGroup - Returns all the Channel registrations of a particular BotService resource
+// NewListByResourceGroupPager - Returns all the Channel registrations of a particular BotService resource
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the Bot resource group in the user subscription.
 // resourceName - The name of the Bot resource.
 // options - ChannelsClientListByResourceGroupOptions contains the optional parameters for the ChannelsClient.ListByResourceGroup
 // method.
-func (client *ChannelsClient) ListByResourceGroup(resourceGroupName string, resourceName string, options *ChannelsClientListByResourceGroupOptions) *runtime.Pager[ChannelsClientListByResourceGroupResponse] {
+func (client *ChannelsClient) NewListByResourceGroupPager(resourceGroupName string, resourceName string, options *ChannelsClientListByResourceGroupOptions) *runtime.Pager[ChannelsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ChannelsClientListByResourceGroupResponse]{
 		More: func(page ChannelsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

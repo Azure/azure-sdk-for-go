@@ -254,10 +254,10 @@ func (client *BotsClient) getCheckNameAvailabilityHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// List - Returns all the resources of a particular type belonging to a subscription.
+// NewListPager - Returns all the resources of a particular type belonging to a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - BotsClientListOptions contains the optional parameters for the BotsClient.List method.
-func (client *BotsClient) List(options *BotsClientListOptions) *runtime.Pager[BotsClientListResponse] {
+func (client *BotsClient) NewListPager(options *BotsClientListOptions) *runtime.Pager[BotsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BotsClientListResponse]{
 		More: func(page BotsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -312,12 +312,12 @@ func (client *BotsClient) listHandleResponse(resp *http.Response) (BotsClientLis
 	return result, nil
 }
 
-// ListByResourceGroup - Returns all the resources of a particular type belonging to a resource group
+// NewListByResourceGroupPager - Returns all the resources of a particular type belonging to a resource group
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the Bot resource group in the user subscription.
 // options - BotsClientListByResourceGroupOptions contains the optional parameters for the BotsClient.ListByResourceGroup
 // method.
-func (client *BotsClient) ListByResourceGroup(resourceGroupName string, options *BotsClientListByResourceGroupOptions) *runtime.Pager[BotsClientListByResourceGroupResponse] {
+func (client *BotsClient) NewListByResourceGroupPager(resourceGroupName string, options *BotsClientListByResourceGroupOptions) *runtime.Pager[BotsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BotsClientListByResourceGroupResponse]{
 		More: func(page BotsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

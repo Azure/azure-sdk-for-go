@@ -148,7 +148,7 @@ func ExampleSourceControlClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControl/getAllSourceControls.json
-func ExampleSourceControlClient_ListByAutomationAccount() {
+func ExampleSourceControlClient_NewListByAutomationAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -160,7 +160,7 @@ func ExampleSourceControlClient_ListByAutomationAccount() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByAutomationAccount("<resource-group-name>",
+	pager := client.NewListByAutomationAccountPager("<resource-group-name>",
 		"<automation-account-name>",
 		&armautomation.SourceControlClientListByAutomationAccountOptions{Filter: nil})
 	for pager.More() {

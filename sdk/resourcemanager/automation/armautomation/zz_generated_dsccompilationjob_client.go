@@ -245,13 +245,13 @@ func (client *DscCompilationJobClient) getStreamHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListByAutomationAccount - Retrieve a list of dsc compilation jobs.
+// NewListByAutomationAccountPager - Retrieve a list of dsc compilation jobs.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - DscCompilationJobClientListByAutomationAccountOptions contains the optional parameters for the DscCompilationJobClient.ListByAutomationAccount
 // method.
-func (client *DscCompilationJobClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *DscCompilationJobClientListByAutomationAccountOptions) *runtime.Pager[DscCompilationJobClientListByAutomationAccountResponse] {
+func (client *DscCompilationJobClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *DscCompilationJobClientListByAutomationAccountOptions) *runtime.Pager[DscCompilationJobClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DscCompilationJobClientListByAutomationAccountResponse]{
 		More: func(page DscCompilationJobClientListByAutomationAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -282,13 +282,13 @@ func (client *WebhookClient) getHandleResponse(resp *http.Response) (WebhookClie
 	return result, nil
 }
 
-// ListByAutomationAccount - Retrieve a list of webhooks.
+// NewListByAutomationAccountPager - Retrieve a list of webhooks.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - WebhookClientListByAutomationAccountOptions contains the optional parameters for the WebhookClient.ListByAutomationAccount
 // method.
-func (client *WebhookClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *WebhookClientListByAutomationAccountOptions) *runtime.Pager[WebhookClientListByAutomationAccountResponse] {
+func (client *WebhookClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *WebhookClientListByAutomationAccountOptions) *runtime.Pager[WebhookClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebhookClientListByAutomationAccountResponse]{
 		More: func(page WebhookClientListByAutomationAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

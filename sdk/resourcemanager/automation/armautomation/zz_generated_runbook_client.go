@@ -279,13 +279,13 @@ func (client *RunbookClient) getContentCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// ListByAutomationAccount - Retrieve a list of runbooks.
+// NewListByAutomationAccountPager - Retrieve a list of runbooks.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - RunbookClientListByAutomationAccountOptions contains the optional parameters for the RunbookClient.ListByAutomationAccount
 // method.
-func (client *RunbookClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *RunbookClientListByAutomationAccountOptions) *runtime.Pager[RunbookClientListByAutomationAccountResponse] {
+func (client *RunbookClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *RunbookClientListByAutomationAccountOptions) *runtime.Pager[RunbookClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RunbookClientListByAutomationAccountResponse]{
 		More: func(page RunbookClientListByAutomationAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

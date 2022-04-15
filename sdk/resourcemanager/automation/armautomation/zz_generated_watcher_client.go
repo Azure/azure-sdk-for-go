@@ -227,13 +227,13 @@ func (client *WatcherClient) getHandleResponse(resp *http.Response) (WatcherClie
 	return result, nil
 }
 
-// ListByAutomationAccount - Retrieve a list of watchers.
+// NewListByAutomationAccountPager - Retrieve a list of watchers.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - WatcherClientListByAutomationAccountOptions contains the optional parameters for the WatcherClient.ListByAutomationAccount
 // method.
-func (client *WatcherClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *WatcherClientListByAutomationAccountOptions) *runtime.Pager[WatcherClientListByAutomationAccountResponse] {
+func (client *WatcherClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *WatcherClientListByAutomationAccountOptions) *runtime.Pager[WatcherClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WatcherClientListByAutomationAccountResponse]{
 		More: func(page WatcherClientListByAutomationAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

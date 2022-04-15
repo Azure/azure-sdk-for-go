@@ -55,7 +55,7 @@ func NewObjectDataTypesClient(subscriptionID string, credential azcore.TokenCred
 	return client, nil
 }
 
-// ListFieldsByModuleAndType - Retrieve a list of fields of a given type identified by module name.
+// NewListFieldsByModuleAndTypePager - Retrieve a list of fields of a given type identified by module name.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
@@ -63,7 +63,7 @@ func NewObjectDataTypesClient(subscriptionID string, credential azcore.TokenCred
 // typeName - The name of type.
 // options - ObjectDataTypesClientListFieldsByModuleAndTypeOptions contains the optional parameters for the ObjectDataTypesClient.ListFieldsByModuleAndType
 // method.
-func (client *ObjectDataTypesClient) ListFieldsByModuleAndType(resourceGroupName string, automationAccountName string, moduleName string, typeName string, options *ObjectDataTypesClientListFieldsByModuleAndTypeOptions) *runtime.Pager[ObjectDataTypesClientListFieldsByModuleAndTypeResponse] {
+func (client *ObjectDataTypesClient) NewListFieldsByModuleAndTypePager(resourceGroupName string, automationAccountName string, moduleName string, typeName string, options *ObjectDataTypesClientListFieldsByModuleAndTypeOptions) *runtime.Pager[ObjectDataTypesClientListFieldsByModuleAndTypeResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ObjectDataTypesClientListFieldsByModuleAndTypeResponse]{
 		More: func(page ObjectDataTypesClientListFieldsByModuleAndTypeResponse) bool {
 			return false
@@ -128,14 +128,14 @@ func (client *ObjectDataTypesClient) listFieldsByModuleAndTypeHandleResponse(res
 	return result, nil
 }
 
-// ListFieldsByType - Retrieve a list of fields of a given type across all accessible modules.
+// NewListFieldsByTypePager - Retrieve a list of fields of a given type across all accessible modules.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // typeName - The name of type.
 // options - ObjectDataTypesClientListFieldsByTypeOptions contains the optional parameters for the ObjectDataTypesClient.ListFieldsByType
 // method.
-func (client *ObjectDataTypesClient) ListFieldsByType(resourceGroupName string, automationAccountName string, typeName string, options *ObjectDataTypesClientListFieldsByTypeOptions) *runtime.Pager[ObjectDataTypesClientListFieldsByTypeResponse] {
+func (client *ObjectDataTypesClient) NewListFieldsByTypePager(resourceGroupName string, automationAccountName string, typeName string, options *ObjectDataTypesClientListFieldsByTypeOptions) *runtime.Pager[ObjectDataTypesClientListFieldsByTypeResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ObjectDataTypesClientListFieldsByTypeResponse]{
 		More: func(page ObjectDataTypesClientListFieldsByTypeResponse) bool {
 			return false

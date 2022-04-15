@@ -134,7 +134,7 @@ func ExampleVariableClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listVariables_First100.json
-func ExampleVariableClient_ListByAutomationAccount() {
+func ExampleVariableClient_NewListByAutomationAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -146,7 +146,7 @@ func ExampleVariableClient_ListByAutomationAccount() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByAutomationAccount("<resource-group-name>",
+	pager := client.NewListByAutomationAccountPager("<resource-group-name>",
 		"<automation-account-name>",
 		nil)
 	for pager.More() {

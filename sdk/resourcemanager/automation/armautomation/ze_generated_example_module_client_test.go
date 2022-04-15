@@ -144,7 +144,7 @@ func ExampleModuleClient_Update() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listModulesByAutomationAccount.json
-func ExampleModuleClient_ListByAutomationAccount() {
+func ExampleModuleClient_NewListByAutomationAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -156,7 +156,7 @@ func ExampleModuleClient_ListByAutomationAccount() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByAutomationAccount("<resource-group-name>",
+	pager := client.NewListByAutomationAccountPager("<resource-group-name>",
 		"<automation-account-name>",
 		nil)
 	for pager.More() {

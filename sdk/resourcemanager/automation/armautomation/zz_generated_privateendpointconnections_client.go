@@ -248,13 +248,13 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListByAutomationAccount - List all private endpoint connections on a Automation account.
+// NewListByAutomationAccountPager - List all private endpoint connections on a Automation account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - PrivateEndpointConnectionsClientListByAutomationAccountOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByAutomationAccount
 // method.
-func (client *PrivateEndpointConnectionsClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *PrivateEndpointConnectionsClientListByAutomationAccountOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByAutomationAccountResponse] {
+func (client *PrivateEndpointConnectionsClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *PrivateEndpointConnectionsClientListByAutomationAccountOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionsClientListByAutomationAccountResponse]{
 		More: func(page PrivateEndpointConnectionsClientListByAutomationAccountResponse) bool {
 			return false

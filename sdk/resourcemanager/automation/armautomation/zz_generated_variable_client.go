@@ -227,13 +227,13 @@ func (client *VariableClient) getHandleResponse(resp *http.Response) (VariableCl
 	return result, nil
 }
 
-// ListByAutomationAccount - Retrieve a list of variables.
+// NewListByAutomationAccountPager - Retrieve a list of variables.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - VariableClientListByAutomationAccountOptions contains the optional parameters for the VariableClient.ListByAutomationAccount
 // method.
-func (client *VariableClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *VariableClientListByAutomationAccountOptions) *runtime.Pager[VariableClientListByAutomationAccountResponse] {
+func (client *VariableClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *VariableClientListByAutomationAccountOptions) *runtime.Pager[VariableClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VariableClientListByAutomationAccountResponse]{
 		More: func(page VariableClientListByAutomationAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

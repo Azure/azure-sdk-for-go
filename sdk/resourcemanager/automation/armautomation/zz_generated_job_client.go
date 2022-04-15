@@ -314,13 +314,13 @@ func (client *JobClient) getRunbookContentHandleResponse(resp *http.Response) (J
 	return result, nil
 }
 
-// ListByAutomationAccount - Retrieve a list of jobs.
+// NewListByAutomationAccountPager - Retrieve a list of jobs.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - JobClientListByAutomationAccountOptions contains the optional parameters for the JobClient.ListByAutomationAccount
 // method.
-func (client *JobClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *JobClientListByAutomationAccountOptions) *runtime.Pager[JobClientListByAutomationAccountResponse] {
+func (client *JobClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *JobClientListByAutomationAccountOptions) *runtime.Pager[JobClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[JobClientListByAutomationAccountResponse]{
 		More: func(page JobClientListByAutomationAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

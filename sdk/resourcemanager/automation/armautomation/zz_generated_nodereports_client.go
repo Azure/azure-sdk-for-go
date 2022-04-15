@@ -185,13 +185,13 @@ func (client *NodeReportsClient) getContentHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// ListByNode - Retrieve the Dsc node report list by node id.
+// NewListByNodePager - Retrieve the Dsc node report list by node id.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // nodeID - The parameters supplied to the list operation.
 // options - NodeReportsClientListByNodeOptions contains the optional parameters for the NodeReportsClient.ListByNode method.
-func (client *NodeReportsClient) ListByNode(resourceGroupName string, automationAccountName string, nodeID string, options *NodeReportsClientListByNodeOptions) *runtime.Pager[NodeReportsClientListByNodeResponse] {
+func (client *NodeReportsClient) NewListByNodePager(resourceGroupName string, automationAccountName string, nodeID string, options *NodeReportsClientListByNodeOptions) *runtime.Pager[NodeReportsClientListByNodeResponse] {
 	return runtime.NewPager(runtime.PageProcessor[NodeReportsClientListByNodeResponse]{
 		More: func(page NodeReportsClientListByNodeResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -1,5 +1,85 @@
 # Release History
 
+## 0.5.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*DscConfigurationClient.ListByAutomationAccount` has been removed
+- Function `*DscCompilationJobClient.ListByAutomationAccount` has been removed
+- Function `*DscNodeConfigurationClient.ListByAutomationAccount` has been removed
+- Function `*ObjectDataTypesClient.ListFieldsByType` has been removed
+- Function `*ObjectDataTypesClient.ListFieldsByModuleAndType` has been removed
+- Function `*FieldsClient.ListByType` has been removed
+- Function `*ConnectionClient.ListByAutomationAccount` has been removed
+- Function `*TestJobStreamsClient.ListByTestJob` has been removed
+- Function `*AccountClient.ListByResourceGroup` has been removed
+- Function `*AccountClient.List` has been removed
+- Function `*DscNodeClient.ListByAutomationAccount` has been removed
+- Function `*PrivateEndpointConnectionsClient.ListByAutomationAccount` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*HybridRunbookWorkerGroupClient.ListByAutomationAccount` has been removed
+- Function `*ConnectionTypeClient.ListByAutomationAccount` has been removed
+- Function `*WatcherClient.ListByAutomationAccount` has been removed
+- Function `*WebhookClient.ListByAutomationAccount` has been removed
+- Function `*StatisticsClient.ListByAutomationAccount` has been removed
+- Function `*SourceControlSyncJobStreamsClient.ListBySyncJob` has been removed
+- Function `*SourceControlSyncJobClient.ListByAutomationAccount` has been removed
+- Function `*ActivityClient.ListByModule` has been removed
+- Function `*JobStreamClient.ListByJob` has been removed
+- Function `*ScheduleClient.ListByAutomationAccount` has been removed
+- Function `*SourceControlClient.ListByAutomationAccount` has been removed
+- Function `*JobScheduleClient.ListByAutomationAccount` has been removed
+- Function `*Python2PackageClient.ListByAutomationAccount` has been removed
+- Function `*JobClient.ListByAutomationAccount` has been removed
+- Function `*NodeReportsClient.ListByNode` has been removed
+- Function `*ModuleClient.ListByAutomationAccount` has been removed
+- Function `*RunbookClient.ListByAutomationAccount` has been removed
+- Function `*VariableClient.ListByAutomationAccount` has been removed
+- Function `*PrivateLinkResourcesClient.Automation` has been removed
+- Function `*UsagesClient.ListByAutomationAccount` has been removed
+- Function `*CredentialClient.ListByAutomationAccount` has been removed
+- Function `*CertificateClient.ListByAutomationAccount` has been removed
+- Function `*HybridRunbookWorkersClient.ListByHybridRunbookWorkerGroup` has been removed
+
+### Features Added
+
+- New function `*JobScheduleClient.NewListByAutomationAccountPager(string, string, *JobScheduleClientListByAutomationAccountOptions) *runtime.Pager[JobScheduleClientListByAutomationAccountResponse]`
+- New function `*TestJobStreamsClient.NewListByTestJobPager(string, string, string, *TestJobStreamsClientListByTestJobOptions) *runtime.Pager[TestJobStreamsClientListByTestJobResponse]`
+- New function `*ActivityClient.NewListByModulePager(string, string, string, *ActivityClientListByModuleOptions) *runtime.Pager[ActivityClientListByModuleResponse]`
+- New function `*ObjectDataTypesClient.NewListFieldsByModuleAndTypePager(string, string, string, string, *ObjectDataTypesClientListFieldsByModuleAndTypeOptions) *runtime.Pager[ObjectDataTypesClientListFieldsByModuleAndTypeResponse]`
+- New function `*ObjectDataTypesClient.NewListFieldsByTypePager(string, string, string, *ObjectDataTypesClientListFieldsByTypeOptions) *runtime.Pager[ObjectDataTypesClientListFieldsByTypeResponse]`
+- New function `*RunbookClient.NewListByAutomationAccountPager(string, string, *RunbookClientListByAutomationAccountOptions) *runtime.Pager[RunbookClientListByAutomationAccountResponse]`
+- New function `*SourceControlSyncJobStreamsClient.NewListBySyncJobPager(string, string, string, string, *SourceControlSyncJobStreamsClientListBySyncJobOptions) *runtime.Pager[SourceControlSyncJobStreamsClientListBySyncJobResponse]`
+- New function `*StatisticsClient.NewListByAutomationAccountPager(string, string, *StatisticsClientListByAutomationAccountOptions) *runtime.Pager[StatisticsClientListByAutomationAccountResponse]`
+- New function `*ConnectionClient.NewListByAutomationAccountPager(string, string, *ConnectionClientListByAutomationAccountOptions) *runtime.Pager[ConnectionClientListByAutomationAccountResponse]`
+- New function `*SourceControlClient.NewListByAutomationAccountPager(string, string, *SourceControlClientListByAutomationAccountOptions) *runtime.Pager[SourceControlClientListByAutomationAccountResponse]`
+- New function `*CertificateClient.NewListByAutomationAccountPager(string, string, *CertificateClientListByAutomationAccountOptions) *runtime.Pager[CertificateClientListByAutomationAccountResponse]`
+- New function `*PrivateLinkResourcesClient.NewAutomationPager(string, string, *PrivateLinkResourcesClientAutomationOptions) *runtime.Pager[PrivateLinkResourcesClientAutomationResponse]`
+- New function `*DscNodeConfigurationClient.NewListByAutomationAccountPager(string, string, *DscNodeConfigurationClientListByAutomationAccountOptions) *runtime.Pager[DscNodeConfigurationClientListByAutomationAccountResponse]`
+- New function `*FieldsClient.NewListByTypePager(string, string, string, string, *FieldsClientListByTypeOptions) *runtime.Pager[FieldsClientListByTypeResponse]`
+- New function `*JobStreamClient.NewListByJobPager(string, string, string, *JobStreamClientListByJobOptions) *runtime.Pager[JobStreamClientListByJobResponse]`
+- New function `*ConnectionTypeClient.NewListByAutomationAccountPager(string, string, *ConnectionTypeClientListByAutomationAccountOptions) *runtime.Pager[ConnectionTypeClientListByAutomationAccountResponse]`
+- New function `*JobClient.NewListByAutomationAccountPager(string, string, *JobClientListByAutomationAccountOptions) *runtime.Pager[JobClientListByAutomationAccountResponse]`
+- New function `*VariableClient.NewListByAutomationAccountPager(string, string, *VariableClientListByAutomationAccountOptions) *runtime.Pager[VariableClientListByAutomationAccountResponse]`
+- New function `*PrivateEndpointConnectionsClient.NewListByAutomationAccountPager(string, string, *PrivateEndpointConnectionsClientListByAutomationAccountOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByAutomationAccountResponse]`
+- New function `*NodeReportsClient.NewListByNodePager(string, string, string, *NodeReportsClientListByNodeOptions) *runtime.Pager[NodeReportsClientListByNodeResponse]`
+- New function `*DscConfigurationClient.NewListByAutomationAccountPager(string, string, *DscConfigurationClientListByAutomationAccountOptions) *runtime.Pager[DscConfigurationClientListByAutomationAccountResponse]`
+- New function `*ModuleClient.NewListByAutomationAccountPager(string, string, *ModuleClientListByAutomationAccountOptions) *runtime.Pager[ModuleClientListByAutomationAccountResponse]`
+- New function `*HybridRunbookWorkerGroupClient.NewListByAutomationAccountPager(string, string, *HybridRunbookWorkerGroupClientListByAutomationAccountOptions) *runtime.Pager[HybridRunbookWorkerGroupClientListByAutomationAccountResponse]`
+- New function `*AccountClient.NewListByResourceGroupPager(string, *AccountClientListByResourceGroupOptions) *runtime.Pager[AccountClientListByResourceGroupResponse]`
+- New function `*WatcherClient.NewListByAutomationAccountPager(string, string, *WatcherClientListByAutomationAccountOptions) *runtime.Pager[WatcherClientListByAutomationAccountResponse]`
+- New function `*DscCompilationJobClient.NewListByAutomationAccountPager(string, string, *DscCompilationJobClientListByAutomationAccountOptions) *runtime.Pager[DscCompilationJobClientListByAutomationAccountResponse]`
+- New function `*WebhookClient.NewListByAutomationAccountPager(string, string, *WebhookClientListByAutomationAccountOptions) *runtime.Pager[WebhookClientListByAutomationAccountResponse]`
+- New function `*UsagesClient.NewListByAutomationAccountPager(string, string, *UsagesClientListByAutomationAccountOptions) *runtime.Pager[UsagesClientListByAutomationAccountResponse]`
+- New function `*AccountClient.NewListPager(*AccountClientListOptions) *runtime.Pager[AccountClientListResponse]`
+- New function `*HybridRunbookWorkersClient.NewListByHybridRunbookWorkerGroupPager(string, string, string, *HybridRunbookWorkersClientListByHybridRunbookWorkerGroupOptions) *runtime.Pager[HybridRunbookWorkersClientListByHybridRunbookWorkerGroupResponse]`
+- New function `*SourceControlSyncJobClient.NewListByAutomationAccountPager(string, string, string, *SourceControlSyncJobClientListByAutomationAccountOptions) *runtime.Pager[SourceControlSyncJobClientListByAutomationAccountResponse]`
+- New function `*Python2PackageClient.NewListByAutomationAccountPager(string, string, *Python2PackageClientListByAutomationAccountOptions) *runtime.Pager[Python2PackageClientListByAutomationAccountResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*DscNodeClient.NewListByAutomationAccountPager(string, string, *DscNodeClientListByAutomationAccountOptions) *runtime.Pager[DscNodeClientListByAutomationAccountResponse]`
+- New function `*CredentialClient.NewListByAutomationAccountPager(string, string, *CredentialClientListByAutomationAccountOptions) *runtime.Pager[CredentialClientListByAutomationAccountResponse]`
+- New function `*ScheduleClient.NewListByAutomationAccountPager(string, string, *ScheduleClientListByAutomationAccountOptions) *runtime.Pager[ScheduleClientListByAutomationAccountResponse]`
+
+
 ## 0.4.0 (2022-04-11)
 ### Breaking Changes
 

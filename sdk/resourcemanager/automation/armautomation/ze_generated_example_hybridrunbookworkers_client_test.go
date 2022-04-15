@@ -130,7 +130,7 @@ func ExampleHybridRunbookWorkersClient_Move() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/listHybridRunbookWorker.json
-func ExampleHybridRunbookWorkersClient_ListByHybridRunbookWorkerGroup() {
+func ExampleHybridRunbookWorkersClient_NewListByHybridRunbookWorkerGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -142,7 +142,7 @@ func ExampleHybridRunbookWorkersClient_ListByHybridRunbookWorkerGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByHybridRunbookWorkerGroup("<resource-group-name>",
+	pager := client.NewListByHybridRunbookWorkerGroupPager("<resource-group-name>",
 		"<automation-account-name>",
 		"<hybrid-runbook-worker-group-name>",
 		&armautomation.HybridRunbookWorkersClientListByHybridRunbookWorkerGroupOptions{Filter: nil})

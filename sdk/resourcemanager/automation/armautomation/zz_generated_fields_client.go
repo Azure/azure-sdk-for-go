@@ -55,14 +55,14 @@ func NewFieldsClient(subscriptionID string, credential azcore.TokenCredential, o
 	return client, nil
 }
 
-// ListByType - Retrieve a list of fields of a given type identified by module name.
+// NewListByTypePager - Retrieve a list of fields of a given type identified by module name.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // moduleName - The name of module.
 // typeName - The name of type.
 // options - FieldsClientListByTypeOptions contains the optional parameters for the FieldsClient.ListByType method.
-func (client *FieldsClient) ListByType(resourceGroupName string, automationAccountName string, moduleName string, typeName string, options *FieldsClientListByTypeOptions) *runtime.Pager[FieldsClientListByTypeResponse] {
+func (client *FieldsClient) NewListByTypePager(resourceGroupName string, automationAccountName string, moduleName string, typeName string, options *FieldsClientListByTypeOptions) *runtime.Pager[FieldsClientListByTypeResponse] {
 	return runtime.NewPager(runtime.PageProcessor[FieldsClientListByTypeResponse]{
 		More: func(page FieldsClientListByTypeResponse) bool {
 			return false

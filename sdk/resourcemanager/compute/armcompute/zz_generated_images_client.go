@@ -235,11 +235,11 @@ func (client *ImagesClient) getHandleResponse(resp *http.Response) (ImagesClient
 	return result, nil
 }
 
-// List - Gets the list of Images in the subscription. Use nextLink property in the response to get the next page of Images.
-// Do this till nextLink is null to fetch all the Images.
+// NewListPager - Gets the list of Images in the subscription. Use nextLink property in the response to get the next page
+// of Images. Do this till nextLink is null to fetch all the Images.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ImagesClientListOptions contains the optional parameters for the ImagesClient.List method.
-func (client *ImagesClient) List(options *ImagesClientListOptions) *runtime.Pager[ImagesClientListResponse] {
+func (client *ImagesClient) NewListPager(options *ImagesClientListOptions) *runtime.Pager[ImagesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ImagesClientListResponse]{
 		More: func(page ImagesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -294,12 +294,12 @@ func (client *ImagesClient) listHandleResponse(resp *http.Response) (ImagesClien
 	return result, nil
 }
 
-// ListByResourceGroup - Gets the list of images under a resource group.
+// NewListByResourceGroupPager - Gets the list of images under a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - ImagesClientListByResourceGroupOptions contains the optional parameters for the ImagesClient.ListByResourceGroup
 // method.
-func (client *ImagesClient) ListByResourceGroup(resourceGroupName string, options *ImagesClientListByResourceGroupOptions) *runtime.Pager[ImagesClientListByResourceGroupResponse] {
+func (client *ImagesClient) NewListByResourceGroupPager(resourceGroupName string, options *ImagesClientListByResourceGroupOptions) *runtime.Pager[ImagesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ImagesClientListByResourceGroupResponse]{
 		More: func(page ImagesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

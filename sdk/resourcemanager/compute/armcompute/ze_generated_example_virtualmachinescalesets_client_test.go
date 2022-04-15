@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/ListVirtualMachineScaleSetsInASubscriptionByLocation.json
-func ExampleVirtualMachineScaleSetsClient_ListByLocation() {
+func ExampleVirtualMachineScaleSetsClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleVirtualMachineScaleSetsClient_ListByLocation() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByLocation("<location>",
+	pager := client.NewListByLocationPager("<location>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -593,7 +593,7 @@ func ExampleVirtualMachineScaleSetsClient_GetInstanceView() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSets_List_MaximumSet_Gen.json
-func ExampleVirtualMachineScaleSetsClient_List() {
+func ExampleVirtualMachineScaleSetsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -605,7 +605,7 @@ func ExampleVirtualMachineScaleSetsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-group-name>",
+	pager := client.NewListPager("<resource-group-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -621,7 +621,7 @@ func ExampleVirtualMachineScaleSetsClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSets_ListAll_MaximumSet_Gen.json
-func ExampleVirtualMachineScaleSetsClient_ListAll() {
+func ExampleVirtualMachineScaleSetsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -633,7 +633,7 @@ func ExampleVirtualMachineScaleSetsClient_ListAll() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListAll(nil)
+	pager := client.NewListAllPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -648,7 +648,7 @@ func ExampleVirtualMachineScaleSetsClient_ListAll() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSets_GetOSUpgradeHistory_MaximumSet_Gen.json
-func ExampleVirtualMachineScaleSetsClient_GetOSUpgradeHistory() {
+func ExampleVirtualMachineScaleSetsClient_NewGetOSUpgradeHistoryPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -660,7 +660,7 @@ func ExampleVirtualMachineScaleSetsClient_GetOSUpgradeHistory() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.GetOSUpgradeHistory("<resource-group-name>",
+	pager := client.NewGetOSUpgradeHistoryPager("<resource-group-name>",
 		"<vm-scale-set-name>",
 		nil)
 	for pager.More() {

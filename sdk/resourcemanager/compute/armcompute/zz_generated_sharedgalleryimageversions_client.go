@@ -123,14 +123,14 @@ func (client *SharedGalleryImageVersionsClient) getHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// List - List shared gallery image versions by subscription id or tenant id.
+// NewListPager - List shared gallery image versions by subscription id or tenant id.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - Resource location.
 // galleryUniqueName - The unique name of the Shared Gallery.
 // galleryImageName - The name of the Shared Gallery Image Definition from which the Image Versions are to be listed.
 // options - SharedGalleryImageVersionsClientListOptions contains the optional parameters for the SharedGalleryImageVersionsClient.List
 // method.
-func (client *SharedGalleryImageVersionsClient) List(location string, galleryUniqueName string, galleryImageName string, options *SharedGalleryImageVersionsClientListOptions) *runtime.Pager[SharedGalleryImageVersionsClientListResponse] {
+func (client *SharedGalleryImageVersionsClient) NewListPager(location string, galleryUniqueName string, galleryImageName string, options *SharedGalleryImageVersionsClientListOptions) *runtime.Pager[SharedGalleryImageVersionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SharedGalleryImageVersionsClientListResponse]{
 		More: func(page SharedGalleryImageVersionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

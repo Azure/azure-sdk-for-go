@@ -222,13 +222,13 @@ func (client *CapacityReservationGroupsClient) getHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all of the capacity reservation groups in the specified resource group. Use the nextLink property
-// in the response to get the next page of capacity reservation groups.
+// NewListByResourceGroupPager - Lists all of the capacity reservation groups in the specified resource group. Use the nextLink
+// property in the response to get the next page of capacity reservation groups.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - CapacityReservationGroupsClientListByResourceGroupOptions contains the optional parameters for the CapacityReservationGroupsClient.ListByResourceGroup
 // method.
-func (client *CapacityReservationGroupsClient) ListByResourceGroup(resourceGroupName string, options *CapacityReservationGroupsClientListByResourceGroupOptions) *runtime.Pager[CapacityReservationGroupsClientListByResourceGroupResponse] {
+func (client *CapacityReservationGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *CapacityReservationGroupsClientListByResourceGroupOptions) *runtime.Pager[CapacityReservationGroupsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CapacityReservationGroupsClientListByResourceGroupResponse]{
 		More: func(page CapacityReservationGroupsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -290,12 +290,12 @@ func (client *CapacityReservationGroupsClient) listByResourceGroupHandleResponse
 	return result, nil
 }
 
-// ListBySubscription - Lists all of the capacity reservation groups in the subscription. Use the nextLink property in the
-// response to get the next page of capacity reservation groups.
+// NewListBySubscriptionPager - Lists all of the capacity reservation groups in the subscription. Use the nextLink property
+// in the response to get the next page of capacity reservation groups.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - CapacityReservationGroupsClientListBySubscriptionOptions contains the optional parameters for the CapacityReservationGroupsClient.ListBySubscription
 // method.
-func (client *CapacityReservationGroupsClient) ListBySubscription(options *CapacityReservationGroupsClientListBySubscriptionOptions) *runtime.Pager[CapacityReservationGroupsClientListBySubscriptionResponse] {
+func (client *CapacityReservationGroupsClient) NewListBySubscriptionPager(options *CapacityReservationGroupsClientListBySubscriptionOptions) *runtime.Pager[CapacityReservationGroupsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CapacityReservationGroupsClientListBySubscriptionResponse]{
 		More: func(page CapacityReservationGroupsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

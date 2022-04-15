@@ -239,10 +239,10 @@ func (client *DiskEncryptionSetsClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// List - Lists all the disk encryption sets under a subscription.
+// NewListPager - Lists all the disk encryption sets under a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DiskEncryptionSetsClientListOptions contains the optional parameters for the DiskEncryptionSetsClient.List method.
-func (client *DiskEncryptionSetsClient) List(options *DiskEncryptionSetsClientListOptions) *runtime.Pager[DiskEncryptionSetsClientListResponse] {
+func (client *DiskEncryptionSetsClient) NewListPager(options *DiskEncryptionSetsClientListOptions) *runtime.Pager[DiskEncryptionSetsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DiskEncryptionSetsClientListResponse]{
 		More: func(page DiskEncryptionSetsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -297,7 +297,7 @@ func (client *DiskEncryptionSetsClient) listHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListAssociatedResources - Lists all resources that are encrypted with this disk encryption set.
+// NewListAssociatedResourcesPager - Lists all resources that are encrypted with this disk encryption set.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // diskEncryptionSetName - The name of the disk encryption set that is being created. The name can't be changed after the
@@ -305,7 +305,7 @@ func (client *DiskEncryptionSetsClient) listHandleResponse(resp *http.Response) 
 // name length is 80 characters.
 // options - DiskEncryptionSetsClientListAssociatedResourcesOptions contains the optional parameters for the DiskEncryptionSetsClient.ListAssociatedResources
 // method.
-func (client *DiskEncryptionSetsClient) ListAssociatedResources(resourceGroupName string, diskEncryptionSetName string, options *DiskEncryptionSetsClientListAssociatedResourcesOptions) *runtime.Pager[DiskEncryptionSetsClientListAssociatedResourcesResponse] {
+func (client *DiskEncryptionSetsClient) NewListAssociatedResourcesPager(resourceGroupName string, diskEncryptionSetName string, options *DiskEncryptionSetsClientListAssociatedResourcesOptions) *runtime.Pager[DiskEncryptionSetsClientListAssociatedResourcesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DiskEncryptionSetsClientListAssociatedResourcesResponse]{
 		More: func(page DiskEncryptionSetsClientListAssociatedResourcesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -368,12 +368,12 @@ func (client *DiskEncryptionSetsClient) listAssociatedResourcesHandleResponse(re
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all the disk encryption sets under a resource group.
+// NewListByResourceGroupPager - Lists all the disk encryption sets under a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - DiskEncryptionSetsClientListByResourceGroupOptions contains the optional parameters for the DiskEncryptionSetsClient.ListByResourceGroup
 // method.
-func (client *DiskEncryptionSetsClient) ListByResourceGroup(resourceGroupName string, options *DiskEncryptionSetsClientListByResourceGroupOptions) *runtime.Pager[DiskEncryptionSetsClientListByResourceGroupResponse] {
+func (client *DiskEncryptionSetsClient) NewListByResourceGroupPager(resourceGroupName string, options *DiskEncryptionSetsClientListByResourceGroupOptions) *runtime.Pager[DiskEncryptionSetsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DiskEncryptionSetsClientListByResourceGroupResponse]{
 		More: func(page DiskEncryptionSetsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

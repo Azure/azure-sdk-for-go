@@ -269,7 +269,7 @@ func (client *GalleryApplicationVersionsClient) getHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListByGalleryApplication - List gallery Application Versions in a gallery Application Definition.
+// NewListByGalleryApplicationPager - List gallery Application Versions in a gallery Application Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // galleryName - The name of the Shared Application Gallery in which the Application Definition resides.
@@ -277,7 +277,7 @@ func (client *GalleryApplicationVersionsClient) getHandleResponse(resp *http.Res
 // are to be listed.
 // options - GalleryApplicationVersionsClientListByGalleryApplicationOptions contains the optional parameters for the GalleryApplicationVersionsClient.ListByGalleryApplication
 // method.
-func (client *GalleryApplicationVersionsClient) ListByGalleryApplication(resourceGroupName string, galleryName string, galleryApplicationName string, options *GalleryApplicationVersionsClientListByGalleryApplicationOptions) *runtime.Pager[GalleryApplicationVersionsClientListByGalleryApplicationResponse] {
+func (client *GalleryApplicationVersionsClient) NewListByGalleryApplicationPager(resourceGroupName string, galleryName string, galleryApplicationName string, options *GalleryApplicationVersionsClientListByGalleryApplicationOptions) *runtime.Pager[GalleryApplicationVersionsClientListByGalleryApplicationResponse] {
 	return runtime.NewPager(runtime.PageProcessor[GalleryApplicationVersionsClientListByGalleryApplicationResponse]{
 		More: func(page GalleryApplicationVersionsClientListByGalleryApplicationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

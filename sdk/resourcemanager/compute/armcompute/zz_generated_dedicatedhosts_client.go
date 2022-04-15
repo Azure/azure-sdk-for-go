@@ -251,14 +251,14 @@ func (client *DedicatedHostsClient) getHandleResponse(resp *http.Response) (Dedi
 	return result, nil
 }
 
-// ListByHostGroup - Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in
-// the response to get the next page of dedicated hosts.
+// NewListByHostGroupPager - Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property
+// in the response to get the next page of dedicated hosts.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // hostGroupName - The name of the dedicated host group.
 // options - DedicatedHostsClientListByHostGroupOptions contains the optional parameters for the DedicatedHostsClient.ListByHostGroup
 // method.
-func (client *DedicatedHostsClient) ListByHostGroup(resourceGroupName string, hostGroupName string, options *DedicatedHostsClientListByHostGroupOptions) *runtime.Pager[DedicatedHostsClientListByHostGroupResponse] {
+func (client *DedicatedHostsClient) NewListByHostGroupPager(resourceGroupName string, hostGroupName string, options *DedicatedHostsClientListByHostGroupOptions) *runtime.Pager[DedicatedHostsClientListByHostGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DedicatedHostsClientListByHostGroupResponse]{
 		More: func(page DedicatedHostsClientListByHostGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

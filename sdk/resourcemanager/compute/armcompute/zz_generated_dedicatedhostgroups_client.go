@@ -218,13 +218,13 @@ func (client *DedicatedHostGroupsClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all of the dedicated host groups in the specified resource group. Use the nextLink property
-// in the response to get the next page of dedicated host groups.
+// NewListByResourceGroupPager - Lists all of the dedicated host groups in the specified resource group. Use the nextLink
+// property in the response to get the next page of dedicated host groups.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - DedicatedHostGroupsClientListByResourceGroupOptions contains the optional parameters for the DedicatedHostGroupsClient.ListByResourceGroup
 // method.
-func (client *DedicatedHostGroupsClient) ListByResourceGroup(resourceGroupName string, options *DedicatedHostGroupsClientListByResourceGroupOptions) *runtime.Pager[DedicatedHostGroupsClientListByResourceGroupResponse] {
+func (client *DedicatedHostGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *DedicatedHostGroupsClientListByResourceGroupOptions) *runtime.Pager[DedicatedHostGroupsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DedicatedHostGroupsClientListByResourceGroupResponse]{
 		More: func(page DedicatedHostGroupsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -283,12 +283,12 @@ func (client *DedicatedHostGroupsClient) listByResourceGroupHandleResponse(resp 
 	return result, nil
 }
 
-// ListBySubscription - Lists all of the dedicated host groups in the subscription. Use the nextLink property in the response
-// to get the next page of dedicated host groups.
+// NewListBySubscriptionPager - Lists all of the dedicated host groups in the subscription. Use the nextLink property in the
+// response to get the next page of dedicated host groups.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DedicatedHostGroupsClientListBySubscriptionOptions contains the optional parameters for the DedicatedHostGroupsClient.ListBySubscription
 // method.
-func (client *DedicatedHostGroupsClient) ListBySubscription(options *DedicatedHostGroupsClientListBySubscriptionOptions) *runtime.Pager[DedicatedHostGroupsClientListBySubscriptionResponse] {
+func (client *DedicatedHostGroupsClient) NewListBySubscriptionPager(options *DedicatedHostGroupsClientListBySubscriptionOptions) *runtime.Pager[DedicatedHostGroupsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DedicatedHostGroupsClientListBySubscriptionResponse]{
 		More: func(page DedicatedHostGroupsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

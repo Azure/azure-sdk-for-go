@@ -157,7 +157,7 @@ func ExampleDiskEncryptionSetsClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/ListDiskEncryptionSetsInAResourceGroup.json
-func ExampleDiskEncryptionSetsClient_ListByResourceGroup() {
+func ExampleDiskEncryptionSetsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -169,7 +169,7 @@ func ExampleDiskEncryptionSetsClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -185,7 +185,7 @@ func ExampleDiskEncryptionSetsClient_ListByResourceGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/ListDiskEncryptionSetsInASubscription.json
-func ExampleDiskEncryptionSetsClient_List() {
+func ExampleDiskEncryptionSetsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -197,7 +197,7 @@ func ExampleDiskEncryptionSetsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(nil)
+	pager := client.NewListPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -212,7 +212,7 @@ func ExampleDiskEncryptionSetsClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/ListDiskEncryptionSetAssociatedResources.json
-func ExampleDiskEncryptionSetsClient_ListAssociatedResources() {
+func ExampleDiskEncryptionSetsClient_NewListAssociatedResourcesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -224,7 +224,7 @@ func ExampleDiskEncryptionSetsClient_ListAssociatedResources() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListAssociatedResources("<resource-group-name>",
+	pager := client.NewListAssociatedResourcesPager("<resource-group-name>",
 		"<disk-encryption-set-name>",
 		nil)
 	for pager.More() {

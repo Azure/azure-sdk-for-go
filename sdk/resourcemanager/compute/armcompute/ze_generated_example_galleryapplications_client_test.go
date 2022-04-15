@@ -156,7 +156,7 @@ func ExampleGalleryApplicationsClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/ListGalleryApplicationsInAGallery.json
-func ExampleGalleryApplicationsClient_ListByGallery() {
+func ExampleGalleryApplicationsClient_NewListByGalleryPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -168,7 +168,7 @@ func ExampleGalleryApplicationsClient_ListByGallery() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByGallery("<resource-group-name>",
+	pager := client.NewListByGalleryPager("<resource-group-name>",
 		"<gallery-name>",
 		nil)
 	for pager.More() {

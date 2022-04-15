@@ -252,13 +252,13 @@ func (client *VirtualMachineScaleSetExtensionsClient) getHandleResponse(resp *ht
 	return result, nil
 }
 
-// List - Gets a list of all extensions in a VM scale set.
+// NewListPager - Gets a list of all extensions in a VM scale set.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // vmScaleSetName - The name of the VM scale set containing the extension.
 // options - VirtualMachineScaleSetExtensionsClientListOptions contains the optional parameters for the VirtualMachineScaleSetExtensionsClient.List
 // method.
-func (client *VirtualMachineScaleSetExtensionsClient) List(resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetExtensionsClientListOptions) *runtime.Pager[VirtualMachineScaleSetExtensionsClientListResponse] {
+func (client *VirtualMachineScaleSetExtensionsClient) NewListPager(resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetExtensionsClientListOptions) *runtime.Pager[VirtualMachineScaleSetExtensionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualMachineScaleSetExtensionsClientListResponse]{
 		More: func(page VirtualMachineScaleSetExtensionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

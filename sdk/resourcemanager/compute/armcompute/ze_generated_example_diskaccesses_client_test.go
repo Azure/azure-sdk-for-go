@@ -142,7 +142,7 @@ func ExampleDiskAccessesClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/ListDiskAccessesInAResourceGroup.json
-func ExampleDiskAccessesClient_ListByResourceGroup() {
+func ExampleDiskAccessesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -154,7 +154,7 @@ func ExampleDiskAccessesClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -170,7 +170,7 @@ func ExampleDiskAccessesClient_ListByResourceGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/ListDiskAccessesInASubscription.json
-func ExampleDiskAccessesClient_List() {
+func ExampleDiskAccessesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -182,7 +182,7 @@ func ExampleDiskAccessesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(nil)
+	pager := client.NewListPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -316,7 +316,7 @@ func ExampleDiskAccessesClient_BeginDeleteAPrivateEndpointConnection() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/ListPrivateEndpointConnectionsInADiskAccess.json
-func ExampleDiskAccessesClient_ListPrivateEndpointConnections() {
+func ExampleDiskAccessesClient_NewListPrivateEndpointConnectionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -328,7 +328,7 @@ func ExampleDiskAccessesClient_ListPrivateEndpointConnections() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListPrivateEndpointConnections("<resource-group-name>",
+	pager := client.NewListPrivateEndpointConnectionsPager("<resource-group-name>",
 		"<disk-access-name>",
 		nil)
 	for pager.More() {

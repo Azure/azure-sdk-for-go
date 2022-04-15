@@ -302,10 +302,10 @@ All I/O operations will return an `error` that can be investigated to discover m
 addition, you can investigate the raw response of any response object:
 
 ```golang
-var errResp azcore.HTTPResponse
+var storageErr *azblob.StorageError
 resp, err := serviceClient.CreateContainer(context.Background(), "testcontainername", nil)
-if err != nil && errors.As(err, &errResp) {
-    // do something with errResp.RawResponse()
+if err != nil && errors.As(err, &storageErr) {
+    // do something with storageErr.Response()
 }
 ```
 

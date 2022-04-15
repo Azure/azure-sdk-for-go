@@ -231,12 +231,12 @@ func (client *ContainerAppsClient) getHandleResponse(resp *http.Response) (Conta
 	return result, nil
 }
 
-// ListByResourceGroup - Get the Container Apps in a given resource group.
+// NewListByResourceGroupPager - Get the Container Apps in a given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // options - ContainerAppsClientListByResourceGroupOptions contains the optional parameters for the ContainerAppsClient.ListByResourceGroup
 // method.
-func (client *ContainerAppsClient) ListByResourceGroup(resourceGroupName string, options *ContainerAppsClientListByResourceGroupOptions) *runtime.Pager[ContainerAppsClientListByResourceGroupResponse] {
+func (client *ContainerAppsClient) NewListByResourceGroupPager(resourceGroupName string, options *ContainerAppsClientListByResourceGroupOptions) *runtime.Pager[ContainerAppsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ContainerAppsClientListByResourceGroupResponse]{
 		More: func(page ContainerAppsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -295,11 +295,11 @@ func (client *ContainerAppsClient) listByResourceGroupHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListBySubscription - Get the Container Apps in a given subscription.
+// NewListBySubscriptionPager - Get the Container Apps in a given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ContainerAppsClientListBySubscriptionOptions contains the optional parameters for the ContainerAppsClient.ListBySubscription
 // method.
-func (client *ContainerAppsClient) ListBySubscription(options *ContainerAppsClientListBySubscriptionOptions) *runtime.Pager[ContainerAppsClientListBySubscriptionResponse] {
+func (client *ContainerAppsClient) NewListBySubscriptionPager(options *ContainerAppsClientListBySubscriptionOptions) *runtime.Pager[ContainerAppsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ContainerAppsClientListBySubscriptionResponse]{
 		More: func(page ContainerAppsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

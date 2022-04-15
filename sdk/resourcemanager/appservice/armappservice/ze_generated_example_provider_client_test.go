@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetFunctionAppStacks.json
-func ExampleProviderClient_GetFunctionAppStacks() {
+func ExampleProviderClient_NewGetFunctionAppStacksPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleProviderClient_GetFunctionAppStacks() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.GetFunctionAppStacks(&armappservice.ProviderClientGetFunctionAppStacksOptions{StackOsType: nil})
+	pager := client.NewGetFunctionAppStacksPager(&armappservice.ProviderClientGetFunctionAppStacksOptions{StackOsType: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -44,7 +44,7 @@ func ExampleProviderClient_GetFunctionAppStacks() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetFunctionAppStacksForLocation.json
-func ExampleProviderClient_GetFunctionAppStacksForLocation() {
+func ExampleProviderClient_NewGetFunctionAppStacksForLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -56,7 +56,7 @@ func ExampleProviderClient_GetFunctionAppStacksForLocation() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.GetFunctionAppStacksForLocation("<location>",
+	pager := client.NewGetFunctionAppStacksForLocationPager("<location>",
 		&armappservice.ProviderClientGetFunctionAppStacksForLocationOptions{StackOsType: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -72,7 +72,7 @@ func ExampleProviderClient_GetFunctionAppStacksForLocation() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetWebAppStacksForLocation.json
-func ExampleProviderClient_GetWebAppStacksForLocation() {
+func ExampleProviderClient_NewGetWebAppStacksForLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -84,7 +84,7 @@ func ExampleProviderClient_GetWebAppStacksForLocation() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.GetWebAppStacksForLocation("<location>",
+	pager := client.NewGetWebAppStacksForLocationPager("<location>",
 		&armappservice.ProviderClientGetWebAppStacksForLocationOptions{StackOsType: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -100,7 +100,7 @@ func ExampleProviderClient_GetWebAppStacksForLocation() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListOperations.json
-func ExampleProviderClient_ListOperations() {
+func ExampleProviderClient_NewListOperationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -112,7 +112,7 @@ func ExampleProviderClient_ListOperations() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListOperations(nil)
+	pager := client.NewListOperationsPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -127,7 +127,7 @@ func ExampleProviderClient_ListOperations() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetWebAppStacks.json
-func ExampleProviderClient_GetWebAppStacks() {
+func ExampleProviderClient_NewGetWebAppStacksPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -139,7 +139,7 @@ func ExampleProviderClient_GetWebAppStacks() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.GetWebAppStacks(&armappservice.ProviderClientGetWebAppStacksOptions{StackOsType: nil})
+	pager := client.NewGetWebAppStacksPager(&armappservice.ProviderClientGetWebAppStacksOptions{StackOsType: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

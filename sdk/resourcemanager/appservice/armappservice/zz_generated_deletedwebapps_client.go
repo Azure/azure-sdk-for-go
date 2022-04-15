@@ -109,10 +109,10 @@ func (client *DeletedWebAppsClient) getDeletedWebAppByLocationHandleResponse(res
 	return result, nil
 }
 
-// List - Description for Get all deleted apps for a subscription.
+// NewListPager - Description for Get all deleted apps for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DeletedWebAppsClientListOptions contains the optional parameters for the DeletedWebAppsClient.List method.
-func (client *DeletedWebAppsClient) List(options *DeletedWebAppsClientListOptions) *runtime.Pager[DeletedWebAppsClientListResponse] {
+func (client *DeletedWebAppsClient) NewListPager(options *DeletedWebAppsClientListOptions) *runtime.Pager[DeletedWebAppsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DeletedWebAppsClientListResponse]{
 		More: func(page DeletedWebAppsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -167,11 +167,11 @@ func (client *DeletedWebAppsClient) listHandleResponse(resp *http.Response) (Del
 	return result, nil
 }
 
-// ListByLocation - Description for Get all deleted apps for a subscription at location
+// NewListByLocationPager - Description for Get all deleted apps for a subscription at location
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DeletedWebAppsClientListByLocationOptions contains the optional parameters for the DeletedWebAppsClient.ListByLocation
 // method.
-func (client *DeletedWebAppsClient) ListByLocation(location string, options *DeletedWebAppsClientListByLocationOptions) *runtime.Pager[DeletedWebAppsClientListByLocationResponse] {
+func (client *DeletedWebAppsClient) NewListByLocationPager(location string, options *DeletedWebAppsClientListByLocationOptions) *runtime.Pager[DeletedWebAppsClientListByLocationResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DeletedWebAppsClientListByLocationResponse]{
 		More: func(page DeletedWebAppsClientListByLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

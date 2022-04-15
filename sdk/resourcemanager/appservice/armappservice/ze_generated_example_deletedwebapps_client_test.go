@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListDeletedWebAppsByLocation.json
-func ExampleDeletedWebAppsClient_ListByLocation() {
+func ExampleDeletedWebAppsClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleDeletedWebAppsClient_ListByLocation() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByLocation("<location>",
+	pager := client.NewListByLocationPager("<location>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

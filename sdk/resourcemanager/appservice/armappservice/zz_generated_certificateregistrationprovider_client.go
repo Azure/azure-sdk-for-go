@@ -48,12 +48,12 @@ func NewCertificateRegistrationProviderClient(credential azcore.TokenCredential,
 	return client, nil
 }
 
-// ListOperations - Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
-// provider
+// NewListOperationsPager - Description for Implements Csm operations Api to exposes the list of available Csm Apis under
+// the resource provider
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - CertificateRegistrationProviderClientListOperationsOptions contains the optional parameters for the CertificateRegistrationProviderClient.ListOperations
 // method.
-func (client *CertificateRegistrationProviderClient) ListOperations(options *CertificateRegistrationProviderClientListOperationsOptions) *runtime.Pager[CertificateRegistrationProviderClientListOperationsResponse] {
+func (client *CertificateRegistrationProviderClient) NewListOperationsPager(options *CertificateRegistrationProviderClientListOperationsOptions) *runtime.Pager[CertificateRegistrationProviderClientListOperationsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CertificateRegistrationProviderClientListOperationsResponse]{
 		More: func(page CertificateRegistrationProviderClientListOperationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

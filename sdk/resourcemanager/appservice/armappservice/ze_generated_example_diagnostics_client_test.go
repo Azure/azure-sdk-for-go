@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_ListHostingEnvironmentDetectorResponses.json
-func ExampleDiagnosticsClient_ListHostingEnvironmentDetectorResponses() {
+func ExampleDiagnosticsClient_NewListHostingEnvironmentDetectorResponsesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleDiagnosticsClient_ListHostingEnvironmentDetectorResponses() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListHostingEnvironmentDetectorResponses("<resource-group-name>",
+	pager := client.NewListHostingEnvironmentDetectorResponsesPager("<resource-group-name>",
 		"<name>",
 		nil)
 	for pager.More() {
@@ -75,7 +75,7 @@ func ExampleDiagnosticsClient_GetHostingEnvironmentDetectorResponse() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_ListSiteDetectorResponses.json
-func ExampleDiagnosticsClient_ListSiteDetectorResponses() {
+func ExampleDiagnosticsClient_NewListSiteDetectorResponsesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -87,7 +87,7 @@ func ExampleDiagnosticsClient_ListSiteDetectorResponses() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListSiteDetectorResponses("<resource-group-name>",
+	pager := client.NewListSiteDetectorResponsesPager("<resource-group-name>",
 		"<site-name>",
 		nil)
 	for pager.More() {
@@ -133,7 +133,7 @@ func ExampleDiagnosticsClient_GetSiteDetectorResponse() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_ListSiteDiagnosticCategories.json
-func ExampleDiagnosticsClient_ListSiteDiagnosticCategories() {
+func ExampleDiagnosticsClient_NewListSiteDiagnosticCategoriesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -145,7 +145,7 @@ func ExampleDiagnosticsClient_ListSiteDiagnosticCategories() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListSiteDiagnosticCategories("<resource-group-name>",
+	pager := client.NewListSiteDiagnosticCategoriesPager("<resource-group-name>",
 		"<site-name>",
 		nil)
 	for pager.More() {
@@ -188,7 +188,7 @@ func ExampleDiagnosticsClient_GetSiteDiagnosticCategory() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_ListSiteAnalyses.json
-func ExampleDiagnosticsClient_ListSiteAnalyses() {
+func ExampleDiagnosticsClient_NewListSiteAnalysesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -200,7 +200,7 @@ func ExampleDiagnosticsClient_ListSiteAnalyses() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListSiteAnalyses("<resource-group-name>",
+	pager := client.NewListSiteAnalysesPager("<resource-group-name>",
 		"<site-name>",
 		"<diagnostic-category>",
 		nil)
@@ -275,7 +275,7 @@ func ExampleDiagnosticsClient_ExecuteSiteAnalysis() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_ListSiteDetectors.json
-func ExampleDiagnosticsClient_ListSiteDetectors() {
+func ExampleDiagnosticsClient_NewListSiteDetectorsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -287,7 +287,7 @@ func ExampleDiagnosticsClient_ListSiteDetectors() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListSiteDetectors("<resource-group-name>",
+	pager := client.NewListSiteDetectorsPager("<resource-group-name>",
 		"<site-name>",
 		"<diagnostic-category>",
 		nil)
@@ -362,7 +362,7 @@ func ExampleDiagnosticsClient_ExecuteSiteDetector() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_ListSiteDetectorResponses.json
-func ExampleDiagnosticsClient_ListSiteDetectorResponsesSlot() {
+func ExampleDiagnosticsClient_NewListSiteDetectorResponsesSlotPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -374,7 +374,7 @@ func ExampleDiagnosticsClient_ListSiteDetectorResponsesSlot() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListSiteDetectorResponsesSlot("<resource-group-name>",
+	pager := client.NewListSiteDetectorResponsesSlotPager("<resource-group-name>",
 		"<site-name>",
 		"<slot>",
 		nil)
@@ -422,7 +422,7 @@ func ExampleDiagnosticsClient_GetSiteDetectorResponseSlot() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_ListSiteDiagnosticCategories.json
-func ExampleDiagnosticsClient_ListSiteDiagnosticCategoriesSlot() {
+func ExampleDiagnosticsClient_NewListSiteDiagnosticCategoriesSlotPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -434,7 +434,7 @@ func ExampleDiagnosticsClient_ListSiteDiagnosticCategoriesSlot() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListSiteDiagnosticCategoriesSlot("<resource-group-name>",
+	pager := client.NewListSiteDiagnosticCategoriesSlotPager("<resource-group-name>",
 		"<site-name>",
 		"<slot>",
 		nil)
@@ -479,7 +479,7 @@ func ExampleDiagnosticsClient_GetSiteDiagnosticCategorySlot() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_ListSiteAnalyses.json
-func ExampleDiagnosticsClient_ListSiteAnalysesSlot() {
+func ExampleDiagnosticsClient_NewListSiteAnalysesSlotPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -491,7 +491,7 @@ func ExampleDiagnosticsClient_ListSiteAnalysesSlot() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListSiteAnalysesSlot("<resource-group-name>",
+	pager := client.NewListSiteAnalysesSlotPager("<resource-group-name>",
 		"<site-name>",
 		"<diagnostic-category>",
 		"<slot>",
@@ -569,7 +569,7 @@ func ExampleDiagnosticsClient_ExecuteSiteAnalysisSlot() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_ListSiteDetectors.json
-func ExampleDiagnosticsClient_ListSiteDetectorsSlot() {
+func ExampleDiagnosticsClient_NewListSiteDetectorsSlotPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -581,7 +581,7 @@ func ExampleDiagnosticsClient_ListSiteDetectorsSlot() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListSiteDetectorsSlot("<resource-group-name>",
+	pager := client.NewListSiteDetectorsSlotPager("<resource-group-name>",
 		"<site-name>",
 		"<diagnostic-category>",
 		"<slot>",

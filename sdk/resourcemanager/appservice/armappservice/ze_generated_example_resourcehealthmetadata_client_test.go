@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListResourceHealthMetadataBySubscription.json
-func ExampleResourceHealthMetadataClient_List() {
+func ExampleResourceHealthMetadataClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleResourceHealthMetadataClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(nil)
+	pager := client.NewListPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -44,7 +44,7 @@ func ExampleResourceHealthMetadataClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListResourceHealthMetadataByResourceGroup.json
-func ExampleResourceHealthMetadataClient_ListByResourceGroup() {
+func ExampleResourceHealthMetadataClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -56,7 +56,7 @@ func ExampleResourceHealthMetadataClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -72,7 +72,7 @@ func ExampleResourceHealthMetadataClient_ListByResourceGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListResourceHealthMetadataBySite.json
-func ExampleResourceHealthMetadataClient_ListBySite() {
+func ExampleResourceHealthMetadataClient_NewListBySitePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -84,7 +84,7 @@ func ExampleResourceHealthMetadataClient_ListBySite() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySite("<resource-group-name>",
+	pager := client.NewListBySitePager("<resource-group-name>",
 		"<name>",
 		nil)
 	for pager.More() {
@@ -126,7 +126,7 @@ func ExampleResourceHealthMetadataClient_GetBySite() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListResourceHealthMetadataBySite.json
-func ExampleResourceHealthMetadataClient_ListBySiteSlot() {
+func ExampleResourceHealthMetadataClient_NewListBySiteSlotPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -138,7 +138,7 @@ func ExampleResourceHealthMetadataClient_ListBySiteSlot() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySiteSlot("<resource-group-name>",
+	pager := client.NewListBySiteSlotPager("<resource-group-name>",
 		"<name>",
 		"<slot>",
 		nil)

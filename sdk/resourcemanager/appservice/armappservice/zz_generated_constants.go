@@ -10,7 +10,7 @@ package armappservice
 
 const (
 	moduleName    = "armappservice"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.4.0"
 )
 
 // ActiveRevisionsMode - ActiveRevisionsMode controls how active revisions are handled for the Container app:Multiple: multiple

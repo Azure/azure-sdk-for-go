@@ -490,10 +490,10 @@ func (client *DomainsClient) getOwnershipIdentifierHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// List - Description for Get all domains in a subscription.
+// NewListPager - Description for Get all domains in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DomainsClientListOptions contains the optional parameters for the DomainsClient.List method.
-func (client *DomainsClient) List(options *DomainsClientListOptions) *runtime.Pager[DomainsClientListResponse] {
+func (client *DomainsClient) NewListPager(options *DomainsClientListOptions) *runtime.Pager[DomainsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DomainsClientListResponse]{
 		More: func(page DomainsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -548,12 +548,12 @@ func (client *DomainsClient) listHandleResponse(resp *http.Response) (DomainsCli
 	return result, nil
 }
 
-// ListByResourceGroup - Description for Get all domains in a resource group.
+// NewListByResourceGroupPager - Description for Get all domains in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // options - DomainsClientListByResourceGroupOptions contains the optional parameters for the DomainsClient.ListByResourceGroup
 // method.
-func (client *DomainsClient) ListByResourceGroup(resourceGroupName string, options *DomainsClientListByResourceGroupOptions) *runtime.Pager[DomainsClientListByResourceGroupResponse] {
+func (client *DomainsClient) NewListByResourceGroupPager(resourceGroupName string, options *DomainsClientListByResourceGroupOptions) *runtime.Pager[DomainsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DomainsClientListByResourceGroupResponse]{
 		More: func(page DomainsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -612,13 +612,13 @@ func (client *DomainsClient) listByResourceGroupHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListOwnershipIdentifiers - Description for Lists domain ownership identifiers.
+// NewListOwnershipIdentifiersPager - Description for Lists domain ownership identifiers.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // domainName - Name of domain.
 // options - DomainsClientListOwnershipIdentifiersOptions contains the optional parameters for the DomainsClient.ListOwnershipIdentifiers
 // method.
-func (client *DomainsClient) ListOwnershipIdentifiers(resourceGroupName string, domainName string, options *DomainsClientListOwnershipIdentifiersOptions) *runtime.Pager[DomainsClientListOwnershipIdentifiersResponse] {
+func (client *DomainsClient) NewListOwnershipIdentifiersPager(resourceGroupName string, domainName string, options *DomainsClientListOwnershipIdentifiersOptions) *runtime.Pager[DomainsClientListOwnershipIdentifiersResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DomainsClientListOwnershipIdentifiersResponse]{
 		More: func(page DomainsClientListOwnershipIdentifiersResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -681,12 +681,12 @@ func (client *DomainsClient) listOwnershipIdentifiersHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListRecommendations - Description for Get domain name recommendations based on keywords.
+// NewListRecommendationsPager - Description for Get domain name recommendations based on keywords.
 // If the operation fails it returns an *azcore.ResponseError type.
 // parameters - Search parameters for domain name recommendations.
 // options - DomainsClientListRecommendationsOptions contains the optional parameters for the DomainsClient.ListRecommendations
 // method.
-func (client *DomainsClient) ListRecommendations(parameters DomainRecommendationSearchParameters, options *DomainsClientListRecommendationsOptions) *runtime.Pager[DomainsClientListRecommendationsResponse] {
+func (client *DomainsClient) NewListRecommendationsPager(parameters DomainRecommendationSearchParameters, options *DomainsClientListRecommendationsOptions) *runtime.Pager[DomainsClientListRecommendationsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DomainsClientListRecommendationsResponse]{
 		More: func(page DomainsClientListRecommendationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

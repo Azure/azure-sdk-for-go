@@ -171,11 +171,11 @@ func (client *ResourceHealthMetadataClient) getBySiteSlotHandleResponse(resp *ht
 	return result, nil
 }
 
-// List - Description for List all ResourceHealthMetadata for all sites in the subscription.
+// NewListPager - Description for List all ResourceHealthMetadata for all sites in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ResourceHealthMetadataClientListOptions contains the optional parameters for the ResourceHealthMetadataClient.List
 // method.
-func (client *ResourceHealthMetadataClient) List(options *ResourceHealthMetadataClientListOptions) *runtime.Pager[ResourceHealthMetadataClientListResponse] {
+func (client *ResourceHealthMetadataClient) NewListPager(options *ResourceHealthMetadataClientListOptions) *runtime.Pager[ResourceHealthMetadataClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourceHealthMetadataClientListResponse]{
 		More: func(page ResourceHealthMetadataClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -230,12 +230,13 @@ func (client *ResourceHealthMetadataClient) listHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListByResourceGroup - Description for List all ResourceHealthMetadata for all sites in the resource group in the subscription.
+// NewListByResourceGroupPager - Description for List all ResourceHealthMetadata for all sites in the resource group in the
+// subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // options - ResourceHealthMetadataClientListByResourceGroupOptions contains the optional parameters for the ResourceHealthMetadataClient.ListByResourceGroup
 // method.
-func (client *ResourceHealthMetadataClient) ListByResourceGroup(resourceGroupName string, options *ResourceHealthMetadataClientListByResourceGroupOptions) *runtime.Pager[ResourceHealthMetadataClientListByResourceGroupResponse] {
+func (client *ResourceHealthMetadataClient) NewListByResourceGroupPager(resourceGroupName string, options *ResourceHealthMetadataClientListByResourceGroupOptions) *runtime.Pager[ResourceHealthMetadataClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourceHealthMetadataClientListByResourceGroupResponse]{
 		More: func(page ResourceHealthMetadataClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -294,13 +295,13 @@ func (client *ResourceHealthMetadataClient) listByResourceGroupHandleResponse(re
 	return result, nil
 }
 
-// ListBySite - Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection
+// NewListBySitePager - Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
 // options - ResourceHealthMetadataClientListBySiteOptions contains the optional parameters for the ResourceHealthMetadataClient.ListBySite
 // method.
-func (client *ResourceHealthMetadataClient) ListBySite(resourceGroupName string, name string, options *ResourceHealthMetadataClientListBySiteOptions) *runtime.Pager[ResourceHealthMetadataClientListBySiteResponse] {
+func (client *ResourceHealthMetadataClient) NewListBySitePager(resourceGroupName string, name string, options *ResourceHealthMetadataClientListBySiteOptions) *runtime.Pager[ResourceHealthMetadataClientListBySiteResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourceHealthMetadataClientListBySiteResponse]{
 		More: func(page ResourceHealthMetadataClientListBySiteResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -363,14 +364,14 @@ func (client *ResourceHealthMetadataClient) listBySiteHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListBySiteSlot - Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection
+// NewListBySiteSlotPager - Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
 // slot - Name of web app slot. If not specified then will default to production slot.
 // options - ResourceHealthMetadataClientListBySiteSlotOptions contains the optional parameters for the ResourceHealthMetadataClient.ListBySiteSlot
 // method.
-func (client *ResourceHealthMetadataClient) ListBySiteSlot(resourceGroupName string, name string, slot string, options *ResourceHealthMetadataClientListBySiteSlotOptions) *runtime.Pager[ResourceHealthMetadataClientListBySiteSlotResponse] {
+func (client *ResourceHealthMetadataClient) NewListBySiteSlotPager(resourceGroupName string, name string, slot string, options *ResourceHealthMetadataClientListBySiteSlotOptions) *runtime.Pager[ResourceHealthMetadataClientListBySiteSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourceHealthMetadataClientListBySiteSlotResponse]{
 		More: func(page ResourceHealthMetadataClientListBySiteSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

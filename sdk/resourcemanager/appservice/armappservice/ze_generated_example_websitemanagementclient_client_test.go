@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListCustomHostNameSites.json
-func ExampleWebSiteManagementClient_ListCustomHostNameSites() {
+func ExampleWebSiteManagementClient_NewListCustomHostNameSitesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleWebSiteManagementClient_ListCustomHostNameSites() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListCustomHostNameSites(nil)
+	pager := client.NewListCustomHostNameSitesPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

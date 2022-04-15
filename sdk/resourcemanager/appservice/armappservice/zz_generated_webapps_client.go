@@ -5822,13 +5822,13 @@ func (client *WebAppsClient) getAppSettingKeyVaultReferenceSlotHandleResponse(re
 	return result, nil
 }
 
-// GetAppSettingsKeyVaultReferences - Description for Gets the config reference app settings and status of an app
+// NewGetAppSettingsKeyVaultReferencesPager - Description for Gets the config reference app settings and status of an app
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
 // options - WebAppsClientGetAppSettingsKeyVaultReferencesOptions contains the optional parameters for the WebAppsClient.GetAppSettingsKeyVaultReferences
 // method.
-func (client *WebAppsClient) GetAppSettingsKeyVaultReferences(resourceGroupName string, name string, options *WebAppsClientGetAppSettingsKeyVaultReferencesOptions) *runtime.Pager[WebAppsClientGetAppSettingsKeyVaultReferencesResponse] {
+func (client *WebAppsClient) NewGetAppSettingsKeyVaultReferencesPager(resourceGroupName string, name string, options *WebAppsClientGetAppSettingsKeyVaultReferencesOptions) *runtime.Pager[WebAppsClientGetAppSettingsKeyVaultReferencesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientGetAppSettingsKeyVaultReferencesResponse]{
 		More: func(page WebAppsClientGetAppSettingsKeyVaultReferencesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -5891,13 +5891,14 @@ func (client *WebAppsClient) getAppSettingsKeyVaultReferencesHandleResponse(resp
 	return result, nil
 }
 
-// GetAppSettingsKeyVaultReferencesSlot - Description for Gets the config reference app settings and status of an app
+// NewGetAppSettingsKeyVaultReferencesSlotPager - Description for Gets the config reference app settings and status of an
+// app
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
 // options - WebAppsClientGetAppSettingsKeyVaultReferencesSlotOptions contains the optional parameters for the WebAppsClient.GetAppSettingsKeyVaultReferencesSlot
 // method.
-func (client *WebAppsClient) GetAppSettingsKeyVaultReferencesSlot(resourceGroupName string, name string, slot string, options *WebAppsClientGetAppSettingsKeyVaultReferencesSlotOptions) *runtime.Pager[WebAppsClientGetAppSettingsKeyVaultReferencesSlotResponse] {
+func (client *WebAppsClient) NewGetAppSettingsKeyVaultReferencesSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientGetAppSettingsKeyVaultReferencesSlotOptions) *runtime.Pager[WebAppsClientGetAppSettingsKeyVaultReferencesSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientGetAppSettingsKeyVaultReferencesSlotResponse]{
 		More: func(page WebAppsClientGetAppSettingsKeyVaultReferencesSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -10047,13 +10048,14 @@ func (client *WebAppsClient) getPrivateEndpointConnectionHandleResponse(resp *ht
 	return result, nil
 }
 
-// GetPrivateEndpointConnectionList - Description for Gets the list of private endpoint connections associated with a site
+// NewGetPrivateEndpointConnectionListPager - Description for Gets the list of private endpoint connections associated with
+// a site
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the site.
 // options - WebAppsClientGetPrivateEndpointConnectionListOptions contains the optional parameters for the WebAppsClient.GetPrivateEndpointConnectionList
 // method.
-func (client *WebAppsClient) GetPrivateEndpointConnectionList(resourceGroupName string, name string, options *WebAppsClientGetPrivateEndpointConnectionListOptions) *runtime.Pager[WebAppsClientGetPrivateEndpointConnectionListResponse] {
+func (client *WebAppsClient) NewGetPrivateEndpointConnectionListPager(resourceGroupName string, name string, options *WebAppsClientGetPrivateEndpointConnectionListOptions) *runtime.Pager[WebAppsClientGetPrivateEndpointConnectionListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientGetPrivateEndpointConnectionListResponse]{
 		More: func(page WebAppsClientGetPrivateEndpointConnectionListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -10116,15 +10118,15 @@ func (client *WebAppsClient) getPrivateEndpointConnectionListHandleResponse(resp
 	return result, nil
 }
 
-// GetPrivateEndpointConnectionListSlot - Description for Gets the list of private endpoint connections associated with a
-// site
+// NewGetPrivateEndpointConnectionListSlotPager - Description for Gets the list of private endpoint connections associated
+// with a site
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the site.
 // slot - Name of the site deployment slot.
 // options - WebAppsClientGetPrivateEndpointConnectionListSlotOptions contains the optional parameters for the WebAppsClient.GetPrivateEndpointConnectionListSlot
 // method.
-func (client *WebAppsClient) GetPrivateEndpointConnectionListSlot(resourceGroupName string, name string, slot string, options *WebAppsClientGetPrivateEndpointConnectionListSlotOptions) *runtime.Pager[WebAppsClientGetPrivateEndpointConnectionListSlotResponse] {
+func (client *WebAppsClient) NewGetPrivateEndpointConnectionListSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientGetPrivateEndpointConnectionListSlotOptions) *runtime.Pager[WebAppsClientGetPrivateEndpointConnectionListSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientGetPrivateEndpointConnectionListSlotResponse]{
 		More: func(page WebAppsClientGetPrivateEndpointConnectionListSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -11240,13 +11242,14 @@ func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferenceSlotHandleR
 	return result, nil
 }
 
-// GetSiteConnectionStringKeyVaultReferences - Description for Gets the config reference app settings and status of an app
+// NewGetSiteConnectionStringKeyVaultReferencesPager - Description for Gets the config reference app settings and status of
+// an app
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
 // options - WebAppsClientGetSiteConnectionStringKeyVaultReferencesOptions contains the optional parameters for the WebAppsClient.GetSiteConnectionStringKeyVaultReferences
 // method.
-func (client *WebAppsClient) GetSiteConnectionStringKeyVaultReferences(resourceGroupName string, name string, options *WebAppsClientGetSiteConnectionStringKeyVaultReferencesOptions) *runtime.Pager[WebAppsClientGetSiteConnectionStringKeyVaultReferencesResponse] {
+func (client *WebAppsClient) NewGetSiteConnectionStringKeyVaultReferencesPager(resourceGroupName string, name string, options *WebAppsClientGetSiteConnectionStringKeyVaultReferencesOptions) *runtime.Pager[WebAppsClientGetSiteConnectionStringKeyVaultReferencesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientGetSiteConnectionStringKeyVaultReferencesResponse]{
 		More: func(page WebAppsClientGetSiteConnectionStringKeyVaultReferencesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -11309,14 +11312,14 @@ func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferencesHandleResp
 	return result, nil
 }
 
-// GetSiteConnectionStringKeyVaultReferencesSlot - Description for Gets the config reference app settings and status of an
-// app
+// NewGetSiteConnectionStringKeyVaultReferencesSlotPager - Description for Gets the config reference app settings and status
+// of an app
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
 // options - WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotOptions contains the optional parameters for the WebAppsClient.GetSiteConnectionStringKeyVaultReferencesSlot
 // method.
-func (client *WebAppsClient) GetSiteConnectionStringKeyVaultReferencesSlot(resourceGroupName string, name string, slot string, options *WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotOptions) *runtime.Pager[WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResponse] {
+func (client *WebAppsClient) NewGetSiteConnectionStringKeyVaultReferencesSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotOptions) *runtime.Pager[WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResponse]{
 		More: func(page WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -12933,10 +12936,10 @@ func (client *WebAppsClient) isCloneableSlotHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// List - Description for Get all apps for a subscription.
+// NewListPager - Description for Get all apps for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - WebAppsClientListOptions contains the optional parameters for the WebAppsClient.List method.
-func (client *WebAppsClient) List(options *WebAppsClientListOptions) *runtime.Pager[WebAppsClientListResponse] {
+func (client *WebAppsClient) NewListPager(options *WebAppsClientListOptions) *runtime.Pager[WebAppsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListResponse]{
 		More: func(page WebAppsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -13360,12 +13363,12 @@ func (client *WebAppsClient) listBackupStatusSecretsSlotHandleResponse(resp *htt
 	return result, nil
 }
 
-// ListBackups - Description for Gets existing backups of an app.
+// NewListBackupsPager - Description for Gets existing backups of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
 // options - WebAppsClientListBackupsOptions contains the optional parameters for the WebAppsClient.ListBackups method.
-func (client *WebAppsClient) ListBackups(resourceGroupName string, name string, options *WebAppsClientListBackupsOptions) *runtime.Pager[WebAppsClientListBackupsResponse] {
+func (client *WebAppsClient) NewListBackupsPager(resourceGroupName string, name string, options *WebAppsClientListBackupsOptions) *runtime.Pager[WebAppsClientListBackupsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListBackupsResponse]{
 		More: func(page WebAppsClientListBackupsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -13428,13 +13431,13 @@ func (client *WebAppsClient) listBackupsHandleResponse(resp *http.Response) (Web
 	return result, nil
 }
 
-// ListBackupsSlot - Description for Gets existing backups of an app.
+// NewListBackupsSlotPager - Description for Gets existing backups of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
 // slot - Name of the deployment slot. If a slot is not specified, the API will get backups of the production slot.
 // options - WebAppsClientListBackupsSlotOptions contains the optional parameters for the WebAppsClient.ListBackupsSlot method.
-func (client *WebAppsClient) ListBackupsSlot(resourceGroupName string, name string, slot string, options *WebAppsClientListBackupsSlotOptions) *runtime.Pager[WebAppsClientListBackupsSlotResponse] {
+func (client *WebAppsClient) NewListBackupsSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListBackupsSlotOptions) *runtime.Pager[WebAppsClientListBackupsSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListBackupsSlotResponse]{
 		More: func(page WebAppsClientListBackupsSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -13501,14 +13504,14 @@ func (client *WebAppsClient) listBackupsSlotHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListBasicPublishingCredentialsPolicies - Description for Returns whether Scm basic auth is allowed and whether Ftp is allowed
-// for a given site.
+// NewListBasicPublishingCredentialsPoliciesPager - Description for Returns whether Scm basic auth is allowed and whether
+// Ftp is allowed for a given site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
 // options - WebAppsClientListBasicPublishingCredentialsPoliciesOptions contains the optional parameters for the WebAppsClient.ListBasicPublishingCredentialsPolicies
 // method.
-func (client *WebAppsClient) ListBasicPublishingCredentialsPolicies(resourceGroupName string, name string, options *WebAppsClientListBasicPublishingCredentialsPoliciesOptions) *runtime.Pager[WebAppsClientListBasicPublishingCredentialsPoliciesResponse] {
+func (client *WebAppsClient) NewListBasicPublishingCredentialsPoliciesPager(resourceGroupName string, name string, options *WebAppsClientListBasicPublishingCredentialsPoliciesOptions) *runtime.Pager[WebAppsClientListBasicPublishingCredentialsPoliciesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListBasicPublishingCredentialsPoliciesResponse]{
 		More: func(page WebAppsClientListBasicPublishingCredentialsPoliciesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -13571,14 +13574,14 @@ func (client *WebAppsClient) listBasicPublishingCredentialsPoliciesHandleRespons
 	return result, nil
 }
 
-// ListBasicPublishingCredentialsPoliciesSlot - Description for Returns whether Scm basic auth is allowed and whether Ftp
-// is allowed for a given site.
+// NewListBasicPublishingCredentialsPoliciesSlotPager - Description for Returns whether Scm basic auth is allowed and whether
+// Ftp is allowed for a given site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
 // options - WebAppsClientListBasicPublishingCredentialsPoliciesSlotOptions contains the optional parameters for the WebAppsClient.ListBasicPublishingCredentialsPoliciesSlot
 // method.
-func (client *WebAppsClient) ListBasicPublishingCredentialsPoliciesSlot(resourceGroupName string, name string, slot string, options *WebAppsClientListBasicPublishingCredentialsPoliciesSlotOptions) *runtime.Pager[WebAppsClientListBasicPublishingCredentialsPoliciesSlotResponse] {
+func (client *WebAppsClient) NewListBasicPublishingCredentialsPoliciesSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListBasicPublishingCredentialsPoliciesSlotOptions) *runtime.Pager[WebAppsClientListBasicPublishingCredentialsPoliciesSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListBasicPublishingCredentialsPoliciesSlotResponse]{
 		More: func(page WebAppsClientListBasicPublishingCredentialsPoliciesSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -13645,12 +13648,12 @@ func (client *WebAppsClient) listBasicPublishingCredentialsPoliciesSlotHandleRes
 	return result, nil
 }
 
-// ListByResourceGroup - Description for Gets all web, mobile, and API apps in the specified resource group.
+// NewListByResourceGroupPager - Description for Gets all web, mobile, and API apps in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // options - WebAppsClientListByResourceGroupOptions contains the optional parameters for the WebAppsClient.ListByResourceGroup
 // method.
-func (client *WebAppsClient) ListByResourceGroup(resourceGroupName string, options *WebAppsClientListByResourceGroupOptions) *runtime.Pager[WebAppsClientListByResourceGroupResponse] {
+func (client *WebAppsClient) NewListByResourceGroupPager(resourceGroupName string, options *WebAppsClientListByResourceGroupOptions) *runtime.Pager[WebAppsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListByResourceGroupResponse]{
 		More: func(page WebAppsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -13712,14 +13715,14 @@ func (client *WebAppsClient) listByResourceGroupHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListConfigurationSnapshotInfo - Description for Gets a list of web app configuration snapshots identifiers. Each element
-// of the list contains a timestamp and the ID of the snapshot.
+// NewListConfigurationSnapshotInfoPager - Description for Gets a list of web app configuration snapshots identifiers. Each
+// element of the list contains a timestamp and the ID of the snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
 // options - WebAppsClientListConfigurationSnapshotInfoOptions contains the optional parameters for the WebAppsClient.ListConfigurationSnapshotInfo
 // method.
-func (client *WebAppsClient) ListConfigurationSnapshotInfo(resourceGroupName string, name string, options *WebAppsClientListConfigurationSnapshotInfoOptions) *runtime.Pager[WebAppsClientListConfigurationSnapshotInfoResponse] {
+func (client *WebAppsClient) NewListConfigurationSnapshotInfoPager(resourceGroupName string, name string, options *WebAppsClientListConfigurationSnapshotInfoOptions) *runtime.Pager[WebAppsClientListConfigurationSnapshotInfoResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListConfigurationSnapshotInfoResponse]{
 		More: func(page WebAppsClientListConfigurationSnapshotInfoResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -13782,15 +13785,15 @@ func (client *WebAppsClient) listConfigurationSnapshotInfoHandleResponse(resp *h
 	return result, nil
 }
 
-// ListConfigurationSnapshotInfoSlot - Description for Gets a list of web app configuration snapshots identifiers. Each element
-// of the list contains a timestamp and the ID of the snapshot.
+// NewListConfigurationSnapshotInfoSlotPager - Description for Gets a list of web app configuration snapshots identifiers.
+// Each element of the list contains a timestamp and the ID of the snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
 // slot - Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
 // options - WebAppsClientListConfigurationSnapshotInfoSlotOptions contains the optional parameters for the WebAppsClient.ListConfigurationSnapshotInfoSlot
 // method.
-func (client *WebAppsClient) ListConfigurationSnapshotInfoSlot(resourceGroupName string, name string, slot string, options *WebAppsClientListConfigurationSnapshotInfoSlotOptions) *runtime.Pager[WebAppsClientListConfigurationSnapshotInfoSlotResponse] {
+func (client *WebAppsClient) NewListConfigurationSnapshotInfoSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListConfigurationSnapshotInfoSlotOptions) *runtime.Pager[WebAppsClientListConfigurationSnapshotInfoSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListConfigurationSnapshotInfoSlotResponse]{
 		More: func(page WebAppsClientListConfigurationSnapshotInfoSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -13857,13 +13860,13 @@ func (client *WebAppsClient) listConfigurationSnapshotInfoSlotHandleResponse(res
 	return result, nil
 }
 
-// ListConfigurations - Description for List the configurations of an app
+// NewListConfigurationsPager - Description for List the configurations of an app
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
 // options - WebAppsClientListConfigurationsOptions contains the optional parameters for the WebAppsClient.ListConfigurations
 // method.
-func (client *WebAppsClient) ListConfigurations(resourceGroupName string, name string, options *WebAppsClientListConfigurationsOptions) *runtime.Pager[WebAppsClientListConfigurationsResponse] {
+func (client *WebAppsClient) NewListConfigurationsPager(resourceGroupName string, name string, options *WebAppsClientListConfigurationsOptions) *runtime.Pager[WebAppsClientListConfigurationsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListConfigurationsResponse]{
 		More: func(page WebAppsClientListConfigurationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -13926,14 +13929,14 @@ func (client *WebAppsClient) listConfigurationsHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListConfigurationsSlot - Description for List the configurations of an app
+// NewListConfigurationsSlotPager - Description for List the configurations of an app
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
 // slot - Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
 // options - WebAppsClientListConfigurationsSlotOptions contains the optional parameters for the WebAppsClient.ListConfigurationsSlot
 // method.
-func (client *WebAppsClient) ListConfigurationsSlot(resourceGroupName string, name string, slot string, options *WebAppsClientListConfigurationsSlotOptions) *runtime.Pager[WebAppsClientListConfigurationsSlotResponse] {
+func (client *WebAppsClient) NewListConfigurationsSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListConfigurationsSlotOptions) *runtime.Pager[WebAppsClientListConfigurationsSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListConfigurationsSlotResponse]{
 		More: func(page WebAppsClientListConfigurationsSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -14118,13 +14121,13 @@ func (client *WebAppsClient) listConnectionStringsSlotHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListContinuousWebJobs - Description for List continuous web jobs for an app, or a deployment slot.
+// NewListContinuousWebJobsPager - Description for List continuous web jobs for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
 // options - WebAppsClientListContinuousWebJobsOptions contains the optional parameters for the WebAppsClient.ListContinuousWebJobs
 // method.
-func (client *WebAppsClient) ListContinuousWebJobs(resourceGroupName string, name string, options *WebAppsClientListContinuousWebJobsOptions) *runtime.Pager[WebAppsClientListContinuousWebJobsResponse] {
+func (client *WebAppsClient) NewListContinuousWebJobsPager(resourceGroupName string, name string, options *WebAppsClientListContinuousWebJobsOptions) *runtime.Pager[WebAppsClientListContinuousWebJobsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListContinuousWebJobsResponse]{
 		More: func(page WebAppsClientListContinuousWebJobsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -14187,14 +14190,14 @@ func (client *WebAppsClient) listContinuousWebJobsHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListContinuousWebJobsSlot - Description for List continuous web jobs for an app, or a deployment slot.
+// NewListContinuousWebJobsSlotPager - Description for List continuous web jobs for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
 // slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
 // options - WebAppsClientListContinuousWebJobsSlotOptions contains the optional parameters for the WebAppsClient.ListContinuousWebJobsSlot
 // method.
-func (client *WebAppsClient) ListContinuousWebJobsSlot(resourceGroupName string, name string, slot string, options *WebAppsClientListContinuousWebJobsSlotOptions) *runtime.Pager[WebAppsClientListContinuousWebJobsSlotResponse] {
+func (client *WebAppsClient) NewListContinuousWebJobsSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListContinuousWebJobsSlotOptions) *runtime.Pager[WebAppsClientListContinuousWebJobsSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListContinuousWebJobsSlotResponse]{
 		More: func(page WebAppsClientListContinuousWebJobsSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -14388,12 +14391,12 @@ func (client *WebAppsClient) listDeploymentLogSlotHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListDeployments - Description for List deployments for an app, or a deployment slot.
+// NewListDeploymentsPager - Description for List deployments for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
 // options - WebAppsClientListDeploymentsOptions contains the optional parameters for the WebAppsClient.ListDeployments method.
-func (client *WebAppsClient) ListDeployments(resourceGroupName string, name string, options *WebAppsClientListDeploymentsOptions) *runtime.Pager[WebAppsClientListDeploymentsResponse] {
+func (client *WebAppsClient) NewListDeploymentsPager(resourceGroupName string, name string, options *WebAppsClientListDeploymentsOptions) *runtime.Pager[WebAppsClientListDeploymentsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListDeploymentsResponse]{
 		More: func(page WebAppsClientListDeploymentsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -14456,14 +14459,14 @@ func (client *WebAppsClient) listDeploymentsHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListDeploymentsSlot - Description for List deployments for an app, or a deployment slot.
+// NewListDeploymentsSlotPager - Description for List deployments for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
 // slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
 // options - WebAppsClientListDeploymentsSlotOptions contains the optional parameters for the WebAppsClient.ListDeploymentsSlot
 // method.
-func (client *WebAppsClient) ListDeploymentsSlot(resourceGroupName string, name string, slot string, options *WebAppsClientListDeploymentsSlotOptions) *runtime.Pager[WebAppsClientListDeploymentsSlotResponse] {
+func (client *WebAppsClient) NewListDeploymentsSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListDeploymentsSlotOptions) *runtime.Pager[WebAppsClientListDeploymentsSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListDeploymentsSlotResponse]{
 		More: func(page WebAppsClientListDeploymentsSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -14530,13 +14533,13 @@ func (client *WebAppsClient) listDeploymentsSlotHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListDomainOwnershipIdentifiers - Description for Lists ownership identifiers for domain associated with web app.
+// NewListDomainOwnershipIdentifiersPager - Description for Lists ownership identifiers for domain associated with web app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
 // options - WebAppsClientListDomainOwnershipIdentifiersOptions contains the optional parameters for the WebAppsClient.ListDomainOwnershipIdentifiers
 // method.
-func (client *WebAppsClient) ListDomainOwnershipIdentifiers(resourceGroupName string, name string, options *WebAppsClientListDomainOwnershipIdentifiersOptions) *runtime.Pager[WebAppsClientListDomainOwnershipIdentifiersResponse] {
+func (client *WebAppsClient) NewListDomainOwnershipIdentifiersPager(resourceGroupName string, name string, options *WebAppsClientListDomainOwnershipIdentifiersOptions) *runtime.Pager[WebAppsClientListDomainOwnershipIdentifiersResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListDomainOwnershipIdentifiersResponse]{
 		More: func(page WebAppsClientListDomainOwnershipIdentifiersResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -14599,14 +14602,15 @@ func (client *WebAppsClient) listDomainOwnershipIdentifiersHandleResponse(resp *
 	return result, nil
 }
 
-// ListDomainOwnershipIdentifiersSlot - Description for Lists ownership identifiers for domain associated with web app.
+// NewListDomainOwnershipIdentifiersSlotPager - Description for Lists ownership identifiers for domain associated with web
+// app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
 // slot - Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
 // options - WebAppsClientListDomainOwnershipIdentifiersSlotOptions contains the optional parameters for the WebAppsClient.ListDomainOwnershipIdentifiersSlot
 // method.
-func (client *WebAppsClient) ListDomainOwnershipIdentifiersSlot(resourceGroupName string, name string, slot string, options *WebAppsClientListDomainOwnershipIdentifiersSlotOptions) *runtime.Pager[WebAppsClientListDomainOwnershipIdentifiersSlotResponse] {
+func (client *WebAppsClient) NewListDomainOwnershipIdentifiersSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListDomainOwnershipIdentifiersSlotOptions) *runtime.Pager[WebAppsClientListDomainOwnershipIdentifiersSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListDomainOwnershipIdentifiersSlotResponse]{
 		More: func(page WebAppsClientListDomainOwnershipIdentifiersSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -14927,12 +14931,12 @@ func (client *WebAppsClient) listFunctionSecretsSlotHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListFunctions - Description for List the functions for a web site, or a deployment slot.
+// NewListFunctionsPager - Description for List the functions for a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
 // options - WebAppsClientListFunctionsOptions contains the optional parameters for the WebAppsClient.ListFunctions method.
-func (client *WebAppsClient) ListFunctions(resourceGroupName string, name string, options *WebAppsClientListFunctionsOptions) *runtime.Pager[WebAppsClientListFunctionsResponse] {
+func (client *WebAppsClient) NewListFunctionsPager(resourceGroupName string, name string, options *WebAppsClientListFunctionsOptions) *runtime.Pager[WebAppsClientListFunctionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListFunctionsResponse]{
 		More: func(page WebAppsClientListFunctionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -15111,13 +15115,13 @@ func (client *WebAppsClient) listHostKeysSlotHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListHostNameBindings - Description for Get hostname bindings for an app or a deployment slot.
+// NewListHostNameBindingsPager - Description for Get hostname bindings for an app or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
 // options - WebAppsClientListHostNameBindingsOptions contains the optional parameters for the WebAppsClient.ListHostNameBindings
 // method.
-func (client *WebAppsClient) ListHostNameBindings(resourceGroupName string, name string, options *WebAppsClientListHostNameBindingsOptions) *runtime.Pager[WebAppsClientListHostNameBindingsResponse] {
+func (client *WebAppsClient) NewListHostNameBindingsPager(resourceGroupName string, name string, options *WebAppsClientListHostNameBindingsOptions) *runtime.Pager[WebAppsClientListHostNameBindingsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListHostNameBindingsResponse]{
 		More: func(page WebAppsClientListHostNameBindingsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -15180,14 +15184,14 @@ func (client *WebAppsClient) listHostNameBindingsHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListHostNameBindingsSlot - Description for Get hostname bindings for an app or a deployment slot.
+// NewListHostNameBindingsSlotPager - Description for Get hostname bindings for an app or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
 // slot - Name of the deployment slot. If a slot is not specified, the API gets hostname bindings for the production slot.
 // options - WebAppsClientListHostNameBindingsSlotOptions contains the optional parameters for the WebAppsClient.ListHostNameBindingsSlot
 // method.
-func (client *WebAppsClient) ListHostNameBindingsSlot(resourceGroupName string, name string, slot string, options *WebAppsClientListHostNameBindingsSlotOptions) *runtime.Pager[WebAppsClientListHostNameBindingsSlotResponse] {
+func (client *WebAppsClient) NewListHostNameBindingsSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListHostNameBindingsSlotOptions) *runtime.Pager[WebAppsClientListHostNameBindingsSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListHostNameBindingsSlotResponse]{
 		More: func(page WebAppsClientListHostNameBindingsSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -15371,14 +15375,14 @@ func (client *WebAppsClient) listHybridConnectionsSlotHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListInstanceFunctionsSlot - Description for List the functions for a web site, or a deployment slot.
+// NewListInstanceFunctionsSlotPager - Description for List the functions for a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
 // slot - Name of the deployment slot.
 // options - WebAppsClientListInstanceFunctionsSlotOptions contains the optional parameters for the WebAppsClient.ListInstanceFunctionsSlot
 // method.
-func (client *WebAppsClient) ListInstanceFunctionsSlot(resourceGroupName string, name string, slot string, options *WebAppsClientListInstanceFunctionsSlotOptions) *runtime.Pager[WebAppsClientListInstanceFunctionsSlotResponse] {
+func (client *WebAppsClient) NewListInstanceFunctionsSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListInstanceFunctionsSlotOptions) *runtime.Pager[WebAppsClientListInstanceFunctionsSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListInstanceFunctionsSlotResponse]{
 		More: func(page WebAppsClientListInstanceFunctionsSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -15445,13 +15449,13 @@ func (client *WebAppsClient) listInstanceFunctionsSlotHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListInstanceIdentifiers - Description for Gets all scale-out instances of an app.
+// NewListInstanceIdentifiersPager - Description for Gets all scale-out instances of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
 // options - WebAppsClientListInstanceIdentifiersOptions contains the optional parameters for the WebAppsClient.ListInstanceIdentifiers
 // method.
-func (client *WebAppsClient) ListInstanceIdentifiers(resourceGroupName string, name string, options *WebAppsClientListInstanceIdentifiersOptions) *runtime.Pager[WebAppsClientListInstanceIdentifiersResponse] {
+func (client *WebAppsClient) NewListInstanceIdentifiersPager(resourceGroupName string, name string, options *WebAppsClientListInstanceIdentifiersOptions) *runtime.Pager[WebAppsClientListInstanceIdentifiersResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListInstanceIdentifiersResponse]{
 		More: func(page WebAppsClientListInstanceIdentifiersResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -15514,14 +15518,14 @@ func (client *WebAppsClient) listInstanceIdentifiersHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListInstanceIdentifiersSlot - Description for Gets all scale-out instances of an app.
+// NewListInstanceIdentifiersSlotPager - Description for Gets all scale-out instances of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
 // slot - Name of the deployment slot. If a slot is not specified, the API gets the production slot instances.
 // options - WebAppsClientListInstanceIdentifiersSlotOptions contains the optional parameters for the WebAppsClient.ListInstanceIdentifiersSlot
 // method.
-func (client *WebAppsClient) ListInstanceIdentifiersSlot(resourceGroupName string, name string, slot string, options *WebAppsClientListInstanceIdentifiersSlotOptions) *runtime.Pager[WebAppsClientListInstanceIdentifiersSlotResponse] {
+func (client *WebAppsClient) NewListInstanceIdentifiersSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListInstanceIdentifiersSlotOptions) *runtime.Pager[WebAppsClientListInstanceIdentifiersSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListInstanceIdentifiersSlotResponse]{
 		More: func(page WebAppsClientListInstanceIdentifiersSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -15588,7 +15592,7 @@ func (client *WebAppsClient) listInstanceIdentifiersSlotHandleResponse(resp *htt
 	return result, nil
 }
 
-// ListInstanceProcessModules - Description for List module information for a process by its ID for a specific scaled-out
+// NewListInstanceProcessModulesPager - Description for List module information for a process by its ID for a specific scaled-out
 // instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
@@ -15598,7 +15602,7 @@ func (client *WebAppsClient) listInstanceIdentifiersSlotHandleResponse(resp *htt
 // api/sites/{siteName}/instances".
 // options - WebAppsClientListInstanceProcessModulesOptions contains the optional parameters for the WebAppsClient.ListInstanceProcessModules
 // method.
-func (client *WebAppsClient) ListInstanceProcessModules(resourceGroupName string, name string, processID string, instanceID string, options *WebAppsClientListInstanceProcessModulesOptions) *runtime.Pager[WebAppsClientListInstanceProcessModulesResponse] {
+func (client *WebAppsClient) NewListInstanceProcessModulesPager(resourceGroupName string, name string, processID string, instanceID string, options *WebAppsClientListInstanceProcessModulesOptions) *runtime.Pager[WebAppsClientListInstanceProcessModulesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListInstanceProcessModulesResponse]{
 		More: func(page WebAppsClientListInstanceProcessModulesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -15669,8 +15673,8 @@ func (client *WebAppsClient) listInstanceProcessModulesHandleResponse(resp *http
 	return result, nil
 }
 
-// ListInstanceProcessModulesSlot - Description for List module information for a process by its ID for a specific scaled-out
-// instance in a web site.
+// NewListInstanceProcessModulesSlotPager - Description for List module information for a process by its ID for a specific
+// scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -15680,7 +15684,7 @@ func (client *WebAppsClient) listInstanceProcessModulesHandleResponse(resp *http
 // api/sites/{siteName}/instances".
 // options - WebAppsClientListInstanceProcessModulesSlotOptions contains the optional parameters for the WebAppsClient.ListInstanceProcessModulesSlot
 // method.
-func (client *WebAppsClient) ListInstanceProcessModulesSlot(resourceGroupName string, name string, processID string, slot string, instanceID string, options *WebAppsClientListInstanceProcessModulesSlotOptions) *runtime.Pager[WebAppsClientListInstanceProcessModulesSlotResponse] {
+func (client *WebAppsClient) NewListInstanceProcessModulesSlotPager(resourceGroupName string, name string, processID string, slot string, instanceID string, options *WebAppsClientListInstanceProcessModulesSlotOptions) *runtime.Pager[WebAppsClientListInstanceProcessModulesSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListInstanceProcessModulesSlotResponse]{
 		More: func(page WebAppsClientListInstanceProcessModulesSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -15755,8 +15759,8 @@ func (client *WebAppsClient) listInstanceProcessModulesSlotHandleResponse(resp *
 	return result, nil
 }
 
-// ListInstanceProcessThreads - Description for List the threads in a process by its ID for a specific scaled-out instance
-// in a web site.
+// NewListInstanceProcessThreadsPager - Description for List the threads in a process by its ID for a specific scaled-out
+// instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -15765,7 +15769,7 @@ func (client *WebAppsClient) listInstanceProcessModulesSlotHandleResponse(resp *
 // api/sites/{siteName}/instances".
 // options - WebAppsClientListInstanceProcessThreadsOptions contains the optional parameters for the WebAppsClient.ListInstanceProcessThreads
 // method.
-func (client *WebAppsClient) ListInstanceProcessThreads(resourceGroupName string, name string, processID string, instanceID string, options *WebAppsClientListInstanceProcessThreadsOptions) *runtime.Pager[WebAppsClientListInstanceProcessThreadsResponse] {
+func (client *WebAppsClient) NewListInstanceProcessThreadsPager(resourceGroupName string, name string, processID string, instanceID string, options *WebAppsClientListInstanceProcessThreadsOptions) *runtime.Pager[WebAppsClientListInstanceProcessThreadsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListInstanceProcessThreadsResponse]{
 		More: func(page WebAppsClientListInstanceProcessThreadsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -15836,8 +15840,8 @@ func (client *WebAppsClient) listInstanceProcessThreadsHandleResponse(resp *http
 	return result, nil
 }
 
-// ListInstanceProcessThreadsSlot - Description for List the threads in a process by its ID for a specific scaled-out instance
-// in a web site.
+// NewListInstanceProcessThreadsSlotPager - Description for List the threads in a process by its ID for a specific scaled-out
+// instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -15847,7 +15851,7 @@ func (client *WebAppsClient) listInstanceProcessThreadsHandleResponse(resp *http
 // api/sites/{siteName}/instances".
 // options - WebAppsClientListInstanceProcessThreadsSlotOptions contains the optional parameters for the WebAppsClient.ListInstanceProcessThreadsSlot
 // method.
-func (client *WebAppsClient) ListInstanceProcessThreadsSlot(resourceGroupName string, name string, processID string, slot string, instanceID string, options *WebAppsClientListInstanceProcessThreadsSlotOptions) *runtime.Pager[WebAppsClientListInstanceProcessThreadsSlotResponse] {
+func (client *WebAppsClient) NewListInstanceProcessThreadsSlotPager(resourceGroupName string, name string, processID string, slot string, instanceID string, options *WebAppsClientListInstanceProcessThreadsSlotOptions) *runtime.Pager[WebAppsClientListInstanceProcessThreadsSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListInstanceProcessThreadsSlotResponse]{
 		More: func(page WebAppsClientListInstanceProcessThreadsSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -15922,8 +15926,8 @@ func (client *WebAppsClient) listInstanceProcessThreadsSlotHandleResponse(resp *
 	return result, nil
 }
 
-// ListInstanceProcesses - Description for Get list of processes for a web site, or a deployment slot, or for a specific scaled-out
-// instance in a web site.
+// NewListInstanceProcessesPager - Description for Get list of processes for a web site, or a deployment slot, or for a specific
+// scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -15931,7 +15935,7 @@ func (client *WebAppsClient) listInstanceProcessThreadsSlotHandleResponse(resp *
 // api/sites/{siteName}/instances".
 // options - WebAppsClientListInstanceProcessesOptions contains the optional parameters for the WebAppsClient.ListInstanceProcesses
 // method.
-func (client *WebAppsClient) ListInstanceProcesses(resourceGroupName string, name string, instanceID string, options *WebAppsClientListInstanceProcessesOptions) *runtime.Pager[WebAppsClientListInstanceProcessesResponse] {
+func (client *WebAppsClient) NewListInstanceProcessesPager(resourceGroupName string, name string, instanceID string, options *WebAppsClientListInstanceProcessesOptions) *runtime.Pager[WebAppsClientListInstanceProcessesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListInstanceProcessesResponse]{
 		More: func(page WebAppsClientListInstanceProcessesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -15998,8 +16002,8 @@ func (client *WebAppsClient) listInstanceProcessesHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListInstanceProcessesSlot - Description for Get list of processes for a web site, or a deployment slot, or for a specific
-// scaled-out instance in a web site.
+// NewListInstanceProcessesSlotPager - Description for Get list of processes for a web site, or a deployment slot, or for
+// a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -16008,7 +16012,7 @@ func (client *WebAppsClient) listInstanceProcessesHandleResponse(resp *http.Resp
 // api/sites/{siteName}/instances".
 // options - WebAppsClientListInstanceProcessesSlotOptions contains the optional parameters for the WebAppsClient.ListInstanceProcessesSlot
 // method.
-func (client *WebAppsClient) ListInstanceProcessesSlot(resourceGroupName string, name string, slot string, instanceID string, options *WebAppsClientListInstanceProcessesSlotOptions) *runtime.Pager[WebAppsClientListInstanceProcessesSlotResponse] {
+func (client *WebAppsClient) NewListInstanceProcessesSlotPager(resourceGroupName string, name string, slot string, instanceID string, options *WebAppsClientListInstanceProcessesSlotOptions) *runtime.Pager[WebAppsClientListInstanceProcessesSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListInstanceProcessesSlotResponse]{
 		More: func(page WebAppsClientListInstanceProcessesSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -16322,13 +16326,13 @@ func (client *WebAppsClient) listNetworkFeaturesSlotHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListPerfMonCounters - Description for Gets perfmon counters for web app.
+// NewListPerfMonCountersPager - Description for Gets perfmon counters for web app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
 // options - WebAppsClientListPerfMonCountersOptions contains the optional parameters for the WebAppsClient.ListPerfMonCounters
 // method.
-func (client *WebAppsClient) ListPerfMonCounters(resourceGroupName string, name string, options *WebAppsClientListPerfMonCountersOptions) *runtime.Pager[WebAppsClientListPerfMonCountersResponse] {
+func (client *WebAppsClient) NewListPerfMonCountersPager(resourceGroupName string, name string, options *WebAppsClientListPerfMonCountersOptions) *runtime.Pager[WebAppsClientListPerfMonCountersResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListPerfMonCountersResponse]{
 		More: func(page WebAppsClientListPerfMonCountersResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -16396,14 +16400,14 @@ func (client *WebAppsClient) listPerfMonCountersHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListPerfMonCountersSlot - Description for Gets perfmon counters for web app.
+// NewListPerfMonCountersSlotPager - Description for Gets perfmon counters for web app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
 // slot - Name of web app slot. If not specified then will default to production slot.
 // options - WebAppsClientListPerfMonCountersSlotOptions contains the optional parameters for the WebAppsClient.ListPerfMonCountersSlot
 // method.
-func (client *WebAppsClient) ListPerfMonCountersSlot(resourceGroupName string, name string, slot string, options *WebAppsClientListPerfMonCountersSlotOptions) *runtime.Pager[WebAppsClientListPerfMonCountersSlotResponse] {
+func (client *WebAppsClient) NewListPerfMonCountersSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListPerfMonCountersSlotOptions) *runtime.Pager[WebAppsClientListPerfMonCountersSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListPerfMonCountersSlotResponse]{
 		More: func(page WebAppsClientListPerfMonCountersSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -16593,15 +16597,15 @@ func (client *WebAppsClient) listPremierAddOnsSlotHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListProcessModules - Description for List module information for a process by its ID for a specific scaled-out instance
-// in a web site.
+// NewListProcessModulesPager - Description for List module information for a process by its ID for a specific scaled-out
+// instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
 // processID - PID.
 // options - WebAppsClientListProcessModulesOptions contains the optional parameters for the WebAppsClient.ListProcessModules
 // method.
-func (client *WebAppsClient) ListProcessModules(resourceGroupName string, name string, processID string, options *WebAppsClientListProcessModulesOptions) *runtime.Pager[WebAppsClientListProcessModulesResponse] {
+func (client *WebAppsClient) NewListProcessModulesPager(resourceGroupName string, name string, processID string, options *WebAppsClientListProcessModulesOptions) *runtime.Pager[WebAppsClientListProcessModulesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListProcessModulesResponse]{
 		More: func(page WebAppsClientListProcessModulesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -16668,8 +16672,8 @@ func (client *WebAppsClient) listProcessModulesHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListProcessModulesSlot - Description for List module information for a process by its ID for a specific scaled-out instance
-// in a web site.
+// NewListProcessModulesSlotPager - Description for List module information for a process by its ID for a specific scaled-out
+// instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -16677,7 +16681,7 @@ func (client *WebAppsClient) listProcessModulesHandleResponse(resp *http.Respons
 // slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
 // options - WebAppsClientListProcessModulesSlotOptions contains the optional parameters for the WebAppsClient.ListProcessModulesSlot
 // method.
-func (client *WebAppsClient) ListProcessModulesSlot(resourceGroupName string, name string, processID string, slot string, options *WebAppsClientListProcessModulesSlotOptions) *runtime.Pager[WebAppsClientListProcessModulesSlotResponse] {
+func (client *WebAppsClient) NewListProcessModulesSlotPager(resourceGroupName string, name string, processID string, slot string, options *WebAppsClientListProcessModulesSlotOptions) *runtime.Pager[WebAppsClientListProcessModulesSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListProcessModulesSlotResponse]{
 		More: func(page WebAppsClientListProcessModulesSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -16748,15 +16752,15 @@ func (client *WebAppsClient) listProcessModulesSlotHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListProcessThreads - Description for List the threads in a process by its ID for a specific scaled-out instance in a web
-// site.
+// NewListProcessThreadsPager - Description for List the threads in a process by its ID for a specific scaled-out instance
+// in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
 // processID - PID.
 // options - WebAppsClientListProcessThreadsOptions contains the optional parameters for the WebAppsClient.ListProcessThreads
 // method.
-func (client *WebAppsClient) ListProcessThreads(resourceGroupName string, name string, processID string, options *WebAppsClientListProcessThreadsOptions) *runtime.Pager[WebAppsClientListProcessThreadsResponse] {
+func (client *WebAppsClient) NewListProcessThreadsPager(resourceGroupName string, name string, processID string, options *WebAppsClientListProcessThreadsOptions) *runtime.Pager[WebAppsClientListProcessThreadsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListProcessThreadsResponse]{
 		More: func(page WebAppsClientListProcessThreadsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -16823,8 +16827,8 @@ func (client *WebAppsClient) listProcessThreadsHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListProcessThreadsSlot - Description for List the threads in a process by its ID for a specific scaled-out instance in
-// a web site.
+// NewListProcessThreadsSlotPager - Description for List the threads in a process by its ID for a specific scaled-out instance
+// in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -16832,7 +16836,7 @@ func (client *WebAppsClient) listProcessThreadsHandleResponse(resp *http.Respons
 // slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
 // options - WebAppsClientListProcessThreadsSlotOptions contains the optional parameters for the WebAppsClient.ListProcessThreadsSlot
 // method.
-func (client *WebAppsClient) ListProcessThreadsSlot(resourceGroupName string, name string, processID string, slot string, options *WebAppsClientListProcessThreadsSlotOptions) *runtime.Pager[WebAppsClientListProcessThreadsSlotResponse] {
+func (client *WebAppsClient) NewListProcessThreadsSlotPager(resourceGroupName string, name string, processID string, slot string, options *WebAppsClientListProcessThreadsSlotOptions) *runtime.Pager[WebAppsClientListProcessThreadsSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListProcessThreadsSlotResponse]{
 		More: func(page WebAppsClientListProcessThreadsSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -16903,13 +16907,13 @@ func (client *WebAppsClient) listProcessThreadsSlotHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListProcesses - Description for Get list of processes for a web site, or a deployment slot, or for a specific scaled-out
+// NewListProcessesPager - Description for Get list of processes for a web site, or a deployment slot, or for a specific scaled-out
 // instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
 // options - WebAppsClientListProcessesOptions contains the optional parameters for the WebAppsClient.ListProcesses method.
-func (client *WebAppsClient) ListProcesses(resourceGroupName string, name string, options *WebAppsClientListProcessesOptions) *runtime.Pager[WebAppsClientListProcessesResponse] {
+func (client *WebAppsClient) NewListProcessesPager(resourceGroupName string, name string, options *WebAppsClientListProcessesOptions) *runtime.Pager[WebAppsClientListProcessesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListProcessesResponse]{
 		More: func(page WebAppsClientListProcessesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -16972,15 +16976,15 @@ func (client *WebAppsClient) listProcessesHandleResponse(resp *http.Response) (W
 	return result, nil
 }
 
-// ListProcessesSlot - Description for Get list of processes for a web site, or a deployment slot, or for a specific scaled-out
-// instance in a web site.
+// NewListProcessesSlotPager - Description for Get list of processes for a web site, or a deployment slot, or for a specific
+// scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
 // slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
 // options - WebAppsClientListProcessesSlotOptions contains the optional parameters for the WebAppsClient.ListProcessesSlot
 // method.
-func (client *WebAppsClient) ListProcessesSlot(resourceGroupName string, name string, slot string, options *WebAppsClientListProcessesSlotOptions) *runtime.Pager[WebAppsClientListProcessesSlotResponse] {
+func (client *WebAppsClient) NewListProcessesSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListProcessesSlotOptions) *runtime.Pager[WebAppsClientListProcessesSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListProcessesSlotResponse]{
 		More: func(page WebAppsClientListProcessesSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -17047,13 +17051,13 @@ func (client *WebAppsClient) listProcessesSlotHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListPublicCertificates - Description for Get public certificates for an app or a deployment slot.
+// NewListPublicCertificatesPager - Description for Get public certificates for an app or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
 // options - WebAppsClientListPublicCertificatesOptions contains the optional parameters for the WebAppsClient.ListPublicCertificates
 // method.
-func (client *WebAppsClient) ListPublicCertificates(resourceGroupName string, name string, options *WebAppsClientListPublicCertificatesOptions) *runtime.Pager[WebAppsClientListPublicCertificatesResponse] {
+func (client *WebAppsClient) NewListPublicCertificatesPager(resourceGroupName string, name string, options *WebAppsClientListPublicCertificatesOptions) *runtime.Pager[WebAppsClientListPublicCertificatesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListPublicCertificatesResponse]{
 		More: func(page WebAppsClientListPublicCertificatesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -17116,14 +17120,14 @@ func (client *WebAppsClient) listPublicCertificatesHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListPublicCertificatesSlot - Description for Get public certificates for an app or a deployment slot.
+// NewListPublicCertificatesSlotPager - Description for Get public certificates for an app or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
 // slot - Name of the deployment slot. If a slot is not specified, the API gets hostname bindings for the production slot.
 // options - WebAppsClientListPublicCertificatesSlotOptions contains the optional parameters for the WebAppsClient.ListPublicCertificatesSlot
 // method.
-func (client *WebAppsClient) ListPublicCertificatesSlot(resourceGroupName string, name string, slot string, options *WebAppsClientListPublicCertificatesSlotOptions) *runtime.Pager[WebAppsClientListPublicCertificatesSlotResponse] {
+func (client *WebAppsClient) NewListPublicCertificatesSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListPublicCertificatesSlotOptions) *runtime.Pager[WebAppsClientListPublicCertificatesSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListPublicCertificatesSlotResponse]{
 		More: func(page WebAppsClientListPublicCertificatesSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -17544,12 +17548,12 @@ func (client *WebAppsClient) listRelayServiceConnectionsSlotHandleResponse(resp 
 	return result, nil
 }
 
-// ListSiteBackups - Description for Gets existing backups of an app.
+// NewListSiteBackupsPager - Description for Gets existing backups of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
 // options - WebAppsClientListSiteBackupsOptions contains the optional parameters for the WebAppsClient.ListSiteBackups method.
-func (client *WebAppsClient) ListSiteBackups(resourceGroupName string, name string, options *WebAppsClientListSiteBackupsOptions) *runtime.Pager[WebAppsClientListSiteBackupsResponse] {
+func (client *WebAppsClient) NewListSiteBackupsPager(resourceGroupName string, name string, options *WebAppsClientListSiteBackupsOptions) *runtime.Pager[WebAppsClientListSiteBackupsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListSiteBackupsResponse]{
 		More: func(page WebAppsClientListSiteBackupsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -17612,14 +17616,14 @@ func (client *WebAppsClient) listSiteBackupsHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListSiteBackupsSlot - Description for Gets existing backups of an app.
+// NewListSiteBackupsSlotPager - Description for Gets existing backups of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
 // slot - Name of the deployment slot. If a slot is not specified, the API will get backups of the production slot.
 // options - WebAppsClientListSiteBackupsSlotOptions contains the optional parameters for the WebAppsClient.ListSiteBackupsSlot
 // method.
-func (client *WebAppsClient) ListSiteBackupsSlot(resourceGroupName string, name string, slot string, options *WebAppsClientListSiteBackupsSlotOptions) *runtime.Pager[WebAppsClientListSiteBackupsSlotResponse] {
+func (client *WebAppsClient) NewListSiteBackupsSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListSiteBackupsSlotOptions) *runtime.Pager[WebAppsClientListSiteBackupsSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListSiteBackupsSlotResponse]{
 		More: func(page WebAppsClientListSiteBackupsSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -17686,13 +17690,13 @@ func (client *WebAppsClient) listSiteBackupsSlotHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListSiteExtensions - Description for Get list of siteextensions for a web site, or a deployment slot.
+// NewListSiteExtensionsPager - Description for Get list of siteextensions for a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
 // options - WebAppsClientListSiteExtensionsOptions contains the optional parameters for the WebAppsClient.ListSiteExtensions
 // method.
-func (client *WebAppsClient) ListSiteExtensions(resourceGroupName string, name string, options *WebAppsClientListSiteExtensionsOptions) *runtime.Pager[WebAppsClientListSiteExtensionsResponse] {
+func (client *WebAppsClient) NewListSiteExtensionsPager(resourceGroupName string, name string, options *WebAppsClientListSiteExtensionsOptions) *runtime.Pager[WebAppsClientListSiteExtensionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListSiteExtensionsResponse]{
 		More: func(page WebAppsClientListSiteExtensionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -17755,14 +17759,14 @@ func (client *WebAppsClient) listSiteExtensionsHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListSiteExtensionsSlot - Description for Get list of siteextensions for a web site, or a deployment slot.
+// NewListSiteExtensionsSlotPager - Description for Get list of siteextensions for a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
 // slot - Name of the deployment slot. If a slot is not specified, the API uses the production slot.
 // options - WebAppsClientListSiteExtensionsSlotOptions contains the optional parameters for the WebAppsClient.ListSiteExtensionsSlot
 // method.
-func (client *WebAppsClient) ListSiteExtensionsSlot(resourceGroupName string, name string, slot string, options *WebAppsClientListSiteExtensionsSlotOptions) *runtime.Pager[WebAppsClientListSiteExtensionsSlotResponse] {
+func (client *WebAppsClient) NewListSiteExtensionsSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListSiteExtensionsSlotOptions) *runtime.Pager[WebAppsClientListSiteExtensionsSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListSiteExtensionsSlotResponse]{
 		More: func(page WebAppsClientListSiteExtensionsSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -18003,14 +18007,15 @@ func (client *WebAppsClient) listSlotConfigurationNamesHandleResponse(resp *http
 	return result, nil
 }
 
-// ListSlotDifferencesFromProduction - Description for Get the difference in configuration settings between two web app slots.
+// NewListSlotDifferencesFromProductionPager - Description for Get the difference in configuration settings between two web
+// app slots.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
 // slotSwapEntity - JSON object that contains the target slot name. See example.
 // options - WebAppsClientListSlotDifferencesFromProductionOptions contains the optional parameters for the WebAppsClient.ListSlotDifferencesFromProduction
 // method.
-func (client *WebAppsClient) ListSlotDifferencesFromProduction(resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, options *WebAppsClientListSlotDifferencesFromProductionOptions) *runtime.Pager[WebAppsClientListSlotDifferencesFromProductionResponse] {
+func (client *WebAppsClient) NewListSlotDifferencesFromProductionPager(resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, options *WebAppsClientListSlotDifferencesFromProductionOptions) *runtime.Pager[WebAppsClientListSlotDifferencesFromProductionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListSlotDifferencesFromProductionResponse]{
 		More: func(page WebAppsClientListSlotDifferencesFromProductionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -18073,7 +18078,7 @@ func (client *WebAppsClient) listSlotDifferencesFromProductionHandleResponse(res
 	return result, nil
 }
 
-// ListSlotDifferencesSlot - Description for Get the difference in configuration settings between two web app slots.
+// NewListSlotDifferencesSlotPager - Description for Get the difference in configuration settings between two web app slots.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -18081,7 +18086,7 @@ func (client *WebAppsClient) listSlotDifferencesFromProductionHandleResponse(res
 // slotSwapEntity - JSON object that contains the target slot name. See example.
 // options - WebAppsClientListSlotDifferencesSlotOptions contains the optional parameters for the WebAppsClient.ListSlotDifferencesSlot
 // method.
-func (client *WebAppsClient) ListSlotDifferencesSlot(resourceGroupName string, name string, slot string, slotSwapEntity CsmSlotEntity, options *WebAppsClientListSlotDifferencesSlotOptions) *runtime.Pager[WebAppsClientListSlotDifferencesSlotResponse] {
+func (client *WebAppsClient) NewListSlotDifferencesSlotPager(resourceGroupName string, name string, slot string, slotSwapEntity CsmSlotEntity, options *WebAppsClientListSlotDifferencesSlotOptions) *runtime.Pager[WebAppsClientListSlotDifferencesSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListSlotDifferencesSlotResponse]{
 		More: func(page WebAppsClientListSlotDifferencesSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -18148,12 +18153,12 @@ func (client *WebAppsClient) listSlotDifferencesSlotHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListSlots - Description for Gets an app's deployment slots.
+// NewListSlotsPager - Description for Gets an app's deployment slots.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
 // options - WebAppsClientListSlotsOptions contains the optional parameters for the WebAppsClient.ListSlots method.
-func (client *WebAppsClient) ListSlots(resourceGroupName string, name string, options *WebAppsClientListSlotsOptions) *runtime.Pager[WebAppsClientListSlotsResponse] {
+func (client *WebAppsClient) NewListSlotsPager(resourceGroupName string, name string, options *WebAppsClientListSlotsOptions) *runtime.Pager[WebAppsClientListSlotsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListSlotsResponse]{
 		More: func(page WebAppsClientListSlotsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -18216,12 +18221,12 @@ func (client *WebAppsClient) listSlotsHandleResponse(resp *http.Response) (WebAp
 	return result, nil
 }
 
-// ListSnapshots - Description for Returns all Snapshots to the user.
+// NewListSnapshotsPager - Description for Returns all Snapshots to the user.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Website Name.
 // options - WebAppsClientListSnapshotsOptions contains the optional parameters for the WebAppsClient.ListSnapshots method.
-func (client *WebAppsClient) ListSnapshots(resourceGroupName string, name string, options *WebAppsClientListSnapshotsOptions) *runtime.Pager[WebAppsClientListSnapshotsResponse] {
+func (client *WebAppsClient) NewListSnapshotsPager(resourceGroupName string, name string, options *WebAppsClientListSnapshotsOptions) *runtime.Pager[WebAppsClientListSnapshotsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListSnapshotsResponse]{
 		More: func(page WebAppsClientListSnapshotsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -18284,13 +18289,13 @@ func (client *WebAppsClient) listSnapshotsHandleResponse(resp *http.Response) (W
 	return result, nil
 }
 
-// ListSnapshotsFromDRSecondary - Description for Returns all Snapshots to the user from DRSecondary endpoint.
+// NewListSnapshotsFromDRSecondaryPager - Description for Returns all Snapshots to the user from DRSecondary endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Website Name.
 // options - WebAppsClientListSnapshotsFromDRSecondaryOptions contains the optional parameters for the WebAppsClient.ListSnapshotsFromDRSecondary
 // method.
-func (client *WebAppsClient) ListSnapshotsFromDRSecondary(resourceGroupName string, name string, options *WebAppsClientListSnapshotsFromDRSecondaryOptions) *runtime.Pager[WebAppsClientListSnapshotsFromDRSecondaryResponse] {
+func (client *WebAppsClient) NewListSnapshotsFromDRSecondaryPager(resourceGroupName string, name string, options *WebAppsClientListSnapshotsFromDRSecondaryOptions) *runtime.Pager[WebAppsClientListSnapshotsFromDRSecondaryResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListSnapshotsFromDRSecondaryResponse]{
 		More: func(page WebAppsClientListSnapshotsFromDRSecondaryResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -18353,14 +18358,14 @@ func (client *WebAppsClient) listSnapshotsFromDRSecondaryHandleResponse(resp *ht
 	return result, nil
 }
 
-// ListSnapshotsFromDRSecondarySlot - Description for Returns all Snapshots to the user from DRSecondary endpoint.
+// NewListSnapshotsFromDRSecondarySlotPager - Description for Returns all Snapshots to the user from DRSecondary endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Website Name.
 // slot - Website Slot.
 // options - WebAppsClientListSnapshotsFromDRSecondarySlotOptions contains the optional parameters for the WebAppsClient.ListSnapshotsFromDRSecondarySlot
 // method.
-func (client *WebAppsClient) ListSnapshotsFromDRSecondarySlot(resourceGroupName string, name string, slot string, options *WebAppsClientListSnapshotsFromDRSecondarySlotOptions) *runtime.Pager[WebAppsClientListSnapshotsFromDRSecondarySlotResponse] {
+func (client *WebAppsClient) NewListSnapshotsFromDRSecondarySlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListSnapshotsFromDRSecondarySlotOptions) *runtime.Pager[WebAppsClientListSnapshotsFromDRSecondarySlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListSnapshotsFromDRSecondarySlotResponse]{
 		More: func(page WebAppsClientListSnapshotsFromDRSecondarySlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -18427,14 +18432,14 @@ func (client *WebAppsClient) listSnapshotsFromDRSecondarySlotHandleResponse(resp
 	return result, nil
 }
 
-// ListSnapshotsSlot - Description for Returns all Snapshots to the user.
+// NewListSnapshotsSlotPager - Description for Returns all Snapshots to the user.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Website Name.
 // slot - Website Slot.
 // options - WebAppsClientListSnapshotsSlotOptions contains the optional parameters for the WebAppsClient.ListSnapshotsSlot
 // method.
-func (client *WebAppsClient) ListSnapshotsSlot(resourceGroupName string, name string, slot string, options *WebAppsClientListSnapshotsSlotOptions) *runtime.Pager[WebAppsClientListSnapshotsSlotResponse] {
+func (client *WebAppsClient) NewListSnapshotsSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListSnapshotsSlotOptions) *runtime.Pager[WebAppsClientListSnapshotsSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListSnapshotsSlotResponse]{
 		More: func(page WebAppsClientListSnapshotsSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -18716,14 +18721,14 @@ func (client *WebAppsClient) listSyncStatusSlotCreateRequest(ctx context.Context
 	return req, nil
 }
 
-// ListTriggeredWebJobHistory - Description for List a triggered web job's history for an app, or a deployment slot.
+// NewListTriggeredWebJobHistoryPager - Description for List a triggered web job's history for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
 // webJobName - Name of Web Job.
 // options - WebAppsClientListTriggeredWebJobHistoryOptions contains the optional parameters for the WebAppsClient.ListTriggeredWebJobHistory
 // method.
-func (client *WebAppsClient) ListTriggeredWebJobHistory(resourceGroupName string, name string, webJobName string, options *WebAppsClientListTriggeredWebJobHistoryOptions) *runtime.Pager[WebAppsClientListTriggeredWebJobHistoryResponse] {
+func (client *WebAppsClient) NewListTriggeredWebJobHistoryPager(resourceGroupName string, name string, webJobName string, options *WebAppsClientListTriggeredWebJobHistoryOptions) *runtime.Pager[WebAppsClientListTriggeredWebJobHistoryResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListTriggeredWebJobHistoryResponse]{
 		More: func(page WebAppsClientListTriggeredWebJobHistoryResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -18790,7 +18795,8 @@ func (client *WebAppsClient) listTriggeredWebJobHistoryHandleResponse(resp *http
 	return result, nil
 }
 
-// ListTriggeredWebJobHistorySlot - Description for List a triggered web job's history for an app, or a deployment slot.
+// NewListTriggeredWebJobHistorySlotPager - Description for List a triggered web job's history for an app, or a deployment
+// slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -18798,7 +18804,7 @@ func (client *WebAppsClient) listTriggeredWebJobHistoryHandleResponse(resp *http
 // slot - Name of the deployment slot. If a slot is not specified, the API uses the production slot.
 // options - WebAppsClientListTriggeredWebJobHistorySlotOptions contains the optional parameters for the WebAppsClient.ListTriggeredWebJobHistorySlot
 // method.
-func (client *WebAppsClient) ListTriggeredWebJobHistorySlot(resourceGroupName string, name string, webJobName string, slot string, options *WebAppsClientListTriggeredWebJobHistorySlotOptions) *runtime.Pager[WebAppsClientListTriggeredWebJobHistorySlotResponse] {
+func (client *WebAppsClient) NewListTriggeredWebJobHistorySlotPager(resourceGroupName string, name string, webJobName string, slot string, options *WebAppsClientListTriggeredWebJobHistorySlotOptions) *runtime.Pager[WebAppsClientListTriggeredWebJobHistorySlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListTriggeredWebJobHistorySlotResponse]{
 		More: func(page WebAppsClientListTriggeredWebJobHistorySlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -18869,13 +18875,13 @@ func (client *WebAppsClient) listTriggeredWebJobHistorySlotHandleResponse(resp *
 	return result, nil
 }
 
-// ListTriggeredWebJobs - Description for List triggered web jobs for an app, or a deployment slot.
+// NewListTriggeredWebJobsPager - Description for List triggered web jobs for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
 // options - WebAppsClientListTriggeredWebJobsOptions contains the optional parameters for the WebAppsClient.ListTriggeredWebJobs
 // method.
-func (client *WebAppsClient) ListTriggeredWebJobs(resourceGroupName string, name string, options *WebAppsClientListTriggeredWebJobsOptions) *runtime.Pager[WebAppsClientListTriggeredWebJobsResponse] {
+func (client *WebAppsClient) NewListTriggeredWebJobsPager(resourceGroupName string, name string, options *WebAppsClientListTriggeredWebJobsOptions) *runtime.Pager[WebAppsClientListTriggeredWebJobsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListTriggeredWebJobsResponse]{
 		More: func(page WebAppsClientListTriggeredWebJobsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -18938,14 +18944,14 @@ func (client *WebAppsClient) listTriggeredWebJobsHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListTriggeredWebJobsSlot - Description for List triggered web jobs for an app, or a deployment slot.
+// NewListTriggeredWebJobsSlotPager - Description for List triggered web jobs for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
 // slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
 // options - WebAppsClientListTriggeredWebJobsSlotOptions contains the optional parameters for the WebAppsClient.ListTriggeredWebJobsSlot
 // method.
-func (client *WebAppsClient) ListTriggeredWebJobsSlot(resourceGroupName string, name string, slot string, options *WebAppsClientListTriggeredWebJobsSlotOptions) *runtime.Pager[WebAppsClientListTriggeredWebJobsSlotResponse] {
+func (client *WebAppsClient) NewListTriggeredWebJobsSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListTriggeredWebJobsSlotOptions) *runtime.Pager[WebAppsClientListTriggeredWebJobsSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListTriggeredWebJobsSlotResponse]{
 		More: func(page WebAppsClientListTriggeredWebJobsSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -19012,12 +19018,12 @@ func (client *WebAppsClient) listTriggeredWebJobsSlotHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListUsages - Description for Gets the quota usage information of an app (or deployment slot, if specified).
+// NewListUsagesPager - Description for Gets the quota usage information of an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
 // options - WebAppsClientListUsagesOptions contains the optional parameters for the WebAppsClient.ListUsages method.
-func (client *WebAppsClient) ListUsages(resourceGroupName string, name string, options *WebAppsClientListUsagesOptions) *runtime.Pager[WebAppsClientListUsagesResponse] {
+func (client *WebAppsClient) NewListUsagesPager(resourceGroupName string, name string, options *WebAppsClientListUsagesOptions) *runtime.Pager[WebAppsClientListUsagesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListUsagesResponse]{
 		More: func(page WebAppsClientListUsagesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -19085,13 +19091,13 @@ func (client *WebAppsClient) listUsagesHandleResponse(resp *http.Response) (WebA
 	return result, nil
 }
 
-// ListUsagesSlot - Description for Gets the quota usage information of an app (or deployment slot, if specified).
+// NewListUsagesSlotPager - Description for Gets the quota usage information of an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
 // slot - Name of the deployment slot. If a slot is not specified, the API will get quota information of the production slot.
 // options - WebAppsClientListUsagesSlotOptions contains the optional parameters for the WebAppsClient.ListUsagesSlot method.
-func (client *WebAppsClient) ListUsagesSlot(resourceGroupName string, name string, slot string, options *WebAppsClientListUsagesSlotOptions) *runtime.Pager[WebAppsClientListUsagesSlotResponse] {
+func (client *WebAppsClient) NewListUsagesSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListUsagesSlotOptions) *runtime.Pager[WebAppsClientListUsagesSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListUsagesSlotResponse]{
 		More: func(page WebAppsClientListUsagesSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -19281,12 +19287,12 @@ func (client *WebAppsClient) listVnetConnectionsSlotHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListWebJobs - Description for List webjobs for an app, or a deployment slot.
+// NewListWebJobsPager - Description for List webjobs for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
 // options - WebAppsClientListWebJobsOptions contains the optional parameters for the WebAppsClient.ListWebJobs method.
-func (client *WebAppsClient) ListWebJobs(resourceGroupName string, name string, options *WebAppsClientListWebJobsOptions) *runtime.Pager[WebAppsClientListWebJobsResponse] {
+func (client *WebAppsClient) NewListWebJobsPager(resourceGroupName string, name string, options *WebAppsClientListWebJobsOptions) *runtime.Pager[WebAppsClientListWebJobsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListWebJobsResponse]{
 		More: func(page WebAppsClientListWebJobsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -19349,13 +19355,13 @@ func (client *WebAppsClient) listWebJobsHandleResponse(resp *http.Response) (Web
 	return result, nil
 }
 
-// ListWebJobsSlot - Description for List webjobs for an app, or a deployment slot.
+// NewListWebJobsSlotPager - Description for List webjobs for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
 // slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
 // options - WebAppsClientListWebJobsSlotOptions contains the optional parameters for the WebAppsClient.ListWebJobsSlot method.
-func (client *WebAppsClient) ListWebJobsSlot(resourceGroupName string, name string, slot string, options *WebAppsClientListWebJobsSlotOptions) *runtime.Pager[WebAppsClientListWebJobsSlotResponse] {
+func (client *WebAppsClient) NewListWebJobsSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListWebJobsSlotOptions) *runtime.Pager[WebAppsClientListWebJobsSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebAppsClientListWebJobsSlotResponse]{
 		More: func(page WebAppsClientListWebJobsSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.DomainRegistration/stable/2021-03-01/examples/ListTopLevelDomains.json
-func ExampleTopLevelDomainsClient_List() {
+func ExampleTopLevelDomainsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleTopLevelDomainsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(nil)
+	pager := client.NewListPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -69,7 +69,7 @@ func ExampleTopLevelDomainsClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.DomainRegistration/stable/2021-03-01/examples/ListTopLevelDomainAgreements.json
-func ExampleTopLevelDomainsClient_ListAgreements() {
+func ExampleTopLevelDomainsClient_NewListAgreementsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -81,7 +81,7 @@ func ExampleTopLevelDomainsClient_ListAgreements() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListAgreements("<name>",
+	pager := client.NewListAgreementsPager("<name>",
 		armappservice.TopLevelDomainAgreementOption{
 			ForTransfer:    to.Ptr(false),
 			IncludePrivacy: to.Ptr(true),

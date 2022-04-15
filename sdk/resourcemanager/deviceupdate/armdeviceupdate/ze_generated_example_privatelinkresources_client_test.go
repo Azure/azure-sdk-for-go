@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2020-03-01-preview/examples/PrivateLinkResources/PrivateLinkResources_ListByAccount.json
-func ExamplePrivateLinkResourcesClient_ListByAccount() {
+func ExamplePrivateLinkResourcesClient_NewListByAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExamplePrivateLinkResourcesClient_ListByAccount() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByAccount("<resource-group-name>",
+	pager := client.NewListByAccountPager("<resource-group-name>",
 		"<account-name>",
 		nil)
 	for pager.More() {

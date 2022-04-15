@@ -252,13 +252,13 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListByAccount - List all private endpoint connections in a device update account.
+// NewListByAccountPager - List all private endpoint connections in a device update account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // accountName - Account name.
 // options - PrivateEndpointConnectionsClientListByAccountOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByAccount
 // method.
-func (client *PrivateEndpointConnectionsClient) ListByAccount(resourceGroupName string, accountName string, options *PrivateEndpointConnectionsClientListByAccountOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByAccountResponse] {
+func (client *PrivateEndpointConnectionsClient) NewListByAccountPager(resourceGroupName string, accountName string, options *PrivateEndpointConnectionsClientListByAccountOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionsClientListByAccountResponse]{
 		More: func(page PrivateEndpointConnectionsClientListByAccountResponse) bool {
 			return false

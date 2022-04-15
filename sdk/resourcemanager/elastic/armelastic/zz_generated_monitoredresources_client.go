@@ -62,12 +62,12 @@ func NewMonitoredResourcesClient(subscriptionID string, credential azcore.TokenC
 	return client, nil
 }
 
-// List - List the resources currently being monitored by the Elastic monitor resource.
+// NewListPager - List the resources currently being monitored by the Elastic monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group to which the Elastic resource belongs.
 // monitorName - Monitor resource name
 // options - MonitoredResourcesClientListOptions contains the optional parameters for the MonitoredResourcesClient.List method.
-func (client *MonitoredResourcesClient) List(resourceGroupName string, monitorName string, options *MonitoredResourcesClientListOptions) *runtime.Pager[MonitoredResourcesClientListResponse] {
+func (client *MonitoredResourcesClient) NewListPager(resourceGroupName string, monitorName string, options *MonitoredResourcesClientListOptions) *runtime.Pager[MonitoredResourcesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MonitoredResourcesClientListResponse]{
 		More: func(page MonitoredResourcesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

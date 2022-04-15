@@ -166,7 +166,7 @@ func ExamplePartnerTopicEventSubscriptionsClient_BeginUpdate() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerTopicEventSubscriptions_ListByPartnerTopic.json
-func ExamplePartnerTopicEventSubscriptionsClient_ListByPartnerTopic() {
+func ExamplePartnerTopicEventSubscriptionsClient_NewListByPartnerTopicPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -178,7 +178,7 @@ func ExamplePartnerTopicEventSubscriptionsClient_ListByPartnerTopic() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByPartnerTopic("<resource-group-name>",
+	pager := client.NewListByPartnerTopicPager("<resource-group-name>",
 		"<partner-topic-name>",
 		&armeventgrid.PartnerTopicEventSubscriptionsClientListByPartnerTopicOptions{Filter: nil,
 			Top: nil,

@@ -1,5 +1,19 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*OperationsClient.List` has been removed
+- Function `*ProviderInstancesClient.List` has been removed
+- Function `*SapMonitorsClient.List` has been removed
+
+### Features Added
+
+- New function `*ProviderInstancesClient.NewListPager(string, string, *ProviderInstancesClientListOptions) *runtime.Pager[ProviderInstancesClientListResponse]`
+- New function `*SapMonitorsClient.NewListPager(*SapMonitorsClientListOptions) *runtime.Pager[SapMonitorsClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

@@ -228,12 +228,12 @@ func (client *HCRPAssignmentsClient) getHandleResponse(resp *http.Response) (HCR
 	return result, nil
 }
 
-// List - List all guest configuration assignments for an ARC machine.
+// NewListPager - List all guest configuration assignments for an ARC machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // machineName - The name of the ARC machine.
 // options - HCRPAssignmentsClientListOptions contains the optional parameters for the HCRPAssignmentsClient.List method.
-func (client *HCRPAssignmentsClient) List(resourceGroupName string, machineName string, options *HCRPAssignmentsClientListOptions) *runtime.Pager[HCRPAssignmentsClientListResponse] {
+func (client *HCRPAssignmentsClient) NewListPager(resourceGroupName string, machineName string, options *HCRPAssignmentsClientListOptions) *runtime.Pager[HCRPAssignmentsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[HCRPAssignmentsClientListResponse]{
 		More: func(page HCRPAssignmentsClientListResponse) bool {
 			return false

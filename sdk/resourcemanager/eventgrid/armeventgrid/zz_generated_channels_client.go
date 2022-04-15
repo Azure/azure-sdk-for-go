@@ -301,13 +301,13 @@ func (client *ChannelsClient) getFullURLHandleResponse(resp *http.Response) (Cha
 	return result, nil
 }
 
-// ListByPartnerNamespace - List all the channels in a partner namespace.
+// NewListByPartnerNamespacePager - List all the channels in a partner namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the partners subscription.
 // partnerNamespaceName - Name of the partner namespace.
 // options - ChannelsClientListByPartnerNamespaceOptions contains the optional parameters for the ChannelsClient.ListByPartnerNamespace
 // method.
-func (client *ChannelsClient) ListByPartnerNamespace(resourceGroupName string, partnerNamespaceName string, options *ChannelsClientListByPartnerNamespaceOptions) *runtime.Pager[ChannelsClientListByPartnerNamespaceResponse] {
+func (client *ChannelsClient) NewListByPartnerNamespacePager(resourceGroupName string, partnerNamespaceName string, options *ChannelsClientListByPartnerNamespaceOptions) *runtime.Pager[ChannelsClientListByPartnerNamespaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ChannelsClientListByPartnerNamespaceResponse]{
 		More: func(page ChannelsClientListByPartnerNamespaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

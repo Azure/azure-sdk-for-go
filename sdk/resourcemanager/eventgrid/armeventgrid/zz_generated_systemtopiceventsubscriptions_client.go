@@ -378,13 +378,13 @@ func (client *SystemTopicEventSubscriptionsClient) getFullURLHandleResponse(resp
 	return result, nil
 }
 
-// ListBySystemTopic - List event subscriptions that belong to a specific system topic.
+// NewListBySystemTopicPager - List event subscriptions that belong to a specific system topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription.
 // systemTopicName - Name of the system topic.
 // options - SystemTopicEventSubscriptionsClientListBySystemTopicOptions contains the optional parameters for the SystemTopicEventSubscriptionsClient.ListBySystemTopic
 // method.
-func (client *SystemTopicEventSubscriptionsClient) ListBySystemTopic(resourceGroupName string, systemTopicName string, options *SystemTopicEventSubscriptionsClientListBySystemTopicOptions) *runtime.Pager[SystemTopicEventSubscriptionsClientListBySystemTopicResponse] {
+func (client *SystemTopicEventSubscriptionsClient) NewListBySystemTopicPager(resourceGroupName string, systemTopicName string, options *SystemTopicEventSubscriptionsClientListBySystemTopicOptions) *runtime.Pager[SystemTopicEventSubscriptionsClientListBySystemTopicResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SystemTopicEventSubscriptionsClientListBySystemTopicResponse]{
 		More: func(page SystemTopicEventSubscriptionsClientListBySystemTopicResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

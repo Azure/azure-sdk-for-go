@@ -1,5 +1,33 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*ManagementClient.ListOrderItemsAtSubscriptionLevel` has been removed
+- Function `*ManagementClient.ListConfigurations` has been removed
+- Function `*ManagementClient.ListOperations` has been removed
+- Function `*ManagementClient.ListProductFamilies` has been removed
+- Function `*ManagementClient.ListProductFamiliesMetadata` has been removed
+- Function `*ManagementClient.ListOrderAtResourceGroupLevel` has been removed
+- Function `*ManagementClient.ListOrderAtSubscriptionLevel` has been removed
+- Function `*ManagementClient.ListAddressesAtResourceGroupLevel` has been removed
+- Function `*ManagementClient.ListAddressesAtSubscriptionLevel` has been removed
+- Function `*ManagementClient.ListOrderItemsAtResourceGroupLevel` has been removed
+
+### Features Added
+
+- New function `*ManagementClient.NewListAddressesAtResourceGroupLevelPager(string, *ManagementClientListAddressesAtResourceGroupLevelOptions) *runtime.Pager[ManagementClientListAddressesAtResourceGroupLevelResponse]`
+- New function `*ManagementClient.NewListOrderItemsAtSubscriptionLevelPager(*ManagementClientListOrderItemsAtSubscriptionLevelOptions) *runtime.Pager[ManagementClientListOrderItemsAtSubscriptionLevelResponse]`
+- New function `*ManagementClient.NewListProductFamiliesMetadataPager(*ManagementClientListProductFamiliesMetadataOptions) *runtime.Pager[ManagementClientListProductFamiliesMetadataResponse]`
+- New function `*ManagementClient.NewListAddressesAtSubscriptionLevelPager(*ManagementClientListAddressesAtSubscriptionLevelOptions) *runtime.Pager[ManagementClientListAddressesAtSubscriptionLevelResponse]`
+- New function `*ManagementClient.NewListOrderAtResourceGroupLevelPager(string, *ManagementClientListOrderAtResourceGroupLevelOptions) *runtime.Pager[ManagementClientListOrderAtResourceGroupLevelResponse]`
+- New function `*ManagementClient.NewListProductFamiliesPager(ProductFamiliesRequest, *ManagementClientListProductFamiliesOptions) *runtime.Pager[ManagementClientListProductFamiliesResponse]`
+- New function `*ManagementClient.NewListOperationsPager(*ManagementClientListOperationsOptions) *runtime.Pager[ManagementClientListOperationsResponse]`
+- New function `*ManagementClient.NewListOrderAtSubscriptionLevelPager(*ManagementClientListOrderAtSubscriptionLevelOptions) *runtime.Pager[ManagementClientListOrderAtSubscriptionLevelResponse]`
+- New function `*ManagementClient.NewListOrderItemsAtResourceGroupLevelPager(string, *ManagementClientListOrderItemsAtResourceGroupLevelOptions) *runtime.Pager[ManagementClientListOrderItemsAtResourceGroupLevelResponse]`
+- New function `*ManagementClient.NewListConfigurationsPager(ConfigurationsRequest, *ManagementClientListConfigurationsOptions) *runtime.Pager[ManagementClientListConfigurationsResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

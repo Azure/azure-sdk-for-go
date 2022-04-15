@@ -1,5 +1,95 @@
 # Release History
 
+## 0.5.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*TopicsClient.ListBySubscription` has been removed
+- Function `*SystemTopicsClient.ListBySubscription` has been removed
+- Function `*EventSubscriptionsClient.ListGlobalBySubscriptionForTopicType` has been removed
+- Function `*PartnerTopicsClient.ListByResourceGroup` has been removed
+- Function `*DomainTopicsClient.ListByDomain` has been removed
+- Function `*TopicsClient.ListEventTypes` has been removed
+- Function `*DomainsClient.ListBySubscription` has been removed
+- Function `*EventSubscriptionsClient.ListGlobalBySubscription` has been removed
+- Function `*PartnerDestinationsClient.ListByResourceGroup` has been removed
+- Function `*SystemTopicEventSubscriptionsClient.ListBySystemTopic` has been removed
+- Function `*PartnerNamespacesClient.ListByResourceGroup` has been removed
+- Function `*TopicsClient.ListByResourceGroup` has been removed
+- Function `*DomainEventSubscriptionsClient.List` has been removed
+- Function `*PartnerDestinationsClient.ListBySubscription` has been removed
+- Function `*EventSubscriptionsClient.ListRegionalBySubscription` has been removed
+- Function `*PartnerNamespacesClient.ListBySubscription` has been removed
+- Function `*PrivateEndpointConnectionsClient.ListByResource` has been removed
+- Function `*EventSubscriptionsClient.ListByResource` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*EventSubscriptionsClient.ListRegionalByResourceGroup` has been removed
+- Function `*EventSubscriptionsClient.ListGlobalByResourceGroup` has been removed
+- Function `*PartnerTopicEventSubscriptionsClient.ListByPartnerTopic` has been removed
+- Function `*PartnerConfigurationsClient.ListBySubscription` has been removed
+- Function `*PartnerConfigurationsClient.ListByResourceGroup` has been removed
+- Function `*PrivateLinkResourcesClient.ListByResource` has been removed
+- Function `*PartnerTopicsClient.ListBySubscription` has been removed
+- Function `*DomainsClient.ListByResourceGroup` has been removed
+- Function `*ChannelsClient.ListByPartnerNamespace` has been removed
+- Function `*PartnerRegistrationsClient.ListBySubscription` has been removed
+- Function `*SystemTopicsClient.ListByResourceGroup` has been removed
+- Function `*TopicTypesClient.List` has been removed
+- Function `*DomainTopicEventSubscriptionsClient.List` has been removed
+- Function `*EventChannelsClient.ListByPartnerNamespace` has been removed
+- Function `*EventSubscriptionsClient.ListGlobalByResourceGroupForTopicType` has been removed
+- Function `*EventSubscriptionsClient.ListByDomainTopic` has been removed
+- Function `*TopicEventSubscriptionsClient.List` has been removed
+- Function `*VerifiedPartnersClient.List` has been removed
+- Function `*EventSubscriptionsClient.ListRegionalBySubscriptionForTopicType` has been removed
+- Function `*EventSubscriptionsClient.ListRegionalByResourceGroupForTopicType` has been removed
+- Function `*TopicTypesClient.ListEventTypes` has been removed
+- Function `*PartnerRegistrationsClient.ListByResourceGroup` has been removed
+
+### Features Added
+
+- New function `*PartnerConfigurationsClient.NewListBySubscriptionPager(*PartnerConfigurationsClientListBySubscriptionOptions) *runtime.Pager[PartnerConfigurationsClientListBySubscriptionResponse]`
+- New function `*PartnerRegistrationsClient.NewListBySubscriptionPager(*PartnerRegistrationsClientListBySubscriptionOptions) *runtime.Pager[PartnerRegistrationsClientListBySubscriptionResponse]`
+- New function `*EventSubscriptionsClient.NewListByResourcePager(string, string, string, string, *EventSubscriptionsClientListByResourceOptions) *runtime.Pager[EventSubscriptionsClientListByResourceResponse]`
+- New function `*DomainsClient.NewListByResourceGroupPager(string, *DomainsClientListByResourceGroupOptions) *runtime.Pager[DomainsClientListByResourceGroupResponse]`
+- New function `*EventSubscriptionsClient.NewListGlobalBySubscriptionForTopicTypePager(string, *EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeOptions) *runtime.Pager[EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse]`
+- New function `*SystemTopicsClient.NewListByResourceGroupPager(string, *SystemTopicsClientListByResourceGroupOptions) *runtime.Pager[SystemTopicsClientListByResourceGroupResponse]`
+- New function `*EventSubscriptionsClient.NewListRegionalBySubscriptionPager(string, *EventSubscriptionsClientListRegionalBySubscriptionOptions) *runtime.Pager[EventSubscriptionsClientListRegionalBySubscriptionResponse]`
+- New function `*EventSubscriptionsClient.NewListRegionalByResourceGroupForTopicTypePager(string, string, string, *EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeOptions) *runtime.Pager[EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse]`
+- New function `*PartnerNamespacesClient.NewListByResourceGroupPager(string, *PartnerNamespacesClientListByResourceGroupOptions) *runtime.Pager[PartnerNamespacesClientListByResourceGroupResponse]`
+- New function `*ChannelsClient.NewListByPartnerNamespacePager(string, string, *ChannelsClientListByPartnerNamespaceOptions) *runtime.Pager[ChannelsClientListByPartnerNamespaceResponse]`
+- New function `*TopicTypesClient.NewListPager(*TopicTypesClientListOptions) *runtime.Pager[TopicTypesClientListResponse]`
+- New function `*EventSubscriptionsClient.NewListGlobalByResourceGroupForTopicTypePager(string, string, *EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeOptions) *runtime.Pager[EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse]`
+- New function `*TopicTypesClient.NewListEventTypesPager(string, *TopicTypesClientListEventTypesOptions) *runtime.Pager[TopicTypesClientListEventTypesResponse]`
+- New function `*SystemTopicsClient.NewListBySubscriptionPager(*SystemTopicsClientListBySubscriptionOptions) *runtime.Pager[SystemTopicsClientListBySubscriptionResponse]`
+- New function `*DomainsClient.NewListBySubscriptionPager(*DomainsClientListBySubscriptionOptions) *runtime.Pager[DomainsClientListBySubscriptionResponse]`
+- New function `*SystemTopicEventSubscriptionsClient.NewListBySystemTopicPager(string, string, *SystemTopicEventSubscriptionsClientListBySystemTopicOptions) *runtime.Pager[SystemTopicEventSubscriptionsClientListBySystemTopicResponse]`
+- New function `*VerifiedPartnersClient.NewListPager(*VerifiedPartnersClientListOptions) *runtime.Pager[VerifiedPartnersClientListResponse]`
+- New function `*PartnerDestinationsClient.NewListBySubscriptionPager(*PartnerDestinationsClientListBySubscriptionOptions) *runtime.Pager[PartnerDestinationsClientListBySubscriptionResponse]`
+- New function `*PartnerTopicsClient.NewListByResourceGroupPager(string, *PartnerTopicsClientListByResourceGroupOptions) *runtime.Pager[PartnerTopicsClientListByResourceGroupResponse]`
+- New function `*PrivateEndpointConnectionsClient.NewListByResourcePager(string, ParentType, string, *PrivateEndpointConnectionsClientListByResourceOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByResourceResponse]`
+- New function `*PartnerNamespacesClient.NewListBySubscriptionPager(*PartnerNamespacesClientListBySubscriptionOptions) *runtime.Pager[PartnerNamespacesClientListBySubscriptionResponse]`
+- New function `*PartnerConfigurationsClient.NewListByResourceGroupPager(string, *PartnerConfigurationsClientListByResourceGroupOptions) *runtime.Pager[PartnerConfigurationsClientListByResourceGroupResponse]`
+- New function `*DomainEventSubscriptionsClient.NewListPager(string, string, *DomainEventSubscriptionsClientListOptions) *runtime.Pager[DomainEventSubscriptionsClientListResponse]`
+- New function `*EventSubscriptionsClient.NewListGlobalBySubscriptionPager(*EventSubscriptionsClientListGlobalBySubscriptionOptions) *runtime.Pager[EventSubscriptionsClientListGlobalBySubscriptionResponse]`
+- New function `*EventSubscriptionsClient.NewListRegionalBySubscriptionForTopicTypePager(string, string, *EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeOptions) *runtime.Pager[EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse]`
+- New function `*EventChannelsClient.NewListByPartnerNamespacePager(string, string, *EventChannelsClientListByPartnerNamespaceOptions) *runtime.Pager[EventChannelsClientListByPartnerNamespaceResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*EventSubscriptionsClient.NewListGlobalByResourceGroupPager(string, *EventSubscriptionsClientListGlobalByResourceGroupOptions) *runtime.Pager[EventSubscriptionsClientListGlobalByResourceGroupResponse]`
+- New function `*TopicsClient.NewListEventTypesPager(string, string, string, string, *TopicsClientListEventTypesOptions) *runtime.Pager[TopicsClientListEventTypesResponse]`
+- New function `*PartnerDestinationsClient.NewListByResourceGroupPager(string, *PartnerDestinationsClientListByResourceGroupOptions) *runtime.Pager[PartnerDestinationsClientListByResourceGroupResponse]`
+- New function `*TopicsClient.NewListBySubscriptionPager(*TopicsClientListBySubscriptionOptions) *runtime.Pager[TopicsClientListBySubscriptionResponse]`
+- New function `*DomainTopicEventSubscriptionsClient.NewListPager(string, string, string, *DomainTopicEventSubscriptionsClientListOptions) *runtime.Pager[DomainTopicEventSubscriptionsClientListResponse]`
+- New function `*PartnerTopicsClient.NewListBySubscriptionPager(*PartnerTopicsClientListBySubscriptionOptions) *runtime.Pager[PartnerTopicsClientListBySubscriptionResponse]`
+- New function `*EventSubscriptionsClient.NewListByDomainTopicPager(string, string, string, *EventSubscriptionsClientListByDomainTopicOptions) *runtime.Pager[EventSubscriptionsClientListByDomainTopicResponse]`
+- New function `*TopicsClient.NewListByResourceGroupPager(string, *TopicsClientListByResourceGroupOptions) *runtime.Pager[TopicsClientListByResourceGroupResponse]`
+- New function `*DomainTopicsClient.NewListByDomainPager(string, string, *DomainTopicsClientListByDomainOptions) *runtime.Pager[DomainTopicsClientListByDomainResponse]`
+- New function `*TopicEventSubscriptionsClient.NewListPager(string, string, *TopicEventSubscriptionsClientListOptions) *runtime.Pager[TopicEventSubscriptionsClientListResponse]`
+- New function `*PrivateLinkResourcesClient.NewListByResourcePager(string, string, string, *PrivateLinkResourcesClientListByResourceOptions) *runtime.Pager[PrivateLinkResourcesClientListByResourceResponse]`
+- New function `*PartnerRegistrationsClient.NewListByResourceGroupPager(string, *PartnerRegistrationsClientListByResourceGroupOptions) *runtime.Pager[PartnerRegistrationsClientListByResourceGroupResponse]`
+- New function `*EventSubscriptionsClient.NewListRegionalByResourceGroupPager(string, string, *EventSubscriptionsClientListRegionalByResourceGroupOptions) *runtime.Pager[EventSubscriptionsClientListRegionalByResourceGroupResponse]`
+- New function `*PartnerTopicEventSubscriptionsClient.NewListByPartnerTopicPager(string, string, *PartnerTopicEventSubscriptionsClientListByPartnerTopicOptions) *runtime.Pager[PartnerTopicEventSubscriptionsClientListByPartnerTopicResponse]`
+
+
 ## 0.4.0 (2022-04-11)
 ### Breaking Changes
 

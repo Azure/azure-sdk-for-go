@@ -166,7 +166,7 @@ func ExampleDomainsClient_BeginUpdate() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Domains_ListBySubscription.json
-func ExampleDomainsClient_ListBySubscription() {
+func ExampleDomainsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -178,7 +178,7 @@ func ExampleDomainsClient_ListBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription(&armeventgrid.DomainsClientListBySubscriptionOptions{Filter: nil,
+	pager := client.NewListBySubscriptionPager(&armeventgrid.DomainsClientListBySubscriptionOptions{Filter: nil,
 		Top: nil,
 	})
 	for pager.More() {
@@ -195,7 +195,7 @@ func ExampleDomainsClient_ListBySubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Domains_ListByResourceGroup.json
-func ExampleDomainsClient_ListByResourceGroup() {
+func ExampleDomainsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -207,7 +207,7 @@ func ExampleDomainsClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		&armeventgrid.DomainsClientListByResourceGroupOptions{Filter: nil,
 			Top: nil,
 		})

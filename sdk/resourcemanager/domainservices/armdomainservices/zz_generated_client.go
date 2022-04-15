@@ -235,11 +235,11 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 	return result, nil
 }
 
-// List - The List Domain Services in Subscription operation lists all the domain services available under the given subscription
-// (and across all resource groups within that subscription).
+// NewListPager - The List Domain Services in Subscription operation lists all the domain services available under the given
+// subscription (and across all resource groups within that subscription).
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ClientListOptions contains the optional parameters for the Client.List method.
-func (client *Client) List(options *ClientListOptions) *runtime.Pager[ClientListResponse] {
+func (client *Client) NewListPager(options *ClientListOptions) *runtime.Pager[ClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClientListResponse]{
 		More: func(page ClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -294,12 +294,12 @@ func (client *Client) listHandleResponse(resp *http.Response) (ClientListRespons
 	return result, nil
 }
 
-// ListByResourceGroup - The List Domain Services in Resource Group operation lists all the domain services available under
-// the given resource group.
+// NewListByResourceGroupPager - The List Domain Services in Resource Group operation lists all the domain services available
+// under the given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // options - ClientListByResourceGroupOptions contains the optional parameters for the Client.ListByResourceGroup method.
-func (client *Client) ListByResourceGroup(resourceGroupName string, options *ClientListByResourceGroupOptions) *runtime.Pager[ClientListByResourceGroupResponse] {
+func (client *Client) NewListByResourceGroupPager(resourceGroupName string, options *ClientListByResourceGroupOptions) *runtime.Pager[ClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClientListByResourceGroupResponse]{
 		More: func(page ClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

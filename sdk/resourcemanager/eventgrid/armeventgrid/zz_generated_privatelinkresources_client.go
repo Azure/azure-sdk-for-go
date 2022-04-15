@@ -122,14 +122,14 @@ func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListByResource - List all the private link resources under a topic, domain, or partner namespace.
+// NewListByResourcePager - List all the private link resources under a topic, domain, or partner namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription.
 // parentType - The type of the parent resource. This can be either \'topics\', \'domains\', or \'partnerNamespaces\'.
 // parentName - The name of the parent resource (namely, either, the topic name, domain name, or partner namespace name).
 // options - PrivateLinkResourcesClientListByResourceOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByResource
 // method.
-func (client *PrivateLinkResourcesClient) ListByResource(resourceGroupName string, parentType string, parentName string, options *PrivateLinkResourcesClientListByResourceOptions) *runtime.Pager[PrivateLinkResourcesClientListByResourceResponse] {
+func (client *PrivateLinkResourcesClient) NewListByResourcePager(resourceGroupName string, parentType string, parentName string, options *PrivateLinkResourcesClientListByResourceOptions) *runtime.Pager[PrivateLinkResourcesClientListByResourceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkResourcesClientListByResourceResponse]{
 		More: func(page PrivateLinkResourcesClientListByResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

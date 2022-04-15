@@ -246,12 +246,12 @@ func (client *OuContainerClient) getHandleResponse(resp *http.Response) (OuConta
 	return result, nil
 }
 
-// List - The List of OuContainers in DomainService instance.
+// NewListPager - The List of OuContainers in DomainService instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // domainServiceName - The name of the domain service.
 // options - OuContainerClientListOptions contains the optional parameters for the OuContainerClient.List method.
-func (client *OuContainerClient) List(resourceGroupName string, domainServiceName string, options *OuContainerClientListOptions) *runtime.Pager[OuContainerClientListResponse] {
+func (client *OuContainerClient) NewListPager(resourceGroupName string, domainServiceName string, options *OuContainerClientListOptions) *runtime.Pager[OuContainerClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[OuContainerClientListResponse]{
 		More: func(page OuContainerClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -252,13 +252,13 @@ func (client *RulesEnginesClient) getHandleResponse(resp *http.Response) (RulesE
 	return result, nil
 }
 
-// ListByFrontDoor - Lists all of the Rules Engine Configurations within a Front Door.
+// NewListByFrontDoorPager - Lists all of the Rules Engine Configurations within a Front Door.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // frontDoorName - Name of the Front Door which is globally unique.
 // options - RulesEnginesClientListByFrontDoorOptions contains the optional parameters for the RulesEnginesClient.ListByFrontDoor
 // method.
-func (client *RulesEnginesClient) ListByFrontDoor(resourceGroupName string, frontDoorName string, options *RulesEnginesClientListByFrontDoorOptions) *runtime.Pager[RulesEnginesClientListByFrontDoorResponse] {
+func (client *RulesEnginesClient) NewListByFrontDoorPager(resourceGroupName string, frontDoorName string, options *RulesEnginesClientListByFrontDoorOptions) *runtime.Pager[RulesEnginesClientListByFrontDoorResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RulesEnginesClientListByFrontDoorResponse]{
 		More: func(page RulesEnginesClientListByFrontDoorResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

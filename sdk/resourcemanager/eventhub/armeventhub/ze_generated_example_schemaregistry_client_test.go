@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/SchemaRegistry/SchemaRegistryListByNamespace.json
-func ExampleSchemaRegistryClient_ListByNamespace() {
+func ExampleSchemaRegistryClient_NewListByNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleSchemaRegistryClient_ListByNamespace() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByNamespace("<resource-group-name>",
+	pager := client.NewListByNamespacePager("<resource-group-name>",
 		"<namespace-name>",
 		&armeventhub.SchemaRegistryClientListByNamespaceOptions{Skip: nil,
 			Top: nil,

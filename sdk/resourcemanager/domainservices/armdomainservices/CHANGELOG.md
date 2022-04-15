@@ -1,5 +1,23 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*Client.List` has been removed
+- Function `*Client.ListByResourceGroup` has been removed
+- Function `*OuContainerOperationsClient.List` has been removed
+- Function `*OuContainerClient.List` has been removed
+- Function `*DomainServiceOperationsClient.List` has been removed
+
+### Features Added
+
+- New function `*OuContainerOperationsClient.NewListPager(*OuContainerOperationsClientListOptions) *runtime.Pager[OuContainerOperationsClientListResponse]`
+- New function `*DomainServiceOperationsClient.NewListPager(*DomainServiceOperationsClientListOptions) *runtime.Pager[DomainServiceOperationsClientListResponse]`
+- New function `*Client.NewListByResourceGroupPager(string, *ClientListByResourceGroupOptions) *runtime.Pager[ClientListByResourceGroupResponse]`
+- New function `*Client.NewListPager(*ClientListOptions) *runtime.Pager[ClientListResponse]`
+- New function `*OuContainerClient.NewListPager(string, string, *OuContainerClientListOptions) *runtime.Pager[OuContainerClientListResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

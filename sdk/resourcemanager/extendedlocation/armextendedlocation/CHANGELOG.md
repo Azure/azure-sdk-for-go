@@ -1,5 +1,21 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*CustomLocationsClient.ListEnabledResourceTypes` has been removed
+- Function `*CustomLocationsClient.ListBySubscription` has been removed
+- Function `*CustomLocationsClient.ListOperations` has been removed
+- Function `*CustomLocationsClient.ListByResourceGroup` has been removed
+
+### Features Added
+
+- New function `*CustomLocationsClient.NewListBySubscriptionPager(*CustomLocationsClientListBySubscriptionOptions) *runtime.Pager[CustomLocationsClientListBySubscriptionResponse]`
+- New function `*CustomLocationsClient.NewListEnabledResourceTypesPager(string, string, *CustomLocationsClientListEnabledResourceTypesOptions) *runtime.Pager[CustomLocationsClientListEnabledResourceTypesResponse]`
+- New function `*CustomLocationsClient.NewListByResourceGroupPager(string, *CustomLocationsClientListByResourceGroupOptions) *runtime.Pager[CustomLocationsClientListByResourceGroupResponse]`
+- New function `*CustomLocationsClient.NewListOperationsPager(*CustomLocationsClientListOperationsOptions) *runtime.Pager[CustomLocationsClientListOperationsResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

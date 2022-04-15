@@ -252,13 +252,13 @@ func (client *FrontendEndpointsClient) getHandleResponse(resp *http.Response) (F
 	return result, nil
 }
 
-// ListByFrontDoor - Lists all of the frontend endpoints within a Front Door.
+// NewListByFrontDoorPager - Lists all of the frontend endpoints within a Front Door.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // frontDoorName - Name of the Front Door which is globally unique.
 // options - FrontendEndpointsClientListByFrontDoorOptions contains the optional parameters for the FrontendEndpointsClient.ListByFrontDoor
 // method.
-func (client *FrontendEndpointsClient) ListByFrontDoor(resourceGroupName string, frontDoorName string, options *FrontendEndpointsClientListByFrontDoorOptions) *runtime.Pager[FrontendEndpointsClientListByFrontDoorResponse] {
+func (client *FrontendEndpointsClient) NewListByFrontDoorPager(resourceGroupName string, frontDoorName string, options *FrontendEndpointsClientListByFrontDoorOptions) *runtime.Pager[FrontendEndpointsClientListByFrontDoorResponse] {
 	return runtime.NewPager(runtime.PageProcessor[FrontendEndpointsClientListByFrontDoorResponse]{
 		More: func(page FrontendEndpointsClientListByFrontDoorResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

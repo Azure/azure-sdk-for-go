@@ -373,13 +373,13 @@ func (client *DomainEventSubscriptionsClient) getFullURLHandleResponse(resp *htt
 	return result, nil
 }
 
-// List - List all event subscriptions that have been created for a specific topic.
+// NewListPager - List all event subscriptions that have been created for a specific topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription.
 // domainName - Name of the domain.
 // options - DomainEventSubscriptionsClientListOptions contains the optional parameters for the DomainEventSubscriptionsClient.List
 // method.
-func (client *DomainEventSubscriptionsClient) List(resourceGroupName string, domainName string, options *DomainEventSubscriptionsClientListOptions) *runtime.Pager[DomainEventSubscriptionsClientListResponse] {
+func (client *DomainEventSubscriptionsClient) NewListPager(resourceGroupName string, domainName string, options *DomainEventSubscriptionsClientListOptions) *runtime.Pager[DomainEventSubscriptionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DomainEventSubscriptionsClientListResponse]{
 		More: func(page DomainEventSubscriptionsClientListResponse) bool {
 			return false

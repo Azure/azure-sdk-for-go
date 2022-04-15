@@ -62,12 +62,12 @@ func NewVMHostClient(subscriptionID string, credential azcore.TokenCredential, o
 	return client, nil
 }
 
-// List - List the vm resources currently being monitored by the Elastic monitor resource.
+// NewListPager - List the vm resources currently being monitored by the Elastic monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group to which the Elastic resource belongs.
 // monitorName - Monitor resource name
 // options - VMHostClientListOptions contains the optional parameters for the VMHostClient.List method.
-func (client *VMHostClient) List(resourceGroupName string, monitorName string, options *VMHostClientListOptions) *runtime.Pager[VMHostClientListResponse] {
+func (client *VMHostClient) NewListPager(resourceGroupName string, monitorName string, options *VMHostClientListOptions) *runtime.Pager[VMHostClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VMHostClientListResponse]{
 		More: func(page VMHostClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

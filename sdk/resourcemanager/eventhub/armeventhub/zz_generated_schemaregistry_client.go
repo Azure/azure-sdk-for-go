@@ -229,13 +229,13 @@ func (client *SchemaRegistryClient) getHandleResponse(resp *http.Response) (Sche
 	return result, nil
 }
 
-// ListByNamespace - Gets all the Schema Groups in a Namespace.
+// NewListByNamespacePager - Gets all the Schema Groups in a Namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group within the azure subscription.
 // namespaceName - The Namespace name
 // options - SchemaRegistryClientListByNamespaceOptions contains the optional parameters for the SchemaRegistryClient.ListByNamespace
 // method.
-func (client *SchemaRegistryClient) ListByNamespace(resourceGroupName string, namespaceName string, options *SchemaRegistryClientListByNamespaceOptions) *runtime.Pager[SchemaRegistryClientListByNamespaceResponse] {
+func (client *SchemaRegistryClient) NewListByNamespacePager(resourceGroupName string, namespaceName string, options *SchemaRegistryClientListByNamespaceOptions) *runtime.Pager[SchemaRegistryClientListByNamespaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SchemaRegistryClientListByNamespaceResponse]{
 		More: func(page SchemaRegistryClientListByNamespaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

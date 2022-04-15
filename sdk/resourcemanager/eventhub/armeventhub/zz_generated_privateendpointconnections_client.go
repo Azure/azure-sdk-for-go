@@ -244,13 +244,13 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// List - Gets the available PrivateEndpointConnections within a namespace.
+// NewListPager - Gets the available PrivateEndpointConnections within a namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group within the azure subscription.
 // namespaceName - The Namespace name
 // options - PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.List
 // method.
-func (client *PrivateEndpointConnectionsClient) List(resourceGroupName string, namespaceName string, options *PrivateEndpointConnectionsClientListOptions) *runtime.Pager[PrivateEndpointConnectionsClientListResponse] {
+func (client *PrivateEndpointConnectionsClient) NewListPager(resourceGroupName string, namespaceName string, options *PrivateEndpointConnectionsClientListOptions) *runtime.Pager[PrivateEndpointConnectionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionsClientListResponse]{
 		More: func(page PrivateEndpointConnectionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

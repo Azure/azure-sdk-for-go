@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListOperations.json
-func ExampleManagementClient_ListOperations() {
+func ExampleManagementClient_NewListOperationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleManagementClient_ListOperations() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListOperations(nil)
+	pager := client.NewListOperationsPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -47,7 +47,7 @@ func ExampleManagementClient_ListOperations() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListAddressesAtSubscriptionLevel.json
-func ExampleManagementClient_ListAddressesAtSubscriptionLevel() {
+func ExampleManagementClient_NewListAddressesAtSubscriptionLevelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -59,7 +59,7 @@ func ExampleManagementClient_ListAddressesAtSubscriptionLevel() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListAddressesAtSubscriptionLevel(&armedgeorder.ManagementClientListAddressesAtSubscriptionLevelOptions{Filter: nil,
+	pager := client.NewListAddressesAtSubscriptionLevelPager(&armedgeorder.ManagementClientListAddressesAtSubscriptionLevelOptions{Filter: nil,
 		SkipToken: nil,
 	})
 	for pager.More() {
@@ -76,7 +76,7 @@ func ExampleManagementClient_ListAddressesAtSubscriptionLevel() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListProductFamilies.json
-func ExampleManagementClient_ListProductFamilies() {
+func ExampleManagementClient_NewListProductFamiliesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -88,7 +88,7 @@ func ExampleManagementClient_ListProductFamilies() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListProductFamilies(armedgeorder.ProductFamiliesRequest{
+	pager := client.NewListProductFamiliesPager(armedgeorder.ProductFamiliesRequest{
 		FilterableProperties: map[string][]*armedgeorder.FilterableProperty{
 			"azurestackedge": {
 				{
@@ -115,7 +115,7 @@ func ExampleManagementClient_ListProductFamilies() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListConfigurations.json
-func ExampleManagementClient_ListConfigurations() {
+func ExampleManagementClient_NewListConfigurationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -127,7 +127,7 @@ func ExampleManagementClient_ListConfigurations() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListConfigurations(armedgeorder.ConfigurationsRequest{
+	pager := client.NewListConfigurationsPager(armedgeorder.ConfigurationsRequest{
 		ConfigurationFilters: []*armedgeorder.ConfigurationFilters{
 			{
 				FilterableProperty: []*armedgeorder.FilterableProperty{
@@ -158,7 +158,7 @@ func ExampleManagementClient_ListConfigurations() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListProductFamiliesMetadata.json
-func ExampleManagementClient_ListProductFamiliesMetadata() {
+func ExampleManagementClient_NewListProductFamiliesMetadataPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -170,7 +170,7 @@ func ExampleManagementClient_ListProductFamiliesMetadata() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListProductFamiliesMetadata(&armedgeorder.ManagementClientListProductFamiliesMetadataOptions{SkipToken: nil})
+	pager := client.NewListProductFamiliesMetadataPager(&armedgeorder.ManagementClientListProductFamiliesMetadataOptions{SkipToken: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -185,7 +185,7 @@ func ExampleManagementClient_ListProductFamiliesMetadata() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListOrderAtSubscriptionLevel.json
-func ExampleManagementClient_ListOrderAtSubscriptionLevel() {
+func ExampleManagementClient_NewListOrderAtSubscriptionLevelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -197,7 +197,7 @@ func ExampleManagementClient_ListOrderAtSubscriptionLevel() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListOrderAtSubscriptionLevel(&armedgeorder.ManagementClientListOrderAtSubscriptionLevelOptions{SkipToken: nil})
+	pager := client.NewListOrderAtSubscriptionLevelPager(&armedgeorder.ManagementClientListOrderAtSubscriptionLevelOptions{SkipToken: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -212,7 +212,7 @@ func ExampleManagementClient_ListOrderAtSubscriptionLevel() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListOrderItemsAtSubscriptionLevel.json
-func ExampleManagementClient_ListOrderItemsAtSubscriptionLevel() {
+func ExampleManagementClient_NewListOrderItemsAtSubscriptionLevelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -224,7 +224,7 @@ func ExampleManagementClient_ListOrderItemsAtSubscriptionLevel() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListOrderItemsAtSubscriptionLevel(&armedgeorder.ManagementClientListOrderItemsAtSubscriptionLevelOptions{Filter: nil,
+	pager := client.NewListOrderItemsAtSubscriptionLevelPager(&armedgeorder.ManagementClientListOrderItemsAtSubscriptionLevelOptions{Filter: nil,
 		Expand:    nil,
 		SkipToken: nil,
 	})
@@ -242,7 +242,7 @@ func ExampleManagementClient_ListOrderItemsAtSubscriptionLevel() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListAddressesAtResourceGroupLevel.json
-func ExampleManagementClient_ListAddressesAtResourceGroupLevel() {
+func ExampleManagementClient_NewListAddressesAtResourceGroupLevelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -254,7 +254,7 @@ func ExampleManagementClient_ListAddressesAtResourceGroupLevel() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListAddressesAtResourceGroupLevel("<resource-group-name>",
+	pager := client.NewListAddressesAtResourceGroupLevelPager("<resource-group-name>",
 		&armedgeorder.ManagementClientListAddressesAtResourceGroupLevelOptions{Filter: nil,
 			SkipToken: nil,
 		})
@@ -434,7 +434,7 @@ func ExampleManagementClient_BeginUpdateAddress() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListOrderAtResourceGroupLevel.json
-func ExampleManagementClient_ListOrderAtResourceGroupLevel() {
+func ExampleManagementClient_NewListOrderAtResourceGroupLevelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -446,7 +446,7 @@ func ExampleManagementClient_ListOrderAtResourceGroupLevel() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListOrderAtResourceGroupLevel("<resource-group-name>",
+	pager := client.NewListOrderAtResourceGroupLevelPager("<resource-group-name>",
 		&armedgeorder.ManagementClientListOrderAtResourceGroupLevelOptions{SkipToken: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -488,7 +488,7 @@ func ExampleManagementClient_GetOrderByName() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListOrderItemsAtResourceGroupLevel.json
-func ExampleManagementClient_ListOrderItemsAtResourceGroupLevel() {
+func ExampleManagementClient_NewListOrderItemsAtResourceGroupLevelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -500,7 +500,7 @@ func ExampleManagementClient_ListOrderItemsAtResourceGroupLevel() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListOrderItemsAtResourceGroupLevel("<resource-group-name>",
+	pager := client.NewListOrderItemsAtResourceGroupLevelPager("<resource-group-name>",
 		&armedgeorder.ManagementClientListOrderItemsAtResourceGroupLevelOptions{Filter: nil,
 			Expand:    nil,
 			SkipToken: nil,

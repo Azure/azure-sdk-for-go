@@ -1,5 +1,33 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*PreconfiguredEndpointsClient.List` has been removed
+- Function `*RulesEnginesClient.ListByFrontDoor` has been removed
+- Function `*FrontDoorsClient.List` has been removed
+- Function `*FrontDoorsClient.ListByResourceGroup` has been removed
+- Function `*FrontendEndpointsClient.ListByFrontDoor` has been removed
+- Function `*ManagedRuleSetsClient.List` has been removed
+- Function `*NetworkExperimentProfilesClient.ListByResourceGroup` has been removed
+- Function `*NetworkExperimentProfilesClient.List` has been removed
+- Function `*PoliciesClient.List` has been removed
+- Function `*ExperimentsClient.ListByProfile` has been removed
+
+### Features Added
+
+- New function `*PreconfiguredEndpointsClient.NewListPager(string, string, *PreconfiguredEndpointsClientListOptions) *runtime.Pager[PreconfiguredEndpointsClientListResponse]`
+- New function `*PoliciesClient.NewListPager(string, *PoliciesClientListOptions) *runtime.Pager[PoliciesClientListResponse]`
+- New function `*NetworkExperimentProfilesClient.NewListByResourceGroupPager(string, *NetworkExperimentProfilesClientListByResourceGroupOptions) *runtime.Pager[NetworkExperimentProfilesClientListByResourceGroupResponse]`
+- New function `*NetworkExperimentProfilesClient.NewListPager(*NetworkExperimentProfilesClientListOptions) *runtime.Pager[NetworkExperimentProfilesClientListResponse]`
+- New function `*FrontendEndpointsClient.NewListByFrontDoorPager(string, string, *FrontendEndpointsClientListByFrontDoorOptions) *runtime.Pager[FrontendEndpointsClientListByFrontDoorResponse]`
+- New function `*FrontDoorsClient.NewListByResourceGroupPager(string, *FrontDoorsClientListByResourceGroupOptions) *runtime.Pager[FrontDoorsClientListByResourceGroupResponse]`
+- New function `*RulesEnginesClient.NewListByFrontDoorPager(string, string, *RulesEnginesClientListByFrontDoorOptions) *runtime.Pager[RulesEnginesClientListByFrontDoorResponse]`
+- New function `*ExperimentsClient.NewListByProfilePager(string, string, *ExperimentsClientListByProfileOptions) *runtime.Pager[ExperimentsClientListByProfileResponse]`
+- New function `*FrontDoorsClient.NewListPager(*FrontDoorsClientListOptions) *runtime.Pager[FrontDoorsClientListResponse]`
+- New function `*ManagedRuleSetsClient.NewListPager(*ManagedRuleSetsClientListOptions) *runtime.Pager[ManagedRuleSetsClientListResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

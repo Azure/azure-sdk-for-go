@@ -1,5 +1,25 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*MonitorsClient.List` has been removed
+- Function `*MonitorsClient.ListByResourceGroup` has been removed
+- Function `*VMHostClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*TagRulesClient.List` has been removed
+- Function `*MonitoredResourcesClient.List` has been removed
+
+### Features Added
+
+- New function `*VMHostClient.NewListPager(string, string, *VMHostClientListOptions) *runtime.Pager[VMHostClientListResponse]`
+- New function `*TagRulesClient.NewListPager(string, string, *TagRulesClientListOptions) *runtime.Pager[TagRulesClientListResponse]`
+- New function `*MonitoredResourcesClient.NewListPager(string, string, *MonitoredResourcesClientListOptions) *runtime.Pager[MonitoredResourcesClientListResponse]`
+- New function `*MonitorsClient.NewListPager(*MonitorsClientListOptions) *runtime.Pager[MonitorsClientListResponse]`
+- New function `*MonitorsClient.NewListByResourceGroupPager(string, *MonitorsClientListByResourceGroupOptions) *runtime.Pager[MonitorsClientListByResourceGroupResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

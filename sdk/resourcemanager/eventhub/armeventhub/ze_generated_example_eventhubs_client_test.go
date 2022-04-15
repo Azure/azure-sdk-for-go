@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/EventHubs/EHEventHubListByNameSpace.json
-func ExampleEventHubsClient_ListByNamespace() {
+func ExampleEventHubsClient_NewListByNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleEventHubsClient_ListByNamespace() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByNamespace("<resource-group-name>",
+	pager := client.NewListByNamespacePager("<resource-group-name>",
 		"<namespace-name>",
 		&armeventhub.EventHubsClientListByNamespaceOptions{Skip: nil,
 			Top: nil,
@@ -146,7 +146,7 @@ func ExampleEventHubsClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/EventHubs/EHEventHubAuthorizationRuleListAll.json
-func ExampleEventHubsClient_ListAuthorizationRules() {
+func ExampleEventHubsClient_NewListAuthorizationRulesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -158,7 +158,7 @@ func ExampleEventHubsClient_ListAuthorizationRules() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListAuthorizationRules("<resource-group-name>",
+	pager := client.NewListAuthorizationRulesPager("<resource-group-name>",
 		"<namespace-name>",
 		"<event-hub-name>",
 		nil)

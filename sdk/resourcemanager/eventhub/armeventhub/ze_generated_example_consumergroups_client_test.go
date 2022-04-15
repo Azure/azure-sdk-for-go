@@ -102,7 +102,7 @@ func ExampleConsumerGroupsClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/ConsumerGroup/EHConsumerGroupListByEventHub.json
-func ExampleConsumerGroupsClient_ListByEventHub() {
+func ExampleConsumerGroupsClient_NewListByEventHubPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -114,7 +114,7 @@ func ExampleConsumerGroupsClient_ListByEventHub() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByEventHub("<resource-group-name>",
+	pager := client.NewListByEventHubPager("<resource-group-name>",
 		"<namespace-name>",
 		"<event-hub-name>",
 		&armeventhub.ConsumerGroupsClientListByEventHubOptions{Skip: nil,

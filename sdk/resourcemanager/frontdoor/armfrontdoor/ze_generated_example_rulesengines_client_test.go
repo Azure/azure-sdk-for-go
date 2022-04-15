@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/FrontdoorRulesEngineList.json
-func ExampleRulesEnginesClient_ListByFrontDoor() {
+func ExampleRulesEnginesClient_NewListByFrontDoorPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleRulesEnginesClient_ListByFrontDoor() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByFrontDoor("<resource-group-name>",
+	pager := client.NewListByFrontDoorPager("<resource-group-name>",
 		"<front-door-name>",
 		nil)
 	for pager.More() {

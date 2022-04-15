@@ -10,7 +10,7 @@ package armfrontdoor
 
 const (
 	moduleName    = "armfrontdoor"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.4.0"
 )
 
 // ActionType - Defines the action to take on rule match.

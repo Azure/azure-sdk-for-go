@@ -515,7 +515,7 @@ func createReceiverLink(ctx context.Context, session amqpwrap.AMQPSession, linkO
 		Err      error
 	}
 
-	done := make(chan ret, 1)
+	done := make(chan ret)
 
 	go func(ctx context.Context) {
 		defer close(done)

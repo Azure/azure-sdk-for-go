@@ -115,13 +115,13 @@ func (client *PrivateLinkResourceClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListByBatchAccount - Lists all of the private link resources in the specified account.
+// NewListByBatchAccountPager - Lists all of the private link resources in the specified account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // options - PrivateLinkResourceClientListByBatchAccountOptions contains the optional parameters for the PrivateLinkResourceClient.ListByBatchAccount
 // method.
-func (client *PrivateLinkResourceClient) ListByBatchAccount(resourceGroupName string, accountName string, options *PrivateLinkResourceClientListByBatchAccountOptions) *runtime.Pager[PrivateLinkResourceClientListByBatchAccountResponse] {
+func (client *PrivateLinkResourceClient) NewListByBatchAccountPager(resourceGroupName string, accountName string, options *PrivateLinkResourceClientListByBatchAccountOptions) *runtime.Pager[PrivateLinkResourceClientListByBatchAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkResourceClientListByBatchAccountResponse]{
 		More: func(page PrivateLinkResourceClientListByBatchAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -148,7 +148,7 @@ func ExampleAccountClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/BatchAccountList.json
-func ExampleAccountClient_List() {
+func ExampleAccountClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -160,7 +160,7 @@ func ExampleAccountClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(nil)
+	pager := client.NewListPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -175,7 +175,7 @@ func ExampleAccountClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/BatchAccountListByResourceGroup.json
-func ExampleAccountClient_ListByResourceGroup() {
+func ExampleAccountClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -187,7 +187,7 @@ func ExampleAccountClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -279,7 +279,7 @@ func ExampleAccountClient_GetKeys() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/DetectorList.json
-func ExampleAccountClient_ListDetectors() {
+func ExampleAccountClient_NewListDetectorsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -291,7 +291,7 @@ func ExampleAccountClient_ListDetectors() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListDetectors("<resource-group-name>",
+	pager := client.NewListDetectorsPager("<resource-group-name>",
 		"<account-name>",
 		nil)
 	for pager.More() {
@@ -334,7 +334,7 @@ func ExampleAccountClient_GetDetector() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/BatchAccountListOutboundNetworkDependenciesEndpoints.json
-func ExampleAccountClient_ListOutboundNetworkDependenciesEndpoints() {
+func ExampleAccountClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -346,7 +346,7 @@ func ExampleAccountClient_ListOutboundNetworkDependenciesEndpoints() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListOutboundNetworkDependenciesEndpoints("<resource-group-name>",
+	pager := client.NewListOutboundNetworkDependenciesEndpointsPager("<resource-group-name>",
 		"<account-name>",
 		nil)
 	for pager.More() {

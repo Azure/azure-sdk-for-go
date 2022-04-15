@@ -357,10 +357,10 @@ func (client *AccountClient) getKeysHandleResponse(resp *http.Response) (Account
 	return result, nil
 }
 
-// List - Gets information about the Batch accounts associated with the subscription.
+// NewListPager - Gets information about the Batch accounts associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AccountClientListOptions contains the optional parameters for the AccountClient.List method.
-func (client *AccountClient) List(options *AccountClientListOptions) *runtime.Pager[AccountClientListResponse] {
+func (client *AccountClient) NewListPager(options *AccountClientListOptions) *runtime.Pager[AccountClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccountClientListResponse]{
 		More: func(page AccountClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -415,12 +415,12 @@ func (client *AccountClient) listHandleResponse(resp *http.Response) (AccountCli
 	return result, nil
 }
 
-// ListByResourceGroup - Gets information about the Batch accounts associated with the specified resource group.
+// NewListByResourceGroupPager - Gets information about the Batch accounts associated with the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // options - AccountClientListByResourceGroupOptions contains the optional parameters for the AccountClient.ListByResourceGroup
 // method.
-func (client *AccountClient) ListByResourceGroup(resourceGroupName string, options *AccountClientListByResourceGroupOptions) *runtime.Pager[AccountClientListByResourceGroupResponse] {
+func (client *AccountClient) NewListByResourceGroupPager(resourceGroupName string, options *AccountClientListByResourceGroupOptions) *runtime.Pager[AccountClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccountClientListByResourceGroupResponse]{
 		More: func(page AccountClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -479,12 +479,12 @@ func (client *AccountClient) listByResourceGroupHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListDetectors - Gets information about the detectors available for a given Batch account.
+// NewListDetectorsPager - Gets information about the detectors available for a given Batch account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // options - AccountClientListDetectorsOptions contains the optional parameters for the AccountClient.ListDetectors method.
-func (client *AccountClient) ListDetectors(resourceGroupName string, accountName string, options *AccountClientListDetectorsOptions) *runtime.Pager[AccountClientListDetectorsResponse] {
+func (client *AccountClient) NewListDetectorsPager(resourceGroupName string, accountName string, options *AccountClientListDetectorsOptions) *runtime.Pager[AccountClientListDetectorsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccountClientListDetectorsResponse]{
 		More: func(page AccountClientListDetectorsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -547,8 +547,9 @@ func (client *AccountClient) listDetectorsHandleResponse(resp *http.Response) (A
 	return result, nil
 }
 
-// ListOutboundNetworkDependenciesEndpoints - Lists the endpoints that a Batch Compute Node under this Batch Account may call
-// as part of Batch service administration. If you are deploying a Pool inside of a virtual network that you specify, you
+// NewListOutboundNetworkDependenciesEndpointsPager - Lists the endpoints that a Batch Compute Node under this Batch Account
+// may call as part of Batch service administration. If you are deploying a Pool inside of a virtual network that you specify,
+// you
 // must make sure your network allows outbound access to these endpoints. Failure to allow access to these endpoints may cause
 // Batch to mark the affected nodes as unusable. For more information about
 // creating a pool inside of a virtual network, see https://docs.microsoft.com/en-us/azure/batch/batch-virtual-network.
@@ -557,7 +558,7 @@ func (client *AccountClient) listDetectorsHandleResponse(resp *http.Response) (A
 // accountName - The name of the Batch account.
 // options - AccountClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the AccountClient.ListOutboundNetworkDependenciesEndpoints
 // method.
-func (client *AccountClient) ListOutboundNetworkDependenciesEndpoints(resourceGroupName string, accountName string, options *AccountClientListOutboundNetworkDependenciesEndpointsOptions) *runtime.Pager[AccountClientListOutboundNetworkDependenciesEndpointsResponse] {
+func (client *AccountClient) NewListOutboundNetworkDependenciesEndpointsPager(resourceGroupName string, accountName string, options *AccountClientListOutboundNetworkDependenciesEndpointsOptions) *runtime.Pager[AccountClientListOutboundNetworkDependenciesEndpointsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccountClientListOutboundNetworkDependenciesEndpointsResponse]{
 		More: func(page AccountClientListOutboundNetworkDependenciesEndpointsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

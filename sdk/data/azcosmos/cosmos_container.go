@@ -8,6 +8,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
 // ContainerClient lets you perform read, update, change throughput, and delete container operations.
@@ -406,8 +407,10 @@ func (c *ContainerClient) DeleteItem(
 // partitionKey - The partition key to scope the query on.
 // o - Options for the operation.
 func (c *ContainerClient) QueryItemsByPartitionKey(query string, partitionKey PartitionKey, o *QueryOptions) *runtime.Pager[QueryItemsResponse] {
+	correlatedActivityId, _ := uuid.New()
 	h := headerOptionsOverride{
 		partitionKey: &partitionKey,
+		correlatedActivityId: &correlatedActivityId,
 	}
 
 	if o == nil {

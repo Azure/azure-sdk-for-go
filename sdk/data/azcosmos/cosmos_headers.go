@@ -29,6 +29,7 @@ const (
 	cosmosHeaderPopulateQueryMetrics               string = "x-ms-documentdb-populatequerymetrics"
 	cosmosHeaderQueryMetrics                       string = "x-ms-documentdb-query-metrics"
 	cosmosHeaderIndexUtilization                   string = "x-ms-cosmos-index-utilization"
+	cosmosHeaderCorrelatedActivityId               string = "x-ms-cosmos-correlated-activityid"
 	headerXmsDate                                  string = "x-ms-date"
 	headerAuthorization                            string = "Authorization"
 	headerContentType                              string = "Content-Type"

@@ -1,5 +1,23 @@
 # Release History
 
+## 0.5.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*OperationsClient.List` has been removed
+- Function `*OperationStatusClient.List` has been removed
+- Function `*FluxConfigurationsClient.List` has been removed
+- Function `*ExtensionsClient.List` has been removed
+- Function `*SourceControlConfigurationsClient.List` has been removed
+
+### Features Added
+
+- New function `*SourceControlConfigurationsClient.NewListPager(string, string, string, string, *SourceControlConfigurationsClientListOptions) *runtime.Pager[SourceControlConfigurationsClientListResponse]`
+- New function `*ExtensionsClient.NewListPager(string, string, string, string, *ExtensionsClientListOptions) *runtime.Pager[ExtensionsClientListResponse]`
+- New function `*OperationStatusClient.NewListPager(string, string, string, string, *OperationStatusClientListOptions) *runtime.Pager[OperationStatusClientListResponse]`
+- New function `*FluxConfigurationsClient.NewListPager(string, string, string, string, *FluxConfigurationsClientListOptions) *runtime.Pager[FluxConfigurationsClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+
+
 ## 0.4.0 (2022-04-12)
 ### Breaking Changes
 

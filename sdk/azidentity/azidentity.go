@@ -23,13 +23,14 @@ import (
 )
 
 const (
+	azureAuthorityHost = "AZURE_AUTHORITY_HOST"
+	azureClientID      = "AZURE_CLIENT_ID"
+
 	organizationsTenantID   = "organizations"
 	developerSignOnClientID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"
 	defaultSuffix           = "/.default"
 	tenantIDValidationErr   = "invalid tenantID. You can locate your tenantID by following the instructions listed here: https://docs.microsoft.com/partner-center/find-ids-and-domain-names"
 )
-
-const azureAuthorityHost = "AZURE_AUTHORITY_HOST"
 
 // setAuthorityHost initializes the authority host for credentials. Precedence is:
 // 1. cloud.Configuration.LoginEndpoint value set by user

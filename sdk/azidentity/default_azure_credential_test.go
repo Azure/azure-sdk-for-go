@@ -5,6 +5,7 @@ package azidentity
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -12,7 +13,7 @@ import (
 )
 
 func TestDefaultAzureCredential_GetTokenSuccess(t *testing.T) {
-	env := map[string]string{"AZURE_TENANT_ID": fakeTenantID, "AZURE_CLIENT_ID": fakeClientID, "AZURE_CLIENT_SECRET": secret}
+	env := map[string]string{"AZURE_TENANT_ID": fakeTenantID, azureClientID: fakeClientID, "AZURE_CLIENT_SECRET": secret}
 	setEnvironmentVariables(t, env)
 	cred, err := NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,5 +61,28 @@ func TestDefaultAzureCredential_ConstructorErrorHandler(t *testing.T) {
 	}
 	if logMessages[0] != expectedLogs {
 		t.Fatalf("Did not receive the expected logs.\n\nReceived:\n%s\n\nExpected:\n%s", logMessages[0], expectedLogs)
+	}
+}
+
+func TestDefaultAzureCredential_UserAssignedIdentity(t *testing.T) {
+	for _, ID := range []ManagedIDKind{nil, ClientID("client-id")} {
+		t.Run(fmt.Sprintf("%v", ID), func(t *testing.T) {
+			if ID != nil {
+				t.Setenv(azureClientID, ID.String())
+			}
+			cred, err := NewDefaultAzureCredential(nil)
+			if err != nil {
+				t.Fatal(err)
+			}
+			for _, c := range cred.chain.sources {
+				if mic, ok := c.(*ManagedIdentityCredential); ok {
+					if mic.id != ID {
+						t.Fatalf(`expected %v, got "%v"`, ID, mic.id)
+					}
+					return
+				}
+			}
+			t.Fatal("default chain should include ManagedIdentityCredential")
+		})
 	}
 }

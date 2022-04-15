@@ -245,12 +245,12 @@ func (client *TokensClient) getHandleResponse(resp *http.Response) (TokensClient
 	return result, nil
 }
 
-// List - Lists all the tokens for the specified container registry.
+// NewListPager - Lists all the tokens for the specified container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // options - TokensClientListOptions contains the optional parameters for the TokensClient.List method.
-func (client *TokensClient) List(resourceGroupName string, registryName string, options *TokensClientListOptions) *runtime.Pager[TokensClientListResponse] {
+func (client *TokensClient) NewListPager(resourceGroupName string, registryName string, options *TokensClientListOptions) *runtime.Pager[TokensClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TokensClientListResponse]{
 		More: func(page TokensClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

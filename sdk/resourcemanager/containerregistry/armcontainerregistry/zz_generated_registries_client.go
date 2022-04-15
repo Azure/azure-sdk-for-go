@@ -517,10 +517,10 @@ func (client *RegistriesClient) importImageCreateRequest(ctx context.Context, re
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// List - Lists all the container registries under the specified subscription.
+// NewListPager - Lists all the container registries under the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - RegistriesClientListOptions contains the optional parameters for the RegistriesClient.List method.
-func (client *RegistriesClient) List(options *RegistriesClientListOptions) *runtime.Pager[RegistriesClientListResponse] {
+func (client *RegistriesClient) NewListPager(options *RegistriesClientListOptions) *runtime.Pager[RegistriesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RegistriesClientListResponse]{
 		More: func(page RegistriesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -575,12 +575,12 @@ func (client *RegistriesClient) listHandleResponse(resp *http.Response) (Registr
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all the container registries under the specified resource group.
+// NewListByResourceGroupPager - Lists all the container registries under the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // options - RegistriesClientListByResourceGroupOptions contains the optional parameters for the RegistriesClient.ListByResourceGroup
 // method.
-func (client *RegistriesClient) ListByResourceGroup(resourceGroupName string, options *RegistriesClientListByResourceGroupOptions) *runtime.Pager[RegistriesClientListByResourceGroupResponse] {
+func (client *RegistriesClient) NewListByResourceGroupPager(resourceGroupName string, options *RegistriesClientListByResourceGroupOptions) *runtime.Pager[RegistriesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RegistriesClientListByResourceGroupResponse]{
 		More: func(page RegistriesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -695,13 +695,13 @@ func (client *RegistriesClient) listCredentialsHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListPrivateLinkResources - Lists the private link resources for a container registry.
+// NewListPrivateLinkResourcesPager - Lists the private link resources for a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // options - RegistriesClientListPrivateLinkResourcesOptions contains the optional parameters for the RegistriesClient.ListPrivateLinkResources
 // method.
-func (client *RegistriesClient) ListPrivateLinkResources(resourceGroupName string, registryName string, options *RegistriesClientListPrivateLinkResourcesOptions) *runtime.Pager[RegistriesClientListPrivateLinkResourcesResponse] {
+func (client *RegistriesClient) NewListPrivateLinkResourcesPager(resourceGroupName string, registryName string, options *RegistriesClientListPrivateLinkResourcesOptions) *runtime.Pager[RegistriesClientListPrivateLinkResourcesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RegistriesClientListPrivateLinkResourcesResponse]{
 		More: func(page RegistriesClientListPrivateLinkResourcesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

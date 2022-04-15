@@ -197,10 +197,11 @@ func (client *RecommendationsClient) getGenerateStatusCreateRequest(ctx context.
 	return req, nil
 }
 
-// List - Obtains cached recommendations for a subscription. The recommendations are generated or computed by invoking generateRecommendations.
+// NewListPager - Obtains cached recommendations for a subscription. The recommendations are generated or computed by invoking
+// generateRecommendations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - RecommendationsClientListOptions contains the optional parameters for the RecommendationsClient.List method.
-func (client *RecommendationsClient) List(options *RecommendationsClientListOptions) *runtime.Pager[RecommendationsClientListResponse] {
+func (client *RecommendationsClient) NewListPager(options *RecommendationsClientListOptions) *runtime.Pager[RecommendationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RecommendationsClientListResponse]{
 		More: func(page RecommendationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

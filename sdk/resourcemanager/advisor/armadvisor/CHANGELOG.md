@@ -1,5 +1,25 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*RecommendationsClient.List` has been removed
+- Function `*ConfigurationsClient.ListBySubscription` has been removed
+- Function `*RecommendationMetadataClient.List` has been removed
+- Function `*ConfigurationsClient.ListByResourceGroup` has been removed
+- Function `*SuppressionsClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+
+### Features Added
+
+- New function `*SuppressionsClient.NewListPager(*SuppressionsClientListOptions) *runtime.Pager[SuppressionsClientListResponse]`
+- New function `*RecommendationMetadataClient.NewListPager(*RecommendationMetadataClientListOptions) *runtime.Pager[RecommendationMetadataClientListResponse]`
+- New function `*ConfigurationsClient.NewListByResourceGroupPager(string, *ConfigurationsClientListByResourceGroupOptions) *runtime.Pager[ConfigurationsClientListByResourceGroupResponse]`
+- New function `*RecommendationsClient.NewListPager(*RecommendationsClientListOptions) *runtime.Pager[RecommendationsClientListResponse]`
+- New function `*ConfigurationsClient.NewListBySubscriptionPager(*ConfigurationsClientListBySubscriptionOptions) *runtime.Pager[ConfigurationsClientListBySubscriptionResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

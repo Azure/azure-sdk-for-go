@@ -246,12 +246,12 @@ func (client *ClustersClient) getHandleResponse(resp *http.Response) (ClustersCl
 	return result, nil
 }
 
-// List - List clusters in a private cloud
+// NewListPager - List clusters in a private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // options - ClustersClientListOptions contains the optional parameters for the ClustersClient.List method.
-func (client *ClustersClient) List(resourceGroupName string, privateCloudName string, options *ClustersClientListOptions) *runtime.Pager[ClustersClientListResponse] {
+func (client *ClustersClient) NewListPager(resourceGroupName string, privateCloudName string, options *ClustersClientListOptions) *runtime.Pager[ClustersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClustersClientListResponse]{
 		More: func(page ClustersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

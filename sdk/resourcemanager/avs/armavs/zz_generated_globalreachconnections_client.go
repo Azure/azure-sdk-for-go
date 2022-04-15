@@ -248,13 +248,13 @@ func (client *GlobalReachConnectionsClient) getHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// List - List global reach connections in a private cloud
+// NewListPager - List global reach connections in a private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // options - GlobalReachConnectionsClientListOptions contains the optional parameters for the GlobalReachConnectionsClient.List
 // method.
-func (client *GlobalReachConnectionsClient) List(resourceGroupName string, privateCloudName string, options *GlobalReachConnectionsClientListOptions) *runtime.Pager[GlobalReachConnectionsClientListResponse] {
+func (client *GlobalReachConnectionsClient) NewListPager(resourceGroupName string, privateCloudName string, options *GlobalReachConnectionsClientListOptions) *runtime.Pager[GlobalReachConnectionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[GlobalReachConnectionsClientListResponse]{
 		More: func(page GlobalReachConnectionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

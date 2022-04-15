@@ -262,13 +262,13 @@ func (client *PlacementPoliciesClient) getHandleResponse(resp *http.Response) (P
 	return result, nil
 }
 
-// List - List placement policies in a private cloud cluster
+// NewListPager - List placement policies in a private cloud cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // clusterName - Name of the cluster in the private cloud
 // options - PlacementPoliciesClientListOptions contains the optional parameters for the PlacementPoliciesClient.List method.
-func (client *PlacementPoliciesClient) List(resourceGroupName string, privateCloudName string, clusterName string, options *PlacementPoliciesClientListOptions) *runtime.Pager[PlacementPoliciesClientListResponse] {
+func (client *PlacementPoliciesClient) NewListPager(resourceGroupName string, privateCloudName string, clusterName string, options *PlacementPoliciesClientListOptions) *runtime.Pager[PlacementPoliciesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PlacementPoliciesClientListResponse]{
 		More: func(page PlacementPoliciesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

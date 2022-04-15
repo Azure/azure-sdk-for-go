@@ -119,13 +119,13 @@ func (client *VirtualMachinesClient) getHandleResponse(resp *http.Response) (Vir
 	return result, nil
 }
 
-// List - List of virtual machines in a private cloud cluster
+// NewListPager - List of virtual machines in a private cloud cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // clusterName - Name of the cluster in the private cloud
 // options - VirtualMachinesClientListOptions contains the optional parameters for the VirtualMachinesClient.List method.
-func (client *VirtualMachinesClient) List(resourceGroupName string, privateCloudName string, clusterName string, options *VirtualMachinesClientListOptions) *runtime.Pager[VirtualMachinesClientListResponse] {
+func (client *VirtualMachinesClient) NewListPager(resourceGroupName string, privateCloudName string, clusterName string, options *VirtualMachinesClientListOptions) *runtime.Pager[VirtualMachinesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualMachinesClientListResponse]{
 		More: func(page VirtualMachinesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

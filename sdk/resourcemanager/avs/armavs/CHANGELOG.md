@@ -1,5 +1,61 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*HcxEnterpriseSitesClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*ClustersClient.List` has been removed
+- Function `*WorkloadNetworksClient.ListPortMirroring` has been removed
+- Function `*WorkloadNetworksClient.ListSegments` has been removed
+- Function `*ScriptPackagesClient.List` has been removed
+- Function `*PlacementPoliciesClient.List` has been removed
+- Function `*VirtualMachinesClient.List` has been removed
+- Function `*WorkloadNetworksClient.ListPublicIPs` has been removed
+- Function `*WorkloadNetworksClient.ListDNSZones` has been removed
+- Function `*AddonsClient.List` has been removed
+- Function `*AuthorizationsClient.List` has been removed
+- Function `*WorkloadNetworksClient.ListDNSServices` has been removed
+- Function `*WorkloadNetworksClient.ListGateways` has been removed
+- Function `*WorkloadNetworksClient.ListVMGroups` has been removed
+- Function `*WorkloadNetworksClient.ListDhcp` has been removed
+- Function `*CloudLinksClient.List` has been removed
+- Function `*ScriptCmdletsClient.List` has been removed
+- Function `*PrivateCloudsClient.List` has been removed
+- Function `*WorkloadNetworksClient.ListVirtualMachines` has been removed
+- Function `*PrivateCloudsClient.ListInSubscription` has been removed
+- Function `*ScriptExecutionsClient.List` has been removed
+- Function `*GlobalReachConnectionsClient.List` has been removed
+- Function `*DatastoresClient.List` has been removed
+
+### Features Added
+
+- New function `*CloudLinksClient.NewListPager(string, string, *CloudLinksClientListOptions) *runtime.Pager[CloudLinksClientListResponse]`
+- New function `*PlacementPoliciesClient.NewListPager(string, string, string, *PlacementPoliciesClientListOptions) *runtime.Pager[PlacementPoliciesClientListResponse]`
+- New function `*AddonsClient.NewListPager(string, string, *AddonsClientListOptions) *runtime.Pager[AddonsClientListResponse]`
+- New function `*WorkloadNetworksClient.NewListPortMirroringPager(string, string, *WorkloadNetworksClientListPortMirroringOptions) *runtime.Pager[WorkloadNetworksClientListPortMirroringResponse]`
+- New function `*ScriptPackagesClient.NewListPager(string, string, *ScriptPackagesClientListOptions) *runtime.Pager[ScriptPackagesClientListResponse]`
+- New function `*ClustersClient.NewListPager(string, string, *ClustersClientListOptions) *runtime.Pager[ClustersClientListResponse]`
+- New function `*WorkloadNetworksClient.NewListSegmentsPager(string, string, *WorkloadNetworksClientListSegmentsOptions) *runtime.Pager[WorkloadNetworksClientListSegmentsResponse]`
+- New function `*AuthorizationsClient.NewListPager(string, string, *AuthorizationsClientListOptions) *runtime.Pager[AuthorizationsClientListResponse]`
+- New function `*GlobalReachConnectionsClient.NewListPager(string, string, *GlobalReachConnectionsClientListOptions) *runtime.Pager[GlobalReachConnectionsClientListResponse]`
+- New function `*PrivateCloudsClient.NewListPager(string, *PrivateCloudsClientListOptions) *runtime.Pager[PrivateCloudsClientListResponse]`
+- New function `*ScriptCmdletsClient.NewListPager(string, string, string, *ScriptCmdletsClientListOptions) *runtime.Pager[ScriptCmdletsClientListResponse]`
+- New function `*WorkloadNetworksClient.NewListDhcpPager(string, string, *WorkloadNetworksClientListDhcpOptions) *runtime.Pager[WorkloadNetworksClientListDhcpResponse]`
+- New function `*WorkloadNetworksClient.NewListVirtualMachinesPager(string, string, *WorkloadNetworksClientListVirtualMachinesOptions) *runtime.Pager[WorkloadNetworksClientListVirtualMachinesResponse]`
+- New function `*ScriptExecutionsClient.NewListPager(string, string, *ScriptExecutionsClientListOptions) *runtime.Pager[ScriptExecutionsClientListResponse]`
+- New function `*WorkloadNetworksClient.NewListGatewaysPager(string, string, *WorkloadNetworksClientListGatewaysOptions) *runtime.Pager[WorkloadNetworksClientListGatewaysResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*VirtualMachinesClient.NewListPager(string, string, string, *VirtualMachinesClientListOptions) *runtime.Pager[VirtualMachinesClientListResponse]`
+- New function `*WorkloadNetworksClient.NewListDNSZonesPager(string, string, *WorkloadNetworksClientListDNSZonesOptions) *runtime.Pager[WorkloadNetworksClientListDNSZonesResponse]`
+- New function `*WorkloadNetworksClient.NewListDNSServicesPager(string, string, *WorkloadNetworksClientListDNSServicesOptions) *runtime.Pager[WorkloadNetworksClientListDNSServicesResponse]`
+- New function `*HcxEnterpriseSitesClient.NewListPager(string, string, *HcxEnterpriseSitesClientListOptions) *runtime.Pager[HcxEnterpriseSitesClientListResponse]`
+- New function `*WorkloadNetworksClient.NewListVMGroupsPager(string, string, *WorkloadNetworksClientListVMGroupsOptions) *runtime.Pager[WorkloadNetworksClientListVMGroupsResponse]`
+- New function `*DatastoresClient.NewListPager(string, string, string, *DatastoresClientListOptions) *runtime.Pager[DatastoresClientListResponse]`
+- New function `*WorkloadNetworksClient.NewListPublicIPsPager(string, string, *WorkloadNetworksClientListPublicIPsOptions) *runtime.Pager[WorkloadNetworksClientListPublicIPsResponse]`
+- New function `*PrivateCloudsClient.NewListInSubscriptionPager(*PrivateCloudsClientListInSubscriptionOptions) *runtime.Pager[PrivateCloudsClientListInSubscriptionResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

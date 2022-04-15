@@ -311,12 +311,12 @@ func (client *ScriptExecutionsClient) getExecutionLogsHandleResponse(resp *http.
 	return result, nil
 }
 
-// List - List script executions in a private cloud
+// NewListPager - List script executions in a private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // options - ScriptExecutionsClientListOptions contains the optional parameters for the ScriptExecutionsClient.List method.
-func (client *ScriptExecutionsClient) List(resourceGroupName string, privateCloudName string, options *ScriptExecutionsClientListOptions) *runtime.Pager[ScriptExecutionsClientListResponse] {
+func (client *ScriptExecutionsClient) NewListPager(resourceGroupName string, privateCloudName string, options *ScriptExecutionsClientListOptions) *runtime.Pager[ScriptExecutionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ScriptExecutionsClientListResponse]{
 		More: func(page ScriptExecutionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

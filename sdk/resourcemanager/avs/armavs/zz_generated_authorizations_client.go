@@ -247,12 +247,12 @@ func (client *AuthorizationsClient) getHandleResponse(resp *http.Response) (Auth
 	return result, nil
 }
 
-// List - List ExpressRoute Circuit Authorizations in a private cloud
+// NewListPager - List ExpressRoute Circuit Authorizations in a private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // options - AuthorizationsClientListOptions contains the optional parameters for the AuthorizationsClient.List method.
-func (client *AuthorizationsClient) List(resourceGroupName string, privateCloudName string, options *AuthorizationsClientListOptions) *runtime.Pager[AuthorizationsClientListResponse] {
+func (client *AuthorizationsClient) NewListPager(resourceGroupName string, privateCloudName string, options *AuthorizationsClientListOptions) *runtime.Pager[AuthorizationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AuthorizationsClientListResponse]{
 		More: func(page AuthorizationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

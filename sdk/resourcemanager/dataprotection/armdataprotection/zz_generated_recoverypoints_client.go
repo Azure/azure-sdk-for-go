@@ -118,13 +118,13 @@ func (client *RecoveryPointsClient) getHandleResponse(resp *http.Response) (Reco
 	return result, nil
 }
 
-// List - Returns a list of Recovery Points for a DataSource in a vault.
+// NewListPager - Returns a list of Recovery Points for a DataSource in a vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group where the backup vault is present.
 // vaultName - The name of the backup vault.
 // backupInstanceName - The name of the backup instance
 // options - RecoveryPointsClientListOptions contains the optional parameters for the RecoveryPointsClient.List method.
-func (client *RecoveryPointsClient) List(resourceGroupName string, vaultName string, backupInstanceName string, options *RecoveryPointsClientListOptions) *runtime.Pager[RecoveryPointsClientListResponse] {
+func (client *RecoveryPointsClient) NewListPager(resourceGroupName string, vaultName string, backupInstanceName string, options *RecoveryPointsClientListOptions) *runtime.Pager[RecoveryPointsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RecoveryPointsClientListResponse]{
 		More: func(page RecoveryPointsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

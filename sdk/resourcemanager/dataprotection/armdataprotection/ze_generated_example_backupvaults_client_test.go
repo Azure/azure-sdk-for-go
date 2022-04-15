@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/VaultCRUD/GetBackupVaultsInSubscription.json
-func ExampleBackupVaultsClient_GetInSubscription() {
+func ExampleBackupVaultsClient_NewGetInSubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleBackupVaultsClient_GetInSubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.GetInSubscription(nil)
+	pager := client.NewGetInSubscriptionPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -47,7 +47,7 @@ func ExampleBackupVaultsClient_GetInSubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/VaultCRUD/GetBackupVaultsInResourceGroup.json
-func ExampleBackupVaultsClient_GetInResourceGroup() {
+func ExampleBackupVaultsClient_NewGetInResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -59,7 +59,7 @@ func ExampleBackupVaultsClient_GetInResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.GetInResourceGroup("<resource-group-name>",
+	pager := client.NewGetInResourceGroupPager("<resource-group-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

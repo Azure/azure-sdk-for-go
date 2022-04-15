@@ -155,13 +155,13 @@ func (client *ResourceGuardsClient) getHandleResponse(resp *http.Response) (Reso
 	return result, nil
 }
 
-// GetBackupSecurityPINRequestsObjects - Returns collection of operation request objects for a critical operation protected
-// by the given ResourceGuard resource.
+// NewGetBackupSecurityPINRequestsObjectsPager - Returns collection of operation request objects for a critical operation
+// protected by the given ResourceGuard resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group where the backup vault is present.
 // options - ResourceGuardsClientGetBackupSecurityPINRequestsObjectsOptions contains the optional parameters for the ResourceGuardsClient.GetBackupSecurityPINRequestsObjects
 // method.
-func (client *ResourceGuardsClient) GetBackupSecurityPINRequestsObjects(resourceGroupName string, resourceGuardsName string, options *ResourceGuardsClientGetBackupSecurityPINRequestsObjectsOptions) *runtime.Pager[ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse] {
+func (client *ResourceGuardsClient) NewGetBackupSecurityPINRequestsObjectsPager(resourceGroupName string, resourceGuardsName string, options *ResourceGuardsClientGetBackupSecurityPINRequestsObjectsOptions) *runtime.Pager[ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse]{
 		More: func(page ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -584,13 +584,13 @@ func (client *ResourceGuardsClient) getDefaultUpdateProtectionPolicyRequestsObje
 	return result, nil
 }
 
-// GetDeleteProtectedItemRequestsObjects - Returns collection of operation request objects for a critical operation protected
-// by the given ResourceGuard resource.
+// NewGetDeleteProtectedItemRequestsObjectsPager - Returns collection of operation request objects for a critical operation
+// protected by the given ResourceGuard resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group where the backup vault is present.
 // options - ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsOptions contains the optional parameters for the ResourceGuardsClient.GetDeleteProtectedItemRequestsObjects
 // method.
-func (client *ResourceGuardsClient) GetDeleteProtectedItemRequestsObjects(resourceGroupName string, resourceGuardsName string, options *ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsOptions) *runtime.Pager[ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsResponse] {
+func (client *ResourceGuardsClient) NewGetDeleteProtectedItemRequestsObjectsPager(resourceGroupName string, resourceGuardsName string, options *ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsOptions) *runtime.Pager[ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsResponse]{
 		More: func(page ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -653,13 +653,13 @@ func (client *ResourceGuardsClient) getDeleteProtectedItemRequestsObjectsHandleR
 	return result, nil
 }
 
-// GetDeleteResourceGuardProxyRequestsObjects - Returns collection of operation request objects for a critical operation protected
-// by the given ResourceGuard resource.
+// NewGetDeleteResourceGuardProxyRequestsObjectsPager - Returns collection of operation request objects for a critical operation
+// protected by the given ResourceGuard resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group where the backup vault is present.
 // options - ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsOptions contains the optional parameters for the
 // ResourceGuardsClient.GetDeleteResourceGuardProxyRequestsObjects method.
-func (client *ResourceGuardsClient) GetDeleteResourceGuardProxyRequestsObjects(resourceGroupName string, resourceGuardsName string, options *ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsOptions) *runtime.Pager[ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsResponse] {
+func (client *ResourceGuardsClient) NewGetDeleteResourceGuardProxyRequestsObjectsPager(resourceGroupName string, resourceGuardsName string, options *ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsOptions) *runtime.Pager[ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsResponse]{
 		More: func(page ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -722,13 +722,13 @@ func (client *ResourceGuardsClient) getDeleteResourceGuardProxyRequestsObjectsHa
 	return result, nil
 }
 
-// GetDisableSoftDeleteRequestsObjects - Returns collection of operation request objects for a critical operation protected
-// by the given ResourceGuard resource.
+// NewGetDisableSoftDeleteRequestsObjectsPager - Returns collection of operation request objects for a critical operation
+// protected by the given ResourceGuard resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group where the backup vault is present.
 // options - ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsOptions contains the optional parameters for the ResourceGuardsClient.GetDisableSoftDeleteRequestsObjects
 // method.
-func (client *ResourceGuardsClient) GetDisableSoftDeleteRequestsObjects(resourceGroupName string, resourceGuardsName string, options *ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsOptions) *runtime.Pager[ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsResponse] {
+func (client *ResourceGuardsClient) NewGetDisableSoftDeleteRequestsObjectsPager(resourceGroupName string, resourceGuardsName string, options *ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsOptions) *runtime.Pager[ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsResponse]{
 		More: func(page ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -791,12 +791,12 @@ func (client *ResourceGuardsClient) getDisableSoftDeleteRequestsObjectsHandleRes
 	return result, nil
 }
 
-// GetResourcesInResourceGroup - Returns ResourceGuards collection belonging to a ResourceGroup.
+// NewGetResourcesInResourceGroupPager - Returns ResourceGuards collection belonging to a ResourceGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group where the backup vault is present.
 // options - ResourceGuardsClientGetResourcesInResourceGroupOptions contains the optional parameters for the ResourceGuardsClient.GetResourcesInResourceGroup
 // method.
-func (client *ResourceGuardsClient) GetResourcesInResourceGroup(resourceGroupName string, options *ResourceGuardsClientGetResourcesInResourceGroupOptions) *runtime.Pager[ResourceGuardsClientGetResourcesInResourceGroupResponse] {
+func (client *ResourceGuardsClient) NewGetResourcesInResourceGroupPager(resourceGroupName string, options *ResourceGuardsClientGetResourcesInResourceGroupOptions) *runtime.Pager[ResourceGuardsClientGetResourcesInResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourceGuardsClientGetResourcesInResourceGroupResponse]{
 		More: func(page ResourceGuardsClientGetResourcesInResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -855,11 +855,11 @@ func (client *ResourceGuardsClient) getResourcesInResourceGroupHandleResponse(re
 	return result, nil
 }
 
-// GetResourcesInSubscription - Returns ResourceGuards collection belonging to a subscription.
+// NewGetResourcesInSubscriptionPager - Returns ResourceGuards collection belonging to a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ResourceGuardsClientGetResourcesInSubscriptionOptions contains the optional parameters for the ResourceGuardsClient.GetResourcesInSubscription
 // method.
-func (client *ResourceGuardsClient) GetResourcesInSubscription(options *ResourceGuardsClientGetResourcesInSubscriptionOptions) *runtime.Pager[ResourceGuardsClientGetResourcesInSubscriptionResponse] {
+func (client *ResourceGuardsClient) NewGetResourcesInSubscriptionPager(options *ResourceGuardsClientGetResourcesInSubscriptionOptions) *runtime.Pager[ResourceGuardsClientGetResourcesInSubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourceGuardsClientGetResourcesInSubscriptionResponse]{
 		More: func(page ResourceGuardsClientGetResourcesInSubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -914,13 +914,13 @@ func (client *ResourceGuardsClient) getResourcesInSubscriptionHandleResponse(res
 	return result, nil
 }
 
-// GetUpdateProtectedItemRequestsObjects - Returns collection of operation request objects for a critical operation protected
-// by the given ResourceGuard resource.
+// NewGetUpdateProtectedItemRequestsObjectsPager - Returns collection of operation request objects for a critical operation
+// protected by the given ResourceGuard resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group where the backup vault is present.
 // options - ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsOptions contains the optional parameters for the ResourceGuardsClient.GetUpdateProtectedItemRequestsObjects
 // method.
-func (client *ResourceGuardsClient) GetUpdateProtectedItemRequestsObjects(resourceGroupName string, resourceGuardsName string, options *ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsOptions) *runtime.Pager[ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsResponse] {
+func (client *ResourceGuardsClient) NewGetUpdateProtectedItemRequestsObjectsPager(resourceGroupName string, resourceGuardsName string, options *ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsOptions) *runtime.Pager[ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsResponse]{
 		More: func(page ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -983,13 +983,13 @@ func (client *ResourceGuardsClient) getUpdateProtectedItemRequestsObjectsHandleR
 	return result, nil
 }
 
-// GetUpdateProtectionPolicyRequestsObjects - Returns collection of operation request objects for a critical operation protected
-// by the given ResourceGuard resource.
+// NewGetUpdateProtectionPolicyRequestsObjectsPager - Returns collection of operation request objects for a critical operation
+// protected by the given ResourceGuard resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group where the backup vault is present.
 // options - ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsOptions contains the optional parameters for the
 // ResourceGuardsClient.GetUpdateProtectionPolicyRequestsObjects method.
-func (client *ResourceGuardsClient) GetUpdateProtectionPolicyRequestsObjects(resourceGroupName string, resourceGuardsName string, options *ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsOptions) *runtime.Pager[ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsResponse] {
+func (client *ResourceGuardsClient) NewGetUpdateProtectionPolicyRequestsObjectsPager(resourceGroupName string, resourceGuardsName string, options *ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsOptions) *runtime.Pager[ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsResponse]{
 		More: func(page ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

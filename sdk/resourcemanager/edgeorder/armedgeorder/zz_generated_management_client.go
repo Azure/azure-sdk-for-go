@@ -529,12 +529,12 @@ func (client *ManagementClient) getOrderItemByNameHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListAddressesAtResourceGroupLevel - Lists all the addresses available under the given resource group.
+// NewListAddressesAtResourceGroupLevelPager - Lists all the addresses available under the given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ManagementClientListAddressesAtResourceGroupLevelOptions contains the optional parameters for the ManagementClient.ListAddressesAtResourceGroupLevel
 // method.
-func (client *ManagementClient) ListAddressesAtResourceGroupLevel(resourceGroupName string, options *ManagementClientListAddressesAtResourceGroupLevelOptions) *runtime.Pager[ManagementClientListAddressesAtResourceGroupLevelResponse] {
+func (client *ManagementClient) NewListAddressesAtResourceGroupLevelPager(resourceGroupName string, options *ManagementClientListAddressesAtResourceGroupLevelOptions) *runtime.Pager[ManagementClientListAddressesAtResourceGroupLevelResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagementClientListAddressesAtResourceGroupLevelResponse]{
 		More: func(page ManagementClientListAddressesAtResourceGroupLevelResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -599,11 +599,11 @@ func (client *ManagementClient) listAddressesAtResourceGroupLevelHandleResponse(
 	return result, nil
 }
 
-// ListAddressesAtSubscriptionLevel - Lists all the addresses available under the subscription.
+// NewListAddressesAtSubscriptionLevelPager - Lists all the addresses available under the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ManagementClientListAddressesAtSubscriptionLevelOptions contains the optional parameters for the ManagementClient.ListAddressesAtSubscriptionLevel
 // method.
-func (client *ManagementClient) ListAddressesAtSubscriptionLevel(options *ManagementClientListAddressesAtSubscriptionLevelOptions) *runtime.Pager[ManagementClientListAddressesAtSubscriptionLevelResponse] {
+func (client *ManagementClient) NewListAddressesAtSubscriptionLevelPager(options *ManagementClientListAddressesAtSubscriptionLevelOptions) *runtime.Pager[ManagementClientListAddressesAtSubscriptionLevelResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagementClientListAddressesAtSubscriptionLevelResponse]{
 		More: func(page ManagementClientListAddressesAtSubscriptionLevelResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -664,13 +664,13 @@ func (client *ManagementClient) listAddressesAtSubscriptionLevelHandleResponse(r
 	return result, nil
 }
 
-// ListConfigurations - This method provides the list of configurations for the given product family, product line and product
-// under subscription.
+// NewListConfigurationsPager - This method provides the list of configurations for the given product family, product line
+// and product under subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // configurationsRequest - Filters for showing the configurations.
 // options - ManagementClientListConfigurationsOptions contains the optional parameters for the ManagementClient.ListConfigurations
 // method.
-func (client *ManagementClient) ListConfigurations(configurationsRequest ConfigurationsRequest, options *ManagementClientListConfigurationsOptions) *runtime.Pager[ManagementClientListConfigurationsResponse] {
+func (client *ManagementClient) NewListConfigurationsPager(configurationsRequest ConfigurationsRequest, options *ManagementClientListConfigurationsOptions) *runtime.Pager[ManagementClientListConfigurationsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagementClientListConfigurationsResponse]{
 		More: func(page ManagementClientListConfigurationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -728,11 +728,11 @@ func (client *ManagementClient) listConfigurationsHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListOperations - This method gets all the operations that are exposed for customer.
+// NewListOperationsPager - This method gets all the operations that are exposed for customer.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ManagementClientListOperationsOptions contains the optional parameters for the ManagementClient.ListOperations
 // method.
-func (client *ManagementClient) ListOperations(options *ManagementClientListOperationsOptions) *runtime.Pager[ManagementClientListOperationsResponse] {
+func (client *ManagementClient) NewListOperationsPager(options *ManagementClientListOperationsOptions) *runtime.Pager[ManagementClientListOperationsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagementClientListOperationsResponse]{
 		More: func(page ManagementClientListOperationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -783,12 +783,12 @@ func (client *ManagementClient) listOperationsHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListOrderAtResourceGroupLevel - Lists order at resource group level.
+// NewListOrderAtResourceGroupLevelPager - Lists order at resource group level.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ManagementClientListOrderAtResourceGroupLevelOptions contains the optional parameters for the ManagementClient.ListOrderAtResourceGroupLevel
 // method.
-func (client *ManagementClient) ListOrderAtResourceGroupLevel(resourceGroupName string, options *ManagementClientListOrderAtResourceGroupLevelOptions) *runtime.Pager[ManagementClientListOrderAtResourceGroupLevelResponse] {
+func (client *ManagementClient) NewListOrderAtResourceGroupLevelPager(resourceGroupName string, options *ManagementClientListOrderAtResourceGroupLevelOptions) *runtime.Pager[ManagementClientListOrderAtResourceGroupLevelResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagementClientListOrderAtResourceGroupLevelResponse]{
 		More: func(page ManagementClientListOrderAtResourceGroupLevelResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -850,11 +850,11 @@ func (client *ManagementClient) listOrderAtResourceGroupLevelHandleResponse(resp
 	return result, nil
 }
 
-// ListOrderAtSubscriptionLevel - Lists order at subscription level.
+// NewListOrderAtSubscriptionLevelPager - Lists order at subscription level.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ManagementClientListOrderAtSubscriptionLevelOptions contains the optional parameters for the ManagementClient.ListOrderAtSubscriptionLevel
 // method.
-func (client *ManagementClient) ListOrderAtSubscriptionLevel(options *ManagementClientListOrderAtSubscriptionLevelOptions) *runtime.Pager[ManagementClientListOrderAtSubscriptionLevelResponse] {
+func (client *ManagementClient) NewListOrderAtSubscriptionLevelPager(options *ManagementClientListOrderAtSubscriptionLevelOptions) *runtime.Pager[ManagementClientListOrderAtSubscriptionLevelResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagementClientListOrderAtSubscriptionLevelResponse]{
 		More: func(page ManagementClientListOrderAtSubscriptionLevelResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -912,12 +912,12 @@ func (client *ManagementClient) listOrderAtSubscriptionLevelHandleResponse(resp 
 	return result, nil
 }
 
-// ListOrderItemsAtResourceGroupLevel - Lists order item at resource group level.
+// NewListOrderItemsAtResourceGroupLevelPager - Lists order item at resource group level.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ManagementClientListOrderItemsAtResourceGroupLevelOptions contains the optional parameters for the ManagementClient.ListOrderItemsAtResourceGroupLevel
 // method.
-func (client *ManagementClient) ListOrderItemsAtResourceGroupLevel(resourceGroupName string, options *ManagementClientListOrderItemsAtResourceGroupLevelOptions) *runtime.Pager[ManagementClientListOrderItemsAtResourceGroupLevelResponse] {
+func (client *ManagementClient) NewListOrderItemsAtResourceGroupLevelPager(resourceGroupName string, options *ManagementClientListOrderItemsAtResourceGroupLevelOptions) *runtime.Pager[ManagementClientListOrderItemsAtResourceGroupLevelResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagementClientListOrderItemsAtResourceGroupLevelResponse]{
 		More: func(page ManagementClientListOrderItemsAtResourceGroupLevelResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -985,11 +985,11 @@ func (client *ManagementClient) listOrderItemsAtResourceGroupLevelHandleResponse
 	return result, nil
 }
 
-// ListOrderItemsAtSubscriptionLevel - Lists order item at subscription level.
+// NewListOrderItemsAtSubscriptionLevelPager - Lists order item at subscription level.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ManagementClientListOrderItemsAtSubscriptionLevelOptions contains the optional parameters for the ManagementClient.ListOrderItemsAtSubscriptionLevel
 // method.
-func (client *ManagementClient) ListOrderItemsAtSubscriptionLevel(options *ManagementClientListOrderItemsAtSubscriptionLevelOptions) *runtime.Pager[ManagementClientListOrderItemsAtSubscriptionLevelResponse] {
+func (client *ManagementClient) NewListOrderItemsAtSubscriptionLevelPager(options *ManagementClientListOrderItemsAtSubscriptionLevelOptions) *runtime.Pager[ManagementClientListOrderItemsAtSubscriptionLevelResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagementClientListOrderItemsAtSubscriptionLevelResponse]{
 		More: func(page ManagementClientListOrderItemsAtSubscriptionLevelResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1053,12 +1053,12 @@ func (client *ManagementClient) listOrderItemsAtSubscriptionLevelHandleResponse(
 	return result, nil
 }
 
-// ListProductFamilies - This method provides the list of product families for the given subscription.
+// NewListProductFamiliesPager - This method provides the list of product families for the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // productFamiliesRequest - Filters for showing the product families.
 // options - ManagementClientListProductFamiliesOptions contains the optional parameters for the ManagementClient.ListProductFamilies
 // method.
-func (client *ManagementClient) ListProductFamilies(productFamiliesRequest ProductFamiliesRequest, options *ManagementClientListProductFamiliesOptions) *runtime.Pager[ManagementClientListProductFamiliesResponse] {
+func (client *ManagementClient) NewListProductFamiliesPager(productFamiliesRequest ProductFamiliesRequest, options *ManagementClientListProductFamiliesOptions) *runtime.Pager[ManagementClientListProductFamiliesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagementClientListProductFamiliesResponse]{
 		More: func(page ManagementClientListProductFamiliesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1119,11 +1119,11 @@ func (client *ManagementClient) listProductFamiliesHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListProductFamiliesMetadata - This method provides the list of product families metadata for the given subscription.
+// NewListProductFamiliesMetadataPager - This method provides the list of product families metadata for the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ManagementClientListProductFamiliesMetadataOptions contains the optional parameters for the ManagementClient.ListProductFamiliesMetadata
 // method.
-func (client *ManagementClient) ListProductFamiliesMetadata(options *ManagementClientListProductFamiliesMetadataOptions) *runtime.Pager[ManagementClientListProductFamiliesMetadataResponse] {
+func (client *ManagementClient) NewListProductFamiliesMetadataPager(options *ManagementClientListProductFamiliesMetadataOptions) *runtime.Pager[ManagementClientListProductFamiliesMetadataResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagementClientListProductFamiliesMetadataResponse]{
 		More: func(page ManagementClientListProductFamiliesMetadataResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

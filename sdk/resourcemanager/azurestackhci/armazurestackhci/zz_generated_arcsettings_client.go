@@ -371,13 +371,13 @@ func (client *ArcSettingsClient) getHandleResponse(resp *http.Response) (ArcSett
 	return result, nil
 }
 
-// ListByCluster - Get ArcSetting resources of HCI Cluster.
+// NewListByClusterPager - Get ArcSetting resources of HCI Cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // clusterName - The name of the cluster.
 // options - ArcSettingsClientListByClusterOptions contains the optional parameters for the ArcSettingsClient.ListByCluster
 // method.
-func (client *ArcSettingsClient) ListByCluster(resourceGroupName string, clusterName string, options *ArcSettingsClientListByClusterOptions) *runtime.Pager[ArcSettingsClientListByClusterResponse] {
+func (client *ArcSettingsClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *ArcSettingsClientListByClusterOptions) *runtime.Pager[ArcSettingsClientListByClusterResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ArcSettingsClientListByClusterResponse]{
 		More: func(page ArcSettingsClientListByClusterResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

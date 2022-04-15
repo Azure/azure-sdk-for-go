@@ -237,11 +237,11 @@ func (client *PrivateLinkServicesForSCCPowershellClient) getHandleResponse(resp 
 	return result, nil
 }
 
-// List - Get all the privateLinkServicesForSCCPowershell instances in a subscription.
+// NewListPager - Get all the privateLinkServicesForSCCPowershell instances in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PrivateLinkServicesForSCCPowershellClientListOptions contains the optional parameters for the PrivateLinkServicesForSCCPowershellClient.List
 // method.
-func (client *PrivateLinkServicesForSCCPowershellClient) List(options *PrivateLinkServicesForSCCPowershellClientListOptions) *runtime.Pager[PrivateLinkServicesForSCCPowershellClientListResponse] {
+func (client *PrivateLinkServicesForSCCPowershellClient) NewListPager(options *PrivateLinkServicesForSCCPowershellClientListOptions) *runtime.Pager[PrivateLinkServicesForSCCPowershellClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesForSCCPowershellClientListResponse]{
 		More: func(page PrivateLinkServicesForSCCPowershellClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -296,12 +296,12 @@ func (client *PrivateLinkServicesForSCCPowershellClient) listHandleResponse(resp
 	return result, nil
 }
 
-// ListByResourceGroup - Get all the service instances in a resource group.
+// NewListByResourceGroupPager - Get all the service instances in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the service instance.
 // options - PrivateLinkServicesForSCCPowershellClientListByResourceGroupOptions contains the optional parameters for the
 // PrivateLinkServicesForSCCPowershellClient.ListByResourceGroup method.
-func (client *PrivateLinkServicesForSCCPowershellClient) ListByResourceGroup(resourceGroupName string, options *PrivateLinkServicesForSCCPowershellClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkServicesForSCCPowershellClientListByResourceGroupResponse] {
+func (client *PrivateLinkServicesForSCCPowershellClient) NewListByResourceGroupPager(resourceGroupName string, options *PrivateLinkServicesForSCCPowershellClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkServicesForSCCPowershellClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesForSCCPowershellClientListByResourceGroupResponse]{
 		More: func(page PrivateLinkServicesForSCCPowershellClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

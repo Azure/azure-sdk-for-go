@@ -237,11 +237,11 @@ func (client *PrivateLinkServicesForMIPPolicySyncClient) getHandleResponse(resp 
 	return result, nil
 }
 
-// List - Get all the privateLinkServicesForMIPPolicySync instances in a subscription.
+// NewListPager - Get all the privateLinkServicesForMIPPolicySync instances in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PrivateLinkServicesForMIPPolicySyncClientListOptions contains the optional parameters for the PrivateLinkServicesForMIPPolicySyncClient.List
 // method.
-func (client *PrivateLinkServicesForMIPPolicySyncClient) List(options *PrivateLinkServicesForMIPPolicySyncClientListOptions) *runtime.Pager[PrivateLinkServicesForMIPPolicySyncClientListResponse] {
+func (client *PrivateLinkServicesForMIPPolicySyncClient) NewListPager(options *PrivateLinkServicesForMIPPolicySyncClientListOptions) *runtime.Pager[PrivateLinkServicesForMIPPolicySyncClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesForMIPPolicySyncClientListResponse]{
 		More: func(page PrivateLinkServicesForMIPPolicySyncClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -296,12 +296,12 @@ func (client *PrivateLinkServicesForMIPPolicySyncClient) listHandleResponse(resp
 	return result, nil
 }
 
-// ListByResourceGroup - Get all the service instances in a resource group.
+// NewListByResourceGroupPager - Get all the service instances in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the service instance.
 // options - PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupOptions contains the optional parameters for the
 // PrivateLinkServicesForMIPPolicySyncClient.ListByResourceGroup method.
-func (client *PrivateLinkServicesForMIPPolicySyncClient) ListByResourceGroup(resourceGroupName string, options *PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupResponse] {
+func (client *PrivateLinkServicesForMIPPolicySyncClient) NewListByResourceGroupPager(resourceGroupName string, options *PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupResponse]{
 		More: func(page PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

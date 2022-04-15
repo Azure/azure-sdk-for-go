@@ -164,7 +164,7 @@ func ExampleSystemTopicEventSubscriptionsClient_BeginUpdate() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/SystemTopicEventSubscriptions_ListBySystemTopic.json
-func ExampleSystemTopicEventSubscriptionsClient_ListBySystemTopic() {
+func ExampleSystemTopicEventSubscriptionsClient_NewListBySystemTopicPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -176,7 +176,7 @@ func ExampleSystemTopicEventSubscriptionsClient_ListBySystemTopic() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySystemTopic("<resource-group-name>",
+	pager := client.NewListBySystemTopicPager("<resource-group-name>",
 		"<system-topic-name>",
 		&armeventgrid.SystemTopicEventSubscriptionsClientListBySystemTopicOptions{Filter: nil,
 			Top: nil,

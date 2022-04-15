@@ -44,7 +44,7 @@ func ExamplePrivateLinkResourcesClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PrivateLinkResources_ListByResource.json
-func ExamplePrivateLinkResourcesClient_ListByResource() {
+func ExamplePrivateLinkResourcesClient_NewListByResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -56,7 +56,7 @@ func ExamplePrivateLinkResourcesClient_ListByResource() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResource("<resource-group-name>",
+	pager := client.NewListByResourcePager("<resource-group-name>",
 		"<parent-type>",
 		"<parent-name>",
 		&armeventgrid.PrivateLinkResourcesClientListByResourceOptions{Filter: nil,

@@ -192,14 +192,14 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListByResource - Get all private endpoint connections under a topic, domain, or partner namespace.
+// NewListByResourcePager - Get all private endpoint connections under a topic, domain, or partner namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription.
 // parentType - The type of the parent resource. This can be either \'topics\', \'domains\', or \'partnerNamespaces\'.
 // parentName - The name of the parent resource (namely, either, the topic name, domain name, or partner namespace name).
 // options - PrivateEndpointConnectionsClientListByResourceOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByResource
 // method.
-func (client *PrivateEndpointConnectionsClient) ListByResource(resourceGroupName string, parentType ParentType, parentName string, options *PrivateEndpointConnectionsClientListByResourceOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByResourceResponse] {
+func (client *PrivateEndpointConnectionsClient) NewListByResourcePager(resourceGroupName string, parentType ParentType, parentName string, options *PrivateEndpointConnectionsClientListByResourceOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByResourceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionsClientListByResourceResponse]{
 		More: func(page PrivateEndpointConnectionsClientListByResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

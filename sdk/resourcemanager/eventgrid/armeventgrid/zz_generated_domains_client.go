@@ -232,12 +232,12 @@ func (client *DomainsClient) getHandleResponse(resp *http.Response) (DomainsClie
 	return result, nil
 }
 
-// ListByResourceGroup - List all the domains under a resource group.
+// NewListByResourceGroupPager - List all the domains under a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription.
 // options - DomainsClientListByResourceGroupOptions contains the optional parameters for the DomainsClient.ListByResourceGroup
 // method.
-func (client *DomainsClient) ListByResourceGroup(resourceGroupName string, options *DomainsClientListByResourceGroupOptions) *runtime.Pager[DomainsClientListByResourceGroupResponse] {
+func (client *DomainsClient) NewListByResourceGroupPager(resourceGroupName string, options *DomainsClientListByResourceGroupOptions) *runtime.Pager[DomainsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DomainsClientListByResourceGroupResponse]{
 		More: func(page DomainsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -302,11 +302,11 @@ func (client *DomainsClient) listByResourceGroupHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListBySubscription - List all the domains under an Azure subscription.
+// NewListBySubscriptionPager - List all the domains under an Azure subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DomainsClientListBySubscriptionOptions contains the optional parameters for the DomainsClient.ListBySubscription
 // method.
-func (client *DomainsClient) ListBySubscription(options *DomainsClientListBySubscriptionOptions) *runtime.Pager[DomainsClientListBySubscriptionResponse] {
+func (client *DomainsClient) NewListBySubscriptionPager(options *DomainsClientListBySubscriptionOptions) *runtime.Pager[DomainsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DomainsClientListBySubscriptionResponse]{
 		More: func(page DomainsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

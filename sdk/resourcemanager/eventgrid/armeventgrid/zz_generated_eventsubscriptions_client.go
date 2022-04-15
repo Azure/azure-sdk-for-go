@@ -348,14 +348,14 @@ func (client *EventSubscriptionsClient) getFullURLHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListByDomainTopic - List all event subscriptions that have been created for a specific domain topic.
+// NewListByDomainTopicPager - List all event subscriptions that have been created for a specific domain topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription.
 // domainName - Name of the top level domain.
 // topicName - Name of the domain topic.
 // options - EventSubscriptionsClientListByDomainTopicOptions contains the optional parameters for the EventSubscriptionsClient.ListByDomainTopic
 // method.
-func (client *EventSubscriptionsClient) ListByDomainTopic(resourceGroupName string, domainName string, topicName string, options *EventSubscriptionsClientListByDomainTopicOptions) *runtime.Pager[EventSubscriptionsClientListByDomainTopicResponse] {
+func (client *EventSubscriptionsClient) NewListByDomainTopicPager(resourceGroupName string, domainName string, topicName string, options *EventSubscriptionsClientListByDomainTopicOptions) *runtime.Pager[EventSubscriptionsClientListByDomainTopicResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EventSubscriptionsClientListByDomainTopicResponse]{
 		More: func(page EventSubscriptionsClientListByDomainTopicResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -428,7 +428,7 @@ func (client *EventSubscriptionsClient) listByDomainTopicHandleResponse(resp *ht
 	return result, nil
 }
 
-// ListByResource - List all event subscriptions that have been created for a specific resource.
+// NewListByResourcePager - List all event subscriptions that have been created for a specific resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription.
 // providerNamespace - Namespace of the provider of the topic.
@@ -436,7 +436,7 @@ func (client *EventSubscriptionsClient) listByDomainTopicHandleResponse(resp *ht
 // resourceName - Name of the resource.
 // options - EventSubscriptionsClientListByResourceOptions contains the optional parameters for the EventSubscriptionsClient.ListByResource
 // method.
-func (client *EventSubscriptionsClient) ListByResource(resourceGroupName string, providerNamespace string, resourceTypeName string, resourceName string, options *EventSubscriptionsClientListByResourceOptions) *runtime.Pager[EventSubscriptionsClientListByResourceResponse] {
+func (client *EventSubscriptionsClient) NewListByResourcePager(resourceGroupName string, providerNamespace string, resourceTypeName string, resourceName string, options *EventSubscriptionsClientListByResourceOptions) *runtime.Pager[EventSubscriptionsClientListByResourceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EventSubscriptionsClientListByResourceResponse]{
 		More: func(page EventSubscriptionsClientListByResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -513,12 +513,13 @@ func (client *EventSubscriptionsClient) listByResourceHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListGlobalByResourceGroup - List all global event subscriptions under a specific Azure subscription and resource group.
+// NewListGlobalByResourceGroupPager - List all global event subscriptions under a specific Azure subscription and resource
+// group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription.
 // options - EventSubscriptionsClientListGlobalByResourceGroupOptions contains the optional parameters for the EventSubscriptionsClient.ListGlobalByResourceGroup
 // method.
-func (client *EventSubscriptionsClient) ListGlobalByResourceGroup(resourceGroupName string, options *EventSubscriptionsClientListGlobalByResourceGroupOptions) *runtime.Pager[EventSubscriptionsClientListGlobalByResourceGroupResponse] {
+func (client *EventSubscriptionsClient) NewListGlobalByResourceGroupPager(resourceGroupName string, options *EventSubscriptionsClientListGlobalByResourceGroupOptions) *runtime.Pager[EventSubscriptionsClientListGlobalByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EventSubscriptionsClientListGlobalByResourceGroupResponse]{
 		More: func(page EventSubscriptionsClientListGlobalByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -583,14 +584,14 @@ func (client *EventSubscriptionsClient) listGlobalByResourceGroupHandleResponse(
 	return result, nil
 }
 
-// ListGlobalByResourceGroupForTopicType - List all global event subscriptions under a resource group for a specific topic
-// type.
+// NewListGlobalByResourceGroupForTopicTypePager - List all global event subscriptions under a resource group for a specific
+// topic type.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription.
 // topicTypeName - Name of the topic type.
 // options - EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeOptions contains the optional parameters for the
 // EventSubscriptionsClient.ListGlobalByResourceGroupForTopicType method.
-func (client *EventSubscriptionsClient) ListGlobalByResourceGroupForTopicType(resourceGroupName string, topicTypeName string, options *EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeOptions) *runtime.Pager[EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse] {
+func (client *EventSubscriptionsClient) NewListGlobalByResourceGroupForTopicTypePager(resourceGroupName string, topicTypeName string, options *EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeOptions) *runtime.Pager[EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse]{
 		More: func(page EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -659,11 +660,11 @@ func (client *EventSubscriptionsClient) listGlobalByResourceGroupForTopicTypeHan
 	return result, nil
 }
 
-// ListGlobalBySubscription - List all aggregated global event subscriptions under a specific Azure subscription.
+// NewListGlobalBySubscriptionPager - List all aggregated global event subscriptions under a specific Azure subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - EventSubscriptionsClientListGlobalBySubscriptionOptions contains the optional parameters for the EventSubscriptionsClient.ListGlobalBySubscription
 // method.
-func (client *EventSubscriptionsClient) ListGlobalBySubscription(options *EventSubscriptionsClientListGlobalBySubscriptionOptions) *runtime.Pager[EventSubscriptionsClientListGlobalBySubscriptionResponse] {
+func (client *EventSubscriptionsClient) NewListGlobalBySubscriptionPager(options *EventSubscriptionsClientListGlobalBySubscriptionOptions) *runtime.Pager[EventSubscriptionsClientListGlobalBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EventSubscriptionsClientListGlobalBySubscriptionResponse]{
 		More: func(page EventSubscriptionsClientListGlobalBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -724,12 +725,13 @@ func (client *EventSubscriptionsClient) listGlobalBySubscriptionHandleResponse(r
 	return result, nil
 }
 
-// ListGlobalBySubscriptionForTopicType - List all global event subscriptions under an Azure subscription for a topic type.
+// NewListGlobalBySubscriptionForTopicTypePager - List all global event subscriptions under an Azure subscription for a topic
+// type.
 // If the operation fails it returns an *azcore.ResponseError type.
 // topicTypeName - Name of the topic type.
 // options - EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeOptions contains the optional parameters for the
 // EventSubscriptionsClient.ListGlobalBySubscriptionForTopicType method.
-func (client *EventSubscriptionsClient) ListGlobalBySubscriptionForTopicType(topicTypeName string, options *EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeOptions) *runtime.Pager[EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse] {
+func (client *EventSubscriptionsClient) NewListGlobalBySubscriptionForTopicTypePager(topicTypeName string, options *EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeOptions) *runtime.Pager[EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse]{
 		More: func(page EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -794,14 +796,14 @@ func (client *EventSubscriptionsClient) listGlobalBySubscriptionForTopicTypeHand
 	return result, nil
 }
 
-// ListRegionalByResourceGroup - List all event subscriptions from the given location under a specific Azure subscription
+// NewListRegionalByResourceGroupPager - List all event subscriptions from the given location under a specific Azure subscription
 // and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription.
 // location - Name of the location.
 // options - EventSubscriptionsClientListRegionalByResourceGroupOptions contains the optional parameters for the EventSubscriptionsClient.ListRegionalByResourceGroup
 // method.
-func (client *EventSubscriptionsClient) ListRegionalByResourceGroup(resourceGroupName string, location string, options *EventSubscriptionsClientListRegionalByResourceGroupOptions) *runtime.Pager[EventSubscriptionsClientListRegionalByResourceGroupResponse] {
+func (client *EventSubscriptionsClient) NewListRegionalByResourceGroupPager(resourceGroupName string, location string, options *EventSubscriptionsClientListRegionalByResourceGroupOptions) *runtime.Pager[EventSubscriptionsClientListRegionalByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EventSubscriptionsClientListRegionalByResourceGroupResponse]{
 		More: func(page EventSubscriptionsClientListRegionalByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -870,15 +872,15 @@ func (client *EventSubscriptionsClient) listRegionalByResourceGroupHandleRespons
 	return result, nil
 }
 
-// ListRegionalByResourceGroupForTopicType - List all event subscriptions from the given location under a specific Azure subscription
-// and resource group and topic type.
+// NewListRegionalByResourceGroupForTopicTypePager - List all event subscriptions from the given location under a specific
+// Azure subscription and resource group and topic type.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription.
 // location - Name of the location.
 // topicTypeName - Name of the topic type.
 // options - EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeOptions contains the optional parameters for the
 // EventSubscriptionsClient.ListRegionalByResourceGroupForTopicType method.
-func (client *EventSubscriptionsClient) ListRegionalByResourceGroupForTopicType(resourceGroupName string, location string, topicTypeName string, options *EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeOptions) *runtime.Pager[EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse] {
+func (client *EventSubscriptionsClient) NewListRegionalByResourceGroupForTopicTypePager(resourceGroupName string, location string, topicTypeName string, options *EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeOptions) *runtime.Pager[EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse]{
 		More: func(page EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -951,12 +953,12 @@ func (client *EventSubscriptionsClient) listRegionalByResourceGroupForTopicTypeH
 	return result, nil
 }
 
-// ListRegionalBySubscription - List all event subscriptions from the given location under a specific Azure subscription.
+// NewListRegionalBySubscriptionPager - List all event subscriptions from the given location under a specific Azure subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - Name of the location.
 // options - EventSubscriptionsClientListRegionalBySubscriptionOptions contains the optional parameters for the EventSubscriptionsClient.ListRegionalBySubscription
 // method.
-func (client *EventSubscriptionsClient) ListRegionalBySubscription(location string, options *EventSubscriptionsClientListRegionalBySubscriptionOptions) *runtime.Pager[EventSubscriptionsClientListRegionalBySubscriptionResponse] {
+func (client *EventSubscriptionsClient) NewListRegionalBySubscriptionPager(location string, options *EventSubscriptionsClientListRegionalBySubscriptionOptions) *runtime.Pager[EventSubscriptionsClientListRegionalBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EventSubscriptionsClientListRegionalBySubscriptionResponse]{
 		More: func(page EventSubscriptionsClientListRegionalBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1021,14 +1023,14 @@ func (client *EventSubscriptionsClient) listRegionalBySubscriptionHandleResponse
 	return result, nil
 }
 
-// ListRegionalBySubscriptionForTopicType - List all event subscriptions from the given location under a specific Azure subscription
-// and topic type.
+// NewListRegionalBySubscriptionForTopicTypePager - List all event subscriptions from the given location under a specific
+// Azure subscription and topic type.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - Name of the location.
 // topicTypeName - Name of the topic type.
 // options - EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeOptions contains the optional parameters for the
 // EventSubscriptionsClient.ListRegionalBySubscriptionForTopicType method.
-func (client *EventSubscriptionsClient) ListRegionalBySubscriptionForTopicType(location string, topicTypeName string, options *EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeOptions) *runtime.Pager[EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse] {
+func (client *EventSubscriptionsClient) NewListRegionalBySubscriptionForTopicTypePager(location string, topicTypeName string, options *EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeOptions) *runtime.Pager[EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse]{
 		More: func(page EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

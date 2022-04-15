@@ -97,10 +97,10 @@ func (client *TopicTypesClient) getHandleResponse(resp *http.Response) (TopicTyp
 	return result, nil
 }
 
-// List - List all registered topic types.
+// NewListPager - List all registered topic types.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - TopicTypesClientListOptions contains the optional parameters for the TopicTypesClient.List method.
-func (client *TopicTypesClient) List(options *TopicTypesClientListOptions) *runtime.Pager[TopicTypesClientListResponse] {
+func (client *TopicTypesClient) NewListPager(options *TopicTypesClientListOptions) *runtime.Pager[TopicTypesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TopicTypesClientListResponse]{
 		More: func(page TopicTypesClientListResponse) bool {
 			return false
@@ -145,12 +145,12 @@ func (client *TopicTypesClient) listHandleResponse(resp *http.Response) (TopicTy
 	return result, nil
 }
 
-// ListEventTypes - List event types for a topic type.
+// NewListEventTypesPager - List event types for a topic type.
 // If the operation fails it returns an *azcore.ResponseError type.
 // topicTypeName - Name of the topic type.
 // options - TopicTypesClientListEventTypesOptions contains the optional parameters for the TopicTypesClient.ListEventTypes
 // method.
-func (client *TopicTypesClient) ListEventTypes(topicTypeName string, options *TopicTypesClientListEventTypesOptions) *runtime.Pager[TopicTypesClientListEventTypesResponse] {
+func (client *TopicTypesClient) NewListEventTypesPager(topicTypeName string, options *TopicTypesClientListEventTypesOptions) *runtime.Pager[TopicTypesClientListEventTypesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TopicTypesClientListEventTypesResponse]{
 		More: func(page TopicTypesClientListEventTypesResponse) bool {
 			return false

@@ -41,7 +41,7 @@ func ExampleVerifiedPartnersClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/VerifiedPartners_List.json
-func ExampleVerifiedPartnersClient_List() {
+func ExampleVerifiedPartnersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -53,7 +53,7 @@ func ExampleVerifiedPartnersClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(&armeventgrid.VerifiedPartnersClientListOptions{Filter: nil,
+	pager := client.NewListPager(&armeventgrid.VerifiedPartnersClientListOptions{Filter: nil,
 		Top: nil,
 	})
 	for pager.More() {

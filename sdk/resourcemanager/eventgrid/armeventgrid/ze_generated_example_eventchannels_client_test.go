@@ -113,7 +113,7 @@ func ExampleEventChannelsClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventChannels_ListByPartnerNamespace.json
-func ExampleEventChannelsClient_ListByPartnerNamespace() {
+func ExampleEventChannelsClient_NewListByPartnerNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -125,7 +125,7 @@ func ExampleEventChannelsClient_ListByPartnerNamespace() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByPartnerNamespace("<resource-group-name>",
+	pager := client.NewListByPartnerNamespacePager("<resource-group-name>",
 		"<partner-namespace-name>",
 		&armeventgrid.EventChannelsClientListByPartnerNamespaceOptions{Filter: nil,
 			Top: nil,

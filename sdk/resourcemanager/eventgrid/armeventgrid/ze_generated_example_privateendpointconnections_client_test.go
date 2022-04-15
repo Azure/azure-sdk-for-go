@@ -118,7 +118,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PrivateEndpointConnections_ListByResource.json
-func ExamplePrivateEndpointConnectionsClient_ListByResource() {
+func ExamplePrivateEndpointConnectionsClient_NewListByResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -130,7 +130,7 @@ func ExamplePrivateEndpointConnectionsClient_ListByResource() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResource("<resource-group-name>",
+	pager := client.NewListByResourcePager("<resource-group-name>",
 		armeventgrid.ParentTypeTopics,
 		"<parent-name>",
 		&armeventgrid.PrivateEndpointConnectionsClientListByResourceOptions{Filter: nil,

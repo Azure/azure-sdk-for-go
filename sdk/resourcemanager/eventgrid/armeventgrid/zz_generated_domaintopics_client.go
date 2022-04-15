@@ -247,13 +247,13 @@ func (client *DomainTopicsClient) getHandleResponse(resp *http.Response) (Domain
 	return result, nil
 }
 
-// ListByDomain - List all the topics in a domain.
+// NewListByDomainPager - List all the topics in a domain.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription.
 // domainName - Domain name.
 // options - DomainTopicsClientListByDomainOptions contains the optional parameters for the DomainTopicsClient.ListByDomain
 // method.
-func (client *DomainTopicsClient) ListByDomain(resourceGroupName string, domainName string, options *DomainTopicsClientListByDomainOptions) *runtime.Pager[DomainTopicsClientListByDomainResponse] {
+func (client *DomainTopicsClient) NewListByDomainPager(resourceGroupName string, domainName string, options *DomainTopicsClientListByDomainOptions) *runtime.Pager[DomainTopicsClientListByDomainResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DomainTopicsClientListByDomainResponse]{
 		More: func(page DomainTopicsClientListByDomainResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

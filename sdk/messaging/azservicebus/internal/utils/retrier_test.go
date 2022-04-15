@@ -13,7 +13,7 @@ import (
 	"time"
 
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exports"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
@@ -31,7 +31,7 @@ func TestRetrier(t *testing.T) {
 			return nil
 		}, func(err error) bool {
 			panic("won't get called")
-		}, exports.RetryOptions{})
+		}, exported.RetryOptions{})
 
 		require.Nil(t, err)
 		require.EqualValues(t, 1, called)
@@ -80,7 +80,7 @@ func TestRetrier(t *testing.T) {
 		err := Retry(ctx, testLogEvent, "notused", func(ctx context.Context, args *RetryFnArgs) error {
 			called++
 			return errors.New("isFatalFn says this is a fatal error")
-		}, isFatalFn, exports.RetryOptions{})
+		}, isFatalFn, exported.RetryOptions{})
 
 		require.EqualValues(t, "isFatalFn says this is a fatal error", err.Error())
 		require.EqualValues(t, 1, called)
@@ -105,7 +105,7 @@ func TestRetrier(t *testing.T) {
 			}
 
 			return context.Canceled
-		}, isFatalFn, exports.RetryOptions{})
+		}, isFatalFn, exported.RetryOptions{})
 
 		require.ErrorIs(t, context.Canceled, err)
 	})
@@ -130,7 +130,7 @@ func TestRetrier(t *testing.T) {
 			}
 
 			return errors.New("whatever")
-		}, isFatalFn, exports.RetryOptions{
+		}, isFatalFn, exported.RetryOptions{
 			MaxRetries:    maxRetries,
 			RetryDelay:    time.Millisecond,
 			MaxRetryDelay: time.Millisecond,
@@ -167,7 +167,7 @@ func TestRetrier(t *testing.T) {
 
 func Test_calcDelay(t *testing.T) {
 	t.Run("can't exceed max retry delay", func(t *testing.T) {
-		duration := calcDelay(exports.RetryOptions{
+		duration := calcDelay(exported.RetryOptions{
 			RetryDelay:    time.Hour,
 			MaxRetryDelay: time.Minute,
 		}, 1)
@@ -176,7 +176,7 @@ func Test_calcDelay(t *testing.T) {
 	})
 
 	t.Run("increases with jitter", func(t *testing.T) {
-		duration := calcDelay(exports.RetryOptions{
+		duration := calcDelay(exported.RetryOptions{
 			RetryDelay:    time.Minute,
 			MaxRetryDelay: time.Hour,
 		}, 1)
@@ -184,7 +184,7 @@ func Test_calcDelay(t *testing.T) {
 		require.GreaterOrEqual(t, duration, time.Duration((2-1)*time.Minute.Seconds()*0.8*float64(time.Second)))
 		require.LessOrEqual(t, duration, time.Duration((2-1)*time.Minute.Seconds()*1.3*float64(time.Second)))
 
-		duration = calcDelay(exports.RetryOptions{
+		duration = calcDelay(exported.RetryOptions{
 			RetryDelay:    time.Minute,
 			MaxRetryDelay: time.Hour,
 		}, 2)
@@ -192,7 +192,7 @@ func Test_calcDelay(t *testing.T) {
 		require.GreaterOrEqual(t, duration, time.Duration((2*2-1)*time.Minute.Seconds()*0.8*float64(time.Second)))
 		require.LessOrEqual(t, duration, time.Duration((2*2-1)*time.Minute.Seconds()*1.3*float64(time.Second)))
 
-		duration = calcDelay(exports.RetryOptions{
+		duration = calcDelay(exported.RetryOptions{
 			RetryDelay:    time.Minute,
 			MaxRetryDelay: time.Hour,
 		}, 3)
@@ -202,7 +202,7 @@ func Test_calcDelay(t *testing.T) {
 	})
 }
 
-var fastRetryOptions = exports.RetryOptions{
+var fastRetryOptions = exported.RetryOptions{
 	// note: omitting MaxRetries just to give a sanity check that
 	// we do setDefaults() before we run.
 	RetryDelay:    time.Millisecond,
@@ -210,7 +210,7 @@ var fastRetryOptions = exports.RetryOptions{
 }
 
 func TestRetryDefaults(t *testing.T) {
-	ro := exports.RetryOptions{}
+	ro := exported.RetryOptions{}
 	setDefaults(&ro)
 
 	require.EqualValues(t, 3, ro.MaxRetries)
@@ -231,7 +231,7 @@ func TestRetryDefaults(t *testing.T) {
 
 func TestCalcDelay(t *testing.T) {
 	// calcDelay introduces some jitter, automatically.
-	ro := exports.RetryOptions{}
+	ro := exported.RetryOptions{}
 	setDefaults(&ro)
 	d := calcDelay(ro, 0)
 	require.EqualValues(t, 0, d)
@@ -259,7 +259,7 @@ func TestRetryLogging(t *testing.T) {
 			return errors.New("hello")
 		}, func(err error) bool {
 			return false
-		}, exports.RetryOptions{
+		}, exported.RetryOptions{
 			RetryDelay: time.Microsecond,
 		})
 		require.EqualError(t, err, "hello")
@@ -291,7 +291,7 @@ func TestRetryLogging(t *testing.T) {
 			return context.Canceled
 		}, func(err error) bool {
 			return errors.Is(err, context.Canceled)
-		}, exports.RetryOptions{
+		}, exported.RetryOptions{
 			RetryDelay: time.Microsecond,
 		})
 		require.ErrorIs(t, err, context.Canceled)
@@ -311,7 +311,7 @@ func TestRetryLogging(t *testing.T) {
 			return errors.New("custom fatal error")
 		}, func(err error) bool {
 			return true
-		}, exports.RetryOptions{
+		}, exported.RetryOptions{
 			RetryDelay: time.Microsecond,
 		})
 		require.EqualError(t, err, "custom fatal error")
@@ -346,7 +346,7 @@ func TestRetryLogging(t *testing.T) {
 		}, func(err error) bool {
 			var de amqp.DetachError
 			return errors.Is(err, &de)
-		}, exports.RetryOptions{
+		}, exported.RetryOptions{
 			RetryDelay: time.Microsecond,
 		})
 		require.Nil(t, err)

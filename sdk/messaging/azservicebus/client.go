@@ -14,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exports"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 )
 
 // Client provides methods to create Sender and Receiver
@@ -59,10 +59,10 @@ type ClientOptions struct {
 
 // RetryOptions controls how often operations are retried from this client and any
 // Receivers and Senders created from this client.
-type RetryOptions = exports.RetryOptions
+type RetryOptions = exported.RetryOptions
 
 // NewWebSocketConnArgs are passed to your web socket creation function (ClientOptions.NewWebSocketConn)
-type NewWebSocketConnArgs = exports.NewWebSocketConnArgs
+type NewWebSocketConnArgs = exported.NewWebSocketConnArgs
 
 // NewClient creates a new Client for a Service Bus namespace, using a TokenCredential.
 // A Client allows you create receivers (for queues or subscriptions) and senders (for queues and topics).

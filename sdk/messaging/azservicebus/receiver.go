@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exports"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
 	"github.com/devigned/tab"
@@ -20,15 +20,15 @@ import (
 
 // ReceiveMode represents the lock style to use for a receiver - either
 // `PeekLock` or `ReceiveAndDelete`
-type ReceiveMode = exports.ReceiveMode
+type ReceiveMode = exported.ReceiveMode
 
 const (
 	// ReceiveModePeekLock will lock messages as they are received and can be settled
 	// using the Receiver's (Complete|Abandon|DeadLetter|Defer)Message
 	// functions.
-	ReceiveModePeekLock ReceiveMode = exports.PeekLock
+	ReceiveModePeekLock ReceiveMode = exported.PeekLock
 	// ReceiveModeReceiveAndDelete will delete messages as they are received.
-	ReceiveModeReceiveAndDelete ReceiveMode = exports.ReceiveAndDelete
+	ReceiveModeReceiveAndDelete ReceiveMode = exported.ReceiveAndDelete
 )
 
 // SubQueue allows you to target a subqueue of a queue or subscription.

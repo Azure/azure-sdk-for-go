@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package exports
+package exported
 
 // NOTE: this struct is exported via client.go:NewWebSocketConnArgs
 

@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exports"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/sbauth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
@@ -45,9 +45,9 @@ type (
 		tlsConfig     *tls.Config
 		userAgent     string
 
-		newWebSocketConn func(ctx context.Context, args exports.NewWebSocketConnArgs) (net.Conn, error)
+		newWebSocketConn func(ctx context.Context, args exported.NewWebSocketConnArgs) (net.Conn, error)
 
-		retryOptions exports.RetryOptions
+		retryOptions exported.RetryOptions
 
 		clientMu         sync.RWMutex
 		client           *amqp.Client
@@ -116,7 +116,7 @@ func NamespaceWithUserAgent(userAgent string) NamespaceOption {
 }
 
 // NamespaceWithWebSocket configures the namespace and all entities to use wss:// rather than amqps://
-func NamespaceWithWebSocket(newWebSocketConn func(ctx context.Context, args exports.NewWebSocketConnArgs) (net.Conn, error)) NamespaceOption {
+func NamespaceWithWebSocket(newWebSocketConn func(ctx context.Context, args exported.NewWebSocketConnArgs) (net.Conn, error)) NamespaceOption {
 	return func(ns *Namespace) error {
 		ns.newWebSocketConn = newWebSocketConn
 		return nil
@@ -133,7 +133,7 @@ func NamespaceWithTokenCredential(fullyQualifiedNamespace string, tokenCredentia
 	}
 }
 
-func NamespaceWithRetryOptions(retryOptions exports.RetryOptions) NamespaceOption {
+func NamespaceWithRetryOptions(retryOptions exported.RetryOptions) NamespaceOption {
 	return func(ns *Namespace) error {
 		ns.retryOptions = retryOptions
 		return nil
@@ -176,7 +176,7 @@ func (ns *Namespace) newClient(ctx context.Context) (*amqp.Client, error) {
 	}
 
 	if ns.newWebSocketConn != nil {
-		nConn, err := ns.newWebSocketConn(ctx, exports.NewWebSocketConnArgs{
+		nConn, err := ns.newWebSocketConn(ctx, exported.NewWebSocketConnArgs{
 			Host: ns.getWSSHostURI() + "$servicebus/websocket",
 		})
 
@@ -287,7 +287,7 @@ func (ns *Namespace) Recover(ctx context.Context, theirConnID uint64) (bool, err
 		tab.Int64Attribute("theirConnID", int64(theirConnID)))
 
 	if ns.connID != theirConnID {
-		log.Writef(exports.EventConn, "Skipping connection recovery, already recovered: %d vs %d", ns.connID, theirConnID)
+		log.Writef(exported.EventConn, "Skipping connection recovery, already recovered: %d vs %d", ns.connID, theirConnID)
 		// we've already recovered since the client last tried.
 		return false, nil
 	}
@@ -301,7 +301,7 @@ func (ns *Namespace) Recover(ctx context.Context, theirConnID uint64) (bool, err
 	}
 
 	var err error
-	log.Writef(exports.EventConn, "Creating a new client (rev:%d)", ns.connID)
+	log.Writef(exported.EventConn, "Creating a new client (rev:%d)", ns.connID)
 	ns.client, err = ns.newClient(ctx)
 
 	if err != nil {
@@ -309,7 +309,7 @@ func (ns *Namespace) Recover(ctx context.Context, theirConnID uint64) (bool, err
 	}
 
 	ns.connID++
-	log.Writef(exports.EventConn, "New client created, (rev: %d)", ns.connID)
+	log.Writef(exported.EventConn, "New client created, (rev: %d)", ns.connID)
 	return true, nil
 }
 
@@ -335,7 +335,7 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 	audience := ns.GetEntityAudience(entityPath)
 
 	refreshClaim := func(ctx context.Context) (time.Time, error) {
-		log.Writef(exports.EventAuth, "(%s) refreshing claim", entityPath)
+		log.Writef(exported.EventAuth, "(%s) refreshing claim", entityPath)
 		ctx, span := ns.startSpanFromContext(ctx, tracing.SpanNegotiateClaim)
 		defer span.End()
 
@@ -348,11 +348,11 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 		token, expiration, err := ns.TokenProvider.GetTokenAsTokenProvider(audience)
 
 		if err != nil {
-			log.Writef(exports.EventAuth, "(%s) negotiate claim, failed getting token: %s", entityPath, err.Error())
+			log.Writef(exported.EventAuth, "(%s) negotiate claim, failed getting token: %s", entityPath, err.Error())
 			return time.Time{}, err
 		}
 
-		log.Writef(exports.EventAuth, "(%s) negotiate claim, token expires on %s", entityPath, expiration.Format(time.RFC3339))
+		log.Writef(exported.EventAuth, "(%s) negotiate claim, token expires on %s", entityPath, expiration.Format(time.RFC3339))
 
 		// You're not allowed to have multiple $cbs links open in a single connection.
 		// The current cbs.NegotiateClaim implementation automatically creates and shuts
@@ -366,11 +366,11 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 			// the negotiateClaim code creates it's own link each time.
 			if GetRecoveryKind(err) == RecoveryKindConn {
 				if _, err := ns.Recover(ctx, clientRevision); err != nil {
-					log.Writef(exports.EventAuth, "(%s) negotiate claim, failed in connection recovery: %s", entityPath, err)
+					log.Writef(exported.EventAuth, "(%s) negotiate claim, failed in connection recovery: %s", entityPath, err)
 				}
 			}
 
-			log.Writef(exports.EventAuth, "(%s) negotiate claim, failed: %s", entityPath, err.Error())
+			log.Writef(exported.EventAuth, "(%s) negotiate claim, failed: %s", entityPath, err.Error())
 			return time.Time{}, err
 		}
 
@@ -404,14 +404,14 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 		for {
 			nextClaimAt := nextClaimRefreshDurationFn(expiresOn, time.Now())
 
-			log.Writef(exports.EventAuth, "(%s) next refresh in %s", entityPath, nextClaimAt)
+			log.Writef(exported.EventAuth, "(%s) next refresh in %s", entityPath, nextClaimAt)
 
 			select {
 			case <-refreshCtx.Done():
 				return
 			case <-time.After(nextClaimAt):
 				for {
-					err := utils.Retry(refreshCtx, exports.EventAuth, "NegotiateClaimRefresh", func(ctx context.Context, args *utils.RetryFnArgs) error {
+					err := utils.Retry(refreshCtx, exported.EventAuth, "NegotiateClaimRefresh", func(ctx context.Context, args *utils.RetryFnArgs) error {
 						tmpExpiresOn, err := refreshClaim(ctx)
 
 						if err != nil {
@@ -427,7 +427,7 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 					}
 
 					if GetRecoveryKind(err) == RecoveryKindFatal {
-						log.Writef(exports.EventAuth, "[%s] fatal error, stopping token refresh loop: %s", entityPath, err.Error())
+						log.Writef(exported.EventAuth, "[%s] fatal error, stopping token refresh loop: %s", entityPath, err.Error())
 						break TokenRefreshLoop
 					}
 				}

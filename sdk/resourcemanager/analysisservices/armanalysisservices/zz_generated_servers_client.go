@@ -334,10 +334,10 @@ func (client *ServersClient) getDetailsHandleResponse(resp *http.Response) (Serv
 	return result, nil
 }
 
-// List - Lists all the Analysis Services servers for the given subscription.
+// NewListPager - Lists all the Analysis Services servers for the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ServersClientListOptions contains the optional parameters for the ServersClient.List method.
-func (client *ServersClient) List(options *ServersClientListOptions) *runtime.Pager[ServersClientListResponse] {
+func (client *ServersClient) NewListPager(options *ServersClientListOptions) *runtime.Pager[ServersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServersClientListResponse]{
 		More: func(page ServersClientListResponse) bool {
 			return false
@@ -386,13 +386,13 @@ func (client *ServersClient) listHandleResponse(resp *http.Response) (ServersCli
 	return result, nil
 }
 
-// ListByResourceGroup - Gets all the Analysis Services servers for the given resource group.
+// NewListByResourceGroupPager - Gets all the Analysis Services servers for the given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the Azure Resource group of which a given Analysis Services server is part. This name must
 // be at least 1 character in length, and no more than 90.
 // options - ServersClientListByResourceGroupOptions contains the optional parameters for the ServersClient.ListByResourceGroup
 // method.
-func (client *ServersClient) ListByResourceGroup(resourceGroupName string, options *ServersClientListByResourceGroupOptions) *runtime.Pager[ServersClientListByResourceGroupResponse] {
+func (client *ServersClient) NewListByResourceGroupPager(resourceGroupName string, options *ServersClientListByResourceGroupOptions) *runtime.Pager[ServersClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServersClientListByResourceGroupResponse]{
 		More: func(page ServersClientListByResourceGroupResponse) bool {
 			return false

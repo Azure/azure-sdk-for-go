@@ -1,5 +1,39 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*VendorSKUsClient.List` has been removed
+- Function `*NetworkFunctionVendorsClient.List` has been removed
+- Function `*VendorsClient.ListBySubscription` has been removed
+- Function `*DevicesClient.ListByResourceGroup` has been removed
+- Function `*VendorNetworkFunctionsClient.List` has been removed
+- Function `*RoleInstancesClient.List` has been removed
+- Function `*DevicesClient.ListBySubscription` has been removed
+- Function `*VendorSKUPreviewClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*NetworkFunctionsClient.ListByResourceGroup` has been removed
+- Function `*NetworkFunctionsClient.ListBySubscription` has been removed
+- Function `*NetworkFunctionVendorSKUsClient.ListBySKU` has been removed
+- Function `*NetworkFunctionVendorSKUsClient.ListByVendor` has been removed
+
+### Features Added
+
+- New function `*NetworkFunctionVendorSKUsClient.NewListBySKUPager(string, string, *NetworkFunctionVendorSKUsClientListBySKUOptions) *runtime.Pager[NetworkFunctionVendorSKUsClientListBySKUResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*RoleInstancesClient.NewListPager(string, string, string, *RoleInstancesClientListOptions) *runtime.Pager[RoleInstancesClientListResponse]`
+- New function `*VendorSKUPreviewClient.NewListPager(string, string, *VendorSKUPreviewClientListOptions) *runtime.Pager[VendorSKUPreviewClientListResponse]`
+- New function `*NetworkFunctionVendorSKUsClient.NewListByVendorPager(string, *NetworkFunctionVendorSKUsClientListByVendorOptions) *runtime.Pager[NetworkFunctionVendorSKUsClientListByVendorResponse]`
+- New function `*DevicesClient.NewListBySubscriptionPager(*DevicesClientListBySubscriptionOptions) *runtime.Pager[DevicesClientListBySubscriptionResponse]`
+- New function `*VendorSKUsClient.NewListPager(string, *VendorSKUsClientListOptions) *runtime.Pager[VendorSKUsClientListResponse]`
+- New function `*DevicesClient.NewListByResourceGroupPager(string, *DevicesClientListByResourceGroupOptions) *runtime.Pager[DevicesClientListByResourceGroupResponse]`
+- New function `*NetworkFunctionsClient.NewListByResourceGroupPager(string, *NetworkFunctionsClientListByResourceGroupOptions) *runtime.Pager[NetworkFunctionsClientListByResourceGroupResponse]`
+- New function `*NetworkFunctionVendorsClient.NewListPager(*NetworkFunctionVendorsClientListOptions) *runtime.Pager[NetworkFunctionVendorsClientListResponse]`
+- New function `*NetworkFunctionsClient.NewListBySubscriptionPager(*NetworkFunctionsClientListBySubscriptionOptions) *runtime.Pager[NetworkFunctionsClientListBySubscriptionResponse]`
+- New function `*VendorNetworkFunctionsClient.NewListPager(string, string, *VendorNetworkFunctionsClientListOptions) *runtime.Pager[VendorNetworkFunctionsClientListResponse]`
+- New function `*VendorsClient.NewListBySubscriptionPager(*VendorsClientListBySubscriptionOptions) *runtime.Pager[VendorsClientListBySubscriptionResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

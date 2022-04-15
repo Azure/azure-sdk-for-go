@@ -222,11 +222,11 @@ func (client *VendorsClient) getHandleResponse(resp *http.Response) (VendorsClie
 	return result, nil
 }
 
-// ListBySubscription - Lists all the vendors in a subscription.
+// NewListBySubscriptionPager - Lists all the vendors in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - VendorsClientListBySubscriptionOptions contains the optional parameters for the VendorsClient.ListBySubscription
 // method.
-func (client *VendorsClient) ListBySubscription(options *VendorsClientListBySubscriptionOptions) *runtime.Pager[VendorsClientListBySubscriptionResponse] {
+func (client *VendorsClient) NewListBySubscriptionPager(options *VendorsClientListBySubscriptionOptions) *runtime.Pager[VendorsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VendorsClientListBySubscriptionResponse]{
 		More: func(page VendorsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

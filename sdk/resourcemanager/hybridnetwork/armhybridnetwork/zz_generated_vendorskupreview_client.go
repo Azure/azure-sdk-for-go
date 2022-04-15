@@ -251,12 +251,12 @@ func (client *VendorSKUPreviewClient) getHandleResponse(resp *http.Response) (Ve
 	return result, nil
 }
 
-// List - Lists all the preview information of a vendor sku.
+// NewListPager - Lists all the preview information of a vendor sku.
 // If the operation fails it returns an *azcore.ResponseError type.
 // vendorName - The name of the vendor.
 // skuName - The name of the sku.
 // options - VendorSKUPreviewClientListOptions contains the optional parameters for the VendorSKUPreviewClient.List method.
-func (client *VendorSKUPreviewClient) List(vendorName string, skuName string, options *VendorSKUPreviewClientListOptions) *runtime.Pager[VendorSKUPreviewClientListResponse] {
+func (client *VendorSKUPreviewClient) NewListPager(vendorName string, skuName string, options *VendorSKUPreviewClientListOptions) *runtime.Pager[VendorSKUPreviewClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VendorSKUPreviewClientListResponse]{
 		More: func(page VendorSKUPreviewClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

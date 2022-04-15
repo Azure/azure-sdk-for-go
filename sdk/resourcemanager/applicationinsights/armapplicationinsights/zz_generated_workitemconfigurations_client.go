@@ -282,13 +282,13 @@ func (client *WorkItemConfigurationsClient) getItemHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// List - Gets the list work item configurations that exist for the application
+// NewListPager - Gets the list work item configurations that exist for the application
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // options - WorkItemConfigurationsClientListOptions contains the optional parameters for the WorkItemConfigurationsClient.List
 // method.
-func (client *WorkItemConfigurationsClient) List(resourceGroupName string, resourceName string, options *WorkItemConfigurationsClientListOptions) *runtime.Pager[WorkItemConfigurationsClientListResponse] {
+func (client *WorkItemConfigurationsClient) NewListPager(resourceGroupName string, resourceName string, options *WorkItemConfigurationsClientListOptions) *runtime.Pager[WorkItemConfigurationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkItemConfigurationsClientListResponse]{
 		More: func(page WorkItemConfigurationsClientListResponse) bool {
 			return false

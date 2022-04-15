@@ -220,14 +220,14 @@ func (client *AnnotationsClient) getHandleResponse(resp *http.Response) (Annotat
 	return result, nil
 }
 
-// List - Gets the list of annotations for a component for given time range
+// NewListPager - Gets the list of annotations for a component for given time range
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // start - The start time to query from for annotations, cannot be older than 90 days from current date.
 // end - The end time to query for annotations.
 // options - AnnotationsClientListOptions contains the optional parameters for the AnnotationsClient.List method.
-func (client *AnnotationsClient) List(resourceGroupName string, resourceName string, start string, end string, options *AnnotationsClientListOptions) *runtime.Pager[AnnotationsClientListResponse] {
+func (client *AnnotationsClient) NewListPager(resourceGroupName string, resourceName string, start string, end string, options *AnnotationsClientListOptions) *runtime.Pager[AnnotationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AnnotationsClientListResponse]{
 		More: func(page AnnotationsClientListResponse) bool {
 			return false

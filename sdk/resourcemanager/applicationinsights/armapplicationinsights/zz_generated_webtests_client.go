@@ -210,10 +210,10 @@ func (client *WebTestsClient) getHandleResponse(resp *http.Response) (WebTestsCl
 	return result, nil
 }
 
-// List - Get all Application Insights web test alerts definitions within a subscription.
+// NewListPager - Get all Application Insights web test alerts definitions within a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - WebTestsClientListOptions contains the optional parameters for the WebTestsClient.List method.
-func (client *WebTestsClient) List(options *WebTestsClientListOptions) *runtime.Pager[WebTestsClientListResponse] {
+func (client *WebTestsClient) NewListPager(options *WebTestsClientListOptions) *runtime.Pager[WebTestsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebTestsClientListResponse]{
 		More: func(page WebTestsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -268,13 +268,13 @@ func (client *WebTestsClient) listHandleResponse(resp *http.Response) (WebTestsC
 	return result, nil
 }
 
-// ListByComponent - Get all Application Insights web tests defined for the specified component.
+// NewListByComponentPager - Get all Application Insights web tests defined for the specified component.
 // If the operation fails it returns an *azcore.ResponseError type.
 // componentName - The name of the Application Insights component resource.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - WebTestsClientListByComponentOptions contains the optional parameters for the WebTestsClient.ListByComponent
 // method.
-func (client *WebTestsClient) ListByComponent(componentName string, resourceGroupName string, options *WebTestsClientListByComponentOptions) *runtime.Pager[WebTestsClientListByComponentResponse] {
+func (client *WebTestsClient) NewListByComponentPager(componentName string, resourceGroupName string, options *WebTestsClientListByComponentOptions) *runtime.Pager[WebTestsClientListByComponentResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebTestsClientListByComponentResponse]{
 		More: func(page WebTestsClientListByComponentResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -337,12 +337,12 @@ func (client *WebTestsClient) listByComponentHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListByResourceGroup - Get all Application Insights web tests defined within a specified resource group.
+// NewListByResourceGroupPager - Get all Application Insights web tests defined within a specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - WebTestsClientListByResourceGroupOptions contains the optional parameters for the WebTestsClient.ListByResourceGroup
 // method.
-func (client *WebTestsClient) ListByResourceGroup(resourceGroupName string, options *WebTestsClientListByResourceGroupOptions) *runtime.Pager[WebTestsClientListByResourceGroupResponse] {
+func (client *WebTestsClient) NewListByResourceGroupPager(resourceGroupName string, options *WebTestsClientListByResourceGroupOptions) *runtime.Pager[WebTestsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebTestsClientListByResourceGroupResponse]{
 		More: func(page WebTestsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

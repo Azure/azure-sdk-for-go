@@ -219,13 +219,13 @@ func (client *WorkbooksClient) getHandleResponse(resp *http.Response) (Workbooks
 	return result, nil
 }
 
-// ListByResourceGroup - Get all Workbooks defined within a specified resource group and category.
+// NewListByResourceGroupPager - Get all Workbooks defined within a specified resource group and category.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // category - Category of workbook to return.
 // options - WorkbooksClientListByResourceGroupOptions contains the optional parameters for the WorkbooksClient.ListByResourceGroup
 // method.
-func (client *WorkbooksClient) ListByResourceGroup(resourceGroupName string, category CategoryType, options *WorkbooksClientListByResourceGroupOptions) *runtime.Pager[WorkbooksClientListByResourceGroupResponse] {
+func (client *WorkbooksClient) NewListByResourceGroupPager(resourceGroupName string, category CategoryType, options *WorkbooksClientListByResourceGroupOptions) *runtime.Pager[WorkbooksClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkbooksClientListByResourceGroupResponse]{
 		More: func(page WorkbooksClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -294,12 +294,12 @@ func (client *WorkbooksClient) listByResourceGroupHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListBySubscription - Get all Workbooks defined within a specified subscription and category.
+// NewListBySubscriptionPager - Get all Workbooks defined within a specified subscription and category.
 // If the operation fails it returns an *azcore.ResponseError type.
 // category - Category of workbook to return.
 // options - WorkbooksClientListBySubscriptionOptions contains the optional parameters for the WorkbooksClient.ListBySubscription
 // method.
-func (client *WorkbooksClient) ListBySubscription(category CategoryType, options *WorkbooksClientListBySubscriptionOptions) *runtime.Pager[WorkbooksClientListBySubscriptionResponse] {
+func (client *WorkbooksClient) NewListBySubscriptionPager(category CategoryType, options *WorkbooksClientListBySubscriptionOptions) *runtime.Pager[WorkbooksClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkbooksClientListBySubscriptionResponse]{
 		More: func(page WorkbooksClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -421,12 +421,12 @@ func (client *WorkbooksClient) revisionGetHandleResponse(resp *http.Response) (W
 	return result, nil
 }
 
-// RevisionsList - Get the revisions for the workbook defined by its resourceName.
+// NewRevisionsListPager - Get the revisions for the workbook defined by its resourceName.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // options - WorkbooksClientRevisionsListOptions contains the optional parameters for the WorkbooksClient.RevisionsList method.
-func (client *WorkbooksClient) RevisionsList(resourceGroupName string, resourceName string, options *WorkbooksClientRevisionsListOptions) *runtime.Pager[WorkbooksClientRevisionsListResponse] {
+func (client *WorkbooksClient) NewRevisionsListPager(resourceGroupName string, resourceName string, options *WorkbooksClientRevisionsListOptions) *runtime.Pager[WorkbooksClientRevisionsListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkbooksClientRevisionsListResponse]{
 		More: func(page WorkbooksClientRevisionsListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

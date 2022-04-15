@@ -46,7 +46,7 @@ client.Authorizer = authorizer
 
 ```go
 credential, err := azidentity.NewClientSecretCredential("<TenantId>", "<ClientId>", "<ClientSecret>", nil)
-client := armresources.NewResourceGroupsClient("<SubscriptionId>", credential, nil)
+client, err := armresources.NewResourceGroupsClient("<SubscriptionId>", credential, nil)
 ```
 
 For detailed information on the benefits of using the new authentication types, please refer to [this page](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azidentity/README.md)
@@ -55,7 +55,7 @@ For detailed information on the benefits of using the new authentication types, 
 
 There are some minor changes in the error handling.
 
-- When there is an error in the SDK request, in the previous version (`services/**/mgmt/**`), the return value will all be non-nil, and you can get the raw HTTP response from the response value. In the latest version (`sdk/resourcemanager/**/arm**`), the first return value will be empty and you need to convert the error to the `azcore.HTTPResponse` interface to get the raw HTTP response. When the request is successful and there is no error returned, you can get the raw HTTP response in `RawResponse` property of the first return value.
+- When there is an error in the SDK request, in the previous version (`services/**/mgmt/**`), the return value will all be non-nil, and you can get the raw HTTP response from the response value. In the latest version (`sdk/resourcemanager/**/arm**`), the first return value will be empty and you need to convert the error to the `azcore.HTTPResponse` interface to get the raw HTTP response. When the request is successful and there is no error returned, you can get the raw HTTP response from request context.
 
 **Previous version (`services/**/mgmt/**`)**
 
@@ -71,26 +71,30 @@ if err != nil {
 ```go
 resp, err := resourceGroupsClient.CreateOrUpdate(context.Background(), resourceGroupName, resourceGroupParameters, nil)
 if err != nil {
-    var respErr azcore.HTTPResponse
+    var respErr azcore.ResponseError
     if errors.As(err, &respErr) {
-        log.Fatalf("Status code: %d", respErr.RawResponse().StatusCode)
+        log.Fatalf("Status code: %d", respErr.RawResponse.StatusCode)
+    } else {
+	    log.Fatalf("Other error: %+v", err)
     }
-	log.Fatalf("Other error: %+v", err)
 }
 ```
 
 **When there is no error in latest version (`sdk/resourcemanager/**/arm**`)**
 
 ```go
-resp, err := resourceGroupsClient.CreateOrUpdate(context.Background(), resourceGroupName, resourceGroupParameters, nil)
+var rawResponse *http.Response
+ctxWithResp := runtime.WithCaptureResponse(context.Background(), &rawResponse)
+resp, err := resourceGroupsClient.CreateOrUpdate(ctxWithResp, resourceGroupName, resourceGroupParameters, nil)
 if err != nil {
-    var respErr azcore.HTTPResponse
+    var respErr azcore.ResponseError
     if errors.As(err, &respErr) {
-        log.Fatalf("Status code: %d", respErr.RawResponse().StatusCode)
+        log.Fatalf("Status code: %d", respErr.RawResponse.StatusCode)
+    } else {
+        log.Fatalf("Other error: %+v", err)
     }
-    log.Fatalf("Other error: %+v", err)
 }
-log.Printf("Status code: %d", resp.RawResponse.StatusCode)
+log.Printf("Status code: %d", rawResponse.StatusCode)
 ```
 
 ### Long Running Operations
@@ -105,13 +109,16 @@ In the latest version, if a request is a long-running operation, the function na
 future, err := virtualMachinesClient.CreateOrUpdate(context.Background(), "<resource group name>", "<virtual machine name>", param)
 if err != nil {
 	log.Fatal(err)
+    return
 }
 if err := future.WaitForCompletionRef(context.Background(), virtualMachinesClient.Client); err != nil {
 	log.Fatal(err)
+    return
 }
 vm, err := future.Result(virtualMachinesClient)
 if err != nil {
 	log.Fatal(err)
+    return
 }
 log.Printf("virtual machine ID: %v", *vm.ID)
 ```
@@ -122,10 +129,12 @@ log.Printf("virtual machine ID: %v", *vm.ID)
 poller, err := client.BeginCreateOrUpdate(context.Background(), "<resource group name>", "<virtual machine name>", param, nil)
 if err != nil {
 	log.Fatal(err)
+    return
 }
 resp, err := poller.PollUntilDone(context.Background(), 30*time.Second)
 if err != nil {
     log.Fatal(err)
+    return
 }
 log.Printf("virtual machine ID: %v", *resp.VirtualMachine.ID)
 ```
@@ -142,6 +151,7 @@ In the latest version, if a request is a paginated operation, a struct `**Pager`
 pager, err := resourceGroupsClient.List(context.Background(), "", nil)
 if err != nil {
     log.Fatal(err)
+    return
 }
 for p.NotDone() {
     for _, v := range pager.Values() {
@@ -149,6 +159,7 @@ for p.NotDone() {
     }
     if err := pager.NextWithContext(context.Background()); err != nil   {
         log.Fatal(err)
+        return
     }
 }
 ```
@@ -156,14 +167,16 @@ for p.NotDone() {
 **Latest version (`sdk/resourcemanager/**/arm**`)**
 
 ```go
-pager := resourceGroupsClient.List(nil)
-for pager.NextPage(context.Background()) {
-    for _, rg := range pager.PageResponse().ResourceGroupListResult.Value {
+pager := resourceGroupsClient.NewListPager(nil)
+for pager.More() {
+    nextResult, err := pager.NextPage(ctx)
+    if err != nil {
+        log.Fatalf("failed to advance page: %v", err)
+        return
+    }
+    for _, rg := range nextResult.Value {
         log.Printf("resource group ID: %s\n", *rg.ID)
     }
-}
-if err := pager.Err(); err != nil {
-    log.Fatalf("failed to advance page: %v", err)
 }
 ```
 
@@ -195,7 +208,7 @@ options := &arm.ClientOptions{
         Transport: &httpClient,
     },
 }
-client := armresources.NewResourceGroupsClient("<SubscriptionId>", credential, options)
+client, err := armresources.NewResourceGroupsClient("<SubscriptionId>", credential, options)
 ```
 
 ## Need help?

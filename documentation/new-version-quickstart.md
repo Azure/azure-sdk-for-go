@@ -112,12 +112,12 @@ Once you have a credential, you will need to decide what service to use and crea
 To show an example, we will create a client to manage Virtual Machines. The code to achieve this task would be:
 
 ```go
-client := armcompute.NewVirtualMachinesClient("<subscription ID>", credential, nil)
+client, err := armcompute.NewVirtualMachinesClient("<subscription ID>", credential, nil)
 ```
 You can use the same pattern to connect with other Azure services that you are using. For example, in order to manage Virtual Network resources, you would install the Network package and create a `VirtualNetwork` Client:
 
 ```go
-client := armnetwork.NewVirtualNetworksClient("<subscription ID>", credential, nil)
+client, err := armnetwork.NewVirtualNetworksClient("<subscription ID>", credential, nil)
 ```
 
 Interacting with Azure Resources
@@ -151,8 +151,6 @@ import (
     "time"
 
     "github.com/Azure/azure-sdk-for-go/sdk/azcore"
-    "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-    "github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
     "github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
     "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
@@ -172,14 +170,19 @@ var (
 
 ***Write a function to create a resource group***
 ```go
-func createResourceGroup(ctx context.Context, credential azcore.TokenCredential) (armresources.ResourceGroupsCreateOrUpdateResponse, error) {
-	rgClient := armresources.NewResourceGroupsClient(subscriptionId, credential, nil)
+func createResourceGroup(ctx context.Context, credential azcore.TokenCredential) (*armresources.ResourceGroupsClientCreateOrUpdateResponse, error) {
+	rgClient, err := armresources.NewResourceGroupsClient(subscriptionId, credential, nil)
+	if err != nil {
+		return nil, err
+	}
 
-    param := armresources.ResourceGroup{
-        Location: to.StringPtr(location),
-    }
+	param := armresources.ResourceGroup{
+		Location: to.Ptr(location),
+	}
 
-    return rgClient.CreateOrUpdate(context.Background(), resourceGroupName, param, nil)
+	resp, err := rgClient.CreateOrUpdate(context.Background(), resourceGroupName, param, nil)
+
+	return &resp, err
 }
 ```
 
@@ -207,15 +210,21 @@ Example: Managing Resource Groups
 ***Update a resource group***
 
 ```go
-func updateResourceGroup(ctx context.Context, credential azcore.TokenCredential) (armresources.ResourceGroupsUpdateResponse, error) {
-    rgClient := armresources.NewResourceGroupsClient(subscriptionId, credential, nil)
+func updateResourceGroup(ctx context.Context, credential azcore.TokenCredential) (*armresources.ResourceGroupsClientUpdateResponse, error) {
+    rgClient, err := armresources.NewResourceGroupsClient(subscriptionId, credential, nil)
+	if err != nil {
+		return nil, err
+	}
 
     update := armresources.ResourceGroupPatchable{
         Tags: map[string]*string{
-            "new": to.StringPtr("tag"),
+            "new": to.Ptr("tag"),
         },
     }
-    return rgClient.Update(ctx, resourceGroupName, update, nil)
+
+	resp,err :=rgClient.Update(ctx, resourceGroupName, update, nil)
+	
+    return  &resp, err
 }
 ```
 
@@ -223,18 +232,25 @@ func updateResourceGroup(ctx context.Context, credential azcore.TokenCredential)
 
 ```go
 func listResourceGroups(ctx context.Context, credential azcore.TokenCredential) ([]*armresources.ResourceGroup, error) {
-    rgClient := armresources.NewResourceGroupsClient(subscriptionId, credential, nil)
-    
-    pager := rgClient.List(nil)
-    
-    var resourceGroups []*armresources.ResourceGroup
-    for pager.NextPage(ctx) {
-        resp := pager.PageResponse()
-        if resp.ResourceGroupListResult.Value != nil {
-            resourceGroups = append(resourceGroups, resp.ResourceGroupListResult.Value...)
-        }
-    }
-    return resourceGroups, pager.Err()
+	rgClient, err := armresources.NewResourceGroupsClient(subscriptionId, credential, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	pager := rgClient.NewListPager(nil)
+
+	var resourceGroups []*armresources.ResourceGroup
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			return nil, err
+		}
+		if nextResult.ResourceGroupListResult.Value != nil {
+			resourceGroups = append(resourceGroups, nextResult.ResourceGroupListResult.Value...)
+		}
+	}
+
+	return resourceGroups, nil
 }
 ```
 
@@ -242,8 +258,11 @@ func listResourceGroups(ctx context.Context, credential azcore.TokenCredential) 
 
 ```go
 func deleteResourceGroup(ctx context.Context, credential azcore.TokenCredential) error {
-    rgClient := armresources.NewResourceGroupsClient(subscriptionId, credential, nil)
-    
+    rgClient, err := armresources.NewResourceGroupsClient(subscriptionId, credential, nil)
+    if err != nil {
+		return err
+	}
+
     poller, err := rgClient.BeginDelete(ctx, resourceGroupName, nil)
     if err != nil {
         return err
@@ -259,31 +278,36 @@ func main() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("authentication failure: %+v", err)
+        return
 	}
 
     resourceGroup, err := createResourceGroup(ctx, cred)
     if err != nil {
         log.Fatalf("cannot create resource group: %+v", err)
+        return
     }
     log.Printf("Resource Group %s created", *resourceGroup.ResourceGroup.ID)
 
     updatedRG, err := updateResourceGroup(ctx, cred)
     if err != nil {
         log.Fatalf("cannot update resource group: %+v", err)
+        return
     }
     log.Printf("Resource Group %s updated", *updatedRG.ResourceGroup.ID)
 
     rgList, err := listResourceGroups(ctx, cred)
     if err != nil {
         log.Fatalf("cannot list resource group: %+v", err)
+        return
     }
     log.Printf("We totally have %d resource groups", len(rgList))
 
     if err := deleteResourceGroup(ctx, cred); err != nil {
         log.Fatalf("cannot delete resource group: %+v", err)
+        return
     }
     log.Printf("Resource Group deleted")
-})
+}
 ```
 
 Example: Managing Virtual Machines

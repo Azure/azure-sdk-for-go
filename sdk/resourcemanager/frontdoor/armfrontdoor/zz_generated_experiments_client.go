@@ -247,13 +247,13 @@ func (client *ExperimentsClient) getHandleResponse(resp *http.Response) (Experim
 	return result, nil
 }
 
-// ListByProfile - Gets a list of Experiments
+// NewListByProfilePager - Gets a list of Experiments
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - The Profile identifier associated with the Tenant and Partner
 // options - ExperimentsClientListByProfileOptions contains the optional parameters for the ExperimentsClient.ListByProfile
 // method.
-func (client *ExperimentsClient) ListByProfile(resourceGroupName string, profileName string, options *ExperimentsClientListByProfileOptions) *runtime.Pager[ExperimentsClientListByProfileResponse] {
+func (client *ExperimentsClient) NewListByProfilePager(resourceGroupName string, profileName string, options *ExperimentsClientListByProfileOptions) *runtime.Pager[ExperimentsClientListByProfileResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ExperimentsClientListByProfileResponse]{
 		More: func(page ExperimentsClientListByProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

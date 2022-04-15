@@ -234,11 +234,11 @@ func (client *NetworkExperimentProfilesClient) getHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// List - Gets a list of Network Experiment Profiles under a subscription
+// NewListPager - Gets a list of Network Experiment Profiles under a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - NetworkExperimentProfilesClientListOptions contains the optional parameters for the NetworkExperimentProfilesClient.List
 // method.
-func (client *NetworkExperimentProfilesClient) List(options *NetworkExperimentProfilesClientListOptions) *runtime.Pager[NetworkExperimentProfilesClientListResponse] {
+func (client *NetworkExperimentProfilesClient) NewListPager(options *NetworkExperimentProfilesClientListOptions) *runtime.Pager[NetworkExperimentProfilesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[NetworkExperimentProfilesClientListResponse]{
 		More: func(page NetworkExperimentProfilesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -293,12 +293,12 @@ func (client *NetworkExperimentProfilesClient) listHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListByResourceGroup - Gets a list of Network Experiment Profiles within a resource group under a subscription
+// NewListByResourceGroupPager - Gets a list of Network Experiment Profiles within a resource group under a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // options - NetworkExperimentProfilesClientListByResourceGroupOptions contains the optional parameters for the NetworkExperimentProfilesClient.ListByResourceGroup
 // method.
-func (client *NetworkExperimentProfilesClient) ListByResourceGroup(resourceGroupName string, options *NetworkExperimentProfilesClientListByResourceGroupOptions) *runtime.Pager[NetworkExperimentProfilesClientListByResourceGroupResponse] {
+func (client *NetworkExperimentProfilesClient) NewListByResourceGroupPager(resourceGroupName string, options *NetworkExperimentProfilesClientListByResourceGroupOptions) *runtime.Pager[NetworkExperimentProfilesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[NetworkExperimentProfilesClientListByResourceGroupResponse]{
 		More: func(page NetworkExperimentProfilesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

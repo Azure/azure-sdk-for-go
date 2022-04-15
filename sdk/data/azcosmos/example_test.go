@@ -510,6 +510,50 @@ func ExampleContainerClient_ReplaceItem_optimisticConcurrency() {
 	}
 }
 
+func ExampleContainerClient_QueryItemsByPartitionKey() {
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
+	if !ok {
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
+	}
+
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
+	if !ok {
+		panic("AZURE_COSMOS_KEY could not be found")
+	}
+
+	cred, err := azcosmos.NewKeyCredential(key)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	container, err := client.NewContainer("databaseName", "aContainer")
+	if err != nil {
+		panic(err)
+	}
+
+	pk := azcosmos.NewPartitionKeyString("newPartitionKey")
+
+	queryPager := container.QueryItemsByPartitionKey("select * from docs c", pk, nil)
+	for queryPager.More() {
+		queryResponse, err := queryPager.NextPage(context.Background())
+		if err != nil {
+			panic(err)
+		}
+
+		for _, item := range queryResponse.Items {
+			var itemResponseBody map[string]interface{}
+			json.Unmarshal(item, &itemResponseBody)
+		}
+
+		fmt.Printf("Query page received with %v items. ActivityId %s consuming %v RU", len(queryResponse.Items), queryResponse.ActivityID, queryResponse.RequestCharge)
+	}
+}
+
 func retryOptimisticConcurrency(retryAttempts int, wait time.Duration, retry func() (bool, error)) (result error) {
 	for i := 0; ; i++ {
 		retryResult, err := retry()

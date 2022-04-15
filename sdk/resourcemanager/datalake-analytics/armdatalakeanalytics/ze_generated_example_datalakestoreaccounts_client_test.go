@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datalake-analytics/resource-manager/Microsoft.DataLakeAnalytics/preview/2019-11-01-preview/examples/DataLakeStoreAccounts_ListByAccount.json
-func ExampleDataLakeStoreAccountsClient_ListByAccount() {
+func ExampleDataLakeStoreAccountsClient_NewListByAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleDataLakeStoreAccountsClient_ListByAccount() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByAccount("<resource-group-name>",
+	pager := client.NewListByAccountPager("<resource-group-name>",
 		"<account-name>",
 		&armdatalakeanalytics.DataLakeStoreAccountsClientListByAccountOptions{Filter: to.Ptr("<filter>"),
 			Top:     to.Ptr[int32](1),

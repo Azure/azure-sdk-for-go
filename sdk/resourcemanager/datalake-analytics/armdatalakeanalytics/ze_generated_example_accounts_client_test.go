@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datalake-analytics/resource-manager/Microsoft.DataLakeAnalytics/preview/2019-11-01-preview/examples/Accounts_List.json
-func ExampleAccountsClient_List() {
+func ExampleAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleAccountsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(&armdatalakeanalytics.AccountsClientListOptions{Filter: to.Ptr("<filter>"),
+	pager := client.NewListPager(&armdatalakeanalytics.AccountsClientListOptions{Filter: to.Ptr("<filter>"),
 		Top:     to.Ptr[int32](1),
 		Skip:    to.Ptr[int32](1),
 		Select:  to.Ptr("<select>"),
@@ -53,7 +53,7 @@ func ExampleAccountsClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datalake-analytics/resource-manager/Microsoft.DataLakeAnalytics/preview/2019-11-01-preview/examples/Accounts_ListByResourceGroup.json
-func ExampleAccountsClient_ListByResourceGroup() {
+func ExampleAccountsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -65,7 +65,7 @@ func ExampleAccountsClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		&armdatalakeanalytics.AccountsClientListByResourceGroupOptions{Filter: to.Ptr("<filter>"),
 			Top:     to.Ptr[int32](1),
 			Skip:    to.Ptr[int32](1),

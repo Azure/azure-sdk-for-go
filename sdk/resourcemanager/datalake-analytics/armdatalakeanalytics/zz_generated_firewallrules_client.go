@@ -229,13 +229,13 @@ func (client *FirewallRulesClient) getHandleResponse(resp *http.Response) (Firew
 	return result, nil
 }
 
-// ListByAccount - Lists the Data Lake Analytics firewall rules within the specified Data Lake Analytics account.
+// NewListByAccountPager - Lists the Data Lake Analytics firewall rules within the specified Data Lake Analytics account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Analytics account.
 // options - FirewallRulesClientListByAccountOptions contains the optional parameters for the FirewallRulesClient.ListByAccount
 // method.
-func (client *FirewallRulesClient) ListByAccount(resourceGroupName string, accountName string, options *FirewallRulesClientListByAccountOptions) *runtime.Pager[FirewallRulesClientListByAccountResponse] {
+func (client *FirewallRulesClient) NewListByAccountPager(resourceGroupName string, accountName string, options *FirewallRulesClientListByAccountOptions) *runtime.Pager[FirewallRulesClientListByAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[FirewallRulesClientListByAccountResponse]{
 		More: func(page FirewallRulesClientListByAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

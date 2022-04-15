@@ -1,5 +1,29 @@
 # Release History
 
+## 0.5.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*StorageAccountsClient.ListStorageContainers` has been removed
+- Function `*AccountsClient.List` has been removed
+- Function `*FirewallRulesClient.ListByAccount` has been removed
+- Function `*ComputePoliciesClient.ListByAccount` has been removed
+- Function `*AccountsClient.ListByResourceGroup` has been removed
+- Function `*StorageAccountsClient.ListByAccount` has been removed
+- Function `*DataLakeStoreAccountsClient.ListByAccount` has been removed
+- Function `*StorageAccountsClient.ListSasTokens` has been removed
+
+### Features Added
+
+- New function `*StorageAccountsClient.NewListByAccountPager(string, string, *StorageAccountsClientListByAccountOptions) *runtime.Pager[StorageAccountsClientListByAccountResponse]`
+- New function `*DataLakeStoreAccountsClient.NewListByAccountPager(string, string, *DataLakeStoreAccountsClientListByAccountOptions) *runtime.Pager[DataLakeStoreAccountsClientListByAccountResponse]`
+- New function `*StorageAccountsClient.NewListSasTokensPager(string, string, string, string, *StorageAccountsClientListSasTokensOptions) *runtime.Pager[StorageAccountsClientListSasTokensResponse]`
+- New function `*StorageAccountsClient.NewListStorageContainersPager(string, string, string, *StorageAccountsClientListStorageContainersOptions) *runtime.Pager[StorageAccountsClientListStorageContainersResponse]`
+- New function `*FirewallRulesClient.NewListByAccountPager(string, string, *FirewallRulesClientListByAccountOptions) *runtime.Pager[FirewallRulesClientListByAccountResponse]`
+- New function `*AccountsClient.NewListPager(*AccountsClientListOptions) *runtime.Pager[AccountsClientListResponse]`
+- New function `*AccountsClient.NewListByResourceGroupPager(string, *AccountsClientListByResourceGroupOptions) *runtime.Pager[AccountsClientListByResourceGroupResponse]`
+- New function `*ComputePoliciesClient.NewListByAccountPager(string, string, *ComputePoliciesClientListByAccountOptions) *runtime.Pager[ComputePoliciesClientListByAccountResponse]`
+
+
 ## 0.4.0 (2022-04-11)
 ### Breaking Changes
 

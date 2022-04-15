@@ -122,7 +122,7 @@ func (client *BuildServiceAgentPoolClient) getHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// List - List build service agent pool.
+// NewListPager - List build service agent pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -130,7 +130,7 @@ func (client *BuildServiceAgentPoolClient) getHandleResponse(resp *http.Response
 // buildServiceName - The name of the build service resource.
 // options - BuildServiceAgentPoolClientListOptions contains the optional parameters for the BuildServiceAgentPoolClient.List
 // method.
-func (client *BuildServiceAgentPoolClient) List(resourceGroupName string, serviceName string, buildServiceName string, options *BuildServiceAgentPoolClientListOptions) *runtime.Pager[BuildServiceAgentPoolClientListResponse] {
+func (client *BuildServiceAgentPoolClient) NewListPager(resourceGroupName string, serviceName string, buildServiceName string, options *BuildServiceAgentPoolClientListOptions) *runtime.Pager[BuildServiceAgentPoolClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BuildServiceAgentPoolClientListResponse]{
 		More: func(page BuildServiceAgentPoolClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

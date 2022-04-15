@@ -271,7 +271,7 @@ func (client *APIPortalCustomDomainsClient) getHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// List - Handle requests to list all API portal custom domains.
+// NewListPager - Handle requests to list all API portal custom domains.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -279,7 +279,7 @@ func (client *APIPortalCustomDomainsClient) getHandleResponse(resp *http.Respons
 // apiPortalName - The name of API portal.
 // options - APIPortalCustomDomainsClientListOptions contains the optional parameters for the APIPortalCustomDomainsClient.List
 // method.
-func (client *APIPortalCustomDomainsClient) List(resourceGroupName string, serviceName string, apiPortalName string, options *APIPortalCustomDomainsClientListOptions) *runtime.Pager[APIPortalCustomDomainsClientListResponse] {
+func (client *APIPortalCustomDomainsClient) NewListPager(resourceGroupName string, serviceName string, apiPortalName string, options *APIPortalCustomDomainsClientListOptions) *runtime.Pager[APIPortalCustomDomainsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[APIPortalCustomDomainsClientListResponse]{
 		More: func(page APIPortalCustomDomainsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

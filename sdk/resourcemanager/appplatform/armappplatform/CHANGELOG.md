@@ -1,5 +1,61 @@
 # Release History
 
+## 0.5.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*BuildServiceAgentPoolClient.List` has been removed
+- Function `*DeploymentsClient.ListForCluster` has been removed
+- Function `*CustomDomainsClient.List` has been removed
+- Function `*APIPortalsClient.List` has been removed
+- Function `*GatewayRouteConfigsClient.List` has been removed
+- Function `*BindingsClient.List` has been removed
+- Function `*BuildServiceBuilderClient.List` has been removed
+- Function `*ConfigurationServicesClient.List` has been removed
+- Function `*AppsClient.List` has been removed
+- Function `*BuildServiceClient.ListBuildResults` has been removed
+- Function `*GatewaysClient.List` has been removed
+- Function `*ServicesClient.List` has been removed
+- Function `*StoragesClient.List` has been removed
+- Function `*BuildServiceClient.ListBuildServices` has been removed
+- Function `*BuildpackBindingClient.List` has been removed
+- Function `*CertificatesClient.List` has been removed
+- Function `*DeploymentsClient.List` has been removed
+- Function `*ServiceRegistriesClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*BuildServiceClient.ListBuilds` has been removed
+- Function `*SKUsClient.List` has been removed
+- Function `*GatewayCustomDomainsClient.List` has been removed
+- Function `*APIPortalCustomDomainsClient.List` has been removed
+- Function `*ServicesClient.ListBySubscription` has been removed
+
+### Features Added
+
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*ServiceRegistriesClient.NewListPager(string, string, *ServiceRegistriesClientListOptions) *runtime.Pager[ServiceRegistriesClientListResponse]`
+- New function `*BuildServiceClient.NewListBuildResultsPager(string, string, string, string, *BuildServiceClientListBuildResultsOptions) *runtime.Pager[BuildServiceClientListBuildResultsResponse]`
+- New function `*BuildServiceClient.NewListBuildsPager(string, string, string, *BuildServiceClientListBuildsOptions) *runtime.Pager[BuildServiceClientListBuildsResponse]`
+- New function `*AppsClient.NewListPager(string, string, *AppsClientListOptions) *runtime.Pager[AppsClientListResponse]`
+- New function `*GatewaysClient.NewListPager(string, string, *GatewaysClientListOptions) *runtime.Pager[GatewaysClientListResponse]`
+- New function `*BindingsClient.NewListPager(string, string, string, *BindingsClientListOptions) *runtime.Pager[BindingsClientListResponse]`
+- New function `*ServicesClient.NewListPager(string, *ServicesClientListOptions) *runtime.Pager[ServicesClientListResponse]`
+- New function `*ConfigurationServicesClient.NewListPager(string, string, *ConfigurationServicesClientListOptions) *runtime.Pager[ConfigurationServicesClientListResponse]`
+- New function `*GatewayCustomDomainsClient.NewListPager(string, string, string, *GatewayCustomDomainsClientListOptions) *runtime.Pager[GatewayCustomDomainsClientListResponse]`
+- New function `*StoragesClient.NewListPager(string, string, *StoragesClientListOptions) *runtime.Pager[StoragesClientListResponse]`
+- New function `*DeploymentsClient.NewListForClusterPager(string, string, *DeploymentsClientListForClusterOptions) *runtime.Pager[DeploymentsClientListForClusterResponse]`
+- New function `*DeploymentsClient.NewListPager(string, string, string, *DeploymentsClientListOptions) *runtime.Pager[DeploymentsClientListResponse]`
+- New function `*BuildServiceAgentPoolClient.NewListPager(string, string, string, *BuildServiceAgentPoolClientListOptions) *runtime.Pager[BuildServiceAgentPoolClientListResponse]`
+- New function `*APIPortalCustomDomainsClient.NewListPager(string, string, string, *APIPortalCustomDomainsClientListOptions) *runtime.Pager[APIPortalCustomDomainsClientListResponse]`
+- New function `*GatewayRouteConfigsClient.NewListPager(string, string, string, *GatewayRouteConfigsClientListOptions) *runtime.Pager[GatewayRouteConfigsClientListResponse]`
+- New function `*ServicesClient.NewListBySubscriptionPager(*ServicesClientListBySubscriptionOptions) *runtime.Pager[ServicesClientListBySubscriptionResponse]`
+- New function `*APIPortalsClient.NewListPager(string, string, *APIPortalsClientListOptions) *runtime.Pager[APIPortalsClientListResponse]`
+- New function `*CertificatesClient.NewListPager(string, string, *CertificatesClientListOptions) *runtime.Pager[CertificatesClientListResponse]`
+- New function `*BuildServiceClient.NewListBuildServicesPager(string, string, *BuildServiceClientListBuildServicesOptions) *runtime.Pager[BuildServiceClientListBuildServicesResponse]`
+- New function `*BuildServiceBuilderClient.NewListPager(string, string, string, *BuildServiceBuilderClientListOptions) *runtime.Pager[BuildServiceBuilderClientListResponse]`
+- New function `*SKUsClient.NewListPager(*SKUsClientListOptions) *runtime.Pager[SKUsClientListResponse]`
+- New function `*BuildpackBindingClient.NewListPager(string, string, string, string, *BuildpackBindingClientListOptions) *runtime.Pager[BuildpackBindingClientListResponse]`
+- New function `*CustomDomainsClient.NewListPager(string, string, string, *CustomDomainsClientListOptions) *runtime.Pager[CustomDomainsClientListResponse]`
+
+
 ## 0.4.0 (2022-04-11)
 ### Breaking Changes
 

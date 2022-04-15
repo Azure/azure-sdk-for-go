@@ -254,13 +254,13 @@ func (client *GatewaysClient) getHandleResponse(resp *http.Response) (GatewaysCl
 	return result, nil
 }
 
-// List - Handles requests to list all resources in a Service.
+// NewListPager - Handles requests to list all resources in a Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
 // options - GatewaysClientListOptions contains the optional parameters for the GatewaysClient.List method.
-func (client *GatewaysClient) List(resourceGroupName string, serviceName string, options *GatewaysClientListOptions) *runtime.Pager[GatewaysClientListResponse] {
+func (client *GatewaysClient) NewListPager(resourceGroupName string, serviceName string, options *GatewaysClientListOptions) *runtime.Pager[GatewaysClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[GatewaysClientListResponse]{
 		More: func(page GatewaysClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

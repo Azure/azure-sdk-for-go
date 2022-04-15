@@ -254,13 +254,13 @@ func (client *StoragesClient) getHandleResponse(resp *http.Response) (StoragesCl
 	return result, nil
 }
 
-// List - List all the storages of one Azure Spring Cloud instance.
+// NewListPager - List all the storages of one Azure Spring Cloud instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
 // options - StoragesClientListOptions contains the optional parameters for the StoragesClient.List method.
-func (client *StoragesClient) List(resourceGroupName string, serviceName string, options *StoragesClientListOptions) *runtime.Pager[StoragesClientListResponse] {
+func (client *StoragesClient) NewListPager(resourceGroupName string, serviceName string, options *StoragesClientListOptions) *runtime.Pager[StoragesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[StoragesClientListResponse]{
 		More: func(page StoragesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

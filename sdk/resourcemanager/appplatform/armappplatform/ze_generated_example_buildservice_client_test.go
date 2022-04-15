@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/BuildService_ListBuildServices.json
-func ExampleBuildServiceClient_ListBuildServices() {
+func ExampleBuildServiceClient_NewListBuildServicesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleBuildServiceClient_ListBuildServices() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBuildServices("<resource-group-name>",
+	pager := client.NewListBuildServicesPager("<resource-group-name>",
 		"<service-name>",
 		nil)
 	for pager.More() {
@@ -73,7 +73,7 @@ func ExampleBuildServiceClient_GetBuildService() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/BuildService_ListBuilds.json
-func ExampleBuildServiceClient_ListBuilds() {
+func ExampleBuildServiceClient_NewListBuildsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -85,7 +85,7 @@ func ExampleBuildServiceClient_ListBuilds() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBuilds("<resource-group-name>",
+	pager := client.NewListBuildsPager("<resource-group-name>",
 		"<service-name>",
 		"<build-service-name>",
 		nil)
@@ -167,7 +167,7 @@ func ExampleBuildServiceClient_CreateOrUpdateBuild() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/BuildService_ListBuildResults.json
-func ExampleBuildServiceClient_ListBuildResults() {
+func ExampleBuildServiceClient_NewListBuildResultsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -179,7 +179,7 @@ func ExampleBuildServiceClient_ListBuildResults() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBuildResults("<resource-group-name>",
+	pager := client.NewListBuildResultsPager("<resource-group-name>",
 		"<service-name>",
 		"<build-service-name>",
 		"<build-name>",

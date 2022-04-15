@@ -258,14 +258,14 @@ func (client *ConfigurationServicesClient) getHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// List - Handles requests to list all resources in a Service.
+// NewListPager - Handles requests to list all resources in a Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
 // options - ConfigurationServicesClientListOptions contains the optional parameters for the ConfigurationServicesClient.List
 // method.
-func (client *ConfigurationServicesClient) List(resourceGroupName string, serviceName string, options *ConfigurationServicesClientListOptions) *runtime.Pager[ConfigurationServicesClientListResponse] {
+func (client *ConfigurationServicesClient) NewListPager(resourceGroupName string, serviceName string, options *ConfigurationServicesClientListOptions) *runtime.Pager[ConfigurationServicesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ConfigurationServicesClientListResponse]{
 		More: func(page ConfigurationServicesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -124,7 +124,7 @@ func ExampleGatewayRouteConfigsClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/GatewayRouteConfigs_List.json
-func ExampleGatewayRouteConfigsClient_List() {
+func ExampleGatewayRouteConfigsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -136,7 +136,7 @@ func ExampleGatewayRouteConfigsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-group-name>",
+	pager := client.NewListPager("<resource-group-name>",
 		"<service-name>",
 		"<gateway-name>",
 		nil)

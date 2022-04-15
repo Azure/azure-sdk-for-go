@@ -13,7 +13,9 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/sas"
@@ -204,7 +206,7 @@ func TestNewClientNewReceiverNotFound(t *testing.T) {
 	assertRPCNotFound(t, err)
 }
 
-func TestNewClientNewSessionReceiverNotFound(t *testing.T) {
+func TestClientNewSessionReceiverNotFound(t *testing.T) {
 	connectionString := test.GetConnectionString(t)
 	client, err := NewClientFromConnectionString(connectionString, nil)
 	require.NoError(t, err)
@@ -256,6 +258,29 @@ func TestClientCloseVsClosePermanently(t *testing.T) {
 	sessionReceiver, err = client.AcceptNextSessionForSubscription(context.Background(), "topic", "subscription", nil)
 	require.EqualError(t, err, "client has been closed by user")
 	require.Nil(t, sessionReceiver)
+}
+
+func TestClientNewSessionReceiverCancel(t *testing.T) {
+	// Both the session APIs create the receiver immediately however AcceptNextSession() has a quirk
+	// where it takes an excessively long time.
+	connectionString := test.GetConnectionString(t)
+
+	queue, cleanup := createQueue(t, connectionString, &admin.QueueProperties{
+		RequiresSession: to.Ptr(true),
+	})
+
+	defer cleanup()
+
+	client, err := NewClientFromConnectionString(connectionString, nil)
+	require.NoError(t, err)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	// non-cancelled version
+	receiver, err := client.AcceptNextSessionForQueue(ctx, queue, nil)
+	require.ErrorIs(t, err, context.DeadlineExceeded)
+	require.Nil(t, receiver)
 }
 
 func TestNewClientUnitTests(t *testing.T) {

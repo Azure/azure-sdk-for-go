@@ -247,13 +247,13 @@ func (client *IotConnectorsClient) getHandleResponse(resp *http.Response) (IotCo
 	return result, nil
 }
 
-// ListByWorkspace - Lists all IoT Connectors for the given workspace
+// NewListByWorkspacePager - Lists all IoT Connectors for the given workspace
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the service instance.
 // workspaceName - The name of workspace resource.
 // options - IotConnectorsClientListByWorkspaceOptions contains the optional parameters for the IotConnectorsClient.ListByWorkspace
 // method.
-func (client *IotConnectorsClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *IotConnectorsClientListByWorkspaceOptions) *runtime.Pager[IotConnectorsClientListByWorkspaceResponse] {
+func (client *IotConnectorsClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *IotConnectorsClientListByWorkspaceOptions) *runtime.Pager[IotConnectorsClientListByWorkspaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IotConnectorsClientListByWorkspaceResponse]{
 		More: func(page IotConnectorsClientListByWorkspaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

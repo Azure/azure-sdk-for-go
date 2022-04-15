@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/legacy/ServiceListPrivateEndpointConnections.json
-func ExamplePrivateEndpointConnectionsClient_ListByService() {
+func ExamplePrivateEndpointConnectionsClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExamplePrivateEndpointConnectionsClient_ListByService() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByService("<resource-group-name>",
+	pager := client.NewListByServicePager("<resource-group-name>",
 		"<resource-name>",
 		nil)
 	for pager.More() {

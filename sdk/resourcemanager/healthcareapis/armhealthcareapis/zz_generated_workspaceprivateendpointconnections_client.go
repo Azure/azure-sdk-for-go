@@ -248,13 +248,13 @@ func (client *WorkspacePrivateEndpointConnectionsClient) getHandleResponse(resp 
 	return result, nil
 }
 
-// ListByWorkspace - Lists all private endpoint connections for a workspace.
+// NewListByWorkspacePager - Lists all private endpoint connections for a workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the service instance.
 // workspaceName - The name of workspace resource.
 // options - WorkspacePrivateEndpointConnectionsClientListByWorkspaceOptions contains the optional parameters for the WorkspacePrivateEndpointConnectionsClient.ListByWorkspace
 // method.
-func (client *WorkspacePrivateEndpointConnectionsClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *WorkspacePrivateEndpointConnectionsClientListByWorkspaceOptions) *runtime.Pager[WorkspacePrivateEndpointConnectionsClientListByWorkspaceResponse] {
+func (client *WorkspacePrivateEndpointConnectionsClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *WorkspacePrivateEndpointConnectionsClientListByWorkspaceOptions) *runtime.Pager[WorkspacePrivateEndpointConnectionsClientListByWorkspaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkspacePrivateEndpointConnectionsClientListByWorkspaceResponse]{
 		More: func(page WorkspacePrivateEndpointConnectionsClientListByWorkspaceResponse) bool {
 			return false

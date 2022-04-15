@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/PrivateLinkResources_ListByHostPool.json
-func ExamplePrivateLinkResourcesClient_ListByHostPool() {
+func ExamplePrivateLinkResourcesClient_NewListByHostPoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExamplePrivateLinkResourcesClient_ListByHostPool() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByHostPool("<resource-group-name>",
+	pager := client.NewListByHostPoolPager("<resource-group-name>",
 		"<host-pool-name>",
 		nil)
 	for pager.More() {
@@ -46,7 +46,7 @@ func ExamplePrivateLinkResourcesClient_ListByHostPool() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/PrivateLinkResources_ListByWorkspace.json
-func ExamplePrivateLinkResourcesClient_ListByWorkspace() {
+func ExamplePrivateLinkResourcesClient_NewListByWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -58,7 +58,7 @@ func ExamplePrivateLinkResourcesClient_ListByWorkspace() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByWorkspace("<resource-group-name>",
+	pager := client.NewListByWorkspacePager("<resource-group-name>",
 		"<workspace-name>",
 		nil)
 	for pager.More() {

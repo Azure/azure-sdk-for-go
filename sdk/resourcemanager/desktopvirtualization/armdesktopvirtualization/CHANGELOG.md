@@ -1,5 +1,57 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*PrivateEndpointConnectionsClient.ListByWorkspace` has been removed
+- Function `*MsixImagesClient.Expand` has been removed
+- Function `*DesktopsClient.List` has been removed
+- Function `*SessionHostsClient.List` has been removed
+- Function `*PrivateLinkResourcesClient.ListByHostPool` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*ApplicationsClient.List` has been removed
+- Function `*PrivateEndpointConnectionsClient.ListByHostPool` has been removed
+- Function `*HostPoolsClient.List` has been removed
+- Function `*PrivateLinkResourcesClient.ListByWorkspace` has been removed
+- Function `*StartMenuItemsClient.List` has been removed
+- Function `*ScalingPlansClient.ListBySubscription` has been removed
+- Function `*ApplicationGroupsClient.ListBySubscription` has been removed
+- Function `*WorkspacesClient.ListBySubscription` has been removed
+- Function `*ApplicationGroupsClient.ListByResourceGroup` has been removed
+- Function `*HostPoolsClient.ListByResourceGroup` has been removed
+- Function `*UserSessionsClient.ListByHostPool` has been removed
+- Function `*ScalingPlansClient.ListByHostPool` has been removed
+- Function `*UserSessionsClient.List` has been removed
+- Function `*WorkspacesClient.ListByResourceGroup` has been removed
+- Function `*ScalingPlansClient.ListByResourceGroup` has been removed
+- Function `*MSIXPackagesClient.List` has been removed
+
+### Features Added
+
+- New function `*MSIXPackagesClient.NewListPager(string, string, *MSIXPackagesClientListOptions) *runtime.Pager[MSIXPackagesClientListResponse]`
+- New function `*WorkspacesClient.NewListBySubscriptionPager(*WorkspacesClientListBySubscriptionOptions) *runtime.Pager[WorkspacesClientListBySubscriptionResponse]`
+- New function `*SessionHostsClient.NewListPager(string, string, *SessionHostsClientListOptions) *runtime.Pager[SessionHostsClientListResponse]`
+- New function `*PrivateEndpointConnectionsClient.NewListByWorkspacePager(string, string, *PrivateEndpointConnectionsClientListByWorkspaceOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByWorkspaceResponse]`
+- New function `*WorkspacesClient.NewListByResourceGroupPager(string, *WorkspacesClientListByResourceGroupOptions) *runtime.Pager[WorkspacesClientListByResourceGroupResponse]`
+- New function `*PrivateLinkResourcesClient.NewListByWorkspacePager(string, string, *PrivateLinkResourcesClientListByWorkspaceOptions) *runtime.Pager[PrivateLinkResourcesClientListByWorkspaceResponse]`
+- New function `*ScalingPlansClient.NewListByHostPoolPager(string, string, *ScalingPlansClientListByHostPoolOptions) *runtime.Pager[ScalingPlansClientListByHostPoolResponse]`
+- New function `*UserSessionsClient.NewListByHostPoolPager(string, string, *UserSessionsClientListByHostPoolOptions) *runtime.Pager[UserSessionsClientListByHostPoolResponse]`
+- New function `*ApplicationGroupsClient.NewListBySubscriptionPager(*ApplicationGroupsClientListBySubscriptionOptions) *runtime.Pager[ApplicationGroupsClientListBySubscriptionResponse]`
+- New function `*ScalingPlansClient.NewListBySubscriptionPager(*ScalingPlansClientListBySubscriptionOptions) *runtime.Pager[ScalingPlansClientListBySubscriptionResponse]`
+- New function `*ApplicationsClient.NewListPager(string, string, *ApplicationsClientListOptions) *runtime.Pager[ApplicationsClientListResponse]`
+- New function `*HostPoolsClient.NewListByResourceGroupPager(string, *HostPoolsClientListByResourceGroupOptions) *runtime.Pager[HostPoolsClientListByResourceGroupResponse]`
+- New function `*DesktopsClient.NewListPager(string, string, *DesktopsClientListOptions) *runtime.Pager[DesktopsClientListResponse]`
+- New function `*HostPoolsClient.NewListPager(*HostPoolsClientListOptions) *runtime.Pager[HostPoolsClientListResponse]`
+- New function `*UserSessionsClient.NewListPager(string, string, string, *UserSessionsClientListOptions) *runtime.Pager[UserSessionsClientListResponse]`
+- New function `*ApplicationGroupsClient.NewListByResourceGroupPager(string, *ApplicationGroupsClientListByResourceGroupOptions) *runtime.Pager[ApplicationGroupsClientListByResourceGroupResponse]`
+- New function `*PrivateEndpointConnectionsClient.NewListByHostPoolPager(string, string, *PrivateEndpointConnectionsClientListByHostPoolOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByHostPoolResponse]`
+- New function `*PrivateLinkResourcesClient.NewListByHostPoolPager(string, string, *PrivateLinkResourcesClientListByHostPoolOptions) *runtime.Pager[PrivateLinkResourcesClientListByHostPoolResponse]`
+- New function `*StartMenuItemsClient.NewListPager(string, string, *StartMenuItemsClientListOptions) *runtime.Pager[StartMenuItemsClientListResponse]`
+- New function `*ScalingPlansClient.NewListByResourceGroupPager(string, *ScalingPlansClientListByResourceGroupOptions) *runtime.Pager[ScalingPlansClientListByResourceGroupResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*MsixImagesClient.NewExpandPager(string, string, MSIXImageURI, *MsixImagesClientExpandOptions) *runtime.Pager[MsixImagesClientExpandResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

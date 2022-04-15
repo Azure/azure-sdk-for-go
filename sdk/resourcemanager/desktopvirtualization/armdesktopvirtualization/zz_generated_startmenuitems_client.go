@@ -54,12 +54,12 @@ func NewStartMenuItemsClient(subscriptionID string, credential azcore.TokenCrede
 	return client, nil
 }
 
-// List - List start menu items in the given application group.
+// NewListPager - List start menu items in the given application group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // applicationGroupName - The name of the application group
 // options - StartMenuItemsClientListOptions contains the optional parameters for the StartMenuItemsClient.List method.
-func (client *StartMenuItemsClient) List(resourceGroupName string, applicationGroupName string, options *StartMenuItemsClientListOptions) *runtime.Pager[StartMenuItemsClientListResponse] {
+func (client *StartMenuItemsClient) NewListPager(resourceGroupName string, applicationGroupName string, options *StartMenuItemsClientListOptions) *runtime.Pager[StartMenuItemsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[StartMenuItemsClientListResponse]{
 		More: func(page StartMenuItemsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

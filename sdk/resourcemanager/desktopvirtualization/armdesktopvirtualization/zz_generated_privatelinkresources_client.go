@@ -54,13 +54,13 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 	return client, nil
 }
 
-// ListByHostPool - List the private link resources available for this hostpool.
+// NewListByHostPoolPager - List the private link resources available for this hostpool.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // hostPoolName - The name of the host pool within the specified resource group
 // options - PrivateLinkResourcesClientListByHostPoolOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByHostPool
 // method.
-func (client *PrivateLinkResourcesClient) ListByHostPool(resourceGroupName string, hostPoolName string, options *PrivateLinkResourcesClientListByHostPoolOptions) *runtime.Pager[PrivateLinkResourcesClientListByHostPoolResponse] {
+func (client *PrivateLinkResourcesClient) NewListByHostPoolPager(resourceGroupName string, hostPoolName string, options *PrivateLinkResourcesClientListByHostPoolOptions) *runtime.Pager[PrivateLinkResourcesClientListByHostPoolResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkResourcesClientListByHostPoolResponse]{
 		More: func(page PrivateLinkResourcesClientListByHostPoolResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -123,13 +123,13 @@ func (client *PrivateLinkResourcesClient) listByHostPoolHandleResponse(resp *htt
 	return result, nil
 }
 
-// ListByWorkspace - List the private link resources available for this workspace.
+// NewListByWorkspacePager - List the private link resources available for this workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace
 // options - PrivateLinkResourcesClientListByWorkspaceOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByWorkspace
 // method.
-func (client *PrivateLinkResourcesClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *PrivateLinkResourcesClientListByWorkspaceOptions) *runtime.Pager[PrivateLinkResourcesClientListByWorkspaceResponse] {
+func (client *PrivateLinkResourcesClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *PrivateLinkResourcesClientListByWorkspaceOptions) *runtime.Pager[PrivateLinkResourcesClientListByWorkspaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkResourcesClientListByWorkspaceResponse]{
 		More: func(page PrivateLinkResourcesClientListByWorkspaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

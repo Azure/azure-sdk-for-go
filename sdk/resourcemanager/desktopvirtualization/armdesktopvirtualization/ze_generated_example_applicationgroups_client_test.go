@@ -143,7 +143,7 @@ func ExampleApplicationGroupsClient_Update() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/ApplicationGroup_ListByResourceGroup.json
-func ExampleApplicationGroupsClient_ListByResourceGroup() {
+func ExampleApplicationGroupsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -155,7 +155,7 @@ func ExampleApplicationGroupsClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		&armdesktopvirtualization.ApplicationGroupsClientListByResourceGroupOptions{Filter: to.Ptr("<filter>")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -171,7 +171,7 @@ func ExampleApplicationGroupsClient_ListByResourceGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/ApplicationGroup_ListBySubscription.json
-func ExampleApplicationGroupsClient_ListBySubscription() {
+func ExampleApplicationGroupsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -183,7 +183,7 @@ func ExampleApplicationGroupsClient_ListBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription(&armdesktopvirtualization.ApplicationGroupsClientListBySubscriptionOptions{Filter: to.Ptr("<filter>")})
+	pager := client.NewListBySubscriptionPager(&armdesktopvirtualization.ApplicationGroupsClientListBySubscriptionOptions{Filter: to.Ptr("<filter>")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

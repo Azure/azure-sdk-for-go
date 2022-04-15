@@ -227,12 +227,12 @@ func (client *ApplicationsClient) getHandleResponse(resp *http.Response) (Applic
 	return result, nil
 }
 
-// List - List applications.
+// NewListPager - List applications.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // applicationGroupName - The name of the application group
 // options - ApplicationsClientListOptions contains the optional parameters for the ApplicationsClient.List method.
-func (client *ApplicationsClient) List(resourceGroupName string, applicationGroupName string, options *ApplicationsClientListOptions) *runtime.Pager[ApplicationsClientListResponse] {
+func (client *ApplicationsClient) NewListPager(resourceGroupName string, applicationGroupName string, options *ApplicationsClientListOptions) *runtime.Pager[ApplicationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ApplicationsClientListResponse]{
 		More: func(page ApplicationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

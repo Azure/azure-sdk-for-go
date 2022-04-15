@@ -227,12 +227,12 @@ func (client *MSIXPackagesClient) getHandleResponse(resp *http.Response) (MSIXPa
 	return result, nil
 }
 
-// List - List MSIX packages in hostpool.
+// NewListPager - List MSIX packages in hostpool.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // hostPoolName - The name of the host pool within the specified resource group
 // options - MSIXPackagesClientListOptions contains the optional parameters for the MSIXPackagesClient.List method.
-func (client *MSIXPackagesClient) List(resourceGroupName string, hostPoolName string, options *MSIXPackagesClientListOptions) *runtime.Pager[MSIXPackagesClientListResponse] {
+func (client *MSIXPackagesClient) NewListPager(resourceGroupName string, hostPoolName string, options *MSIXPackagesClientListOptions) *runtime.Pager[MSIXPackagesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MSIXPackagesClientListResponse]{
 		More: func(page MSIXPackagesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

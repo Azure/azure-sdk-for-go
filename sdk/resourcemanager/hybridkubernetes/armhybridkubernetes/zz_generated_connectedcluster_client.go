@@ -237,12 +237,12 @@ func (client *ConnectedClusterClient) getHandleResponse(resp *http.Response) (Co
 	return result, nil
 }
 
-// ListByResourceGroup - API to enumerate registered connected K8s clusters under a Resource Group
+// NewListByResourceGroupPager - API to enumerate registered connected K8s clusters under a Resource Group
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ConnectedClusterClientListByResourceGroupOptions contains the optional parameters for the ConnectedClusterClient.ListByResourceGroup
 // method.
-func (client *ConnectedClusterClient) ListByResourceGroup(resourceGroupName string, options *ConnectedClusterClientListByResourceGroupOptions) *runtime.Pager[ConnectedClusterClientListByResourceGroupResponse] {
+func (client *ConnectedClusterClient) NewListByResourceGroupPager(resourceGroupName string, options *ConnectedClusterClientListByResourceGroupOptions) *runtime.Pager[ConnectedClusterClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ConnectedClusterClientListByResourceGroupResponse]{
 		More: func(page ConnectedClusterClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -301,11 +301,11 @@ func (client *ConnectedClusterClient) listByResourceGroupHandleResponse(resp *ht
 	return result, nil
 }
 
-// ListBySubscription - API to enumerate registered connected K8s clusters under a Subscription
+// NewListBySubscriptionPager - API to enumerate registered connected K8s clusters under a Subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ConnectedClusterClientListBySubscriptionOptions contains the optional parameters for the ConnectedClusterClient.ListBySubscription
 // method.
-func (client *ConnectedClusterClient) ListBySubscription(options *ConnectedClusterClientListBySubscriptionOptions) *runtime.Pager[ConnectedClusterClientListBySubscriptionResponse] {
+func (client *ConnectedClusterClient) NewListBySubscriptionPager(options *ConnectedClusterClientListBySubscriptionOptions) *runtime.Pager[ConnectedClusterClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ConnectedClusterClientListBySubscriptionResponse]{
 		More: func(page ConnectedClusterClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

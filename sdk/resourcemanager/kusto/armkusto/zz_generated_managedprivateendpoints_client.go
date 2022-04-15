@@ -306,13 +306,13 @@ func (client *ManagedPrivateEndpointsClient) getHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// List - Returns the list of managed private endpoints.
+// NewListPager - Returns the list of managed private endpoints.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group containing the Kusto cluster.
 // clusterName - The name of the Kusto cluster.
 // options - ManagedPrivateEndpointsClientListOptions contains the optional parameters for the ManagedPrivateEndpointsClient.List
 // method.
-func (client *ManagedPrivateEndpointsClient) List(resourceGroupName string, clusterName string, options *ManagedPrivateEndpointsClientListOptions) *runtime.Pager[ManagedPrivateEndpointsClientListResponse] {
+func (client *ManagedPrivateEndpointsClient) NewListPager(resourceGroupName string, clusterName string, options *ManagedPrivateEndpointsClientListOptions) *runtime.Pager[ManagedPrivateEndpointsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagedPrivateEndpointsClientListResponse]{
 		More: func(page ManagedPrivateEndpointsClientListResponse) bool {
 			return false

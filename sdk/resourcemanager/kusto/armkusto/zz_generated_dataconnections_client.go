@@ -394,14 +394,14 @@ func (client *DataConnectionsClient) getHandleResponse(resp *http.Response) (Dat
 	return result, nil
 }
 
-// ListByDatabase - Returns the list of data connections of the given Kusto database.
+// NewListByDatabasePager - Returns the list of data connections of the given Kusto database.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group containing the Kusto cluster.
 // clusterName - The name of the Kusto cluster.
 // databaseName - The name of the database in the Kusto cluster.
 // options - DataConnectionsClientListByDatabaseOptions contains the optional parameters for the DataConnectionsClient.ListByDatabase
 // method.
-func (client *DataConnectionsClient) ListByDatabase(resourceGroupName string, clusterName string, databaseName string, options *DataConnectionsClientListByDatabaseOptions) *runtime.Pager[DataConnectionsClientListByDatabaseResponse] {
+func (client *DataConnectionsClient) NewListByDatabasePager(resourceGroupName string, clusterName string, databaseName string, options *DataConnectionsClientListByDatabaseOptions) *runtime.Pager[DataConnectionsClientListByDatabaseResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DataConnectionsClientListByDatabaseResponse]{
 		More: func(page DataConnectionsClientListByDatabaseResponse) bool {
 			return false

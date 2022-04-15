@@ -49,7 +49,7 @@ func ExampleDatabasesClient_CheckNameAvailability() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoDatabasesListByCluster.json
-func ExampleDatabasesClient_ListByCluster() {
+func ExampleDatabasesClient_NewListByClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -61,7 +61,7 @@ func ExampleDatabasesClient_ListByCluster() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByCluster("<resource-group-name>",
+	pager := client.NewListByClusterPager("<resource-group-name>",
 		"<cluster-name>",
 		nil)
 	for pager.More() {
@@ -208,7 +208,7 @@ func ExampleDatabasesClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoDatabaseListPrincipals.json
-func ExampleDatabasesClient_ListPrincipals() {
+func ExampleDatabasesClient_NewListPrincipalsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -220,7 +220,7 @@ func ExampleDatabasesClient_ListPrincipals() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListPrincipals("<resource-group-name>",
+	pager := client.NewListPrincipalsPager("<resource-group-name>",
 		"<cluster-name>",
 		"<database-name>",
 		nil)

@@ -306,13 +306,13 @@ func (client *AttachedDatabaseConfigurationsClient) getHandleResponse(resp *http
 	return result, nil
 }
 
-// ListByCluster - Returns the list of attached database configurations of the given Kusto cluster.
+// NewListByClusterPager - Returns the list of attached database configurations of the given Kusto cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group containing the Kusto cluster.
 // clusterName - The name of the Kusto cluster.
 // options - AttachedDatabaseConfigurationsClientListByClusterOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.ListByCluster
 // method.
-func (client *AttachedDatabaseConfigurationsClient) ListByCluster(resourceGroupName string, clusterName string, options *AttachedDatabaseConfigurationsClientListByClusterOptions) *runtime.Pager[AttachedDatabaseConfigurationsClientListByClusterResponse] {
+func (client *AttachedDatabaseConfigurationsClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *AttachedDatabaseConfigurationsClientListByClusterOptions) *runtime.Pager[AttachedDatabaseConfigurationsClientListByClusterResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AttachedDatabaseConfigurationsClientListByClusterResponse]{
 		More: func(page AttachedDatabaseConfigurationsClientListByClusterResponse) bool {
 			return false

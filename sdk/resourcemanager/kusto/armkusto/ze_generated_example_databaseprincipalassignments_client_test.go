@@ -147,7 +147,7 @@ func ExampleDatabasePrincipalAssignmentsClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoDatabasePrincipalAssignmentsList.json
-func ExampleDatabasePrincipalAssignmentsClient_List() {
+func ExampleDatabasePrincipalAssignmentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -159,7 +159,7 @@ func ExampleDatabasePrincipalAssignmentsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-group-name>",
+	pager := client.NewListPager("<resource-group-name>",
 		"<cluster-name>",
 		"<database-name>",
 		nil)

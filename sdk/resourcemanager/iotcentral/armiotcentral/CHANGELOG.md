@@ -1,5 +1,25 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*AppsClient.ListTemplates` has been removed
+- Function `*AppsClient.ListByResourceGroup` has been removed
+- Function `*PrivateLinksClient.List` has been removed
+- Function `*AppsClient.ListBySubscription` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*PrivateEndpointConnectionsClient.List` has been removed
+
+### Features Added
+
+- New function `*PrivateEndpointConnectionsClient.NewListPager(string, string, *PrivateEndpointConnectionsClientListOptions) *runtime.Pager[PrivateEndpointConnectionsClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*AppsClient.NewListBySubscriptionPager(*AppsClientListBySubscriptionOptions) *runtime.Pager[AppsClientListBySubscriptionResponse]`
+- New function `*AppsClient.NewListByResourceGroupPager(string, *AppsClientListByResourceGroupOptions) *runtime.Pager[AppsClientListByResourceGroupResponse]`
+- New function `*PrivateLinksClient.NewListPager(string, string, *PrivateLinksClientListOptions) *runtime.Pager[PrivateLinksClientListResponse]`
+- New function `*AppsClient.NewListTemplatesPager(*AppsClientListTemplatesOptions) *runtime.Pager[AppsClientListTemplatesResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

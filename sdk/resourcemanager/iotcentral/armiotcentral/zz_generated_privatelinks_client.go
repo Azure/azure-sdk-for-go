@@ -114,12 +114,12 @@ func (client *PrivateLinksClient) getHandleResponse(resp *http.Response) (Privat
 	return result, nil
 }
 
-// List - Get all private link resources of a IoT Central Application.
+// NewListPager - Get all private link resources of a IoT Central Application.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the IoT Central application.
 // resourceName - The ARM resource name of the IoT Central application.
 // options - PrivateLinksClientListOptions contains the optional parameters for the PrivateLinksClient.List method.
-func (client *PrivateLinksClient) List(resourceGroupName string, resourceName string, options *PrivateLinksClientListOptions) *runtime.Pager[PrivateLinksClientListResponse] {
+func (client *PrivateLinksClient) NewListPager(resourceGroupName string, resourceName string, options *PrivateLinksClientListOptions) *runtime.Pager[PrivateLinksClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinksClientListResponse]{
 		More: func(page PrivateLinksClientListResponse) bool {
 			return false

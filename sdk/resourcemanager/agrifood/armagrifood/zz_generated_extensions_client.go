@@ -226,13 +226,13 @@ func (client *ExtensionsClient) getHandleResponse(resp *http.Response) (Extensio
 	return result, nil
 }
 
-// ListByFarmBeats - Get installed extensions details.
+// NewListByFarmBeatsPager - Get installed extensions details.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // farmBeatsResourceName - FarmBeats resource name.
 // options - ExtensionsClientListByFarmBeatsOptions contains the optional parameters for the ExtensionsClient.ListByFarmBeats
 // method.
-func (client *ExtensionsClient) ListByFarmBeats(resourceGroupName string, farmBeatsResourceName string, options *ExtensionsClientListByFarmBeatsOptions) *runtime.Pager[ExtensionsClientListByFarmBeatsResponse] {
+func (client *ExtensionsClient) NewListByFarmBeatsPager(resourceGroupName string, farmBeatsResourceName string, options *ExtensionsClientListByFarmBeatsOptions) *runtime.Pager[ExtensionsClientListByFarmBeatsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ExtensionsClientListByFarmBeatsResponse]{
 		More: func(page ExtensionsClientListByFarmBeatsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

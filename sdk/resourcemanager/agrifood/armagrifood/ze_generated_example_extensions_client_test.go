@@ -117,7 +117,7 @@ func ExampleExtensionsClient_Delete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/agrifood/resource-manager/Microsoft.AgFoodPlatform/preview/2020-05-12-preview/examples/Extensions_ListByFarmBeats.json
-func ExampleExtensionsClient_ListByFarmBeats() {
+func ExampleExtensionsClient_NewListByFarmBeatsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -129,7 +129,7 @@ func ExampleExtensionsClient_ListByFarmBeats() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByFarmBeats("<resource-group-name>",
+	pager := client.NewListByFarmBeatsPager("<resource-group-name>",
 		"<farm-beats-resource-name>",
 		&armagrifood.ExtensionsClientListByFarmBeatsOptions{ExtensionIDs: []string{},
 			ExtensionCategories: []string{},

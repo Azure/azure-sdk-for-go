@@ -106,14 +106,14 @@ func (client *AssignmentOperationsClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// List - List operations for given blueprint assignment within a subscription or a management group.
+// NewListPager - List operations for given blueprint assignment within a subscription or a management group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format: '/subscriptions/{subscriptionId}').
 // assignmentName - Name of the blueprint assignment.
 // options - AssignmentOperationsClientListOptions contains the optional parameters for the AssignmentOperationsClient.List
 // method.
-func (client *AssignmentOperationsClient) List(resourceScope string, assignmentName string, options *AssignmentOperationsClientListOptions) *runtime.Pager[AssignmentOperationsClientListResponse] {
+func (client *AssignmentOperationsClient) NewListPager(resourceScope string, assignmentName string, options *AssignmentOperationsClientListOptions) *runtime.Pager[AssignmentOperationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AssignmentOperationsClientListResponse]{
 		More: func(page AssignmentOperationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

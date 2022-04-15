@@ -145,7 +145,7 @@ func ExampleArtifactsClient_Delete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/Artifact_List.json
-func ExampleArtifactsClient_List() {
+func ExampleArtifactsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -157,7 +157,7 @@ func ExampleArtifactsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-scope>",
+	pager := client.NewListPager("<resource-scope>",
 		"<blueprint-name>",
 		nil)
 	for pager.More() {

@@ -110,14 +110,14 @@ func (client *PublishedArtifactsClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// List - List artifacts for a version of a published blueprint definition.
+// NewListPager - List artifacts for a version of a published blueprint definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format: '/subscriptions/{subscriptionId}').
 // blueprintName - Name of the blueprint definition.
 // versionID - Version of the published blueprint definition.
 // options - PublishedArtifactsClientListOptions contains the optional parameters for the PublishedArtifactsClient.List method.
-func (client *PublishedArtifactsClient) List(resourceScope string, blueprintName string, versionID string, options *PublishedArtifactsClientListOptions) *runtime.Pager[PublishedArtifactsClientListResponse] {
+func (client *PublishedArtifactsClient) NewListPager(resourceScope string, blueprintName string, versionID string, options *PublishedArtifactsClientListOptions) *runtime.Pager[PublishedArtifactsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PublishedArtifactsClientListResponse]{
 		More: func(page PublishedArtifactsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

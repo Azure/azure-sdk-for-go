@@ -44,7 +44,7 @@ func ExamplePublishedArtifactsClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/SealedArtifact_List.json
-func ExamplePublishedArtifactsClient_List() {
+func ExamplePublishedArtifactsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -56,7 +56,7 @@ func ExamplePublishedArtifactsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-scope>",
+	pager := client.NewListPager("<resource-scope>",
 		"<blueprint-name>",
 		"<version-id>",
 		nil)

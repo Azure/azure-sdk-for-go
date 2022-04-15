@@ -278,12 +278,12 @@ func (client *ClustersClient) listAvailableClusterRegionHandleResponse(resp *htt
 	return result, nil
 }
 
-// ListByResourceGroup - Lists the available Event Hubs Clusters within an ARM resource group
+// NewListByResourceGroupPager - Lists the available Event Hubs Clusters within an ARM resource group
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group within the azure subscription.
 // options - ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.ListByResourceGroup
 // method.
-func (client *ClustersClient) ListByResourceGroup(resourceGroupName string, options *ClustersClientListByResourceGroupOptions) *runtime.Pager[ClustersClientListByResourceGroupResponse] {
+func (client *ClustersClient) NewListByResourceGroupPager(resourceGroupName string, options *ClustersClientListByResourceGroupOptions) *runtime.Pager[ClustersClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClustersClientListByResourceGroupResponse]{
 		More: func(page ClustersClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -342,11 +342,11 @@ func (client *ClustersClient) listByResourceGroupHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListBySubscription - Lists the available Event Hubs Clusters within an ARM resource group
+// NewListBySubscriptionPager - Lists the available Event Hubs Clusters within an ARM resource group
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ClustersClientListBySubscriptionOptions contains the optional parameters for the ClustersClient.ListBySubscription
 // method.
-func (client *ClustersClient) ListBySubscription(options *ClustersClientListBySubscriptionOptions) *runtime.Pager[ClustersClientListBySubscriptionResponse] {
+func (client *ClustersClient) NewListBySubscriptionPager(options *ClustersClientListBySubscriptionOptions) *runtime.Pager[ClustersClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClustersClientListBySubscriptionResponse]{
 		More: func(page ClustersClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -1,5 +1,39 @@
 # Release History
 
+## 0.5.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*PrivateEndpointConnectionsClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*EventHubsClient.ListAuthorizationRules` has been removed
+- Function `*EventHubsClient.ListByNamespace` has been removed
+- Function `*ConsumerGroupsClient.ListByEventHub` has been removed
+- Function `*NamespacesClient.ListByResourceGroup` has been removed
+- Function `*ClustersClient.ListBySubscription` has been removed
+- Function `*DisasterRecoveryConfigsClient.ListAuthorizationRules` has been removed
+- Function `*SchemaRegistryClient.ListByNamespace` has been removed
+- Function `*ClustersClient.ListByResourceGroup` has been removed
+- Function `*NamespacesClient.List` has been removed
+- Function `*DisasterRecoveryConfigsClient.List` has been removed
+- Function `*NamespacesClient.ListAuthorizationRules` has been removed
+
+### Features Added
+
+- New function `*DisasterRecoveryConfigsClient.NewListPager(string, string, *DisasterRecoveryConfigsClientListOptions) *runtime.Pager[DisasterRecoveryConfigsClientListResponse]`
+- New function `*DisasterRecoveryConfigsClient.NewListAuthorizationRulesPager(string, string, string, *DisasterRecoveryConfigsClientListAuthorizationRulesOptions) *runtime.Pager[DisasterRecoveryConfigsClientListAuthorizationRulesResponse]`
+- New function `*ClustersClient.NewListByResourceGroupPager(string, *ClustersClientListByResourceGroupOptions) *runtime.Pager[ClustersClientListByResourceGroupResponse]`
+- New function `*ClustersClient.NewListBySubscriptionPager(*ClustersClientListBySubscriptionOptions) *runtime.Pager[ClustersClientListBySubscriptionResponse]`
+- New function `*PrivateEndpointConnectionsClient.NewListPager(string, string, *PrivateEndpointConnectionsClientListOptions) *runtime.Pager[PrivateEndpointConnectionsClientListResponse]`
+- New function `*NamespacesClient.NewListAuthorizationRulesPager(string, string, *NamespacesClientListAuthorizationRulesOptions) *runtime.Pager[NamespacesClientListAuthorizationRulesResponse]`
+- New function `*SchemaRegistryClient.NewListByNamespacePager(string, string, *SchemaRegistryClientListByNamespaceOptions) *runtime.Pager[SchemaRegistryClientListByNamespaceResponse]`
+- New function `*ConsumerGroupsClient.NewListByEventHubPager(string, string, string, *ConsumerGroupsClientListByEventHubOptions) *runtime.Pager[ConsumerGroupsClientListByEventHubResponse]`
+- New function `*NamespacesClient.NewListPager(*NamespacesClientListOptions) *runtime.Pager[NamespacesClientListResponse]`
+- New function `*EventHubsClient.NewListAuthorizationRulesPager(string, string, string, *EventHubsClientListAuthorizationRulesOptions) *runtime.Pager[EventHubsClientListAuthorizationRulesResponse]`
+- New function `*EventHubsClient.NewListByNamespacePager(string, string, *EventHubsClientListByNamespaceOptions) *runtime.Pager[EventHubsClientListByNamespaceResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*NamespacesClient.NewListByResourceGroupPager(string, *NamespacesClientListByResourceGroupOptions) *runtime.Pager[NamespacesClientListByResourceGroupResponse]`
+
+
 ## 0.4.0 (2022-04-14)
 ### Breaking Changes
 

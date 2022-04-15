@@ -244,15 +244,15 @@ func (client *ConsumerGroupsClient) getHandleResponse(resp *http.Response) (Cons
 	return result, nil
 }
 
-// ListByEventHub - Gets all the consumer groups in a Namespace. An empty feed is returned if no consumer group exists in
-// the Namespace.
+// NewListByEventHubPager - Gets all the consumer groups in a Namespace. An empty feed is returned if no consumer group exists
+// in the Namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group within the azure subscription.
 // namespaceName - The Namespace name
 // eventHubName - The Event Hub name
 // options - ConsumerGroupsClientListByEventHubOptions contains the optional parameters for the ConsumerGroupsClient.ListByEventHub
 // method.
-func (client *ConsumerGroupsClient) ListByEventHub(resourceGroupName string, namespaceName string, eventHubName string, options *ConsumerGroupsClientListByEventHubOptions) *runtime.Pager[ConsumerGroupsClientListByEventHubResponse] {
+func (client *ConsumerGroupsClient) NewListByEventHubPager(resourceGroupName string, namespaceName string, eventHubName string, options *ConsumerGroupsClientListByEventHubOptions) *runtime.Pager[ConsumerGroupsClientListByEventHubResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ConsumerGroupsClientListByEventHubResponse]{
 		More: func(page ConsumerGroupsClientListByEventHubResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

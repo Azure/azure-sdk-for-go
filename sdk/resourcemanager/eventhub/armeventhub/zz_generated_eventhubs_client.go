@@ -420,14 +420,14 @@ func (client *EventHubsClient) getAuthorizationRuleHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListAuthorizationRules - Gets the authorization rules for an Event Hub.
+// NewListAuthorizationRulesPager - Gets the authorization rules for an Event Hub.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group within the azure subscription.
 // namespaceName - The Namespace name
 // eventHubName - The Event Hub name
 // options - EventHubsClientListAuthorizationRulesOptions contains the optional parameters for the EventHubsClient.ListAuthorizationRules
 // method.
-func (client *EventHubsClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, eventHubName string, options *EventHubsClientListAuthorizationRulesOptions) *runtime.Pager[EventHubsClientListAuthorizationRulesResponse] {
+func (client *EventHubsClient) NewListAuthorizationRulesPager(resourceGroupName string, namespaceName string, eventHubName string, options *EventHubsClientListAuthorizationRulesOptions) *runtime.Pager[EventHubsClientListAuthorizationRulesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EventHubsClientListAuthorizationRulesResponse]{
 		More: func(page EventHubsClientListAuthorizationRulesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -494,13 +494,13 @@ func (client *EventHubsClient) listAuthorizationRulesHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListByNamespace - Gets all the Event Hubs in a Namespace.
+// NewListByNamespacePager - Gets all the Event Hubs in a Namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group within the azure subscription.
 // namespaceName - The Namespace name
 // options - EventHubsClientListByNamespaceOptions contains the optional parameters for the EventHubsClient.ListByNamespace
 // method.
-func (client *EventHubsClient) ListByNamespace(resourceGroupName string, namespaceName string, options *EventHubsClientListByNamespaceOptions) *runtime.Pager[EventHubsClientListByNamespaceResponse] {
+func (client *EventHubsClient) NewListByNamespacePager(resourceGroupName string, namespaceName string, options *EventHubsClientListByNamespaceOptions) *runtime.Pager[EventHubsClientListByNamespaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EventHubsClientListByNamespaceResponse]{
 		More: func(page EventHubsClientListByNamespaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

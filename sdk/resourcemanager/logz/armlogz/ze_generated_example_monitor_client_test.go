@@ -42,7 +42,7 @@ func ExampleMonitorClient_VMHostPayload() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/logz/resource-manager/Microsoft.Logz/stable/2020-10-01/examples/MainAccount_VMHosts_List.json
-func ExampleMonitorClient_ListVMHosts() {
+func ExampleMonitorClient_NewListVMHostsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -54,7 +54,7 @@ func ExampleMonitorClient_ListVMHosts() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListVMHosts("<resource-group-name>",
+	pager := client.NewListVMHostsPager("<resource-group-name>",
 		"<monitor-name>",
 		nil)
 	for pager.More() {

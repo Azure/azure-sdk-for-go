@@ -251,12 +251,12 @@ func (client *SubAccountClient) getHandleResponse(resp *http.Response) (SubAccou
 	return result, nil
 }
 
-// List - List the sub account under a given monitor resource.
+// NewListPager - List the sub account under a given monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // options - SubAccountClientListOptions contains the optional parameters for the SubAccountClient.List method.
-func (client *SubAccountClient) List(resourceGroupName string, monitorName string, options *SubAccountClientListOptions) *runtime.Pager[SubAccountClientListResponse] {
+func (client *SubAccountClient) NewListPager(resourceGroupName string, monitorName string, options *SubAccountClientListOptions) *runtime.Pager[SubAccountClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SubAccountClientListResponse]{
 		More: func(page SubAccountClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -319,14 +319,14 @@ func (client *SubAccountClient) listHandleResponse(resp *http.Response) (SubAcco
 	return result, nil
 }
 
-// ListMonitoredResources - List the resources currently being monitored by the Logz sub account resource.
+// NewListMonitoredResourcesPager - List the resources currently being monitored by the Logz sub account resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // subAccountName - Sub Account resource name
 // options - SubAccountClientListMonitoredResourcesOptions contains the optional parameters for the SubAccountClient.ListMonitoredResources
 // method.
-func (client *SubAccountClient) ListMonitoredResources(resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientListMonitoredResourcesOptions) *runtime.Pager[SubAccountClientListMonitoredResourcesResponse] {
+func (client *SubAccountClient) NewListMonitoredResourcesPager(resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientListMonitoredResourcesOptions) *runtime.Pager[SubAccountClientListMonitoredResourcesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SubAccountClientListMonitoredResourcesResponse]{
 		More: func(page SubAccountClientListMonitoredResourcesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -393,14 +393,15 @@ func (client *SubAccountClient) listMonitoredResourcesHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListVMHostUpdate - Sending request to update the collection when Logz.io agent has been installed on a VM for a given monitor.
+// NewListVMHostUpdatePager - Sending request to update the collection when Logz.io agent has been installed on a VM for a
+// given monitor.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // subAccountName - Sub Account resource name
 // options - SubAccountClientListVMHostUpdateOptions contains the optional parameters for the SubAccountClient.ListVMHostUpdate
 // method.
-func (client *SubAccountClient) ListVMHostUpdate(resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientListVMHostUpdateOptions) *runtime.Pager[SubAccountClientListVMHostUpdateResponse] {
+func (client *SubAccountClient) NewListVMHostUpdatePager(resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientListVMHostUpdateOptions) *runtime.Pager[SubAccountClientListVMHostUpdateResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SubAccountClientListVMHostUpdateResponse]{
 		More: func(page SubAccountClientListVMHostUpdateResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -470,13 +471,13 @@ func (client *SubAccountClient) listVMHostUpdateHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListVMHosts - List the compute resources currently being monitored by the Logz sub account resource.
+// NewListVMHostsPager - List the compute resources currently being monitored by the Logz sub account resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // subAccountName - Sub Account resource name
 // options - SubAccountClientListVMHostsOptions contains the optional parameters for the SubAccountClient.ListVMHosts method.
-func (client *SubAccountClient) ListVMHosts(resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientListVMHostsOptions) *runtime.Pager[SubAccountClientListVMHostsResponse] {
+func (client *SubAccountClient) NewListVMHostsPager(resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientListVMHostsOptions) *runtime.Pager[SubAccountClientListVMHostsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SubAccountClientListVMHostsResponse]{
 		More: func(page SubAccountClientListVMHostsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

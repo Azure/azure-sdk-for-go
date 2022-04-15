@@ -19,7 +19,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/logz/resource-manager/Microsoft.Logz/stable/2020-10-01/examples/MonitoredResources_List.json
-func ExampleMonitorsClient_ListMonitoredResources() {
+func ExampleMonitorsClient_NewListMonitoredResourcesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -31,7 +31,7 @@ func ExampleMonitorsClient_ListMonitoredResources() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListMonitoredResources("<resource-group-name>",
+	pager := client.NewListMonitoredResourcesPager("<resource-group-name>",
 		"<monitor-name>",
 		nil)
 	for pager.More() {
@@ -48,7 +48,7 @@ func ExampleMonitorsClient_ListMonitoredResources() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/logz/resource-manager/Microsoft.Logz/stable/2020-10-01/examples/Monitors_List.json
-func ExampleMonitorsClient_ListBySubscription() {
+func ExampleMonitorsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -60,7 +60,7 @@ func ExampleMonitorsClient_ListBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription(nil)
+	pager := client.NewListBySubscriptionPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -75,7 +75,7 @@ func ExampleMonitorsClient_ListBySubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/logz/resource-manager/Microsoft.Logz/stable/2020-10-01/examples/Monitors_ListByResourceGroup.json
-func ExampleMonitorsClient_ListByResourceGroup() {
+func ExampleMonitorsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -87,7 +87,7 @@ func ExampleMonitorsClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -213,7 +213,7 @@ func ExampleMonitorsClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/logz/resource-manager/Microsoft.Logz/stable/2020-10-01/examples/MainAccount_listUserRoles.json
-func ExampleMonitorsClient_ListUserRoles() {
+func ExampleMonitorsClient_NewListUserRolesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -225,7 +225,7 @@ func ExampleMonitorsClient_ListUserRoles() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListUserRoles("<resource-group-name>",
+	pager := client.NewListUserRolesPager("<resource-group-name>",
 		"<monitor-name>",
 		&armlogz.MonitorsClientListUserRolesOptions{Body: nil})
 	for pager.More() {

@@ -1,5 +1,41 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*MonitorClient.ListVMHostUpdate` has been removed
+- Function `*MonitorsClient.ListByResourceGroup` has been removed
+- Function `*MonitorsClient.ListBySubscription` has been removed
+- Function `*SubAccountClient.List` has been removed
+- Function `*TagRulesClient.List` has been removed
+- Function `*MonitorsClient.ListMonitoredResources` has been removed
+- Function `*SubAccountClient.ListVMHosts` has been removed
+- Function `*SingleSignOnClient.List` has been removed
+- Function `*MonitorsClient.ListUserRoles` has been removed
+- Function `*SubAccountClient.ListMonitoredResources` has been removed
+- Function `*SubAccountClient.ListVMHostUpdate` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*SubAccountTagRulesClient.List` has been removed
+- Function `*MonitorClient.ListVMHosts` has been removed
+
+### Features Added
+
+- New function `*MonitorsClient.NewListByResourceGroupPager(string, *MonitorsClientListByResourceGroupOptions) *runtime.Pager[MonitorsClientListByResourceGroupResponse]`
+- New function `*SubAccountClient.NewListVMHostsPager(string, string, string, *SubAccountClientListVMHostsOptions) *runtime.Pager[SubAccountClientListVMHostsResponse]`
+- New function `*MonitorsClient.NewListUserRolesPager(string, string, *MonitorsClientListUserRolesOptions) *runtime.Pager[MonitorsClientListUserRolesResponse]`
+- New function `*SubAccountClient.NewListPager(string, string, *SubAccountClientListOptions) *runtime.Pager[SubAccountClientListResponse]`
+- New function `*SubAccountTagRulesClient.NewListPager(string, string, string, *SubAccountTagRulesClientListOptions) *runtime.Pager[SubAccountTagRulesClientListResponse]`
+- New function `*MonitorsClient.NewListMonitoredResourcesPager(string, string, *MonitorsClientListMonitoredResourcesOptions) *runtime.Pager[MonitorsClientListMonitoredResourcesResponse]`
+- New function `*TagRulesClient.NewListPager(string, string, *TagRulesClientListOptions) *runtime.Pager[TagRulesClientListResponse]`
+- New function `*SingleSignOnClient.NewListPager(string, string, *SingleSignOnClientListOptions) *runtime.Pager[SingleSignOnClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*MonitorClient.NewListVMHostsPager(string, string, *MonitorClientListVMHostsOptions) *runtime.Pager[MonitorClientListVMHostsResponse]`
+- New function `*MonitorClient.NewListVMHostUpdatePager(string, string, *MonitorClientListVMHostUpdateOptions) *runtime.Pager[MonitorClientListVMHostUpdateResponse]`
+- New function `*SubAccountClient.NewListMonitoredResourcesPager(string, string, string, *SubAccountClientListMonitoredResourcesOptions) *runtime.Pager[SubAccountClientListMonitoredResourcesResponse]`
+- New function `*SubAccountClient.NewListVMHostUpdatePager(string, string, string, *SubAccountClientListVMHostUpdateOptions) *runtime.Pager[SubAccountClientListVMHostUpdateResponse]`
+- New function `*MonitorsClient.NewListBySubscriptionPager(*MonitorsClientListBySubscriptionOptions) *runtime.Pager[MonitorsClientListBySubscriptionResponse]`
+
+
 ## 0.3.0 (2022-04-12)
 ### Breaking Changes
 

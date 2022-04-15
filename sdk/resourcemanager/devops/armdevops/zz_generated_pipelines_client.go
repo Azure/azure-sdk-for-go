@@ -217,12 +217,12 @@ func (client *PipelinesClient) getHandleResponse(resp *http.Response) (Pipelines
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all Azure Pipelines under the specified resource group.
+// NewListByResourceGroupPager - Lists all Azure Pipelines under the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group within the Azure subscription.
 // options - PipelinesClientListByResourceGroupOptions contains the optional parameters for the PipelinesClient.ListByResourceGroup
 // method.
-func (client *PipelinesClient) ListByResourceGroup(resourceGroupName string, options *PipelinesClientListByResourceGroupOptions) *runtime.Pager[PipelinesClientListByResourceGroupResponse] {
+func (client *PipelinesClient) NewListByResourceGroupPager(resourceGroupName string, options *PipelinesClientListByResourceGroupOptions) *runtime.Pager[PipelinesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PipelinesClientListByResourceGroupResponse]{
 		More: func(page PipelinesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -281,11 +281,11 @@ func (client *PipelinesClient) listByResourceGroupHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListBySubscription - Lists all Azure Pipelines under the specified subscription.
+// NewListBySubscriptionPager - Lists all Azure Pipelines under the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PipelinesClientListBySubscriptionOptions contains the optional parameters for the PipelinesClient.ListBySubscription
 // method.
-func (client *PipelinesClient) ListBySubscription(options *PipelinesClientListBySubscriptionOptions) *runtime.Pager[PipelinesClientListBySubscriptionResponse] {
+func (client *PipelinesClient) NewListBySubscriptionPager(options *PipelinesClientListBySubscriptionOptions) *runtime.Pager[PipelinesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PipelinesClientListBySubscriptionResponse]{
 		More: func(page PipelinesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

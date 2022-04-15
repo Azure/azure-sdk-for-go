@@ -1,5 +1,21 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*OperationsClient.List` has been removed
+- Function `*PipelinesClient.ListByResourceGroup` has been removed
+- Function `*PipelinesClient.ListBySubscription` has been removed
+- Function `*PipelineTemplateDefinitionsClient.List` has been removed
+
+### Features Added
+
+- New function `*PipelinesClient.NewListByResourceGroupPager(string, *PipelinesClientListByResourceGroupOptions) *runtime.Pager[PipelinesClientListByResourceGroupResponse]`
+- New function `*PipelinesClient.NewListBySubscriptionPager(*PipelinesClientListBySubscriptionOptions) *runtime.Pager[PipelinesClientListBySubscriptionResponse]`
+- New function `*PipelineTemplateDefinitionsClient.NewListPager(*PipelineTemplateDefinitionsClientListOptions) *runtime.Pager[PipelineTemplateDefinitionsClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

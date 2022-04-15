@@ -48,11 +48,11 @@ func NewPipelineTemplateDefinitionsClient(credential azcore.TokenCredential, opt
 	return client, nil
 }
 
-// List - Lists all pipeline templates which can be used to configure an Azure Pipeline.
+// NewListPager - Lists all pipeline templates which can be used to configure an Azure Pipeline.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PipelineTemplateDefinitionsClientListOptions contains the optional parameters for the PipelineTemplateDefinitionsClient.List
 // method.
-func (client *PipelineTemplateDefinitionsClient) List(options *PipelineTemplateDefinitionsClientListOptions) *runtime.Pager[PipelineTemplateDefinitionsClientListResponse] {
+func (client *PipelineTemplateDefinitionsClient) NewListPager(options *PipelineTemplateDefinitionsClientListOptions) *runtime.Pager[PipelineTemplateDefinitionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PipelineTemplateDefinitionsClientListResponse]{
 		More: func(page PipelineTemplateDefinitionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

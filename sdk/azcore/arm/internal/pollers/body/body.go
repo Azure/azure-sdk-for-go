@@ -12,7 +12,6 @@ import (
 
 	armpollers "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
@@ -50,7 +49,7 @@ func New(resp *http.Response, pollerID string) (*Poller, error) {
 	// status code and provisioning state, we might change the value.
 	curState := pollers.StatusInProgress
 	provState, err := armpollers.GetProvisioningState(resp)
-	if err != nil && !errors.Is(err, shared.ErrNoBody) {
+	if err != nil && !errors.Is(err, pollers.ErrNoBody) {
 		return nil, err
 	}
 	if resp.StatusCode == http.StatusCreated && provState != "" {
@@ -87,7 +86,7 @@ func (p *Poller) Update(resp *http.Response) error {
 		return nil
 	}
 	state, err := armpollers.GetProvisioningState(resp)
-	if errors.Is(err, shared.ErrNoBody) {
+	if errors.Is(err, pollers.ErrNoBody) {
 		// a missing response body in non-204 case is an error
 		return err
 	} else if state == "" {

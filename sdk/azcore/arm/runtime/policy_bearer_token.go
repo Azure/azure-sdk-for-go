@@ -10,6 +10,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	armpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	azpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -23,8 +24,8 @@ type acquiringResourceState struct {
 
 // acquire acquires or updates the resource; only one
 // thread/goroutine at a time ever calls this function
-func acquire(state acquiringResourceState) (newResource *shared.AccessToken, newExpiration time.Time, err error) {
-	tk, err := state.p.cred.GetToken(state.ctx, shared.TokenRequestOptions{
+func acquire(state acquiringResourceState) (newResource *azcore.AccessToken, newExpiration time.Time, err error) {
+	tk, err := state.p.cred.GetToken(state.ctx, azpolicy.TokenRequestOptions{
 		Scopes:   state.p.options.Scopes,
 		TenantID: state.tenant,
 	})
@@ -37,18 +38,18 @@ func acquire(state acquiringResourceState) (newResource *shared.AccessToken, new
 // BearerTokenPolicy authorizes requests with bearer tokens acquired from a TokenCredential.
 type BearerTokenPolicy struct {
 	// mainResource is the resource to be retreived using the tenant specified in the credential
-	mainResource *shared.ExpiringResource[*shared.AccessToken, acquiringResourceState]
+	mainResource *shared.ExpiringResource[*azcore.AccessToken, acquiringResourceState]
 	// auxResources are additional resources that are required for cross-tenant applications
-	auxResources map[string]*shared.ExpiringResource[*shared.AccessToken, acquiringResourceState]
+	auxResources map[string]*shared.ExpiringResource[*azcore.AccessToken, acquiringResourceState]
 	// the following fields are read-only
-	cred    shared.TokenCredential
+	cred    azcore.TokenCredential
 	options armpolicy.BearerTokenOptions
 }
 
 // NewBearerTokenPolicy creates a policy object that authorizes requests with bearer tokens.
 // cred: an azcore.TokenCredential implementation such as a credential object from azidentity
 // opts: optional settings. Pass nil to accept default values; this is the same as passing a zero-value options.
-func NewBearerTokenPolicy(cred shared.TokenCredential, opts *armpolicy.BearerTokenOptions) *BearerTokenPolicy {
+func NewBearerTokenPolicy(cred azcore.TokenCredential, opts *armpolicy.BearerTokenOptions) *BearerTokenPolicy {
 	if opts == nil {
 		opts = &armpolicy.BearerTokenOptions{}
 	}
@@ -58,7 +59,7 @@ func NewBearerTokenPolicy(cred shared.TokenCredential, opts *armpolicy.BearerTok
 		mainResource: shared.NewExpiringResource(acquire),
 	}
 	if len(opts.AuxiliaryTenants) > 0 {
-		p.auxResources = map[string]*shared.ExpiringResource[*shared.AccessToken, acquiringResourceState]{}
+		p.auxResources = map[string]*shared.ExpiringResource[*azcore.AccessToken, acquiringResourceState]{}
 	}
 	for _, t := range opts.AuxiliaryTenants {
 		p.auxResources[t] = shared.NewExpiringResource(acquire)

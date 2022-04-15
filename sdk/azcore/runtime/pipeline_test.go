@@ -14,7 +14,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
@@ -97,7 +96,7 @@ func TestNewPipelineCustomPolicies(t *testing.T) {
 	perRetryPolicy := &countingPolicy{}
 	pl := NewPipeline("",
 		"",
-		PipelineOptions{PerCall: []pipeline.Policy{perCallPolicy}, PerRetry: []pipeline.Policy{perRetryPolicy}},
+		PipelineOptions{PerCall: []policy.Policy{perCallPolicy}, PerRetry: []policy.Policy{perRetryPolicy}},
 		&opts,
 	)
 	_, err = pl.Do(req)

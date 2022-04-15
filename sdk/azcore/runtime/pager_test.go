@@ -13,8 +13,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
 )
@@ -34,7 +33,7 @@ func pageResponseFetcher(ctx context.Context, pl Pipeline, endpoint string) (Pag
 		return PageResponse{}, err
 	}
 	if !HasStatusCode(resp, http.StatusOK) {
-		return PageResponse{}, shared.NewResponseError(resp)
+		return PageResponse{}, NewResponseError(resp)
 	}
 	pr := PageResponse{}
 	if err := UnmarshalAsJSON(resp, &pr); err != nil {
@@ -47,7 +46,7 @@ func TestPagerSinglePage(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`{"values": [1, 2, 3, 4, 5]}`)))
-	pl := pipeline.NewPipeline(srv)
+	pl := exported.NewPipeline(srv)
 
 	pager := NewPager(PageProcessor[PageResponse]{
 		More: func(current PageResponse) bool {
@@ -79,7 +78,7 @@ func TestPagerMultiplePages(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`{"values": [1, 2, 3, 4, 5], "next": true}`)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`{"values": [6, 7, 8], "next": true}`)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`{"values": [9, 0, 1, 2]}`)))
-	pl := pipeline.NewPipeline(srv)
+	pl := exported.NewPipeline(srv)
 
 	pageCount := 0
 	pager := NewPager(PageProcessor[PageResponse]{
@@ -123,7 +122,7 @@ func TestPagerLROMultiplePages(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`{"values": [6, 7, 8]}`)))
-	pl := pipeline.NewPipeline(srv)
+	pl := exported.NewPipeline(srv)
 
 	pager := NewPager(PageProcessor[PageResponse]{
 		More: func(current PageResponse) bool {
@@ -177,7 +176,7 @@ func TestPagerPipelineError(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetError(errors.New("pipeline failed"))
-	pl := pipeline.NewPipeline(srv)
+	pl := exported.NewPipeline(srv)
 
 	pager := NewPager(PageProcessor[PageResponse]{
 		More: func(current PageResponse) bool {
@@ -199,7 +198,7 @@ func TestPagerSecondPageError(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`{"values": [1, 2, 3, 4, 5], "next": true}`)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest), mock.WithBody([]byte(`{"message": "didn't work", "code": "PageError"}`)))
-	pl := pipeline.NewPipeline(srv)
+	pl := exported.NewPipeline(srv)
 
 	pageCount := 0
 	pager := NewPager(PageProcessor[PageResponse]{
@@ -227,7 +226,7 @@ func TestPagerSecondPageError(t *testing.T) {
 			require.True(t, page.NextPage)
 		case 2:
 			require.Error(t, err)
-			var respErr *shared.ResponseError
+			var respErr *exported.ResponseError
 			require.True(t, errors.As(err, &respErr))
 			require.Equal(t, "PageError", respErr.ErrorCode)
 			goto ExitLoop
@@ -241,7 +240,7 @@ func TestPagerResponderError(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`incorrect JSON response`)))
-	pl := pipeline.NewPipeline(srv)
+	pl := exported.NewPipeline(srv)
 
 	pager := NewPager(PageProcessor[PageResponse]{
 		More: func(current PageResponse) bool {

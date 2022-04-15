@@ -22,7 +22,7 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 )
 
@@ -535,7 +535,7 @@ func TestRequestSetBodyContentLengthHeader(t *testing.T) {
 	for i := 0; i < buffLen; i++ {
 		buff[i] = 1
 	}
-	err = req.SetBody(shared.NopCloser(bytes.NewReader(buff)), "application/octet-stream")
+	err = req.SetBody(exported.NopCloser(bytes.NewReader(buff)), "application/octet-stream")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -565,7 +565,7 @@ func TestRequestValidFail(t *testing.T) {
 		t.Fatal(err)
 	}
 	req.Raw().Header.Add("inval d", "header")
-	p := pipeline.NewPipeline(nil)
+	p := exported.NewPipeline(nil)
 	resp, err := p.Do(req)
 	if err == nil {
 		t.Fatal("unexpected nil error")
@@ -593,7 +593,7 @@ func TestSetMultipartFormData(t *testing.T) {
 	err = SetMultipartFormData(req, map[string]interface{}{
 		"string": "value",
 		"int":    1,
-		"data":   shared.NopCloser(strings.NewReader("some data")),
+		"data":   exported.NopCloser(strings.NewReader("some data")),
 	})
 	if err != nil {
 		t.Fatal(err)

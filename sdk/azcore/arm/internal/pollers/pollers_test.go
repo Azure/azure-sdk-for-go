@@ -13,7 +13,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
 )
 
 func TestGetStatusSuccess(t *testing.T) {
@@ -35,14 +35,14 @@ func TestGetNoBody(t *testing.T) {
 		Body: http.NoBody,
 	}
 	status, err := GetStatus(resp)
-	if !errors.Is(err, shared.ErrNoBody) {
+	if !errors.Is(err, pollers.ErrNoBody) {
 		t.Fatalf("unexpected error %T", err)
 	}
 	if status != "" {
 		t.Fatal("expected empty status")
 	}
 	status, err = GetProvisioningState(resp)
-	if !errors.Is(err, shared.ErrNoBody) {
+	if !errors.Is(err, pollers.ErrNoBody) {
 		t.Fatalf("unexpected error %T", err)
 	}
 	if status != "" {

@@ -69,7 +69,7 @@ func New(resp *http.Response, finalState pollers.FinalStateVia, pollerID string)
 	}
 	// check for provisioning state
 	state, err := armpollers.GetProvisioningState(resp)
-	if errors.Is(err, shared.ErrNoBody) || state == "" {
+	if errors.Is(err, pollers.ErrNoBody) || state == "" {
 		// NOTE: the ARM RPC spec explicitly states that for async PUT the initial response MUST
 		// contain a provisioning state.  to maintain compat with track 1 and other implementations
 		// we are explicitly relaxing this requirement.

@@ -10,39 +10,38 @@ import (
 	"errors"
 	"reflect"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	azpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // NewPipeline creates a pipeline from connection options.
 // The telemetry policy, when enabled, will use the specified module and version info.
-func NewPipeline(module, version string, cred shared.TokenCredential, plOpts azruntime.PipelineOptions, options *arm.ClientOptions) (pipeline.Pipeline, error) {
+func NewPipeline(module, version string, cred azcore.TokenCredential, plOpts azruntime.PipelineOptions, options *arm.ClientOptions) (azruntime.Pipeline, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
 	conf, err := getConfiguration(&options.ClientOptions)
 	if err != nil {
-		return pipeline.Pipeline{}, err
+		return azruntime.Pipeline{}, err
 	}
 	authPolicy := NewBearerTokenPolicy(cred, &armpolicy.BearerTokenOptions{
 		Scopes:           []string{conf.Audience + "/.default"},
 		AuxiliaryTenants: options.AuxiliaryTenants,
 	})
-	perRetry := make([]pipeline.Policy, 0, len(plOpts.PerRetry)+1)
+	perRetry := make([]azpolicy.Policy, 0, len(plOpts.PerRetry)+1)
 	copy(perRetry, plOpts.PerRetry)
 	plOpts.PerRetry = append(perRetry, authPolicy)
 	if !options.DisableRPRegistration {
 		regRPOpts := armpolicy.RegistrationOptions{ClientOptions: options.ClientOptions}
 		regPolicy, err := NewRPRegistrationPolicy(cred, &regRPOpts)
 		if err != nil {
-			return pipeline.Pipeline{}, err
+			return azruntime.Pipeline{}, err
 		}
-		perCall := make([]pipeline.Policy, 0, len(plOpts.PerCall)+1)
+		perCall := make([]azpolicy.Policy, 0, len(plOpts.PerCall)+1)
 		copy(perCall, plOpts.PerCall)
 		plOpts.PerCall = append(perCall, regPolicy)
 	}

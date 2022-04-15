@@ -4,15 +4,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package pipeline
+package exported
 
 import (
 	"context"
 	"net/http"
 	"strings"
 	"testing"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 )
 
 const testURL = "http://test.contoso.com/"
@@ -36,6 +34,12 @@ func TestNewRequest(t *testing.T) {
 	}
 }
 
+type testPolicy struct{}
+
+func (testPolicy) Do(*Request) (*http.Response, error) {
+	return &http.Response{}, nil
+}
+
 func TestRequestPolicies(t *testing.T) {
 	req, err := NewRequest(context.Background(), http.MethodPost, testURL)
 	if err != nil {
@@ -56,10 +60,7 @@ func TestRequestPolicies(t *testing.T) {
 	if resp != nil {
 		t.Fatal("expected nil response")
 	}
-	testPolicy := func(*Request) (*http.Response, error) {
-		return &http.Response{}, nil
-	}
-	req.policies = []Policy{PolicyFunc(testPolicy)}
+	req.policies = []Policy{testPolicy{}}
 	resp, err = req.Next()
 	if err != nil {
 		t.Fatal(err)
@@ -80,7 +81,7 @@ func TestRequestBody(t *testing.T) {
 	if err := req.Close(); err != nil {
 		t.Fatal(err)
 	}
-	if err := req.SetBody(shared.NopCloser(strings.NewReader("test")), "application/text"); err != nil {
+	if err := req.SetBody(NopCloser(strings.NewReader("test")), "application/text"); err != nil {
 		t.Fatal(err)
 	}
 	if err := req.RewindBody(); err != nil {
@@ -96,7 +97,7 @@ func TestRequestClone(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := req.SetBody(shared.NopCloser(strings.NewReader("test")), "application/text"); err != nil {
+	if err := req.SetBody(NopCloser(strings.NewReader("test")), "application/text"); err != nil {
 		t.Fatal(err)
 	}
 	type ensureCloned struct {

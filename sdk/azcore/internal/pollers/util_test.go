@@ -7,6 +7,8 @@
 package pollers
 
 import (
+	"errors"
+	"io/ioutil"
 	"net/http"
 	"strings"
 	"testing"
@@ -148,6 +150,23 @@ func TestFailed(t *testing.T) {
 	}
 	if !Failed("failed") {
 		t.Fatal("expected failure")
+	}
+}
+
+func TestGetJSON(t *testing.T) {
+	j, err := GetJSON(&http.Response{Body: http.NoBody})
+	if !errors.Is(err, ErrNoBody) {
+		t.Fatal(err)
+	}
+	if j != nil {
+		t.Fatal("expected nil json")
+	}
+	j, err = GetJSON(&http.Response{Body: ioutil.NopCloser(strings.NewReader(`{ "foo": "bar" }`))})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if v := j["foo"]; v != "bar" {
+		t.Fatalf("unexpected value %s", v)
 	}
 }
 

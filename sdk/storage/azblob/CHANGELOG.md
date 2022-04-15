@@ -1,15 +1,12 @@
 # Release History
 
-## 0.4.0 (Unreleased)
-
-### Features Added
+## 0.4.0 (2022-04-15)
 
 ### Breaking Changes
 * [#17321](https://github.com/Azure/azure-sdk-for-go/pull/17321): Returns all clients by pointers
 
 ### Bugs Fixed
-
-### Other Changes
+* [#17274](https://github.com/Azure/azure-sdk-for-go/pull/17274): Fix blob versioning bug
 
 ## 0.3.0 (2022-02-09)
 

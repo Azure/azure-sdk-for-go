@@ -13,7 +13,7 @@ The Azure Blob SDK can access an Azure Storage account.
 
 ### Prerequisites
 
-* Go versions 1.16 or higher
+* Go versions 1.18 or higher
 * You must have an [Azure storage account][azure_storage_account]. If you need to create one, you can use
   the [Azure Cloud Shell](https://shell.azure.com/bash) to create one with these commands (replace `my-resource-group`
   and `mystorageaccount` with your own unique names):
@@ -205,16 +205,16 @@ Three different clients are provided to interact with the various components of 
 ### Example
 
 ```go
-    // Use your storage account's name and key to create a credential object, used to access your account.
+// Use your storage account's name and key to create a credential object, used to access your account.
 // You can obtain these details from the Azure Portal.
 accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 if !ok {
-handle(errors.New("AZURE_STORAGE_ACCOUNT_NAME could not be found"))
+    handle(errors.New("AZURE_STORAGE_ACCOUNT_NAME could not be found"))
 }
 
 accountKey, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_KEY")
 if !ok {
-handle(errors.New("AZURE_STORAGE_ACCOUNT_KEY could not be found"))
+    handle(errors.New("AZURE_STORAGE_ACCOUNT_KEY could not be found"))
 }
 cred, err := NewSharedKeyCredential(accountName, accountKey)
 handle(err)
@@ -233,6 +233,7 @@ ctx := context.Background() // This example has no expiry.
 
 // First, branch off of the service client and create a container client.
 container := service.NewContainerClient("mycontainer")
+
 // Then, fire off a create operation on the container client.
 // Note that, all service-side requests have an options bag attached, allowing you to specify things like metadata, public access types, etc.
 // Specifying nil omits all options.
@@ -256,13 +257,14 @@ handle(err)
 
 // Open a buffer, reader, and then download!
 downloadedData := &bytes.Buffer{}
-reader := get.Body(RetryReaderOptions{}) // RetryReaderOptions has a lot of in-depth tuning abilities, but for the sake of simplicity, we'll omit those here.
+// RetryReaderOptions has a lot of in-depth tuning abilities, but for the sake of simplicity, we'll omit those here.
+reader := get.Body(RetryReaderOptions{})
 _, err = downloadedData.ReadFrom(reader)
 handle(err)
 err = reader.Close()
 handle(err)
 if data != downloadedData.String() {
-handle(errors.New("downloaded data doesn't match uploaded data"))
+    handle(errors.New("downloaded data doesn't match uploaded data"))
 }
 
 // ===== 3. list blobs =====
@@ -272,15 +274,15 @@ handle(errors.New("downloaded data doesn't match uploaded data"))
 pager := container.ListBlobsFlat(nil)
 
 for pager.NextPage(ctx) {
-resp := pager.PageResponse()
+    resp := pager.PageResponse()
 
-for _, v := range resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems {
-fmt.Println(*v.Name)
-}
+    for _, v := range resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems {
+        fmt.Println(*v.Name)
+    }
 }
 
 if err = pager.Err(); err != nil {
-handle(err)
+    handle(err)
 }
 
 // Delete the blob we created earlier.
@@ -302,10 +304,8 @@ addition, you can investigate the raw response of any response object:
 ```golang
 var errResp azcore.HTTPResponse
 resp, err := serviceClient.CreateContainer(context.Background(), "testcontainername", nil)
-if err != nil {
-   if errors.As(err, &errResp) {
-        // do something with errResp.RawResponse()
-   }
+if err != nil && errors.As(err, &errResp) {
+    // do something with errResp.RawResponse()
 }
 ```
 
@@ -325,7 +325,7 @@ be like the following:
 import azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 // Set log to output to the console
 azlog.SetListener(func (cls azlog.Classification, msg string) {
-fmt.Println(msg) // printing log out to the console
+    fmt.Println(msg) // printing log out to the console
 })
 
 // Includes only requests and responses in credential logs

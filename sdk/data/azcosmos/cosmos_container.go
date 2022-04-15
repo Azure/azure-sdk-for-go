@@ -200,7 +200,7 @@ func (c *ContainerClient) CreateItem(
 		isWriteOperation:      true,
 		headerOptionsOverride: &h}
 
-	path, err := generatePathForNameBased(resourceTypeDocument, c.link, true)
+	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
 	if err != nil {
 		return ItemResponse{}, err
 	}
@@ -249,7 +249,7 @@ func (c *ContainerClient) UpsertItem(
 		isWriteOperation:      true,
 		headerOptionsOverride: &h}
 
-	path, err := generatePathForNameBased(resourceTypeDocument, c.link, true)
+	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
 	if err != nil {
 		return ItemResponse{}, err
 	}
@@ -415,12 +415,12 @@ func (c *ContainerClient) QueryItemsByPartitionKey(query string, partitionKey Pa
 	}
 
 	operationContext := pipelineRequestOptions{
-		resourceType:    resourceTypeCollection,
+		resourceType:    resourceTypeDocument,
 		resourceAddress: c.link,
 		headerOptionsOverride: &h,
 	}
 
-	path, _ := generatePathForNameBased(resourceTypeCollection, operationContext.resourceAddress, true)
+	path, _ := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
 
 	return runtime.NewPager(runtime.PageProcessor[QueryItemsResponse]{
 		More: func(page QueryItemsResponse) bool {

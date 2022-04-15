@@ -237,12 +237,12 @@ func (client *ForwardingRulesClient) getHandleResponse(resp *http.Response) (For
 	return result, nil
 }
 
-// List - Lists forwarding rules in a DNS forwarding ruleset.
+// NewListPager - Lists forwarding rules in a DNS forwarding ruleset.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // dnsForwardingRulesetName - The name of the DNS forwarding ruleset.
 // options - ForwardingRulesClientListOptions contains the optional parameters for the ForwardingRulesClient.List method.
-func (client *ForwardingRulesClient) List(resourceGroupName string, dnsForwardingRulesetName string, options *ForwardingRulesClientListOptions) *runtime.Pager[ForwardingRulesClientListResponse] {
+func (client *ForwardingRulesClient) NewListPager(resourceGroupName string, dnsForwardingRulesetName string, options *ForwardingRulesClientListOptions) *runtime.Pager[ForwardingRulesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ForwardingRulesClientListResponse]{
 		More: func(page ForwardingRulesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

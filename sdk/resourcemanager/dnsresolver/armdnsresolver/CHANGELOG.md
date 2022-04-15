@@ -1,5 +1,33 @@
 # Release History
 
+## 0.3.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*DNSResolversClient.ListByResourceGroup` has been removed
+- Function `*OutboundEndpointsClient.List` has been removed
+- Function `*DNSForwardingRulesetsClient.ListByVirtualNetwork` has been removed
+- Function `*DNSForwardingRulesetsClient.List` has been removed
+- Function `*DNSForwardingRulesetsClient.ListByResourceGroup` has been removed
+- Function `*DNSResolversClient.List` has been removed
+- Function `*InboundEndpointsClient.List` has been removed
+- Function `*VirtualNetworkLinksClient.List` has been removed
+- Function `*ForwardingRulesClient.List` has been removed
+- Function `*DNSResolversClient.ListByVirtualNetwork` has been removed
+
+### Features Added
+
+- New function `*DNSResolversClient.NewListPager(*DNSResolversClientListOptions) *runtime.Pager[DNSResolversClientListResponse]`
+- New function `*DNSResolversClient.NewListByResourceGroupPager(string, *DNSResolversClientListByResourceGroupOptions) *runtime.Pager[DNSResolversClientListByResourceGroupResponse]`
+- New function `*DNSForwardingRulesetsClient.NewListByVirtualNetworkPager(string, string, *DNSForwardingRulesetsClientListByVirtualNetworkOptions) *runtime.Pager[DNSForwardingRulesetsClientListByVirtualNetworkResponse]`
+- New function `*VirtualNetworkLinksClient.NewListPager(string, string, *VirtualNetworkLinksClientListOptions) *runtime.Pager[VirtualNetworkLinksClientListResponse]`
+- New function `*DNSResolversClient.NewListByVirtualNetworkPager(string, string, *DNSResolversClientListByVirtualNetworkOptions) *runtime.Pager[DNSResolversClientListByVirtualNetworkResponse]`
+- New function `*DNSForwardingRulesetsClient.NewListByResourceGroupPager(string, *DNSForwardingRulesetsClientListByResourceGroupOptions) *runtime.Pager[DNSForwardingRulesetsClientListByResourceGroupResponse]`
+- New function `*InboundEndpointsClient.NewListPager(string, string, *InboundEndpointsClientListOptions) *runtime.Pager[InboundEndpointsClientListResponse]`
+- New function `*OutboundEndpointsClient.NewListPager(string, string, *OutboundEndpointsClientListOptions) *runtime.Pager[OutboundEndpointsClientListResponse]`
+- New function `*ForwardingRulesClient.NewListPager(string, string, *ForwardingRulesClientListOptions) *runtime.Pager[ForwardingRulesClientListResponse]`
+- New function `*DNSForwardingRulesetsClient.NewListPager(*DNSForwardingRulesetsClientListOptions) *runtime.Pager[DNSForwardingRulesetsClientListResponse]`
+
+
 ## 0.2.0 (2022-04-11)
 ### Breaking Changes
 

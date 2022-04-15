@@ -257,12 +257,12 @@ func (client *InboundEndpointsClient) getHandleResponse(resp *http.Response) (In
 	return result, nil
 }
 
-// List - Lists inbound endpoints for a DNS resolver.
+// NewListPager - Lists inbound endpoints for a DNS resolver.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // dnsResolverName - The name of the DNS resolver.
 // options - InboundEndpointsClientListOptions contains the optional parameters for the InboundEndpointsClient.List method.
-func (client *InboundEndpointsClient) List(resourceGroupName string, dnsResolverName string, options *InboundEndpointsClientListOptions) *runtime.Pager[InboundEndpointsClientListResponse] {
+func (client *InboundEndpointsClient) NewListPager(resourceGroupName string, dnsResolverName string, options *InboundEndpointsClientListOptions) *runtime.Pager[InboundEndpointsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[InboundEndpointsClientListResponse]{
 		More: func(page InboundEndpointsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

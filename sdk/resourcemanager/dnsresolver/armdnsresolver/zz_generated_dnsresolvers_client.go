@@ -242,10 +242,10 @@ func (client *DNSResolversClient) getHandleResponse(resp *http.Response) (DNSRes
 	return result, nil
 }
 
-// List - Lists DNS resolvers in all resource groups of a subscription.
+// NewListPager - Lists DNS resolvers in all resource groups of a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DNSResolversClientListOptions contains the optional parameters for the DNSResolversClient.List method.
-func (client *DNSResolversClient) List(options *DNSResolversClientListOptions) *runtime.Pager[DNSResolversClientListResponse] {
+func (client *DNSResolversClient) NewListPager(options *DNSResolversClientListOptions) *runtime.Pager[DNSResolversClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DNSResolversClientListResponse]{
 		More: func(page DNSResolversClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -303,12 +303,12 @@ func (client *DNSResolversClient) listHandleResponse(resp *http.Response) (DNSRe
 	return result, nil
 }
 
-// ListByResourceGroup - Lists DNS resolvers within a resource group.
+// NewListByResourceGroupPager - Lists DNS resolvers within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - DNSResolversClientListByResourceGroupOptions contains the optional parameters for the DNSResolversClient.ListByResourceGroup
 // method.
-func (client *DNSResolversClient) ListByResourceGroup(resourceGroupName string, options *DNSResolversClientListByResourceGroupOptions) *runtime.Pager[DNSResolversClientListByResourceGroupResponse] {
+func (client *DNSResolversClient) NewListByResourceGroupPager(resourceGroupName string, options *DNSResolversClientListByResourceGroupOptions) *runtime.Pager[DNSResolversClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DNSResolversClientListByResourceGroupResponse]{
 		More: func(page DNSResolversClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -370,13 +370,13 @@ func (client *DNSResolversClient) listByResourceGroupHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListByVirtualNetwork - Lists DNS resolver resource IDs linked to a virtual network.
+// NewListByVirtualNetworkPager - Lists DNS resolver resource IDs linked to a virtual network.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // virtualNetworkName - The name of the virtual network.
 // options - DNSResolversClientListByVirtualNetworkOptions contains the optional parameters for the DNSResolversClient.ListByVirtualNetwork
 // method.
-func (client *DNSResolversClient) ListByVirtualNetwork(resourceGroupName string, virtualNetworkName string, options *DNSResolversClientListByVirtualNetworkOptions) *runtime.Pager[DNSResolversClientListByVirtualNetworkResponse] {
+func (client *DNSResolversClient) NewListByVirtualNetworkPager(resourceGroupName string, virtualNetworkName string, options *DNSResolversClientListByVirtualNetworkOptions) *runtime.Pager[DNSResolversClientListByVirtualNetworkResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DNSResolversClientListByVirtualNetworkResponse]{
 		More: func(page DNSResolversClientListByVirtualNetworkResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

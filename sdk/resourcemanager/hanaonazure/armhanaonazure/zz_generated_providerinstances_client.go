@@ -251,13 +251,13 @@ func (client *ProviderInstancesClient) getHandleResponse(resp *http.Response) (P
 	return result, nil
 }
 
-// List - Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of each
-// provider instances.
+// NewListPager - Gets a list of provider instances in the specified SAP monitor. The operations returns various properties
+// of each provider instances.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group.
 // sapMonitorName - Name of the SAP monitor resource.
 // options - ProviderInstancesClientListOptions contains the optional parameters for the ProviderInstancesClient.List method.
-func (client *ProviderInstancesClient) List(resourceGroupName string, sapMonitorName string, options *ProviderInstancesClientListOptions) *runtime.Pager[ProviderInstancesClientListResponse] {
+func (client *ProviderInstancesClient) NewListPager(resourceGroupName string, sapMonitorName string, options *ProviderInstancesClientListOptions) *runtime.Pager[ProviderInstancesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProviderInstancesClientListResponse]{
 		More: func(page ProviderInstancesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

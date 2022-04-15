@@ -296,12 +296,12 @@ func (client *SchedulesClient) getHandleResponse(resp *http.Response) (Schedules
 	return result, nil
 }
 
-// List - List schedules in a given lab.
+// NewListPager - List schedules in a given lab.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // options - SchedulesClientListOptions contains the optional parameters for the SchedulesClient.List method.
-func (client *SchedulesClient) List(resourceGroupName string, labName string, options *SchedulesClientListOptions) *runtime.Pager[SchedulesClientListResponse] {
+func (client *SchedulesClient) NewListPager(resourceGroupName string, labName string, options *SchedulesClientListOptions) *runtime.Pager[SchedulesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SchedulesClientListResponse]{
 		More: func(page SchedulesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -376,14 +376,14 @@ func (client *SchedulesClient) listHandleResponse(resp *http.Response) (Schedule
 	return result, nil
 }
 
-// ListApplicable - Lists all applicable schedules
+// NewListApplicablePager - Lists all applicable schedules
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // name - The name of the schedule.
 // options - SchedulesClientListApplicableOptions contains the optional parameters for the SchedulesClient.ListApplicable
 // method.
-func (client *SchedulesClient) ListApplicable(resourceGroupName string, labName string, name string, options *SchedulesClientListApplicableOptions) *runtime.Pager[SchedulesClientListApplicableResponse] {
+func (client *SchedulesClient) NewListApplicablePager(resourceGroupName string, labName string, name string, options *SchedulesClientListApplicableOptions) *runtime.Pager[SchedulesClientListApplicableResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SchedulesClientListApplicableResponse]{
 		More: func(page SchedulesClientListApplicableResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

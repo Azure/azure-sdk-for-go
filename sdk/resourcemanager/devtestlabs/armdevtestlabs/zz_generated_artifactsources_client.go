@@ -231,12 +231,12 @@ func (client *ArtifactSourcesClient) getHandleResponse(resp *http.Response) (Art
 	return result, nil
 }
 
-// List - List artifact sources in a given lab.
+// NewListPager - List artifact sources in a given lab.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // options - ArtifactSourcesClientListOptions contains the optional parameters for the ArtifactSourcesClient.List method.
-func (client *ArtifactSourcesClient) List(resourceGroupName string, labName string, options *ArtifactSourcesClientListOptions) *runtime.Pager[ArtifactSourcesClientListResponse] {
+func (client *ArtifactSourcesClient) NewListPager(resourceGroupName string, labName string, options *ArtifactSourcesClientListOptions) *runtime.Pager[ArtifactSourcesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ArtifactSourcesClientListResponse]{
 		More: func(page ArtifactSourcesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

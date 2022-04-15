@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/GlobalSchedules_ListBySubscription.json
-func ExampleGlobalSchedulesClient_ListBySubscription() {
+func ExampleGlobalSchedulesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleGlobalSchedulesClient_ListBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription(&armdevtestlabs.GlobalSchedulesClientListBySubscriptionOptions{Expand: nil,
+	pager := client.NewListBySubscriptionPager(&armdevtestlabs.GlobalSchedulesClientListBySubscriptionOptions{Expand: nil,
 		Filter:  nil,
 		Top:     nil,
 		Orderby: nil,
@@ -51,7 +51,7 @@ func ExampleGlobalSchedulesClient_ListBySubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/GlobalSchedules_ListByResourceGroup.json
-func ExampleGlobalSchedulesClient_ListByResourceGroup() {
+func ExampleGlobalSchedulesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -63,7 +63,7 @@ func ExampleGlobalSchedulesClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		&armdevtestlabs.GlobalSchedulesClientListByResourceGroupOptions{Expand: nil,
 			Filter:  nil,
 			Top:     nil,

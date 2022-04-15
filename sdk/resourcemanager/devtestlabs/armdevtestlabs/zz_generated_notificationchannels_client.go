@@ -233,13 +233,13 @@ func (client *NotificationChannelsClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// List - List notification channels in a given lab.
+// NewListPager - List notification channels in a given lab.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // options - NotificationChannelsClientListOptions contains the optional parameters for the NotificationChannelsClient.List
 // method.
-func (client *NotificationChannelsClient) List(resourceGroupName string, labName string, options *NotificationChannelsClientListOptions) *runtime.Pager[NotificationChannelsClientListResponse] {
+func (client *NotificationChannelsClient) NewListPager(resourceGroupName string, labName string, options *NotificationChannelsClientListOptions) *runtime.Pager[NotificationChannelsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[NotificationChannelsClientListResponse]{
 		More: func(page NotificationChannelsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

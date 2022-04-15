@@ -266,13 +266,13 @@ func (client *ServiceFabricsClient) getHandleResponse(resp *http.Response) (Serv
 	return result, nil
 }
 
-// List - List service fabrics in a given user profile.
+// NewListPager - List service fabrics in a given user profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // userName - The name of the user profile.
 // options - ServiceFabricsClientListOptions contains the optional parameters for the ServiceFabricsClient.List method.
-func (client *ServiceFabricsClient) List(resourceGroupName string, labName string, userName string, options *ServiceFabricsClientListOptions) *runtime.Pager[ServiceFabricsClientListResponse] {
+func (client *ServiceFabricsClient) NewListPager(resourceGroupName string, labName string, userName string, options *ServiceFabricsClientListOptions) *runtime.Pager[ServiceFabricsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServiceFabricsClientListResponse]{
 		More: func(page ServiceFabricsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

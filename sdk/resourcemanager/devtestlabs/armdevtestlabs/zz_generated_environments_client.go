@@ -266,13 +266,13 @@ func (client *EnvironmentsClient) getHandleResponse(resp *http.Response) (Enviro
 	return result, nil
 }
 
-// List - List environments in a given user profile.
+// NewListPager - List environments in a given user profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // userName - The name of the user profile.
 // options - EnvironmentsClientListOptions contains the optional parameters for the EnvironmentsClient.List method.
-func (client *EnvironmentsClient) List(resourceGroupName string, labName string, userName string, options *EnvironmentsClientListOptions) *runtime.Pager[EnvironmentsClientListResponse] {
+func (client *EnvironmentsClient) NewListPager(resourceGroupName string, labName string, userName string, options *EnvironmentsClientListOptions) *runtime.Pager[EnvironmentsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListResponse]{
 		More: func(page EnvironmentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

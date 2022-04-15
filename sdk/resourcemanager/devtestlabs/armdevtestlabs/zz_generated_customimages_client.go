@@ -251,12 +251,12 @@ func (client *CustomImagesClient) getHandleResponse(resp *http.Response) (Custom
 	return result, nil
 }
 
-// List - List custom images in a given lab.
+// NewListPager - List custom images in a given lab.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // options - CustomImagesClientListOptions contains the optional parameters for the CustomImagesClient.List method.
-func (client *CustomImagesClient) List(resourceGroupName string, labName string, options *CustomImagesClientListOptions) *runtime.Pager[CustomImagesClientListResponse] {
+func (client *CustomImagesClient) NewListPager(resourceGroupName string, labName string, options *CustomImagesClientListOptions) *runtime.Pager[CustomImagesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CustomImagesClientListResponse]{
 		More: func(page CustomImagesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -236,12 +236,12 @@ func (client *FormulasClient) getHandleResponse(resp *http.Response) (FormulasCl
 	return result, nil
 }
 
-// List - List formulas in a given lab.
+// NewListPager - List formulas in a given lab.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // options - FormulasClientListOptions contains the optional parameters for the FormulasClient.List method.
-func (client *FormulasClient) List(resourceGroupName string, labName string, options *FormulasClientListOptions) *runtime.Pager[FormulasClientListResponse] {
+func (client *FormulasClient) NewListPager(resourceGroupName string, labName string, options *FormulasClientListOptions) *runtime.Pager[FormulasClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[FormulasClientListResponse]{
 		More: func(page FormulasClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

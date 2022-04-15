@@ -250,12 +250,12 @@ func (client *UsersClient) getHandleResponse(resp *http.Response) (UsersClientGe
 	return result, nil
 }
 
-// List - List user profiles in a given lab.
+// NewListPager - List user profiles in a given lab.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // options - UsersClientListOptions contains the optional parameters for the UsersClient.List method.
-func (client *UsersClient) List(resourceGroupName string, labName string, options *UsersClientListOptions) *runtime.Pager[UsersClientListResponse] {
+func (client *UsersClient) NewListPager(resourceGroupName string, labName string, options *UsersClientListOptions) *runtime.Pager[UsersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[UsersClientListResponse]{
 		More: func(page UsersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

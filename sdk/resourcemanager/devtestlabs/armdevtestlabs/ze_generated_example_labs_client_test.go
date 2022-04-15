@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Labs_ListBySubscription.json
-func ExampleLabsClient_ListBySubscription() {
+func ExampleLabsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleLabsClient_ListBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription(&armdevtestlabs.LabsClientListBySubscriptionOptions{Expand: nil,
+	pager := client.NewListBySubscriptionPager(&armdevtestlabs.LabsClientListBySubscriptionOptions{Expand: nil,
 		Filter:  nil,
 		Top:     nil,
 		Orderby: nil,
@@ -51,7 +51,7 @@ func ExampleLabsClient_ListBySubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Labs_ListByResourceGroup.json
-func ExampleLabsClient_ListByResourceGroup() {
+func ExampleLabsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -63,7 +63,7 @@ func ExampleLabsClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		&armdevtestlabs.LabsClientListByResourceGroupOptions{Expand: nil,
 			Filter:  nil,
 			Top:     nil,
@@ -317,7 +317,7 @@ func ExampleLabsClient_BeginImportVirtualMachine() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Labs_ListVhds.json
-func ExampleLabsClient_ListVhds() {
+func ExampleLabsClient_NewListVhdsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -329,7 +329,7 @@ func ExampleLabsClient_ListVhds() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListVhds("<resource-group-name>",
+	pager := client.NewListVhdsPager("<resource-group-name>",
 		"<name>",
 		nil)
 	for pager.More() {

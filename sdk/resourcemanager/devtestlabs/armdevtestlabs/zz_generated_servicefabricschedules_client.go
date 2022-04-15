@@ -339,7 +339,7 @@ func (client *ServiceFabricSchedulesClient) getHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// List - List schedules in a given service fabric.
+// NewListPager - List schedules in a given service fabric.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
@@ -347,7 +347,7 @@ func (client *ServiceFabricSchedulesClient) getHandleResponse(resp *http.Respons
 // serviceFabricName - The name of the service fabric.
 // options - ServiceFabricSchedulesClientListOptions contains the optional parameters for the ServiceFabricSchedulesClient.List
 // method.
-func (client *ServiceFabricSchedulesClient) List(resourceGroupName string, labName string, userName string, serviceFabricName string, options *ServiceFabricSchedulesClientListOptions) *runtime.Pager[ServiceFabricSchedulesClientListResponse] {
+func (client *ServiceFabricSchedulesClient) NewListPager(resourceGroupName string, labName string, userName string, serviceFabricName string, options *ServiceFabricSchedulesClientListOptions) *runtime.Pager[ServiceFabricSchedulesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServiceFabricSchedulesClientListResponse]{
 		More: func(page ServiceFabricSchedulesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

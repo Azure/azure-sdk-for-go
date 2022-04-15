@@ -55,12 +55,12 @@ func NewGalleryImagesClient(subscriptionID string, credential azcore.TokenCreden
 	return client, nil
 }
 
-// List - List gallery images in a given lab.
+// NewListPager - List gallery images in a given lab.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // options - GalleryImagesClientListOptions contains the optional parameters for the GalleryImagesClient.List method.
-func (client *GalleryImagesClient) List(resourceGroupName string, labName string, options *GalleryImagesClientListOptions) *runtime.Pager[GalleryImagesClientListResponse] {
+func (client *GalleryImagesClient) NewListPager(resourceGroupName string, labName string, options *GalleryImagesClientListOptions) *runtime.Pager[GalleryImagesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[GalleryImagesClientListResponse]{
 		More: func(page GalleryImagesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

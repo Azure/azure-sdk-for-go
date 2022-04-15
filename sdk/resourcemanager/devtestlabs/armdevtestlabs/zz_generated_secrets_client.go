@@ -251,13 +251,13 @@ func (client *SecretsClient) getHandleResponse(resp *http.Response) (SecretsClie
 	return result, nil
 }
 
-// List - List secrets in a given user profile.
+// NewListPager - List secrets in a given user profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // userName - The name of the user profile.
 // options - SecretsClientListOptions contains the optional parameters for the SecretsClient.List method.
-func (client *SecretsClient) List(resourceGroupName string, labName string, userName string, options *SecretsClientListOptions) *runtime.Pager[SecretsClientListResponse] {
+func (client *SecretsClient) NewListPager(resourceGroupName string, labName string, userName string, options *SecretsClientListOptions) *runtime.Pager[SecretsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SecretsClientListResponse]{
 		More: func(page SecretsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

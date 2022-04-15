@@ -20,13 +20,13 @@ type settler interface {
 
 type messageSettler struct {
 	links        internal.AMQPLinks
-	retryOptions utils.RetryOptions
+	retryOptions RetryOptions
 
 	// used only for tests
 	onlyDoBackupSettlement bool
 }
 
-func newMessageSettler(links internal.AMQPLinks, retryOptions utils.RetryOptions) settler {
+func newMessageSettler(links internal.AMQPLinks, retryOptions RetryOptions) settler {
 	return &messageSettler{
 		links:        links,
 		retryOptions: retryOptions,
@@ -50,7 +50,7 @@ func (s *messageSettler) settleWithRetries(ctx context.Context, message *Receive
 		}
 
 		return nil
-	}, utils.RetryOptions{})
+	}, RetryOptions{})
 
 	return err
 }

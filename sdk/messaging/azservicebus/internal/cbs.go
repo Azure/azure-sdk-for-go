@@ -8,6 +8,7 @@ import (
 
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
 	"github.com/Azure/go-amqp"
 )
@@ -34,7 +35,7 @@ func NegotiateClaim(ctx context.Context, audience string, conn *amqp.Client, pro
 
 	defer func() {
 		if err := link.Close(ctx); err != nil {
-			azlog.Writef(EventAuth, "Failed closing claim link: %s", err.Error())
+			azlog.Writef(exported.EventAuth, "Failed closing claim link: %s", err.Error())
 		}
 	}()
 
@@ -43,7 +44,7 @@ func NegotiateClaim(ctx context.Context, audience string, conn *amqp.Client, pro
 		return err
 	}
 
-	azlog.Writef(EventAuth, "negotiating claim for audience %s with token type %s and expiry of %s", audience, token.TokenType, token.Expiry)
+	azlog.Writef(exported.EventAuth, "negotiating claim for audience %s with token type %s and expiry of %s", audience, token.TokenType, token.Expiry)
 
 	msg := &amqp.Message{
 		Value: token.Token,

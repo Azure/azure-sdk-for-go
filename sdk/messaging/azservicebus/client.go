@@ -14,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 )
 
 // Client provides methods to create Sender and Receiver
@@ -59,10 +59,10 @@ type ClientOptions struct {
 
 // RetryOptions controls how often operations are retried from this client and any
 // Receivers and Senders created from this client.
-type RetryOptions = utils.RetryOptions
+type RetryOptions = exported.RetryOptions
 
 // NewWebSocketConnArgs are passed to your web socket creation function (ClientOptions.NewWebSocketConn)
-type NewWebSocketConnArgs = internal.NewWebSocketConnArgs
+type NewWebSocketConnArgs = exported.NewWebSocketConnArgs
 
 // NewClient creates a new Client for a Service Bus namespace, using a TokenCredential.
 // A Client allows you create receivers (for queues or subscriptions) and senders (for queues and topics).
@@ -145,7 +145,7 @@ func newClientImpl(creds clientCreds, options *ClientOptions) (*Client, error) {
 			nsOptions = append(nsOptions, internal.NamespaceWithUserAgent(options.ApplicationID))
 		}
 
-		nsOptions = append(nsOptions, internal.NamespaceWithRetryOptions((utils.RetryOptions)(options.RetryOptions)))
+		nsOptions = append(nsOptions, internal.NamespaceWithRetryOptions(options.RetryOptions))
 	}
 
 	client.namespace, err = internal.NewNamespace(nsOptions...)
@@ -321,7 +321,7 @@ func (client *Client) Close(ctx context.Context) error {
 
 	for _, link := range links {
 		if err := link.Close(ctx); err != nil {
-			log.Writef(internal.EventConn, "Failed to close link (error might be cached): %s", err.Error())
+			log.Writef(EventConn, "Failed to close link (error might be cached): %s", err.Error())
 		}
 	}
 

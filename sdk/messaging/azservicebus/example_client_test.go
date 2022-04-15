@@ -12,7 +12,6 @@ import (
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"nhooyr.io/websocket"
 )
 
@@ -74,7 +73,7 @@ func ExampleNewClient_configuringRetries() {
 		// NOTE: you don't need to configure these explicitly if you like the defaults.
 		// For more information see:
 		//  https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus#RetryOptions
-		RetryOptions: utils.RetryOptions{
+		RetryOptions: azservicebus.RetryOptions{
 			// MaxRetries specifies the maximum number of attempts a failed operation will be retried
 			// before producing an error.
 			MaxRetries: 3,

@@ -48,11 +48,11 @@ func NewOrganizationOperationsClient(credential azcore.TokenCredential, options 
 	return client, nil
 }
 
-// List - List all operations provided by Microsoft.Confluent.
+// NewListPager - List all operations provided by Microsoft.Confluent.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - OrganizationOperationsClientListOptions contains the optional parameters for the OrganizationOperationsClient.List
 // method.
-func (client *OrganizationOperationsClient) List(options *OrganizationOperationsClientListOptions) *runtime.Pager[OrganizationOperationsClientListResponse] {
+func (client *OrganizationOperationsClient) NewListPager(options *OrganizationOperationsClientListOptions) *runtime.Pager[OrganizationOperationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[OrganizationOperationsClientListResponse]{
 		More: func(page OrganizationOperationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

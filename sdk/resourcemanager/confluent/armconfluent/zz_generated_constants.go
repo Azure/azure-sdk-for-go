@@ -10,7 +10,7 @@ package armconfluent
 
 const (
 	moduleName    = "armconfluent"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.4.0"
 )
 
 // CreatedByType - The type of identity that created the resource.

@@ -245,13 +245,13 @@ func (client *TenantAccessClient) getEntityTagHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListByService - Returns list of access infos - for Git and Management endpoints.
+// NewListByServicePager - Returns list of access infos - for Git and Management endpoints.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - TenantAccessClientListByServiceOptions contains the optional parameters for the TenantAccessClient.ListByService
 // method.
-func (client *TenantAccessClient) ListByService(resourceGroupName string, serviceName string, options *TenantAccessClientListByServiceOptions) *runtime.Pager[TenantAccessClientListByServiceResponse] {
+func (client *TenantAccessClient) NewListByServicePager(resourceGroupName string, serviceName string, options *TenantAccessClientListByServiceOptions) *runtime.Pager[TenantAccessClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TenantAccessClientListByServiceResponse]{
 		More: func(page TenantAccessClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -56,13 +56,13 @@ func NewReportsClient(subscriptionID string, credential azcore.TokenCredential, 
 	return client, nil
 }
 
-// ListByAPI - Lists report records by API.
+// NewListByAPIPager - Lists report records by API.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // filter - The filter to apply on the operation.
 // options - ReportsClientListByAPIOptions contains the optional parameters for the ReportsClient.ListByAPI method.
-func (client *ReportsClient) ListByAPI(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByAPIOptions) *runtime.Pager[ReportsClientListByAPIResponse] {
+func (client *ReportsClient) NewListByAPIPager(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByAPIOptions) *runtime.Pager[ReportsClientListByAPIResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReportsClientListByAPIResponse]{
 		More: func(page ReportsClientListByAPIResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -135,7 +135,7 @@ func (client *ReportsClient) listByAPIHandleResponse(resp *http.Response) (Repor
 	return result, nil
 }
 
-// ListByGeo - Lists report records by geography.
+// NewListByGeoPager - Lists report records by geography.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
@@ -165,7 +165,7 @@ func (client *ReportsClient) listByAPIHandleResponse(resp *http.Response) (Repor
 // | serviceTimeMin | select | | |
 // | serviceTimeMax | select | | |
 // options - ReportsClientListByGeoOptions contains the optional parameters for the ReportsClient.ListByGeo method.
-func (client *ReportsClient) ListByGeo(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByGeoOptions) *runtime.Pager[ReportsClientListByGeoResponse] {
+func (client *ReportsClient) NewListByGeoPager(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByGeoOptions) *runtime.Pager[ReportsClientListByGeoResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReportsClientListByGeoResponse]{
 		More: func(page ReportsClientListByGeoResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -235,7 +235,7 @@ func (client *ReportsClient) listByGeoHandleResponse(resp *http.Response) (Repor
 	return result, nil
 }
 
-// ListByOperation - Lists report records by API Operations.
+// NewListByOperationPager - Lists report records by API Operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
@@ -264,7 +264,7 @@ func (client *ReportsClient) listByGeoHandleResponse(resp *http.Response) (Repor
 // | serviceTimeMin | select | | |
 // | serviceTimeMax | select | | |
 // options - ReportsClientListByOperationOptions contains the optional parameters for the ReportsClient.ListByOperation method.
-func (client *ReportsClient) ListByOperation(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByOperationOptions) *runtime.Pager[ReportsClientListByOperationResponse] {
+func (client *ReportsClient) NewListByOperationPager(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByOperationOptions) *runtime.Pager[ReportsClientListByOperationResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReportsClientListByOperationResponse]{
 		More: func(page ReportsClientListByOperationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -337,7 +337,7 @@ func (client *ReportsClient) listByOperationHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListByProduct - Lists report records by Product.
+// NewListByProductPager - Lists report records by Product.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
@@ -364,7 +364,7 @@ func (client *ReportsClient) listByOperationHandleResponse(resp *http.Response) 
 // | serviceTimeMin | select | | |
 // | serviceTimeMax | select | | |
 // options - ReportsClientListByProductOptions contains the optional parameters for the ReportsClient.ListByProduct method.
-func (client *ReportsClient) ListByProduct(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByProductOptions) *runtime.Pager[ReportsClientListByProductResponse] {
+func (client *ReportsClient) NewListByProductPager(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByProductOptions) *runtime.Pager[ReportsClientListByProductResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReportsClientListByProductResponse]{
 		More: func(page ReportsClientListByProductResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -437,7 +437,7 @@ func (client *ReportsClient) listByProductHandleResponse(resp *http.Response) (R
 	return result, nil
 }
 
-// ListByRequest - Lists report records by Request.
+// NewListByRequestPager - Lists report records by Request.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
@@ -451,7 +451,7 @@ func (client *ReportsClient) listByProductHandleResponse(resp *http.Response) (R
 // | apiRegion | filter | eq | |
 // | subscriptionId | filter | eq | |
 // options - ReportsClientListByRequestOptions contains the optional parameters for the ReportsClient.ListByRequest method.
-func (client *ReportsClient) ListByRequest(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByRequestOptions) *runtime.Pager[ReportsClientListByRequestResponse] {
+func (client *ReportsClient) NewListByRequestPager(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByRequestOptions) *runtime.Pager[ReportsClientListByRequestResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReportsClientListByRequestResponse]{
 		More: func(page ReportsClientListByRequestResponse) bool {
 			return false
@@ -515,7 +515,7 @@ func (client *ReportsClient) listByRequestHandleResponse(resp *http.Response) (R
 	return result, nil
 }
 
-// ListBySubscription - Lists report records by subscription.
+// NewListBySubscriptionPager - Lists report records by subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
@@ -543,7 +543,7 @@ func (client *ReportsClient) listByRequestHandleResponse(resp *http.Response) (R
 // | serviceTimeMax | select | | |
 // options - ReportsClientListBySubscriptionOptions contains the optional parameters for the ReportsClient.ListBySubscription
 // method.
-func (client *ReportsClient) ListBySubscription(resourceGroupName string, serviceName string, filter string, options *ReportsClientListBySubscriptionOptions) *runtime.Pager[ReportsClientListBySubscriptionResponse] {
+func (client *ReportsClient) NewListBySubscriptionPager(resourceGroupName string, serviceName string, filter string, options *ReportsClientListBySubscriptionOptions) *runtime.Pager[ReportsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReportsClientListBySubscriptionResponse]{
 		More: func(page ReportsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -616,7 +616,7 @@ func (client *ReportsClient) listBySubscriptionHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListByTime - Lists report records by Time.
+// NewListByTimePager - Lists report records by Time.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
@@ -647,7 +647,7 @@ func (client *ReportsClient) listBySubscriptionHandleResponse(resp *http.Respons
 // format (http://en.wikipedia.org/wiki/ISO_8601#Durations).This code can be used to convert
 // TimeSpan to a valid interval string: XmlConvert.ToString(new TimeSpan(hours, minutes, seconds)).
 // options - ReportsClientListByTimeOptions contains the optional parameters for the ReportsClient.ListByTime method.
-func (client *ReportsClient) ListByTime(resourceGroupName string, serviceName string, filter string, interval string, options *ReportsClientListByTimeOptions) *runtime.Pager[ReportsClientListByTimeResponse] {
+func (client *ReportsClient) NewListByTimePager(resourceGroupName string, serviceName string, filter string, interval string, options *ReportsClientListByTimeOptions) *runtime.Pager[ReportsClientListByTimeResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReportsClientListByTimeResponse]{
 		More: func(page ReportsClientListByTimeResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -721,7 +721,7 @@ func (client *ReportsClient) listByTimeHandleResponse(resp *http.Response) (Repo
 	return result, nil
 }
 
-// ListByUser - Lists report records by User.
+// NewListByUserPager - Lists report records by User.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
@@ -750,7 +750,7 @@ func (client *ReportsClient) listByTimeHandleResponse(resp *http.Response) (Repo
 // | serviceTimeMin | select | | |
 // | serviceTimeMax | select | | |
 // options - ReportsClientListByUserOptions contains the optional parameters for the ReportsClient.ListByUser method.
-func (client *ReportsClient) ListByUser(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByUserOptions) *runtime.Pager[ReportsClientListByUserResponse] {
+func (client *ReportsClient) NewListByUserPager(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByUserOptions) *runtime.Pager[ReportsClientListByUserResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReportsClientListByUserResponse]{
 		More: func(page ReportsClientListByUserResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -307,12 +307,12 @@ func (client *SubscriptionClient) getEntityTagHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// List - Lists all subscriptions of the API Management service instance.
+// NewListPager - Lists all subscriptions of the API Management service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - SubscriptionClientListOptions contains the optional parameters for the SubscriptionClient.List method.
-func (client *SubscriptionClient) List(resourceGroupName string, serviceName string, options *SubscriptionClientListOptions) *runtime.Pager[SubscriptionClientListResponse] {
+func (client *SubscriptionClient) NewListPager(resourceGroupName string, serviceName string, options *SubscriptionClientListOptions) *runtime.Pager[SubscriptionClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SubscriptionClientListResponse]{
 		More: func(page SubscriptionClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

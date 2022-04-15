@@ -325,14 +325,14 @@ func (client *APIOperationClient) getEntityTagHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListByAPI - Lists a collection of the operations for the specified API.
+// NewListByAPIPager - Lists a collection of the operations for the specified API.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
 // ;rev=n as a suffix where n is the revision number.
 // options - APIOperationClientListByAPIOptions contains the optional parameters for the APIOperationClient.ListByAPI method.
-func (client *APIOperationClient) ListByAPI(resourceGroupName string, serviceName string, apiID string, options *APIOperationClientListByAPIOptions) *runtime.Pager[APIOperationClientListByAPIResponse] {
+func (client *APIOperationClient) NewListByAPIPager(resourceGroupName string, serviceName string, apiID string, options *APIOperationClientListByAPIOptions) *runtime.Pager[APIOperationClientListByAPIResponse] {
 	return runtime.NewPager(runtime.PageProcessor[APIOperationClientListByAPIResponse]{
 		More: func(page APIOperationClientListByAPIResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

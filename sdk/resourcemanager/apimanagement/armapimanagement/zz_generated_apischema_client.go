@@ -331,14 +331,14 @@ func (client *APISchemaClient) getEntityTagHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// ListByAPI - Get the schema configuration at the API level.
+// NewListByAPIPager - Get the schema configuration at the API level.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
 // ;rev=n as a suffix where n is the revision number.
 // options - APISchemaClientListByAPIOptions contains the optional parameters for the APISchemaClient.ListByAPI method.
-func (client *APISchemaClient) ListByAPI(resourceGroupName string, serviceName string, apiID string, options *APISchemaClientListByAPIOptions) *runtime.Pager[APISchemaClientListByAPIResponse] {
+func (client *APISchemaClient) NewListByAPIPager(resourceGroupName string, serviceName string, apiID string, options *APISchemaClientListByAPIOptions) *runtime.Pager[APISchemaClientListByAPIResponse] {
 	return runtime.NewPager(runtime.PageProcessor[APISchemaClientListByAPIResponse]{
 		More: func(page APISchemaClientListByAPIResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

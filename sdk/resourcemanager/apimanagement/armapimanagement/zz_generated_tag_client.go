@@ -1091,14 +1091,14 @@ func (client *TagClient) getEntityStateByProductHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListByAPI - Lists all Tags associated with the API.
+// NewListByAPIPager - Lists all Tags associated with the API.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
 // ;rev=n as a suffix where n is the revision number.
 // options - TagClientListByAPIOptions contains the optional parameters for the TagClient.ListByAPI method.
-func (client *TagClient) ListByAPI(resourceGroupName string, serviceName string, apiID string, options *TagClientListByAPIOptions) *runtime.Pager[TagClientListByAPIResponse] {
+func (client *TagClient) NewListByAPIPager(resourceGroupName string, serviceName string, apiID string, options *TagClientListByAPIOptions) *runtime.Pager[TagClientListByAPIResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TagClientListByAPIResponse]{
 		More: func(page TagClientListByAPIResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1174,7 +1174,7 @@ func (client *TagClient) listByAPIHandleResponse(resp *http.Response) (TagClient
 	return result, nil
 }
 
-// ListByOperation - Lists all Tags associated with the Operation.
+// NewListByOperationPager - Lists all Tags associated with the Operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
@@ -1182,7 +1182,7 @@ func (client *TagClient) listByAPIHandleResponse(resp *http.Response) (TagClient
 // ;rev=n as a suffix where n is the revision number.
 // operationID - Operation identifier within an API. Must be unique in the current API Management service instance.
 // options - TagClientListByOperationOptions contains the optional parameters for the TagClient.ListByOperation method.
-func (client *TagClient) ListByOperation(resourceGroupName string, serviceName string, apiID string, operationID string, options *TagClientListByOperationOptions) *runtime.Pager[TagClientListByOperationResponse] {
+func (client *TagClient) NewListByOperationPager(resourceGroupName string, serviceName string, apiID string, operationID string, options *TagClientListByOperationOptions) *runtime.Pager[TagClientListByOperationResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TagClientListByOperationResponse]{
 		More: func(page TagClientListByOperationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1262,13 +1262,13 @@ func (client *TagClient) listByOperationHandleResponse(resp *http.Response) (Tag
 	return result, nil
 }
 
-// ListByProduct - Lists all Tags associated with the Product.
+// NewListByProductPager - Lists all Tags associated with the Product.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // productID - Product identifier. Must be unique in the current API Management service instance.
 // options - TagClientListByProductOptions contains the optional parameters for the TagClient.ListByProduct method.
-func (client *TagClient) ListByProduct(resourceGroupName string, serviceName string, productID string, options *TagClientListByProductOptions) *runtime.Pager[TagClientListByProductResponse] {
+func (client *TagClient) NewListByProductPager(resourceGroupName string, serviceName string, productID string, options *TagClientListByProductOptions) *runtime.Pager[TagClientListByProductResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TagClientListByProductResponse]{
 		More: func(page TagClientListByProductResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1344,12 +1344,12 @@ func (client *TagClient) listByProductHandleResponse(resp *http.Response) (TagCl
 	return result, nil
 }
 
-// ListByService - Lists a collection of tags defined within a service instance.
+// NewListByServicePager - Lists a collection of tags defined within a service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - TagClientListByServiceOptions contains the optional parameters for the TagClient.ListByService method.
-func (client *TagClient) ListByService(resourceGroupName string, serviceName string, options *TagClientListByServiceOptions) *runtime.Pager[TagClientListByServiceResponse] {
+func (client *TagClient) NewListByServicePager(resourceGroupName string, serviceName string, options *TagClientListByServiceOptions) *runtime.Pager[TagClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TagClientListByServiceResponse]{
 		More: func(page TagClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

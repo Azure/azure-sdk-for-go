@@ -299,12 +299,12 @@ func (client *CacheClient) getEntityTagHandleResponse(resp *http.Response) (Cach
 	return result, nil
 }
 
-// ListByService - Lists a collection of all external Caches in the specified service instance.
+// NewListByServicePager - Lists a collection of all external Caches in the specified service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - CacheClientListByServiceOptions contains the optional parameters for the CacheClient.ListByService method.
-func (client *CacheClient) ListByService(resourceGroupName string, serviceName string, options *CacheClientListByServiceOptions) *runtime.Pager[CacheClientListByServiceResponse] {
+func (client *CacheClient) NewListByServicePager(resourceGroupName string, serviceName string, options *CacheClientListByServiceOptions) *runtime.Pager[CacheClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CacheClientListByServiceResponse]{
 		More: func(page CacheClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

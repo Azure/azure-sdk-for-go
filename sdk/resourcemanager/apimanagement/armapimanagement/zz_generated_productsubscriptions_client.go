@@ -56,14 +56,14 @@ func NewProductSubscriptionsClient(subscriptionID string, credential azcore.Toke
 	return client, nil
 }
 
-// List - Lists the collection of subscriptions to the specified product.
+// NewListPager - Lists the collection of subscriptions to the specified product.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // productID - Product identifier. Must be unique in the current API Management service instance.
 // options - ProductSubscriptionsClientListOptions contains the optional parameters for the ProductSubscriptionsClient.List
 // method.
-func (client *ProductSubscriptionsClient) List(resourceGroupName string, serviceName string, productID string, options *ProductSubscriptionsClientListOptions) *runtime.Pager[ProductSubscriptionsClientListResponse] {
+func (client *ProductSubscriptionsClient) NewListPager(resourceGroupName string, serviceName string, productID string, options *ProductSubscriptionsClientListOptions) *runtime.Pager[ProductSubscriptionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProductSubscriptionsClientListResponse]{
 		More: func(page ProductSubscriptionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

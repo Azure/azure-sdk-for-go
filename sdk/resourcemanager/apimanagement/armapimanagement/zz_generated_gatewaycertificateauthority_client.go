@@ -326,7 +326,7 @@ func (client *GatewayCertificateAuthorityClient) getEntityTagHandleResponse(resp
 	return result, nil
 }
 
-// ListByService - Lists the collection of Certificate Authorities for the specified Gateway entity.
+// NewListByServicePager - Lists the collection of Certificate Authorities for the specified Gateway entity.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
@@ -334,7 +334,7 @@ func (client *GatewayCertificateAuthorityClient) getEntityTagHandleResponse(resp
 // 'managed'
 // options - GatewayCertificateAuthorityClientListByServiceOptions contains the optional parameters for the GatewayCertificateAuthorityClient.ListByService
 // method.
-func (client *GatewayCertificateAuthorityClient) ListByService(resourceGroupName string, serviceName string, gatewayID string, options *GatewayCertificateAuthorityClientListByServiceOptions) *runtime.Pager[GatewayCertificateAuthorityClientListByServiceResponse] {
+func (client *GatewayCertificateAuthorityClient) NewListByServicePager(resourceGroupName string, serviceName string, gatewayID string, options *GatewayCertificateAuthorityClientListByServiceOptions) *runtime.Pager[GatewayCertificateAuthorityClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[GatewayCertificateAuthorityClientListByServiceResponse]{
 		More: func(page GatewayCertificateAuthorityClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

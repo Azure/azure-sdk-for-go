@@ -304,13 +304,13 @@ func (client *NamedValueClient) getEntityTagHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListByService - Lists a collection of named values defined within a service instance.
+// NewListByServicePager - Lists a collection of named values defined within a service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - NamedValueClientListByServiceOptions contains the optional parameters for the NamedValueClient.ListByService
 // method.
-func (client *NamedValueClient) ListByService(resourceGroupName string, serviceName string, options *NamedValueClientListByServiceOptions) *runtime.Pager[NamedValueClientListByServiceResponse] {
+func (client *NamedValueClient) NewListByServicePager(resourceGroupName string, serviceName string, options *NamedValueClientListByServiceOptions) *runtime.Pager[NamedValueClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[NamedValueClientListByServiceResponse]{
 		More: func(page NamedValueClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

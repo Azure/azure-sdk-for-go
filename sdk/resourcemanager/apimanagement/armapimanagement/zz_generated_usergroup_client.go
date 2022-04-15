@@ -56,13 +56,13 @@ func NewUserGroupClient(subscriptionID string, credential azcore.TokenCredential
 	return client, nil
 }
 
-// List - Lists all user groups.
+// NewListPager - Lists all user groups.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // userID - User identifier. Must be unique in the current API Management service instance.
 // options - UserGroupClientListOptions contains the optional parameters for the UserGroupClient.List method.
-func (client *UserGroupClient) List(resourceGroupName string, serviceName string, userID string, options *UserGroupClientListOptions) *runtime.Pager[UserGroupClientListResponse] {
+func (client *UserGroupClient) NewListPager(resourceGroupName string, serviceName string, userID string, options *UserGroupClientListOptions) *runtime.Pager[UserGroupClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[UserGroupClientListResponse]{
 		More: func(page UserGroupClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

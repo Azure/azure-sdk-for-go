@@ -118,13 +118,13 @@ func (client *TenantSettingsClient) getHandleResponse(resp *http.Response) (Tena
 	return result, nil
 }
 
-// ListByService - Public settings.
+// NewListByServicePager - Public settings.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - TenantSettingsClientListByServiceOptions contains the optional parameters for the TenantSettingsClient.ListByService
 // method.
-func (client *TenantSettingsClient) ListByService(resourceGroupName string, serviceName string, options *TenantSettingsClientListByServiceOptions) *runtime.Pager[TenantSettingsClientListByServiceResponse] {
+func (client *TenantSettingsClient) NewListByServicePager(resourceGroupName string, serviceName string, options *TenantSettingsClientListByServiceOptions) *runtime.Pager[TenantSettingsClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TenantSettingsClientListByServiceResponse]{
 		More: func(page TenantSettingsClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

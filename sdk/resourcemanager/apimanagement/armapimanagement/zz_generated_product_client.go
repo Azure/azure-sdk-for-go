@@ -302,12 +302,12 @@ func (client *ProductClient) getEntityTagHandleResponse(resp *http.Response) (Pr
 	return result, nil
 }
 
-// ListByService - Lists a collection of products in the specified service instance.
+// NewListByServicePager - Lists a collection of products in the specified service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - ProductClientListByServiceOptions contains the optional parameters for the ProductClient.ListByService method.
-func (client *ProductClient) ListByService(resourceGroupName string, serviceName string, options *ProductClientListByServiceOptions) *runtime.Pager[ProductClientListByServiceResponse] {
+func (client *ProductClient) NewListByServicePager(resourceGroupName string, serviceName string, options *ProductClientListByServiceOptions) *runtime.Pager[ProductClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProductClientListByServiceResponse]{
 		More: func(page ProductClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -385,12 +385,12 @@ func (client *ProductClient) listByServiceHandleResponse(resp *http.Response) (P
 	return result, nil
 }
 
-// ListByTags - Lists a collection of products associated with tags.
+// NewListByTagsPager - Lists a collection of products associated with tags.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - ProductClientListByTagsOptions contains the optional parameters for the ProductClient.ListByTags method.
-func (client *ProductClient) ListByTags(resourceGroupName string, serviceName string, options *ProductClientListByTagsOptions) *runtime.Pager[ProductClientListByTagsResponse] {
+func (client *ProductClient) NewListByTagsPager(resourceGroupName string, serviceName string, options *ProductClientListByTagsOptions) *runtime.Pager[ProductClientListByTagsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProductClientListByTagsResponse]{
 		More: func(page ProductClientListByTagsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -180,13 +180,13 @@ func (client *NotificationClient) getHandleResponse(resp *http.Response) (Notifi
 	return result, nil
 }
 
-// ListByService - Lists a collection of properties defined within a service instance.
+// NewListByServicePager - Lists a collection of properties defined within a service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - NotificationClientListByServiceOptions contains the optional parameters for the NotificationClient.ListByService
 // method.
-func (client *NotificationClient) ListByService(resourceGroupName string, serviceName string, options *NotificationClientListByServiceOptions) *runtime.Pager[NotificationClientListByServiceResponse] {
+func (client *NotificationClient) NewListByServicePager(resourceGroupName string, serviceName string, options *NotificationClientListByServiceOptions) *runtime.Pager[NotificationClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[NotificationClientListByServiceResponse]{
 		More: func(page NotificationClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

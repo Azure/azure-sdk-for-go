@@ -319,14 +319,14 @@ func (client *ContentItemClient) getEntityTagHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListByService - Lists developer portal's content items specified by the provided content type.
+// NewListByServicePager - Lists developer portal's content items specified by the provided content type.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // contentTypeID - Content type identifier.
 // options - ContentItemClientListByServiceOptions contains the optional parameters for the ContentItemClient.ListByService
 // method.
-func (client *ContentItemClient) ListByService(resourceGroupName string, serviceName string, contentTypeID string, options *ContentItemClientListByServiceOptions) *runtime.Pager[ContentItemClientListByServiceResponse] {
+func (client *ContentItemClient) NewListByServicePager(resourceGroupName string, serviceName string, contentTypeID string, options *ContentItemClientListByServiceOptions) *runtime.Pager[ContentItemClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ContentItemClientListByServiceResponse]{
 		More: func(page ContentItemClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

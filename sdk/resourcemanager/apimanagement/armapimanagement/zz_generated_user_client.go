@@ -434,12 +434,12 @@ func (client *UserClient) getSharedAccessTokenHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListByService - Lists a collection of registered users in the specified service instance.
+// NewListByServicePager - Lists a collection of registered users in the specified service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - UserClientListByServiceOptions contains the optional parameters for the UserClient.ListByService method.
-func (client *UserClient) ListByService(resourceGroupName string, serviceName string, options *UserClientListByServiceOptions) *runtime.Pager[UserClientListByServiceResponse] {
+func (client *UserClient) NewListByServicePager(resourceGroupName string, serviceName string, options *UserClientListByServiceOptions) *runtime.Pager[UserClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[UserClientListByServiceResponse]{
 		More: func(page UserClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

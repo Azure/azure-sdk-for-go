@@ -235,14 +235,14 @@ func (client *ProductGroupClient) deleteCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// ListByProduct - Lists the collection of developer groups associated with the specified product.
+// NewListByProductPager - Lists the collection of developer groups associated with the specified product.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // productID - Product identifier. Must be unique in the current API Management service instance.
 // options - ProductGroupClientListByProductOptions contains the optional parameters for the ProductGroupClient.ListByProduct
 // method.
-func (client *ProductGroupClient) ListByProduct(resourceGroupName string, serviceName string, productID string, options *ProductGroupClientListByProductOptions) *runtime.Pager[ProductGroupClientListByProductResponse] {
+func (client *ProductGroupClient) NewListByProductPager(resourceGroupName string, serviceName string, productID string, options *ProductGroupClientListByProductOptions) *runtime.Pager[ProductGroupClientListByProductResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProductGroupClientListByProductResponse]{
 		More: func(page ProductGroupClientListByProductResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

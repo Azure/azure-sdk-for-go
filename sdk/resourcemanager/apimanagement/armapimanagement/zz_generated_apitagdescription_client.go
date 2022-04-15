@@ -330,8 +330,8 @@ func (client *APITagDescriptionClient) getEntityTagHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListByService - Lists all Tags descriptions in scope of API. Model similar to swagger - tagDescription is defined on API
-// level but tag may be assigned to the Operations
+// NewListByServicePager - Lists all Tags descriptions in scope of API. Model similar to swagger - tagDescription is defined
+// on API level but tag may be assigned to the Operations
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
@@ -339,7 +339,7 @@ func (client *APITagDescriptionClient) getEntityTagHandleResponse(resp *http.Res
 // ;rev=n as a suffix where n is the revision number.
 // options - APITagDescriptionClientListByServiceOptions contains the optional parameters for the APITagDescriptionClient.ListByService
 // method.
-func (client *APITagDescriptionClient) ListByService(resourceGroupName string, serviceName string, apiID string, options *APITagDescriptionClientListByServiceOptions) *runtime.Pager[APITagDescriptionClientListByServiceResponse] {
+func (client *APITagDescriptionClient) NewListByServicePager(resourceGroupName string, serviceName string, apiID string, options *APITagDescriptionClientListByServiceOptions) *runtime.Pager[APITagDescriptionClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[APITagDescriptionClientListByServiceResponse]{
 		More: func(page APITagDescriptionClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

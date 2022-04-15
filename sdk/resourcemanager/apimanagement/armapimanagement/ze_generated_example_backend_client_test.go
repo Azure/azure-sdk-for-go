@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListBackends.json
-func ExampleBackendClient_ListByService() {
+func ExampleBackendClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleBackendClient_ListByService() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByService("<resource-group-name>",
+	pager := client.NewListByServicePager("<resource-group-name>",
 		"<service-name>",
 		&armapimanagement.BackendClientListByServiceOptions{Filter: nil,
 			Top:  nil,

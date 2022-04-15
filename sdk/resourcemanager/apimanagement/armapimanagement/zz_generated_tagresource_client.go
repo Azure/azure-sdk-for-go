@@ -56,13 +56,13 @@ func NewTagResourceClient(subscriptionID string, credential azcore.TokenCredenti
 	return client, nil
 }
 
-// ListByService - Lists a collection of resources associated with tags.
+// NewListByServicePager - Lists a collection of resources associated with tags.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - TagResourceClientListByServiceOptions contains the optional parameters for the TagResourceClient.ListByService
 // method.
-func (client *TagResourceClient) ListByService(resourceGroupName string, serviceName string, options *TagResourceClientListByServiceOptions) *runtime.Pager[TagResourceClientListByServiceResponse] {
+func (client *TagResourceClient) NewListByServicePager(resourceGroupName string, serviceName string, options *TagResourceClientListByServiceOptions) *runtime.Pager[TagResourceClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TagResourceClientListByServiceResponse]{
 		More: func(page TagResourceClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

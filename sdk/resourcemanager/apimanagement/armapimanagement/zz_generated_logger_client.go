@@ -299,12 +299,12 @@ func (client *LoggerClient) getEntityTagHandleResponse(resp *http.Response) (Log
 	return result, nil
 }
 
-// ListByService - Lists a collection of loggers in the specified service instance.
+// NewListByServicePager - Lists a collection of loggers in the specified service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - LoggerClientListByServiceOptions contains the optional parameters for the LoggerClient.ListByService method.
-func (client *LoggerClient) ListByService(resourceGroupName string, serviceName string, options *LoggerClientListByServiceOptions) *runtime.Pager[LoggerClientListByServiceResponse] {
+func (client *LoggerClient) NewListByServicePager(resourceGroupName string, serviceName string, options *LoggerClientListByServiceOptions) *runtime.Pager[LoggerClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LoggerClientListByServiceResponse]{
 		More: func(page LoggerClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

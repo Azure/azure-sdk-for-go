@@ -515,10 +515,10 @@ func (client *ServiceClient) getSsoTokenHandleResponse(resp *http.Response) (Ser
 	return result, nil
 }
 
-// List - Lists all API Management services within an Azure subscription.
+// NewListPager - Lists all API Management services within an Azure subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ServiceClientListOptions contains the optional parameters for the ServiceClient.List method.
-func (client *ServiceClient) List(options *ServiceClientListOptions) *runtime.Pager[ServiceClientListResponse] {
+func (client *ServiceClient) NewListPager(options *ServiceClientListOptions) *runtime.Pager[ServiceClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServiceClientListResponse]{
 		More: func(page ServiceClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -573,12 +573,12 @@ func (client *ServiceClient) listHandleResponse(resp *http.Response) (ServiceCli
 	return result, nil
 }
 
-// ListByResourceGroup - List all API Management services within a resource group.
+// NewListByResourceGroupPager - List all API Management services within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - ServiceClientListByResourceGroupOptions contains the optional parameters for the ServiceClient.ListByResourceGroup
 // method.
-func (client *ServiceClient) ListByResourceGroup(resourceGroupName string, options *ServiceClientListByResourceGroupOptions) *runtime.Pager[ServiceClientListByResourceGroupResponse] {
+func (client *ServiceClient) NewListByResourceGroupPager(resourceGroupName string, options *ServiceClientListByResourceGroupOptions) *runtime.Pager[ServiceClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServiceClientListByResourceGroupResponse]{
 		More: func(page ServiceClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

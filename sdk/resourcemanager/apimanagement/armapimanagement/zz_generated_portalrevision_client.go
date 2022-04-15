@@ -249,13 +249,13 @@ func (client *PortalRevisionClient) getEntityTagHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListByService - Lists developer portal's revisions.
+// NewListByServicePager - Lists developer portal's revisions.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - PortalRevisionClientListByServiceOptions contains the optional parameters for the PortalRevisionClient.ListByService
 // method.
-func (client *PortalRevisionClient) ListByService(resourceGroupName string, serviceName string, options *PortalRevisionClientListByServiceOptions) *runtime.Pager[PortalRevisionClientListByServiceResponse] {
+func (client *PortalRevisionClient) NewListByServicePager(resourceGroupName string, serviceName string, options *PortalRevisionClientListByServiceOptions) *runtime.Pager[PortalRevisionClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PortalRevisionClientListByServiceResponse]{
 		More: func(page PortalRevisionClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

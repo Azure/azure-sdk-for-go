@@ -56,14 +56,14 @@ func NewOperationClient(subscriptionID string, credential azcore.TokenCredential
 	return client, nil
 }
 
-// ListByTags - Lists a collection of operations associated with tags.
+// NewListByTagsPager - Lists a collection of operations associated with tags.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
 // ;rev=n as a suffix where n is the revision number.
 // options - OperationClientListByTagsOptions contains the optional parameters for the OperationClient.ListByTags method.
-func (client *OperationClient) ListByTags(resourceGroupName string, serviceName string, apiID string, options *OperationClientListByTagsOptions) *runtime.Pager[OperationClientListByTagsResponse] {
+func (client *OperationClient) NewListByTagsPager(resourceGroupName string, serviceName string, apiID string, options *OperationClientListByTagsOptions) *runtime.Pager[OperationClientListByTagsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[OperationClientListByTagsResponse]{
 		More: func(page OperationClientListByTagsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

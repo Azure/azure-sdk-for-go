@@ -244,14 +244,14 @@ func (client *ContentTypeClient) getHandleResponse(resp *http.Response) (Content
 	return result, nil
 }
 
-// ListByService - Lists the developer portal's content types. Content types describe content items' properties, validation
+// NewListByServicePager - Lists the developer portal's content types. Content types describe content items' properties, validation
 // rules, and constraints.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - ContentTypeClientListByServiceOptions contains the optional parameters for the ContentTypeClient.ListByService
 // method.
-func (client *ContentTypeClient) ListByService(resourceGroupName string, serviceName string, options *ContentTypeClientListByServiceOptions) *runtime.Pager[ContentTypeClientListByServiceResponse] {
+func (client *ContentTypeClient) NewListByServicePager(resourceGroupName string, serviceName string, options *ContentTypeClientListByServiceOptions) *runtime.Pager[ContentTypeClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ContentTypeClientListByServiceResponse]{
 		More: func(page ContentTypeClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

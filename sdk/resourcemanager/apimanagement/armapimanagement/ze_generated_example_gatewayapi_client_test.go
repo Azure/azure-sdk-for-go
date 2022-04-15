@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListGatewayApis.json
-func ExampleGatewayAPIClient_ListByService() {
+func ExampleGatewayAPIClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleGatewayAPIClient_ListByService() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByService("<resource-group-name>",
+	pager := client.NewListByServicePager("<resource-group-name>",
 		"<service-name>",
 		"<gateway-id>",
 		&armapimanagement.GatewayAPIClientListByServiceOptions{Filter: nil,

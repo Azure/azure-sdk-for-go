@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/TransactionsListByInvoice.json
-func ExampleTransactionsClient_ListByInvoice() {
+func ExampleTransactionsClient_NewListByInvoicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleTransactionsClient_ListByInvoice() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByInvoice("<billing-account-name>",
+	pager := client.NewListByInvoicePager("<billing-account-name>",
 		"<invoice-name>",
 		nil)
 	for pager.More() {

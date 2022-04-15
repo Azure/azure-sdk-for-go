@@ -51,12 +51,12 @@ func NewPermissionsClient(credential azcore.TokenCredential, options *arm.Client
 	return client, nil
 }
 
-// ListByBillingAccount - Lists the billing permissions the caller has on a billing account.
+// NewListByBillingAccountPager - Lists the billing permissions the caller has on a billing account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountName - The ID that uniquely identifies a billing account.
 // options - PermissionsClientListByBillingAccountOptions contains the optional parameters for the PermissionsClient.ListByBillingAccount
 // method.
-func (client *PermissionsClient) ListByBillingAccount(billingAccountName string, options *PermissionsClientListByBillingAccountOptions) *runtime.Pager[PermissionsClientListByBillingAccountResponse] {
+func (client *PermissionsClient) NewListByBillingAccountPager(billingAccountName string, options *PermissionsClientListByBillingAccountOptions) *runtime.Pager[PermissionsClientListByBillingAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PermissionsClientListByBillingAccountResponse]{
 		More: func(page PermissionsClientListByBillingAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -111,13 +111,13 @@ func (client *PermissionsClient) listByBillingAccountHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListByBillingProfile - Lists the billing permissions the caller has on a billing profile.
+// NewListByBillingProfilePager - Lists the billing permissions the caller has on a billing profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // options - PermissionsClientListByBillingProfileOptions contains the optional parameters for the PermissionsClient.ListByBillingProfile
 // method.
-func (client *PermissionsClient) ListByBillingProfile(billingAccountName string, billingProfileName string, options *PermissionsClientListByBillingProfileOptions) *runtime.Pager[PermissionsClientListByBillingProfileResponse] {
+func (client *PermissionsClient) NewListByBillingProfilePager(billingAccountName string, billingProfileName string, options *PermissionsClientListByBillingProfileOptions) *runtime.Pager[PermissionsClientListByBillingProfileResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PermissionsClientListByBillingProfileResponse]{
 		More: func(page PermissionsClientListByBillingProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -176,13 +176,13 @@ func (client *PermissionsClient) listByBillingProfileHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListByCustomer - Lists the billing permissions the caller has for a customer.
+// NewListByCustomerPager - Lists the billing permissions the caller has for a customer.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountName - The ID that uniquely identifies a billing account.
 // customerName - The ID that uniquely identifies a customer.
 // options - PermissionsClientListByCustomerOptions contains the optional parameters for the PermissionsClient.ListByCustomer
 // method.
-func (client *PermissionsClient) ListByCustomer(billingAccountName string, customerName string, options *PermissionsClientListByCustomerOptions) *runtime.Pager[PermissionsClientListByCustomerResponse] {
+func (client *PermissionsClient) NewListByCustomerPager(billingAccountName string, customerName string, options *PermissionsClientListByCustomerOptions) *runtime.Pager[PermissionsClientListByCustomerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PermissionsClientListByCustomerResponse]{
 		More: func(page PermissionsClientListByCustomerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -241,14 +241,14 @@ func (client *PermissionsClient) listByCustomerHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListByInvoiceSections - Lists the billing permissions the caller has on an invoice section.
+// NewListByInvoiceSectionsPager - Lists the billing permissions the caller has on an invoice section.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // invoiceSectionName - The ID that uniquely identifies an invoice section.
 // options - PermissionsClientListByInvoiceSectionsOptions contains the optional parameters for the PermissionsClient.ListByInvoiceSections
 // method.
-func (client *PermissionsClient) ListByInvoiceSections(billingAccountName string, billingProfileName string, invoiceSectionName string, options *PermissionsClientListByInvoiceSectionsOptions) *runtime.Pager[PermissionsClientListByInvoiceSectionsResponse] {
+func (client *PermissionsClient) NewListByInvoiceSectionsPager(billingAccountName string, billingProfileName string, invoiceSectionName string, options *PermissionsClientListByInvoiceSectionsOptions) *runtime.Pager[PermissionsClientListByInvoiceSectionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PermissionsClientListByInvoiceSectionsResponse]{
 		More: func(page PermissionsClientListByInvoiceSectionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

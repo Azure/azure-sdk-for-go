@@ -105,12 +105,12 @@ func (client *AgreementsClient) getHandleResponse(resp *http.Response) (Agreemen
 	return result, nil
 }
 
-// ListByBillingAccount - Lists the agreements for a billing account.
+// NewListByBillingAccountPager - Lists the agreements for a billing account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountName - The ID that uniquely identifies a billing account.
 // options - AgreementsClientListByBillingAccountOptions contains the optional parameters for the AgreementsClient.ListByBillingAccount
 // method.
-func (client *AgreementsClient) ListByBillingAccount(billingAccountName string, options *AgreementsClientListByBillingAccountOptions) *runtime.Pager[AgreementsClientListByBillingAccountResponse] {
+func (client *AgreementsClient) NewListByBillingAccountPager(billingAccountName string, options *AgreementsClientListByBillingAccountOptions) *runtime.Pager[AgreementsClientListByBillingAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AgreementsClientListByBillingAccountResponse]{
 		More: func(page AgreementsClientListByBillingAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

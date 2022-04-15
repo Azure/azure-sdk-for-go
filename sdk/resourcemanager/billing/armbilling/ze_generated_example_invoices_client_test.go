@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingAccountInvoicesList.json
-func ExampleInvoicesClient_ListByBillingAccount() {
+func ExampleInvoicesClient_NewListByBillingAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleInvoicesClient_ListByBillingAccount() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByBillingAccount("<billing-account-name>",
+	pager := client.NewListByBillingAccountPager("<billing-account-name>",
 		"<period-start-date>",
 		"<period-end-date>",
 		nil)
@@ -50,7 +50,7 @@ func ExampleInvoicesClient_ListByBillingAccount() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/InvoicesListByBillingProfile.json
-func ExampleInvoicesClient_ListByBillingProfile() {
+func ExampleInvoicesClient_NewListByBillingProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -62,7 +62,7 @@ func ExampleInvoicesClient_ListByBillingProfile() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByBillingProfile("<billing-account-name>",
+	pager := client.NewListByBillingProfilePager("<billing-account-name>",
 		"<billing-profile-name>",
 		"<period-start-date>",
 		"<period-end-date>",
@@ -170,7 +170,7 @@ func ExampleInvoicesClient_BeginDownloadMultipleBillingProfileInvoices() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingSubscriptionInvoicesList.json
-func ExampleInvoicesClient_ListByBillingSubscription() {
+func ExampleInvoicesClient_NewListByBillingSubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -182,7 +182,7 @@ func ExampleInvoicesClient_ListByBillingSubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByBillingSubscription("<period-start-date>",
+	pager := client.NewListByBillingSubscriptionPager("<period-start-date>",
 		"<period-end-date>",
 		nil)
 	for pager.More() {

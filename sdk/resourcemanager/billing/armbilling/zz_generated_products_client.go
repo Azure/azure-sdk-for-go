@@ -104,14 +104,14 @@ func (client *ProductsClient) getHandleResponse(resp *http.Response) (ProductsCl
 	return result, nil
 }
 
-// ListByBillingAccount - Lists the products for a billing account. These don't include products billed based on usage. The
-// operation is supported for billing accounts with agreement type Microsoft Customer Agreement or
+// NewListByBillingAccountPager - Lists the products for a billing account. These don't include products billed based on usage.
+// The operation is supported for billing accounts with agreement type Microsoft Customer Agreement or
 // Microsoft Partner Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountName - The ID that uniquely identifies a billing account.
 // options - ProductsClientListByBillingAccountOptions contains the optional parameters for the ProductsClient.ListByBillingAccount
 // method.
-func (client *ProductsClient) ListByBillingAccount(billingAccountName string, options *ProductsClientListByBillingAccountOptions) *runtime.Pager[ProductsClientListByBillingAccountResponse] {
+func (client *ProductsClient) NewListByBillingAccountPager(billingAccountName string, options *ProductsClientListByBillingAccountOptions) *runtime.Pager[ProductsClientListByBillingAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProductsClientListByBillingAccountResponse]{
 		More: func(page ProductsClientListByBillingAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -169,15 +169,15 @@ func (client *ProductsClient) listByBillingAccountHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListByBillingProfile - Lists the products for a billing profile. These don't include products billed based on usage. The
-// operation is supported for billing accounts with agreement type Microsoft Customer Agreement or
+// NewListByBillingProfilePager - Lists the products for a billing profile. These don't include products billed based on usage.
+// The operation is supported for billing accounts with agreement type Microsoft Customer Agreement or
 // Microsoft Partner Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // options - ProductsClientListByBillingProfileOptions contains the optional parameters for the ProductsClient.ListByBillingProfile
 // method.
-func (client *ProductsClient) ListByBillingProfile(billingAccountName string, billingProfileName string, options *ProductsClientListByBillingProfileOptions) *runtime.Pager[ProductsClientListByBillingProfileResponse] {
+func (client *ProductsClient) NewListByBillingProfilePager(billingAccountName string, billingProfileName string, options *ProductsClientListByBillingProfileOptions) *runtime.Pager[ProductsClientListByBillingProfileResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProductsClientListByBillingProfileResponse]{
 		More: func(page ProductsClientListByBillingProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -239,13 +239,13 @@ func (client *ProductsClient) listByBillingProfileHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListByCustomer - Lists the products for a customer. These don't include products billed based on usage.The operation is
-// supported only for billing accounts with agreement type Microsoft Partner Agreement.
+// NewListByCustomerPager - Lists the products for a customer. These don't include products billed based on usage.The operation
+// is supported only for billing accounts with agreement type Microsoft Partner Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountName - The ID that uniquely identifies a billing account.
 // customerName - The ID that uniquely identifies a customer.
 // options - ProductsClientListByCustomerOptions contains the optional parameters for the ProductsClient.ListByCustomer method.
-func (client *ProductsClient) ListByCustomer(billingAccountName string, customerName string, options *ProductsClientListByCustomerOptions) *runtime.Pager[ProductsClientListByCustomerResponse] {
+func (client *ProductsClient) NewListByCustomerPager(billingAccountName string, customerName string, options *ProductsClientListByCustomerOptions) *runtime.Pager[ProductsClientListByCustomerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProductsClientListByCustomerResponse]{
 		More: func(page ProductsClientListByCustomerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -304,15 +304,15 @@ func (client *ProductsClient) listByCustomerHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListByInvoiceSection - Lists the products for an invoice section. These don't include products billed based on usage. The
-// operation is supported only for billing accounts with agreement type Microsoft Customer Agreement.
+// NewListByInvoiceSectionPager - Lists the products for an invoice section. These don't include products billed based on
+// usage. The operation is supported only for billing accounts with agreement type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // invoiceSectionName - The ID that uniquely identifies an invoice section.
 // options - ProductsClientListByInvoiceSectionOptions contains the optional parameters for the ProductsClient.ListByInvoiceSection
 // method.
-func (client *ProductsClient) ListByInvoiceSection(billingAccountName string, billingProfileName string, invoiceSectionName string, options *ProductsClientListByInvoiceSectionOptions) *runtime.Pager[ProductsClientListByInvoiceSectionResponse] {
+func (client *ProductsClient) NewListByInvoiceSectionPager(billingAccountName string, billingProfileName string, invoiceSectionName string, options *ProductsClientListByInvoiceSectionOptions) *runtime.Pager[ProductsClientListByInvoiceSectionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProductsClientListByInvoiceSectionResponse]{
 		More: func(page ProductsClientListByInvoiceSectionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

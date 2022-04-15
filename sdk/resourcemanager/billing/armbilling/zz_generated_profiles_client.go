@@ -166,13 +166,13 @@ func (client *ProfilesClient) getHandleResponse(resp *http.Response) (ProfilesCl
 	return result, nil
 }
 
-// ListByBillingAccount - Lists the billing profiles that a user has access to. The operation is supported for billing accounts
-// with agreement type Microsoft Customer Agreement or Microsoft Partner Agreement.
+// NewListByBillingAccountPager - Lists the billing profiles that a user has access to. The operation is supported for billing
+// accounts with agreement type Microsoft Customer Agreement or Microsoft Partner Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountName - The ID that uniquely identifies a billing account.
 // options - ProfilesClientListByBillingAccountOptions contains the optional parameters for the ProfilesClient.ListByBillingAccount
 // method.
-func (client *ProfilesClient) ListByBillingAccount(billingAccountName string, options *ProfilesClientListByBillingAccountOptions) *runtime.Pager[ProfilesClientListByBillingAccountResponse] {
+func (client *ProfilesClient) NewListByBillingAccountPager(billingAccountName string, options *ProfilesClientListByBillingAccountOptions) *runtime.Pager[ProfilesClientListByBillingAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProfilesClientListByBillingAccountResponse]{
 		More: func(page ProfilesClientListByBillingAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -250,12 +250,12 @@ func (client *EndpointsClient) getHandleResponse(resp *http.Response) (Endpoints
 	return result, nil
 }
 
-// ListByProfile - Lists existing CDN endpoints.
+// NewListByProfilePager - Lists existing CDN endpoints.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the CDN profile which is unique within the resource group.
 // options - EndpointsClientListByProfileOptions contains the optional parameters for the EndpointsClient.ListByProfile method.
-func (client *EndpointsClient) ListByProfile(resourceGroupName string, profileName string, options *EndpointsClientListByProfileOptions) *runtime.Pager[EndpointsClientListByProfileResponse] {
+func (client *EndpointsClient) NewListByProfilePager(resourceGroupName string, profileName string, options *EndpointsClientListByProfileOptions) *runtime.Pager[EndpointsClientListByProfileResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EndpointsClientListByProfileResponse]{
 		More: func(page EndpointsClientListByProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -318,14 +318,14 @@ func (client *EndpointsClient) listByProfileHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListResourceUsage - Checks the quota and usage of geo filters and custom domains under the given endpoint.
+// NewListResourceUsagePager - Checks the quota and usage of geo filters and custom domains under the given endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the CDN profile which is unique within the resource group.
 // endpointName - Name of the endpoint under the profile which is unique globally.
 // options - EndpointsClientListResourceUsageOptions contains the optional parameters for the EndpointsClient.ListResourceUsage
 // method.
-func (client *EndpointsClient) ListResourceUsage(resourceGroupName string, profileName string, endpointName string, options *EndpointsClientListResourceUsageOptions) *runtime.Pager[EndpointsClientListResourceUsageResponse] {
+func (client *EndpointsClient) NewListResourceUsagePager(resourceGroupName string, profileName string, endpointName string, options *EndpointsClientListResourceUsageOptions) *runtime.Pager[EndpointsClientListResourceUsageResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EndpointsClientListResourceUsageResponse]{
 		More: func(page EndpointsClientListResourceUsageResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

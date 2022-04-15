@@ -112,14 +112,14 @@ func (client *AFDProfilesClient) checkHostNameAvailabilityHandleResponse(resp *h
 	return result, nil
 }
 
-// ListResourceUsage - Checks the quota and actual usage of endpoints under the given CDN profile.
+// NewListResourceUsagePager - Checks the quota and actual usage of endpoints under the given CDN profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 // resource group.
 // options - AFDProfilesClientListResourceUsageOptions contains the optional parameters for the AFDProfilesClient.ListResourceUsage
 // method.
-func (client *AFDProfilesClient) ListResourceUsage(resourceGroupName string, profileName string, options *AFDProfilesClientListResourceUsageOptions) *runtime.Pager[AFDProfilesClientListResourceUsageResponse] {
+func (client *AFDProfilesClient) NewListResourceUsagePager(resourceGroupName string, profileName string, options *AFDProfilesClientListResourceUsageOptions) *runtime.Pager[AFDProfilesClientListResourceUsageResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AFDProfilesClientListResourceUsageResponse]{
 		More: func(page AFDProfilesClientListResourceUsageResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

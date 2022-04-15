@@ -298,10 +298,10 @@ func (client *ProfilesClient) getHandleResponse(resp *http.Response) (ProfilesCl
 	return result, nil
 }
 
-// List - Lists all of the Azure Front Door Standard, Azure Front Door Premium, and CDN profiles within an Azure subscription.
+// NewListPager - Lists all of the Azure Front Door Standard, Azure Front Door Premium, and CDN profiles within an Azure subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ProfilesClientListOptions contains the optional parameters for the ProfilesClient.List method.
-func (client *ProfilesClient) List(options *ProfilesClientListOptions) *runtime.Pager[ProfilesClientListResponse] {
+func (client *ProfilesClient) NewListPager(options *ProfilesClientListOptions) *runtime.Pager[ProfilesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProfilesClientListResponse]{
 		More: func(page ProfilesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -356,13 +356,13 @@ func (client *ProfilesClient) listHandleResponse(resp *http.Response) (ProfilesC
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all of the Azure Front Door Standard, Azure Front Door Premium, and CDN profiles within a resource
-// group.
+// NewListByResourceGroupPager - Lists all of the Azure Front Door Standard, Azure Front Door Premium, and CDN profiles within
+// a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // options - ProfilesClientListByResourceGroupOptions contains the optional parameters for the ProfilesClient.ListByResourceGroup
 // method.
-func (client *ProfilesClient) ListByResourceGroup(resourceGroupName string, options *ProfilesClientListByResourceGroupOptions) *runtime.Pager[ProfilesClientListByResourceGroupResponse] {
+func (client *ProfilesClient) NewListByResourceGroupPager(resourceGroupName string, options *ProfilesClientListByResourceGroupOptions) *runtime.Pager[ProfilesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProfilesClientListByResourceGroupResponse]{
 		More: func(page ProfilesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -421,15 +421,15 @@ func (client *ProfilesClient) listByResourceGroupHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListResourceUsage - Checks the quota and actual usage of endpoints under the given Azure Front Door Standard or Azure Front
-// Door Premium or CDN profile.
+// NewListResourceUsagePager - Checks the quota and actual usage of endpoints under the given Azure Front Door Standard or
+// Azure Front Door Premium or CDN profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 // resource group.
 // options - ProfilesClientListResourceUsageOptions contains the optional parameters for the ProfilesClient.ListResourceUsage
 // method.
-func (client *ProfilesClient) ListResourceUsage(resourceGroupName string, profileName string, options *ProfilesClientListResourceUsageOptions) *runtime.Pager[ProfilesClientListResourceUsageResponse] {
+func (client *ProfilesClient) NewListResourceUsagePager(resourceGroupName string, profileName string, options *ProfilesClientListResourceUsageOptions) *runtime.Pager[ProfilesClientListResourceUsageResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProfilesClientListResourceUsageResponse]{
 		More: func(page ProfilesClientListResourceUsageResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

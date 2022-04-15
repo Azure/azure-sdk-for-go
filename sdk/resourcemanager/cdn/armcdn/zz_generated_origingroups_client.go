@@ -262,14 +262,14 @@ func (client *OriginGroupsClient) getHandleResponse(resp *http.Response) (Origin
 	return result, nil
 }
 
-// ListByEndpoint - Lists all of the existing origin groups within an endpoint.
+// NewListByEndpointPager - Lists all of the existing origin groups within an endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the CDN profile which is unique within the resource group.
 // endpointName - Name of the endpoint under the profile which is unique globally.
 // options - OriginGroupsClientListByEndpointOptions contains the optional parameters for the OriginGroupsClient.ListByEndpoint
 // method.
-func (client *OriginGroupsClient) ListByEndpoint(resourceGroupName string, profileName string, endpointName string, options *OriginGroupsClientListByEndpointOptions) *runtime.Pager[OriginGroupsClientListByEndpointResponse] {
+func (client *OriginGroupsClient) NewListByEndpointPager(resourceGroupName string, profileName string, endpointName string, options *OriginGroupsClientListByEndpointOptions) *runtime.Pager[OriginGroupsClientListByEndpointResponse] {
 	return runtime.NewPager(runtime.PageProcessor[OriginGroupsClientListByEndpointResponse]{
 		More: func(page OriginGroupsClientListByEndpointResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

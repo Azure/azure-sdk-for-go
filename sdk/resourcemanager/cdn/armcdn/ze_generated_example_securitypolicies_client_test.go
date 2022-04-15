@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/SecurityPolicies_ListByProfile.json
-func ExampleSecurityPoliciesClient_ListByProfile() {
+func ExampleSecurityPoliciesClient_NewListByProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleSecurityPoliciesClient_ListByProfile() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByProfile("<resource-group-name>",
+	pager := client.NewListByProfilePager("<resource-group-name>",
 		"<profile-name>",
 		nil)
 	for pager.More() {

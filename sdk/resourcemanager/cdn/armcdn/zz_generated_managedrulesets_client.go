@@ -54,10 +54,10 @@ func NewManagedRuleSetsClient(subscriptionID string, credential azcore.TokenCred
 	return client, nil
 }
 
-// List - Lists all available managed rule sets.
+// NewListPager - Lists all available managed rule sets.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ManagedRuleSetsClientListOptions contains the optional parameters for the ManagedRuleSetsClient.List method.
-func (client *ManagedRuleSetsClient) List(options *ManagedRuleSetsClientListOptions) *runtime.Pager[ManagedRuleSetsClientListResponse] {
+func (client *ManagedRuleSetsClient) NewListPager(options *ManagedRuleSetsClientListOptions) *runtime.Pager[ManagedRuleSetsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagedRuleSetsClientListResponse]{
 		More: func(page ManagedRuleSetsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -19,7 +19,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/RuleSets_ListByProfile.json
-func ExampleRuleSetsClient_ListByProfile() {
+func ExampleRuleSetsClient_NewListByProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -31,7 +31,7 @@ func ExampleRuleSetsClient_ListByProfile() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByProfile("<resource-group-name>",
+	pager := client.NewListByProfilePager("<resource-group-name>",
 		"<profile-name>",
 		nil)
 	for pager.More() {
@@ -129,7 +129,7 @@ func ExampleRuleSetsClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/RuleSets_ListResourceUsage.json
-func ExampleRuleSetsClient_ListResourceUsage() {
+func ExampleRuleSetsClient_NewListResourceUsagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -141,7 +141,7 @@ func ExampleRuleSetsClient_ListResourceUsage() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListResourceUsage("<resource-group-name>",
+	pager := client.NewListResourceUsagePager("<resource-group-name>",
 		"<profile-name>",
 		"<rule-set-name>",
 		nil)

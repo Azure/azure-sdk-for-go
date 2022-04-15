@@ -178,7 +178,7 @@ func (testsuite *VirtualMachineScaleSetsClientTestSuite) TestVirtualMachineScale
 	testsuite.Require().Equal(vmssName, *getResp.Name)
 
 	// list
-	listResp := vmssClient.List(testsuite.resourceGroupName, nil)
+	listResp := vmssClient.NewListPager(testsuite.resourceGroupName, nil)
 	testsuite.Require().True(listResp.More())
 
 	// delete

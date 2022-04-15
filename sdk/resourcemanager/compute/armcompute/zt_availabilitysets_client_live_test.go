@@ -80,15 +80,15 @@ func (testsuite *AvailabilitySetsClientTestSuite) TestAvailabilitySetsCRUD() {
 	testsuite.Require().Equal(*getResp.Name, name)
 
 	// list
-	listPager := client.List(testsuite.resourceGroupName, nil)
+	listPager := client.NewListPager(testsuite.resourceGroupName, nil)
 	testsuite.Require().True(listPager.More())
 
 	// list available size
-	listResp := client.ListAvailableSizes(testsuite.resourceGroupName, name, nil)
+	listResp := client.NewListAvailableSizesPager(testsuite.resourceGroupName, name, nil)
 	testsuite.Require().True(listResp.More())
 
 	// list by subscription
-	listBySubscription := client.ListBySubscription(nil)
+	listBySubscription := client.NewListBySubscriptionPager(nil)
 	testsuite.Require().True(listBySubscription.More())
 
 	// update

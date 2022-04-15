@@ -210,11 +210,11 @@ func (client *AssociationsClient) getHandleResponse(resp *http.Response) (Associ
 	return result, nil
 }
 
-// ListAll - Gets all association for the given scope.
+// NewListAllPager - Gets all association for the given scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 // scope - The scope of the association.
 // options - AssociationsClientListAllOptions contains the optional parameters for the AssociationsClient.ListAll method.
-func (client *AssociationsClient) ListAll(scope string, options *AssociationsClientListAllOptions) *runtime.Pager[AssociationsClientListAllResponse] {
+func (client *AssociationsClient) NewListAllPager(scope string, options *AssociationsClientListAllOptions) *runtime.Pager[AssociationsClientListAllResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AssociationsClientListAllResponse]{
 		More: func(page AssociationsClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

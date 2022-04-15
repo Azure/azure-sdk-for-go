@@ -1,5 +1,11 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Features Added
+
+- New const `ReservedResourceTypeVirtualMachineSoftware`
+
+
 ## 0.3.0 (2022-04-13)
 ### Breaking Changes
 

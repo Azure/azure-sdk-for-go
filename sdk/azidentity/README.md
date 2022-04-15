@@ -139,7 +139,6 @@ client := armresources.NewResourceGroupsClient("subscription ID", chain, nil)
 |[InteractiveBrowserCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#InteractiveBrowserCredential)|Interactively authenticate a user with the default web browser
 |[DeviceCodeCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#DeviceCodeCredential)|Interactively authenticate a user on a device with limited UI
 |[UsernamePasswordCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#UsernamePasswordCredential)|Authenticate a user with a username and password
-|[AuthorizationCodeCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#AuthorizationCodeCredential)|Authenticate a user with a previously obtained authorization code
 
 ### Authenticating via Development Tools
 

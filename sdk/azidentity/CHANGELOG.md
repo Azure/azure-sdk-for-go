@@ -1,10 +1,12 @@
 # Release History
 
-## 0.14.1 (Unreleased)
+## 0.15.0 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+* Removed `AuthorizationCodeCredential`. Use `InteractiveBrowserCredential` instead
+  to authenticate a user with the authorization code flow.
 
 ### Bugs Fixed
 * `AzureCLICredential` panics after receiving an unexpected error type

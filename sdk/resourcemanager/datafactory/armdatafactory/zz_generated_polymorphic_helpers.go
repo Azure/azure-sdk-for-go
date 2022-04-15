@@ -971,6 +971,10 @@ func unmarshalLinkedServiceClassification(rawMsg json.RawMessage) (LinkedService
 		b = &AmazonS3LinkedService{}
 	case "AmazonS3Compatible":
 		b = &AmazonS3CompatibleLinkedService{}
+	case "AppFigures":
+		b = &AppFiguresLinkedService{}
+	case "Asana":
+		b = &AsanaLinkedService{}
 	case "AzureBatch":
 		b = &AzureBatchLinkedService{}
 	case "AzureBlobFS":
@@ -1029,6 +1033,8 @@ func unmarshalLinkedServiceClassification(rawMsg json.RawMessage) (LinkedService
 		b = &CouchbaseLinkedService{}
 	case "CustomDataSource":
 		b = &CustomDataSourceLinkedService{}
+	case "Dataworld":
+		b = &DataworldLinkedService{}
 	case "Db2":
 		b = &Db2LinkedService{}
 	case "Drill":
@@ -1161,6 +1167,8 @@ func unmarshalLinkedServiceClassification(rawMsg json.RawMessage) (LinkedService
 		b = &TeamDeskLinkedService{}
 	case "Teradata":
 		b = &TeradataLinkedService{}
+	case "Twilio":
+		b = &TwilioLinkedService{}
 	case "Vertica":
 		b = &VerticaLinkedService{}
 	case "Web":

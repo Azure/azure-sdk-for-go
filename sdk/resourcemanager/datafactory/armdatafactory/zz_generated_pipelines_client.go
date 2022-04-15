@@ -309,12 +309,12 @@ func (client *PipelinesClient) getHandleResponse(resp *http.Response) (Pipelines
 	return result, nil
 }
 
-// ListByFactory - Lists pipelines.
+// NewListByFactoryPager - Lists pipelines.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // options - PipelinesClientListByFactoryOptions contains the optional parameters for the PipelinesClient.ListByFactory method.
-func (client *PipelinesClient) ListByFactory(resourceGroupName string, factoryName string, options *PipelinesClientListByFactoryOptions) *runtime.Pager[PipelinesClientListByFactoryResponse] {
+func (client *PipelinesClient) NewListByFactoryPager(resourceGroupName string, factoryName string, options *PipelinesClientListByFactoryOptions) *runtime.Pager[PipelinesClientListByFactoryResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PipelinesClientListByFactoryResponse]{
 		More: func(page PipelinesClientListByFactoryResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

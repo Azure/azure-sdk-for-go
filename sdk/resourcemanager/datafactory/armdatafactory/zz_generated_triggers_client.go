@@ -293,12 +293,12 @@ func (client *TriggersClient) getEventSubscriptionStatusHandleResponse(resp *htt
 	return result, nil
 }
 
-// ListByFactory - Lists triggers.
+// NewListByFactoryPager - Lists triggers.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // options - TriggersClientListByFactoryOptions contains the optional parameters for the TriggersClient.ListByFactory method.
-func (client *TriggersClient) ListByFactory(resourceGroupName string, factoryName string, options *TriggersClientListByFactoryOptions) *runtime.Pager[TriggersClientListByFactoryResponse] {
+func (client *TriggersClient) NewListByFactoryPager(resourceGroupName string, factoryName string, options *TriggersClientListByFactoryOptions) *runtime.Pager[TriggersClientListByFactoryResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TriggersClientListByFactoryResponse]{
 		More: func(page TriggersClientListByFactoryResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

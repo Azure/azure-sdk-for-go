@@ -232,12 +232,12 @@ func (client *DatasetsClient) getHandleResponse(resp *http.Response) (DatasetsCl
 	return result, nil
 }
 
-// ListByFactory - Lists datasets.
+// NewListByFactoryPager - Lists datasets.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // options - DatasetsClientListByFactoryOptions contains the optional parameters for the DatasetsClient.ListByFactory method.
-func (client *DatasetsClient) ListByFactory(resourceGroupName string, factoryName string, options *DatasetsClientListByFactoryOptions) *runtime.Pager[DatasetsClientListByFactoryResponse] {
+func (client *DatasetsClient) NewListByFactoryPager(resourceGroupName string, factoryName string, options *DatasetsClientListByFactoryOptions) *runtime.Pager[DatasetsClientListByFactoryResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DatasetsClientListByFactoryResponse]{
 		More: func(page DatasetsClientListByFactoryResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

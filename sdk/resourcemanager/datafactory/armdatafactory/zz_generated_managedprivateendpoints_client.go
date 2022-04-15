@@ -250,14 +250,14 @@ func (client *ManagedPrivateEndpointsClient) getHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListByFactory - Lists managed private endpoints.
+// NewListByFactoryPager - Lists managed private endpoints.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // managedVirtualNetworkName - Managed virtual network name
 // options - ManagedPrivateEndpointsClientListByFactoryOptions contains the optional parameters for the ManagedPrivateEndpointsClient.ListByFactory
 // method.
-func (client *ManagedPrivateEndpointsClient) ListByFactory(resourceGroupName string, factoryName string, managedVirtualNetworkName string, options *ManagedPrivateEndpointsClientListByFactoryOptions) *runtime.Pager[ManagedPrivateEndpointsClientListByFactoryResponse] {
+func (client *ManagedPrivateEndpointsClient) NewListByFactoryPager(resourceGroupName string, factoryName string, managedVirtualNetworkName string, options *ManagedPrivateEndpointsClientListByFactoryOptions) *runtime.Pager[ManagedPrivateEndpointsClientListByFactoryResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagedPrivateEndpointsClientListByFactoryResponse]{
 		More: func(page ManagedPrivateEndpointsClientListByFactoryResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

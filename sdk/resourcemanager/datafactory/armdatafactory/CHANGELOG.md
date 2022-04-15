@@ -1,5 +1,67 @@
 # Release History
 
+## 0.5.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*ManagedVirtualNetworksClient.ListByFactory` has been removed
+- Function `*DatasetsClient.ListByFactory` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*FactoriesClient.List` has been removed
+- Function `*DataFlowsClient.ListByFactory` has been removed
+- Function `*TriggersClient.ListByFactory` has been removed
+- Function `*ManagedPrivateEndpointsClient.ListByFactory` has been removed
+- Function `*DataFlowDebugSessionClient.QueryByFactory` has been removed
+- Function `*PrivateEndPointConnectionsClient.ListByFactory` has been removed
+- Function `*FactoriesClient.ListByResourceGroup` has been removed
+- Function `*LinkedServicesClient.ListByFactory` has been removed
+- Function `*PipelinesClient.ListByFactory` has been removed
+- Function `*IntegrationRuntimesClient.ListByFactory` has been removed
+
+### Features Added
+
+- New function `*TwilioLinkedService.UnmarshalJSON([]byte) error`
+- New function `DataworldLinkedService.MarshalJSON() ([]byte, error)`
+- New function `*PipelinesClient.NewListByFactoryPager(string, string, *PipelinesClientListByFactoryOptions) *runtime.Pager[PipelinesClientListByFactoryResponse]`
+- New function `*TwilioLinkedService.GetLinkedService() *LinkedService`
+- New function `*FactoriesClient.NewListByResourceGroupPager(string, *FactoriesClientListByResourceGroupOptions) *runtime.Pager[FactoriesClientListByResourceGroupResponse]`
+- New function `*TriggersClient.NewListByFactoryPager(string, string, *TriggersClientListByFactoryOptions) *runtime.Pager[TriggersClientListByFactoryResponse]`
+- New function `TwilioLinkedServiceTypeProperties.MarshalJSON() ([]byte, error)`
+- New function `*AsanaLinkedServiceTypeProperties.UnmarshalJSON([]byte) error`
+- New function `*TwilioLinkedServiceTypeProperties.UnmarshalJSON([]byte) error`
+- New function `*AppFiguresLinkedService.GetLinkedService() *LinkedService`
+- New function `*AppFiguresLinkedService.UnmarshalJSON([]byte) error`
+- New function `*IntegrationRuntimesClient.NewListByFactoryPager(string, string, *IntegrationRuntimesClientListByFactoryOptions) *runtime.Pager[IntegrationRuntimesClientListByFactoryResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*ManagedVirtualNetworksClient.NewListByFactoryPager(string, string, *ManagedVirtualNetworksClientListByFactoryOptions) *runtime.Pager[ManagedVirtualNetworksClientListByFactoryResponse]`
+- New function `*FactoriesClient.NewListPager(*FactoriesClientListOptions) *runtime.Pager[FactoriesClientListResponse]`
+- New function `*DatasetsClient.NewListByFactoryPager(string, string, *DatasetsClientListByFactoryOptions) *runtime.Pager[DatasetsClientListByFactoryResponse]`
+- New function `*ManagedPrivateEndpointsClient.NewListByFactoryPager(string, string, string, *ManagedPrivateEndpointsClientListByFactoryOptions) *runtime.Pager[ManagedPrivateEndpointsClientListByFactoryResponse]`
+- New function `DataworldLinkedServiceTypeProperties.MarshalJSON() ([]byte, error)`
+- New function `*AppFiguresLinkedServiceTypeProperties.UnmarshalJSON([]byte) error`
+- New function `*PrivateEndPointConnectionsClient.NewListByFactoryPager(string, string, *PrivateEndPointConnectionsClientListByFactoryOptions) *runtime.Pager[PrivateEndPointConnectionsClientListByFactoryResponse]`
+- New function `*AsanaLinkedService.GetLinkedService() *LinkedService`
+- New function `*DataFlowsClient.NewListByFactoryPager(string, string, *DataFlowsClientListByFactoryOptions) *runtime.Pager[DataFlowsClientListByFactoryResponse]`
+- New function `*DataworldLinkedService.UnmarshalJSON([]byte) error`
+- New function `*DataworldLinkedServiceTypeProperties.UnmarshalJSON([]byte) error`
+- New function `*DataFlowDebugSessionClient.NewQueryByFactoryPager(string, string, *DataFlowDebugSessionClientQueryByFactoryOptions) *runtime.Pager[DataFlowDebugSessionClientQueryByFactoryResponse]`
+- New function `AppFiguresLinkedService.MarshalJSON() ([]byte, error)`
+- New function `AsanaLinkedServiceTypeProperties.MarshalJSON() ([]byte, error)`
+- New function `AppFiguresLinkedServiceTypeProperties.MarshalJSON() ([]byte, error)`
+- New function `*AsanaLinkedService.UnmarshalJSON([]byte) error`
+- New function `*DataworldLinkedService.GetLinkedService() *LinkedService`
+- New function `TwilioLinkedService.MarshalJSON() ([]byte, error)`
+- New function `*LinkedServicesClient.NewListByFactoryPager(string, string, *LinkedServicesClientListByFactoryOptions) *runtime.Pager[LinkedServicesClientListByFactoryResponse]`
+- New function `AsanaLinkedService.MarshalJSON() ([]byte, error)`
+- New struct `AppFiguresLinkedService`
+- New struct `AppFiguresLinkedServiceTypeProperties`
+- New struct `AsanaLinkedService`
+- New struct `AsanaLinkedServiceTypeProperties`
+- New struct `DataworldLinkedService`
+- New struct `DataworldLinkedServiceTypeProperties`
+- New struct `TwilioLinkedService`
+- New struct `TwilioLinkedServiceTypeProperties`
+
+
 ## 0.4.0 (2022-04-11)
 ### Breaking Changes
 

@@ -248,13 +248,13 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListByConfigurationStore - Lists all private endpoint connections for a configuration store.
+// NewListByConfigurationStorePager - Lists all private endpoint connections for a configuration store.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // configStoreName - The name of the configuration store.
 // options - PrivateEndpointConnectionsClientListByConfigurationStoreOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByConfigurationStore
 // method.
-func (client *PrivateEndpointConnectionsClient) ListByConfigurationStore(resourceGroupName string, configStoreName string, options *PrivateEndpointConnectionsClientListByConfigurationStoreOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByConfigurationStoreResponse] {
+func (client *PrivateEndpointConnectionsClient) NewListByConfigurationStorePager(resourceGroupName string, configStoreName string, options *PrivateEndpointConnectionsClientListByConfigurationStoreOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByConfigurationStoreResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionsClientListByConfigurationStoreResponse]{
 		More: func(page PrivateEndpointConnectionsClientListByConfigurationStoreResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

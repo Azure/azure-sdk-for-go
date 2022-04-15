@@ -115,13 +115,13 @@ func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListByConfigurationStore - Gets the private link resources that need to be created for a configuration store.
+// NewListByConfigurationStorePager - Gets the private link resources that need to be created for a configuration store.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // configStoreName - The name of the configuration store.
 // options - PrivateLinkResourcesClientListByConfigurationStoreOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByConfigurationStore
 // method.
-func (client *PrivateLinkResourcesClient) ListByConfigurationStore(resourceGroupName string, configStoreName string, options *PrivateLinkResourcesClientListByConfigurationStoreOptions) *runtime.Pager[PrivateLinkResourcesClientListByConfigurationStoreResponse] {
+func (client *PrivateLinkResourcesClient) NewListByConfigurationStorePager(resourceGroupName string, configStoreName string, options *PrivateLinkResourcesClientListByConfigurationStoreOptions) *runtime.Pager[PrivateLinkResourcesClientListByConfigurationStoreResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkResourcesClientListByConfigurationStoreResponse]{
 		More: func(page PrivateLinkResourcesClientListByConfigurationStoreResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

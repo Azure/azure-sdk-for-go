@@ -288,11 +288,11 @@ func (client *ConfigurationStoresClient) getDeletedHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// List - Lists the configuration stores for a given subscription.
+// NewListPager - Lists the configuration stores for a given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ConfigurationStoresClientListOptions contains the optional parameters for the ConfigurationStoresClient.List
 // method.
-func (client *ConfigurationStoresClient) List(options *ConfigurationStoresClientListOptions) *runtime.Pager[ConfigurationStoresClientListResponse] {
+func (client *ConfigurationStoresClient) NewListPager(options *ConfigurationStoresClientListOptions) *runtime.Pager[ConfigurationStoresClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ConfigurationStoresClientListResponse]{
 		More: func(page ConfigurationStoresClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -350,12 +350,12 @@ func (client *ConfigurationStoresClient) listHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListByResourceGroup - Lists the configuration stores for a given resource group.
+// NewListByResourceGroupPager - Lists the configuration stores for a given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // options - ConfigurationStoresClientListByResourceGroupOptions contains the optional parameters for the ConfigurationStoresClient.ListByResourceGroup
 // method.
-func (client *ConfigurationStoresClient) ListByResourceGroup(resourceGroupName string, options *ConfigurationStoresClientListByResourceGroupOptions) *runtime.Pager[ConfigurationStoresClientListByResourceGroupResponse] {
+func (client *ConfigurationStoresClient) NewListByResourceGroupPager(resourceGroupName string, options *ConfigurationStoresClientListByResourceGroupOptions) *runtime.Pager[ConfigurationStoresClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ConfigurationStoresClientListByResourceGroupResponse]{
 		More: func(page ConfigurationStoresClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -417,11 +417,11 @@ func (client *ConfigurationStoresClient) listByResourceGroupHandleResponse(resp 
 	return result, nil
 }
 
-// ListDeleted - Gets information about the deleted configuration stores in a subscription.
+// NewListDeletedPager - Gets information about the deleted configuration stores in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ConfigurationStoresClientListDeletedOptions contains the optional parameters for the ConfigurationStoresClient.ListDeleted
 // method.
-func (client *ConfigurationStoresClient) ListDeleted(options *ConfigurationStoresClientListDeletedOptions) *runtime.Pager[ConfigurationStoresClientListDeletedResponse] {
+func (client *ConfigurationStoresClient) NewListDeletedPager(options *ConfigurationStoresClientListDeletedOptions) *runtime.Pager[ConfigurationStoresClientListDeletedResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ConfigurationStoresClientListDeletedResponse]{
 		More: func(page ConfigurationStoresClientListDeletedResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -476,13 +476,13 @@ func (client *ConfigurationStoresClient) listDeletedHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListKeys - Lists the access key for the specified configuration store.
+// NewListKeysPager - Lists the access key for the specified configuration store.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // configStoreName - The name of the configuration store.
 // options - ConfigurationStoresClientListKeysOptions contains the optional parameters for the ConfigurationStoresClient.ListKeys
 // method.
-func (client *ConfigurationStoresClient) ListKeys(resourceGroupName string, configStoreName string, options *ConfigurationStoresClientListKeysOptions) *runtime.Pager[ConfigurationStoresClientListKeysResponse] {
+func (client *ConfigurationStoresClient) NewListKeysPager(resourceGroupName string, configStoreName string, options *ConfigurationStoresClientListKeysOptions) *runtime.Pager[ConfigurationStoresClientListKeysResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ConfigurationStoresClientListKeysResponse]{
 		More: func(page ConfigurationStoresClientListKeysResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

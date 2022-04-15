@@ -1,5 +1,29 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*ConfigurationStoresClient.ListDeleted` has been removed
+- Function `*PrivateLinkResourcesClient.ListByConfigurationStore` has been removed
+- Function `*ConfigurationStoresClient.ListKeys` has been removed
+- Function `*PrivateEndpointConnectionsClient.ListByConfigurationStore` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*ConfigurationStoresClient.List` has been removed
+- Function `*ConfigurationStoresClient.ListByResourceGroup` has been removed
+- Function `*KeyValuesClient.ListByConfigurationStore` has been removed
+
+### Features Added
+
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*KeyValuesClient.NewListByConfigurationStorePager(string, string, *KeyValuesClientListByConfigurationStoreOptions) *runtime.Pager[KeyValuesClientListByConfigurationStoreResponse]`
+- New function `*ConfigurationStoresClient.NewListKeysPager(string, string, *ConfigurationStoresClientListKeysOptions) *runtime.Pager[ConfigurationStoresClientListKeysResponse]`
+- New function `*ConfigurationStoresClient.NewListDeletedPager(*ConfigurationStoresClientListDeletedOptions) *runtime.Pager[ConfigurationStoresClientListDeletedResponse]`
+- New function `*PrivateLinkResourcesClient.NewListByConfigurationStorePager(string, string, *PrivateLinkResourcesClientListByConfigurationStoreOptions) *runtime.Pager[PrivateLinkResourcesClientListByConfigurationStoreResponse]`
+- New function `*ConfigurationStoresClient.NewListPager(*ConfigurationStoresClientListOptions) *runtime.Pager[ConfigurationStoresClientListResponse]`
+- New function `*PrivateEndpointConnectionsClient.NewListByConfigurationStorePager(string, string, *PrivateEndpointConnectionsClientListByConfigurationStoreOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByConfigurationStoreResponse]`
+- New function `*ConfigurationStoresClient.NewListByResourceGroupPager(string, *ConfigurationStoresClientListByResourceGroupOptions) *runtime.Pager[ConfigurationStoresClientListByResourceGroupResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

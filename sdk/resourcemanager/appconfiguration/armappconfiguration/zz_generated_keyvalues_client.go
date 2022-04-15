@@ -243,13 +243,13 @@ func (client *KeyValuesClient) getHandleResponse(resp *http.Response) (KeyValues
 	return result, nil
 }
 
-// ListByConfigurationStore - Lists the key-values for a given configuration store.
+// NewListByConfigurationStorePager - Lists the key-values for a given configuration store.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // configStoreName - The name of the configuration store.
 // options - KeyValuesClientListByConfigurationStoreOptions contains the optional parameters for the KeyValuesClient.ListByConfigurationStore
 // method.
-func (client *KeyValuesClient) ListByConfigurationStore(resourceGroupName string, configStoreName string, options *KeyValuesClientListByConfigurationStoreOptions) *runtime.Pager[KeyValuesClientListByConfigurationStoreResponse] {
+func (client *KeyValuesClient) NewListByConfigurationStorePager(resourceGroupName string, configStoreName string, options *KeyValuesClientListByConfigurationStoreOptions) *runtime.Pager[KeyValuesClientListByConfigurationStoreResponse] {
 	return runtime.NewPager(runtime.PageProcessor[KeyValuesClientListByConfigurationStoreResponse]{
 		More: func(page KeyValuesClientListByConfigurationStoreResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -277,12 +277,12 @@ func (client *GlobalSchedulesClient) getHandleResponse(resp *http.Response) (Glo
 	return result, nil
 }
 
-// ListByResourceGroup - List schedules in a resource group.
+// NewListByResourceGroupPager - List schedules in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - GlobalSchedulesClientListByResourceGroupOptions contains the optional parameters for the GlobalSchedulesClient.ListByResourceGroup
 // method.
-func (client *GlobalSchedulesClient) ListByResourceGroup(resourceGroupName string, options *GlobalSchedulesClientListByResourceGroupOptions) *runtime.Pager[GlobalSchedulesClientListByResourceGroupResponse] {
+func (client *GlobalSchedulesClient) NewListByResourceGroupPager(resourceGroupName string, options *GlobalSchedulesClientListByResourceGroupOptions) *runtime.Pager[GlobalSchedulesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[GlobalSchedulesClientListByResourceGroupResponse]{
 		More: func(page GlobalSchedulesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -353,11 +353,11 @@ func (client *GlobalSchedulesClient) listByResourceGroupHandleResponse(resp *htt
 	return result, nil
 }
 
-// ListBySubscription - List schedules in a subscription.
+// NewListBySubscriptionPager - List schedules in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - GlobalSchedulesClientListBySubscriptionOptions contains the optional parameters for the GlobalSchedulesClient.ListBySubscription
 // method.
-func (client *GlobalSchedulesClient) ListBySubscription(options *GlobalSchedulesClientListBySubscriptionOptions) *runtime.Pager[GlobalSchedulesClientListBySubscriptionResponse] {
+func (client *GlobalSchedulesClient) NewListBySubscriptionPager(options *GlobalSchedulesClientListBySubscriptionOptions) *runtime.Pager[GlobalSchedulesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[GlobalSchedulesClientListBySubscriptionResponse]{
 		More: func(page GlobalSchedulesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

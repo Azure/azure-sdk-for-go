@@ -245,11 +245,11 @@ func (client *DNSForwardingRulesetsClient) getHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// List - Lists DNS forwarding rulesets in all resource groups of a subscription.
+// NewListPager - Lists DNS forwarding rulesets in all resource groups of a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DNSForwardingRulesetsClientListOptions contains the optional parameters for the DNSForwardingRulesetsClient.List
 // method.
-func (client *DNSForwardingRulesetsClient) List(options *DNSForwardingRulesetsClientListOptions) *runtime.Pager[DNSForwardingRulesetsClientListResponse] {
+func (client *DNSForwardingRulesetsClient) NewListPager(options *DNSForwardingRulesetsClientListOptions) *runtime.Pager[DNSForwardingRulesetsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DNSForwardingRulesetsClientListResponse]{
 		More: func(page DNSForwardingRulesetsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -307,12 +307,12 @@ func (client *DNSForwardingRulesetsClient) listHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListByResourceGroup - Lists DNS forwarding rulesets within a resource group.
+// NewListByResourceGroupPager - Lists DNS forwarding rulesets within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - DNSForwardingRulesetsClientListByResourceGroupOptions contains the optional parameters for the DNSForwardingRulesetsClient.ListByResourceGroup
 // method.
-func (client *DNSForwardingRulesetsClient) ListByResourceGroup(resourceGroupName string, options *DNSForwardingRulesetsClientListByResourceGroupOptions) *runtime.Pager[DNSForwardingRulesetsClientListByResourceGroupResponse] {
+func (client *DNSForwardingRulesetsClient) NewListByResourceGroupPager(resourceGroupName string, options *DNSForwardingRulesetsClientListByResourceGroupOptions) *runtime.Pager[DNSForwardingRulesetsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DNSForwardingRulesetsClientListByResourceGroupResponse]{
 		More: func(page DNSForwardingRulesetsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -374,13 +374,13 @@ func (client *DNSForwardingRulesetsClient) listByResourceGroupHandleResponse(res
 	return result, nil
 }
 
-// ListByVirtualNetwork - Lists DNS forwarding ruleset resource IDs attached to a virtual network.
+// NewListByVirtualNetworkPager - Lists DNS forwarding ruleset resource IDs attached to a virtual network.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // virtualNetworkName - The name of the virtual network.
 // options - DNSForwardingRulesetsClientListByVirtualNetworkOptions contains the optional parameters for the DNSForwardingRulesetsClient.ListByVirtualNetwork
 // method.
-func (client *DNSForwardingRulesetsClient) ListByVirtualNetwork(resourceGroupName string, virtualNetworkName string, options *DNSForwardingRulesetsClientListByVirtualNetworkOptions) *runtime.Pager[DNSForwardingRulesetsClientListByVirtualNetworkResponse] {
+func (client *DNSForwardingRulesetsClient) NewListByVirtualNetworkPager(resourceGroupName string, virtualNetworkName string, options *DNSForwardingRulesetsClientListByVirtualNetworkOptions) *runtime.Pager[DNSForwardingRulesetsClientListByVirtualNetworkResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DNSForwardingRulesetsClientListByVirtualNetworkResponse]{
 		More: func(page DNSForwardingRulesetsClientListByVirtualNetworkResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

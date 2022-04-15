@@ -257,13 +257,13 @@ func (client *VirtualNetworkLinksClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// List - Lists virtual network links to a DNS forwarding ruleset.
+// NewListPager - Lists virtual network links to a DNS forwarding ruleset.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // dnsForwardingRulesetName - The name of the DNS forwarding ruleset.
 // options - VirtualNetworkLinksClientListOptions contains the optional parameters for the VirtualNetworkLinksClient.List
 // method.
-func (client *VirtualNetworkLinksClient) List(resourceGroupName string, dnsForwardingRulesetName string, options *VirtualNetworkLinksClientListOptions) *runtime.Pager[VirtualNetworkLinksClientListResponse] {
+func (client *VirtualNetworkLinksClient) NewListPager(resourceGroupName string, dnsForwardingRulesetName string, options *VirtualNetworkLinksClientListOptions) *runtime.Pager[VirtualNetworkLinksClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualNetworkLinksClientListResponse]{
 		More: func(page VirtualNetworkLinksClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

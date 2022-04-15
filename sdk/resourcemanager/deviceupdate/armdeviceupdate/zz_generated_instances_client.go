@@ -300,12 +300,12 @@ func (client *InstancesClient) headCreateRequest(ctx context.Context, resourceGr
 	return req, nil
 }
 
-// ListByAccount - Returns instances for the given account name.
+// NewListByAccountPager - Returns instances for the given account name.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // accountName - Account name.
 // options - InstancesClientListByAccountOptions contains the optional parameters for the InstancesClient.ListByAccount method.
-func (client *InstancesClient) ListByAccount(resourceGroupName string, accountName string, options *InstancesClientListByAccountOptions) *runtime.Pager[InstancesClientListByAccountResponse] {
+func (client *InstancesClient) NewListByAccountPager(resourceGroupName string, accountName string, options *InstancesClientListByAccountOptions) *runtime.Pager[InstancesClientListByAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[InstancesClientListByAccountResponse]{
 		More: func(page InstancesClientListByAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

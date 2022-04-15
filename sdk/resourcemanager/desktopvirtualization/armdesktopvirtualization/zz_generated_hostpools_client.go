@@ -216,10 +216,10 @@ func (client *HostPoolsClient) getHandleResponse(resp *http.Response) (HostPools
 	return result, nil
 }
 
-// List - List hostPools in subscription.
+// NewListPager - List hostPools in subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - HostPoolsClientListOptions contains the optional parameters for the HostPoolsClient.List method.
-func (client *HostPoolsClient) List(options *HostPoolsClientListOptions) *runtime.Pager[HostPoolsClientListResponse] {
+func (client *HostPoolsClient) NewListPager(options *HostPoolsClientListOptions) *runtime.Pager[HostPoolsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[HostPoolsClientListResponse]{
 		More: func(page HostPoolsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -274,12 +274,12 @@ func (client *HostPoolsClient) listHandleResponse(resp *http.Response) (HostPool
 	return result, nil
 }
 
-// ListByResourceGroup - List hostPools.
+// NewListByResourceGroupPager - List hostPools.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - HostPoolsClientListByResourceGroupOptions contains the optional parameters for the HostPoolsClient.ListByResourceGroup
 // method.
-func (client *HostPoolsClient) ListByResourceGroup(resourceGroupName string, options *HostPoolsClientListByResourceGroupOptions) *runtime.Pager[HostPoolsClientListByResourceGroupResponse] {
+func (client *HostPoolsClient) NewListByResourceGroupPager(resourceGroupName string, options *HostPoolsClientListByResourceGroupOptions) *runtime.Pager[HostPoolsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[HostPoolsClientListByResourceGroupResponse]{
 		More: func(page HostPoolsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -143,7 +143,7 @@ func ExampleProviderShareSubscriptionsClient_GetByShare() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ProviderShareSubscriptions_ListByShare.json
-func ExampleProviderShareSubscriptionsClient_ListByShare() {
+func ExampleProviderShareSubscriptionsClient_NewListBySharePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -155,7 +155,7 @@ func ExampleProviderShareSubscriptionsClient_ListByShare() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByShare("<resource-group-name>",
+	pager := client.NewListBySharePager("<resource-group-name>",
 		"<account-name>",
 		"<share-name>",
 		&armdatashare.ProviderShareSubscriptionsClientListByShareOptions{SkipToken: nil})

@@ -1,5 +1,23 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*IotDpsResourceClient.ListValidSKUs` has been removed
+- Function `*IotDpsResourceClient.ListByResourceGroup` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*IotDpsResourceClient.ListBySubscription` has been removed
+- Function `*IotDpsResourceClient.ListKeys` has been removed
+
+### Features Added
+
+- New function `*IotDpsResourceClient.NewListBySubscriptionPager(*IotDpsResourceClientListBySubscriptionOptions) *runtime.Pager[IotDpsResourceClientListBySubscriptionResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*IotDpsResourceClient.NewListValidSKUsPager(string, string, *IotDpsResourceClientListValidSKUsOptions) *runtime.Pager[IotDpsResourceClientListValidSKUsResponse]`
+- New function `*IotDpsResourceClient.NewListKeysPager(string, string, *IotDpsResourceClientListKeysOptions) *runtime.Pager[IotDpsResourceClientListKeysResponse]`
+- New function `*IotDpsResourceClient.NewListByResourceGroupPager(string, *IotDpsResourceClientListByResourceGroupOptions) *runtime.Pager[IotDpsResourceClientListByResourceGroupResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

@@ -251,12 +251,12 @@ func (client *VirtualNetworksClient) getHandleResponse(resp *http.Response) (Vir
 	return result, nil
 }
 
-// List - List virtual networks in a given lab.
+// NewListPager - List virtual networks in a given lab.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // options - VirtualNetworksClientListOptions contains the optional parameters for the VirtualNetworksClient.List method.
-func (client *VirtualNetworksClient) List(resourceGroupName string, labName string, options *VirtualNetworksClientListOptions) *runtime.Pager[VirtualNetworksClientListResponse] {
+func (client *VirtualNetworksClient) NewListPager(resourceGroupName string, labName string, options *VirtualNetworksClientListOptions) *runtime.Pager[VirtualNetworksClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualNetworksClientListResponse]{
 		More: func(page VirtualNetworksClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

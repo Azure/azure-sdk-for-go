@@ -169,12 +169,12 @@ func (client *SessionHostsClient) getHandleResponse(resp *http.Response) (Sessio
 	return result, nil
 }
 
-// List - List sessionHosts.
+// NewListPager - List sessionHosts.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // hostPoolName - The name of the host pool within the specified resource group
 // options - SessionHostsClientListOptions contains the optional parameters for the SessionHostsClient.List method.
-func (client *SessionHostsClient) List(resourceGroupName string, hostPoolName string, options *SessionHostsClientListOptions) *runtime.Pager[SessionHostsClientListResponse] {
+func (client *SessionHostsClient) NewListPager(resourceGroupName string, hostPoolName string, options *SessionHostsClientListOptions) *runtime.Pager[SessionHostsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SessionHostsClientListResponse]{
 		More: func(page SessionHostsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

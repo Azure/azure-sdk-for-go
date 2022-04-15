@@ -54,13 +54,13 @@ func NewMsixImagesClient(subscriptionID string, credential azcore.TokenCredentia
 	return client, nil
 }
 
-// Expand - Expands and Lists MSIX packages in an Image, given the Image Path.
+// NewExpandPager - Expands and Lists MSIX packages in an Image, given the Image Path.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // hostPoolName - The name of the host pool within the specified resource group
 // msixImageURI - Object containing URI to MSIX Image
 // options - MsixImagesClientExpandOptions contains the optional parameters for the MsixImagesClient.Expand method.
-func (client *MsixImagesClient) Expand(resourceGroupName string, hostPoolName string, msixImageURI MSIXImageURI, options *MsixImagesClientExpandOptions) *runtime.Pager[MsixImagesClientExpandResponse] {
+func (client *MsixImagesClient) NewExpandPager(resourceGroupName string, hostPoolName string, msixImageURI MSIXImageURI, options *MsixImagesClientExpandOptions) *runtime.Pager[MsixImagesClientExpandResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MsixImagesClientExpandResponse]{
 		More: func(page MsixImagesClientExpandResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

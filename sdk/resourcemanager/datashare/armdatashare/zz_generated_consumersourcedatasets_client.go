@@ -54,14 +54,14 @@ func NewConsumerSourceDataSetsClient(subscriptionID string, credential azcore.To
 	return client, nil
 }
 
-// ListByShareSubscription - Get source dataSets of a shareSubscription
+// NewListByShareSubscriptionPager - Get source dataSets of a shareSubscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareSubscriptionName - The name of the shareSubscription.
 // options - ConsumerSourceDataSetsClientListByShareSubscriptionOptions contains the optional parameters for the ConsumerSourceDataSetsClient.ListByShareSubscription
 // method.
-func (client *ConsumerSourceDataSetsClient) ListByShareSubscription(resourceGroupName string, accountName string, shareSubscriptionName string, options *ConsumerSourceDataSetsClientListByShareSubscriptionOptions) *runtime.Pager[ConsumerSourceDataSetsClientListByShareSubscriptionResponse] {
+func (client *ConsumerSourceDataSetsClient) NewListByShareSubscriptionPager(resourceGroupName string, accountName string, shareSubscriptionName string, options *ConsumerSourceDataSetsClientListByShareSubscriptionOptions) *runtime.Pager[ConsumerSourceDataSetsClientListByShareSubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ConsumerSourceDataSetsClientListByShareSubscriptionResponse]{
 		More: func(page ConsumerSourceDataSetsClientListByShareSubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

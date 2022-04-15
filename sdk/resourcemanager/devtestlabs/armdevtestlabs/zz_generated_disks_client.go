@@ -408,13 +408,13 @@ func (client *DisksClient) getHandleResponse(resp *http.Response) (DisksClientGe
 	return result, nil
 }
 
-// List - List disks in a given user profile.
+// NewListPager - List disks in a given user profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // userName - The name of the user profile.
 // options - DisksClientListOptions contains the optional parameters for the DisksClient.List method.
-func (client *DisksClient) List(resourceGroupName string, labName string, userName string, options *DisksClientListOptions) *runtime.Pager[DisksClientListResponse] {
+func (client *DisksClient) NewListPager(resourceGroupName string, labName string, userName string, options *DisksClientListOptions) *runtime.Pager[DisksClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DisksClientListResponse]{
 		More: func(page DisksClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

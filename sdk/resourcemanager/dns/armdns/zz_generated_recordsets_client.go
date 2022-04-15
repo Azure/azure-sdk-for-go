@@ -245,13 +245,13 @@ func (client *RecordSetsClient) getHandleResponse(resp *http.Response) (RecordSe
 	return result, nil
 }
 
-// ListAllByDNSZone - Lists all record sets in a DNS zone.
+// NewListAllByDNSZonePager - Lists all record sets in a DNS zone.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // zoneName - The name of the DNS zone (without a terminating dot).
 // options - RecordSetsClientListAllByDNSZoneOptions contains the optional parameters for the RecordSetsClient.ListAllByDNSZone
 // method.
-func (client *RecordSetsClient) ListAllByDNSZone(resourceGroupName string, zoneName string, options *RecordSetsClientListAllByDNSZoneOptions) *runtime.Pager[RecordSetsClientListAllByDNSZoneResponse] {
+func (client *RecordSetsClient) NewListAllByDNSZonePager(resourceGroupName string, zoneName string, options *RecordSetsClientListAllByDNSZoneOptions) *runtime.Pager[RecordSetsClientListAllByDNSZoneResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RecordSetsClientListAllByDNSZoneResponse]{
 		More: func(page RecordSetsClientListAllByDNSZoneResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -320,13 +320,13 @@ func (client *RecordSetsClient) listAllByDNSZoneHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListByDNSZone - Lists all record sets in a DNS zone.
+// NewListByDNSZonePager - Lists all record sets in a DNS zone.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // zoneName - The name of the DNS zone (without a terminating dot).
 // options - RecordSetsClientListByDNSZoneOptions contains the optional parameters for the RecordSetsClient.ListByDNSZone
 // method.
-func (client *RecordSetsClient) ListByDNSZone(resourceGroupName string, zoneName string, options *RecordSetsClientListByDNSZoneOptions) *runtime.Pager[RecordSetsClientListByDNSZoneResponse] {
+func (client *RecordSetsClient) NewListByDNSZonePager(resourceGroupName string, zoneName string, options *RecordSetsClientListByDNSZoneOptions) *runtime.Pager[RecordSetsClientListByDNSZoneResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RecordSetsClientListByDNSZoneResponse]{
 		More: func(page RecordSetsClientListByDNSZoneResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -395,13 +395,13 @@ func (client *RecordSetsClient) listByDNSZoneHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListByType - Lists the record sets of a specified type in a DNS zone.
+// NewListByTypePager - Lists the record sets of a specified type in a DNS zone.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // zoneName - The name of the DNS zone (without a terminating dot).
 // recordType - The type of record sets to enumerate.
 // options - RecordSetsClientListByTypeOptions contains the optional parameters for the RecordSetsClient.ListByType method.
-func (client *RecordSetsClient) ListByType(resourceGroupName string, zoneName string, recordType RecordType, options *RecordSetsClientListByTypeOptions) *runtime.Pager[RecordSetsClientListByTypeResponse] {
+func (client *RecordSetsClient) NewListByTypePager(resourceGroupName string, zoneName string, recordType RecordType, options *RecordSetsClientListByTypeOptions) *runtime.Pager[RecordSetsClientListByTypeResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RecordSetsClientListByTypeResponse]{
 		More: func(page RecordSetsClientListByTypeResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

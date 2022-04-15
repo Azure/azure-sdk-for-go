@@ -538,12 +538,12 @@ func (client *LabsClient) importVirtualMachineCreateRequest(ctx context.Context,
 	return req, runtime.MarshalAsJSON(req, importLabVirtualMachineRequest)
 }
 
-// ListByResourceGroup - List labs in a resource group.
+// NewListByResourceGroupPager - List labs in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - LabsClientListByResourceGroupOptions contains the optional parameters for the LabsClient.ListByResourceGroup
 // method.
-func (client *LabsClient) ListByResourceGroup(resourceGroupName string, options *LabsClientListByResourceGroupOptions) *runtime.Pager[LabsClientListByResourceGroupResponse] {
+func (client *LabsClient) NewListByResourceGroupPager(resourceGroupName string, options *LabsClientListByResourceGroupOptions) *runtime.Pager[LabsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LabsClientListByResourceGroupResponse]{
 		More: func(page LabsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -614,10 +614,10 @@ func (client *LabsClient) listByResourceGroupHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListBySubscription - List labs in a subscription.
+// NewListBySubscriptionPager - List labs in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - LabsClientListBySubscriptionOptions contains the optional parameters for the LabsClient.ListBySubscription method.
-func (client *LabsClient) ListBySubscription(options *LabsClientListBySubscriptionOptions) *runtime.Pager[LabsClientListBySubscriptionResponse] {
+func (client *LabsClient) NewListBySubscriptionPager(options *LabsClientListBySubscriptionOptions) *runtime.Pager[LabsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LabsClientListBySubscriptionResponse]{
 		More: func(page LabsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -684,12 +684,12 @@ func (client *LabsClient) listBySubscriptionHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListVhds - List disk images available for custom image creation.
+// NewListVhdsPager - List disk images available for custom image creation.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // name - The name of the lab.
 // options - LabsClientListVhdsOptions contains the optional parameters for the LabsClient.ListVhds method.
-func (client *LabsClient) ListVhds(resourceGroupName string, name string, options *LabsClientListVhdsOptions) *runtime.Pager[LabsClientListVhdsResponse] {
+func (client *LabsClient) NewListVhdsPager(resourceGroupName string, name string, options *LabsClientListVhdsOptions) *runtime.Pager[LabsClientListVhdsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LabsClientListVhdsResponse]{
 		More: func(page LabsClientListVhdsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

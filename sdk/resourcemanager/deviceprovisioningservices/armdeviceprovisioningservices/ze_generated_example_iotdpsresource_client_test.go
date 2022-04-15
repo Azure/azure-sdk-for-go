@@ -149,7 +149,7 @@ func ExampleIotDpsResourceClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSListBySubscription.json
-func ExampleIotDpsResourceClient_ListBySubscription() {
+func ExampleIotDpsResourceClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -161,7 +161,7 @@ func ExampleIotDpsResourceClient_ListBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription(nil)
+	pager := client.NewListBySubscriptionPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -176,7 +176,7 @@ func ExampleIotDpsResourceClient_ListBySubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSListByResourceGroup.json
-func ExampleIotDpsResourceClient_ListByResourceGroup() {
+func ExampleIotDpsResourceClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -188,7 +188,7 @@ func ExampleIotDpsResourceClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -257,7 +257,7 @@ func ExampleIotDpsResourceClient_CheckProvisioningServiceNameAvailability() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSListKeys.json
-func ExampleIotDpsResourceClient_ListKeys() {
+func ExampleIotDpsResourceClient_NewListKeysPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -269,7 +269,7 @@ func ExampleIotDpsResourceClient_ListKeys() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListKeys("<provisioning-service-name>",
+	pager := client.NewListKeysPager("<provisioning-service-name>",
 		"<resource-group-name>",
 		nil)
 	for pager.More() {

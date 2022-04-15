@@ -108,7 +108,7 @@ func ExampleDataSetMappingsClient_Delete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/DataSetMappings_ListByShareSubscription.json
-func ExampleDataSetMappingsClient_ListByShareSubscription() {
+func ExampleDataSetMappingsClient_NewListByShareSubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -120,7 +120,7 @@ func ExampleDataSetMappingsClient_ListByShareSubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByShareSubscription("<resource-group-name>",
+	pager := client.NewListByShareSubscriptionPager("<resource-group-name>",
 		"<account-name>",
 		"<share-subscription-name>",
 		&armdatashare.DataSetMappingsClientListByShareSubscriptionOptions{SkipToken: nil,

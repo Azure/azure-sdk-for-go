@@ -114,12 +114,12 @@ func (client *DesktopsClient) getHandleResponse(resp *http.Response) (DesktopsCl
 	return result, nil
 }
 
-// List - List desktops.
+// NewListPager - List desktops.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // applicationGroupName - The name of the application group
 // options - DesktopsClientListOptions contains the optional parameters for the DesktopsClient.List method.
-func (client *DesktopsClient) List(resourceGroupName string, applicationGroupName string, options *DesktopsClientListOptions) *runtime.Pager[DesktopsClientListResponse] {
+func (client *DesktopsClient) NewListPager(resourceGroupName string, applicationGroupName string, options *DesktopsClientListOptions) *runtime.Pager[DesktopsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DesktopsClientListResponse]{
 		More: func(page DesktopsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

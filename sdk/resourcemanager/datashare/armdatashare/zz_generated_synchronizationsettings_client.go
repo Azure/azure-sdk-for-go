@@ -258,14 +258,14 @@ func (client *SynchronizationSettingsClient) getHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListByShare - List synchronizationSettings in a share
+// NewListBySharePager - List synchronizationSettings in a share
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareName - The name of the share.
 // options - SynchronizationSettingsClientListByShareOptions contains the optional parameters for the SynchronizationSettingsClient.ListByShare
 // method.
-func (client *SynchronizationSettingsClient) ListByShare(resourceGroupName string, accountName string, shareName string, options *SynchronizationSettingsClientListByShareOptions) *runtime.Pager[SynchronizationSettingsClientListByShareResponse] {
+func (client *SynchronizationSettingsClient) NewListBySharePager(resourceGroupName string, accountName string, shareName string, options *SynchronizationSettingsClientListByShareOptions) *runtime.Pager[SynchronizationSettingsClientListByShareResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SynchronizationSettingsClientListByShareResponse]{
 		More: func(page SynchronizationSettingsClientListByShareResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

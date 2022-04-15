@@ -247,13 +247,13 @@ func (client *BandwidthSchedulesClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// ListByDataBoxEdgeDevice - Gets all the bandwidth schedules for a Data Box Edge/Data Box Gateway device.
+// NewListByDataBoxEdgeDevicePager - Gets all the bandwidth schedules for a Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
 // deviceName - The device name.
 // resourceGroupName - The resource group name.
 // options - BandwidthSchedulesClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the BandwidthSchedulesClient.ListByDataBoxEdgeDevice
 // method.
-func (client *BandwidthSchedulesClient) ListByDataBoxEdgeDevice(deviceName string, resourceGroupName string, options *BandwidthSchedulesClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[BandwidthSchedulesClientListByDataBoxEdgeDeviceResponse] {
+func (client *BandwidthSchedulesClient) NewListByDataBoxEdgeDevicePager(deviceName string, resourceGroupName string, options *BandwidthSchedulesClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[BandwidthSchedulesClientListByDataBoxEdgeDeviceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BandwidthSchedulesClientListByDataBoxEdgeDeviceResponse]{
 		More: func(page BandwidthSchedulesClientListByDataBoxEdgeDeviceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

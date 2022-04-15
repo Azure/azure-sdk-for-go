@@ -247,13 +247,13 @@ func (client *MonitoringConfigClient) getHandleResponse(resp *http.Response) (Mo
 	return result, nil
 }
 
-// List - Lists metric configurations in a role.
+// NewListPager - Lists metric configurations in a role.
 // If the operation fails it returns an *azcore.ResponseError type.
 // deviceName - The device name.
 // roleName - The role name.
 // resourceGroupName - The resource group name.
 // options - MonitoringConfigClientListOptions contains the optional parameters for the MonitoringConfigClient.List method.
-func (client *MonitoringConfigClient) List(deviceName string, roleName string, resourceGroupName string, options *MonitoringConfigClientListOptions) *runtime.Pager[MonitoringConfigClientListResponse] {
+func (client *MonitoringConfigClient) NewListPager(deviceName string, roleName string, resourceGroupName string, options *MonitoringConfigClientListOptions) *runtime.Pager[MonitoringConfigClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MonitoringConfigClientListResponse]{
 		More: func(page MonitoringConfigClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -246,13 +246,13 @@ func (client *RolesClient) getHandleResponse(resp *http.Response) (RolesClientGe
 	return result, nil
 }
 
-// ListByDataBoxEdgeDevice - Lists all the roles configured in a Data Box Edge/Data Box Gateway device.
+// NewListByDataBoxEdgeDevicePager - Lists all the roles configured in a Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
 // deviceName - The device name.
 // resourceGroupName - The resource group name.
 // options - RolesClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the RolesClient.ListByDataBoxEdgeDevice
 // method.
-func (client *RolesClient) ListByDataBoxEdgeDevice(deviceName string, resourceGroupName string, options *RolesClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[RolesClientListByDataBoxEdgeDeviceResponse] {
+func (client *RolesClient) NewListByDataBoxEdgeDevicePager(deviceName string, resourceGroupName string, options *RolesClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[RolesClientListByDataBoxEdgeDeviceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RolesClientListByDataBoxEdgeDeviceResponse]{
 		More: func(page RolesClientListByDataBoxEdgeDeviceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

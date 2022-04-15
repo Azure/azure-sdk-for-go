@@ -113,7 +113,7 @@ func ExampleAssignmentsClient_Delete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/listSubGuestConfigurationAssignments.json
-func ExampleAssignmentsClient_SubscriptionList() {
+func ExampleAssignmentsClient_NewSubscriptionListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -125,7 +125,7 @@ func ExampleAssignmentsClient_SubscriptionList() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.SubscriptionList(nil)
+	pager := client.NewSubscriptionListPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -140,7 +140,7 @@ func ExampleAssignmentsClient_SubscriptionList() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/listRGGuestConfigurationAssignments.json
-func ExampleAssignmentsClient_RGList() {
+func ExampleAssignmentsClient_NewRGListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -152,7 +152,7 @@ func ExampleAssignmentsClient_RGList() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.RGList("<resource-group-name>",
+	pager := client.NewRGListPager("<resource-group-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -168,7 +168,7 @@ func ExampleAssignmentsClient_RGList() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/listGuestConfigurationAssignments.json
-func ExampleAssignmentsClient_List() {
+func ExampleAssignmentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -180,7 +180,7 @@ func ExampleAssignmentsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-group-name>",
+	pager := client.NewListPager("<resource-group-name>",
 		"<vm-name>",
 		nil)
 	for pager.More() {

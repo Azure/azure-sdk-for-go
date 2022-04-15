@@ -106,10 +106,10 @@ func (client *LocationsClient) getHandleResponse(resp *http.Response) (Locations
 	return result, nil
 }
 
-// List - Lists Defender for IoT locations associated with the given subscription.
+// NewListPager - Lists Defender for IoT locations associated with the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - LocationsClientListOptions contains the optional parameters for the LocationsClient.List method.
-func (client *LocationsClient) List(options *LocationsClientListOptions) *runtime.Pager[LocationsClientListResponse] {
+func (client *LocationsClient) NewListPager(options *LocationsClientListOptions) *runtime.Pager[LocationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LocationsClientListResponse]{
 		More: func(page LocationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

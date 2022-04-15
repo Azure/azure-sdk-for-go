@@ -1,5 +1,37 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*WorkspacePrivateLinkResourcesClient.ListByWorkspace` has been removed
+- Function `*WorkspacesClient.ListByResourceGroup` has been removed
+- Function `*ServicesClient.ListByResourceGroup` has been removed
+- Function `*FhirServicesClient.ListByWorkspace` has been removed
+- Function `*WorkspacePrivateEndpointConnectionsClient.ListByWorkspace` has been removed
+- Function `*ServicesClient.List` has been removed
+- Function `*DicomServicesClient.ListByWorkspace` has been removed
+- Function `*PrivateEndpointConnectionsClient.ListByService` has been removed
+- Function `*FhirDestinationsClient.ListByIotConnector` has been removed
+- Function `*IotConnectorsClient.ListByWorkspace` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*WorkspacesClient.ListBySubscription` has been removed
+
+### Features Added
+
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*WorkspacesClient.NewListBySubscriptionPager(*WorkspacesClientListBySubscriptionOptions) *runtime.Pager[WorkspacesClientListBySubscriptionResponse]`
+- New function `*IotConnectorsClient.NewListByWorkspacePager(string, string, *IotConnectorsClientListByWorkspaceOptions) *runtime.Pager[IotConnectorsClientListByWorkspaceResponse]`
+- New function `*ServicesClient.NewListByResourceGroupPager(string, *ServicesClientListByResourceGroupOptions) *runtime.Pager[ServicesClientListByResourceGroupResponse]`
+- New function `*FhirServicesClient.NewListByWorkspacePager(string, string, *FhirServicesClientListByWorkspaceOptions) *runtime.Pager[FhirServicesClientListByWorkspaceResponse]`
+- New function `*WorkspacePrivateEndpointConnectionsClient.NewListByWorkspacePager(string, string, *WorkspacePrivateEndpointConnectionsClientListByWorkspaceOptions) *runtime.Pager[WorkspacePrivateEndpointConnectionsClientListByWorkspaceResponse]`
+- New function `*DicomServicesClient.NewListByWorkspacePager(string, string, *DicomServicesClientListByWorkspaceOptions) *runtime.Pager[DicomServicesClientListByWorkspaceResponse]`
+- New function `*FhirDestinationsClient.NewListByIotConnectorPager(string, string, string, *FhirDestinationsClientListByIotConnectorOptions) *runtime.Pager[FhirDestinationsClientListByIotConnectorResponse]`
+- New function `*PrivateEndpointConnectionsClient.NewListByServicePager(string, string, *PrivateEndpointConnectionsClientListByServiceOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByServiceResponse]`
+- New function `*WorkspacePrivateLinkResourcesClient.NewListByWorkspacePager(string, string, *WorkspacePrivateLinkResourcesClientListByWorkspaceOptions) *runtime.Pager[WorkspacePrivateLinkResourcesClientListByWorkspaceResponse]`
+- New function `*ServicesClient.NewListPager(*ServicesClientListOptions) *runtime.Pager[ServicesClientListResponse]`
+- New function `*WorkspacesClient.NewListByResourceGroupPager(string, *WorkspacesClientListByResourceGroupOptions) *runtime.Pager[WorkspacesClientListByResourceGroupResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

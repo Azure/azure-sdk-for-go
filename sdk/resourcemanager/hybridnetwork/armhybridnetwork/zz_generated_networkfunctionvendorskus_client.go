@@ -54,13 +54,13 @@ func NewNetworkFunctionVendorSKUsClient(subscriptionID string, credential azcore
 	return client, nil
 }
 
-// ListBySKU - Lists information about network function vendor sku details.
+// NewListBySKUPager - Lists information about network function vendor sku details.
 // If the operation fails it returns an *azcore.ResponseError type.
 // vendorName - The name of the network function vendor.
 // vendorSKUName - The name of the network function sku.
 // options - NetworkFunctionVendorSKUsClientListBySKUOptions contains the optional parameters for the NetworkFunctionVendorSKUsClient.ListBySKU
 // method.
-func (client *NetworkFunctionVendorSKUsClient) ListBySKU(vendorName string, vendorSKUName string, options *NetworkFunctionVendorSKUsClientListBySKUOptions) *runtime.Pager[NetworkFunctionVendorSKUsClientListBySKUResponse] {
+func (client *NetworkFunctionVendorSKUsClient) NewListBySKUPager(vendorName string, vendorSKUName string, options *NetworkFunctionVendorSKUsClientListBySKUOptions) *runtime.Pager[NetworkFunctionVendorSKUsClientListBySKUResponse] {
 	return runtime.NewPager(runtime.PageProcessor[NetworkFunctionVendorSKUsClientListBySKUResponse]{
 		More: func(page NetworkFunctionVendorSKUsClientListBySKUResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -123,12 +123,12 @@ func (client *NetworkFunctionVendorSKUsClient) listBySKUHandleResponse(resp *htt
 	return result, nil
 }
 
-// ListByVendor - Lists all network function vendor sku details in a vendor.
+// NewListByVendorPager - Lists all network function vendor sku details in a vendor.
 // If the operation fails it returns an *azcore.ResponseError type.
 // vendorName - The name of the network function vendor.
 // options - NetworkFunctionVendorSKUsClientListByVendorOptions contains the optional parameters for the NetworkFunctionVendorSKUsClient.ListByVendor
 // method.
-func (client *NetworkFunctionVendorSKUsClient) ListByVendor(vendorName string, options *NetworkFunctionVendorSKUsClientListByVendorOptions) *runtime.Pager[NetworkFunctionVendorSKUsClientListByVendorResponse] {
+func (client *NetworkFunctionVendorSKUsClient) NewListByVendorPager(vendorName string, options *NetworkFunctionVendorSKUsClientListByVendorOptions) *runtime.Pager[NetworkFunctionVendorSKUsClientListByVendorResponse] {
 	return runtime.NewPager(runtime.PageProcessor[NetworkFunctionVendorSKUsClientListByVendorResponse]{
 		More: func(page NetworkFunctionVendorSKUsClientListByVendorResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

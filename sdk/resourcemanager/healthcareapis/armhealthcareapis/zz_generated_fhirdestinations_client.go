@@ -54,14 +54,14 @@ func NewFhirDestinationsClient(subscriptionID string, credential azcore.TokenCre
 	return client, nil
 }
 
-// ListByIotConnector - Lists all FHIR destinations for the given IoT Connector
+// NewListByIotConnectorPager - Lists all FHIR destinations for the given IoT Connector
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the service instance.
 // workspaceName - The name of workspace resource.
 // iotConnectorName - The name of IoT Connector resource.
 // options - FhirDestinationsClientListByIotConnectorOptions contains the optional parameters for the FhirDestinationsClient.ListByIotConnector
 // method.
-func (client *FhirDestinationsClient) ListByIotConnector(resourceGroupName string, workspaceName string, iotConnectorName string, options *FhirDestinationsClientListByIotConnectorOptions) *runtime.Pager[FhirDestinationsClientListByIotConnectorResponse] {
+func (client *FhirDestinationsClient) NewListByIotConnectorPager(resourceGroupName string, workspaceName string, iotConnectorName string, options *FhirDestinationsClientListByIotConnectorOptions) *runtime.Pager[FhirDestinationsClientListByIotConnectorResponse] {
 	return runtime.NewPager(runtime.PageProcessor[FhirDestinationsClientListByIotConnectorResponse]{
 		More: func(page FhirDestinationsClientListByIotConnectorResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

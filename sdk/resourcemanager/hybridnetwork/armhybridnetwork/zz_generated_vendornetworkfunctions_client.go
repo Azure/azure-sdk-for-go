@@ -186,13 +186,13 @@ func (client *VendorNetworkFunctionsClient) getHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// List - Lists all the vendor network function sub resources in an Azure region, filtered by skuType, skuName, vendorProvisioningState.
+// NewListPager - Lists all the vendor network function sub resources in an Azure region, filtered by skuType, skuName, vendorProvisioningState.
 // If the operation fails it returns an *azcore.ResponseError type.
 // locationName - The Azure region where the network function resource was created by the customer.
 // vendorName - The name of the vendor.
 // options - VendorNetworkFunctionsClientListOptions contains the optional parameters for the VendorNetworkFunctionsClient.List
 // method.
-func (client *VendorNetworkFunctionsClient) List(locationName string, vendorName string, options *VendorNetworkFunctionsClientListOptions) *runtime.Pager[VendorNetworkFunctionsClientListResponse] {
+func (client *VendorNetworkFunctionsClient) NewListPager(locationName string, vendorName string, options *VendorNetworkFunctionsClientListOptions) *runtime.Pager[VendorNetworkFunctionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VendorNetworkFunctionsClientListResponse]{
 		More: func(page VendorNetworkFunctionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

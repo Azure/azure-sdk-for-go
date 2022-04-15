@@ -236,10 +236,10 @@ func (client *DataManagersClient) getHandleResponse(resp *http.Response) (DataMa
 	return result, nil
 }
 
-// List - Lists all the data manager resources available under the subscription.
+// NewListPager - Lists all the data manager resources available under the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DataManagersClientListOptions contains the optional parameters for the DataManagersClient.List method.
-func (client *DataManagersClient) List(options *DataManagersClientListOptions) *runtime.Pager[DataManagersClientListResponse] {
+func (client *DataManagersClient) NewListPager(options *DataManagersClientListOptions) *runtime.Pager[DataManagersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DataManagersClientListResponse]{
 		More: func(page DataManagersClientListResponse) bool {
 			return false
@@ -288,12 +288,12 @@ func (client *DataManagersClient) listHandleResponse(resp *http.Response) (DataM
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all the data manager resources available under the given resource group.
+// NewListByResourceGroupPager - Lists all the data manager resources available under the given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The Resource Group Name
 // options - DataManagersClientListByResourceGroupOptions contains the optional parameters for the DataManagersClient.ListByResourceGroup
 // method.
-func (client *DataManagersClient) ListByResourceGroup(resourceGroupName string, options *DataManagersClientListByResourceGroupOptions) *runtime.Pager[DataManagersClientListByResourceGroupResponse] {
+func (client *DataManagersClient) NewListByResourceGroupPager(resourceGroupName string, options *DataManagersClientListByResourceGroupOptions) *runtime.Pager[DataManagersClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DataManagersClientListByResourceGroupResponse]{
 		More: func(page DataManagersClientListByResourceGroupResponse) bool {
 			return false

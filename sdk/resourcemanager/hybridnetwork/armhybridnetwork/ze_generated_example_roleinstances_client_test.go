@@ -136,7 +136,7 @@ func ExampleRoleInstancesClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/RoleInstanceListByVendorNetworkFunction.json
-func ExampleRoleInstancesClient_List() {
+func ExampleRoleInstancesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -148,7 +148,7 @@ func ExampleRoleInstancesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<location-name>",
+	pager := client.NewListPager("<location-name>",
 		"<vendor-name>",
 		"<service-key>",
 		nil)

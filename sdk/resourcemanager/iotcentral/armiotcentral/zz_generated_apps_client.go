@@ -331,12 +331,12 @@ func (client *AppsClient) getHandleResponse(resp *http.Response) (AppsClientGetR
 	return result, nil
 }
 
-// ListByResourceGroup - Get all the IoT Central Applications in a resource group.
+// NewListByResourceGroupPager - Get all the IoT Central Applications in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the IoT Central application.
 // options - AppsClientListByResourceGroupOptions contains the optional parameters for the AppsClient.ListByResourceGroup
 // method.
-func (client *AppsClient) ListByResourceGroup(resourceGroupName string, options *AppsClientListByResourceGroupOptions) *runtime.Pager[AppsClientListByResourceGroupResponse] {
+func (client *AppsClient) NewListByResourceGroupPager(resourceGroupName string, options *AppsClientListByResourceGroupOptions) *runtime.Pager[AppsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AppsClientListByResourceGroupResponse]{
 		More: func(page AppsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -395,10 +395,10 @@ func (client *AppsClient) listByResourceGroupHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListBySubscription - Get all IoT Central Applications in a subscription.
+// NewListBySubscriptionPager - Get all IoT Central Applications in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AppsClientListBySubscriptionOptions contains the optional parameters for the AppsClient.ListBySubscription method.
-func (client *AppsClient) ListBySubscription(options *AppsClientListBySubscriptionOptions) *runtime.Pager[AppsClientListBySubscriptionResponse] {
+func (client *AppsClient) NewListBySubscriptionPager(options *AppsClientListBySubscriptionOptions) *runtime.Pager[AppsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AppsClientListBySubscriptionResponse]{
 		More: func(page AppsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -453,10 +453,10 @@ func (client *AppsClient) listBySubscriptionHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListTemplates - Get all available application templates.
+// NewListTemplatesPager - Get all available application templates.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AppsClientListTemplatesOptions contains the optional parameters for the AppsClient.ListTemplates method.
-func (client *AppsClient) ListTemplates(options *AppsClientListTemplatesOptions) *runtime.Pager[AppsClientListTemplatesResponse] {
+func (client *AppsClient) NewListTemplatesPager(options *AppsClientListTemplatesOptions) *runtime.Pager[AppsClientListTemplatesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AppsClientListTemplatesResponse]{
 		More: func(page AppsClientListTemplatesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

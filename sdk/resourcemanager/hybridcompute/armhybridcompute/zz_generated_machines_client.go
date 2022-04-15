@@ -214,13 +214,13 @@ func (client *MachinesClient) getHandleResponse(resp *http.Response) (MachinesCl
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all the hybrid machines in the specified resource group. Use the nextLink property in the response
-// to get the next page of hybrid machines.
+// NewListByResourceGroupPager - Lists all the hybrid machines in the specified resource group. Use the nextLink property
+// in the response to get the next page of hybrid machines.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - MachinesClientListByResourceGroupOptions contains the optional parameters for the MachinesClient.ListByResourceGroup
 // method.
-func (client *MachinesClient) ListByResourceGroup(resourceGroupName string, options *MachinesClientListByResourceGroupOptions) *runtime.Pager[MachinesClientListByResourceGroupResponse] {
+func (client *MachinesClient) NewListByResourceGroupPager(resourceGroupName string, options *MachinesClientListByResourceGroupOptions) *runtime.Pager[MachinesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MachinesClientListByResourceGroupResponse]{
 		More: func(page MachinesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -279,12 +279,12 @@ func (client *MachinesClient) listByResourceGroupHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListBySubscription - Lists all the hybrid machines in the specified subscription. Use the nextLink property in the response
-// to get the next page of hybrid machines.
+// NewListBySubscriptionPager - Lists all the hybrid machines in the specified subscription. Use the nextLink property in
+// the response to get the next page of hybrid machines.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - MachinesClientListBySubscriptionOptions contains the optional parameters for the MachinesClient.ListBySubscription
 // method.
-func (client *MachinesClient) ListBySubscription(options *MachinesClientListBySubscriptionOptions) *runtime.Pager[MachinesClientListBySubscriptionResponse] {
+func (client *MachinesClient) NewListBySubscriptionPager(options *MachinesClientListBySubscriptionOptions) *runtime.Pager[MachinesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MachinesClientListBySubscriptionResponse]{
 		More: func(page MachinesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

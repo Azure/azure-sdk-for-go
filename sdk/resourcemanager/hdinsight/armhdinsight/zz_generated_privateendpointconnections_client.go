@@ -253,13 +253,13 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListByCluster - Lists the private endpoint connections for a HDInsight cluster.
+// NewListByClusterPager - Lists the private endpoint connections for a HDInsight cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // clusterName - The name of the cluster.
 // options - PrivateEndpointConnectionsClientListByClusterOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByCluster
 // method.
-func (client *PrivateEndpointConnectionsClient) ListByCluster(resourceGroupName string, clusterName string, options *PrivateEndpointConnectionsClientListByClusterOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByClusterResponse] {
+func (client *PrivateEndpointConnectionsClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *PrivateEndpointConnectionsClientListByClusterOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByClusterResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionsClientListByClusterResponse]{
 		More: func(page PrivateEndpointConnectionsClientListByClusterResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -1,5 +1,29 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*PrivateLinkScopesClient.ListByResourceGroup` has been removed
+- Function `*PrivateEndpointConnectionsClient.ListByPrivateLinkScope` has been removed
+- Function `*MachinesClient.ListBySubscription` has been removed
+- Function `*MachinesClient.ListByResourceGroup` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*MachineExtensionsClient.List` has been removed
+- Function `*PrivateLinkResourcesClient.ListByPrivateLinkScope` has been removed
+- Function `*PrivateLinkScopesClient.List` has been removed
+
+### Features Added
+
+- New function `*MachinesClient.NewListByResourceGroupPager(string, *MachinesClientListByResourceGroupOptions) *runtime.Pager[MachinesClientListByResourceGroupResponse]`
+- New function `*PrivateLinkResourcesClient.NewListByPrivateLinkScopePager(string, string, *PrivateLinkResourcesClientListByPrivateLinkScopeOptions) *runtime.Pager[PrivateLinkResourcesClientListByPrivateLinkScopeResponse]`
+- New function `*MachinesClient.NewListBySubscriptionPager(*MachinesClientListBySubscriptionOptions) *runtime.Pager[MachinesClientListBySubscriptionResponse]`
+- New function `*PrivateLinkScopesClient.NewListByResourceGroupPager(string, *PrivateLinkScopesClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkScopesClientListByResourceGroupResponse]`
+- New function `*PrivateLinkScopesClient.NewListPager(*PrivateLinkScopesClientListOptions) *runtime.Pager[PrivateLinkScopesClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*MachineExtensionsClient.NewListPager(string, string, *MachineExtensionsClientListOptions) *runtime.Pager[MachineExtensionsClientListResponse]`
+- New function `*PrivateEndpointConnectionsClient.NewListByPrivateLinkScopePager(string, string, *PrivateEndpointConnectionsClientListByPrivateLinkScopeOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

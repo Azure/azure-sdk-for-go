@@ -162,7 +162,7 @@ func ExampleDedicatedHsmClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/DedicatedHsm_ListByResourceGroup.json
-func ExampleDedicatedHsmClient_ListByResourceGroup() {
+func ExampleDedicatedHsmClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -174,7 +174,7 @@ func ExampleDedicatedHsmClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		&armhardwaresecuritymodules.DedicatedHsmClientListByResourceGroupOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -190,7 +190,7 @@ func ExampleDedicatedHsmClient_ListByResourceGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/DedicatedHsm_ListBySubscription.json
-func ExampleDedicatedHsmClient_ListBySubscription() {
+func ExampleDedicatedHsmClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -202,7 +202,7 @@ func ExampleDedicatedHsmClient_ListBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription(&armhardwaresecuritymodules.DedicatedHsmClientListBySubscriptionOptions{Top: nil})
+	pager := client.NewListBySubscriptionPager(&armhardwaresecuritymodules.DedicatedHsmClientListBySubscriptionOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -217,7 +217,7 @@ func ExampleDedicatedHsmClient_ListBySubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/GetOutboundNetworkDependenciesEndpointsList.json
-func ExampleDedicatedHsmClient_ListOutboundNetworkDependenciesEndpoints() {
+func ExampleDedicatedHsmClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -229,7 +229,7 @@ func ExampleDedicatedHsmClient_ListOutboundNetworkDependenciesEndpoints() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListOutboundNetworkDependenciesEndpoints("<resource-group-name>",
+	pager := client.NewListOutboundNetworkDependenciesEndpointsPager("<resource-group-name>",
 		"<name>",
 		nil)
 	for pager.More() {

@@ -247,12 +247,12 @@ func (client *MachineExtensionsClient) getHandleResponse(resp *http.Response) (M
 	return result, nil
 }
 
-// List - The operation to get all extensions of a non-Azure machine
+// NewListPager - The operation to get all extensions of a non-Azure machine
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // machineName - The name of the machine containing the extension.
 // options - MachineExtensionsClientListOptions contains the optional parameters for the MachineExtensionsClient.List method.
-func (client *MachineExtensionsClient) List(resourceGroupName string, machineName string, options *MachineExtensionsClientListOptions) *runtime.Pager[MachineExtensionsClientListResponse] {
+func (client *MachineExtensionsClient) NewListPager(resourceGroupName string, machineName string, options *MachineExtensionsClientListOptions) *runtime.Pager[MachineExtensionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MachineExtensionsClientListResponse]{
 		More: func(page MachineExtensionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

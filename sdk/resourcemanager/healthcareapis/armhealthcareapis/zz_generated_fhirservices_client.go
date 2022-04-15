@@ -247,13 +247,13 @@ func (client *FhirServicesClient) getHandleResponse(resp *http.Response) (FhirSe
 	return result, nil
 }
 
-// ListByWorkspace - Lists all FHIR Services for the given workspace
+// NewListByWorkspacePager - Lists all FHIR Services for the given workspace
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the service instance.
 // workspaceName - The name of workspace resource.
 // options - FhirServicesClientListByWorkspaceOptions contains the optional parameters for the FhirServicesClient.ListByWorkspace
 // method.
-func (client *FhirServicesClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *FhirServicesClientListByWorkspaceOptions) *runtime.Pager[FhirServicesClientListByWorkspaceResponse] {
+func (client *FhirServicesClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *FhirServicesClientListByWorkspaceOptions) *runtime.Pager[FhirServicesClientListByWorkspaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[FhirServicesClientListByWorkspaceResponse]{
 		More: func(page FhirServicesClientListByWorkspaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

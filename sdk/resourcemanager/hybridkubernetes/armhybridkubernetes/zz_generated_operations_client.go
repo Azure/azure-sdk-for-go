@@ -48,10 +48,10 @@ func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientO
 	return client, nil
 }
 
-// Get - Lists all of the available API operations for Connected Cluster resource.
+// NewGetPager - Lists all of the available API operations for Connected Cluster resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - OperationsClientGetOptions contains the optional parameters for the OperationsClient.Get method.
-func (client *OperationsClient) Get(options *OperationsClientGetOptions) *runtime.Pager[OperationsClientGetResponse] {
+func (client *OperationsClient) NewGetPager(options *OperationsClientGetOptions) *runtime.Pager[OperationsClientGetResponse] {
 	return runtime.NewPager(runtime.PageProcessor[OperationsClientGetResponse]{
 		More: func(page OperationsClientGetResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

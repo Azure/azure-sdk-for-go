@@ -75,7 +75,7 @@ func ExampleKeysClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/keyvault/resource-manager/Microsoft.KeyVault/preview/2021-11-01-preview/examples/listKeys.json
-func ExampleKeysClient_List() {
+func ExampleKeysClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -87,7 +87,7 @@ func ExampleKeysClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-group-name>",
+	pager := client.NewListPager("<resource-group-name>",
 		"<vault-name>",
 		nil)
 	for pager.More() {
@@ -131,7 +131,7 @@ func ExampleKeysClient_GetVersion() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/keyvault/resource-manager/Microsoft.KeyVault/preview/2021-11-01-preview/examples/listKeyVersions.json
-func ExampleKeysClient_ListVersions() {
+func ExampleKeysClient_NewListVersionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -143,7 +143,7 @@ func ExampleKeysClient_ListVersions() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListVersions("<resource-group-name>",
+	pager := client.NewListVersionsPager("<resource-group-name>",
 		"<vault-name>",
 		"<key-name>",
 		nil)

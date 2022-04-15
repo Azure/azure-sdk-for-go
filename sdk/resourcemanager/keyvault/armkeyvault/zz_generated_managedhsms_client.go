@@ -288,13 +288,13 @@ func (client *ManagedHsmsClient) getDeletedHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// ListByResourceGroup - The List operation gets information about the managed HSM Pools associated with the subscription
+// NewListByResourceGroupPager - The List operation gets information about the managed HSM Pools associated with the subscription
 // and within the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group that contains the managed HSM pool.
 // options - ManagedHsmsClientListByResourceGroupOptions contains the optional parameters for the ManagedHsmsClient.ListByResourceGroup
 // method.
-func (client *ManagedHsmsClient) ListByResourceGroup(resourceGroupName string, options *ManagedHsmsClientListByResourceGroupOptions) *runtime.Pager[ManagedHsmsClientListByResourceGroupResponse] {
+func (client *ManagedHsmsClient) NewListByResourceGroupPager(resourceGroupName string, options *ManagedHsmsClientListByResourceGroupOptions) *runtime.Pager[ManagedHsmsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagedHsmsClientListByResourceGroupResponse]{
 		More: func(page ManagedHsmsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -356,11 +356,11 @@ func (client *ManagedHsmsClient) listByResourceGroupHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListBySubscription - The List operation gets information about the managed HSM Pools associated with the subscription.
+// NewListBySubscriptionPager - The List operation gets information about the managed HSM Pools associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ManagedHsmsClientListBySubscriptionOptions contains the optional parameters for the ManagedHsmsClient.ListBySubscription
 // method.
-func (client *ManagedHsmsClient) ListBySubscription(options *ManagedHsmsClientListBySubscriptionOptions) *runtime.Pager[ManagedHsmsClientListBySubscriptionResponse] {
+func (client *ManagedHsmsClient) NewListBySubscriptionPager(options *ManagedHsmsClientListBySubscriptionOptions) *runtime.Pager[ManagedHsmsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagedHsmsClientListBySubscriptionResponse]{
 		More: func(page ManagedHsmsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -418,10 +418,10 @@ func (client *ManagedHsmsClient) listBySubscriptionHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListDeleted - The List operation gets information about the deleted managed HSMs associated with the subscription.
+// NewListDeletedPager - The List operation gets information about the deleted managed HSMs associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ManagedHsmsClientListDeletedOptions contains the optional parameters for the ManagedHsmsClient.ListDeleted method.
-func (client *ManagedHsmsClient) ListDeleted(options *ManagedHsmsClientListDeletedOptions) *runtime.Pager[ManagedHsmsClientListDeletedResponse] {
+func (client *ManagedHsmsClient) NewListDeletedPager(options *ManagedHsmsClientListDeletedOptions) *runtime.Pager[ManagedHsmsClientListDeletedResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagedHsmsClientListDeletedResponse]{
 		More: func(page ManagedHsmsClientListDeletedResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -180,14 +180,14 @@ func (client *SecretsClient) getHandleResponse(resp *http.Response) (SecretsClie
 	return result, nil
 }
 
-// List - The List operation gets information about the secrets in a vault. NOTE: This API is intended for internal use in
-// ARM deployments. Users should use the data-plane REST service for interaction with
+// NewListPager - The List operation gets information about the secrets in a vault. NOTE: This API is intended for internal
+// use in ARM deployments. Users should use the data-plane REST service for interaction with
 // vault secrets.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the Resource Group to which the vault belongs.
 // vaultName - The name of the vault.
 // options - SecretsClientListOptions contains the optional parameters for the SecretsClient.List method.
-func (client *SecretsClient) List(resourceGroupName string, vaultName string, options *SecretsClientListOptions) *runtime.Pager[SecretsClientListResponse] {
+func (client *SecretsClient) NewListPager(resourceGroupName string, vaultName string, options *SecretsClientListOptions) *runtime.Pager[SecretsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SecretsClientListResponse]{
 		More: func(page SecretsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

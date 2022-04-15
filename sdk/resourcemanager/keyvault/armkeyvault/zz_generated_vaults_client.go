@@ -321,10 +321,10 @@ func (client *VaultsClient) getDeletedHandleResponse(resp *http.Response) (Vault
 	return result, nil
 }
 
-// List - The List operation gets information about the vaults associated with the subscription.
+// NewListPager - The List operation gets information about the vaults associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - VaultsClientListOptions contains the optional parameters for the VaultsClient.List method.
-func (client *VaultsClient) List(options *VaultsClientListOptions) *runtime.Pager[VaultsClientListResponse] {
+func (client *VaultsClient) NewListPager(options *VaultsClientListOptions) *runtime.Pager[VaultsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VaultsClientListResponse]{
 		More: func(page VaultsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -383,13 +383,13 @@ func (client *VaultsClient) listHandleResponse(resp *http.Response) (VaultsClien
 	return result, nil
 }
 
-// ListByResourceGroup - The List operation gets information about the vaults associated with the subscription and within
-// the specified resource group.
+// NewListByResourceGroupPager - The List operation gets information about the vaults associated with the subscription and
+// within the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the Resource Group to which the vault belongs.
 // options - VaultsClientListByResourceGroupOptions contains the optional parameters for the VaultsClient.ListByResourceGroup
 // method.
-func (client *VaultsClient) ListByResourceGroup(resourceGroupName string, options *VaultsClientListByResourceGroupOptions) *runtime.Pager[VaultsClientListByResourceGroupResponse] {
+func (client *VaultsClient) NewListByResourceGroupPager(resourceGroupName string, options *VaultsClientListByResourceGroupOptions) *runtime.Pager[VaultsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VaultsClientListByResourceGroupResponse]{
 		More: func(page VaultsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -451,11 +451,11 @@ func (client *VaultsClient) listByResourceGroupHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListBySubscription - The List operation gets information about the vaults associated with the subscription.
+// NewListBySubscriptionPager - The List operation gets information about the vaults associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - VaultsClientListBySubscriptionOptions contains the optional parameters for the VaultsClient.ListBySubscription
 // method.
-func (client *VaultsClient) ListBySubscription(options *VaultsClientListBySubscriptionOptions) *runtime.Pager[VaultsClientListBySubscriptionResponse] {
+func (client *VaultsClient) NewListBySubscriptionPager(options *VaultsClientListBySubscriptionOptions) *runtime.Pager[VaultsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VaultsClientListBySubscriptionResponse]{
 		More: func(page VaultsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -513,10 +513,10 @@ func (client *VaultsClient) listBySubscriptionHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListDeleted - Gets information about the deleted vaults in a subscription.
+// NewListDeletedPager - Gets information about the deleted vaults in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - VaultsClientListDeletedOptions contains the optional parameters for the VaultsClient.ListDeleted method.
-func (client *VaultsClient) ListDeleted(options *VaultsClientListDeletedOptions) *runtime.Pager[VaultsClientListDeletedResponse] {
+func (client *VaultsClient) NewListDeletedPager(options *VaultsClientListDeletedOptions) *runtime.Pager[VaultsClientListDeletedResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VaultsClientListDeletedResponse]{
 		More: func(page VaultsClientListDeletedResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

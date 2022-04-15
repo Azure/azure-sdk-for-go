@@ -1,5 +1,21 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*SQLServerRegistrationsClient.ListByResourceGroup` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*SQLServersClient.ListByResourceGroup` has been removed
+- Function `*SQLServerRegistrationsClient.List` has been removed
+
+### Features Added
+
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*SQLServerRegistrationsClient.NewListByResourceGroupPager(string, *SQLServerRegistrationsClientListByResourceGroupOptions) *runtime.Pager[SQLServerRegistrationsClientListByResourceGroupResponse]`
+- New function `*SQLServersClient.NewListByResourceGroupPager(string, string, *SQLServersClientListByResourceGroupOptions) *runtime.Pager[SQLServersClientListByResourceGroupResponse]`
+- New function `*SQLServerRegistrationsClient.NewListPager(*SQLServerRegistrationsClientListOptions) *runtime.Pager[SQLServerRegistrationsClientListResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

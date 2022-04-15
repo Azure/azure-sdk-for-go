@@ -217,11 +217,11 @@ func (client *SQLServerRegistrationsClient) getHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// List - Gets all SQL Server registrations in a subscription.
+// NewListPager - Gets all SQL Server registrations in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SQLServerRegistrationsClientListOptions contains the optional parameters for the SQLServerRegistrationsClient.List
 // method.
-func (client *SQLServerRegistrationsClient) List(options *SQLServerRegistrationsClientListOptions) *runtime.Pager[SQLServerRegistrationsClientListResponse] {
+func (client *SQLServerRegistrationsClient) NewListPager(options *SQLServerRegistrationsClientListOptions) *runtime.Pager[SQLServerRegistrationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLServerRegistrationsClientListResponse]{
 		More: func(page SQLServerRegistrationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -276,13 +276,13 @@ func (client *SQLServerRegistrationsClient) listHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListByResourceGroup - Gets all SQL Server registrations in a resource group.
+// NewListByResourceGroupPager - Gets all SQL Server registrations in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 // Manager API or the portal.
 // options - SQLServerRegistrationsClientListByResourceGroupOptions contains the optional parameters for the SQLServerRegistrationsClient.ListByResourceGroup
 // method.
-func (client *SQLServerRegistrationsClient) ListByResourceGroup(resourceGroupName string, options *SQLServerRegistrationsClientListByResourceGroupOptions) *runtime.Pager[SQLServerRegistrationsClientListByResourceGroupResponse] {
+func (client *SQLServerRegistrationsClient) NewListByResourceGroupPager(resourceGroupName string, options *SQLServerRegistrationsClientListByResourceGroupOptions) *runtime.Pager[SQLServerRegistrationsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLServerRegistrationsClientListByResourceGroupResponse]{
 		More: func(page SQLServerRegistrationsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -1,5 +1,23 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*OperationsClient.List` has been removed
+- Function `*DimensionsClient.ByExternalCloudProviderType` has been removed
+- Function `*ViewsClient.ListByScope` has been removed
+- Function `*DimensionsClient.List` has been removed
+- Function `*ViewsClient.List` has been removed
+
+### Features Added
+
+- New function `*DimensionsClient.NewByExternalCloudProviderTypePager(ExternalCloudProviderType, string, *DimensionsClientByExternalCloudProviderTypeOptions) *runtime.Pager[DimensionsClientByExternalCloudProviderTypeResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*ViewsClient.NewListByScopePager(string, *ViewsClientListByScopeOptions) *runtime.Pager[ViewsClientListByScopeResponse]`
+- New function `*ViewsClient.NewListPager(*ViewsClientListOptions) *runtime.Pager[ViewsClientListResponse]`
+- New function `*DimensionsClient.NewListPager(string, *DimensionsClientListOptions) *runtime.Pager[DimensionsClientListResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

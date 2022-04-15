@@ -54,7 +54,8 @@ func NewCollectionPartitionRegionClient(subscriptionID string, credential azcore
 	return client, nil
 }
 
-// ListMetrics - Retrieves the metrics determined by the given filter for the given collection and region, split by partition.
+// NewListMetricsPager - Retrieves the metrics determined by the given filter for the given collection and region, split by
+// partition.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
@@ -66,7 +67,7 @@ func NewCollectionPartitionRegionClient(subscriptionID string, credential azcore
 // and timeGrain. The supported operator is eq.
 // options - CollectionPartitionRegionClientListMetricsOptions contains the optional parameters for the CollectionPartitionRegionClient.ListMetrics
 // method.
-func (client *CollectionPartitionRegionClient) ListMetrics(resourceGroupName string, accountName string, region string, databaseRid string, collectionRid string, filter string, options *CollectionPartitionRegionClientListMetricsOptions) *runtime.Pager[CollectionPartitionRegionClientListMetricsResponse] {
+func (client *CollectionPartitionRegionClient) NewListMetricsPager(resourceGroupName string, accountName string, region string, databaseRid string, collectionRid string, filter string, options *CollectionPartitionRegionClientListMetricsOptions) *runtime.Pager[CollectionPartitionRegionClientListMetricsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CollectionPartitionRegionClientListMetricsResponse]{
 		More: func(page CollectionPartitionRegionClientListMetricsResponse) bool {
 			return false

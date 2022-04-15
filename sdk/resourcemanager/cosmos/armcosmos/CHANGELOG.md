@@ -1,5 +1,141 @@
 # Release History
 
+## 0.5.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*DatabaseAccountsClient.ListUsages` has been removed
+- Function `*MongoDBResourcesClient.ListMongoRoleDefinitions` has been removed
+- Function `*CassandraDataCentersClient.List` has been removed
+- Function `*CassandraClustersClient.ListByResourceGroup` has been removed
+- Function `*CollectionClient.ListUsages` has been removed
+- Function `*PrivateLinkResourcesClient.ListByDatabaseAccount` has been removed
+- Function `*RestorableTablesClient.List` has been removed
+- Function `*CassandraClustersClient.ListBySubscription` has been removed
+- Function `*DatabaseClient.ListMetricDefinitions` has been removed
+- Function `*SQLResourcesClient.ListSQLTriggers` has been removed
+- Function `*DatabaseAccountsClient.ListMetrics` has been removed
+- Function `*RestorableTableResourcesClient.List` has been removed
+- Function `*RestorableMongodbResourcesClient.List` has been removed
+- Function `*TableResourcesClient.ListTables` has been removed
+- Function `*PrivateEndpointConnectionsClient.ListByDatabaseAccount` has been removed
+- Function `*RestorableGremlinDatabasesClient.List` has been removed
+- Function `*SQLResourcesClient.ListClientEncryptionKeys` has been removed
+- Function `*DatabaseClient.ListUsages` has been removed
+- Function `*CollectionPartitionClient.ListUsages` has been removed
+- Function `*ServiceClient.List` has been removed
+- Function `*DatabaseAccountRegionClient.ListMetrics` has been removed
+- Function `*DatabaseClient.ListMetrics` has been removed
+- Function `*PercentileTargetClient.ListMetrics` has been removed
+- Function `*PartitionKeyRangeIDClient.ListMetrics` has been removed
+- Function `*CassandraClustersClient.ListBackups` has been removed
+- Function `*DataTransferJobsClient.ListByDatabaseAccount` has been removed
+- Function `*RestorableSQLContainersClient.List` has been removed
+- Function `*RestorableDatabaseAccountsClient.List` has been removed
+- Function `*NotebookWorkspacesClient.ListByDatabaseAccount` has been removed
+- Function `*CassandraResourcesClient.ListCassandraViews` has been removed
+- Function `*SQLResourcesClient.ListSQLUserDefinedFunctions` has been removed
+- Function `*CassandraResourcesClient.ListCassandraTables` has been removed
+- Function `*SQLResourcesClient.ListSQLDatabases` has been removed
+- Function `*SQLResourcesClient.ListSQLStoredProcedures` has been removed
+- Function `*RestorableSQLDatabasesClient.List` has been removed
+- Function `*CollectionPartitionClient.ListMetrics` has been removed
+- Function `*GraphResourcesClient.ListGraphs` has been removed
+- Function `*CollectionClient.ListMetrics` has been removed
+- Function `*RestorableGremlinResourcesClient.List` has been removed
+- Function `*SQLResourcesClient.ListSQLContainers` has been removed
+- Function `*PartitionKeyRangeIDRegionClient.ListMetrics` has been removed
+- Function `*LocationsClient.List` has been removed
+- Function `*CollectionRegionClient.ListMetrics` has been removed
+- Function `*CollectionPartitionRegionClient.ListMetrics` has been removed
+- Function `*RestorableDatabaseAccountsClient.ListByLocation` has been removed
+- Function `*CollectionClient.ListMetricDefinitions` has been removed
+- Function `*MongoDBResourcesClient.ListMongoDBDatabases` has been removed
+- Function `*PercentileClient.ListMetrics` has been removed
+- Function `*CassandraResourcesClient.ListCassandraKeyspaces` has been removed
+- Function `*SQLResourcesClient.ListSQLRoleDefinitions` has been removed
+- Function `*RestorableGremlinGraphsClient.List` has been removed
+- Function `*RestorableSQLResourcesClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*PercentileSourceTargetClient.ListMetrics` has been removed
+- Function `*DatabaseAccountsClient.List` has been removed
+- Function `*SQLResourcesClient.ListSQLRoleAssignments` has been removed
+- Function `*GremlinResourcesClient.ListGremlinDatabases` has been removed
+- Function `*RestorableMongodbDatabasesClient.List` has been removed
+- Function `*RestorableMongodbCollectionsClient.List` has been removed
+- Function `*GremlinResourcesClient.ListGremlinGraphs` has been removed
+- Function `*DatabaseAccountsClient.ListMetricDefinitions` has been removed
+- Function `*MongoDBResourcesClient.ListMongoDBCollections` has been removed
+- Function `*MongoDBResourcesClient.ListMongoUserDefinitions` has been removed
+- Function `*DatabaseAccountsClient.ListByResourceGroup` has been removed
+
+### Features Added
+
+- New function `*CollectionPartitionClient.NewListMetricsPager(string, string, string, string, string, *CollectionPartitionClientListMetricsOptions) *runtime.Pager[CollectionPartitionClientListMetricsResponse]`
+- New function `*RestorableTableResourcesClient.NewListPager(string, string, *RestorableTableResourcesClientListOptions) *runtime.Pager[RestorableTableResourcesClientListResponse]`
+- New function `*RestorableSQLContainersClient.NewListPager(string, string, *RestorableSQLContainersClientListOptions) *runtime.Pager[RestorableSQLContainersClientListResponse]`
+- New function `*RestorableSQLDatabasesClient.NewListPager(string, string, *RestorableSQLDatabasesClientListOptions) *runtime.Pager[RestorableSQLDatabasesClientListResponse]`
+- New function `*SQLResourcesClient.NewListSQLTriggersPager(string, string, string, string, *SQLResourcesClientListSQLTriggersOptions) *runtime.Pager[SQLResourcesClientListSQLTriggersResponse]`
+- New function `*CassandraResourcesClient.NewListCassandraViewsPager(string, string, string, *CassandraResourcesClientListCassandraViewsOptions) *runtime.Pager[CassandraResourcesClientListCassandraViewsResponse]`
+- New function `*SQLResourcesClient.NewListSQLDatabasesPager(string, string, *SQLResourcesClientListSQLDatabasesOptions) *runtime.Pager[SQLResourcesClientListSQLDatabasesResponse]`
+- New function `*PrivateLinkResourcesClient.NewListByDatabaseAccountPager(string, string, *PrivateLinkResourcesClientListByDatabaseAccountOptions) *runtime.Pager[PrivateLinkResourcesClientListByDatabaseAccountResponse]`
+- New function `*PercentileTargetClient.NewListMetricsPager(string, string, string, string, *PercentileTargetClientListMetricsOptions) *runtime.Pager[PercentileTargetClientListMetricsResponse]`
+- New function `*GremlinResourcesClient.NewListGremlinGraphsPager(string, string, string, *GremlinResourcesClientListGremlinGraphsOptions) *runtime.Pager[GremlinResourcesClientListGremlinGraphsResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*PrivateEndpointConnectionsClient.NewListByDatabaseAccountPager(string, string, *PrivateEndpointConnectionsClientListByDatabaseAccountOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByDatabaseAccountResponse]`
+- New function `*SQLResourcesClient.NewListSQLUserDefinedFunctionsPager(string, string, string, string, *SQLResourcesClientListSQLUserDefinedFunctionsOptions) *runtime.Pager[SQLResourcesClientListSQLUserDefinedFunctionsResponse]`
+- New function `*CollectionRegionClient.NewListMetricsPager(string, string, string, string, string, string, *CollectionRegionClientListMetricsOptions) *runtime.Pager[CollectionRegionClientListMetricsResponse]`
+- New function `*DatabaseClient.NewListUsagesPager(string, string, string, *DatabaseClientListUsagesOptions) *runtime.Pager[DatabaseClientListUsagesResponse]`
+- New function `*SQLResourcesClient.NewListSQLContainersPager(string, string, string, *SQLResourcesClientListSQLContainersOptions) *runtime.Pager[SQLResourcesClientListSQLContainersResponse]`
+- New function `*DatabaseAccountsClient.NewListMetricsPager(string, string, string, *DatabaseAccountsClientListMetricsOptions) *runtime.Pager[DatabaseAccountsClientListMetricsResponse]`
+- New function `*RestorableTablesClient.NewListPager(string, string, *RestorableTablesClientListOptions) *runtime.Pager[RestorableTablesClientListResponse]`
+- New function `*LocationsClient.NewListPager(*LocationsClientListOptions) *runtime.Pager[LocationsClientListResponse]`
+- New function `*CollectionClient.NewListUsagesPager(string, string, string, string, *CollectionClientListUsagesOptions) *runtime.Pager[CollectionClientListUsagesResponse]`
+- New function `*DatabaseAccountsClient.NewListMetricDefinitionsPager(string, string, *DatabaseAccountsClientListMetricDefinitionsOptions) *runtime.Pager[DatabaseAccountsClientListMetricDefinitionsResponse]`
+- New function `*GremlinResourcesClient.NewListGremlinDatabasesPager(string, string, *GremlinResourcesClientListGremlinDatabasesOptions) *runtime.Pager[GremlinResourcesClientListGremlinDatabasesResponse]`
+- New function `*NotebookWorkspacesClient.NewListByDatabaseAccountPager(string, string, *NotebookWorkspacesClientListByDatabaseAccountOptions) *runtime.Pager[NotebookWorkspacesClientListByDatabaseAccountResponse]`
+- New function `*PercentileClient.NewListMetricsPager(string, string, string, *PercentileClientListMetricsOptions) *runtime.Pager[PercentileClientListMetricsResponse]`
+- New function `*RestorableDatabaseAccountsClient.NewListPager(*RestorableDatabaseAccountsClientListOptions) *runtime.Pager[RestorableDatabaseAccountsClientListResponse]`
+- New function `*RestorableGremlinGraphsClient.NewListPager(string, string, *RestorableGremlinGraphsClientListOptions) *runtime.Pager[RestorableGremlinGraphsClientListResponse]`
+- New function `*RestorableMongodbCollectionsClient.NewListPager(string, string, *RestorableMongodbCollectionsClientListOptions) *runtime.Pager[RestorableMongodbCollectionsClientListResponse]`
+- New function `*DataTransferJobsClient.NewListByDatabaseAccountPager(string, string, *DataTransferJobsClientListByDatabaseAccountOptions) *runtime.Pager[DataTransferJobsClientListByDatabaseAccountResponse]`
+- New function `*SQLResourcesClient.NewListClientEncryptionKeysPager(string, string, string, *SQLResourcesClientListClientEncryptionKeysOptions) *runtime.Pager[SQLResourcesClientListClientEncryptionKeysResponse]`
+- New function `*CollectionPartitionRegionClient.NewListMetricsPager(string, string, string, string, string, string, *CollectionPartitionRegionClientListMetricsOptions) *runtime.Pager[CollectionPartitionRegionClientListMetricsResponse]`
+- New function `*MongoDBResourcesClient.NewListMongoRoleDefinitionsPager(string, string, *MongoDBResourcesClientListMongoRoleDefinitionsOptions) *runtime.Pager[MongoDBResourcesClientListMongoRoleDefinitionsResponse]`
+- New function `*DatabaseAccountsClient.NewListUsagesPager(string, string, *DatabaseAccountsClientListUsagesOptions) *runtime.Pager[DatabaseAccountsClientListUsagesResponse]`
+- New function `*PercentileSourceTargetClient.NewListMetricsPager(string, string, string, string, string, *PercentileSourceTargetClientListMetricsOptions) *runtime.Pager[PercentileSourceTargetClientListMetricsResponse]`
+- New function `*GraphResourcesClient.NewListGraphsPager(string, string, *GraphResourcesClientListGraphsOptions) *runtime.Pager[GraphResourcesClientListGraphsResponse]`
+- New function `*MongoDBResourcesClient.NewListMongoUserDefinitionsPager(string, string, *MongoDBResourcesClientListMongoUserDefinitionsOptions) *runtime.Pager[MongoDBResourcesClientListMongoUserDefinitionsResponse]`
+- New function `*CollectionPartitionClient.NewListUsagesPager(string, string, string, string, *CollectionPartitionClientListUsagesOptions) *runtime.Pager[CollectionPartitionClientListUsagesResponse]`
+- New function `*TableResourcesClient.NewListTablesPager(string, string, *TableResourcesClientListTablesOptions) *runtime.Pager[TableResourcesClientListTablesResponse]`
+- New function `*CassandraDataCentersClient.NewListPager(string, string, *CassandraDataCentersClientListOptions) *runtime.Pager[CassandraDataCentersClientListResponse]`
+- New function `*SQLResourcesClient.NewListSQLRoleAssignmentsPager(string, string, *SQLResourcesClientListSQLRoleAssignmentsOptions) *runtime.Pager[SQLResourcesClientListSQLRoleAssignmentsResponse]`
+- New function `*RestorableSQLResourcesClient.NewListPager(string, string, *RestorableSQLResourcesClientListOptions) *runtime.Pager[RestorableSQLResourcesClientListResponse]`
+- New function `*DatabaseClient.NewListMetricsPager(string, string, string, string, *DatabaseClientListMetricsOptions) *runtime.Pager[DatabaseClientListMetricsResponse]`
+- New function `*CassandraResourcesClient.NewListCassandraKeyspacesPager(string, string, *CassandraResourcesClientListCassandraKeyspacesOptions) *runtime.Pager[CassandraResourcesClientListCassandraKeyspacesResponse]`
+- New function `*PartitionKeyRangeIDClient.NewListMetricsPager(string, string, string, string, string, string, *PartitionKeyRangeIDClientListMetricsOptions) *runtime.Pager[PartitionKeyRangeIDClientListMetricsResponse]`
+- New function `*RestorableMongodbResourcesClient.NewListPager(string, string, *RestorableMongodbResourcesClientListOptions) *runtime.Pager[RestorableMongodbResourcesClientListResponse]`
+- New function `*RestorableDatabaseAccountsClient.NewListByLocationPager(string, *RestorableDatabaseAccountsClientListByLocationOptions) *runtime.Pager[RestorableDatabaseAccountsClientListByLocationResponse]`
+- New function `*CassandraClustersClient.NewListBySubscriptionPager(*CassandraClustersClientListBySubscriptionOptions) *runtime.Pager[CassandraClustersClientListBySubscriptionResponse]`
+- New function `*MongoDBResourcesClient.NewListMongoDBCollectionsPager(string, string, string, *MongoDBResourcesClientListMongoDBCollectionsOptions) *runtime.Pager[MongoDBResourcesClientListMongoDBCollectionsResponse]`
+- New function `*RestorableGremlinResourcesClient.NewListPager(string, string, *RestorableGremlinResourcesClientListOptions) *runtime.Pager[RestorableGremlinResourcesClientListResponse]`
+- New function `*CollectionClient.NewListMetricDefinitionsPager(string, string, string, string, *CollectionClientListMetricDefinitionsOptions) *runtime.Pager[CollectionClientListMetricDefinitionsResponse]`
+- New function `*DatabaseClient.NewListMetricDefinitionsPager(string, string, string, *DatabaseClientListMetricDefinitionsOptions) *runtime.Pager[DatabaseClientListMetricDefinitionsResponse]`
+- New function `*CollectionClient.NewListMetricsPager(string, string, string, string, string, *CollectionClientListMetricsOptions) *runtime.Pager[CollectionClientListMetricsResponse]`
+- New function `*SQLResourcesClient.NewListSQLRoleDefinitionsPager(string, string, *SQLResourcesClientListSQLRoleDefinitionsOptions) *runtime.Pager[SQLResourcesClientListSQLRoleDefinitionsResponse]`
+- New function `*CassandraClustersClient.NewListByResourceGroupPager(string, *CassandraClustersClientListByResourceGroupOptions) *runtime.Pager[CassandraClustersClientListByResourceGroupResponse]`
+- New function `*MongoDBResourcesClient.NewListMongoDBDatabasesPager(string, string, *MongoDBResourcesClientListMongoDBDatabasesOptions) *runtime.Pager[MongoDBResourcesClientListMongoDBDatabasesResponse]`
+- New function `*ServiceClient.NewListPager(string, string, *ServiceClientListOptions) *runtime.Pager[ServiceClientListResponse]`
+- New function `*RestorableGremlinDatabasesClient.NewListPager(string, string, *RestorableGremlinDatabasesClientListOptions) *runtime.Pager[RestorableGremlinDatabasesClientListResponse]`
+- New function `*RestorableMongodbDatabasesClient.NewListPager(string, string, *RestorableMongodbDatabasesClientListOptions) *runtime.Pager[RestorableMongodbDatabasesClientListResponse]`
+- New function `*PartitionKeyRangeIDRegionClient.NewListMetricsPager(string, string, string, string, string, string, string, *PartitionKeyRangeIDRegionClientListMetricsOptions) *runtime.Pager[PartitionKeyRangeIDRegionClientListMetricsResponse]`
+- New function `*CassandraClustersClient.NewListBackupsPager(string, string, *CassandraClustersClientListBackupsOptions) *runtime.Pager[CassandraClustersClientListBackupsResponse]`
+- New function `*DatabaseAccountsClient.NewListPager(*DatabaseAccountsClientListOptions) *runtime.Pager[DatabaseAccountsClientListResponse]`
+- New function `*DatabaseAccountsClient.NewListByResourceGroupPager(string, *DatabaseAccountsClientListByResourceGroupOptions) *runtime.Pager[DatabaseAccountsClientListByResourceGroupResponse]`
+- New function `*DatabaseAccountRegionClient.NewListMetricsPager(string, string, string, string, *DatabaseAccountRegionClientListMetricsOptions) *runtime.Pager[DatabaseAccountRegionClientListMetricsResponse]`
+- New function `*CassandraResourcesClient.NewListCassandraTablesPager(string, string, string, *CassandraResourcesClientListCassandraTablesOptions) *runtime.Pager[CassandraResourcesClientListCassandraTablesResponse]`
+- New function `*SQLResourcesClient.NewListSQLStoredProceduresPager(string, string, string, string, *SQLResourcesClientListSQLStoredProceduresOptions) *runtime.Pager[SQLResourcesClientListSQLStoredProceduresResponse]`
+
+
 ## 0.4.0 (2022-04-11)
 ### Breaking Changes
 

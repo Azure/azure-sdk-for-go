@@ -1,5 +1,21 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*MarketplaceAgreementsClient.List` has been removed
+- Function `*OrganizationClient.ListBySubscription` has been removed
+- Function `*OrganizationClient.ListByResourceGroup` has been removed
+- Function `*OrganizationOperationsClient.List` has been removed
+
+### Features Added
+
+- New function `*OrganizationClient.NewListByResourceGroupPager(string, *OrganizationClientListByResourceGroupOptions) *runtime.Pager[OrganizationClientListByResourceGroupResponse]`
+- New function `*OrganizationClient.NewListBySubscriptionPager(*OrganizationClientListBySubscriptionOptions) *runtime.Pager[OrganizationClientListBySubscriptionResponse]`
+- New function `*MarketplaceAgreementsClient.NewListPager(*MarketplaceAgreementsClientListOptions) *runtime.Pager[MarketplaceAgreementsClientListResponse]`
+- New function `*OrganizationOperationsClient.NewListPager(*OrganizationOperationsClientListOptions) *runtime.Pager[OrganizationOperationsClientListResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

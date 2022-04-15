@@ -115,13 +115,13 @@ func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListByDatabaseAccount - Gets the private link resources that need to be created for a Cosmos DB account.
+// NewListByDatabaseAccountPager - Gets the private link resources that need to be created for a Cosmos DB account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // options - PrivateLinkResourcesClientListByDatabaseAccountOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByDatabaseAccount
 // method.
-func (client *PrivateLinkResourcesClient) ListByDatabaseAccount(resourceGroupName string, accountName string, options *PrivateLinkResourcesClientListByDatabaseAccountOptions) *runtime.Pager[PrivateLinkResourcesClientListByDatabaseAccountResponse] {
+func (client *PrivateLinkResourcesClient) NewListByDatabaseAccountPager(resourceGroupName string, accountName string, options *PrivateLinkResourcesClientListByDatabaseAccountOptions) *runtime.Pager[PrivateLinkResourcesClientListByDatabaseAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkResourcesClientListByDatabaseAccountResponse]{
 		More: func(page PrivateLinkResourcesClientListByDatabaseAccountResponse) bool {
 			return false

@@ -305,12 +305,12 @@ func (client *TaskRunsClient) getDetailsHandleResponse(resp *http.Response) (Tas
 	return result, nil
 }
 
-// List - Lists all the task runs for a specified container registry.
+// NewListPager - Lists all the task runs for a specified container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // options - TaskRunsClientListOptions contains the optional parameters for the TaskRunsClient.List method.
-func (client *TaskRunsClient) List(resourceGroupName string, registryName string, options *TaskRunsClientListOptions) *runtime.Pager[TaskRunsClientListResponse] {
+func (client *TaskRunsClient) NewListPager(resourceGroupName string, registryName string, options *TaskRunsClientListOptions) *runtime.Pager[TaskRunsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TaskRunsClientListResponse]{
 		More: func(page TaskRunsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -174,13 +174,13 @@ func (client *DataTransferJobsClient) getHandleResponse(resp *http.Response) (Da
 	return result, nil
 }
 
-// ListByDatabaseAccount - Get a list of Data Transfer jobs.
+// NewListByDatabaseAccountPager - Get a list of Data Transfer jobs.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // options - DataTransferJobsClientListByDatabaseAccountOptions contains the optional parameters for the DataTransferJobsClient.ListByDatabaseAccount
 // method.
-func (client *DataTransferJobsClient) ListByDatabaseAccount(resourceGroupName string, accountName string, options *DataTransferJobsClientListByDatabaseAccountOptions) *runtime.Pager[DataTransferJobsClientListByDatabaseAccountResponse] {
+func (client *DataTransferJobsClient) NewListByDatabaseAccountPager(resourceGroupName string, accountName string, options *DataTransferJobsClientListByDatabaseAccountOptions) *runtime.Pager[DataTransferJobsClientListByDatabaseAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DataTransferJobsClientListByDatabaseAccountResponse]{
 		More: func(page DataTransferJobsClientListByDatabaseAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

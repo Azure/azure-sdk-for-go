@@ -233,12 +233,12 @@ func (client *CustomResourceProviderClient) getHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListByResourceGroup - Gets all the custom resource providers within a resource group.
+// NewListByResourceGroupPager - Gets all the custom resource providers within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - CustomResourceProviderClientListByResourceGroupOptions contains the optional parameters for the CustomResourceProviderClient.ListByResourceGroup
 // method.
-func (client *CustomResourceProviderClient) ListByResourceGroup(resourceGroupName string, options *CustomResourceProviderClientListByResourceGroupOptions) *runtime.Pager[CustomResourceProviderClientListByResourceGroupResponse] {
+func (client *CustomResourceProviderClient) NewListByResourceGroupPager(resourceGroupName string, options *CustomResourceProviderClientListByResourceGroupOptions) *runtime.Pager[CustomResourceProviderClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CustomResourceProviderClientListByResourceGroupResponse]{
 		More: func(page CustomResourceProviderClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -297,11 +297,11 @@ func (client *CustomResourceProviderClient) listByResourceGroupHandleResponse(re
 	return result, nil
 }
 
-// ListBySubscription - Gets all the custom resource providers within a subscription.
+// NewListBySubscriptionPager - Gets all the custom resource providers within a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - CustomResourceProviderClientListBySubscriptionOptions contains the optional parameters for the CustomResourceProviderClient.ListBySubscription
 // method.
-func (client *CustomResourceProviderClient) ListBySubscription(options *CustomResourceProviderClientListBySubscriptionOptions) *runtime.Pager[CustomResourceProviderClientListBySubscriptionResponse] {
+func (client *CustomResourceProviderClient) NewListBySubscriptionPager(options *CustomResourceProviderClientListBySubscriptionOptions) *runtime.Pager[CustomResourceProviderClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CustomResourceProviderClientListBySubscriptionResponse]{
 		More: func(page CustomResourceProviderClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

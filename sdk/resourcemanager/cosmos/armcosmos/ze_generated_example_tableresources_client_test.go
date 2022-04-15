@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBTableList.json
-func ExampleTableResourcesClient_ListTables() {
+func ExampleTableResourcesClient_NewListTablesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleTableResourcesClient_ListTables() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListTables("<resource-group-name>",
+	pager := client.NewListTablesPager("<resource-group-name>",
 		"<account-name>",
 		nil)
 	for pager.More() {

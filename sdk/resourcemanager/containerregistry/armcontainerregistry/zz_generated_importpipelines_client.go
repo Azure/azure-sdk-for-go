@@ -247,12 +247,12 @@ func (client *ImportPipelinesClient) getHandleResponse(resp *http.Response) (Imp
 	return result, nil
 }
 
-// List - Lists all import pipelines for the specified container registry.
+// NewListPager - Lists all import pipelines for the specified container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // options - ImportPipelinesClientListOptions contains the optional parameters for the ImportPipelinesClient.List method.
-func (client *ImportPipelinesClient) List(resourceGroupName string, registryName string, options *ImportPipelinesClientListOptions) *runtime.Pager[ImportPipelinesClientListResponse] {
+func (client *ImportPipelinesClient) NewListPager(resourceGroupName string, registryName string, options *ImportPipelinesClientListOptions) *runtime.Pager[ImportPipelinesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ImportPipelinesClientListResponse]{
 		More: func(page ImportPipelinesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

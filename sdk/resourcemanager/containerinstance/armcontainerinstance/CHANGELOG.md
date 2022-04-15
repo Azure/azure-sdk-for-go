@@ -1,5 +1,25 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*ContainerGroupsClient.List` has been removed
+- Function `*LocationClient.ListUsage` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*LocationClient.ListCapabilities` has been removed
+- Function `*LocationClient.ListCachedImages` has been removed
+- Function `*ContainerGroupsClient.ListByResourceGroup` has been removed
+
+### Features Added
+
+- New function `*ContainerGroupsClient.NewListPager(*ContainerGroupsClientListOptions) *runtime.Pager[ContainerGroupsClientListResponse]`
+- New function `*LocationClient.NewListUsagePager(string, *LocationClientListUsageOptions) *runtime.Pager[LocationClientListUsageResponse]`
+- New function `*ContainerGroupsClient.NewListByResourceGroupPager(string, *ContainerGroupsClientListByResourceGroupOptions) *runtime.Pager[ContainerGroupsClientListByResourceGroupResponse]`
+- New function `*LocationClient.NewListCachedImagesPager(string, *LocationClientListCachedImagesOptions) *runtime.Pager[LocationClientListCachedImagesResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*LocationClient.NewListCapabilitiesPager(string, *LocationClientListCapabilitiesOptions) *runtime.Pager[LocationClientListCapabilitiesResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

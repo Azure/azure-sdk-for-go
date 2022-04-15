@@ -72,7 +72,7 @@ func ExampleRequestsClient_UpdateStatus() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/customerlockbox/resource-manager/Microsoft.CustomerLockbox/preview/2018-02-28-preview/examples/Requests_List_FilterByStatus.json
-func ExampleRequestsClient_List() {
+func ExampleRequestsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -84,7 +84,7 @@ func ExampleRequestsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<subscription-id>",
+	pager := client.NewListPager("<subscription-id>",
 		&armcustomerlockbox.RequestsClientListOptions{Filter: to.Ptr("<filter>")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

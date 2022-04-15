@@ -54,7 +54,7 @@ func NewCollectionPartitionClient(subscriptionID string, credential azcore.Token
 	return client, nil
 }
 
-// ListMetrics - Retrieves the metrics determined by the given filter for the given collection, split by partition.
+// NewListMetricsPager - Retrieves the metrics determined by the given filter for the given collection, split by partition.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
@@ -65,7 +65,7 @@ func NewCollectionPartitionClient(subscriptionID string, credential azcore.Token
 // and timeGrain. The supported operator is eq.
 // options - CollectionPartitionClientListMetricsOptions contains the optional parameters for the CollectionPartitionClient.ListMetrics
 // method.
-func (client *CollectionPartitionClient) ListMetrics(resourceGroupName string, accountName string, databaseRid string, collectionRid string, filter string, options *CollectionPartitionClientListMetricsOptions) *runtime.Pager[CollectionPartitionClientListMetricsResponse] {
+func (client *CollectionPartitionClient) NewListMetricsPager(resourceGroupName string, accountName string, databaseRid string, collectionRid string, filter string, options *CollectionPartitionClientListMetricsOptions) *runtime.Pager[CollectionPartitionClientListMetricsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CollectionPartitionClientListMetricsResponse]{
 		More: func(page CollectionPartitionClientListMetricsResponse) bool {
 			return false
@@ -131,7 +131,7 @@ func (client *CollectionPartitionClient) listMetricsHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListUsages - Retrieves the usages (most recent storage data) for the given collection, split by partition.
+// NewListUsagesPager - Retrieves the usages (most recent storage data) for the given collection, split by partition.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
@@ -139,7 +139,7 @@ func (client *CollectionPartitionClient) listMetricsHandleResponse(resp *http.Re
 // collectionRid - Cosmos DB collection rid.
 // options - CollectionPartitionClientListUsagesOptions contains the optional parameters for the CollectionPartitionClient.ListUsages
 // method.
-func (client *CollectionPartitionClient) ListUsages(resourceGroupName string, accountName string, databaseRid string, collectionRid string, options *CollectionPartitionClientListUsagesOptions) *runtime.Pager[CollectionPartitionClientListUsagesResponse] {
+func (client *CollectionPartitionClient) NewListUsagesPager(resourceGroupName string, accountName string, databaseRid string, collectionRid string, options *CollectionPartitionClientListUsagesOptions) *runtime.Pager[CollectionPartitionClientListUsagesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CollectionPartitionClientListUsagesResponse]{
 		More: func(page CollectionPartitionClientListUsagesResponse) bool {
 			return false

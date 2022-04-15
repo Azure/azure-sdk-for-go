@@ -54,7 +54,7 @@ func NewDatabaseAccountRegionClient(subscriptionID string, credential azcore.Tok
 	return client, nil
 }
 
-// ListMetrics - Retrieves the metrics determined by the given filter for the given database account and region.
+// NewListMetricsPager - Retrieves the metrics determined by the given filter for the given database account and region.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
@@ -64,7 +64,7 @@ func NewDatabaseAccountRegionClient(subscriptionID string, credential azcore.Tok
 // and timeGrain. The supported operator is eq.
 // options - DatabaseAccountRegionClientListMetricsOptions contains the optional parameters for the DatabaseAccountRegionClient.ListMetrics
 // method.
-func (client *DatabaseAccountRegionClient) ListMetrics(resourceGroupName string, accountName string, region string, filter string, options *DatabaseAccountRegionClientListMetricsOptions) *runtime.Pager[DatabaseAccountRegionClientListMetricsResponse] {
+func (client *DatabaseAccountRegionClient) NewListMetricsPager(resourceGroupName string, accountName string, region string, filter string, options *DatabaseAccountRegionClientListMetricsOptions) *runtime.Pager[DatabaseAccountRegionClientListMetricsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DatabaseAccountRegionClientListMetricsResponse]{
 		More: func(page DatabaseAccountRegionClientListMetricsResponse) bool {
 			return false

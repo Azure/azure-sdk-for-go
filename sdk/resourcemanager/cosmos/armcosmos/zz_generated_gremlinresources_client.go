@@ -584,13 +584,13 @@ func (client *GremlinResourcesClient) getGremlinGraphThroughputHandleResponse(re
 	return result, nil
 }
 
-// ListGremlinDatabases - Lists the Gremlin databases under an existing Azure Cosmos DB database account.
+// NewListGremlinDatabasesPager - Lists the Gremlin databases under an existing Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // options - GremlinResourcesClientListGremlinDatabasesOptions contains the optional parameters for the GremlinResourcesClient.ListGremlinDatabases
 // method.
-func (client *GremlinResourcesClient) ListGremlinDatabases(resourceGroupName string, accountName string, options *GremlinResourcesClientListGremlinDatabasesOptions) *runtime.Pager[GremlinResourcesClientListGremlinDatabasesResponse] {
+func (client *GremlinResourcesClient) NewListGremlinDatabasesPager(resourceGroupName string, accountName string, options *GremlinResourcesClientListGremlinDatabasesOptions) *runtime.Pager[GremlinResourcesClientListGremlinDatabasesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[GremlinResourcesClientListGremlinDatabasesResponse]{
 		More: func(page GremlinResourcesClientListGremlinDatabasesResponse) bool {
 			return false
@@ -647,14 +647,14 @@ func (client *GremlinResourcesClient) listGremlinDatabasesHandleResponse(resp *h
 	return result, nil
 }
 
-// ListGremlinGraphs - Lists the Gremlin graph under an existing Azure Cosmos DB database account.
+// NewListGremlinGraphsPager - Lists the Gremlin graph under an existing Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // databaseName - Cosmos DB database name.
 // options - GremlinResourcesClientListGremlinGraphsOptions contains the optional parameters for the GremlinResourcesClient.ListGremlinGraphs
 // method.
-func (client *GremlinResourcesClient) ListGremlinGraphs(resourceGroupName string, accountName string, databaseName string, options *GremlinResourcesClientListGremlinGraphsOptions) *runtime.Pager[GremlinResourcesClientListGremlinGraphsResponse] {
+func (client *GremlinResourcesClient) NewListGremlinGraphsPager(resourceGroupName string, accountName string, databaseName string, options *GremlinResourcesClientListGremlinGraphsOptions) *runtime.Pager[GremlinResourcesClientListGremlinGraphsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[GremlinResourcesClientListGremlinGraphsResponse]{
 		More: func(page GremlinResourcesClientListGremlinGraphsResponse) bool {
 			return false

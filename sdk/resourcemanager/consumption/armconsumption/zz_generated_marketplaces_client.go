@@ -50,8 +50,8 @@ func NewMarketplacesClient(credential azcore.TokenCredential, options *arm.Clien
 	return client, nil
 }
 
-// List - Lists the marketplaces for a scope at the defined scope. Marketplaces are available via this API only for May 1,
-// 2014 or later.
+// NewListPager - Lists the marketplaces for a scope at the defined scope. Marketplaces are available via this API only for
+// May 1, 2014 or later.
 // If the operation fails it returns an *azcore.ResponseError type.
 // scope - The scope associated with marketplace operations. This includes '/subscriptions/{subscriptionId}/' for subscription
 // scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing
@@ -63,7 +63,7 @@ func NewMarketplacesClient(credential azcore.TokenCredential, options *arm.Clien
 // billing period at department scope use
 // '/providers/Microsoft.Billing/departments/{departmentId}/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}'
 // options - MarketplacesClientListOptions contains the optional parameters for the MarketplacesClient.List method.
-func (client *MarketplacesClient) List(scope string, options *MarketplacesClientListOptions) *runtime.Pager[MarketplacesClientListResponse] {
+func (client *MarketplacesClient) NewListPager(scope string, options *MarketplacesClientListOptions) *runtime.Pager[MarketplacesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MarketplacesClientListResponse]{
 		More: func(page MarketplacesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

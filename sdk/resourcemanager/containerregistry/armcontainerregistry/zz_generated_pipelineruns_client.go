@@ -247,12 +247,12 @@ func (client *PipelineRunsClient) getHandleResponse(resp *http.Response) (Pipeli
 	return result, nil
 }
 
-// List - Lists all the pipeline runs for the specified container registry.
+// NewListPager - Lists all the pipeline runs for the specified container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // options - PipelineRunsClientListOptions contains the optional parameters for the PipelineRunsClient.List method.
-func (client *PipelineRunsClient) List(resourceGroupName string, registryName string, options *PipelineRunsClientListOptions) *runtime.Pager[PipelineRunsClientListResponse] {
+func (client *PipelineRunsClient) NewListPager(resourceGroupName string, registryName string, options *PipelineRunsClientListOptions) *runtime.Pager[PipelineRunsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PipelineRunsClientListResponse]{
 		More: func(page PipelineRunsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -1,5 +1,21 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*CustomResourceProviderClient.ListBySubscription` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*AssociationsClient.ListAll` has been removed
+- Function `*CustomResourceProviderClient.ListByResourceGroup` has been removed
+
+### Features Added
+
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*AssociationsClient.NewListAllPager(string, *AssociationsClientListAllOptions) *runtime.Pager[AssociationsClientListAllResponse]`
+- New function `*CustomResourceProviderClient.NewListBySubscriptionPager(*CustomResourceProviderClientListBySubscriptionOptions) *runtime.Pager[CustomResourceProviderClientListBySubscriptionResponse]`
+- New function `*CustomResourceProviderClient.NewListByResourceGroupPager(string, *CustomResourceProviderClientListByResourceGroupOptions) *runtime.Pager[CustomResourceProviderClientListByResourceGroupResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

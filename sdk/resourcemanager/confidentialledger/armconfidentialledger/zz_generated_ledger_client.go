@@ -232,12 +232,12 @@ func (client *LedgerClient) getHandleResponse(resp *http.Response) (LedgerClient
 	return result, nil
 }
 
-// ListByResourceGroup - Retrieves the properties of all Confidential Ledgers.
+// NewListByResourceGroupPager - Retrieves the properties of all Confidential Ledgers.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - LedgerClientListByResourceGroupOptions contains the optional parameters for the LedgerClient.ListByResourceGroup
 // method.
-func (client *LedgerClient) ListByResourceGroup(resourceGroupName string, options *LedgerClientListByResourceGroupOptions) *runtime.Pager[LedgerClientListByResourceGroupResponse] {
+func (client *LedgerClient) NewListByResourceGroupPager(resourceGroupName string, options *LedgerClientListByResourceGroupOptions) *runtime.Pager[LedgerClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LedgerClientListByResourceGroupResponse]{
 		More: func(page LedgerClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -299,11 +299,11 @@ func (client *LedgerClient) listByResourceGroupHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListBySubscription - Retrieves the properties of all Confidential Ledgers.
+// NewListBySubscriptionPager - Retrieves the properties of all Confidential Ledgers.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - LedgerClientListBySubscriptionOptions contains the optional parameters for the LedgerClient.ListBySubscription
 // method.
-func (client *LedgerClient) ListBySubscription(options *LedgerClientListBySubscriptionOptions) *runtime.Pager[LedgerClientListBySubscriptionResponse] {
+func (client *LedgerClient) NewListBySubscriptionPager(options *LedgerClientListBySubscriptionOptions) *runtime.Pager[LedgerClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LedgerClientListBySubscriptionResponse]{
 		More: func(page LedgerClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

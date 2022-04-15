@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBCassandraKeyspaceList.json
-func ExampleCassandraResourcesClient_ListCassandraKeyspaces() {
+func ExampleCassandraResourcesClient_NewListCassandraKeyspacesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleCassandraResourcesClient_ListCassandraKeyspaces() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListCassandraKeyspaces("<resource-group-name>",
+	pager := client.NewListCassandraKeyspacesPager("<resource-group-name>",
 		"<account-name>",
 		nil)
 	for pager.More() {
@@ -273,7 +273,7 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraKeyspaceToManualThroug
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBCassandraTableList.json
-func ExampleCassandraResourcesClient_ListCassandraTables() {
+func ExampleCassandraResourcesClient_NewListCassandraTablesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -285,7 +285,7 @@ func ExampleCassandraResourcesClient_ListCassandraTables() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListCassandraTables("<resource-group-name>",
+	pager := client.NewListCassandraTablesPager("<resource-group-name>",
 		"<account-name>",
 		"<keyspace-name>",
 		nil)
@@ -552,7 +552,7 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraTableToManualThroughpu
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBCassandraViewList.json
-func ExampleCassandraResourcesClient_ListCassandraViews() {
+func ExampleCassandraResourcesClient_NewListCassandraViewsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -564,7 +564,7 @@ func ExampleCassandraResourcesClient_ListCassandraViews() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListCassandraViews("<resource-group-name>",
+	pager := client.NewListCassandraViewsPager("<resource-group-name>",
 		"<account-name>",
 		"<keyspace-name>",
 		nil)

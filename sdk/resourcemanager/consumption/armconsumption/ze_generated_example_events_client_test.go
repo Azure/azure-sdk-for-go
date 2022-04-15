@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/EventsListByBillingProfile.json
-func ExampleEventsClient_ListByBillingProfile() {
+func ExampleEventsClient_NewListByBillingProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleEventsClient_ListByBillingProfile() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByBillingProfile("<billing-account-id>",
+	pager := client.NewListByBillingProfilePager("<billing-account-id>",
 		"<billing-profile-id>",
 		"<start-date>",
 		"<end-date>",
@@ -48,7 +48,7 @@ func ExampleEventsClient_ListByBillingProfile() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/EventsGetByBillingAccount.json
-func ExampleEventsClient_ListByBillingAccount() {
+func ExampleEventsClient_NewListByBillingAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -60,7 +60,7 @@ func ExampleEventsClient_ListByBillingAccount() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByBillingAccount("<billing-account-id>",
+	pager := client.NewListByBillingAccountPager("<billing-account-id>",
 		&armconsumption.EventsClientListByBillingAccountOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

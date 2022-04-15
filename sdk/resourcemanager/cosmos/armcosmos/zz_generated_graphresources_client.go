@@ -246,13 +246,13 @@ func (client *GraphResourcesClient) getGraphHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListGraphs - Lists the graphs under an existing Azure Cosmos DB database account.
+// NewListGraphsPager - Lists the graphs under an existing Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // options - GraphResourcesClientListGraphsOptions contains the optional parameters for the GraphResourcesClient.ListGraphs
 // method.
-func (client *GraphResourcesClient) ListGraphs(resourceGroupName string, accountName string, options *GraphResourcesClientListGraphsOptions) *runtime.Pager[GraphResourcesClientListGraphsResponse] {
+func (client *GraphResourcesClient) NewListGraphsPager(resourceGroupName string, accountName string, options *GraphResourcesClientListGraphsOptions) *runtime.Pager[GraphResourcesClientListGraphsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[GraphResourcesClientListGraphsResponse]{
 		More: func(page GraphResourcesClientListGraphsResponse) bool {
 			return false

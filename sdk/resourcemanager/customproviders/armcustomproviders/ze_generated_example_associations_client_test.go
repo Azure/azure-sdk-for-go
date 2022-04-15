@@ -108,7 +108,7 @@ func ExampleAssociationsClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/customproviders/resource-manager/Microsoft.CustomProviders/preview/2018-09-01-preview/examples/getAllAssociations.json
-func ExampleAssociationsClient_ListAll() {
+func ExampleAssociationsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -120,7 +120,7 @@ func ExampleAssociationsClient_ListAll() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListAll("<scope>",
+	pager := client.NewListAllPager("<scope>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

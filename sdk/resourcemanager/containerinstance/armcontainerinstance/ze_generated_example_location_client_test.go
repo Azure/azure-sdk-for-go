@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupUsage.json
-func ExampleLocationClient_ListUsage() {
+func ExampleLocationClient_NewListUsagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleLocationClient_ListUsage() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListUsage("<location>",
+	pager := client.NewListUsagePager("<location>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -45,7 +45,7 @@ func ExampleLocationClient_ListUsage() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/CachedImagesList.json
-func ExampleLocationClient_ListCachedImages() {
+func ExampleLocationClient_NewListCachedImagesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -57,7 +57,7 @@ func ExampleLocationClient_ListCachedImages() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListCachedImages("<location>",
+	pager := client.NewListCachedImagesPager("<location>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -73,7 +73,7 @@ func ExampleLocationClient_ListCachedImages() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/CapabilitiesList.json
-func ExampleLocationClient_ListCapabilities() {
+func ExampleLocationClient_NewListCapabilitiesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -85,7 +85,7 @@ func ExampleLocationClient_ListCapabilities() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListCapabilities("<location>",
+	pager := client.NewListCapabilitiesPager("<location>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

@@ -51,7 +51,7 @@ func NewReservationsSummariesClient(credential azcore.TokenCredential, options *
 	return client, nil
 }
 
-// List - Lists the reservations summaries for the defined scope daily or monthly grain.
+// NewListPager - Lists the reservations summaries for the defined scope daily or monthly grain.
 // If the operation fails it returns an *azcore.ResponseError type.
 // scope - The scope associated with reservations summaries operations. This includes '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}'
 // for BillingAccount scope (legacy), and
@@ -60,7 +60,7 @@ func NewReservationsSummariesClient(credential azcore.TokenCredential, options *
 // grain - Can be daily or monthly
 // options - ReservationsSummariesClientListOptions contains the optional parameters for the ReservationsSummariesClient.List
 // method.
-func (client *ReservationsSummariesClient) List(scope string, grain Datagrain, options *ReservationsSummariesClientListOptions) *runtime.Pager[ReservationsSummariesClientListResponse] {
+func (client *ReservationsSummariesClient) NewListPager(scope string, grain Datagrain, options *ReservationsSummariesClientListOptions) *runtime.Pager[ReservationsSummariesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReservationsSummariesClientListResponse]{
 		More: func(page ReservationsSummariesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -128,13 +128,13 @@ func (client *ReservationsSummariesClient) listHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListByReservationOrder - Lists the reservations summaries for daily or monthly grain.
+// NewListByReservationOrderPager - Lists the reservations summaries for daily or monthly grain.
 // If the operation fails it returns an *azcore.ResponseError type.
 // reservationOrderID - Order Id of the reservation
 // grain - Can be daily or monthly
 // options - ReservationsSummariesClientListByReservationOrderOptions contains the optional parameters for the ReservationsSummariesClient.ListByReservationOrder
 // method.
-func (client *ReservationsSummariesClient) ListByReservationOrder(reservationOrderID string, grain Datagrain, options *ReservationsSummariesClientListByReservationOrderOptions) *runtime.Pager[ReservationsSummariesClientListByReservationOrderResponse] {
+func (client *ReservationsSummariesClient) NewListByReservationOrderPager(reservationOrderID string, grain Datagrain, options *ReservationsSummariesClientListByReservationOrderOptions) *runtime.Pager[ReservationsSummariesClientListByReservationOrderResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReservationsSummariesClientListByReservationOrderResponse]{
 		More: func(page ReservationsSummariesClientListByReservationOrderResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -193,14 +193,14 @@ func (client *ReservationsSummariesClient) listByReservationOrderHandleResponse(
 	return result, nil
 }
 
-// ListByReservationOrderAndReservation - Lists the reservations summaries for daily or monthly grain.
+// NewListByReservationOrderAndReservationPager - Lists the reservations summaries for daily or monthly grain.
 // If the operation fails it returns an *azcore.ResponseError type.
 // reservationOrderID - Order Id of the reservation
 // reservationID - Id of the reservation
 // grain - Can be daily or monthly
 // options - ReservationsSummariesClientListByReservationOrderAndReservationOptions contains the optional parameters for the
 // ReservationsSummariesClient.ListByReservationOrderAndReservation method.
-func (client *ReservationsSummariesClient) ListByReservationOrderAndReservation(reservationOrderID string, reservationID string, grain Datagrain, options *ReservationsSummariesClientListByReservationOrderAndReservationOptions) *runtime.Pager[ReservationsSummariesClientListByReservationOrderAndReservationResponse] {
+func (client *ReservationsSummariesClient) NewListByReservationOrderAndReservationPager(reservationOrderID string, reservationID string, grain Datagrain, options *ReservationsSummariesClientListByReservationOrderAndReservationOptions) *runtime.Pager[ReservationsSummariesClientListByReservationOrderAndReservationResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReservationsSummariesClientListByReservationOrderAndReservationResponse]{
 		More: func(page ReservationsSummariesClientListByReservationOrderAndReservationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

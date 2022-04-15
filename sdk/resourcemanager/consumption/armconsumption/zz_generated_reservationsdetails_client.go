@@ -51,7 +51,7 @@ func NewReservationsDetailsClient(credential azcore.TokenCredential, options *ar
 	return client, nil
 }
 
-// List - Lists the reservations details for the defined scope and provided date range.
+// NewListPager - Lists the reservations details for the defined scope and provided date range.
 // If the operation fails it returns an *azcore.ResponseError type.
 // scope - The scope associated with reservations details operations. This includes '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}'
 // for BillingAccount scope (legacy), and
@@ -59,7 +59,7 @@ func NewReservationsDetailsClient(credential azcore.TokenCredential, options *ar
 // scope (modern).
 // options - ReservationsDetailsClientListOptions contains the optional parameters for the ReservationsDetailsClient.List
 // method.
-func (client *ReservationsDetailsClient) List(scope string, options *ReservationsDetailsClientListOptions) *runtime.Pager[ReservationsDetailsClientListResponse] {
+func (client *ReservationsDetailsClient) NewListPager(scope string, options *ReservationsDetailsClientListOptions) *runtime.Pager[ReservationsDetailsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReservationsDetailsClientListResponse]{
 		More: func(page ReservationsDetailsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -126,14 +126,14 @@ func (client *ReservationsDetailsClient) listHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListByReservationOrder - Lists the reservations details for provided date range.
+// NewListByReservationOrderPager - Lists the reservations details for provided date range.
 // If the operation fails it returns an *azcore.ResponseError type.
 // reservationOrderID - Order Id of the reservation
 // filter - Filter reservation details by date range. The properties/UsageDate for start date and end date. The filter supports
 // 'le' and 'ge'
 // options - ReservationsDetailsClientListByReservationOrderOptions contains the optional parameters for the ReservationsDetailsClient.ListByReservationOrder
 // method.
-func (client *ReservationsDetailsClient) ListByReservationOrder(reservationOrderID string, filter string, options *ReservationsDetailsClientListByReservationOrderOptions) *runtime.Pager[ReservationsDetailsClientListByReservationOrderResponse] {
+func (client *ReservationsDetailsClient) NewListByReservationOrderPager(reservationOrderID string, filter string, options *ReservationsDetailsClientListByReservationOrderOptions) *runtime.Pager[ReservationsDetailsClientListByReservationOrderResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReservationsDetailsClientListByReservationOrderResponse]{
 		More: func(page ReservationsDetailsClientListByReservationOrderResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -189,7 +189,7 @@ func (client *ReservationsDetailsClient) listByReservationOrderHandleResponse(re
 	return result, nil
 }
 
-// ListByReservationOrderAndReservation - Lists the reservations details for provided date range.
+// NewListByReservationOrderAndReservationPager - Lists the reservations details for provided date range.
 // If the operation fails it returns an *azcore.ResponseError type.
 // reservationOrderID - Order Id of the reservation
 // reservationID - Id of the reservation
@@ -197,7 +197,7 @@ func (client *ReservationsDetailsClient) listByReservationOrderHandleResponse(re
 // 'le' and 'ge'
 // options - ReservationsDetailsClientListByReservationOrderAndReservationOptions contains the optional parameters for the
 // ReservationsDetailsClient.ListByReservationOrderAndReservation method.
-func (client *ReservationsDetailsClient) ListByReservationOrderAndReservation(reservationOrderID string, reservationID string, filter string, options *ReservationsDetailsClientListByReservationOrderAndReservationOptions) *runtime.Pager[ReservationsDetailsClientListByReservationOrderAndReservationResponse] {
+func (client *ReservationsDetailsClient) NewListByReservationOrderAndReservationPager(reservationOrderID string, reservationID string, filter string, options *ReservationsDetailsClientListByReservationOrderAndReservationOptions) *runtime.Pager[ReservationsDetailsClientListByReservationOrderAndReservationResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReservationsDetailsClientListByReservationOrderAndReservationResponse]{
 		More: func(page ReservationsDetailsClientListByReservationOrderAndReservationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

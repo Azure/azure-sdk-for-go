@@ -305,12 +305,12 @@ func (client *WebhooksClient) getCallbackConfigHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// List - Lists all the webhooks for the specified container registry.
+// NewListPager - Lists all the webhooks for the specified container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // options - WebhooksClientListOptions contains the optional parameters for the WebhooksClient.List method.
-func (client *WebhooksClient) List(resourceGroupName string, registryName string, options *WebhooksClientListOptions) *runtime.Pager[WebhooksClientListResponse] {
+func (client *WebhooksClient) NewListPager(resourceGroupName string, registryName string, options *WebhooksClientListOptions) *runtime.Pager[WebhooksClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebhooksClientListResponse]{
 		More: func(page WebhooksClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -373,13 +373,13 @@ func (client *WebhooksClient) listHandleResponse(resp *http.Response) (WebhooksC
 	return result, nil
 }
 
-// ListEvents - Lists recent events for the specified webhook.
+// NewListEventsPager - Lists recent events for the specified webhook.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // webhookName - The name of the webhook.
 // options - WebhooksClientListEventsOptions contains the optional parameters for the WebhooksClient.ListEvents method.
-func (client *WebhooksClient) ListEvents(resourceGroupName string, registryName string, webhookName string, options *WebhooksClientListEventsOptions) *runtime.Pager[WebhooksClientListEventsResponse] {
+func (client *WebhooksClient) NewListEventsPager(resourceGroupName string, registryName string, webhookName string, options *WebhooksClientListEventsOptions) *runtime.Pager[WebhooksClientListEventsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebhooksClientListEventsResponse]{
 		More: func(page WebhooksClientListEventsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -306,12 +306,12 @@ func (client *AgentPoolsClient) getQueueStatusHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// List - Lists all the agent pools for a specified container registry.
+// NewListPager - Lists all the agent pools for a specified container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // options - AgentPoolsClientListOptions contains the optional parameters for the AgentPoolsClient.List method.
-func (client *AgentPoolsClient) List(resourceGroupName string, registryName string, options *AgentPoolsClientListOptions) *runtime.Pager[AgentPoolsClientListResponse] {
+func (client *AgentPoolsClient) NewListPager(resourceGroupName string, registryName string, options *AgentPoolsClientListOptions) *runtime.Pager[AgentPoolsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AgentPoolsClientListResponse]{
 		More: func(page AgentPoolsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

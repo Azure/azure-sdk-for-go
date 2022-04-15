@@ -240,12 +240,12 @@ func (client *RunsClient) getLogSasURLHandleResponse(resp *http.Response) (RunsC
 	return result, nil
 }
 
-// List - Gets all the runs for a registry.
+// NewListPager - Gets all the runs for a registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // options - RunsClientListOptions contains the optional parameters for the RunsClient.List method.
-func (client *RunsClient) List(resourceGroupName string, registryName string, options *RunsClientListOptions) *runtime.Pager[RunsClientListResponse] {
+func (client *RunsClient) NewListPager(resourceGroupName string, registryName string, options *RunsClientListOptions) *runtime.Pager[RunsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RunsClientListResponse]{
 		More: func(page RunsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

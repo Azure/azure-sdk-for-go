@@ -238,12 +238,12 @@ func (client *OrganizationClient) getHandleResponse(resp *http.Response) (Organi
 	return result, nil
 }
 
-// ListByResourceGroup - List all Organizations under the specified resource group.
+// NewListByResourceGroupPager - List all Organizations under the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Resource group name
 // options - OrganizationClientListByResourceGroupOptions contains the optional parameters for the OrganizationClient.ListByResourceGroup
 // method.
-func (client *OrganizationClient) ListByResourceGroup(resourceGroupName string, options *OrganizationClientListByResourceGroupOptions) *runtime.Pager[OrganizationClientListByResourceGroupResponse] {
+func (client *OrganizationClient) NewListByResourceGroupPager(resourceGroupName string, options *OrganizationClientListByResourceGroupOptions) *runtime.Pager[OrganizationClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[OrganizationClientListByResourceGroupResponse]{
 		More: func(page OrganizationClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -302,11 +302,11 @@ func (client *OrganizationClient) listByResourceGroupHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListBySubscription - List all organizations under the specified subscription.
+// NewListBySubscriptionPager - List all organizations under the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - OrganizationClientListBySubscriptionOptions contains the optional parameters for the OrganizationClient.ListBySubscription
 // method.
-func (client *OrganizationClient) ListBySubscription(options *OrganizationClientListBySubscriptionOptions) *runtime.Pager[OrganizationClientListBySubscriptionResponse] {
+func (client *OrganizationClient) NewListBySubscriptionPager(options *OrganizationClientListBySubscriptionOptions) *runtime.Pager[OrganizationClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[OrganizationClientListBySubscriptionResponse]{
 		More: func(page OrganizationClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

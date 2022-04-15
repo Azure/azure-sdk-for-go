@@ -247,13 +247,13 @@ func (client *NotebookWorkspacesClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// ListByDatabaseAccount - Gets the notebook workspace resources of an existing Cosmos DB account.
+// NewListByDatabaseAccountPager - Gets the notebook workspace resources of an existing Cosmos DB account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // options - NotebookWorkspacesClientListByDatabaseAccountOptions contains the optional parameters for the NotebookWorkspacesClient.ListByDatabaseAccount
 // method.
-func (client *NotebookWorkspacesClient) ListByDatabaseAccount(resourceGroupName string, accountName string, options *NotebookWorkspacesClientListByDatabaseAccountOptions) *runtime.Pager[NotebookWorkspacesClientListByDatabaseAccountResponse] {
+func (client *NotebookWorkspacesClient) NewListByDatabaseAccountPager(resourceGroupName string, accountName string, options *NotebookWorkspacesClientListByDatabaseAccountOptions) *runtime.Pager[NotebookWorkspacesClientListByDatabaseAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[NotebookWorkspacesClientListByDatabaseAccountResponse]{
 		More: func(page NotebookWorkspacesClientListByDatabaseAccountResponse) bool {
 			return false

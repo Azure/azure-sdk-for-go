@@ -54,7 +54,7 @@ func NewPartitionKeyRangeIDClient(subscriptionID string, credential azcore.Token
 	return client, nil
 }
 
-// ListMetrics - Retrieves the metrics determined by the given filter for the given partition key range id.
+// NewListMetricsPager - Retrieves the metrics determined by the given filter for the given partition key range id.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
@@ -66,7 +66,7 @@ func NewPartitionKeyRangeIDClient(subscriptionID string, credential azcore.Token
 // and timeGrain. The supported operator is eq.
 // options - PartitionKeyRangeIDClientListMetricsOptions contains the optional parameters for the PartitionKeyRangeIDClient.ListMetrics
 // method.
-func (client *PartitionKeyRangeIDClient) ListMetrics(resourceGroupName string, accountName string, databaseRid string, collectionRid string, partitionKeyRangeID string, filter string, options *PartitionKeyRangeIDClientListMetricsOptions) *runtime.Pager[PartitionKeyRangeIDClientListMetricsResponse] {
+func (client *PartitionKeyRangeIDClient) NewListMetricsPager(resourceGroupName string, accountName string, databaseRid string, collectionRid string, partitionKeyRangeID string, filter string, options *PartitionKeyRangeIDClientListMetricsOptions) *runtime.Pager[PartitionKeyRangeIDClientListMetricsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PartitionKeyRangeIDClientListMetricsResponse]{
 		More: func(page PartitionKeyRangeIDClientListMetricsResponse) bool {
 			return false

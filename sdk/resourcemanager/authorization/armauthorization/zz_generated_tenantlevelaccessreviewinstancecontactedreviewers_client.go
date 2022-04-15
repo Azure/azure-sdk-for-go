@@ -51,13 +51,13 @@ func NewTenantLevelAccessReviewInstanceContactedReviewersClient(credential azcor
 	return client, nil
 }
 
-// List - Get access review instance contacted reviewers
+// NewListPager - Get access review instance contacted reviewers
 // If the operation fails it returns an *azcore.ResponseError type.
 // scheduleDefinitionID - The id of the access review schedule definition.
 // id - The id of the access review instance.
 // options - TenantLevelAccessReviewInstanceContactedReviewersClientListOptions contains the optional parameters for the TenantLevelAccessReviewInstanceContactedReviewersClient.List
 // method.
-func (client *TenantLevelAccessReviewInstanceContactedReviewersClient) List(scheduleDefinitionID string, id string, options *TenantLevelAccessReviewInstanceContactedReviewersClientListOptions) *runtime.Pager[TenantLevelAccessReviewInstanceContactedReviewersClientListResponse] {
+func (client *TenantLevelAccessReviewInstanceContactedReviewersClient) NewListPager(scheduleDefinitionID string, id string, options *TenantLevelAccessReviewInstanceContactedReviewersClientListOptions) *runtime.Pager[TenantLevelAccessReviewInstanceContactedReviewersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TenantLevelAccessReviewInstanceContactedReviewersClientListResponse]{
 		More: func(page TenantLevelAccessReviewInstanceContactedReviewersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

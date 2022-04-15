@@ -54,13 +54,13 @@ func NewAccessReviewInstanceDecisionsClient(subscriptionID string, credential az
 	return client, nil
 }
 
-// List - Get access review instance decisions
+// NewListPager - Get access review instance decisions
 // If the operation fails it returns an *azcore.ResponseError type.
 // scheduleDefinitionID - The id of the access review schedule definition.
 // id - The id of the access review instance.
 // options - AccessReviewInstanceDecisionsClientListOptions contains the optional parameters for the AccessReviewInstanceDecisionsClient.List
 // method.
-func (client *AccessReviewInstanceDecisionsClient) List(scheduleDefinitionID string, id string, options *AccessReviewInstanceDecisionsClientListOptions) *runtime.Pager[AccessReviewInstanceDecisionsClientListResponse] {
+func (client *AccessReviewInstanceDecisionsClient) NewListPager(scheduleDefinitionID string, id string, options *AccessReviewInstanceDecisionsClientListOptions) *runtime.Pager[AccessReviewInstanceDecisionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccessReviewInstanceDecisionsClientListResponse]{
 		More: func(page AccessReviewInstanceDecisionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

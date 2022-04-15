@@ -235,10 +235,10 @@ func (client *ZonesClient) getHandleResponse(resp *http.Response) (ZonesClientGe
 	return result, nil
 }
 
-// List - Lists the DNS zones in all resource groups in a subscription.
+// NewListPager - Lists the DNS zones in all resource groups in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ZonesClientListOptions contains the optional parameters for the ZonesClient.List method.
-func (client *ZonesClient) List(options *ZonesClientListOptions) *runtime.Pager[ZonesClientListResponse] {
+func (client *ZonesClient) NewListPager(options *ZonesClientListOptions) *runtime.Pager[ZonesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ZonesClientListResponse]{
 		More: func(page ZonesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -296,12 +296,12 @@ func (client *ZonesClient) listHandleResponse(resp *http.Response) (ZonesClientL
 	return result, nil
 }
 
-// ListByResourceGroup - Lists the DNS zones within a resource group.
+// NewListByResourceGroupPager - Lists the DNS zones within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - ZonesClientListByResourceGroupOptions contains the optional parameters for the ZonesClient.ListByResourceGroup
 // method.
-func (client *ZonesClient) ListByResourceGroup(resourceGroupName string, options *ZonesClientListByResourceGroupOptions) *runtime.Pager[ZonesClientListByResourceGroupResponse] {
+func (client *ZonesClient) NewListByResourceGroupPager(resourceGroupName string, options *ZonesClientListByResourceGroupOptions) *runtime.Pager[ZonesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ZonesClientListByResourceGroupResponse]{
 		More: func(page ZonesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

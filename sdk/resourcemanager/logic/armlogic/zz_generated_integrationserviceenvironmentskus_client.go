@@ -54,13 +54,13 @@ func NewIntegrationServiceEnvironmentSKUsClient(subscriptionID string, credentia
 	return client, nil
 }
 
-// List - Gets a list of integration service environment Skus.
+// NewListPager - Gets a list of integration service environment Skus.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroup - The resource group.
 // integrationServiceEnvironmentName - The integration service environment name.
 // options - IntegrationServiceEnvironmentSKUsClientListOptions contains the optional parameters for the IntegrationServiceEnvironmentSKUsClient.List
 // method.
-func (client *IntegrationServiceEnvironmentSKUsClient) List(resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentSKUsClientListOptions) *runtime.Pager[IntegrationServiceEnvironmentSKUsClientListResponse] {
+func (client *IntegrationServiceEnvironmentSKUsClient) NewListPager(resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentSKUsClientListOptions) *runtime.Pager[IntegrationServiceEnvironmentSKUsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IntegrationServiceEnvironmentSKUsClientListResponse]{
 		More: func(page IntegrationServiceEnvironmentSKUsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -230,13 +230,13 @@ func (client *IntegrationAccountPartnersClient) getHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// List - Gets a list of integration account partners.
+// NewListPager - Gets a list of integration account partners.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // options - IntegrationAccountPartnersClientListOptions contains the optional parameters for the IntegrationAccountPartnersClient.List
 // method.
-func (client *IntegrationAccountPartnersClient) List(resourceGroupName string, integrationAccountName string, options *IntegrationAccountPartnersClientListOptions) *runtime.Pager[IntegrationAccountPartnersClientListResponse] {
+func (client *IntegrationAccountPartnersClient) NewListPager(resourceGroupName string, integrationAccountName string, options *IntegrationAccountPartnersClientListOptions) *runtime.Pager[IntegrationAccountPartnersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IntegrationAccountPartnersClientListResponse]{
 		More: func(page IntegrationAccountPartnersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -54,14 +54,14 @@ func NewIntegrationServiceEnvironmentManagedAPIOperationsClient(subscriptionID s
 	return client, nil
 }
 
-// List - Gets the managed Api operations.
+// NewListPager - Gets the managed Api operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroup - The resource group.
 // integrationServiceEnvironmentName - The integration service environment name.
 // apiName - The api name.
 // options - IntegrationServiceEnvironmentManagedAPIOperationsClientListOptions contains the optional parameters for the IntegrationServiceEnvironmentManagedAPIOperationsClient.List
 // method.
-func (client *IntegrationServiceEnvironmentManagedAPIOperationsClient) List(resourceGroup string, integrationServiceEnvironmentName string, apiName string, options *IntegrationServiceEnvironmentManagedAPIOperationsClientListOptions) *runtime.Pager[IntegrationServiceEnvironmentManagedAPIOperationsClientListResponse] {
+func (client *IntegrationServiceEnvironmentManagedAPIOperationsClient) NewListPager(resourceGroup string, integrationServiceEnvironmentName string, apiName string, options *IntegrationServiceEnvironmentManagedAPIOperationsClientListOptions) *runtime.Pager[IntegrationServiceEnvironmentManagedAPIOperationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IntegrationServiceEnvironmentManagedAPIOperationsClientListResponse]{
 		More: func(page IntegrationServiceEnvironmentManagedAPIOperationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

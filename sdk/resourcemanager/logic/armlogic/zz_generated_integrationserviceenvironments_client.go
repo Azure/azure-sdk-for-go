@@ -220,12 +220,12 @@ func (client *IntegrationServiceEnvironmentsClient) getHandleResponse(resp *http
 	return result, nil
 }
 
-// ListByResourceGroup - Gets a list of integration service environments by resource group.
+// NewListByResourceGroupPager - Gets a list of integration service environments by resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroup - The resource group.
 // options - IntegrationServiceEnvironmentsClientListByResourceGroupOptions contains the optional parameters for the IntegrationServiceEnvironmentsClient.ListByResourceGroup
 // method.
-func (client *IntegrationServiceEnvironmentsClient) ListByResourceGroup(resourceGroup string, options *IntegrationServiceEnvironmentsClientListByResourceGroupOptions) *runtime.Pager[IntegrationServiceEnvironmentsClientListByResourceGroupResponse] {
+func (client *IntegrationServiceEnvironmentsClient) NewListByResourceGroupPager(resourceGroup string, options *IntegrationServiceEnvironmentsClientListByResourceGroupOptions) *runtime.Pager[IntegrationServiceEnvironmentsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IntegrationServiceEnvironmentsClientListByResourceGroupResponse]{
 		More: func(page IntegrationServiceEnvironmentsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -287,11 +287,11 @@ func (client *IntegrationServiceEnvironmentsClient) listByResourceGroupHandleRes
 	return result, nil
 }
 
-// ListBySubscription - Gets a list of integration service environments by subscription.
+// NewListBySubscriptionPager - Gets a list of integration service environments by subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - IntegrationServiceEnvironmentsClientListBySubscriptionOptions contains the optional parameters for the IntegrationServiceEnvironmentsClient.ListBySubscription
 // method.
-func (client *IntegrationServiceEnvironmentsClient) ListBySubscription(options *IntegrationServiceEnvironmentsClientListBySubscriptionOptions) *runtime.Pager[IntegrationServiceEnvironmentsClientListBySubscriptionResponse] {
+func (client *IntegrationServiceEnvironmentsClient) NewListBySubscriptionPager(options *IntegrationServiceEnvironmentsClientListBySubscriptionOptions) *runtime.Pager[IntegrationServiceEnvironmentsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IntegrationServiceEnvironmentsClientListBySubscriptionResponse]{
 		More: func(page IntegrationServiceEnvironmentsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

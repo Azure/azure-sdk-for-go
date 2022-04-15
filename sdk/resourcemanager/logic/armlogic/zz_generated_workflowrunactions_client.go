@@ -120,13 +120,13 @@ func (client *WorkflowRunActionsClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// List - Gets a list of workflow run actions.
+// NewListPager - Gets a list of workflow run actions.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
 // runName - The workflow run name.
 // options - WorkflowRunActionsClientListOptions contains the optional parameters for the WorkflowRunActionsClient.List method.
-func (client *WorkflowRunActionsClient) List(resourceGroupName string, workflowName string, runName string, options *WorkflowRunActionsClientListOptions) *runtime.Pager[WorkflowRunActionsClientListResponse] {
+func (client *WorkflowRunActionsClient) NewListPager(resourceGroupName string, workflowName string, runName string, options *WorkflowRunActionsClientListOptions) *runtime.Pager[WorkflowRunActionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkflowRunActionsClientListResponse]{
 		More: func(page WorkflowRunActionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -199,7 +199,7 @@ func (client *WorkflowRunActionsClient) listHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListExpressionTraces - Lists a workflow run expression trace.
+// NewListExpressionTracesPager - Lists a workflow run expression trace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
@@ -207,7 +207,7 @@ func (client *WorkflowRunActionsClient) listHandleResponse(resp *http.Response) 
 // actionName - The workflow action name.
 // options - WorkflowRunActionsClientListExpressionTracesOptions contains the optional parameters for the WorkflowRunActionsClient.ListExpressionTraces
 // method.
-func (client *WorkflowRunActionsClient) ListExpressionTraces(resourceGroupName string, workflowName string, runName string, actionName string, options *WorkflowRunActionsClientListExpressionTracesOptions) *runtime.Pager[WorkflowRunActionsClientListExpressionTracesResponse] {
+func (client *WorkflowRunActionsClient) NewListExpressionTracesPager(resourceGroupName string, workflowName string, runName string, actionName string, options *WorkflowRunActionsClientListExpressionTracesOptions) *runtime.Pager[WorkflowRunActionsClientListExpressionTracesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkflowRunActionsClientListExpressionTracesResponse]{
 		More: func(page WorkflowRunActionsClientListExpressionTracesResponse) bool {
 			return false

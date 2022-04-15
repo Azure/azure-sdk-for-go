@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/WorkflowRunActionRepetitions_List.json
-func ExampleWorkflowRunActionRepetitionsClient_List() {
+func ExampleWorkflowRunActionRepetitionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleWorkflowRunActionRepetitionsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-group-name>",
+	pager := client.NewListPager("<resource-group-name>",
 		"<workflow-name>",
 		"<run-name>",
 		"<action-name>",
@@ -76,7 +76,7 @@ func ExampleWorkflowRunActionRepetitionsClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/WorkflowRunActionRepetitions_ListExpressionTraces.json
-func ExampleWorkflowRunActionRepetitionsClient_ListExpressionTraces() {
+func ExampleWorkflowRunActionRepetitionsClient_NewListExpressionTracesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -88,7 +88,7 @@ func ExampleWorkflowRunActionRepetitionsClient_ListExpressionTraces() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListExpressionTraces("<resource-group-name>",
+	pager := client.NewListExpressionTracesPager("<resource-group-name>",
 		"<workflow-name>",
 		"<run-name>",
 		"<action-name>",

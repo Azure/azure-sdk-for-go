@@ -230,13 +230,13 @@ func (client *IntegrationAccountSessionsClient) getHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// List - Gets a list of integration account sessions.
+// NewListPager - Gets a list of integration account sessions.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // options - IntegrationAccountSessionsClientListOptions contains the optional parameters for the IntegrationAccountSessionsClient.List
 // method.
-func (client *IntegrationAccountSessionsClient) List(resourceGroupName string, integrationAccountName string, options *IntegrationAccountSessionsClientListOptions) *runtime.Pager[IntegrationAccountSessionsClientListResponse] {
+func (client *IntegrationAccountSessionsClient) NewListPager(resourceGroupName string, integrationAccountName string, options *IntegrationAccountSessionsClientListOptions) *runtime.Pager[IntegrationAccountSessionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IntegrationAccountSessionsClientListResponse]{
 		More: func(page IntegrationAccountSessionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -121,14 +121,14 @@ func (client *WorkflowTriggerHistoriesClient) getHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// List - Gets a list of workflow trigger histories.
+// NewListPager - Gets a list of workflow trigger histories.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
 // triggerName - The workflow trigger name.
 // options - WorkflowTriggerHistoriesClientListOptions contains the optional parameters for the WorkflowTriggerHistoriesClient.List
 // method.
-func (client *WorkflowTriggerHistoriesClient) List(resourceGroupName string, workflowName string, triggerName string, options *WorkflowTriggerHistoriesClientListOptions) *runtime.Pager[WorkflowTriggerHistoriesClientListResponse] {
+func (client *WorkflowTriggerHistoriesClient) NewListPager(resourceGroupName string, workflowName string, triggerName string, options *WorkflowTriggerHistoriesClientListOptions) *runtime.Pager[WorkflowTriggerHistoriesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkflowTriggerHistoriesClientListResponse]{
 		More: func(page WorkflowTriggerHistoriesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

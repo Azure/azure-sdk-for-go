@@ -230,13 +230,13 @@ func (client *IntegrationAccountCertificatesClient) getHandleResponse(resp *http
 	return result, nil
 }
 
-// List - Gets a list of integration account certificates.
+// NewListPager - Gets a list of integration account certificates.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // options - IntegrationAccountCertificatesClientListOptions contains the optional parameters for the IntegrationAccountCertificatesClient.List
 // method.
-func (client *IntegrationAccountCertificatesClient) List(resourceGroupName string, integrationAccountName string, options *IntegrationAccountCertificatesClientListOptions) *runtime.Pager[IntegrationAccountCertificatesClientListResponse] {
+func (client *IntegrationAccountCertificatesClient) NewListPager(resourceGroupName string, integrationAccountName string, options *IntegrationAccountCertificatesClientListOptions) *runtime.Pager[IntegrationAccountCertificatesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IntegrationAccountCertificatesClientListResponse]{
 		More: func(page IntegrationAccountCertificatesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

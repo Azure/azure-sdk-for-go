@@ -125,7 +125,7 @@ func (client *WorkflowRunActionRequestHistoriesClient) getHandleResponse(resp *h
 	return result, nil
 }
 
-// List - List a workflow run request history.
+// NewListPager - List a workflow run request history.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
@@ -133,7 +133,7 @@ func (client *WorkflowRunActionRequestHistoriesClient) getHandleResponse(resp *h
 // actionName - The workflow action name.
 // options - WorkflowRunActionRequestHistoriesClientListOptions contains the optional parameters for the WorkflowRunActionRequestHistoriesClient.List
 // method.
-func (client *WorkflowRunActionRequestHistoriesClient) List(resourceGroupName string, workflowName string, runName string, actionName string, options *WorkflowRunActionRequestHistoriesClientListOptions) *runtime.Pager[WorkflowRunActionRequestHistoriesClientListResponse] {
+func (client *WorkflowRunActionRequestHistoriesClient) NewListPager(resourceGroupName string, workflowName string, runName string, actionName string, options *WorkflowRunActionRequestHistoriesClientListOptions) *runtime.Pager[WorkflowRunActionRequestHistoriesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkflowRunActionRequestHistoriesClientListResponse]{
 		More: func(page WorkflowRunActionRequestHistoriesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -106,13 +106,13 @@ func (client *CustomersClient) getHandleResponse(resp *http.Response) (Customers
 	return result, nil
 }
 
-// ListByBillingAccount - Lists the customers that are billed to a billing account. The operation is supported only for billing
-// accounts with agreement type Microsoft Partner Agreement.
+// NewListByBillingAccountPager - Lists the customers that are billed to a billing account. The operation is supported only
+// for billing accounts with agreement type Microsoft Partner Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountName - The ID that uniquely identifies a billing account.
 // options - CustomersClientListByBillingAccountOptions contains the optional parameters for the CustomersClient.ListByBillingAccount
 // method.
-func (client *CustomersClient) ListByBillingAccount(billingAccountName string, options *CustomersClientListByBillingAccountOptions) *runtime.Pager[CustomersClientListByBillingAccountResponse] {
+func (client *CustomersClient) NewListByBillingAccountPager(billingAccountName string, options *CustomersClientListByBillingAccountOptions) *runtime.Pager[CustomersClientListByBillingAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CustomersClientListByBillingAccountResponse]{
 		More: func(page CustomersClientListByBillingAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -173,14 +173,14 @@ func (client *CustomersClient) listByBillingAccountHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListByBillingProfile - Lists the customers that are billed to a billing profile. The operation is supported only for billing
-// accounts with agreement type Microsoft Partner Agreement.
+// NewListByBillingProfilePager - Lists the customers that are billed to a billing profile. The operation is supported only
+// for billing accounts with agreement type Microsoft Partner Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // options - CustomersClientListByBillingProfileOptions contains the optional parameters for the CustomersClient.ListByBillingProfile
 // method.
-func (client *CustomersClient) ListByBillingProfile(billingAccountName string, billingProfileName string, options *CustomersClientListByBillingProfileOptions) *runtime.Pager[CustomersClientListByBillingProfileResponse] {
+func (client *CustomersClient) NewListByBillingProfilePager(billingAccountName string, billingProfileName string, options *CustomersClientListByBillingProfileOptions) *runtime.Pager[CustomersClientListByBillingProfileResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CustomersClientListByBillingProfileResponse]{
 		More: func(page CustomersClientListByBillingProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -52,14 +52,14 @@ func NewResourceChangesClient(credential azcore.TokenCredential, options *arm.Cl
 	return client, nil
 }
 
-// List - List the changes of a resource within the specified time range. Customer data will be masked if the user doesn't
-// have access.
+// NewListPager - List the changes of a resource within the specified time range. Customer data will be masked if the user
+// doesn't have access.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceID - The identifier of the resource.
 // startTime - Specifies the start time of the changes request.
 // endTime - Specifies the end time of the changes request.
 // options - ResourceChangesClientListOptions contains the optional parameters for the ResourceChangesClient.List method.
-func (client *ResourceChangesClient) List(resourceID string, startTime time.Time, endTime time.Time, options *ResourceChangesClientListOptions) *runtime.Pager[ResourceChangesClientListResponse] {
+func (client *ResourceChangesClient) NewListPager(resourceID string, startTime time.Time, endTime time.Time, options *ResourceChangesClientListOptions) *runtime.Pager[ResourceChangesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourceChangesClientListResponse]{
 		More: func(page ResourceChangesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

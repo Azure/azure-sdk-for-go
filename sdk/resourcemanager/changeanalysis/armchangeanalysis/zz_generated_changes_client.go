@@ -55,15 +55,15 @@ func NewChangesClient(subscriptionID string, credential azcore.TokenCredential, 
 	return client, nil
 }
 
-// ListChangesByResourceGroup - List the changes of a resource group within the specified time range. Customer data will always
-// be masked.
+// NewListChangesByResourceGroupPager - List the changes of a resource group within the specified time range. Customer data
+// will always be masked.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // startTime - Specifies the start time of the changes request.
 // endTime - Specifies the end time of the changes request.
 // options - ChangesClientListChangesByResourceGroupOptions contains the optional parameters for the ChangesClient.ListChangesByResourceGroup
 // method.
-func (client *ChangesClient) ListChangesByResourceGroup(resourceGroupName string, startTime time.Time, endTime time.Time, options *ChangesClientListChangesByResourceGroupOptions) *runtime.Pager[ChangesClientListChangesByResourceGroupResponse] {
+func (client *ChangesClient) NewListChangesByResourceGroupPager(resourceGroupName string, startTime time.Time, endTime time.Time, options *ChangesClientListChangesByResourceGroupOptions) *runtime.Pager[ChangesClientListChangesByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ChangesClientListChangesByResourceGroupResponse]{
 		More: func(page ChangesClientListChangesByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -127,14 +127,14 @@ func (client *ChangesClient) listChangesByResourceGroupHandleResponse(resp *http
 	return result, nil
 }
 
-// ListChangesBySubscription - List the changes of a subscription within the specified time range. Customer data will always
-// be masked.
+// NewListChangesBySubscriptionPager - List the changes of a subscription within the specified time range. Customer data will
+// always be masked.
 // If the operation fails it returns an *azcore.ResponseError type.
 // startTime - Specifies the start time of the changes request.
 // endTime - Specifies the end time of the changes request.
 // options - ChangesClientListChangesBySubscriptionOptions contains the optional parameters for the ChangesClient.ListChangesBySubscription
 // method.
-func (client *ChangesClient) ListChangesBySubscription(startTime time.Time, endTime time.Time, options *ChangesClientListChangesBySubscriptionOptions) *runtime.Pager[ChangesClientListChangesBySubscriptionResponse] {
+func (client *ChangesClient) NewListChangesBySubscriptionPager(startTime time.Time, endTime time.Time, options *ChangesClientListChangesBySubscriptionOptions) *runtime.Pager[ChangesClientListChangesBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ChangesClientListChangesBySubscriptionResponse]{
 		More: func(page ChangesClientListChangesBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -42,7 +42,7 @@ func ExampleCloudServiceOperatingSystemsClient_GetOSVersion() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-03-01/examples/ListCloudServiceOSVersions.json
-func ExampleCloudServiceOperatingSystemsClient_ListOSVersions() {
+func ExampleCloudServiceOperatingSystemsClient_NewListOSVersionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -54,7 +54,7 @@ func ExampleCloudServiceOperatingSystemsClient_ListOSVersions() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListOSVersions("<location>",
+	pager := client.NewListOSVersionsPager("<location>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -95,7 +95,7 @@ func ExampleCloudServiceOperatingSystemsClient_GetOSFamily() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-03-01/examples/ListCloudServiceOSFamilies.json
-func ExampleCloudServiceOperatingSystemsClient_ListOSFamilies() {
+func ExampleCloudServiceOperatingSystemsClient_NewListOSFamiliesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -107,7 +107,7 @@ func ExampleCloudServiceOperatingSystemsClient_ListOSFamilies() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListOSFamilies("<location>",
+	pager := client.NewListOSFamiliesPager("<location>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

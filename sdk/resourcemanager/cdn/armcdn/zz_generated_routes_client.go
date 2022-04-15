@@ -272,14 +272,14 @@ func (client *RoutesClient) getHandleResponse(resp *http.Response) (RoutesClient
 	return result, nil
 }
 
-// ListByEndpoint - Lists all of the existing origins within a profile.
+// NewListByEndpointPager - Lists all of the existing origins within a profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
 // endpointName - Name of the endpoint under the profile which is unique globally.
 // options - RoutesClientListByEndpointOptions contains the optional parameters for the RoutesClient.ListByEndpoint method.
-func (client *RoutesClient) ListByEndpoint(resourceGroupName string, profileName string, endpointName string, options *RoutesClientListByEndpointOptions) *runtime.Pager[RoutesClientListByEndpointResponse] {
+func (client *RoutesClient) NewListByEndpointPager(resourceGroupName string, profileName string, endpointName string, options *RoutesClientListByEndpointOptions) *runtime.Pager[RoutesClientListByEndpointResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RoutesClientListByEndpointResponse]{
 		More: func(page RoutesClientListByEndpointResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

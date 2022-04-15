@@ -232,10 +232,10 @@ func (client *AccountsClient) getHandleResponse(resp *http.Response) (AccountsCl
 	return result, nil
 }
 
-// List - Returns all the resources of a particular type belonging to a subscription.
+// NewListPager - Returns all the resources of a particular type belonging to a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AccountsClientListOptions contains the optional parameters for the AccountsClient.List method.
-func (client *AccountsClient) List(options *AccountsClientListOptions) *runtime.Pager[AccountsClientListResponse] {
+func (client *AccountsClient) NewListPager(options *AccountsClientListOptions) *runtime.Pager[AccountsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccountsClientListResponse]{
 		More: func(page AccountsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -290,12 +290,12 @@ func (client *AccountsClient) listHandleResponse(resp *http.Response) (AccountsC
 	return result, nil
 }
 
-// ListByResourceGroup - Returns all the resources of a particular type belonging to a resource group
+// NewListByResourceGroupPager - Returns all the resources of a particular type belonging to a resource group
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.ListByResourceGroup
 // method.
-func (client *AccountsClient) ListByResourceGroup(resourceGroupName string, options *AccountsClientListByResourceGroupOptions) *runtime.Pager[AccountsClientListByResourceGroupResponse] {
+func (client *AccountsClient) NewListByResourceGroupPager(resourceGroupName string, options *AccountsClientListByResourceGroupOptions) *runtime.Pager[AccountsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccountsClientListByResourceGroupResponse]{
 		More: func(page AccountsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -409,12 +409,12 @@ func (client *AccountsClient) listKeysHandleResponse(resp *http.Response) (Accou
 	return result, nil
 }
 
-// ListModels - List available Models for the requested Cognitive Services account
+// NewListModelsPager - List available Models for the requested Cognitive Services account
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The name of Cognitive Services account.
 // options - AccountsClientListModelsOptions contains the optional parameters for the AccountsClient.ListModels method.
-func (client *AccountsClient) ListModels(resourceGroupName string, accountName string, options *AccountsClientListModelsOptions) *runtime.Pager[AccountsClientListModelsResponse] {
+func (client *AccountsClient) NewListModelsPager(resourceGroupName string, accountName string, options *AccountsClientListModelsOptions) *runtime.Pager[AccountsClientListModelsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccountsClientListModelsResponse]{
 		More: func(page AccountsClientListModelsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

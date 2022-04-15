@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/AFDEndpoints_ListByProfile.json
-func ExampleAFDEndpointsClient_ListByProfile() {
+func ExampleAFDEndpointsClient_NewListByProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleAFDEndpointsClient_ListByProfile() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByProfile("<resource-group-name>",
+	pager := client.NewListByProfilePager("<resource-group-name>",
 		"<profile-name>",
 		nil)
 	for pager.More() {
@@ -215,7 +215,7 @@ func ExampleAFDEndpointsClient_BeginPurgeContent() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/AFDEndpoints_ListResourceUsage.json
-func ExampleAFDEndpointsClient_ListResourceUsage() {
+func ExampleAFDEndpointsClient_NewListResourceUsagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -227,7 +227,7 @@ func ExampleAFDEndpointsClient_ListResourceUsage() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListResourceUsage("<resource-group-name>",
+	pager := client.NewListResourceUsagePager("<resource-group-name>",
 		"<profile-name>",
 		"<endpoint-name>",
 		nil)

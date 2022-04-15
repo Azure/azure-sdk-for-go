@@ -252,13 +252,13 @@ func (client *TransactionNodesClient) getHandleResponse(resp *http.Response) (Tr
 	return result, nil
 }
 
-// List - Lists the transaction nodes for a blockchain member.
+// NewListPager - Lists the transaction nodes for a blockchain member.
 // If the operation fails it returns an *azcore.ResponseError type.
 // blockchainMemberName - Blockchain member name.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // options - TransactionNodesClientListOptions contains the optional parameters for the TransactionNodesClient.List method.
-func (client *TransactionNodesClient) List(blockchainMemberName string, resourceGroupName string, options *TransactionNodesClientListOptions) *runtime.Pager[TransactionNodesClientListResponse] {
+func (client *TransactionNodesClient) NewListPager(blockchainMemberName string, resourceGroupName string, options *TransactionNodesClientListOptions) *runtime.Pager[TransactionNodesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TransactionNodesClientListResponse]{
 		More: func(page TransactionNodesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

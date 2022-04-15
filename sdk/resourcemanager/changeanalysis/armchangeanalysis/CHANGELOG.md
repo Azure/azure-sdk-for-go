@@ -1,5 +1,21 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*ChangesClient.ListChangesByResourceGroup` has been removed
+- Function `*ChangesClient.ListChangesBySubscription` has been removed
+- Function `*ResourceChangesClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+
+### Features Added
+
+- New function `*ChangesClient.NewListChangesBySubscriptionPager(time.Time, time.Time, *ChangesClientListChangesBySubscriptionOptions) *runtime.Pager[ChangesClientListChangesBySubscriptionResponse]`
+- New function `*ChangesClient.NewListChangesByResourceGroupPager(string, time.Time, time.Time, *ChangesClientListChangesByResourceGroupOptions) *runtime.Pager[ChangesClientListChangesByResourceGroupResponse]`
+- New function `*ResourceChangesClient.NewListPager(string, time.Time, time.Time, *ResourceChangesClientListOptions) *runtime.Pager[ResourceChangesClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

@@ -147,7 +147,7 @@ func ExampleMembersClient_Update() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/BlockchainMembers_List.json
-func ExampleMembersClient_List() {
+func ExampleMembersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -159,7 +159,7 @@ func ExampleMembersClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-group-name>",
+	pager := client.NewListPager("<resource-group-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -175,7 +175,7 @@ func ExampleMembersClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/BlockchainMembers_ListAll.json
-func ExampleMembersClient_ListAll() {
+func ExampleMembersClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -187,7 +187,7 @@ func ExampleMembersClient_ListAll() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListAll(nil)
+	pager := client.NewListAllPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -202,7 +202,7 @@ func ExampleMembersClient_ListAll() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/BlockchainMembers_ListConsortiumMembers.json
-func ExampleMembersClient_ListConsortiumMembers() {
+func ExampleMembersClient_NewListConsortiumMembersPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -214,7 +214,7 @@ func ExampleMembersClient_ListConsortiumMembers() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListConsortiumMembers("<blockchain-member-name>",
+	pager := client.NewListConsortiumMembersPager("<blockchain-member-name>",
 		"<resource-group-name>",
 		nil)
 	for pager.More() {

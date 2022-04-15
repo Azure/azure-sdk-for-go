@@ -219,14 +219,14 @@ func (client *PublishedBlueprintsClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// List - List published versions of given blueprint definition.
+// NewListPager - List published versions of given blueprint definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format: '/subscriptions/{subscriptionId}').
 // blueprintName - Name of the blueprint definition.
 // options - PublishedBlueprintsClientListOptions contains the optional parameters for the PublishedBlueprintsClient.List
 // method.
-func (client *PublishedBlueprintsClient) List(resourceScope string, blueprintName string, options *PublishedBlueprintsClientListOptions) *runtime.Pager[PublishedBlueprintsClientListResponse] {
+func (client *PublishedBlueprintsClient) NewListPager(resourceScope string, blueprintName string, options *PublishedBlueprintsClientListOptions) *runtime.Pager[PublishedBlueprintsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PublishedBlueprintsClientListResponse]{
 		More: func(page PublishedBlueprintsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

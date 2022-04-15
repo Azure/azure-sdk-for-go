@@ -267,14 +267,14 @@ func (client *VirtualMachineScaleSetVMRunCommandsClient) getHandleResponse(resp 
 	return result, nil
 }
 
-// List - The operation to get all run commands of an instance in Virtual Machine Scaleset.
+// NewListPager - The operation to get all run commands of an instance in Virtual Machine Scaleset.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // vmScaleSetName - The name of the VM scale set.
 // instanceID - The instance ID of the virtual machine.
 // options - VirtualMachineScaleSetVMRunCommandsClientListOptions contains the optional parameters for the VirtualMachineScaleSetVMRunCommandsClient.List
 // method.
-func (client *VirtualMachineScaleSetVMRunCommandsClient) List(resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMRunCommandsClientListOptions) *runtime.Pager[VirtualMachineScaleSetVMRunCommandsClientListResponse] {
+func (client *VirtualMachineScaleSetVMRunCommandsClient) NewListPager(resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMRunCommandsClientListOptions) *runtime.Pager[VirtualMachineScaleSetVMRunCommandsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualMachineScaleSetVMRunCommandsClientListResponse]{
 		More: func(page VirtualMachineScaleSetVMRunCommandsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

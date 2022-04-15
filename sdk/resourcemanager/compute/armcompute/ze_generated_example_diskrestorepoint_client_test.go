@@ -47,7 +47,7 @@ func ExampleDiskRestorePointClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/ListDiskRestorePointsInVmRestorePoint.json
-func ExampleDiskRestorePointClient_ListByRestorePoint() {
+func ExampleDiskRestorePointClient_NewListByRestorePointPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -59,7 +59,7 @@ func ExampleDiskRestorePointClient_ListByRestorePoint() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByRestorePoint("<resource-group-name>",
+	pager := client.NewListByRestorePointPager("<resource-group-name>",
 		"<restore-point-collection-name>",
 		"<vm-restore-point-name>",
 		nil)

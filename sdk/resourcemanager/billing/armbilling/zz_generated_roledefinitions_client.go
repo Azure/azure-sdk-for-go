@@ -225,13 +225,13 @@ func (client *RoleDefinitionsClient) getByInvoiceSectionHandleResponse(resp *htt
 	return result, nil
 }
 
-// ListByBillingAccount - Lists the role definitions for a billing account. The operation is supported for billing accounts
-// with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
+// NewListByBillingAccountPager - Lists the role definitions for a billing account. The operation is supported for billing
+// accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountName - The ID that uniquely identifies a billing account.
 // options - RoleDefinitionsClientListByBillingAccountOptions contains the optional parameters for the RoleDefinitionsClient.ListByBillingAccount
 // method.
-func (client *RoleDefinitionsClient) ListByBillingAccount(billingAccountName string, options *RoleDefinitionsClientListByBillingAccountOptions) *runtime.Pager[RoleDefinitionsClientListByBillingAccountResponse] {
+func (client *RoleDefinitionsClient) NewListByBillingAccountPager(billingAccountName string, options *RoleDefinitionsClientListByBillingAccountOptions) *runtime.Pager[RoleDefinitionsClientListByBillingAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RoleDefinitionsClientListByBillingAccountResponse]{
 		More: func(page RoleDefinitionsClientListByBillingAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -286,14 +286,14 @@ func (client *RoleDefinitionsClient) listByBillingAccountHandleResponse(resp *ht
 	return result, nil
 }
 
-// ListByBillingProfile - Lists the role definitions for a billing profile. The operation is supported for billing accounts
-// with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
+// NewListByBillingProfilePager - Lists the role definitions for a billing profile. The operation is supported for billing
+// accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // options - RoleDefinitionsClientListByBillingProfileOptions contains the optional parameters for the RoleDefinitionsClient.ListByBillingProfile
 // method.
-func (client *RoleDefinitionsClient) ListByBillingProfile(billingAccountName string, billingProfileName string, options *RoleDefinitionsClientListByBillingProfileOptions) *runtime.Pager[RoleDefinitionsClientListByBillingProfileResponse] {
+func (client *RoleDefinitionsClient) NewListByBillingProfilePager(billingAccountName string, billingProfileName string, options *RoleDefinitionsClientListByBillingProfileOptions) *runtime.Pager[RoleDefinitionsClientListByBillingProfileResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RoleDefinitionsClientListByBillingProfileResponse]{
 		More: func(page RoleDefinitionsClientListByBillingProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -352,15 +352,15 @@ func (client *RoleDefinitionsClient) listByBillingProfileHandleResponse(resp *ht
 	return result, nil
 }
 
-// ListByInvoiceSection - Lists the role definitions for an invoice section. The operation is supported for billing accounts
-// with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
+// NewListByInvoiceSectionPager - Lists the role definitions for an invoice section. The operation is supported for billing
+// accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // invoiceSectionName - The ID that uniquely identifies an invoice section.
 // options - RoleDefinitionsClientListByInvoiceSectionOptions contains the optional parameters for the RoleDefinitionsClient.ListByInvoiceSection
 // method.
-func (client *RoleDefinitionsClient) ListByInvoiceSection(billingAccountName string, billingProfileName string, invoiceSectionName string, options *RoleDefinitionsClientListByInvoiceSectionOptions) *runtime.Pager[RoleDefinitionsClientListByInvoiceSectionResponse] {
+func (client *RoleDefinitionsClient) NewListByInvoiceSectionPager(billingAccountName string, billingProfileName string, invoiceSectionName string, options *RoleDefinitionsClientListByInvoiceSectionOptions) *runtime.Pager[RoleDefinitionsClientListByInvoiceSectionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RoleDefinitionsClientListByInvoiceSectionResponse]{
 		More: func(page RoleDefinitionsClientListByInvoiceSectionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

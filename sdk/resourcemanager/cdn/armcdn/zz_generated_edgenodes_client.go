@@ -48,10 +48,10 @@ func NewEdgeNodesClient(credential azcore.TokenCredential, options *arm.ClientOp
 	return client, nil
 }
 
-// List - Edgenodes are the global Point of Presence (POP) locations used to deliver CDN content to end users.
+// NewListPager - Edgenodes are the global Point of Presence (POP) locations used to deliver CDN content to end users.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - EdgeNodesClientListOptions contains the optional parameters for the EdgeNodesClient.List method.
-func (client *EdgeNodesClient) List(options *EdgeNodesClientListOptions) *runtime.Pager[EdgeNodesClientListResponse] {
+func (client *EdgeNodesClient) NewListPager(options *EdgeNodesClientListOptions) *runtime.Pager[EdgeNodesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EdgeNodesClientListResponse]{
 		More: func(page EdgeNodesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -144,7 +144,7 @@ func ExampleTransactionNodesClient_Update() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/TransactionNodes_List.json
-func ExampleTransactionNodesClient_List() {
+func ExampleTransactionNodesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -156,7 +156,7 @@ func ExampleTransactionNodesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<blockchain-member-name>",
+	pager := client.NewListPager("<blockchain-member-name>",
 		"<resource-group-name>",
 		nil)
 	for pager.More() {

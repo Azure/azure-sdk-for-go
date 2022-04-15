@@ -1,5 +1,65 @@
 # Release History
 
+## 0.5.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*ManagedRuleSetsClient.List` has been removed
+- Function `*EndpointsClient.ListResourceUsage` has been removed
+- Function `*OriginsClient.ListByEndpoint` has been removed
+- Function `*AFDOriginGroupsClient.ListResourceUsage` has been removed
+- Function `*ProfilesClient.List` has been removed
+- Function `*RuleSetsClient.ListByProfile` has been removed
+- Function `*AFDEndpointsClient.ListResourceUsage` has been removed
+- Function `*OriginGroupsClient.ListByEndpoint` has been removed
+- Function `*SecretsClient.ListByProfile` has been removed
+- Function `*AFDOriginGroupsClient.ListByProfile` has been removed
+- Function `*ProfilesClient.ListResourceUsage` has been removed
+- Function `*SecurityPoliciesClient.ListByProfile` has been removed
+- Function `*ProfilesClient.ListByResourceGroup` has been removed
+- Function `*AFDOriginsClient.ListByOriginGroup` has been removed
+- Function `*CustomDomainsClient.ListByEndpoint` has been removed
+- Function `*EndpointsClient.ListByProfile` has been removed
+- Function `*AFDCustomDomainsClient.ListByProfile` has been removed
+- Function `*AFDEndpointsClient.ListByProfile` has been removed
+- Function `*ResourceUsageClient.List` has been removed
+- Function `*AFDProfilesClient.ListResourceUsage` has been removed
+- Function `*RulesClient.ListByRuleSet` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*EdgeNodesClient.List` has been removed
+- Function `*RoutesClient.ListByEndpoint` has been removed
+- Function `*PoliciesClient.List` has been removed
+- Function `*RuleSetsClient.ListResourceUsage` has been removed
+
+### Features Added
+
+- New function `*RuleSetsClient.NewListResourceUsagePager(string, string, string, *RuleSetsClientListResourceUsageOptions) *runtime.Pager[RuleSetsClientListResourceUsageResponse]`
+- New function `*ProfilesClient.NewListResourceUsagePager(string, string, *ProfilesClientListResourceUsageOptions) *runtime.Pager[ProfilesClientListResourceUsageResponse]`
+- New function `*SecretsClient.NewListByProfilePager(string, string, *SecretsClientListByProfileOptions) *runtime.Pager[SecretsClientListByProfileResponse]`
+- New function `*AFDOriginsClient.NewListByOriginGroupPager(string, string, string, *AFDOriginsClientListByOriginGroupOptions) *runtime.Pager[AFDOriginsClientListByOriginGroupResponse]`
+- New function `*ProfilesClient.NewListByResourceGroupPager(string, *ProfilesClientListByResourceGroupOptions) *runtime.Pager[ProfilesClientListByResourceGroupResponse]`
+- New function `*SecurityPoliciesClient.NewListByProfilePager(string, string, *SecurityPoliciesClientListByProfileOptions) *runtime.Pager[SecurityPoliciesClientListByProfileResponse]`
+- New function `*CustomDomainsClient.NewListByEndpointPager(string, string, string, *CustomDomainsClientListByEndpointOptions) *runtime.Pager[CustomDomainsClientListByEndpointResponse]`
+- New function `*EndpointsClient.NewListByProfilePager(string, string, *EndpointsClientListByProfileOptions) *runtime.Pager[EndpointsClientListByProfileResponse]`
+- New function `*ManagedRuleSetsClient.NewListPager(*ManagedRuleSetsClientListOptions) *runtime.Pager[ManagedRuleSetsClientListResponse]`
+- New function `*EndpointsClient.NewListResourceUsagePager(string, string, string, *EndpointsClientListResourceUsageOptions) *runtime.Pager[EndpointsClientListResourceUsageResponse]`
+- New function `*EdgeNodesClient.NewListPager(*EdgeNodesClientListOptions) *runtime.Pager[EdgeNodesClientListResponse]`
+- New function `*RulesClient.NewListByRuleSetPager(string, string, string, *RulesClientListByRuleSetOptions) *runtime.Pager[RulesClientListByRuleSetResponse]`
+- New function `*ResourceUsageClient.NewListPager(*ResourceUsageClientListOptions) *runtime.Pager[ResourceUsageClientListResponse]`
+- New function `*RoutesClient.NewListByEndpointPager(string, string, string, *RoutesClientListByEndpointOptions) *runtime.Pager[RoutesClientListByEndpointResponse]`
+- New function `*AFDCustomDomainsClient.NewListByProfilePager(string, string, *AFDCustomDomainsClientListByProfileOptions) *runtime.Pager[AFDCustomDomainsClientListByProfileResponse]`
+- New function `*AFDProfilesClient.NewListResourceUsagePager(string, string, *AFDProfilesClientListResourceUsageOptions) *runtime.Pager[AFDProfilesClientListResourceUsageResponse]`
+- New function `*AFDEndpointsClient.NewListByProfilePager(string, string, *AFDEndpointsClientListByProfileOptions) *runtime.Pager[AFDEndpointsClientListByProfileResponse]`
+- New function `*ProfilesClient.NewListPager(*ProfilesClientListOptions) *runtime.Pager[ProfilesClientListResponse]`
+- New function `*PoliciesClient.NewListPager(string, *PoliciesClientListOptions) *runtime.Pager[PoliciesClientListResponse]`
+- New function `*RuleSetsClient.NewListByProfilePager(string, string, *RuleSetsClientListByProfileOptions) *runtime.Pager[RuleSetsClientListByProfileResponse]`
+- New function `*OriginGroupsClient.NewListByEndpointPager(string, string, string, *OriginGroupsClientListByEndpointOptions) *runtime.Pager[OriginGroupsClientListByEndpointResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*AFDOriginGroupsClient.NewListByProfilePager(string, string, *AFDOriginGroupsClientListByProfileOptions) *runtime.Pager[AFDOriginGroupsClientListByProfileResponse]`
+- New function `*AFDEndpointsClient.NewListResourceUsagePager(string, string, string, *AFDEndpointsClientListResourceUsageOptions) *runtime.Pager[AFDEndpointsClientListResourceUsageResponse]`
+- New function `*OriginsClient.NewListByEndpointPager(string, string, string, *OriginsClientListByEndpointOptions) *runtime.Pager[OriginsClientListByEndpointResponse]`
+- New function `*AFDOriginGroupsClient.NewListResourceUsagePager(string, string, string, *AFDOriginGroupsClientListResourceUsageOptions) *runtime.Pager[AFDOriginGroupsClientListResourceUsageResponse]`
+
+
 ## 0.4.0 (2022-04-11)
 ### Breaking Changes
 

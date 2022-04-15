@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingProfilesListByBillingAccount.json
-func ExampleProfilesClient_ListByBillingAccount() {
+func ExampleProfilesClient_NewListByBillingAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleProfilesClient_ListByBillingAccount() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByBillingAccount("<billing-account-name>",
+	pager := client.NewListByBillingAccountPager("<billing-account-name>",
 		&armbilling.ProfilesClientListByBillingAccountOptions{Expand: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

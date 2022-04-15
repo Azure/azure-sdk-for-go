@@ -308,12 +308,12 @@ func (client *VirtualMachineRunCommandsClient) getByVirtualMachineHandleResponse
 	return result, nil
 }
 
-// List - Lists all available run commands for a subscription in a location.
+// NewListPager - Lists all available run commands for a subscription in a location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - The location upon which run commands is queried.
 // options - VirtualMachineRunCommandsClientListOptions contains the optional parameters for the VirtualMachineRunCommandsClient.List
 // method.
-func (client *VirtualMachineRunCommandsClient) List(location string, options *VirtualMachineRunCommandsClientListOptions) *runtime.Pager[VirtualMachineRunCommandsClientListResponse] {
+func (client *VirtualMachineRunCommandsClient) NewListPager(location string, options *VirtualMachineRunCommandsClientListOptions) *runtime.Pager[VirtualMachineRunCommandsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualMachineRunCommandsClientListResponse]{
 		More: func(page VirtualMachineRunCommandsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -372,13 +372,13 @@ func (client *VirtualMachineRunCommandsClient) listHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListByVirtualMachine - The operation to get all run commands of a Virtual Machine.
+// NewListByVirtualMachinePager - The operation to get all run commands of a Virtual Machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // vmName - The name of the virtual machine containing the run command.
 // options - VirtualMachineRunCommandsClientListByVirtualMachineOptions contains the optional parameters for the VirtualMachineRunCommandsClient.ListByVirtualMachine
 // method.
-func (client *VirtualMachineRunCommandsClient) ListByVirtualMachine(resourceGroupName string, vmName string, options *VirtualMachineRunCommandsClientListByVirtualMachineOptions) *runtime.Pager[VirtualMachineRunCommandsClientListByVirtualMachineResponse] {
+func (client *VirtualMachineRunCommandsClient) NewListByVirtualMachinePager(resourceGroupName string, vmName string, options *VirtualMachineRunCommandsClientListByVirtualMachineOptions) *runtime.Pager[VirtualMachineRunCommandsClientListByVirtualMachineResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualMachineRunCommandsClientListByVirtualMachineResponse]{
 		More: func(page VirtualMachineRunCommandsClientListByVirtualMachineResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

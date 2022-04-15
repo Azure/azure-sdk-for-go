@@ -217,11 +217,11 @@ func (client *PoliciesClient) getHandleResponse(resp *http.Response) (PoliciesCl
 	return result, nil
 }
 
-// List - Lists all of the protection policies within a resource group.
+// NewListPager - Lists all of the protection policies within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // options - PoliciesClientListOptions contains the optional parameters for the PoliciesClient.List method.
-func (client *PoliciesClient) List(resourceGroupName string, options *PoliciesClientListOptions) *runtime.Pager[PoliciesClientListResponse] {
+func (client *PoliciesClient) NewListPager(resourceGroupName string, options *PoliciesClientListOptions) *runtime.Pager[PoliciesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PoliciesClientListResponse]{
 		More: func(page PoliciesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

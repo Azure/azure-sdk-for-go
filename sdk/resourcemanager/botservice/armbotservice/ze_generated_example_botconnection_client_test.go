@@ -208,7 +208,7 @@ func ExampleBotConnectionClient_Delete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/ListConnectionsByBotService.json
-func ExampleBotConnectionClient_ListByBotService() {
+func ExampleBotConnectionClient_NewListByBotServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -220,7 +220,7 @@ func ExampleBotConnectionClient_ListByBotService() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByBotService("<resource-group-name>",
+	pager := client.NewListByBotServicePager("<resource-group-name>",
 		"<resource-name>",
 		nil)
 	for pager.More() {

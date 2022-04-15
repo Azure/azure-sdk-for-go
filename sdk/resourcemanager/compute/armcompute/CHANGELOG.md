@@ -1,5 +1,137 @@
 # Release History
 
+## 0.7.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*DisksClient.ListByResourceGroup` has been removed
+- Function `*VirtualMachinesClient.ListByLocation` has been removed
+- Function `*VirtualMachinesClient.ListAvailableSizes` has been removed
+- Function `*DiskAccessesClient.ListPrivateEndpointConnections` has been removed
+- Function `*RestorePointCollectionsClient.ListAll` has been removed
+- Function `*VirtualMachineScaleSetsClient.List` has been removed
+- Function `*SharedGalleryImagesClient.List` has been removed
+- Function `*CloudServicesUpdateDomainClient.ListUpdateDomains` has been removed
+- Function `*SharedGalleriesClient.List` has been removed
+- Function `*VirtualMachineScaleSetExtensionsClient.List` has been removed
+- Function `*DiskEncryptionSetsClient.ListByResourceGroup` has been removed
+- Function `*VirtualMachineScaleSetsClient.ListAll` has been removed
+- Function `*ProximityPlacementGroupsClient.ListBySubscription` has been removed
+- Function `*DiskEncryptionSetsClient.ListAssociatedResources` has been removed
+- Function `*CloudServiceOperatingSystemsClient.ListOSVersions` has been removed
+- Function `*GalleriesClient.ListByResourceGroup` has been removed
+- Function `*UsageClient.List` has been removed
+- Function `*GalleryImagesClient.ListByGallery` has been removed
+- Function `*GalleriesClient.List` has been removed
+- Function `*CloudServicesClient.List` has been removed
+- Function `*SSHPublicKeysClient.ListByResourceGroup` has been removed
+- Function `*RestorePointCollectionsClient.List` has been removed
+- Function `*VirtualMachineRunCommandsClient.ListByVirtualMachine` has been removed
+- Function `*SnapshotsClient.ListByResourceGroup` has been removed
+- Function `*DiskEncryptionSetsClient.List` has been removed
+- Function `*ResourceSKUsClient.List` has been removed
+- Function `*CloudServiceRolesClient.List` has been removed
+- Function `*DisksClient.List` has been removed
+- Function `*DiskRestorePointClient.ListByRestorePoint` has been removed
+- Function `*ProximityPlacementGroupsClient.ListByResourceGroup` has been removed
+- Function `*CloudServiceOperatingSystemsClient.ListOSFamilies` has been removed
+- Function `*VirtualMachinesClient.ListAll` has been removed
+- Function `*VirtualMachineRunCommandsClient.List` has been removed
+- Function `*DiskAccessesClient.List` has been removed
+- Function `*GalleryApplicationVersionsClient.ListByGalleryApplication` has been removed
+- Function `*AvailabilitySetsClient.List` has been removed
+- Function `*AvailabilitySetsClient.ListBySubscription` has been removed
+- Function `*DedicatedHostGroupsClient.ListByResourceGroup` has been removed
+- Function `*VirtualMachinesClient.List` has been removed
+- Function `*CloudServicesClient.ListAll` has been removed
+- Function `*DedicatedHostsClient.ListByHostGroup` has been removed
+- Function `*ImagesClient.ListByResourceGroup` has been removed
+- Function `*VirtualMachineScaleSetsClient.ListByLocation` has been removed
+- Function `*CapacityReservationsClient.ListByCapacityReservationGroup` has been removed
+- Function `*AvailabilitySetsClient.ListAvailableSizes` has been removed
+- Function `*CloudServiceRoleInstancesClient.List` has been removed
+- Function `*DiskAccessesClient.ListByResourceGroup` has been removed
+- Function `*SharedGalleryImageVersionsClient.List` has been removed
+- Function `*GalleryImageVersionsClient.ListByGalleryImage` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsClient.List` has been removed
+- Function `*SSHPublicKeysClient.ListBySubscription` has been removed
+- Function `*GalleryApplicationsClient.ListByGallery` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*CapacityReservationGroupsClient.ListBySubscription` has been removed
+- Function `*CapacityReservationGroupsClient.ListByResourceGroup` has been removed
+- Function `*ImagesClient.List` has been removed
+- Function `*VirtualMachineSizesClient.List` has been removed
+- Function `*DedicatedHostGroupsClient.ListBySubscription` has been removed
+- Function `*SnapshotsClient.List` has been removed
+- Function `*VirtualMachineScaleSetVMsClient.List` has been removed
+- Function `*VirtualMachineScaleSetsClient.GetOSUpgradeHistory` has been removed
+- Function `*VirtualMachineScaleSetsClient.ListSKUs` has been removed
+
+### Features Added
+
+- New function `*SharedGalleriesClient.NewListPager(string, *SharedGalleriesClientListOptions) *runtime.Pager[SharedGalleriesClientListResponse]`
+- New function `*VirtualMachinesClient.NewListAvailableSizesPager(string, string, *VirtualMachinesClientListAvailableSizesOptions) *runtime.Pager[VirtualMachinesClientListAvailableSizesResponse]`
+- New function `*VirtualMachineScaleSetsClient.NewListByLocationPager(string, *VirtualMachineScaleSetsClientListByLocationOptions) *runtime.Pager[VirtualMachineScaleSetsClientListByLocationResponse]`
+- New function `*VirtualMachineScaleSetsClient.NewListAllPager(*VirtualMachineScaleSetsClientListAllOptions) *runtime.Pager[VirtualMachineScaleSetsClientListAllResponse]`
+- New function `*VirtualMachineScaleSetsClient.NewListPager(string, *VirtualMachineScaleSetsClientListOptions) *runtime.Pager[VirtualMachineScaleSetsClientListResponse]`
+- New function `*GalleryApplicationVersionsClient.NewListByGalleryApplicationPager(string, string, string, *GalleryApplicationVersionsClientListByGalleryApplicationOptions) *runtime.Pager[GalleryApplicationVersionsClientListByGalleryApplicationResponse]`
+- New function `*GalleryImagesClient.NewListByGalleryPager(string, string, *GalleryImagesClientListByGalleryOptions) *runtime.Pager[GalleryImagesClientListByGalleryResponse]`
+- New function `*ProximityPlacementGroupsClient.NewListBySubscriptionPager(*ProximityPlacementGroupsClientListBySubscriptionOptions) *runtime.Pager[ProximityPlacementGroupsClientListBySubscriptionResponse]`
+- New function `*DiskAccessesClient.NewListPager(*DiskAccessesClientListOptions) *runtime.Pager[DiskAccessesClientListResponse]`
+- New function `*SSHPublicKeysClient.NewListBySubscriptionPager(*SSHPublicKeysClientListBySubscriptionOptions) *runtime.Pager[SSHPublicKeysClientListBySubscriptionResponse]`
+- New function `*DiskRestorePointClient.NewListByRestorePointPager(string, string, string, *DiskRestorePointClientListByRestorePointOptions) *runtime.Pager[DiskRestorePointClientListByRestorePointResponse]`
+- New function `*CloudServicesClient.NewListAllPager(*CloudServicesClientListAllOptions) *runtime.Pager[CloudServicesClientListAllResponse]`
+- New function `*DedicatedHostsClient.NewListByHostGroupPager(string, string, *DedicatedHostsClientListByHostGroupOptions) *runtime.Pager[DedicatedHostsClientListByHostGroupResponse]`
+- New function `*VirtualMachinesClient.NewListByLocationPager(string, *VirtualMachinesClientListByLocationOptions) *runtime.Pager[VirtualMachinesClientListByLocationResponse]`
+- New function `*GalleryApplicationsClient.NewListByGalleryPager(string, string, *GalleryApplicationsClientListByGalleryOptions) *runtime.Pager[GalleryApplicationsClientListByGalleryResponse]`
+- New function `*VirtualMachineScaleSetExtensionsClient.NewListPager(string, string, *VirtualMachineScaleSetExtensionsClientListOptions) *runtime.Pager[VirtualMachineScaleSetExtensionsClientListResponse]`
+- New function `*VirtualMachineSizesClient.NewListPager(string, *VirtualMachineSizesClientListOptions) *runtime.Pager[VirtualMachineSizesClientListResponse]`
+- New function `*SharedGalleryImageVersionsClient.NewListPager(string, string, string, *SharedGalleryImageVersionsClientListOptions) *runtime.Pager[SharedGalleryImageVersionsClientListResponse]`
+- New function `*ImagesClient.NewListByResourceGroupPager(string, *ImagesClientListByResourceGroupOptions) *runtime.Pager[ImagesClientListByResourceGroupResponse]`
+- New function `*VirtualMachineRunCommandsClient.NewListPager(string, *VirtualMachineRunCommandsClientListOptions) *runtime.Pager[VirtualMachineRunCommandsClientListResponse]`
+- New function `*DisksClient.NewListPager(*DisksClientListOptions) *runtime.Pager[DisksClientListResponse]`
+- New function `*VirtualMachineScaleSetVMsClient.NewListPager(string, string, *VirtualMachineScaleSetVMsClientListOptions) *runtime.Pager[VirtualMachineScaleSetVMsClientListResponse]`
+- New function `*CloudServiceRoleInstancesClient.NewListPager(string, string, *CloudServiceRoleInstancesClientListOptions) *runtime.Pager[CloudServiceRoleInstancesClientListResponse]`
+- New function `*SnapshotsClient.NewListPager(*SnapshotsClientListOptions) *runtime.Pager[SnapshotsClientListResponse]`
+- New function `*ImagesClient.NewListPager(*ImagesClientListOptions) *runtime.Pager[ImagesClientListResponse]`
+- New function `*DiskAccessesClient.NewListByResourceGroupPager(string, *DiskAccessesClientListByResourceGroupOptions) *runtime.Pager[DiskAccessesClientListByResourceGroupResponse]`
+- New function `*ResourceSKUsClient.NewListPager(*ResourceSKUsClientListOptions) *runtime.Pager[ResourceSKUsClientListResponse]`
+- New function `*DisksClient.NewListByResourceGroupPager(string, *DisksClientListByResourceGroupOptions) *runtime.Pager[DisksClientListByResourceGroupResponse]`
+- New function `*CloudServicesClient.NewListPager(string, *CloudServicesClientListOptions) *runtime.Pager[CloudServicesClientListResponse]`
+- New function `*AvailabilitySetsClient.NewListAvailableSizesPager(string, string, *AvailabilitySetsClientListAvailableSizesOptions) *runtime.Pager[AvailabilitySetsClientListAvailableSizesResponse]`
+- New function `*CloudServicesUpdateDomainClient.NewListUpdateDomainsPager(string, string, *CloudServicesUpdateDomainClientListUpdateDomainsOptions) *runtime.Pager[CloudServicesUpdateDomainClientListUpdateDomainsResponse]`
+- New function `*ProximityPlacementGroupsClient.NewListByResourceGroupPager(string, *ProximityPlacementGroupsClientListByResourceGroupOptions) *runtime.Pager[ProximityPlacementGroupsClientListByResourceGroupResponse]`
+- New function `*DiskEncryptionSetsClient.NewListPager(*DiskEncryptionSetsClientListOptions) *runtime.Pager[DiskEncryptionSetsClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*SnapshotsClient.NewListByResourceGroupPager(string, *SnapshotsClientListByResourceGroupOptions) *runtime.Pager[SnapshotsClientListByResourceGroupResponse]`
+- New function `*DedicatedHostGroupsClient.NewListBySubscriptionPager(*DedicatedHostGroupsClientListBySubscriptionOptions) *runtime.Pager[DedicatedHostGroupsClientListBySubscriptionResponse]`
+- New function `*CapacityReservationsClient.NewListByCapacityReservationGroupPager(string, string, *CapacityReservationsClientListByCapacityReservationGroupOptions) *runtime.Pager[CapacityReservationsClientListByCapacityReservationGroupResponse]`
+- New function `*CapacityReservationGroupsClient.NewListByResourceGroupPager(string, *CapacityReservationGroupsClientListByResourceGroupOptions) *runtime.Pager[CapacityReservationGroupsClientListByResourceGroupResponse]`
+- New function `*CloudServiceOperatingSystemsClient.NewListOSVersionsPager(string, *CloudServiceOperatingSystemsClientListOSVersionsOptions) *runtime.Pager[CloudServiceOperatingSystemsClientListOSVersionsResponse]`
+- New function `*VirtualMachineScaleSetsClient.NewGetOSUpgradeHistoryPager(string, string, *VirtualMachineScaleSetsClientGetOSUpgradeHistoryOptions) *runtime.Pager[VirtualMachineScaleSetsClientGetOSUpgradeHistoryResponse]`
+- New function `*GalleriesClient.NewListByResourceGroupPager(string, *GalleriesClientListByResourceGroupOptions) *runtime.Pager[GalleriesClientListByResourceGroupResponse]`
+- New function `*CloudServiceRolesClient.NewListPager(string, string, *CloudServiceRolesClientListOptions) *runtime.Pager[CloudServiceRolesClientListResponse]`
+- New function `*VirtualMachinesClient.NewListPager(string, *VirtualMachinesClientListOptions) *runtime.Pager[VirtualMachinesClientListResponse]`
+- New function `*DedicatedHostGroupsClient.NewListByResourceGroupPager(string, *DedicatedHostGroupsClientListByResourceGroupOptions) *runtime.Pager[DedicatedHostGroupsClientListByResourceGroupResponse]`
+- New function `*RestorePointCollectionsClient.NewListPager(string, *RestorePointCollectionsClientListOptions) *runtime.Pager[RestorePointCollectionsClientListResponse]`
+- New function `*AvailabilitySetsClient.NewListBySubscriptionPager(*AvailabilitySetsClientListBySubscriptionOptions) *runtime.Pager[AvailabilitySetsClientListBySubscriptionResponse]`
+- New function `*CapacityReservationGroupsClient.NewListBySubscriptionPager(*CapacityReservationGroupsClientListBySubscriptionOptions) *runtime.Pager[CapacityReservationGroupsClientListBySubscriptionResponse]`
+- New function `*RestorePointCollectionsClient.NewListAllPager(*RestorePointCollectionsClientListAllOptions) *runtime.Pager[RestorePointCollectionsClientListAllResponse]`
+- New function `*CloudServiceOperatingSystemsClient.NewListOSFamiliesPager(string, *CloudServiceOperatingSystemsClientListOSFamiliesOptions) *runtime.Pager[CloudServiceOperatingSystemsClientListOSFamiliesResponse]`
+- New function `*SharedGalleryImagesClient.NewListPager(string, string, *SharedGalleryImagesClientListOptions) *runtime.Pager[SharedGalleryImagesClientListResponse]`
+- New function `*GalleriesClient.NewListPager(*GalleriesClientListOptions) *runtime.Pager[GalleriesClientListResponse]`
+- New function `*VirtualMachinesClient.NewListAllPager(*VirtualMachinesClientListAllOptions) *runtime.Pager[VirtualMachinesClientListAllResponse]`
+- New function `*SSHPublicKeysClient.NewListByResourceGroupPager(string, *SSHPublicKeysClientListByResourceGroupOptions) *runtime.Pager[SSHPublicKeysClientListByResourceGroupResponse]`
+- New function `*VirtualMachineScaleSetsClient.NewListSKUsPager(string, string, *VirtualMachineScaleSetsClientListSKUsOptions) *runtime.Pager[VirtualMachineScaleSetsClientListSKUsResponse]`
+- New function `*DiskAccessesClient.NewListPrivateEndpointConnectionsPager(string, string, *DiskAccessesClientListPrivateEndpointConnectionsOptions) *runtime.Pager[DiskAccessesClientListPrivateEndpointConnectionsResponse]`
+- New function `*VirtualMachineRunCommandsClient.NewListByVirtualMachinePager(string, string, *VirtualMachineRunCommandsClientListByVirtualMachineOptions) *runtime.Pager[VirtualMachineRunCommandsClientListByVirtualMachineResponse]`
+- New function `*VirtualMachineScaleSetVMRunCommandsClient.NewListPager(string, string, string, *VirtualMachineScaleSetVMRunCommandsClientListOptions) *runtime.Pager[VirtualMachineScaleSetVMRunCommandsClientListResponse]`
+- New function `*DiskEncryptionSetsClient.NewListByResourceGroupPager(string, *DiskEncryptionSetsClientListByResourceGroupOptions) *runtime.Pager[DiskEncryptionSetsClientListByResourceGroupResponse]`
+- New function `*UsageClient.NewListPager(string, *UsageClientListOptions) *runtime.Pager[UsageClientListResponse]`
+- New function `*DiskEncryptionSetsClient.NewListAssociatedResourcesPager(string, string, *DiskEncryptionSetsClientListAssociatedResourcesOptions) *runtime.Pager[DiskEncryptionSetsClientListAssociatedResourcesResponse]`
+- New function `*GalleryImageVersionsClient.NewListByGalleryImagePager(string, string, string, *GalleryImageVersionsClientListByGalleryImageOptions) *runtime.Pager[GalleryImageVersionsClientListByGalleryImageResponse]`
+- New function `*AvailabilitySetsClient.NewListPager(string, *AvailabilitySetsClientListOptions) *runtime.Pager[AvailabilitySetsClientListResponse]`
+
+
 ## 0.6.0 (2022-04-13)
 ### Breaking Changes
 

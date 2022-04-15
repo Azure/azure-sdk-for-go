@@ -267,14 +267,14 @@ func (client *RulesClient) getHandleResponse(resp *http.Response) (RulesClientGe
 	return result, nil
 }
 
-// ListByRuleSet - Lists all of the existing delivery rules within a rule set.
+// NewListByRuleSetPager - Lists all of the existing delivery rules within a rule set.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
 // ruleSetName - Name of the rule set under the profile.
 // options - RulesClientListByRuleSetOptions contains the optional parameters for the RulesClient.ListByRuleSet method.
-func (client *RulesClient) ListByRuleSet(resourceGroupName string, profileName string, ruleSetName string, options *RulesClientListByRuleSetOptions) *runtime.Pager[RulesClientListByRuleSetResponse] {
+func (client *RulesClient) NewListByRuleSetPager(resourceGroupName string, profileName string, ruleSetName string, options *RulesClientListByRuleSetOptions) *runtime.Pager[RulesClientListByRuleSetResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RulesClientListByRuleSetResponse]{
 		More: func(page RulesClientListByRuleSetResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/CustomerPermissionsList.json
-func ExamplePermissionsClient_ListByCustomer() {
+func ExamplePermissionsClient_NewListByCustomerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExamplePermissionsClient_ListByCustomer() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByCustomer("<billing-account-name>",
+	pager := client.NewListByCustomerPager("<billing-account-name>",
 		"<customer-name>",
 		nil)
 	for pager.More() {
@@ -46,7 +46,7 @@ func ExamplePermissionsClient_ListByCustomer() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingAccountPermissionsList.json
-func ExamplePermissionsClient_ListByBillingAccount() {
+func ExamplePermissionsClient_NewListByBillingAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -58,7 +58,7 @@ func ExamplePermissionsClient_ListByBillingAccount() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByBillingAccount("<billing-account-name>",
+	pager := client.NewListByBillingAccountPager("<billing-account-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -74,7 +74,7 @@ func ExamplePermissionsClient_ListByBillingAccount() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/InvoiceSectionPermissionsList.json
-func ExamplePermissionsClient_ListByInvoiceSections() {
+func ExamplePermissionsClient_NewListByInvoiceSectionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -86,7 +86,7 @@ func ExamplePermissionsClient_ListByInvoiceSections() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByInvoiceSections("<billing-account-name>",
+	pager := client.NewListByInvoiceSectionsPager("<billing-account-name>",
 		"<billing-profile-name>",
 		"<invoice-section-name>",
 		nil)
@@ -104,7 +104,7 @@ func ExamplePermissionsClient_ListByInvoiceSections() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingProfilePermissionsList.json
-func ExamplePermissionsClient_ListByBillingProfile() {
+func ExamplePermissionsClient_NewListByBillingProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -116,7 +116,7 @@ func ExamplePermissionsClient_ListByBillingProfile() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByBillingProfile("<billing-account-name>",
+	pager := client.NewListByBillingProfilePager("<billing-account-name>",
 		"<billing-profile-name>",
 		nil)
 	for pager.More() {

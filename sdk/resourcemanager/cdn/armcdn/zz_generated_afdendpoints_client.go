@@ -259,14 +259,14 @@ func (client *AFDEndpointsClient) getHandleResponse(resp *http.Response) (AFDEnd
 	return result, nil
 }
 
-// ListByProfile - Lists existing AzureFrontDoor endpoints.
+// NewListByProfilePager - Lists existing AzureFrontDoor endpoints.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
 // options - AFDEndpointsClientListByProfileOptions contains the optional parameters for the AFDEndpointsClient.ListByProfile
 // method.
-func (client *AFDEndpointsClient) ListByProfile(resourceGroupName string, profileName string, options *AFDEndpointsClientListByProfileOptions) *runtime.Pager[AFDEndpointsClientListByProfileResponse] {
+func (client *AFDEndpointsClient) NewListByProfilePager(resourceGroupName string, profileName string, options *AFDEndpointsClientListByProfileOptions) *runtime.Pager[AFDEndpointsClientListByProfileResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AFDEndpointsClientListByProfileResponse]{
 		More: func(page AFDEndpointsClientListByProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -329,7 +329,7 @@ func (client *AFDEndpointsClient) listByProfileHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListResourceUsage - Checks the quota and actual usage of endpoints under the given CDN profile.
+// NewListResourceUsagePager - Checks the quota and actual usage of endpoints under the given CDN profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
@@ -337,7 +337,7 @@ func (client *AFDEndpointsClient) listByProfileHandleResponse(resp *http.Respons
 // endpointName - Name of the endpoint under the profile which is unique globally.
 // options - AFDEndpointsClientListResourceUsageOptions contains the optional parameters for the AFDEndpointsClient.ListResourceUsage
 // method.
-func (client *AFDEndpointsClient) ListResourceUsage(resourceGroupName string, profileName string, endpointName string, options *AFDEndpointsClientListResourceUsageOptions) *runtime.Pager[AFDEndpointsClientListResourceUsageResponse] {
+func (client *AFDEndpointsClient) NewListResourceUsagePager(resourceGroupName string, profileName string, endpointName string, options *AFDEndpointsClientListResourceUsageOptions) *runtime.Pager[AFDEndpointsClientListResourceUsageResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AFDEndpointsClientListResourceUsageResponse]{
 		More: func(page AFDEndpointsClientListResourceUsageResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

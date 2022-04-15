@@ -173,14 +173,14 @@ func (client *InvoiceSectionsClient) getHandleResponse(resp *http.Response) (Inv
 	return result, nil
 }
 
-// ListByBillingProfile - Lists the invoice sections that a user has access to. The operation is supported only for billing
-// accounts with agreement type Microsoft Customer Agreement.
+// NewListByBillingProfilePager - Lists the invoice sections that a user has access to. The operation is supported only for
+// billing accounts with agreement type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // options - InvoiceSectionsClientListByBillingProfileOptions contains the optional parameters for the InvoiceSectionsClient.ListByBillingProfile
 // method.
-func (client *InvoiceSectionsClient) ListByBillingProfile(billingAccountName string, billingProfileName string, options *InvoiceSectionsClientListByBillingProfileOptions) *runtime.Pager[InvoiceSectionsClientListByBillingProfileResponse] {
+func (client *InvoiceSectionsClient) NewListByBillingProfilePager(billingAccountName string, billingProfileName string, options *InvoiceSectionsClientListByBillingProfileOptions) *runtime.Pager[InvoiceSectionsClientListByBillingProfileResponse] {
 	return runtime.NewPager(runtime.PageProcessor[InvoiceSectionsClientListByBillingProfileResponse]{
 		More: func(page InvoiceSectionsClientListByBillingProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

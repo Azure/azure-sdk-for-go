@@ -270,13 +270,13 @@ func (client *SSHPublicKeysClient) getHandleResponse(resp *http.Response) (SSHPu
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all of the SSH public keys in the specified resource group. Use the nextLink property in the
-// response to get the next page of SSH public keys.
+// NewListByResourceGroupPager - Lists all of the SSH public keys in the specified resource group. Use the nextLink property
+// in the response to get the next page of SSH public keys.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - SSHPublicKeysClientListByResourceGroupOptions contains the optional parameters for the SSHPublicKeysClient.ListByResourceGroup
 // method.
-func (client *SSHPublicKeysClient) ListByResourceGroup(resourceGroupName string, options *SSHPublicKeysClientListByResourceGroupOptions) *runtime.Pager[SSHPublicKeysClientListByResourceGroupResponse] {
+func (client *SSHPublicKeysClient) NewListByResourceGroupPager(resourceGroupName string, options *SSHPublicKeysClientListByResourceGroupOptions) *runtime.Pager[SSHPublicKeysClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SSHPublicKeysClientListByResourceGroupResponse]{
 		More: func(page SSHPublicKeysClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -335,12 +335,12 @@ func (client *SSHPublicKeysClient) listByResourceGroupHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListBySubscription - Lists all of the SSH public keys in the subscription. Use the nextLink property in the response to
-// get the next page of SSH public keys.
+// NewListBySubscriptionPager - Lists all of the SSH public keys in the subscription. Use the nextLink property in the response
+// to get the next page of SSH public keys.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SSHPublicKeysClientListBySubscriptionOptions contains the optional parameters for the SSHPublicKeysClient.ListBySubscription
 // method.
-func (client *SSHPublicKeysClient) ListBySubscription(options *SSHPublicKeysClientListBySubscriptionOptions) *runtime.Pager[SSHPublicKeysClientListBySubscriptionResponse] {
+func (client *SSHPublicKeysClient) NewListBySubscriptionPager(options *SSHPublicKeysClientListBySubscriptionOptions) *runtime.Pager[SSHPublicKeysClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SSHPublicKeysClientListBySubscriptionResponse]{
 		More: func(page SSHPublicKeysClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

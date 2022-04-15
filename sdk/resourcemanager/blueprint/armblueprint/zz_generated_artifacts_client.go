@@ -215,13 +215,13 @@ func (client *ArtifactsClient) getHandleResponse(resp *http.Response) (Artifacts
 	return result, nil
 }
 
-// List - List artifacts for a given blueprint definition.
+// NewListPager - List artifacts for a given blueprint definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format: '/subscriptions/{subscriptionId}').
 // blueprintName - Name of the blueprint definition.
 // options - ArtifactsClientListOptions contains the optional parameters for the ArtifactsClient.List method.
-func (client *ArtifactsClient) List(resourceScope string, blueprintName string, options *ArtifactsClientListOptions) *runtime.Pager[ArtifactsClientListResponse] {
+func (client *ArtifactsClient) NewListPager(resourceScope string, blueprintName string, options *ArtifactsClientListOptions) *runtime.Pager[ArtifactsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ArtifactsClientListResponse]{
 		More: func(page ArtifactsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

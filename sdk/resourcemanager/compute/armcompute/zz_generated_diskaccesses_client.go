@@ -428,10 +428,10 @@ func (client *DiskAccessesClient) getPrivateLinkResourcesHandleResponse(resp *ht
 	return result, nil
 }
 
-// List - Lists all the disk access resources under a subscription.
+// NewListPager - Lists all the disk access resources under a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DiskAccessesClientListOptions contains the optional parameters for the DiskAccessesClient.List method.
-func (client *DiskAccessesClient) List(options *DiskAccessesClientListOptions) *runtime.Pager[DiskAccessesClientListResponse] {
+func (client *DiskAccessesClient) NewListPager(options *DiskAccessesClientListOptions) *runtime.Pager[DiskAccessesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DiskAccessesClientListResponse]{
 		More: func(page DiskAccessesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -486,12 +486,12 @@ func (client *DiskAccessesClient) listHandleResponse(resp *http.Response) (DiskA
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all the disk access resources under a resource group.
+// NewListByResourceGroupPager - Lists all the disk access resources under a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - DiskAccessesClientListByResourceGroupOptions contains the optional parameters for the DiskAccessesClient.ListByResourceGroup
 // method.
-func (client *DiskAccessesClient) ListByResourceGroup(resourceGroupName string, options *DiskAccessesClientListByResourceGroupOptions) *runtime.Pager[DiskAccessesClientListByResourceGroupResponse] {
+func (client *DiskAccessesClient) NewListByResourceGroupPager(resourceGroupName string, options *DiskAccessesClientListByResourceGroupOptions) *runtime.Pager[DiskAccessesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DiskAccessesClientListByResourceGroupResponse]{
 		More: func(page DiskAccessesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -550,7 +550,7 @@ func (client *DiskAccessesClient) listByResourceGroupHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListPrivateEndpointConnections - List information about private endpoint connections under a disk access resource
+// NewListPrivateEndpointConnectionsPager - List information about private endpoint connections under a disk access resource
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
@@ -558,7 +558,7 @@ func (client *DiskAccessesClient) listByResourceGroupHandleResponse(resp *http.R
 // maximum name length is 80 characters.
 // options - DiskAccessesClientListPrivateEndpointConnectionsOptions contains the optional parameters for the DiskAccessesClient.ListPrivateEndpointConnections
 // method.
-func (client *DiskAccessesClient) ListPrivateEndpointConnections(resourceGroupName string, diskAccessName string, options *DiskAccessesClientListPrivateEndpointConnectionsOptions) *runtime.Pager[DiskAccessesClientListPrivateEndpointConnectionsResponse] {
+func (client *DiskAccessesClient) NewListPrivateEndpointConnectionsPager(resourceGroupName string, diskAccessName string, options *DiskAccessesClientListPrivateEndpointConnectionsOptions) *runtime.Pager[DiskAccessesClientListPrivateEndpointConnectionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DiskAccessesClientListPrivateEndpointConnectionsResponse]{
 		More: func(page DiskAccessesClientListPrivateEndpointConnectionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

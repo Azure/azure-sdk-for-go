@@ -403,11 +403,11 @@ func (client *ExperimentsClient) getStatusHandleResponse(resp *http.Response) (E
 	return result, nil
 }
 
-// List - Get a list of Experiment resources in a resource group.
+// NewListPager - Get a list of Experiment resources in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - String that represents an Azure resource group.
 // options - ExperimentsClientListOptions contains the optional parameters for the ExperimentsClient.List method.
-func (client *ExperimentsClient) List(resourceGroupName string, options *ExperimentsClientListOptions) *runtime.Pager[ExperimentsClientListResponse] {
+func (client *ExperimentsClient) NewListPager(resourceGroupName string, options *ExperimentsClientListOptions) *runtime.Pager[ExperimentsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ExperimentsClientListResponse]{
 		More: func(page ExperimentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -472,10 +472,10 @@ func (client *ExperimentsClient) listHandleResponse(resp *http.Response) (Experi
 	return result, nil
 }
 
-// ListAll - Get a list of Experiment resources in a subscription.
+// NewListAllPager - Get a list of Experiment resources in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ExperimentsClientListAllOptions contains the optional parameters for the ExperimentsClient.ListAll method.
-func (client *ExperimentsClient) ListAll(options *ExperimentsClientListAllOptions) *runtime.Pager[ExperimentsClientListAllResponse] {
+func (client *ExperimentsClient) NewListAllPager(options *ExperimentsClientListAllOptions) *runtime.Pager[ExperimentsClientListAllResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ExperimentsClientListAllResponse]{
 		More: func(page ExperimentsClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -536,13 +536,13 @@ func (client *ExperimentsClient) listAllHandleResponse(resp *http.Response) (Exp
 	return result, nil
 }
 
-// ListAllStatuses - Get a list of statuses of a Experiment resource.
+// NewListAllStatusesPager - Get a list of statuses of a Experiment resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - String that represents an Azure resource group.
 // experimentName - String that represents a Experiment resource name.
 // options - ExperimentsClientListAllStatusesOptions contains the optional parameters for the ExperimentsClient.ListAllStatuses
 // method.
-func (client *ExperimentsClient) ListAllStatuses(resourceGroupName string, experimentName string, options *ExperimentsClientListAllStatusesOptions) *runtime.Pager[ExperimentsClientListAllStatusesResponse] {
+func (client *ExperimentsClient) NewListAllStatusesPager(resourceGroupName string, experimentName string, options *ExperimentsClientListAllStatusesOptions) *runtime.Pager[ExperimentsClientListAllStatusesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ExperimentsClientListAllStatusesResponse]{
 		More: func(page ExperimentsClientListAllStatusesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -605,13 +605,13 @@ func (client *ExperimentsClient) listAllStatusesHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListExecutionDetails - Get a list of execution details of a Experiment resource.
+// NewListExecutionDetailsPager - Get a list of execution details of a Experiment resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - String that represents an Azure resource group.
 // experimentName - String that represents a Experiment resource name.
 // options - ExperimentsClientListExecutionDetailsOptions contains the optional parameters for the ExperimentsClient.ListExecutionDetails
 // method.
-func (client *ExperimentsClient) ListExecutionDetails(resourceGroupName string, experimentName string, options *ExperimentsClientListExecutionDetailsOptions) *runtime.Pager[ExperimentsClientListExecutionDetailsResponse] {
+func (client *ExperimentsClient) NewListExecutionDetailsPager(resourceGroupName string, experimentName string, options *ExperimentsClientListExecutionDetailsOptions) *runtime.Pager[ExperimentsClientListExecutionDetailsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ExperimentsClientListExecutionDetailsResponse]{
 		More: func(page ExperimentsClientListExecutionDetailsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/AFDOrigins_ListByOriginGroup.json
-func ExampleAFDOriginsClient_ListByOriginGroup() {
+func ExampleAFDOriginsClient_NewListByOriginGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleAFDOriginsClient_ListByOriginGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByOriginGroup("<resource-group-name>",
+	pager := client.NewListByOriginGroupPager("<resource-group-name>",
 		"<profile-name>",
 		"<origin-group-name>",
 		nil)

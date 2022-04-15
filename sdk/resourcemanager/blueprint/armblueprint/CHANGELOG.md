@@ -1,5 +1,25 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*AssignmentsClient.List` has been removed
+- Function `*AssignmentOperationsClient.List` has been removed
+- Function `*BlueprintsClient.List` has been removed
+- Function `*PublishedArtifactsClient.List` has been removed
+- Function `*PublishedBlueprintsClient.List` has been removed
+- Function `*ArtifactsClient.List` has been removed
+
+### Features Added
+
+- New function `*PublishedBlueprintsClient.NewListPager(string, string, *PublishedBlueprintsClientListOptions) *runtime.Pager[PublishedBlueprintsClientListResponse]`
+- New function `*AssignmentsClient.NewListPager(string, *AssignmentsClientListOptions) *runtime.Pager[AssignmentsClientListResponse]`
+- New function `*PublishedArtifactsClient.NewListPager(string, string, string, *PublishedArtifactsClientListOptions) *runtime.Pager[PublishedArtifactsClientListResponse]`
+- New function `*BlueprintsClient.NewListPager(string, *BlueprintsClientListOptions) *runtime.Pager[BlueprintsClientListResponse]`
+- New function `*AssignmentOperationsClient.NewListPager(string, string, *AssignmentOperationsClientListOptions) *runtime.Pager[AssignmentOperationsClientListResponse]`
+- New function `*ArtifactsClient.NewListPager(string, string, *ArtifactsClientListOptions) *runtime.Pager[ArtifactsClientListResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

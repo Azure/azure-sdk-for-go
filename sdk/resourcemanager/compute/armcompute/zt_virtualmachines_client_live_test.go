@@ -295,7 +295,7 @@ func (testsuite *VirtualMachinesClientTestSuite) TestVirtualMachineCRUD() {
 	testsuite.Require().Equal(*resp.Name, vmName)
 
 	// virtual machine list
-	vmList := vmClient.List(testsuite.resourceGroupName, nil)
+	vmList := vmClient.NewListPager(testsuite.resourceGroupName, nil)
 	testsuite.Require().Equal(vmList.More(), true)
 
 	// delete virtual machine

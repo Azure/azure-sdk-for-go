@@ -247,13 +247,13 @@ func (client *RuleSetsClient) getHandleResponse(resp *http.Response) (RuleSetsCl
 	return result, nil
 }
 
-// ListByProfile - Lists existing AzureFrontDoor rule sets within a profile.
+// NewListByProfilePager - Lists existing AzureFrontDoor rule sets within a profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
 // options - RuleSetsClientListByProfileOptions contains the optional parameters for the RuleSetsClient.ListByProfile method.
-func (client *RuleSetsClient) ListByProfile(resourceGroupName string, profileName string, options *RuleSetsClientListByProfileOptions) *runtime.Pager[RuleSetsClientListByProfileResponse] {
+func (client *RuleSetsClient) NewListByProfilePager(resourceGroupName string, profileName string, options *RuleSetsClientListByProfileOptions) *runtime.Pager[RuleSetsClientListByProfileResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RuleSetsClientListByProfileResponse]{
 		More: func(page RuleSetsClientListByProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -316,7 +316,7 @@ func (client *RuleSetsClient) listByProfileHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// ListResourceUsage - Checks the quota and actual usage of endpoints under the given CDN profile.
+// NewListResourceUsagePager - Checks the quota and actual usage of endpoints under the given CDN profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
@@ -324,7 +324,7 @@ func (client *RuleSetsClient) listByProfileHandleResponse(resp *http.Response) (
 // ruleSetName - Name of the rule set under the profile which is unique globally.
 // options - RuleSetsClientListResourceUsageOptions contains the optional parameters for the RuleSetsClient.ListResourceUsage
 // method.
-func (client *RuleSetsClient) ListResourceUsage(resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsClientListResourceUsageOptions) *runtime.Pager[RuleSetsClientListResourceUsageResponse] {
+func (client *RuleSetsClient) NewListResourceUsagePager(resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsClientListResourceUsageOptions) *runtime.Pager[RuleSetsClientListResourceUsageResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RuleSetsClientListResourceUsageResponse]{
 		More: func(page RuleSetsClientListResourceUsageResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

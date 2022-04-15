@@ -664,7 +664,7 @@ func ExampleVirtualMachineScaleSetVMsClient_GetInstanceView() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSetVMs_List_MaximumSet_Gen.json
-func ExampleVirtualMachineScaleSetVMsClient_List() {
+func ExampleVirtualMachineScaleSetVMsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -676,7 +676,7 @@ func ExampleVirtualMachineScaleSetVMsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-group-name>",
+	pager := client.NewListPager("<resource-group-name>",
 		"<virtual-machine-scale-set-name>",
 		&armcompute.VirtualMachineScaleSetVMsClientListOptions{Filter: to.Ptr("<filter>"),
 			Select: to.Ptr("<select>"),

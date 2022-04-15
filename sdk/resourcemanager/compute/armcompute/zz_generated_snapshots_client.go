@@ -303,10 +303,10 @@ func (client *SnapshotsClient) grantAccessCreateRequest(ctx context.Context, res
 	return req, runtime.MarshalAsJSON(req, grantAccessData)
 }
 
-// List - Lists snapshots under a subscription.
+// NewListPager - Lists snapshots under a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SnapshotsClientListOptions contains the optional parameters for the SnapshotsClient.List method.
-func (client *SnapshotsClient) List(options *SnapshotsClientListOptions) *runtime.Pager[SnapshotsClientListResponse] {
+func (client *SnapshotsClient) NewListPager(options *SnapshotsClientListOptions) *runtime.Pager[SnapshotsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SnapshotsClientListResponse]{
 		More: func(page SnapshotsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -361,12 +361,12 @@ func (client *SnapshotsClient) listHandleResponse(resp *http.Response) (Snapshot
 	return result, nil
 }
 
-// ListByResourceGroup - Lists snapshots under a resource group.
+// NewListByResourceGroupPager - Lists snapshots under a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - SnapshotsClientListByResourceGroupOptions contains the optional parameters for the SnapshotsClient.ListByResourceGroup
 // method.
-func (client *SnapshotsClient) ListByResourceGroup(resourceGroupName string, options *SnapshotsClientListByResourceGroupOptions) *runtime.Pager[SnapshotsClientListByResourceGroupResponse] {
+func (client *SnapshotsClient) NewListByResourceGroupPager(resourceGroupName string, options *SnapshotsClientListByResourceGroupOptions) *runtime.Pager[SnapshotsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SnapshotsClientListByResourceGroupResponse]{
 		More: func(page SnapshotsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

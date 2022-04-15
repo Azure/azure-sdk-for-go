@@ -1,5 +1,25 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*ChannelsClient.ListByResourceGroup` has been removed
+- Function `*BotConnectionClient.ListByBotService` has been removed
+- Function `*PrivateEndpointConnectionsClient.List` has been removed
+- Function `*BotsClient.ListByResourceGroup` has been removed
+- Function `*BotsClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+
+### Features Added
+
+- New function `*PrivateEndpointConnectionsClient.NewListPager(string, string, *PrivateEndpointConnectionsClientListOptions) *runtime.Pager[PrivateEndpointConnectionsClientListResponse]`
+- New function `*ChannelsClient.NewListByResourceGroupPager(string, string, *ChannelsClientListByResourceGroupOptions) *runtime.Pager[ChannelsClientListByResourceGroupResponse]`
+- New function `*BotsClient.NewListPager(*BotsClientListOptions) *runtime.Pager[BotsClientListResponse]`
+- New function `*BotConnectionClient.NewListByBotServicePager(string, string, *BotConnectionClientListByBotServiceOptions) *runtime.Pager[BotConnectionClientListByBotServiceResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*BotsClient.NewListByResourceGroupPager(string, *BotsClientListByResourceGroupOptions) *runtime.Pager[BotsClientListByResourceGroupResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

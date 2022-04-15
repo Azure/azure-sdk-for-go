@@ -256,14 +256,14 @@ func (client *TargetsClient) getHandleResponse(resp *http.Response) (TargetsClie
 	return result, nil
 }
 
-// List - Get a list of Target resources that extend a tracked regional resource.
+// NewListPager - Get a list of Target resources that extend a tracked regional resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - String that represents an Azure resource group.
 // parentProviderNamespace - String that represents a resource provider namespace.
 // parentResourceType - String that represents a resource type.
 // parentResourceName - String that represents a resource name.
 // options - TargetsClientListOptions contains the optional parameters for the TargetsClient.List method.
-func (client *TargetsClient) List(resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, options *TargetsClientListOptions) *runtime.Pager[TargetsClientListResponse] {
+func (client *TargetsClient) NewListPager(resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, options *TargetsClientListOptions) *runtime.Pager[TargetsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TargetsClientListResponse]{
 		More: func(page TargetsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

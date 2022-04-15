@@ -356,12 +356,12 @@ func (client *CloudServicesClient) getInstanceViewHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// List - Gets a list of all cloud services under a resource group. Use nextLink property in the response to get the next
-// page of Cloud Services. Do this till nextLink is null to fetch all the Cloud Services.
+// NewListPager - Gets a list of all cloud services under a resource group. Use nextLink property in the response to get the
+// next page of Cloud Services. Do this till nextLink is null to fetch all the Cloud Services.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group.
 // options - CloudServicesClientListOptions contains the optional parameters for the CloudServicesClient.List method.
-func (client *CloudServicesClient) List(resourceGroupName string, options *CloudServicesClientListOptions) *runtime.Pager[CloudServicesClientListResponse] {
+func (client *CloudServicesClient) NewListPager(resourceGroupName string, options *CloudServicesClientListOptions) *runtime.Pager[CloudServicesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CloudServicesClientListResponse]{
 		More: func(page CloudServicesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -420,12 +420,12 @@ func (client *CloudServicesClient) listHandleResponse(resp *http.Response) (Clou
 	return result, nil
 }
 
-// ListAll - Gets a list of all cloud services in the subscription, regardless of the associated resource group. Use nextLink
-// property in the response to get the next page of Cloud Services. Do this till nextLink
+// NewListAllPager - Gets a list of all cloud services in the subscription, regardless of the associated resource group. Use
+// nextLink property in the response to get the next page of Cloud Services. Do this till nextLink
 // is null to fetch all the Cloud Services.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - CloudServicesClientListAllOptions contains the optional parameters for the CloudServicesClient.ListAll method.
-func (client *CloudServicesClient) ListAll(options *CloudServicesClientListAllOptions) *runtime.Pager[CloudServicesClientListAllResponse] {
+func (client *CloudServicesClient) NewListAllPager(options *CloudServicesClientListAllOptions) *runtime.Pager[CloudServicesClientListAllResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CloudServicesClientListAllResponse]{
 		More: func(page CloudServicesClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

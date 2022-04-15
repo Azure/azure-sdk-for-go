@@ -543,13 +543,13 @@ func (client *VirtualMachineScaleSetsClient) getInstanceViewHandleResponse(resp 
 	return result, nil
 }
 
-// GetOSUpgradeHistory - Gets list of OS upgrades on a VM scale set instance.
+// NewGetOSUpgradeHistoryPager - Gets list of OS upgrades on a VM scale set instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // vmScaleSetName - The name of the VM scale set.
 // options - VirtualMachineScaleSetsClientGetOSUpgradeHistoryOptions contains the optional parameters for the VirtualMachineScaleSetsClient.GetOSUpgradeHistory
 // method.
-func (client *VirtualMachineScaleSetsClient) GetOSUpgradeHistory(resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetsClientGetOSUpgradeHistoryOptions) *runtime.Pager[VirtualMachineScaleSetsClientGetOSUpgradeHistoryResponse] {
+func (client *VirtualMachineScaleSetsClient) NewGetOSUpgradeHistoryPager(resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetsClientGetOSUpgradeHistoryOptions) *runtime.Pager[VirtualMachineScaleSetsClientGetOSUpgradeHistoryResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualMachineScaleSetsClientGetOSUpgradeHistoryResponse]{
 		More: func(page VirtualMachineScaleSetsClientGetOSUpgradeHistoryResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -612,12 +612,12 @@ func (client *VirtualMachineScaleSetsClient) getOSUpgradeHistoryHandleResponse(r
 	return result, nil
 }
 
-// List - Gets a list of all VM scale sets under a resource group.
+// NewListPager - Gets a list of all VM scale sets under a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - VirtualMachineScaleSetsClientListOptions contains the optional parameters for the VirtualMachineScaleSetsClient.List
 // method.
-func (client *VirtualMachineScaleSetsClient) List(resourceGroupName string, options *VirtualMachineScaleSetsClientListOptions) *runtime.Pager[VirtualMachineScaleSetsClientListResponse] {
+func (client *VirtualMachineScaleSetsClient) NewListPager(resourceGroupName string, options *VirtualMachineScaleSetsClientListOptions) *runtime.Pager[VirtualMachineScaleSetsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualMachineScaleSetsClientListResponse]{
 		More: func(page VirtualMachineScaleSetsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -676,13 +676,13 @@ func (client *VirtualMachineScaleSetsClient) listHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListAll - Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink
-// property in the response to get the next page of VM Scale Sets. Do this till nextLink is
+// NewListAllPager - Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use
+// nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is
 // null to fetch all the VM Scale Sets.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - VirtualMachineScaleSetsClientListAllOptions contains the optional parameters for the VirtualMachineScaleSetsClient.ListAll
 // method.
-func (client *VirtualMachineScaleSetsClient) ListAll(options *VirtualMachineScaleSetsClientListAllOptions) *runtime.Pager[VirtualMachineScaleSetsClientListAllResponse] {
+func (client *VirtualMachineScaleSetsClient) NewListAllPager(options *VirtualMachineScaleSetsClientListAllOptions) *runtime.Pager[VirtualMachineScaleSetsClientListAllResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualMachineScaleSetsClientListAllResponse]{
 		More: func(page VirtualMachineScaleSetsClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -737,12 +737,12 @@ func (client *VirtualMachineScaleSetsClient) listAllHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListByLocation - Gets all the VM scale sets under the specified subscription for the specified location.
+// NewListByLocationPager - Gets all the VM scale sets under the specified subscription for the specified location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - The location for which VM scale sets under the subscription are queried.
 // options - VirtualMachineScaleSetsClientListByLocationOptions contains the optional parameters for the VirtualMachineScaleSetsClient.ListByLocation
 // method.
-func (client *VirtualMachineScaleSetsClient) ListByLocation(location string, options *VirtualMachineScaleSetsClientListByLocationOptions) *runtime.Pager[VirtualMachineScaleSetsClientListByLocationResponse] {
+func (client *VirtualMachineScaleSetsClient) NewListByLocationPager(location string, options *VirtualMachineScaleSetsClientListByLocationOptions) *runtime.Pager[VirtualMachineScaleSetsClientListByLocationResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualMachineScaleSetsClientListByLocationResponse]{
 		More: func(page VirtualMachineScaleSetsClientListByLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -801,14 +801,14 @@ func (client *VirtualMachineScaleSetsClient) listByLocationHandleResponse(resp *
 	return result, nil
 }
 
-// ListSKUs - Gets a list of SKUs available for your VM scale set, including the minimum and maximum VM instances allowed
-// for each SKU.
+// NewListSKUsPager - Gets a list of SKUs available for your VM scale set, including the minimum and maximum VM instances
+// allowed for each SKU.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // vmScaleSetName - The name of the VM scale set.
 // options - VirtualMachineScaleSetsClientListSKUsOptions contains the optional parameters for the VirtualMachineScaleSetsClient.ListSKUs
 // method.
-func (client *VirtualMachineScaleSetsClient) ListSKUs(resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetsClientListSKUsOptions) *runtime.Pager[VirtualMachineScaleSetsClientListSKUsResponse] {
+func (client *VirtualMachineScaleSetsClient) NewListSKUsPager(resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetsClientListSKUsOptions) *runtime.Pager[VirtualMachineScaleSetsClientListSKUsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualMachineScaleSetsClientListSKUsResponse]{
 		More: func(page VirtualMachineScaleSetsClientListSKUsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

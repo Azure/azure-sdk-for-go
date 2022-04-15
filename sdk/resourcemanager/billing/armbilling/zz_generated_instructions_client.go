@@ -107,13 +107,13 @@ func (client *InstructionsClient) getHandleResponse(resp *http.Response) (Instru
 	return result, nil
 }
 
-// ListByBillingProfile - Lists the instructions by billing profile id.
+// NewListByBillingProfilePager - Lists the instructions by billing profile id.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // options - InstructionsClientListByBillingProfileOptions contains the optional parameters for the InstructionsClient.ListByBillingProfile
 // method.
-func (client *InstructionsClient) ListByBillingProfile(billingAccountName string, billingProfileName string, options *InstructionsClientListByBillingProfileOptions) *runtime.Pager[InstructionsClientListByBillingProfileResponse] {
+func (client *InstructionsClient) NewListByBillingProfilePager(billingAccountName string, billingProfileName string, options *InstructionsClientListByBillingProfileOptions) *runtime.Pager[InstructionsClientListByBillingProfileResponse] {
 	return runtime.NewPager(runtime.PageProcessor[InstructionsClientListByBillingProfileResponse]{
 		More: func(page InstructionsClientListByBillingProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

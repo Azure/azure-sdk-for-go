@@ -116,13 +116,13 @@ func (client *CloudServicesUpdateDomainClient) getUpdateDomainHandleResponse(res
 	return result, nil
 }
 
-// ListUpdateDomains - Gets a list of all update domains in a cloud service.
+// NewListUpdateDomainsPager - Gets a list of all update domains in a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group.
 // cloudServiceName - Name of the cloud service.
 // options - CloudServicesUpdateDomainClientListUpdateDomainsOptions contains the optional parameters for the CloudServicesUpdateDomainClient.ListUpdateDomains
 // method.
-func (client *CloudServicesUpdateDomainClient) ListUpdateDomains(resourceGroupName string, cloudServiceName string, options *CloudServicesUpdateDomainClientListUpdateDomainsOptions) *runtime.Pager[CloudServicesUpdateDomainClientListUpdateDomainsResponse] {
+func (client *CloudServicesUpdateDomainClient) NewListUpdateDomainsPager(resourceGroupName string, cloudServiceName string, options *CloudServicesUpdateDomainClientListUpdateDomainsOptions) *runtime.Pager[CloudServicesUpdateDomainClientListUpdateDomainsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CloudServicesUpdateDomainClientListUpdateDomainsResponse]{
 		More: func(page CloudServicesUpdateDomainClientListUpdateDomainsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

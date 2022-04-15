@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/runCommands/VirtualMachineRunCommandList.json
-func ExampleVirtualMachineRunCommandsClient_List() {
+func ExampleVirtualMachineRunCommandsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleVirtualMachineRunCommandsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<location>",
+	pager := client.NewListPager("<location>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -218,7 +218,7 @@ func ExampleVirtualMachineRunCommandsClient_GetByVirtualMachine() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/runCommands/ListRunCommandsInVM.json
-func ExampleVirtualMachineRunCommandsClient_ListByVirtualMachine() {
+func ExampleVirtualMachineRunCommandsClient_NewListByVirtualMachinePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -230,7 +230,7 @@ func ExampleVirtualMachineRunCommandsClient_ListByVirtualMachine() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByVirtualMachine("<resource-group-name>",
+	pager := client.NewListByVirtualMachinePager("<resource-group-name>",
 		"<vm-name>",
 		&armcompute.VirtualMachineRunCommandsClientListByVirtualMachineOptions{Expand: nil})
 	for pager.More() {

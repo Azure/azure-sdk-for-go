@@ -76,7 +76,7 @@ func ExampleCloudServicesUpdateDomainClient_GetUpdateDomain() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-03-01/examples/ListCloudServiceUpdateDomains.json
-func ExampleCloudServicesUpdateDomainClient_ListUpdateDomains() {
+func ExampleCloudServicesUpdateDomainClient_NewListUpdateDomainsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -88,7 +88,7 @@ func ExampleCloudServicesUpdateDomainClient_ListUpdateDomains() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListUpdateDomains("<resource-group-name>",
+	pager := client.NewListUpdateDomainsPager("<resource-group-name>",
 		"<cloud-service-name>",
 		nil)
 	for pager.More() {

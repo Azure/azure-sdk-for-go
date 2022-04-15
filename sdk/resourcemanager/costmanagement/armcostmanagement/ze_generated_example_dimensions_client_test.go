@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/BillingAccountDimensionsList.json
-func ExampleDimensionsClient_List() {
+func ExampleDimensionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleDimensionsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<scope>",
+	pager := client.NewListPager("<scope>",
 		&armcostmanagement.DimensionsClientListOptions{Filter: nil,
 			Expand:    nil,
 			Skiptoken: nil,
@@ -49,7 +49,7 @@ func ExampleDimensionsClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExternalBillingAccountsDimensions.json
-func ExampleDimensionsClient_ByExternalCloudProviderType() {
+func ExampleDimensionsClient_NewByExternalCloudProviderTypePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -61,7 +61,7 @@ func ExampleDimensionsClient_ByExternalCloudProviderType() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ByExternalCloudProviderType(armcostmanagement.ExternalCloudProviderTypeExternalBillingAccounts,
+	pager := client.NewByExternalCloudProviderTypePager(armcostmanagement.ExternalCloudProviderTypeExternalBillingAccounts,
 		"<external-cloud-provider-id>",
 		&armcostmanagement.DimensionsClientByExternalCloudProviderTypeOptions{Filter: nil,
 			Expand:    nil,

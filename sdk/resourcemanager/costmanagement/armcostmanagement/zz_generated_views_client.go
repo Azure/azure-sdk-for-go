@@ -367,10 +367,10 @@ func (client *ViewsClient) getByScopeHandleResponse(resp *http.Response) (ViewsC
 	return result, nil
 }
 
-// List - Lists all views by tenant and object.
+// NewListPager - Lists all views by tenant and object.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ViewsClientListOptions contains the optional parameters for the ViewsClient.List method.
-func (client *ViewsClient) List(options *ViewsClientListOptions) *runtime.Pager[ViewsClientListResponse] {
+func (client *ViewsClient) NewListPager(options *ViewsClientListOptions) *runtime.Pager[ViewsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ViewsClientListResponse]{
 		More: func(page ViewsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -421,7 +421,7 @@ func (client *ViewsClient) listHandleResponse(resp *http.Response) (ViewsClientL
 	return result, nil
 }
 
-// ListByScope - Lists all views at the given scope.
+// NewListByScopePager - Lists all views at the given scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 // scope - The scope associated with view operations. This includes 'subscriptions/{subscriptionId}' for subscription scope,
 // 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
@@ -437,7 +437,7 @@ func (client *ViewsClient) listHandleResponse(resp *http.Response) (ViewsClientL
 // Billing Account scope and
 // 'providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for External Subscription scope.
 // options - ViewsClientListByScopeOptions contains the optional parameters for the ViewsClient.ListByScope method.
-func (client *ViewsClient) ListByScope(scope string, options *ViewsClientListByScopeOptions) *runtime.Pager[ViewsClientListByScopeResponse] {
+func (client *ViewsClient) NewListByScopePager(scope string, options *ViewsClientListByScopeOptions) *runtime.Pager[ViewsClientListByScopeResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ViewsClientListByScopeResponse]{
 		More: func(page ViewsClientListByScopeResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -52,7 +52,7 @@ func NewDimensionsClient(credential azcore.TokenCredential, options *arm.ClientO
 	return client, nil
 }
 
-// ByExternalCloudProviderType - Lists the dimensions by the external cloud provider type.
+// NewByExternalCloudProviderTypePager - Lists the dimensions by the external cloud provider type.
 // If the operation fails it returns an *azcore.ResponseError type.
 // externalCloudProviderType - The external cloud provider type associated with dimension/query operations. This includes
 // 'externalSubscriptions' for linked account and 'externalBillingAccounts' for consolidated account.
@@ -60,7 +60,7 @@ func NewDimensionsClient(credential azcore.TokenCredential, options *arm.ClientO
 // consolidated account used with dimension/query operations.
 // options - DimensionsClientByExternalCloudProviderTypeOptions contains the optional parameters for the DimensionsClient.ByExternalCloudProviderType
 // method.
-func (client *DimensionsClient) ByExternalCloudProviderType(externalCloudProviderType ExternalCloudProviderType, externalCloudProviderID string, options *DimensionsClientByExternalCloudProviderTypeOptions) *runtime.Pager[DimensionsClientByExternalCloudProviderTypeResponse] {
+func (client *DimensionsClient) NewByExternalCloudProviderTypePager(externalCloudProviderType ExternalCloudProviderType, externalCloudProviderID string, options *DimensionsClientByExternalCloudProviderTypeOptions) *runtime.Pager[DimensionsClientByExternalCloudProviderTypeResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DimensionsClientByExternalCloudProviderTypeResponse]{
 		More: func(page DimensionsClientByExternalCloudProviderTypeResponse) bool {
 			return false
@@ -125,7 +125,7 @@ func (client *DimensionsClient) byExternalCloudProviderTypeHandleResponse(resp *
 	return result, nil
 }
 
-// List - Lists the dimensions by the defined scope.
+// NewListPager - Lists the dimensions by the defined scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 // scope - The scope associated with dimension operations. This includes '/subscriptions/{subscriptionId}/' for subscription
 // scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
@@ -138,7 +138,7 @@ func (client *DimensionsClient) byExternalCloudProviderTypeHandleResponse(resp *
 // for invoiceSection scope, and
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for partners.
 // options - DimensionsClientListOptions contains the optional parameters for the DimensionsClient.List method.
-func (client *DimensionsClient) List(scope string, options *DimensionsClientListOptions) *runtime.Pager[DimensionsClientListResponse] {
+func (client *DimensionsClient) NewListPager(scope string, options *DimensionsClientListOptions) *runtime.Pager[DimensionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DimensionsClientListResponse]{
 		More: func(page DimensionsClientListResponse) bool {
 			return false

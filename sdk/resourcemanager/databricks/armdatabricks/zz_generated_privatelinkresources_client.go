@@ -115,13 +115,13 @@ func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// List - List private link resources for a given workspace
+// NewListPager - List private link resources for a given workspace
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - PrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkResourcesClient.List
 // method.
-func (client *PrivateLinkResourcesClient) List(resourceGroupName string, workspaceName string, options *PrivateLinkResourcesClientListOptions) *runtime.Pager[PrivateLinkResourcesClientListResponse] {
+func (client *PrivateLinkResourcesClient) NewListPager(resourceGroupName string, workspaceName string, options *PrivateLinkResourcesClientListOptions) *runtime.Pager[PrivateLinkResourcesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkResourcesClientListResponse]{
 		More: func(page PrivateLinkResourcesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

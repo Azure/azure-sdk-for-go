@@ -234,13 +234,13 @@ func (client *DedicatedHsmClient) getHandleResponse(resp *http.Response) (Dedica
 	return result, nil
 }
 
-// ListByResourceGroup - The List operation gets information about the dedicated hsms associated with the subscription and
-// within the specified resource group.
+// NewListByResourceGroupPager - The List operation gets information about the dedicated hsms associated with the subscription
+// and within the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the Resource Group to which the dedicated HSM belongs.
 // options - DedicatedHsmClientListByResourceGroupOptions contains the optional parameters for the DedicatedHsmClient.ListByResourceGroup
 // method.
-func (client *DedicatedHsmClient) ListByResourceGroup(resourceGroupName string, options *DedicatedHsmClientListByResourceGroupOptions) *runtime.Pager[DedicatedHsmClientListByResourceGroupResponse] {
+func (client *DedicatedHsmClient) NewListByResourceGroupPager(resourceGroupName string, options *DedicatedHsmClientListByResourceGroupOptions) *runtime.Pager[DedicatedHsmClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DedicatedHsmClientListByResourceGroupResponse]{
 		More: func(page DedicatedHsmClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -302,11 +302,11 @@ func (client *DedicatedHsmClient) listByResourceGroupHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListBySubscription - The List operation gets information about the dedicated HSMs associated with the subscription.
+// NewListBySubscriptionPager - The List operation gets information about the dedicated HSMs associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DedicatedHsmClientListBySubscriptionOptions contains the optional parameters for the DedicatedHsmClient.ListBySubscription
 // method.
-func (client *DedicatedHsmClient) ListBySubscription(options *DedicatedHsmClientListBySubscriptionOptions) *runtime.Pager[DedicatedHsmClientListBySubscriptionResponse] {
+func (client *DedicatedHsmClient) NewListBySubscriptionPager(options *DedicatedHsmClientListBySubscriptionOptions) *runtime.Pager[DedicatedHsmClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DedicatedHsmClientListBySubscriptionResponse]{
 		More: func(page DedicatedHsmClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -364,14 +364,14 @@ func (client *DedicatedHsmClient) listBySubscriptionHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListOutboundNetworkDependenciesEndpoints - Gets a list of egress endpoints (network endpoints of all outbound dependencies)
+// NewListOutboundNetworkDependenciesEndpointsPager - Gets a list of egress endpoints (network endpoints of all outbound dependencies)
 // in the specified dedicated hsm resource. The operation returns properties of each egress endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the Resource Group to which the dedicated hsm belongs.
 // name - The name of the dedicated HSM.
 // options - DedicatedHsmClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the DedicatedHsmClient.ListOutboundNetworkDependenciesEndpoints
 // method.
-func (client *DedicatedHsmClient) ListOutboundNetworkDependenciesEndpoints(resourceGroupName string, name string, options *DedicatedHsmClientListOutboundNetworkDependenciesEndpointsOptions) *runtime.Pager[DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse] {
+func (client *DedicatedHsmClient) NewListOutboundNetworkDependenciesEndpointsPager(resourceGroupName string, name string, options *DedicatedHsmClientListOutboundNetworkDependenciesEndpointsOptions) *runtime.Pager[DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse]{
 		More: func(page DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -392,10 +392,10 @@ func (client *DatabaseAccountsClient) getReadOnlyKeysHandleResponse(resp *http.R
 	return result, nil
 }
 
-// List - Lists all the Azure Cosmos DB database accounts available under the subscription.
+// NewListPager - Lists all the Azure Cosmos DB database accounts available under the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DatabaseAccountsClientListOptions contains the optional parameters for the DatabaseAccountsClient.List method.
-func (client *DatabaseAccountsClient) List(options *DatabaseAccountsClientListOptions) *runtime.Pager[DatabaseAccountsClientListResponse] {
+func (client *DatabaseAccountsClient) NewListPager(options *DatabaseAccountsClientListOptions) *runtime.Pager[DatabaseAccountsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DatabaseAccountsClientListResponse]{
 		More: func(page DatabaseAccountsClientListResponse) bool {
 			return false
@@ -444,12 +444,12 @@ func (client *DatabaseAccountsClient) listHandleResponse(resp *http.Response) (D
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all the Azure Cosmos DB database accounts available under the given resource group.
+// NewListByResourceGroupPager - Lists all the Azure Cosmos DB database accounts available under the given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - DatabaseAccountsClientListByResourceGroupOptions contains the optional parameters for the DatabaseAccountsClient.ListByResourceGroup
 // method.
-func (client *DatabaseAccountsClient) ListByResourceGroup(resourceGroupName string, options *DatabaseAccountsClientListByResourceGroupOptions) *runtime.Pager[DatabaseAccountsClientListByResourceGroupResponse] {
+func (client *DatabaseAccountsClient) NewListByResourceGroupPager(resourceGroupName string, options *DatabaseAccountsClientListByResourceGroupOptions) *runtime.Pager[DatabaseAccountsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DatabaseAccountsClientListByResourceGroupResponse]{
 		More: func(page DatabaseAccountsClientListByResourceGroupResponse) bool {
 			return false
@@ -614,13 +614,13 @@ func (client *DatabaseAccountsClient) listKeysHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListMetricDefinitions - Retrieves metric definitions for the given database account.
+// NewListMetricDefinitionsPager - Retrieves metric definitions for the given database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // options - DatabaseAccountsClientListMetricDefinitionsOptions contains the optional parameters for the DatabaseAccountsClient.ListMetricDefinitions
 // method.
-func (client *DatabaseAccountsClient) ListMetricDefinitions(resourceGroupName string, accountName string, options *DatabaseAccountsClientListMetricDefinitionsOptions) *runtime.Pager[DatabaseAccountsClientListMetricDefinitionsResponse] {
+func (client *DatabaseAccountsClient) NewListMetricDefinitionsPager(resourceGroupName string, accountName string, options *DatabaseAccountsClientListMetricDefinitionsOptions) *runtime.Pager[DatabaseAccountsClientListMetricDefinitionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DatabaseAccountsClientListMetricDefinitionsResponse]{
 		More: func(page DatabaseAccountsClientListMetricDefinitionsResponse) bool {
 			return false
@@ -677,7 +677,7 @@ func (client *DatabaseAccountsClient) listMetricDefinitionsHandleResponse(resp *
 	return result, nil
 }
 
-// ListMetrics - Retrieves the metrics determined by the given filter for the given database account.
+// NewListMetricsPager - Retrieves the metrics determined by the given filter for the given database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
@@ -686,7 +686,7 @@ func (client *DatabaseAccountsClient) listMetricDefinitionsHandleResponse(resp *
 // and timeGrain. The supported operator is eq.
 // options - DatabaseAccountsClientListMetricsOptions contains the optional parameters for the DatabaseAccountsClient.ListMetrics
 // method.
-func (client *DatabaseAccountsClient) ListMetrics(resourceGroupName string, accountName string, filter string, options *DatabaseAccountsClientListMetricsOptions) *runtime.Pager[DatabaseAccountsClientListMetricsResponse] {
+func (client *DatabaseAccountsClient) NewListMetricsPager(resourceGroupName string, accountName string, filter string, options *DatabaseAccountsClientListMetricsOptions) *runtime.Pager[DatabaseAccountsClientListMetricsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DatabaseAccountsClientListMetricsResponse]{
 		More: func(page DatabaseAccountsClientListMetricsResponse) bool {
 			return false
@@ -800,13 +800,13 @@ func (client *DatabaseAccountsClient) listReadOnlyKeysHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListUsages - Retrieves the usages (most recent data) for the given database account.
+// NewListUsagesPager - Retrieves the usages (most recent data) for the given database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // options - DatabaseAccountsClientListUsagesOptions contains the optional parameters for the DatabaseAccountsClient.ListUsages
 // method.
-func (client *DatabaseAccountsClient) ListUsages(resourceGroupName string, accountName string, options *DatabaseAccountsClientListUsagesOptions) *runtime.Pager[DatabaseAccountsClientListUsagesResponse] {
+func (client *DatabaseAccountsClient) NewListUsagesPager(resourceGroupName string, accountName string, options *DatabaseAccountsClientListUsagesOptions) *runtime.Pager[DatabaseAccountsClientListUsagesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DatabaseAccountsClientListUsagesResponse]{
 		More: func(page DatabaseAccountsClientListUsagesResponse) bool {
 			return false

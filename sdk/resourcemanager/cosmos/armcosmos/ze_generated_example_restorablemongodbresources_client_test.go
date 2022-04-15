@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBRestorableMongodbResourceList.json
-func ExampleRestorableMongodbResourcesClient_List() {
+func ExampleRestorableMongodbResourcesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleRestorableMongodbResourcesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<location>",
+	pager := client.NewListPager("<location>",
 		"<instance-id>",
 		&armcosmos.RestorableMongodbResourcesClientListOptions{RestoreLocation: to.Ptr("<restore-location>"),
 			RestoreTimestampInUTC: to.Ptr("<restore-timestamp-in-utc>"),

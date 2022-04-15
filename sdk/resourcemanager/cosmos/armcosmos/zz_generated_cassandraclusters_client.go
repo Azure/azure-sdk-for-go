@@ -422,13 +422,13 @@ func (client *CassandraClustersClient) invokeCommandCreateRequest(ctx context.Co
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
-// ListBackups - List the backups of this cluster that are available to restore.
+// NewListBackupsPager - List the backups of this cluster that are available to restore.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // clusterName - Managed Cassandra cluster name.
 // options - CassandraClustersClientListBackupsOptions contains the optional parameters for the CassandraClustersClient.ListBackups
 // method.
-func (client *CassandraClustersClient) ListBackups(resourceGroupName string, clusterName string, options *CassandraClustersClientListBackupsOptions) *runtime.Pager[CassandraClustersClientListBackupsResponse] {
+func (client *CassandraClustersClient) NewListBackupsPager(resourceGroupName string, clusterName string, options *CassandraClustersClientListBackupsOptions) *runtime.Pager[CassandraClustersClientListBackupsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CassandraClustersClientListBackupsResponse]{
 		More: func(page CassandraClustersClientListBackupsResponse) bool {
 			return false
@@ -485,12 +485,12 @@ func (client *CassandraClustersClient) listBackupsHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListByResourceGroup - List all managed Cassandra clusters in this resource group.
+// NewListByResourceGroupPager - List all managed Cassandra clusters in this resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - CassandraClustersClientListByResourceGroupOptions contains the optional parameters for the CassandraClustersClient.ListByResourceGroup
 // method.
-func (client *CassandraClustersClient) ListByResourceGroup(resourceGroupName string, options *CassandraClustersClientListByResourceGroupOptions) *runtime.Pager[CassandraClustersClientListByResourceGroupResponse] {
+func (client *CassandraClustersClient) NewListByResourceGroupPager(resourceGroupName string, options *CassandraClustersClientListByResourceGroupOptions) *runtime.Pager[CassandraClustersClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CassandraClustersClientListByResourceGroupResponse]{
 		More: func(page CassandraClustersClientListByResourceGroupResponse) bool {
 			return false
@@ -543,11 +543,11 @@ func (client *CassandraClustersClient) listByResourceGroupHandleResponse(resp *h
 	return result, nil
 }
 
-// ListBySubscription - List all managed Cassandra clusters in this subscription.
+// NewListBySubscriptionPager - List all managed Cassandra clusters in this subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - CassandraClustersClientListBySubscriptionOptions contains the optional parameters for the CassandraClustersClient.ListBySubscription
 // method.
-func (client *CassandraClustersClient) ListBySubscription(options *CassandraClustersClientListBySubscriptionOptions) *runtime.Pager[CassandraClustersClientListBySubscriptionResponse] {
+func (client *CassandraClustersClient) NewListBySubscriptionPager(options *CassandraClustersClientListBySubscriptionOptions) *runtime.Pager[CassandraClustersClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CassandraClustersClientListBySubscriptionResponse]{
 		More: func(page CassandraClustersClientListBySubscriptionResponse) bool {
 			return false

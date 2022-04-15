@@ -1046,14 +1046,14 @@ func (client *MongoDBResourcesClient) listMongoDBCollectionPartitionMergeCreateR
 	return req, runtime.MarshalAsJSON(req, mergeParameters)
 }
 
-// ListMongoDBCollections - Lists the MongoDB collection under an existing Azure Cosmos DB database account.
+// NewListMongoDBCollectionsPager - Lists the MongoDB collection under an existing Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // databaseName - Cosmos DB database name.
 // options - MongoDBResourcesClientListMongoDBCollectionsOptions contains the optional parameters for the MongoDBResourcesClient.ListMongoDBCollections
 // method.
-func (client *MongoDBResourcesClient) ListMongoDBCollections(resourceGroupName string, accountName string, databaseName string, options *MongoDBResourcesClientListMongoDBCollectionsOptions) *runtime.Pager[MongoDBResourcesClientListMongoDBCollectionsResponse] {
+func (client *MongoDBResourcesClient) NewListMongoDBCollectionsPager(resourceGroupName string, accountName string, databaseName string, options *MongoDBResourcesClientListMongoDBCollectionsOptions) *runtime.Pager[MongoDBResourcesClientListMongoDBCollectionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MongoDBResourcesClientListMongoDBCollectionsResponse]{
 		More: func(page MongoDBResourcesClientListMongoDBCollectionsResponse) bool {
 			return false
@@ -1114,13 +1114,13 @@ func (client *MongoDBResourcesClient) listMongoDBCollectionsHandleResponse(resp 
 	return result, nil
 }
 
-// ListMongoDBDatabases - Lists the MongoDB databases under an existing Azure Cosmos DB database account.
+// NewListMongoDBDatabasesPager - Lists the MongoDB databases under an existing Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // options - MongoDBResourcesClientListMongoDBDatabasesOptions contains the optional parameters for the MongoDBResourcesClient.ListMongoDBDatabases
 // method.
-func (client *MongoDBResourcesClient) ListMongoDBDatabases(resourceGroupName string, accountName string, options *MongoDBResourcesClientListMongoDBDatabasesOptions) *runtime.Pager[MongoDBResourcesClientListMongoDBDatabasesResponse] {
+func (client *MongoDBResourcesClient) NewListMongoDBDatabasesPager(resourceGroupName string, accountName string, options *MongoDBResourcesClientListMongoDBDatabasesOptions) *runtime.Pager[MongoDBResourcesClientListMongoDBDatabasesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MongoDBResourcesClientListMongoDBDatabasesResponse]{
 		More: func(page MongoDBResourcesClientListMongoDBDatabasesResponse) bool {
 			return false
@@ -1177,13 +1177,13 @@ func (client *MongoDBResourcesClient) listMongoDBDatabasesHandleResponse(resp *h
 	return result, nil
 }
 
-// ListMongoRoleDefinitions - Retrieves the list of all Azure Cosmos DB Mongo Role Definitions.
+// NewListMongoRoleDefinitionsPager - Retrieves the list of all Azure Cosmos DB Mongo Role Definitions.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // options - MongoDBResourcesClientListMongoRoleDefinitionsOptions contains the optional parameters for the MongoDBResourcesClient.ListMongoRoleDefinitions
 // method.
-func (client *MongoDBResourcesClient) ListMongoRoleDefinitions(resourceGroupName string, accountName string, options *MongoDBResourcesClientListMongoRoleDefinitionsOptions) *runtime.Pager[MongoDBResourcesClientListMongoRoleDefinitionsResponse] {
+func (client *MongoDBResourcesClient) NewListMongoRoleDefinitionsPager(resourceGroupName string, accountName string, options *MongoDBResourcesClientListMongoRoleDefinitionsOptions) *runtime.Pager[MongoDBResourcesClientListMongoRoleDefinitionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MongoDBResourcesClientListMongoRoleDefinitionsResponse]{
 		More: func(page MongoDBResourcesClientListMongoRoleDefinitionsResponse) bool {
 			return false
@@ -1240,13 +1240,13 @@ func (client *MongoDBResourcesClient) listMongoRoleDefinitionsHandleResponse(res
 	return result, nil
 }
 
-// ListMongoUserDefinitions - Retrieves the list of all Azure Cosmos DB Mongo User Definition.
+// NewListMongoUserDefinitionsPager - Retrieves the list of all Azure Cosmos DB Mongo User Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // options - MongoDBResourcesClientListMongoUserDefinitionsOptions contains the optional parameters for the MongoDBResourcesClient.ListMongoUserDefinitions
 // method.
-func (client *MongoDBResourcesClient) ListMongoUserDefinitions(resourceGroupName string, accountName string, options *MongoDBResourcesClientListMongoUserDefinitionsOptions) *runtime.Pager[MongoDBResourcesClientListMongoUserDefinitionsResponse] {
+func (client *MongoDBResourcesClient) NewListMongoUserDefinitionsPager(resourceGroupName string, accountName string, options *MongoDBResourcesClientListMongoUserDefinitionsOptions) *runtime.Pager[MongoDBResourcesClientListMongoUserDefinitionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MongoDBResourcesClientListMongoUserDefinitionsResponse]{
 		More: func(page MongoDBResourcesClientListMongoUserDefinitionsResponse) bool {
 			return false

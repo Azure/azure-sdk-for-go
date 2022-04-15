@@ -860,13 +860,13 @@ func (client *CassandraResourcesClient) getCassandraViewThroughputHandleResponse
 	return result, nil
 }
 
-// ListCassandraKeyspaces - Lists the Cassandra keyspaces under an existing Azure Cosmos DB database account.
+// NewListCassandraKeyspacesPager - Lists the Cassandra keyspaces under an existing Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // options - CassandraResourcesClientListCassandraKeyspacesOptions contains the optional parameters for the CassandraResourcesClient.ListCassandraKeyspaces
 // method.
-func (client *CassandraResourcesClient) ListCassandraKeyspaces(resourceGroupName string, accountName string, options *CassandraResourcesClientListCassandraKeyspacesOptions) *runtime.Pager[CassandraResourcesClientListCassandraKeyspacesResponse] {
+func (client *CassandraResourcesClient) NewListCassandraKeyspacesPager(resourceGroupName string, accountName string, options *CassandraResourcesClientListCassandraKeyspacesOptions) *runtime.Pager[CassandraResourcesClientListCassandraKeyspacesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CassandraResourcesClientListCassandraKeyspacesResponse]{
 		More: func(page CassandraResourcesClientListCassandraKeyspacesResponse) bool {
 			return false
@@ -923,14 +923,14 @@ func (client *CassandraResourcesClient) listCassandraKeyspacesHandleResponse(res
 	return result, nil
 }
 
-// ListCassandraTables - Lists the Cassandra table under an existing Azure Cosmos DB database account.
+// NewListCassandraTablesPager - Lists the Cassandra table under an existing Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // keyspaceName - Cosmos DB keyspace name.
 // options - CassandraResourcesClientListCassandraTablesOptions contains the optional parameters for the CassandraResourcesClient.ListCassandraTables
 // method.
-func (client *CassandraResourcesClient) ListCassandraTables(resourceGroupName string, accountName string, keyspaceName string, options *CassandraResourcesClientListCassandraTablesOptions) *runtime.Pager[CassandraResourcesClientListCassandraTablesResponse] {
+func (client *CassandraResourcesClient) NewListCassandraTablesPager(resourceGroupName string, accountName string, keyspaceName string, options *CassandraResourcesClientListCassandraTablesOptions) *runtime.Pager[CassandraResourcesClientListCassandraTablesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CassandraResourcesClientListCassandraTablesResponse]{
 		More: func(page CassandraResourcesClientListCassandraTablesResponse) bool {
 			return false
@@ -991,14 +991,14 @@ func (client *CassandraResourcesClient) listCassandraTablesHandleResponse(resp *
 	return result, nil
 }
 
-// ListCassandraViews - Lists the Cassandra materialized views under an existing Azure Cosmos DB database account.
+// NewListCassandraViewsPager - Lists the Cassandra materialized views under an existing Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // keyspaceName - Cosmos DB keyspace name.
 // options - CassandraResourcesClientListCassandraViewsOptions contains the optional parameters for the CassandraResourcesClient.ListCassandraViews
 // method.
-func (client *CassandraResourcesClient) ListCassandraViews(resourceGroupName string, accountName string, keyspaceName string, options *CassandraResourcesClientListCassandraViewsOptions) *runtime.Pager[CassandraResourcesClientListCassandraViewsResponse] {
+func (client *CassandraResourcesClient) NewListCassandraViewsPager(resourceGroupName string, accountName string, keyspaceName string, options *CassandraResourcesClientListCassandraViewsOptions) *runtime.Pager[CassandraResourcesClientListCassandraViewsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CassandraResourcesClientListCassandraViewsResponse]{
 		More: func(page CassandraResourcesClientListCassandraViewsResponse) bool {
 			return false

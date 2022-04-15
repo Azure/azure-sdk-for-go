@@ -1780,14 +1780,14 @@ func (client *SQLResourcesClient) getSQLUserDefinedFunctionHandleResponse(resp *
 	return result, nil
 }
 
-// ListClientEncryptionKeys - Lists the ClientEncryptionKeys under an existing Azure Cosmos DB SQL database.
+// NewListClientEncryptionKeysPager - Lists the ClientEncryptionKeys under an existing Azure Cosmos DB SQL database.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // databaseName - Cosmos DB database name.
 // options - SQLResourcesClientListClientEncryptionKeysOptions contains the optional parameters for the SQLResourcesClient.ListClientEncryptionKeys
 // method.
-func (client *SQLResourcesClient) ListClientEncryptionKeys(resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientListClientEncryptionKeysOptions) *runtime.Pager[SQLResourcesClientListClientEncryptionKeysResponse] {
+func (client *SQLResourcesClient) NewListClientEncryptionKeysPager(resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientListClientEncryptionKeysOptions) *runtime.Pager[SQLResourcesClientListClientEncryptionKeysResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLResourcesClientListClientEncryptionKeysResponse]{
 		More: func(page SQLResourcesClientListClientEncryptionKeysResponse) bool {
 			return false
@@ -1922,14 +1922,14 @@ func (client *SQLResourcesClient) listSQLContainerPartitionMergeCreateRequest(ct
 	return req, runtime.MarshalAsJSON(req, mergeParameters)
 }
 
-// ListSQLContainers - Lists the SQL container under an existing Azure Cosmos DB database account.
+// NewListSQLContainersPager - Lists the SQL container under an existing Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // databaseName - Cosmos DB database name.
 // options - SQLResourcesClientListSQLContainersOptions contains the optional parameters for the SQLResourcesClient.ListSQLContainers
 // method.
-func (client *SQLResourcesClient) ListSQLContainers(resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientListSQLContainersOptions) *runtime.Pager[SQLResourcesClientListSQLContainersResponse] {
+func (client *SQLResourcesClient) NewListSQLContainersPager(resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientListSQLContainersOptions) *runtime.Pager[SQLResourcesClientListSQLContainersResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLResourcesClientListSQLContainersResponse]{
 		More: func(page SQLResourcesClientListSQLContainersResponse) bool {
 			return false
@@ -1990,13 +1990,13 @@ func (client *SQLResourcesClient) listSQLContainersHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListSQLDatabases - Lists the SQL databases under an existing Azure Cosmos DB database account.
+// NewListSQLDatabasesPager - Lists the SQL databases under an existing Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // options - SQLResourcesClientListSQLDatabasesOptions contains the optional parameters for the SQLResourcesClient.ListSQLDatabases
 // method.
-func (client *SQLResourcesClient) ListSQLDatabases(resourceGroupName string, accountName string, options *SQLResourcesClientListSQLDatabasesOptions) *runtime.Pager[SQLResourcesClientListSQLDatabasesResponse] {
+func (client *SQLResourcesClient) NewListSQLDatabasesPager(resourceGroupName string, accountName string, options *SQLResourcesClientListSQLDatabasesOptions) *runtime.Pager[SQLResourcesClientListSQLDatabasesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLResourcesClientListSQLDatabasesResponse]{
 		More: func(page SQLResourcesClientListSQLDatabasesResponse) bool {
 			return false
@@ -2053,13 +2053,13 @@ func (client *SQLResourcesClient) listSQLDatabasesHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListSQLRoleAssignments - Retrieves the list of all Azure Cosmos DB SQL Role Assignments.
+// NewListSQLRoleAssignmentsPager - Retrieves the list of all Azure Cosmos DB SQL Role Assignments.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // options - SQLResourcesClientListSQLRoleAssignmentsOptions contains the optional parameters for the SQLResourcesClient.ListSQLRoleAssignments
 // method.
-func (client *SQLResourcesClient) ListSQLRoleAssignments(resourceGroupName string, accountName string, options *SQLResourcesClientListSQLRoleAssignmentsOptions) *runtime.Pager[SQLResourcesClientListSQLRoleAssignmentsResponse] {
+func (client *SQLResourcesClient) NewListSQLRoleAssignmentsPager(resourceGroupName string, accountName string, options *SQLResourcesClientListSQLRoleAssignmentsOptions) *runtime.Pager[SQLResourcesClientListSQLRoleAssignmentsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLResourcesClientListSQLRoleAssignmentsResponse]{
 		More: func(page SQLResourcesClientListSQLRoleAssignmentsResponse) bool {
 			return false
@@ -2116,13 +2116,13 @@ func (client *SQLResourcesClient) listSQLRoleAssignmentsHandleResponse(resp *htt
 	return result, nil
 }
 
-// ListSQLRoleDefinitions - Retrieves the list of all Azure Cosmos DB SQL Role Definitions.
+// NewListSQLRoleDefinitionsPager - Retrieves the list of all Azure Cosmos DB SQL Role Definitions.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // options - SQLResourcesClientListSQLRoleDefinitionsOptions contains the optional parameters for the SQLResourcesClient.ListSQLRoleDefinitions
 // method.
-func (client *SQLResourcesClient) ListSQLRoleDefinitions(resourceGroupName string, accountName string, options *SQLResourcesClientListSQLRoleDefinitionsOptions) *runtime.Pager[SQLResourcesClientListSQLRoleDefinitionsResponse] {
+func (client *SQLResourcesClient) NewListSQLRoleDefinitionsPager(resourceGroupName string, accountName string, options *SQLResourcesClientListSQLRoleDefinitionsOptions) *runtime.Pager[SQLResourcesClientListSQLRoleDefinitionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLResourcesClientListSQLRoleDefinitionsResponse]{
 		More: func(page SQLResourcesClientListSQLRoleDefinitionsResponse) bool {
 			return false
@@ -2179,7 +2179,7 @@ func (client *SQLResourcesClient) listSQLRoleDefinitionsHandleResponse(resp *htt
 	return result, nil
 }
 
-// ListSQLStoredProcedures - Lists the SQL storedProcedure under an existing Azure Cosmos DB database account.
+// NewListSQLStoredProceduresPager - Lists the SQL storedProcedure under an existing Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
@@ -2187,7 +2187,7 @@ func (client *SQLResourcesClient) listSQLRoleDefinitionsHandleResponse(resp *htt
 // containerName - Cosmos DB container name.
 // options - SQLResourcesClientListSQLStoredProceduresOptions contains the optional parameters for the SQLResourcesClient.ListSQLStoredProcedures
 // method.
-func (client *SQLResourcesClient) ListSQLStoredProcedures(resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientListSQLStoredProceduresOptions) *runtime.Pager[SQLResourcesClientListSQLStoredProceduresResponse] {
+func (client *SQLResourcesClient) NewListSQLStoredProceduresPager(resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientListSQLStoredProceduresOptions) *runtime.Pager[SQLResourcesClientListSQLStoredProceduresResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLResourcesClientListSQLStoredProceduresResponse]{
 		More: func(page SQLResourcesClientListSQLStoredProceduresResponse) bool {
 			return false
@@ -2252,7 +2252,7 @@ func (client *SQLResourcesClient) listSQLStoredProceduresHandleResponse(resp *ht
 	return result, nil
 }
 
-// ListSQLTriggers - Lists the SQL trigger under an existing Azure Cosmos DB database account.
+// NewListSQLTriggersPager - Lists the SQL trigger under an existing Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
@@ -2260,7 +2260,7 @@ func (client *SQLResourcesClient) listSQLStoredProceduresHandleResponse(resp *ht
 // containerName - Cosmos DB container name.
 // options - SQLResourcesClientListSQLTriggersOptions contains the optional parameters for the SQLResourcesClient.ListSQLTriggers
 // method.
-func (client *SQLResourcesClient) ListSQLTriggers(resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientListSQLTriggersOptions) *runtime.Pager[SQLResourcesClientListSQLTriggersResponse] {
+func (client *SQLResourcesClient) NewListSQLTriggersPager(resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientListSQLTriggersOptions) *runtime.Pager[SQLResourcesClientListSQLTriggersResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLResourcesClientListSQLTriggersResponse]{
 		More: func(page SQLResourcesClientListSQLTriggersResponse) bool {
 			return false
@@ -2325,7 +2325,7 @@ func (client *SQLResourcesClient) listSQLTriggersHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListSQLUserDefinedFunctions - Lists the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
+// NewListSQLUserDefinedFunctionsPager - Lists the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
@@ -2333,7 +2333,7 @@ func (client *SQLResourcesClient) listSQLTriggersHandleResponse(resp *http.Respo
 // containerName - Cosmos DB container name.
 // options - SQLResourcesClientListSQLUserDefinedFunctionsOptions contains the optional parameters for the SQLResourcesClient.ListSQLUserDefinedFunctions
 // method.
-func (client *SQLResourcesClient) ListSQLUserDefinedFunctions(resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientListSQLUserDefinedFunctionsOptions) *runtime.Pager[SQLResourcesClientListSQLUserDefinedFunctionsResponse] {
+func (client *SQLResourcesClient) NewListSQLUserDefinedFunctionsPager(resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientListSQLUserDefinedFunctionsOptions) *runtime.Pager[SQLResourcesClientListSQLUserDefinedFunctionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLResourcesClientListSQLUserDefinedFunctionsResponse]{
 		More: func(page SQLResourcesClientListSQLUserDefinedFunctionsResponse) bool {
 			return false

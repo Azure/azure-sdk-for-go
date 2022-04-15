@@ -54,15 +54,15 @@ func NewRestorableGremlinGraphsClient(subscriptionID string, credential azcore.T
 	return client, nil
 }
 
-// List - Show the event feed of all mutations done on all the Azure Cosmos DB Gremlin graphs under a specific database. This
-// helps in scenario where container was accidentally deleted. This API requires
+// NewListPager - Show the event feed of all mutations done on all the Azure Cosmos DB Gremlin graphs under a specific database.
+// This helps in scenario where container was accidentally deleted. This API requires
 // 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/…/read' permission
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - Cosmos DB region, with spaces between words and each word capitalized.
 // instanceID - The instanceId GUID of a restorable database account.
 // options - RestorableGremlinGraphsClientListOptions contains the optional parameters for the RestorableGremlinGraphsClient.List
 // method.
-func (client *RestorableGremlinGraphsClient) List(location string, instanceID string, options *RestorableGremlinGraphsClientListOptions) *runtime.Pager[RestorableGremlinGraphsClientListResponse] {
+func (client *RestorableGremlinGraphsClient) NewListPager(location string, instanceID string, options *RestorableGremlinGraphsClientListOptions) *runtime.Pager[RestorableGremlinGraphsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RestorableGremlinGraphsClientListResponse]{
 		More: func(page RestorableGremlinGraphsClientListResponse) bool {
 			return false

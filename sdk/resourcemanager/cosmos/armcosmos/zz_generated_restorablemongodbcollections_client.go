@@ -54,15 +54,15 @@ func NewRestorableMongodbCollectionsClient(subscriptionID string, credential azc
 	return client, nil
 }
 
-// List - Show the event feed of all mutations done on all the Azure Cosmos DB MongoDB collections under a specific database.
-// This helps in scenario where container was accidentally deleted. This API requires
+// NewListPager - Show the event feed of all mutations done on all the Azure Cosmos DB MongoDB collections under a specific
+// database. This helps in scenario where container was accidentally deleted. This API requires
 // 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/…/read' permission
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - Cosmos DB region, with spaces between words and each word capitalized.
 // instanceID - The instanceId GUID of a restorable database account.
 // options - RestorableMongodbCollectionsClientListOptions contains the optional parameters for the RestorableMongodbCollectionsClient.List
 // method.
-func (client *RestorableMongodbCollectionsClient) List(location string, instanceID string, options *RestorableMongodbCollectionsClientListOptions) *runtime.Pager[RestorableMongodbCollectionsClientListResponse] {
+func (client *RestorableMongodbCollectionsClient) NewListPager(location string, instanceID string, options *RestorableMongodbCollectionsClientListOptions) *runtime.Pager[RestorableMongodbCollectionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RestorableMongodbCollectionsClientListResponse]{
 		More: func(page RestorableMongodbCollectionsClientListResponse) bool {
 			return false

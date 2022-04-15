@@ -82,7 +82,7 @@ func ExampleDataTransferJobsClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobFeed.json
-func ExampleDataTransferJobsClient_ListByDatabaseAccount() {
+func ExampleDataTransferJobsClient_NewListByDatabaseAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -94,7 +94,7 @@ func ExampleDataTransferJobsClient_ListByDatabaseAccount() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByDatabaseAccount("<resource-group-name>",
+	pager := client.NewListByDatabaseAccountPager("<resource-group-name>",
 		"<account-name>",
 		nil)
 	for pager.More() {

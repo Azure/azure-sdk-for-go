@@ -250,13 +250,13 @@ func (client *CassandraDataCentersClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// List - List all data centers in a particular managed Cassandra cluster.
+// NewListPager - List all data centers in a particular managed Cassandra cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // clusterName - Managed Cassandra cluster name.
 // options - CassandraDataCentersClientListOptions contains the optional parameters for the CassandraDataCentersClient.List
 // method.
-func (client *CassandraDataCentersClient) List(resourceGroupName string, clusterName string, options *CassandraDataCentersClientListOptions) *runtime.Pager[CassandraDataCentersClientListResponse] {
+func (client *CassandraDataCentersClient) NewListPager(resourceGroupName string, clusterName string, options *CassandraDataCentersClientListOptions) *runtime.Pager[CassandraDataCentersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CassandraDataCentersClientListResponse]{
 		More: func(page CassandraDataCentersClientListResponse) bool {
 			return false

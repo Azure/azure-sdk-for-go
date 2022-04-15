@@ -54,8 +54,8 @@ func NewPercentileTargetClient(subscriptionID string, credential azcore.TokenCre
 	return client, nil
 }
 
-// ListMetrics - Retrieves the metrics determined by the given filter for the given account target region. This url is only
-// for PBS and Replication Latency data
+// NewListMetricsPager - Retrieves the metrics determined by the given filter for the given account target region. This url
+// is only for PBS and Replication Latency data
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
@@ -65,7 +65,7 @@ func NewPercentileTargetClient(subscriptionID string, credential azcore.TokenCre
 // and timeGrain. The supported operator is eq.
 // options - PercentileTargetClientListMetricsOptions contains the optional parameters for the PercentileTargetClient.ListMetrics
 // method.
-func (client *PercentileTargetClient) ListMetrics(resourceGroupName string, accountName string, targetRegion string, filter string, options *PercentileTargetClientListMetricsOptions) *runtime.Pager[PercentileTargetClientListMetricsResponse] {
+func (client *PercentileTargetClient) NewListMetricsPager(resourceGroupName string, accountName string, targetRegion string, filter string, options *PercentileTargetClientListMetricsOptions) *runtime.Pager[PercentileTargetClientListMetricsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PercentileTargetClientListMetricsResponse]{
 		More: func(page PercentileTargetClientListMetricsResponse) bool {
 			return false

@@ -54,15 +54,15 @@ func NewRestorableSQLDatabasesClient(subscriptionID string, credential azcore.To
 	return client, nil
 }
 
-// List - Show the event feed of all mutations done on all the Azure Cosmos DB SQL databases under the restorable account.
-// This helps in scenario where database was accidentally deleted to get the deletion
+// NewListPager - Show the event feed of all mutations done on all the Azure Cosmos DB SQL databases under the restorable
+// account. This helps in scenario where database was accidentally deleted to get the deletion
 // time. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/…/read' permission
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - Cosmos DB region, with spaces between words and each word capitalized.
 // instanceID - The instanceId GUID of a restorable database account.
 // options - RestorableSQLDatabasesClientListOptions contains the optional parameters for the RestorableSQLDatabasesClient.List
 // method.
-func (client *RestorableSQLDatabasesClient) List(location string, instanceID string, options *RestorableSQLDatabasesClientListOptions) *runtime.Pager[RestorableSQLDatabasesClientListResponse] {
+func (client *RestorableSQLDatabasesClient) NewListPager(location string, instanceID string, options *RestorableSQLDatabasesClientListOptions) *runtime.Pager[RestorableSQLDatabasesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RestorableSQLDatabasesClientListResponse]{
 		More: func(page RestorableSQLDatabasesClientListResponse) bool {
 			return false

@@ -250,13 +250,13 @@ func (client *ActiveDirectoryConnectorsClient) getHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// List - List the active directory connectors associated with the given data controller.
+// NewListPager - List the active directory connectors associated with the given data controller.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the Azure resource group
 // dataControllerName - The name of the data controller
 // options - ActiveDirectoryConnectorsClientListOptions contains the optional parameters for the ActiveDirectoryConnectorsClient.List
 // method.
-func (client *ActiveDirectoryConnectorsClient) List(resourceGroupName string, dataControllerName string, options *ActiveDirectoryConnectorsClientListOptions) *runtime.Pager[ActiveDirectoryConnectorsClientListResponse] {
+func (client *ActiveDirectoryConnectorsClient) NewListPager(resourceGroupName string, dataControllerName string, options *ActiveDirectoryConnectorsClientListOptions) *runtime.Pager[ActiveDirectoryConnectorsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ActiveDirectoryConnectorsClientListResponse]{
 		More: func(page ActiveDirectoryConnectorsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

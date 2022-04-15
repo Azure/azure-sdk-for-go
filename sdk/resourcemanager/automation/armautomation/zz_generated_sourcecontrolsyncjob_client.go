@@ -182,14 +182,14 @@ func (client *SourceControlSyncJobClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListByAutomationAccount - Retrieve a list of source control sync jobs.
+// NewListByAutomationAccountPager - Retrieve a list of source control sync jobs.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // sourceControlName - The source control name.
 // options - SourceControlSyncJobClientListByAutomationAccountOptions contains the optional parameters for the SourceControlSyncJobClient.ListByAutomationAccount
 // method.
-func (client *SourceControlSyncJobClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, sourceControlName string, options *SourceControlSyncJobClientListByAutomationAccountOptions) *runtime.Pager[SourceControlSyncJobClientListByAutomationAccountResponse] {
+func (client *SourceControlSyncJobClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, sourceControlName string, options *SourceControlSyncJobClientListByAutomationAccountOptions) *runtime.Pager[SourceControlSyncJobClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SourceControlSyncJobClientListByAutomationAccountResponse]{
 		More: func(page SourceControlSyncJobClientListByAutomationAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

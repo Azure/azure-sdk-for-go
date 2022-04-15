@@ -42,7 +42,7 @@ func ExampleBestPracticesVersionsClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/listBestPracticesVersionsByTenant.json
-func ExampleBestPracticesVersionsClient_ListByTenant() {
+func ExampleBestPracticesVersionsClient_NewListByTenantPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -54,7 +54,7 @@ func ExampleBestPracticesVersionsClient_ListByTenant() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByTenant("<best-practice-name>",
+	pager := client.NewListByTenantPager("<best-practice-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

@@ -1,5 +1,33 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*ReportsClient.ListByConfigurationProfileAssignments` has been removed
+- Function `*ConfigurationProfilesClient.ListByResourceGroup` has been removed
+- Function `*ServicePrincipalsClient.ListBySubscription` has been removed
+- Function `*ConfigurationProfilesClient.ListBySubscription` has been removed
+- Function `*ConfigurationProfilesVersionsClient.ListChildResources` has been removed
+- Function `*ConfigurationProfileAssignmentsClient.ListBySubscription` has been removed
+- Function `*BestPracticesVersionsClient.ListByTenant` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*ConfigurationProfileAssignmentsClient.List` has been removed
+- Function `*BestPracticesClient.ListByTenant` has been removed
+
+### Features Added
+
+- New function `*BestPracticesVersionsClient.NewListByTenantPager(string, *BestPracticesVersionsClientListByTenantOptions) *runtime.Pager[BestPracticesVersionsClientListByTenantResponse]`
+- New function `*ConfigurationProfileAssignmentsClient.NewListPager(string, *ConfigurationProfileAssignmentsClientListOptions) *runtime.Pager[ConfigurationProfileAssignmentsClientListResponse]`
+- New function `*ConfigurationProfileAssignmentsClient.NewListBySubscriptionPager(*ConfigurationProfileAssignmentsClientListBySubscriptionOptions) *runtime.Pager[ConfigurationProfileAssignmentsClientListBySubscriptionResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*ConfigurationProfilesClient.NewListBySubscriptionPager(*ConfigurationProfilesClientListBySubscriptionOptions) *runtime.Pager[ConfigurationProfilesClientListBySubscriptionResponse]`
+- New function `*ServicePrincipalsClient.NewListBySubscriptionPager(*ServicePrincipalsClientListBySubscriptionOptions) *runtime.Pager[ServicePrincipalsClientListBySubscriptionResponse]`
+- New function `*ReportsClient.NewListByConfigurationProfileAssignmentsPager(string, string, string, *ReportsClientListByConfigurationProfileAssignmentsOptions) *runtime.Pager[ReportsClientListByConfigurationProfileAssignmentsResponse]`
+- New function `*ConfigurationProfilesVersionsClient.NewListChildResourcesPager(string, string, *ConfigurationProfilesVersionsClientListChildResourcesOptions) *runtime.Pager[ConfigurationProfilesVersionsClientListChildResourcesResponse]`
+- New function `*ConfigurationProfilesClient.NewListByResourceGroupPager(string, *ConfigurationProfilesClientListByResourceGroupOptions) *runtime.Pager[ConfigurationProfilesClientListByResourceGroupResponse]`
+- New function `*BestPracticesClient.NewListByTenantPager(*BestPracticesClientListByTenantOptions) *runtime.Pager[BestPracticesClientListByTenantResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

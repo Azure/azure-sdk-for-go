@@ -274,12 +274,12 @@ func (client *ClustersClient) getHandleResponse(resp *http.Response) (ClustersCl
 	return result, nil
 }
 
-// ListByResourceGroup - List all HCI clusters in a resource group.
+// NewListByResourceGroupPager - List all HCI clusters in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.ListByResourceGroup
 // method.
-func (client *ClustersClient) ListByResourceGroup(resourceGroupName string, options *ClustersClientListByResourceGroupOptions) *runtime.Pager[ClustersClientListByResourceGroupResponse] {
+func (client *ClustersClient) NewListByResourceGroupPager(resourceGroupName string, options *ClustersClientListByResourceGroupOptions) *runtime.Pager[ClustersClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClustersClientListByResourceGroupResponse]{
 		More: func(page ClustersClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -338,11 +338,11 @@ func (client *ClustersClient) listByResourceGroupHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListBySubscription - List all HCI clusters in a subscription.
+// NewListBySubscriptionPager - List all HCI clusters in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ClustersClientListBySubscriptionOptions contains the optional parameters for the ClustersClient.ListBySubscription
 // method.
-func (client *ClustersClient) ListBySubscription(options *ClustersClientListBySubscriptionOptions) *runtime.Pager[ClustersClientListBySubscriptionResponse] {
+func (client *ClustersClient) NewListBySubscriptionPager(options *ClustersClientListBySubscriptionOptions) *runtime.Pager[ClustersClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClustersClientListBySubscriptionResponse]{
 		More: func(page ClustersClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -119,14 +119,14 @@ func (client *ReportsClient) getHandleResponse(resp *http.Response) (ReportsClie
 	return result, nil
 }
 
-// ListByConfigurationProfileAssignments - Retrieve a list of reports within a given configuration profile assignment
+// NewListByConfigurationProfileAssignmentsPager - Retrieve a list of reports within a given configuration profile assignment
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // configurationProfileAssignmentName - The configuration profile assignment name.
 // vmName - The name of the virtual machine.
 // options - ReportsClientListByConfigurationProfileAssignmentsOptions contains the optional parameters for the ReportsClient.ListByConfigurationProfileAssignments
 // method.
-func (client *ReportsClient) ListByConfigurationProfileAssignments(resourceGroupName string, configurationProfileAssignmentName string, vmName string, options *ReportsClientListByConfigurationProfileAssignmentsOptions) *runtime.Pager[ReportsClientListByConfigurationProfileAssignmentsResponse] {
+func (client *ReportsClient) NewListByConfigurationProfileAssignmentsPager(resourceGroupName string, configurationProfileAssignmentName string, vmName string, options *ReportsClientListByConfigurationProfileAssignmentsOptions) *runtime.Pager[ReportsClientListByConfigurationProfileAssignmentsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReportsClientListByConfigurationProfileAssignmentsResponse]{
 		More: func(page ReportsClientListByConfigurationProfileAssignmentsResponse) bool {
 			return false

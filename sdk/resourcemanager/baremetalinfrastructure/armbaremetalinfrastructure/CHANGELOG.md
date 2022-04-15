@@ -1,5 +1,19 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*AzureBareMetalInstancesClient.ListBySubscription` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*AzureBareMetalInstancesClient.ListByResourceGroup` has been removed
+
+### Features Added
+
+- New function `*AzureBareMetalInstancesClient.NewListByResourceGroupPager(string, *AzureBareMetalInstancesClientListByResourceGroupOptions) *runtime.Pager[AzureBareMetalInstancesClientListByResourceGroupResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*AzureBareMetalInstancesClient.NewListBySubscriptionPager(*AzureBareMetalInstancesClientListBySubscriptionOptions) *runtime.Pager[AzureBareMetalInstancesClientListBySubscriptionResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

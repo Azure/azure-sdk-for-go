@@ -229,13 +229,13 @@ func (client *ConfigurationProfilesVersionsClient) getHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListChildResources - Retrieve a list of configuration profile version for a configuration profile
+// NewListChildResourcesPager - Retrieve a list of configuration profile version for a configuration profile
 // If the operation fails it returns an *azcore.ResponseError type.
 // configurationProfileName - Name of the configuration profile.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ConfigurationProfilesVersionsClientListChildResourcesOptions contains the optional parameters for the ConfigurationProfilesVersionsClient.ListChildResources
 // method.
-func (client *ConfigurationProfilesVersionsClient) ListChildResources(configurationProfileName string, resourceGroupName string, options *ConfigurationProfilesVersionsClientListChildResourcesOptions) *runtime.Pager[ConfigurationProfilesVersionsClientListChildResourcesResponse] {
+func (client *ConfigurationProfilesVersionsClient) NewListChildResourcesPager(configurationProfileName string, resourceGroupName string, options *ConfigurationProfilesVersionsClientListChildResourcesOptions) *runtime.Pager[ConfigurationProfilesVersionsClientListChildResourcesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ConfigurationProfilesVersionsClientListChildResourcesResponse]{
 		More: func(page ConfigurationProfilesVersionsClientListChildResourcesResponse) bool {
 			return false

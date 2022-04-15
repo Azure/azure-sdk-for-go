@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listDscNodeReportsByNode.json
-func ExampleNodeReportsClient_ListByNode() {
+func ExampleNodeReportsClient_NewListByNodePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleNodeReportsClient_ListByNode() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByNode("<resource-group-name>",
+	pager := client.NewListByNodePager("<resource-group-name>",
 		"<automation-account-name>",
 		"<node-id>",
 		&armautomation.NodeReportsClientListByNodeOptions{Filter: nil})

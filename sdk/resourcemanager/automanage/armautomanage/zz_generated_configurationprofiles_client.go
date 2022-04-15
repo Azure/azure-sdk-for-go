@@ -214,12 +214,12 @@ func (client *ConfigurationProfilesClient) getHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListByResourceGroup - Retrieve a list of configuration profile within a given resource group
+// NewListByResourceGroupPager - Retrieve a list of configuration profile within a given resource group
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ConfigurationProfilesClientListByResourceGroupOptions contains the optional parameters for the ConfigurationProfilesClient.ListByResourceGroup
 // method.
-func (client *ConfigurationProfilesClient) ListByResourceGroup(resourceGroupName string, options *ConfigurationProfilesClientListByResourceGroupOptions) *runtime.Pager[ConfigurationProfilesClientListByResourceGroupResponse] {
+func (client *ConfigurationProfilesClient) NewListByResourceGroupPager(resourceGroupName string, options *ConfigurationProfilesClientListByResourceGroupOptions) *runtime.Pager[ConfigurationProfilesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ConfigurationProfilesClientListByResourceGroupResponse]{
 		More: func(page ConfigurationProfilesClientListByResourceGroupResponse) bool {
 			return false
@@ -272,11 +272,11 @@ func (client *ConfigurationProfilesClient) listByResourceGroupHandleResponse(res
 	return result, nil
 }
 
-// ListBySubscription - Retrieve a list of configuration profile within a subscription
+// NewListBySubscriptionPager - Retrieve a list of configuration profile within a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ConfigurationProfilesClientListBySubscriptionOptions contains the optional parameters for the ConfigurationProfilesClient.ListBySubscription
 // method.
-func (client *ConfigurationProfilesClient) ListBySubscription(options *ConfigurationProfilesClientListBySubscriptionOptions) *runtime.Pager[ConfigurationProfilesClientListBySubscriptionResponse] {
+func (client *ConfigurationProfilesClient) NewListBySubscriptionPager(options *ConfigurationProfilesClientListBySubscriptionOptions) *runtime.Pager[ConfigurationProfilesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ConfigurationProfilesClientListBySubscriptionResponse]{
 		More: func(page ConfigurationProfilesClientListBySubscriptionResponse) bool {
 			return false

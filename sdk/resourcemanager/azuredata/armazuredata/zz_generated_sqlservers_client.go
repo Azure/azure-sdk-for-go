@@ -233,14 +233,14 @@ func (client *SQLServersClient) getHandleResponse(resp *http.Response) (SQLServe
 	return result, nil
 }
 
-// ListByResourceGroup - Gets all SQL Servers in a SQL Server Registration.
+// NewListByResourceGroupPager - Gets all SQL Servers in a SQL Server Registration.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 // Manager API or the portal.
 // sqlServerRegistrationName - Name of the SQL Server registration.
 // options - SQLServersClientListByResourceGroupOptions contains the optional parameters for the SQLServersClient.ListByResourceGroup
 // method.
-func (client *SQLServersClient) ListByResourceGroup(resourceGroupName string, sqlServerRegistrationName string, options *SQLServersClientListByResourceGroupOptions) *runtime.Pager[SQLServersClientListByResourceGroupResponse] {
+func (client *SQLServersClient) NewListByResourceGroupPager(resourceGroupName string, sqlServerRegistrationName string, options *SQLServersClientListByResourceGroupOptions) *runtime.Pager[SQLServersClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLServersClientListByResourceGroupResponse]{
 		More: func(page SQLServersClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

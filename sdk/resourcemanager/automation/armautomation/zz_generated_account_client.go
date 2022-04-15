@@ -212,10 +212,10 @@ func (client *AccountClient) getHandleResponse(resp *http.Response) (AccountClie
 	return result, nil
 }
 
-// List - Retrieve a list of accounts within a given subscription.
+// NewListPager - Retrieve a list of accounts within a given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AccountClientListOptions contains the optional parameters for the AccountClient.List method.
-func (client *AccountClient) List(options *AccountClientListOptions) *runtime.Pager[AccountClientListResponse] {
+func (client *AccountClient) NewListPager(options *AccountClientListOptions) *runtime.Pager[AccountClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccountClientListResponse]{
 		More: func(page AccountClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -270,12 +270,12 @@ func (client *AccountClient) listHandleResponse(resp *http.Response) (AccountCli
 	return result, nil
 }
 
-// ListByResourceGroup - Retrieve a list of accounts within a given resource group.
+// NewListByResourceGroupPager - Retrieve a list of accounts within a given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure Resource group.
 // options - AccountClientListByResourceGroupOptions contains the optional parameters for the AccountClient.ListByResourceGroup
 // method.
-func (client *AccountClient) ListByResourceGroup(resourceGroupName string, options *AccountClientListByResourceGroupOptions) *runtime.Pager[AccountClientListByResourceGroupResponse] {
+func (client *AccountClient) NewListByResourceGroupPager(resourceGroupName string, options *AccountClientListByResourceGroupOptions) *runtime.Pager[AccountClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccountClientListByResourceGroupResponse]{
 		More: func(page AccountClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

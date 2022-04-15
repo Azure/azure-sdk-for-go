@@ -234,10 +234,10 @@ func (client *PostgresInstancesClient) getHandleResponse(resp *http.Response) (P
 	return result, nil
 }
 
-// List - List postgres Instance resources in the subscription
+// NewListPager - List postgres Instance resources in the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PostgresInstancesClientListOptions contains the optional parameters for the PostgresInstancesClient.List method.
-func (client *PostgresInstancesClient) List(options *PostgresInstancesClientListOptions) *runtime.Pager[PostgresInstancesClientListResponse] {
+func (client *PostgresInstancesClient) NewListPager(options *PostgresInstancesClientListOptions) *runtime.Pager[PostgresInstancesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PostgresInstancesClientListResponse]{
 		More: func(page PostgresInstancesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -292,12 +292,12 @@ func (client *PostgresInstancesClient) listHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// ListByResourceGroup - Get a postgres Instances list by Resource group name.
+// NewListByResourceGroupPager - Get a postgres Instances list by Resource group name.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the Azure resource group
 // options - PostgresInstancesClientListByResourceGroupOptions contains the optional parameters for the PostgresInstancesClient.ListByResourceGroup
 // method.
-func (client *PostgresInstancesClient) ListByResourceGroup(resourceGroupName string, options *PostgresInstancesClientListByResourceGroupOptions) *runtime.Pager[PostgresInstancesClientListByResourceGroupResponse] {
+func (client *PostgresInstancesClient) NewListByResourceGroupPager(resourceGroupName string, options *PostgresInstancesClientListByResourceGroupOptions) *runtime.Pager[PostgresInstancesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PostgresInstancesClientListByResourceGroupResponse]{
 		More: func(page PostgresInstancesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

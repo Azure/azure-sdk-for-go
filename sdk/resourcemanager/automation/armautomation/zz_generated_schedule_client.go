@@ -227,13 +227,13 @@ func (client *ScheduleClient) getHandleResponse(resp *http.Response) (ScheduleCl
 	return result, nil
 }
 
-// ListByAutomationAccount - Retrieve a list of schedules.
+// NewListByAutomationAccountPager - Retrieve a list of schedules.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - ScheduleClientListByAutomationAccountOptions contains the optional parameters for the ScheduleClient.ListByAutomationAccount
 // method.
-func (client *ScheduleClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *ScheduleClientListByAutomationAccountOptions) *runtime.Pager[ScheduleClientListByAutomationAccountResponse] {
+func (client *ScheduleClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *ScheduleClientListByAutomationAccountOptions) *runtime.Pager[ScheduleClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ScheduleClientListByAutomationAccountResponse]{
 		More: func(page ScheduleClientListByAutomationAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -1,5 +1,35 @@
 # Release History
 
+## 0.5.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*AccessReviewInstanceContactedReviewersClient.List` has been removed
+- Function `*AccessReviewInstancesAssignedForMyApprovalClient.List` has been removed
+- Function `*AccessReviewScheduleDefinitionsClient.List` has been removed
+- Function `*AccessReviewInstancesClient.List` has been removed
+- Function `*AccessReviewInstanceDecisionsClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*AccessReviewHistoryDefinitionInstancesClient.List` has been removed
+- Function `*TenantLevelAccessReviewInstanceContactedReviewersClient.List` has been removed
+- Function `*AccessReviewHistoryDefinitionsClient.List` has been removed
+- Function `*AccessReviewInstanceMyDecisionsClient.List` has been removed
+- Function `*AccessReviewScheduleDefinitionsAssignedForMyApprovalClient.List` has been removed
+
+### Features Added
+
+- New function `*AccessReviewInstanceMyDecisionsClient.NewListPager(string, string, *AccessReviewInstanceMyDecisionsClientListOptions) *runtime.Pager[AccessReviewInstanceMyDecisionsClientListResponse]`
+- New function `*AccessReviewHistoryDefinitionsClient.NewListPager(*AccessReviewHistoryDefinitionsClientListOptions) *runtime.Pager[AccessReviewHistoryDefinitionsClientListResponse]`
+- New function `*AccessReviewInstanceContactedReviewersClient.NewListPager(string, string, *AccessReviewInstanceContactedReviewersClientListOptions) *runtime.Pager[AccessReviewInstanceContactedReviewersClientListResponse]`
+- New function `*AccessReviewInstanceDecisionsClient.NewListPager(string, string, *AccessReviewInstanceDecisionsClientListOptions) *runtime.Pager[AccessReviewInstanceDecisionsClientListResponse]`
+- New function `*AccessReviewInstancesAssignedForMyApprovalClient.NewListPager(string, *AccessReviewInstancesAssignedForMyApprovalClientListOptions) *runtime.Pager[AccessReviewInstancesAssignedForMyApprovalClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*AccessReviewHistoryDefinitionInstancesClient.NewListPager(string, *AccessReviewHistoryDefinitionInstancesClientListOptions) *runtime.Pager[AccessReviewHistoryDefinitionInstancesClientListResponse]`
+- New function `*TenantLevelAccessReviewInstanceContactedReviewersClient.NewListPager(string, string, *TenantLevelAccessReviewInstanceContactedReviewersClientListOptions) *runtime.Pager[TenantLevelAccessReviewInstanceContactedReviewersClientListResponse]`
+- New function `*AccessReviewScheduleDefinitionsAssignedForMyApprovalClient.NewListPager(*AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions) *runtime.Pager[AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListResponse]`
+- New function `*AccessReviewInstancesClient.NewListPager(string, *AccessReviewInstancesClientListOptions) *runtime.Pager[AccessReviewInstancesClientListResponse]`
+- New function `*AccessReviewScheduleDefinitionsClient.NewListPager(*AccessReviewScheduleDefinitionsClientListOptions) *runtime.Pager[AccessReviewScheduleDefinitionsClientListResponse]`
+
+
 ## 0.4.0 (2022-04-11)
 ### Breaking Changes
 

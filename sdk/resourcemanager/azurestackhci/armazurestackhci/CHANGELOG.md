@@ -1,5 +1,21 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*ExtensionsClient.ListByArcSetting` has been removed
+- Function `*ClustersClient.ListByResourceGroup` has been removed
+- Function `*ClustersClient.ListBySubscription` has been removed
+- Function `*ArcSettingsClient.ListByCluster` has been removed
+
+### Features Added
+
+- New function `*ClustersClient.NewListBySubscriptionPager(*ClustersClientListBySubscriptionOptions) *runtime.Pager[ClustersClientListBySubscriptionResponse]`
+- New function `*ArcSettingsClient.NewListByClusterPager(string, string, *ArcSettingsClientListByClusterOptions) *runtime.Pager[ArcSettingsClientListByClusterResponse]`
+- New function `*ExtensionsClient.NewListByArcSettingPager(string, string, string, *ExtensionsClientListByArcSettingOptions) *runtime.Pager[ExtensionsClientListByArcSettingResponse]`
+- New function `*ClustersClient.NewListByResourceGroupPager(string, *ClustersClientListByResourceGroupOptions) *runtime.Pager[ClustersClientListByResourceGroupResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

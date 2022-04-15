@@ -1534,13 +1534,13 @@ func (client *WorkloadNetworksClient) getVirtualMachineHandleResponse(resp *http
 	return result, nil
 }
 
-// ListDNSServices - List of DNS services in a private cloud workload network.
+// NewListDNSServicesPager - List of DNS services in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // options - WorkloadNetworksClientListDNSServicesOptions contains the optional parameters for the WorkloadNetworksClient.ListDNSServices
 // method.
-func (client *WorkloadNetworksClient) ListDNSServices(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListDNSServicesOptions) *runtime.Pager[WorkloadNetworksClientListDNSServicesResponse] {
+func (client *WorkloadNetworksClient) NewListDNSServicesPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListDNSServicesOptions) *runtime.Pager[WorkloadNetworksClientListDNSServicesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkloadNetworksClientListDNSServicesResponse]{
 		More: func(page WorkloadNetworksClientListDNSServicesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1603,13 +1603,13 @@ func (client *WorkloadNetworksClient) listDNSServicesHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListDNSZones - List of DNS zones in a private cloud workload network.
+// NewListDNSZonesPager - List of DNS zones in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // options - WorkloadNetworksClientListDNSZonesOptions contains the optional parameters for the WorkloadNetworksClient.ListDNSZones
 // method.
-func (client *WorkloadNetworksClient) ListDNSZones(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListDNSZonesOptions) *runtime.Pager[WorkloadNetworksClientListDNSZonesResponse] {
+func (client *WorkloadNetworksClient) NewListDNSZonesPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListDNSZonesOptions) *runtime.Pager[WorkloadNetworksClientListDNSZonesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkloadNetworksClientListDNSZonesResponse]{
 		More: func(page WorkloadNetworksClientListDNSZonesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1672,13 +1672,13 @@ func (client *WorkloadNetworksClient) listDNSZonesHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListDhcp - List dhcp in a private cloud workload network.
+// NewListDhcpPager - List dhcp in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // options - WorkloadNetworksClientListDhcpOptions contains the optional parameters for the WorkloadNetworksClient.ListDhcp
 // method.
-func (client *WorkloadNetworksClient) ListDhcp(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListDhcpOptions) *runtime.Pager[WorkloadNetworksClientListDhcpResponse] {
+func (client *WorkloadNetworksClient) NewListDhcpPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListDhcpOptions) *runtime.Pager[WorkloadNetworksClientListDhcpResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkloadNetworksClientListDhcpResponse]{
 		More: func(page WorkloadNetworksClientListDhcpResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1741,13 +1741,13 @@ func (client *WorkloadNetworksClient) listDhcpHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListGateways - List of gateways in a private cloud workload network.
+// NewListGatewaysPager - List of gateways in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // options - WorkloadNetworksClientListGatewaysOptions contains the optional parameters for the WorkloadNetworksClient.ListGateways
 // method.
-func (client *WorkloadNetworksClient) ListGateways(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListGatewaysOptions) *runtime.Pager[WorkloadNetworksClientListGatewaysResponse] {
+func (client *WorkloadNetworksClient) NewListGatewaysPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListGatewaysOptions) *runtime.Pager[WorkloadNetworksClientListGatewaysResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkloadNetworksClientListGatewaysResponse]{
 		More: func(page WorkloadNetworksClientListGatewaysResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1810,13 +1810,13 @@ func (client *WorkloadNetworksClient) listGatewaysHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListPortMirroring - List of port mirroring profiles in a private cloud workload network.
+// NewListPortMirroringPager - List of port mirroring profiles in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // options - WorkloadNetworksClientListPortMirroringOptions contains the optional parameters for the WorkloadNetworksClient.ListPortMirroring
 // method.
-func (client *WorkloadNetworksClient) ListPortMirroring(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListPortMirroringOptions) *runtime.Pager[WorkloadNetworksClientListPortMirroringResponse] {
+func (client *WorkloadNetworksClient) NewListPortMirroringPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListPortMirroringOptions) *runtime.Pager[WorkloadNetworksClientListPortMirroringResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkloadNetworksClientListPortMirroringResponse]{
 		More: func(page WorkloadNetworksClientListPortMirroringResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1879,13 +1879,13 @@ func (client *WorkloadNetworksClient) listPortMirroringHandleResponse(resp *http
 	return result, nil
 }
 
-// ListPublicIPs - List of Public IP Blocks in a private cloud workload network.
+// NewListPublicIPsPager - List of Public IP Blocks in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // options - WorkloadNetworksClientListPublicIPsOptions contains the optional parameters for the WorkloadNetworksClient.ListPublicIPs
 // method.
-func (client *WorkloadNetworksClient) ListPublicIPs(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListPublicIPsOptions) *runtime.Pager[WorkloadNetworksClientListPublicIPsResponse] {
+func (client *WorkloadNetworksClient) NewListPublicIPsPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListPublicIPsOptions) *runtime.Pager[WorkloadNetworksClientListPublicIPsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkloadNetworksClientListPublicIPsResponse]{
 		More: func(page WorkloadNetworksClientListPublicIPsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1948,13 +1948,13 @@ func (client *WorkloadNetworksClient) listPublicIPsHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListSegments - List of segments in a private cloud workload network.
+// NewListSegmentsPager - List of segments in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // options - WorkloadNetworksClientListSegmentsOptions contains the optional parameters for the WorkloadNetworksClient.ListSegments
 // method.
-func (client *WorkloadNetworksClient) ListSegments(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListSegmentsOptions) *runtime.Pager[WorkloadNetworksClientListSegmentsResponse] {
+func (client *WorkloadNetworksClient) NewListSegmentsPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListSegmentsOptions) *runtime.Pager[WorkloadNetworksClientListSegmentsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkloadNetworksClientListSegmentsResponse]{
 		More: func(page WorkloadNetworksClientListSegmentsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -2017,13 +2017,13 @@ func (client *WorkloadNetworksClient) listSegmentsHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListVMGroups - List of vm groups in a private cloud workload network.
+// NewListVMGroupsPager - List of vm groups in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // options - WorkloadNetworksClientListVMGroupsOptions contains the optional parameters for the WorkloadNetworksClient.ListVMGroups
 // method.
-func (client *WorkloadNetworksClient) ListVMGroups(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListVMGroupsOptions) *runtime.Pager[WorkloadNetworksClientListVMGroupsResponse] {
+func (client *WorkloadNetworksClient) NewListVMGroupsPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListVMGroupsOptions) *runtime.Pager[WorkloadNetworksClientListVMGroupsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkloadNetworksClientListVMGroupsResponse]{
 		More: func(page WorkloadNetworksClientListVMGroupsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -2086,13 +2086,13 @@ func (client *WorkloadNetworksClient) listVMGroupsHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListVirtualMachines - List of virtual machines in a private cloud workload network.
+// NewListVirtualMachinesPager - List of virtual machines in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // options - WorkloadNetworksClientListVirtualMachinesOptions contains the optional parameters for the WorkloadNetworksClient.ListVirtualMachines
 // method.
-func (client *WorkloadNetworksClient) ListVirtualMachines(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListVirtualMachinesOptions) *runtime.Pager[WorkloadNetworksClientListVirtualMachinesResponse] {
+func (client *WorkloadNetworksClient) NewListVirtualMachinesPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListVirtualMachinesOptions) *runtime.Pager[WorkloadNetworksClientListVirtualMachinesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkloadNetworksClientListVirtualMachinesResponse]{
 		More: func(page WorkloadNetworksClientListVirtualMachinesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

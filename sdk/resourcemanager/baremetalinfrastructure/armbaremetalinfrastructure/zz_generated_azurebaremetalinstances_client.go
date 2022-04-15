@@ -110,13 +110,13 @@ func (client *AzureBareMetalInstancesClient) getHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListByResourceGroup - Gets a list of AzureBareMetal instances in the specified subscription and resource group. The operations
-// returns various properties of each Azure BareMetal instance.
+// NewListByResourceGroupPager - Gets a list of AzureBareMetal instances in the specified subscription and resource group.
+// The operations returns various properties of each Azure BareMetal instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - AzureBareMetalInstancesClientListByResourceGroupOptions contains the optional parameters for the AzureBareMetalInstancesClient.ListByResourceGroup
 // method.
-func (client *AzureBareMetalInstancesClient) ListByResourceGroup(resourceGroupName string, options *AzureBareMetalInstancesClientListByResourceGroupOptions) *runtime.Pager[AzureBareMetalInstancesClientListByResourceGroupResponse] {
+func (client *AzureBareMetalInstancesClient) NewListByResourceGroupPager(resourceGroupName string, options *AzureBareMetalInstancesClientListByResourceGroupOptions) *runtime.Pager[AzureBareMetalInstancesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AzureBareMetalInstancesClientListByResourceGroupResponse]{
 		More: func(page AzureBareMetalInstancesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -175,12 +175,12 @@ func (client *AzureBareMetalInstancesClient) listByResourceGroupHandleResponse(r
 	return result, nil
 }
 
-// ListBySubscription - Gets a list of AzureBareMetal instances in the specified subscription. The operations returns various
-// properties of each Azure BareMetal instance.
+// NewListBySubscriptionPager - Gets a list of AzureBareMetal instances in the specified subscription. The operations returns
+// various properties of each Azure BareMetal instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AzureBareMetalInstancesClientListBySubscriptionOptions contains the optional parameters for the AzureBareMetalInstancesClient.ListBySubscription
 // method.
-func (client *AzureBareMetalInstancesClient) ListBySubscription(options *AzureBareMetalInstancesClientListBySubscriptionOptions) *runtime.Pager[AzureBareMetalInstancesClientListBySubscriptionResponse] {
+func (client *AzureBareMetalInstancesClient) NewListBySubscriptionPager(options *AzureBareMetalInstancesClientListBySubscriptionOptions) *runtime.Pager[AzureBareMetalInstancesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AzureBareMetalInstancesClientListBySubscriptionResponse]{
 		More: func(page AzureBareMetalInstancesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

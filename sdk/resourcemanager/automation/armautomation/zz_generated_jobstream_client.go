@@ -123,13 +123,13 @@ func (client *JobStreamClient) getHandleResponse(resp *http.Response) (JobStream
 	return result, nil
 }
 
-// ListByJob - Retrieve a list of jobs streams identified by job name.
+// NewListByJobPager - Retrieve a list of jobs streams identified by job name.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // jobName - The job name.
 // options - JobStreamClientListByJobOptions contains the optional parameters for the JobStreamClient.ListByJob method.
-func (client *JobStreamClient) ListByJob(resourceGroupName string, automationAccountName string, jobName string, options *JobStreamClientListByJobOptions) *runtime.Pager[JobStreamClientListByJobResponse] {
+func (client *JobStreamClient) NewListByJobPager(resourceGroupName string, automationAccountName string, jobName string, options *JobStreamClientListByJobOptions) *runtime.Pager[JobStreamClientListByJobResponse] {
 	return runtime.NewPager(runtime.PageProcessor[JobStreamClientListByJobResponse]{
 		More: func(page JobStreamClientListByJobResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

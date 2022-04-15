@@ -228,13 +228,13 @@ func (client *SourceControlClient) getHandleResponse(resp *http.Response) (Sourc
 	return result, nil
 }
 
-// ListByAutomationAccount - Retrieve a list of source controls.
+// NewListByAutomationAccountPager - Retrieve a list of source controls.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - SourceControlClientListByAutomationAccountOptions contains the optional parameters for the SourceControlClient.ListByAutomationAccount
 // method.
-func (client *SourceControlClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *SourceControlClientListByAutomationAccountOptions) *runtime.Pager[SourceControlClientListByAutomationAccountResponse] {
+func (client *SourceControlClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *SourceControlClientListByAutomationAccountOptions) *runtime.Pager[SourceControlClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SourceControlClientListByAutomationAccountResponse]{
 		More: func(page SourceControlClientListByAutomationAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

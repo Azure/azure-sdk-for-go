@@ -10,7 +10,7 @@ package armbaremetalinfrastructure
 
 const (
 	moduleName    = "armbaremetalinfrastructure"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.4.0"
 )
 
 // AzureBareMetalHardwareTypeNamesEnum - Name of the hardware type (vendor and/or their product name)

@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/getStatisticsOfAutomationAccount.json
-func ExampleStatisticsClient_ListByAutomationAccount() {
+func ExampleStatisticsClient_NewListByAutomationAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleStatisticsClient_ListByAutomationAccount() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByAutomationAccount("<resource-group-name>",
+	pager := client.NewListByAutomationAccountPager("<resource-group-name>",
 		"<automation-account-name>",
 		&armautomation.StatisticsClientListByAutomationAccountOptions{Filter: nil})
 	for pager.More() {

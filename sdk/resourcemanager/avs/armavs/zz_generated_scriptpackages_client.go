@@ -114,12 +114,12 @@ func (client *ScriptPackagesClient) getHandleResponse(resp *http.Response) (Scri
 	return result, nil
 }
 
-// List - List script packages available to run on the private cloud
+// NewListPager - List script packages available to run on the private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // options - ScriptPackagesClientListOptions contains the optional parameters for the ScriptPackagesClient.List method.
-func (client *ScriptPackagesClient) List(resourceGroupName string, privateCloudName string, options *ScriptPackagesClientListOptions) *runtime.Pager[ScriptPackagesClientListResponse] {
+func (client *ScriptPackagesClient) NewListPager(resourceGroupName string, privateCloudName string, options *ScriptPackagesClientListOptions) *runtime.Pager[ScriptPackagesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ScriptPackagesClientListResponse]{
 		More: func(page ScriptPackagesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -180,7 +180,7 @@ func ExampleJobClient_Create() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/listJobsByAutomationAccount.json
-func ExampleJobClient_ListByAutomationAccount() {
+func ExampleJobClient_NewListByAutomationAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -192,7 +192,7 @@ func ExampleJobClient_ListByAutomationAccount() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByAutomationAccount("<resource-group-name>",
+	pager := client.NewListByAutomationAccountPager("<resource-group-name>",
 		"<automation-account-name>",
 		&armautomation.JobClientListByAutomationAccountOptions{Filter: nil,
 			ClientRequestID: nil,

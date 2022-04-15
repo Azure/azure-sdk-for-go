@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listFieldsByModuleAndType.json
-func ExampleFieldsClient_ListByType() {
+func ExampleFieldsClient_NewListByTypePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleFieldsClient_ListByType() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByType("<resource-group-name>",
+	pager := client.NewListByTypePager("<resource-group-name>",
 		"<automation-account-name>",
 		"<module-name>",
 		"<type-name>",

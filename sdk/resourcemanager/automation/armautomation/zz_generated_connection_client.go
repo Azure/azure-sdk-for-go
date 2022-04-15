@@ -228,13 +228,13 @@ func (client *ConnectionClient) getHandleResponse(resp *http.Response) (Connecti
 	return result, nil
 }
 
-// ListByAutomationAccount - Retrieve a list of connections.
+// NewListByAutomationAccountPager - Retrieve a list of connections.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - ConnectionClientListByAutomationAccountOptions contains the optional parameters for the ConnectionClient.ListByAutomationAccount
 // method.
-func (client *ConnectionClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *ConnectionClientListByAutomationAccountOptions) *runtime.Pager[ConnectionClientListByAutomationAccountResponse] {
+func (client *ConnectionClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *ConnectionClientListByAutomationAccountOptions) *runtime.Pager[ConnectionClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ConnectionClientListByAutomationAccountResponse]{
 		More: func(page ConnectionClientListByAutomationAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

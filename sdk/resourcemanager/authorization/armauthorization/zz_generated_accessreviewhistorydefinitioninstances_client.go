@@ -54,12 +54,12 @@ func NewAccessReviewHistoryDefinitionInstancesClient(subscriptionID string, cred
 	return client, nil
 }
 
-// List - Get access review history definition instances by definition Id
+// NewListPager - Get access review history definition instances by definition Id
 // If the operation fails it returns an *azcore.ResponseError type.
 // historyDefinitionID - The id of the access review history definition.
 // options - AccessReviewHistoryDefinitionInstancesClientListOptions contains the optional parameters for the AccessReviewHistoryDefinitionInstancesClient.List
 // method.
-func (client *AccessReviewHistoryDefinitionInstancesClient) List(historyDefinitionID string, options *AccessReviewHistoryDefinitionInstancesClientListOptions) *runtime.Pager[AccessReviewHistoryDefinitionInstancesClientListResponse] {
+func (client *AccessReviewHistoryDefinitionInstancesClient) NewListPager(historyDefinitionID string, options *AccessReviewHistoryDefinitionInstancesClientListOptions) *runtime.Pager[AccessReviewHistoryDefinitionInstancesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccessReviewHistoryDefinitionInstancesClientListResponse]{
 		More: func(page AccessReviewHistoryDefinitionInstancesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

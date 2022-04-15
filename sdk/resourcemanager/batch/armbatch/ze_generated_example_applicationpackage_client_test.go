@@ -127,7 +127,7 @@ func ExampleApplicationPackageClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/ApplicationPackageList.json
-func ExampleApplicationPackageClient_List() {
+func ExampleApplicationPackageClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -139,7 +139,7 @@ func ExampleApplicationPackageClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-group-name>",
+	pager := client.NewListPager("<resource-group-name>",
 		"<account-name>",
 		"<application-name>",
 		&armbatch.ApplicationPackageClientListOptions{Maxresults: nil})

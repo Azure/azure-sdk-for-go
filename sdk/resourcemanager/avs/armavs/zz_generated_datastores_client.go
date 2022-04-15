@@ -261,13 +261,13 @@ func (client *DatastoresClient) getHandleResponse(resp *http.Response) (Datastor
 	return result, nil
 }
 
-// List - List datastores in a private cloud cluster
+// NewListPager - List datastores in a private cloud cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // clusterName - Name of the cluster in the private cloud
 // options - DatastoresClientListOptions contains the optional parameters for the DatastoresClient.List method.
-func (client *DatastoresClient) List(resourceGroupName string, privateCloudName string, clusterName string, options *DatastoresClientListOptions) *runtime.Pager[DatastoresClientListResponse] {
+func (client *DatastoresClient) NewListPager(resourceGroupName string, privateCloudName string, clusterName string, options *DatastoresClientListOptions) *runtime.Pager[DatastoresClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DatastoresClientListResponse]{
 		More: func(page DatastoresClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

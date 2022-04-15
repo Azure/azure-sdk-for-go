@@ -227,13 +227,13 @@ func (client *ModuleClient) getHandleResponse(resp *http.Response) (ModuleClient
 	return result, nil
 }
 
-// ListByAutomationAccount - Retrieve a list of modules.
+// NewListByAutomationAccountPager - Retrieve a list of modules.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - ModuleClientListByAutomationAccountOptions contains the optional parameters for the ModuleClient.ListByAutomationAccount
 // method.
-func (client *ModuleClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *ModuleClientListByAutomationAccountOptions) *runtime.Pager[ModuleClientListByAutomationAccountResponse] {
+func (client *ModuleClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *ModuleClientListByAutomationAccountOptions) *runtime.Pager[ModuleClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ModuleClientListByAutomationAccountResponse]{
 		More: func(page ModuleClientListByAutomationAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

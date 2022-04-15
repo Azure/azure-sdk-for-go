@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/authorization/resource-manager/Microsoft.Authorization/preview/2021-11-16-preview/examples/GetAccessReviewScheduleDefinitionsAssignedForMyApproval.json
-func ExampleAccessReviewScheduleDefinitionsAssignedForMyApprovalClient_List() {
+func ExampleAccessReviewScheduleDefinitionsAssignedForMyApprovalClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleAccessReviewScheduleDefinitionsAssignedForMyApprovalClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(&armauthorization.AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions{Filter: to.Ptr("<filter>")})
+	pager := client.NewListPager(&armauthorization.AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions{Filter: to.Ptr("<filter>")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

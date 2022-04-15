@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_ListSegments.json
-func ExampleWorkloadNetworksClient_ListSegments() {
+func ExampleWorkloadNetworksClient_NewListSegmentsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleWorkloadNetworksClient_ListSegments() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListSegments("<resource-group-name>",
+	pager := client.NewListSegmentsPager("<resource-group-name>",
 		"<private-cloud-name>",
 		nil)
 	for pager.More() {
@@ -189,7 +189,7 @@ func ExampleWorkloadNetworksClient_BeginDeleteSegment() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_ListDhcpConfigurations.json
-func ExampleWorkloadNetworksClient_ListDhcp() {
+func ExampleWorkloadNetworksClient_NewListDhcpPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -201,7 +201,7 @@ func ExampleWorkloadNetworksClient_ListDhcp() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListDhcp("<resource-group-name>",
+	pager := client.NewListDhcpPager("<resource-group-name>",
 		"<private-cloud-name>",
 		nil)
 	for pager.More() {
@@ -352,7 +352,7 @@ func ExampleWorkloadNetworksClient_BeginDeleteDhcp() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_ListGateways.json
-func ExampleWorkloadNetworksClient_ListGateways() {
+func ExampleWorkloadNetworksClient_NewListGatewaysPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -364,7 +364,7 @@ func ExampleWorkloadNetworksClient_ListGateways() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListGateways("<resource-group-name>",
+	pager := client.NewListGatewaysPager("<resource-group-name>",
 		"<private-cloud-name>",
 		nil)
 	for pager.More() {
@@ -407,7 +407,7 @@ func ExampleWorkloadNetworksClient_GetGateway() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_ListPortMirroringProfiles.json
-func ExampleWorkloadNetworksClient_ListPortMirroring() {
+func ExampleWorkloadNetworksClient_NewListPortMirroringPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -419,7 +419,7 @@ func ExampleWorkloadNetworksClient_ListPortMirroring() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListPortMirroring("<resource-group-name>",
+	pager := client.NewListPortMirroringPager("<resource-group-name>",
 		"<private-cloud-name>",
 		nil)
 	for pager.More() {
@@ -570,7 +570,7 @@ func ExampleWorkloadNetworksClient_BeginDeletePortMirroring() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_ListVMGroups.json
-func ExampleWorkloadNetworksClient_ListVMGroups() {
+func ExampleWorkloadNetworksClient_NewListVMGroupsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -582,7 +582,7 @@ func ExampleWorkloadNetworksClient_ListVMGroups() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListVMGroups("<resource-group-name>",
+	pager := client.NewListVMGroupsPager("<resource-group-name>",
 		"<private-cloud-name>",
 		nil)
 	for pager.More() {
@@ -731,7 +731,7 @@ func ExampleWorkloadNetworksClient_BeginDeleteVMGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_ListVirtualMachines.json
-func ExampleWorkloadNetworksClient_ListVirtualMachines() {
+func ExampleWorkloadNetworksClient_NewListVirtualMachinesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -743,7 +743,7 @@ func ExampleWorkloadNetworksClient_ListVirtualMachines() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListVirtualMachines("<resource-group-name>",
+	pager := client.NewListVirtualMachinesPager("<resource-group-name>",
 		"<private-cloud-name>",
 		nil)
 	for pager.More() {
@@ -786,7 +786,7 @@ func ExampleWorkloadNetworksClient_GetVirtualMachine() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_ListPublicIPs.json
-func ExampleWorkloadNetworksClient_ListPublicIPs() {
+func ExampleWorkloadNetworksClient_NewListPublicIPsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -798,7 +798,7 @@ func ExampleWorkloadNetworksClient_ListPublicIPs() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListPublicIPs("<resource-group-name>",
+	pager := client.NewListPublicIPsPager("<resource-group-name>",
 		"<private-cloud-name>",
 		nil)
 	for pager.More() {

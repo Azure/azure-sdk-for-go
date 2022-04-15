@@ -228,12 +228,12 @@ func (client *HcxEnterpriseSitesClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// List - List HCX Enterprise Sites in a private cloud
+// NewListPager - List HCX Enterprise Sites in a private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // options - HcxEnterpriseSitesClientListOptions contains the optional parameters for the HcxEnterpriseSitesClient.List method.
-func (client *HcxEnterpriseSitesClient) List(resourceGroupName string, privateCloudName string, options *HcxEnterpriseSitesClientListOptions) *runtime.Pager[HcxEnterpriseSitesClientListResponse] {
+func (client *HcxEnterpriseSitesClient) NewListPager(resourceGroupName string, privateCloudName string, options *HcxEnterpriseSitesClientListOptions) *runtime.Pager[HcxEnterpriseSitesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[HcxEnterpriseSitesClientListResponse]{
 		More: func(page HcxEnterpriseSitesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

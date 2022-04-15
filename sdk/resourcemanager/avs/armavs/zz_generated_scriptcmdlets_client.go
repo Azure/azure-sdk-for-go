@@ -119,13 +119,14 @@ func (client *ScriptCmdletsClient) getHandleResponse(resp *http.Response) (Scrip
 	return result, nil
 }
 
-// List - List script cmdlet resources available for a private cloud to create a script execution resource on a private cloud
+// NewListPager - List script cmdlet resources available for a private cloud to create a script execution resource on a private
+// cloud
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // scriptPackageName - Name of the script package in the private cloud
 // options - ScriptCmdletsClientListOptions contains the optional parameters for the ScriptCmdletsClient.List method.
-func (client *ScriptCmdletsClient) List(resourceGroupName string, privateCloudName string, scriptPackageName string, options *ScriptCmdletsClientListOptions) *runtime.Pager[ScriptCmdletsClientListResponse] {
+func (client *ScriptCmdletsClient) NewListPager(resourceGroupName string, privateCloudName string, scriptPackageName string, options *ScriptCmdletsClientListOptions) *runtime.Pager[ScriptCmdletsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ScriptCmdletsClientListResponse]{
 		More: func(page ScriptCmdletsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

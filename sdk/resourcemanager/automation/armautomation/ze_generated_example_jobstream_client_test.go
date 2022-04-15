@@ -44,7 +44,7 @@ func ExampleJobStreamClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/listJobStreamsByJob.json
-func ExampleJobStreamClient_ListByJob() {
+func ExampleJobStreamClient_NewListByJobPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -56,7 +56,7 @@ func ExampleJobStreamClient_ListByJob() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByJob("<resource-group-name>",
+	pager := client.NewListByJobPager("<resource-group-name>",
 		"<automation-account-name>",
 		"<job-name>",
 		&armautomation.JobStreamClientListByJobOptions{Filter: nil,

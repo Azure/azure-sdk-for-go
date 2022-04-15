@@ -1,5 +1,39 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*SQLServerInstancesClient.List` has been removed
+- Function `*ActiveDirectoryConnectorsClient.List` has been removed
+- Function `*PostgresInstancesClient.ListByResourceGroup` has been removed
+- Function `*DataControllersClient.ListInSubscription` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*SQLServerInstancesClient.ListByResourceGroup` has been removed
+- Function `*SQLManagedInstancesClient.ListByResourceGroup` has been removed
+- Function `*DataControllersClient.ListInGroup` has been removed
+- Function `*SQLManagedInstancesClient.List` has been removed
+- Function `*PostgresInstancesClient.List` has been removed
+
+### Features Added
+
+- New const `AccountProvisioningModeAutomatic`
+- New const `AccountProvisioningModeManual`
+- New function `PossibleAccountProvisioningModeValues() []AccountProvisioningMode`
+- New function `*SQLManagedInstancesClient.NewListByResourceGroupPager(string, *SQLManagedInstancesClientListByResourceGroupOptions) *runtime.Pager[SQLManagedInstancesClientListByResourceGroupResponse]`
+- New function `*SQLServerInstancesClient.NewListPager(*SQLServerInstancesClientListOptions) *runtime.Pager[SQLServerInstancesClientListResponse]`
+- New function `*SQLServerInstancesClient.NewListByResourceGroupPager(string, *SQLServerInstancesClientListByResourceGroupOptions) *runtime.Pager[SQLServerInstancesClientListByResourceGroupResponse]`
+- New function `*PostgresInstancesClient.NewListPager(*PostgresInstancesClientListOptions) *runtime.Pager[PostgresInstancesClientListResponse]`
+- New function `*ActiveDirectoryConnectorsClient.NewListPager(string, string, *ActiveDirectoryConnectorsClientListOptions) *runtime.Pager[ActiveDirectoryConnectorsClientListResponse]`
+- New function `*PostgresInstancesClient.NewListByResourceGroupPager(string, *PostgresInstancesClientListByResourceGroupOptions) *runtime.Pager[PostgresInstancesClientListByResourceGroupResponse]`
+- New function `*DataControllersClient.NewListInSubscriptionPager(*DataControllersClientListInSubscriptionOptions) *runtime.Pager[DataControllersClientListInSubscriptionResponse]`
+- New function `*DataControllersClient.NewListInGroupPager(string, *DataControllersClientListInGroupOptions) *runtime.Pager[DataControllersClientListInGroupResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*SQLManagedInstancesClient.NewListPager(*SQLManagedInstancesClientListOptions) *runtime.Pager[SQLManagedInstancesClientListResponse]`
+- New field `DomainServiceAccountLoginInformation` in struct `ActiveDirectoryConnectorProperties`
+- New field `OuDistinguishedName` in struct `ActiveDirectoryConnectorDomainDetails`
+- New field `ServiceAccountProvisioning` in struct `ActiveDirectoryConnectorDomainDetails`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

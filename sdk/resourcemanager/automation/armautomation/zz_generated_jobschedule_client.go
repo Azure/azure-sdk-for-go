@@ -218,13 +218,13 @@ func (client *JobScheduleClient) getHandleResponse(resp *http.Response) (JobSche
 	return result, nil
 }
 
-// ListByAutomationAccount - Retrieve a list of job schedules.
+// NewListByAutomationAccountPager - Retrieve a list of job schedules.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - JobScheduleClientListByAutomationAccountOptions contains the optional parameters for the JobScheduleClient.ListByAutomationAccount
 // method.
-func (client *JobScheduleClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *JobScheduleClientListByAutomationAccountOptions) *runtime.Pager[JobScheduleClientListByAutomationAccountResponse] {
+func (client *JobScheduleClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *JobScheduleClientListByAutomationAccountOptions) *runtime.Pager[JobScheduleClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[JobScheduleClientListByAutomationAccountResponse]{
 		More: func(page JobScheduleClientListByAutomationAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

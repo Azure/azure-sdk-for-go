@@ -232,11 +232,11 @@ func (client *PrivateCloudsClient) getHandleResponse(resp *http.Response) (Priva
 	return result, nil
 }
 
-// List - List private clouds in a resource group
+// NewListPager - List private clouds in a resource group
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - PrivateCloudsClientListOptions contains the optional parameters for the PrivateCloudsClient.List method.
-func (client *PrivateCloudsClient) List(resourceGroupName string, options *PrivateCloudsClientListOptions) *runtime.Pager[PrivateCloudsClientListResponse] {
+func (client *PrivateCloudsClient) NewListPager(resourceGroupName string, options *PrivateCloudsClientListOptions) *runtime.Pager[PrivateCloudsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateCloudsClientListResponse]{
 		More: func(page PrivateCloudsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -351,11 +351,11 @@ func (client *PrivateCloudsClient) listAdminCredentialsHandleResponse(resp *http
 	return result, nil
 }
 
-// ListInSubscription - List private clouds in a subscription
+// NewListInSubscriptionPager - List private clouds in a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PrivateCloudsClientListInSubscriptionOptions contains the optional parameters for the PrivateCloudsClient.ListInSubscription
 // method.
-func (client *PrivateCloudsClient) ListInSubscription(options *PrivateCloudsClientListInSubscriptionOptions) *runtime.Pager[PrivateCloudsClientListInSubscriptionResponse] {
+func (client *PrivateCloudsClient) NewListInSubscriptionPager(options *PrivateCloudsClientListInSubscriptionOptions) *runtime.Pager[PrivateCloudsClientListInSubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateCloudsClientListInSubscriptionResponse]{
 		More: func(page PrivateCloudsClientListInSubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/authorization/resource-manager/Microsoft.Authorization/preview/2021-11-16-preview/examples/GetAccessReviewInstanceContactedReviewers.json
-func ExampleAccessReviewInstanceContactedReviewersClient_List() {
+func ExampleAccessReviewInstanceContactedReviewersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleAccessReviewInstanceContactedReviewersClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<schedule-definition-id>",
+	pager := client.NewListPager("<schedule-definition-id>",
 		"<id>",
 		nil)
 	for pager.More() {

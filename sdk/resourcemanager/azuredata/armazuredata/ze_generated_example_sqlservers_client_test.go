@@ -103,7 +103,7 @@ func ExampleSQLServersClient_Delete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azuredata/resource-manager/Microsoft.AzureData/preview/2019-07-24-preview/examples/ListByResourceGroupSqlServer.json
-func ExampleSQLServersClient_ListByResourceGroup() {
+func ExampleSQLServersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -115,7 +115,7 @@ func ExampleSQLServersClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		"<sql-server-registration-name>",
 		&armazuredata.SQLServersClientListByResourceGroupOptions{Expand: nil})
 	for pager.More() {

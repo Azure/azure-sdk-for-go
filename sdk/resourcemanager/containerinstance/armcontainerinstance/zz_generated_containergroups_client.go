@@ -294,12 +294,12 @@ func (client *ContainerGroupsClient) getOutboundNetworkDependenciesEndpointsHand
 	return result, nil
 }
 
-// List - Get a list of container groups in the specified subscription. This operation returns properties of each container
-// group including containers, image registry credentials, restart policy, IP address
+// NewListPager - Get a list of container groups in the specified subscription. This operation returns properties of each
+// container group including containers, image registry credentials, restart policy, IP address
 // type, OS type, state, and volumes.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ContainerGroupsClientListOptions contains the optional parameters for the ContainerGroupsClient.List method.
-func (client *ContainerGroupsClient) List(options *ContainerGroupsClientListOptions) *runtime.Pager[ContainerGroupsClientListResponse] {
+func (client *ContainerGroupsClient) NewListPager(options *ContainerGroupsClientListOptions) *runtime.Pager[ContainerGroupsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ContainerGroupsClientListResponse]{
 		More: func(page ContainerGroupsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -354,14 +354,14 @@ func (client *ContainerGroupsClient) listHandleResponse(resp *http.Response) (Co
 	return result, nil
 }
 
-// ListByResourceGroup - Get a list of container groups in a specified subscription and resource group. This operation returns
-// properties of each container group including containers, image registry credentials, restart
+// NewListByResourceGroupPager - Get a list of container groups in a specified subscription and resource group. This operation
+// returns properties of each container group including containers, image registry credentials, restart
 // policy, IP address type, OS type, state, and volumes.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - ContainerGroupsClientListByResourceGroupOptions contains the optional parameters for the ContainerGroupsClient.ListByResourceGroup
 // method.
-func (client *ContainerGroupsClient) ListByResourceGroup(resourceGroupName string, options *ContainerGroupsClientListByResourceGroupOptions) *runtime.Pager[ContainerGroupsClientListByResourceGroupResponse] {
+func (client *ContainerGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *ContainerGroupsClientListByResourceGroupOptions) *runtime.Pager[ContainerGroupsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ContainerGroupsClientListByResourceGroupResponse]{
 		More: func(page ContainerGroupsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

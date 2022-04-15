@@ -55,12 +55,12 @@ func NewLocationClient(subscriptionID string, credential azcore.TokenCredential,
 	return client, nil
 }
 
-// ListCachedImages - Get the list of cached images on specific OS type for a subscription in a region.
+// NewListCachedImagesPager - Get the list of cached images on specific OS type for a subscription in a region.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - The identifier for the physical azure location.
 // options - LocationClientListCachedImagesOptions contains the optional parameters for the LocationClient.ListCachedImages
 // method.
-func (client *LocationClient) ListCachedImages(location string, options *LocationClientListCachedImagesOptions) *runtime.Pager[LocationClientListCachedImagesResponse] {
+func (client *LocationClient) NewListCachedImagesPager(location string, options *LocationClientListCachedImagesOptions) *runtime.Pager[LocationClientListCachedImagesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LocationClientListCachedImagesResponse]{
 		More: func(page LocationClientListCachedImagesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -119,12 +119,12 @@ func (client *LocationClient) listCachedImagesHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListCapabilities - Get the list of CPU/memory/GPU capabilities of a region.
+// NewListCapabilitiesPager - Get the list of CPU/memory/GPU capabilities of a region.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - The identifier for the physical azure location.
 // options - LocationClientListCapabilitiesOptions contains the optional parameters for the LocationClient.ListCapabilities
 // method.
-func (client *LocationClient) ListCapabilities(location string, options *LocationClientListCapabilitiesOptions) *runtime.Pager[LocationClientListCapabilitiesResponse] {
+func (client *LocationClient) NewListCapabilitiesPager(location string, options *LocationClientListCapabilitiesOptions) *runtime.Pager[LocationClientListCapabilitiesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LocationClientListCapabilitiesResponse]{
 		More: func(page LocationClientListCapabilitiesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -183,11 +183,11 @@ func (client *LocationClient) listCapabilitiesHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListUsage - Get the usage for a subscription
+// NewListUsagePager - Get the usage for a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - The identifier for the physical azure location.
 // options - LocationClientListUsageOptions contains the optional parameters for the LocationClient.ListUsage method.
-func (client *LocationClient) ListUsage(location string, options *LocationClientListUsageOptions) *runtime.Pager[LocationClientListUsageResponse] {
+func (client *LocationClient) NewListUsagePager(location string, options *LocationClientListUsageOptions) *runtime.Pager[LocationClientListUsageResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LocationClientListUsageResponse]{
 		More: func(page LocationClientListUsageResponse) bool {
 			return false

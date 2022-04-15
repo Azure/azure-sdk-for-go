@@ -230,13 +230,13 @@ func (client *IntegrationAccountSchemasClient) getHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// List - Gets a list of integration account schemas.
+// NewListPager - Gets a list of integration account schemas.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // options - IntegrationAccountSchemasClientListOptions contains the optional parameters for the IntegrationAccountSchemasClient.List
 // method.
-func (client *IntegrationAccountSchemasClient) List(resourceGroupName string, integrationAccountName string, options *IntegrationAccountSchemasClientListOptions) *runtime.Pager[IntegrationAccountSchemasClientListResponse] {
+func (client *IntegrationAccountSchemasClient) NewListPager(resourceGroupName string, integrationAccountName string, options *IntegrationAccountSchemasClientListOptions) *runtime.Pager[IntegrationAccountSchemasClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IntegrationAccountSchemasClientListResponse]{
 		More: func(page IntegrationAccountSchemasClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

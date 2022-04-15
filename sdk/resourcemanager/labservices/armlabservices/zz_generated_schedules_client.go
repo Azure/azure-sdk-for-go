@@ -243,12 +243,12 @@ func (client *SchedulesClient) getHandleResponse(resp *http.Response) (Schedules
 	return result, nil
 }
 
-// ListByLab - Returns a list of all schedules for a lab.
+// NewListByLabPager - Returns a list of all schedules for a lab.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
 // options - SchedulesClientListByLabOptions contains the optional parameters for the SchedulesClient.ListByLab method.
-func (client *SchedulesClient) ListByLab(resourceGroupName string, labName string, options *SchedulesClientListByLabOptions) *runtime.Pager[SchedulesClientListByLabResponse] {
+func (client *SchedulesClient) NewListByLabPager(resourceGroupName string, labName string, options *SchedulesClientListByLabOptions) *runtime.Pager[SchedulesClientListByLabResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SchedulesClientListByLabResponse]{
 		More: func(page SchedulesClientListByLabResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

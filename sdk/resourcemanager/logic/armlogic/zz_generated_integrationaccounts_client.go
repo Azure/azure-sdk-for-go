@@ -214,12 +214,12 @@ func (client *IntegrationAccountsClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListByResourceGroup - Gets a list of integration accounts by resource group.
+// NewListByResourceGroupPager - Gets a list of integration accounts by resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // options - IntegrationAccountsClientListByResourceGroupOptions contains the optional parameters for the IntegrationAccountsClient.ListByResourceGroup
 // method.
-func (client *IntegrationAccountsClient) ListByResourceGroup(resourceGroupName string, options *IntegrationAccountsClientListByResourceGroupOptions) *runtime.Pager[IntegrationAccountsClientListByResourceGroupResponse] {
+func (client *IntegrationAccountsClient) NewListByResourceGroupPager(resourceGroupName string, options *IntegrationAccountsClientListByResourceGroupOptions) *runtime.Pager[IntegrationAccountsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IntegrationAccountsClientListByResourceGroupResponse]{
 		More: func(page IntegrationAccountsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -281,11 +281,11 @@ func (client *IntegrationAccountsClient) listByResourceGroupHandleResponse(resp 
 	return result, nil
 }
 
-// ListBySubscription - Gets a list of integration accounts by subscription.
+// NewListBySubscriptionPager - Gets a list of integration accounts by subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - IntegrationAccountsClientListBySubscriptionOptions contains the optional parameters for the IntegrationAccountsClient.ListBySubscription
 // method.
-func (client *IntegrationAccountsClient) ListBySubscription(options *IntegrationAccountsClientListBySubscriptionOptions) *runtime.Pager[IntegrationAccountsClientListBySubscriptionResponse] {
+func (client *IntegrationAccountsClient) NewListBySubscriptionPager(options *IntegrationAccountsClientListBySubscriptionOptions) *runtime.Pager[IntegrationAccountsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IntegrationAccountsClientListBySubscriptionResponse]{
 		More: func(page IntegrationAccountsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -400,14 +400,14 @@ func (client *IntegrationAccountsClient) listCallbackURLHandleResponse(resp *htt
 	return result, nil
 }
 
-// ListKeyVaultKeys - Gets the integration account's Key Vault keys.
+// NewListKeyVaultKeysPager - Gets the integration account's Key Vault keys.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // listKeyVaultKeys - The key vault parameters.
 // options - IntegrationAccountsClientListKeyVaultKeysOptions contains the optional parameters for the IntegrationAccountsClient.ListKeyVaultKeys
 // method.
-func (client *IntegrationAccountsClient) ListKeyVaultKeys(resourceGroupName string, integrationAccountName string, listKeyVaultKeys ListKeyVaultKeysDefinition, options *IntegrationAccountsClientListKeyVaultKeysOptions) *runtime.Pager[IntegrationAccountsClientListKeyVaultKeysResponse] {
+func (client *IntegrationAccountsClient) NewListKeyVaultKeysPager(resourceGroupName string, integrationAccountName string, listKeyVaultKeys ListKeyVaultKeysDefinition, options *IntegrationAccountsClientListKeyVaultKeysOptions) *runtime.Pager[IntegrationAccountsClientListKeyVaultKeysResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IntegrationAccountsClientListKeyVaultKeysResponse]{
 		More: func(page IntegrationAccountsClientListKeyVaultKeysResponse) bool {
 			return false

@@ -671,12 +671,12 @@ func (client *VirtualMachinesClient) instanceViewHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// List - Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to
-// get the next page of virtual machines.
+// NewListPager - Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response
+// to get the next page of virtual machines.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - VirtualMachinesClientListOptions contains the optional parameters for the VirtualMachinesClient.List method.
-func (client *VirtualMachinesClient) List(resourceGroupName string, options *VirtualMachinesClientListOptions) *runtime.Pager[VirtualMachinesClientListResponse] {
+func (client *VirtualMachinesClient) NewListPager(resourceGroupName string, options *VirtualMachinesClientListOptions) *runtime.Pager[VirtualMachinesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualMachinesClientListResponse]{
 		More: func(page VirtualMachinesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -738,11 +738,11 @@ func (client *VirtualMachinesClient) listHandleResponse(resp *http.Response) (Vi
 	return result, nil
 }
 
-// ListAll - Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to
-// get the next page of virtual machines.
+// NewListAllPager - Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response
+// to get the next page of virtual machines.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - VirtualMachinesClientListAllOptions contains the optional parameters for the VirtualMachinesClient.ListAll method.
-func (client *VirtualMachinesClient) ListAll(options *VirtualMachinesClientListAllOptions) *runtime.Pager[VirtualMachinesClientListAllResponse] {
+func (client *VirtualMachinesClient) NewListAllPager(options *VirtualMachinesClientListAllOptions) *runtime.Pager[VirtualMachinesClientListAllResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualMachinesClientListAllResponse]{
 		More: func(page VirtualMachinesClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -803,13 +803,13 @@ func (client *VirtualMachinesClient) listAllHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListAvailableSizes - Lists all available virtual machine sizes to which the specified virtual machine can be resized.
+// NewListAvailableSizesPager - Lists all available virtual machine sizes to which the specified virtual machine can be resized.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // vmName - The name of the virtual machine.
 // options - VirtualMachinesClientListAvailableSizesOptions contains the optional parameters for the VirtualMachinesClient.ListAvailableSizes
 // method.
-func (client *VirtualMachinesClient) ListAvailableSizes(resourceGroupName string, vmName string, options *VirtualMachinesClientListAvailableSizesOptions) *runtime.Pager[VirtualMachinesClientListAvailableSizesResponse] {
+func (client *VirtualMachinesClient) NewListAvailableSizesPager(resourceGroupName string, vmName string, options *VirtualMachinesClientListAvailableSizesOptions) *runtime.Pager[VirtualMachinesClientListAvailableSizesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualMachinesClientListAvailableSizesResponse]{
 		More: func(page VirtualMachinesClientListAvailableSizesResponse) bool {
 			return false
@@ -866,12 +866,12 @@ func (client *VirtualMachinesClient) listAvailableSizesHandleResponse(resp *http
 	return result, nil
 }
 
-// ListByLocation - Gets all the virtual machines under the specified subscription for the specified location.
+// NewListByLocationPager - Gets all the virtual machines under the specified subscription for the specified location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - The location for which virtual machines under the subscription are queried.
 // options - VirtualMachinesClientListByLocationOptions contains the optional parameters for the VirtualMachinesClient.ListByLocation
 // method.
-func (client *VirtualMachinesClient) ListByLocation(location string, options *VirtualMachinesClientListByLocationOptions) *runtime.Pager[VirtualMachinesClientListByLocationResponse] {
+func (client *VirtualMachinesClient) NewListByLocationPager(location string, options *VirtualMachinesClientListByLocationOptions) *runtime.Pager[VirtualMachinesClientListByLocationResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualMachinesClientListByLocationResponse]{
 		More: func(page VirtualMachinesClientListByLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

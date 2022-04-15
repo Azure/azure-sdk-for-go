@@ -203,13 +203,13 @@ func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsClientGetR
 	return result, nil
 }
 
-// ListByDataManager - This method gets all the jobs at the data manager resource level.
+// NewListByDataManagerPager - This method gets all the jobs at the data manager resource level.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The Resource Group Name
 // dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
 // 3 and 24 characters in length and use any alphanumeric and underscore only
 // options - JobsClientListByDataManagerOptions contains the optional parameters for the JobsClient.ListByDataManager method.
-func (client *JobsClient) ListByDataManager(resourceGroupName string, dataManagerName string, options *JobsClientListByDataManagerOptions) *runtime.Pager[JobsClientListByDataManagerResponse] {
+func (client *JobsClient) NewListByDataManagerPager(resourceGroupName string, dataManagerName string, options *JobsClientListByDataManagerOptions) *runtime.Pager[JobsClientListByDataManagerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[JobsClientListByDataManagerResponse]{
 		More: func(page JobsClientListByDataManagerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -275,14 +275,14 @@ func (client *JobsClient) listByDataManagerHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// ListByDataService - This method gets all the jobs of a data service type in a given resource.
+// NewListByDataServicePager - This method gets all the jobs of a data service type in a given resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // dataServiceName - The name of the data service of interest.
 // resourceGroupName - The Resource Group Name
 // dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
 // 3 and 24 characters in length and use any alphanumeric and underscore only
 // options - JobsClientListByDataServiceOptions contains the optional parameters for the JobsClient.ListByDataService method.
-func (client *JobsClient) ListByDataService(dataServiceName string, resourceGroupName string, dataManagerName string, options *JobsClientListByDataServiceOptions) *runtime.Pager[JobsClientListByDataServiceResponse] {
+func (client *JobsClient) NewListByDataServicePager(dataServiceName string, resourceGroupName string, dataManagerName string, options *JobsClientListByDataServiceOptions) *runtime.Pager[JobsClientListByDataServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[JobsClientListByDataServiceResponse]{
 		More: func(page JobsClientListByDataServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -352,7 +352,7 @@ func (client *JobsClient) listByDataServiceHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// ListByJobDefinition - This method gets all the jobs of a given job definition.
+// NewListByJobDefinitionPager - This method gets all the jobs of a given job definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 // dataServiceName - The name of the data service of the job definition.
 // jobDefinitionName - The name of the job definition for which jobs are needed.
@@ -361,7 +361,7 @@ func (client *JobsClient) listByDataServiceHandleResponse(resp *http.Response) (
 // 3 and 24 characters in length and use any alphanumeric and underscore only
 // options - JobsClientListByJobDefinitionOptions contains the optional parameters for the JobsClient.ListByJobDefinition
 // method.
-func (client *JobsClient) ListByJobDefinition(dataServiceName string, jobDefinitionName string, resourceGroupName string, dataManagerName string, options *JobsClientListByJobDefinitionOptions) *runtime.Pager[JobsClientListByJobDefinitionResponse] {
+func (client *JobsClient) NewListByJobDefinitionPager(dataServiceName string, jobDefinitionName string, resourceGroupName string, dataManagerName string, options *JobsClientListByJobDefinitionOptions) *runtime.Pager[JobsClientListByJobDefinitionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[JobsClientListByJobDefinitionResponse]{
 		More: func(page JobsClientListByJobDefinitionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

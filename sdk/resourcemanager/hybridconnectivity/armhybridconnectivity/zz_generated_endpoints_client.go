@@ -178,11 +178,11 @@ func (client *EndpointsClient) getHandleResponse(resp *http.Response) (Endpoints
 	return result, nil
 }
 
-// List - List of endpoints to the target resource.
+// NewListPager - List of endpoints to the target resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
 // options - EndpointsClientListOptions contains the optional parameters for the EndpointsClient.List method.
-func (client *EndpointsClient) List(resourceURI string, options *EndpointsClientListOptions) *runtime.Pager[EndpointsClientListResponse] {
+func (client *EndpointsClient) NewListPager(resourceURI string, options *EndpointsClientListOptions) *runtime.Pager[EndpointsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EndpointsClientListResponse]{
 		More: func(page EndpointsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

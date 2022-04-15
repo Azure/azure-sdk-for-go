@@ -103,11 +103,11 @@ func (client *MarketplaceAgreementsClient) createOrUpdateHandleResponse(resp *ht
 	return result, nil
 }
 
-// List - List Datadog marketplace agreements in the subscription.
+// NewListPager - List Datadog marketplace agreements in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - MarketplaceAgreementsClientListOptions contains the optional parameters for the MarketplaceAgreementsClient.List
 // method.
-func (client *MarketplaceAgreementsClient) List(options *MarketplaceAgreementsClientListOptions) *runtime.Pager[MarketplaceAgreementsClientListResponse] {
+func (client *MarketplaceAgreementsClient) NewListPager(options *MarketplaceAgreementsClientListOptions) *runtime.Pager[MarketplaceAgreementsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MarketplaceAgreementsClientListResponse]{
 		More: func(page MarketplaceAgreementsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -235,13 +235,13 @@ func (client *UserSessionsClient) getHandleResponse(resp *http.Response) (UserSe
 	return result, nil
 }
 
-// List - List userSessions.
+// NewListPager - List userSessions.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // hostPoolName - The name of the host pool within the specified resource group
 // sessionHostName - The name of the session host within the specified host pool
 // options - UserSessionsClientListOptions contains the optional parameters for the UserSessionsClient.List method.
-func (client *UserSessionsClient) List(resourceGroupName string, hostPoolName string, sessionHostName string, options *UserSessionsClientListOptions) *runtime.Pager[UserSessionsClientListResponse] {
+func (client *UserSessionsClient) NewListPager(resourceGroupName string, hostPoolName string, sessionHostName string, options *UserSessionsClientListOptions) *runtime.Pager[UserSessionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[UserSessionsClientListResponse]{
 		More: func(page UserSessionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -308,13 +308,13 @@ func (client *UserSessionsClient) listHandleResponse(resp *http.Response) (UserS
 	return result, nil
 }
 
-// ListByHostPool - List userSessions.
+// NewListByHostPoolPager - List userSessions.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // hostPoolName - The name of the host pool within the specified resource group
 // options - UserSessionsClientListByHostPoolOptions contains the optional parameters for the UserSessionsClient.ListByHostPool
 // method.
-func (client *UserSessionsClient) ListByHostPool(resourceGroupName string, hostPoolName string, options *UserSessionsClientListByHostPoolOptions) *runtime.Pager[UserSessionsClientListByHostPoolResponse] {
+func (client *UserSessionsClient) NewListByHostPoolPager(resourceGroupName string, hostPoolName string, options *UserSessionsClientListByHostPoolOptions) *runtime.Pager[UserSessionsClientListByHostPoolResponse] {
 	return runtime.NewPager(runtime.PageProcessor[UserSessionsClientListByHostPoolResponse]{
 		More: func(page UserSessionsClientListByHostPoolResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

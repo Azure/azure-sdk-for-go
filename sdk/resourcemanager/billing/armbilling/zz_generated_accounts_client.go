@@ -100,10 +100,10 @@ func (client *AccountsClient) getHandleResponse(resp *http.Response) (AccountsCl
 	return result, nil
 }
 
-// List - Lists the billing accounts that a user has access to.
+// NewListPager - Lists the billing accounts that a user has access to.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AccountsClientListOptions contains the optional parameters for the AccountsClient.List method.
-func (client *AccountsClient) List(options *AccountsClientListOptions) *runtime.Pager[AccountsClientListResponse] {
+func (client *AccountsClient) NewListPager(options *AccountsClientListOptions) *runtime.Pager[AccountsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccountsClientListResponse]{
 		More: func(page AccountsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -157,13 +157,14 @@ func (client *AccountsClient) listHandleResponse(resp *http.Response) (AccountsC
 	return result, nil
 }
 
-// ListInvoiceSectionsByCreateSubscriptionPermission - Lists the invoice sections for which the user has permission to create
-// Azure subscriptions. The operation is supported only for billing accounts with agreement type Microsoft Customer Agreement.
+// NewListInvoiceSectionsByCreateSubscriptionPermissionPager - Lists the invoice sections for which the user has permission
+// to create Azure subscriptions. The operation is supported only for billing accounts with agreement type Microsoft Customer
+// Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountName - The ID that uniquely identifies a billing account.
 // options - AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionOptions contains the optional parameters for the
 // AccountsClient.ListInvoiceSectionsByCreateSubscriptionPermission method.
-func (client *AccountsClient) ListInvoiceSectionsByCreateSubscriptionPermission(billingAccountName string, options *AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionOptions) *runtime.Pager[AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse] {
+func (client *AccountsClient) NewListInvoiceSectionsByCreateSubscriptionPermissionPager(billingAccountName string, options *AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionOptions) *runtime.Pager[AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse]{
 		More: func(page AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

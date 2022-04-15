@@ -219,12 +219,12 @@ func (client *PrivateLinkForAzureAdClient) getHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// List - Operation to return the list of Private Link Policies For AzureAD scoped to the resourceGroup.
+// NewListPager - Operation to return the list of Private Link Policies For AzureAD scoped to the resourceGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure resource group.
 // options - PrivateLinkForAzureAdClientListOptions contains the optional parameters for the PrivateLinkForAzureAdClient.List
 // method.
-func (client *PrivateLinkForAzureAdClient) List(resourceGroupName string, options *PrivateLinkForAzureAdClientListOptions) *runtime.Pager[PrivateLinkForAzureAdClientListResponse] {
+func (client *PrivateLinkForAzureAdClient) NewListPager(resourceGroupName string, options *PrivateLinkForAzureAdClientListOptions) *runtime.Pager[PrivateLinkForAzureAdClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkForAzureAdClientListResponse]{
 		More: func(page PrivateLinkForAzureAdClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -283,11 +283,11 @@ func (client *PrivateLinkForAzureAdClient) listHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListBySubscription - Lists all Private Link Policies For AzureAD in the given subscription.
+// NewListBySubscriptionPager - Lists all Private Link Policies For AzureAD in the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PrivateLinkForAzureAdClientListBySubscriptionOptions contains the optional parameters for the PrivateLinkForAzureAdClient.ListBySubscription
 // method.
-func (client *PrivateLinkForAzureAdClient) ListBySubscription(options *PrivateLinkForAzureAdClientListBySubscriptionOptions) *runtime.Pager[PrivateLinkForAzureAdClientListBySubscriptionResponse] {
+func (client *PrivateLinkForAzureAdClient) NewListBySubscriptionPager(options *PrivateLinkForAzureAdClientListBySubscriptionOptions) *runtime.Pager[PrivateLinkForAzureAdClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkForAzureAdClientListBySubscriptionResponse]{
 		More: func(page PrivateLinkForAzureAdClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

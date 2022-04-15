@@ -269,14 +269,14 @@ func (client *BindingsClient) getHandleResponse(resp *http.Response) (BindingsCl
 	return result, nil
 }
 
-// List - Handles requests to list all resources in an App.
+// NewListPager - Handles requests to list all resources in an App.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
 // appName - The name of the App resource.
 // options - BindingsClientListOptions contains the optional parameters for the BindingsClient.List method.
-func (client *BindingsClient) List(resourceGroupName string, serviceName string, appName string, options *BindingsClientListOptions) *runtime.Pager[BindingsClientListResponse] {
+func (client *BindingsClient) NewListPager(resourceGroupName string, serviceName string, appName string, options *BindingsClientListOptions) *runtime.Pager[BindingsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BindingsClientListResponse]{
 		More: func(page BindingsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

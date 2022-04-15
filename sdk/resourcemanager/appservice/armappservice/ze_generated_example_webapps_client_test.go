@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListPublishingCredentialsPolicies.json
-func ExampleWebAppsClient_ListBasicPublishingCredentialsPolicies() {
+func ExampleWebAppsClient_NewListBasicPublishingCredentialsPoliciesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleWebAppsClient_ListBasicPublishingCredentialsPolicies() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBasicPublishingCredentialsPolicies("<resource-group-name>",
+	pager := client.NewListBasicPublishingCredentialsPoliciesPager("<resource-group-name>",
 		"<name>",
 		nil)
 	for pager.More() {
@@ -159,7 +159,7 @@ func ExampleWebAppsClient_UpdateScmAllowed() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetKeyVaultReferencesForAppSettings.json
-func ExampleWebAppsClient_GetAppSettingsKeyVaultReferences() {
+func ExampleWebAppsClient_NewGetAppSettingsKeyVaultReferencesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -171,7 +171,7 @@ func ExampleWebAppsClient_GetAppSettingsKeyVaultReferences() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.GetAppSettingsKeyVaultReferences("<resource-group-name>",
+	pager := client.NewGetAppSettingsKeyVaultReferencesPager("<resource-group-name>",
 		"<name>",
 		nil)
 	for pager.More() {
@@ -240,7 +240,7 @@ func ExampleWebAppsClient_GetInstanceInfo() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListSlotBackups.json
-func ExampleWebAppsClient_ListSiteBackups() {
+func ExampleWebAppsClient_NewListSiteBackupsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -252,7 +252,7 @@ func ExampleWebAppsClient_ListSiteBackups() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListSiteBackups("<resource-group-name>",
+	pager := client.NewListSiteBackupsPager("<resource-group-name>",
 		"<name>",
 		nil)
 	for pager.More() {
@@ -552,7 +552,7 @@ func ExampleWebAppsClient_GetPrivateLinkResources() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListPublishingCredentialsPoliciesSlot.json
-func ExampleWebAppsClient_ListBasicPublishingCredentialsPoliciesSlot() {
+func ExampleWebAppsClient_NewListBasicPublishingCredentialsPoliciesSlotPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -564,7 +564,7 @@ func ExampleWebAppsClient_ListBasicPublishingCredentialsPoliciesSlot() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBasicPublishingCredentialsPoliciesSlot("<resource-group-name>",
+	pager := client.NewListBasicPublishingCredentialsPoliciesSlotPager("<resource-group-name>",
 		"<name>",
 		"<slot>",
 		nil)
@@ -696,7 +696,7 @@ func ExampleWebAppsClient_UpdateScmAllowedSlot() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetKeyVaultReferencesForAppSettingsSlot.json
-func ExampleWebAppsClient_GetAppSettingsKeyVaultReferencesSlot() {
+func ExampleWebAppsClient_NewGetAppSettingsKeyVaultReferencesSlotPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -708,7 +708,7 @@ func ExampleWebAppsClient_GetAppSettingsKeyVaultReferencesSlot() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.GetAppSettingsKeyVaultReferencesSlot("<resource-group-name>",
+	pager := client.NewGetAppSettingsKeyVaultReferencesSlotPager("<resource-group-name>",
 		"<name>",
 		"<slot>",
 		nil)
@@ -780,7 +780,7 @@ func ExampleWebAppsClient_GetInstanceInfoSlot() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListSlotBackups.json
-func ExampleWebAppsClient_ListSiteBackupsSlot() {
+func ExampleWebAppsClient_NewListSiteBackupsSlotPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -792,7 +792,7 @@ func ExampleWebAppsClient_ListSiteBackupsSlot() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListSiteBackupsSlot("<resource-group-name>",
+	pager := client.NewListSiteBackupsSlotPager("<resource-group-name>",
 		"<name>",
 		"<slot>",
 		nil)

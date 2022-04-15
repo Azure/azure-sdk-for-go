@@ -228,13 +228,13 @@ func (client *CertificateClient) getHandleResponse(resp *http.Response) (Certifi
 	return result, nil
 }
 
-// ListByAutomationAccount - Retrieve a list of certificates.
+// NewListByAutomationAccountPager - Retrieve a list of certificates.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - CertificateClientListByAutomationAccountOptions contains the optional parameters for the CertificateClient.ListByAutomationAccount
 // method.
-func (client *CertificateClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *CertificateClientListByAutomationAccountOptions) *runtime.Pager[CertificateClientListByAutomationAccountResponse] {
+func (client *CertificateClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *CertificateClientListByAutomationAccountOptions) *runtime.Pager[CertificateClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CertificateClientListByAutomationAccountResponse]{
 		More: func(page CertificateClientListByAutomationAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

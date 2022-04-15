@@ -252,13 +252,13 @@ func (client *SecretsClient) getHandleResponse(resp *http.Response) (SecretsClie
 	return result, nil
 }
 
-// ListByProfile - Lists existing AzureFrontDoor secrets.
+// NewListByProfilePager - Lists existing AzureFrontDoor secrets.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
 // options - SecretsClientListByProfileOptions contains the optional parameters for the SecretsClient.ListByProfile method.
-func (client *SecretsClient) ListByProfile(resourceGroupName string, profileName string, options *SecretsClientListByProfileOptions) *runtime.Pager[SecretsClientListByProfileResponse] {
+func (client *SecretsClient) NewListByProfilePager(resourceGroupName string, profileName string, options *SecretsClientListByProfileOptions) *runtime.Pager[SecretsClientListByProfileResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SecretsClientListByProfileResponse]{
 		More: func(page SecretsClientListByProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -176,7 +176,7 @@ func ExampleDedicatedHostsClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/DedicatedHosts_ListByHostGroup_MaximumSet_Gen.json
-func ExampleDedicatedHostsClient_ListByHostGroup() {
+func ExampleDedicatedHostsClient_NewListByHostGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -188,7 +188,7 @@ func ExampleDedicatedHostsClient_ListByHostGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByHostGroup("<resource-group-name>",
+	pager := client.NewListByHostGroupPager("<resource-group-name>",
 		"<host-group-name>",
 		nil)
 	for pager.More() {

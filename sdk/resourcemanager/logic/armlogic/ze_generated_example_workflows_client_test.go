@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/Workflows_ListBySubscription.json
-func ExampleWorkflowsClient_ListBySubscription() {
+func ExampleWorkflowsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleWorkflowsClient_ListBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription(&armlogic.WorkflowsClientListBySubscriptionOptions{Top: nil,
+	pager := client.NewListBySubscriptionPager(&armlogic.WorkflowsClientListBySubscriptionOptions{Top: nil,
 		Filter: nil,
 	})
 	for pager.More() {
@@ -49,7 +49,7 @@ func ExampleWorkflowsClient_ListBySubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/Workflows_ListByResourceGroup.json
-func ExampleWorkflowsClient_ListByResourceGroup() {
+func ExampleWorkflowsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -61,7 +61,7 @@ func ExampleWorkflowsClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		&armlogic.WorkflowsClientListByResourceGroupOptions{Top: nil,
 			Filter: nil,
 		})

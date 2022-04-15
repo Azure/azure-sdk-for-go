@@ -218,7 +218,7 @@ func ExampleClustersClient_BeginStart() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClusterListFollowerDatabases.json
-func ExampleClustersClient_ListFollowerDatabases() {
+func ExampleClustersClient_NewListFollowerDatabasesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -230,7 +230,7 @@ func ExampleClustersClient_ListFollowerDatabases() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListFollowerDatabases("<resource-group-name>",
+	pager := client.NewListFollowerDatabasesPager("<resource-group-name>",
 		"<cluster-name>",
 		nil)
 	for pager.More() {
@@ -309,7 +309,7 @@ func ExampleClustersClient_BeginDiagnoseVirtualNetwork() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClustersListByResourceGroup.json
-func ExampleClustersClient_ListByResourceGroup() {
+func ExampleClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -321,7 +321,7 @@ func ExampleClustersClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -337,7 +337,7 @@ func ExampleClustersClient_ListByResourceGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClustersList.json
-func ExampleClustersClient_List() {
+func ExampleClustersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -349,7 +349,7 @@ func ExampleClustersClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(nil)
+	pager := client.NewListPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -392,7 +392,7 @@ func ExampleClustersClient_CheckNameAvailability() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoOutboundNetworkDependenciesList.json
-func ExampleClustersClient_ListOutboundNetworkDependenciesEndpoints() {
+func ExampleClustersClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -404,7 +404,7 @@ func ExampleClustersClient_ListOutboundNetworkDependenciesEndpoints() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListOutboundNetworkDependenciesEndpoints("<resource-group-name>",
+	pager := client.NewListOutboundNetworkDependenciesEndpointsPager("<resource-group-name>",
 		"<cluster-name>",
 		nil)
 	for pager.More() {
@@ -421,7 +421,7 @@ func ExampleClustersClient_ListOutboundNetworkDependenciesEndpoints() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClusterListLanguageExtensions.json
-func ExampleClustersClient_ListLanguageExtensions() {
+func ExampleClustersClient_NewListLanguageExtensionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -433,7 +433,7 @@ func ExampleClustersClient_ListLanguageExtensions() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListLanguageExtensions("<resource-group-name>",
+	pager := client.NewListLanguageExtensionsPager("<resource-group-name>",
 		"<cluster-name>",
 		nil)
 	for pager.More() {

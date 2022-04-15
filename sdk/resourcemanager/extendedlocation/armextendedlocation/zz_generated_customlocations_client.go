@@ -236,13 +236,13 @@ func (client *CustomLocationsClient) getHandleResponse(resp *http.Response) (Cus
 	return result, nil
 }
 
-// ListByResourceGroup - Gets a list of Custom Locations in the specified subscription and resource group. The operation returns
-// properties of each Custom Location.
+// NewListByResourceGroupPager - Gets a list of Custom Locations in the specified subscription and resource group. The operation
+// returns properties of each Custom Location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - CustomLocationsClientListByResourceGroupOptions contains the optional parameters for the CustomLocationsClient.ListByResourceGroup
 // method.
-func (client *CustomLocationsClient) ListByResourceGroup(resourceGroupName string, options *CustomLocationsClientListByResourceGroupOptions) *runtime.Pager[CustomLocationsClientListByResourceGroupResponse] {
+func (client *CustomLocationsClient) NewListByResourceGroupPager(resourceGroupName string, options *CustomLocationsClientListByResourceGroupOptions) *runtime.Pager[CustomLocationsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CustomLocationsClientListByResourceGroupResponse]{
 		More: func(page CustomLocationsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -301,12 +301,12 @@ func (client *CustomLocationsClient) listByResourceGroupHandleResponse(resp *htt
 	return result, nil
 }
 
-// ListBySubscription - Gets a list of Custom Locations in the specified subscription. The operation returns properties of
-// each Custom Location
+// NewListBySubscriptionPager - Gets a list of Custom Locations in the specified subscription. The operation returns properties
+// of each Custom Location
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - CustomLocationsClientListBySubscriptionOptions contains the optional parameters for the CustomLocationsClient.ListBySubscription
 // method.
-func (client *CustomLocationsClient) ListBySubscription(options *CustomLocationsClientListBySubscriptionOptions) *runtime.Pager[CustomLocationsClientListBySubscriptionResponse] {
+func (client *CustomLocationsClient) NewListBySubscriptionPager(options *CustomLocationsClientListBySubscriptionOptions) *runtime.Pager[CustomLocationsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CustomLocationsClientListBySubscriptionResponse]{
 		More: func(page CustomLocationsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -361,13 +361,13 @@ func (client *CustomLocationsClient) listBySubscriptionHandleResponse(resp *http
 	return result, nil
 }
 
-// ListEnabledResourceTypes - Gets the list of the Enabled Resource Types.
+// NewListEnabledResourceTypesPager - Gets the list of the Enabled Resource Types.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - Custom Locations name.
 // options - CustomLocationsClientListEnabledResourceTypesOptions contains the optional parameters for the CustomLocationsClient.ListEnabledResourceTypes
 // method.
-func (client *CustomLocationsClient) ListEnabledResourceTypes(resourceGroupName string, resourceName string, options *CustomLocationsClientListEnabledResourceTypesOptions) *runtime.Pager[CustomLocationsClientListEnabledResourceTypesResponse] {
+func (client *CustomLocationsClient) NewListEnabledResourceTypesPager(resourceGroupName string, resourceName string, options *CustomLocationsClientListEnabledResourceTypesOptions) *runtime.Pager[CustomLocationsClientListEnabledResourceTypesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CustomLocationsClientListEnabledResourceTypesResponse]{
 		More: func(page CustomLocationsClientListEnabledResourceTypesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -430,11 +430,11 @@ func (client *CustomLocationsClient) listEnabledResourceTypesHandleResponse(resp
 	return result, nil
 }
 
-// ListOperations - Lists all available Custom Locations operations.
+// NewListOperationsPager - Lists all available Custom Locations operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - CustomLocationsClientListOperationsOptions contains the optional parameters for the CustomLocationsClient.ListOperations
 // method.
-func (client *CustomLocationsClient) ListOperations(options *CustomLocationsClientListOperationsOptions) *runtime.Pager[CustomLocationsClientListOperationsResponse] {
+func (client *CustomLocationsClient) NewListOperationsPager(options *CustomLocationsClientListOperationsOptions) *runtime.Pager[CustomLocationsClientListOperationsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CustomLocationsClientListOperationsResponse]{
 		More: func(page CustomLocationsClientListOperationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

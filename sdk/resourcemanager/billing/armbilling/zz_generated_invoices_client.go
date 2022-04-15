@@ -442,8 +442,8 @@ func (client *InvoicesClient) getBySubscriptionAndInvoiceIDHandleResponse(resp *
 	return result, nil
 }
 
-// ListByBillingAccount - Lists the invoices for a billing account for a given start date and end date. The operation is supported
-// for billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer
+// NewListByBillingAccountPager - Lists the invoices for a billing account for a given start date and end date. The operation
+// is supported for billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer
 // Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountName - The ID that uniquely identifies a billing account.
@@ -451,7 +451,7 @@ func (client *InvoicesClient) getBySubscriptionAndInvoiceIDHandleResponse(resp *
 // periodEndDate - The end date to fetch the invoices. The date should be specified in MM-DD-YYYY format.
 // options - InvoicesClientListByBillingAccountOptions contains the optional parameters for the InvoicesClient.ListByBillingAccount
 // method.
-func (client *InvoicesClient) ListByBillingAccount(billingAccountName string, periodStartDate string, periodEndDate string, options *InvoicesClientListByBillingAccountOptions) *runtime.Pager[InvoicesClientListByBillingAccountResponse] {
+func (client *InvoicesClient) NewListByBillingAccountPager(billingAccountName string, periodStartDate string, periodEndDate string, options *InvoicesClientListByBillingAccountOptions) *runtime.Pager[InvoicesClientListByBillingAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[InvoicesClientListByBillingAccountResponse]{
 		More: func(page InvoicesClientListByBillingAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -508,8 +508,8 @@ func (client *InvoicesClient) listByBillingAccountHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListByBillingProfile - Lists the invoices for a billing profile for a given start date and end date. The operation is supported
-// for billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer
+// NewListByBillingProfilePager - Lists the invoices for a billing profile for a given start date and end date. The operation
+// is supported for billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer
 // Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountName - The ID that uniquely identifies a billing account.
@@ -518,7 +518,7 @@ func (client *InvoicesClient) listByBillingAccountHandleResponse(resp *http.Resp
 // periodEndDate - The end date to fetch the invoices. The date should be specified in MM-DD-YYYY format.
 // options - InvoicesClientListByBillingProfileOptions contains the optional parameters for the InvoicesClient.ListByBillingProfile
 // method.
-func (client *InvoicesClient) ListByBillingProfile(billingAccountName string, billingProfileName string, periodStartDate string, periodEndDate string, options *InvoicesClientListByBillingProfileOptions) *runtime.Pager[InvoicesClientListByBillingProfileResponse] {
+func (client *InvoicesClient) NewListByBillingProfilePager(billingAccountName string, billingProfileName string, periodStartDate string, periodEndDate string, options *InvoicesClientListByBillingProfileOptions) *runtime.Pager[InvoicesClientListByBillingProfileResponse] {
 	return runtime.NewPager(runtime.PageProcessor[InvoicesClientListByBillingProfileResponse]{
 		More: func(page InvoicesClientListByBillingProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -579,13 +579,13 @@ func (client *InvoicesClient) listByBillingProfileHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListByBillingSubscription - Lists the invoices for a subscription.
+// NewListByBillingSubscriptionPager - Lists the invoices for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // periodStartDate - Invoice period start date.
 // periodEndDate - Invoice period end date.
 // options - InvoicesClientListByBillingSubscriptionOptions contains the optional parameters for the InvoicesClient.ListByBillingSubscription
 // method.
-func (client *InvoicesClient) ListByBillingSubscription(periodStartDate string, periodEndDate string, options *InvoicesClientListByBillingSubscriptionOptions) *runtime.Pager[InvoicesClientListByBillingSubscriptionResponse] {
+func (client *InvoicesClient) NewListByBillingSubscriptionPager(periodStartDate string, periodEndDate string, options *InvoicesClientListByBillingSubscriptionOptions) *runtime.Pager[InvoicesClientListByBillingSubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[InvoicesClientListByBillingSubscriptionResponse]{
 		More: func(page InvoicesClientListByBillingSubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

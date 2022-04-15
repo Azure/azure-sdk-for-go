@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/OriginGroups_ListByEndpoint.json
-func ExampleOriginGroupsClient_ListByEndpoint() {
+func ExampleOriginGroupsClient_NewListByEndpointPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleOriginGroupsClient_ListByEndpoint() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByEndpoint("<resource-group-name>",
+	pager := client.NewListByEndpointPager("<resource-group-name>",
 		"<profile-name>",
 		"<endpoint-name>",
 		nil)

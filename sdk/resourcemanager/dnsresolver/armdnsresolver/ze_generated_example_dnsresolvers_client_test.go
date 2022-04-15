@@ -156,7 +156,7 @@ func ExampleDNSResolversClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsResolver_ListByResourceGroup.json
-func ExampleDNSResolversClient_ListByResourceGroup() {
+func ExampleDNSResolversClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -168,7 +168,7 @@ func ExampleDNSResolversClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		&armdnsresolver.DNSResolversClientListByResourceGroupOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -184,7 +184,7 @@ func ExampleDNSResolversClient_ListByResourceGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsResolver_ListBySubscription.json
-func ExampleDNSResolversClient_List() {
+func ExampleDNSResolversClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -196,7 +196,7 @@ func ExampleDNSResolversClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(&armdnsresolver.DNSResolversClientListOptions{Top: nil})
+	pager := client.NewListPager(&armdnsresolver.DNSResolversClientListOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -211,7 +211,7 @@ func ExampleDNSResolversClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsResolver_ListByVirtualNetwork.json
-func ExampleDNSResolversClient_ListByVirtualNetwork() {
+func ExampleDNSResolversClient_NewListByVirtualNetworkPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -223,7 +223,7 @@ func ExampleDNSResolversClient_ListByVirtualNetwork() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByVirtualNetwork("<resource-group-name>",
+	pager := client.NewListByVirtualNetworkPager("<resource-group-name>",
 		"<virtual-network-name>",
 		&armdnsresolver.DNSResolversClientListByVirtualNetworkOptions{Top: nil})
 	for pager.More() {

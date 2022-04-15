@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybriddatamanager/resource-manager/Microsoft.HybridData/stable/2019-06-01/examples/DataServices_ListByDataManager-GET-example-51.json
-func ExampleDataServicesClient_ListByDataManager() {
+func ExampleDataServicesClient_NewListByDataManagerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleDataServicesClient_ListByDataManager() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByDataManager("<resource-group-name>",
+	pager := client.NewListByDataManagerPager("<resource-group-name>",
 		"<data-manager-name>",
 		nil)
 	for pager.More() {

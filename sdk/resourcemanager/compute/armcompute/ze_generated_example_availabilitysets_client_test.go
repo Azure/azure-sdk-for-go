@@ -144,7 +144,7 @@ func ExampleAvailabilitySetsClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/ListAvailabilitySetsInASubscription.json
-func ExampleAvailabilitySetsClient_ListBySubscription() {
+func ExampleAvailabilitySetsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -156,7 +156,7 @@ func ExampleAvailabilitySetsClient_ListBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription(&armcompute.AvailabilitySetsClientListBySubscriptionOptions{Expand: to.Ptr("<expand>")})
+	pager := client.NewListBySubscriptionPager(&armcompute.AvailabilitySetsClientListBySubscriptionOptions{Expand: to.Ptr("<expand>")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -171,7 +171,7 @@ func ExampleAvailabilitySetsClient_ListBySubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/AvailabilitySets_List_MaximumSet_Gen.json
-func ExampleAvailabilitySetsClient_List() {
+func ExampleAvailabilitySetsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -183,7 +183,7 @@ func ExampleAvailabilitySetsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-group-name>",
+	pager := client.NewListPager("<resource-group-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -199,7 +199,7 @@ func ExampleAvailabilitySetsClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/AvailabilitySets_ListAvailableSizes_MaximumSet_Gen.json
-func ExampleAvailabilitySetsClient_ListAvailableSizes() {
+func ExampleAvailabilitySetsClient_NewListAvailableSizesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -211,7 +211,7 @@ func ExampleAvailabilitySetsClient_ListAvailableSizes() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListAvailableSizes("<resource-group-name>",
+	pager := client.NewListAvailableSizesPager("<resource-group-name>",
 		"<availability-set-name>",
 		nil)
 	for pager.More() {

@@ -246,12 +246,12 @@ func (client *EndpointClient) getHandleResponse(resp *http.Response) (EndpointCl
 	return result, nil
 }
 
-// List - Get DigitalTwinsInstance Endpoints.
+// NewListPager - Get DigitalTwinsInstance Endpoints.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the DigitalTwinsInstance.
 // resourceName - The name of the DigitalTwinsInstance.
 // options - EndpointClientListOptions contains the optional parameters for the EndpointClient.List method.
-func (client *EndpointClient) List(resourceGroupName string, resourceName string, options *EndpointClientListOptions) *runtime.Pager[EndpointClientListResponse] {
+func (client *EndpointClient) NewListPager(resourceGroupName string, resourceName string, options *EndpointClientListOptions) *runtime.Pager[EndpointClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EndpointClientListResponse]{
 		More: func(page EndpointClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

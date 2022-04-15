@@ -2237,6 +2237,115 @@ func (a *AmazonS3ReadSettings) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// GetLinkedService implements the LinkedServiceClassification interface for type AppFiguresLinkedService.
+func (a *AppFiguresLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AppFiguresLinkedService.
+func (a AppFiguresLinkedService) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "annotations", a.Annotations)
+	populate(objectMap, "connectVia", a.ConnectVia)
+	populate(objectMap, "description", a.Description)
+	populate(objectMap, "parameters", a.Parameters)
+	objectMap["type"] = "AppFigures"
+	populate(objectMap, "typeProperties", a.TypeProperties)
+	if a.AdditionalProperties != nil {
+		for key, val := range a.AdditionalProperties {
+			objectMap[key] = val
+		}
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AppFiguresLinkedService.
+func (a *AppFiguresLinkedService) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "annotations":
+			err = unpopulate(val, &a.Annotations)
+			delete(rawMsg, key)
+		case "connectVia":
+			err = unpopulate(val, &a.ConnectVia)
+			delete(rawMsg, key)
+		case "description":
+			err = unpopulate(val, &a.Description)
+			delete(rawMsg, key)
+		case "parameters":
+			err = unpopulate(val, &a.Parameters)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &a.Type)
+			delete(rawMsg, key)
+		case "typeProperties":
+			err = unpopulate(val, &a.TypeProperties)
+			delete(rawMsg, key)
+		default:
+			if a.AdditionalProperties == nil {
+				a.AdditionalProperties = map[string]interface{}{}
+			}
+			if val != nil {
+				var aux interface{}
+				err = json.Unmarshal(val, &aux)
+				a.AdditionalProperties[key] = aux
+			}
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AppFiguresLinkedServiceTypeProperties.
+func (a AppFiguresLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "clientKey", a.ClientKey)
+	populate(objectMap, "password", a.Password)
+	populate(objectMap, "userName", &a.UserName)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AppFiguresLinkedServiceTypeProperties.
+func (a *AppFiguresLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "clientKey":
+			a.ClientKey, err = unmarshalSecretBaseClassification(val)
+			delete(rawMsg, key)
+		case "password":
+			a.Password, err = unmarshalSecretBaseClassification(val)
+			delete(rawMsg, key)
+		case "userName":
+			err = unpopulate(val, &a.UserName)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // GetActivity implements the ActivityClassification interface for type AppendVariableActivity.
 func (a *AppendVariableActivity) GetActivity() *Activity {
 	return &Activity{
@@ -2314,6 +2423,111 @@ func (a *AppendVariableActivity) UnmarshalJSON(data []byte) error {
 				err = json.Unmarshal(val, &aux)
 				a.AdditionalProperties[key] = aux
 			}
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type AsanaLinkedService.
+func (a *AsanaLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AsanaLinkedService.
+func (a AsanaLinkedService) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "annotations", a.Annotations)
+	populate(objectMap, "connectVia", a.ConnectVia)
+	populate(objectMap, "description", a.Description)
+	populate(objectMap, "parameters", a.Parameters)
+	objectMap["type"] = "Asana"
+	populate(objectMap, "typeProperties", a.TypeProperties)
+	if a.AdditionalProperties != nil {
+		for key, val := range a.AdditionalProperties {
+			objectMap[key] = val
+		}
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AsanaLinkedService.
+func (a *AsanaLinkedService) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "annotations":
+			err = unpopulate(val, &a.Annotations)
+			delete(rawMsg, key)
+		case "connectVia":
+			err = unpopulate(val, &a.ConnectVia)
+			delete(rawMsg, key)
+		case "description":
+			err = unpopulate(val, &a.Description)
+			delete(rawMsg, key)
+		case "parameters":
+			err = unpopulate(val, &a.Parameters)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &a.Type)
+			delete(rawMsg, key)
+		case "typeProperties":
+			err = unpopulate(val, &a.TypeProperties)
+			delete(rawMsg, key)
+		default:
+			if a.AdditionalProperties == nil {
+				a.AdditionalProperties = map[string]interface{}{}
+			}
+			if val != nil {
+				var aux interface{}
+				err = json.Unmarshal(val, &aux)
+				a.AdditionalProperties[key] = aux
+			}
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AsanaLinkedServiceTypeProperties.
+func (a AsanaLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "apiToken", a.APIToken)
+	populate(objectMap, "encryptedCredential", &a.EncryptedCredential)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AsanaLinkedServiceTypeProperties.
+func (a *AsanaLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "apiToken":
+			a.APIToken, err = unmarshalSecretBaseClassification(val)
+			delete(rawMsg, key)
+		case "encryptedCredential":
+			err = unpopulate(val, &a.EncryptedCredential)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -14978,6 +15192,111 @@ func (d *DatasetStorageFormat) UnmarshalJSON(data []byte) error {
 				err = json.Unmarshal(val, &aux)
 				d.AdditionalProperties[key] = aux
 			}
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type DataworldLinkedService.
+func (d *DataworldLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 d.Type,
+		ConnectVia:           d.ConnectVia,
+		Description:          d.Description,
+		Parameters:           d.Parameters,
+		Annotations:          d.Annotations,
+		AdditionalProperties: d.AdditionalProperties,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DataworldLinkedService.
+func (d DataworldLinkedService) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "annotations", d.Annotations)
+	populate(objectMap, "connectVia", d.ConnectVia)
+	populate(objectMap, "description", d.Description)
+	populate(objectMap, "parameters", d.Parameters)
+	objectMap["type"] = "Dataworld"
+	populate(objectMap, "typeProperties", d.TypeProperties)
+	if d.AdditionalProperties != nil {
+		for key, val := range d.AdditionalProperties {
+			objectMap[key] = val
+		}
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DataworldLinkedService.
+func (d *DataworldLinkedService) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "annotations":
+			err = unpopulate(val, &d.Annotations)
+			delete(rawMsg, key)
+		case "connectVia":
+			err = unpopulate(val, &d.ConnectVia)
+			delete(rawMsg, key)
+		case "description":
+			err = unpopulate(val, &d.Description)
+			delete(rawMsg, key)
+		case "parameters":
+			err = unpopulate(val, &d.Parameters)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &d.Type)
+			delete(rawMsg, key)
+		case "typeProperties":
+			err = unpopulate(val, &d.TypeProperties)
+			delete(rawMsg, key)
+		default:
+			if d.AdditionalProperties == nil {
+				d.AdditionalProperties = map[string]interface{}{}
+			}
+			if val != nil {
+				var aux interface{}
+				err = json.Unmarshal(val, &aux)
+				d.AdditionalProperties[key] = aux
+			}
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DataworldLinkedServiceTypeProperties.
+func (d DataworldLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "apiToken", d.APIToken)
+	populate(objectMap, "encryptedCredential", &d.EncryptedCredential)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DataworldLinkedServiceTypeProperties.
+func (d *DataworldLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "apiToken":
+			d.APIToken, err = unmarshalSecretBaseClassification(val)
+			delete(rawMsg, key)
+		case "encryptedCredential":
+			err = unpopulate(val, &d.EncryptedCredential)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -46784,6 +47103,111 @@ func (t *TumblingWindowTriggerTypeProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "startTime":
 			err = unpopulateTimeRFC3339(val, &t.StartTime)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type TwilioLinkedService.
+func (t *TwilioLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 t.Type,
+		ConnectVia:           t.ConnectVia,
+		Description:          t.Description,
+		Parameters:           t.Parameters,
+		Annotations:          t.Annotations,
+		AdditionalProperties: t.AdditionalProperties,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type TwilioLinkedService.
+func (t TwilioLinkedService) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "annotations", t.Annotations)
+	populate(objectMap, "connectVia", t.ConnectVia)
+	populate(objectMap, "description", t.Description)
+	populate(objectMap, "parameters", t.Parameters)
+	objectMap["type"] = "Twilio"
+	populate(objectMap, "typeProperties", t.TypeProperties)
+	if t.AdditionalProperties != nil {
+		for key, val := range t.AdditionalProperties {
+			objectMap[key] = val
+		}
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type TwilioLinkedService.
+func (t *TwilioLinkedService) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "annotations":
+			err = unpopulate(val, &t.Annotations)
+			delete(rawMsg, key)
+		case "connectVia":
+			err = unpopulate(val, &t.ConnectVia)
+			delete(rawMsg, key)
+		case "description":
+			err = unpopulate(val, &t.Description)
+			delete(rawMsg, key)
+		case "parameters":
+			err = unpopulate(val, &t.Parameters)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &t.Type)
+			delete(rawMsg, key)
+		case "typeProperties":
+			err = unpopulate(val, &t.TypeProperties)
+			delete(rawMsg, key)
+		default:
+			if t.AdditionalProperties == nil {
+				t.AdditionalProperties = map[string]interface{}{}
+			}
+			if val != nil {
+				var aux interface{}
+				err = json.Unmarshal(val, &aux)
+				t.AdditionalProperties[key] = aux
+			}
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type TwilioLinkedServiceTypeProperties.
+func (t TwilioLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "password", t.Password)
+	populate(objectMap, "userName", &t.UserName)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type TwilioLinkedServiceTypeProperties.
+func (t *TwilioLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "password":
+			t.Password, err = unmarshalSecretBaseClassification(val)
+			delete(rawMsg, key)
+		case "userName":
+			err = unpopulate(val, &t.UserName)
 			delete(rawMsg, key)
 		}
 		if err != nil {

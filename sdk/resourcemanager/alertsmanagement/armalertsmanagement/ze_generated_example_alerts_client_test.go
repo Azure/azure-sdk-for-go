@@ -41,7 +41,7 @@ func ExampleAlertsClient_MetaData() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/preview/2019-05-05-preview/examples/Alerts_List.json
-func ExampleAlertsClient_GetAll() {
+func ExampleAlertsClient_NewGetAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -53,7 +53,7 @@ func ExampleAlertsClient_GetAll() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.GetAll(&armalertsmanagement.AlertsClientGetAllOptions{TargetResource: nil,
+	pager := client.NewGetAllPager(&armalertsmanagement.AlertsClientGetAllOptions{TargetResource: nil,
 		TargetResourceType:  nil,
 		TargetResourceGroup: nil,
 		MonitorService:      nil,

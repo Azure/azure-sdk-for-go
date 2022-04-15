@@ -124,13 +124,13 @@ func (client *UserSubscriptionClient) getHandleResponse(resp *http.Response) (Us
 	return result, nil
 }
 
-// List - Lists the collection of subscriptions of the specified user.
+// NewListPager - Lists the collection of subscriptions of the specified user.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // userID - User identifier. Must be unique in the current API Management service instance.
 // options - UserSubscriptionClientListOptions contains the optional parameters for the UserSubscriptionClient.List method.
-func (client *UserSubscriptionClient) List(resourceGroupName string, serviceName string, userID string, options *UserSubscriptionClientListOptions) *runtime.Pager[UserSubscriptionClientListResponse] {
+func (client *UserSubscriptionClient) NewListPager(resourceGroupName string, serviceName string, userID string, options *UserSubscriptionClientListOptions) *runtime.Pager[UserSubscriptionClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[UserSubscriptionClientListResponse]{
 		More: func(page UserSubscriptionClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

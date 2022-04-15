@@ -99,7 +99,7 @@ func ExampleSuppressionsClient_Delete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/ListSuppressions.json
-func ExampleSuppressionsClient_List() {
+func ExampleSuppressionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -111,7 +111,7 @@ func ExampleSuppressionsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(&armadvisor.SuppressionsClientListOptions{Top: nil,
+	pager := client.NewListPager(&armadvisor.SuppressionsClientListOptions{Top: nil,
 		SkipToken: nil,
 	})
 	for pager.More() {

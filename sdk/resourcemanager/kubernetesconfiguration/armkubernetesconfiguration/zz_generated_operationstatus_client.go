@@ -129,14 +129,14 @@ func (client *OperationStatusClient) getHandleResponse(resp *http.Response) (Ope
 	return result, nil
 }
 
-// List - List Async Operations, currently in progress, in a cluster
+// NewListPager - List Async Operations, currently in progress, in a cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // clusterRp - The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes, Microsoft.HybridContainerService.
 // clusterResourceName - The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters, provisionedClusters.
 // clusterName - The name of the kubernetes cluster.
 // options - OperationStatusClientListOptions contains the optional parameters for the OperationStatusClient.List method.
-func (client *OperationStatusClient) List(resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, options *OperationStatusClientListOptions) *runtime.Pager[OperationStatusClientListResponse] {
+func (client *OperationStatusClient) NewListPager(resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, options *OperationStatusClientListOptions) *runtime.Pager[OperationStatusClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[OperationStatusClientListResponse]{
 		More: func(page OperationStatusClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

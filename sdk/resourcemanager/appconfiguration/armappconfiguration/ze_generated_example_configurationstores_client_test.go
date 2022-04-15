@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/preview/2021-10-01-preview/examples/ConfigurationStoresList.json
-func ExampleConfigurationStoresClient_List() {
+func ExampleConfigurationStoresClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleConfigurationStoresClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(&armappconfiguration.ConfigurationStoresClientListOptions{SkipToken: nil})
+	pager := client.NewListPager(&armappconfiguration.ConfigurationStoresClientListOptions{SkipToken: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -47,7 +47,7 @@ func ExampleConfigurationStoresClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/preview/2021-10-01-preview/examples/ConfigurationStoresListByResourceGroup.json
-func ExampleConfigurationStoresClient_ListByResourceGroup() {
+func ExampleConfigurationStoresClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -59,7 +59,7 @@ func ExampleConfigurationStoresClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		&armappconfiguration.ConfigurationStoresClientListByResourceGroupOptions{SkipToken: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -205,7 +205,7 @@ func ExampleConfigurationStoresClient_BeginUpdate() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/preview/2021-10-01-preview/examples/ConfigurationStoresListKeys.json
-func ExampleConfigurationStoresClient_ListKeys() {
+func ExampleConfigurationStoresClient_NewListKeysPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -217,7 +217,7 @@ func ExampleConfigurationStoresClient_ListKeys() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListKeys("<resource-group-name>",
+	pager := client.NewListKeysPager("<resource-group-name>",
 		"<config-store-name>",
 		&armappconfiguration.ConfigurationStoresClientListKeysOptions{SkipToken: nil})
 	for pager.More() {
@@ -262,7 +262,7 @@ func ExampleConfigurationStoresClient_RegenerateKey() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/preview/2021-10-01-preview/examples/DeletedConfigurationStoresList.json
-func ExampleConfigurationStoresClient_ListDeleted() {
+func ExampleConfigurationStoresClient_NewListDeletedPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -274,7 +274,7 @@ func ExampleConfigurationStoresClient_ListDeleted() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListDeleted(nil)
+	pager := client.NewListDeletedPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

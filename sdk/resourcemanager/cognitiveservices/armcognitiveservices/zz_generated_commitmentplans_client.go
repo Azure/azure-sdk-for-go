@@ -242,12 +242,12 @@ func (client *CommitmentPlansClient) getHandleResponse(resp *http.Response) (Com
 	return result, nil
 }
 
-// List - Gets the commitmentPlans associated with the Cognitive Services account.
+// NewListPager - Gets the commitmentPlans associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The name of Cognitive Services account.
 // options - CommitmentPlansClientListOptions contains the optional parameters for the CommitmentPlansClient.List method.
-func (client *CommitmentPlansClient) List(resourceGroupName string, accountName string, options *CommitmentPlansClientListOptions) *runtime.Pager[CommitmentPlansClientListResponse] {
+func (client *CommitmentPlansClient) NewListPager(resourceGroupName string, accountName string, options *CommitmentPlansClientListOptions) *runtime.Pager[CommitmentPlansClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CommitmentPlansClientListResponse]{
 		More: func(page CommitmentPlansClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

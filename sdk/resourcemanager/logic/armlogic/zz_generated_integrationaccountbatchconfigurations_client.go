@@ -229,13 +229,13 @@ func (client *IntegrationAccountBatchConfigurationsClient) getHandleResponse(res
 	return result, nil
 }
 
-// List - List the batch configurations for an integration account.
+// NewListPager - List the batch configurations for an integration account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // options - IntegrationAccountBatchConfigurationsClientListOptions contains the optional parameters for the IntegrationAccountBatchConfigurationsClient.List
 // method.
-func (client *IntegrationAccountBatchConfigurationsClient) List(resourceGroupName string, integrationAccountName string, options *IntegrationAccountBatchConfigurationsClientListOptions) *runtime.Pager[IntegrationAccountBatchConfigurationsClientListResponse] {
+func (client *IntegrationAccountBatchConfigurationsClient) NewListPager(resourceGroupName string, integrationAccountName string, options *IntegrationAccountBatchConfigurationsClientListOptions) *runtime.Pager[IntegrationAccountBatchConfigurationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IntegrationAccountBatchConfigurationsClientListResponse]{
 		More: func(page IntegrationAccountBatchConfigurationsClientListResponse) bool {
 			return false

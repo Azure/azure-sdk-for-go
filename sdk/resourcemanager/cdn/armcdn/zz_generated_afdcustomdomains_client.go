@@ -257,14 +257,14 @@ func (client *AFDCustomDomainsClient) getHandleResponse(resp *http.Response) (AF
 	return result, nil
 }
 
-// ListByProfile - Lists existing AzureFrontDoor domains.
+// NewListByProfilePager - Lists existing AzureFrontDoor domains.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile or CDN profile which is unique
 // within the resource group.
 // options - AFDCustomDomainsClientListByProfileOptions contains the optional parameters for the AFDCustomDomainsClient.ListByProfile
 // method.
-func (client *AFDCustomDomainsClient) ListByProfile(resourceGroupName string, profileName string, options *AFDCustomDomainsClientListByProfileOptions) *runtime.Pager[AFDCustomDomainsClientListByProfileResponse] {
+func (client *AFDCustomDomainsClient) NewListByProfilePager(resourceGroupName string, profileName string, options *AFDCustomDomainsClientListByProfileOptions) *runtime.Pager[AFDCustomDomainsClientListByProfileResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AFDCustomDomainsClientListByProfileResponse]{
 		More: func(page AFDCustomDomainsClientListByProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

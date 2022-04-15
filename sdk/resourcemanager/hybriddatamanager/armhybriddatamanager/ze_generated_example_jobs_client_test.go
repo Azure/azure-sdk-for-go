@@ -19,7 +19,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybriddatamanager/resource-manager/Microsoft.HybridData/stable/2019-06-01/examples/Jobs_ListByJobDefinition-GET-example-91.json
-func ExampleJobsClient_ListByJobDefinition() {
+func ExampleJobsClient_NewListByJobDefinitionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -31,7 +31,7 @@ func ExampleJobsClient_ListByJobDefinition() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByJobDefinition("<data-service-name>",
+	pager := client.NewListByJobDefinitionPager("<data-service-name>",
 		"<job-definition-name>",
 		"<resource-group-name>",
 		"<data-manager-name>",
@@ -140,7 +140,7 @@ func ExampleJobsClient_BeginResume() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybriddatamanager/resource-manager/Microsoft.HybridData/stable/2019-06-01/examples/Jobs_ListByDataService-GET-example-141.json
-func ExampleJobsClient_ListByDataService() {
+func ExampleJobsClient_NewListByDataServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -152,7 +152,7 @@ func ExampleJobsClient_ListByDataService() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByDataService("<data-service-name>",
+	pager := client.NewListByDataServicePager("<data-service-name>",
 		"<resource-group-name>",
 		"<data-manager-name>",
 		&armhybriddatamanager.JobsClientListByDataServiceOptions{Filter: nil})
@@ -170,7 +170,7 @@ func ExampleJobsClient_ListByDataService() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybriddatamanager/resource-manager/Microsoft.HybridData/stable/2019-06-01/examples/Jobs_ListByDataManager-GET-example-201.json
-func ExampleJobsClient_ListByDataManager() {
+func ExampleJobsClient_NewListByDataManagerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -182,7 +182,7 @@ func ExampleJobsClient_ListByDataManager() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByDataManager("<resource-group-name>",
+	pager := client.NewListByDataManagerPager("<resource-group-name>",
 		"<data-manager-name>",
 		&armhybriddatamanager.JobsClientListByDataManagerOptions{Filter: nil})
 	for pager.More() {

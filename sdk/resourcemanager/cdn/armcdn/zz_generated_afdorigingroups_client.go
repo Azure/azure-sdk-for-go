@@ -254,14 +254,14 @@ func (client *AFDOriginGroupsClient) getHandleResponse(resp *http.Response) (AFD
 	return result, nil
 }
 
-// ListByProfile - Lists all of the existing origin groups within a profile.
+// NewListByProfilePager - Lists all of the existing origin groups within a profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
 // options - AFDOriginGroupsClientListByProfileOptions contains the optional parameters for the AFDOriginGroupsClient.ListByProfile
 // method.
-func (client *AFDOriginGroupsClient) ListByProfile(resourceGroupName string, profileName string, options *AFDOriginGroupsClientListByProfileOptions) *runtime.Pager[AFDOriginGroupsClientListByProfileResponse] {
+func (client *AFDOriginGroupsClient) NewListByProfilePager(resourceGroupName string, profileName string, options *AFDOriginGroupsClientListByProfileOptions) *runtime.Pager[AFDOriginGroupsClientListByProfileResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AFDOriginGroupsClientListByProfileResponse]{
 		More: func(page AFDOriginGroupsClientListByProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -324,7 +324,7 @@ func (client *AFDOriginGroupsClient) listByProfileHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListResourceUsage - Checks the quota and actual usage of endpoints under the given CDN profile.
+// NewListResourceUsagePager - Checks the quota and actual usage of endpoints under the given CDN profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
@@ -332,7 +332,7 @@ func (client *AFDOriginGroupsClient) listByProfileHandleResponse(resp *http.Resp
 // originGroupName - Name of the origin group which is unique within the endpoint.
 // options - AFDOriginGroupsClientListResourceUsageOptions contains the optional parameters for the AFDOriginGroupsClient.ListResourceUsage
 // method.
-func (client *AFDOriginGroupsClient) ListResourceUsage(resourceGroupName string, profileName string, originGroupName string, options *AFDOriginGroupsClientListResourceUsageOptions) *runtime.Pager[AFDOriginGroupsClientListResourceUsageResponse] {
+func (client *AFDOriginGroupsClient) NewListResourceUsagePager(resourceGroupName string, profileName string, originGroupName string, options *AFDOriginGroupsClientListResourceUsageOptions) *runtime.Pager[AFDOriginGroupsClientListResourceUsageResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AFDOriginGroupsClientListResourceUsageResponse]{
 		More: func(page AFDOriginGroupsClientListResourceUsageResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

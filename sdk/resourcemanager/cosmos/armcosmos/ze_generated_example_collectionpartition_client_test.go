@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBCollectionPartitionGetMetrics.json
-func ExampleCollectionPartitionClient_ListMetrics() {
+func ExampleCollectionPartitionClient_NewListMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleCollectionPartitionClient_ListMetrics() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListMetrics("<resource-group-name>",
+	pager := client.NewListMetricsPager("<resource-group-name>",
 		"<account-name>",
 		"<database-rid>",
 		"<collection-rid>",
@@ -50,7 +50,7 @@ func ExampleCollectionPartitionClient_ListMetrics() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBCollectionPartitionGetUsages.json
-func ExampleCollectionPartitionClient_ListUsages() {
+func ExampleCollectionPartitionClient_NewListUsagesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -62,7 +62,7 @@ func ExampleCollectionPartitionClient_ListUsages() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListUsages("<resource-group-name>",
+	pager := client.NewListUsagesPager("<resource-group-name>",
 		"<account-name>",
 		"<database-rid>",
 		"<collection-rid>",

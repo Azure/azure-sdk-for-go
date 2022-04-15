@@ -256,13 +256,13 @@ func (client *PrivateEndpointConnectionProxiesClient) getHandleResponse(resp *ht
 	return result, nil
 }
 
-// ListByAccount - (INTERNAL - DO NOT USE) List all private endpoint connection proxies in a device update account.
+// NewListByAccountPager - (INTERNAL - DO NOT USE) List all private endpoint connection proxies in a device update account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // accountName - Account name.
 // options - PrivateEndpointConnectionProxiesClientListByAccountOptions contains the optional parameters for the PrivateEndpointConnectionProxiesClient.ListByAccount
 // method.
-func (client *PrivateEndpointConnectionProxiesClient) ListByAccount(resourceGroupName string, accountName string, options *PrivateEndpointConnectionProxiesClientListByAccountOptions) *runtime.Pager[PrivateEndpointConnectionProxiesClientListByAccountResponse] {
+func (client *PrivateEndpointConnectionProxiesClient) NewListByAccountPager(resourceGroupName string, accountName string, options *PrivateEndpointConnectionProxiesClientListByAccountOptions) *runtime.Pager[PrivateEndpointConnectionProxiesClientListByAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionProxiesClientListByAccountResponse]{
 		More: func(page PrivateEndpointConnectionProxiesClientListByAccountResponse) bool {
 			return false

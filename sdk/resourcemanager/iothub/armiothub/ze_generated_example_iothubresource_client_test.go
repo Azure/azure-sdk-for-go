@@ -219,7 +219,7 @@ func ExampleResourceClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_listbysubscription.json
-func ExampleResourceClient_ListBySubscription() {
+func ExampleResourceClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -231,7 +231,7 @@ func ExampleResourceClient_ListBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription(nil)
+	pager := client.NewListBySubscriptionPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -246,7 +246,7 @@ func ExampleResourceClient_ListBySubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_listbyrg.json
-func ExampleResourceClient_ListByResourceGroup() {
+func ExampleResourceClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -258,7 +258,7 @@ func ExampleResourceClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -299,7 +299,7 @@ func ExampleResourceClient_GetStats() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_listehgroups.json
-func ExampleResourceClient_ListEventHubConsumerGroups() {
+func ExampleResourceClient_NewListEventHubConsumerGroupsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -311,7 +311,7 @@ func ExampleResourceClient_ListEventHubConsumerGroups() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListEventHubConsumerGroups("<resource-group-name>",
+	pager := client.NewListEventHubConsumerGroupsPager("<resource-group-name>",
 		"<resource-name>",
 		"<event-hub-endpoint-name>",
 		nil)
@@ -413,7 +413,7 @@ func ExampleResourceClient_DeleteEventHubConsumerGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_listjobs.json
-func ExampleResourceClient_ListJobs() {
+func ExampleResourceClient_NewListJobsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -425,7 +425,7 @@ func ExampleResourceClient_ListJobs() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListJobs("<resource-group-name>",
+	pager := client.NewListJobsPager("<resource-group-name>",
 		"<resource-name>",
 		nil)
 	for pager.More() {
@@ -468,7 +468,7 @@ func ExampleResourceClient_GetJob() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_quotametrics.json
-func ExampleResourceClient_GetQuotaMetrics() {
+func ExampleResourceClient_NewGetQuotaMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -480,7 +480,7 @@ func ExampleResourceClient_GetQuotaMetrics() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.GetQuotaMetrics("<resource-group-name>",
+	pager := client.NewGetQuotaMetricsPager("<resource-group-name>",
 		"<resource-name>",
 		nil)
 	for pager.More() {
@@ -497,7 +497,7 @@ func ExampleResourceClient_GetQuotaMetrics() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_routingendpointhealth.json
-func ExampleResourceClient_GetEndpointHealth() {
+func ExampleResourceClient_NewGetEndpointHealthPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -509,7 +509,7 @@ func ExampleResourceClient_GetEndpointHealth() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.GetEndpointHealth("<resource-group-name>",
+	pager := client.NewGetEndpointHealthPager("<resource-group-name>",
 		"<iot-hub-name>",
 		nil)
 	for pager.More() {
@@ -632,7 +632,7 @@ func ExampleResourceClient_TestRoute() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_listkeys.json
-func ExampleResourceClient_ListKeys() {
+func ExampleResourceClient_NewListKeysPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -644,7 +644,7 @@ func ExampleResourceClient_ListKeys() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListKeys("<resource-group-name>",
+	pager := client.NewListKeysPager("<resource-group-name>",
 		"<resource-name>",
 		nil)
 	for pager.More() {

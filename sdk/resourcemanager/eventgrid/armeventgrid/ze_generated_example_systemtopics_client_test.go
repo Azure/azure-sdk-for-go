@@ -150,7 +150,7 @@ func ExampleSystemTopicsClient_BeginUpdate() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/SystemTopics_ListBySubscription.json
-func ExampleSystemTopicsClient_ListBySubscription() {
+func ExampleSystemTopicsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -162,7 +162,7 @@ func ExampleSystemTopicsClient_ListBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription(&armeventgrid.SystemTopicsClientListBySubscriptionOptions{Filter: nil,
+	pager := client.NewListBySubscriptionPager(&armeventgrid.SystemTopicsClientListBySubscriptionOptions{Filter: nil,
 		Top: nil,
 	})
 	for pager.More() {
@@ -179,7 +179,7 @@ func ExampleSystemTopicsClient_ListBySubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/SystemTopics_ListByResourceGroup.json
-func ExampleSystemTopicsClient_ListByResourceGroup() {
+func ExampleSystemTopicsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -191,7 +191,7 @@ func ExampleSystemTopicsClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		&armeventgrid.SystemTopicsClientListByResourceGroupOptions{Filter: nil,
 			Top: nil,
 		})

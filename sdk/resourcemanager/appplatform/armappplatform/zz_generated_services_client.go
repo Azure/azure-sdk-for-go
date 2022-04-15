@@ -396,12 +396,12 @@ func (client *ServicesClient) getHandleResponse(resp *http.Response) (ServicesCl
 	return result, nil
 }
 
-// List - Handles requests to list all resources in a resource group.
+// NewListPager - Handles requests to list all resources in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // options - ServicesClientListOptions contains the optional parameters for the ServicesClient.List method.
-func (client *ServicesClient) List(resourceGroupName string, options *ServicesClientListOptions) *runtime.Pager[ServicesClientListResponse] {
+func (client *ServicesClient) NewListPager(resourceGroupName string, options *ServicesClientListOptions) *runtime.Pager[ServicesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServicesClientListResponse]{
 		More: func(page ServicesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -460,11 +460,11 @@ func (client *ServicesClient) listHandleResponse(resp *http.Response) (ServicesC
 	return result, nil
 }
 
-// ListBySubscription - Handles requests to list all resources in a subscription.
+// NewListBySubscriptionPager - Handles requests to list all resources in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ServicesClientListBySubscriptionOptions contains the optional parameters for the ServicesClient.ListBySubscription
 // method.
-func (client *ServicesClient) ListBySubscription(options *ServicesClientListBySubscriptionOptions) *runtime.Pager[ServicesClientListBySubscriptionResponse] {
+func (client *ServicesClient) NewListBySubscriptionPager(options *ServicesClientListBySubscriptionOptions) *runtime.Pager[ServicesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServicesClientListBySubscriptionResponse]{
 		More: func(page ServicesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

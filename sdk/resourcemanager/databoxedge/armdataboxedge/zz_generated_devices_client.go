@@ -634,12 +634,12 @@ func (client *DevicesClient) installUpdatesCreateRequest(ctx context.Context, de
 	return req, nil
 }
 
-// ListByResourceGroup - Gets all the Data Box Edge/Data Box Gateway devices in a resource group.
+// NewListByResourceGroupPager - Gets all the Data Box Edge/Data Box Gateway devices in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // options - DevicesClientListByResourceGroupOptions contains the optional parameters for the DevicesClient.ListByResourceGroup
 // method.
-func (client *DevicesClient) ListByResourceGroup(resourceGroupName string, options *DevicesClientListByResourceGroupOptions) *runtime.Pager[DevicesClientListByResourceGroupResponse] {
+func (client *DevicesClient) NewListByResourceGroupPager(resourceGroupName string, options *DevicesClientListByResourceGroupOptions) *runtime.Pager[DevicesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DevicesClientListByResourceGroupResponse]{
 		More: func(page DevicesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -701,11 +701,11 @@ func (client *DevicesClient) listByResourceGroupHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListBySubscription - Gets all the Data Box Edge/Data Box Gateway devices in a subscription.
+// NewListBySubscriptionPager - Gets all the Data Box Edge/Data Box Gateway devices in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DevicesClientListBySubscriptionOptions contains the optional parameters for the DevicesClient.ListBySubscription
 // method.
-func (client *DevicesClient) ListBySubscription(options *DevicesClientListBySubscriptionOptions) *runtime.Pager[DevicesClientListBySubscriptionResponse] {
+func (client *DevicesClient) NewListBySubscriptionPager(options *DevicesClientListBySubscriptionOptions) *runtime.Pager[DevicesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DevicesClientListBySubscriptionResponse]{
 		More: func(page DevicesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

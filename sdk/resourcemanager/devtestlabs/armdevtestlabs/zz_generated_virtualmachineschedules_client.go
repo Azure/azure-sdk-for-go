@@ -319,14 +319,14 @@ func (client *VirtualMachineSchedulesClient) getHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// List - List schedules in a given virtual machine.
+// NewListPager - List schedules in a given virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // virtualMachineName - The name of the virtual machine.
 // options - VirtualMachineSchedulesClientListOptions contains the optional parameters for the VirtualMachineSchedulesClient.List
 // method.
-func (client *VirtualMachineSchedulesClient) List(resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachineSchedulesClientListOptions) *runtime.Pager[VirtualMachineSchedulesClientListResponse] {
+func (client *VirtualMachineSchedulesClient) NewListPager(resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachineSchedulesClientListOptions) *runtime.Pager[VirtualMachineSchedulesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualMachineSchedulesClientListResponse]{
 		More: func(page VirtualMachineSchedulesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -54,11 +54,11 @@ func NewAPISClient(subscriptionID string, credential azcore.TokenCredential, opt
 	return client, nil
 }
 
-// ListOperationsPartner - This method gets all the operations that are exposed for customer.
+// NewListOperationsPartnerPager - This method gets all the operations that are exposed for customer.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - APISClientListOperationsPartnerOptions contains the optional parameters for the APISClient.ListOperationsPartner
 // method.
-func (client *APISClient) ListOperationsPartner(options *APISClientListOperationsPartnerOptions) *runtime.Pager[APISClientListOperationsPartnerResponse] {
+func (client *APISClient) NewListOperationsPartnerPager(options *APISClientListOperationsPartnerOptions) *runtime.Pager[APISClientListOperationsPartnerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[APISClientListOperationsPartnerResponse]{
 		More: func(page APISClientListOperationsPartnerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -228,11 +228,11 @@ func (client *APISClient) manageLinkCreateRequest(ctx context.Context, familyIde
 	return req, runtime.MarshalAsJSON(req, manageLinkRequest)
 }
 
-// SearchInventories - API for Search inventories
+// NewSearchInventoriesPager - API for Search inventories
 // If the operation fails it returns an *azcore.ResponseError type.
 // searchInventoriesRequest - Searches inventories with the given filters and returns in the form of a list
 // options - APISClientSearchInventoriesOptions contains the optional parameters for the APISClient.SearchInventories method.
-func (client *APISClient) SearchInventories(searchInventoriesRequest SearchInventoriesRequest, options *APISClientSearchInventoriesOptions) *runtime.Pager[APISClientSearchInventoriesResponse] {
+func (client *APISClient) NewSearchInventoriesPager(searchInventoriesRequest SearchInventoriesRequest, options *APISClientSearchInventoriesOptions) *runtime.Pager[APISClientSearchInventoriesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[APISClientSearchInventoriesResponse]{
 		More: func(page APISClientSearchInventoriesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

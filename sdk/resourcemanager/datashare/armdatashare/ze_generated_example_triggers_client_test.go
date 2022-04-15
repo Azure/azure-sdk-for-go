@@ -119,7 +119,7 @@ func ExampleTriggersClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Triggers_ListByShareSubscription.json
-func ExampleTriggersClient_ListByShareSubscription() {
+func ExampleTriggersClient_NewListByShareSubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -131,7 +131,7 @@ func ExampleTriggersClient_ListByShareSubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByShareSubscription("<resource-group-name>",
+	pager := client.NewListByShareSubscriptionPager("<resource-group-name>",
 		"<account-name>",
 		"<share-subscription-name>",
 		&armdatashare.TriggersClientListByShareSubscriptionOptions{SkipToken: nil})

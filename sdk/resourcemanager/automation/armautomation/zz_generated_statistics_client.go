@@ -55,13 +55,13 @@ func NewStatisticsClient(subscriptionID string, credential azcore.TokenCredentia
 	return client, nil
 }
 
-// ListByAutomationAccount - Retrieve the statistics for the account.
+// NewListByAutomationAccountPager - Retrieve the statistics for the account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - StatisticsClientListByAutomationAccountOptions contains the optional parameters for the StatisticsClient.ListByAutomationAccount
 // method.
-func (client *StatisticsClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *StatisticsClientListByAutomationAccountOptions) *runtime.Pager[StatisticsClientListByAutomationAccountResponse] {
+func (client *StatisticsClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *StatisticsClientListByAutomationAccountOptions) *runtime.Pager[StatisticsClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[StatisticsClientListByAutomationAccountResponse]{
 		More: func(page StatisticsClientListByAutomationAccountResponse) bool {
 			return false

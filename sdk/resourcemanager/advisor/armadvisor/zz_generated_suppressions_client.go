@@ -218,11 +218,11 @@ func (client *SuppressionsClient) getHandleResponse(resp *http.Response) (Suppre
 	return result, nil
 }
 
-// List - Retrieves the list of snoozed or dismissed suppressions for a subscription. The snoozed or dismissed attribute of
-// a recommendation is referred to as a suppression.
+// NewListPager - Retrieves the list of snoozed or dismissed suppressions for a subscription. The snoozed or dismissed attribute
+// of a recommendation is referred to as a suppression.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SuppressionsClientListOptions contains the optional parameters for the SuppressionsClient.List method.
-func (client *SuppressionsClient) List(options *SuppressionsClientListOptions) *runtime.Pager[SuppressionsClientListResponse] {
+func (client *SuppressionsClient) NewListPager(options *SuppressionsClientListOptions) *runtime.Pager[SuppressionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SuppressionsClientListResponse]{
 		More: func(page SuppressionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

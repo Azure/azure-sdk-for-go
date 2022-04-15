@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Schedules_List.json
-func ExampleSchedulesClient_List() {
+func ExampleSchedulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleSchedulesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-group-name>",
+	pager := client.NewListPager("<resource-group-name>",
 		"<lab-name>",
 		&armdevtestlabs.SchedulesClientListOptions{Expand: nil,
 			Filter:  nil,
@@ -221,7 +221,7 @@ func ExampleSchedulesClient_BeginExecute() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Schedules_ListApplicable.json
-func ExampleSchedulesClient_ListApplicable() {
+func ExampleSchedulesClient_NewListApplicablePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -233,7 +233,7 @@ func ExampleSchedulesClient_ListApplicable() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListApplicable("<resource-group-name>",
+	pager := client.NewListApplicablePager("<resource-group-name>",
 		"<lab-name>",
 		"<name>",
 		nil)

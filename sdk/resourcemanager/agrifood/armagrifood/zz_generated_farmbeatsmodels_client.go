@@ -213,12 +213,12 @@ func (client *FarmBeatsModelsClient) getHandleResponse(resp *http.Response) (Far
 	return result, nil
 }
 
-// ListByResourceGroup - Lists the FarmBeats instances for a resource group.
+// NewListByResourceGroupPager - Lists the FarmBeats instances for a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - FarmBeatsModelsClientListByResourceGroupOptions contains the optional parameters for the FarmBeatsModelsClient.ListByResourceGroup
 // method.
-func (client *FarmBeatsModelsClient) ListByResourceGroup(resourceGroupName string, options *FarmBeatsModelsClientListByResourceGroupOptions) *runtime.Pager[FarmBeatsModelsClientListByResourceGroupResponse] {
+func (client *FarmBeatsModelsClient) NewListByResourceGroupPager(resourceGroupName string, options *FarmBeatsModelsClientListByResourceGroupOptions) *runtime.Pager[FarmBeatsModelsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[FarmBeatsModelsClientListByResourceGroupResponse]{
 		More: func(page FarmBeatsModelsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -283,11 +283,11 @@ func (client *FarmBeatsModelsClient) listByResourceGroupHandleResponse(resp *htt
 	return result, nil
 }
 
-// ListBySubscription - Lists the FarmBeats instances for a subscription.
+// NewListBySubscriptionPager - Lists the FarmBeats instances for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - FarmBeatsModelsClientListBySubscriptionOptions contains the optional parameters for the FarmBeatsModelsClient.ListBySubscription
 // method.
-func (client *FarmBeatsModelsClient) ListBySubscription(options *FarmBeatsModelsClientListBySubscriptionOptions) *runtime.Pager[FarmBeatsModelsClientListBySubscriptionResponse] {
+func (client *FarmBeatsModelsClient) NewListBySubscriptionPager(options *FarmBeatsModelsClientListBySubscriptionOptions) *runtime.Pager[FarmBeatsModelsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[FarmBeatsModelsClientListBySubscriptionResponse]{
 		More: func(page FarmBeatsModelsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -247,13 +247,13 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListByDatabaseAccount - List all private endpoint connections on a Cosmos DB account.
+// NewListByDatabaseAccountPager - List all private endpoint connections on a Cosmos DB account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // options - PrivateEndpointConnectionsClientListByDatabaseAccountOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByDatabaseAccount
 // method.
-func (client *PrivateEndpointConnectionsClient) ListByDatabaseAccount(resourceGroupName string, accountName string, options *PrivateEndpointConnectionsClientListByDatabaseAccountOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByDatabaseAccountResponse] {
+func (client *PrivateEndpointConnectionsClient) NewListByDatabaseAccountPager(resourceGroupName string, accountName string, options *PrivateEndpointConnectionsClientListByDatabaseAccountOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByDatabaseAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionsClientListByDatabaseAccountResponse]{
 		More: func(page PrivateEndpointConnectionsClientListByDatabaseAccountResponse) bool {
 			return false

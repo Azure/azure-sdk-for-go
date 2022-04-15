@@ -260,14 +260,14 @@ func (client *TriggersClient) getHandleResponse(resp *http.Response) (TriggersCl
 	return result, nil
 }
 
-// ListByShareSubscription - List Triggers in a share subscription
+// NewListByShareSubscriptionPager - List Triggers in a share subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareSubscriptionName - The name of the share subscription.
 // options - TriggersClientListByShareSubscriptionOptions contains the optional parameters for the TriggersClient.ListByShareSubscription
 // method.
-func (client *TriggersClient) ListByShareSubscription(resourceGroupName string, accountName string, shareSubscriptionName string, options *TriggersClientListByShareSubscriptionOptions) *runtime.Pager[TriggersClientListByShareSubscriptionResponse] {
+func (client *TriggersClient) NewListByShareSubscriptionPager(resourceGroupName string, accountName string, shareSubscriptionName string, options *TriggersClientListByShareSubscriptionOptions) *runtime.Pager[TriggersClientListByShareSubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TriggersClientListByShareSubscriptionResponse]{
 		More: func(page TriggersClientListByShareSubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

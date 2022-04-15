@@ -309,13 +309,13 @@ func (client *PrivateEndpointConnectionClient) getPrivateLinkResourceHandleRespo
 	return result, nil
 }
 
-// ListByService - Lists all private endpoint connections of the API Management service instance.
+// NewListByServicePager - Lists all private endpoint connections of the API Management service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - PrivateEndpointConnectionClientListByServiceOptions contains the optional parameters for the PrivateEndpointConnectionClient.ListByService
 // method.
-func (client *PrivateEndpointConnectionClient) ListByService(resourceGroupName string, serviceName string, options *PrivateEndpointConnectionClientListByServiceOptions) *runtime.Pager[PrivateEndpointConnectionClientListByServiceResponse] {
+func (client *PrivateEndpointConnectionClient) NewListByServicePager(resourceGroupName string, serviceName string, options *PrivateEndpointConnectionClientListByServiceOptions) *runtime.Pager[PrivateEndpointConnectionClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionClientListByServiceResponse]{
 		More: func(page PrivateEndpointConnectionClientListByServiceResponse) bool {
 			return false

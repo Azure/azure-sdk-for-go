@@ -145,7 +145,7 @@ func ExampleRecordSetsClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/ListARecordset.json
-func ExampleRecordSetsClient_ListByType() {
+func ExampleRecordSetsClient_NewListByTypePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -157,7 +157,7 @@ func ExampleRecordSetsClient_ListByType() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByType("<resource-group-name>",
+	pager := client.NewListByTypePager("<resource-group-name>",
 		"<zone-name>",
 		armdns.RecordTypeA,
 		&armdns.RecordSetsClientListByTypeOptions{Top: nil,

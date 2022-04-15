@@ -230,12 +230,12 @@ func (client *APIKeysClient) getHandleResponse(resp *http.Response) (APIKeysClie
 	return result, nil
 }
 
-// List - Gets a list of API keys of an Application Insights component.
+// NewListPager - Gets a list of API keys of an Application Insights component.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // options - APIKeysClientListOptions contains the optional parameters for the APIKeysClient.List method.
-func (client *APIKeysClient) List(resourceGroupName string, resourceName string, options *APIKeysClientListOptions) *runtime.Pager[APIKeysClientListResponse] {
+func (client *APIKeysClient) NewListPager(resourceGroupName string, resourceName string, options *APIKeysClientListOptions) *runtime.Pager[APIKeysClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[APIKeysClientListResponse]{
 		More: func(page APIKeysClientListResponse) bool {
 			return false

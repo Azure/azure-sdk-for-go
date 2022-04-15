@@ -1,5 +1,83 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*PeriodsClient.List` has been removed
+- Function `*InvoicesClient.ListByBillingProfile` has been removed
+- Function `*RoleAssignmentsClient.ListByBillingProfile` has been removed
+- Function `*CustomersClient.ListByBillingAccount` has been removed
+- Function `*AccountsClient.List` has been removed
+- Function `*RoleDefinitionsClient.ListByInvoiceSection` has been removed
+- Function `*PermissionsClient.ListByBillingProfile` has been removed
+- Function `*ProductsClient.ListByCustomer` has been removed
+- Function `*TransactionsClient.ListByInvoice` has been removed
+- Function `*ReservationsClient.ListByBillingProfile` has been removed
+- Function `*ProductsClient.ListByBillingAccount` has been removed
+- Function `*SubscriptionsClient.ListByCustomer` has been removed
+- Function `*CustomersClient.ListByBillingProfile` has been removed
+- Function `*SubscriptionsClient.ListByBillingProfile` has been removed
+- Function `*InvoicesClient.ListByBillingAccount` has been removed
+- Function `*PermissionsClient.ListByBillingAccount` has been removed
+- Function `*RoleAssignmentsClient.ListByBillingAccount` has been removed
+- Function `*AgreementsClient.ListByBillingAccount` has been removed
+- Function `*PermissionsClient.ListByInvoiceSections` has been removed
+- Function `*EnrollmentAccountsClient.List` has been removed
+- Function `*InvoiceSectionsClient.ListByBillingProfile` has been removed
+- Function `*ProductsClient.ListByBillingProfile` has been removed
+- Function `*InvoicesClient.ListByBillingSubscription` has been removed
+- Function `*SubscriptionsClient.ListByBillingAccount` has been removed
+- Function `*ReservationsClient.ListByBillingAccount` has been removed
+- Function `*PermissionsClient.ListByCustomer` has been removed
+- Function `*RoleAssignmentsClient.ListByInvoiceSection` has been removed
+- Function `*AccountsClient.ListInvoiceSectionsByCreateSubscriptionPermission` has been removed
+- Function `*RoleDefinitionsClient.ListByBillingProfile` has been removed
+- Function `*InstructionsClient.ListByBillingProfile` has been removed
+- Function `*RoleDefinitionsClient.ListByBillingAccount` has been removed
+- Function `*ProfilesClient.ListByBillingAccount` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*SubscriptionsClient.ListByInvoiceSection` has been removed
+- Function `*ProductsClient.ListByInvoiceSection` has been removed
+
+### Features Added
+
+- New function `*SubscriptionsClient.NewListByInvoiceSectionPager(string, string, string, *SubscriptionsClientListByInvoiceSectionOptions) *runtime.Pager[SubscriptionsClientListByInvoiceSectionResponse]`
+- New function `*RoleDefinitionsClient.NewListByBillingAccountPager(string, *RoleDefinitionsClientListByBillingAccountOptions) *runtime.Pager[RoleDefinitionsClientListByBillingAccountResponse]`
+- New function `*ProfilesClient.NewListByBillingAccountPager(string, *ProfilesClientListByBillingAccountOptions) *runtime.Pager[ProfilesClientListByBillingAccountResponse]`
+- New function `*AgreementsClient.NewListByBillingAccountPager(string, *AgreementsClientListByBillingAccountOptions) *runtime.Pager[AgreementsClientListByBillingAccountResponse]`
+- New function `*ProductsClient.NewListByInvoiceSectionPager(string, string, string, *ProductsClientListByInvoiceSectionOptions) *runtime.Pager[ProductsClientListByInvoiceSectionResponse]`
+- New function `*PeriodsClient.NewListPager(*PeriodsClientListOptions) *runtime.Pager[PeriodsClientListResponse]`
+- New function `*PermissionsClient.NewListByBillingProfilePager(string, string, *PermissionsClientListByBillingProfileOptions) *runtime.Pager[PermissionsClientListByBillingProfileResponse]`
+- New function `*InvoiceSectionsClient.NewListByBillingProfilePager(string, string, *InvoiceSectionsClientListByBillingProfileOptions) *runtime.Pager[InvoiceSectionsClientListByBillingProfileResponse]`
+- New function `*EnrollmentAccountsClient.NewListPager(*EnrollmentAccountsClientListOptions) *runtime.Pager[EnrollmentAccountsClientListResponse]`
+- New function `*ProductsClient.NewListByBillingAccountPager(string, *ProductsClientListByBillingAccountOptions) *runtime.Pager[ProductsClientListByBillingAccountResponse]`
+- New function `*InvoicesClient.NewListByBillingProfilePager(string, string, string, string, *InvoicesClientListByBillingProfileOptions) *runtime.Pager[InvoicesClientListByBillingProfileResponse]`
+- New function `*RoleAssignmentsClient.NewListByBillingAccountPager(string, *RoleAssignmentsClientListByBillingAccountOptions) *runtime.Pager[RoleAssignmentsClientListByBillingAccountResponse]`
+- New function `*AccountsClient.NewListInvoiceSectionsByCreateSubscriptionPermissionPager(string, *AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionOptions) *runtime.Pager[AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse]`
+- New function `*ProductsClient.NewListByCustomerPager(string, string, *ProductsClientListByCustomerOptions) *runtime.Pager[ProductsClientListByCustomerResponse]`
+- New function `*ProductsClient.NewListByBillingProfilePager(string, string, *ProductsClientListByBillingProfileOptions) *runtime.Pager[ProductsClientListByBillingProfileResponse]`
+- New function `*PermissionsClient.NewListByInvoiceSectionsPager(string, string, string, *PermissionsClientListByInvoiceSectionsOptions) *runtime.Pager[PermissionsClientListByInvoiceSectionsResponse]`
+- New function `*SubscriptionsClient.NewListByCustomerPager(string, string, *SubscriptionsClientListByCustomerOptions) *runtime.Pager[SubscriptionsClientListByCustomerResponse]`
+- New function `*RoleAssignmentsClient.NewListByInvoiceSectionPager(string, string, string, *RoleAssignmentsClientListByInvoiceSectionOptions) *runtime.Pager[RoleAssignmentsClientListByInvoiceSectionResponse]`
+- New function `*InvoicesClient.NewListByBillingAccountPager(string, string, string, *InvoicesClientListByBillingAccountOptions) *runtime.Pager[InvoicesClientListByBillingAccountResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*InstructionsClient.NewListByBillingProfilePager(string, string, *InstructionsClientListByBillingProfileOptions) *runtime.Pager[InstructionsClientListByBillingProfileResponse]`
+- New function `*RoleDefinitionsClient.NewListByBillingProfilePager(string, string, *RoleDefinitionsClientListByBillingProfileOptions) *runtime.Pager[RoleDefinitionsClientListByBillingProfileResponse]`
+- New function `*PermissionsClient.NewListByBillingAccountPager(string, *PermissionsClientListByBillingAccountOptions) *runtime.Pager[PermissionsClientListByBillingAccountResponse]`
+- New function `*ReservationsClient.NewListByBillingAccountPager(string, *ReservationsClientListByBillingAccountOptions) *runtime.Pager[ReservationsClientListByBillingAccountResponse]`
+- New function `*ReservationsClient.NewListByBillingProfilePager(string, string, *ReservationsClientListByBillingProfileOptions) *runtime.Pager[ReservationsClientListByBillingProfileResponse]`
+- New function `*CustomersClient.NewListByBillingAccountPager(string, *CustomersClientListByBillingAccountOptions) *runtime.Pager[CustomersClientListByBillingAccountResponse]`
+- New function `*SubscriptionsClient.NewListByBillingAccountPager(string, *SubscriptionsClientListByBillingAccountOptions) *runtime.Pager[SubscriptionsClientListByBillingAccountResponse]`
+- New function `*RoleAssignmentsClient.NewListByBillingProfilePager(string, string, *RoleAssignmentsClientListByBillingProfileOptions) *runtime.Pager[RoleAssignmentsClientListByBillingProfileResponse]`
+- New function `*CustomersClient.NewListByBillingProfilePager(string, string, *CustomersClientListByBillingProfileOptions) *runtime.Pager[CustomersClientListByBillingProfileResponse]`
+- New function `*AccountsClient.NewListPager(*AccountsClientListOptions) *runtime.Pager[AccountsClientListResponse]`
+- New function `*PermissionsClient.NewListByCustomerPager(string, string, *PermissionsClientListByCustomerOptions) *runtime.Pager[PermissionsClientListByCustomerResponse]`
+- New function `*TransactionsClient.NewListByInvoicePager(string, string, *TransactionsClientListByInvoiceOptions) *runtime.Pager[TransactionsClientListByInvoiceResponse]`
+- New function `*InvoicesClient.NewListByBillingSubscriptionPager(string, string, *InvoicesClientListByBillingSubscriptionOptions) *runtime.Pager[InvoicesClientListByBillingSubscriptionResponse]`
+- New function `*SubscriptionsClient.NewListByBillingProfilePager(string, string, *SubscriptionsClientListByBillingProfileOptions) *runtime.Pager[SubscriptionsClientListByBillingProfileResponse]`
+- New function `*RoleDefinitionsClient.NewListByInvoiceSectionPager(string, string, string, *RoleDefinitionsClientListByInvoiceSectionOptions) *runtime.Pager[RoleDefinitionsClientListByInvoiceSectionResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

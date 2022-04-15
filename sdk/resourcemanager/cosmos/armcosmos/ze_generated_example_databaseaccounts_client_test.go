@@ -301,7 +301,7 @@ func ExampleDatabaseAccountsClient_BeginFailoverPriorityChange() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBDatabaseAccountList.json
-func ExampleDatabaseAccountsClient_List() {
+func ExampleDatabaseAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -313,7 +313,7 @@ func ExampleDatabaseAccountsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(nil)
+	pager := client.NewListPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -328,7 +328,7 @@ func ExampleDatabaseAccountsClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBDatabaseAccountListByResourceGroup.json
-func ExampleDatabaseAccountsClient_ListByResourceGroup() {
+func ExampleDatabaseAccountsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -340,7 +340,7 @@ func ExampleDatabaseAccountsClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -567,7 +567,7 @@ func ExampleDatabaseAccountsClient_CheckNameExists() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBDatabaseAccountGetMetrics.json
-func ExampleDatabaseAccountsClient_ListMetrics() {
+func ExampleDatabaseAccountsClient_NewListMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -579,7 +579,7 @@ func ExampleDatabaseAccountsClient_ListMetrics() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListMetrics("<resource-group-name>",
+	pager := client.NewListMetricsPager("<resource-group-name>",
 		"<account-name>",
 		"<filter>",
 		nil)
@@ -597,7 +597,7 @@ func ExampleDatabaseAccountsClient_ListMetrics() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBDatabaseAccountGetUsages.json
-func ExampleDatabaseAccountsClient_ListUsages() {
+func ExampleDatabaseAccountsClient_NewListUsagesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -609,7 +609,7 @@ func ExampleDatabaseAccountsClient_ListUsages() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListUsages("<resource-group-name>",
+	pager := client.NewListUsagesPager("<resource-group-name>",
 		"<account-name>",
 		&armcosmos.DatabaseAccountsClientListUsagesOptions{Filter: to.Ptr("<filter>")})
 	for pager.More() {
@@ -626,7 +626,7 @@ func ExampleDatabaseAccountsClient_ListUsages() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBDatabaseAccountGetMetricDefinitions.json
-func ExampleDatabaseAccountsClient_ListMetricDefinitions() {
+func ExampleDatabaseAccountsClient_NewListMetricDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -638,7 +638,7 @@ func ExampleDatabaseAccountsClient_ListMetricDefinitions() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListMetricDefinitions("<resource-group-name>",
+	pager := client.NewListMetricDefinitionsPager("<resource-group-name>",
 		"<account-name>",
 		nil)
 	for pager.More() {

@@ -166,12 +166,12 @@ func (client *WorkflowRunsClient) getHandleResponse(resp *http.Response) (Workfl
 	return result, nil
 }
 
-// List - Gets a list of workflow runs.
+// NewListPager - Gets a list of workflow runs.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
 // options - WorkflowRunsClientListOptions contains the optional parameters for the WorkflowRunsClient.List method.
-func (client *WorkflowRunsClient) List(resourceGroupName string, workflowName string, options *WorkflowRunsClientListOptions) *runtime.Pager[WorkflowRunsClientListResponse] {
+func (client *WorkflowRunsClient) NewListPager(resourceGroupName string, workflowName string, options *WorkflowRunsClientListOptions) *runtime.Pager[WorkflowRunsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkflowRunsClientListResponse]{
 		More: func(page WorkflowRunsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -261,13 +261,13 @@ func (client *AddonsClient) getHandleResponse(resp *http.Response) (AddonsClient
 	return result, nil
 }
 
-// ListByRole - Lists all the addons configured in the role.
+// NewListByRolePager - Lists all the addons configured in the role.
 // If the operation fails it returns an *azcore.ResponseError type.
 // deviceName - The device name.
 // roleName - The role name.
 // resourceGroupName - The resource group name.
 // options - AddonsClientListByRoleOptions contains the optional parameters for the AddonsClient.ListByRole method.
-func (client *AddonsClient) ListByRole(deviceName string, roleName string, resourceGroupName string, options *AddonsClientListByRoleOptions) *runtime.Pager[AddonsClientListByRoleResponse] {
+func (client *AddonsClient) NewListByRolePager(deviceName string, roleName string, resourceGroupName string, options *AddonsClientListByRoleOptions) *runtime.Pager[AddonsClientListByRoleResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AddonsClientListByRoleResponse]{
 		More: func(page AddonsClientListByRoleResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -228,13 +228,13 @@ func (client *ScriptActionsClient) getExecutionDetailHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListByCluster - Lists all the persisted script actions for the specified cluster.
+// NewListByClusterPager - Lists all the persisted script actions for the specified cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // clusterName - The name of the cluster.
 // options - ScriptActionsClientListByClusterOptions contains the optional parameters for the ScriptActionsClient.ListByCluster
 // method.
-func (client *ScriptActionsClient) ListByCluster(resourceGroupName string, clusterName string, options *ScriptActionsClientListByClusterOptions) *runtime.Pager[ScriptActionsClientListByClusterResponse] {
+func (client *ScriptActionsClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *ScriptActionsClientListByClusterOptions) *runtime.Pager[ScriptActionsClientListByClusterResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ScriptActionsClientListByClusterResponse]{
 		More: func(page ScriptActionsClientListByClusterResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

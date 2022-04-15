@@ -113,11 +113,11 @@ func (client *CloudServiceRolesClient) getHandleResponse(resp *http.Response) (C
 	return result, nil
 }
 
-// List - Gets a list of all roles in a cloud service. Use nextLink property in the response to get the next page of roles.
-// Do this till nextLink is null to fetch all the roles.
+// NewListPager - Gets a list of all roles in a cloud service. Use nextLink property in the response to get the next page
+// of roles. Do this till nextLink is null to fetch all the roles.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - CloudServiceRolesClientListOptions contains the optional parameters for the CloudServiceRolesClient.List method.
-func (client *CloudServiceRolesClient) List(resourceGroupName string, cloudServiceName string, options *CloudServiceRolesClientListOptions) *runtime.Pager[CloudServiceRolesClientListResponse] {
+func (client *CloudServiceRolesClient) NewListPager(resourceGroupName string, cloudServiceName string, options *CloudServiceRolesClientListOptions) *runtime.Pager[CloudServiceRolesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CloudServiceRolesClientListResponse]{
 		More: func(page CloudServiceRolesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

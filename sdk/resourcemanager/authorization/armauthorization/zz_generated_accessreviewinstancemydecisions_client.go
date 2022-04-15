@@ -108,13 +108,13 @@ func (client *AccessReviewInstanceMyDecisionsClient) getByIDHandleResponse(resp 
 	return result, nil
 }
 
-// List - Get my access review instance decisions.
+// NewListPager - Get my access review instance decisions.
 // If the operation fails it returns an *azcore.ResponseError type.
 // scheduleDefinitionID - The id of the access review schedule definition.
 // id - The id of the access review instance.
 // options - AccessReviewInstanceMyDecisionsClientListOptions contains the optional parameters for the AccessReviewInstanceMyDecisionsClient.List
 // method.
-func (client *AccessReviewInstanceMyDecisionsClient) List(scheduleDefinitionID string, id string, options *AccessReviewInstanceMyDecisionsClientListOptions) *runtime.Pager[AccessReviewInstanceMyDecisionsClientListResponse] {
+func (client *AccessReviewInstanceMyDecisionsClient) NewListPager(scheduleDefinitionID string, id string, options *AccessReviewInstanceMyDecisionsClientListOptions) *runtime.Pager[AccessReviewInstanceMyDecisionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccessReviewInstanceMyDecisionsClientListResponse]{
 		More: func(page AccessReviewInstanceMyDecisionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

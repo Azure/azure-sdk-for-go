@@ -1,5 +1,23 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*JobsClient.ListByResourceGroup` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*JobsClient.List` has been removed
+- Function `*JobsClient.ListCredentials` has been removed
+- Function `*ServiceClient.ListAvailableSKUsByResourceGroup` has been removed
+
+### Features Added
+
+- New function `*JobsClient.NewListPager(*JobsClientListOptions) *runtime.Pager[JobsClientListResponse]`
+- New function `*ServiceClient.NewListAvailableSKUsByResourceGroupPager(string, string, AvailableSKURequest, *ServiceClientListAvailableSKUsByResourceGroupOptions) *runtime.Pager[ServiceClientListAvailableSKUsByResourceGroupResponse]`
+- New function `*JobsClient.NewListByResourceGroupPager(string, *JobsClientListByResourceGroupOptions) *runtime.Pager[JobsClientListByResourceGroupResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*JobsClient.NewListCredentialsPager(string, string, *JobsClientListCredentialsOptions) *runtime.Pager[JobsClientListCredentialsResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

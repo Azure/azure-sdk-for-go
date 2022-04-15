@@ -235,12 +235,12 @@ func (client *MembersClient) getHandleResponse(resp *http.Response) (MembersClie
 	return result, nil
 }
 
-// List - Lists the blockchain members for a resource group.
+// NewListPager - Lists the blockchain members for a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // options - MembersClientListOptions contains the optional parameters for the MembersClient.List method.
-func (client *MembersClient) List(resourceGroupName string, options *MembersClientListOptions) *runtime.Pager[MembersClientListResponse] {
+func (client *MembersClient) NewListPager(resourceGroupName string, options *MembersClientListOptions) *runtime.Pager[MembersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MembersClientListResponse]{
 		More: func(page MembersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -355,10 +355,10 @@ func (client *MembersClient) listAPIKeysHandleResponse(resp *http.Response) (Mem
 	return result, nil
 }
 
-// ListAll - Lists the blockchain members for a subscription.
+// NewListAllPager - Lists the blockchain members for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - MembersClientListAllOptions contains the optional parameters for the MembersClient.ListAll method.
-func (client *MembersClient) ListAll(options *MembersClientListAllOptions) *runtime.Pager[MembersClientListAllResponse] {
+func (client *MembersClient) NewListAllPager(options *MembersClientListAllOptions) *runtime.Pager[MembersClientListAllResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MembersClientListAllResponse]{
 		More: func(page MembersClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -413,14 +413,14 @@ func (client *MembersClient) listAllHandleResponse(resp *http.Response) (Members
 	return result, nil
 }
 
-// ListConsortiumMembers - Lists the consortium members for a blockchain member.
+// NewListConsortiumMembersPager - Lists the consortium members for a blockchain member.
 // If the operation fails it returns an *azcore.ResponseError type.
 // blockchainMemberName - Blockchain member name.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // options - MembersClientListConsortiumMembersOptions contains the optional parameters for the MembersClient.ListConsortiumMembers
 // method.
-func (client *MembersClient) ListConsortiumMembers(blockchainMemberName string, resourceGroupName string, options *MembersClientListConsortiumMembersOptions) *runtime.Pager[MembersClientListConsortiumMembersResponse] {
+func (client *MembersClient) NewListConsortiumMembersPager(blockchainMemberName string, resourceGroupName string, options *MembersClientListConsortiumMembersOptions) *runtime.Pager[MembersClientListConsortiumMembersResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MembersClientListConsortiumMembersResponse]{
 		More: func(page MembersClientListConsortiumMembersResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

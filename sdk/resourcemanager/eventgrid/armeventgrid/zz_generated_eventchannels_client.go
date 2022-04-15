@@ -243,13 +243,13 @@ func (client *EventChannelsClient) getHandleResponse(resp *http.Response) (Event
 	return result, nil
 }
 
-// ListByPartnerNamespace - List all the event channels in a partner namespace.
+// NewListByPartnerNamespacePager - List all the event channels in a partner namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription.
 // partnerNamespaceName - Name of the partner namespace.
 // options - EventChannelsClientListByPartnerNamespaceOptions contains the optional parameters for the EventChannelsClient.ListByPartnerNamespace
 // method.
-func (client *EventChannelsClient) ListByPartnerNamespace(resourceGroupName string, partnerNamespaceName string, options *EventChannelsClientListByPartnerNamespaceOptions) *runtime.Pager[EventChannelsClientListByPartnerNamespaceResponse] {
+func (client *EventChannelsClient) NewListByPartnerNamespacePager(resourceGroupName string, partnerNamespaceName string, options *EventChannelsClientListByPartnerNamespaceOptions) *runtime.Pager[EventChannelsClientListByPartnerNamespaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EventChannelsClientListByPartnerNamespaceResponse]{
 		More: func(page EventChannelsClientListByPartnerNamespaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

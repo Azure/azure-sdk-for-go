@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/IntegrationAccounts_ListBySubscription.json
-func ExampleIntegrationAccountsClient_ListBySubscription() {
+func ExampleIntegrationAccountsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleIntegrationAccountsClient_ListBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription(&armlogic.IntegrationAccountsClientListBySubscriptionOptions{Top: nil})
+	pager := client.NewListBySubscriptionPager(&armlogic.IntegrationAccountsClientListBySubscriptionOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -47,7 +47,7 @@ func ExampleIntegrationAccountsClient_ListBySubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/IntegrationAccounts_ListByResourceGroup.json
-func ExampleIntegrationAccountsClient_ListByResourceGroup() {
+func ExampleIntegrationAccountsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -59,7 +59,7 @@ func ExampleIntegrationAccountsClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		&armlogic.IntegrationAccountsClientListByResourceGroupOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -187,7 +187,7 @@ func ExampleIntegrationAccountsClient_Delete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/IntegrationAccounts_ListKeyVaultKeys.json
-func ExampleIntegrationAccountsClient_ListKeyVaultKeys() {
+func ExampleIntegrationAccountsClient_NewListKeyVaultKeysPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -199,7 +199,7 @@ func ExampleIntegrationAccountsClient_ListKeyVaultKeys() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListKeyVaultKeys("<resource-group-name>",
+	pager := client.NewListKeyVaultKeysPager("<resource-group-name>",
 		"<integration-account-name>",
 		armlogic.ListKeyVaultKeysDefinition{
 			KeyVault: &armlogic.KeyVaultReference{

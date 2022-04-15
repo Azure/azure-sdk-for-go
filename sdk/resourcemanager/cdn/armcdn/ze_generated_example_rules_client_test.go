@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/Rules_ListByRuleSet.json
-func ExampleRulesClient_ListByRuleSet() {
+func ExampleRulesClient_NewListByRuleSetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleRulesClient_ListByRuleSet() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByRuleSet("<resource-group-name>",
+	pager := client.NewListByRuleSetPager("<resource-group-name>",
 		"<profile-name>",
 		"<rule-set-name>",
 		nil)

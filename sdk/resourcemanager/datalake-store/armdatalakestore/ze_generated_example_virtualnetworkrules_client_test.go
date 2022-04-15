@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datalake-store/resource-manager/Microsoft.DataLakeStore/stable/2016-11-01/examples/VirtualNetworkRules_ListByAccount.json
-func ExampleVirtualNetworkRulesClient_ListByAccount() {
+func ExampleVirtualNetworkRulesClient_NewListByAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleVirtualNetworkRulesClient_ListByAccount() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByAccount("<resource-group-name>",
+	pager := client.NewListByAccountPager("<resource-group-name>",
 		"<account-name>",
 		nil)
 	for pager.More() {

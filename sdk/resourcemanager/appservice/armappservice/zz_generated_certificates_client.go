@@ -212,10 +212,10 @@ func (client *CertificatesClient) getHandleResponse(resp *http.Response) (Certif
 	return result, nil
 }
 
-// List - Description for Get all certificates for a subscription.
+// NewListPager - Description for Get all certificates for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - CertificatesClientListOptions contains the optional parameters for the CertificatesClient.List method.
-func (client *CertificatesClient) List(options *CertificatesClientListOptions) *runtime.Pager[CertificatesClientListResponse] {
+func (client *CertificatesClient) NewListPager(options *CertificatesClientListOptions) *runtime.Pager[CertificatesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CertificatesClientListResponse]{
 		More: func(page CertificatesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -275,12 +275,12 @@ func (client *CertificatesClient) listHandleResponse(resp *http.Response) (Certi
 	return result, nil
 }
 
-// ListByResourceGroup - Description for Get all certificates in a resource group.
+// NewListByResourceGroupPager - Description for Get all certificates in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // options - CertificatesClientListByResourceGroupOptions contains the optional parameters for the CertificatesClient.ListByResourceGroup
 // method.
-func (client *CertificatesClient) ListByResourceGroup(resourceGroupName string, options *CertificatesClientListByResourceGroupOptions) *runtime.Pager[CertificatesClientListByResourceGroupResponse] {
+func (client *CertificatesClient) NewListByResourceGroupPager(resourceGroupName string, options *CertificatesClientListByResourceGroupOptions) *runtime.Pager[CertificatesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CertificatesClientListByResourceGroupResponse]{
 		More: func(page CertificatesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

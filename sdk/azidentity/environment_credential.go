@@ -56,9 +56,9 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 	if tenantID == "" {
 		return nil, errors.New("missing environment variable AZURE_TENANT_ID")
 	}
-	clientID := os.Getenv("AZURE_CLIENT_ID")
+	clientID := os.Getenv(azureClientID)
 	if clientID == "" {
-		return nil, errors.New("missing environment variable AZURE_CLIENT_ID")
+		return nil, errors.New("missing environment variable " + azureClientID)
 	}
 	if clientSecret := os.Getenv("AZURE_CLIENT_SECRET"); clientSecret != "" {
 		log.Write(EventAuthentication, "EnvironmentCredential will authenticate with ClientSecretCredential")

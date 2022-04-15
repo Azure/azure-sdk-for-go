@@ -228,12 +228,12 @@ func (client *AssignmentsClient) getHandleResponse(resp *http.Response) (Assignm
 	return result, nil
 }
 
-// List - List all guest configuration assignments for a virtual machine.
+// NewListPager - List all guest configuration assignments for a virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // vmName - The name of the virtual machine.
 // options - AssignmentsClientListOptions contains the optional parameters for the AssignmentsClient.List method.
-func (client *AssignmentsClient) List(resourceGroupName string, vmName string, options *AssignmentsClientListOptions) *runtime.Pager[AssignmentsClientListResponse] {
+func (client *AssignmentsClient) NewListPager(resourceGroupName string, vmName string, options *AssignmentsClientListOptions) *runtime.Pager[AssignmentsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AssignmentsClientListResponse]{
 		More: func(page AssignmentsClientListResponse) bool {
 			return false
@@ -290,11 +290,11 @@ func (client *AssignmentsClient) listHandleResponse(resp *http.Response) (Assign
 	return result, nil
 }
 
-// RGList - List all guest configuration assignments for a resource group.
+// NewRGListPager - List all guest configuration assignments for a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // options - AssignmentsClientRGListOptions contains the optional parameters for the AssignmentsClient.RGList method.
-func (client *AssignmentsClient) RGList(resourceGroupName string, options *AssignmentsClientRGListOptions) *runtime.Pager[AssignmentsClientRGListResponse] {
+func (client *AssignmentsClient) NewRGListPager(resourceGroupName string, options *AssignmentsClientRGListOptions) *runtime.Pager[AssignmentsClientRGListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AssignmentsClientRGListResponse]{
 		More: func(page AssignmentsClientRGListResponse) bool {
 			return false
@@ -347,11 +347,11 @@ func (client *AssignmentsClient) rgListHandleResponse(resp *http.Response) (Assi
 	return result, nil
 }
 
-// SubscriptionList - List all guest configuration assignments for a subscription.
+// NewSubscriptionListPager - List all guest configuration assignments for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AssignmentsClientSubscriptionListOptions contains the optional parameters for the AssignmentsClient.SubscriptionList
 // method.
-func (client *AssignmentsClient) SubscriptionList(options *AssignmentsClientSubscriptionListOptions) *runtime.Pager[AssignmentsClientSubscriptionListResponse] {
+func (client *AssignmentsClient) NewSubscriptionListPager(options *AssignmentsClientSubscriptionListOptions) *runtime.Pager[AssignmentsClientSubscriptionListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AssignmentsClientSubscriptionListResponse]{
 		More: func(page AssignmentsClientSubscriptionListResponse) bool {
 			return false

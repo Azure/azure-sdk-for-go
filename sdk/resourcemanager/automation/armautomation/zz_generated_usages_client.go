@@ -55,13 +55,13 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 	return client, nil
 }
 
-// ListByAutomationAccount - Retrieve the usage for the account id.
+// NewListByAutomationAccountPager - Retrieve the usage for the account id.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - UsagesClientListByAutomationAccountOptions contains the optional parameters for the UsagesClient.ListByAutomationAccount
 // method.
-func (client *UsagesClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *UsagesClientListByAutomationAccountOptions) *runtime.Pager[UsagesClientListByAutomationAccountResponse] {
+func (client *UsagesClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *UsagesClientListByAutomationAccountOptions) *runtime.Pager[UsagesClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[UsagesClientListByAutomationAccountResponse]{
 		More: func(page UsagesClientListByAutomationAccountResponse) bool {
 			return false

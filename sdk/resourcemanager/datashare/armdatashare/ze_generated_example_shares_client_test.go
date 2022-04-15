@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Shares_ListSynchronizationDetails.json
-func ExampleSharesClient_ListSynchronizationDetails() {
+func ExampleSharesClient_NewListSynchronizationDetailsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleSharesClient_ListSynchronizationDetails() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListSynchronizationDetails("<resource-group-name>",
+	pager := client.NewListSynchronizationDetailsPager("<resource-group-name>",
 		"<account-name>",
 		"<share-name>",
 		armdatashare.ShareSynchronization{
@@ -56,7 +56,7 @@ func ExampleSharesClient_ListSynchronizationDetails() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Shares_ListSynchronizations.json
-func ExampleSharesClient_ListSynchronizations() {
+func ExampleSharesClient_NewListSynchronizationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -68,7 +68,7 @@ func ExampleSharesClient_ListSynchronizations() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListSynchronizations("<resource-group-name>",
+	pager := client.NewListSynchronizationsPager("<resource-group-name>",
 		"<account-name>",
 		"<share-name>",
 		&armdatashare.SharesClientListSynchronizationsOptions{SkipToken: nil,
@@ -179,7 +179,7 @@ func ExampleSharesClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Shares_ListByAccount.json
-func ExampleSharesClient_ListByAccount() {
+func ExampleSharesClient_NewListByAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -191,7 +191,7 @@ func ExampleSharesClient_ListByAccount() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByAccount("<resource-group-name>",
+	pager := client.NewListByAccountPager("<resource-group-name>",
 		"<account-name>",
 		&armdatashare.SharesClientListByAccountOptions{SkipToken: nil,
 			Filter:  nil,

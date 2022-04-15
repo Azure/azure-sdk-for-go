@@ -248,7 +248,7 @@ func (client *GatewayAPIClient) getEntityTagHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListByService - Lists a collection of the APIs associated with a gateway.
+// NewListByServicePager - Lists a collection of the APIs associated with a gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
@@ -256,7 +256,7 @@ func (client *GatewayAPIClient) getEntityTagHandleResponse(resp *http.Response) 
 // 'managed'
 // options - GatewayAPIClientListByServiceOptions contains the optional parameters for the GatewayAPIClient.ListByService
 // method.
-func (client *GatewayAPIClient) ListByService(resourceGroupName string, serviceName string, gatewayID string, options *GatewayAPIClientListByServiceOptions) *runtime.Pager[GatewayAPIClientListByServiceResponse] {
+func (client *GatewayAPIClient) NewListByServicePager(resourceGroupName string, serviceName string, gatewayID string, options *GatewayAPIClientListByServiceOptions) *runtime.Pager[GatewayAPIClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[GatewayAPIClientListByServiceResponse]{
 		More: func(page GatewayAPIClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

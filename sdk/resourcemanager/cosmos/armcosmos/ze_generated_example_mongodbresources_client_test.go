@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBDatabaseList.json
-func ExampleMongoDBResourcesClient_ListMongoDBDatabases() {
+func ExampleMongoDBResourcesClient_NewListMongoDBDatabasesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleMongoDBResourcesClient_ListMongoDBDatabases() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListMongoDBDatabases("<resource-group-name>",
+	pager := client.NewListMongoDBDatabasesPager("<resource-group-name>",
 		"<account-name>",
 		nil)
 	for pager.More() {
@@ -273,7 +273,7 @@ func ExampleMongoDBResourcesClient_BeginMigrateMongoDBDatabaseToManualThroughput
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBCollectionList.json
-func ExampleMongoDBResourcesClient_ListMongoDBCollections() {
+func ExampleMongoDBResourcesClient_NewListMongoDBCollectionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -285,7 +285,7 @@ func ExampleMongoDBResourcesClient_ListMongoDBCollections() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListMongoDBCollections("<resource-group-name>",
+	pager := client.NewListMongoDBCollectionsPager("<resource-group-name>",
 		"<account-name>",
 		"<database-name>",
 		nil)
@@ -697,7 +697,7 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoRoleDefinition() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBRoleDefinitionList.json
-func ExampleMongoDBResourcesClient_ListMongoRoleDefinitions() {
+func ExampleMongoDBResourcesClient_NewListMongoRoleDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -709,7 +709,7 @@ func ExampleMongoDBResourcesClient_ListMongoRoleDefinitions() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListMongoRoleDefinitions("<resource-group-name>",
+	pager := client.NewListMongoRoleDefinitionsPager("<resource-group-name>",
 		"<account-name>",
 		nil)
 	for pager.More() {
@@ -826,7 +826,7 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoUserDefinition() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBMongoDBUserDefinitionList.json
-func ExampleMongoDBResourcesClient_ListMongoUserDefinitions() {
+func ExampleMongoDBResourcesClient_NewListMongoUserDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -838,7 +838,7 @@ func ExampleMongoDBResourcesClient_ListMongoUserDefinitions() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListMongoUserDefinitions("<resource-group-name>",
+	pager := client.NewListMongoUserDefinitionsPager("<resource-group-name>",
 		"<account-name>",
 		nil)
 	for pager.More() {

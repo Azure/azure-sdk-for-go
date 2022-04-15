@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azurearcdata/resource-manager/Microsoft.AzureArcData/preview/2022-03-01-preview/examples/ListByDataControllerActiveDirectoryConnector.json
-func ExampleActiveDirectoryConnectorsClient_List() {
+func ExampleActiveDirectoryConnectorsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleActiveDirectoryConnectorsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-group-name>",
+	pager := client.NewListPager("<resource-group-name>",
 		"<data-controller-name>",
 		nil)
 	for pager.More() {
@@ -81,7 +81,8 @@ func ExampleActiveDirectoryConnectorsClient_BeginCreate() {
 									Hostname: to.Ptr("<hostname>"),
 								}},
 						},
-						Realm: to.Ptr("<realm>"),
+						Realm:                      to.Ptr("<realm>"),
+						ServiceAccountProvisioning: to.Ptr(armazurearcdata.AccountProvisioningModeManual),
 					},
 					DNS: &armazurearcdata.ActiveDirectoryConnectorDNSDetails{
 						NameserverIPAddresses: []*string{

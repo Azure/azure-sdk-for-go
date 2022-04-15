@@ -48,10 +48,10 @@ func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientO
 	return client, nil
 }
 
-// ListAll - Get a list all available Operations.
+// NewListAllPager - Get a list all available Operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - OperationsClientListAllOptions contains the optional parameters for the OperationsClient.ListAll method.
-func (client *OperationsClient) ListAll(options *OperationsClientListAllOptions) *runtime.Pager[OperationsClientListAllResponse] {
+func (client *OperationsClient) NewListAllPager(options *OperationsClientListAllOptions) *runtime.Pager[OperationsClientListAllResponse] {
 	return runtime.NewPager(runtime.PageProcessor[OperationsClientListAllResponse]{
 		More: func(page OperationsClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

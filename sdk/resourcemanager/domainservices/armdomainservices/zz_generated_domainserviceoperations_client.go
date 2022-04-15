@@ -48,11 +48,11 @@ func NewDomainServiceOperationsClient(credential azcore.TokenCredential, options
 	return client, nil
 }
 
-// List - Lists all the available Domain Services operations.
+// NewListPager - Lists all the available Domain Services operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DomainServiceOperationsClientListOptions contains the optional parameters for the DomainServiceOperationsClient.List
 // method.
-func (client *DomainServiceOperationsClient) List(options *DomainServiceOperationsClientListOptions) *runtime.Pager[DomainServiceOperationsClientListResponse] {
+func (client *DomainServiceOperationsClient) NewListPager(options *DomainServiceOperationsClientListOptions) *runtime.Pager[DomainServiceOperationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DomainServiceOperationsClientListResponse]{
 		More: func(page DomainServiceOperationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

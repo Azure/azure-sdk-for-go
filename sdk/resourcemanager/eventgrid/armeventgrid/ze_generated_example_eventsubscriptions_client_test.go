@@ -160,7 +160,7 @@ func ExampleEventSubscriptionsClient_BeginUpdate() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_ListGlobalBySubscription.json
-func ExampleEventSubscriptionsClient_ListGlobalBySubscription() {
+func ExampleEventSubscriptionsClient_NewListGlobalBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -172,7 +172,7 @@ func ExampleEventSubscriptionsClient_ListGlobalBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListGlobalBySubscription(&armeventgrid.EventSubscriptionsClientListGlobalBySubscriptionOptions{Filter: nil,
+	pager := client.NewListGlobalBySubscriptionPager(&armeventgrid.EventSubscriptionsClientListGlobalBySubscriptionOptions{Filter: nil,
 		Top: nil,
 	})
 	for pager.More() {
@@ -189,7 +189,7 @@ func ExampleEventSubscriptionsClient_ListGlobalBySubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_ListGlobalBySubscriptionForTopicType.json
-func ExampleEventSubscriptionsClient_ListGlobalBySubscriptionForTopicType() {
+func ExampleEventSubscriptionsClient_NewListGlobalBySubscriptionForTopicTypePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -201,7 +201,7 @@ func ExampleEventSubscriptionsClient_ListGlobalBySubscriptionForTopicType() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListGlobalBySubscriptionForTopicType("<topic-type-name>",
+	pager := client.NewListGlobalBySubscriptionForTopicTypePager("<topic-type-name>",
 		&armeventgrid.EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeOptions{Filter: nil,
 			Top: nil,
 		})
@@ -219,7 +219,7 @@ func ExampleEventSubscriptionsClient_ListGlobalBySubscriptionForTopicType() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_ListGlobalByResourceGroup.json
-func ExampleEventSubscriptionsClient_ListGlobalByResourceGroup() {
+func ExampleEventSubscriptionsClient_NewListGlobalByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -231,7 +231,7 @@ func ExampleEventSubscriptionsClient_ListGlobalByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListGlobalByResourceGroup("<resource-group-name>",
+	pager := client.NewListGlobalByResourceGroupPager("<resource-group-name>",
 		&armeventgrid.EventSubscriptionsClientListGlobalByResourceGroupOptions{Filter: nil,
 			Top: nil,
 		})
@@ -249,7 +249,7 @@ func ExampleEventSubscriptionsClient_ListGlobalByResourceGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_ListGlobalByResourceGroupForTopicType.json
-func ExampleEventSubscriptionsClient_ListGlobalByResourceGroupForTopicType() {
+func ExampleEventSubscriptionsClient_NewListGlobalByResourceGroupForTopicTypePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -261,7 +261,7 @@ func ExampleEventSubscriptionsClient_ListGlobalByResourceGroupForTopicType() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListGlobalByResourceGroupForTopicType("<resource-group-name>",
+	pager := client.NewListGlobalByResourceGroupForTopicTypePager("<resource-group-name>",
 		"<topic-type-name>",
 		&armeventgrid.EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeOptions{Filter: nil,
 			Top: nil,
@@ -280,7 +280,7 @@ func ExampleEventSubscriptionsClient_ListGlobalByResourceGroupForTopicType() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_ListRegionalBySubscription.json
-func ExampleEventSubscriptionsClient_ListRegionalBySubscription() {
+func ExampleEventSubscriptionsClient_NewListRegionalBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -292,7 +292,7 @@ func ExampleEventSubscriptionsClient_ListRegionalBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListRegionalBySubscription("<location>",
+	pager := client.NewListRegionalBySubscriptionPager("<location>",
 		&armeventgrid.EventSubscriptionsClientListRegionalBySubscriptionOptions{Filter: nil,
 			Top: nil,
 		})
@@ -310,7 +310,7 @@ func ExampleEventSubscriptionsClient_ListRegionalBySubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_ListRegionalByResourceGroup.json
-func ExampleEventSubscriptionsClient_ListRegionalByResourceGroup() {
+func ExampleEventSubscriptionsClient_NewListRegionalByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -322,7 +322,7 @@ func ExampleEventSubscriptionsClient_ListRegionalByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListRegionalByResourceGroup("<resource-group-name>",
+	pager := client.NewListRegionalByResourceGroupPager("<resource-group-name>",
 		"<location>",
 		&armeventgrid.EventSubscriptionsClientListRegionalByResourceGroupOptions{Filter: nil,
 			Top: nil,
@@ -341,7 +341,7 @@ func ExampleEventSubscriptionsClient_ListRegionalByResourceGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_ListRegionalBySubscriptionForTopicType.json
-func ExampleEventSubscriptionsClient_ListRegionalBySubscriptionForTopicType() {
+func ExampleEventSubscriptionsClient_NewListRegionalBySubscriptionForTopicTypePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -353,7 +353,7 @@ func ExampleEventSubscriptionsClient_ListRegionalBySubscriptionForTopicType() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListRegionalBySubscriptionForTopicType("<location>",
+	pager := client.NewListRegionalBySubscriptionForTopicTypePager("<location>",
 		"<topic-type-name>",
 		&armeventgrid.EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeOptions{Filter: nil,
 			Top: nil,
@@ -372,7 +372,7 @@ func ExampleEventSubscriptionsClient_ListRegionalBySubscriptionForTopicType() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_ListRegionalByResourceGroupForTopicType.json
-func ExampleEventSubscriptionsClient_ListRegionalByResourceGroupForTopicType() {
+func ExampleEventSubscriptionsClient_NewListRegionalByResourceGroupForTopicTypePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -384,7 +384,7 @@ func ExampleEventSubscriptionsClient_ListRegionalByResourceGroupForTopicType() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListRegionalByResourceGroupForTopicType("<resource-group-name>",
+	pager := client.NewListRegionalByResourceGroupForTopicTypePager("<resource-group-name>",
 		"<location>",
 		"<topic-type-name>",
 		&armeventgrid.EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeOptions{Filter: nil,
@@ -404,7 +404,7 @@ func ExampleEventSubscriptionsClient_ListRegionalByResourceGroupForTopicType() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_ListByResource.json
-func ExampleEventSubscriptionsClient_ListByResource() {
+func ExampleEventSubscriptionsClient_NewListByResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -416,7 +416,7 @@ func ExampleEventSubscriptionsClient_ListByResource() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResource("<resource-group-name>",
+	pager := client.NewListByResourcePager("<resource-group-name>",
 		"<provider-namespace>",
 		"<resource-type-name>",
 		"<resource-name>",
@@ -437,7 +437,7 @@ func ExampleEventSubscriptionsClient_ListByResource() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_ListByDomainTopic.json
-func ExampleEventSubscriptionsClient_ListByDomainTopic() {
+func ExampleEventSubscriptionsClient_NewListByDomainTopicPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -449,7 +449,7 @@ func ExampleEventSubscriptionsClient_ListByDomainTopic() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByDomainTopic("<resource-group-name>",
+	pager := client.NewListByDomainTopicPager("<resource-group-name>",
 		"<domain-name>",
 		"<topic-name>",
 		&armeventgrid.EventSubscriptionsClientListByDomainTopicOptions{Filter: nil,

@@ -486,14 +486,14 @@ func (client *DeploymentsClient) getLogFileURLHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// List - Handles requests to list all resources in an App.
+// NewListPager - Handles requests to list all resources in an App.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
 // appName - The name of the App resource.
 // options - DeploymentsClientListOptions contains the optional parameters for the DeploymentsClient.List method.
-func (client *DeploymentsClient) List(resourceGroupName string, serviceName string, appName string, options *DeploymentsClientListOptions) *runtime.Pager[DeploymentsClientListResponse] {
+func (client *DeploymentsClient) NewListPager(resourceGroupName string, serviceName string, appName string, options *DeploymentsClientListOptions) *runtime.Pager[DeploymentsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DeploymentsClientListResponse]{
 		More: func(page DeploymentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -565,14 +565,14 @@ func (client *DeploymentsClient) listHandleResponse(resp *http.Response) (Deploy
 	return result, nil
 }
 
-// ListForCluster - List deployments for a certain service
+// NewListForClusterPager - List deployments for a certain service
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
 // options - DeploymentsClientListForClusterOptions contains the optional parameters for the DeploymentsClient.ListForCluster
 // method.
-func (client *DeploymentsClient) ListForCluster(resourceGroupName string, serviceName string, options *DeploymentsClientListForClusterOptions) *runtime.Pager[DeploymentsClientListForClusterResponse] {
+func (client *DeploymentsClient) NewListForClusterPager(resourceGroupName string, serviceName string, options *DeploymentsClientListForClusterOptions) *runtime.Pager[DeploymentsClientListForClusterResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DeploymentsClientListForClusterResponse]{
 		More: func(page DeploymentsClientListForClusterResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

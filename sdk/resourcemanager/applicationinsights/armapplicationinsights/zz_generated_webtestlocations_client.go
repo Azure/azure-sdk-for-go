@@ -54,12 +54,12 @@ func NewWebTestLocationsClient(subscriptionID string, credential azcore.TokenCre
 	return client, nil
 }
 
-// List - Gets a list of web test locations available to this Application Insights component.
+// NewListPager - Gets a list of web test locations available to this Application Insights component.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // options - WebTestLocationsClientListOptions contains the optional parameters for the WebTestLocationsClient.List method.
-func (client *WebTestLocationsClient) List(resourceGroupName string, resourceName string, options *WebTestLocationsClientListOptions) *runtime.Pager[WebTestLocationsClientListResponse] {
+func (client *WebTestLocationsClient) NewListPager(resourceGroupName string, resourceName string, options *WebTestLocationsClientListOptions) *runtime.Pager[WebTestLocationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebTestLocationsClientListResponse]{
 		More: func(page WebTestLocationsClientListResponse) bool {
 			return false

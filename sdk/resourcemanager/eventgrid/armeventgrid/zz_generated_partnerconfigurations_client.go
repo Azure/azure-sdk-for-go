@@ -271,12 +271,12 @@ func (client *PartnerConfigurationsClient) getHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListByResourceGroup - List all the partner configurations under a resource group.
+// NewListByResourceGroupPager - List all the partner configurations under a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription.
 // options - PartnerConfigurationsClientListByResourceGroupOptions contains the optional parameters for the PartnerConfigurationsClient.ListByResourceGroup
 // method.
-func (client *PartnerConfigurationsClient) ListByResourceGroup(resourceGroupName string, options *PartnerConfigurationsClientListByResourceGroupOptions) *runtime.Pager[PartnerConfigurationsClientListByResourceGroupResponse] {
+func (client *PartnerConfigurationsClient) NewListByResourceGroupPager(resourceGroupName string, options *PartnerConfigurationsClientListByResourceGroupOptions) *runtime.Pager[PartnerConfigurationsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PartnerConfigurationsClientListByResourceGroupResponse]{
 		More: func(page PartnerConfigurationsClientListByResourceGroupResponse) bool {
 			return false
@@ -329,11 +329,11 @@ func (client *PartnerConfigurationsClient) listByResourceGroupHandleResponse(res
 	return result, nil
 }
 
-// ListBySubscription - List all the partner configurations under an Azure subscription.
+// NewListBySubscriptionPager - List all the partner configurations under an Azure subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PartnerConfigurationsClientListBySubscriptionOptions contains the optional parameters for the PartnerConfigurationsClient.ListBySubscription
 // method.
-func (client *PartnerConfigurationsClient) ListBySubscription(options *PartnerConfigurationsClientListBySubscriptionOptions) *runtime.Pager[PartnerConfigurationsClientListBySubscriptionResponse] {
+func (client *PartnerConfigurationsClient) NewListBySubscriptionPager(options *PartnerConfigurationsClientListBySubscriptionOptions) *runtime.Pager[PartnerConfigurationsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PartnerConfigurationsClientListBySubscriptionResponse]{
 		More: func(page PartnerConfigurationsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

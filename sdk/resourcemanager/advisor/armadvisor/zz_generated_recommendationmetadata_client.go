@@ -98,11 +98,11 @@ func (client *RecommendationMetadataClient) getHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// List - Gets the list of metadata entities.
+// NewListPager - Gets the list of metadata entities.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - RecommendationMetadataClientListOptions contains the optional parameters for the RecommendationMetadataClient.List
 // method.
-func (client *RecommendationMetadataClient) List(options *RecommendationMetadataClientListOptions) *runtime.Pager[RecommendationMetadataClientListResponse] {
+func (client *RecommendationMetadataClient) NewListPager(options *RecommendationMetadataClientListOptions) *runtime.Pager[RecommendationMetadataClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RecommendationMetadataClientListResponse]{
 		More: func(page RecommendationMetadataClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBGremlinDatabaseList.json
-func ExampleGremlinResourcesClient_ListGremlinDatabases() {
+func ExampleGremlinResourcesClient_NewListGremlinDatabasesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleGremlinResourcesClient_ListGremlinDatabases() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListGremlinDatabases("<resource-group-name>",
+	pager := client.NewListGremlinDatabasesPager("<resource-group-name>",
 		"<account-name>",
 		nil)
 	for pager.More() {
@@ -273,7 +273,7 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinDatabaseToManualThroughput
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBGremlinGraphList.json
-func ExampleGremlinResourcesClient_ListGremlinGraphs() {
+func ExampleGremlinResourcesClient_NewListGremlinGraphsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -285,7 +285,7 @@ func ExampleGremlinResourcesClient_ListGremlinGraphs() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListGremlinGraphs("<resource-group-name>",
+	pager := client.NewListGremlinGraphsPager("<resource-group-name>",
 		"<account-name>",
 		"<database-name>",
 		nil)

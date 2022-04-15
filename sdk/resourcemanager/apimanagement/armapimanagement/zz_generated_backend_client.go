@@ -299,12 +299,12 @@ func (client *BackendClient) getEntityTagHandleResponse(resp *http.Response) (Ba
 	return result, nil
 }
 
-// ListByService - Lists a collection of backends in the specified service instance.
+// NewListByServicePager - Lists a collection of backends in the specified service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - BackendClientListByServiceOptions contains the optional parameters for the BackendClient.ListByService method.
-func (client *BackendClient) ListByService(resourceGroupName string, serviceName string, options *BackendClientListByServiceOptions) *runtime.Pager[BackendClientListByServiceResponse] {
+func (client *BackendClient) NewListByServicePager(resourceGroupName string, serviceName string, options *BackendClientListByServiceOptions) *runtime.Pager[BackendClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BackendClientListByServiceResponse]{
 		More: func(page BackendClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

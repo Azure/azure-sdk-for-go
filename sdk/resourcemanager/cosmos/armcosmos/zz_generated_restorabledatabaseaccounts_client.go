@@ -111,12 +111,12 @@ func (client *RestorableDatabaseAccountsClient) getByLocationHandleResponse(resp
 	return result, nil
 }
 
-// List - Lists all the restorable Azure Cosmos DB database accounts available under the subscription. This call requires
+// NewListPager - Lists all the restorable Azure Cosmos DB database accounts available under the subscription. This call requires
 // 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read' permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - RestorableDatabaseAccountsClientListOptions contains the optional parameters for the RestorableDatabaseAccountsClient.List
 // method.
-func (client *RestorableDatabaseAccountsClient) List(options *RestorableDatabaseAccountsClientListOptions) *runtime.Pager[RestorableDatabaseAccountsClientListResponse] {
+func (client *RestorableDatabaseAccountsClient) NewListPager(options *RestorableDatabaseAccountsClientListOptions) *runtime.Pager[RestorableDatabaseAccountsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RestorableDatabaseAccountsClientListResponse]{
 		More: func(page RestorableDatabaseAccountsClientListResponse) bool {
 			return false
@@ -165,14 +165,14 @@ func (client *RestorableDatabaseAccountsClient) listHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListByLocation - Lists all the restorable Azure Cosmos DB database accounts available under the subscription and in a region.
-// This call requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read'
+// NewListByLocationPager - Lists all the restorable Azure Cosmos DB database accounts available under the subscription and
+// in a region. This call requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read'
 // permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - Cosmos DB region, with spaces between words and each word capitalized.
 // options - RestorableDatabaseAccountsClientListByLocationOptions contains the optional parameters for the RestorableDatabaseAccountsClient.ListByLocation
 // method.
-func (client *RestorableDatabaseAccountsClient) ListByLocation(location string, options *RestorableDatabaseAccountsClientListByLocationOptions) *runtime.Pager[RestorableDatabaseAccountsClientListByLocationResponse] {
+func (client *RestorableDatabaseAccountsClient) NewListByLocationPager(location string, options *RestorableDatabaseAccountsClientListByLocationOptions) *runtime.Pager[RestorableDatabaseAccountsClientListByLocationResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RestorableDatabaseAccountsClientListByLocationResponse]{
 		More: func(page RestorableDatabaseAccountsClientListByLocationResponse) bool {
 			return false

@@ -115,14 +115,14 @@ func (client *PublicKeysClient) getHandleResponse(resp *http.Response) (PublicKe
 	return result, nil
 }
 
-// ListByDataManager - This method gets the list view of public keys, however it will only have one element.
+// NewListByDataManagerPager - This method gets the list view of public keys, however it will only have one element.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The Resource Group Name
 // dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
 // 3 and 24 characters in length and use any alphanumeric and underscore only
 // options - PublicKeysClientListByDataManagerOptions contains the optional parameters for the PublicKeysClient.ListByDataManager
 // method.
-func (client *PublicKeysClient) ListByDataManager(resourceGroupName string, dataManagerName string, options *PublicKeysClientListByDataManagerOptions) *runtime.Pager[PublicKeysClientListByDataManagerResponse] {
+func (client *PublicKeysClient) NewListByDataManagerPager(resourceGroupName string, dataManagerName string, options *PublicKeysClientListByDataManagerOptions) *runtime.Pager[PublicKeysClientListByDataManagerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PublicKeysClientListByDataManagerResponse]{
 		More: func(page PublicKeysClientListByDataManagerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

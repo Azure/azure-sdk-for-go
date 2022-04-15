@@ -1,5 +1,49 @@
 # Release History
 
+## 0.5.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*RegistriesClient.List` has been removed
+- Function `*WebhooksClient.List` has been removed
+- Function `*RegistriesClient.ListByResourceGroup` has been removed
+- Function `*PipelineRunsClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*ExportPipelinesClient.List` has been removed
+- Function `*WebhooksClient.ListEvents` has been removed
+- Function `*RegistriesClient.ListPrivateLinkResources` has been removed
+- Function `*TokensClient.List` has been removed
+- Function `*TasksClient.List` has been removed
+- Function `*ImportPipelinesClient.List` has been removed
+- Function `*ScopeMapsClient.List` has been removed
+- Function `*TaskRunsClient.List` has been removed
+- Function `*PrivateEndpointConnectionsClient.List` has been removed
+- Function `*RunsClient.List` has been removed
+- Function `*AgentPoolsClient.List` has been removed
+- Function `*ReplicationsClient.List` has been removed
+- Function `*ConnectedRegistriesClient.List` has been removed
+
+### Features Added
+
+- New function `*TasksClient.NewListPager(string, string, *TasksClientListOptions) *runtime.Pager[TasksClientListResponse]`
+- New function `*RegistriesClient.NewListPrivateLinkResourcesPager(string, string, *RegistriesClientListPrivateLinkResourcesOptions) *runtime.Pager[RegistriesClientListPrivateLinkResourcesResponse]`
+- New function `*ReplicationsClient.NewListPager(string, string, *ReplicationsClientListOptions) *runtime.Pager[ReplicationsClientListResponse]`
+- New function `*ImportPipelinesClient.NewListPager(string, string, *ImportPipelinesClientListOptions) *runtime.Pager[ImportPipelinesClientListResponse]`
+- New function `*ExportPipelinesClient.NewListPager(string, string, *ExportPipelinesClientListOptions) *runtime.Pager[ExportPipelinesClientListResponse]`
+- New function `*RegistriesClient.NewListPager(*RegistriesClientListOptions) *runtime.Pager[RegistriesClientListResponse]`
+- New function `*PrivateEndpointConnectionsClient.NewListPager(string, string, *PrivateEndpointConnectionsClientListOptions) *runtime.Pager[PrivateEndpointConnectionsClientListResponse]`
+- New function `*RunsClient.NewListPager(string, string, *RunsClientListOptions) *runtime.Pager[RunsClientListResponse]`
+- New function `*WebhooksClient.NewListEventsPager(string, string, string, *WebhooksClientListEventsOptions) *runtime.Pager[WebhooksClientListEventsResponse]`
+- New function `*WebhooksClient.NewListPager(string, string, *WebhooksClientListOptions) *runtime.Pager[WebhooksClientListResponse]`
+- New function `*ConnectedRegistriesClient.NewListPager(string, string, *ConnectedRegistriesClientListOptions) *runtime.Pager[ConnectedRegistriesClientListResponse]`
+- New function `*TokensClient.NewListPager(string, string, *TokensClientListOptions) *runtime.Pager[TokensClientListResponse]`
+- New function `*PipelineRunsClient.NewListPager(string, string, *PipelineRunsClientListOptions) *runtime.Pager[PipelineRunsClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*AgentPoolsClient.NewListPager(string, string, *AgentPoolsClientListOptions) *runtime.Pager[AgentPoolsClientListResponse]`
+- New function `*ScopeMapsClient.NewListPager(string, string, *ScopeMapsClientListOptions) *runtime.Pager[ScopeMapsClientListResponse]`
+- New function `*RegistriesClient.NewListByResourceGroupPager(string, *RegistriesClientListByResourceGroupOptions) *runtime.Pager[RegistriesClientListByResourceGroupResponse]`
+- New function `*TaskRunsClient.NewListPager(string, string, *TaskRunsClientListOptions) *runtime.Pager[TaskRunsClientListResponse]`
+
+
 ## 0.4.0 (2022-04-11)
 ### Breaking Changes
 

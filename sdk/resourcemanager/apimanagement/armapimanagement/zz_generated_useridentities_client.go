@@ -55,13 +55,13 @@ func NewUserIdentitiesClient(subscriptionID string, credential azcore.TokenCrede
 	return client, nil
 }
 
-// List - List of all user identities.
+// NewListPager - List of all user identities.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // userID - User identifier. Must be unique in the current API Management service instance.
 // options - UserIdentitiesClientListOptions contains the optional parameters for the UserIdentitiesClient.List method.
-func (client *UserIdentitiesClient) List(resourceGroupName string, serviceName string, userID string, options *UserIdentitiesClientListOptions) *runtime.Pager[UserIdentitiesClientListResponse] {
+func (client *UserIdentitiesClient) NewListPager(resourceGroupName string, serviceName string, userID string, options *UserIdentitiesClientListOptions) *runtime.Pager[UserIdentitiesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[UserIdentitiesClientListResponse]{
 		More: func(page UserIdentitiesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

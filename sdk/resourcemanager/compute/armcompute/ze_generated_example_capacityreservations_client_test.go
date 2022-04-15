@@ -172,7 +172,7 @@ func ExampleCapacityReservationsClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/ListCapacityReservationsInReservationGroup.json
-func ExampleCapacityReservationsClient_ListByCapacityReservationGroup() {
+func ExampleCapacityReservationsClient_NewListByCapacityReservationGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -184,7 +184,7 @@ func ExampleCapacityReservationsClient_ListByCapacityReservationGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByCapacityReservationGroup("<resource-group-name>",
+	pager := client.NewListByCapacityReservationGroupPager("<resource-group-name>",
 		"<capacity-reservation-group-name>",
 		nil)
 	for pager.More() {

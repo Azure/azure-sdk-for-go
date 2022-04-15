@@ -304,12 +304,12 @@ func (client *NetworkFunctionsClient) getHandleResponse(resp *http.Response) (Ne
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all the network function resources in a resource group.
+// NewListByResourceGroupPager - Lists all the network function resources in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - NetworkFunctionsClientListByResourceGroupOptions contains the optional parameters for the NetworkFunctionsClient.ListByResourceGroup
 // method.
-func (client *NetworkFunctionsClient) ListByResourceGroup(resourceGroupName string, options *NetworkFunctionsClientListByResourceGroupOptions) *runtime.Pager[NetworkFunctionsClientListByResourceGroupResponse] {
+func (client *NetworkFunctionsClient) NewListByResourceGroupPager(resourceGroupName string, options *NetworkFunctionsClientListByResourceGroupOptions) *runtime.Pager[NetworkFunctionsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[NetworkFunctionsClientListByResourceGroupResponse]{
 		More: func(page NetworkFunctionsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -368,11 +368,11 @@ func (client *NetworkFunctionsClient) listByResourceGroupHandleResponse(resp *ht
 	return result, nil
 }
 
-// ListBySubscription - Lists all the network functions in a subscription.
+// NewListBySubscriptionPager - Lists all the network functions in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - NetworkFunctionsClientListBySubscriptionOptions contains the optional parameters for the NetworkFunctionsClient.ListBySubscription
 // method.
-func (client *NetworkFunctionsClient) ListBySubscription(options *NetworkFunctionsClientListBySubscriptionOptions) *runtime.Pager[NetworkFunctionsClientListBySubscriptionResponse] {
+func (client *NetworkFunctionsClient) NewListBySubscriptionPager(options *NetworkFunctionsClientListBySubscriptionOptions) *runtime.Pager[NetworkFunctionsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[NetworkFunctionsClientListBySubscriptionResponse]{
 		More: func(page NetworkFunctionsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

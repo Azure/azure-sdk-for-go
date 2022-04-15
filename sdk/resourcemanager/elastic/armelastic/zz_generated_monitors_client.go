@@ -242,10 +242,10 @@ func (client *MonitorsClient) getHandleResponse(resp *http.Response) (MonitorsCl
 	return result, nil
 }
 
-// List - List all monitors under the specified subscription.
+// NewListPager - List all monitors under the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - MonitorsClientListOptions contains the optional parameters for the MonitorsClient.List method.
-func (client *MonitorsClient) List(options *MonitorsClientListOptions) *runtime.Pager[MonitorsClientListResponse] {
+func (client *MonitorsClient) NewListPager(options *MonitorsClientListOptions) *runtime.Pager[MonitorsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MonitorsClientListResponse]{
 		More: func(page MonitorsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -300,12 +300,12 @@ func (client *MonitorsClient) listHandleResponse(resp *http.Response) (MonitorsC
 	return result, nil
 }
 
-// ListByResourceGroup - List all monitors under the specified resource group.
+// NewListByResourceGroupPager - List all monitors under the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group to which the Elastic resource belongs.
 // options - MonitorsClientListByResourceGroupOptions contains the optional parameters for the MonitorsClient.ListByResourceGroup
 // method.
-func (client *MonitorsClient) ListByResourceGroup(resourceGroupName string, options *MonitorsClientListByResourceGroupOptions) *runtime.Pager[MonitorsClientListByResourceGroupResponse] {
+func (client *MonitorsClient) NewListByResourceGroupPager(resourceGroupName string, options *MonitorsClientListByResourceGroupOptions) *runtime.Pager[MonitorsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MonitorsClientListByResourceGroupResponse]{
 		More: func(page MonitorsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

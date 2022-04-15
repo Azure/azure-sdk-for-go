@@ -255,13 +255,13 @@ func (client *DataSetsClient) getHandleResponse(resp *http.Response) (DataSetsCl
 	return result, nil
 }
 
-// ListByShare - List DataSets in a share
+// NewListBySharePager - List DataSets in a share
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareName - The name of the share.
 // options - DataSetsClientListByShareOptions contains the optional parameters for the DataSetsClient.ListByShare method.
-func (client *DataSetsClient) ListByShare(resourceGroupName string, accountName string, shareName string, options *DataSetsClientListByShareOptions) *runtime.Pager[DataSetsClientListByShareResponse] {
+func (client *DataSetsClient) NewListBySharePager(resourceGroupName string, accountName string, shareName string, options *DataSetsClientListByShareOptions) *runtime.Pager[DataSetsClientListByShareResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DataSetsClientListByShareResponse]{
 		More: func(page DataSetsClientListByShareResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

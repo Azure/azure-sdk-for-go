@@ -54,10 +54,10 @@ func NewResourceUsageClient(subscriptionID string, credential azcore.TokenCreden
 	return client, nil
 }
 
-// List - Check the quota and actual usage of the CDN profiles under the given subscription.
+// NewListPager - Check the quota and actual usage of the CDN profiles under the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ResourceUsageClientListOptions contains the optional parameters for the ResourceUsageClient.List method.
-func (client *ResourceUsageClient) List(options *ResourceUsageClientListOptions) *runtime.Pager[ResourceUsageClientListResponse] {
+func (client *ResourceUsageClient) NewListPager(options *ResourceUsageClientListOptions) *runtime.Pager[ResourceUsageClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourceUsageClientListResponse]{
 		More: func(page ResourceUsageClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

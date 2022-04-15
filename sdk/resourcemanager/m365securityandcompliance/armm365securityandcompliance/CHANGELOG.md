@@ -1,5 +1,51 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*PrivateLinkServicesForMIPPolicySyncClient.ListByResourceGroup` has been removed
+- Function `*PrivateLinkServicesForEDMUploadClient.ListByResourceGroup` has been removed
+- Function `*PrivateEndpointConnectionsForSCCPowershellClient.ListByService` has been removed
+- Function `*PrivateLinkServicesForEDMUploadClient.List` has been removed
+- Function `*PrivateEndpointConnectionsForEDMClient.ListByService` has been removed
+- Function `*PrivateLinkServicesForM365ComplianceCenterClient.List` has been removed
+- Function `*PrivateLinkServicesForM365SecurityCenterClient.List` has been removed
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClient.List` has been removed
+- Function `*PrivateLinkServicesForSCCPowershellClient.ListByResourceGroup` has been removed
+- Function `*PrivateEndpointConnectionsForMIPPolicySyncClient.ListByService` has been removed
+- Function `*PrivateEndpointConnectionsCompClient.ListByService` has been removed
+- Function `*PrivateLinkServicesForM365SecurityCenterClient.ListByResourceGroup` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*PrivateLinkServicesForM365ComplianceCenterClient.ListByResourceGroup` has been removed
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClient.ListByResourceGroup` has been removed
+- Function `*PrivateLinkServicesForSCCPowershellClient.List` has been removed
+- Function `*PrivateEndpointConnectionsAdtAPIClient.ListByService` has been removed
+- Function `*PrivateEndpointConnectionsSecClient.ListByService` has been removed
+- Function `*PrivateLinkServicesForMIPPolicySyncClient.List` has been removed
+
+### Features Added
+
+- New function `*PrivateLinkServicesForM365ComplianceCenterClient.NewListPager(*PrivateLinkServicesForM365ComplianceCenterClientListOptions) *runtime.Pager[PrivateLinkServicesForM365ComplianceCenterClientListResponse]`
+- New function `*PrivateLinkServicesForM365SecurityCenterClient.NewListByResourceGroupPager(string, *PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupResponse]`
+- New function `*PrivateLinkServicesForMIPPolicySyncClient.NewListPager(*PrivateLinkServicesForMIPPolicySyncClientListOptions) *runtime.Pager[PrivateLinkServicesForMIPPolicySyncClientListResponse]`
+- New function `*PrivateEndpointConnectionsCompClient.NewListByServicePager(string, string, *PrivateEndpointConnectionsCompClientListByServiceOptions) *runtime.Pager[PrivateEndpointConnectionsCompClientListByServiceResponse]`
+- New function `*PrivateLinkServicesForO365ManagementActivityAPIClient.NewListByResourceGroupPager(string, *PrivateLinkServicesForO365ManagementActivityAPIClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkServicesForO365ManagementActivityAPIClientListByResourceGroupResponse]`
+- New function `*PrivateEndpointConnectionsAdtAPIClient.NewListByServicePager(string, string, *PrivateEndpointConnectionsAdtAPIClientListByServiceOptions) *runtime.Pager[PrivateEndpointConnectionsAdtAPIClientListByServiceResponse]`
+- New function `*PrivateEndpointConnectionsSecClient.NewListByServicePager(string, string, *PrivateEndpointConnectionsSecClientListByServiceOptions) *runtime.Pager[PrivateEndpointConnectionsSecClientListByServiceResponse]`
+- New function `*PrivateLinkServicesForM365SecurityCenterClient.NewListPager(*PrivateLinkServicesForM365SecurityCenterClientListOptions) *runtime.Pager[PrivateLinkServicesForM365SecurityCenterClientListResponse]`
+- New function `*PrivateLinkServicesForSCCPowershellClient.NewListByResourceGroupPager(string, *PrivateLinkServicesForSCCPowershellClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkServicesForSCCPowershellClientListByResourceGroupResponse]`
+- New function `*PrivateEndpointConnectionsForSCCPowershellClient.NewListByServicePager(string, string, *PrivateEndpointConnectionsForSCCPowershellClientListByServiceOptions) *runtime.Pager[PrivateEndpointConnectionsForSCCPowershellClientListByServiceResponse]`
+- New function `*PrivateLinkServicesForO365ManagementActivityAPIClient.NewListPager(*PrivateLinkServicesForO365ManagementActivityAPIClientListOptions) *runtime.Pager[PrivateLinkServicesForO365ManagementActivityAPIClientListResponse]`
+- New function `*PrivateLinkServicesForEDMUploadClient.NewListPager(*PrivateLinkServicesForEDMUploadClientListOptions) *runtime.Pager[PrivateLinkServicesForEDMUploadClientListResponse]`
+- New function `*PrivateEndpointConnectionsForEDMClient.NewListByServicePager(string, string, *PrivateEndpointConnectionsForEDMClientListByServiceOptions) *runtime.Pager[PrivateEndpointConnectionsForEDMClientListByServiceResponse]`
+- New function `*PrivateEndpointConnectionsForMIPPolicySyncClient.NewListByServicePager(string, string, *PrivateEndpointConnectionsForMIPPolicySyncClientListByServiceOptions) *runtime.Pager[PrivateEndpointConnectionsForMIPPolicySyncClientListByServiceResponse]`
+- New function `*PrivateLinkServicesForMIPPolicySyncClient.NewListByResourceGroupPager(string, *PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupResponse]`
+- New function `*PrivateLinkServicesForM365ComplianceCenterClient.NewListByResourceGroupPager(string, *PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupResponse]`
+- New function `*PrivateLinkServicesForSCCPowershellClient.NewListPager(*PrivateLinkServicesForSCCPowershellClientListOptions) *runtime.Pager[PrivateLinkServicesForSCCPowershellClientListResponse]`
+- New function `*PrivateLinkServicesForEDMUploadClient.NewListByResourceGroupPager(string, *PrivateLinkServicesForEDMUploadClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkServicesForEDMUploadClientListByResourceGroupResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+
+
 ## 0.3.0 (2022-04-12)
 ### Breaking Changes
 

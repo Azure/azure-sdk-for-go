@@ -1,5 +1,35 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*UsersClient.ListByLab` has been removed
+- Function `*SKUsClient.List` has been removed
+- Function `*LabPlansClient.ListByResourceGroup` has been removed
+- Function `*ImagesClient.ListByLabPlan` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*LabsClient.ListByResourceGroup` has been removed
+- Function `*SchedulesClient.ListByLab` has been removed
+- Function `*VirtualMachinesClient.ListByLab` has been removed
+- Function `*LabPlansClient.ListBySubscription` has been removed
+- Function `*LabsClient.ListBySubscription` has been removed
+- Function `*UsagesClient.ListByLocation` has been removed
+
+### Features Added
+
+- New function `*LabPlansClient.NewListBySubscriptionPager(*LabPlansClientListBySubscriptionOptions) *runtime.Pager[LabPlansClientListBySubscriptionResponse]`
+- New function `*VirtualMachinesClient.NewListByLabPager(string, string, *VirtualMachinesClientListByLabOptions) *runtime.Pager[VirtualMachinesClientListByLabResponse]`
+- New function `*LabsClient.NewListBySubscriptionPager(*LabsClientListBySubscriptionOptions) *runtime.Pager[LabsClientListBySubscriptionResponse]`
+- New function `*LabsClient.NewListByResourceGroupPager(string, *LabsClientListByResourceGroupOptions) *runtime.Pager[LabsClientListByResourceGroupResponse]`
+- New function `*SKUsClient.NewListPager(*SKUsClientListOptions) *runtime.Pager[SKUsClientListResponse]`
+- New function `*UsersClient.NewListByLabPager(string, string, *UsersClientListByLabOptions) *runtime.Pager[UsersClientListByLabResponse]`
+- New function `*ImagesClient.NewListByLabPlanPager(string, string, *ImagesClientListByLabPlanOptions) *runtime.Pager[ImagesClientListByLabPlanResponse]`
+- New function `*UsagesClient.NewListByLocationPager(string, *UsagesClientListByLocationOptions) *runtime.Pager[UsagesClientListByLocationResponse]`
+- New function `*LabPlansClient.NewListByResourceGroupPager(string, *LabPlansClientListByResourceGroupOptions) *runtime.Pager[LabPlansClientListByResourceGroupResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*SchedulesClient.NewListByLabPager(string, string, *SchedulesClientListByLabOptions) *runtime.Pager[SchedulesClientListByLabResponse]`
+
+
 ## 0.3.0 (2022-04-12)
 ### Breaking Changes
 

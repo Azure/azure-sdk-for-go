@@ -55,13 +55,13 @@ func NewScriptExecutionHistoryClient(subscriptionID string, credential azcore.To
 	return client, nil
 }
 
-// ListByCluster - Lists all scripts' execution history for the specified cluster.
+// NewListByClusterPager - Lists all scripts' execution history for the specified cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // clusterName - The name of the cluster.
 // options - ScriptExecutionHistoryClientListByClusterOptions contains the optional parameters for the ScriptExecutionHistoryClient.ListByCluster
 // method.
-func (client *ScriptExecutionHistoryClient) ListByCluster(resourceGroupName string, clusterName string, options *ScriptExecutionHistoryClientListByClusterOptions) *runtime.Pager[ScriptExecutionHistoryClientListByClusterResponse] {
+func (client *ScriptExecutionHistoryClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *ScriptExecutionHistoryClientListByClusterOptions) *runtime.Pager[ScriptExecutionHistoryClientListByClusterResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ScriptExecutionHistoryClientListByClusterResponse]{
 		More: func(page ScriptExecutionHistoryClientListByClusterResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

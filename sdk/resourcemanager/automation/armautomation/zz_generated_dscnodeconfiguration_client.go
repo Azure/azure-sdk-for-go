@@ -236,13 +236,13 @@ func (client *DscNodeConfigurationClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListByAutomationAccount - Retrieve a list of dsc node configurations.
+// NewListByAutomationAccountPager - Retrieve a list of dsc node configurations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - DscNodeConfigurationClientListByAutomationAccountOptions contains the optional parameters for the DscNodeConfigurationClient.ListByAutomationAccount
 // method.
-func (client *DscNodeConfigurationClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *DscNodeConfigurationClientListByAutomationAccountOptions) *runtime.Pager[DscNodeConfigurationClientListByAutomationAccountResponse] {
+func (client *DscNodeConfigurationClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *DscNodeConfigurationClientListByAutomationAccountOptions) *runtime.Pager[DscNodeConfigurationClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DscNodeConfigurationClientListByAutomationAccountResponse]{
 		More: func(page DscNodeConfigurationClientListByAutomationAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

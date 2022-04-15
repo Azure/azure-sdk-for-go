@@ -105,12 +105,12 @@ func (client *AccessReviewHistoryDefinitionsClient) getByIDHandleResponse(resp *
 	return result, nil
 }
 
-// List - Lists the accessReviewHistoryDefinitions available from this provider, definition instances are only available for
-// 30 days after creation.
+// NewListPager - Lists the accessReviewHistoryDefinitions available from this provider, definition instances are only available
+// for 30 days after creation.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AccessReviewHistoryDefinitionsClientListOptions contains the optional parameters for the AccessReviewHistoryDefinitionsClient.List
 // method.
-func (client *AccessReviewHistoryDefinitionsClient) List(options *AccessReviewHistoryDefinitionsClientListOptions) *runtime.Pager[AccessReviewHistoryDefinitionsClientListResponse] {
+func (client *AccessReviewHistoryDefinitionsClient) NewListPager(options *AccessReviewHistoryDefinitionsClientListOptions) *runtime.Pager[AccessReviewHistoryDefinitionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccessReviewHistoryDefinitionsClientListResponse]{
 		More: func(page AccessReviewHistoryDefinitionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

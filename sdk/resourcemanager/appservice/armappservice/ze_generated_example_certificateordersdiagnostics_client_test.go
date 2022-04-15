@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2021-03-01/examples/Diagnostics_ListAppServiceCertificateOrderDetectorResponse.json
-func ExampleCertificateOrdersDiagnosticsClient_ListAppServiceCertificateOrderDetectorResponse() {
+func ExampleCertificateOrdersDiagnosticsClient_NewListAppServiceCertificateOrderDetectorResponsePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleCertificateOrdersDiagnosticsClient_ListAppServiceCertificateOrderDet
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListAppServiceCertificateOrderDetectorResponse("<resource-group-name>",
+	pager := client.NewListAppServiceCertificateOrderDetectorResponsePager("<resource-group-name>",
 		"<certificate-order-name>",
 		nil)
 	for pager.More() {

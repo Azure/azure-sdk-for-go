@@ -51,14 +51,14 @@ func NewLotsClient(credential azcore.TokenCredential, options *arm.ClientOptions
 	return client, nil
 }
 
-// ListByBillingAccount - Lists all Azure credits and Microsoft Azure consumption commitments for a billing account or a billing
-// profile. Microsoft Azure consumption commitments are only supported for the billing account
+// NewListByBillingAccountPager - Lists all Azure credits and Microsoft Azure consumption commitments for a billing account
+// or a billing profile. Microsoft Azure consumption commitments are only supported for the billing account
 // scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountID - BillingAccount ID
 // options - LotsClientListByBillingAccountOptions contains the optional parameters for the LotsClient.ListByBillingAccount
 // method.
-func (client *LotsClient) ListByBillingAccount(billingAccountID string, options *LotsClientListByBillingAccountOptions) *runtime.Pager[LotsClientListByBillingAccountResponse] {
+func (client *LotsClient) NewListByBillingAccountPager(billingAccountID string, options *LotsClientListByBillingAccountOptions) *runtime.Pager[LotsClientListByBillingAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LotsClientListByBillingAccountResponse]{
 		More: func(page LotsClientListByBillingAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -116,15 +116,15 @@ func (client *LotsClient) listByBillingAccountHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListByBillingProfile - Lists all Azure credits and Microsoft Azure consumption commitments for a billing account or a billing
-// profile. Microsoft Azure consumption commitments are only supported for the billing account
+// NewListByBillingProfilePager - Lists all Azure credits and Microsoft Azure consumption commitments for a billing account
+// or a billing profile. Microsoft Azure consumption commitments are only supported for the billing account
 // scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountID - BillingAccount ID
 // billingProfileID - Azure Billing Profile ID.
 // options - LotsClientListByBillingProfileOptions contains the optional parameters for the LotsClient.ListByBillingProfile
 // method.
-func (client *LotsClient) ListByBillingProfile(billingAccountID string, billingProfileID string, options *LotsClientListByBillingProfileOptions) *runtime.Pager[LotsClientListByBillingProfileResponse] {
+func (client *LotsClient) NewListByBillingProfilePager(billingAccountID string, billingProfileID string, options *LotsClientListByBillingProfileOptions) *runtime.Pager[LotsClientListByBillingProfileResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LotsClientListByBillingProfileResponse]{
 		More: func(page LotsClientListByBillingProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -183,14 +183,14 @@ func (client *LotsClient) listByBillingProfileHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListByCustomer - Lists all Azure credits and Microsoft Azure consumption commitments for a billing account or a billing
-// profile and a customer. Microsoft Azure consumption commitments are only supported for the
+// NewListByCustomerPager - Lists all Azure credits and Microsoft Azure consumption commitments for a billing account or a
+// billing profile and a customer. Microsoft Azure consumption commitments are only supported for the
 // billing account scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountID - BillingAccount ID
 // customerID - Customer ID
 // options - LotsClientListByCustomerOptions contains the optional parameters for the LotsClient.ListByCustomer method.
-func (client *LotsClient) ListByCustomer(billingAccountID string, customerID string, options *LotsClientListByCustomerOptions) *runtime.Pager[LotsClientListByCustomerResponse] {
+func (client *LotsClient) NewListByCustomerPager(billingAccountID string, customerID string, options *LotsClientListByCustomerOptions) *runtime.Pager[LotsClientListByCustomerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LotsClientListByCustomerResponse]{
 		More: func(page LotsClientListByCustomerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

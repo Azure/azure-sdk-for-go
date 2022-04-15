@@ -115,13 +115,13 @@ func (client *WorkspacePrivateLinkResourcesClient) getHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListByWorkspace - Gets the private link resources that need to be created for a workspace.
+// NewListByWorkspacePager - Gets the private link resources that need to be created for a workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the service instance.
 // workspaceName - The name of workspace resource.
 // options - WorkspacePrivateLinkResourcesClientListByWorkspaceOptions contains the optional parameters for the WorkspacePrivateLinkResourcesClient.ListByWorkspace
 // method.
-func (client *WorkspacePrivateLinkResourcesClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *WorkspacePrivateLinkResourcesClientListByWorkspaceOptions) *runtime.Pager[WorkspacePrivateLinkResourcesClientListByWorkspaceResponse] {
+func (client *WorkspacePrivateLinkResourcesClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *WorkspacePrivateLinkResourcesClientListByWorkspaceOptions) *runtime.Pager[WorkspacePrivateLinkResourcesClientListByWorkspaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkspacePrivateLinkResourcesClientListByWorkspaceResponse]{
 		More: func(page WorkspacePrivateLinkResourcesClientListByWorkspaceResponse) bool {
 			return false

@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2022-03-01/examples/ContainerListAllInDevice.json
-func ExampleContainersClient_ListByStorageAccount() {
+func ExampleContainersClient_NewListByStorageAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleContainersClient_ListByStorageAccount() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByStorageAccount("<device-name>",
+	pager := client.NewListByStorageAccountPager("<device-name>",
 		"<storage-account-name>",
 		"<resource-group-name>",
 		nil)

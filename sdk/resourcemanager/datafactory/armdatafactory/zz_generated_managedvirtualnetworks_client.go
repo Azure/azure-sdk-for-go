@@ -183,13 +183,13 @@ func (client *ManagedVirtualNetworksClient) getHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListByFactory - Lists managed Virtual Networks.
+// NewListByFactoryPager - Lists managed Virtual Networks.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // options - ManagedVirtualNetworksClientListByFactoryOptions contains the optional parameters for the ManagedVirtualNetworksClient.ListByFactory
 // method.
-func (client *ManagedVirtualNetworksClient) ListByFactory(resourceGroupName string, factoryName string, options *ManagedVirtualNetworksClientListByFactoryOptions) *runtime.Pager[ManagedVirtualNetworksClientListByFactoryResponse] {
+func (client *ManagedVirtualNetworksClient) NewListByFactoryPager(resourceGroupName string, factoryName string, options *ManagedVirtualNetworksClientListByFactoryOptions) *runtime.Pager[ManagedVirtualNetworksClientListByFactoryResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagedVirtualNetworksClientListByFactoryResponse]{
 		More: func(page ManagedVirtualNetworksClientListByFactoryResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

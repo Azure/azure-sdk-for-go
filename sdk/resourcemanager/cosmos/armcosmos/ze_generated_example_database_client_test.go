@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBDatabaseGetMetrics.json
-func ExampleDatabaseClient_ListMetrics() {
+func ExampleDatabaseClient_NewListMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleDatabaseClient_ListMetrics() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListMetrics("<resource-group-name>",
+	pager := client.NewListMetricsPager("<resource-group-name>",
 		"<account-name>",
 		"<database-rid>",
 		"<filter>",
@@ -49,7 +49,7 @@ func ExampleDatabaseClient_ListMetrics() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBDatabaseGetUsages.json
-func ExampleDatabaseClient_ListUsages() {
+func ExampleDatabaseClient_NewListUsagesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -61,7 +61,7 @@ func ExampleDatabaseClient_ListUsages() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListUsages("<resource-group-name>",
+	pager := client.NewListUsagesPager("<resource-group-name>",
 		"<account-name>",
 		"<database-rid>",
 		&armcosmos.DatabaseClientListUsagesOptions{Filter: to.Ptr("<filter>")})
@@ -79,7 +79,7 @@ func ExampleDatabaseClient_ListUsages() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBDatabaseGetMetricDefinitions.json
-func ExampleDatabaseClient_ListMetricDefinitions() {
+func ExampleDatabaseClient_NewListMetricDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -91,7 +91,7 @@ func ExampleDatabaseClient_ListMetricDefinitions() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListMetricDefinitions("<resource-group-name>",
+	pager := client.NewListMetricDefinitionsPager("<resource-group-name>",
 		"<account-name>",
 		"<database-rid>",
 		nil)

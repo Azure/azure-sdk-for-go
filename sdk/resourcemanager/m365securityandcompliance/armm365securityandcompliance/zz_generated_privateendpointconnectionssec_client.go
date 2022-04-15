@@ -252,13 +252,13 @@ func (client *PrivateEndpointConnectionsSecClient) getHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListByService - Lists all private endpoint connections for a service.
+// NewListByServicePager - Lists all private endpoint connections for a service.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the service instance.
 // resourceName - The name of the service instance.
 // options - PrivateEndpointConnectionsSecClientListByServiceOptions contains the optional parameters for the PrivateEndpointConnectionsSecClient.ListByService
 // method.
-func (client *PrivateEndpointConnectionsSecClient) ListByService(resourceGroupName string, resourceName string, options *PrivateEndpointConnectionsSecClientListByServiceOptions) *runtime.Pager[PrivateEndpointConnectionsSecClientListByServiceResponse] {
+func (client *PrivateEndpointConnectionsSecClient) NewListByServicePager(resourceGroupName string, resourceName string, options *PrivateEndpointConnectionsSecClientListByServiceOptions) *runtime.Pager[PrivateEndpointConnectionsSecClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionsSecClientListByServiceResponse]{
 		More: func(page PrivateEndpointConnectionsSecClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

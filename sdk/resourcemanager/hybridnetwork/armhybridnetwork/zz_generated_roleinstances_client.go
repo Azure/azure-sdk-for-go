@@ -119,13 +119,13 @@ func (client *RoleInstancesClient) getHandleResponse(resp *http.Response) (RoleI
 	return result, nil
 }
 
-// List - Lists the information of role instances of vendor network function.
+// NewListPager - Lists the information of role instances of vendor network function.
 // If the operation fails it returns an *azcore.ResponseError type.
 // locationName - The Azure region where the network function resource was created by customer.
 // vendorName - The name of the vendor.
 // serviceKey - The GUID for the vendor network function.
 // options - RoleInstancesClientListOptions contains the optional parameters for the RoleInstancesClient.List method.
-func (client *RoleInstancesClient) List(locationName string, vendorName string, serviceKey string, options *RoleInstancesClientListOptions) *runtime.Pager[RoleInstancesClientListResponse] {
+func (client *RoleInstancesClient) NewListPager(locationName string, vendorName string, serviceKey string, options *RoleInstancesClientListOptions) *runtime.Pager[RoleInstancesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RoleInstancesClientListResponse]{
 		More: func(page RoleInstancesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

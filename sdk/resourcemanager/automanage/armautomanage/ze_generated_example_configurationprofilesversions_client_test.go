@@ -182,7 +182,7 @@ func ExampleConfigurationProfilesVersionsClient_Update() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/listConfigurationProfileVersions.json
-func ExampleConfigurationProfilesVersionsClient_ListChildResources() {
+func ExampleConfigurationProfilesVersionsClient_NewListChildResourcesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -194,7 +194,7 @@ func ExampleConfigurationProfilesVersionsClient_ListChildResources() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListChildResources("<configuration-profile-name>",
+	pager := client.NewListChildResourcesPager("<configuration-profile-name>",
 		"<resource-group-name>",
 		nil)
 	for pager.More() {

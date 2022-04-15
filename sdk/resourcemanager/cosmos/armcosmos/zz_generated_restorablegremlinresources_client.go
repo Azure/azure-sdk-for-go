@@ -54,15 +54,15 @@ func NewRestorableGremlinResourcesClient(subscriptionID string, credential azcor
 	return client, nil
 }
 
-// List - Return a list of gremlin database and graphs combo that exist on the account at the given timestamp and location.
-// This helps in scenarios to validate what resources exist at given timestamp and
+// NewListPager - Return a list of gremlin database and graphs combo that exist on the account at the given timestamp and
+// location. This helps in scenarios to validate what resources exist at given timestamp and
 // location. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/…/read' permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - Cosmos DB region, with spaces between words and each word capitalized.
 // instanceID - The instanceId GUID of a restorable database account.
 // options - RestorableGremlinResourcesClientListOptions contains the optional parameters for the RestorableGremlinResourcesClient.List
 // method.
-func (client *RestorableGremlinResourcesClient) List(location string, instanceID string, options *RestorableGremlinResourcesClientListOptions) *runtime.Pager[RestorableGremlinResourcesClientListResponse] {
+func (client *RestorableGremlinResourcesClient) NewListPager(location string, instanceID string, options *RestorableGremlinResourcesClientListOptions) *runtime.Pager[RestorableGremlinResourcesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RestorableGremlinResourcesClientListResponse]{
 		More: func(page RestorableGremlinResourcesClientListResponse) bool {
 			return false

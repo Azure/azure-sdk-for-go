@@ -247,12 +247,12 @@ func (client *ExportPipelinesClient) getHandleResponse(resp *http.Response) (Exp
 	return result, nil
 }
 
-// List - Lists all export pipelines for the specified container registry.
+// NewListPager - Lists all export pipelines for the specified container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // options - ExportPipelinesClientListOptions contains the optional parameters for the ExportPipelinesClient.List method.
-func (client *ExportPipelinesClient) List(resourceGroupName string, registryName string, options *ExportPipelinesClientListOptions) *runtime.Pager[ExportPipelinesClientListResponse] {
+func (client *ExportPipelinesClient) NewListPager(resourceGroupName string, registryName string, options *ExportPipelinesClientListOptions) *runtime.Pager[ExportPipelinesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ExportPipelinesClientListResponse]{
 		More: func(page ExportPipelinesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

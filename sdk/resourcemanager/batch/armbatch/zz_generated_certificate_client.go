@@ -327,13 +327,13 @@ func (client *CertificateClient) getHandleResponse(resp *http.Response) (Certifi
 	return result, nil
 }
 
-// ListByBatchAccount - Lists all of the certificates in the specified account.
+// NewListByBatchAccountPager - Lists all of the certificates in the specified account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // options - CertificateClientListByBatchAccountOptions contains the optional parameters for the CertificateClient.ListByBatchAccount
 // method.
-func (client *CertificateClient) ListByBatchAccount(resourceGroupName string, accountName string, options *CertificateClientListByBatchAccountOptions) *runtime.Pager[CertificateClientListByBatchAccountResponse] {
+func (client *CertificateClient) NewListByBatchAccountPager(resourceGroupName string, accountName string, options *CertificateClientListByBatchAccountOptions) *runtime.Pager[CertificateClientListByBatchAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CertificateClientListByBatchAccountResponse]{
 		More: func(page CertificateClientListByBatchAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

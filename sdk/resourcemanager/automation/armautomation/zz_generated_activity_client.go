@@ -120,13 +120,13 @@ func (client *ActivityClient) getHandleResponse(resp *http.Response) (ActivityCl
 	return result, nil
 }
 
-// ListByModule - Retrieve a list of activities in the module identified by module name.
+// NewListByModulePager - Retrieve a list of activities in the module identified by module name.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // moduleName - The name of module.
 // options - ActivityClientListByModuleOptions contains the optional parameters for the ActivityClient.ListByModule method.
-func (client *ActivityClient) ListByModule(resourceGroupName string, automationAccountName string, moduleName string, options *ActivityClientListByModuleOptions) *runtime.Pager[ActivityClientListByModuleResponse] {
+func (client *ActivityClient) NewListByModulePager(resourceGroupName string, automationAccountName string, moduleName string, options *ActivityClientListByModuleOptions) *runtime.Pager[ActivityClientListByModuleResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ActivityClientListByModuleResponse]{
 		More: func(page ActivityClientListByModuleResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -194,14 +194,14 @@ func (client *DiskRestorePointClient) grantAccessCreateRequest(ctx context.Conte
 	return req, runtime.MarshalAsJSON(req, grantAccessData)
 }
 
-// ListByRestorePoint - Lists diskRestorePoints under a vmRestorePoint.
+// NewListByRestorePointPager - Lists diskRestorePoints under a vmRestorePoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // restorePointCollectionName - The name of the restore point collection that the disk restore point belongs.
 // vmRestorePointName - The name of the vm restore point that the disk disk restore point belongs.
 // options - DiskRestorePointClientListByRestorePointOptions contains the optional parameters for the DiskRestorePointClient.ListByRestorePoint
 // method.
-func (client *DiskRestorePointClient) ListByRestorePoint(resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, options *DiskRestorePointClientListByRestorePointOptions) *runtime.Pager[DiskRestorePointClientListByRestorePointResponse] {
+func (client *DiskRestorePointClient) NewListByRestorePointPager(resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, options *DiskRestorePointClientListByRestorePointOptions) *runtime.Pager[DiskRestorePointClientListByRestorePointResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DiskRestorePointClientListByRestorePointResponse]{
 		More: func(page DiskRestorePointClientListByRestorePointResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -1,5 +1,23 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*MembersClient.ListConsortiumMembers` has been removed
+- Function `*MembersClient.ListAll` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*TransactionNodesClient.List` has been removed
+- Function `*MembersClient.List` has been removed
+
+### Features Added
+
+- New function `*TransactionNodesClient.NewListPager(string, string, *TransactionNodesClientListOptions) *runtime.Pager[TransactionNodesClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*MembersClient.NewListConsortiumMembersPager(string, string, *MembersClientListConsortiumMembersOptions) *runtime.Pager[MembersClientListConsortiumMembersResponse]`
+- New function `*MembersClient.NewListPager(string, *MembersClientListOptions) *runtime.Pager[MembersClientListResponse]`
+- New function `*MembersClient.NewListAllPager(*MembersClientListAllOptions) *runtime.Pager[MembersClientListAllResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

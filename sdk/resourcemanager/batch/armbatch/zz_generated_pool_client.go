@@ -318,12 +318,12 @@ func (client *PoolClient) getHandleResponse(resp *http.Response) (PoolClientGetR
 	return result, nil
 }
 
-// ListByBatchAccount - Lists all of the pools in the specified account.
+// NewListByBatchAccountPager - Lists all of the pools in the specified account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // options - PoolClientListByBatchAccountOptions contains the optional parameters for the PoolClient.ListByBatchAccount method.
-func (client *PoolClient) ListByBatchAccount(resourceGroupName string, accountName string, options *PoolClientListByBatchAccountOptions) *runtime.Pager[PoolClientListByBatchAccountResponse] {
+func (client *PoolClient) NewListByBatchAccountPager(resourceGroupName string, accountName string, options *PoolClientListByBatchAccountOptions) *runtime.Pager[PoolClientListByBatchAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PoolClientListByBatchAccountResponse]{
 		More: func(page PoolClientListByBatchAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

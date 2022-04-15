@@ -97,10 +97,10 @@ func (client *EnrollmentAccountsClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// List - Lists the enrollment accounts the caller has access to.
+// NewListPager - Lists the enrollment accounts the caller has access to.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - EnrollmentAccountsClientListOptions contains the optional parameters for the EnrollmentAccountsClient.List method.
-func (client *EnrollmentAccountsClient) List(options *EnrollmentAccountsClientListOptions) *runtime.Pager[EnrollmentAccountsClientListResponse] {
+func (client *EnrollmentAccountsClient) NewListPager(options *EnrollmentAccountsClientListOptions) *runtime.Pager[EnrollmentAccountsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EnrollmentAccountsClientListResponse]{
 		More: func(page EnrollmentAccountsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

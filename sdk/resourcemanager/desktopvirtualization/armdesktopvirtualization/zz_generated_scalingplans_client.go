@@ -211,13 +211,13 @@ func (client *ScalingPlansClient) getHandleResponse(resp *http.Response) (Scalin
 	return result, nil
 }
 
-// ListByHostPool - List scaling plan associated with hostpool.
+// NewListByHostPoolPager - List scaling plan associated with hostpool.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // hostPoolName - The name of the host pool within the specified resource group
 // options - ScalingPlansClientListByHostPoolOptions contains the optional parameters for the ScalingPlansClient.ListByHostPool
 // method.
-func (client *ScalingPlansClient) ListByHostPool(resourceGroupName string, hostPoolName string, options *ScalingPlansClientListByHostPoolOptions) *runtime.Pager[ScalingPlansClientListByHostPoolResponse] {
+func (client *ScalingPlansClient) NewListByHostPoolPager(resourceGroupName string, hostPoolName string, options *ScalingPlansClientListByHostPoolOptions) *runtime.Pager[ScalingPlansClientListByHostPoolResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ScalingPlansClientListByHostPoolResponse]{
 		More: func(page ScalingPlansClientListByHostPoolResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -280,12 +280,12 @@ func (client *ScalingPlansClient) listByHostPoolHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListByResourceGroup - List scaling plans.
+// NewListByResourceGroupPager - List scaling plans.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ScalingPlansClientListByResourceGroupOptions contains the optional parameters for the ScalingPlansClient.ListByResourceGroup
 // method.
-func (client *ScalingPlansClient) ListByResourceGroup(resourceGroupName string, options *ScalingPlansClientListByResourceGroupOptions) *runtime.Pager[ScalingPlansClientListByResourceGroupResponse] {
+func (client *ScalingPlansClient) NewListByResourceGroupPager(resourceGroupName string, options *ScalingPlansClientListByResourceGroupOptions) *runtime.Pager[ScalingPlansClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ScalingPlansClientListByResourceGroupResponse]{
 		More: func(page ScalingPlansClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -344,11 +344,11 @@ func (client *ScalingPlansClient) listByResourceGroupHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListBySubscription - List scaling plans in subscription.
+// NewListBySubscriptionPager - List scaling plans in subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ScalingPlansClientListBySubscriptionOptions contains the optional parameters for the ScalingPlansClient.ListBySubscription
 // method.
-func (client *ScalingPlansClient) ListBySubscription(options *ScalingPlansClientListBySubscriptionOptions) *runtime.Pager[ScalingPlansClientListBySubscriptionResponse] {
+func (client *ScalingPlansClient) NewListBySubscriptionPager(options *ScalingPlansClientListBySubscriptionOptions) *runtime.Pager[ScalingPlansClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ScalingPlansClientListBySubscriptionResponse]{
 		More: func(page ScalingPlansClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

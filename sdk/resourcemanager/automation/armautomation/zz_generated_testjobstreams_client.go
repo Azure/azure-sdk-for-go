@@ -120,14 +120,14 @@ func (client *TestJobStreamsClient) getHandleResponse(resp *http.Response) (Test
 	return result, nil
 }
 
-// ListByTestJob - Retrieve a list of test job streams identified by runbook name.
+// NewListByTestJobPager - Retrieve a list of test job streams identified by runbook name.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // runbookName - The runbook name.
 // options - TestJobStreamsClientListByTestJobOptions contains the optional parameters for the TestJobStreamsClient.ListByTestJob
 // method.
-func (client *TestJobStreamsClient) ListByTestJob(resourceGroupName string, automationAccountName string, runbookName string, options *TestJobStreamsClientListByTestJobOptions) *runtime.Pager[TestJobStreamsClientListByTestJobResponse] {
+func (client *TestJobStreamsClient) NewListByTestJobPager(resourceGroupName string, automationAccountName string, runbookName string, options *TestJobStreamsClientListByTestJobOptions) *runtime.Pager[TestJobStreamsClientListByTestJobResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TestJobStreamsClientListByTestJobResponse]{
 		More: func(page TestJobStreamsClientListByTestJobResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

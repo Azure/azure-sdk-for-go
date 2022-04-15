@@ -250,13 +250,13 @@ func (client *GalleryImagesClient) getHandleResponse(resp *http.Response) (Galle
 	return result, nil
 }
 
-// ListByGallery - List gallery image definitions in a gallery.
+// NewListByGalleryPager - List gallery image definitions in a gallery.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // galleryName - The name of the Shared Image Gallery from which Image Definitions are to be listed.
 // options - GalleryImagesClientListByGalleryOptions contains the optional parameters for the GalleryImagesClient.ListByGallery
 // method.
-func (client *GalleryImagesClient) ListByGallery(resourceGroupName string, galleryName string, options *GalleryImagesClientListByGalleryOptions) *runtime.Pager[GalleryImagesClientListByGalleryResponse] {
+func (client *GalleryImagesClient) NewListByGalleryPager(resourceGroupName string, galleryName string, options *GalleryImagesClientListByGalleryOptions) *runtime.Pager[GalleryImagesClientListByGalleryResponse] {
 	return runtime.NewPager(runtime.PageProcessor[GalleryImagesClientListByGalleryResponse]{
 		More: func(page GalleryImagesClientListByGalleryResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listFieldsByModuleAndType.json
-func ExampleObjectDataTypesClient_ListFieldsByModuleAndType() {
+func ExampleObjectDataTypesClient_NewListFieldsByModuleAndTypePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleObjectDataTypesClient_ListFieldsByModuleAndType() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListFieldsByModuleAndType("<resource-group-name>",
+	pager := client.NewListFieldsByModuleAndTypePager("<resource-group-name>",
 		"<automation-account-name>",
 		"<module-name>",
 		"<type-name>",
@@ -48,7 +48,7 @@ func ExampleObjectDataTypesClient_ListFieldsByModuleAndType() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listFieldsByType.json
-func ExampleObjectDataTypesClient_ListFieldsByType() {
+func ExampleObjectDataTypesClient_NewListFieldsByTypePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -60,7 +60,7 @@ func ExampleObjectDataTypesClient_ListFieldsByType() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListFieldsByType("<resource-group-name>",
+	pager := client.NewListFieldsByTypePager("<resource-group-name>",
 		"<automation-account-name>",
 		"<type-name>",
 		nil)

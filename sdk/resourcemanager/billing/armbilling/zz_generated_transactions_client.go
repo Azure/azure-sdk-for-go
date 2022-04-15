@@ -51,13 +51,14 @@ func NewTransactionsClient(credential azcore.TokenCredential, options *arm.Clien
 	return client, nil
 }
 
-// ListByInvoice - Lists the transactions for an invoice. Transactions include purchases, refunds and Azure usage charges.
+// NewListByInvoicePager - Lists the transactions for an invoice. Transactions include purchases, refunds and Azure usage
+// charges.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountName - The ID that uniquely identifies a billing account.
 // invoiceName - The ID that uniquely identifies an invoice.
 // options - TransactionsClientListByInvoiceOptions contains the optional parameters for the TransactionsClient.ListByInvoice
 // method.
-func (client *TransactionsClient) ListByInvoice(billingAccountName string, invoiceName string, options *TransactionsClientListByInvoiceOptions) *runtime.Pager[TransactionsClientListByInvoiceResponse] {
+func (client *TransactionsClient) NewListByInvoicePager(billingAccountName string, invoiceName string, options *TransactionsClientListByInvoiceOptions) *runtime.Pager[TransactionsClientListByInvoiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TransactionsClientListByInvoiceResponse]{
 		More: func(page TransactionsClientListByInvoiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

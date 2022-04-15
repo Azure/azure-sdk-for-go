@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/AFDProfiles_ListResourceUsage.json
-func ExampleAFDProfilesClient_ListResourceUsage() {
+func ExampleAFDProfilesClient_NewListResourceUsagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleAFDProfilesClient_ListResourceUsage() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListResourceUsage("<resource-group-name>",
+	pager := client.NewListResourceUsagePager("<resource-group-name>",
 		"<profile-name>",
 		nil)
 	for pager.More() {

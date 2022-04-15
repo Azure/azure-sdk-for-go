@@ -48,10 +48,10 @@ func NewProviderOperationsClient(credential azcore.TokenCredential, options *arm
 	return client, nil
 }
 
-// List - Result of the request to list REST API operations
+// NewListPager - Result of the request to list REST API operations
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ProviderOperationsClientListOptions contains the optional parameters for the ProviderOperationsClient.List method.
-func (client *ProviderOperationsClient) List(options *ProviderOperationsClientListOptions) *runtime.Pager[ProviderOperationsClientListResponse] {
+func (client *ProviderOperationsClient) NewListPager(options *ProviderOperationsClientListOptions) *runtime.Pager[ProviderOperationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProviderOperationsClientListResponse]{
 		More: func(page ProviderOperationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

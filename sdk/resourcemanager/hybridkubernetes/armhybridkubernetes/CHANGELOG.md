@@ -1,5 +1,19 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*ConnectedClusterClient.ListByResourceGroup` has been removed
+- Function `*OperationsClient.Get` has been removed
+- Function `*ConnectedClusterClient.ListBySubscription` has been removed
+
+### Features Added
+
+- New function `*ConnectedClusterClient.NewListBySubscriptionPager(*ConnectedClusterClientListBySubscriptionOptions) *runtime.Pager[ConnectedClusterClientListBySubscriptionResponse]`
+- New function `*ConnectedClusterClient.NewListByResourceGroupPager(string, *ConnectedClusterClientListByResourceGroupOptions) *runtime.Pager[ConnectedClusterClientListByResourceGroupResponse]`
+- New function `*OperationsClient.NewGetPager(*OperationsClientGetOptions) *runtime.Pager[OperationsClientGetResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

@@ -302,10 +302,10 @@ func (client *DisksClient) grantAccessCreateRequest(ctx context.Context, resourc
 	return req, runtime.MarshalAsJSON(req, grantAccessData)
 }
 
-// List - Lists all the disks under a subscription.
+// NewListPager - Lists all the disks under a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DisksClientListOptions contains the optional parameters for the DisksClient.List method.
-func (client *DisksClient) List(options *DisksClientListOptions) *runtime.Pager[DisksClientListResponse] {
+func (client *DisksClient) NewListPager(options *DisksClientListOptions) *runtime.Pager[DisksClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DisksClientListResponse]{
 		More: func(page DisksClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -360,12 +360,12 @@ func (client *DisksClient) listHandleResponse(resp *http.Response) (DisksClientL
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all the disks under a resource group.
+// NewListByResourceGroupPager - Lists all the disks under a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - DisksClientListByResourceGroupOptions contains the optional parameters for the DisksClient.ListByResourceGroup
 // method.
-func (client *DisksClient) ListByResourceGroup(resourceGroupName string, options *DisksClientListByResourceGroupOptions) *runtime.Pager[DisksClientListByResourceGroupResponse] {
+func (client *DisksClient) NewListByResourceGroupPager(resourceGroupName string, options *DisksClientListByResourceGroupOptions) *runtime.Pager[DisksClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DisksClientListByResourceGroupResponse]{
 		More: func(page DisksClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -228,13 +228,13 @@ func (client *CredentialClient) getHandleResponse(resp *http.Response) (Credenti
 	return result, nil
 }
 
-// ListByAutomationAccount - Retrieve a list of credentials.
+// NewListByAutomationAccountPager - Retrieve a list of credentials.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - CredentialClientListByAutomationAccountOptions contains the optional parameters for the CredentialClient.ListByAutomationAccount
 // method.
-func (client *CredentialClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *CredentialClientListByAutomationAccountOptions) *runtime.Pager[CredentialClientListByAutomationAccountResponse] {
+func (client *CredentialClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *CredentialClientListByAutomationAccountOptions) *runtime.Pager[CredentialClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CredentialClientListByAutomationAccountResponse]{
 		More: func(page CredentialClientListByAutomationAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

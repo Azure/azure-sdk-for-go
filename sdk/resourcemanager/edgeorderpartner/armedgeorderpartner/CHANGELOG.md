@@ -1,5 +1,17 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*APISClient.ListOperationsPartner` has been removed
+- Function `*APISClient.SearchInventories` has been removed
+
+### Features Added
+
+- New function `*APISClient.NewListOperationsPartnerPager(*APISClientListOperationsPartnerOptions) *runtime.Pager[APISClientListOperationsPartnerResponse]`
+- New function `*APISClient.NewSearchInventoriesPager(SearchInventoriesRequest, *APISClientSearchInventoriesOptions) *runtime.Pager[APISClientSearchInventoriesResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

@@ -99,11 +99,12 @@ func (client *ServicePrincipalsClient) getHandleResponse(resp *http.Response) (S
 	return result, nil
 }
 
-// ListBySubscription - Get the Automanage AAD first party Application Service Principal details for the subscription id.
+// NewListBySubscriptionPager - Get the Automanage AAD first party Application Service Principal details for the subscription
+// id.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ServicePrincipalsClientListBySubscriptionOptions contains the optional parameters for the ServicePrincipalsClient.ListBySubscription
 // method.
-func (client *ServicePrincipalsClient) ListBySubscription(options *ServicePrincipalsClientListBySubscriptionOptions) *runtime.Pager[ServicePrincipalsClientListBySubscriptionResponse] {
+func (client *ServicePrincipalsClient) NewListBySubscriptionPager(options *ServicePrincipalsClientListBySubscriptionOptions) *runtime.Pager[ServicePrincipalsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServicePrincipalsClientListBySubscriptionResponse]{
 		More: func(page ServicePrincipalsClientListBySubscriptionResponse) bool {
 			return false

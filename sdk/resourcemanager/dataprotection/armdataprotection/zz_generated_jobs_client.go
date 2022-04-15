@@ -114,12 +114,12 @@ func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsClientGetR
 	return result, nil
 }
 
-// List - Returns list of jobs belonging to a backup vault
+// NewListPager - Returns list of jobs belonging to a backup vault
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group where the backup vault is present.
 // vaultName - The name of the backup vault.
 // options - JobsClientListOptions contains the optional parameters for the JobsClient.List method.
-func (client *JobsClient) List(resourceGroupName string, vaultName string, options *JobsClientListOptions) *runtime.Pager[JobsClientListResponse] {
+func (client *JobsClient) NewListPager(resourceGroupName string, vaultName string, options *JobsClientListOptions) *runtime.Pager[JobsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[JobsClientListResponse]{
 		More: func(page JobsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

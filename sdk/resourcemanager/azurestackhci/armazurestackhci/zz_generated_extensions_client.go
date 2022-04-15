@@ -264,14 +264,14 @@ func (client *ExtensionsClient) getHandleResponse(resp *http.Response) (Extensio
 	return result, nil
 }
 
-// ListByArcSetting - List all Extensions under ArcSetting resource.
+// NewListByArcSettingPager - List all Extensions under ArcSetting resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // clusterName - The name of the cluster.
 // arcSettingName - The name of the proxy resource holding details of HCI ArcSetting information.
 // options - ExtensionsClientListByArcSettingOptions contains the optional parameters for the ExtensionsClient.ListByArcSetting
 // method.
-func (client *ExtensionsClient) ListByArcSetting(resourceGroupName string, clusterName string, arcSettingName string, options *ExtensionsClientListByArcSettingOptions) *runtime.Pager[ExtensionsClientListByArcSettingResponse] {
+func (client *ExtensionsClient) NewListByArcSettingPager(resourceGroupName string, clusterName string, arcSettingName string, options *ExtensionsClientListByArcSettingOptions) *runtime.Pager[ExtensionsClientListByArcSettingResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ExtensionsClientListByArcSettingResponse]{
 		More: func(page ExtensionsClientListByArcSettingResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

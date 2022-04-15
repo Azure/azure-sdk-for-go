@@ -1,5 +1,38 @@
 # Release History
 
+## 0.5.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*OperationsClient.List` has been removed
+- Function `*SnapshotsClient.List` has been removed
+- Function `*ManagedClustersClient.ListByResourceGroup` has been removed
+- Function `*MaintenanceConfigurationsClient.ListByManagedCluster` has been removed
+- Function `*ManagedClustersClient.ListOutboundNetworkDependenciesEndpoints` has been removed
+- Function `*ManagedClustersClient.List` has been removed
+- Function `*AgentPoolsClient.List` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*SnapshotsClient.ListByResourceGroup` has been removed
+- Field `Location` of struct `Resource` has been removed
+- Field `Tags` of struct `Resource` has been removed
+
+### Features Added
+
+- New function `*SnapshotsClient.NewListByResourceGroupPager(string, *SnapshotsClientListByResourceGroupOptions) *runtime.Pager[SnapshotsClientListByResourceGroupResponse]`
+- New function `*AgentPoolsClient.NewListPager(string, string, *AgentPoolsClientListOptions) *runtime.Pager[AgentPoolsClientListResponse]`
+- New function `*ManagedClustersClient.NewListOutboundNetworkDependenciesEndpointsPager(string, string, *ManagedClustersClientListOutboundNetworkDependenciesEndpointsOptions) *runtime.Pager[ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse]`
+- New function `TrackedResource.MarshalJSON() ([]byte, error)`
+- New function `*ManagedClustersClient.NewListByResourceGroupPager(string, *ManagedClustersClientListByResourceGroupOptions) *runtime.Pager[ManagedClustersClientListByResourceGroupResponse]`
+- New function `*ManagedClustersClient.NewListPager(*ManagedClustersClientListOptions) *runtime.Pager[ManagedClustersClientListResponse]`
+- New function `*SnapshotsClient.NewListPager(*SnapshotsClientListOptions) *runtime.Pager[SnapshotsClientListResponse]`
+- New function `*MaintenanceConfigurationsClient.NewListByManagedClusterPager(string, string, *MaintenanceConfigurationsClientListByManagedClusterOptions) *runtime.Pager[MaintenanceConfigurationsClientListByManagedClusterResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New struct `ManagedClusterStorageProfile`
+- New struct `ManagedClusterStorageProfileDiskCSIDriver`
+- New struct `ManagedClusterStorageProfileFileCSIDriver`
+- New struct `ManagedClusterStorageProfileSnapshotController`
+- New struct `TrackedResource`
+
+
 ## 0.4.0 (2022-04-11)
 ### Breaking Changes
 

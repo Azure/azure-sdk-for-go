@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2022-03-01/examples/UserGetAllInDevice.json
-func ExampleUsersClient_ListByDataBoxEdgeDevice() {
+func ExampleUsersClient_NewListByDataBoxEdgeDevicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleUsersClient_ListByDataBoxEdgeDevice() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByDataBoxEdgeDevice("<device-name>",
+	pager := client.NewListByDataBoxEdgeDevicePager("<device-name>",
 		"<resource-group-name>",
 		&armdataboxedge.UsersClientListByDataBoxEdgeDeviceOptions{Filter: nil})
 	for pager.More() {

@@ -54,13 +54,13 @@ func NewPrivateEndPointConnectionsClient(subscriptionID string, credential azcor
 	return client, nil
 }
 
-// ListByFactory - Lists Private endpoint connections
+// NewListByFactoryPager - Lists Private endpoint connections
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // options - PrivateEndPointConnectionsClientListByFactoryOptions contains the optional parameters for the PrivateEndPointConnectionsClient.ListByFactory
 // method.
-func (client *PrivateEndPointConnectionsClient) ListByFactory(resourceGroupName string, factoryName string, options *PrivateEndPointConnectionsClientListByFactoryOptions) *runtime.Pager[PrivateEndPointConnectionsClientListByFactoryResponse] {
+func (client *PrivateEndPointConnectionsClient) NewListByFactoryPager(resourceGroupName string, factoryName string, options *PrivateEndPointConnectionsClientListByFactoryOptions) *runtime.Pager[PrivateEndPointConnectionsClientListByFactoryResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateEndPointConnectionsClientListByFactoryResponse]{
 		More: func(page PrivateEndPointConnectionsClientListByFactoryResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

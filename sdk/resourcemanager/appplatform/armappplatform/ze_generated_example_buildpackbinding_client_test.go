@@ -127,7 +127,7 @@ func ExampleBuildpackBindingClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/BuildpackBinding_List.json
-func ExampleBuildpackBindingClient_List() {
+func ExampleBuildpackBindingClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -139,7 +139,7 @@ func ExampleBuildpackBindingClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-group-name>",
+	pager := client.NewListPager("<resource-group-name>",
 		"<service-name>",
 		"<build-service-name>",
 		"<builder-name>",

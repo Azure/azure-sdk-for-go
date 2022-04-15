@@ -55,13 +55,13 @@ func NewPreconfiguredEndpointsClient(subscriptionID string, credential azcore.To
 	return client, nil
 }
 
-// List - Gets a list of Preconfigured Endpoints
+// NewListPager - Gets a list of Preconfigured Endpoints
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - The Profile identifier associated with the Tenant and Partner
 // options - PreconfiguredEndpointsClientListOptions contains the optional parameters for the PreconfiguredEndpointsClient.List
 // method.
-func (client *PreconfiguredEndpointsClient) List(resourceGroupName string, profileName string, options *PreconfiguredEndpointsClientListOptions) *runtime.Pager[PreconfiguredEndpointsClientListResponse] {
+func (client *PreconfiguredEndpointsClient) NewListPager(resourceGroupName string, profileName string, options *PreconfiguredEndpointsClientListOptions) *runtime.Pager[PreconfiguredEndpointsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PreconfiguredEndpointsClientListResponse]{
 		More: func(page PreconfiguredEndpointsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

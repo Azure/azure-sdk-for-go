@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/billing/resource-manager/Microsoft.Billing/preview/2018-03-01-preview/examples/BillingPeriodsList.json
-func ExamplePeriodsClient_List() {
+func ExamplePeriodsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExamplePeriodsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(&armbilling.PeriodsClientListOptions{Filter: nil,
+	pager := client.NewListPager(&armbilling.PeriodsClientListOptions{Filter: nil,
 		Skiptoken: nil,
 		Top:       nil,
 	})

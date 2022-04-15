@@ -246,12 +246,12 @@ func (client *AddonsClient) getHandleResponse(resp *http.Response) (AddonsClient
 	return result, nil
 }
 
-// List - List addons in a private cloud
+// NewListPager - List addons in a private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // options - AddonsClientListOptions contains the optional parameters for the AddonsClient.List method.
-func (client *AddonsClient) List(resourceGroupName string, privateCloudName string, options *AddonsClientListOptions) *runtime.Pager[AddonsClientListResponse] {
+func (client *AddonsClient) NewListPager(resourceGroupName string, privateCloudName string, options *AddonsClientListOptions) *runtime.Pager[AddonsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AddonsClientListResponse]{
 		More: func(page AddonsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

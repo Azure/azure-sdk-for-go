@@ -186,13 +186,13 @@ func (client *SingleSignOnConfigurationsClient) getHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// List - List the single sign-on configurations for a given monitor resource.
+// NewListPager - List the single sign-on configurations for a given monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // options - SingleSignOnConfigurationsClientListOptions contains the optional parameters for the SingleSignOnConfigurationsClient.List
 // method.
-func (client *SingleSignOnConfigurationsClient) List(resourceGroupName string, monitorName string, options *SingleSignOnConfigurationsClientListOptions) *runtime.Pager[SingleSignOnConfigurationsClientListResponse] {
+func (client *SingleSignOnConfigurationsClient) NewListPager(resourceGroupName string, monitorName string, options *SingleSignOnConfigurationsClientListOptions) *runtime.Pager[SingleSignOnConfigurationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SingleSignOnConfigurationsClientListResponse]{
 		More: func(page SingleSignOnConfigurationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

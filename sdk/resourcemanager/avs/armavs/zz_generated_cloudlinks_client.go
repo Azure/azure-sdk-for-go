@@ -246,12 +246,12 @@ func (client *CloudLinksClient) getHandleResponse(resp *http.Response) (CloudLin
 	return result, nil
 }
 
-// List - List cloud link in a private cloud
+// NewListPager - List cloud link in a private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // options - CloudLinksClientListOptions contains the optional parameters for the CloudLinksClient.List method.
-func (client *CloudLinksClient) List(resourceGroupName string, privateCloudName string, options *CloudLinksClientListOptions) *runtime.Pager[CloudLinksClientListResponse] {
+func (client *CloudLinksClient) NewListPager(resourceGroupName string, privateCloudName string, options *CloudLinksClientListOptions) *runtime.Pager[CloudLinksClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CloudLinksClientListResponse]{
 		More: func(page CloudLinksClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

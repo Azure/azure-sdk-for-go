@@ -55,13 +55,13 @@ func NewServiceSKUsClient(subscriptionID string, credential azcore.TokenCredenti
 	return client, nil
 }
 
-// ListAvailableServiceSKUs - Gets all available SKU for a given API Management service
+// NewListAvailableServiceSKUsPager - Gets all available SKU for a given API Management service
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - ServiceSKUsClientListAvailableServiceSKUsOptions contains the optional parameters for the ServiceSKUsClient.ListAvailableServiceSKUs
 // method.
-func (client *ServiceSKUsClient) ListAvailableServiceSKUs(resourceGroupName string, serviceName string, options *ServiceSKUsClientListAvailableServiceSKUsOptions) *runtime.Pager[ServiceSKUsClientListAvailableServiceSKUsResponse] {
+func (client *ServiceSKUsClient) NewListAvailableServiceSKUsPager(resourceGroupName string, serviceName string, options *ServiceSKUsClientListAvailableServiceSKUsOptions) *runtime.Pager[ServiceSKUsClientListAvailableServiceSKUsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServiceSKUsClientListAvailableServiceSKUsResponse]{
 		More: func(page ServiceSKUsClientListAvailableServiceSKUsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

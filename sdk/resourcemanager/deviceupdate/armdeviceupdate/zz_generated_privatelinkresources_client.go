@@ -115,13 +115,13 @@ func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListByAccount - List all private link resources in a device update account.
+// NewListByAccountPager - List all private link resources in a device update account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // accountName - Account name.
 // options - PrivateLinkResourcesClientListByAccountOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByAccount
 // method.
-func (client *PrivateLinkResourcesClient) ListByAccount(resourceGroupName string, accountName string, options *PrivateLinkResourcesClientListByAccountOptions) *runtime.Pager[PrivateLinkResourcesClientListByAccountResponse] {
+func (client *PrivateLinkResourcesClient) NewListByAccountPager(resourceGroupName string, accountName string, options *PrivateLinkResourcesClientListByAccountOptions) *runtime.Pager[PrivateLinkResourcesClientListByAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkResourcesClientListByAccountResponse]{
 		More: func(page PrivateLinkResourcesClientListByAccountResponse) bool {
 			return false

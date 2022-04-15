@@ -213,11 +213,11 @@ func (client *AvailabilitySetsClient) getHandleResponse(resp *http.Response) (Av
 	return result, nil
 }
 
-// List - Lists all availability sets in a resource group.
+// NewListPager - Lists all availability sets in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - AvailabilitySetsClientListOptions contains the optional parameters for the AvailabilitySetsClient.List method.
-func (client *AvailabilitySetsClient) List(resourceGroupName string, options *AvailabilitySetsClientListOptions) *runtime.Pager[AvailabilitySetsClientListResponse] {
+func (client *AvailabilitySetsClient) NewListPager(resourceGroupName string, options *AvailabilitySetsClientListOptions) *runtime.Pager[AvailabilitySetsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AvailabilitySetsClientListResponse]{
 		More: func(page AvailabilitySetsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -276,14 +276,14 @@ func (client *AvailabilitySetsClient) listHandleResponse(resp *http.Response) (A
 	return result, nil
 }
 
-// ListAvailableSizes - Lists all available virtual machine sizes that can be used to create a new virtual machine in an existing
-// availability set.
+// NewListAvailableSizesPager - Lists all available virtual machine sizes that can be used to create a new virtual machine
+// in an existing availability set.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // availabilitySetName - The name of the availability set.
 // options - AvailabilitySetsClientListAvailableSizesOptions contains the optional parameters for the AvailabilitySetsClient.ListAvailableSizes
 // method.
-func (client *AvailabilitySetsClient) ListAvailableSizes(resourceGroupName string, availabilitySetName string, options *AvailabilitySetsClientListAvailableSizesOptions) *runtime.Pager[AvailabilitySetsClientListAvailableSizesResponse] {
+func (client *AvailabilitySetsClient) NewListAvailableSizesPager(resourceGroupName string, availabilitySetName string, options *AvailabilitySetsClientListAvailableSizesOptions) *runtime.Pager[AvailabilitySetsClientListAvailableSizesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AvailabilitySetsClientListAvailableSizesResponse]{
 		More: func(page AvailabilitySetsClientListAvailableSizesResponse) bool {
 			return false
@@ -340,11 +340,11 @@ func (client *AvailabilitySetsClient) listAvailableSizesHandleResponse(resp *htt
 	return result, nil
 }
 
-// ListBySubscription - Lists all availability sets in a subscription.
+// NewListBySubscriptionPager - Lists all availability sets in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AvailabilitySetsClientListBySubscriptionOptions contains the optional parameters for the AvailabilitySetsClient.ListBySubscription
 // method.
-func (client *AvailabilitySetsClient) ListBySubscription(options *AvailabilitySetsClientListBySubscriptionOptions) *runtime.Pager[AvailabilitySetsClientListBySubscriptionResponse] {
+func (client *AvailabilitySetsClient) NewListBySubscriptionPager(options *AvailabilitySetsClientListBySubscriptionOptions) *runtime.Pager[AvailabilitySetsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AvailabilitySetsClientListBySubscriptionResponse]{
 		More: func(page AvailabilitySetsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

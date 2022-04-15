@@ -280,13 +280,13 @@ func (client *PrivateEndpointConnectionsClient) getByWorkspaceHandleResponse(res
 	return result, nil
 }
 
-// ListByHostPool - List private endpoint connections associated with hostpool.
+// NewListByHostPoolPager - List private endpoint connections associated with hostpool.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // hostPoolName - The name of the host pool within the specified resource group
 // options - PrivateEndpointConnectionsClientListByHostPoolOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByHostPool
 // method.
-func (client *PrivateEndpointConnectionsClient) ListByHostPool(resourceGroupName string, hostPoolName string, options *PrivateEndpointConnectionsClientListByHostPoolOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByHostPoolResponse] {
+func (client *PrivateEndpointConnectionsClient) NewListByHostPoolPager(resourceGroupName string, hostPoolName string, options *PrivateEndpointConnectionsClientListByHostPoolOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByHostPoolResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionsClientListByHostPoolResponse]{
 		More: func(page PrivateEndpointConnectionsClientListByHostPoolResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -349,13 +349,13 @@ func (client *PrivateEndpointConnectionsClient) listByHostPoolHandleResponse(res
 	return result, nil
 }
 
-// ListByWorkspace - List private endpoint connections.
+// NewListByWorkspacePager - List private endpoint connections.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace
 // options - PrivateEndpointConnectionsClientListByWorkspaceOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByWorkspace
 // method.
-func (client *PrivateEndpointConnectionsClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *PrivateEndpointConnectionsClientListByWorkspaceOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByWorkspaceResponse] {
+func (client *PrivateEndpointConnectionsClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *PrivateEndpointConnectionsClientListByWorkspaceOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByWorkspaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionsClientListByWorkspaceResponse]{
 		More: func(page PrivateEndpointConnectionsClientListByWorkspaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

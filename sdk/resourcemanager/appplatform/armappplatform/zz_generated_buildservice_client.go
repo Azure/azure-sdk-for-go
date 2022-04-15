@@ -591,7 +591,7 @@ func (client *BuildServiceClient) getSupportedStackHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListBuildResults - List KPack build results.
+// NewListBuildResultsPager - List KPack build results.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -600,7 +600,7 @@ func (client *BuildServiceClient) getSupportedStackHandleResponse(resp *http.Res
 // buildName - The name of the build resource.
 // options - BuildServiceClientListBuildResultsOptions contains the optional parameters for the BuildServiceClient.ListBuildResults
 // method.
-func (client *BuildServiceClient) ListBuildResults(resourceGroupName string, serviceName string, buildServiceName string, buildName string, options *BuildServiceClientListBuildResultsOptions) *runtime.Pager[BuildServiceClientListBuildResultsResponse] {
+func (client *BuildServiceClient) NewListBuildResultsPager(resourceGroupName string, serviceName string, buildServiceName string, buildName string, options *BuildServiceClientListBuildResultsOptions) *runtime.Pager[BuildServiceClientListBuildResultsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BuildServiceClientListBuildResultsResponse]{
 		More: func(page BuildServiceClientListBuildResultsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -671,14 +671,14 @@ func (client *BuildServiceClient) listBuildResultsHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListBuildServices - List build services resource.
+// NewListBuildServicesPager - List build services resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
 // options - BuildServiceClientListBuildServicesOptions contains the optional parameters for the BuildServiceClient.ListBuildServices
 // method.
-func (client *BuildServiceClient) ListBuildServices(resourceGroupName string, serviceName string, options *BuildServiceClientListBuildServicesOptions) *runtime.Pager[BuildServiceClientListBuildServicesResponse] {
+func (client *BuildServiceClient) NewListBuildServicesPager(resourceGroupName string, serviceName string, options *BuildServiceClientListBuildServicesOptions) *runtime.Pager[BuildServiceClientListBuildServicesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BuildServiceClientListBuildServicesResponse]{
 		More: func(page BuildServiceClientListBuildServicesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -741,14 +741,14 @@ func (client *BuildServiceClient) listBuildServicesHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListBuilds - List KPack builds.
+// NewListBuildsPager - List KPack builds.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
 // buildServiceName - The name of the build service resource.
 // options - BuildServiceClientListBuildsOptions contains the optional parameters for the BuildServiceClient.ListBuilds method.
-func (client *BuildServiceClient) ListBuilds(resourceGroupName string, serviceName string, buildServiceName string, options *BuildServiceClientListBuildsOptions) *runtime.Pager[BuildServiceClientListBuildsResponse] {
+func (client *BuildServiceClient) NewListBuildsPager(resourceGroupName string, serviceName string, buildServiceName string, options *BuildServiceClientListBuildsOptions) *runtime.Pager[BuildServiceClientListBuildsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BuildServiceClientListBuildsResponse]{
 		More: func(page BuildServiceClientListBuildsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

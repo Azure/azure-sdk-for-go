@@ -51,13 +51,13 @@ func NewReservationsClient(credential azcore.TokenCredential, options *arm.Clien
 	return client, nil
 }
 
-// ListByBillingAccount - Lists the reservations for a billing account and the roll up counts of reservations group by provisioning
-// states.
+// NewListByBillingAccountPager - Lists the reservations for a billing account and the roll up counts of reservations group
+// by provisioning states.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountName - The ID that uniquely identifies a billing account.
 // options - ReservationsClientListByBillingAccountOptions contains the optional parameters for the ReservationsClient.ListByBillingAccount
 // method.
-func (client *ReservationsClient) ListByBillingAccount(billingAccountName string, options *ReservationsClientListByBillingAccountOptions) *runtime.Pager[ReservationsClientListByBillingAccountResponse] {
+func (client *ReservationsClient) NewListByBillingAccountPager(billingAccountName string, options *ReservationsClientListByBillingAccountOptions) *runtime.Pager[ReservationsClientListByBillingAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReservationsClientListByBillingAccountResponse]{
 		More: func(page ReservationsClientListByBillingAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -124,14 +124,14 @@ func (client *ReservationsClient) listByBillingAccountHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListByBillingProfile - Lists the reservations for a billing profile and the roll up counts of reservations group by provisioning
-// state.
+// NewListByBillingProfilePager - Lists the reservations for a billing profile and the roll up counts of reservations group
+// by provisioning state.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // options - ReservationsClientListByBillingProfileOptions contains the optional parameters for the ReservationsClient.ListByBillingProfile
 // method.
-func (client *ReservationsClient) ListByBillingProfile(billingAccountName string, billingProfileName string, options *ReservationsClientListByBillingProfileOptions) *runtime.Pager[ReservationsClientListByBillingProfileResponse] {
+func (client *ReservationsClient) NewListByBillingProfilePager(billingAccountName string, billingProfileName string, options *ReservationsClientListByBillingProfileOptions) *runtime.Pager[ReservationsClientListByBillingProfileResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReservationsClientListByBillingProfileResponse]{
 		More: func(page ReservationsClientListByBillingProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

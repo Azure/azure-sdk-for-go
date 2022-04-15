@@ -233,12 +233,12 @@ func (client *SystemTopicsClient) getHandleResponse(resp *http.Response) (System
 	return result, nil
 }
 
-// ListByResourceGroup - List all the system topics under a resource group.
+// NewListByResourceGroupPager - List all the system topics under a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription.
 // options - SystemTopicsClientListByResourceGroupOptions contains the optional parameters for the SystemTopicsClient.ListByResourceGroup
 // method.
-func (client *SystemTopicsClient) ListByResourceGroup(resourceGroupName string, options *SystemTopicsClientListByResourceGroupOptions) *runtime.Pager[SystemTopicsClientListByResourceGroupResponse] {
+func (client *SystemTopicsClient) NewListByResourceGroupPager(resourceGroupName string, options *SystemTopicsClientListByResourceGroupOptions) *runtime.Pager[SystemTopicsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SystemTopicsClientListByResourceGroupResponse]{
 		More: func(page SystemTopicsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -303,11 +303,11 @@ func (client *SystemTopicsClient) listByResourceGroupHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListBySubscription - List all the system topics under an Azure subscription.
+// NewListBySubscriptionPager - List all the system topics under an Azure subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SystemTopicsClientListBySubscriptionOptions contains the optional parameters for the SystemTopicsClient.ListBySubscription
 // method.
-func (client *SystemTopicsClient) ListBySubscription(options *SystemTopicsClientListBySubscriptionOptions) *runtime.Pager[SystemTopicsClientListBySubscriptionResponse] {
+func (client *SystemTopicsClient) NewListBySubscriptionPager(options *SystemTopicsClientListBySubscriptionOptions) *runtime.Pager[SystemTopicsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SystemTopicsClientListBySubscriptionResponse]{
 		More: func(page SystemTopicsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

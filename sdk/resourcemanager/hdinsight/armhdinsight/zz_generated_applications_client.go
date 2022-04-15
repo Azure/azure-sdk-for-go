@@ -318,13 +318,13 @@ func (client *ApplicationsClient) getAzureAsyncOperationStatusHandleResponse(res
 	return result, nil
 }
 
-// ListByCluster - Lists all of the applications for the HDInsight cluster.
+// NewListByClusterPager - Lists all of the applications for the HDInsight cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // clusterName - The name of the cluster.
 // options - ApplicationsClientListByClusterOptions contains the optional parameters for the ApplicationsClient.ListByCluster
 // method.
-func (client *ApplicationsClient) ListByCluster(resourceGroupName string, clusterName string, options *ApplicationsClientListByClusterOptions) *runtime.Pager[ApplicationsClientListByClusterResponse] {
+func (client *ApplicationsClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *ApplicationsClientListByClusterOptions) *runtime.Pager[ApplicationsClientListByClusterResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ApplicationsClientListByClusterResponse]{
 		More: func(page ApplicationsClientListByClusterResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

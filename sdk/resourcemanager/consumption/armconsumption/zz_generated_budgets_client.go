@@ -213,7 +213,7 @@ func (client *BudgetsClient) getHandleResponse(resp *http.Response) (BudgetsClie
 	return result, nil
 }
 
-// List - Lists all budgets for the defined scope.
+// NewListPager - Lists all budgets for the defined scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 // scope - The scope associated with budget operations. This includes '/subscriptions/{subscriptionId}/' for subscription
 // scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
@@ -225,7 +225,7 @@ func (client *BudgetsClient) getHandleResponse(resp *http.Response) (BudgetsClie
 // for billingProfile scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}'
 // for invoiceSection scope.
 // options - BudgetsClientListOptions contains the optional parameters for the BudgetsClient.List method.
-func (client *BudgetsClient) List(scope string, options *BudgetsClientListOptions) *runtime.Pager[BudgetsClientListResponse] {
+func (client *BudgetsClient) NewListPager(scope string, options *BudgetsClientListOptions) *runtime.Pager[BudgetsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BudgetsClientListResponse]{
 		More: func(page BudgetsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

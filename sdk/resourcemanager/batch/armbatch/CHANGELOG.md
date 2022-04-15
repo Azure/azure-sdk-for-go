@@ -1,5 +1,39 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*PrivateEndpointConnectionClient.ListByBatchAccount` has been removed
+- Function `*AccountClient.ListByResourceGroup` has been removed
+- Function `*ApplicationPackageClient.List` has been removed
+- Function `*AccountClient.List` has been removed
+- Function `*LocationClient.ListSupportedVirtualMachineSKUs` has been removed
+- Function `*CertificateClient.ListByBatchAccount` has been removed
+- Function `*LocationClient.ListSupportedCloudServiceSKUs` has been removed
+- Function `*PoolClient.ListByBatchAccount` has been removed
+- Function `*PrivateLinkResourceClient.ListByBatchAccount` has been removed
+- Function `*AccountClient.ListDetectors` has been removed
+- Function `*AccountClient.ListOutboundNetworkDependenciesEndpoints` has been removed
+- Function `*ApplicationClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+
+### Features Added
+
+- New function `*PrivateEndpointConnectionClient.NewListByBatchAccountPager(string, string, *PrivateEndpointConnectionClientListByBatchAccountOptions) *runtime.Pager[PrivateEndpointConnectionClientListByBatchAccountResponse]`
+- New function `*LocationClient.NewListSupportedVirtualMachineSKUsPager(string, *LocationClientListSupportedVirtualMachineSKUsOptions) *runtime.Pager[LocationClientListSupportedVirtualMachineSKUsResponse]`
+- New function `*ApplicationClient.NewListPager(string, string, *ApplicationClientListOptions) *runtime.Pager[ApplicationClientListResponse]`
+- New function `*PrivateLinkResourceClient.NewListByBatchAccountPager(string, string, *PrivateLinkResourceClientListByBatchAccountOptions) *runtime.Pager[PrivateLinkResourceClientListByBatchAccountResponse]`
+- New function `*AccountClient.NewListOutboundNetworkDependenciesEndpointsPager(string, string, *AccountClientListOutboundNetworkDependenciesEndpointsOptions) *runtime.Pager[AccountClientListOutboundNetworkDependenciesEndpointsResponse]`
+- New function `*ApplicationPackageClient.NewListPager(string, string, string, *ApplicationPackageClientListOptions) *runtime.Pager[ApplicationPackageClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*AccountClient.NewListByResourceGroupPager(string, *AccountClientListByResourceGroupOptions) *runtime.Pager[AccountClientListByResourceGroupResponse]`
+- New function `*PoolClient.NewListByBatchAccountPager(string, string, *PoolClientListByBatchAccountOptions) *runtime.Pager[PoolClientListByBatchAccountResponse]`
+- New function `*AccountClient.NewListDetectorsPager(string, string, *AccountClientListDetectorsOptions) *runtime.Pager[AccountClientListDetectorsResponse]`
+- New function `*LocationClient.NewListSupportedCloudServiceSKUsPager(string, *LocationClientListSupportedCloudServiceSKUsOptions) *runtime.Pager[LocationClientListSupportedCloudServiceSKUsResponse]`
+- New function `*AccountClient.NewListPager(*AccountClientListOptions) *runtime.Pager[AccountClientListResponse]`
+- New function `*CertificateClient.NewListByBatchAccountPager(string, string, *CertificateClientListByBatchAccountOptions) *runtime.Pager[CertificateClientListByBatchAccountResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

@@ -157,12 +157,13 @@ func (client *LocationClient) getQuotasHandleResponse(resp *http.Response) (Loca
 	return result, nil
 }
 
-// ListSupportedCloudServiceSKUs - Gets the list of Batch supported Cloud Service VM sizes available at the given location.
+// NewListSupportedCloudServiceSKUsPager - Gets the list of Batch supported Cloud Service VM sizes available at the given
+// location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // locationName - The region for which to retrieve Batch service supported SKUs.
 // options - LocationClientListSupportedCloudServiceSKUsOptions contains the optional parameters for the LocationClient.ListSupportedCloudServiceSKUs
 // method.
-func (client *LocationClient) ListSupportedCloudServiceSKUs(locationName string, options *LocationClientListSupportedCloudServiceSKUsOptions) *runtime.Pager[LocationClientListSupportedCloudServiceSKUsResponse] {
+func (client *LocationClient) NewListSupportedCloudServiceSKUsPager(locationName string, options *LocationClientListSupportedCloudServiceSKUsOptions) *runtime.Pager[LocationClientListSupportedCloudServiceSKUsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LocationClientListSupportedCloudServiceSKUsResponse]{
 		More: func(page LocationClientListSupportedCloudServiceSKUsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -227,12 +228,13 @@ func (client *LocationClient) listSupportedCloudServiceSKUsHandleResponse(resp *
 	return result, nil
 }
 
-// ListSupportedVirtualMachineSKUs - Gets the list of Batch supported Virtual Machine VM sizes available at the given location.
+// NewListSupportedVirtualMachineSKUsPager - Gets the list of Batch supported Virtual Machine VM sizes available at the given
+// location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // locationName - The region for which to retrieve Batch service supported SKUs.
 // options - LocationClientListSupportedVirtualMachineSKUsOptions contains the optional parameters for the LocationClient.ListSupportedVirtualMachineSKUs
 // method.
-func (client *LocationClient) ListSupportedVirtualMachineSKUs(locationName string, options *LocationClientListSupportedVirtualMachineSKUsOptions) *runtime.Pager[LocationClientListSupportedVirtualMachineSKUsResponse] {
+func (client *LocationClient) NewListSupportedVirtualMachineSKUsPager(locationName string, options *LocationClientListSupportedVirtualMachineSKUsOptions) *runtime.Pager[LocationClientListSupportedVirtualMachineSKUsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LocationClientListSupportedVirtualMachineSKUsResponse]{
 		More: func(page LocationClientListSupportedVirtualMachineSKUsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

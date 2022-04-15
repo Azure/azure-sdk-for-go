@@ -236,12 +236,12 @@ func (client *MonitorsClient) getHandleResponse(resp *http.Response) (MonitorsCl
 	return result, nil
 }
 
-// ListByResourceGroup - List all monitors under the specified resource group.
+// NewListByResourceGroupPager - List all monitors under the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - MonitorsClientListByResourceGroupOptions contains the optional parameters for the MonitorsClient.ListByResourceGroup
 // method.
-func (client *MonitorsClient) ListByResourceGroup(resourceGroupName string, options *MonitorsClientListByResourceGroupOptions) *runtime.Pager[MonitorsClientListByResourceGroupResponse] {
+func (client *MonitorsClient) NewListByResourceGroupPager(resourceGroupName string, options *MonitorsClientListByResourceGroupOptions) *runtime.Pager[MonitorsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MonitorsClientListByResourceGroupResponse]{
 		More: func(page MonitorsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -300,11 +300,11 @@ func (client *MonitorsClient) listByResourceGroupHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListBySubscription - List all monitors under the specified subscription.
+// NewListBySubscriptionPager - List all monitors under the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - MonitorsClientListBySubscriptionOptions contains the optional parameters for the MonitorsClient.ListBySubscription
 // method.
-func (client *MonitorsClient) ListBySubscription(options *MonitorsClientListBySubscriptionOptions) *runtime.Pager[MonitorsClientListBySubscriptionResponse] {
+func (client *MonitorsClient) NewListBySubscriptionPager(options *MonitorsClientListBySubscriptionOptions) *runtime.Pager[MonitorsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MonitorsClientListBySubscriptionResponse]{
 		More: func(page MonitorsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -359,13 +359,13 @@ func (client *MonitorsClient) listBySubscriptionHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListMonitoredResources - List the resources currently being monitored by the Logz monitor resource.
+// NewListMonitoredResourcesPager - List the resources currently being monitored by the Logz monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // options - MonitorsClientListMonitoredResourcesOptions contains the optional parameters for the MonitorsClient.ListMonitoredResources
 // method.
-func (client *MonitorsClient) ListMonitoredResources(resourceGroupName string, monitorName string, options *MonitorsClientListMonitoredResourcesOptions) *runtime.Pager[MonitorsClientListMonitoredResourcesResponse] {
+func (client *MonitorsClient) NewListMonitoredResourcesPager(resourceGroupName string, monitorName string, options *MonitorsClientListMonitoredResourcesOptions) *runtime.Pager[MonitorsClientListMonitoredResourcesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MonitorsClientListMonitoredResourcesResponse]{
 		More: func(page MonitorsClientListMonitoredResourcesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -428,12 +428,12 @@ func (client *MonitorsClient) listMonitoredResourcesHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListUserRoles - List the user's roles configured on Logz.io side for the account corresponding to the monitor resource.
+// NewListUserRolesPager - List the user's roles configured on Logz.io side for the account corresponding to the monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // options - MonitorsClientListUserRolesOptions contains the optional parameters for the MonitorsClient.ListUserRoles method.
-func (client *MonitorsClient) ListUserRoles(resourceGroupName string, monitorName string, options *MonitorsClientListUserRolesOptions) *runtime.Pager[MonitorsClientListUserRolesResponse] {
+func (client *MonitorsClient) NewListUserRolesPager(resourceGroupName string, monitorName string, options *MonitorsClientListUserRolesOptions) *runtime.Pager[MonitorsClientListUserRolesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MonitorsClientListUserRolesResponse]{
 		More: func(page MonitorsClientListUserRolesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

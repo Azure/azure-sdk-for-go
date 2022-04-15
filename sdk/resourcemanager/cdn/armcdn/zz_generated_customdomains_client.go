@@ -397,14 +397,14 @@ func (client *CustomDomainsClient) getHandleResponse(resp *http.Response) (Custo
 	return result, nil
 }
 
-// ListByEndpoint - Lists all of the existing custom domains within an endpoint.
+// NewListByEndpointPager - Lists all of the existing custom domains within an endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the CDN profile which is unique within the resource group.
 // endpointName - Name of the endpoint under the profile which is unique globally.
 // options - CustomDomainsClientListByEndpointOptions contains the optional parameters for the CustomDomainsClient.ListByEndpoint
 // method.
-func (client *CustomDomainsClient) ListByEndpoint(resourceGroupName string, profileName string, endpointName string, options *CustomDomainsClientListByEndpointOptions) *runtime.Pager[CustomDomainsClientListByEndpointResponse] {
+func (client *CustomDomainsClient) NewListByEndpointPager(resourceGroupName string, profileName string, endpointName string, options *CustomDomainsClientListByEndpointOptions) *runtime.Pager[CustomDomainsClientListByEndpointResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CustomDomainsClientListByEndpointResponse]{
 		More: func(page CustomDomainsClientListByEndpointResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

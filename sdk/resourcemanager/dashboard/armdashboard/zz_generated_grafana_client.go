@@ -236,10 +236,10 @@ func (client *GrafanaClient) getHandleResponse(resp *http.Response) (GrafanaClie
 	return result, nil
 }
 
-// List - List all resources of workspaces for Grafana under the specified subscription.
+// NewListPager - List all resources of workspaces for Grafana under the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - GrafanaClientListOptions contains the optional parameters for the GrafanaClient.List method.
-func (client *GrafanaClient) List(options *GrafanaClientListOptions) *runtime.Pager[GrafanaClientListResponse] {
+func (client *GrafanaClient) NewListPager(options *GrafanaClientListOptions) *runtime.Pager[GrafanaClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[GrafanaClientListResponse]{
 		More: func(page GrafanaClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -294,12 +294,12 @@ func (client *GrafanaClient) listHandleResponse(resp *http.Response) (GrafanaCli
 	return result, nil
 }
 
-// ListByResourceGroup - List all resources of workspaces for Grafana under the specified resource group.
+// NewListByResourceGroupPager - List all resources of workspaces for Grafana under the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - GrafanaClientListByResourceGroupOptions contains the optional parameters for the GrafanaClient.ListByResourceGroup
 // method.
-func (client *GrafanaClient) ListByResourceGroup(resourceGroupName string, options *GrafanaClientListByResourceGroupOptions) *runtime.Pager[GrafanaClientListByResourceGroupResponse] {
+func (client *GrafanaClient) NewListByResourceGroupPager(resourceGroupName string, options *GrafanaClientListByResourceGroupOptions) *runtime.Pager[GrafanaClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[GrafanaClientListByResourceGroupResponse]{
 		More: func(page GrafanaClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

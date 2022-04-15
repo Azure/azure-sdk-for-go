@@ -56,14 +56,14 @@ func NewAPIRevisionClient(subscriptionID string, credential azcore.TokenCredenti
 	return client, nil
 }
 
-// ListByService - Lists all revisions of an API.
+// NewListByServicePager - Lists all revisions of an API.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // apiID - API identifier. Must be unique in the current API Management service instance.
 // options - APIRevisionClientListByServiceOptions contains the optional parameters for the APIRevisionClient.ListByService
 // method.
-func (client *APIRevisionClient) ListByService(resourceGroupName string, serviceName string, apiID string, options *APIRevisionClientListByServiceOptions) *runtime.Pager[APIRevisionClientListByServiceResponse] {
+func (client *APIRevisionClient) NewListByServicePager(resourceGroupName string, serviceName string, apiID string, options *APIRevisionClientListByServiceOptions) *runtime.Pager[APIRevisionClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[APIRevisionClientListByServiceResponse]{
 		More: func(page APIRevisionClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

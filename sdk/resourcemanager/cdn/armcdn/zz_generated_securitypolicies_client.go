@@ -254,14 +254,14 @@ func (client *SecurityPoliciesClient) getHandleResponse(resp *http.Response) (Se
 	return result, nil
 }
 
-// ListByProfile - Lists security policies associated with the profile
+// NewListByProfilePager - Lists security policies associated with the profile
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
 // options - SecurityPoliciesClientListByProfileOptions contains the optional parameters for the SecurityPoliciesClient.ListByProfile
 // method.
-func (client *SecurityPoliciesClient) ListByProfile(resourceGroupName string, profileName string, options *SecurityPoliciesClientListByProfileOptions) *runtime.Pager[SecurityPoliciesClientListByProfileResponse] {
+func (client *SecurityPoliciesClient) NewListByProfilePager(resourceGroupName string, profileName string, options *SecurityPoliciesClientListByProfileOptions) *runtime.Pager[SecurityPoliciesClientListByProfileResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SecurityPoliciesClientListByProfileResponse]{
 		More: func(page SecurityPoliciesClientListByProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

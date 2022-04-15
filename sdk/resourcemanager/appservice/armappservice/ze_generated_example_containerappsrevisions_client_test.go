@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListRevisions.json
-func ExampleContainerAppsRevisionsClient_ListRevisions() {
+func ExampleContainerAppsRevisionsClient_NewListRevisionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleContainerAppsRevisionsClient_ListRevisions() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListRevisions("<resource-group-name>",
+	pager := client.NewListRevisionsPager("<resource-group-name>",
 		"<container-app-name>",
 		nil)
 	for pager.More() {

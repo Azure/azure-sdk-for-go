@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/ListTargetTypes.json
-func ExampleTargetTypesClient_List() {
+func ExampleTargetTypesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleTargetTypesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<location-name>",
+	pager := client.NewListPager("<location-name>",
 		&armchaos.TargetTypesClientListOptions{ContinuationToken: to.Ptr("<continuation-token>")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

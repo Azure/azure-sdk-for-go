@@ -313,13 +313,13 @@ func (client *ConnectedRegistriesClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// List - Lists all connected registries for the specified container registry.
+// NewListPager - Lists all connected registries for the specified container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // options - ConnectedRegistriesClientListOptions contains the optional parameters for the ConnectedRegistriesClient.List
 // method.
-func (client *ConnectedRegistriesClient) List(resourceGroupName string, registryName string, options *ConnectedRegistriesClientListOptions) *runtime.Pager[ConnectedRegistriesClientListResponse] {
+func (client *ConnectedRegistriesClient) NewListPager(resourceGroupName string, registryName string, options *ConnectedRegistriesClientListOptions) *runtime.Pager[ConnectedRegistriesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ConnectedRegistriesClientListResponse]{
 		More: func(page ConnectedRegistriesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

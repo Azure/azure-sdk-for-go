@@ -10,8 +10,24 @@ package armazurearcdata
 
 const (
 	moduleName    = "armazurearcdata"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.4.0"
 )
+
+// AccountProvisioningMode - The service account provisioning mode for this Active Directory connector.
+type AccountProvisioningMode string
+
+const (
+	AccountProvisioningModeAutomatic AccountProvisioningMode = "automatic"
+	AccountProvisioningModeManual    AccountProvisioningMode = "manual"
+)
+
+// PossibleAccountProvisioningModeValues returns the possible values for the AccountProvisioningMode const type.
+func PossibleAccountProvisioningModeValues() []AccountProvisioningMode {
+	return []AccountProvisioningMode{
+		AccountProvisioningModeAutomatic,
+		AccountProvisioningModeManual,
+	}
+}
 
 // ArcSQLManagedInstanceLicenseType - The license type to apply for this managed instance.
 type ArcSQLManagedInstanceLicenseType string

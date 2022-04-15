@@ -373,13 +373,13 @@ func (client *TopicEventSubscriptionsClient) getFullURLHandleResponse(resp *http
 	return result, nil
 }
 
-// List - List all event subscriptions that have been created for a specific topic.
+// NewListPager - List all event subscriptions that have been created for a specific topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription.
 // topicName - Name of the topic.
 // options - TopicEventSubscriptionsClientListOptions contains the optional parameters for the TopicEventSubscriptionsClient.List
 // method.
-func (client *TopicEventSubscriptionsClient) List(resourceGroupName string, topicName string, options *TopicEventSubscriptionsClientListOptions) *runtime.Pager[TopicEventSubscriptionsClientListResponse] {
+func (client *TopicEventSubscriptionsClient) NewListPager(resourceGroupName string, topicName string, options *TopicEventSubscriptionsClientListOptions) *runtime.Pager[TopicEventSubscriptionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TopicEventSubscriptionsClientListResponse]{
 		More: func(page TopicEventSubscriptionsClientListResponse) bool {
 			return false

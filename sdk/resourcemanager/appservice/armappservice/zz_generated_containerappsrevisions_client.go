@@ -219,13 +219,13 @@ func (client *ContainerAppsRevisionsClient) getRevisionHandleResponse(resp *http
 	return result, nil
 }
 
-// ListRevisions - Get the Revisions for a given Container App.
+// NewListRevisionsPager - Get the Revisions for a given Container App.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // containerAppName - Name of the Container App for which Revisions are needed.
 // options - ContainerAppsRevisionsClientListRevisionsOptions contains the optional parameters for the ContainerAppsRevisionsClient.ListRevisions
 // method.
-func (client *ContainerAppsRevisionsClient) ListRevisions(resourceGroupName string, containerAppName string, options *ContainerAppsRevisionsClientListRevisionsOptions) *runtime.Pager[ContainerAppsRevisionsClientListRevisionsResponse] {
+func (client *ContainerAppsRevisionsClient) NewListRevisionsPager(resourceGroupName string, containerAppName string, options *ContainerAppsRevisionsClientListRevisionsOptions) *runtime.Pager[ContainerAppsRevisionsClientListRevisionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ContainerAppsRevisionsClientListRevisionsResponse]{
 		More: func(page ContainerAppsRevisionsClientListRevisionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

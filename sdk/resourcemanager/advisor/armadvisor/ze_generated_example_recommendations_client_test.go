@@ -61,7 +61,7 @@ func ExampleRecommendationsClient_GetGenerateStatus() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/ListRecommendations.json
-func ExampleRecommendationsClient_List() {
+func ExampleRecommendationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -73,7 +73,7 @@ func ExampleRecommendationsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(&armadvisor.RecommendationsClientListOptions{Filter: nil,
+	pager := client.NewListPager(&armadvisor.RecommendationsClientListOptions{Filter: nil,
 		Top:       to.Ptr[int32](10),
 		SkipToken: nil,
 	})

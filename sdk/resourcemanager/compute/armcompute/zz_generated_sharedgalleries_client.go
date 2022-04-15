@@ -110,11 +110,11 @@ func (client *SharedGalleriesClient) getHandleResponse(resp *http.Response) (Sha
 	return result, nil
 }
 
-// List - List shared galleries by subscription id or tenant id.
+// NewListPager - List shared galleries by subscription id or tenant id.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - Resource location.
 // options - SharedGalleriesClientListOptions contains the optional parameters for the SharedGalleriesClient.List method.
-func (client *SharedGalleriesClient) List(location string, options *SharedGalleriesClientListOptions) *runtime.Pager[SharedGalleriesClientListResponse] {
+func (client *SharedGalleriesClient) NewListPager(location string, options *SharedGalleriesClientListOptions) *runtime.Pager[SharedGalleriesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SharedGalleriesClientListResponse]{
 		More: func(page SharedGalleriesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

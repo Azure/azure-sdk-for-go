@@ -1,5 +1,27 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*ScriptExecutionHistoryClient.ListByCluster` has been removed
+- Function `*ClustersClient.ListByResourceGroup` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*ApplicationsClient.ListByCluster` has been removed
+- Function `*PrivateEndpointConnectionsClient.ListByCluster` has been removed
+- Function `*ScriptActionsClient.ListByCluster` has been removed
+- Function `*ClustersClient.List` has been removed
+
+### Features Added
+
+- New function `*ScriptExecutionHistoryClient.NewListByClusterPager(string, string, *ScriptExecutionHistoryClientListByClusterOptions) *runtime.Pager[ScriptExecutionHistoryClientListByClusterResponse]`
+- New function `*PrivateEndpointConnectionsClient.NewListByClusterPager(string, string, *PrivateEndpointConnectionsClientListByClusterOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByClusterResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*ClustersClient.NewListByResourceGroupPager(string, *ClustersClientListByResourceGroupOptions) *runtime.Pager[ClustersClientListByResourceGroupResponse]`
+- New function `*ApplicationsClient.NewListByClusterPager(string, string, *ApplicationsClientListByClusterOptions) *runtime.Pager[ApplicationsClientListByClusterResponse]`
+- New function `*ScriptActionsClient.NewListByClusterPager(string, string, *ScriptActionsClientListByClusterOptions) *runtime.Pager[ScriptActionsClientListByClusterResponse]`
+- New function `*ClustersClient.NewListPager(*ClustersClientListOptions) *runtime.Pager[ClustersClientListResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

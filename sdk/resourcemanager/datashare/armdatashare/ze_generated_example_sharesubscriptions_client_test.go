@@ -54,7 +54,7 @@ func ExampleShareSubscriptionsClient_BeginCancelSynchronization() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ShareSubscriptions_ListSourceShareSynchronizationSettings.json
-func ExampleShareSubscriptionsClient_ListSourceShareSynchronizationSettings() {
+func ExampleShareSubscriptionsClient_NewListSourceShareSynchronizationSettingsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -66,7 +66,7 @@ func ExampleShareSubscriptionsClient_ListSourceShareSynchronizationSettings() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListSourceShareSynchronizationSettings("<resource-group-name>",
+	pager := client.NewListSourceShareSynchronizationSettingsPager("<resource-group-name>",
 		"<account-name>",
 		"<share-subscription-name>",
 		&armdatashare.ShareSubscriptionsClientListSourceShareSynchronizationSettingsOptions{SkipToken: nil})
@@ -84,7 +84,7 @@ func ExampleShareSubscriptionsClient_ListSourceShareSynchronizationSettings() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ShareSubscriptions_ListSynchronizationDetails.json
-func ExampleShareSubscriptionsClient_ListSynchronizationDetails() {
+func ExampleShareSubscriptionsClient_NewListSynchronizationDetailsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -96,7 +96,7 @@ func ExampleShareSubscriptionsClient_ListSynchronizationDetails() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListSynchronizationDetails("<resource-group-name>",
+	pager := client.NewListSynchronizationDetailsPager("<resource-group-name>",
 		"<account-name>",
 		"<share-subscription-name>",
 		armdatashare.ShareSubscriptionSynchronization{
@@ -120,7 +120,7 @@ func ExampleShareSubscriptionsClient_ListSynchronizationDetails() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ShareSubscriptions_ListSynchronizations.json
-func ExampleShareSubscriptionsClient_ListSynchronizations() {
+func ExampleShareSubscriptionsClient_NewListSynchronizationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -132,7 +132,7 @@ func ExampleShareSubscriptionsClient_ListSynchronizations() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListSynchronizations("<resource-group-name>",
+	pager := client.NewListSynchronizationsPager("<resource-group-name>",
 		"<account-name>",
 		"<share-subscription-name>",
 		&armdatashare.ShareSubscriptionsClientListSynchronizationsOptions{SkipToken: nil,
@@ -277,7 +277,7 @@ func ExampleShareSubscriptionsClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ShareSubscriptions_ListByAccount.json
-func ExampleShareSubscriptionsClient_ListByAccount() {
+func ExampleShareSubscriptionsClient_NewListByAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -289,7 +289,7 @@ func ExampleShareSubscriptionsClient_ListByAccount() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByAccount("<resource-group-name>",
+	pager := client.NewListByAccountPager("<resource-group-name>",
 		"<account-name>",
 		&armdatashare.ShareSubscriptionsClientListByAccountOptions{SkipToken: nil,
 			Filter:  nil,

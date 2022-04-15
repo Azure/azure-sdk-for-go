@@ -225,12 +225,12 @@ func (client *BackupPoliciesClient) getHandleResponse(resp *http.Response) (Back
 	return result, nil
 }
 
-// List - Returns list of backup policies belonging to a backup vault
+// NewListPager - Returns list of backup policies belonging to a backup vault
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group where the backup vault is present.
 // vaultName - The name of the backup vault.
 // options - BackupPoliciesClientListOptions contains the optional parameters for the BackupPoliciesClient.List method.
-func (client *BackupPoliciesClient) List(resourceGroupName string, vaultName string, options *BackupPoliciesClientListOptions) *runtime.Pager[BackupPoliciesClientListResponse] {
+func (client *BackupPoliciesClient) NewListPager(resourceGroupName string, vaultName string, options *BackupPoliciesClientListOptions) *runtime.Pager[BackupPoliciesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BackupPoliciesClientListResponse]{
 		More: func(page BackupPoliciesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

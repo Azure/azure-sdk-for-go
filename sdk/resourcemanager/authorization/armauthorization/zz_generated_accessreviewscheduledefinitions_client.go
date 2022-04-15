@@ -199,11 +199,11 @@ func (client *AccessReviewScheduleDefinitionsClient) getByIDHandleResponse(resp 
 	return result, nil
 }
 
-// List - Get access review schedule definitions
+// NewListPager - Get access review schedule definitions
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AccessReviewScheduleDefinitionsClientListOptions contains the optional parameters for the AccessReviewScheduleDefinitionsClient.List
 // method.
-func (client *AccessReviewScheduleDefinitionsClient) List(options *AccessReviewScheduleDefinitionsClientListOptions) *runtime.Pager[AccessReviewScheduleDefinitionsClientListResponse] {
+func (client *AccessReviewScheduleDefinitionsClient) NewListPager(options *AccessReviewScheduleDefinitionsClientListOptions) *runtime.Pager[AccessReviewScheduleDefinitionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccessReviewScheduleDefinitionsClientListResponse]{
 		More: func(page AccessReviewScheduleDefinitionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

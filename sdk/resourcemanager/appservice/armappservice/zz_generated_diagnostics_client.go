@@ -981,13 +981,13 @@ func (client *DiagnosticsClient) getSiteDiagnosticCategorySlotHandleResponse(res
 	return result, nil
 }
 
-// ListHostingEnvironmentDetectorResponses - Description for List Hosting Environment Detector Responses
+// NewListHostingEnvironmentDetectorResponsesPager - Description for List Hosting Environment Detector Responses
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site Name
 // options - DiagnosticsClientListHostingEnvironmentDetectorResponsesOptions contains the optional parameters for the DiagnosticsClient.ListHostingEnvironmentDetectorResponses
 // method.
-func (client *DiagnosticsClient) ListHostingEnvironmentDetectorResponses(resourceGroupName string, name string, options *DiagnosticsClientListHostingEnvironmentDetectorResponsesOptions) *runtime.Pager[DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse] {
+func (client *DiagnosticsClient) NewListHostingEnvironmentDetectorResponsesPager(resourceGroupName string, name string, options *DiagnosticsClientListHostingEnvironmentDetectorResponsesOptions) *runtime.Pager[DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse]{
 		More: func(page DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1050,14 +1050,14 @@ func (client *DiagnosticsClient) listHostingEnvironmentDetectorResponsesHandleRe
 	return result, nil
 }
 
-// ListSiteAnalyses - Description for Get Site Analyses
+// NewListSiteAnalysesPager - Description for Get Site Analyses
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Site Name
 // diagnosticCategory - Diagnostic Category
 // options - DiagnosticsClientListSiteAnalysesOptions contains the optional parameters for the DiagnosticsClient.ListSiteAnalyses
 // method.
-func (client *DiagnosticsClient) ListSiteAnalyses(resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsClientListSiteAnalysesOptions) *runtime.Pager[DiagnosticsClientListSiteAnalysesResponse] {
+func (client *DiagnosticsClient) NewListSiteAnalysesPager(resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsClientListSiteAnalysesOptions) *runtime.Pager[DiagnosticsClientListSiteAnalysesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DiagnosticsClientListSiteAnalysesResponse]{
 		More: func(page DiagnosticsClientListSiteAnalysesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1124,7 +1124,7 @@ func (client *DiagnosticsClient) listSiteAnalysesHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListSiteAnalysesSlot - Description for Get Site Analyses
+// NewListSiteAnalysesSlotPager - Description for Get Site Analyses
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Site Name
@@ -1132,7 +1132,7 @@ func (client *DiagnosticsClient) listSiteAnalysesHandleResponse(resp *http.Respo
 // slot - Slot Name
 // options - DiagnosticsClientListSiteAnalysesSlotOptions contains the optional parameters for the DiagnosticsClient.ListSiteAnalysesSlot
 // method.
-func (client *DiagnosticsClient) ListSiteAnalysesSlot(resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsClientListSiteAnalysesSlotOptions) *runtime.Pager[DiagnosticsClientListSiteAnalysesSlotResponse] {
+func (client *DiagnosticsClient) NewListSiteAnalysesSlotPager(resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsClientListSiteAnalysesSlotOptions) *runtime.Pager[DiagnosticsClientListSiteAnalysesSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DiagnosticsClientListSiteAnalysesSlotResponse]{
 		More: func(page DiagnosticsClientListSiteAnalysesSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1203,13 +1203,13 @@ func (client *DiagnosticsClient) listSiteAnalysesSlotHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListSiteDetectorResponses - Description for List Site Detector Responses
+// NewListSiteDetectorResponsesPager - Description for List Site Detector Responses
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Site Name
 // options - DiagnosticsClientListSiteDetectorResponsesOptions contains the optional parameters for the DiagnosticsClient.ListSiteDetectorResponses
 // method.
-func (client *DiagnosticsClient) ListSiteDetectorResponses(resourceGroupName string, siteName string, options *DiagnosticsClientListSiteDetectorResponsesOptions) *runtime.Pager[DiagnosticsClientListSiteDetectorResponsesResponse] {
+func (client *DiagnosticsClient) NewListSiteDetectorResponsesPager(resourceGroupName string, siteName string, options *DiagnosticsClientListSiteDetectorResponsesOptions) *runtime.Pager[DiagnosticsClientListSiteDetectorResponsesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DiagnosticsClientListSiteDetectorResponsesResponse]{
 		More: func(page DiagnosticsClientListSiteDetectorResponsesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1272,14 +1272,14 @@ func (client *DiagnosticsClient) listSiteDetectorResponsesHandleResponse(resp *h
 	return result, nil
 }
 
-// ListSiteDetectorResponsesSlot - Description for List Site Detector Responses
+// NewListSiteDetectorResponsesSlotPager - Description for List Site Detector Responses
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Site Name
 // slot - Slot Name
 // options - DiagnosticsClientListSiteDetectorResponsesSlotOptions contains the optional parameters for the DiagnosticsClient.ListSiteDetectorResponsesSlot
 // method.
-func (client *DiagnosticsClient) ListSiteDetectorResponsesSlot(resourceGroupName string, siteName string, slot string, options *DiagnosticsClientListSiteDetectorResponsesSlotOptions) *runtime.Pager[DiagnosticsClientListSiteDetectorResponsesSlotResponse] {
+func (client *DiagnosticsClient) NewListSiteDetectorResponsesSlotPager(resourceGroupName string, siteName string, slot string, options *DiagnosticsClientListSiteDetectorResponsesSlotOptions) *runtime.Pager[DiagnosticsClientListSiteDetectorResponsesSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DiagnosticsClientListSiteDetectorResponsesSlotResponse]{
 		More: func(page DiagnosticsClientListSiteDetectorResponsesSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1346,14 +1346,14 @@ func (client *DiagnosticsClient) listSiteDetectorResponsesSlotHandleResponse(res
 	return result, nil
 }
 
-// ListSiteDetectors - Description for Get Detectors
+// NewListSiteDetectorsPager - Description for Get Detectors
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Site Name
 // diagnosticCategory - Diagnostic Category
 // options - DiagnosticsClientListSiteDetectorsOptions contains the optional parameters for the DiagnosticsClient.ListSiteDetectors
 // method.
-func (client *DiagnosticsClient) ListSiteDetectors(resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsClientListSiteDetectorsOptions) *runtime.Pager[DiagnosticsClientListSiteDetectorsResponse] {
+func (client *DiagnosticsClient) NewListSiteDetectorsPager(resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsClientListSiteDetectorsOptions) *runtime.Pager[DiagnosticsClientListSiteDetectorsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DiagnosticsClientListSiteDetectorsResponse]{
 		More: func(page DiagnosticsClientListSiteDetectorsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1420,7 +1420,7 @@ func (client *DiagnosticsClient) listSiteDetectorsHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListSiteDetectorsSlot - Description for Get Detectors
+// NewListSiteDetectorsSlotPager - Description for Get Detectors
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Site Name
@@ -1428,7 +1428,7 @@ func (client *DiagnosticsClient) listSiteDetectorsHandleResponse(resp *http.Resp
 // slot - Slot Name
 // options - DiagnosticsClientListSiteDetectorsSlotOptions contains the optional parameters for the DiagnosticsClient.ListSiteDetectorsSlot
 // method.
-func (client *DiagnosticsClient) ListSiteDetectorsSlot(resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsClientListSiteDetectorsSlotOptions) *runtime.Pager[DiagnosticsClientListSiteDetectorsSlotResponse] {
+func (client *DiagnosticsClient) NewListSiteDetectorsSlotPager(resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsClientListSiteDetectorsSlotOptions) *runtime.Pager[DiagnosticsClientListSiteDetectorsSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DiagnosticsClientListSiteDetectorsSlotResponse]{
 		More: func(page DiagnosticsClientListSiteDetectorsSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1499,13 +1499,13 @@ func (client *DiagnosticsClient) listSiteDetectorsSlotHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListSiteDiagnosticCategories - Description for Get Diagnostics Categories
+// NewListSiteDiagnosticCategoriesPager - Description for Get Diagnostics Categories
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Site Name
 // options - DiagnosticsClientListSiteDiagnosticCategoriesOptions contains the optional parameters for the DiagnosticsClient.ListSiteDiagnosticCategories
 // method.
-func (client *DiagnosticsClient) ListSiteDiagnosticCategories(resourceGroupName string, siteName string, options *DiagnosticsClientListSiteDiagnosticCategoriesOptions) *runtime.Pager[DiagnosticsClientListSiteDiagnosticCategoriesResponse] {
+func (client *DiagnosticsClient) NewListSiteDiagnosticCategoriesPager(resourceGroupName string, siteName string, options *DiagnosticsClientListSiteDiagnosticCategoriesOptions) *runtime.Pager[DiagnosticsClientListSiteDiagnosticCategoriesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DiagnosticsClientListSiteDiagnosticCategoriesResponse]{
 		More: func(page DiagnosticsClientListSiteDiagnosticCategoriesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1568,14 +1568,14 @@ func (client *DiagnosticsClient) listSiteDiagnosticCategoriesHandleResponse(resp
 	return result, nil
 }
 
-// ListSiteDiagnosticCategoriesSlot - Description for Get Diagnostics Categories
+// NewListSiteDiagnosticCategoriesSlotPager - Description for Get Diagnostics Categories
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Site Name
 // slot - Slot Name
 // options - DiagnosticsClientListSiteDiagnosticCategoriesSlotOptions contains the optional parameters for the DiagnosticsClient.ListSiteDiagnosticCategoriesSlot
 // method.
-func (client *DiagnosticsClient) ListSiteDiagnosticCategoriesSlot(resourceGroupName string, siteName string, slot string, options *DiagnosticsClientListSiteDiagnosticCategoriesSlotOptions) *runtime.Pager[DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse] {
+func (client *DiagnosticsClient) NewListSiteDiagnosticCategoriesSlotPager(resourceGroupName string, siteName string, slot string, options *DiagnosticsClientListSiteDiagnosticCategoriesSlotOptions) *runtime.Pager[DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse]{
 		More: func(page DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

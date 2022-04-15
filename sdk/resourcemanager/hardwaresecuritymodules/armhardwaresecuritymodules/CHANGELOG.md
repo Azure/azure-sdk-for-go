@@ -1,5 +1,21 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*DedicatedHsmClient.ListBySubscription` has been removed
+- Function `*DedicatedHsmClient.ListOutboundNetworkDependenciesEndpoints` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*DedicatedHsmClient.ListByResourceGroup` has been removed
+
+### Features Added
+
+- New function `*DedicatedHsmClient.NewListOutboundNetworkDependenciesEndpointsPager(string, string, *DedicatedHsmClientListOutboundNetworkDependenciesEndpointsOptions) *runtime.Pager[DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse]`
+- New function `*DedicatedHsmClient.NewListBySubscriptionPager(*DedicatedHsmClientListBySubscriptionOptions) *runtime.Pager[DedicatedHsmClientListBySubscriptionResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*DedicatedHsmClient.NewListByResourceGroupPager(string, *DedicatedHsmClientListByResourceGroupOptions) *runtime.Pager[DedicatedHsmClientListByResourceGroupResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

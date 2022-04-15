@@ -245,13 +245,13 @@ func (client *PoliciesClient) getHandleResponse(resp *http.Response) (PoliciesCl
 	return result, nil
 }
 
-// List - List policies in a given policy set.
+// NewListPager - List policies in a given policy set.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // policySetName - The name of the policy set.
 // options - PoliciesClientListOptions contains the optional parameters for the PoliciesClient.List method.
-func (client *PoliciesClient) List(resourceGroupName string, labName string, policySetName string, options *PoliciesClientListOptions) *runtime.Pager[PoliciesClientListResponse] {
+func (client *PoliciesClient) NewListPager(resourceGroupName string, labName string, policySetName string, options *PoliciesClientListOptions) *runtime.Pager[PoliciesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PoliciesClientListResponse]{
 		More: func(page PoliciesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

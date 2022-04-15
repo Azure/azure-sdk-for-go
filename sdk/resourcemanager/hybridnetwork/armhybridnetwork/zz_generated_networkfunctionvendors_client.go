@@ -54,11 +54,11 @@ func NewNetworkFunctionVendorsClient(subscriptionID string, credential azcore.To
 	return client, nil
 }
 
-// List - Lists all the available vendor and sku information.
+// NewListPager - Lists all the available vendor and sku information.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - NetworkFunctionVendorsClientListOptions contains the optional parameters for the NetworkFunctionVendorsClient.List
 // method.
-func (client *NetworkFunctionVendorsClient) List(options *NetworkFunctionVendorsClientListOptions) *runtime.Pager[NetworkFunctionVendorsClientListResponse] {
+func (client *NetworkFunctionVendorsClient) NewListPager(options *NetworkFunctionVendorsClientListOptions) *runtime.Pager[NetworkFunctionVendorsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[NetworkFunctionVendorsClientListResponse]{
 		More: func(page NetworkFunctionVendorsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

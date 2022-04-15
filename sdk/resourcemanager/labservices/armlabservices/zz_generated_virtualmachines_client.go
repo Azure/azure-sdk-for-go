@@ -115,13 +115,13 @@ func (client *VirtualMachinesClient) getHandleResponse(resp *http.Response) (Vir
 	return result, nil
 }
 
-// ListByLab - Returns a list of all virtual machines for a lab.
+// NewListByLabPager - Returns a list of all virtual machines for a lab.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
 // options - VirtualMachinesClientListByLabOptions contains the optional parameters for the VirtualMachinesClient.ListByLab
 // method.
-func (client *VirtualMachinesClient) ListByLab(resourceGroupName string, labName string, options *VirtualMachinesClientListByLabOptions) *runtime.Pager[VirtualMachinesClientListByLabResponse] {
+func (client *VirtualMachinesClient) NewListByLabPager(resourceGroupName string, labName string, options *VirtualMachinesClientListByLabOptions) *runtime.Pager[VirtualMachinesClientListByLabResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualMachinesClientListByLabResponse]{
 		More: func(page VirtualMachinesClientListByLabResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

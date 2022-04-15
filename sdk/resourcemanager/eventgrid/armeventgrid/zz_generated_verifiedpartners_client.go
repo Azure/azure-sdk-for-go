@@ -98,10 +98,10 @@ func (client *VerifiedPartnersClient) getHandleResponse(resp *http.Response) (Ve
 	return result, nil
 }
 
-// List - Get a list of all verified partners.
+// NewListPager - Get a list of all verified partners.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - VerifiedPartnersClientListOptions contains the optional parameters for the VerifiedPartnersClient.List method.
-func (client *VerifiedPartnersClient) List(options *VerifiedPartnersClientListOptions) *runtime.Pager[VerifiedPartnersClientListResponse] {
+func (client *VerifiedPartnersClient) NewListPager(options *VerifiedPartnersClientListOptions) *runtime.Pager[VerifiedPartnersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VerifiedPartnersClientListResponse]{
 		More: func(page VerifiedPartnersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -479,10 +479,10 @@ func (client *ClustersClient) getHandleResponse(resp *http.Response) (ClustersCl
 	return result, nil
 }
 
-// List - Lists all Kusto clusters within a subscription.
+// NewListPager - Lists all Kusto clusters within a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ClustersClientListOptions contains the optional parameters for the ClustersClient.List method.
-func (client *ClustersClient) List(options *ClustersClientListOptions) *runtime.Pager[ClustersClientListResponse] {
+func (client *ClustersClient) NewListPager(options *ClustersClientListOptions) *runtime.Pager[ClustersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClustersClientListResponse]{
 		More: func(page ClustersClientListResponse) bool {
 			return false
@@ -531,12 +531,12 @@ func (client *ClustersClient) listHandleResponse(resp *http.Response) (ClustersC
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all Kusto clusters within a resource group.
+// NewListByResourceGroupPager - Lists all Kusto clusters within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group containing the Kusto cluster.
 // options - ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.ListByResourceGroup
 // method.
-func (client *ClustersClient) ListByResourceGroup(resourceGroupName string, options *ClustersClientListByResourceGroupOptions) *runtime.Pager[ClustersClientListByResourceGroupResponse] {
+func (client *ClustersClient) NewListByResourceGroupPager(resourceGroupName string, options *ClustersClientListByResourceGroupOptions) *runtime.Pager[ClustersClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClustersClientListByResourceGroupResponse]{
 		More: func(page ClustersClientListByResourceGroupResponse) bool {
 			return false
@@ -589,13 +589,14 @@ func (client *ClustersClient) listByResourceGroupHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListFollowerDatabases - Returns a list of databases that are owned by this cluster and were followed by another cluster.
+// NewListFollowerDatabasesPager - Returns a list of databases that are owned by this cluster and were followed by another
+// cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group containing the Kusto cluster.
 // clusterName - The name of the Kusto cluster.
 // options - ClustersClientListFollowerDatabasesOptions contains the optional parameters for the ClustersClient.ListFollowerDatabases
 // method.
-func (client *ClustersClient) ListFollowerDatabases(resourceGroupName string, clusterName string, options *ClustersClientListFollowerDatabasesOptions) *runtime.Pager[ClustersClientListFollowerDatabasesResponse] {
+func (client *ClustersClient) NewListFollowerDatabasesPager(resourceGroupName string, clusterName string, options *ClustersClientListFollowerDatabasesOptions) *runtime.Pager[ClustersClientListFollowerDatabasesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClustersClientListFollowerDatabasesResponse]{
 		More: func(page ClustersClientListFollowerDatabasesResponse) bool {
 			return false
@@ -652,13 +653,13 @@ func (client *ClustersClient) listFollowerDatabasesHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListLanguageExtensions - Returns a list of language extensions that can run within KQL queries.
+// NewListLanguageExtensionsPager - Returns a list of language extensions that can run within KQL queries.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group containing the Kusto cluster.
 // clusterName - The name of the Kusto cluster.
 // options - ClustersClientListLanguageExtensionsOptions contains the optional parameters for the ClustersClient.ListLanguageExtensions
 // method.
-func (client *ClustersClient) ListLanguageExtensions(resourceGroupName string, clusterName string, options *ClustersClientListLanguageExtensionsOptions) *runtime.Pager[ClustersClientListLanguageExtensionsResponse] {
+func (client *ClustersClient) NewListLanguageExtensionsPager(resourceGroupName string, clusterName string, options *ClustersClientListLanguageExtensionsOptions) *runtime.Pager[ClustersClientListLanguageExtensionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClustersClientListLanguageExtensionsResponse]{
 		More: func(page ClustersClientListLanguageExtensionsResponse) bool {
 			return false
@@ -715,13 +716,13 @@ func (client *ClustersClient) listLanguageExtensionsHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListOutboundNetworkDependenciesEndpoints - Gets the network endpoints of all outbound dependencies of a Kusto cluster
+// NewListOutboundNetworkDependenciesEndpointsPager - Gets the network endpoints of all outbound dependencies of a Kusto cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group containing the Kusto cluster.
 // clusterName - The name of the Kusto cluster.
 // options - ClustersClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the ClustersClient.ListOutboundNetworkDependenciesEndpoints
 // method.
-func (client *ClustersClient) ListOutboundNetworkDependenciesEndpoints(resourceGroupName string, clusterName string, options *ClustersClientListOutboundNetworkDependenciesEndpointsOptions) *runtime.Pager[ClustersClientListOutboundNetworkDependenciesEndpointsResponse] {
+func (client *ClustersClient) NewListOutboundNetworkDependenciesEndpointsPager(resourceGroupName string, clusterName string, options *ClustersClientListOutboundNetworkDependenciesEndpointsOptions) *runtime.Pager[ClustersClientListOutboundNetworkDependenciesEndpointsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClustersClientListOutboundNetworkDependenciesEndpointsResponse]{
 		More: func(page ClustersClientListOutboundNetworkDependenciesEndpointsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -784,10 +785,10 @@ func (client *ClustersClient) listOutboundNetworkDependenciesEndpointsHandleResp
 	return result, nil
 }
 
-// ListSKUs - Lists eligible SKUs for Kusto resource provider.
+// NewListSKUsPager - Lists eligible SKUs for Kusto resource provider.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ClustersClientListSKUsOptions contains the optional parameters for the ClustersClient.ListSKUs method.
-func (client *ClustersClient) ListSKUs(options *ClustersClientListSKUsOptions) *runtime.Pager[ClustersClientListSKUsResponse] {
+func (client *ClustersClient) NewListSKUsPager(options *ClustersClientListSKUsOptions) *runtime.Pager[ClustersClientListSKUsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClustersClientListSKUsResponse]{
 		More: func(page ClustersClientListSKUsResponse) bool {
 			return false
@@ -836,13 +837,13 @@ func (client *ClustersClient) listSKUsHandleResponse(resp *http.Response) (Clust
 	return result, nil
 }
 
-// ListSKUsByResource - Returns the SKUs available for the provided resource.
+// NewListSKUsByResourcePager - Returns the SKUs available for the provided resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group containing the Kusto cluster.
 // clusterName - The name of the Kusto cluster.
 // options - ClustersClientListSKUsByResourceOptions contains the optional parameters for the ClustersClient.ListSKUsByResource
 // method.
-func (client *ClustersClient) ListSKUsByResource(resourceGroupName string, clusterName string, options *ClustersClientListSKUsByResourceOptions) *runtime.Pager[ClustersClientListSKUsByResourceResponse] {
+func (client *ClustersClient) NewListSKUsByResourcePager(resourceGroupName string, clusterName string, options *ClustersClientListSKUsByResourceOptions) *runtime.Pager[ClustersClientListSKUsByResourceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClustersClientListSKUsByResourceResponse]{
 		More: func(page ClustersClientListSKUsByResourceResponse) bool {
 			return false

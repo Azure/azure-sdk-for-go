@@ -286,14 +286,14 @@ func (client *StorageAccountsClient) getStorageContainerHandleResponse(resp *htt
 	return result, nil
 }
 
-// ListByAccount - Gets the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account.
-// The response includes a link to the next page, if any.
+// NewListByAccountPager - Gets the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics
+// account. The response includes a link to the next page, if any.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Analytics account.
 // options - StorageAccountsClientListByAccountOptions contains the optional parameters for the StorageAccountsClient.ListByAccount
 // method.
-func (client *StorageAccountsClient) ListByAccount(resourceGroupName string, accountName string, options *StorageAccountsClientListByAccountOptions) *runtime.Pager[StorageAccountsClientListByAccountResponse] {
+func (client *StorageAccountsClient) NewListByAccountPager(resourceGroupName string, accountName string, options *StorageAccountsClientListByAccountOptions) *runtime.Pager[StorageAccountsClientListByAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[StorageAccountsClientListByAccountResponse]{
 		More: func(page StorageAccountsClientListByAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -374,8 +374,8 @@ func (client *StorageAccountsClient) listByAccountHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListSasTokens - Gets the SAS token associated with the specified Data Lake Analytics and Azure Storage account and container
-// combination.
+// NewListSasTokensPager - Gets the SAS token associated with the specified Data Lake Analytics and Azure Storage account
+// and container combination.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Analytics account.
@@ -383,7 +383,7 @@ func (client *StorageAccountsClient) listByAccountHandleResponse(resp *http.Resp
 // containerName - The name of the Azure storage container for which the SAS token is being requested.
 // options - StorageAccountsClientListSasTokensOptions contains the optional parameters for the StorageAccountsClient.ListSasTokens
 // method.
-func (client *StorageAccountsClient) ListSasTokens(resourceGroupName string, accountName string, storageAccountName string, containerName string, options *StorageAccountsClientListSasTokensOptions) *runtime.Pager[StorageAccountsClientListSasTokensResponse] {
+func (client *StorageAccountsClient) NewListSasTokensPager(resourceGroupName string, accountName string, storageAccountName string, containerName string, options *StorageAccountsClientListSasTokensOptions) *runtime.Pager[StorageAccountsClientListSasTokensResponse] {
 	return runtime.NewPager(runtime.PageProcessor[StorageAccountsClientListSasTokensResponse]{
 		More: func(page StorageAccountsClientListSasTokensResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -454,15 +454,15 @@ func (client *StorageAccountsClient) listSasTokensHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListStorageContainers - Lists the Azure Storage containers, if any, associated with the specified Data Lake Analytics and
-// Azure Storage account combination. The response includes a link to the next page of results, if any.
+// NewListStorageContainersPager - Lists the Azure Storage containers, if any, associated with the specified Data Lake Analytics
+// and Azure Storage account combination. The response includes a link to the next page of results, if any.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Analytics account.
 // storageAccountName - The name of the Azure storage account from which to list blob containers.
 // options - StorageAccountsClientListStorageContainersOptions contains the optional parameters for the StorageAccountsClient.ListStorageContainers
 // method.
-func (client *StorageAccountsClient) ListStorageContainers(resourceGroupName string, accountName string, storageAccountName string, options *StorageAccountsClientListStorageContainersOptions) *runtime.Pager[StorageAccountsClientListStorageContainersResponse] {
+func (client *StorageAccountsClient) NewListStorageContainersPager(resourceGroupName string, accountName string, storageAccountName string, options *StorageAccountsClientListStorageContainersOptions) *runtime.Pager[StorageAccountsClientListStorageContainersResponse] {
 	return runtime.NewPager(runtime.PageProcessor[StorageAccountsClientListStorageContainersResponse]{
 		More: func(page StorageAccountsClientListStorageContainersResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

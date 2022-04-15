@@ -230,13 +230,13 @@ func (client *HybridRunbookWorkerGroupClient) getHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListByAutomationAccount - Retrieve a list of hybrid runbook worker groups.
+// NewListByAutomationAccountPager - Retrieve a list of hybrid runbook worker groups.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - HybridRunbookWorkerGroupClientListByAutomationAccountOptions contains the optional parameters for the HybridRunbookWorkerGroupClient.ListByAutomationAccount
 // method.
-func (client *HybridRunbookWorkerGroupClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *HybridRunbookWorkerGroupClientListByAutomationAccountOptions) *runtime.Pager[HybridRunbookWorkerGroupClientListByAutomationAccountResponse] {
+func (client *HybridRunbookWorkerGroupClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *HybridRunbookWorkerGroupClientListByAutomationAccountOptions) *runtime.Pager[HybridRunbookWorkerGroupClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[HybridRunbookWorkerGroupClientListByAutomationAccountResponse]{
 		More: func(page HybridRunbookWorkerGroupClientListByAutomationAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

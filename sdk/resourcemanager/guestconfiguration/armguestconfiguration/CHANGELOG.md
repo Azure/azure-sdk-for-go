@@ -1,5 +1,23 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*AssignmentsClient.SubscriptionList` has been removed
+- Function `*AssignmentsClient.List` has been removed
+- Function `*AssignmentsClient.RGList` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*HCRPAssignmentsClient.List` has been removed
+
+### Features Added
+
+- New function `*AssignmentsClient.NewSubscriptionListPager(*AssignmentsClientSubscriptionListOptions) *runtime.Pager[AssignmentsClientSubscriptionListResponse]`
+- New function `*HCRPAssignmentsClient.NewListPager(string, string, *HCRPAssignmentsClientListOptions) *runtime.Pager[HCRPAssignmentsClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*AssignmentsClient.NewRGListPager(string, *AssignmentsClientRGListOptions) *runtime.Pager[AssignmentsClientRGListResponse]`
+- New function `*AssignmentsClient.NewListPager(string, string, *AssignmentsClientListOptions) *runtime.Pager[AssignmentsClientListResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

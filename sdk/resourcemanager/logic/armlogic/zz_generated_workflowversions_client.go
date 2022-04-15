@@ -115,12 +115,12 @@ func (client *WorkflowVersionsClient) getHandleResponse(resp *http.Response) (Wo
 	return result, nil
 }
 
-// List - Gets a list of workflow versions.
+// NewListPager - Gets a list of workflow versions.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
 // options - WorkflowVersionsClientListOptions contains the optional parameters for the WorkflowVersionsClient.List method.
-func (client *WorkflowVersionsClient) List(resourceGroupName string, workflowName string, options *WorkflowVersionsClientListOptions) *runtime.Pager[WorkflowVersionsClientListResponse] {
+func (client *WorkflowVersionsClient) NewListPager(resourceGroupName string, workflowName string, options *WorkflowVersionsClientListOptions) *runtime.Pager[WorkflowVersionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkflowVersionsClientListResponse]{
 		More: func(page WorkflowVersionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

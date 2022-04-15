@@ -123,13 +123,13 @@ func (client *ArmTemplatesClient) getHandleResponse(resp *http.Response) (ArmTem
 	return result, nil
 }
 
-// List - List azure resource manager templates in a given artifact source.
+// NewListPager - List azure resource manager templates in a given artifact source.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // artifactSourceName - The name of the artifact source.
 // options - ArmTemplatesClientListOptions contains the optional parameters for the ArmTemplatesClient.List method.
-func (client *ArmTemplatesClient) List(resourceGroupName string, labName string, artifactSourceName string, options *ArmTemplatesClientListOptions) *runtime.Pager[ArmTemplatesClientListResponse] {
+func (client *ArmTemplatesClient) NewListPager(resourceGroupName string, labName string, artifactSourceName string, options *ArmTemplatesClientListOptions) *runtime.Pager[ArmTemplatesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ArmTemplatesClientListResponse]{
 		More: func(page ArmTemplatesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

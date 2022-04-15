@@ -55,12 +55,12 @@ func NewUsageClient(subscriptionID string, credential azcore.TokenCredential, op
 	return client, nil
 }
 
-// List - Gets, for the specified location, the current compute resource usage information as well as the limits for compute
-// resources under the subscription.
+// NewListPager - Gets, for the specified location, the current compute resource usage information as well as the limits for
+// compute resources under the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - The location for which resource usage is queried.
 // options - UsageClientListOptions contains the optional parameters for the UsageClient.List method.
-func (client *UsageClient) List(location string, options *UsageClientListOptions) *runtime.Pager[UsageClientListResponse] {
+func (client *UsageClient) NewListPager(location string, options *UsageClientListOptions) *runtime.Pager[UsageClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[UsageClientListResponse]{
 		More: func(page UsageClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

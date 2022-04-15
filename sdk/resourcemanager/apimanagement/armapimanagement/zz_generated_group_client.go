@@ -299,12 +299,12 @@ func (client *GroupClient) getEntityTagHandleResponse(resp *http.Response) (Grou
 	return result, nil
 }
 
-// ListByService - Lists a collection of groups defined within a service instance.
+// NewListByServicePager - Lists a collection of groups defined within a service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - GroupClientListByServiceOptions contains the optional parameters for the GroupClient.ListByService method.
-func (client *GroupClient) ListByService(resourceGroupName string, serviceName string, options *GroupClientListByServiceOptions) *runtime.Pager[GroupClientListByServiceResponse] {
+func (client *GroupClient) NewListByServicePager(resourceGroupName string, serviceName string, options *GroupClientListByServiceOptions) *runtime.Pager[GroupClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[GroupClientListByServiceResponse]{
 		More: func(page GroupClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

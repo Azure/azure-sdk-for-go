@@ -159,7 +159,7 @@ func ExampleManagedHsmsClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/keyvault/resource-manager/Microsoft.KeyVault/preview/2021-11-01-preview/examples/ManagedHsm_ListByResourceGroup.json
-func ExampleManagedHsmsClient_ListByResourceGroup() {
+func ExampleManagedHsmsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -171,7 +171,7 @@ func ExampleManagedHsmsClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		&armkeyvault.ManagedHsmsClientListByResourceGroupOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -187,7 +187,7 @@ func ExampleManagedHsmsClient_ListByResourceGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/keyvault/resource-manager/Microsoft.KeyVault/preview/2021-11-01-preview/examples/ManagedHsm_ListBySubscription.json
-func ExampleManagedHsmsClient_ListBySubscription() {
+func ExampleManagedHsmsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -199,7 +199,7 @@ func ExampleManagedHsmsClient_ListBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription(&armkeyvault.ManagedHsmsClientListBySubscriptionOptions{Top: nil})
+	pager := client.NewListBySubscriptionPager(&armkeyvault.ManagedHsmsClientListBySubscriptionOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -214,7 +214,7 @@ func ExampleManagedHsmsClient_ListBySubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/keyvault/resource-manager/Microsoft.KeyVault/preview/2021-11-01-preview/examples/DeletedManagedHsm_List.json
-func ExampleManagedHsmsClient_ListDeleted() {
+func ExampleManagedHsmsClient_NewListDeletedPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -226,7 +226,7 @@ func ExampleManagedHsmsClient_ListDeleted() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListDeleted(nil)
+	pager := client.NewListDeletedPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

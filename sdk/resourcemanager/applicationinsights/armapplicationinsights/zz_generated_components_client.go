@@ -274,10 +274,10 @@ func (client *ComponentsClient) getPurgeStatusHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// List - Gets a list of all Application Insights components within a subscription.
+// NewListPager - Gets a list of all Application Insights components within a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ComponentsClientListOptions contains the optional parameters for the ComponentsClient.List method.
-func (client *ComponentsClient) List(options *ComponentsClientListOptions) *runtime.Pager[ComponentsClientListResponse] {
+func (client *ComponentsClient) NewListPager(options *ComponentsClientListOptions) *runtime.Pager[ComponentsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ComponentsClientListResponse]{
 		More: func(page ComponentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -332,12 +332,12 @@ func (client *ComponentsClient) listHandleResponse(resp *http.Response) (Compone
 	return result, nil
 }
 
-// ListByResourceGroup - Gets a list of Application Insights components within a resource group.
+// NewListByResourceGroupPager - Gets a list of Application Insights components within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ComponentsClientListByResourceGroupOptions contains the optional parameters for the ComponentsClient.ListByResourceGroup
 // method.
-func (client *ComponentsClient) ListByResourceGroup(resourceGroupName string, options *ComponentsClientListByResourceGroupOptions) *runtime.Pager[ComponentsClientListByResourceGroupResponse] {
+func (client *ComponentsClient) NewListByResourceGroupPager(resourceGroupName string, options *ComponentsClientListByResourceGroupOptions) *runtime.Pager[ComponentsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ComponentsClientListByResourceGroupResponse]{
 		More: func(page ComponentsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

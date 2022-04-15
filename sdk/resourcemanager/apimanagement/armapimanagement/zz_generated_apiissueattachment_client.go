@@ -342,7 +342,7 @@ func (client *APIIssueAttachmentClient) getEntityTagHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListByService - Lists all attachments for the Issue associated with the specified API.
+// NewListByServicePager - Lists all attachments for the Issue associated with the specified API.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
@@ -350,7 +350,7 @@ func (client *APIIssueAttachmentClient) getEntityTagHandleResponse(resp *http.Re
 // issueID - Issue identifier. Must be unique in the current API Management service instance.
 // options - APIIssueAttachmentClientListByServiceOptions contains the optional parameters for the APIIssueAttachmentClient.ListByService
 // method.
-func (client *APIIssueAttachmentClient) ListByService(resourceGroupName string, serviceName string, apiID string, issueID string, options *APIIssueAttachmentClientListByServiceOptions) *runtime.Pager[APIIssueAttachmentClientListByServiceResponse] {
+func (client *APIIssueAttachmentClient) NewListByServicePager(resourceGroupName string, serviceName string, apiID string, issueID string, options *APIIssueAttachmentClientListByServiceOptions) *runtime.Pager[APIIssueAttachmentClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[APIIssueAttachmentClientListByServiceResponse]{
 		More: func(page APIIssueAttachmentClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

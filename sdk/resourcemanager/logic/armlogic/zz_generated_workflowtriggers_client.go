@@ -176,12 +176,12 @@ func (client *WorkflowTriggersClient) getSchemaJSONHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// List - Gets a list of workflow triggers.
+// NewListPager - Gets a list of workflow triggers.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
 // options - WorkflowTriggersClientListOptions contains the optional parameters for the WorkflowTriggersClient.List method.
-func (client *WorkflowTriggersClient) List(resourceGroupName string, workflowName string, options *WorkflowTriggersClientListOptions) *runtime.Pager[WorkflowTriggersClientListResponse] {
+func (client *WorkflowTriggersClient) NewListPager(resourceGroupName string, workflowName string, options *WorkflowTriggersClientListOptions) *runtime.Pager[WorkflowTriggersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkflowTriggersClientListResponse]{
 		More: func(page WorkflowTriggersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

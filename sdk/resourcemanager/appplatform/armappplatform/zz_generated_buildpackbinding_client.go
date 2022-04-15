@@ -285,7 +285,7 @@ func (client *BuildpackBindingClient) getHandleResponse(resp *http.Response) (Bu
 	return result, nil
 }
 
-// List - Handles requests to list all buildpack bindings in a builder.
+// NewListPager - Handles requests to list all buildpack bindings in a builder.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -293,7 +293,7 @@ func (client *BuildpackBindingClient) getHandleResponse(resp *http.Response) (Bu
 // buildServiceName - The name of the build service resource.
 // builderName - The name of the builder resource.
 // options - BuildpackBindingClientListOptions contains the optional parameters for the BuildpackBindingClient.List method.
-func (client *BuildpackBindingClient) List(resourceGroupName string, serviceName string, buildServiceName string, builderName string, options *BuildpackBindingClientListOptions) *runtime.Pager[BuildpackBindingClientListResponse] {
+func (client *BuildpackBindingClient) NewListPager(resourceGroupName string, serviceName string, buildServiceName string, builderName string, options *BuildpackBindingClientListOptions) *runtime.Pager[BuildpackBindingClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BuildpackBindingClientListResponse]{
 		More: func(page BuildpackBindingClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

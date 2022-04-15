@@ -235,12 +235,12 @@ func (client *LoadTestsClient) getHandleResponse(resp *http.Response) (LoadTests
 	return result, nil
 }
 
-// ListByResourceGroup - Lists loadtest resources in a resource group.
+// NewListByResourceGroupPager - Lists loadtest resources in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - LoadTestsClientListByResourceGroupOptions contains the optional parameters for the LoadTestsClient.ListByResourceGroup
 // method.
-func (client *LoadTestsClient) ListByResourceGroup(resourceGroupName string, options *LoadTestsClientListByResourceGroupOptions) *runtime.Pager[LoadTestsClientListByResourceGroupResponse] {
+func (client *LoadTestsClient) NewListByResourceGroupPager(resourceGroupName string, options *LoadTestsClientListByResourceGroupOptions) *runtime.Pager[LoadTestsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LoadTestsClientListByResourceGroupResponse]{
 		More: func(page LoadTestsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -299,11 +299,11 @@ func (client *LoadTestsClient) listByResourceGroupHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListBySubscription - Lists loadtests resources in a subscription.
+// NewListBySubscriptionPager - Lists loadtests resources in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - LoadTestsClientListBySubscriptionOptions contains the optional parameters for the LoadTestsClient.ListBySubscription
 // method.
-func (client *LoadTestsClient) ListBySubscription(options *LoadTestsClientListBySubscriptionOptions) *runtime.Pager[LoadTestsClientListBySubscriptionResponse] {
+func (client *LoadTestsClient) NewListBySubscriptionPager(options *LoadTestsClientListBySubscriptionOptions) *runtime.Pager[LoadTestsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LoadTestsClientListBySubscriptionResponse]{
 		More: func(page LoadTestsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

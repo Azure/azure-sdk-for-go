@@ -1,5 +1,25 @@
 # Release History
 
+## 0.5.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*AccountsClient.ListByResourceGroup` has been removed
+- Function `*FirewallRulesClient.ListByAccount` has been removed
+- Function `*AccountsClient.List` has been removed
+- Function `*VirtualNetworkRulesClient.ListByAccount` has been removed
+- Function `*TrustedIDProvidersClient.ListByAccount` has been removed
+- Function `*LocationsClient.GetUsage` has been removed
+
+### Features Added
+
+- New function `*AccountsClient.NewListByResourceGroupPager(string, *AccountsClientListByResourceGroupOptions) *runtime.Pager[AccountsClientListByResourceGroupResponse]`
+- New function `*FirewallRulesClient.NewListByAccountPager(string, string, *FirewallRulesClientListByAccountOptions) *runtime.Pager[FirewallRulesClientListByAccountResponse]`
+- New function `*VirtualNetworkRulesClient.NewListByAccountPager(string, string, *VirtualNetworkRulesClientListByAccountOptions) *runtime.Pager[VirtualNetworkRulesClientListByAccountResponse]`
+- New function `*LocationsClient.NewGetUsagePager(string, *LocationsClientGetUsageOptions) *runtime.Pager[LocationsClientGetUsageResponse]`
+- New function `*TrustedIDProvidersClient.NewListByAccountPager(string, string, *TrustedIDProvidersClientListByAccountOptions) *runtime.Pager[TrustedIDProvidersClientListByAccountResponse]`
+- New function `*AccountsClient.NewListPager(*AccountsClientListOptions) *runtime.Pager[AccountsClientListResponse]`
+
+
 ## 0.4.0 (2022-04-11)
 ### Breaking Changes
 

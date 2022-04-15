@@ -247,13 +247,13 @@ func (client *DicomServicesClient) getHandleResponse(resp *http.Response) (Dicom
 	return result, nil
 }
 
-// ListByWorkspace - Lists all DICOM Services for the given workspace
+// NewListByWorkspacePager - Lists all DICOM Services for the given workspace
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the service instance.
 // workspaceName - The name of workspace resource.
 // options - DicomServicesClientListByWorkspaceOptions contains the optional parameters for the DicomServicesClient.ListByWorkspace
 // method.
-func (client *DicomServicesClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *DicomServicesClientListByWorkspaceOptions) *runtime.Pager[DicomServicesClientListByWorkspaceResponse] {
+func (client *DicomServicesClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *DicomServicesClientListByWorkspaceOptions) *runtime.Pager[DicomServicesClientListByWorkspaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DicomServicesClientListByWorkspaceResponse]{
 		More: func(page DicomServicesClientListByWorkspaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

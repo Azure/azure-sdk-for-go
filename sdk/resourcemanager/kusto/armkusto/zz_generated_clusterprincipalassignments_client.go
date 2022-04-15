@@ -306,13 +306,13 @@ func (client *ClusterPrincipalAssignmentsClient) getHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// List - Lists all Kusto cluster principalAssignments.
+// NewListPager - Lists all Kusto cluster principalAssignments.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group containing the Kusto cluster.
 // clusterName - The name of the Kusto cluster.
 // options - ClusterPrincipalAssignmentsClientListOptions contains the optional parameters for the ClusterPrincipalAssignmentsClient.List
 // method.
-func (client *ClusterPrincipalAssignmentsClient) List(resourceGroupName string, clusterName string, options *ClusterPrincipalAssignmentsClientListOptions) *runtime.Pager[ClusterPrincipalAssignmentsClientListResponse] {
+func (client *ClusterPrincipalAssignmentsClient) NewListPager(resourceGroupName string, clusterName string, options *ClusterPrincipalAssignmentsClientListOptions) *runtime.Pager[ClusterPrincipalAssignmentsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClusterPrincipalAssignmentsClientListResponse]{
 		More: func(page ClusterPrincipalAssignmentsClientListResponse) bool {
 			return false

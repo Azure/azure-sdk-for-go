@@ -171,12 +171,12 @@ func (client *DataControllersClient) getDataControllerHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListInGroup - List dataController resources in the resource group
+// NewListInGroupPager - List dataController resources in the resource group
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the Azure resource group
 // options - DataControllersClientListInGroupOptions contains the optional parameters for the DataControllersClient.ListInGroup
 // method.
-func (client *DataControllersClient) ListInGroup(resourceGroupName string, options *DataControllersClientListInGroupOptions) *runtime.Pager[DataControllersClientListInGroupResponse] {
+func (client *DataControllersClient) NewListInGroupPager(resourceGroupName string, options *DataControllersClientListInGroupOptions) *runtime.Pager[DataControllersClientListInGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DataControllersClientListInGroupResponse]{
 		More: func(page DataControllersClientListInGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -235,11 +235,11 @@ func (client *DataControllersClient) listInGroupHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListInSubscription - List dataController resources in the subscription
+// NewListInSubscriptionPager - List dataController resources in the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DataControllersClientListInSubscriptionOptions contains the optional parameters for the DataControllersClient.ListInSubscription
 // method.
-func (client *DataControllersClient) ListInSubscription(options *DataControllersClientListInSubscriptionOptions) *runtime.Pager[DataControllersClientListInSubscriptionResponse] {
+func (client *DataControllersClient) NewListInSubscriptionPager(options *DataControllersClientListInSubscriptionOptions) *runtime.Pager[DataControllersClientListInSubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DataControllersClientListInSubscriptionResponse]{
 		More: func(page DataControllersClientListInSubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

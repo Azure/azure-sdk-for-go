@@ -257,12 +257,12 @@ func (client *OutboundEndpointsClient) getHandleResponse(resp *http.Response) (O
 	return result, nil
 }
 
-// List - Lists outbound endpoints for a DNS resolver.
+// NewListPager - Lists outbound endpoints for a DNS resolver.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // dnsResolverName - The name of the DNS resolver.
 // options - OutboundEndpointsClientListOptions contains the optional parameters for the OutboundEndpointsClient.List method.
-func (client *OutboundEndpointsClient) List(resourceGroupName string, dnsResolverName string, options *OutboundEndpointsClientListOptions) *runtime.Pager[OutboundEndpointsClientListResponse] {
+func (client *OutboundEndpointsClient) NewListPager(resourceGroupName string, dnsResolverName string, options *OutboundEndpointsClientListOptions) *runtime.Pager[OutboundEndpointsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[OutboundEndpointsClientListResponse]{
 		More: func(page OutboundEndpointsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -160,7 +160,7 @@ func ExampleDNSForwardingRulesetsClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsForwardingRuleset_ListByResourceGroup.json
-func ExampleDNSForwardingRulesetsClient_ListByResourceGroup() {
+func ExampleDNSForwardingRulesetsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -172,7 +172,7 @@ func ExampleDNSForwardingRulesetsClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		&armdnsresolver.DNSForwardingRulesetsClientListByResourceGroupOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -188,7 +188,7 @@ func ExampleDNSForwardingRulesetsClient_ListByResourceGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsForwardingRuleset_ListBySubscription.json
-func ExampleDNSForwardingRulesetsClient_List() {
+func ExampleDNSForwardingRulesetsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -200,7 +200,7 @@ func ExampleDNSForwardingRulesetsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(&armdnsresolver.DNSForwardingRulesetsClientListOptions{Top: nil})
+	pager := client.NewListPager(&armdnsresolver.DNSForwardingRulesetsClientListOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -215,7 +215,7 @@ func ExampleDNSForwardingRulesetsClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsForwardingRuleset_ListByVirtualNetwork.json
-func ExampleDNSForwardingRulesetsClient_ListByVirtualNetwork() {
+func ExampleDNSForwardingRulesetsClient_NewListByVirtualNetworkPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -227,7 +227,7 @@ func ExampleDNSForwardingRulesetsClient_ListByVirtualNetwork() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByVirtualNetwork("<resource-group-name>",
+	pager := client.NewListByVirtualNetworkPager("<resource-group-name>",
 		"<virtual-network-name>",
 		&armdnsresolver.DNSForwardingRulesetsClientListByVirtualNetworkOptions{Top: nil})
 	for pager.More() {

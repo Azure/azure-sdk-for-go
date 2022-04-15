@@ -166,7 +166,7 @@ func ExampleTopicsClient_BeginUpdate() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Topics_ListBySubscription.json
-func ExampleTopicsClient_ListBySubscription() {
+func ExampleTopicsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -178,7 +178,7 @@ func ExampleTopicsClient_ListBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription(&armeventgrid.TopicsClientListBySubscriptionOptions{Filter: nil,
+	pager := client.NewListBySubscriptionPager(&armeventgrid.TopicsClientListBySubscriptionOptions{Filter: nil,
 		Top: nil,
 	})
 	for pager.More() {
@@ -195,7 +195,7 @@ func ExampleTopicsClient_ListBySubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Topics_ListByResourceGroup.json
-func ExampleTopicsClient_ListByResourceGroup() {
+func ExampleTopicsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -207,7 +207,7 @@ func ExampleTopicsClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		&armeventgrid.TopicsClientListByResourceGroupOptions{Filter: nil,
 			Top: nil,
 		})
@@ -283,7 +283,7 @@ func ExampleTopicsClient_BeginRegenerateKey() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Topics_ListEventTypes.json
-func ExampleTopicsClient_ListEventTypes() {
+func ExampleTopicsClient_NewListEventTypesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -295,7 +295,7 @@ func ExampleTopicsClient_ListEventTypes() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListEventTypes("<resource-group-name>",
+	pager := client.NewListEventTypesPager("<resource-group-name>",
 		"<provider-namespace>",
 		"<resource-type-name>",
 		"<resource-name>",

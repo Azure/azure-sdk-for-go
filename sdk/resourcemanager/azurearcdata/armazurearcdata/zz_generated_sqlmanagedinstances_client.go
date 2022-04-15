@@ -234,11 +234,11 @@ func (client *SQLManagedInstancesClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// List - List sqlManagedInstance resources in the subscription
+// NewListPager - List sqlManagedInstance resources in the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SQLManagedInstancesClientListOptions contains the optional parameters for the SQLManagedInstancesClient.List
 // method.
-func (client *SQLManagedInstancesClient) List(options *SQLManagedInstancesClientListOptions) *runtime.Pager[SQLManagedInstancesClientListResponse] {
+func (client *SQLManagedInstancesClient) NewListPager(options *SQLManagedInstancesClientListOptions) *runtime.Pager[SQLManagedInstancesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLManagedInstancesClientListResponse]{
 		More: func(page SQLManagedInstancesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -293,12 +293,12 @@ func (client *SQLManagedInstancesClient) listHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListByResourceGroup - Gets all sqlManagedInstances in a resource group.
+// NewListByResourceGroupPager - Gets all sqlManagedInstances in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the Azure resource group
 // options - SQLManagedInstancesClientListByResourceGroupOptions contains the optional parameters for the SQLManagedInstancesClient.ListByResourceGroup
 // method.
-func (client *SQLManagedInstancesClient) ListByResourceGroup(resourceGroupName string, options *SQLManagedInstancesClientListByResourceGroupOptions) *runtime.Pager[SQLManagedInstancesClientListByResourceGroupResponse] {
+func (client *SQLManagedInstancesClient) NewListByResourceGroupPager(resourceGroupName string, options *SQLManagedInstancesClientListByResourceGroupOptions) *runtime.Pager[SQLManagedInstancesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLManagedInstancesClientListByResourceGroupResponse]{
 		More: func(page SQLManagedInstancesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

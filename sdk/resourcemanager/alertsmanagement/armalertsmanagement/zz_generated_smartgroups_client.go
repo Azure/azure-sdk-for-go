@@ -110,10 +110,10 @@ func (client *SmartGroupsClient) changeStateHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// GetAll - List all the Smart Groups within a specified subscription.
+// NewGetAllPager - List all the Smart Groups within a specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SmartGroupsClientGetAllOptions contains the optional parameters for the SmartGroupsClient.GetAll method.
-func (client *SmartGroupsClient) GetAll(options *SmartGroupsClientGetAllOptions) *runtime.Pager[SmartGroupsClientGetAllResponse] {
+func (client *SmartGroupsClient) NewGetAllPager(options *SmartGroupsClientGetAllOptions) *runtime.Pager[SmartGroupsClientGetAllResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SmartGroupsClientGetAllResponse]{
 		More: func(page SmartGroupsClientGetAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

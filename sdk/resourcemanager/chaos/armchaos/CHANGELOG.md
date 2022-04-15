@@ -1,5 +1,31 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*CapabilityTypesClient.List` has been removed
+- Function `*ExperimentsClient.ListAllStatuses` has been removed
+- Function `*TargetsClient.List` has been removed
+- Function `*TargetTypesClient.List` has been removed
+- Function `*CapabilitiesClient.List` has been removed
+- Function `*ExperimentsClient.List` has been removed
+- Function `*ExperimentsClient.ListExecutionDetails` has been removed
+- Function `*ExperimentsClient.ListAll` has been removed
+- Function `*OperationsClient.ListAll` has been removed
+
+### Features Added
+
+- New function `*ExperimentsClient.NewListAllPager(*ExperimentsClientListAllOptions) *runtime.Pager[ExperimentsClientListAllResponse]`
+- New function `*TargetTypesClient.NewListPager(string, *TargetTypesClientListOptions) *runtime.Pager[TargetTypesClientListResponse]`
+- New function `*ExperimentsClient.NewListExecutionDetailsPager(string, string, *ExperimentsClientListExecutionDetailsOptions) *runtime.Pager[ExperimentsClientListExecutionDetailsResponse]`
+- New function `*OperationsClient.NewListAllPager(*OperationsClientListAllOptions) *runtime.Pager[OperationsClientListAllResponse]`
+- New function `*ExperimentsClient.NewListAllStatusesPager(string, string, *ExperimentsClientListAllStatusesOptions) *runtime.Pager[ExperimentsClientListAllStatusesResponse]`
+- New function `*CapabilitiesClient.NewListPager(string, string, string, string, string, *CapabilitiesClientListOptions) *runtime.Pager[CapabilitiesClientListResponse]`
+- New function `*CapabilityTypesClient.NewListPager(string, string, *CapabilityTypesClientListOptions) *runtime.Pager[CapabilityTypesClientListResponse]`
+- New function `*ExperimentsClient.NewListPager(string, *ExperimentsClientListOptions) *runtime.Pager[ExperimentsClientListResponse]`
+- New function `*TargetsClient.NewListPager(string, string, string, string, *TargetsClientListOptions) *runtime.Pager[TargetsClientListResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

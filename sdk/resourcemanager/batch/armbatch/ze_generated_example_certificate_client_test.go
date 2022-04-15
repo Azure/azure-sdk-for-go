@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/CertificateList.json
-func ExampleCertificateClient_ListByBatchAccount() {
+func ExampleCertificateClient_NewListByBatchAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleCertificateClient_ListByBatchAccount() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByBatchAccount("<resource-group-name>",
+	pager := client.NewListByBatchAccountPager("<resource-group-name>",
 		"<account-name>",
 		&armbatch.CertificateClientListByBatchAccountOptions{Maxresults: nil,
 			Select: nil,

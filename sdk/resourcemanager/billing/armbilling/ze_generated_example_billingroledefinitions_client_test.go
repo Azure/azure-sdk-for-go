@@ -95,7 +95,7 @@ func ExampleRoleDefinitionsClient_GetByBillingProfile() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingAccountRoleDefinitionsList.json
-func ExampleRoleDefinitionsClient_ListByBillingAccount() {
+func ExampleRoleDefinitionsClient_NewListByBillingAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -107,7 +107,7 @@ func ExampleRoleDefinitionsClient_ListByBillingAccount() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByBillingAccount("<billing-account-name>",
+	pager := client.NewListByBillingAccountPager("<billing-account-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -123,7 +123,7 @@ func ExampleRoleDefinitionsClient_ListByBillingAccount() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/InvoiceSectionRoleDefinitionsList.json
-func ExampleRoleDefinitionsClient_ListByInvoiceSection() {
+func ExampleRoleDefinitionsClient_NewListByInvoiceSectionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -135,7 +135,7 @@ func ExampleRoleDefinitionsClient_ListByInvoiceSection() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByInvoiceSection("<billing-account-name>",
+	pager := client.NewListByInvoiceSectionPager("<billing-account-name>",
 		"<billing-profile-name>",
 		"<invoice-section-name>",
 		nil)
@@ -153,7 +153,7 @@ func ExampleRoleDefinitionsClient_ListByInvoiceSection() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingProfileRoleDefinitionsList.json
-func ExampleRoleDefinitionsClient_ListByBillingProfile() {
+func ExampleRoleDefinitionsClient_NewListByBillingProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -165,7 +165,7 @@ func ExampleRoleDefinitionsClient_ListByBillingProfile() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByBillingProfile("<billing-account-name>",
+	pager := client.NewListByBillingProfilePager("<billing-account-name>",
 		"<billing-profile-name>",
 		nil)
 	for pager.More() {

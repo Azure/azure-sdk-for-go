@@ -103,12 +103,12 @@ func (client *AccessReviewInstancesAssignedForMyApprovalClient) getByIDHandleRes
 	return result, nil
 }
 
-// List - Get access review instances assigned for my approval.
+// NewListPager - Get access review instances assigned for my approval.
 // If the operation fails it returns an *azcore.ResponseError type.
 // scheduleDefinitionID - The id of the access review schedule definition.
 // options - AccessReviewInstancesAssignedForMyApprovalClientListOptions contains the optional parameters for the AccessReviewInstancesAssignedForMyApprovalClient.List
 // method.
-func (client *AccessReviewInstancesAssignedForMyApprovalClient) List(scheduleDefinitionID string, options *AccessReviewInstancesAssignedForMyApprovalClientListOptions) *runtime.Pager[AccessReviewInstancesAssignedForMyApprovalClientListResponse] {
+func (client *AccessReviewInstancesAssignedForMyApprovalClient) NewListPager(scheduleDefinitionID string, options *AccessReviewInstancesAssignedForMyApprovalClientListOptions) *runtime.Pager[AccessReviewInstancesAssignedForMyApprovalClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccessReviewInstancesAssignedForMyApprovalClientListResponse]{
 		More: func(page AccessReviewInstancesAssignedForMyApprovalClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

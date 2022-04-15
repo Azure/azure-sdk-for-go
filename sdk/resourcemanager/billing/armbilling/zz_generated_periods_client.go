@@ -107,12 +107,12 @@ func (client *PeriodsClient) getHandleResponse(resp *http.Response) (PeriodsClie
 	return result, nil
 }
 
-// List - Lists the available billing periods for a subscription in reverse chronological order. This is only supported for
-// Azure Web-Direct subscriptions. Other subscription types which were not purchased
+// NewListPager - Lists the available billing periods for a subscription in reverse chronological order. This is only supported
+// for Azure Web-Direct subscriptions. Other subscription types which were not purchased
 // directly through the Azure web portal are not supported through this preview API.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PeriodsClientListOptions contains the optional parameters for the PeriodsClient.List method.
-func (client *PeriodsClient) List(options *PeriodsClientListOptions) *runtime.Pager[PeriodsClientListResponse] {
+func (client *PeriodsClient) NewListPager(options *PeriodsClientListOptions) *runtime.Pager[PeriodsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PeriodsClientListResponse]{
 		More: func(page PeriodsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

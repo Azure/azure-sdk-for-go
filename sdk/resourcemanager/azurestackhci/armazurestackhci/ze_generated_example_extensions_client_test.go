@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2022-03-01/examples/ListExtensionsByArcSetting.json
-func ExampleExtensionsClient_ListByArcSetting() {
+func ExampleExtensionsClient_NewListByArcSettingPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleExtensionsClient_ListByArcSetting() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByArcSetting("<resource-group-name>",
+	pager := client.NewListByArcSettingPager("<resource-group-name>",
 		"<cluster-name>",
 		"<arc-setting-name>",
 		nil)

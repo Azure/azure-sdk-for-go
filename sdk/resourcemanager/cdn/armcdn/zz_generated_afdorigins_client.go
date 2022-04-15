@@ -267,7 +267,7 @@ func (client *AFDOriginsClient) getHandleResponse(resp *http.Response) (AFDOrigi
 	return result, nil
 }
 
-// ListByOriginGroup - Lists all of the existing origins within an origin group.
+// NewListByOriginGroupPager - Lists all of the existing origins within an origin group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
@@ -275,7 +275,7 @@ func (client *AFDOriginsClient) getHandleResponse(resp *http.Response) (AFDOrigi
 // originGroupName - Name of the origin group which is unique within the profile.
 // options - AFDOriginsClientListByOriginGroupOptions contains the optional parameters for the AFDOriginsClient.ListByOriginGroup
 // method.
-func (client *AFDOriginsClient) ListByOriginGroup(resourceGroupName string, profileName string, originGroupName string, options *AFDOriginsClientListByOriginGroupOptions) *runtime.Pager[AFDOriginsClientListByOriginGroupResponse] {
+func (client *AFDOriginsClient) NewListByOriginGroupPager(resourceGroupName string, profileName string, originGroupName string, options *AFDOriginsClientListByOriginGroupOptions) *runtime.Pager[AFDOriginsClientListByOriginGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AFDOriginsClientListByOriginGroupResponse]{
 		More: func(page AFDOriginsClientListByOriginGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -251,13 +251,13 @@ func (client *SubAccountTagRulesClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// List - List the tag rules for a given sub account resource.
+// NewListPager - List the tag rules for a given sub account resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // subAccountName - Sub Account resource name
 // options - SubAccountTagRulesClientListOptions contains the optional parameters for the SubAccountTagRulesClient.List method.
-func (client *SubAccountTagRulesClient) List(resourceGroupName string, monitorName string, subAccountName string, options *SubAccountTagRulesClientListOptions) *runtime.Pager[SubAccountTagRulesClientListResponse] {
+func (client *SubAccountTagRulesClient) NewListPager(resourceGroupName string, monitorName string, subAccountName string, options *SubAccountTagRulesClientListOptions) *runtime.Pager[SubAccountTagRulesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SubAccountTagRulesClientListResponse]{
 		More: func(page SubAccountTagRulesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

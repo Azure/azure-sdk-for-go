@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/preview/2019-05-05-preview/examples/SmartGroups_List.json
-func ExampleSmartGroupsClient_GetAll() {
+func ExampleSmartGroupsClient_NewGetAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleSmartGroupsClient_GetAll() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.GetAll(&armalertsmanagement.SmartGroupsClientGetAllOptions{TargetResource: nil,
+	pager := client.NewGetAllPager(&armalertsmanagement.SmartGroupsClientGetAllOptions{TargetResource: nil,
 		TargetResourceGroup: nil,
 		TargetResourceType:  nil,
 		MonitorService:      nil,

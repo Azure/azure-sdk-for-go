@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2022-03-01/examples/RoleListAddOns.json
-func ExampleAddonsClient_ListByRole() {
+func ExampleAddonsClient_NewListByRolePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleAddonsClient_ListByRole() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByRole("<device-name>",
+	pager := client.NewListByRolePager("<device-name>",
 		"<role-name>",
 		"<resource-group-name>",
 		nil)

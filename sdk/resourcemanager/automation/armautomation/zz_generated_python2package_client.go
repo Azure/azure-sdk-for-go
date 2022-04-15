@@ -228,13 +228,13 @@ func (client *Python2PackageClient) getHandleResponse(resp *http.Response) (Pyth
 	return result, nil
 }
 
-// ListByAutomationAccount - Retrieve a list of python 2 packages.
+// NewListByAutomationAccountPager - Retrieve a list of python 2 packages.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - Python2PackageClientListByAutomationAccountOptions contains the optional parameters for the Python2PackageClient.ListByAutomationAccount
 // method.
-func (client *Python2PackageClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *Python2PackageClientListByAutomationAccountOptions) *runtime.Pager[Python2PackageClientListByAutomationAccountResponse] {
+func (client *Python2PackageClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *Python2PackageClientListByAutomationAccountOptions) *runtime.Pager[Python2PackageClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[Python2PackageClientListByAutomationAccountResponse]{
 		More: func(page Python2PackageClientListByAutomationAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

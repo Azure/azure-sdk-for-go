@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListApiOperationsByTags.json
-func ExampleOperationClient_ListByTags() {
+func ExampleOperationClient_NewListByTagsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleOperationClient_ListByTags() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByTags("<resource-group-name>",
+	pager := client.NewListByTagsPager("<resource-group-name>",
 		"<service-name>",
 		"<api-id>",
 		&armapimanagement.OperationClientListByTagsOptions{Filter: nil,

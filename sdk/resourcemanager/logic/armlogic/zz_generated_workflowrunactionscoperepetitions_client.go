@@ -125,7 +125,7 @@ func (client *WorkflowRunActionScopeRepetitionsClient) getHandleResponse(resp *h
 	return result, nil
 }
 
-// List - List the workflow run action scoped repetitions.
+// NewListPager - List the workflow run action scoped repetitions.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
@@ -133,7 +133,7 @@ func (client *WorkflowRunActionScopeRepetitionsClient) getHandleResponse(resp *h
 // actionName - The workflow action name.
 // options - WorkflowRunActionScopeRepetitionsClientListOptions contains the optional parameters for the WorkflowRunActionScopeRepetitionsClient.List
 // method.
-func (client *WorkflowRunActionScopeRepetitionsClient) List(resourceGroupName string, workflowName string, runName string, actionName string, options *WorkflowRunActionScopeRepetitionsClientListOptions) *runtime.Pager[WorkflowRunActionScopeRepetitionsClientListResponse] {
+func (client *WorkflowRunActionScopeRepetitionsClient) NewListPager(resourceGroupName string, workflowName string, runName string, actionName string, options *WorkflowRunActionScopeRepetitionsClientListOptions) *runtime.Pager[WorkflowRunActionScopeRepetitionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkflowRunActionScopeRepetitionsClientListResponse]{
 		More: func(page WorkflowRunActionScopeRepetitionsClientListResponse) bool {
 			return false

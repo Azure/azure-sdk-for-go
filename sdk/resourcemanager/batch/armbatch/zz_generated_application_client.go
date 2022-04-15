@@ -229,12 +229,12 @@ func (client *ApplicationClient) getHandleResponse(resp *http.Response) (Applica
 	return result, nil
 }
 
-// List - Lists all of the applications in the specified account.
+// NewListPager - Lists all of the applications in the specified account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // options - ApplicationClientListOptions contains the optional parameters for the ApplicationClient.List method.
-func (client *ApplicationClient) List(resourceGroupName string, accountName string, options *ApplicationClientListOptions) *runtime.Pager[ApplicationClientListResponse] {
+func (client *ApplicationClient) NewListPager(resourceGroupName string, accountName string, options *ApplicationClientListOptions) *runtime.Pager[ApplicationClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ApplicationClientListResponse]{
 		More: func(page ApplicationClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/NetworkFunctionSkuListByVendor.json
-func ExampleNetworkFunctionVendorSKUsClient_ListByVendor() {
+func ExampleNetworkFunctionVendorSKUsClient_NewListByVendorPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleNetworkFunctionVendorSKUsClient_ListByVendor() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByVendor("<vendor-name>",
+	pager := client.NewListByVendorPager("<vendor-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

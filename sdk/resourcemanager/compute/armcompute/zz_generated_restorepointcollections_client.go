@@ -235,12 +235,12 @@ func (client *RestorePointCollectionsClient) getHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// List - Gets the list of restore point collections in a resource group.
+// NewListPager - Gets the list of restore point collections in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - RestorePointCollectionsClientListOptions contains the optional parameters for the RestorePointCollectionsClient.List
 // method.
-func (client *RestorePointCollectionsClient) List(resourceGroupName string, options *RestorePointCollectionsClientListOptions) *runtime.Pager[RestorePointCollectionsClientListResponse] {
+func (client *RestorePointCollectionsClient) NewListPager(resourceGroupName string, options *RestorePointCollectionsClientListOptions) *runtime.Pager[RestorePointCollectionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RestorePointCollectionsClientListResponse]{
 		More: func(page RestorePointCollectionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -299,13 +299,13 @@ func (client *RestorePointCollectionsClient) listHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListAll - Gets the list of restore point collections in the subscription. Use nextLink property in the response to get
-// the next page of restore point collections. Do this till nextLink is not null to fetch all
+// NewListAllPager - Gets the list of restore point collections in the subscription. Use nextLink property in the response
+// to get the next page of restore point collections. Do this till nextLink is not null to fetch all
 // the restore point collections.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - RestorePointCollectionsClientListAllOptions contains the optional parameters for the RestorePointCollectionsClient.ListAll
 // method.
-func (client *RestorePointCollectionsClient) ListAll(options *RestorePointCollectionsClientListAllOptions) *runtime.Pager[RestorePointCollectionsClientListAllResponse] {
+func (client *RestorePointCollectionsClient) NewListAllPager(options *RestorePointCollectionsClientListAllOptions) *runtime.Pager[RestorePointCollectionsClientListAllResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RestorePointCollectionsClientListAllResponse]{
 		More: func(page RestorePointCollectionsClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

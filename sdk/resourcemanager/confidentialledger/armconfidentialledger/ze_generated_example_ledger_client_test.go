@@ -174,7 +174,7 @@ func ExampleLedgerClient_BeginUpdate() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2021-05-13-preview/examples/ConfidentialLedger_List.json
-func ExampleLedgerClient_ListByResourceGroup() {
+func ExampleLedgerClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -186,7 +186,7 @@ func ExampleLedgerClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		&armconfidentialledger.LedgerClientListByResourceGroupOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -202,7 +202,7 @@ func ExampleLedgerClient_ListByResourceGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2021-05-13-preview/examples/ConfidentialLedger_ListBySub.json
-func ExampleLedgerClient_ListBySubscription() {
+func ExampleLedgerClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -214,7 +214,7 @@ func ExampleLedgerClient_ListBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription(&armconfidentialledger.LedgerClientListBySubscriptionOptions{Filter: nil})
+	pager := client.NewListBySubscriptionPager(&armconfidentialledger.LedgerClientListBySubscriptionOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

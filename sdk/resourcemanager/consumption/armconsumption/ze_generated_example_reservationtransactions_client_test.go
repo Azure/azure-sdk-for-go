@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/ReservationTransactionsListByEnrollmentNumber.json
-func ExampleReservationTransactionsClient_List() {
+func ExampleReservationTransactionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleReservationTransactionsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<billing-account-id>",
+	pager := client.NewListPager("<billing-account-id>",
 		&armconsumption.ReservationTransactionsClientListOptions{Filter: to.Ptr("<filter>")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -46,7 +46,7 @@ func ExampleReservationTransactionsClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/ReservationTransactionsListByBillingProfileId.json
-func ExampleReservationTransactionsClient_ListByBillingProfile() {
+func ExampleReservationTransactionsClient_NewListByBillingProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -58,7 +58,7 @@ func ExampleReservationTransactionsClient_ListByBillingProfile() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByBillingProfile("<billing-account-id>",
+	pager := client.NewListByBillingProfilePager("<billing-account-id>",
 		"<billing-profile-id>",
 		&armconsumption.ReservationTransactionsClientListByBillingProfileOptions{Filter: to.Ptr("<filter>")})
 	for pager.More() {

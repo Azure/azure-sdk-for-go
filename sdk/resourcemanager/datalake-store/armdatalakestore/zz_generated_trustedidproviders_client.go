@@ -230,13 +230,13 @@ func (client *TrustedIDProvidersClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// ListByAccount - Lists the Data Lake Store trusted identity providers within the specified Data Lake Store account.
+// NewListByAccountPager - Lists the Data Lake Store trusted identity providers within the specified Data Lake Store account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Store account.
 // options - TrustedIDProvidersClientListByAccountOptions contains the optional parameters for the TrustedIDProvidersClient.ListByAccount
 // method.
-func (client *TrustedIDProvidersClient) ListByAccount(resourceGroupName string, accountName string, options *TrustedIDProvidersClientListByAccountOptions) *runtime.Pager[TrustedIDProvidersClientListByAccountResponse] {
+func (client *TrustedIDProvidersClient) NewListByAccountPager(resourceGroupName string, accountName string, options *TrustedIDProvidersClientListByAccountOptions) *runtime.Pager[TrustedIDProvidersClientListByAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TrustedIDProvidersClientListByAccountResponse]{
 		More: func(page TrustedIDProvidersClientListByAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

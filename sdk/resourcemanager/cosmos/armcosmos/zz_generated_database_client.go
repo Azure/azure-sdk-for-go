@@ -54,14 +54,14 @@ func NewDatabaseClient(subscriptionID string, credential azcore.TokenCredential,
 	return client, nil
 }
 
-// ListMetricDefinitions - Retrieves metric definitions for the given database.
+// NewListMetricDefinitionsPager - Retrieves metric definitions for the given database.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // databaseRid - Cosmos DB database rid.
 // options - DatabaseClientListMetricDefinitionsOptions contains the optional parameters for the DatabaseClient.ListMetricDefinitions
 // method.
-func (client *DatabaseClient) ListMetricDefinitions(resourceGroupName string, accountName string, databaseRid string, options *DatabaseClientListMetricDefinitionsOptions) *runtime.Pager[DatabaseClientListMetricDefinitionsResponse] {
+func (client *DatabaseClient) NewListMetricDefinitionsPager(resourceGroupName string, accountName string, databaseRid string, options *DatabaseClientListMetricDefinitionsOptions) *runtime.Pager[DatabaseClientListMetricDefinitionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DatabaseClientListMetricDefinitionsResponse]{
 		More: func(page DatabaseClientListMetricDefinitionsResponse) bool {
 			return false
@@ -122,7 +122,7 @@ func (client *DatabaseClient) listMetricDefinitionsHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListMetrics - Retrieves the metrics determined by the given filter for the given database account and database.
+// NewListMetricsPager - Retrieves the metrics determined by the given filter for the given database account and database.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
@@ -131,7 +131,7 @@ func (client *DatabaseClient) listMetricDefinitionsHandleResponse(resp *http.Res
 // name.value (name of the metric, can have an or of multiple names), startTime, endTime,
 // and timeGrain. The supported operator is eq.
 // options - DatabaseClientListMetricsOptions contains the optional parameters for the DatabaseClient.ListMetrics method.
-func (client *DatabaseClient) ListMetrics(resourceGroupName string, accountName string, databaseRid string, filter string, options *DatabaseClientListMetricsOptions) *runtime.Pager[DatabaseClientListMetricsResponse] {
+func (client *DatabaseClient) NewListMetricsPager(resourceGroupName string, accountName string, databaseRid string, filter string, options *DatabaseClientListMetricsOptions) *runtime.Pager[DatabaseClientListMetricsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DatabaseClientListMetricsResponse]{
 		More: func(page DatabaseClientListMetricsResponse) bool {
 			return false
@@ -193,13 +193,13 @@ func (client *DatabaseClient) listMetricsHandleResponse(resp *http.Response) (Da
 	return result, nil
 }
 
-// ListUsages - Retrieves the usages (most recent data) for the given database.
+// NewListUsagesPager - Retrieves the usages (most recent data) for the given database.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // databaseRid - Cosmos DB database rid.
 // options - DatabaseClientListUsagesOptions contains the optional parameters for the DatabaseClient.ListUsages method.
-func (client *DatabaseClient) ListUsages(resourceGroupName string, accountName string, databaseRid string, options *DatabaseClientListUsagesOptions) *runtime.Pager[DatabaseClientListUsagesResponse] {
+func (client *DatabaseClient) NewListUsagesPager(resourceGroupName string, accountName string, databaseRid string, options *DatabaseClientListUsagesOptions) *runtime.Pager[DatabaseClientListUsagesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DatabaseClientListUsagesResponse]{
 		More: func(page DatabaseClientListUsagesResponse) bool {
 			return false

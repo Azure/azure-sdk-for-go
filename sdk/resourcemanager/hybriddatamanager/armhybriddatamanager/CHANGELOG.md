@@ -1,5 +1,37 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*DataStoreTypesClient.ListByDataManager` has been removed
+- Function `*DataManagersClient.List` has been removed
+- Function `*DataManagersClient.ListByResourceGroup` has been removed
+- Function `*PublicKeysClient.ListByDataManager` has been removed
+- Function `*DataStoresClient.ListByDataManager` has been removed
+- Function `*JobsClient.ListByJobDefinition` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*JobsClient.ListByDataManager` has been removed
+- Function `*JobsClient.ListByDataService` has been removed
+- Function `*DataServicesClient.ListByDataManager` has been removed
+- Function `*JobDefinitionsClient.ListByDataManager` has been removed
+- Function `*JobDefinitionsClient.ListByDataService` has been removed
+
+### Features Added
+
+- New function `*JobDefinitionsClient.NewListByDataServicePager(string, string, string, *JobDefinitionsClientListByDataServiceOptions) *runtime.Pager[JobDefinitionsClientListByDataServiceResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*JobsClient.NewListByJobDefinitionPager(string, string, string, string, *JobsClientListByJobDefinitionOptions) *runtime.Pager[JobsClientListByJobDefinitionResponse]`
+- New function `*JobsClient.NewListByDataServicePager(string, string, string, *JobsClientListByDataServiceOptions) *runtime.Pager[JobsClientListByDataServiceResponse]`
+- New function `*DataStoresClient.NewListByDataManagerPager(string, string, *DataStoresClientListByDataManagerOptions) *runtime.Pager[DataStoresClientListByDataManagerResponse]`
+- New function `*JobsClient.NewListByDataManagerPager(string, string, *JobsClientListByDataManagerOptions) *runtime.Pager[JobsClientListByDataManagerResponse]`
+- New function `*DataManagersClient.NewListPager(*DataManagersClientListOptions) *runtime.Pager[DataManagersClientListResponse]`
+- New function `*DataStoreTypesClient.NewListByDataManagerPager(string, string, *DataStoreTypesClientListByDataManagerOptions) *runtime.Pager[DataStoreTypesClientListByDataManagerResponse]`
+- New function `*DataServicesClient.NewListByDataManagerPager(string, string, *DataServicesClientListByDataManagerOptions) *runtime.Pager[DataServicesClientListByDataManagerResponse]`
+- New function `*DataManagersClient.NewListByResourceGroupPager(string, *DataManagersClientListByResourceGroupOptions) *runtime.Pager[DataManagersClientListByResourceGroupResponse]`
+- New function `*JobDefinitionsClient.NewListByDataManagerPager(string, string, *JobDefinitionsClientListByDataManagerOptions) *runtime.Pager[JobDefinitionsClientListByDataManagerResponse]`
+- New function `*PublicKeysClient.NewListByDataManagerPager(string, string, *PublicKeysClientListByDataManagerOptions) *runtime.Pager[PublicKeysClientListByDataManagerResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

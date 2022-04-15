@@ -212,10 +212,10 @@ func (client *DeviceGroupsClient) getHandleResponse(resp *http.Response) (Device
 	return result, nil
 }
 
-// List - List device groups
+// NewListPager - List device groups
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DeviceGroupsClientListOptions contains the optional parameters for the DeviceGroupsClient.List method.
-func (client *DeviceGroupsClient) List(options *DeviceGroupsClientListOptions) *runtime.Pager[DeviceGroupsClientListResponse] {
+func (client *DeviceGroupsClient) NewListPager(options *DeviceGroupsClientListOptions) *runtime.Pager[DeviceGroupsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DeviceGroupsClientListResponse]{
 		More: func(page DeviceGroupsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

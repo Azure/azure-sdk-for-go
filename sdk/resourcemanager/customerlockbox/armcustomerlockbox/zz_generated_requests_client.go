@@ -102,11 +102,11 @@ func (client *RequestsClient) getHandleResponse(resp *http.Response) (RequestsCl
 	return result, nil
 }
 
-// List - Lists all of the Lockbox requests in the given subscription.
+// NewListPager - Lists all of the Lockbox requests in the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
 // options - RequestsClientListOptions contains the optional parameters for the RequestsClient.List method.
-func (client *RequestsClient) List(subscriptionID string, options *RequestsClientListOptions) *runtime.Pager[RequestsClientListResponse] {
+func (client *RequestsClient) NewListPager(subscriptionID string, options *RequestsClientListOptions) *runtime.Pager[RequestsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RequestsClientListResponse]{
 		More: func(page RequestsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

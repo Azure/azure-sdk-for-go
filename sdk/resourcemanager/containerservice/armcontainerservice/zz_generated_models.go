@@ -397,7 +397,7 @@ type MaintenanceConfigurationsClientListByManagedClusterOptions struct {
 
 // ManagedCluster - Managed cluster.
 type ManagedCluster struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// The extended location of the Virtual Machine.
@@ -412,7 +412,7 @@ type ManagedCluster struct {
 	// The managed cluster SKU.
 	SKU *ManagedClusterSKU `json:"sku,omitempty"`
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -475,13 +475,13 @@ type ManagedClusterAPIServerAccessProfile struct {
 
 // ManagedClusterAccessProfile - Managed cluster Access Profile.
 type ManagedClusterAccessProfile struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// AccessProfile of a managed cluster.
 	Properties *AccessProfile `json:"properties,omitempty"`
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -1226,6 +1226,36 @@ type ManagedClusterServicePrincipalProfile struct {
 	Secret *string `json:"secret,omitempty"`
 }
 
+// ManagedClusterStorageProfile - Storage profile for the container service cluster.
+type ManagedClusterStorageProfile struct {
+	// AzureDisk CSI Driver settings for the storage profile.
+	DiskCSIDriver *ManagedClusterStorageProfileDiskCSIDriver `json:"diskCSIDriver,omitempty"`
+
+	// AzureFile CSI Driver settings for the storage profile.
+	FileCSIDriver *ManagedClusterStorageProfileFileCSIDriver `json:"fileCSIDriver,omitempty"`
+
+	// Snapshot Controller settings for the storage profile.
+	SnapshotController *ManagedClusterStorageProfileSnapshotController `json:"snapshotController,omitempty"`
+}
+
+// ManagedClusterStorageProfileDiskCSIDriver - AzureDisk CSI Driver settings for the storage profile.
+type ManagedClusterStorageProfileDiskCSIDriver struct {
+	// Whether to enable AzureDisk CSI Driver. The default value is true.
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// ManagedClusterStorageProfileFileCSIDriver - AzureFile CSI Driver settings for the storage profile.
+type ManagedClusterStorageProfileFileCSIDriver struct {
+	// Whether to enable AzureFile CSI Driver. The default value is true.
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// ManagedClusterStorageProfileSnapshotController - Snapshot Controller settings for the storage profile.
+type ManagedClusterStorageProfileSnapshotController struct {
+	// Whether to enable Snapshot Controller. The default value is true.
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
 // ManagedClusterUpgradeProfile - The list of available upgrades for compute pools.
 type ManagedClusterUpgradeProfile struct {
 	// REQUIRED; The properties of the upgrade profile.
@@ -1709,12 +1739,6 @@ type ResolvePrivateLinkServiceIDClientPOSTOptions struct {
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
-	// REQUIRED; Resource location
-	Location *string `json:"location,omitempty"`
-
-	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty" azure:"ro"`
 
@@ -1770,13 +1794,13 @@ type SSHPublicKey struct {
 
 // Snapshot - A node pool snapshot resource.
 type Snapshot struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Properties of a snapshot.
 	Properties *SnapshotProperties `json:"properties,omitempty"`
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -2003,6 +2027,28 @@ type TimeSpan struct {
 
 	// The start of a time span
 	Start *time.Time `json:"start,omitempty"`
+}
+
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
+type TrackedResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // UserAssignedIdentity - Details about a user assigned identity.

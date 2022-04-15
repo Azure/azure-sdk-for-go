@@ -1,5 +1,63 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*CustomImagesClient.List` has been removed
+- Function `*GlobalSchedulesClient.ListByResourceGroup` has been removed
+- Function `*GlobalSchedulesClient.ListBySubscription` has been removed
+- Function `*EnvironmentsClient.List` has been removed
+- Function `*DisksClient.List` has been removed
+- Function `*GalleryImagesClient.List` has been removed
+- Function `*ProviderOperationsClient.List` has been removed
+- Function `*ServiceFabricsClient.List` has been removed
+- Function `*ArmTemplatesClient.List` has been removed
+- Function `*VirtualMachinesClient.List` has been removed
+- Function `*SchedulesClient.List` has been removed
+- Function `*LabsClient.ListByResourceGroup` has been removed
+- Function `*LabsClient.ListVhds` has been removed
+- Function `*NotificationChannelsClient.List` has been removed
+- Function `*VirtualMachineSchedulesClient.List` has been removed
+- Function `*VirtualNetworksClient.List` has been removed
+- Function `*LabsClient.ListBySubscription` has been removed
+- Function `*ServiceFabricSchedulesClient.List` has been removed
+- Function `*ArtifactSourcesClient.List` has been removed
+- Function `*SchedulesClient.ListApplicable` has been removed
+- Function `*UsersClient.List` has been removed
+- Function `*SecretsClient.List` has been removed
+- Function `*ArtifactsClient.List` has been removed
+- Function `*PoliciesClient.List` has been removed
+- Function `*FormulasClient.List` has been removed
+
+### Features Added
+
+- New function `*SchedulesClient.NewListPager(string, string, *SchedulesClientListOptions) *runtime.Pager[SchedulesClientListResponse]`
+- New function `*VirtualNetworksClient.NewListPager(string, string, *VirtualNetworksClientListOptions) *runtime.Pager[VirtualNetworksClientListResponse]`
+- New function `*ServiceFabricSchedulesClient.NewListPager(string, string, string, string, *ServiceFabricSchedulesClientListOptions) *runtime.Pager[ServiceFabricSchedulesClientListResponse]`
+- New function `*SecretsClient.NewListPager(string, string, string, *SecretsClientListOptions) *runtime.Pager[SecretsClientListResponse]`
+- New function `*SchedulesClient.NewListApplicablePager(string, string, string, *SchedulesClientListApplicableOptions) *runtime.Pager[SchedulesClientListApplicableResponse]`
+- New function `*ArmTemplatesClient.NewListPager(string, string, string, *ArmTemplatesClientListOptions) *runtime.Pager[ArmTemplatesClientListResponse]`
+- New function `*GlobalSchedulesClient.NewListBySubscriptionPager(*GlobalSchedulesClientListBySubscriptionOptions) *runtime.Pager[GlobalSchedulesClientListBySubscriptionResponse]`
+- New function `*LabsClient.NewListVhdsPager(string, string, *LabsClientListVhdsOptions) *runtime.Pager[LabsClientListVhdsResponse]`
+- New function `*GalleryImagesClient.NewListPager(string, string, *GalleryImagesClientListOptions) *runtime.Pager[GalleryImagesClientListResponse]`
+- New function `*EnvironmentsClient.NewListPager(string, string, string, *EnvironmentsClientListOptions) *runtime.Pager[EnvironmentsClientListResponse]`
+- New function `*LabsClient.NewListByResourceGroupPager(string, *LabsClientListByResourceGroupOptions) *runtime.Pager[LabsClientListByResourceGroupResponse]`
+- New function `*NotificationChannelsClient.NewListPager(string, string, *NotificationChannelsClientListOptions) *runtime.Pager[NotificationChannelsClientListResponse]`
+- New function `*PoliciesClient.NewListPager(string, string, string, *PoliciesClientListOptions) *runtime.Pager[PoliciesClientListResponse]`
+- New function `*LabsClient.NewListBySubscriptionPager(*LabsClientListBySubscriptionOptions) *runtime.Pager[LabsClientListBySubscriptionResponse]`
+- New function `*ArtifactsClient.NewListPager(string, string, string, *ArtifactsClientListOptions) *runtime.Pager[ArtifactsClientListResponse]`
+- New function `*DisksClient.NewListPager(string, string, string, *DisksClientListOptions) *runtime.Pager[DisksClientListResponse]`
+- New function `*FormulasClient.NewListPager(string, string, *FormulasClientListOptions) *runtime.Pager[FormulasClientListResponse]`
+- New function `*VirtualMachineSchedulesClient.NewListPager(string, string, string, *VirtualMachineSchedulesClientListOptions) *runtime.Pager[VirtualMachineSchedulesClientListResponse]`
+- New function `*VirtualMachinesClient.NewListPager(string, string, *VirtualMachinesClientListOptions) *runtime.Pager[VirtualMachinesClientListResponse]`
+- New function `*CustomImagesClient.NewListPager(string, string, *CustomImagesClientListOptions) *runtime.Pager[CustomImagesClientListResponse]`
+- New function `*ProviderOperationsClient.NewListPager(*ProviderOperationsClientListOptions) *runtime.Pager[ProviderOperationsClientListResponse]`
+- New function `*UsersClient.NewListPager(string, string, *UsersClientListOptions) *runtime.Pager[UsersClientListResponse]`
+- New function `*ServiceFabricsClient.NewListPager(string, string, string, *ServiceFabricsClientListOptions) *runtime.Pager[ServiceFabricsClientListResponse]`
+- New function `*ArtifactSourcesClient.NewListPager(string, string, *ArtifactSourcesClientListOptions) *runtime.Pager[ArtifactSourcesClientListResponse]`
+- New function `*GlobalSchedulesClient.NewListByResourceGroupPager(string, *GlobalSchedulesClientListByResourceGroupOptions) *runtime.Pager[GlobalSchedulesClientListByResourceGroupResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

@@ -54,15 +54,15 @@ func NewRestorableSQLResourcesClient(subscriptionID string, credential azcore.To
 	return client, nil
 }
 
-// List - Return a list of database and container combo that exist on the account at the given timestamp and location. This
-// helps in scenarios to validate what resources exist at given timestamp and location.
+// NewListPager - Return a list of database and container combo that exist on the account at the given timestamp and location.
+// This helps in scenarios to validate what resources exist at given timestamp and location.
 // This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/…/read' permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - Cosmos DB region, with spaces between words and each word capitalized.
 // instanceID - The instanceId GUID of a restorable database account.
 // options - RestorableSQLResourcesClientListOptions contains the optional parameters for the RestorableSQLResourcesClient.List
 // method.
-func (client *RestorableSQLResourcesClient) List(location string, instanceID string, options *RestorableSQLResourcesClientListOptions) *runtime.Pager[RestorableSQLResourcesClientListResponse] {
+func (client *RestorableSQLResourcesClient) NewListPager(location string, instanceID string, options *RestorableSQLResourcesClientListOptions) *runtime.Pager[RestorableSQLResourcesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RestorableSQLResourcesClientListResponse]{
 		More: func(page RestorableSQLResourcesClientListResponse) bool {
 			return false

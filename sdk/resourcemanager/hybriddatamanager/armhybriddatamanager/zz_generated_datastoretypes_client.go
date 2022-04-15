@@ -115,14 +115,14 @@ func (client *DataStoreTypesClient) getHandleResponse(resp *http.Response) (Data
 	return result, nil
 }
 
-// ListByDataManager - Gets all the data store/repository types that the resource supports.
+// NewListByDataManagerPager - Gets all the data store/repository types that the resource supports.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The Resource Group Name
 // dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
 // 3 and 24 characters in length and use any alphanumeric and underscore only
 // options - DataStoreTypesClientListByDataManagerOptions contains the optional parameters for the DataStoreTypesClient.ListByDataManager
 // method.
-func (client *DataStoreTypesClient) ListByDataManager(resourceGroupName string, dataManagerName string, options *DataStoreTypesClientListByDataManagerOptions) *runtime.Pager[DataStoreTypesClientListByDataManagerResponse] {
+func (client *DataStoreTypesClient) NewListByDataManagerPager(resourceGroupName string, dataManagerName string, options *DataStoreTypesClientListByDataManagerOptions) *runtime.Pager[DataStoreTypesClientListByDataManagerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DataStoreTypesClientListByDataManagerResponse]{
 		More: func(page DataStoreTypesClientListByDataManagerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

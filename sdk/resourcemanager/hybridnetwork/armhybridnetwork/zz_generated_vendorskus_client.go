@@ -237,11 +237,11 @@ func (client *VendorSKUsClient) getHandleResponse(resp *http.Response) (VendorSK
 	return result, nil
 }
 
-// List - Lists all the skus of a vendor.
+// NewListPager - Lists all the skus of a vendor.
 // If the operation fails it returns an *azcore.ResponseError type.
 // vendorName - The name of the vendor.
 // options - VendorSKUsClientListOptions contains the optional parameters for the VendorSKUsClient.List method.
-func (client *VendorSKUsClient) List(vendorName string, options *VendorSKUsClientListOptions) *runtime.Pager[VendorSKUsClientListResponse] {
+func (client *VendorSKUsClient) NewListPager(vendorName string, options *VendorSKUsClientListOptions) *runtime.Pager[VendorSKUsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VendorSKUsClientListResponse]{
 		More: func(page VendorSKUsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

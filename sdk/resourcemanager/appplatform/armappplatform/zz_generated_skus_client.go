@@ -55,10 +55,10 @@ func NewSKUsClient(subscriptionID string, credential azcore.TokenCredential, opt
 	return client, nil
 }
 
-// List - Lists all of the available skus of the Microsoft.AppPlatform provider.
+// NewListPager - Lists all of the available skus of the Microsoft.AppPlatform provider.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SKUsClientListOptions contains the optional parameters for the SKUsClient.List method.
-func (client *SKUsClient) List(options *SKUsClientListOptions) *runtime.Pager[SKUsClientListResponse] {
+func (client *SKUsClient) NewListPager(options *SKUsClientListOptions) *runtime.Pager[SKUsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SKUsClientListResponse]{
 		More: func(page SKUsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

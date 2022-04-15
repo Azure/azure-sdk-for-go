@@ -261,14 +261,14 @@ func (client *ContainersClient) getHandleResponse(resp *http.Response) (Containe
 	return result, nil
 }
 
-// ListByStorageAccount - Lists all the containers of a storage Account in a Data Box Edge/Data Box Gateway device.
+// NewListByStorageAccountPager - Lists all the containers of a storage Account in a Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
 // deviceName - The device name.
 // storageAccountName - The storage Account name.
 // resourceGroupName - The resource group name.
 // options - ContainersClientListByStorageAccountOptions contains the optional parameters for the ContainersClient.ListByStorageAccount
 // method.
-func (client *ContainersClient) ListByStorageAccount(deviceName string, storageAccountName string, resourceGroupName string, options *ContainersClientListByStorageAccountOptions) *runtime.Pager[ContainersClientListByStorageAccountResponse] {
+func (client *ContainersClient) NewListByStorageAccountPager(deviceName string, storageAccountName string, resourceGroupName string, options *ContainersClientListByStorageAccountOptions) *runtime.Pager[ContainersClientListByStorageAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ContainersClientListByStorageAccountResponse]{
 		More: func(page ContainersClientListByStorageAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

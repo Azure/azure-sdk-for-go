@@ -298,13 +298,13 @@ func (client *EmailTemplateClient) getEntityTagHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListByService - Gets all email templates
+// NewListByServicePager - Gets all email templates
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - EmailTemplateClientListByServiceOptions contains the optional parameters for the EmailTemplateClient.ListByService
 // method.
-func (client *EmailTemplateClient) ListByService(resourceGroupName string, serviceName string, options *EmailTemplateClientListByServiceOptions) *runtime.Pager[EmailTemplateClientListByServiceResponse] {
+func (client *EmailTemplateClient) NewListByServicePager(resourceGroupName string, serviceName string, options *EmailTemplateClientListByServiceOptions) *runtime.Pager[EmailTemplateClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EmailTemplateClientListByServiceResponse]{
 		More: func(page EmailTemplateClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

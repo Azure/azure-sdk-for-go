@@ -54,13 +54,13 @@ func NewAccessReviewInstanceContactedReviewersClient(subscriptionID string, cred
 	return client, nil
 }
 
-// List - Get access review instance contacted reviewers
+// NewListPager - Get access review instance contacted reviewers
 // If the operation fails it returns an *azcore.ResponseError type.
 // scheduleDefinitionID - The id of the access review schedule definition.
 // id - The id of the access review instance.
 // options - AccessReviewInstanceContactedReviewersClientListOptions contains the optional parameters for the AccessReviewInstanceContactedReviewersClient.List
 // method.
-func (client *AccessReviewInstanceContactedReviewersClient) List(scheduleDefinitionID string, id string, options *AccessReviewInstanceContactedReviewersClientListOptions) *runtime.Pager[AccessReviewInstanceContactedReviewersClientListResponse] {
+func (client *AccessReviewInstanceContactedReviewersClient) NewListPager(scheduleDefinitionID string, id string, options *AccessReviewInstanceContactedReviewersClientListOptions) *runtime.Pager[AccessReviewInstanceContactedReviewersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccessReviewInstanceContactedReviewersClientListResponse]{
 		More: func(page AccessReviewInstanceContactedReviewersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

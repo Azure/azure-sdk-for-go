@@ -213,12 +213,12 @@ func (client *ApplicationGroupsClient) getHandleResponse(resp *http.Response) (A
 	return result, nil
 }
 
-// ListByResourceGroup - List applicationGroups.
+// NewListByResourceGroupPager - List applicationGroups.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ApplicationGroupsClientListByResourceGroupOptions contains the optional parameters for the ApplicationGroupsClient.ListByResourceGroup
 // method.
-func (client *ApplicationGroupsClient) ListByResourceGroup(resourceGroupName string, options *ApplicationGroupsClientListByResourceGroupOptions) *runtime.Pager[ApplicationGroupsClientListByResourceGroupResponse] {
+func (client *ApplicationGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *ApplicationGroupsClientListByResourceGroupOptions) *runtime.Pager[ApplicationGroupsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ApplicationGroupsClientListByResourceGroupResponse]{
 		More: func(page ApplicationGroupsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -280,11 +280,11 @@ func (client *ApplicationGroupsClient) listByResourceGroupHandleResponse(resp *h
 	return result, nil
 }
 
-// ListBySubscription - List applicationGroups in subscription.
+// NewListBySubscriptionPager - List applicationGroups in subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ApplicationGroupsClientListBySubscriptionOptions contains the optional parameters for the ApplicationGroupsClient.ListBySubscription
 // method.
-func (client *ApplicationGroupsClient) ListBySubscription(options *ApplicationGroupsClientListBySubscriptionOptions) *runtime.Pager[ApplicationGroupsClientListBySubscriptionResponse] {
+func (client *ApplicationGroupsClient) NewListBySubscriptionPager(options *ApplicationGroupsClientListBySubscriptionOptions) *runtime.Pager[ApplicationGroupsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ApplicationGroupsClientListBySubscriptionResponse]{
 		More: func(page ApplicationGroupsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

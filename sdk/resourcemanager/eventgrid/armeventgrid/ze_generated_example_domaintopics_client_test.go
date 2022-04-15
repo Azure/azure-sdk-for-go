@@ -103,7 +103,7 @@ func ExampleDomainTopicsClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainTopics_ListByDomain.json
-func ExampleDomainTopicsClient_ListByDomain() {
+func ExampleDomainTopicsClient_NewListByDomainPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -115,7 +115,7 @@ func ExampleDomainTopicsClient_ListByDomain() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByDomain("<resource-group-name>",
+	pager := client.NewListByDomainPager("<resource-group-name>",
 		"<domain-name>",
 		&armeventgrid.DomainTopicsClientListByDomainOptions{Filter: nil,
 			Top: nil,

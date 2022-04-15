@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/UserSession_ListByHostPool.json
-func ExampleUserSessionsClient_ListByHostPool() {
+func ExampleUserSessionsClient_NewListByHostPoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleUserSessionsClient_ListByHostPool() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByHostPool("<resource-group-name>",
+	pager := client.NewListByHostPoolPager("<resource-group-name>",
 		"<host-pool-name>",
 		&armdesktopvirtualization.UserSessionsClientListByHostPoolOptions{Filter: to.Ptr("<filter>")})
 	for pager.More() {
@@ -99,7 +99,7 @@ func ExampleUserSessionsClient_Delete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/UserSession_List.json
-func ExampleUserSessionsClient_List() {
+func ExampleUserSessionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -111,7 +111,7 @@ func ExampleUserSessionsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-group-name>",
+	pager := client.NewListPager("<resource-group-name>",
 		"<host-pool-name>",
 		"<session-host-name>",
 		nil)

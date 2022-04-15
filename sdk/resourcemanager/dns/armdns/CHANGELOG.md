@@ -1,5 +1,23 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*ZonesClient.List` has been removed
+- Function `*RecordSetsClient.ListByType` has been removed
+- Function `*RecordSetsClient.ListAllByDNSZone` has been removed
+- Function `*ZonesClient.ListByResourceGroup` has been removed
+- Function `*RecordSetsClient.ListByDNSZone` has been removed
+
+### Features Added
+
+- New function `*RecordSetsClient.NewListAllByDNSZonePager(string, string, *RecordSetsClientListAllByDNSZoneOptions) *runtime.Pager[RecordSetsClientListAllByDNSZoneResponse]`
+- New function `*ZonesClient.NewListByResourceGroupPager(string, *ZonesClientListByResourceGroupOptions) *runtime.Pager[ZonesClientListByResourceGroupResponse]`
+- New function `*ZonesClient.NewListPager(*ZonesClientListOptions) *runtime.Pager[ZonesClientListResponse]`
+- New function `*RecordSetsClient.NewListByDNSZonePager(string, string, *RecordSetsClientListByDNSZoneOptions) *runtime.Pager[RecordSetsClientListByDNSZoneResponse]`
+- New function `*RecordSetsClient.NewListByTypePager(string, string, RecordType, *RecordSetsClientListByTypeOptions) *runtime.Pager[RecordSetsClientListByTypeResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

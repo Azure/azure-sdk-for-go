@@ -232,12 +232,12 @@ func (client *TopicsClient) getHandleResponse(resp *http.Response) (TopicsClient
 	return result, nil
 }
 
-// ListByResourceGroup - List all the topics under a resource group.
+// NewListByResourceGroupPager - List all the topics under a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription.
 // options - TopicsClientListByResourceGroupOptions contains the optional parameters for the TopicsClient.ListByResourceGroup
 // method.
-func (client *TopicsClient) ListByResourceGroup(resourceGroupName string, options *TopicsClientListByResourceGroupOptions) *runtime.Pager[TopicsClientListByResourceGroupResponse] {
+func (client *TopicsClient) NewListByResourceGroupPager(resourceGroupName string, options *TopicsClientListByResourceGroupOptions) *runtime.Pager[TopicsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TopicsClientListByResourceGroupResponse]{
 		More: func(page TopicsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -302,11 +302,11 @@ func (client *TopicsClient) listByResourceGroupHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListBySubscription - List all the topics under an Azure subscription.
+// NewListBySubscriptionPager - List all the topics under an Azure subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - TopicsClientListBySubscriptionOptions contains the optional parameters for the TopicsClient.ListBySubscription
 // method.
-func (client *TopicsClient) ListBySubscription(options *TopicsClientListBySubscriptionOptions) *runtime.Pager[TopicsClientListBySubscriptionResponse] {
+func (client *TopicsClient) NewListBySubscriptionPager(options *TopicsClientListBySubscriptionOptions) *runtime.Pager[TopicsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TopicsClientListBySubscriptionResponse]{
 		More: func(page TopicsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -367,14 +367,14 @@ func (client *TopicsClient) listBySubscriptionHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListEventTypes - List event types for a topic.
+// NewListEventTypesPager - List event types for a topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription.
 // providerNamespace - Namespace of the provider of the topic.
 // resourceTypeName - Name of the topic type.
 // resourceName - Name of the topic.
 // options - TopicsClientListEventTypesOptions contains the optional parameters for the TopicsClient.ListEventTypes method.
-func (client *TopicsClient) ListEventTypes(resourceGroupName string, providerNamespace string, resourceTypeName string, resourceName string, options *TopicsClientListEventTypesOptions) *runtime.Pager[TopicsClientListEventTypesResponse] {
+func (client *TopicsClient) NewListEventTypesPager(resourceGroupName string, providerNamespace string, resourceTypeName string, resourceName string, options *TopicsClientListEventTypesOptions) *runtime.Pager[TopicsClientListEventTypesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TopicsClientListEventTypesResponse]{
 		More: func(page TopicsClientListEventTypesResponse) bool {
 			return false

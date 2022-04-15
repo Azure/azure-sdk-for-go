@@ -237,11 +237,11 @@ func (client *WebSiteManagementClient) getSubscriptionDeploymentLocationsHandleR
 	return result, nil
 }
 
-// ListBillingMeters - Description for Gets a list of meters for a given location.
+// NewListBillingMetersPager - Description for Gets a list of meters for a given location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - WebSiteManagementClientListBillingMetersOptions contains the optional parameters for the WebSiteManagementClient.ListBillingMeters
 // method.
-func (client *WebSiteManagementClient) ListBillingMeters(options *WebSiteManagementClientListBillingMetersOptions) *runtime.Pager[WebSiteManagementClientListBillingMetersResponse] {
+func (client *WebSiteManagementClient) NewListBillingMetersPager(options *WebSiteManagementClientListBillingMetersOptions) *runtime.Pager[WebSiteManagementClientListBillingMetersResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebSiteManagementClientListBillingMetersResponse]{
 		More: func(page WebSiteManagementClientListBillingMetersResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -302,11 +302,11 @@ func (client *WebSiteManagementClient) listBillingMetersHandleResponse(resp *htt
 	return result, nil
 }
 
-// ListCustomHostNameSites - Get custom hostnames under this subscription
+// NewListCustomHostNameSitesPager - Get custom hostnames under this subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - WebSiteManagementClientListCustomHostNameSitesOptions contains the optional parameters for the WebSiteManagementClient.ListCustomHostNameSites
 // method.
-func (client *WebSiteManagementClient) ListCustomHostNameSites(options *WebSiteManagementClientListCustomHostNameSitesOptions) *runtime.Pager[WebSiteManagementClientListCustomHostNameSitesResponse] {
+func (client *WebSiteManagementClient) NewListCustomHostNameSitesPager(options *WebSiteManagementClientListCustomHostNameSitesOptions) *runtime.Pager[WebSiteManagementClientListCustomHostNameSitesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebSiteManagementClientListCustomHostNameSitesResponse]{
 		More: func(page WebSiteManagementClientListCustomHostNameSitesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -361,11 +361,11 @@ func (client *WebSiteManagementClient) listCustomHostNameSitesHandleResponse(res
 	return result, nil
 }
 
-// ListGeoRegions - Description for Get a list of available geographical regions.
+// NewListGeoRegionsPager - Description for Get a list of available geographical regions.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - WebSiteManagementClientListGeoRegionsOptions contains the optional parameters for the WebSiteManagementClient.ListGeoRegions
 // method.
-func (client *WebSiteManagementClient) ListGeoRegions(options *WebSiteManagementClientListGeoRegionsOptions) *runtime.Pager[WebSiteManagementClientListGeoRegionsResponse] {
+func (client *WebSiteManagementClient) NewListGeoRegionsPager(options *WebSiteManagementClientListGeoRegionsOptions) *runtime.Pager[WebSiteManagementClientListGeoRegionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebSiteManagementClientListGeoRegionsResponse]{
 		More: func(page WebSiteManagementClientListGeoRegionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -432,11 +432,11 @@ func (client *WebSiteManagementClient) listGeoRegionsHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListPremierAddOnOffers - Description for List all premier add-on offers.
+// NewListPremierAddOnOffersPager - Description for List all premier add-on offers.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - WebSiteManagementClientListPremierAddOnOffersOptions contains the optional parameters for the WebSiteManagementClient.ListPremierAddOnOffers
 // method.
-func (client *WebSiteManagementClient) ListPremierAddOnOffers(options *WebSiteManagementClientListPremierAddOnOffersOptions) *runtime.Pager[WebSiteManagementClientListPremierAddOnOffersResponse] {
+func (client *WebSiteManagementClient) NewListPremierAddOnOffersPager(options *WebSiteManagementClientListPremierAddOnOffersOptions) *runtime.Pager[WebSiteManagementClientListPremierAddOnOffersResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebSiteManagementClientListPremierAddOnOffersResponse]{
 		More: func(page WebSiteManagementClientListPremierAddOnOffersResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -537,12 +537,12 @@ func (client *WebSiteManagementClient) listSKUsHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListSiteIdentifiersAssignedToHostName - Description for List all apps that are assigned to a hostname.
+// NewListSiteIdentifiersAssignedToHostNamePager - Description for List all apps that are assigned to a hostname.
 // If the operation fails it returns an *azcore.ResponseError type.
 // nameIdentifier - Hostname information.
 // options - WebSiteManagementClientListSiteIdentifiersAssignedToHostNameOptions contains the optional parameters for the
 // WebSiteManagementClient.ListSiteIdentifiersAssignedToHostName method.
-func (client *WebSiteManagementClient) ListSiteIdentifiersAssignedToHostName(nameIdentifier NameIdentifier, options *WebSiteManagementClientListSiteIdentifiersAssignedToHostNameOptions) *runtime.Pager[WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse] {
+func (client *WebSiteManagementClient) NewListSiteIdentifiersAssignedToHostNamePager(nameIdentifier NameIdentifier, options *WebSiteManagementClientListSiteIdentifiersAssignedToHostNameOptions) *runtime.Pager[WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse]{
 		More: func(page WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -597,11 +597,11 @@ func (client *WebSiteManagementClient) listSiteIdentifiersAssignedToHostNameHand
 	return result, nil
 }
 
-// ListSourceControls - Description for Gets the source controls available for Azure websites.
+// NewListSourceControlsPager - Description for Gets the source controls available for Azure websites.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - WebSiteManagementClientListSourceControlsOptions contains the optional parameters for the WebSiteManagementClient.ListSourceControls
 // method.
-func (client *WebSiteManagementClient) ListSourceControls(options *WebSiteManagementClientListSourceControlsOptions) *runtime.Pager[WebSiteManagementClientListSourceControlsResponse] {
+func (client *WebSiteManagementClient) NewListSourceControlsPager(options *WebSiteManagementClientListSourceControlsOptions) *runtime.Pager[WebSiteManagementClientListSourceControlsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebSiteManagementClientListSourceControlsResponse]{
 		More: func(page WebSiteManagementClientListSourceControlsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

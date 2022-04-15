@@ -231,11 +231,11 @@ func (client *SapMonitorsClient) getHandleResponse(resp *http.Response) (SapMoni
 	return result, nil
 }
 
-// List - Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each SAP
-// monitor.
+// NewListPager - Gets a list of SAP monitors in the specified subscription. The operations returns various properties of
+// each SAP monitor.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SapMonitorsClientListOptions contains the optional parameters for the SapMonitorsClient.List method.
-func (client *SapMonitorsClient) List(options *SapMonitorsClientListOptions) *runtime.Pager[SapMonitorsClientListResponse] {
+func (client *SapMonitorsClient) NewListPager(options *SapMonitorsClientListOptions) *runtime.Pager[SapMonitorsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SapMonitorsClientListResponse]{
 		More: func(page SapMonitorsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

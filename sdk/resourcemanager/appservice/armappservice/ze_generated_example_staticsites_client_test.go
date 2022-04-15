@@ -55,7 +55,7 @@ func ExampleStaticSitesClient_PreviewWorkflow() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetAllStaticSites.json
-func ExampleStaticSitesClient_List() {
+func ExampleStaticSitesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -67,7 +67,7 @@ func ExampleStaticSitesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(nil)
+	pager := client.NewListPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -82,7 +82,7 @@ func ExampleStaticSitesClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetStaticSites.json
-func ExampleStaticSitesClient_GetStaticSitesByResourceGroup() {
+func ExampleStaticSitesClient_NewGetStaticSitesByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -94,7 +94,7 @@ func ExampleStaticSitesClient_GetStaticSitesByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.GetStaticSitesByResourceGroup("<resource-group-name>",
+	pager := client.NewGetStaticSitesByResourceGroupPager("<resource-group-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -238,7 +238,7 @@ func ExampleStaticSitesClient_UpdateStaticSite() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListStaticSiteUsers.json
-func ExampleStaticSitesClient_ListStaticSiteUsers() {
+func ExampleStaticSitesClient_NewListStaticSiteUsersPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -250,7 +250,7 @@ func ExampleStaticSitesClient_ListStaticSiteUsers() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListStaticSiteUsers("<resource-group-name>",
+	pager := client.NewListStaticSiteUsersPager("<resource-group-name>",
 		"<name>",
 		"<authprovider>",
 		nil)
@@ -325,7 +325,7 @@ func ExampleStaticSitesClient_UpdateStaticSiteUser() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetStaticSiteBuilds.json
-func ExampleStaticSitesClient_GetStaticSiteBuilds() {
+func ExampleStaticSitesClient_NewGetStaticSiteBuildsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -337,7 +337,7 @@ func ExampleStaticSitesClient_GetStaticSiteBuilds() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.GetStaticSiteBuilds("<resource-group-name>",
+	pager := client.NewGetStaticSiteBuildsPager("<resource-group-name>",
 		"<name>",
 		nil)
 	for pager.More() {
@@ -473,7 +473,7 @@ func ExampleStaticSitesClient_CreateOrUpdateStaticSiteBuildFunctionAppSettings()
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListStaticSiteBuildFunctions.json
-func ExampleStaticSitesClient_ListStaticSiteBuildFunctions() {
+func ExampleStaticSitesClient_NewListStaticSiteBuildFunctionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -485,7 +485,7 @@ func ExampleStaticSitesClient_ListStaticSiteBuildFunctions() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListStaticSiteBuildFunctions("<resource-group-name>",
+	pager := client.NewListStaticSiteBuildFunctionsPager("<resource-group-name>",
 		"<name>",
 		"<environment-name>",
 		nil)
@@ -555,7 +555,7 @@ func ExampleStaticSitesClient_ListStaticSiteBuildFunctionAppSettings() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetUserProvidedFunctionAppsForStaticSiteBuild.json
-func ExampleStaticSitesClient_GetUserProvidedFunctionAppsForStaticSiteBuild() {
+func ExampleStaticSitesClient_NewGetUserProvidedFunctionAppsForStaticSiteBuildPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -567,7 +567,7 @@ func ExampleStaticSitesClient_GetUserProvidedFunctionAppsForStaticSiteBuild() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.GetUserProvidedFunctionAppsForStaticSiteBuild("<resource-group-name>",
+	pager := client.NewGetUserProvidedFunctionAppsForStaticSiteBuildPager("<resource-group-name>",
 		"<name>",
 		"<environment-name>",
 		nil)
@@ -811,7 +811,7 @@ func ExampleStaticSitesClient_CreateUserRolesInvitationLink() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetStaticSiteCustomDomains.json
-func ExampleStaticSitesClient_ListStaticSiteCustomDomains() {
+func ExampleStaticSitesClient_NewListStaticSiteCustomDomainsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -823,7 +823,7 @@ func ExampleStaticSitesClient_ListStaticSiteCustomDomains() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListStaticSiteCustomDomains("<resource-group-name>",
+	pager := client.NewListStaticSiteCustomDomainsPager("<resource-group-name>",
 		"<name>",
 		nil)
 	for pager.More() {
@@ -989,7 +989,7 @@ func ExampleStaticSitesClient_BeginDetachStaticSite() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListStaticSiteFunctions.json
-func ExampleStaticSitesClient_ListStaticSiteFunctions() {
+func ExampleStaticSitesClient_NewListStaticSiteFunctionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1001,7 +1001,7 @@ func ExampleStaticSitesClient_ListStaticSiteFunctions() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListStaticSiteFunctions("<resource-group-name>",
+	pager := client.NewListStaticSiteFunctionsPager("<resource-group-name>",
 		"<name>",
 		nil)
 	for pager.More() {
@@ -1118,7 +1118,7 @@ func ExampleStaticSitesClient_ListStaticSiteSecrets() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetSitePrivateEndpointConnectionList.json
-func ExampleStaticSitesClient_GetPrivateEndpointConnectionList() {
+func ExampleStaticSitesClient_NewGetPrivateEndpointConnectionListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1130,7 +1130,7 @@ func ExampleStaticSitesClient_GetPrivateEndpointConnectionList() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.GetPrivateEndpointConnectionList("<resource-group-name>",
+	pager := client.NewGetPrivateEndpointConnectionListPager("<resource-group-name>",
 		"<name>",
 		nil)
 	for pager.More() {
@@ -1269,7 +1269,7 @@ func ExampleStaticSitesClient_GetPrivateLinkResources() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetUserProvidedFunctionAppsForStaticSite.json
-func ExampleStaticSitesClient_GetUserProvidedFunctionAppsForStaticSite() {
+func ExampleStaticSitesClient_NewGetUserProvidedFunctionAppsForStaticSitePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1281,7 +1281,7 @@ func ExampleStaticSitesClient_GetUserProvidedFunctionAppsForStaticSite() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.GetUserProvidedFunctionAppsForStaticSite("<resource-group-name>",
+	pager := client.NewGetUserProvidedFunctionAppsForStaticSitePager("<resource-group-name>",
 		"<name>",
 		nil)
 	for pager.More() {

@@ -1230,14 +1230,14 @@ func (client *StaticSitesClient) getPrivateEndpointConnectionHandleResponse(resp
 	return result, nil
 }
 
-// GetPrivateEndpointConnectionList - Description for Gets the list of private endpoint connections associated with a static
-// site
+// NewGetPrivateEndpointConnectionListPager - Description for Gets the list of private endpoint connections associated with
+// a static site
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // options - StaticSitesClientGetPrivateEndpointConnectionListOptions contains the optional parameters for the StaticSitesClient.GetPrivateEndpointConnectionList
 // method.
-func (client *StaticSitesClient) GetPrivateEndpointConnectionList(resourceGroupName string, name string, options *StaticSitesClientGetPrivateEndpointConnectionListOptions) *runtime.Pager[StaticSitesClientGetPrivateEndpointConnectionListResponse] {
+func (client *StaticSitesClient) NewGetPrivateEndpointConnectionListPager(resourceGroupName string, name string, options *StaticSitesClientGetPrivateEndpointConnectionListOptions) *runtime.Pager[StaticSitesClientGetPrivateEndpointConnectionListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[StaticSitesClientGetPrivateEndpointConnectionListResponse]{
 		More: func(page StaticSitesClientGetPrivateEndpointConnectionListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1473,13 +1473,13 @@ func (client *StaticSitesClient) getStaticSiteBuildHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// GetStaticSiteBuilds - Description for Gets all static site builds for a particular static site.
+// NewGetStaticSiteBuildsPager - Description for Gets all static site builds for a particular static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // options - StaticSitesClientGetStaticSiteBuildsOptions contains the optional parameters for the StaticSitesClient.GetStaticSiteBuilds
 // method.
-func (client *StaticSitesClient) GetStaticSiteBuilds(resourceGroupName string, name string, options *StaticSitesClientGetStaticSiteBuildsOptions) *runtime.Pager[StaticSitesClientGetStaticSiteBuildsResponse] {
+func (client *StaticSitesClient) NewGetStaticSiteBuildsPager(resourceGroupName string, name string, options *StaticSitesClientGetStaticSiteBuildsOptions) *runtime.Pager[StaticSitesClientGetStaticSiteBuildsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[StaticSitesClientGetStaticSiteBuildsResponse]{
 		More: func(page StaticSitesClientGetStaticSiteBuildsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1603,12 +1603,12 @@ func (client *StaticSitesClient) getStaticSiteCustomDomainHandleResponse(resp *h
 	return result, nil
 }
 
-// GetStaticSitesByResourceGroup - Description for Gets all static sites in the specified resource group.
+// NewGetStaticSitesByResourceGroupPager - Description for Gets all static sites in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // options - StaticSitesClientGetStaticSitesByResourceGroupOptions contains the optional parameters for the StaticSitesClient.GetStaticSitesByResourceGroup
 // method.
-func (client *StaticSitesClient) GetStaticSitesByResourceGroup(resourceGroupName string, options *StaticSitesClientGetStaticSitesByResourceGroupOptions) *runtime.Pager[StaticSitesClientGetStaticSitesByResourceGroupResponse] {
+func (client *StaticSitesClient) NewGetStaticSitesByResourceGroupPager(resourceGroupName string, options *StaticSitesClientGetStaticSitesByResourceGroupOptions) *runtime.Pager[StaticSitesClientGetStaticSitesByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[StaticSitesClientGetStaticSitesByResourceGroupResponse]{
 		More: func(page StaticSitesClientGetStaticSitesByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1796,14 +1796,14 @@ func (client *StaticSitesClient) getUserProvidedFunctionAppForStaticSiteBuildHan
 	return result, nil
 }
 
-// GetUserProvidedFunctionAppsForStaticSite - Description for Gets the details of the user provided function apps registered
-// with a static site
+// NewGetUserProvidedFunctionAppsForStaticSitePager - Description for Gets the details of the user provided function apps
+// registered with a static site
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // options - StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteOptions contains the optional parameters for the StaticSitesClient.GetUserProvidedFunctionAppsForStaticSite
 // method.
-func (client *StaticSitesClient) GetUserProvidedFunctionAppsForStaticSite(resourceGroupName string, name string, options *StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteOptions) *runtime.Pager[StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResponse] {
+func (client *StaticSitesClient) NewGetUserProvidedFunctionAppsForStaticSitePager(resourceGroupName string, name string, options *StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteOptions) *runtime.Pager[StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResponse] {
 	return runtime.NewPager(runtime.PageProcessor[StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResponse]{
 		More: func(page StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1866,15 +1866,15 @@ func (client *StaticSitesClient) getUserProvidedFunctionAppsForStaticSiteHandleR
 	return result, nil
 }
 
-// GetUserProvidedFunctionAppsForStaticSiteBuild - Description for Gets the details of the user provided function apps registered
-// with a static site build
+// NewGetUserProvidedFunctionAppsForStaticSiteBuildPager - Description for Gets the details of the user provided function
+// apps registered with a static site build
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // environmentName - The stage site identifier.
 // options - StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildOptions contains the optional parameters for the
 // StaticSitesClient.GetUserProvidedFunctionAppsForStaticSiteBuild method.
-func (client *StaticSitesClient) GetUserProvidedFunctionAppsForStaticSiteBuild(resourceGroupName string, name string, environmentName string, options *StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildOptions) *runtime.Pager[StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResponse] {
+func (client *StaticSitesClient) NewGetUserProvidedFunctionAppsForStaticSiteBuildPager(resourceGroupName string, name string, environmentName string, options *StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildOptions) *runtime.Pager[StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResponse] {
 	return runtime.NewPager(runtime.PageProcessor[StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResponse]{
 		More: func(page StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1941,10 +1941,10 @@ func (client *StaticSitesClient) getUserProvidedFunctionAppsForStaticSiteBuildHa
 	return result, nil
 }
 
-// List - Description for Get all Static Sites for a subscription.
+// NewListPager - Description for Get all Static Sites for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - StaticSitesClientListOptions contains the optional parameters for the StaticSitesClient.List method.
-func (client *StaticSitesClient) List(options *StaticSitesClientListOptions) *runtime.Pager[StaticSitesClientListResponse] {
+func (client *StaticSitesClient) NewListPager(options *StaticSitesClientListOptions) *runtime.Pager[StaticSitesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[StaticSitesClientListResponse]{
 		More: func(page StaticSitesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -2177,14 +2177,14 @@ func (client *StaticSitesClient) listStaticSiteBuildFunctionAppSettingsHandleRes
 	return result, nil
 }
 
-// ListStaticSiteBuildFunctions - Description for Gets the functions of a particular static site build.
+// NewListStaticSiteBuildFunctionsPager - Description for Gets the functions of a particular static site build.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // environmentName - The stage site identifier.
 // options - StaticSitesClientListStaticSiteBuildFunctionsOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteBuildFunctions
 // method.
-func (client *StaticSitesClient) ListStaticSiteBuildFunctions(resourceGroupName string, name string, environmentName string, options *StaticSitesClientListStaticSiteBuildFunctionsOptions) *runtime.Pager[StaticSitesClientListStaticSiteBuildFunctionsResponse] {
+func (client *StaticSitesClient) NewListStaticSiteBuildFunctionsPager(resourceGroupName string, name string, environmentName string, options *StaticSitesClientListStaticSiteBuildFunctionsOptions) *runtime.Pager[StaticSitesClientListStaticSiteBuildFunctionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[StaticSitesClientListStaticSiteBuildFunctionsResponse]{
 		More: func(page StaticSitesClientListStaticSiteBuildFunctionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -2307,13 +2307,13 @@ func (client *StaticSitesClient) listStaticSiteConfiguredRolesHandleResponse(res
 	return result, nil
 }
 
-// ListStaticSiteCustomDomains - Description for Gets all static site custom domains for a particular static site.
+// NewListStaticSiteCustomDomainsPager - Description for Gets all static site custom domains for a particular static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site resource to search in.
 // options - StaticSitesClientListStaticSiteCustomDomainsOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteCustomDomains
 // method.
-func (client *StaticSitesClient) ListStaticSiteCustomDomains(resourceGroupName string, name string, options *StaticSitesClientListStaticSiteCustomDomainsOptions) *runtime.Pager[StaticSitesClientListStaticSiteCustomDomainsResponse] {
+func (client *StaticSitesClient) NewListStaticSiteCustomDomainsPager(resourceGroupName string, name string, options *StaticSitesClientListStaticSiteCustomDomainsOptions) *runtime.Pager[StaticSitesClientListStaticSiteCustomDomainsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[StaticSitesClientListStaticSiteCustomDomainsResponse]{
 		More: func(page StaticSitesClientListStaticSiteCustomDomainsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -2432,13 +2432,13 @@ func (client *StaticSitesClient) listStaticSiteFunctionAppSettingsHandleResponse
 	return result, nil
 }
 
-// ListStaticSiteFunctions - Description for Gets the functions of a static site.
+// NewListStaticSiteFunctionsPager - Description for Gets the functions of a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // options - StaticSitesClientListStaticSiteFunctionsOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteFunctions
 // method.
-func (client *StaticSitesClient) ListStaticSiteFunctions(resourceGroupName string, name string, options *StaticSitesClientListStaticSiteFunctionsOptions) *runtime.Pager[StaticSitesClientListStaticSiteFunctionsResponse] {
+func (client *StaticSitesClient) NewListStaticSiteFunctionsPager(resourceGroupName string, name string, options *StaticSitesClientListStaticSiteFunctionsOptions) *runtime.Pager[StaticSitesClientListStaticSiteFunctionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[StaticSitesClientListStaticSiteFunctionsResponse]{
 		More: func(page StaticSitesClientListStaticSiteFunctionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -2557,14 +2557,14 @@ func (client *StaticSitesClient) listStaticSiteSecretsHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListStaticSiteUsers - Description for Gets the list of users of a static site.
+// NewListStaticSiteUsersPager - Description for Gets the list of users of a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // authprovider - The auth provider for the users.
 // options - StaticSitesClientListStaticSiteUsersOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteUsers
 // method.
-func (client *StaticSitesClient) ListStaticSiteUsers(resourceGroupName string, name string, authprovider string, options *StaticSitesClientListStaticSiteUsersOptions) *runtime.Pager[StaticSitesClientListStaticSiteUsersResponse] {
+func (client *StaticSitesClient) NewListStaticSiteUsersPager(resourceGroupName string, name string, authprovider string, options *StaticSitesClientListStaticSiteUsersOptions) *runtime.Pager[StaticSitesClientListStaticSiteUsersResponse] {
 	return runtime.NewPager(runtime.PageProcessor[StaticSitesClientListStaticSiteUsersResponse]{
 		More: func(page StaticSitesClientListStaticSiteUsersResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -51,12 +51,12 @@ func NewReservationTransactionsClient(credential azcore.TokenCredential, options
 	return client, nil
 }
 
-// List - List of transactions for reserved instances on billing account scope
+// NewListPager - List of transactions for reserved instances on billing account scope
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountID - BillingAccount ID
 // options - ReservationTransactionsClientListOptions contains the optional parameters for the ReservationTransactionsClient.List
 // method.
-func (client *ReservationTransactionsClient) List(billingAccountID string, options *ReservationTransactionsClientListOptions) *runtime.Pager[ReservationTransactionsClientListResponse] {
+func (client *ReservationTransactionsClient) NewListPager(billingAccountID string, options *ReservationTransactionsClientListOptions) *runtime.Pager[ReservationTransactionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReservationTransactionsClientListResponse]{
 		More: func(page ReservationTransactionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -114,13 +114,13 @@ func (client *ReservationTransactionsClient) listHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListByBillingProfile - List of transactions for reserved instances on billing account scope
+// NewListByBillingProfilePager - List of transactions for reserved instances on billing account scope
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountID - BillingAccount ID
 // billingProfileID - Azure Billing Profile ID.
 // options - ReservationTransactionsClientListByBillingProfileOptions contains the optional parameters for the ReservationTransactionsClient.ListByBillingProfile
 // method.
-func (client *ReservationTransactionsClient) ListByBillingProfile(billingAccountID string, billingProfileID string, options *ReservationTransactionsClientListByBillingProfileOptions) *runtime.Pager[ReservationTransactionsClientListByBillingProfileResponse] {
+func (client *ReservationTransactionsClient) NewListByBillingProfilePager(billingAccountID string, billingProfileID string, options *ReservationTransactionsClientListByBillingProfileOptions) *runtime.Pager[ReservationTransactionsClientListByBillingProfileResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReservationTransactionsClientListByBillingProfileResponse]{
 		More: func(page ReservationTransactionsClientListByBillingProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

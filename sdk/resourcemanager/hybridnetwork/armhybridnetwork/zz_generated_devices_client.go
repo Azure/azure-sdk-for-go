@@ -235,12 +235,12 @@ func (client *DevicesClient) getHandleResponse(resp *http.Response) (DevicesClie
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all the device resource in a resource group.
+// NewListByResourceGroupPager - Lists all the device resource in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - DevicesClientListByResourceGroupOptions contains the optional parameters for the DevicesClient.ListByResourceGroup
 // method.
-func (client *DevicesClient) ListByResourceGroup(resourceGroupName string, options *DevicesClientListByResourceGroupOptions) *runtime.Pager[DevicesClientListByResourceGroupResponse] {
+func (client *DevicesClient) NewListByResourceGroupPager(resourceGroupName string, options *DevicesClientListByResourceGroupOptions) *runtime.Pager[DevicesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DevicesClientListByResourceGroupResponse]{
 		More: func(page DevicesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -299,11 +299,11 @@ func (client *DevicesClient) listByResourceGroupHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListBySubscription - Lists all the devices in a subscription.
+// NewListBySubscriptionPager - Lists all the devices in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DevicesClientListBySubscriptionOptions contains the optional parameters for the DevicesClient.ListBySubscription
 // method.
-func (client *DevicesClient) ListBySubscription(options *DevicesClientListBySubscriptionOptions) *runtime.Pager[DevicesClientListBySubscriptionResponse] {
+func (client *DevicesClient) NewListBySubscriptionPager(options *DevicesClientListBySubscriptionOptions) *runtime.Pager[DevicesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DevicesClientListBySubscriptionResponse]{
 		More: func(page DevicesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

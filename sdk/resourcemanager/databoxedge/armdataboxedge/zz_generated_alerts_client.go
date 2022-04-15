@@ -114,13 +114,13 @@ func (client *AlertsClient) getHandleResponse(resp *http.Response) (AlertsClient
 	return result, nil
 }
 
-// ListByDataBoxEdgeDevice - Gets all the alerts for a Data Box Edge/Data Box Gateway device.
+// NewListByDataBoxEdgeDevicePager - Gets all the alerts for a Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
 // deviceName - The device name.
 // resourceGroupName - The resource group name.
 // options - AlertsClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the AlertsClient.ListByDataBoxEdgeDevice
 // method.
-func (client *AlertsClient) ListByDataBoxEdgeDevice(deviceName string, resourceGroupName string, options *AlertsClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[AlertsClientListByDataBoxEdgeDeviceResponse] {
+func (client *AlertsClient) NewListByDataBoxEdgeDevicePager(deviceName string, resourceGroupName string, options *AlertsClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[AlertsClientListByDataBoxEdgeDeviceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AlertsClientListByDataBoxEdgeDeviceResponse]{
 		More: func(page AlertsClientListByDataBoxEdgeDeviceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

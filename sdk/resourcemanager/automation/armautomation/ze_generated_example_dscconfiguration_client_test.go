@@ -93,7 +93,7 @@ func ExampleDscConfigurationClient_GetContent() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/getAllDscConfigurations.json
-func ExampleDscConfigurationClient_ListByAutomationAccount() {
+func ExampleDscConfigurationClient_NewListByAutomationAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -105,7 +105,7 @@ func ExampleDscConfigurationClient_ListByAutomationAccount() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByAutomationAccount("<resource-group-name>",
+	pager := client.NewListByAutomationAccountPager("<resource-group-name>",
 		"<automation-account-name>",
 		&armautomation.DscConfigurationClientListByAutomationAccountOptions{Filter: nil,
 			Skip:        nil,

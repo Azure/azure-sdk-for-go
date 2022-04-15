@@ -128,7 +128,7 @@ func ExampleVendorNetworkFunctionsClient_BeginCreateOrUpdate() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/VendorNfListByVendor.json
-func ExampleVendorNetworkFunctionsClient_List() {
+func ExampleVendorNetworkFunctionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -140,7 +140,7 @@ func ExampleVendorNetworkFunctionsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<location-name>",
+	pager := client.NewListPager("<location-name>",
 		"<vendor-name>",
 		&armhybridnetwork.VendorNetworkFunctionsClientListOptions{Filter: nil})
 	for pager.More() {

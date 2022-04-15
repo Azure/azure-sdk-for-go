@@ -10,7 +10,7 @@ package armiotsecurity
 
 const (
 	moduleName    = "armiotsecurity"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.4.0"
 )
 
 // AuthorizedState - Authorized state of the device.

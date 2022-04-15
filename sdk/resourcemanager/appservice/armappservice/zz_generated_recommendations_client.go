@@ -432,10 +432,10 @@ func (client *RecommendationsClient) getRuleDetailsByWebAppHandleResponse(resp *
 	return result, nil
 }
 
-// List - Description for List all recommendations for a subscription.
+// NewListPager - Description for List all recommendations for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - RecommendationsClientListOptions contains the optional parameters for the RecommendationsClient.List method.
-func (client *RecommendationsClient) List(options *RecommendationsClientListOptions) *runtime.Pager[RecommendationsClientListResponse] {
+func (client *RecommendationsClient) NewListPager(options *RecommendationsClientListOptions) *runtime.Pager[RecommendationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RecommendationsClientListResponse]{
 		More: func(page RecommendationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -498,14 +498,14 @@ func (client *RecommendationsClient) listHandleResponse(resp *http.Response) (Re
 	return result, nil
 }
 
-// ListHistoryForHostingEnvironment - Description for Get past recommendations for an app, optionally specified by the time
-// range.
+// NewListHistoryForHostingEnvironmentPager - Description for Get past recommendations for an app, optionally specified by
+// the time range.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // hostingEnvironmentName - Name of the hosting environment.
 // options - RecommendationsClientListHistoryForHostingEnvironmentOptions contains the optional parameters for the RecommendationsClient.ListHistoryForHostingEnvironment
 // method.
-func (client *RecommendationsClient) ListHistoryForHostingEnvironment(resourceGroupName string, hostingEnvironmentName string, options *RecommendationsClientListHistoryForHostingEnvironmentOptions) *runtime.Pager[RecommendationsClientListHistoryForHostingEnvironmentResponse] {
+func (client *RecommendationsClient) NewListHistoryForHostingEnvironmentPager(resourceGroupName string, hostingEnvironmentName string, options *RecommendationsClientListHistoryForHostingEnvironmentOptions) *runtime.Pager[RecommendationsClientListHistoryForHostingEnvironmentResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RecommendationsClientListHistoryForHostingEnvironmentResponse]{
 		More: func(page RecommendationsClientListHistoryForHostingEnvironmentResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -576,13 +576,13 @@ func (client *RecommendationsClient) listHistoryForHostingEnvironmentHandleRespo
 	return result, nil
 }
 
-// ListHistoryForWebApp - Description for Get past recommendations for an app, optionally specified by the time range.
+// NewListHistoryForWebAppPager - Description for Get past recommendations for an app, optionally specified by the time range.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Name of the app.
 // options - RecommendationsClientListHistoryForWebAppOptions contains the optional parameters for the RecommendationsClient.ListHistoryForWebApp
 // method.
-func (client *RecommendationsClient) ListHistoryForWebApp(resourceGroupName string, siteName string, options *RecommendationsClientListHistoryForWebAppOptions) *runtime.Pager[RecommendationsClientListHistoryForWebAppResponse] {
+func (client *RecommendationsClient) NewListHistoryForWebAppPager(resourceGroupName string, siteName string, options *RecommendationsClientListHistoryForWebAppOptions) *runtime.Pager[RecommendationsClientListHistoryForWebAppResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RecommendationsClientListHistoryForWebAppResponse]{
 		More: func(page RecommendationsClientListHistoryForWebAppResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -653,13 +653,13 @@ func (client *RecommendationsClient) listHistoryForWebAppHandleResponse(resp *ht
 	return result, nil
 }
 
-// ListRecommendedRulesForHostingEnvironment - Description for Get all recommendations for a hosting environment.
+// NewListRecommendedRulesForHostingEnvironmentPager - Description for Get all recommendations for a hosting environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // hostingEnvironmentName - Name of the app.
 // options - RecommendationsClientListRecommendedRulesForHostingEnvironmentOptions contains the optional parameters for the
 // RecommendationsClient.ListRecommendedRulesForHostingEnvironment method.
-func (client *RecommendationsClient) ListRecommendedRulesForHostingEnvironment(resourceGroupName string, hostingEnvironmentName string, options *RecommendationsClientListRecommendedRulesForHostingEnvironmentOptions) *runtime.Pager[RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse] {
+func (client *RecommendationsClient) NewListRecommendedRulesForHostingEnvironmentPager(resourceGroupName string, hostingEnvironmentName string, options *RecommendationsClientListRecommendedRulesForHostingEnvironmentOptions) *runtime.Pager[RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse]{
 		More: func(page RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -730,13 +730,13 @@ func (client *RecommendationsClient) listRecommendedRulesForHostingEnvironmentHa
 	return result, nil
 }
 
-// ListRecommendedRulesForWebApp - Description for Get all recommendations for an app.
+// NewListRecommendedRulesForWebAppPager - Description for Get all recommendations for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Name of the app.
 // options - RecommendationsClientListRecommendedRulesForWebAppOptions contains the optional parameters for the RecommendationsClient.ListRecommendedRulesForWebApp
 // method.
-func (client *RecommendationsClient) ListRecommendedRulesForWebApp(resourceGroupName string, siteName string, options *RecommendationsClientListRecommendedRulesForWebAppOptions) *runtime.Pager[RecommendationsClientListRecommendedRulesForWebAppResponse] {
+func (client *RecommendationsClient) NewListRecommendedRulesForWebAppPager(resourceGroupName string, siteName string, options *RecommendationsClientListRecommendedRulesForWebAppOptions) *runtime.Pager[RecommendationsClientListRecommendedRulesForWebAppResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RecommendationsClientListRecommendedRulesForWebAppResponse]{
 		More: func(page RecommendationsClientListRecommendedRulesForWebAppResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

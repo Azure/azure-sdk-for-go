@@ -232,13 +232,13 @@ func (client *IntegrationAccountMapsClient) getHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// List - Gets a list of integration account maps.
+// NewListPager - Gets a list of integration account maps.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // options - IntegrationAccountMapsClientListOptions contains the optional parameters for the IntegrationAccountMapsClient.List
 // method.
-func (client *IntegrationAccountMapsClient) List(resourceGroupName string, integrationAccountName string, options *IntegrationAccountMapsClientListOptions) *runtime.Pager[IntegrationAccountMapsClientListResponse] {
+func (client *IntegrationAccountMapsClient) NewListPager(resourceGroupName string, integrationAccountName string, options *IntegrationAccountMapsClientListOptions) *runtime.Pager[IntegrationAccountMapsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IntegrationAccountMapsClientListResponse]{
 		More: func(page IntegrationAccountMapsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

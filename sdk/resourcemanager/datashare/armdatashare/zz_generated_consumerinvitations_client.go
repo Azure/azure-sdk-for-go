@@ -102,11 +102,11 @@ func (client *ConsumerInvitationsClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListInvitations - Lists invitations
+// NewListInvitationsPager - Lists invitations
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ConsumerInvitationsClientListInvitationsOptions contains the optional parameters for the ConsumerInvitationsClient.ListInvitations
 // method.
-func (client *ConsumerInvitationsClient) ListInvitations(options *ConsumerInvitationsClientListInvitationsOptions) *runtime.Pager[ConsumerInvitationsClientListInvitationsResponse] {
+func (client *ConsumerInvitationsClient) NewListInvitationsPager(options *ConsumerInvitationsClientListInvitationsOptions) *runtime.Pager[ConsumerInvitationsClientListInvitationsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ConsumerInvitationsClientListInvitationsResponse]{
 		More: func(page ConsumerInvitationsClientListInvitationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

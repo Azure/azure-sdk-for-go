@@ -378,13 +378,13 @@ func (client *PartnerTopicEventSubscriptionsClient) getFullURLHandleResponse(res
 	return result, nil
 }
 
-// ListByPartnerTopic - List event subscriptions that belong to a specific partner topic.
+// NewListByPartnerTopicPager - List event subscriptions that belong to a specific partner topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription.
 // partnerTopicName - Name of the partner topic.
 // options - PartnerTopicEventSubscriptionsClientListByPartnerTopicOptions contains the optional parameters for the PartnerTopicEventSubscriptionsClient.ListByPartnerTopic
 // method.
-func (client *PartnerTopicEventSubscriptionsClient) ListByPartnerTopic(resourceGroupName string, partnerTopicName string, options *PartnerTopicEventSubscriptionsClientListByPartnerTopicOptions) *runtime.Pager[PartnerTopicEventSubscriptionsClientListByPartnerTopicResponse] {
+func (client *PartnerTopicEventSubscriptionsClient) NewListByPartnerTopicPager(resourceGroupName string, partnerTopicName string, options *PartnerTopicEventSubscriptionsClientListByPartnerTopicOptions) *runtime.Pager[PartnerTopicEventSubscriptionsClientListByPartnerTopicResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PartnerTopicEventSubscriptionsClientListByPartnerTopicResponse]{
 		More: func(page PartnerTopicEventSubscriptionsClientListByPartnerTopicResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

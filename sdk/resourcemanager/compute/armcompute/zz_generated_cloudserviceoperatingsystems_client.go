@@ -169,14 +169,14 @@ func (client *CloudServiceOperatingSystemsClient) getOSVersionHandleResponse(res
 	return result, nil
 }
 
-// ListOSFamilies - Gets a list of all guest operating system families available to be specified in the XML service configuration
-// (.cscfg) for a cloud service. Use nextLink property in the response to get the next page
+// NewListOSFamiliesPager - Gets a list of all guest operating system families available to be specified in the XML service
+// configuration (.cscfg) for a cloud service. Use nextLink property in the response to get the next page
 // of OS Families. Do this till nextLink is null to fetch all the OS Families.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - Name of the location that the OS families pertain to.
 // options - CloudServiceOperatingSystemsClientListOSFamiliesOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.ListOSFamilies
 // method.
-func (client *CloudServiceOperatingSystemsClient) ListOSFamilies(location string, options *CloudServiceOperatingSystemsClientListOSFamiliesOptions) *runtime.Pager[CloudServiceOperatingSystemsClientListOSFamiliesResponse] {
+func (client *CloudServiceOperatingSystemsClient) NewListOSFamiliesPager(location string, options *CloudServiceOperatingSystemsClientListOSFamiliesOptions) *runtime.Pager[CloudServiceOperatingSystemsClientListOSFamiliesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CloudServiceOperatingSystemsClientListOSFamiliesResponse]{
 		More: func(page CloudServiceOperatingSystemsClientListOSFamiliesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -235,14 +235,14 @@ func (client *CloudServiceOperatingSystemsClient) listOSFamiliesHandleResponse(r
 	return result, nil
 }
 
-// ListOSVersions - Gets a list of all guest operating system versions available to be specified in the XML service configuration
-// (.cscfg) for a cloud service. Use nextLink property in the response to get the next page
+// NewListOSVersionsPager - Gets a list of all guest operating system versions available to be specified in the XML service
+// configuration (.cscfg) for a cloud service. Use nextLink property in the response to get the next page
 // of OS versions. Do this till nextLink is null to fetch all the OS versions.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - Name of the location that the OS versions pertain to.
 // options - CloudServiceOperatingSystemsClientListOSVersionsOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.ListOSVersions
 // method.
-func (client *CloudServiceOperatingSystemsClient) ListOSVersions(location string, options *CloudServiceOperatingSystemsClientListOSVersionsOptions) *runtime.Pager[CloudServiceOperatingSystemsClientListOSVersionsResponse] {
+func (client *CloudServiceOperatingSystemsClient) NewListOSVersionsPager(location string, options *CloudServiceOperatingSystemsClientListOSVersionsOptions) *runtime.Pager[CloudServiceOperatingSystemsClientListOSVersionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CloudServiceOperatingSystemsClientListOSVersionsResponse]{
 		More: func(page CloudServiceOperatingSystemsClientListOSVersionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

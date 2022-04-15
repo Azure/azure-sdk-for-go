@@ -1,5 +1,31 @@
 # Release History
 
+## 0.5.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*ResourceClient.ListByResourceGroup` has been removed
+- Function `*ResourceClient.GetValidSKUs` has been removed
+- Function `*ResourceClient.GetEndpointHealth` has been removed
+- Function `*ResourceClient.ListKeys` has been removed
+- Function `*ResourceClient.ListBySubscription` has been removed
+- Function `*ResourceClient.ListJobs` has been removed
+- Function `*ResourceClient.ListEventHubConsumerGroups` has been removed
+- Function `*ResourceClient.GetQuotaMetrics` has been removed
+- Function `*OperationsClient.List` has been removed
+
+### Features Added
+
+- New function `*ResourceClient.NewGetQuotaMetricsPager(string, string, *ResourceClientGetQuotaMetricsOptions) *runtime.Pager[ResourceClientGetQuotaMetricsResponse]`
+- New function `*ResourceClient.NewGetValidSKUsPager(string, string, *ResourceClientGetValidSKUsOptions) *runtime.Pager[ResourceClientGetValidSKUsResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*ResourceClient.NewListKeysPager(string, string, *ResourceClientListKeysOptions) *runtime.Pager[ResourceClientListKeysResponse]`
+- New function `*ResourceClient.NewListBySubscriptionPager(*ResourceClientListBySubscriptionOptions) *runtime.Pager[ResourceClientListBySubscriptionResponse]`
+- New function `*ResourceClient.NewListEventHubConsumerGroupsPager(string, string, string, *ResourceClientListEventHubConsumerGroupsOptions) *runtime.Pager[ResourceClientListEventHubConsumerGroupsResponse]`
+- New function `*ResourceClient.NewListJobsPager(string, string, *ResourceClientListJobsOptions) *runtime.Pager[ResourceClientListJobsResponse]`
+- New function `*ResourceClient.NewListByResourceGroupPager(string, *ResourceClientListByResourceGroupOptions) *runtime.Pager[ResourceClientListByResourceGroupResponse]`
+- New function `*ResourceClient.NewGetEndpointHealthPager(string, string, *ResourceClientGetEndpointHealthOptions) *runtime.Pager[ResourceClientGetEndpointHealthResponse]`
+
+
 ## 0.4.0 (2022-04-12)
 ### Breaking Changes
 

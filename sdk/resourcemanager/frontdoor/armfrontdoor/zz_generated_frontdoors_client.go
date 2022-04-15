@@ -236,10 +236,10 @@ func (client *FrontDoorsClient) getHandleResponse(resp *http.Response) (FrontDoo
 	return result, nil
 }
 
-// List - Lists all of the Front Doors within an Azure subscription.
+// NewListPager - Lists all of the Front Doors within an Azure subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - FrontDoorsClientListOptions contains the optional parameters for the FrontDoorsClient.List method.
-func (client *FrontDoorsClient) List(options *FrontDoorsClientListOptions) *runtime.Pager[FrontDoorsClientListResponse] {
+func (client *FrontDoorsClient) NewListPager(options *FrontDoorsClientListOptions) *runtime.Pager[FrontDoorsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[FrontDoorsClientListResponse]{
 		More: func(page FrontDoorsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -294,12 +294,12 @@ func (client *FrontDoorsClient) listHandleResponse(resp *http.Response) (FrontDo
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all of the Front Doors within a resource group under a subscription.
+// NewListByResourceGroupPager - Lists all of the Front Doors within a resource group under a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // options - FrontDoorsClientListByResourceGroupOptions contains the optional parameters for the FrontDoorsClient.ListByResourceGroup
 // method.
-func (client *FrontDoorsClient) ListByResourceGroup(resourceGroupName string, options *FrontDoorsClientListByResourceGroupOptions) *runtime.Pager[FrontDoorsClientListByResourceGroupResponse] {
+func (client *FrontDoorsClient) NewListByResourceGroupPager(resourceGroupName string, options *FrontDoorsClientListByResourceGroupOptions) *runtime.Pager[FrontDoorsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[FrontDoorsClientListByResourceGroupResponse]{
 		More: func(page FrontDoorsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

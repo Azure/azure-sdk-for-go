@@ -125,7 +125,7 @@ func (client *WorkflowRunActionRepetitionsClient) getHandleResponse(resp *http.R
 	return result, nil
 }
 
-// List - Get all of a workflow run action repetitions.
+// NewListPager - Get all of a workflow run action repetitions.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
@@ -133,7 +133,7 @@ func (client *WorkflowRunActionRepetitionsClient) getHandleResponse(resp *http.R
 // actionName - The workflow action name.
 // options - WorkflowRunActionRepetitionsClientListOptions contains the optional parameters for the WorkflowRunActionRepetitionsClient.List
 // method.
-func (client *WorkflowRunActionRepetitionsClient) List(resourceGroupName string, workflowName string, runName string, actionName string, options *WorkflowRunActionRepetitionsClientListOptions) *runtime.Pager[WorkflowRunActionRepetitionsClientListResponse] {
+func (client *WorkflowRunActionRepetitionsClient) NewListPager(resourceGroupName string, workflowName string, runName string, actionName string, options *WorkflowRunActionRepetitionsClientListOptions) *runtime.Pager[WorkflowRunActionRepetitionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkflowRunActionRepetitionsClientListResponse]{
 		More: func(page WorkflowRunActionRepetitionsClientListResponse) bool {
 			return false
@@ -198,7 +198,7 @@ func (client *WorkflowRunActionRepetitionsClient) listHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListExpressionTraces - Lists a workflow run expression trace.
+// NewListExpressionTracesPager - Lists a workflow run expression trace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
@@ -207,7 +207,7 @@ func (client *WorkflowRunActionRepetitionsClient) listHandleResponse(resp *http.
 // repetitionName - The workflow repetition.
 // options - WorkflowRunActionRepetitionsClientListExpressionTracesOptions contains the optional parameters for the WorkflowRunActionRepetitionsClient.ListExpressionTraces
 // method.
-func (client *WorkflowRunActionRepetitionsClient) ListExpressionTraces(resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string, options *WorkflowRunActionRepetitionsClientListExpressionTracesOptions) *runtime.Pager[WorkflowRunActionRepetitionsClientListExpressionTracesResponse] {
+func (client *WorkflowRunActionRepetitionsClient) NewListExpressionTracesPager(resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string, options *WorkflowRunActionRepetitionsClientListExpressionTracesOptions) *runtime.Pager[WorkflowRunActionRepetitionsClientListExpressionTracesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkflowRunActionRepetitionsClientListExpressionTracesResponse]{
 		More: func(page WorkflowRunActionRepetitionsClientListExpressionTracesResponse) bool {
 			return false

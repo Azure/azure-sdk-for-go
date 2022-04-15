@@ -301,13 +301,13 @@ func (client *CertificateClient) getEntityTagHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListByService - Lists a collection of all certificates in the specified service instance.
+// NewListByServicePager - Lists a collection of all certificates in the specified service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - CertificateClientListByServiceOptions contains the optional parameters for the CertificateClient.ListByService
 // method.
-func (client *CertificateClient) ListByService(resourceGroupName string, serviceName string, options *CertificateClientListByServiceOptions) *runtime.Pager[CertificateClientListByServiceResponse] {
+func (client *CertificateClient) NewListByServicePager(resourceGroupName string, serviceName string, options *CertificateClientListByServiceOptions) *runtime.Pager[CertificateClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CertificateClientListByServiceResponse]{
 		More: func(page CertificateClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

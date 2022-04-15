@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListApis.json
-func ExampleAPIClient_ListByService() {
+func ExampleAPIClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleAPIClient_ListByService() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByService("<resource-group-name>",
+	pager := client.NewListByServicePager("<resource-group-name>",
 		"<service-name>",
 		&armapimanagement.APIClientListByServiceOptions{Filter: nil,
 			Top:                 nil,
@@ -217,7 +217,7 @@ func ExampleAPIClient_Delete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListApisByTags.json
-func ExampleAPIClient_ListByTags() {
+func ExampleAPIClient_NewListByTagsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -229,7 +229,7 @@ func ExampleAPIClient_ListByTags() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByTags("<resource-group-name>",
+	pager := client.NewListByTagsPager("<resource-group-name>",
 		"<service-name>",
 		&armapimanagement.APIClientListByTagsOptions{Filter: nil,
 			Top:                  nil,

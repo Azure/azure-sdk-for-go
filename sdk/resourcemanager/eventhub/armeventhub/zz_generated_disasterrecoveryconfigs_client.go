@@ -457,13 +457,13 @@ func (client *DisasterRecoveryConfigsClient) getAuthorizationRuleHandleResponse(
 	return result, nil
 }
 
-// List - Gets all Alias(Disaster Recovery configurations)
+// NewListPager - Gets all Alias(Disaster Recovery configurations)
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group within the azure subscription.
 // namespaceName - The Namespace name
 // options - DisasterRecoveryConfigsClientListOptions contains the optional parameters for the DisasterRecoveryConfigsClient.List
 // method.
-func (client *DisasterRecoveryConfigsClient) List(resourceGroupName string, namespaceName string, options *DisasterRecoveryConfigsClientListOptions) *runtime.Pager[DisasterRecoveryConfigsClientListResponse] {
+func (client *DisasterRecoveryConfigsClient) NewListPager(resourceGroupName string, namespaceName string, options *DisasterRecoveryConfigsClientListOptions) *runtime.Pager[DisasterRecoveryConfigsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DisasterRecoveryConfigsClientListResponse]{
 		More: func(page DisasterRecoveryConfigsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -526,14 +526,14 @@ func (client *DisasterRecoveryConfigsClient) listHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListAuthorizationRules - Gets a list of authorization rules for a Namespace.
+// NewListAuthorizationRulesPager - Gets a list of authorization rules for a Namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group within the azure subscription.
 // namespaceName - The Namespace name
 // alias - The Disaster Recovery configuration name
 // options - DisasterRecoveryConfigsClientListAuthorizationRulesOptions contains the optional parameters for the DisasterRecoveryConfigsClient.ListAuthorizationRules
 // method.
-func (client *DisasterRecoveryConfigsClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsClientListAuthorizationRulesOptions) *runtime.Pager[DisasterRecoveryConfigsClientListAuthorizationRulesResponse] {
+func (client *DisasterRecoveryConfigsClient) NewListAuthorizationRulesPager(resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsClientListAuthorizationRulesOptions) *runtime.Pager[DisasterRecoveryConfigsClientListAuthorizationRulesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DisasterRecoveryConfigsClientListAuthorizationRulesResponse]{
 		More: func(page DisasterRecoveryConfigsClientListAuthorizationRulesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -246,13 +246,13 @@ func (client *SharesClient) getHandleResponse(resp *http.Response) (SharesClient
 	return result, nil
 }
 
-// ListByDataBoxEdgeDevice - Lists all the shares in a Data Box Edge/Data Box Gateway device.
+// NewListByDataBoxEdgeDevicePager - Lists all the shares in a Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
 // deviceName - The device name.
 // resourceGroupName - The resource group name.
 // options - SharesClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the SharesClient.ListByDataBoxEdgeDevice
 // method.
-func (client *SharesClient) ListByDataBoxEdgeDevice(deviceName string, resourceGroupName string, options *SharesClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[SharesClientListByDataBoxEdgeDeviceResponse] {
+func (client *SharesClient) NewListByDataBoxEdgeDevicePager(deviceName string, resourceGroupName string, options *SharesClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[SharesClientListByDataBoxEdgeDeviceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SharesClientListByDataBoxEdgeDeviceResponse]{
 		More: func(page SharesClientListByDataBoxEdgeDeviceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

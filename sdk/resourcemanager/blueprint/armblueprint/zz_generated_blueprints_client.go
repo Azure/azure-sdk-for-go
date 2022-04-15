@@ -200,12 +200,12 @@ func (client *BlueprintsClient) getHandleResponse(resp *http.Response) (Blueprin
 	return result, nil
 }
 
-// List - List blueprint definitions.
+// NewListPager - List blueprint definitions.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format: '/subscriptions/{subscriptionId}').
 // options - BlueprintsClientListOptions contains the optional parameters for the BlueprintsClient.List method.
-func (client *BlueprintsClient) List(resourceScope string, options *BlueprintsClientListOptions) *runtime.Pager[BlueprintsClientListResponse] {
+func (client *BlueprintsClient) NewListPager(resourceScope string, options *BlueprintsClientListOptions) *runtime.Pager[BlueprintsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BlueprintsClientListResponse]{
 		More: func(page BlueprintsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -245,12 +245,12 @@ func (client *ServiceClient) getHandleResponse(resp *http.Response) (ServiceClie
 	return result, nil
 }
 
-// List - Gets the status of service.
+// NewListPager - Gets the status of service.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // options - ServiceClientListOptions contains the optional parameters for the ServiceClient.List method.
-func (client *ServiceClient) List(resourceGroupName string, accountName string, options *ServiceClientListOptions) *runtime.Pager[ServiceClientListResponse] {
+func (client *ServiceClient) NewListPager(resourceGroupName string, accountName string, options *ServiceClientListOptions) *runtime.Pager[ServiceClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServiceClientListResponse]{
 		More: func(page ServiceClientListResponse) bool {
 			return false

@@ -119,12 +119,12 @@ func (client *IssueClient) getHandleResponse(resp *http.Response) (IssueClientGe
 	return result, nil
 }
 
-// ListByService - Lists a collection of issues in the specified service instance.
+// NewListByServicePager - Lists a collection of issues in the specified service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - IssueClientListByServiceOptions contains the optional parameters for the IssueClient.ListByService method.
-func (client *IssueClient) ListByService(resourceGroupName string, serviceName string, options *IssueClientListByServiceOptions) *runtime.Pager[IssueClientListByServiceResponse] {
+func (client *IssueClient) NewListByServicePager(resourceGroupName string, serviceName string, options *IssueClientListByServiceOptions) *runtime.Pager[IssueClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IssueClientListByServiceResponse]{
 		More: func(page IssueClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

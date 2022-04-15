@@ -252,13 +252,13 @@ func (client *PrivateEndpointConnectionsForSCCPowershellClient) getHandleRespons
 	return result, nil
 }
 
-// ListByService - Lists all private endpoint connections for a service.
+// NewListByServicePager - Lists all private endpoint connections for a service.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the service instance.
 // resourceName - The name of the service instance.
 // options - PrivateEndpointConnectionsForSCCPowershellClientListByServiceOptions contains the optional parameters for the
 // PrivateEndpointConnectionsForSCCPowershellClient.ListByService method.
-func (client *PrivateEndpointConnectionsForSCCPowershellClient) ListByService(resourceGroupName string, resourceName string, options *PrivateEndpointConnectionsForSCCPowershellClientListByServiceOptions) *runtime.Pager[PrivateEndpointConnectionsForSCCPowershellClientListByServiceResponse] {
+func (client *PrivateEndpointConnectionsForSCCPowershellClient) NewListByServicePager(resourceGroupName string, resourceName string, options *PrivateEndpointConnectionsForSCCPowershellClientListByServiceOptions) *runtime.Pager[PrivateEndpointConnectionsForSCCPowershellClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionsForSCCPowershellClientListByServiceResponse]{
 		More: func(page PrivateEndpointConnectionsForSCCPowershellClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

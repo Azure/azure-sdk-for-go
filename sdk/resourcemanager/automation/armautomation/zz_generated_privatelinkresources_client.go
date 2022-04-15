@@ -55,13 +55,13 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 	return client, nil
 }
 
-// Automation - Gets the private link resources that need to be created for Automation account.
+// NewAutomationPager - Gets the private link resources that need to be created for Automation account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - PrivateLinkResourcesClientAutomationOptions contains the optional parameters for the PrivateLinkResourcesClient.Automation
 // method.
-func (client *PrivateLinkResourcesClient) Automation(resourceGroupName string, automationAccountName string, options *PrivateLinkResourcesClientAutomationOptions) *runtime.Pager[PrivateLinkResourcesClientAutomationResponse] {
+func (client *PrivateLinkResourcesClient) NewAutomationPager(resourceGroupName string, automationAccountName string, options *PrivateLinkResourcesClientAutomationOptions) *runtime.Pager[PrivateLinkResourcesClientAutomationResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkResourcesClientAutomationResponse]{
 		More: func(page PrivateLinkResourcesClientAutomationResponse) bool {
 			return false

@@ -135,7 +135,7 @@ func (testsuite *VaultsClientTestSuite) TestVaultsCRUD() {
 	testsuite.Require().Equal("recording", *updateResp.Tags["test"])
 
 	// list vault deleted
-	deletedPager := vaultsClient.ListDeleted(nil)
+	deletedPager := vaultsClient.NewListDeletedPager(nil)
 	testsuite.Require().True(deletedPager.More())
 
 	// delete vault

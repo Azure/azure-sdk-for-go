@@ -149,6 +149,6 @@ func (testsuite *SecretsClientTestSuite) TestSecretsCRUD() {
 	testsuite.Require().Equal(secretName, *getResp.Name)
 
 	// list secret
-	secretPager := secretsClient.List(testsuite.resourceGroupName, vaultName, nil)
+	secretPager := secretsClient.NewListPager(testsuite.resourceGroupName, vaultName, nil)
 	testsuite.Require().True(secretPager.More())
 }

@@ -272,7 +272,7 @@ func (client *CapabilitiesClient) getHandleResponse(resp *http.Response) (Capabi
 	return result, nil
 }
 
-// List - Get a list of Capability resources that extend a Target resource..
+// NewListPager - Get a list of Capability resources that extend a Target resource..
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - String that represents an Azure resource group.
 // parentProviderNamespace - String that represents a resource provider namespace.
@@ -280,7 +280,7 @@ func (client *CapabilitiesClient) getHandleResponse(resp *http.Response) (Capabi
 // parentResourceName - String that represents a resource name.
 // targetName - String that represents a Target resource name.
 // options - CapabilitiesClientListOptions contains the optional parameters for the CapabilitiesClient.List method.
-func (client *CapabilitiesClient) List(resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, options *CapabilitiesClientListOptions) *runtime.Pager[CapabilitiesClientListResponse] {
+func (client *CapabilitiesClient) NewListPager(resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, options *CapabilitiesClientListOptions) *runtime.Pager[CapabilitiesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CapabilitiesClientListResponse]{
 		More: func(page CapabilitiesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

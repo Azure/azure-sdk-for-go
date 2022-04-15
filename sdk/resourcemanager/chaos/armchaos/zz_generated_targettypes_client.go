@@ -109,11 +109,11 @@ func (client *TargetTypesClient) getHandleResponse(resp *http.Response) (TargetT
 	return result, nil
 }
 
-// List - Get a list of Target Type resources for given location.
+// NewListPager - Get a list of Target Type resources for given location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // locationName - String that represents a Location resource name.
 // options - TargetTypesClientListOptions contains the optional parameters for the TargetTypesClient.List method.
-func (client *TargetTypesClient) List(locationName string, options *TargetTypesClientListOptions) *runtime.Pager[TargetTypesClientListResponse] {
+func (client *TargetTypesClient) NewListPager(locationName string, options *TargetTypesClientListOptions) *runtime.Pager[TargetTypesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TargetTypesClientListResponse]{
 		More: func(page TargetTypesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

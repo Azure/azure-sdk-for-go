@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/ListCapabilities.json
-func ExampleCapabilitiesClient_List() {
+func ExampleCapabilitiesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleCapabilitiesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-group-name>",
+	pager := client.NewListPager("<resource-group-name>",
 		"<parent-provider-namespace>",
 		"<parent-resource-type>",
 		"<parent-resource-name>",

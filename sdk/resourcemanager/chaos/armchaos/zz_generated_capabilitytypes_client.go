@@ -114,12 +114,12 @@ func (client *CapabilityTypesClient) getHandleResponse(resp *http.Response) (Cap
 	return result, nil
 }
 
-// List - Get a list of Capability Type resources for given Target Type and location.
+// NewListPager - Get a list of Capability Type resources for given Target Type and location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // locationName - String that represents a Location resource name.
 // targetTypeName - String that represents a Target Type resource name.
 // options - CapabilityTypesClientListOptions contains the optional parameters for the CapabilityTypesClient.List method.
-func (client *CapabilityTypesClient) List(locationName string, targetTypeName string, options *CapabilityTypesClientListOptions) *runtime.Pager[CapabilityTypesClientListResponse] {
+func (client *CapabilityTypesClient) NewListPager(locationName string, targetTypeName string, options *CapabilityTypesClientListOptions) *runtime.Pager[CapabilityTypesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CapabilityTypesClientListResponse]{
 		More: func(page CapabilityTypesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

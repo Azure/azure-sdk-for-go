@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/ListExperimentsInASubscription.json
-func ExampleExperimentsClient_ListAll() {
+func ExampleExperimentsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleExperimentsClient_ListAll() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListAll(&armchaos.ExperimentsClientListAllOptions{Running: nil,
+	pager := client.NewListAllPager(&armchaos.ExperimentsClientListAllOptions{Running: nil,
 		ContinuationToken: to.Ptr("<continuation-token>"),
 	})
 	for pager.More() {
@@ -49,7 +49,7 @@ func ExampleExperimentsClient_ListAll() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/ListExperimentsInAResourceGroup.json
-func ExampleExperimentsClient_List() {
+func ExampleExperimentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -61,7 +61,7 @@ func ExampleExperimentsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-group-name>",
+	pager := client.NewListPager("<resource-group-name>",
 		&armchaos.ExperimentsClientListOptions{Running: nil,
 			ContinuationToken: to.Ptr("<continuation-token>"),
 		})
@@ -239,7 +239,7 @@ func ExampleExperimentsClient_Start() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/ListExperimentStatuses.json
-func ExampleExperimentsClient_ListAllStatuses() {
+func ExampleExperimentsClient_NewListAllStatusesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -251,7 +251,7 @@ func ExampleExperimentsClient_ListAllStatuses() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListAllStatuses("<resource-group-name>",
+	pager := client.NewListAllStatusesPager("<resource-group-name>",
 		"<experiment-name>",
 		nil)
 	for pager.More() {
@@ -294,7 +294,7 @@ func ExampleExperimentsClient_GetStatus() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/ListExperimentExecutionsDetails.json
-func ExampleExperimentsClient_ListExecutionDetails() {
+func ExampleExperimentsClient_NewListExecutionDetailsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -306,7 +306,7 @@ func ExampleExperimentsClient_ListExecutionDetails() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListExecutionDetails("<resource-group-name>",
+	pager := client.NewListExecutionDetailsPager("<resource-group-name>",
 		"<experiment-name>",
 		nil)
 	for pager.More() {

@@ -469,11 +469,11 @@ func (client *ResourceClient) getHandleResponse(resp *http.Response) (ResourceCl
 	return result, nil
 }
 
-// GetEndpointHealth - Get the health for routing endpoints.
+// NewGetEndpointHealthPager - Get the health for routing endpoints.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ResourceClientGetEndpointHealthOptions contains the optional parameters for the ResourceClient.GetEndpointHealth
 // method.
-func (client *ResourceClient) GetEndpointHealth(resourceGroupName string, iotHubName string, options *ResourceClientGetEndpointHealthOptions) *runtime.Pager[ResourceClientGetEndpointHealthResponse] {
+func (client *ResourceClient) NewGetEndpointHealthPager(resourceGroupName string, iotHubName string, options *ResourceClientGetEndpointHealthOptions) *runtime.Pager[ResourceClientGetEndpointHealthResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourceClientGetEndpointHealthResponse]{
 		More: func(page ResourceClientGetEndpointHealthResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -723,13 +723,13 @@ func (client *ResourceClient) getKeysForKeyNameHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// GetQuotaMetrics - Get the quota metrics for an IoT hub.
+// NewGetQuotaMetricsPager - Get the quota metrics for an IoT hub.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the IoT hub.
 // resourceName - The name of the IoT hub.
 // options - ResourceClientGetQuotaMetricsOptions contains the optional parameters for the ResourceClient.GetQuotaMetrics
 // method.
-func (client *ResourceClient) GetQuotaMetrics(resourceGroupName string, resourceName string, options *ResourceClientGetQuotaMetricsOptions) *runtime.Pager[ResourceClientGetQuotaMetricsResponse] {
+func (client *ResourceClient) NewGetQuotaMetricsPager(resourceGroupName string, resourceName string, options *ResourceClientGetQuotaMetricsOptions) *runtime.Pager[ResourceClientGetQuotaMetricsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourceClientGetQuotaMetricsResponse]{
 		More: func(page ResourceClientGetQuotaMetricsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -847,12 +847,12 @@ func (client *ResourceClient) getStatsHandleResponse(resp *http.Response) (Resou
 	return result, nil
 }
 
-// GetValidSKUs - Get the list of valid SKUs for an IoT hub.
+// NewGetValidSKUsPager - Get the list of valid SKUs for an IoT hub.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the IoT hub.
 // resourceName - The name of the IoT hub.
 // options - ResourceClientGetValidSKUsOptions contains the optional parameters for the ResourceClient.GetValidSKUs method.
-func (client *ResourceClient) GetValidSKUs(resourceGroupName string, resourceName string, options *ResourceClientGetValidSKUsOptions) *runtime.Pager[ResourceClientGetValidSKUsResponse] {
+func (client *ResourceClient) NewGetValidSKUsPager(resourceGroupName string, resourceName string, options *ResourceClientGetValidSKUsOptions) *runtime.Pager[ResourceClientGetValidSKUsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourceClientGetValidSKUsResponse]{
 		More: func(page ResourceClientGetValidSKUsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -973,12 +973,12 @@ func (client *ResourceClient) importDevicesHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// ListByResourceGroup - Get all the IoT hubs in a resource group.
+// NewListByResourceGroupPager - Get all the IoT hubs in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the IoT hub.
 // options - ResourceClientListByResourceGroupOptions contains the optional parameters for the ResourceClient.ListByResourceGroup
 // method.
-func (client *ResourceClient) ListByResourceGroup(resourceGroupName string, options *ResourceClientListByResourceGroupOptions) *runtime.Pager[ResourceClientListByResourceGroupResponse] {
+func (client *ResourceClient) NewListByResourceGroupPager(resourceGroupName string, options *ResourceClientListByResourceGroupOptions) *runtime.Pager[ResourceClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourceClientListByResourceGroupResponse]{
 		More: func(page ResourceClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1037,11 +1037,11 @@ func (client *ResourceClient) listByResourceGroupHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListBySubscription - Get all the IoT hubs in a subscription.
+// NewListBySubscriptionPager - Get all the IoT hubs in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ResourceClientListBySubscriptionOptions contains the optional parameters for the ResourceClient.ListBySubscription
 // method.
-func (client *ResourceClient) ListBySubscription(options *ResourceClientListBySubscriptionOptions) *runtime.Pager[ResourceClientListBySubscriptionResponse] {
+func (client *ResourceClient) NewListBySubscriptionPager(options *ResourceClientListBySubscriptionOptions) *runtime.Pager[ResourceClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourceClientListBySubscriptionResponse]{
 		More: func(page ResourceClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1096,15 +1096,15 @@ func (client *ResourceClient) listBySubscriptionHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListEventHubConsumerGroups - Get a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint in
-// an IoT hub.
+// NewListEventHubConsumerGroupsPager - Get a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint
+// in an IoT hub.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the IoT hub.
 // resourceName - The name of the IoT hub.
 // eventHubEndpointName - The name of the Event Hub-compatible endpoint.
 // options - ResourceClientListEventHubConsumerGroupsOptions contains the optional parameters for the ResourceClient.ListEventHubConsumerGroups
 // method.
-func (client *ResourceClient) ListEventHubConsumerGroups(resourceGroupName string, resourceName string, eventHubEndpointName string, options *ResourceClientListEventHubConsumerGroupsOptions) *runtime.Pager[ResourceClientListEventHubConsumerGroupsResponse] {
+func (client *ResourceClient) NewListEventHubConsumerGroupsPager(resourceGroupName string, resourceName string, eventHubEndpointName string, options *ResourceClientListEventHubConsumerGroupsOptions) *runtime.Pager[ResourceClientListEventHubConsumerGroupsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourceClientListEventHubConsumerGroupsResponse]{
 		More: func(page ResourceClientListEventHubConsumerGroupsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1171,12 +1171,12 @@ func (client *ResourceClient) listEventHubConsumerGroupsHandleResponse(resp *htt
 	return result, nil
 }
 
-// ListJobs - Get a list of all the jobs in an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
+// NewListJobsPager - Get a list of all the jobs in an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the IoT hub.
 // resourceName - The name of the IoT hub.
 // options - ResourceClientListJobsOptions contains the optional parameters for the ResourceClient.ListJobs method.
-func (client *ResourceClient) ListJobs(resourceGroupName string, resourceName string, options *ResourceClientListJobsOptions) *runtime.Pager[ResourceClientListJobsResponse] {
+func (client *ResourceClient) NewListJobsPager(resourceGroupName string, resourceName string, options *ResourceClientListJobsOptions) *runtime.Pager[ResourceClientListJobsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourceClientListJobsResponse]{
 		More: func(page ResourceClientListJobsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1239,12 +1239,12 @@ func (client *ResourceClient) listJobsHandleResponse(resp *http.Response) (Resou
 	return result, nil
 }
 
-// ListKeys - Get the security metadata for an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
+// NewListKeysPager - Get the security metadata for an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the IoT hub.
 // resourceName - The name of the IoT hub.
 // options - ResourceClientListKeysOptions contains the optional parameters for the ResourceClient.ListKeys method.
-func (client *ResourceClient) ListKeys(resourceGroupName string, resourceName string, options *ResourceClientListKeysOptions) *runtime.Pager[ResourceClientListKeysResponse] {
+func (client *ResourceClient) NewListKeysPager(resourceGroupName string, resourceName string, options *ResourceClientListKeysOptions) *runtime.Pager[ResourceClientListKeysResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourceClientListKeysResponse]{
 		More: func(page ResourceClientListKeysResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

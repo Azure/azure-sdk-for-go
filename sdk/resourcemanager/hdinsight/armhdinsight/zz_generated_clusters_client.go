@@ -416,10 +416,10 @@ func (client *ClustersClient) getGatewaySettingsHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// List - Lists all the HDInsight clusters under the subscription.
+// NewListPager - Lists all the HDInsight clusters under the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ClustersClientListOptions contains the optional parameters for the ClustersClient.List method.
-func (client *ClustersClient) List(options *ClustersClientListOptions) *runtime.Pager[ClustersClientListResponse] {
+func (client *ClustersClient) NewListPager(options *ClustersClientListOptions) *runtime.Pager[ClustersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClustersClientListResponse]{
 		More: func(page ClustersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -474,12 +474,12 @@ func (client *ClustersClient) listHandleResponse(resp *http.Response) (ClustersC
 	return result, nil
 }
 
-// ListByResourceGroup - Lists the HDInsight clusters in a resource group.
+// NewListByResourceGroupPager - Lists the HDInsight clusters in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.ListByResourceGroup
 // method.
-func (client *ClustersClient) ListByResourceGroup(resourceGroupName string, options *ClustersClientListByResourceGroupOptions) *runtime.Pager[ClustersClientListByResourceGroupResponse] {
+func (client *ClustersClient) NewListByResourceGroupPager(resourceGroupName string, options *ClustersClientListByResourceGroupOptions) *runtime.Pager[ClustersClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClustersClientListByResourceGroupResponse]{
 		More: func(page ClustersClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

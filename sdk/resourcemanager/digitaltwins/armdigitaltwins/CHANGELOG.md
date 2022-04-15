@@ -1,5 +1,23 @@
 # Release History
 
+## 0.4.0 (2022-04-15)
+### Breaking Changes
+
+- Function `*OperationsClient.List` has been removed
+- Function `*TimeSeriesDatabaseConnectionsClient.List` has been removed
+- Function `*Client.ListByResourceGroup` has been removed
+- Function `*Client.List` has been removed
+- Function `*EndpointClient.List` has been removed
+
+### Features Added
+
+- New function `*EndpointClient.NewListPager(string, string, *EndpointClientListOptions) *runtime.Pager[EndpointClientListResponse]`
+- New function `*TimeSeriesDatabaseConnectionsClient.NewListPager(string, string, *TimeSeriesDatabaseConnectionsClientListOptions) *runtime.Pager[TimeSeriesDatabaseConnectionsClientListResponse]`
+- New function `*Client.NewListPager(*ClientListOptions) *runtime.Pager[ClientListResponse]`
+- New function `*Client.NewListByResourceGroupPager(string, *ClientListByResourceGroupOptions) *runtime.Pager[ClientListByResourceGroupResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

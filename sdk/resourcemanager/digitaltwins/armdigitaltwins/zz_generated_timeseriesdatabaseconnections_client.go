@@ -248,13 +248,13 @@ func (client *TimeSeriesDatabaseConnectionsClient) getHandleResponse(resp *http.
 	return result, nil
 }
 
-// List - Get all existing time series database connections for this DigitalTwins instance.
+// NewListPager - Get all existing time series database connections for this DigitalTwins instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the DigitalTwinsInstance.
 // resourceName - The name of the DigitalTwinsInstance.
 // options - TimeSeriesDatabaseConnectionsClientListOptions contains the optional parameters for the TimeSeriesDatabaseConnectionsClient.List
 // method.
-func (client *TimeSeriesDatabaseConnectionsClient) List(resourceGroupName string, resourceName string, options *TimeSeriesDatabaseConnectionsClientListOptions) *runtime.Pager[TimeSeriesDatabaseConnectionsClientListResponse] {
+func (client *TimeSeriesDatabaseConnectionsClient) NewListPager(resourceGroupName string, resourceName string, options *TimeSeriesDatabaseConnectionsClientListOptions) *runtime.Pager[TimeSeriesDatabaseConnectionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TimeSeriesDatabaseConnectionsClientListResponse]{
 		More: func(page TimeSeriesDatabaseConnectionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

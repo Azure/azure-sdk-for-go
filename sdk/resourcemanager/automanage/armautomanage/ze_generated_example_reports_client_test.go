@@ -44,7 +44,7 @@ func ExampleReportsClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/listReportsByconfigurationProfileAssignment.json
-func ExampleReportsClient_ListByConfigurationProfileAssignments() {
+func ExampleReportsClient_NewListByConfigurationProfileAssignmentsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -56,7 +56,7 @@ func ExampleReportsClient_ListByConfigurationProfileAssignments() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByConfigurationProfileAssignments("<resource-group-name>",
+	pager := client.NewListByConfigurationProfileAssignmentsPager("<resource-group-name>",
 		"<configuration-profile-assignment-name>",
 		"<vm-name>",
 		nil)

@@ -103,12 +103,12 @@ func (client *BestPracticesVersionsClient) getHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListByTenant - Retrieve a list of Automanage best practices versions
+// NewListByTenantPager - Retrieve a list of Automanage best practices versions
 // If the operation fails it returns an *azcore.ResponseError type.
 // bestPracticeName - The Automanage best practice name.
 // options - BestPracticesVersionsClientListByTenantOptions contains the optional parameters for the BestPracticesVersionsClient.ListByTenant
 // method.
-func (client *BestPracticesVersionsClient) ListByTenant(bestPracticeName string, options *BestPracticesVersionsClientListByTenantOptions) *runtime.Pager[BestPracticesVersionsClientListByTenantResponse] {
+func (client *BestPracticesVersionsClient) NewListByTenantPager(bestPracticeName string, options *BestPracticesVersionsClientListByTenantOptions) *runtime.Pager[BestPracticesVersionsClientListByTenantResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BestPracticesVersionsClientListByTenantResponse]{
 		More: func(page BestPracticesVersionsClientListByTenantResponse) bool {
 			return false

@@ -229,12 +229,12 @@ func (client *ConfigurationProfileAssignmentsClient) getHandleResponse(resp *htt
 	return result, nil
 }
 
-// List - Get list of configuration profile assignments
+// NewListPager - Get list of configuration profile assignments
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ConfigurationProfileAssignmentsClientListOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.List
 // method.
-func (client *ConfigurationProfileAssignmentsClient) List(resourceGroupName string, options *ConfigurationProfileAssignmentsClientListOptions) *runtime.Pager[ConfigurationProfileAssignmentsClientListResponse] {
+func (client *ConfigurationProfileAssignmentsClient) NewListPager(resourceGroupName string, options *ConfigurationProfileAssignmentsClientListOptions) *runtime.Pager[ConfigurationProfileAssignmentsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ConfigurationProfileAssignmentsClientListResponse]{
 		More: func(page ConfigurationProfileAssignmentsClientListResponse) bool {
 			return false
@@ -287,11 +287,11 @@ func (client *ConfigurationProfileAssignmentsClient) listHandleResponse(resp *ht
 	return result, nil
 }
 
-// ListBySubscription - Get list of configuration profile assignments under a given subscription
+// NewListBySubscriptionPager - Get list of configuration profile assignments under a given subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ConfigurationProfileAssignmentsClientListBySubscriptionOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.ListBySubscription
 // method.
-func (client *ConfigurationProfileAssignmentsClient) ListBySubscription(options *ConfigurationProfileAssignmentsClientListBySubscriptionOptions) *runtime.Pager[ConfigurationProfileAssignmentsClientListBySubscriptionResponse] {
+func (client *ConfigurationProfileAssignmentsClient) NewListBySubscriptionPager(options *ConfigurationProfileAssignmentsClientListBySubscriptionOptions) *runtime.Pager[ConfigurationProfileAssignmentsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ConfigurationProfileAssignmentsClientListBySubscriptionResponse]{
 		More: func(page ConfigurationProfileAssignmentsClientListBySubscriptionResponse) bool {
 			return false

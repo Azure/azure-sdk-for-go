@@ -115,14 +115,14 @@ func (client *DataServicesClient) getHandleResponse(resp *http.Response) (DataSe
 	return result, nil
 }
 
-// ListByDataManager - This method gets all the data services.
+// NewListByDataManagerPager - This method gets all the data services.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The Resource Group Name
 // dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
 // 3 and 24 characters in length and use any alphanumeric and underscore only
 // options - DataServicesClientListByDataManagerOptions contains the optional parameters for the DataServicesClient.ListByDataManager
 // method.
-func (client *DataServicesClient) ListByDataManager(resourceGroupName string, dataManagerName string, options *DataServicesClientListByDataManagerOptions) *runtime.Pager[DataServicesClientListByDataManagerResponse] {
+func (client *DataServicesClient) NewListByDataManagerPager(resourceGroupName string, dataManagerName string, options *DataServicesClientListByDataManagerOptions) *runtime.Pager[DataServicesClientListByDataManagerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DataServicesClientListByDataManagerResponse]{
 		More: func(page DataServicesClientListByDataManagerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

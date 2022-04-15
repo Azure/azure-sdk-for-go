@@ -248,14 +248,14 @@ func (client *DataStoresClient) getHandleResponse(resp *http.Response) (DataStor
 	return result, nil
 }
 
-// ListByDataManager - Gets all the data stores/repositories in the given resource.
+// NewListByDataManagerPager - Gets all the data stores/repositories in the given resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The Resource Group Name
 // dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
 // 3 and 24 characters in length and use any alphanumeric and underscore only
 // options - DataStoresClientListByDataManagerOptions contains the optional parameters for the DataStoresClient.ListByDataManager
 // method.
-func (client *DataStoresClient) ListByDataManager(resourceGroupName string, dataManagerName string, options *DataStoresClientListByDataManagerOptions) *runtime.Pager[DataStoresClientListByDataManagerResponse] {
+func (client *DataStoresClient) NewListByDataManagerPager(resourceGroupName string, dataManagerName string, options *DataStoresClientListByDataManagerOptions) *runtime.Pager[DataStoresClientListByDataManagerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DataStoresClientListByDataManagerResponse]{
 		More: func(page DataStoresClientListByDataManagerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

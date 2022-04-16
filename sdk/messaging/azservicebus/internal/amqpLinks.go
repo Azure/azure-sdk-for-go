@@ -11,6 +11,7 @@ import (
 	"sync"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
@@ -85,7 +86,7 @@ type AMQPLinksImpl struct {
 	RPCLink RPCLink
 
 	// the AMQP session for either the 'sender' or 'receiver' link
-	session AMQPSessionCloser
+	session amqpwrap.AMQPSession
 
 	// these are populated by your `createLinkFunc` when you construct
 	// the amqpLinks
@@ -104,7 +105,7 @@ type AMQPLinksImpl struct {
 
 // CreateLinkFunc creates the links, using the given session. Typically you'll only create either an
 // *amqp.Sender or a *amqp.Receiver. AMQPLinks handles it either way.
-type CreateLinkFunc func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error)
+type CreateLinkFunc func(ctx context.Context, session amqpwrap.AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error)
 
 type NewAMQPLinksArgs struct {
 	NS                  NamespaceForAMQPLinks

@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
@@ -146,7 +147,7 @@ func (s *Sender) scheduleAMQPMessages(ctx context.Context, messages []*amqp.Mess
 	return sequenceNumbers, err
 }
 
-func (sender *Sender) createSenderLink(ctx context.Context, session internal.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
+func (sender *Sender) createSenderLink(ctx context.Context, session amqpwrap.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
 	amqpSender, err := session.NewSender(
 		amqp.LinkSenderSettle(amqp.ModeMixed),
 		amqp.LinkReceiverSettle(amqp.ModeFirst),

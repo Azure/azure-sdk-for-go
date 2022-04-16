@@ -12,6 +12,9 @@
 
 ### Bugs Fixed
 
+- Fixing issue where the AcceptNextSessionForQueue and AcceptNextSessionForSubscription 
+  couldn't be cancelled, forcing the user to wait for the service to timeout. (#17598)
+
 ### Other Changes
 
 ## 0.4.0 (2022-04-06)

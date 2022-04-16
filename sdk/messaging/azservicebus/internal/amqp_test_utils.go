@@ -8,6 +8,7 @@ import (
 	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
@@ -18,7 +19,7 @@ type FakeNS struct {
 	recovered       uint64
 	clientRevisions []uint64
 	RPCLink         RPCLink
-	Session         AMQPSessionCloser
+	Session         amqpwrap.AMQPSession
 	AMQPLinks       *FakeAMQPLinks
 
 	CloseCalled int
@@ -30,7 +31,10 @@ type FakeAMQPSender struct {
 }
 
 type FakeAMQPSession struct {
-	AMQPSessionCloser
+	amqpwrap.AMQPSession
+
+	NewReceiverFn func(opts ...amqp.LinkOption) (AMQPReceiverCloser, error)
+
 	closed int
 }
 
@@ -54,7 +58,8 @@ type FakeAMQPLinks struct {
 
 type FakeAMQPReceiver struct {
 	AMQPReceiver
-	Closed int
+	Closed  int
+	CloseFn func(ctx context.Context) error
 
 	DrainCalled     int
 	DrainCreditImpl func(ctx context.Context) error
@@ -139,6 +144,11 @@ func (r *FakeAMQPReceiver) Prefetched(ctx context.Context) (*amqp.Message, error
 
 func (r *FakeAMQPReceiver) Close(ctx context.Context) error {
 	r.Closed++
+
+	if r.CloseFn != nil {
+		return r.CloseFn(ctx)
+	}
+
 	return nil
 }
 
@@ -189,6 +199,10 @@ func (s *FakeAMQPSender) Close(ctx context.Context) error {
 	return nil
 }
 
+func (s *FakeAMQPSession) NewReceiver(opts ...amqp.LinkOption) (AMQPReceiverCloser, error) {
+	return s.NewReceiverFn(opts...)
+}
+
 func (s *FakeAMQPSession) Close(ctx context.Context) error {
 	s.closed++
 	return nil
@@ -207,7 +221,7 @@ func (ns *FakeNS) GetEntityAudience(entityPath string) string {
 	return fmt.Sprintf("audience: %s", entityPath)
 }
 
-func (ns *FakeNS) NewAMQPSession(ctx context.Context) (AMQPSessionCloser, uint64, error) {
+func (ns *FakeNS) NewAMQPSession(ctx context.Context) (amqpwrap.AMQPSession, uint64, error) {
 	return ns.Session, ns.recovered + 100, nil
 }
 

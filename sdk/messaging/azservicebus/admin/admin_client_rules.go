@@ -47,7 +47,7 @@ type Rule struct {
 	Action Actions
 }
 
-// SQLRuleFilter is an action that updates a message according to the filter's
+// SQLAction is an action that updates a message according to its
 // expression.
 type SQLAction struct {
 	// Expression is a SQL Expression
@@ -57,7 +57,7 @@ type SQLAction struct {
 	Parameters map[string]interface{}
 }
 
-// SQLRuleFilter is a filter that evaluates to true for any message that matches
+// SQLFilter is a filter that evaluates to true for any message that matches
 // its expression.
 type SQLFilter struct {
 	// Expression is a SQL Expression

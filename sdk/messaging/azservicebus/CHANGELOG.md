@@ -8,7 +8,7 @@
   discover and they are also documented. NOTE: The log messages themselves 
   are not guaranteed to be stable. (#17596)
 - `admin.Client` can now manage authorization rules and subscription filters and 
-  actions. (#TBD)
+  actions. (#17616)
 
 ### Breaking Changes
 

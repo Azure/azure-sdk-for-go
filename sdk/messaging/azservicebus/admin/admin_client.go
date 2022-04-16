@@ -5,6 +5,7 @@ package admin
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"time"
@@ -213,4 +214,23 @@ func (ep *entityPager[TFeed, T, TOutput]) Fetcher(ctx context.Context) ([]TOutpu
 	}
 
 	return finalItems, nil
+}
+
+// mapATOMError checks if the error is a legitimate 404 or a "fake" 404 (where the service succeeded but gave us back an
+// empty feed instead). This "fake" behavior comes about because the API here is not truly a CRUD API (it's extremely close)
+// so we have to do some small workarounds.
+// NOTE: we had a debate about whether to return a nil instance or try to fabricate an HTTP 404 response instead (even if
+// one didn't come back) and went with 'nil' to avoid having a fake HTTP response, which would have been confusing.
+func mapATOMError[T any](err error) (*T, error) {
+	if errors.Is(err, atom.ErrFeedEmpty) {
+		return nil, nil
+	}
+
+	var respError *azcore.ResponseError
+
+	if errors.As(err, &respError) && respError.StatusCode == http.StatusNotFound {
+		return nil, nil
+	}
+
+	return nil, err
 }

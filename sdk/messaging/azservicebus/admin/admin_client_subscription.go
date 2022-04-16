@@ -5,12 +5,10 @@ package admin
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/http"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
@@ -140,17 +138,7 @@ func (ac *Client) GetSubscription(ctx context.Context, topicName string, subscri
 	_, err := ac.em.Get(ctx, fmt.Sprintf("/%s/Subscriptions/%s", topicName, subscriptionName), &atomResp)
 
 	if err != nil {
-		if errors.Is(err, atom.ErrFeedEmpty) {
-			return nil, nil
-		}
-
-		var respError *azcore.ResponseError
-
-		if errors.As(err, &respError) && respError.StatusCode == http.StatusNotFound {
-			return nil, nil
-		}
-
-		return nil, err
+		return mapATOMError[GetSubscriptionResponse](err)
 	}
 
 	item, err := newSubscriptionItem(atomResp, topicName)
@@ -181,17 +169,7 @@ func (ac *Client) GetSubscriptionRuntimeProperties(ctx context.Context, topicNam
 	_, err := ac.em.Get(ctx, fmt.Sprintf("/%s/Subscriptions/%s", topicName, subscriptionName), &atomResp)
 
 	if err != nil {
-		if errors.Is(err, atom.ErrFeedEmpty) {
-			return nil, nil
-		}
-
-		var respError *azcore.ResponseError
-
-		if errors.As(err, &respError) && respError.StatusCode == http.StatusNotFound {
-			return nil, nil
-		}
-
-		return nil, err
+		return mapATOMError[GetSubscriptionRuntimePropertiesResponse](err)
 	}
 
 	item, err := newSubscriptionRuntimePropertiesItem(atomResp, topicName)

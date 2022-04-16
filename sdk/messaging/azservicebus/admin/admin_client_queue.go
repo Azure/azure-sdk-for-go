@@ -5,7 +5,6 @@ package admin
 
 import (
 	"context"
-	"errors"
 	"net/http"
 	"time"
 
@@ -72,6 +71,9 @@ type QueueProperties struct {
 
 	// UserMetadata is custom metadata that user can associate with the queue.
 	UserMetadata *string
+
+	// AuthorizationRules are the authorization rules for this entity.
+	AuthorizationRules []AuthorizationRule
 }
 
 // QueueRuntimeProperties represent dynamic properties of a queue, such as the ActiveMessageCount.
@@ -178,11 +180,7 @@ func (ac *Client) GetQueue(ctx context.Context, queueName string, options *GetQu
 	_, err := ac.em.Get(ctx, "/"+queueName, &atomResp)
 
 	if err != nil {
-		if errors.Is(err, atom.ErrFeedEmpty) {
-			return nil, nil
-		}
-
-		return nil, err
+		return mapATOMError[GetQueueResponse](err)
 	}
 
 	queueItem, err := newQueueItem(atomResp)
@@ -213,11 +211,7 @@ func (ac *Client) GetQueueRuntimeProperties(ctx context.Context, queueName strin
 	_, err := ac.em.Get(ctx, "/"+queueName, &atomResp)
 
 	if err != nil {
-		if errors.Is(err, atom.ErrFeedEmpty) {
-			return nil, nil
-		}
-
-		return nil, err
+		return mapATOMError[GetQueueRuntimePropertiesResponse](err)
 	}
 
 	item, err := newQueueRuntimePropertiesItem(atomResp)
@@ -397,6 +391,7 @@ func newQueueEnvelope(props *QueueProperties, tokenProvider auth.TokenProvider) 
 		ForwardTo:                           props.ForwardTo,
 		ForwardDeadLetteredMessagesTo:       props.ForwardDeadLetteredMessagesTo,
 		UserMetadata:                        props.UserMetadata,
+		AuthorizationRules:                  publicAccessRightsToInternal(props.AuthorizationRules),
 	}
 
 	return atom.WrapWithQueueEnvelope(qpr, tokenProvider)
@@ -421,6 +416,7 @@ func newQueueItem(env *atom.QueueEnvelope) (*QueueItem, error) {
 		ForwardTo:                           desc.ForwardTo,
 		ForwardDeadLetteredMessagesTo:       desc.ForwardDeadLetteredMessagesTo,
 		UserMetadata:                        desc.UserMetadata,
+		AuthorizationRules:                  internalAccessRightsToPublic(desc.AuthorizationRules),
 	}
 
 	return &QueueItem{

@@ -23,6 +23,8 @@ If you are an existing user of the older version of Azure management library for
 Prerequisites
 -------------
 
+You will need Go 1.18 and latest version of resource management modules.
+
 You will need the following values to authenticate to Azure
 
 -   **Subscription ID**

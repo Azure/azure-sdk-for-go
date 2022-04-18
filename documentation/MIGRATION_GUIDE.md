@@ -18,7 +18,8 @@ This document is intended for users that are familiar with the previous version 
 
 ## Prerequisites
 
-The last 2 released stable versions of Go are supported.
+- Go 1.18
+- Latest version of resource management modules
 
 ## General Changes
 

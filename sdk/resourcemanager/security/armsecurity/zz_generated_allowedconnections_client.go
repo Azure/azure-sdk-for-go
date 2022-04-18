@@ -114,10 +114,10 @@ func (client *AllowedConnectionsClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// List - Gets the list of all possible traffic between resources for the subscription
+// NewListPager - Gets the list of all possible traffic between resources for the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AllowedConnectionsClientListOptions contains the optional parameters for the AllowedConnectionsClient.List method.
-func (client *AllowedConnectionsClient) List(options *AllowedConnectionsClientListOptions) *runtime.Pager[AllowedConnectionsClientListResponse] {
+func (client *AllowedConnectionsClient) NewListPager(options *AllowedConnectionsClientListOptions) *runtime.Pager[AllowedConnectionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AllowedConnectionsClientListResponse]{
 		More: func(page AllowedConnectionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -172,12 +172,12 @@ func (client *AllowedConnectionsClient) listHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListByHomeRegion - Gets the list of all possible traffic between resources for the subscription and location.
+// NewListByHomeRegionPager - Gets the list of all possible traffic between resources for the subscription and location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // options - AllowedConnectionsClientListByHomeRegionOptions contains the optional parameters for the AllowedConnectionsClient.ListByHomeRegion
 // method.
-func (client *AllowedConnectionsClient) ListByHomeRegion(ascLocation string, options *AllowedConnectionsClientListByHomeRegionOptions) *runtime.Pager[AllowedConnectionsClientListByHomeRegionResponse] {
+func (client *AllowedConnectionsClient) NewListByHomeRegionPager(ascLocation string, options *AllowedConnectionsClientListByHomeRegionOptions) *runtime.Pager[AllowedConnectionsClientListByHomeRegionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AllowedConnectionsClientListByHomeRegionResponse]{
 		More: func(page AllowedConnectionsClientListByHomeRegionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

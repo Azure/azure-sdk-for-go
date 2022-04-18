@@ -213,12 +213,12 @@ func (client *IotSecuritySolutionClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListByResourceGroup - Use this method to get the list IoT Security solutions organized by resource group.
+// NewListByResourceGroupPager - Use this method to get the list IoT Security solutions organized by resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // options - IotSecuritySolutionClientListByResourceGroupOptions contains the optional parameters for the IotSecuritySolutionClient.ListByResourceGroup
 // method.
-func (client *IotSecuritySolutionClient) ListByResourceGroup(resourceGroupName string, options *IotSecuritySolutionClientListByResourceGroupOptions) *runtime.Pager[IotSecuritySolutionClientListByResourceGroupResponse] {
+func (client *IotSecuritySolutionClient) NewListByResourceGroupPager(resourceGroupName string, options *IotSecuritySolutionClientListByResourceGroupOptions) *runtime.Pager[IotSecuritySolutionClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IotSecuritySolutionClientListByResourceGroupResponse]{
 		More: func(page IotSecuritySolutionClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -280,11 +280,11 @@ func (client *IotSecuritySolutionClient) listByResourceGroupHandleResponse(resp 
 	return result, nil
 }
 
-// ListBySubscription - Use this method to get the list of IoT Security solutions by subscription.
+// NewListBySubscriptionPager - Use this method to get the list of IoT Security solutions by subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - IotSecuritySolutionClientListBySubscriptionOptions contains the optional parameters for the IotSecuritySolutionClient.ListBySubscription
 // method.
-func (client *IotSecuritySolutionClient) ListBySubscription(options *IotSecuritySolutionClientListBySubscriptionOptions) *runtime.Pager[IotSecuritySolutionClientListBySubscriptionResponse] {
+func (client *IotSecuritySolutionClient) NewListBySubscriptionPager(options *IotSecuritySolutionClientListBySubscriptionOptions) *runtime.Pager[IotSecuritySolutionClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IotSecuritySolutionClientListBySubscriptionResponse]{
 		More: func(page IotSecuritySolutionClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

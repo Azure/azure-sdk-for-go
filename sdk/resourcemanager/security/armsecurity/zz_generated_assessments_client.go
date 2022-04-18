@@ -193,12 +193,12 @@ func (client *AssessmentsClient) getHandleResponse(resp *http.Response) (Assessm
 	return result, nil
 }
 
-// List - Get security assessments on all your scanned resources inside a scope
+// NewListPager - Get security assessments on all your scanned resources inside a scope
 // If the operation fails it returns an *azcore.ResponseError type.
 // scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
 // (/providers/Microsoft.Management/managementGroups/mgName).
 // options - AssessmentsClientListOptions contains the optional parameters for the AssessmentsClient.List method.
-func (client *AssessmentsClient) List(scope string, options *AssessmentsClientListOptions) *runtime.Pager[AssessmentsClientListResponse] {
+func (client *AssessmentsClient) NewListPager(scope string, options *AssessmentsClientListOptions) *runtime.Pager[AssessmentsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AssessmentsClientListResponse]{
 		More: func(page AssessmentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

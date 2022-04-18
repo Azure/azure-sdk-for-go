@@ -54,7 +54,7 @@ func NewPricingsClient(subscriptionID string, credential azcore.TokenCredential,
 	return client, nil
 }
 
-// Get - Gets a provided Security Center pricing configuration in the subscription.
+// Get - Gets a provided Microsoft Defender for Cloud pricing configuration in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // pricingName - name of the pricing configuration
 // options - PricingsClientGetOptions contains the optional parameters for the PricingsClient.Get method.
@@ -104,7 +104,7 @@ func (client *PricingsClient) getHandleResponse(resp *http.Response) (PricingsCl
 	return result, nil
 }
 
-// List - Lists Security Center pricing configurations in the subscription.
+// List - Lists Microsoft Defender for Cloud pricing configurations in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PricingsClientListOptions contains the optional parameters for the PricingsClient.List method.
 func (client *PricingsClient) List(ctx context.Context, options *PricingsClientListOptions) (PricingsClientListResponse, error) {
@@ -149,7 +149,7 @@ func (client *PricingsClient) listHandleResponse(resp *http.Response) (PricingsC
 	return result, nil
 }
 
-// Update - Updates a provided Security Center pricing configuration in the subscription.
+// Update - Updates a provided Microsoft Defender for Cloud pricing configuration in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // pricingName - name of the pricing configuration
 // pricing - Pricing object

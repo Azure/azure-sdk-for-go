@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/RegulatoryCompliance/getRegulatoryComplianceAssessmentList_example.json
-func ExampleRegulatoryComplianceAssessmentsClient_List() {
+func ExampleRegulatoryComplianceAssessmentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleRegulatoryComplianceAssessmentsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<regulatory-compliance-standard-name>",
+	pager := client.NewListPager("<regulatory-compliance-standard-name>",
 		"<regulatory-compliance-control-name>",
 		&armsecurity.RegulatoryComplianceAssessmentsClientListOptions{Filter: nil})
 	for pager.More() {

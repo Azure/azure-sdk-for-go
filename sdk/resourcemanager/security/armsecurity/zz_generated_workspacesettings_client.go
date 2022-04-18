@@ -199,11 +199,11 @@ func (client *WorkspaceSettingsClient) getHandleResponse(resp *http.Response) (W
 	return result, nil
 }
 
-// List - Settings about where we should store your security data and logs. If the result is empty, it means that no custom-workspace
-// configuration was set
+// NewListPager - Settings about where we should store your security data and logs. If the result is empty, it means that
+// no custom-workspace configuration was set
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - WorkspaceSettingsClientListOptions contains the optional parameters for the WorkspaceSettingsClient.List method.
-func (client *WorkspaceSettingsClient) List(options *WorkspaceSettingsClientListOptions) *runtime.Pager[WorkspaceSettingsClientListResponse] {
+func (client *WorkspaceSettingsClient) NewListPager(options *WorkspaceSettingsClientListOptions) *runtime.Pager[WorkspaceSettingsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkspaceSettingsClientListResponse]{
 		More: func(page WorkspaceSettingsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -115,13 +115,13 @@ func (client *RegulatoryComplianceAssessmentsClient) getHandleResponse(resp *htt
 	return result, nil
 }
 
-// List - Details and state of assessments mapped to selected regulatory compliance control
+// NewListPager - Details and state of assessments mapped to selected regulatory compliance control
 // If the operation fails it returns an *azcore.ResponseError type.
 // regulatoryComplianceStandardName - Name of the regulatory compliance standard object
 // regulatoryComplianceControlName - Name of the regulatory compliance control object
 // options - RegulatoryComplianceAssessmentsClientListOptions contains the optional parameters for the RegulatoryComplianceAssessmentsClient.List
 // method.
-func (client *RegulatoryComplianceAssessmentsClient) List(regulatoryComplianceStandardName string, regulatoryComplianceControlName string, options *RegulatoryComplianceAssessmentsClientListOptions) *runtime.Pager[RegulatoryComplianceAssessmentsClientListResponse] {
+func (client *RegulatoryComplianceAssessmentsClient) NewListPager(regulatoryComplianceStandardName string, regulatoryComplianceControlName string, options *RegulatoryComplianceAssessmentsClientListOptions) *runtime.Pager[RegulatoryComplianceAssessmentsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RegulatoryComplianceAssessmentsClientListResponse]{
 		More: func(page RegulatoryComplianceAssessmentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -43,7 +43,7 @@ func ExampleIotSecuritySolutionsAnalyticsRecommendationClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutionsAnalytics/GetIoTSecuritySolutionsSecurityRecommendationList.json
-func ExampleIotSecuritySolutionsAnalyticsRecommendationClient_List() {
+func ExampleIotSecuritySolutionsAnalyticsRecommendationClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -55,7 +55,7 @@ func ExampleIotSecuritySolutionsAnalyticsRecommendationClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-group-name>",
+	pager := client.NewListPager("<resource-group-name>",
 		"<solution-name>",
 		&armsecurity.IotSecuritySolutionsAnalyticsRecommendationClientListOptions{Top: nil})
 	for pager.More() {

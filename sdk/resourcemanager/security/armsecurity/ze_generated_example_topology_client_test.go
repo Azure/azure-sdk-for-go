@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/Topology/GetTopologySubscription_example.json
-func ExampleTopologyClient_List() {
+func ExampleTopologyClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleTopologyClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(nil)
+	pager := client.NewListPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -44,7 +44,7 @@ func ExampleTopologyClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/Topology/GetTopologySubscriptionLocation_example.json
-func ExampleTopologyClient_ListByHomeRegion() {
+func ExampleTopologyClient_NewListByHomeRegionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -56,7 +56,7 @@ func ExampleTopologyClient_ListByHomeRegion() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByHomeRegion("<asc-location>",
+	pager := client.NewListByHomeRegionPager("<asc-location>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

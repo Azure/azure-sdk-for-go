@@ -10,7 +10,7 @@ package armsecurity
 
 const (
 	moduleName    = "armsecurity"
-	moduleVersion = "v0.5.0"
+	moduleVersion = "v0.6.0"
 )
 
 // AADConnectivityState - The connectivity state of the external AAD solution
@@ -228,12 +228,13 @@ func PossibleAssessmentStatusCodeValues() []AssessmentStatusCode {
 type AssessmentType string
 
 const (
-	// AssessmentTypeBuiltIn - Azure Security Center managed assessments
+	// AssessmentTypeBuiltIn - Microsoft Defender for Cloud managed assessments
 	AssessmentTypeBuiltIn AssessmentType = "BuiltIn"
-	// AssessmentTypeCustomPolicy - User defined policies that are automatically ingested from Azure Policy to Azure Security
-	// Center
+	// AssessmentTypeCustomPolicy - User defined policies that are automatically ingested from Azure Policy to Microsoft Defender
+	// for Cloud
 	AssessmentTypeCustomPolicy AssessmentType = "CustomPolicy"
-	// AssessmentTypeCustomerManaged - User assessments pushed directly by the user or other third party to Azure Security Center
+	// AssessmentTypeCustomerManaged - User assessments pushed directly by the user or other third party to Microsoft Defender
+	// for Cloud
 	AssessmentTypeCustomerManaged AssessmentType = "CustomerManaged"
 	// AssessmentTypeVerifiedPartner - An assessment that was created by a verified 3rd party if the user connected it to ASC
 	AssessmentTypeVerifiedPartner AssessmentType = "VerifiedPartner"
@@ -422,9 +423,9 @@ func PossibleConnectionTypeValues() []ConnectionType {
 type ControlType string
 
 const (
-	// ControlTypeBuiltIn - Azure Security Center managed assessments
+	// ControlTypeBuiltIn - Microsoft Defender for Cloud managed assessments
 	ControlTypeBuiltIn ControlType = "BuiltIn"
-	// ControlTypeCustom - Non Azure Security Center managed assessments
+	// ControlTypeCustom - Non Microsoft Defender for Cloud managed assessments
 	ControlTypeCustom ControlType = "Custom"
 )
 
@@ -910,15 +911,15 @@ func PossiblePermissionPropertyValues() []PermissionProperty {
 	}
 }
 
-// PricingTier - The pricing tier value. Azure Security Center is provided in two pricing tiers: free and standard, with the
-// standard tier available with a trial period. The standard tier offers advanced security
-// capabilities, while the free tier offers basic security features.
+// PricingTier - The pricing tier value. Microsoft Defender for Cloud is provided in two pricing tiers: free and standard,
+// with the standard tier available with a trial period. The standard tier offers advanced
+// security capabilities, while the free tier offers basic security features.
 type PricingTier string
 
 const (
-	// PricingTierFree - Get free Azure security center experience with basic security features
+	// PricingTierFree - Get free Microsoft Defender for Cloud experience with basic security features
 	PricingTierFree PricingTier = "Free"
-	// PricingTierStandard - Get the standard Azure security center experience with advanced security features
+	// PricingTierStandard - Get the standard Microsoft Defender for Cloud experience with advanced security features
 	PricingTierStandard PricingTier = "Standard"
 )
 

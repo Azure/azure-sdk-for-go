@@ -202,7 +202,7 @@ func (client *AdaptiveNetworkHardeningsClient) getHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListByExtendedResource - Gets a list of Adaptive Network Hardenings resources in scope of an extended resource.
+// NewListByExtendedResourcePager - Gets a list of Adaptive Network Hardenings resources in scope of an extended resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // resourceNamespace - The Namespace of the resource.
@@ -210,7 +210,7 @@ func (client *AdaptiveNetworkHardeningsClient) getHandleResponse(resp *http.Resp
 // resourceName - Name of the resource.
 // options - AdaptiveNetworkHardeningsClientListByExtendedResourceOptions contains the optional parameters for the AdaptiveNetworkHardeningsClient.ListByExtendedResource
 // method.
-func (client *AdaptiveNetworkHardeningsClient) ListByExtendedResource(resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, options *AdaptiveNetworkHardeningsClientListByExtendedResourceOptions) *runtime.Pager[AdaptiveNetworkHardeningsClientListByExtendedResourceResponse] {
+func (client *AdaptiveNetworkHardeningsClient) NewListByExtendedResourcePager(resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, options *AdaptiveNetworkHardeningsClientListByExtendedResourceOptions) *runtime.Pager[AdaptiveNetworkHardeningsClientListByExtendedResourceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AdaptiveNetworkHardeningsClientListByExtendedResourceResponse]{
 		More: func(page AdaptiveNetworkHardeningsClientListByExtendedResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

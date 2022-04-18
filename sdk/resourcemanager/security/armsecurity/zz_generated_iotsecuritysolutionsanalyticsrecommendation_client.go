@@ -117,13 +117,13 @@ func (client *IotSecuritySolutionsAnalyticsRecommendationClient) getHandleRespon
 	return result, nil
 }
 
-// List - Use this method to get the list of aggregated security analytics recommendations of yours IoT Security solution.
+// NewListPager - Use this method to get the list of aggregated security analytics recommendations of yours IoT Security solution.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // solutionName - The name of the IoT Security solution.
 // options - IotSecuritySolutionsAnalyticsRecommendationClientListOptions contains the optional parameters for the IotSecuritySolutionsAnalyticsRecommendationClient.List
 // method.
-func (client *IotSecuritySolutionsAnalyticsRecommendationClient) List(resourceGroupName string, solutionName string, options *IotSecuritySolutionsAnalyticsRecommendationClientListOptions) *runtime.Pager[IotSecuritySolutionsAnalyticsRecommendationClientListResponse] {
+func (client *IotSecuritySolutionsAnalyticsRecommendationClient) NewListPager(resourceGroupName string, solutionName string, options *IotSecuritySolutionsAnalyticsRecommendationClientListOptions) *runtime.Pager[IotSecuritySolutionsAnalyticsRecommendationClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IotSecuritySolutionsAnalyticsRecommendationClientListResponse]{
 		More: func(page IotSecuritySolutionsAnalyticsRecommendationClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

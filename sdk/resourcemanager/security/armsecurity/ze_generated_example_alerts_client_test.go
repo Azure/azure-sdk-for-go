@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/stable/2021-11-01/examples/Alerts/GetAlertsSubscription_example.json
-func ExampleAlertsClient_List() {
+func ExampleAlertsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleAlertsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(nil)
+	pager := client.NewListPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -45,7 +45,7 @@ func ExampleAlertsClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/stable/2021-11-01/examples/Alerts/GetAlertsResourceGroup_example.json
-func ExampleAlertsClient_ListByResourceGroup() {
+func ExampleAlertsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -57,7 +57,7 @@ func ExampleAlertsClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -73,7 +73,7 @@ func ExampleAlertsClient_ListByResourceGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/stable/2021-11-01/examples/Alerts/GetAlertsSubscriptionsLocation_example.json
-func ExampleAlertsClient_ListSubscriptionLevelByRegion() {
+func ExampleAlertsClient_NewListSubscriptionLevelByRegionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -85,7 +85,7 @@ func ExampleAlertsClient_ListSubscriptionLevelByRegion() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListSubscriptionLevelByRegion("<asc-location>",
+	pager := client.NewListSubscriptionLevelByRegionPager("<asc-location>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -101,7 +101,7 @@ func ExampleAlertsClient_ListSubscriptionLevelByRegion() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/stable/2021-11-01/examples/Alerts/GetAlertsResourceGroupLocation_example.json
-func ExampleAlertsClient_ListResourceGroupLevelByRegion() {
+func ExampleAlertsClient_NewListResourceGroupLevelByRegionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -113,7 +113,7 @@ func ExampleAlertsClient_ListResourceGroupLevelByRegion() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListResourceGroupLevelByRegion("<asc-location>",
+	pager := client.NewListResourceGroupLevelByRegionPager("<asc-location>",
 		"<resource-group-name>",
 		nil)
 	for pager.More() {

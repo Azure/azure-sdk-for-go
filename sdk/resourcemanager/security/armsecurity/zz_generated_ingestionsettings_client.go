@@ -198,10 +198,10 @@ func (client *IngestionSettingsClient) getHandleResponse(resp *http.Response) (I
 	return result, nil
 }
 
-// List - Settings for ingesting security data and logs to correlate with resources associated with the subscription.
+// NewListPager - Settings for ingesting security data and logs to correlate with resources associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - IngestionSettingsClientListOptions contains the optional parameters for the IngestionSettingsClient.List method.
-func (client *IngestionSettingsClient) List(options *IngestionSettingsClientListOptions) *runtime.Pager[IngestionSettingsClientListResponse] {
+func (client *IngestionSettingsClient) NewListPager(options *IngestionSettingsClientListOptions) *runtime.Pager[IngestionSettingsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IngestionSettingsClientListResponse]{
 		More: func(page IngestionSettingsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -124,7 +124,7 @@ func (client *SoftwareInventoriesClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListByExtendedResource - Gets the software inventory of the virtual machine.
+// NewListByExtendedResourcePager - Gets the software inventory of the virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // resourceNamespace - The namespace of the resource.
@@ -132,7 +132,7 @@ func (client *SoftwareInventoriesClient) getHandleResponse(resp *http.Response) 
 // resourceName - Name of the resource.
 // options - SoftwareInventoriesClientListByExtendedResourceOptions contains the optional parameters for the SoftwareInventoriesClient.ListByExtendedResource
 // method.
-func (client *SoftwareInventoriesClient) ListByExtendedResource(resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, options *SoftwareInventoriesClientListByExtendedResourceOptions) *runtime.Pager[SoftwareInventoriesClientListByExtendedResourceResponse] {
+func (client *SoftwareInventoriesClient) NewListByExtendedResourcePager(resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, options *SoftwareInventoriesClientListByExtendedResourceOptions) *runtime.Pager[SoftwareInventoriesClientListByExtendedResourceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SoftwareInventoriesClientListByExtendedResourceResponse]{
 		More: func(page SoftwareInventoriesClientListByExtendedResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -203,11 +203,11 @@ func (client *SoftwareInventoriesClient) listByExtendedResourceHandleResponse(re
 	return result, nil
 }
 
-// ListBySubscription - Gets the software inventory of all virtual machines in the subscriptions.
+// NewListBySubscriptionPager - Gets the software inventory of all virtual machines in the subscriptions.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SoftwareInventoriesClientListBySubscriptionOptions contains the optional parameters for the SoftwareInventoriesClient.ListBySubscription
 // method.
-func (client *SoftwareInventoriesClient) ListBySubscription(options *SoftwareInventoriesClientListBySubscriptionOptions) *runtime.Pager[SoftwareInventoriesClientListBySubscriptionResponse] {
+func (client *SoftwareInventoriesClient) NewListBySubscriptionPager(options *SoftwareInventoriesClientListBySubscriptionOptions) *runtime.Pager[SoftwareInventoriesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SoftwareInventoriesClientListBySubscriptionResponse]{
 		More: func(page SoftwareInventoriesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

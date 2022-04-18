@@ -214,12 +214,12 @@ func (client *CustomEntityStoreAssignmentsClient) getHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListByResourceGroup - List custom entity store assignments by a provided subscription and resource group
+// NewListByResourceGroupPager - List custom entity store assignments by a provided subscription and resource group
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // options - CustomEntityStoreAssignmentsClientListByResourceGroupOptions contains the optional parameters for the CustomEntityStoreAssignmentsClient.ListByResourceGroup
 // method.
-func (client *CustomEntityStoreAssignmentsClient) ListByResourceGroup(resourceGroupName string, options *CustomEntityStoreAssignmentsClientListByResourceGroupOptions) *runtime.Pager[CustomEntityStoreAssignmentsClientListByResourceGroupResponse] {
+func (client *CustomEntityStoreAssignmentsClient) NewListByResourceGroupPager(resourceGroupName string, options *CustomEntityStoreAssignmentsClientListByResourceGroupOptions) *runtime.Pager[CustomEntityStoreAssignmentsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CustomEntityStoreAssignmentsClientListByResourceGroupResponse]{
 		More: func(page CustomEntityStoreAssignmentsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -278,11 +278,11 @@ func (client *CustomEntityStoreAssignmentsClient) listByResourceGroupHandleRespo
 	return result, nil
 }
 
-// ListBySubscription - List custom entity store assignments by provided subscription
+// NewListBySubscriptionPager - List custom entity store assignments by provided subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - CustomEntityStoreAssignmentsClientListBySubscriptionOptions contains the optional parameters for the CustomEntityStoreAssignmentsClient.ListBySubscription
 // method.
-func (client *CustomEntityStoreAssignmentsClient) ListBySubscription(options *CustomEntityStoreAssignmentsClientListBySubscriptionOptions) *runtime.Pager[CustomEntityStoreAssignmentsClientListBySubscriptionResponse] {
+func (client *CustomEntityStoreAssignmentsClient) NewListBySubscriptionPager(options *CustomEntityStoreAssignmentsClientListBySubscriptionOptions) *runtime.Pager[CustomEntityStoreAssignmentsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CustomEntityStoreAssignmentsClientListBySubscriptionResponse]{
 		More: func(page CustomEntityStoreAssignmentsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

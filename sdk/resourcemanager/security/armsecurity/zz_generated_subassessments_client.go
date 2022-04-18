@@ -105,13 +105,13 @@ func (client *SubAssessmentsClient) getHandleResponse(resp *http.Response) (SubA
 	return result, nil
 }
 
-// List - Get security sub-assessments on all your scanned resources inside a scope
+// NewListPager - Get security sub-assessments on all your scanned resources inside a scope
 // If the operation fails it returns an *azcore.ResponseError type.
 // scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
 // (/providers/Microsoft.Management/managementGroups/mgName).
 // assessmentName - The Assessment Key - Unique key for the assessment type
 // options - SubAssessmentsClientListOptions contains the optional parameters for the SubAssessmentsClient.List method.
-func (client *SubAssessmentsClient) List(scope string, assessmentName string, options *SubAssessmentsClientListOptions) *runtime.Pager[SubAssessmentsClientListResponse] {
+func (client *SubAssessmentsClient) NewListPager(scope string, assessmentName string, options *SubAssessmentsClientListOptions) *runtime.Pager[SubAssessmentsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SubAssessmentsClientListResponse]{
 		More: func(page SubAssessmentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -167,12 +167,12 @@ func (client *SubAssessmentsClient) listHandleResponse(resp *http.Response) (Sub
 	return result, nil
 }
 
-// ListAll - Get security sub-assessments on all your scanned resources inside a subscription scope
+// NewListAllPager - Get security sub-assessments on all your scanned resources inside a subscription scope
 // If the operation fails it returns an *azcore.ResponseError type.
 // scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
 // (/providers/Microsoft.Management/managementGroups/mgName).
 // options - SubAssessmentsClientListAllOptions contains the optional parameters for the SubAssessmentsClient.ListAll method.
-func (client *SubAssessmentsClient) ListAll(scope string, options *SubAssessmentsClientListAllOptions) *runtime.Pager[SubAssessmentsClientListAllResponse] {
+func (client *SubAssessmentsClient) NewListAllPager(scope string, options *SubAssessmentsClientListAllOptions) *runtime.Pager[SubAssessmentsClientListAllResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SubAssessmentsClientListAllResponse]{
 		More: func(page SubAssessmentsClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -115,11 +115,11 @@ func (client *ExternalSecuritySolutionsClient) getHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// List - Gets a list of external security solutions for the subscription.
+// NewListPager - Gets a list of external security solutions for the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ExternalSecuritySolutionsClientListOptions contains the optional parameters for the ExternalSecuritySolutionsClient.List
 // method.
-func (client *ExternalSecuritySolutionsClient) List(options *ExternalSecuritySolutionsClientListOptions) *runtime.Pager[ExternalSecuritySolutionsClientListResponse] {
+func (client *ExternalSecuritySolutionsClient) NewListPager(options *ExternalSecuritySolutionsClientListOptions) *runtime.Pager[ExternalSecuritySolutionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ExternalSecuritySolutionsClientListResponse]{
 		More: func(page ExternalSecuritySolutionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -174,12 +174,12 @@ func (client *ExternalSecuritySolutionsClient) listHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListByHomeRegion - Gets a list of external Security Solutions for the subscription and location.
+// NewListByHomeRegionPager - Gets a list of external Security Solutions for the subscription and location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // options - ExternalSecuritySolutionsClientListByHomeRegionOptions contains the optional parameters for the ExternalSecuritySolutionsClient.ListByHomeRegion
 // method.
-func (client *ExternalSecuritySolutionsClient) ListByHomeRegion(ascLocation string, options *ExternalSecuritySolutionsClientListByHomeRegionOptions) *runtime.Pager[ExternalSecuritySolutionsClientListByHomeRegionResponse] {
+func (client *ExternalSecuritySolutionsClient) NewListByHomeRegionPager(ascLocation string, options *ExternalSecuritySolutionsClientListByHomeRegionOptions) *runtime.Pager[ExternalSecuritySolutionsClientListByHomeRegionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ExternalSecuritySolutionsClientListByHomeRegionResponse]{
 		More: func(page ExternalSecuritySolutionsClientListByHomeRegionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

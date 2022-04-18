@@ -54,8 +54,8 @@ func NewSecureScoresClient(subscriptionID string, credential azcore.TokenCredent
 	return client, nil
 }
 
-// Get - Get secure score for a specific Security Center initiative within your current scope. For the ASC Default initiative,
-// use 'ascScore'.
+// Get - Get secure score for a specific Microsoft Defender for Cloud initiative within your current scope. For the ASC Default
+// initiative, use 'ascScore'.
 // If the operation fails it returns an *azcore.ResponseError type.
 // secureScoreName - The initiative name. For the ASC Default initiative, use 'ascScore' as in the sample request below.
 // options - SecureScoresClientGetOptions contains the optional parameters for the SecureScoresClient.Get method.
@@ -105,10 +105,10 @@ func (client *SecureScoresClient) getHandleResponse(resp *http.Response) (Secure
 	return result, nil
 }
 
-// List - List secure scores for all your Security Center initiatives within your current scope.
+// NewListPager - List secure scores for all your Microsoft Defender for Cloud initiatives within your current scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SecureScoresClientListOptions contains the optional parameters for the SecureScoresClient.List method.
-func (client *SecureScoresClient) List(options *SecureScoresClientListOptions) *runtime.Pager[SecureScoresClientListResponse] {
+func (client *SecureScoresClient) NewListPager(options *SecureScoresClientListOptions) *runtime.Pager[SecureScoresClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SecureScoresClientListResponse]{
 		More: func(page SecureScoresClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

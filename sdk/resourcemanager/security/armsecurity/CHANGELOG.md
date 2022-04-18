@@ -1,5 +1,135 @@
 # Release History
 
+## 0.6.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*CustomEntityStoreAssignmentsClient.ListByResourceGroup` has been removed
+- Function `*SecureScoreControlDefinitionsClient.ListBySubscription` has been removed
+- Function `*AutomationsClient.List` has been removed
+- Function `*JitNetworkAccessPoliciesClient.List` has been removed
+- Function `*AlertsSuppressionRulesClient.List` has been removed
+- Function `*SecureScoresClient.List` has been removed
+- Function `*AdaptiveNetworkHardeningsClient.ListByExtendedResource` has been removed
+- Function `*CompliancesClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*TasksClient.List` has been removed
+- Function `*TasksClient.ListByHomeRegion` has been removed
+- Function `*SecureScoreControlsClient.ListBySecureScore` has been removed
+- Function `*CustomEntityStoreAssignmentsClient.ListBySubscription` has been removed
+- Function `*ComplianceResultsClient.List` has been removed
+- Function `*RegulatoryComplianceStandardsClient.List` has been removed
+- Function `*JitNetworkAccessPoliciesClient.ListByRegion` has been removed
+- Function `*SubAssessmentsClient.List` has been removed
+- Function `*IotSecuritySolutionsAnalyticsAggregatedAlertClient.List` has been removed
+- Function `*AccountConnectorsClient.List` has been removed
+- Function `*IotSecuritySolutionsAnalyticsRecommendationClient.List` has been removed
+- Function `*IotSecuritySolutionClient.ListByResourceGroup` has been removed
+- Function `*SubAssessmentsClient.ListAll` has been removed
+- Function `*TopologyClient.List` has been removed
+- Function `*AssessmentsMetadataClient.ListBySubscription` has been removed
+- Function `*AllowedConnectionsClient.ListByHomeRegion` has been removed
+- Function `*SecureScoreControlsClient.List` has been removed
+- Function `*TopologyClient.ListByHomeRegion` has been removed
+- Function `*DiscoveredSecuritySolutionsClient.ListByHomeRegion` has been removed
+- Function `*RegulatoryComplianceAssessmentsClient.List` has been removed
+- Function `*IngestionSettingsClient.List` has been removed
+- Function `*SoftwareInventoriesClient.ListBySubscription` has been removed
+- Function `*AlertsClient.List` has been removed
+- Function `*AutomationsClient.ListByResourceGroup` has been removed
+- Function `*ExternalSecuritySolutionsClient.ListByHomeRegion` has been removed
+- Function `*AssessmentsMetadataClient.List` has been removed
+- Function `*WorkspaceSettingsClient.List` has been removed
+- Function `*DiscoveredSecuritySolutionsClient.List` has been removed
+- Function `*AssessmentsClient.List` has been removed
+- Function `*TasksClient.ListByResourceGroup` has been removed
+- Function `*DeviceSecurityGroupsClient.List` has been removed
+- Function `*AlertsClient.ListResourceGroupLevelByRegion` has been removed
+- Function `*SettingsClient.List` has been removed
+- Function `*ContactsClient.List` has been removed
+- Function `*CustomAssessmentAutomationsClient.ListByResourceGroup` has been removed
+- Function `*AllowedConnectionsClient.List` has been removed
+- Function `*AlertsClient.ListSubscriptionLevelByRegion` has been removed
+- Function `*SoftwareInventoriesClient.ListByExtendedResource` has been removed
+- Function `*JitNetworkAccessPoliciesClient.ListByResourceGroupAndRegion` has been removed
+- Function `*ConnectorsClient.List` has been removed
+- Function `*SecureScoreControlDefinitionsClient.List` has been removed
+- Function `*ConnectorsClient.ListByResourceGroup` has been removed
+- Function `*CustomAssessmentAutomationsClient.ListBySubscription` has been removed
+- Function `*IotSecuritySolutionClient.ListBySubscription` has been removed
+- Function `*AutoProvisioningSettingsClient.List` has been removed
+- Function `*RegulatoryComplianceControlsClient.List` has been removed
+- Function `*JitNetworkAccessPoliciesClient.ListByResourceGroup` has been removed
+- Function `*ExternalSecuritySolutionsClient.List` has been removed
+- Function `*InformationProtectionPoliciesClient.List` has been removed
+- Function `*LocationsClient.List` has been removed
+- Function `*AlertsClient.ListByResourceGroup` has been removed
+- Function `*SolutionsClient.List` has been removed
+
+### Features Added
+
+- New function `*TasksClient.NewListByResourceGroupPager(string, string, *TasksClientListByResourceGroupOptions) *runtime.Pager[TasksClientListByResourceGroupResponse]`
+- New function `*AlertsSuppressionRulesClient.NewListPager(*AlertsSuppressionRulesClientListOptions) *runtime.Pager[AlertsSuppressionRulesClientListResponse]`
+- New function `*SecureScoreControlDefinitionsClient.NewListBySubscriptionPager(*SecureScoreControlDefinitionsClientListBySubscriptionOptions) *runtime.Pager[SecureScoreControlDefinitionsClientListBySubscriptionResponse]`
+- New function `*AssessmentsMetadataClient.NewListPager(*AssessmentsMetadataClientListOptions) *runtime.Pager[AssessmentsMetadataClientListResponse]`
+- New function `*SoftwareInventoriesClient.NewListBySubscriptionPager(*SoftwareInventoriesClientListBySubscriptionOptions) *runtime.Pager[SoftwareInventoriesClientListBySubscriptionResponse]`
+- New function `*ConnectorsClient.NewListPager(*ConnectorsClientListOptions) *runtime.Pager[ConnectorsClientListResponse]`
+- New function `*SubAssessmentsClient.NewListPager(string, string, *SubAssessmentsClientListOptions) *runtime.Pager[SubAssessmentsClientListResponse]`
+- New function `*CustomEntityStoreAssignmentsClient.NewListByResourceGroupPager(string, *CustomEntityStoreAssignmentsClientListByResourceGroupOptions) *runtime.Pager[CustomEntityStoreAssignmentsClientListByResourceGroupResponse]`
+- New function `*AccountConnectorsClient.NewListPager(*AccountConnectorsClientListOptions) *runtime.Pager[AccountConnectorsClientListResponse]`
+- New function `*CustomAssessmentAutomationsClient.NewListByResourceGroupPager(string, *CustomAssessmentAutomationsClientListByResourceGroupOptions) *runtime.Pager[CustomAssessmentAutomationsClientListByResourceGroupResponse]`
+- New function `*AllowedConnectionsClient.NewListByHomeRegionPager(string, *AllowedConnectionsClientListByHomeRegionOptions) *runtime.Pager[AllowedConnectionsClientListByHomeRegionResponse]`
+- New function `*DeviceSecurityGroupsClient.NewListPager(string, *DeviceSecurityGroupsClientListOptions) *runtime.Pager[DeviceSecurityGroupsClientListResponse]`
+- New function `*ExternalSecuritySolutionsClient.NewListByHomeRegionPager(string, *ExternalSecuritySolutionsClientListByHomeRegionOptions) *runtime.Pager[ExternalSecuritySolutionsClientListByHomeRegionResponse]`
+- New function `*AllowedConnectionsClient.NewListPager(*AllowedConnectionsClientListOptions) *runtime.Pager[AllowedConnectionsClientListResponse]`
+- New function `*JitNetworkAccessPoliciesClient.NewListPager(*JitNetworkAccessPoliciesClientListOptions) *runtime.Pager[JitNetworkAccessPoliciesClientListResponse]`
+- New function `*TopologyClient.NewListPager(*TopologyClientListOptions) *runtime.Pager[TopologyClientListResponse]`
+- New function `*ComplianceResultsClient.NewListPager(string, *ComplianceResultsClientListOptions) *runtime.Pager[ComplianceResultsClientListResponse]`
+- New function `*SecureScoreControlDefinitionsClient.NewListPager(*SecureScoreControlDefinitionsClientListOptions) *runtime.Pager[SecureScoreControlDefinitionsClientListResponse]`
+- New function `*SoftwareInventoriesClient.NewListByExtendedResourcePager(string, string, string, string, *SoftwareInventoriesClientListByExtendedResourceOptions) *runtime.Pager[SoftwareInventoriesClientListByExtendedResourceResponse]`
+- New function `*TasksClient.NewListPager(*TasksClientListOptions) *runtime.Pager[TasksClientListResponse]`
+- New function `*AdaptiveNetworkHardeningsClient.NewListByExtendedResourcePager(string, string, string, string, *AdaptiveNetworkHardeningsClientListByExtendedResourceOptions) *runtime.Pager[AdaptiveNetworkHardeningsClientListByExtendedResourceResponse]`
+- New function `*AssessmentsClient.NewListPager(string, *AssessmentsClientListOptions) *runtime.Pager[AssessmentsClientListResponse]`
+- New function `*LocationsClient.NewListPager(*LocationsClientListOptions) *runtime.Pager[LocationsClientListResponse]`
+- New function `*WorkspaceSettingsClient.NewListPager(*WorkspaceSettingsClientListOptions) *runtime.Pager[WorkspaceSettingsClientListResponse]`
+- New function `*CustomAssessmentAutomationsClient.NewListBySubscriptionPager(*CustomAssessmentAutomationsClientListBySubscriptionOptions) *runtime.Pager[CustomAssessmentAutomationsClientListBySubscriptionResponse]`
+- New function `*SecureScoresClient.NewListPager(*SecureScoresClientListOptions) *runtime.Pager[SecureScoresClientListResponse]`
+- New function `*IotSecuritySolutionsAnalyticsAggregatedAlertClient.NewListPager(string, string, *IotSecuritySolutionsAnalyticsAggregatedAlertClientListOptions) *runtime.Pager[IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse]`
+- New function `*IngestionSettingsClient.NewListPager(*IngestionSettingsClientListOptions) *runtime.Pager[IngestionSettingsClientListResponse]`
+- New function `*AutomationsClient.NewListByResourceGroupPager(string, *AutomationsClientListByResourceGroupOptions) *runtime.Pager[AutomationsClientListByResourceGroupResponse]`
+- New function `*IotSecuritySolutionClient.NewListByResourceGroupPager(string, *IotSecuritySolutionClientListByResourceGroupOptions) *runtime.Pager[IotSecuritySolutionClientListByResourceGroupResponse]`
+- New function `*RegulatoryComplianceStandardsClient.NewListPager(*RegulatoryComplianceStandardsClientListOptions) *runtime.Pager[RegulatoryComplianceStandardsClientListResponse]`
+- New function `*DiscoveredSecuritySolutionsClient.NewListPager(*DiscoveredSecuritySolutionsClientListOptions) *runtime.Pager[DiscoveredSecuritySolutionsClientListResponse]`
+- New function `*AssessmentsMetadataClient.NewListBySubscriptionPager(*AssessmentsMetadataClientListBySubscriptionOptions) *runtime.Pager[AssessmentsMetadataClientListBySubscriptionResponse]`
+- New function `*AutoProvisioningSettingsClient.NewListPager(*AutoProvisioningSettingsClientListOptions) *runtime.Pager[AutoProvisioningSettingsClientListResponse]`
+- New function `*IotSecuritySolutionsAnalyticsRecommendationClient.NewListPager(string, string, *IotSecuritySolutionsAnalyticsRecommendationClientListOptions) *runtime.Pager[IotSecuritySolutionsAnalyticsRecommendationClientListResponse]`
+- New function `*IotSecuritySolutionClient.NewListBySubscriptionPager(*IotSecuritySolutionClientListBySubscriptionOptions) *runtime.Pager[IotSecuritySolutionClientListBySubscriptionResponse]`
+- New function `*RegulatoryComplianceControlsClient.NewListPager(string, *RegulatoryComplianceControlsClientListOptions) *runtime.Pager[RegulatoryComplianceControlsClientListResponse]`
+- New function `*JitNetworkAccessPoliciesClient.NewListByResourceGroupPager(string, *JitNetworkAccessPoliciesClientListByResourceGroupOptions) *runtime.Pager[JitNetworkAccessPoliciesClientListByResourceGroupResponse]`
+- New function `*AlertsClient.NewListPager(*AlertsClientListOptions) *runtime.Pager[AlertsClientListResponse]`
+- New function `*ExternalSecuritySolutionsClient.NewListPager(*ExternalSecuritySolutionsClientListOptions) *runtime.Pager[ExternalSecuritySolutionsClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*SettingsClient.NewListPager(*SettingsClientListOptions) *runtime.Pager[SettingsClientListResponse]`
+- New function `*CustomEntityStoreAssignmentsClient.NewListBySubscriptionPager(*CustomEntityStoreAssignmentsClientListBySubscriptionOptions) *runtime.Pager[CustomEntityStoreAssignmentsClientListBySubscriptionResponse]`
+- New function `*SubAssessmentsClient.NewListAllPager(string, *SubAssessmentsClientListAllOptions) *runtime.Pager[SubAssessmentsClientListAllResponse]`
+- New function `*TopologyClient.NewListByHomeRegionPager(string, *TopologyClientListByHomeRegionOptions) *runtime.Pager[TopologyClientListByHomeRegionResponse]`
+- New function `*SecureScoreControlsClient.NewListBySecureScorePager(string, *SecureScoreControlsClientListBySecureScoreOptions) *runtime.Pager[SecureScoreControlsClientListBySecureScoreResponse]`
+- New function `*AlertsClient.NewListResourceGroupLevelByRegionPager(string, string, *AlertsClientListResourceGroupLevelByRegionOptions) *runtime.Pager[AlertsClientListResourceGroupLevelByRegionResponse]`
+- New function `*ContactsClient.NewListPager(*ContactsClientListOptions) *runtime.Pager[ContactsClientListResponse]`
+- New function `*DiscoveredSecuritySolutionsClient.NewListByHomeRegionPager(string, *DiscoveredSecuritySolutionsClientListByHomeRegionOptions) *runtime.Pager[DiscoveredSecuritySolutionsClientListByHomeRegionResponse]`
+- New function `*ConnectorsClient.NewListByResourceGroupPager(string, *ConnectorsClientListByResourceGroupOptions) *runtime.Pager[ConnectorsClientListByResourceGroupResponse]`
+- New function `*TasksClient.NewListByHomeRegionPager(string, *TasksClientListByHomeRegionOptions) *runtime.Pager[TasksClientListByHomeRegionResponse]`
+- New function `*CompliancesClient.NewListPager(string, *CompliancesClientListOptions) *runtime.Pager[CompliancesClientListResponse]`
+- New function `*AlertsClient.NewListSubscriptionLevelByRegionPager(string, *AlertsClientListSubscriptionLevelByRegionOptions) *runtime.Pager[AlertsClientListSubscriptionLevelByRegionResponse]`
+- New function `*JitNetworkAccessPoliciesClient.NewListByResourceGroupAndRegionPager(string, string, *JitNetworkAccessPoliciesClientListByResourceGroupAndRegionOptions) *runtime.Pager[JitNetworkAccessPoliciesClientListByResourceGroupAndRegionResponse]`
+- New function `*RegulatoryComplianceAssessmentsClient.NewListPager(string, string, *RegulatoryComplianceAssessmentsClientListOptions) *runtime.Pager[RegulatoryComplianceAssessmentsClientListResponse]`
+- New function `*SecureScoreControlsClient.NewListPager(*SecureScoreControlsClientListOptions) *runtime.Pager[SecureScoreControlsClientListResponse]`
+- New function `*AutomationsClient.NewListPager(*AutomationsClientListOptions) *runtime.Pager[AutomationsClientListResponse]`
+- New function `*InformationProtectionPoliciesClient.NewListPager(string, *InformationProtectionPoliciesClientListOptions) *runtime.Pager[InformationProtectionPoliciesClientListResponse]`
+- New function `*AlertsClient.NewListByResourceGroupPager(string, *AlertsClientListByResourceGroupOptions) *runtime.Pager[AlertsClientListByResourceGroupResponse]`
+- New function `*JitNetworkAccessPoliciesClient.NewListByRegionPager(string, *JitNetworkAccessPoliciesClientListByRegionOptions) *runtime.Pager[JitNetworkAccessPoliciesClientListByRegionResponse]`
+- New function `*SolutionsClient.NewListPager(*SolutionsClientListOptions) *runtime.Pager[SolutionsClientListResponse]`
+
+
 ## 0.5.0 (2022-04-13)
 ### Breaking Changes
 

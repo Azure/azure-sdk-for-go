@@ -290,11 +290,11 @@ func (client *JitNetworkAccessPoliciesClient) initiateHandleResponse(resp *http.
 	return result, nil
 }
 
-// List - Policies for protecting resources using Just-in-Time access control.
+// NewListPager - Policies for protecting resources using Just-in-Time access control.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - JitNetworkAccessPoliciesClientListOptions contains the optional parameters for the JitNetworkAccessPoliciesClient.List
 // method.
-func (client *JitNetworkAccessPoliciesClient) List(options *JitNetworkAccessPoliciesClientListOptions) *runtime.Pager[JitNetworkAccessPoliciesClientListResponse] {
+func (client *JitNetworkAccessPoliciesClient) NewListPager(options *JitNetworkAccessPoliciesClientListOptions) *runtime.Pager[JitNetworkAccessPoliciesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[JitNetworkAccessPoliciesClientListResponse]{
 		More: func(page JitNetworkAccessPoliciesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -349,12 +349,12 @@ func (client *JitNetworkAccessPoliciesClient) listHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListByRegion - Policies for protecting resources using Just-in-Time access control for the subscription, location
+// NewListByRegionPager - Policies for protecting resources using Just-in-Time access control for the subscription, location
 // If the operation fails it returns an *azcore.ResponseError type.
 // ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // options - JitNetworkAccessPoliciesClientListByRegionOptions contains the optional parameters for the JitNetworkAccessPoliciesClient.ListByRegion
 // method.
-func (client *JitNetworkAccessPoliciesClient) ListByRegion(ascLocation string, options *JitNetworkAccessPoliciesClientListByRegionOptions) *runtime.Pager[JitNetworkAccessPoliciesClientListByRegionResponse] {
+func (client *JitNetworkAccessPoliciesClient) NewListByRegionPager(ascLocation string, options *JitNetworkAccessPoliciesClientListByRegionOptions) *runtime.Pager[JitNetworkAccessPoliciesClientListByRegionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[JitNetworkAccessPoliciesClientListByRegionResponse]{
 		More: func(page JitNetworkAccessPoliciesClientListByRegionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -413,12 +413,13 @@ func (client *JitNetworkAccessPoliciesClient) listByRegionHandleResponse(resp *h
 	return result, nil
 }
 
-// ListByResourceGroup - Policies for protecting resources using Just-in-Time access control for the subscription, location
+// NewListByResourceGroupPager - Policies for protecting resources using Just-in-Time access control for the subscription,
+// location
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // options - JitNetworkAccessPoliciesClientListByResourceGroupOptions contains the optional parameters for the JitNetworkAccessPoliciesClient.ListByResourceGroup
 // method.
-func (client *JitNetworkAccessPoliciesClient) ListByResourceGroup(resourceGroupName string, options *JitNetworkAccessPoliciesClientListByResourceGroupOptions) *runtime.Pager[JitNetworkAccessPoliciesClientListByResourceGroupResponse] {
+func (client *JitNetworkAccessPoliciesClient) NewListByResourceGroupPager(resourceGroupName string, options *JitNetworkAccessPoliciesClientListByResourceGroupOptions) *runtime.Pager[JitNetworkAccessPoliciesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[JitNetworkAccessPoliciesClientListByResourceGroupResponse]{
 		More: func(page JitNetworkAccessPoliciesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -477,14 +478,14 @@ func (client *JitNetworkAccessPoliciesClient) listByResourceGroupHandleResponse(
 	return result, nil
 }
 
-// ListByResourceGroupAndRegion - Policies for protecting resources using Just-in-Time access control for the subscription,
+// NewListByResourceGroupAndRegionPager - Policies for protecting resources using Just-in-Time access control for the subscription,
 // location
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // options - JitNetworkAccessPoliciesClientListByResourceGroupAndRegionOptions contains the optional parameters for the JitNetworkAccessPoliciesClient.ListByResourceGroupAndRegion
 // method.
-func (client *JitNetworkAccessPoliciesClient) ListByResourceGroupAndRegion(resourceGroupName string, ascLocation string, options *JitNetworkAccessPoliciesClientListByResourceGroupAndRegionOptions) *runtime.Pager[JitNetworkAccessPoliciesClientListByResourceGroupAndRegionResponse] {
+func (client *JitNetworkAccessPoliciesClient) NewListByResourceGroupAndRegionPager(resourceGroupName string, ascLocation string, options *JitNetworkAccessPoliciesClientListByResourceGroupAndRegionOptions) *runtime.Pager[JitNetworkAccessPoliciesClientListByResourceGroupAndRegionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[JitNetworkAccessPoliciesClientListByResourceGroupAndRegionResponse]{
 		More: func(page JitNetworkAccessPoliciesClientListByResourceGroupAndRegionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

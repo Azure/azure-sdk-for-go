@@ -213,11 +213,11 @@ func (client *ConnectorsClient) getHandleResponse(resp *http.Response) (Connecto
 	return result, nil
 }
 
-// List - Lists all the security connectors in the specified subscription. Use the 'nextLink' property in the response to
-// get the next page of security connectors for the specified subscription.
+// NewListPager - Lists all the security connectors in the specified subscription. Use the 'nextLink' property in the response
+// to get the next page of security connectors for the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ConnectorsClientListOptions contains the optional parameters for the ConnectorsClient.List method.
-func (client *ConnectorsClient) List(options *ConnectorsClientListOptions) *runtime.Pager[ConnectorsClientListResponse] {
+func (client *ConnectorsClient) NewListPager(options *ConnectorsClientListOptions) *runtime.Pager[ConnectorsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ConnectorsClientListResponse]{
 		More: func(page ConnectorsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -272,13 +272,13 @@ func (client *ConnectorsClient) listHandleResponse(resp *http.Response) (Connect
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all the security connectors in the specified resource group. Use the 'nextLink' property in
-// the response to get the next page of security connectors for the specified resource group.
+// NewListByResourceGroupPager - Lists all the security connectors in the specified resource group. Use the 'nextLink' property
+// in the response to get the next page of security connectors for the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // options - ConnectorsClientListByResourceGroupOptions contains the optional parameters for the ConnectorsClient.ListByResourceGroup
 // method.
-func (client *ConnectorsClient) ListByResourceGroup(resourceGroupName string, options *ConnectorsClientListByResourceGroupOptions) *runtime.Pager[ConnectorsClientListByResourceGroupResponse] {
+func (client *ConnectorsClient) NewListByResourceGroupPager(resourceGroupName string, options *ConnectorsClientListByResourceGroupOptions) *runtime.Pager[ConnectorsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ConnectorsClientListByResourceGroupResponse]{
 		More: func(page ConnectorsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

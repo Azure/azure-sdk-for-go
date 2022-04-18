@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/preview/2015-06-01-preview/examples/Tasks/GetTasksSubscription_example.json
-func ExampleTasksClient_List() {
+func ExampleTasksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleTasksClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(&armsecurity.TasksClientListOptions{Filter: nil})
+	pager := client.NewListPager(&armsecurity.TasksClientListOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -44,7 +44,7 @@ func ExampleTasksClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/preview/2015-06-01-preview/examples/Tasks/GetTasksSubscriptionLocation_example.json
-func ExampleTasksClient_ListByHomeRegion() {
+func ExampleTasksClient_NewListByHomeRegionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -56,7 +56,7 @@ func ExampleTasksClient_ListByHomeRegion() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByHomeRegion("<asc-location>",
+	pager := client.NewListByHomeRegionPager("<asc-location>",
 		&armsecurity.TasksClientListByHomeRegionOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -121,7 +121,7 @@ func ExampleTasksClient_UpdateSubscriptionLevelTaskState() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/preview/2015-06-01-preview/examples/Tasks/GetTasksResourceGroupLocation_example.json
-func ExampleTasksClient_ListByResourceGroup() {
+func ExampleTasksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -133,7 +133,7 @@ func ExampleTasksClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		"<asc-location>",
 		&armsecurity.TasksClientListByResourceGroupOptions{Filter: nil})
 	for pager.More() {

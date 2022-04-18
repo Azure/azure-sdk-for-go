@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutions/GetIoTSecuritySolutionsListByIotHub.json
-func ExampleIotSecuritySolutionClient_ListBySubscription() {
+func ExampleIotSecuritySolutionClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleIotSecuritySolutionClient_ListBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription(&armsecurity.IotSecuritySolutionClientListBySubscriptionOptions{Filter: to.Ptr("<filter>")})
+	pager := client.NewListBySubscriptionPager(&armsecurity.IotSecuritySolutionClientListBySubscriptionOptions{Filter: to.Ptr("<filter>")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -45,7 +45,7 @@ func ExampleIotSecuritySolutionClient_ListBySubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutions/GetIoTSecuritySolutionsListByRg.json
-func ExampleIotSecuritySolutionClient_ListByResourceGroup() {
+func ExampleIotSecuritySolutionClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -57,7 +57,7 @@ func ExampleIotSecuritySolutionClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		&armsecurity.IotSecuritySolutionClientListByResourceGroupOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

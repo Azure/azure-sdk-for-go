@@ -54,7 +54,7 @@ func NewSettingsClient(subscriptionID string, credential azcore.TokenCredential,
 	return client, nil
 }
 
-// Get - Settings of different configurations in security center
+// Get - Settings of different configurations in Microsoft Defender for Cloud
 // If the operation fails it returns an *azcore.ResponseError type.
 // settingName - The name of the setting
 // options - SettingsClientGetOptions contains the optional parameters for the SettingsClient.Get method.
@@ -104,10 +104,10 @@ func (client *SettingsClient) getHandleResponse(resp *http.Response) (SettingsCl
 	return result, nil
 }
 
-// List - Settings about different configurations in security center
+// NewListPager - Settings about different configurations in Microsoft Defender for Cloud
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SettingsClientListOptions contains the optional parameters for the SettingsClient.List method.
-func (client *SettingsClient) List(options *SettingsClientListOptions) *runtime.Pager[SettingsClientListResponse] {
+func (client *SettingsClient) NewListPager(options *SettingsClientListOptions) *runtime.Pager[SettingsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SettingsClientListResponse]{
 		More: func(page SettingsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -162,7 +162,7 @@ func (client *SettingsClient) listHandleResponse(resp *http.Response) (SettingsC
 	return result, nil
 }
 
-// Update - updating settings about different configurations in security center
+// Update - updating settings about different configurations in Microsoft Defender for Cloud
 // If the operation fails it returns an *azcore.ResponseError type.
 // settingName - The name of the setting
 // setting - Setting object

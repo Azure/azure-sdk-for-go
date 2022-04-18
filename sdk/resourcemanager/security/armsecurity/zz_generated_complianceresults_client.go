@@ -99,12 +99,12 @@ func (client *ComplianceResultsClient) getHandleResponse(resp *http.Response) (C
 	return result, nil
 }
 
-// List - Security compliance results in the subscription
+// NewListPager - Security compliance results in the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
 // (/providers/Microsoft.Management/managementGroups/mgName).
 // options - ComplianceResultsClientListOptions contains the optional parameters for the ComplianceResultsClient.List method.
-func (client *ComplianceResultsClient) List(scope string, options *ComplianceResultsClientListOptions) *runtime.Pager[ComplianceResultsClientListResponse] {
+func (client *ComplianceResultsClient) NewListPager(scope string, options *ComplianceResultsClientListOptions) *runtime.Pager[ComplianceResultsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ComplianceResultsClientListResponse]{
 		More: func(page ComplianceResultsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

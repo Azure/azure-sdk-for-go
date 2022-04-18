@@ -114,10 +114,10 @@ func (client *SolutionsClient) getHandleResponse(resp *http.Response) (Solutions
 	return result, nil
 }
 
-// List - Gets a list of Security Solutions for the subscription.
+// NewListPager - Gets a list of Security Solutions for the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SolutionsClientListOptions contains the optional parameters for the SolutionsClient.List method.
-func (client *SolutionsClient) List(options *SolutionsClientListOptions) *runtime.Pager[SolutionsClientListResponse] {
+func (client *SolutionsClient) NewListPager(options *SolutionsClientListOptions) *runtime.Pager[SolutionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SolutionsClientListResponse]{
 		More: func(page SolutionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

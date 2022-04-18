@@ -215,12 +215,12 @@ func (client *CustomAssessmentAutomationsClient) getHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListByResourceGroup - List custom assessment automations by provided subscription and resource group
+// NewListByResourceGroupPager - List custom assessment automations by provided subscription and resource group
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // options - CustomAssessmentAutomationsClientListByResourceGroupOptions contains the optional parameters for the CustomAssessmentAutomationsClient.ListByResourceGroup
 // method.
-func (client *CustomAssessmentAutomationsClient) ListByResourceGroup(resourceGroupName string, options *CustomAssessmentAutomationsClientListByResourceGroupOptions) *runtime.Pager[CustomAssessmentAutomationsClientListByResourceGroupResponse] {
+func (client *CustomAssessmentAutomationsClient) NewListByResourceGroupPager(resourceGroupName string, options *CustomAssessmentAutomationsClientListByResourceGroupOptions) *runtime.Pager[CustomAssessmentAutomationsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CustomAssessmentAutomationsClientListByResourceGroupResponse]{
 		More: func(page CustomAssessmentAutomationsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -279,11 +279,11 @@ func (client *CustomAssessmentAutomationsClient) listByResourceGroupHandleRespon
 	return result, nil
 }
 
-// ListBySubscription - List custom assessment automations by provided subscription
+// NewListBySubscriptionPager - List custom assessment automations by provided subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - CustomAssessmentAutomationsClientListBySubscriptionOptions contains the optional parameters for the CustomAssessmentAutomationsClient.ListBySubscription
 // method.
-func (client *CustomAssessmentAutomationsClient) ListBySubscription(options *CustomAssessmentAutomationsClientListBySubscriptionOptions) *runtime.Pager[CustomAssessmentAutomationsClientListBySubscriptionResponse] {
+func (client *CustomAssessmentAutomationsClient) NewListBySubscriptionPager(options *CustomAssessmentAutomationsClientListBySubscriptionOptions) *runtime.Pager[CustomAssessmentAutomationsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CustomAssessmentAutomationsClientListBySubscriptionResponse]{
 		More: func(page CustomAssessmentAutomationsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

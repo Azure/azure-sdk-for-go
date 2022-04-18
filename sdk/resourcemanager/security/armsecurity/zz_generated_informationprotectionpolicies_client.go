@@ -152,13 +152,13 @@ func (client *InformationProtectionPoliciesClient) getHandleResponse(resp *http.
 	return result, nil
 }
 
-// List - Information protection policies of a specific management group.
+// NewListPager - Information protection policies of a specific management group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
 // (/providers/Microsoft.Management/managementGroups/mgName).
 // options - InformationProtectionPoliciesClientListOptions contains the optional parameters for the InformationProtectionPoliciesClient.List
 // method.
-func (client *InformationProtectionPoliciesClient) List(scope string, options *InformationProtectionPoliciesClientListOptions) *runtime.Pager[InformationProtectionPoliciesClientListResponse] {
+func (client *InformationProtectionPoliciesClient) NewListPager(scope string, options *InformationProtectionPoliciesClientListOptions) *runtime.Pager[InformationProtectionPoliciesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[InformationProtectionPoliciesClientListResponse]{
 		More: func(page InformationProtectionPoliciesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

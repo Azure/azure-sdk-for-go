@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/AllowedConnections/GetAllowedConnectionsSubscription_example.json
-func ExampleAllowedConnectionsClient_List() {
+func ExampleAllowedConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleAllowedConnectionsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(nil)
+	pager := client.NewListPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -44,7 +44,7 @@ func ExampleAllowedConnectionsClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/AllowedConnections/GetAllowedConnectionsSubscriptionLocation_example.json
-func ExampleAllowedConnectionsClient_ListByHomeRegion() {
+func ExampleAllowedConnectionsClient_NewListByHomeRegionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -56,7 +56,7 @@ func ExampleAllowedConnectionsClient_ListByHomeRegion() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByHomeRegion("<asc-location>",
+	pager := client.NewListByHomeRegionPager("<asc-location>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

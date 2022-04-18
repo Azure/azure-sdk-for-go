@@ -114,10 +114,10 @@ func (client *TopologyClient) getHandleResponse(resp *http.Response) (TopologyCl
 	return result, nil
 }
 
-// List - Gets a list that allows to build a topology view of a subscription.
+// NewListPager - Gets a list that allows to build a topology view of a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - TopologyClientListOptions contains the optional parameters for the TopologyClient.List method.
-func (client *TopologyClient) List(options *TopologyClientListOptions) *runtime.Pager[TopologyClientListResponse] {
+func (client *TopologyClient) NewListPager(options *TopologyClientListOptions) *runtime.Pager[TopologyClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TopologyClientListResponse]{
 		More: func(page TopologyClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -172,12 +172,12 @@ func (client *TopologyClient) listHandleResponse(resp *http.Response) (TopologyC
 	return result, nil
 }
 
-// ListByHomeRegion - Gets a list that allows to build a topology view of a subscription and location.
+// NewListByHomeRegionPager - Gets a list that allows to build a topology view of a subscription and location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // options - TopologyClientListByHomeRegionOptions contains the optional parameters for the TopologyClient.ListByHomeRegion
 // method.
-func (client *TopologyClient) ListByHomeRegion(ascLocation string, options *TopologyClientListByHomeRegionOptions) *runtime.Pager[TopologyClientListByHomeRegionResponse] {
+func (client *TopologyClient) NewListByHomeRegionPager(ascLocation string, options *TopologyClientListByHomeRegionOptions) *runtime.Pager[TopologyClientListByHomeRegionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TopologyClientListByHomeRegionResponse]{
 		More: func(page TopologyClientListByHomeRegionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

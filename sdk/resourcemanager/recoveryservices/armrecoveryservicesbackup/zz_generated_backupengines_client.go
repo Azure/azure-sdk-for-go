@@ -120,12 +120,12 @@ func (client *BackupEnginesClient) getHandleResponse(resp *http.Response) (Backu
 	return result, nil
 }
 
-// List - Backup management servers registered to Recovery Services Vault. Returns a pageable list of servers.
+// NewListPager - Backup management servers registered to Recovery Services Vault. Returns a pageable list of servers.
 // If the operation fails it returns an *azcore.ResponseError type.
 // vaultName - The name of the recovery services vault.
 // resourceGroupName - The name of the resource group where the recovery services vault is present.
 // options - BackupEnginesClientListOptions contains the optional parameters for the BackupEnginesClient.List method.
-func (client *BackupEnginesClient) List(vaultName string, resourceGroupName string, options *BackupEnginesClientListOptions) *runtime.Pager[BackupEnginesClientListResponse] {
+func (client *BackupEnginesClient) NewListPager(vaultName string, resourceGroupName string, options *BackupEnginesClientListOptions) *runtime.Pager[BackupEnginesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BackupEnginesClientListResponse]{
 		More: func(page BackupEnginesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

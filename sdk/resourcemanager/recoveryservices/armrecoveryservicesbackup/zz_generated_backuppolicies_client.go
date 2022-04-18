@@ -54,13 +54,13 @@ func NewBackupPoliciesClient(subscriptionID string, credential azcore.TokenCrede
 	return client, nil
 }
 
-// List - Lists of backup policies associated with Recovery Services Vault. API provides pagination parameters to fetch scoped
-// results.
+// NewListPager - Lists of backup policies associated with Recovery Services Vault. API provides pagination parameters to
+// fetch scoped results.
 // If the operation fails it returns an *azcore.ResponseError type.
 // vaultName - The name of the recovery services vault.
 // resourceGroupName - The name of the resource group where the recovery services vault is present.
 // options - BackupPoliciesClientListOptions contains the optional parameters for the BackupPoliciesClient.List method.
-func (client *BackupPoliciesClient) List(vaultName string, resourceGroupName string, options *BackupPoliciesClientListOptions) *runtime.Pager[BackupPoliciesClientListResponse] {
+func (client *BackupPoliciesClient) NewListPager(vaultName string, resourceGroupName string, options *BackupPoliciesClientListOptions) *runtime.Pager[BackupPoliciesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BackupPoliciesClientListResponse]{
 		More: func(page BackupPoliciesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

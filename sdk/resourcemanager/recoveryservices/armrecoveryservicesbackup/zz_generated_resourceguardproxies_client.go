@@ -54,13 +54,13 @@ func NewResourceGuardProxiesClient(subscriptionID string, credential azcore.Toke
 	return client, nil
 }
 
-// Get - List the ResourceGuardProxies under vault
+// NewGetPager - List the ResourceGuardProxies under vault
 // If the operation fails it returns an *azcore.ResponseError type.
 // vaultName - The name of the recovery services vault.
 // resourceGroupName - The name of the resource group where the recovery services vault is present.
 // options - ResourceGuardProxiesClientGetOptions contains the optional parameters for the ResourceGuardProxiesClient.Get
 // method.
-func (client *ResourceGuardProxiesClient) Get(vaultName string, resourceGroupName string, options *ResourceGuardProxiesClientGetOptions) *runtime.Pager[ResourceGuardProxiesClientGetResponse] {
+func (client *ResourceGuardProxiesClient) NewGetPager(vaultName string, resourceGroupName string, options *ResourceGuardProxiesClientGetOptions) *runtime.Pager[ResourceGuardProxiesClientGetResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourceGuardProxiesClientGetResponse]{
 		More: func(page ResourceGuardProxiesClientGetResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

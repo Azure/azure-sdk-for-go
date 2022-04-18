@@ -54,13 +54,13 @@ func NewBackupProtectedItemsClient(subscriptionID string, credential azcore.Toke
 	return client, nil
 }
 
-// List - Provides a pageable list of all items that are backed up within a vault.
+// NewListPager - Provides a pageable list of all items that are backed up within a vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 // vaultName - The name of the recovery services vault.
 // resourceGroupName - The name of the resource group where the recovery services vault is present.
 // options - BackupProtectedItemsClientListOptions contains the optional parameters for the BackupProtectedItemsClient.List
 // method.
-func (client *BackupProtectedItemsClient) List(vaultName string, resourceGroupName string, options *BackupProtectedItemsClientListOptions) *runtime.Pager[BackupProtectedItemsClientListResponse] {
+func (client *BackupProtectedItemsClient) NewListPager(vaultName string, resourceGroupName string, options *BackupProtectedItemsClientListOptions) *runtime.Pager[BackupProtectedItemsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BackupProtectedItemsClientListResponse]{
 		More: func(page BackupProtectedItemsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

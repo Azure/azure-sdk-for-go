@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/ResourceGuardProxyCRUD/ListResourceGuardProxy.json
-func ExampleResourceGuardProxiesClient_Get() {
+func ExampleResourceGuardProxiesClient_NewGetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleResourceGuardProxiesClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.Get("<vault-name>",
+	pager := client.NewGetPager("<vault-name>",
 		"<resource-group-name>",
 		nil)
 	for pager.More() {

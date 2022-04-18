@@ -10,7 +10,7 @@ package armservicelinker
 
 const (
 	moduleName    = "armservicelinker"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.4.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -174,20 +174,20 @@ func PossibleVNetSolutionTypeValues() []VNetSolutionType {
 	}
 }
 
-// ValidationItemResult - The result of validation
-type ValidationItemResult string
+// ValidationResultStatus - The result of validation
+type ValidationResultStatus string
 
 const (
-	ValidationItemResultFailed  ValidationItemResult = "failed"
-	ValidationItemResultSuccess ValidationItemResult = "success"
-	ValidationItemResultWarning ValidationItemResult = "warning"
+	ValidationResultStatusFailed  ValidationResultStatus = "failed"
+	ValidationResultStatusSuccess ValidationResultStatus = "success"
+	ValidationResultStatusWarning ValidationResultStatus = "warning"
 )
 
-// PossibleValidationItemResultValues returns the possible values for the ValidationItemResult const type.
-func PossibleValidationItemResultValues() []ValidationItemResult {
-	return []ValidationItemResult{
-		ValidationItemResultFailed,
-		ValidationItemResultSuccess,
-		ValidationItemResultWarning,
+// PossibleValidationResultStatusValues returns the possible values for the ValidationResultStatus const type.
+func PossibleValidationResultStatusValues() []ValidationResultStatus {
+	return []ValidationResultStatus{
+		ValidationResultStatusFailed,
+		ValidationResultStatusSuccess,
+		ValidationResultStatusWarning,
 	}
 }

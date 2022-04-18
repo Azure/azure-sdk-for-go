@@ -264,12 +264,12 @@ func (client *ProfilesClient) getHandleResponse(resp *http.Response) (ProfilesCl
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all Traffic Manager profiles within a resource group.
+// NewListByResourceGroupPager - Lists all Traffic Manager profiles within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group containing the Traffic Manager profiles to be listed.
 // options - ProfilesClientListByResourceGroupOptions contains the optional parameters for the ProfilesClient.ListByResourceGroup
 // method.
-func (client *ProfilesClient) ListByResourceGroup(resourceGroupName string, options *ProfilesClientListByResourceGroupOptions) *runtime.Pager[ProfilesClientListByResourceGroupResponse] {
+func (client *ProfilesClient) NewListByResourceGroupPager(resourceGroupName string, options *ProfilesClientListByResourceGroupOptions) *runtime.Pager[ProfilesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProfilesClientListByResourceGroupResponse]{
 		More: func(page ProfilesClientListByResourceGroupResponse) bool {
 			return false
@@ -322,11 +322,11 @@ func (client *ProfilesClient) listByResourceGroupHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListBySubscription - Lists all Traffic Manager profiles within a subscription.
+// NewListBySubscriptionPager - Lists all Traffic Manager profiles within a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ProfilesClientListBySubscriptionOptions contains the optional parameters for the ProfilesClient.ListBySubscription
 // method.
-func (client *ProfilesClient) ListBySubscription(options *ProfilesClientListBySubscriptionOptions) *runtime.Pager[ProfilesClientListBySubscriptionResponse] {
+func (client *ProfilesClient) NewListBySubscriptionPager(options *ProfilesClientListBySubscriptionOptions) *runtime.Pager[ProfilesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProfilesClientListBySubscriptionResponse]{
 		More: func(page ProfilesClientListBySubscriptionResponse) bool {
 			return false

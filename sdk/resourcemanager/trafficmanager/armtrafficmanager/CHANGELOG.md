@@ -1,5 +1,17 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*ProfilesClient.ListBySubscription` has been removed
+- Function `*ProfilesClient.ListByResourceGroup` has been removed
+
+### Features Added
+
+- New function `*ProfilesClient.NewListBySubscriptionPager(*ProfilesClientListBySubscriptionOptions) *runtime.Pager[ProfilesClientListBySubscriptionResponse]`
+- New function `*ProfilesClient.NewListByResourceGroupPager(string, *ProfilesClientListByResourceGroupOptions) *runtime.Pager[ProfilesClientListByResourceGroupResponse]`
+
+
 ## 0.3.0 (2022-04-13)
 ### Breaking Changes
 

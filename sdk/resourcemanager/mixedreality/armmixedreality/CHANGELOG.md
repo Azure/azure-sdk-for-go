@@ -1,5 +1,27 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*RemoteRenderingAccountsClient.ListByResourceGroup` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*RemoteRenderingAccountsClient.ListBySubscription` has been removed
+- Function `*ObjectAnchorsAccountsClient.ListBySubscription` has been removed
+- Function `*ObjectAnchorsAccountsClient.ListByResourceGroup` has been removed
+- Function `*SpatialAnchorsAccountsClient.ListBySubscription` has been removed
+- Function `*SpatialAnchorsAccountsClient.ListByResourceGroup` has been removed
+
+### Features Added
+
+- New function `*RemoteRenderingAccountsClient.NewListBySubscriptionPager(*RemoteRenderingAccountsClientListBySubscriptionOptions) *runtime.Pager[RemoteRenderingAccountsClientListBySubscriptionResponse]`
+- New function `*ObjectAnchorsAccountsClient.NewListBySubscriptionPager(*ObjectAnchorsAccountsClientListBySubscriptionOptions) *runtime.Pager[ObjectAnchorsAccountsClientListBySubscriptionResponse]`
+- New function `*SpatialAnchorsAccountsClient.NewListBySubscriptionPager(*SpatialAnchorsAccountsClientListBySubscriptionOptions) *runtime.Pager[SpatialAnchorsAccountsClientListBySubscriptionResponse]`
+- New function `*ObjectAnchorsAccountsClient.NewListByResourceGroupPager(string, *ObjectAnchorsAccountsClientListByResourceGroupOptions) *runtime.Pager[ObjectAnchorsAccountsClientListByResourceGroupResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*SpatialAnchorsAccountsClient.NewListByResourceGroupPager(string, *SpatialAnchorsAccountsClientListByResourceGroupOptions) *runtime.Pager[SpatialAnchorsAccountsClientListByResourceGroupResponse]`
+- New function `*RemoteRenderingAccountsClient.NewListByResourceGroupPager(string, *RemoteRenderingAccountsClientListByResourceGroupOptions) *runtime.Pager[RemoteRenderingAccountsClientListByResourceGroupResponse]`
+
+
 ## 0.3.0 (2022-04-12)
 ### Breaking Changes
 

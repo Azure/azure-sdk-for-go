@@ -214,12 +214,12 @@ func (client *ObjectAnchorsAccountsClient) getHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListByResourceGroup - List Resources by Resource Group
+// NewListByResourceGroupPager - List Resources by Resource Group
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure resource group.
 // options - ObjectAnchorsAccountsClientListByResourceGroupOptions contains the optional parameters for the ObjectAnchorsAccountsClient.ListByResourceGroup
 // method.
-func (client *ObjectAnchorsAccountsClient) ListByResourceGroup(resourceGroupName string, options *ObjectAnchorsAccountsClientListByResourceGroupOptions) *runtime.Pager[ObjectAnchorsAccountsClientListByResourceGroupResponse] {
+func (client *ObjectAnchorsAccountsClient) NewListByResourceGroupPager(resourceGroupName string, options *ObjectAnchorsAccountsClientListByResourceGroupOptions) *runtime.Pager[ObjectAnchorsAccountsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ObjectAnchorsAccountsClientListByResourceGroupResponse]{
 		More: func(page ObjectAnchorsAccountsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -278,11 +278,11 @@ func (client *ObjectAnchorsAccountsClient) listByResourceGroupHandleResponse(res
 	return result, nil
 }
 
-// ListBySubscription - List Object Anchors Accounts by Subscription
+// NewListBySubscriptionPager - List Object Anchors Accounts by Subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ObjectAnchorsAccountsClientListBySubscriptionOptions contains the optional parameters for the ObjectAnchorsAccountsClient.ListBySubscription
 // method.
-func (client *ObjectAnchorsAccountsClient) ListBySubscription(options *ObjectAnchorsAccountsClientListBySubscriptionOptions) *runtime.Pager[ObjectAnchorsAccountsClientListBySubscriptionResponse] {
+func (client *ObjectAnchorsAccountsClient) NewListBySubscriptionPager(options *ObjectAnchorsAccountsClientListBySubscriptionOptions) *runtime.Pager[ObjectAnchorsAccountsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ObjectAnchorsAccountsClientListBySubscriptionResponse]{
 		More: func(page ObjectAnchorsAccountsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

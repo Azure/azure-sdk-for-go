@@ -214,12 +214,12 @@ func (client *SpatialAnchorsAccountsClient) getHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListByResourceGroup - List Resources by Resource Group
+// NewListByResourceGroupPager - List Resources by Resource Group
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure resource group.
 // options - SpatialAnchorsAccountsClientListByResourceGroupOptions contains the optional parameters for the SpatialAnchorsAccountsClient.ListByResourceGroup
 // method.
-func (client *SpatialAnchorsAccountsClient) ListByResourceGroup(resourceGroupName string, options *SpatialAnchorsAccountsClientListByResourceGroupOptions) *runtime.Pager[SpatialAnchorsAccountsClientListByResourceGroupResponse] {
+func (client *SpatialAnchorsAccountsClient) NewListByResourceGroupPager(resourceGroupName string, options *SpatialAnchorsAccountsClientListByResourceGroupOptions) *runtime.Pager[SpatialAnchorsAccountsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SpatialAnchorsAccountsClientListByResourceGroupResponse]{
 		More: func(page SpatialAnchorsAccountsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -278,11 +278,11 @@ func (client *SpatialAnchorsAccountsClient) listByResourceGroupHandleResponse(re
 	return result, nil
 }
 
-// ListBySubscription - List Spatial Anchors Accounts by Subscription
+// NewListBySubscriptionPager - List Spatial Anchors Accounts by Subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SpatialAnchorsAccountsClientListBySubscriptionOptions contains the optional parameters for the SpatialAnchorsAccountsClient.ListBySubscription
 // method.
-func (client *SpatialAnchorsAccountsClient) ListBySubscription(options *SpatialAnchorsAccountsClientListBySubscriptionOptions) *runtime.Pager[SpatialAnchorsAccountsClientListBySubscriptionResponse] {
+func (client *SpatialAnchorsAccountsClient) NewListBySubscriptionPager(options *SpatialAnchorsAccountsClientListBySubscriptionOptions) *runtime.Pager[SpatialAnchorsAccountsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SpatialAnchorsAccountsClientListBySubscriptionResponse]{
 		More: func(page SpatialAnchorsAccountsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

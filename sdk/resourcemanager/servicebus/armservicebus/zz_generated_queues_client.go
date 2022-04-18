@@ -418,14 +418,14 @@ func (client *QueuesClient) getAuthorizationRuleHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListAuthorizationRules - Gets all authorization rules for a queue.
+// NewListAuthorizationRulesPager - Gets all authorization rules for a queue.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // queueName - The queue name.
 // options - QueuesClientListAuthorizationRulesOptions contains the optional parameters for the QueuesClient.ListAuthorizationRules
 // method.
-func (client *QueuesClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, queueName string, options *QueuesClientListAuthorizationRulesOptions) *runtime.Pager[QueuesClientListAuthorizationRulesResponse] {
+func (client *QueuesClient) NewListAuthorizationRulesPager(resourceGroupName string, namespaceName string, queueName string, options *QueuesClientListAuthorizationRulesOptions) *runtime.Pager[QueuesClientListAuthorizationRulesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[QueuesClientListAuthorizationRulesResponse]{
 		More: func(page QueuesClientListAuthorizationRulesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -492,12 +492,12 @@ func (client *QueuesClient) listAuthorizationRulesHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListByNamespace - Gets the queues within a namespace.
+// NewListByNamespacePager - Gets the queues within a namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // options - QueuesClientListByNamespaceOptions contains the optional parameters for the QueuesClient.ListByNamespace method.
-func (client *QueuesClient) ListByNamespace(resourceGroupName string, namespaceName string, options *QueuesClientListByNamespaceOptions) *runtime.Pager[QueuesClientListByNamespaceResponse] {
+func (client *QueuesClient) NewListByNamespacePager(resourceGroupName string, namespaceName string, options *QueuesClientListByNamespaceOptions) *runtime.Pager[QueuesClientListByNamespaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[QueuesClientListByNamespaceResponse]{
 		More: func(page QueuesClientListByNamespaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

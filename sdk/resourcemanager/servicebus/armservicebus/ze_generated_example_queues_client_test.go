@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/Queues/SBQueueAuthorizationRuleListAll.json
-func ExampleQueuesClient_ListAuthorizationRules() {
+func ExampleQueuesClient_NewListAuthorizationRulesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleQueuesClient_ListAuthorizationRules() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListAuthorizationRules("<resource-group-name>",
+	pager := client.NewListAuthorizationRulesPager("<resource-group-name>",
 		"<namespace-name>",
 		"<queue-name>",
 		nil)
@@ -191,7 +191,7 @@ func ExampleQueuesClient_RegenerateKeys() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/Queues/SBQueueListByNameSpace.json
-func ExampleQueuesClient_ListByNamespace() {
+func ExampleQueuesClient_NewListByNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -203,7 +203,7 @@ func ExampleQueuesClient_ListByNamespace() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByNamespace("<resource-group-name>",
+	pager := client.NewListByNamespacePager("<resource-group-name>",
 		"<namespace-name>",
 		&armservicebus.QueuesClientListByNamespaceOptions{Skip: nil,
 			Top: nil,

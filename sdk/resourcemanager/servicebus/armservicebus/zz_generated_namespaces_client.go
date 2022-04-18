@@ -569,10 +569,10 @@ func (client *NamespacesClient) getNetworkRuleSetHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// List - Gets all the available namespaces within the subscription, irrespective of the resource groups.
+// NewListPager - Gets all the available namespaces within the subscription, irrespective of the resource groups.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - NamespacesClientListOptions contains the optional parameters for the NamespacesClient.List method.
-func (client *NamespacesClient) List(options *NamespacesClientListOptions) *runtime.Pager[NamespacesClientListResponse] {
+func (client *NamespacesClient) NewListPager(options *NamespacesClientListOptions) *runtime.Pager[NamespacesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[NamespacesClientListResponse]{
 		More: func(page NamespacesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -627,13 +627,13 @@ func (client *NamespacesClient) listHandleResponse(resp *http.Response) (Namespa
 	return result, nil
 }
 
-// ListAuthorizationRules - Gets the authorization rules for a namespace.
+// NewListAuthorizationRulesPager - Gets the authorization rules for a namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // options - NamespacesClientListAuthorizationRulesOptions contains the optional parameters for the NamespacesClient.ListAuthorizationRules
 // method.
-func (client *NamespacesClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, options *NamespacesClientListAuthorizationRulesOptions) *runtime.Pager[NamespacesClientListAuthorizationRulesResponse] {
+func (client *NamespacesClient) NewListAuthorizationRulesPager(resourceGroupName string, namespaceName string, options *NamespacesClientListAuthorizationRulesOptions) *runtime.Pager[NamespacesClientListAuthorizationRulesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[NamespacesClientListAuthorizationRulesResponse]{
 		More: func(page NamespacesClientListAuthorizationRulesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -696,12 +696,12 @@ func (client *NamespacesClient) listAuthorizationRulesHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListByResourceGroup - Gets the available namespaces within a resource group.
+// NewListByResourceGroupPager - Gets the available namespaces within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // options - NamespacesClientListByResourceGroupOptions contains the optional parameters for the NamespacesClient.ListByResourceGroup
 // method.
-func (client *NamespacesClient) ListByResourceGroup(resourceGroupName string, options *NamespacesClientListByResourceGroupOptions) *runtime.Pager[NamespacesClientListByResourceGroupResponse] {
+func (client *NamespacesClient) NewListByResourceGroupPager(resourceGroupName string, options *NamespacesClientListByResourceGroupOptions) *runtime.Pager[NamespacesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[NamespacesClientListByResourceGroupResponse]{
 		More: func(page NamespacesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -820,13 +820,13 @@ func (client *NamespacesClient) listKeysHandleResponse(resp *http.Response) (Nam
 	return result, nil
 }
 
-// ListNetworkRuleSets - Gets list of NetworkRuleSet for a Namespace.
+// NewListNetworkRuleSetsPager - Gets list of NetworkRuleSet for a Namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // options - NamespacesClientListNetworkRuleSetsOptions contains the optional parameters for the NamespacesClient.ListNetworkRuleSets
 // method.
-func (client *NamespacesClient) ListNetworkRuleSets(resourceGroupName string, namespaceName string, options *NamespacesClientListNetworkRuleSetsOptions) *runtime.Pager[NamespacesClientListNetworkRuleSetsResponse] {
+func (client *NamespacesClient) NewListNetworkRuleSetsPager(resourceGroupName string, namespaceName string, options *NamespacesClientListNetworkRuleSetsOptions) *runtime.Pager[NamespacesClientListNetworkRuleSetsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[NamespacesClientListNetworkRuleSetsResponse]{
 		More: func(page NamespacesClientListNetworkRuleSetsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

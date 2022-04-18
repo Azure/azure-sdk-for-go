@@ -278,33 +278,28 @@ func main() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("authentication failure: %+v", err)
-        return
 	}
 
     resourceGroup, err := createResourceGroup(ctx, cred)
     if err != nil {
         log.Fatalf("cannot create resource group: %+v", err)
-        return
     }
     log.Printf("Resource Group %s created", *resourceGroup.ResourceGroup.ID)
 
     updatedRG, err := updateResourceGroup(ctx, cred)
     if err != nil {
         log.Fatalf("cannot update resource group: %+v", err)
-        return
     }
     log.Printf("Resource Group %s updated", *updatedRG.ResourceGroup.ID)
 
     rgList, err := listResourceGroups(ctx, cred)
     if err != nil {
         log.Fatalf("cannot list resource group: %+v", err)
-        return
     }
     log.Printf("We totally have %d resource groups", len(rgList))
 
     if err := deleteResourceGroup(ctx, cred); err != nil {
         log.Fatalf("cannot delete resource group: %+v", err)
-        return
     }
     log.Printf("Resource Group deleted")
 }

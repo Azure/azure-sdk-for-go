@@ -55,7 +55,7 @@ For detailed information on the benefits of using the new authentication types, 
 
 There are some minor changes in the error handling.
 
-- When there is an error in the SDK request, in the previous version (`services/**/mgmt/**`), the return value will all be non-nil, and you can get the raw HTTP response from the response value. In the latest version (`sdk/resourcemanager/**/arm**`), the first return value will be empty and you need to convert the error to the `azcore.HTTPResponse` interface to get the raw HTTP response. When the request is successful and there is no error returned, you can get the raw HTTP response from request context.
+- When there is an error in the SDK request, in the previous version (`services/**/mgmt/**`), the return value will all be non-nil, and you can get the raw HTTP response from the response value. In the latest version (`sdk/resourcemanager/**/arm**`), the first return value will be empty and you need to convert the error to the `azcore.ResponseError` interface to get the raw HTTP response. When the request is successful and there is no error returned, you can get the raw HTTP response from request context.
 
 **Previous version (`services/**/mgmt/**`)**
 
@@ -67,20 +67,6 @@ if err != nil {
 ```
 
 **Latest version (`sdk/resourcemanager/**/arm**`)**
-
-```go
-resp, err := resourceGroupsClient.CreateOrUpdate(context.Background(), resourceGroupName, resourceGroupParameters, nil)
-if err != nil {
-    var respErr azcore.ResponseError
-    if errors.As(err, &respErr) {
-        log.Fatalf("Status code: %d", respErr.RawResponse.StatusCode)
-    } else {
-	    log.Fatalf("Other error: %+v", err)
-    }
-}
-```
-
-**When there is no error in latest version (`sdk/resourcemanager/**/arm**`)**
 
 ```go
 var rawResponse *http.Response
@@ -109,16 +95,13 @@ In the latest version, if a request is a long-running operation, the function na
 future, err := virtualMachinesClient.CreateOrUpdate(context.Background(), "<resource group name>", "<virtual machine name>", param)
 if err != nil {
 	log.Fatal(err)
-    return
 }
 if err := future.WaitForCompletionRef(context.Background(), virtualMachinesClient.Client); err != nil {
 	log.Fatal(err)
-    return
 }
 vm, err := future.Result(virtualMachinesClient)
 if err != nil {
 	log.Fatal(err)
-    return
 }
 log.Printf("virtual machine ID: %v", *vm.ID)
 ```
@@ -129,12 +112,10 @@ log.Printf("virtual machine ID: %v", *vm.ID)
 poller, err := client.BeginCreateOrUpdate(context.Background(), "<resource group name>", "<virtual machine name>", param, nil)
 if err != nil {
 	log.Fatal(err)
-    return
 }
 resp, err := poller.PollUntilDone(context.Background(), 30*time.Second)
 if err != nil {
     log.Fatal(err)
-    return
 }
 log.Printf("virtual machine ID: %v", *resp.VirtualMachine.ID)
 ```
@@ -151,7 +132,6 @@ In the latest version, if a request is a paginated operation, a struct `**Pager`
 pager, err := resourceGroupsClient.List(context.Background(), "", nil)
 if err != nil {
     log.Fatal(err)
-    return
 }
 for p.NotDone() {
     for _, v := range pager.Values() {
@@ -159,7 +139,6 @@ for p.NotDone() {
     }
     if err := pager.NextWithContext(context.Background()); err != nil   {
         log.Fatal(err)
-        return
     }
 }
 ```
@@ -172,7 +151,6 @@ for pager.More() {
     nextResult, err := pager.NextPage(ctx)
     if err != nil {
         log.Fatalf("failed to advance page: %v", err)
-        return
     }
     for _, rg := range nextResult.Value {
         log.Printf("resource group ID: %s\n", *rg.ID)

@@ -116,7 +116,7 @@ func ExampleSharedPrivateLinkResourcesClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/ListSharedPrivateLinkResourcesByService.json
-func ExampleSharedPrivateLinkResourcesClient_ListByService() {
+func ExampleSharedPrivateLinkResourcesClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -128,7 +128,7 @@ func ExampleSharedPrivateLinkResourcesClient_ListByService() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByService("<resource-group-name>",
+	pager := client.NewListByServicePager("<resource-group-name>",
 		"<search-service-name>",
 		&armsearch.SearchManagementRequestOptions{ClientRequestID: nil},
 		nil)

@@ -44,7 +44,7 @@ func ExampleQueryKeysClient_Create() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/SearchListQueryKeysBySearchService.json
-func ExampleQueryKeysClient_ListBySearchService() {
+func ExampleQueryKeysClient_NewListBySearchServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -56,7 +56,7 @@ func ExampleQueryKeysClient_ListBySearchService() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySearchService("<resource-group-name>",
+	pager := client.NewListBySearchServicePager("<resource-group-name>",
 		"<search-service-name>",
 		&armsearch.SearchManagementRequestOptions{ClientRequestID: nil},
 		nil)

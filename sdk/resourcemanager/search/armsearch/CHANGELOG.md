@@ -1,5 +1,27 @@
 # Release History
 
+## 0.5.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*ServicesClient.ListByResourceGroup` has been removed
+- Function `*QueryKeysClient.ListBySearchService` has been removed
+- Function `*ServicesClient.ListBySubscription` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*PrivateEndpointConnectionsClient.ListByService` has been removed
+- Function `*PrivateLinkResourcesClient.ListSupported` has been removed
+- Function `*SharedPrivateLinkResourcesClient.ListByService` has been removed
+
+### Features Added
+
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*ServicesClient.NewListByResourceGroupPager(string, *SearchManagementRequestOptions, *ServicesClientListByResourceGroupOptions) *runtime.Pager[ServicesClientListByResourceGroupResponse]`
+- New function `*ServicesClient.NewListBySubscriptionPager(*SearchManagementRequestOptions, *ServicesClientListBySubscriptionOptions) *runtime.Pager[ServicesClientListBySubscriptionResponse]`
+- New function `*QueryKeysClient.NewListBySearchServicePager(string, string, *SearchManagementRequestOptions, *QueryKeysClientListBySearchServiceOptions) *runtime.Pager[QueryKeysClientListBySearchServiceResponse]`
+- New function `*PrivateLinkResourcesClient.NewListSupportedPager(string, string, *SearchManagementRequestOptions, *PrivateLinkResourcesClientListSupportedOptions) *runtime.Pager[PrivateLinkResourcesClientListSupportedResponse]`
+- New function `*PrivateEndpointConnectionsClient.NewListByServicePager(string, string, *SearchManagementRequestOptions, *PrivateEndpointConnectionsClientListByServiceOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByServiceResponse]`
+- New function `*SharedPrivateLinkResourcesClient.NewListByServicePager(string, string, *SearchManagementRequestOptions, *SharedPrivateLinkResourcesClientListByServiceOptions) *runtime.Pager[SharedPrivateLinkResourcesClientListByServiceResponse]`
+
+
 ## 0.4.0 (2022-04-13)
 ### Breaking Changes
 

@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/ListSupportedPrivateLinkResources.json
-func ExamplePrivateLinkResourcesClient_ListSupported() {
+func ExamplePrivateLinkResourcesClient_NewListSupportedPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExamplePrivateLinkResourcesClient_ListSupported() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListSupported("<resource-group-name>",
+	pager := client.NewListSupportedPager("<resource-group-name>",
 		"<search-service-name>",
 		&armsearch.SearchManagementRequestOptions{ClientRequestID: nil},
 		nil)

@@ -295,7 +295,7 @@ func (client *ServicesClient) getHandleResponse(resp *http.Response) (ServicesCl
 	return result, nil
 }
 
-// ListByResourceGroup - Gets a list of all search services in the given resource group.
+// NewListByResourceGroupPager - Gets a list of all search services in the given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the current subscription. You can obtain this value from the
 // Azure Resource Manager API or the portal.
@@ -303,7 +303,7 @@ func (client *ServicesClient) getHandleResponse(resp *http.Response) (ServicesCl
 // method.
 // options - ServicesClientListByResourceGroupOptions contains the optional parameters for the ServicesClient.ListByResourceGroup
 // method.
-func (client *ServicesClient) ListByResourceGroup(resourceGroupName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *ServicesClientListByResourceGroupOptions) *runtime.Pager[ServicesClientListByResourceGroupResponse] {
+func (client *ServicesClient) NewListByResourceGroupPager(resourceGroupName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *ServicesClientListByResourceGroupOptions) *runtime.Pager[ServicesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServicesClientListByResourceGroupResponse]{
 		More: func(page ServicesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -365,13 +365,13 @@ func (client *ServicesClient) listByResourceGroupHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListBySubscription - Gets a list of all search services in the given subscription.
+// NewListBySubscriptionPager - Gets a list of all search services in the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // SearchManagementRequestOptions - SearchManagementRequestOptions contains a group of parameters for the AdminKeysClient.Get
 // method.
 // options - ServicesClientListBySubscriptionOptions contains the optional parameters for the ServicesClient.ListBySubscription
 // method.
-func (client *ServicesClient) ListBySubscription(searchManagementRequestOptions *SearchManagementRequestOptions, options *ServicesClientListBySubscriptionOptions) *runtime.Pager[ServicesClientListBySubscriptionResponse] {
+func (client *ServicesClient) NewListBySubscriptionPager(searchManagementRequestOptions *SearchManagementRequestOptions, options *ServicesClientListBySubscriptionOptions) *runtime.Pager[ServicesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServicesClientListBySubscriptionResponse]{
 		More: func(page ServicesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

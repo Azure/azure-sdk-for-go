@@ -179,7 +179,7 @@ func (client *QueryKeysClient) deleteCreateRequest(ctx context.Context, resource
 	return req, nil
 }
 
-// ListBySearchService - Returns the list of query API keys for the given Azure Cognitive Search service.
+// NewListBySearchServicePager - Returns the list of query API keys for the given Azure Cognitive Search service.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the current subscription. You can obtain this value from the
 // Azure Resource Manager API or the portal.
@@ -188,7 +188,7 @@ func (client *QueryKeysClient) deleteCreateRequest(ctx context.Context, resource
 // method.
 // options - QueryKeysClientListBySearchServiceOptions contains the optional parameters for the QueryKeysClient.ListBySearchService
 // method.
-func (client *QueryKeysClient) ListBySearchService(resourceGroupName string, searchServiceName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *QueryKeysClientListBySearchServiceOptions) *runtime.Pager[QueryKeysClientListBySearchServiceResponse] {
+func (client *QueryKeysClient) NewListBySearchServicePager(resourceGroupName string, searchServiceName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *QueryKeysClientListBySearchServiceOptions) *runtime.Pager[QueryKeysClientListBySearchServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[QueryKeysClientListBySearchServiceResponse]{
 		More: func(page QueryKeysClientListBySearchServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

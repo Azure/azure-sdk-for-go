@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCachePatchSchedulesList.json
-func ExamplePatchSchedulesClient_ListByRedisResource() {
+func ExamplePatchSchedulesClient_NewListByRedisResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExamplePatchSchedulesClient_ListByRedisResource() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByRedisResource("<resource-group-name>",
+	pager := client.NewListByRedisResourcePager("<resource-group-name>",
 		"<cache-name>",
 		nil)
 	for pager.More() {

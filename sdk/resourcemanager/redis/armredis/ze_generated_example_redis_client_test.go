@@ -45,7 +45,7 @@ func ExampleClient_CheckNameAvailability() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCacheListUpgradeNotifications.json
-func ExampleClient_ListUpgradeNotifications() {
+func ExampleClient_NewListUpgradeNotificationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -57,7 +57,7 @@ func ExampleClient_ListUpgradeNotifications() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListUpgradeNotifications("<resource-group-name>",
+	pager := client.NewListUpgradeNotificationsPager("<resource-group-name>",
 		"<name>",
 		5000,
 		nil)
@@ -211,7 +211,7 @@ func ExampleClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCacheListByResourceGroup.json
-func ExampleClient_ListByResourceGroup() {
+func ExampleClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -223,7 +223,7 @@ func ExampleClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -239,7 +239,7 @@ func ExampleClient_ListByResourceGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCacheList.json
-func ExampleClient_ListBySubscription() {
+func ExampleClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -251,7 +251,7 @@ func ExampleClient_ListBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription(nil)
+	pager := client.NewListBySubscriptionPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

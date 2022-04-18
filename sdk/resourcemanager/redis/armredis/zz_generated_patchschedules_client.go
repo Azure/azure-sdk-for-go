@@ -228,13 +228,13 @@ func (client *PatchSchedulesClient) getHandleResponse(resp *http.Response) (Patc
 	return result, nil
 }
 
-// ListByRedisResource - Gets all patch schedules in the specified redis cache (there is only one).
+// NewListByRedisResourcePager - Gets all patch schedules in the specified redis cache (there is only one).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // cacheName - The name of the Redis cache.
 // options - PatchSchedulesClientListByRedisResourceOptions contains the optional parameters for the PatchSchedulesClient.ListByRedisResource
 // method.
-func (client *PatchSchedulesClient) ListByRedisResource(resourceGroupName string, cacheName string, options *PatchSchedulesClientListByRedisResourceOptions) *runtime.Pager[PatchSchedulesClientListByRedisResourceResponse] {
+func (client *PatchSchedulesClient) NewListByRedisResourcePager(resourceGroupName string, cacheName string, options *PatchSchedulesClientListByRedisResourceOptions) *runtime.Pager[PatchSchedulesClientListByRedisResourceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PatchSchedulesClientListByRedisResourceResponse]{
 		More: func(page PatchSchedulesClientListByRedisResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

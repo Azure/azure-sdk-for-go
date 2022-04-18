@@ -448,11 +448,11 @@ func (client *Client) importDataCreateRequest(ctx context.Context, resourceGroup
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// ListByResourceGroup - Lists all Redis caches in a resource group.
+// NewListByResourceGroupPager - Lists all Redis caches in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - ClientListByResourceGroupOptions contains the optional parameters for the Client.ListByResourceGroup method.
-func (client *Client) ListByResourceGroup(resourceGroupName string, options *ClientListByResourceGroupOptions) *runtime.Pager[ClientListByResourceGroupResponse] {
+func (client *Client) NewListByResourceGroupPager(resourceGroupName string, options *ClientListByResourceGroupOptions) *runtime.Pager[ClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClientListByResourceGroupResponse]{
 		More: func(page ClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -511,10 +511,10 @@ func (client *Client) listByResourceGroupHandleResponse(resp *http.Response) (Cl
 	return result, nil
 }
 
-// ListBySubscription - Gets all Redis caches in the specified subscription.
+// NewListBySubscriptionPager - Gets all Redis caches in the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ClientListBySubscriptionOptions contains the optional parameters for the Client.ListBySubscription method.
-func (client *Client) ListBySubscription(options *ClientListBySubscriptionOptions) *runtime.Pager[ClientListBySubscriptionResponse] {
+func (client *Client) NewListBySubscriptionPager(options *ClientListBySubscriptionOptions) *runtime.Pager[ClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClientListBySubscriptionResponse]{
 		More: func(page ClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -624,14 +624,14 @@ func (client *Client) listKeysHandleResponse(resp *http.Response) (ClientListKey
 	return result, nil
 }
 
-// ListUpgradeNotifications - Gets any upgrade notifications for a Redis cache.
+// NewListUpgradeNotificationsPager - Gets any upgrade notifications for a Redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // name - The name of the Redis cache.
 // history - how many minutes in past to look for upgrade notifications
 // options - ClientListUpgradeNotificationsOptions contains the optional parameters for the Client.ListUpgradeNotifications
 // method.
-func (client *Client) ListUpgradeNotifications(resourceGroupName string, name string, history float64, options *ClientListUpgradeNotificationsOptions) *runtime.Pager[ClientListUpgradeNotificationsResponse] {
+func (client *Client) NewListUpgradeNotificationsPager(resourceGroupName string, name string, history float64, options *ClientListUpgradeNotificationsOptions) *runtime.Pager[ClientListUpgradeNotificationsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClientListUpgradeNotificationsResponse]{
 		More: func(page ClientListUpgradeNotificationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

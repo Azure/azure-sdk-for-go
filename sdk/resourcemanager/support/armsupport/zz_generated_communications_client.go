@@ -227,7 +227,7 @@ func (client *CommunicationsClient) getHandleResponse(resp *http.Response) (Comm
 	return result, nil
 }
 
-// List - Lists all communications (attachments not included) for a support ticket.
+// NewListPager - Lists all communications (attachments not included) for a support ticket.
 // You can also filter support ticket communications by CreatedDate or CommunicationType using the $filter parameter. The
 // only type of communication supported today is Web. Output will be a paged result
 // with nextLink, using which you can retrieve the next set of Communication results.
@@ -236,7 +236,7 @@ func (client *CommunicationsClient) getHandleResponse(resp *http.Response) (Comm
 // If the operation fails it returns an *azcore.ResponseError type.
 // supportTicketName - Support ticket name.
 // options - CommunicationsClientListOptions contains the optional parameters for the CommunicationsClient.List method.
-func (client *CommunicationsClient) List(supportTicketName string, options *CommunicationsClientListOptions) *runtime.Pager[CommunicationsClientListResponse] {
+func (client *CommunicationsClient) NewListPager(supportTicketName string, options *CommunicationsClientListOptions) *runtime.Pager[CommunicationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CommunicationsClientListResponse]{
 		More: func(page CommunicationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

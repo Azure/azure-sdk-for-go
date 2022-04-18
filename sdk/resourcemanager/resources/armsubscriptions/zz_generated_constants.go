@@ -10,7 +10,7 @@ package armsubscriptions
 
 const (
 	moduleName    = "armsubscriptions"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v0.4.1"
 )
 
 // LocationType - The location type.

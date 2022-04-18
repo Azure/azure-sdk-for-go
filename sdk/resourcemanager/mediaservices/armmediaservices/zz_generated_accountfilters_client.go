@@ -227,12 +227,12 @@ func (client *AccountFiltersClient) getHandleResponse(resp *http.Response) (Acco
 	return result, nil
 }
 
-// List - List Account Filters in the Media Services account.
+// NewListPager - List Account Filters in the Media Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // options - AccountFiltersClientListOptions contains the optional parameters for the AccountFiltersClient.List method.
-func (client *AccountFiltersClient) List(resourceGroupName string, accountName string, options *AccountFiltersClientListOptions) *runtime.Pager[AccountFiltersClientListResponse] {
+func (client *AccountFiltersClient) NewListPager(resourceGroupName string, accountName string, options *AccountFiltersClientListOptions) *runtime.Pager[AccountFiltersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccountFiltersClientListResponse]{
 		More: func(page AccountFiltersClientListResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0

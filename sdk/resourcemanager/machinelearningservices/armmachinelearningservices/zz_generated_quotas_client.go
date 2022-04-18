@@ -54,11 +54,11 @@ func NewQuotasClient(subscriptionID string, credential azcore.TokenCredential, o
 	return client, nil
 }
 
-// List - Gets the currently assigned Workspace Quotas based on VMFamily.
+// NewListPager - Gets the currently assigned Workspace Quotas based on VMFamily.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - The location for which resource usage is queried.
 // options - QuotasClientListOptions contains the optional parameters for the QuotasClient.List method.
-func (client *QuotasClient) List(location string, options *QuotasClientListOptions) *runtime.Pager[QuotasClientListResponse] {
+func (client *QuotasClient) NewListPager(location string, options *QuotasClientListOptions) *runtime.Pager[QuotasClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[QuotasClientListResponse]{
 		More: func(page QuotasClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

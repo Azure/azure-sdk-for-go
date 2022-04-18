@@ -513,7 +513,7 @@ func (client *ConfigurationAssignmentsClient) getParentHandleResponse(resp *http
 	return result, nil
 }
 
-// List - List configurationAssignments for resource.
+// NewListPager - List configurationAssignments for resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Resource group name
 // providerName - Resource provider name
@@ -521,7 +521,7 @@ func (client *ConfigurationAssignmentsClient) getParentHandleResponse(resp *http
 // resourceName - Resource identifier
 // options - ConfigurationAssignmentsClientListOptions contains the optional parameters for the ConfigurationAssignmentsClient.List
 // method.
-func (client *ConfigurationAssignmentsClient) List(resourceGroupName string, providerName string, resourceType string, resourceName string, options *ConfigurationAssignmentsClientListOptions) *runtime.Pager[ConfigurationAssignmentsClientListResponse] {
+func (client *ConfigurationAssignmentsClient) NewListPager(resourceGroupName string, providerName string, resourceType string, resourceName string, options *ConfigurationAssignmentsClientListOptions) *runtime.Pager[ConfigurationAssignmentsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ConfigurationAssignmentsClientListResponse]{
 		More: func(page ConfigurationAssignmentsClientListResponse) bool {
 			return false
@@ -586,7 +586,7 @@ func (client *ConfigurationAssignmentsClient) listHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListParent - List configurationAssignments for resource.
+// NewListParentPager - List configurationAssignments for resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Resource group name
 // providerName - Resource provider name
@@ -596,7 +596,7 @@ func (client *ConfigurationAssignmentsClient) listHandleResponse(resp *http.Resp
 // resourceName - Resource identifier
 // options - ConfigurationAssignmentsClientListParentOptions contains the optional parameters for the ConfigurationAssignmentsClient.ListParent
 // method.
-func (client *ConfigurationAssignmentsClient) ListParent(resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, options *ConfigurationAssignmentsClientListParentOptions) *runtime.Pager[ConfigurationAssignmentsClientListParentResponse] {
+func (client *ConfigurationAssignmentsClient) NewListParentPager(resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, options *ConfigurationAssignmentsClientListParentOptions) *runtime.Pager[ConfigurationAssignmentsClientListParentResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ConfigurationAssignmentsClientListParentResponse]{
 		More: func(page ConfigurationAssignmentsClientListParentResponse) bool {
 			return false

@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/Compute/list.json
-func ExampleComputeClient_List() {
+func ExampleComputeClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleComputeClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-group-name>",
+	pager := client.NewListPager("<resource-group-name>",
 		"<workspace-name>",
 		&armmachinelearningservices.ComputeClientListOptions{Skip: nil})
 	for pager.More() {
@@ -206,7 +206,7 @@ func ExampleComputeClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/Compute/listNodes.json
-func ExampleComputeClient_ListNodes() {
+func ExampleComputeClient_NewListNodesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -218,7 +218,7 @@ func ExampleComputeClient_ListNodes() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListNodes("<resource-group-name>",
+	pager := client.NewListNodesPager("<resource-group-name>",
 		"<workspace-name>",
 		"<compute-name>",
 		nil)

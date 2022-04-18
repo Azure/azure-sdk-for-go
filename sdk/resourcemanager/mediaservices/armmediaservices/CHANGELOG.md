@@ -1,5 +1,41 @@
 # Release History
 
+## 0.6.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*LiveEventsClient.List` has been removed
+- Function `*AssetsClient.List` has been removed
+- Function `*Client.List` has been removed
+- Function `*StreamingEndpointsClient.List` has been removed
+- Function `*Client.ListBySubscription` has been removed
+- Function `*StreamingPoliciesClient.List` has been removed
+- Function `*StreamingLocatorsClient.List` has been removed
+- Function `*TransformsClient.List` has been removed
+- Function `*AccountFiltersClient.List` has been removed
+- Function `*LiveOutputsClient.List` has been removed
+- Function `*ContentKeyPoliciesClient.List` has been removed
+- Function `*TracksClient.List` has been removed
+- Function `*AssetFiltersClient.List` has been removed
+- Function `*JobsClient.List` has been removed
+
+### Features Added
+
+- New function `*ContentKeyPoliciesClient.NewListPager(string, string, *ContentKeyPoliciesClientListOptions) *runtime.Pager[ContentKeyPoliciesClientListResponse]`
+- New function `*StreamingPoliciesClient.NewListPager(string, string, *StreamingPoliciesClientListOptions) *runtime.Pager[StreamingPoliciesClientListResponse]`
+- New function `*LiveEventsClient.NewListPager(string, string, *LiveEventsClientListOptions) *runtime.Pager[LiveEventsClientListResponse]`
+- New function `*AccountFiltersClient.NewListPager(string, string, *AccountFiltersClientListOptions) *runtime.Pager[AccountFiltersClientListResponse]`
+- New function `*StreamingLocatorsClient.NewListPager(string, string, *StreamingLocatorsClientListOptions) *runtime.Pager[StreamingLocatorsClientListResponse]`
+- New function `*AssetsClient.NewListPager(string, string, *AssetsClientListOptions) *runtime.Pager[AssetsClientListResponse]`
+- New function `*JobsClient.NewListPager(string, string, string, *JobsClientListOptions) *runtime.Pager[JobsClientListResponse]`
+- New function `*Client.NewListPager(string, *ClientListOptions) *runtime.Pager[ClientListResponse]`
+- New function `*StreamingEndpointsClient.NewListPager(string, string, *StreamingEndpointsClientListOptions) *runtime.Pager[StreamingEndpointsClientListResponse]`
+- New function `*TracksClient.NewListPager(string, string, string, *TracksClientListOptions) *runtime.Pager[TracksClientListResponse]`
+- New function `*Client.NewListBySubscriptionPager(*ClientListBySubscriptionOptions) *runtime.Pager[ClientListBySubscriptionResponse]`
+- New function `*AssetFiltersClient.NewListPager(string, string, string, *AssetFiltersClientListOptions) *runtime.Pager[AssetFiltersClientListResponse]`
+- New function `*LiveOutputsClient.NewListPager(string, string, string, *LiveOutputsClientListOptions) *runtime.Pager[LiveOutputsClientListResponse]`
+- New function `*TransformsClient.NewListPager(string, string, *TransformsClientListOptions) *runtime.Pager[TransformsClientListResponse]`
+
+
 ## 0.5.0 (2022-04-12)
 ### Breaking Changes
 

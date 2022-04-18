@@ -91,7 +91,7 @@ func ExampleManagementGroupSubscriptionsClient_GetSubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/managementgroups/resource-manager/Microsoft.Management/stable/2021-04-01/examples/GetAllSubscriptionsFromManagementGroup.json
-func ExampleManagementGroupSubscriptionsClient_GetSubscriptionsUnderManagementGroup() {
+func ExampleManagementGroupSubscriptionsClient_NewGetSubscriptionsUnderManagementGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -103,7 +103,7 @@ func ExampleManagementGroupSubscriptionsClient_GetSubscriptionsUnderManagementGr
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.GetSubscriptionsUnderManagementGroup("<group-id>",
+	pager := client.NewGetSubscriptionsUnderManagementGroupPager("<group-id>",
 		&armmanagementgroups.ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupOptions{Skiptoken: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

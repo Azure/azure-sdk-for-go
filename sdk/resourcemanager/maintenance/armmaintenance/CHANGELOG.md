@@ -1,5 +1,35 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*ConfigurationsForResourceGroupClient.List` has been removed
+- Function `*ConfigurationAssignmentsWithinSubscriptionClient.List` has been removed
+- Function `*ConfigurationAssignmentsClient.ListParent` has been removed
+- Function `*UpdatesClient.List` has been removed
+- Function `*PublicMaintenanceConfigurationsClient.List` has been removed
+- Function `*UpdatesClient.ListParent` has been removed
+- Function `*ConfigurationAssignmentsClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*ApplyUpdateForResourceGroupClient.List` has been removed
+- Function `*ApplyUpdatesClient.List` has been removed
+- Function `*ConfigurationsClient.List` has been removed
+
+### Features Added
+
+- New function `*ConfigurationAssignmentsClient.NewListParentPager(string, string, string, string, string, string, *ConfigurationAssignmentsClientListParentOptions) *runtime.Pager[ConfigurationAssignmentsClientListParentResponse]`
+- New function `*ConfigurationsClient.NewListPager(*ConfigurationsClientListOptions) *runtime.Pager[ConfigurationsClientListResponse]`
+- New function `*ApplyUpdateForResourceGroupClient.NewListPager(string, *ApplyUpdateForResourceGroupClientListOptions) *runtime.Pager[ApplyUpdateForResourceGroupClientListResponse]`
+- New function `*ApplyUpdatesClient.NewListPager(*ApplyUpdatesClientListOptions) *runtime.Pager[ApplyUpdatesClientListResponse]`
+- New function `*UpdatesClient.NewListPager(string, string, string, string, *UpdatesClientListOptions) *runtime.Pager[UpdatesClientListResponse]`
+- New function `*ConfigurationsForResourceGroupClient.NewListPager(string, *ConfigurationsForResourceGroupClientListOptions) *runtime.Pager[ConfigurationsForResourceGroupClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*ConfigurationAssignmentsClient.NewListPager(string, string, string, string, *ConfigurationAssignmentsClientListOptions) *runtime.Pager[ConfigurationAssignmentsClientListResponse]`
+- New function `*UpdatesClient.NewListParentPager(string, string, string, string, string, string, *UpdatesClientListParentOptions) *runtime.Pager[UpdatesClientListParentResponse]`
+- New function `*ConfigurationAssignmentsWithinSubscriptionClient.NewListPager(*ConfigurationAssignmentsWithinSubscriptionClientListOptions) *runtime.Pager[ConfigurationAssignmentsWithinSubscriptionClientListResponse]`
+- New function `*PublicMaintenanceConfigurationsClient.NewListPager(*PublicMaintenanceConfigurationsClientListOptions) *runtime.Pager[PublicMaintenanceConfigurationsClientListResponse]`
+
+
 ## 0.3.0 (2022-04-12)
 ### Breaking Changes
 

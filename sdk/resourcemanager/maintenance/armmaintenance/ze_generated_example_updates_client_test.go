@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/Updates_ListParent.json
-func ExampleUpdatesClient_ListParent() {
+func ExampleUpdatesClient_NewListParentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleUpdatesClient_ListParent() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListParent("<resource-group-name>",
+	pager := client.NewListParentPager("<resource-group-name>",
 		"<provider-name>",
 		"<resource-parent-type>",
 		"<resource-parent-name>",
@@ -50,7 +50,7 @@ func ExampleUpdatesClient_ListParent() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/Updates_List.json
-func ExampleUpdatesClient_List() {
+func ExampleUpdatesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -62,7 +62,7 @@ func ExampleUpdatesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-group-name>",
+	pager := client.NewListPager("<resource-group-name>",
 		"<provider-name>",
 		"<resource-type>",
 		"<resource-name>",

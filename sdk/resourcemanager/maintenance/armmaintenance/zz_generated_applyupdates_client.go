@@ -347,10 +347,10 @@ func (client *ApplyUpdatesClient) getParentHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// List - Get Configuration records within a subscription
+// NewListPager - Get Configuration records within a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ApplyUpdatesClientListOptions contains the optional parameters for the ApplyUpdatesClient.List method.
-func (client *ApplyUpdatesClient) List(options *ApplyUpdatesClientListOptions) *runtime.Pager[ApplyUpdatesClientListResponse] {
+func (client *ApplyUpdatesClient) NewListPager(options *ApplyUpdatesClientListOptions) *runtime.Pager[ApplyUpdatesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ApplyUpdatesClientListResponse]{
 		More: func(page ApplyUpdatesClientListResponse) bool {
 			return false

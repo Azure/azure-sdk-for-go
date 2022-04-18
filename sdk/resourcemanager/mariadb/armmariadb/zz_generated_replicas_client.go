@@ -54,12 +54,12 @@ func NewReplicasClient(subscriptionID string, credential azcore.TokenCredential,
 	return client, nil
 }
 
-// ListByServer - List all the replicas for a given server.
+// NewListByServerPager - List all the replicas for a given server.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // options - ReplicasClientListByServerOptions contains the optional parameters for the ReplicasClient.ListByServer method.
-func (client *ReplicasClient) ListByServer(resourceGroupName string, serverName string, options *ReplicasClientListByServerOptions) *runtime.Pager[ReplicasClientListByServerResponse] {
+func (client *ReplicasClient) NewListByServerPager(resourceGroupName string, serverName string, options *ReplicasClientListByServerOptions) *runtime.Pager[ReplicasClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReplicasClientListByServerResponse]{
 		More: func(page ReplicasClientListByServerResponse) bool {
 			return false

@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/managedservices/resource-manager/Microsoft.ManagedServices/preview/2022-01-01-preview/examples/GetMarketplaceRegistrationDefinitions.json
-func ExampleMarketplaceRegistrationDefinitionsClient_List() {
+func ExampleMarketplaceRegistrationDefinitionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleMarketplaceRegistrationDefinitionsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<scope>",
+	pager := client.NewListPager("<scope>",
 		&armmanagedservices.MarketplaceRegistrationDefinitionsClientListOptions{Filter: to.Ptr("<filter>")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

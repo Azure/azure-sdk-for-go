@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/managementgroups/resource-manager/Microsoft.Management/stable/2021-04-01/examples/GetEntities.json
-func ExampleEntitiesClient_List() {
+func ExampleEntitiesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleEntitiesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(&armmanagementgroups.EntitiesClientListOptions{Skiptoken: nil,
+	pager := client.NewListPager(&armmanagementgroups.EntitiesClientListOptions{Skiptoken: nil,
 		Skip:         nil,
 		Top:          nil,
 		Select:       nil,

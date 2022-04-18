@@ -242,13 +242,13 @@ func (client *AssetFiltersClient) getHandleResponse(resp *http.Response) (AssetF
 	return result, nil
 }
 
-// List - List Asset Filters associated with the specified Asset.
+// NewListPager - List Asset Filters associated with the specified Asset.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // assetName - The Asset name.
 // options - AssetFiltersClientListOptions contains the optional parameters for the AssetFiltersClient.List method.
-func (client *AssetFiltersClient) List(resourceGroupName string, accountName string, assetName string, options *AssetFiltersClientListOptions) *runtime.Pager[AssetFiltersClientListResponse] {
+func (client *AssetFiltersClient) NewListPager(resourceGroupName string, accountName string, assetName string, options *AssetFiltersClientListOptions) *runtime.Pager[AssetFiltersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AssetFiltersClientListResponse]{
 		More: func(page AssetFiltersClientListResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0

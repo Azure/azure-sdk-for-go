@@ -1,5 +1,23 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*CreatorsClient.ListByAccount` has been removed
+- Function `*AccountsClient.ListByResourceGroup` has been removed
+- Function `*Client.ListOperations` has been removed
+- Function `*Client.ListSubscriptionOperations` has been removed
+- Function `*AccountsClient.ListBySubscription` has been removed
+
+### Features Added
+
+- New function `*Client.NewListSubscriptionOperationsPager(*ClientListSubscriptionOperationsOptions) *runtime.Pager[ClientListSubscriptionOperationsResponse]`
+- New function `*AccountsClient.NewListByResourceGroupPager(string, *AccountsClientListByResourceGroupOptions) *runtime.Pager[AccountsClientListByResourceGroupResponse]`
+- New function `*CreatorsClient.NewListByAccountPager(string, string, *CreatorsClientListByAccountOptions) *runtime.Pager[CreatorsClientListByAccountResponse]`
+- New function `*Client.NewListOperationsPager(*ClientListOperationsOptions) *runtime.Pager[ClientListOperationsResponse]`
+- New function `*AccountsClient.NewListBySubscriptionPager(*AccountsClientListBySubscriptionOptions) *runtime.Pager[AccountsClientListBySubscriptionResponse]`
+
+
 ## 0.3.0 (2022-04-12)
 ### Breaking Changes
 

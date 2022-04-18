@@ -297,13 +297,13 @@ func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsClientGetR
 	return result, nil
 }
 
-// List - Lists all of the Jobs for the Transform.
+// NewListPager - Lists all of the Jobs for the Transform.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // transformName - The Transform name.
 // options - JobsClientListOptions contains the optional parameters for the JobsClient.List method.
-func (client *JobsClient) List(resourceGroupName string, accountName string, transformName string, options *JobsClientListOptions) *runtime.Pager[JobsClientListResponse] {
+func (client *JobsClient) NewListPager(resourceGroupName string, accountName string, transformName string, options *JobsClientListOptions) *runtime.Pager[JobsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[JobsClientListResponse]{
 		More: func(page JobsClientListResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0

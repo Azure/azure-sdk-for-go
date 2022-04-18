@@ -222,10 +222,10 @@ func (client *ConfigurationsClient) getHandleResponse(resp *http.Response) (Conf
 	return result, nil
 }
 
-// List - Get Configuration records within a subscription
+// NewListPager - Get Configuration records within a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ConfigurationsClientListOptions contains the optional parameters for the ConfigurationsClient.List method.
-func (client *ConfigurationsClient) List(options *ConfigurationsClientListOptions) *runtime.Pager[ConfigurationsClientListResponse] {
+func (client *ConfigurationsClient) NewListPager(options *ConfigurationsClientListOptions) *runtime.Pager[ConfigurationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ConfigurationsClientListResponse]{
 		More: func(page ConfigurationsClientListResponse) bool {
 			return false

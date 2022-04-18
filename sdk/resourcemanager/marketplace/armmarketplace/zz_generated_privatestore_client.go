@@ -674,10 +674,10 @@ func (client *PrivateStoreClient) getRequestApprovalHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// List - Gets the list of available private stores.
+// NewListPager - Gets the list of available private stores.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PrivateStoreClientListOptions contains the optional parameters for the PrivateStoreClient.List method.
-func (client *PrivateStoreClient) List(options *PrivateStoreClientListOptions) *runtime.Pager[PrivateStoreClientListResponse] {
+func (client *PrivateStoreClient) NewListPager(options *PrivateStoreClientListOptions) *runtime.Pager[PrivateStoreClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateStoreClientListResponse]{
 		More: func(page PrivateStoreClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

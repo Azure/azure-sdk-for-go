@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-12-01/examples/GetPrivateStoreOffers.json
-func ExamplePrivateStoreCollectionOfferClient_List() {
+func ExamplePrivateStoreCollectionOfferClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExamplePrivateStoreCollectionOfferClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<private-store-id>",
+	pager := client.NewListPager("<private-store-id>",
 		"<collection-id>",
 		nil)
 	for pager.More() {

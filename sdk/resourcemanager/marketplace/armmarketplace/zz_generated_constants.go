@@ -10,7 +10,7 @@ package armmarketplace
 
 const (
 	moduleName    = "armmarketplace"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.4.0"
 )
 
 // Accessibility - Plan accessibility

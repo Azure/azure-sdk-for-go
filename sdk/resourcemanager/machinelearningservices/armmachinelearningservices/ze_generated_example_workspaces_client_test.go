@@ -174,7 +174,7 @@ func ExampleWorkspacesClient_Update() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/Workspace/listByResourceGroup.json
-func ExampleWorkspacesClient_ListByResourceGroup() {
+func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -186,7 +186,7 @@ func ExampleWorkspacesClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		&armmachinelearningservices.WorkspacesClientListByResourceGroupOptions{Skip: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -299,7 +299,7 @@ func ExampleWorkspacesClient_BeginResyncKeys() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/Workspace/listBySubscription.json
-func ExampleWorkspacesClient_ListBySubscription() {
+func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -311,7 +311,7 @@ func ExampleWorkspacesClient_ListBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription(&armmachinelearningservices.WorkspacesClientListBySubscriptionOptions{Skip: nil})
+	pager := client.NewListBySubscriptionPager(&armmachinelearningservices.WorkspacesClientListBySubscriptionOptions{Skip: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

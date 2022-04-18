@@ -211,12 +211,12 @@ func (client *AccountsClient) getHandleResponse(resp *http.Response) (AccountsCl
 	return result, nil
 }
 
-// ListByResourceGroup - Get all Maps Accounts in a Resource Group
+// NewListByResourceGroupPager - Get all Maps Accounts in a Resource Group
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.ListByResourceGroup
 // method.
-func (client *AccountsClient) ListByResourceGroup(resourceGroupName string, options *AccountsClientListByResourceGroupOptions) *runtime.Pager[AccountsClientListByResourceGroupResponse] {
+func (client *AccountsClient) NewListByResourceGroupPager(resourceGroupName string, options *AccountsClientListByResourceGroupOptions) *runtime.Pager[AccountsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccountsClientListByResourceGroupResponse]{
 		More: func(page AccountsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -275,11 +275,11 @@ func (client *AccountsClient) listByResourceGroupHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListBySubscription - Get all Maps Accounts in a Subscription
+// NewListBySubscriptionPager - Get all Maps Accounts in a Subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AccountsClientListBySubscriptionOptions contains the optional parameters for the AccountsClient.ListBySubscription
 // method.
-func (client *AccountsClient) ListBySubscription(options *AccountsClientListBySubscriptionOptions) *runtime.Pager[AccountsClientListBySubscriptionResponse] {
+func (client *AccountsClient) NewListBySubscriptionPager(options *AccountsClientListBySubscriptionOptions) *runtime.Pager[AccountsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccountsClientListBySubscriptionResponse]{
 		More: func(page AccountsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

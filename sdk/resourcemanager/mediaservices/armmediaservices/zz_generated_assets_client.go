@@ -288,12 +288,12 @@ func (client *AssetsClient) getEncryptionKeyHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// List - List Assets in the Media Services account with optional filtering and ordering
+// NewListPager - List Assets in the Media Services account with optional filtering and ordering
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // options - AssetsClientListOptions contains the optional parameters for the AssetsClient.List method.
-func (client *AssetsClient) List(resourceGroupName string, accountName string, options *AssetsClientListOptions) *runtime.Pager[AssetsClientListResponse] {
+func (client *AssetsClient) NewListPager(resourceGroupName string, accountName string, options *AssetsClientListOptions) *runtime.Pager[AssetsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AssetsClientListResponse]{
 		More: func(page AssetsClientListResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0

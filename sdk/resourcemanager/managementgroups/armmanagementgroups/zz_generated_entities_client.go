@@ -49,10 +49,10 @@ func NewEntitiesClient(credential azcore.TokenCredential, options *arm.ClientOpt
 	return client, nil
 }
 
-// List - List all entities (Management Groups, Subscriptions, etc.) for the authenticated user.
+// NewListPager - List all entities (Management Groups, Subscriptions, etc.) for the authenticated user.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - EntitiesClientListOptions contains the optional parameters for the EntitiesClient.List method.
-func (client *EntitiesClient) List(options *EntitiesClientListOptions) *runtime.Pager[EntitiesClientListResponse] {
+func (client *EntitiesClient) NewListPager(options *EntitiesClientListOptions) *runtime.Pager[EntitiesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EntitiesClientListResponse]{
 		More: func(page EntitiesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

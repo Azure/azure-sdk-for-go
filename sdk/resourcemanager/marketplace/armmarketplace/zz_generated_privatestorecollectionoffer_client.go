@@ -216,13 +216,13 @@ func (client *PrivateStoreCollectionOfferClient) getHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// List - Get a list of all private offers in the given private store and collection
+// NewListPager - Get a list of all private offers in the given private store and collection
 // If the operation fails it returns an *azcore.ResponseError type.
 // privateStoreID - The store ID - must use the tenant ID
 // collectionID - The collection ID
 // options - PrivateStoreCollectionOfferClientListOptions contains the optional parameters for the PrivateStoreCollectionOfferClient.List
 // method.
-func (client *PrivateStoreCollectionOfferClient) List(privateStoreID string, collectionID string, options *PrivateStoreCollectionOfferClientListOptions) *runtime.Pager[PrivateStoreCollectionOfferClientListResponse] {
+func (client *PrivateStoreCollectionOfferClient) NewListPager(privateStoreID string, collectionID string, options *PrivateStoreCollectionOfferClientListOptions) *runtime.Pager[PrivateStoreCollectionOfferClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateStoreCollectionOfferClientListResponse]{
 		More: func(page PrivateStoreCollectionOfferClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

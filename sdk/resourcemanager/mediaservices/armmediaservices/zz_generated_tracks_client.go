@@ -261,13 +261,13 @@ func (client *TracksClient) getHandleResponse(resp *http.Response) (TracksClient
 	return result, nil
 }
 
-// List - Lists the Tracks in the asset
+// NewListPager - Lists the Tracks in the asset
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // assetName - The Asset name.
 // options - TracksClientListOptions contains the optional parameters for the TracksClient.List method.
-func (client *TracksClient) List(resourceGroupName string, accountName string, assetName string, options *TracksClientListOptions) *runtime.Pager[TracksClientListResponse] {
+func (client *TracksClient) NewListPager(resourceGroupName string, accountName string, assetName string, options *TracksClientListOptions) *runtime.Pager[TracksClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TracksClientListResponse]{
 		More: func(page TracksClientListResponse) bool {
 			return false

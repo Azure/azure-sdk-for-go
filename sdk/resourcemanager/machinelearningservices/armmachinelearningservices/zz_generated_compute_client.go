@@ -254,12 +254,12 @@ func (client *ComputeClient) getHandleResponse(resp *http.Response) (ComputeClie
 	return result, nil
 }
 
-// List - Gets computes in specified workspace.
+// NewListPager - Gets computes in specified workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // options - ComputeClientListOptions contains the optional parameters for the ComputeClient.List method.
-func (client *ComputeClient) List(resourceGroupName string, workspaceName string, options *ComputeClientListOptions) *runtime.Pager[ComputeClientListResponse] {
+func (client *ComputeClient) NewListPager(resourceGroupName string, workspaceName string, options *ComputeClientListOptions) *runtime.Pager[ComputeClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ComputeClientListResponse]{
 		More: func(page ComputeClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -385,13 +385,13 @@ func (client *ComputeClient) listKeysHandleResponse(resp *http.Response) (Comput
 	return result, nil
 }
 
-// ListNodes - Get the details (e.g IP address, port etc) of all the compute nodes in the compute.
+// NewListNodesPager - Get the details (e.g IP address, port etc) of all the compute nodes in the compute.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // computeName - Name of the Azure Machine Learning compute.
 // options - ComputeClientListNodesOptions contains the optional parameters for the ComputeClient.ListNodes method.
-func (client *ComputeClient) ListNodes(resourceGroupName string, workspaceName string, computeName string, options *ComputeClientListNodesOptions) *runtime.Pager[ComputeClientListNodesResponse] {
+func (client *ComputeClient) NewListNodesPager(resourceGroupName string, workspaceName string, computeName string, options *ComputeClientListNodesOptions) *runtime.Pager[ComputeClientListNodesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ComputeClientListNodesResponse]{
 		More: func(page ComputeClientListNodesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -225,11 +225,11 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 	return result, nil
 }
 
-// GetDescendants - List all entities that descend from a management group.
+// NewGetDescendantsPager - List all entities that descend from a management group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // groupID - Management Group ID.
 // options - ClientGetDescendantsOptions contains the optional parameters for the Client.GetDescendants method.
-func (client *Client) GetDescendants(groupID string, options *ClientGetDescendantsOptions) *runtime.Pager[ClientGetDescendantsResponse] {
+func (client *Client) NewGetDescendantsPager(groupID string, options *ClientGetDescendantsOptions) *runtime.Pager[ClientGetDescendantsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClientGetDescendantsResponse]{
 		More: func(page ClientGetDescendantsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -290,10 +290,10 @@ func (client *Client) getDescendantsHandleResponse(resp *http.Response) (ClientG
 	return result, nil
 }
 
-// List - List management groups for the authenticated user.
+// NewListPager - List management groups for the authenticated user.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ClientListOptions contains the optional parameters for the Client.List method.
-func (client *Client) List(options *ClientListOptions) *runtime.Pager[ClientListResponse] {
+func (client *Client) NewListPager(options *ClientListOptions) *runtime.Pager[ClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClientListResponse]{
 		More: func(page ClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

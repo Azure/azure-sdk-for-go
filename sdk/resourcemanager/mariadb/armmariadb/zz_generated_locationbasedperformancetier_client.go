@@ -54,12 +54,12 @@ func NewLocationBasedPerformanceTierClient(subscriptionID string, credential azc
 	return client, nil
 }
 
-// List - List all the performance tiers at specified location in a given subscription.
+// NewListPager - List all the performance tiers at specified location in a given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // locationName - The name of the location.
 // options - LocationBasedPerformanceTierClientListOptions contains the optional parameters for the LocationBasedPerformanceTierClient.List
 // method.
-func (client *LocationBasedPerformanceTierClient) List(locationName string, options *LocationBasedPerformanceTierClientListOptions) *runtime.Pager[LocationBasedPerformanceTierClientListResponse] {
+func (client *LocationBasedPerformanceTierClient) NewListPager(locationName string, options *LocationBasedPerformanceTierClientListOptions) *runtime.Pager[LocationBasedPerformanceTierClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LocationBasedPerformanceTierClientListResponse]{
 		More: func(page LocationBasedPerformanceTierClientListResponse) bool {
 			return false

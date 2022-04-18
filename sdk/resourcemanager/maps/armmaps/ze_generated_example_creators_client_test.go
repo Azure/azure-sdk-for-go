@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maps/resource-manager/Microsoft.Maps/preview/2021-12-01-preview/examples/ListMapsCreatorsByAccount.json
-func ExampleCreatorsClient_ListByAccount() {
+func ExampleCreatorsClient_NewListByAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleCreatorsClient_ListByAccount() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByAccount("<resource-group-name>",
+	pager := client.NewListByAccountPager("<resource-group-name>",
 		"<account-name>",
 		nil)
 	for pager.More() {

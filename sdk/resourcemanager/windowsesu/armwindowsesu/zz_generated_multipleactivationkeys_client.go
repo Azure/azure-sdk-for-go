@@ -219,11 +219,11 @@ func (client *MultipleActivationKeysClient) getHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// List - List all Multiple Activation Keys (MAK) created for a subscription.
+// NewListPager - List all Multiple Activation Keys (MAK) created for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - MultipleActivationKeysClientListOptions contains the optional parameters for the MultipleActivationKeysClient.List
 // method.
-func (client *MultipleActivationKeysClient) List(options *MultipleActivationKeysClientListOptions) *runtime.Pager[MultipleActivationKeysClientListResponse] {
+func (client *MultipleActivationKeysClient) NewListPager(options *MultipleActivationKeysClientListOptions) *runtime.Pager[MultipleActivationKeysClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MultipleActivationKeysClientListResponse]{
 		More: func(page MultipleActivationKeysClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -278,12 +278,12 @@ func (client *MultipleActivationKeysClient) listHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListByResourceGroup - List all Multiple Activation Keys (MAK) in a resource group.
+// NewListByResourceGroupPager - List all Multiple Activation Keys (MAK) in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - MultipleActivationKeysClientListByResourceGroupOptions contains the optional parameters for the MultipleActivationKeysClient.ListByResourceGroup
 // method.
-func (client *MultipleActivationKeysClient) ListByResourceGroup(resourceGroupName string, options *MultipleActivationKeysClientListByResourceGroupOptions) *runtime.Pager[MultipleActivationKeysClientListByResourceGroupResponse] {
+func (client *MultipleActivationKeysClient) NewListByResourceGroupPager(resourceGroupName string, options *MultipleActivationKeysClientListByResourceGroupOptions) *runtime.Pager[MultipleActivationKeysClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MultipleActivationKeysClientListByResourceGroupResponse]{
 		More: func(page MultipleActivationKeysClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

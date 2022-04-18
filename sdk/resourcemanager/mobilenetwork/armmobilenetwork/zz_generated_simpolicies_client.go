@@ -250,13 +250,13 @@ func (client *SimPoliciesClient) getHandleResponse(resp *http.Response) (SimPoli
 	return result, nil
 }
 
-// ListByMobileNetwork - Gets all the simPolicies in a mobile network.
+// NewListByMobileNetworkPager - Gets all the simPolicies in a mobile network.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // mobileNetworkName - The name of the mobile network.
 // options - SimPoliciesClientListByMobileNetworkOptions contains the optional parameters for the SimPoliciesClient.ListByMobileNetwork
 // method.
-func (client *SimPoliciesClient) ListByMobileNetwork(resourceGroupName string, mobileNetworkName string, options *SimPoliciesClientListByMobileNetworkOptions) *runtime.Pager[SimPoliciesClientListByMobileNetworkResponse] {
+func (client *SimPoliciesClient) NewListByMobileNetworkPager(resourceGroupName string, mobileNetworkName string, options *SimPoliciesClientListByMobileNetworkOptions) *runtime.Pager[SimPoliciesClientListByMobileNetworkResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SimPoliciesClientListByMobileNetworkResponse]{
 		More: func(page SimPoliciesClientListByMobileNetworkResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

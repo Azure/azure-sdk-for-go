@@ -146,7 +146,7 @@ func ExamplePacketCoreDataPlanesClient_UpdateTags() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/PacketCoreDataPlaneListByPacketCoreControlPlane.json
-func ExamplePacketCoreDataPlanesClient_ListByPacketCoreControlPlane() {
+func ExamplePacketCoreDataPlanesClient_NewListByPacketCoreControlPlanePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -158,7 +158,7 @@ func ExamplePacketCoreDataPlanesClient_ListByPacketCoreControlPlane() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByPacketCoreControlPlane("<resource-group-name>",
+	pager := client.NewListByPacketCoreControlPlanePager("<resource-group-name>",
 		"<packet-core-control-plane-name>",
 		nil)
 	for pager.More() {

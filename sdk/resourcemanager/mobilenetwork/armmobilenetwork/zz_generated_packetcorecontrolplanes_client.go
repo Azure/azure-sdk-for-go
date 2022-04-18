@@ -237,12 +237,12 @@ func (client *PacketCoreControlPlanesClient) getHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all the packetCoreControlPlanes in a resource group.
+// NewListByResourceGroupPager - Lists all the packetCoreControlPlanes in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - PacketCoreControlPlanesClientListByResourceGroupOptions contains the optional parameters for the PacketCoreControlPlanesClient.ListByResourceGroup
 // method.
-func (client *PacketCoreControlPlanesClient) ListByResourceGroup(resourceGroupName string, options *PacketCoreControlPlanesClientListByResourceGroupOptions) *runtime.Pager[PacketCoreControlPlanesClientListByResourceGroupResponse] {
+func (client *PacketCoreControlPlanesClient) NewListByResourceGroupPager(resourceGroupName string, options *PacketCoreControlPlanesClientListByResourceGroupOptions) *runtime.Pager[PacketCoreControlPlanesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PacketCoreControlPlanesClientListByResourceGroupResponse]{
 		More: func(page PacketCoreControlPlanesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -301,11 +301,11 @@ func (client *PacketCoreControlPlanesClient) listByResourceGroupHandleResponse(r
 	return result, nil
 }
 
-// ListBySubscription - Lists all the packetCoreControlPlanes in a subscription.
+// NewListBySubscriptionPager - Lists all the packetCoreControlPlanes in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PacketCoreControlPlanesClientListBySubscriptionOptions contains the optional parameters for the PacketCoreControlPlanesClient.ListBySubscription
 // method.
-func (client *PacketCoreControlPlanesClient) ListBySubscription(options *PacketCoreControlPlanesClientListBySubscriptionOptions) *runtime.Pager[PacketCoreControlPlanesClientListBySubscriptionResponse] {
+func (client *PacketCoreControlPlanesClient) NewListBySubscriptionPager(options *PacketCoreControlPlanesClientListBySubscriptionOptions) *runtime.Pager[PacketCoreControlPlanesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PacketCoreControlPlanesClientListBySubscriptionResponse]{
 		More: func(page PacketCoreControlPlanesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

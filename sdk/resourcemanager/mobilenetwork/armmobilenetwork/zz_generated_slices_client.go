@@ -250,13 +250,13 @@ func (client *SlicesClient) getHandleResponse(resp *http.Response) (SlicesClient
 	return result, nil
 }
 
-// ListByMobileNetwork - Lists all slices in the mobile network.
+// NewListByMobileNetworkPager - Lists all slices in the mobile network.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // mobileNetworkName - The name of the mobile network.
 // options - SlicesClientListByMobileNetworkOptions contains the optional parameters for the SlicesClient.ListByMobileNetwork
 // method.
-func (client *SlicesClient) ListByMobileNetwork(resourceGroupName string, mobileNetworkName string, options *SlicesClientListByMobileNetworkOptions) *runtime.Pager[SlicesClientListByMobileNetworkResponse] {
+func (client *SlicesClient) NewListByMobileNetworkPager(resourceGroupName string, mobileNetworkName string, options *SlicesClientListByMobileNetworkOptions) *runtime.Pager[SlicesClientListByMobileNetworkResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SlicesClientListByMobileNetworkResponse]{
 		More: func(page SlicesClientListByMobileNetworkResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

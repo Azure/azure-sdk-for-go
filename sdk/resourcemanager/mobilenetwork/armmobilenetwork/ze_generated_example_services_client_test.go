@@ -180,7 +180,7 @@ func ExampleServicesClient_UpdateTags() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/ServiceListByMobileNetwork.json
-func ExampleServicesClient_ListByMobileNetwork() {
+func ExampleServicesClient_NewListByMobileNetworkPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -192,7 +192,7 @@ func ExampleServicesClient_ListByMobileNetwork() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByMobileNetwork("<resource-group-name>",
+	pager := client.NewListByMobileNetworkPager("<resource-group-name>",
 		"<mobile-network-name>",
 		nil)
 	for pager.More() {

@@ -235,12 +235,12 @@ func (client *SimsClient) getHandleResponse(resp *http.Response) (SimsClientGetR
 	return result, nil
 }
 
-// ListByResourceGroup - Gets all the Sims in a subscription.
+// NewListByResourceGroupPager - Gets all the Sims in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - SimsClientListByResourceGroupOptions contains the optional parameters for the SimsClient.ListByResourceGroup
 // method.
-func (client *SimsClient) ListByResourceGroup(resourceGroupName string, options *SimsClientListByResourceGroupOptions) *runtime.Pager[SimsClientListByResourceGroupResponse] {
+func (client *SimsClient) NewListByResourceGroupPager(resourceGroupName string, options *SimsClientListByResourceGroupOptions) *runtime.Pager[SimsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SimsClientListByResourceGroupResponse]{
 		More: func(page SimsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -299,10 +299,10 @@ func (client *SimsClient) listByResourceGroupHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListBySubscription - Gets all the sims in a subscription.
+// NewListBySubscriptionPager - Gets all the sims in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SimsClientListBySubscriptionOptions contains the optional parameters for the SimsClient.ListBySubscription method.
-func (client *SimsClient) ListBySubscription(options *SimsClientListBySubscriptionOptions) *runtime.Pager[SimsClientListBySubscriptionResponse] {
+func (client *SimsClient) NewListBySubscriptionPager(options *SimsClientListBySubscriptionOptions) *runtime.Pager[SimsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SimsClientListBySubscriptionResponse]{
 		More: func(page SimsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -252,13 +252,13 @@ func (client *PacketCoreDataPlanesClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListByPacketCoreControlPlane - Lists all the packetCoreDataPlanes associated with a packetCoreControlPlane.
+// NewListByPacketCoreControlPlanePager - Lists all the packetCoreDataPlanes associated with a packetCoreControlPlane.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // packetCoreControlPlaneName - The name of the packet core control plane.
 // options - PacketCoreDataPlanesClientListByPacketCoreControlPlaneOptions contains the optional parameters for the PacketCoreDataPlanesClient.ListByPacketCoreControlPlane
 // method.
-func (client *PacketCoreDataPlanesClient) ListByPacketCoreControlPlane(resourceGroupName string, packetCoreControlPlaneName string, options *PacketCoreDataPlanesClientListByPacketCoreControlPlaneOptions) *runtime.Pager[PacketCoreDataPlanesClientListByPacketCoreControlPlaneResponse] {
+func (client *PacketCoreDataPlanesClient) NewListByPacketCoreControlPlanePager(resourceGroupName string, packetCoreControlPlaneName string, options *PacketCoreDataPlanesClientListByPacketCoreControlPlaneOptions) *runtime.Pager[PacketCoreDataPlanesClientListByPacketCoreControlPlaneResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PacketCoreDataPlanesClientListByPacketCoreControlPlaneResponse]{
 		More: func(page PacketCoreDataPlanesClientListByPacketCoreControlPlaneResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

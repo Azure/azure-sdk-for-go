@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationNetworkMappings_ListByReplicationNetworks.json
-func ExampleReplicationNetworkMappingsClient_ListByReplicationNetworks() {
+func ExampleReplicationNetworkMappingsClient_NewListByReplicationNetworksPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -34,7 +34,7 @@ func ExampleReplicationNetworkMappingsClient_ListByReplicationNetworks() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByReplicationNetworks("<fabric-name>",
+	pager := client.NewListByReplicationNetworksPager("<fabric-name>",
 		"<network-name>",
 		nil)
 	for pager.More() {
@@ -194,7 +194,7 @@ func ExampleReplicationNetworkMappingsClient_BeginUpdate() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationNetworkMappings_List.json
-func ExampleReplicationNetworkMappingsClient_List() {
+func ExampleReplicationNetworkMappingsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -208,7 +208,7 @@ func ExampleReplicationNetworkMappingsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(nil)
+	pager := client.NewListPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

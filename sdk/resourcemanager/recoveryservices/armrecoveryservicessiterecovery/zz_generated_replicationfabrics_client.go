@@ -313,10 +313,10 @@ func (client *ReplicationFabricsClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// List - Gets a list of the Azure Site Recovery fabrics in the vault.
+// NewListPager - Gets a list of the Azure Site Recovery fabrics in the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ReplicationFabricsClientListOptions contains the optional parameters for the ReplicationFabricsClient.List method.
-func (client *ReplicationFabricsClient) List(options *ReplicationFabricsClientListOptions) *runtime.Pager[ReplicationFabricsClientListResponse] {
+func (client *ReplicationFabricsClient) NewListPager(options *ReplicationFabricsClientListOptions) *runtime.Pager[ReplicationFabricsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReplicationFabricsClientListResponse]{
 		More: func(page ReplicationFabricsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

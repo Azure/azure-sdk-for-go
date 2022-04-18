@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/MigrationRecoveryPoints_ListByReplicationMigrationItems.json
-func ExampleMigrationRecoveryPointsClient_ListByReplicationMigrationItems() {
+func ExampleMigrationRecoveryPointsClient_NewListByReplicationMigrationItemsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -31,7 +31,7 @@ func ExampleMigrationRecoveryPointsClient_ListByReplicationMigrationItems() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByReplicationMigrationItems("<fabric-name>",
+	pager := client.NewListByReplicationMigrationItemsPager("<fabric-name>",
 		"<protection-container-name>",
 		"<migration-item-name>",
 		nil)

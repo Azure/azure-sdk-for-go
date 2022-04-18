@@ -123,11 +123,11 @@ func (client *ReplicationNetworksClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// List - Lists the networks available in a vault.
+// NewListPager - Lists the networks available in a vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ReplicationNetworksClientListOptions contains the optional parameters for the ReplicationNetworksClient.List
 // method.
-func (client *ReplicationNetworksClient) List(options *ReplicationNetworksClientListOptions) *runtime.Pager[ReplicationNetworksClientListResponse] {
+func (client *ReplicationNetworksClient) NewListPager(options *ReplicationNetworksClientListOptions) *runtime.Pager[ReplicationNetworksClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReplicationNetworksClientListResponse]{
 		More: func(page ReplicationNetworksClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -190,12 +190,12 @@ func (client *ReplicationNetworksClient) listHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListByReplicationFabrics - Lists the networks available for a fabric.
+// NewListByReplicationFabricsPager - Lists the networks available for a fabric.
 // If the operation fails it returns an *azcore.ResponseError type.
 // fabricName - Fabric name.
 // options - ReplicationNetworksClientListByReplicationFabricsOptions contains the optional parameters for the ReplicationNetworksClient.ListByReplicationFabrics
 // method.
-func (client *ReplicationNetworksClient) ListByReplicationFabrics(fabricName string, options *ReplicationNetworksClientListByReplicationFabricsOptions) *runtime.Pager[ReplicationNetworksClientListByReplicationFabricsResponse] {
+func (client *ReplicationNetworksClient) NewListByReplicationFabricsPager(fabricName string, options *ReplicationNetworksClientListByReplicationFabricsOptions) *runtime.Pager[ReplicationNetworksClientListByReplicationFabricsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReplicationNetworksClientListByReplicationFabricsResponse]{
 		More: func(page ReplicationNetworksClientListByReplicationFabricsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

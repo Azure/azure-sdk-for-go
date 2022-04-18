@@ -124,12 +124,12 @@ func (client *ReplicationLogicalNetworksClient) getHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListByReplicationFabrics - Lists all the logical networks of the Azure Site Recovery fabric.
+// NewListByReplicationFabricsPager - Lists all the logical networks of the Azure Site Recovery fabric.
 // If the operation fails it returns an *azcore.ResponseError type.
 // fabricName - Server Id.
 // options - ReplicationLogicalNetworksClientListByReplicationFabricsOptions contains the optional parameters for the ReplicationLogicalNetworksClient.ListByReplicationFabrics
 // method.
-func (client *ReplicationLogicalNetworksClient) ListByReplicationFabrics(fabricName string, options *ReplicationLogicalNetworksClientListByReplicationFabricsOptions) *runtime.Pager[ReplicationLogicalNetworksClientListByReplicationFabricsResponse] {
+func (client *ReplicationLogicalNetworksClient) NewListByReplicationFabricsPager(fabricName string, options *ReplicationLogicalNetworksClientListByReplicationFabricsOptions) *runtime.Pager[ReplicationLogicalNetworksClientListByReplicationFabricsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReplicationLogicalNetworksClientListByReplicationFabricsResponse]{
 		More: func(page ReplicationLogicalNetworksClientListByReplicationFabricsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

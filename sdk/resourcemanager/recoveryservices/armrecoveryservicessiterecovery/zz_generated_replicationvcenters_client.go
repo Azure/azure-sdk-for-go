@@ -261,11 +261,11 @@ func (client *ReplicationvCentersClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// List - Lists the vCenter servers registered in the vault.
+// NewListPager - Lists the vCenter servers registered in the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ReplicationvCentersClientListOptions contains the optional parameters for the ReplicationvCentersClient.List
 // method.
-func (client *ReplicationvCentersClient) List(options *ReplicationvCentersClientListOptions) *runtime.Pager[ReplicationvCentersClientListResponse] {
+func (client *ReplicationvCentersClient) NewListPager(options *ReplicationvCentersClientListOptions) *runtime.Pager[ReplicationvCentersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReplicationvCentersClientListResponse]{
 		More: func(page ReplicationvCentersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -328,12 +328,12 @@ func (client *ReplicationvCentersClient) listHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListByReplicationFabrics - Lists the vCenter servers registered in a fabric.
+// NewListByReplicationFabricsPager - Lists the vCenter servers registered in a fabric.
 // If the operation fails it returns an *azcore.ResponseError type.
 // fabricName - Fabric name.
 // options - ReplicationvCentersClientListByReplicationFabricsOptions contains the optional parameters for the ReplicationvCentersClient.ListByReplicationFabrics
 // method.
-func (client *ReplicationvCentersClient) ListByReplicationFabrics(fabricName string, options *ReplicationvCentersClientListByReplicationFabricsOptions) *runtime.Pager[ReplicationvCentersClientListByReplicationFabricsResponse] {
+func (client *ReplicationvCentersClient) NewListByReplicationFabricsPager(fabricName string, options *ReplicationvCentersClientListByReplicationFabricsOptions) *runtime.Pager[ReplicationvCentersClientListByReplicationFabricsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReplicationvCentersClientListByReplicationFabricsResponse]{
 		More: func(page ReplicationvCentersClientListByReplicationFabricsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

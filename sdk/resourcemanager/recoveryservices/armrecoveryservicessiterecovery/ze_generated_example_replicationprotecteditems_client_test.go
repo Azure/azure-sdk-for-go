@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationProtectedItems_ListByReplicationProtectionContainers.json
-func ExampleReplicationProtectedItemsClient_ListByReplicationProtectionContainers() {
+func ExampleReplicationProtectedItemsClient_NewListByReplicationProtectionContainersPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -34,7 +34,7 @@ func ExampleReplicationProtectedItemsClient_ListByReplicationProtectionContainer
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByReplicationProtectionContainers("<fabric-name>",
+	pager := client.NewListByReplicationProtectionContainersPager("<fabric-name>",
 		"<protection-container-name>",
 		nil)
 	for pager.More() {
@@ -844,7 +844,7 @@ func ExampleReplicationProtectedItemsClient_BeginUpdateMobilityService() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationProtectedItems_List.json
-func ExampleReplicationProtectedItemsClient_List() {
+func ExampleReplicationProtectedItemsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -858,7 +858,7 @@ func ExampleReplicationProtectedItemsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(&armrecoveryservicessiterecovery.ReplicationProtectedItemsClientListOptions{SkipToken: nil,
+	pager := client.NewListPager(&armrecoveryservicessiterecovery.ReplicationProtectedItemsClientListOptions{SkipToken: nil,
 		Filter: nil,
 	})
 	for pager.More() {

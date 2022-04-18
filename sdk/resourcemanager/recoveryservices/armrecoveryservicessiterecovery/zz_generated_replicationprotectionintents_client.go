@@ -179,11 +179,11 @@ func (client *ReplicationProtectionIntentsClient) getHandleResponse(resp *http.R
 	return result, nil
 }
 
-// List - Gets the list of ASR replication protection intent objects in the vault.
+// NewListPager - Gets the list of ASR replication protection intent objects in the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ReplicationProtectionIntentsClientListOptions contains the optional parameters for the ReplicationProtectionIntentsClient.List
 // method.
-func (client *ReplicationProtectionIntentsClient) List(options *ReplicationProtectionIntentsClientListOptions) *runtime.Pager[ReplicationProtectionIntentsClientListResponse] {
+func (client *ReplicationProtectionIntentsClient) NewListPager(options *ReplicationProtectionIntentsClientListOptions) *runtime.Pager[ReplicationProtectionIntentsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReplicationProtectionIntentsClientListResponse]{
 		More: func(page ReplicationProtectionIntentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

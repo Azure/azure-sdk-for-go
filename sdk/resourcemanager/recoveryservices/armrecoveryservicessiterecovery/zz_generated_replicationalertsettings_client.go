@@ -179,11 +179,11 @@ func (client *ReplicationAlertSettingsClient) getHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// List - Gets the list of email notification(alert) configurations for the vault.
+// NewListPager - Gets the list of email notification(alert) configurations for the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ReplicationAlertSettingsClientListOptions contains the optional parameters for the ReplicationAlertSettingsClient.List
 // method.
-func (client *ReplicationAlertSettingsClient) List(options *ReplicationAlertSettingsClientListOptions) *runtime.Pager[ReplicationAlertSettingsClientListResponse] {
+func (client *ReplicationAlertSettingsClient) NewListPager(options *ReplicationAlertSettingsClientListOptions) *runtime.Pager[ReplicationAlertSettingsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReplicationAlertSettingsClientListResponse]{
 		More: func(page ReplicationAlertSettingsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

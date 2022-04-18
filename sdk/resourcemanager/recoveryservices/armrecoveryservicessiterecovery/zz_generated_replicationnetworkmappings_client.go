@@ -277,11 +277,11 @@ func (client *ReplicationNetworkMappingsClient) getHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// List - Lists all ASR network mappings in the vault.
+// NewListPager - Lists all ASR network mappings in the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ReplicationNetworkMappingsClientListOptions contains the optional parameters for the ReplicationNetworkMappingsClient.List
 // method.
-func (client *ReplicationNetworkMappingsClient) List(options *ReplicationNetworkMappingsClientListOptions) *runtime.Pager[ReplicationNetworkMappingsClientListResponse] {
+func (client *ReplicationNetworkMappingsClient) NewListPager(options *ReplicationNetworkMappingsClientListOptions) *runtime.Pager[ReplicationNetworkMappingsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReplicationNetworkMappingsClientListResponse]{
 		More: func(page ReplicationNetworkMappingsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -344,13 +344,13 @@ func (client *ReplicationNetworkMappingsClient) listHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListByReplicationNetworks - Lists all ASR network mappings for the specified network.
+// NewListByReplicationNetworksPager - Lists all ASR network mappings for the specified network.
 // If the operation fails it returns an *azcore.ResponseError type.
 // fabricName - Primary fabric name.
 // networkName - Primary network name.
 // options - ReplicationNetworkMappingsClientListByReplicationNetworksOptions contains the optional parameters for the ReplicationNetworkMappingsClient.ListByReplicationNetworks
 // method.
-func (client *ReplicationNetworkMappingsClient) ListByReplicationNetworks(fabricName string, networkName string, options *ReplicationNetworkMappingsClientListByReplicationNetworksOptions) *runtime.Pager[ReplicationNetworkMappingsClientListByReplicationNetworksResponse] {
+func (client *ReplicationNetworkMappingsClient) NewListByReplicationNetworksPager(fabricName string, networkName string, options *ReplicationNetworkMappingsClientListByReplicationNetworksOptions) *runtime.Pager[ReplicationNetworkMappingsClientListByReplicationNetworksResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReplicationNetworkMappingsClientListByReplicationNetworksResponse]{
 		More: func(page ReplicationNetworkMappingsClientListByReplicationNetworksResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

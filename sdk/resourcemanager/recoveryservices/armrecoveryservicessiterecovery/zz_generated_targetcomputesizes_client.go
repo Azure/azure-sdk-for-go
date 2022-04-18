@@ -60,14 +60,14 @@ func NewTargetComputeSizesClient(resourceName string, resourceGroupName string, 
 	return client, nil
 }
 
-// ListByReplicationProtectedItems - Lists the available target compute sizes for a replication protected item.
+// NewListByReplicationProtectedItemsPager - Lists the available target compute sizes for a replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 // fabricName - Fabric name.
 // protectionContainerName - protection container name.
 // replicatedProtectedItemName - Replication protected item name.
 // options - TargetComputeSizesClientListByReplicationProtectedItemsOptions contains the optional parameters for the TargetComputeSizesClient.ListByReplicationProtectedItems
 // method.
-func (client *TargetComputeSizesClient) ListByReplicationProtectedItems(fabricName string, protectionContainerName string, replicatedProtectedItemName string, options *TargetComputeSizesClientListByReplicationProtectedItemsOptions) *runtime.Pager[TargetComputeSizesClientListByReplicationProtectedItemsResponse] {
+func (client *TargetComputeSizesClient) NewListByReplicationProtectedItemsPager(fabricName string, protectionContainerName string, replicatedProtectedItemName string, options *TargetComputeSizesClientListByReplicationProtectedItemsOptions) *runtime.Pager[TargetComputeSizesClientListByReplicationProtectedItemsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TargetComputeSizesClientListByReplicationProtectedItemsResponse]{
 		More: func(page TargetComputeSizesClientListByReplicationProtectedItemsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

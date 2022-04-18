@@ -242,10 +242,10 @@ func (client *ReplicationJobsClient) getHandleResponse(resp *http.Response) (Rep
 	return result, nil
 }
 
-// List - Gets the list of Azure Site Recovery Jobs for the vault.
+// NewListPager - Gets the list of Azure Site Recovery Jobs for the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ReplicationJobsClientListOptions contains the optional parameters for the ReplicationJobsClient.List method.
-func (client *ReplicationJobsClient) List(options *ReplicationJobsClientListOptions) *runtime.Pager[ReplicationJobsClientListResponse] {
+func (client *ReplicationJobsClient) NewListPager(options *ReplicationJobsClientListOptions) *runtime.Pager[ReplicationJobsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReplicationJobsClientListResponse]{
 		More: func(page ReplicationJobsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

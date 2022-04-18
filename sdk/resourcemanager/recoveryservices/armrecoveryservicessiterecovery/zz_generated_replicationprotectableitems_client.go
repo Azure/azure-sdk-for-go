@@ -129,13 +129,13 @@ func (client *ReplicationProtectableItemsClient) getHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListByReplicationProtectionContainers - Lists the protectable items in a protection container.
+// NewListByReplicationProtectionContainersPager - Lists the protectable items in a protection container.
 // If the operation fails it returns an *azcore.ResponseError type.
 // fabricName - Fabric name.
 // protectionContainerName - Protection container name.
 // options - ReplicationProtectableItemsClientListByReplicationProtectionContainersOptions contains the optional parameters
 // for the ReplicationProtectableItemsClient.ListByReplicationProtectionContainers method.
-func (client *ReplicationProtectableItemsClient) ListByReplicationProtectionContainers(fabricName string, protectionContainerName string, options *ReplicationProtectableItemsClientListByReplicationProtectionContainersOptions) *runtime.Pager[ReplicationProtectableItemsClientListByReplicationProtectionContainersResponse] {
+func (client *ReplicationProtectableItemsClient) NewListByReplicationProtectionContainersPager(fabricName string, protectionContainerName string, options *ReplicationProtectableItemsClientListByReplicationProtectionContainersOptions) *runtime.Pager[ReplicationProtectableItemsClientListByReplicationProtectionContainersResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReplicationProtectableItemsClientListByReplicationProtectionContainersResponse]{
 		More: func(page ReplicationProtectableItemsClientListByReplicationProtectionContainersResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

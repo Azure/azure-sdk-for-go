@@ -60,11 +60,11 @@ func NewReplicationAppliancesClient(resourceName string, resourceGroupName strin
 	return client, nil
 }
 
-// List - Gets the list of Azure Site Recovery appliances for the vault.
+// NewListPager - Gets the list of Azure Site Recovery appliances for the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ReplicationAppliancesClientListOptions contains the optional parameters for the ReplicationAppliancesClient.List
 // method.
-func (client *ReplicationAppliancesClient) List(options *ReplicationAppliancesClientListOptions) *runtime.Pager[ReplicationAppliancesClientListResponse] {
+func (client *ReplicationAppliancesClient) NewListPager(options *ReplicationAppliancesClientListOptions) *runtime.Pager[ReplicationAppliancesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReplicationAppliancesClientListResponse]{
 		More: func(page ReplicationAppliancesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

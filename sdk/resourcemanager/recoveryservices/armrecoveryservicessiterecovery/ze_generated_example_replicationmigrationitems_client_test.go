@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationMigrationItems_ListByReplicationProtectionContainers.json
-func ExampleReplicationMigrationItemsClient_ListByReplicationProtectionContainers() {
+func ExampleReplicationMigrationItemsClient_NewListByReplicationProtectionContainersPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -34,7 +34,7 @@ func ExampleReplicationMigrationItemsClient_ListByReplicationProtectionContainer
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByReplicationProtectionContainers("<fabric-name>",
+	pager := client.NewListByReplicationProtectionContainersPager("<fabric-name>",
 		"<protection-container-name>",
 		&armrecoveryservicessiterecovery.ReplicationMigrationItemsClientListByReplicationProtectionContainersOptions{SkipToken: nil,
 			TakeToken: nil,
@@ -370,7 +370,7 @@ func ExampleReplicationMigrationItemsClient_BeginTestMigrateCleanup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationMigrationItems_List.json
-func ExampleReplicationMigrationItemsClient_List() {
+func ExampleReplicationMigrationItemsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -384,7 +384,7 @@ func ExampleReplicationMigrationItemsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(&armrecoveryservicessiterecovery.ReplicationMigrationItemsClientListOptions{SkipToken: nil,
+	pager := client.NewListPager(&armrecoveryservicessiterecovery.ReplicationMigrationItemsClientListOptions{SkipToken: nil,
 		TakeToken: nil,
 		Filter:    nil,
 	})

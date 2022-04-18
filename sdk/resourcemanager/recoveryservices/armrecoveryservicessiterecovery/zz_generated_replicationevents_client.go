@@ -118,10 +118,10 @@ func (client *ReplicationEventsClient) getHandleResponse(resp *http.Response) (R
 	return result, nil
 }
 
-// List - Gets the list of Azure Site Recovery events for the vault.
+// NewListPager - Gets the list of Azure Site Recovery events for the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ReplicationEventsClientListOptions contains the optional parameters for the ReplicationEventsClient.List method.
-func (client *ReplicationEventsClient) List(options *ReplicationEventsClientListOptions) *runtime.Pager[ReplicationEventsClientListResponse] {
+func (client *ReplicationEventsClient) NewListPager(options *ReplicationEventsClientListOptions) *runtime.Pager[ReplicationEventsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReplicationEventsClientListResponse]{
 		More: func(page ReplicationEventsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

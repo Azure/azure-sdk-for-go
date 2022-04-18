@@ -53,6 +53,6 @@ func TestUsagesClient(t *testing.T) {
 func (testsuite *UsagesClientTestSuite) TestUsages() {
 	usagesClient, err := armstorage.NewUsagesClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	resp := usagesClient.ListByLocation(testsuite.location, nil)
+	resp := usagesClient.NewListByLocationPager(testsuite.location, nil)
 	testsuite.Require().True(resp.More())
 }

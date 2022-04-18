@@ -5005,13 +5005,6 @@ type ManagedDatabaseSensitivityLabelsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagedDatabaseSensitivityLabelsClientListByDatabaseOptions contains the optional parameters for the ManagedDatabaseSensitivityLabelsClient.ListByDatabase
-// method.
-type ManagedDatabaseSensitivityLabelsClientListByDatabaseOptions struct {
-	// An OData filter expression that filters elements in the collection.
-	Filter *string
-}
-
 // ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseOptions contains the optional parameters for the ManagedDatabaseSensitivityLabelsClient.ListCurrentByDatabase
 // method.
 type ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseOptions struct {
@@ -6268,80 +6261,6 @@ type ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientListB
 	// placeholder for future optional parameters
 }
 
-// ManagedServerDNSAlias - A managed server DNS alias.
-type ManagedServerDNSAlias struct {
-	// Resource properties.
-	Properties *ManagedServerDNSAliasProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// ManagedServerDNSAliasAcquisition - A managed server DNS alias acquisition request.
-type ManagedServerDNSAliasAcquisition struct {
-	// REQUIRED; The resource ID of the managed server DNS alias that will be acquired to point to this managed server instead.
-	OldManagedServerDNSAliasResourceID *string `json:"oldManagedServerDnsAliasResourceId,omitempty"`
-}
-
-// ManagedServerDNSAliasCreation - A managed server dns alias creation request.
-type ManagedServerDNSAliasCreation struct {
-	// Whether or not DNS record should be created for this alias.
-	CreateDNSRecord *bool `json:"createDnsRecord,omitempty"`
-}
-
-// ManagedServerDNSAliasListResult - A list of managed server DNS aliases.
-type ManagedServerDNSAliasListResult struct {
-	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; Array of results.
-	Value []*ManagedServerDNSAlias `json:"value,omitempty" azure:"ro"`
-}
-
-// ManagedServerDNSAliasProperties - Properties of a managed server DNS alias.
-type ManagedServerDNSAliasProperties struct {
-	// READ-ONLY; The fully qualified DNS record for managed server alias
-	AzureDNSRecord *string `json:"azureDnsRecord,omitempty" azure:"ro"`
-}
-
-// ManagedServerDNSAliasesClientBeginAcquireOptions contains the optional parameters for the ManagedServerDNSAliasesClient.BeginAcquire
-// method.
-type ManagedServerDNSAliasesClientBeginAcquireOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ManagedServerDNSAliasesClientBeginCreateOrUpdateOptions contains the optional parameters for the ManagedServerDNSAliasesClient.BeginCreateOrUpdate
-// method.
-type ManagedServerDNSAliasesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ManagedServerDNSAliasesClientBeginDeleteOptions contains the optional parameters for the ManagedServerDNSAliasesClient.BeginDelete
-// method.
-type ManagedServerDNSAliasesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ManagedServerDNSAliasesClientGetOptions contains the optional parameters for the ManagedServerDNSAliasesClient.Get method.
-type ManagedServerDNSAliasesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ManagedServerDNSAliasesClientListByManagedInstanceOptions contains the optional parameters for the ManagedServerDNSAliasesClient.ListByManagedInstance
-// method.
-type ManagedServerDNSAliasesClientListByManagedInstanceOptions struct {
-	// placeholder for future optional parameters
-}
-
 // ManagedServerSecurityAlertPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the ManagedServerSecurityAlertPoliciesClient.BeginCreateOrUpdate
 // method.
 type ManagedServerSecurityAlertPoliciesClientBeginCreateOrUpdateOptions struct {
@@ -7339,25 +7258,6 @@ type ReplicationLinkProperties struct {
 	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
 }
 
-// ReplicationLinksClientBeginFailoverAllowDataLossOptions contains the optional parameters for the ReplicationLinksClient.BeginFailoverAllowDataLoss
-// method.
-type ReplicationLinksClientBeginFailoverAllowDataLossOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ReplicationLinksClientBeginFailoverOptions contains the optional parameters for the ReplicationLinksClient.BeginFailover
-// method.
-type ReplicationLinksClientBeginFailoverOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ReplicationLinksClientDeleteOptions contains the optional parameters for the ReplicationLinksClient.Delete method.
-type ReplicationLinksClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
 // ReplicationLinksClientGetOptions contains the optional parameters for the ReplicationLinksClient.Get method.
 type ReplicationLinksClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -7892,13 +7792,6 @@ type SensitivityLabelsClientEnableRecommendationOptions struct {
 // SensitivityLabelsClientGetOptions contains the optional parameters for the SensitivityLabelsClient.Get method.
 type SensitivityLabelsClientGetOptions struct {
 	// placeholder for future optional parameters
-}
-
-// SensitivityLabelsClientListByDatabaseOptions contains the optional parameters for the SensitivityLabelsClient.ListByDatabase
-// method.
-type SensitivityLabelsClientListByDatabaseOptions struct {
-	// An OData filter expression that filters elements in the collection.
-	Filter *string
 }
 
 // SensitivityLabelsClientListCurrentByDatabaseOptions contains the optional parameters for the SensitivityLabelsClient.ListCurrentByDatabase

@@ -2485,14 +2485,6 @@ func (m ManagedInstanceVulnerabilityAssessmentListResult) MarshalJSON() ([]byte,
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ManagedServerDNSAliasListResult.
-func (m ManagedServerDNSAliasListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", m.NextLink)
-	populate(objectMap, "value", m.Value)
-	return json.Marshal(objectMap)
-}
-
 // MarshalJSON implements the json.Marshaller interface for type ManagedServerSecurityAlertPolicyListResult.
 func (m ManagedServerSecurityAlertPolicyListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})

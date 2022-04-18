@@ -54,205 +54,6 @@ func NewReplicationLinksClient(subscriptionID string, credential azcore.TokenCre
 	return client, nil
 }
 
-// Delete - Deletes the replication link.
-// If the operation fails it returns an *azcore.ResponseError type.
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serverName - The name of the server.
-// databaseName - The name of the database.
-// options - ReplicationLinksClientDeleteOptions contains the optional parameters for the ReplicationLinksClient.Delete method.
-func (client *ReplicationLinksClient) Delete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksClientDeleteOptions) (ReplicationLinksClientDeleteResponse, error) {
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, databaseName, linkID, options)
-	if err != nil {
-		return ReplicationLinksClientDeleteResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ReplicationLinksClientDeleteResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ReplicationLinksClientDeleteResponse{}, runtime.NewResponseError(resp)
-	}
-	return ReplicationLinksClientDeleteResponse{}, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *ReplicationLinksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksClientDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}"
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	if linkID == "" {
-		return nil, errors.New("parameter linkID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{linkId}", url.PathEscape(linkID))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	return req, nil
-}
-
-// BeginFailover - Fails over from the current primary server to this server.
-// If the operation fails it returns an *azcore.ResponseError type.
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serverName - The name of the server.
-// databaseName - The name of the database.
-// linkID - The name of the replication link.
-// options - ReplicationLinksClientBeginFailoverOptions contains the optional parameters for the ReplicationLinksClient.BeginFailover
-// method.
-func (client *ReplicationLinksClient) BeginFailover(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksClientBeginFailoverOptions) (*armruntime.Poller[ReplicationLinksClientFailoverResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.failover(ctx, resourceGroupName, serverName, databaseName, linkID, options)
-		if err != nil {
-			return nil, err
-		}
-		return armruntime.NewPoller[ReplicationLinksClientFailoverResponse](resp, client.pl, nil)
-	} else {
-		return armruntime.NewPollerFromResumeToken[ReplicationLinksClientFailoverResponse](options.ResumeToken, client.pl, nil)
-	}
-}
-
-// Failover - Fails over from the current primary server to this server.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ReplicationLinksClient) failover(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksClientBeginFailoverOptions) (*http.Response, error) {
-	req, err := client.failoverCreateRequest(ctx, resourceGroupName, serverName, databaseName, linkID, options)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(resp)
-	}
-	return resp, nil
-}
-
-// failoverCreateRequest creates the Failover request.
-func (client *ReplicationLinksClient) failoverCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksClientBeginFailoverOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/failover"
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	if linkID == "" {
-		return nil, errors.New("parameter linkID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{linkId}", url.PathEscape(linkID))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
-	return req, nil
-}
-
-// BeginFailoverAllowDataLoss - Fails over from the current primary server to this server allowing data loss.
-// If the operation fails it returns an *azcore.ResponseError type.
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serverName - The name of the server.
-// databaseName - The name of the database.
-// linkID - The name of the replication link.
-// options - ReplicationLinksClientBeginFailoverAllowDataLossOptions contains the optional parameters for the ReplicationLinksClient.BeginFailoverAllowDataLoss
-// method.
-func (client *ReplicationLinksClient) BeginFailoverAllowDataLoss(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksClientBeginFailoverAllowDataLossOptions) (*armruntime.Poller[ReplicationLinksClientFailoverAllowDataLossResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.failoverAllowDataLoss(ctx, resourceGroupName, serverName, databaseName, linkID, options)
-		if err != nil {
-			return nil, err
-		}
-		return armruntime.NewPoller[ReplicationLinksClientFailoverAllowDataLossResponse](resp, client.pl, nil)
-	} else {
-		return armruntime.NewPollerFromResumeToken[ReplicationLinksClientFailoverAllowDataLossResponse](options.ResumeToken, client.pl, nil)
-	}
-}
-
-// FailoverAllowDataLoss - Fails over from the current primary server to this server allowing data loss.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ReplicationLinksClient) failoverAllowDataLoss(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksClientBeginFailoverAllowDataLossOptions) (*http.Response, error) {
-	req, err := client.failoverAllowDataLossCreateRequest(ctx, resourceGroupName, serverName, databaseName, linkID, options)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(resp)
-	}
-	return resp, nil
-}
-
-// failoverAllowDataLossCreateRequest creates the FailoverAllowDataLoss request.
-func (client *ReplicationLinksClient) failoverAllowDataLossCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksClientBeginFailoverAllowDataLossOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/forceFailoverAllowDataLoss"
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	if linkID == "" {
-		return nil, errors.New("parameter linkID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{linkId}", url.PathEscape(linkID))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
-	return req, nil
-}
-
 // Get - Gets a replication link.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
@@ -304,7 +105,7 @@ func (client *ReplicationLinksClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -379,7 +180,7 @@ func (client *ReplicationLinksClient) listByDatabaseCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -449,7 +250,7 @@ func (client *ReplicationLinksClient) listByServerCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil

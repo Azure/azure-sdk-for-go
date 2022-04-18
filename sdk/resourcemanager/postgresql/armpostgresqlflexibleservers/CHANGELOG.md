@@ -1,5 +1,25 @@
 # Release History
 
+## 0.5.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*ServersClient.List` has been removed
+- Function `*FirewallRulesClient.ListByServer` has been removed
+- Function `*DatabasesClient.ListByServer` has been removed
+- Function `*ConfigurationsClient.ListByServer` has been removed
+- Function `*ServersClient.ListByResourceGroup` has been removed
+- Function `*LocationBasedCapabilitiesClient.Execute` has been removed
+
+### Features Added
+
+- New function `*DatabasesClient.NewListByServerPager(string, string, *DatabasesClientListByServerOptions) *runtime.Pager[DatabasesClientListByServerResponse]`
+- New function `*ServersClient.NewListPager(*ServersClientListOptions) *runtime.Pager[ServersClientListResponse]`
+- New function `*ConfigurationsClient.NewListByServerPager(string, string, *ConfigurationsClientListByServerOptions) *runtime.Pager[ConfigurationsClientListByServerResponse]`
+- New function `*ServersClient.NewListByResourceGroupPager(string, *ServersClientListByResourceGroupOptions) *runtime.Pager[ServersClientListByResourceGroupResponse]`
+- New function `*FirewallRulesClient.NewListByServerPager(string, string, *FirewallRulesClientListByServerOptions) *runtime.Pager[FirewallRulesClientListByServerResponse]`
+- New function `*LocationBasedCapabilitiesClient.NewExecutePager(string, *LocationBasedCapabilitiesClientExecuteOptions) *runtime.Pager[LocationBasedCapabilitiesClientExecuteResponse]`
+
+
 ## 0.4.0 (2022-04-12)
 ### Breaking Changes
 

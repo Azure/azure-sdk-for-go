@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/CapabilitiesByLocation.json
-func ExampleLocationBasedCapabilitiesClient_Execute() {
+func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleLocationBasedCapabilitiesClient_Execute() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.Execute("<location-name>",
+	pager := client.NewExecutePager("<location-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

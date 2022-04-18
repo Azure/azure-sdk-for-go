@@ -115,14 +115,14 @@ func (client *RestorableDroppedManagedDatabasesClient) getHandleResponse(resp *h
 	return result, nil
 }
 
-// ListByInstance - Gets a list of restorable dropped managed databases.
+// NewListByInstancePager - Gets a list of restorable dropped managed databases.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
 // options - RestorableDroppedManagedDatabasesClientListByInstanceOptions contains the optional parameters for the RestorableDroppedManagedDatabasesClient.ListByInstance
 // method.
-func (client *RestorableDroppedManagedDatabasesClient) ListByInstance(resourceGroupName string, managedInstanceName string, options *RestorableDroppedManagedDatabasesClientListByInstanceOptions) *runtime.Pager[RestorableDroppedManagedDatabasesClientListByInstanceResponse] {
+func (client *RestorableDroppedManagedDatabasesClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *RestorableDroppedManagedDatabasesClientListByInstanceOptions) *runtime.Pager[RestorableDroppedManagedDatabasesClientListByInstanceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RestorableDroppedManagedDatabasesClientListByInstanceResponse]{
 		More: func(page RestorableDroppedManagedDatabasesClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

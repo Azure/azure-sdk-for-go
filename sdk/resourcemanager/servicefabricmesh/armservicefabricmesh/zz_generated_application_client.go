@@ -205,13 +205,13 @@ func (client *ApplicationClient) getHandleResponse(resp *http.Response) (Applica
 	return result, nil
 }
 
-// ListByResourceGroup - Gets the information about all application resources in a given resource group. The information include
-// the description and other properties of the Application.
+// NewListByResourceGroupPager - Gets the information about all application resources in a given resource group. The information
+// include the description and other properties of the Application.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Azure resource group name
 // options - ApplicationClientListByResourceGroupOptions contains the optional parameters for the ApplicationClient.ListByResourceGroup
 // method.
-func (client *ApplicationClient) ListByResourceGroup(resourceGroupName string, options *ApplicationClientListByResourceGroupOptions) *runtime.Pager[ApplicationClientListByResourceGroupResponse] {
+func (client *ApplicationClient) NewListByResourceGroupPager(resourceGroupName string, options *ApplicationClientListByResourceGroupOptions) *runtime.Pager[ApplicationClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ApplicationClientListByResourceGroupResponse]{
 		More: func(page ApplicationClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -270,12 +270,12 @@ func (client *ApplicationClient) listByResourceGroupHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListBySubscription - Gets the information about all application resources in a given resource group. The information include
-// the description and other properties of the application.
+// NewListBySubscriptionPager - Gets the information about all application resources in a given resource group. The information
+// include the description and other properties of the application.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ApplicationClientListBySubscriptionOptions contains the optional parameters for the ApplicationClient.ListBySubscription
 // method.
-func (client *ApplicationClient) ListBySubscription(options *ApplicationClientListBySubscriptionOptions) *runtime.Pager[ApplicationClientListBySubscriptionResponse] {
+func (client *ApplicationClient) NewListBySubscriptionPager(options *ApplicationClientListBySubscriptionOptions) *runtime.Pager[ApplicationClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ApplicationClientListBySubscriptionResponse]{
 		More: func(page ApplicationClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

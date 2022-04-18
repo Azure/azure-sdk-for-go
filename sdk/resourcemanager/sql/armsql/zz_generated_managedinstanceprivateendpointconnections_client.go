@@ -247,14 +247,14 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) getHandleResponse
 	return result, nil
 }
 
-// ListByManagedInstance - Gets all private endpoint connections on a server.
+// NewListByManagedInstancePager - Gets all private endpoint connections on a server.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
 // options - ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceOptions contains the optional parameters
 // for the ManagedInstancePrivateEndpointConnectionsClient.ListByManagedInstance method.
-func (client *ManagedInstancePrivateEndpointConnectionsClient) ListByManagedInstance(resourceGroupName string, managedInstanceName string, options *ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceOptions) *runtime.Pager[ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceResponse] {
+func (client *ManagedInstancePrivateEndpointConnectionsClient) NewListByManagedInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceOptions) *runtime.Pager[ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceResponse]{
 		More: func(page ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

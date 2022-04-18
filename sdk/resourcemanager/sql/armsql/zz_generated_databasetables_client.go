@@ -125,7 +125,7 @@ func (client *DatabaseTablesClient) getHandleResponse(resp *http.Response) (Data
 	return result, nil
 }
 
-// ListBySchema - List database tables
+// NewListBySchemaPager - List database tables
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -134,7 +134,7 @@ func (client *DatabaseTablesClient) getHandleResponse(resp *http.Response) (Data
 // schemaName - The name of the schema.
 // options - DatabaseTablesClientListBySchemaOptions contains the optional parameters for the DatabaseTablesClient.ListBySchema
 // method.
-func (client *DatabaseTablesClient) ListBySchema(resourceGroupName string, serverName string, databaseName string, schemaName string, options *DatabaseTablesClientListBySchemaOptions) *runtime.Pager[DatabaseTablesClientListBySchemaResponse] {
+func (client *DatabaseTablesClient) NewListBySchemaPager(resourceGroupName string, serverName string, databaseName string, schemaName string, options *DatabaseTablesClientListBySchemaOptions) *runtime.Pager[DatabaseTablesClientListBySchemaResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DatabaseTablesClientListBySchemaResponse]{
 		More: func(page DatabaseTablesClientListBySchemaResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

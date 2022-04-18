@@ -50,7 +50,7 @@ func ExampleSyncGroupsClient_BeginRefreshHubSchema() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SyncGroupGetHubSchema.json
-func ExampleSyncGroupsClient_ListHubSchemas() {
+func ExampleSyncGroupsClient_NewListHubSchemasPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -62,7 +62,7 @@ func ExampleSyncGroupsClient_ListHubSchemas() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListHubSchemas("<resource-group-name>",
+	pager := client.NewListHubSchemasPager("<resource-group-name>",
 		"<server-name>",
 		"<database-name>",
 		"<sync-group-name>",
@@ -81,7 +81,7 @@ func ExampleSyncGroupsClient_ListHubSchemas() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SyncGroupGetLog.json
-func ExampleSyncGroupsClient_ListLogs() {
+func ExampleSyncGroupsClient_NewListLogsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -93,7 +93,7 @@ func ExampleSyncGroupsClient_ListLogs() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListLogs("<resource-group-name>",
+	pager := client.NewListLogsPager("<resource-group-name>",
 		"<server-name>",
 		"<database-name>",
 		"<sync-group-name>",
@@ -305,7 +305,7 @@ func ExampleSyncGroupsClient_BeginUpdate() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SyncGroupListByDatabase.json
-func ExampleSyncGroupsClient_ListByDatabase() {
+func ExampleSyncGroupsClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -317,7 +317,7 @@ func ExampleSyncGroupsClient_ListByDatabase() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByDatabase("<resource-group-name>",
+	pager := client.NewListByDatabasePager("<resource-group-name>",
 		"<server-name>",
 		"<database-name>",
 		nil)

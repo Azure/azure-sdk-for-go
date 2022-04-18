@@ -116,14 +116,14 @@ func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListByServer - Gets the private link resources for SQL server.
+// NewListByServerPager - Gets the private link resources for SQL server.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - PrivateLinkResourcesClientListByServerOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByServer
 // method.
-func (client *PrivateLinkResourcesClient) ListByServer(resourceGroupName string, serverName string, options *PrivateLinkResourcesClientListByServerOptions) *runtime.Pager[PrivateLinkResourcesClientListByServerResponse] {
+func (client *PrivateLinkResourcesClient) NewListByServerPager(resourceGroupName string, serverName string, options *PrivateLinkResourcesClientListByServerOptions) *runtime.Pager[PrivateLinkResourcesClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkResourcesClientListByServerResponse]{
 		More: func(page PrivateLinkResourcesClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

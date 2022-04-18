@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/Rules/RuleListBySubscription.json
-func ExampleRulesClient_ListBySubscriptions() {
+func ExampleRulesClient_NewListBySubscriptionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleRulesClient_ListBySubscriptions() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscriptions("<resource-group-name>",
+	pager := client.NewListBySubscriptionsPager("<resource-group-name>",
 		"<namespace-name>",
 		"<topic-name>",
 		"<subscription-name>",

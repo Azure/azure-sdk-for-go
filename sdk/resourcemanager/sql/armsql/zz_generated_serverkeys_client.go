@@ -251,13 +251,13 @@ func (client *ServerKeysClient) getHandleResponse(resp *http.Response) (ServerKe
 	return result, nil
 }
 
-// ListByServer - Gets a list of server keys.
+// NewListByServerPager - Gets a list of server keys.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - ServerKeysClientListByServerOptions contains the optional parameters for the ServerKeysClient.ListByServer method.
-func (client *ServerKeysClient) ListByServer(resourceGroupName string, serverName string, options *ServerKeysClientListByServerOptions) *runtime.Pager[ServerKeysClientListByServerResponse] {
+func (client *ServerKeysClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerKeysClientListByServerOptions) *runtime.Pager[ServerKeysClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServerKeysClientListByServerResponse]{
 		More: func(page ServerKeysClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

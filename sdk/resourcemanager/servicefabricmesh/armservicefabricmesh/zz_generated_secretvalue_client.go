@@ -211,13 +211,13 @@ func (client *SecretValueClient) getHandleResponse(resp *http.Response) (SecretV
 	return result, nil
 }
 
-// List - Gets information about all secret value resources of the specified secret resource. The information includes the
-// names of the secret value resources, but not the actual values.
+// NewListPager - Gets information about all secret value resources of the specified secret resource. The information includes
+// the names of the secret value resources, but not the actual values.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Azure resource group name
 // secretResourceName - The name of the secret resource.
 // options - SecretValueClientListOptions contains the optional parameters for the SecretValueClient.List method.
-func (client *SecretValueClient) List(resourceGroupName string, secretResourceName string, options *SecretValueClientListOptions) *runtime.Pager[SecretValueClientListResponse] {
+func (client *SecretValueClient) NewListPager(resourceGroupName string, secretResourceName string, options *SecretValueClientListOptions) *runtime.Pager[SecretValueClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SecretValueClientListResponse]{
 		More: func(page SecretValueClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

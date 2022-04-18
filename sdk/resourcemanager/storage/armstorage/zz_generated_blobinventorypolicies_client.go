@@ -232,14 +232,14 @@ func (client *BlobInventoryPoliciesClient) getHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// List - Gets the blob inventory policy associated with the specified storage account.
+// NewListPager - Gets the blob inventory policy associated with the specified storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
 // options - BlobInventoryPoliciesClientListOptions contains the optional parameters for the BlobInventoryPoliciesClient.List
 // method.
-func (client *BlobInventoryPoliciesClient) List(resourceGroupName string, accountName string, options *BlobInventoryPoliciesClientListOptions) *runtime.Pager[BlobInventoryPoliciesClientListResponse] {
+func (client *BlobInventoryPoliciesClient) NewListPager(resourceGroupName string, accountName string, options *BlobInventoryPoliciesClientListOptions) *runtime.Pager[BlobInventoryPoliciesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BlobInventoryPoliciesClientListResponse]{
 		More: func(page BlobInventoryPoliciesClientListResponse) bool {
 			return false

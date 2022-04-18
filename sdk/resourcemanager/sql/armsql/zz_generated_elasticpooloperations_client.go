@@ -107,14 +107,14 @@ func (client *ElasticPoolOperationsClient) cancelCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// ListByElasticPool - Gets a list of operations performed on the elastic pool.
+// NewListByElasticPoolPager - Gets a list of operations performed on the elastic pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - ElasticPoolOperationsClientListByElasticPoolOptions contains the optional parameters for the ElasticPoolOperationsClient.ListByElasticPool
 // method.
-func (client *ElasticPoolOperationsClient) ListByElasticPool(resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolOperationsClientListByElasticPoolOptions) *runtime.Pager[ElasticPoolOperationsClientListByElasticPoolResponse] {
+func (client *ElasticPoolOperationsClient) NewListByElasticPoolPager(resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolOperationsClientListByElasticPoolOptions) *runtime.Pager[ElasticPoolOperationsClientListByElasticPoolResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ElasticPoolOperationsClientListByElasticPoolResponse]{
 		More: func(page ElasticPoolOperationsClientListByElasticPoolResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

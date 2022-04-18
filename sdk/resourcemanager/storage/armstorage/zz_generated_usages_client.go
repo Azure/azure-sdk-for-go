@@ -54,11 +54,11 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 	return client, nil
 }
 
-// ListByLocation - Gets the current usage count and the limit for the resources of the location under the subscription.
+// NewListByLocationPager - Gets the current usage count and the limit for the resources of the location under the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - The location of the Azure Storage resource.
 // options - UsagesClientListByLocationOptions contains the optional parameters for the UsagesClient.ListByLocation method.
-func (client *UsagesClient) ListByLocation(location string, options *UsagesClientListByLocationOptions) *runtime.Pager[UsagesClientListByLocationResponse] {
+func (client *UsagesClient) NewListByLocationPager(location string, options *UsagesClientListByLocationOptions) *runtime.Pager[UsagesClientListByLocationResponse] {
 	return runtime.NewPager(runtime.PageProcessor[UsagesClientListByLocationResponse]{
 		More: func(page UsagesClientListByLocationResponse) bool {
 			return false

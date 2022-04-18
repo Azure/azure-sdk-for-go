@@ -194,7 +194,7 @@ func (client *LongTermRetentionPoliciesClient) getHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListByDatabase - Gets a database's long term retention policy.
+// NewListByDatabasePager - Gets a database's long term retention policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -202,7 +202,7 @@ func (client *LongTermRetentionPoliciesClient) getHandleResponse(resp *http.Resp
 // databaseName - The name of the database.
 // options - LongTermRetentionPoliciesClientListByDatabaseOptions contains the optional parameters for the LongTermRetentionPoliciesClient.ListByDatabase
 // method.
-func (client *LongTermRetentionPoliciesClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *LongTermRetentionPoliciesClientListByDatabaseOptions) *runtime.Pager[LongTermRetentionPoliciesClientListByDatabaseResponse] {
+func (client *LongTermRetentionPoliciesClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *LongTermRetentionPoliciesClientListByDatabaseOptions) *runtime.Pager[LongTermRetentionPoliciesClientListByDatabaseResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LongTermRetentionPoliciesClientListByDatabaseResponse]{
 		More: func(page LongTermRetentionPoliciesClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/Subscriptions/SBSubscriptionListByTopic.json
-func ExampleSubscriptionsClient_ListByTopic() {
+func ExampleSubscriptionsClient_NewListByTopicPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleSubscriptionsClient_ListByTopic() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByTopic("<resource-group-name>",
+	pager := client.NewListByTopicPager("<resource-group-name>",
 		"<namespace-name>",
 		"<topic-name>",
 		&armservicebus.SubscriptionsClientListByTopicOptions{Skip: nil,

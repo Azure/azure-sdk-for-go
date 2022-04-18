@@ -130,7 +130,7 @@ func (client *DatabaseColumnsClient) getHandleResponse(resp *http.Response) (Dat
 	return result, nil
 }
 
-// ListByDatabase - List database columns
+// NewListByDatabasePager - List database columns
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -138,7 +138,7 @@ func (client *DatabaseColumnsClient) getHandleResponse(resp *http.Response) (Dat
 // databaseName - The name of the database.
 // options - DatabaseColumnsClientListByDatabaseOptions contains the optional parameters for the DatabaseColumnsClient.ListByDatabase
 // method.
-func (client *DatabaseColumnsClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *DatabaseColumnsClientListByDatabaseOptions) *runtime.Pager[DatabaseColumnsClientListByDatabaseResponse] {
+func (client *DatabaseColumnsClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *DatabaseColumnsClientListByDatabaseOptions) *runtime.Pager[DatabaseColumnsClientListByDatabaseResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DatabaseColumnsClientListByDatabaseResponse]{
 		More: func(page DatabaseColumnsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -228,7 +228,7 @@ func (client *DatabaseColumnsClient) listByDatabaseHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListByTable - List database columns
+// NewListByTablePager - List database columns
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -238,7 +238,7 @@ func (client *DatabaseColumnsClient) listByDatabaseHandleResponse(resp *http.Res
 // tableName - The name of the table.
 // options - DatabaseColumnsClientListByTableOptions contains the optional parameters for the DatabaseColumnsClient.ListByTable
 // method.
-func (client *DatabaseColumnsClient) ListByTable(resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, options *DatabaseColumnsClientListByTableOptions) *runtime.Pager[DatabaseColumnsClientListByTableResponse] {
+func (client *DatabaseColumnsClient) NewListByTablePager(resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, options *DatabaseColumnsClientListByTableOptions) *runtime.Pager[DatabaseColumnsClientListByTableResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DatabaseColumnsClientListByTableResponse]{
 		More: func(page DatabaseColumnsClientListByTableResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

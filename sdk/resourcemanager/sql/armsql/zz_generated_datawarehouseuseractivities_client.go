@@ -121,7 +121,7 @@ func (client *DataWarehouseUserActivitiesClient) getHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListByDatabase - List the user activities of a data warehouse which includes running and suspended queries
+// NewListByDatabasePager - List the user activities of a data warehouse which includes running and suspended queries
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -129,7 +129,7 @@ func (client *DataWarehouseUserActivitiesClient) getHandleResponse(resp *http.Re
 // databaseName - The name of the database.
 // options - DataWarehouseUserActivitiesClientListByDatabaseOptions contains the optional parameters for the DataWarehouseUserActivitiesClient.ListByDatabase
 // method.
-func (client *DataWarehouseUserActivitiesClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *DataWarehouseUserActivitiesClientListByDatabaseOptions) *runtime.Pager[DataWarehouseUserActivitiesClientListByDatabaseResponse] {
+func (client *DataWarehouseUserActivitiesClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *DataWarehouseUserActivitiesClientListByDatabaseOptions) *runtime.Pager[DataWarehouseUserActivitiesClientListByDatabaseResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DataWarehouseUserActivitiesClientListByDatabaseResponse]{
 		More: func(page DataWarehouseUserActivitiesClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -474,11 +474,11 @@ func (client *AccountsClient) hierarchicalNamespaceMigrationCreateRequest(ctx co
 	return req, nil
 }
 
-// List - Lists all the storage accounts available under the subscription. Note that storage keys are not returned; use the
-// ListKeys operation for this.
+// NewListPager - Lists all the storage accounts available under the subscription. Note that storage keys are not returned;
+// use the ListKeys operation for this.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AccountsClientListOptions contains the optional parameters for the AccountsClient.List method.
-func (client *AccountsClient) List(options *AccountsClientListOptions) *runtime.Pager[AccountsClientListResponse] {
+func (client *AccountsClient) NewListPager(options *AccountsClientListOptions) *runtime.Pager[AccountsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccountsClientListResponse]{
 		More: func(page AccountsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -590,13 +590,13 @@ func (client *AccountsClient) listAccountSASHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all the storage accounts available under the given resource group. Note that storage keys are
-// not returned; use the ListKeys operation for this.
+// NewListByResourceGroupPager - Lists all the storage accounts available under the given resource group. Note that storage
+// keys are not returned; use the ListKeys operation for this.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // options - AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.ListByResourceGroup
 // method.
-func (client *AccountsClient) ListByResourceGroup(resourceGroupName string, options *AccountsClientListByResourceGroupOptions) *runtime.Pager[AccountsClientListByResourceGroupResponse] {
+func (client *AccountsClient) NewListByResourceGroupPager(resourceGroupName string, options *AccountsClientListByResourceGroupOptions) *runtime.Pager[AccountsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccountsClientListByResourceGroupResponse]{
 		More: func(page AccountsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

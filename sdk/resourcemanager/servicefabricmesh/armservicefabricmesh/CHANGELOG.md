@@ -1,5 +1,41 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*SecretValueClient.List` has been removed
+- Function `*NetworkClient.ListByResourceGroup` has been removed
+- Function `*ServiceClient.List` has been removed
+- Function `*SecretClient.ListByResourceGroup` has been removed
+- Function `*VolumeClient.ListBySubscription` has been removed
+- Function `*ApplicationClient.ListBySubscription` has been removed
+- Function `*ServiceReplicaClient.List` has been removed
+- Function `*GatewayClient.ListBySubscription` has been removed
+- Function `*VolumeClient.ListByResourceGroup` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*GatewayClient.ListByResourceGroup` has been removed
+- Function `*NetworkClient.ListBySubscription` has been removed
+- Function `*ApplicationClient.ListByResourceGroup` has been removed
+- Function `*SecretClient.ListBySubscription` has been removed
+
+### Features Added
+
+- New function `*ServiceClient.NewListPager(string, string, *ServiceClientListOptions) *runtime.Pager[ServiceClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*VolumeClient.NewListBySubscriptionPager(*VolumeClientListBySubscriptionOptions) *runtime.Pager[VolumeClientListBySubscriptionResponse]`
+- New function `*SecretClient.NewListBySubscriptionPager(*SecretClientListBySubscriptionOptions) *runtime.Pager[SecretClientListBySubscriptionResponse]`
+- New function `*GatewayClient.NewListByResourceGroupPager(string, *GatewayClientListByResourceGroupOptions) *runtime.Pager[GatewayClientListByResourceGroupResponse]`
+- New function `*SecretClient.NewListByResourceGroupPager(string, *SecretClientListByResourceGroupOptions) *runtime.Pager[SecretClientListByResourceGroupResponse]`
+- New function `*NetworkClient.NewListBySubscriptionPager(*NetworkClientListBySubscriptionOptions) *runtime.Pager[NetworkClientListBySubscriptionResponse]`
+- New function `*SecretValueClient.NewListPager(string, string, *SecretValueClientListOptions) *runtime.Pager[SecretValueClientListResponse]`
+- New function `*ServiceReplicaClient.NewListPager(string, string, string, *ServiceReplicaClientListOptions) *runtime.Pager[ServiceReplicaClientListResponse]`
+- New function `*ApplicationClient.NewListByResourceGroupPager(string, *ApplicationClientListByResourceGroupOptions) *runtime.Pager[ApplicationClientListByResourceGroupResponse]`
+- New function `*NetworkClient.NewListByResourceGroupPager(string, *NetworkClientListByResourceGroupOptions) *runtime.Pager[NetworkClientListByResourceGroupResponse]`
+- New function `*ApplicationClient.NewListBySubscriptionPager(*ApplicationClientListBySubscriptionOptions) *runtime.Pager[ApplicationClientListBySubscriptionResponse]`
+- New function `*VolumeClient.NewListByResourceGroupPager(string, *VolumeClientListByResourceGroupOptions) *runtime.Pager[VolumeClientListByResourceGroupResponse]`
+- New function `*GatewayClient.NewListBySubscriptionPager(*GatewayClientListBySubscriptionOptions) *runtime.Pager[GatewayClientListBySubscriptionResponse]`
+
+
 ## 0.3.0 (2022-04-13)
 ### Breaking Changes
 

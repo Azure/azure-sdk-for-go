@@ -119,7 +119,7 @@ func (testsuite *EncryptionScopesClientTestSuite) TestEncryptionScopesCRUD() {
 	testsuite.Require().Equal(encryptionScopeName, *getResp.Name)
 
 	// list
-	listPager := encryptionScopesClient.List(testsuite.resourceGroupName, scName, nil)
+	listPager := encryptionScopesClient.NewListPager(testsuite.resourceGroupName, scName, nil)
 	testsuite.Require().True(listPager.More())
 
 	// patch

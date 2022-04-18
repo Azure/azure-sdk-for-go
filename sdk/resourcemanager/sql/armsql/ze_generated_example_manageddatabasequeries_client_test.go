@@ -44,7 +44,7 @@ func ExampleManagedDatabaseQueriesClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedInstanceQueryStatisticsList.json
-func ExampleManagedDatabaseQueriesClient_ListByQuery() {
+func ExampleManagedDatabaseQueriesClient_NewListByQueryPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -56,7 +56,7 @@ func ExampleManagedDatabaseQueriesClient_ListByQuery() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByQuery("<resource-group-name>",
+	pager := client.NewListByQueryPager("<resource-group-name>",
 		"<managed-instance-name>",
 		"<database-name>",
 		"<query-id>",

@@ -249,14 +249,14 @@ func (client *ManagedInstanceKeysClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListByInstance - Gets a list of managed instance keys.
+// NewListByInstancePager - Gets a list of managed instance keys.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
 // options - ManagedInstanceKeysClientListByInstanceOptions contains the optional parameters for the ManagedInstanceKeysClient.ListByInstance
 // method.
-func (client *ManagedInstanceKeysClient) ListByInstance(resourceGroupName string, managedInstanceName string, options *ManagedInstanceKeysClientListByInstanceOptions) *runtime.Pager[ManagedInstanceKeysClientListByInstanceResponse] {
+func (client *ManagedInstanceKeysClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstanceKeysClientListByInstanceOptions) *runtime.Pager[ManagedInstanceKeysClientListByInstanceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagedInstanceKeysClientListByInstanceResponse]{
 		More: func(page ManagedInstanceKeysClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

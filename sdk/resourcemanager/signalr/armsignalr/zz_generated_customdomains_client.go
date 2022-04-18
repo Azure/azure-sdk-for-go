@@ -250,13 +250,13 @@ func (client *CustomDomainsClient) getHandleResponse(resp *http.Response) (Custo
 	return result, nil
 }
 
-// List - List all custom domains.
+// NewListPager - List all custom domains.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // resourceName - The name of the resource.
 // options - CustomDomainsClientListOptions contains the optional parameters for the CustomDomainsClient.List method.
-func (client *CustomDomainsClient) List(resourceGroupName string, resourceName string, options *CustomDomainsClientListOptions) *runtime.Pager[CustomDomainsClientListResponse] {
+func (client *CustomDomainsClient) NewListPager(resourceGroupName string, resourceName string, options *CustomDomainsClientListOptions) *runtime.Pager[CustomDomainsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CustomDomainsClientListResponse]{
 		More: func(page CustomDomainsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

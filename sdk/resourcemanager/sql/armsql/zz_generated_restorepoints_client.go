@@ -244,7 +244,7 @@ func (client *RestorePointsClient) getHandleResponse(resp *http.Response) (Resto
 	return result, nil
 }
 
-// ListByDatabase - Gets a list of database restore points.
+// NewListByDatabasePager - Gets a list of database restore points.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -252,7 +252,7 @@ func (client *RestorePointsClient) getHandleResponse(resp *http.Response) (Resto
 // databaseName - The name of the database.
 // options - RestorePointsClientListByDatabaseOptions contains the optional parameters for the RestorePointsClient.ListByDatabase
 // method.
-func (client *RestorePointsClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *RestorePointsClientListByDatabaseOptions) *runtime.Pager[RestorePointsClientListByDatabaseResponse] {
+func (client *RestorePointsClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *RestorePointsClientListByDatabaseOptions) *runtime.Pager[RestorePointsClientListByDatabaseResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RestorePointsClientListByDatabaseResponse]{
 		More: func(page RestorePointsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -121,7 +121,7 @@ func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClie
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/GetListManagedShortTermRetentionPolicyRestorableDropped.json
-func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient_ListByRestorableDroppedDatabase() {
+func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient_NewListByRestorableDroppedDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -133,7 +133,7 @@ func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClie
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByRestorableDroppedDatabase("<resource-group-name>",
+	pager := client.NewListByRestorableDroppedDatabasePager("<resource-group-name>",
 		"<managed-instance-name>",
 		"<restorable-dropped-database-id>",
 		nil)

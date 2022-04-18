@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DatabaseTableListBySchema.json
-func ExampleDatabaseTablesClient_ListBySchema() {
+func ExampleDatabaseTablesClient_NewListBySchemaPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleDatabaseTablesClient_ListBySchema() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySchema("<resource-group-name>",
+	pager := client.NewListBySchemaPager("<resource-group-name>",
 		"<server-name>",
 		"<database-name>",
 		"<schema-name>",

@@ -53,6 +53,6 @@ func TestSKUsClient(t *testing.T) {
 func (testsuite *SKUsClientTestSuite) TestSKUs() {
 	skusClient, err := armstorage.NewSKUsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	resp := skusClient.List(nil)
+	resp := skusClient.NewListPager(nil)
 	testsuite.Require().True(resp.More())
 }

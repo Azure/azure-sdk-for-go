@@ -1,5 +1,43 @@
 # Release History
 
+## 0.5.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*NamespacesClient.ListAuthorizationRules` has been removed
+- Function `*SubscriptionsClient.ListByTopic` has been removed
+- Function `*RulesClient.ListBySubscriptions` has been removed
+- Function `*PrivateEndpointConnectionsClient.List` has been removed
+- Function `*DisasterRecoveryConfigsClient.List` has been removed
+- Function `*NamespacesClient.ListNetworkRuleSets` has been removed
+- Function `*TopicsClient.ListAuthorizationRules` has been removed
+- Function `*MigrationConfigsClient.List` has been removed
+- Function `*QueuesClient.ListByNamespace` has been removed
+- Function `*TopicsClient.ListByNamespace` has been removed
+- Function `*NamespacesClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*DisasterRecoveryConfigsClient.ListAuthorizationRules` has been removed
+- Function `*QueuesClient.ListAuthorizationRules` has been removed
+- Function `*NamespacesClient.ListByResourceGroup` has been removed
+
+### Features Added
+
+- New function `*QueuesClient.NewListAuthorizationRulesPager(string, string, string, *QueuesClientListAuthorizationRulesOptions) *runtime.Pager[QueuesClientListAuthorizationRulesResponse]`
+- New function `*TopicsClient.NewListByNamespacePager(string, string, *TopicsClientListByNamespaceOptions) *runtime.Pager[TopicsClientListByNamespaceResponse]`
+- New function `*NamespacesClient.NewListByResourceGroupPager(string, *NamespacesClientListByResourceGroupOptions) *runtime.Pager[NamespacesClientListByResourceGroupResponse]`
+- New function `*QueuesClient.NewListByNamespacePager(string, string, *QueuesClientListByNamespaceOptions) *runtime.Pager[QueuesClientListByNamespaceResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*NamespacesClient.NewListPager(*NamespacesClientListOptions) *runtime.Pager[NamespacesClientListResponse]`
+- New function `*RulesClient.NewListBySubscriptionsPager(string, string, string, string, *RulesClientListBySubscriptionsOptions) *runtime.Pager[RulesClientListBySubscriptionsResponse]`
+- New function `*DisasterRecoveryConfigsClient.NewListPager(string, string, *DisasterRecoveryConfigsClientListOptions) *runtime.Pager[DisasterRecoveryConfigsClientListResponse]`
+- New function `*SubscriptionsClient.NewListByTopicPager(string, string, string, *SubscriptionsClientListByTopicOptions) *runtime.Pager[SubscriptionsClientListByTopicResponse]`
+- New function `*PrivateEndpointConnectionsClient.NewListPager(string, string, *PrivateEndpointConnectionsClientListOptions) *runtime.Pager[PrivateEndpointConnectionsClientListResponse]`
+- New function `*TopicsClient.NewListAuthorizationRulesPager(string, string, string, *TopicsClientListAuthorizationRulesOptions) *runtime.Pager[TopicsClientListAuthorizationRulesResponse]`
+- New function `*NamespacesClient.NewListNetworkRuleSetsPager(string, string, *NamespacesClientListNetworkRuleSetsOptions) *runtime.Pager[NamespacesClientListNetworkRuleSetsResponse]`
+- New function `*DisasterRecoveryConfigsClient.NewListAuthorizationRulesPager(string, string, string, *DisasterRecoveryConfigsClientListAuthorizationRulesOptions) *runtime.Pager[DisasterRecoveryConfigsClientListAuthorizationRulesResponse]`
+- New function `*NamespacesClient.NewListAuthorizationRulesPager(string, string, *NamespacesClientListAuthorizationRulesOptions) *runtime.Pager[NamespacesClientListAuthorizationRulesResponse]`
+- New function `*MigrationConfigsClient.NewListPager(string, string, *MigrationConfigsClientListOptions) *runtime.Pager[MigrationConfigsClientListResponse]`
+
+
 ## 0.4.0 (2022-04-14)
 ### Breaking Changes
 

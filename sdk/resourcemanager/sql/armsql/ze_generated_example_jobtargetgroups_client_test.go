@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListJobTargetGroups.json
-func ExampleJobTargetGroupsClient_ListByAgent() {
+func ExampleJobTargetGroupsClient_NewListByAgentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleJobTargetGroupsClient_ListByAgent() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByAgent("<resource-group-name>",
+	pager := client.NewListByAgentPager("<resource-group-name>",
 		"<server-name>",
 		"<job-agent-name>",
 		nil)

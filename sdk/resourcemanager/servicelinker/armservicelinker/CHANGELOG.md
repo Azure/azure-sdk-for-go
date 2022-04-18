@@ -1,5 +1,26 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Type of `ValidationResultItem.Result` has been changed from `*ValidationItemResult` to `*ValidationResultStatus`
+- Const `ValidationItemResultWarning` has been removed
+- Const `ValidationItemResultSuccess` has been removed
+- Const `ValidationItemResultFailed` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `PossibleValidationItemResultValues` has been removed
+- Function `*LinkerClient.List` has been removed
+
+### Features Added
+
+- New const `ValidationResultStatusFailed`
+- New const `ValidationResultStatusWarning`
+- New const `ValidationResultStatusSuccess`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `PossibleValidationResultStatusValues() []ValidationResultStatus`
+- New function `*LinkerClient.NewListPager(string, *LinkerClientListOptions) *runtime.Pager[LinkerClientListResponse]`
+
+
 ## 0.3.0 (2022-04-13)
 ### Breaking Changes
 

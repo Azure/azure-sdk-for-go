@@ -109,10 +109,10 @@ func (client *DeletedAccountsClient) getHandleResponse(resp *http.Response) (Del
 	return result, nil
 }
 
-// List - Lists deleted accounts under the subscription.
+// NewListPager - Lists deleted accounts under the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DeletedAccountsClientListOptions contains the optional parameters for the DeletedAccountsClient.List method.
-func (client *DeletedAccountsClient) List(options *DeletedAccountsClientListOptions) *runtime.Pager[DeletedAccountsClientListResponse] {
+func (client *DeletedAccountsClient) NewListPager(options *DeletedAccountsClientListOptions) *runtime.Pager[DeletedAccountsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DeletedAccountsClientListResponse]{
 		More: func(page DeletedAccountsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

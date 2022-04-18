@@ -315,14 +315,14 @@ func (client *ServerDNSAliasesClient) getHandleResponse(resp *http.Response) (Se
 	return result, nil
 }
 
-// ListByServer - Gets a list of server DNS aliases for a server.
+// NewListByServerPager - Gets a list of server DNS aliases for a server.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server that the alias is pointing to.
 // options - ServerDNSAliasesClientListByServerOptions contains the optional parameters for the ServerDNSAliasesClient.ListByServer
 // method.
-func (client *ServerDNSAliasesClient) ListByServer(resourceGroupName string, serverName string, options *ServerDNSAliasesClientListByServerOptions) *runtime.Pager[ServerDNSAliasesClientListByServerResponse] {
+func (client *ServerDNSAliasesClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerDNSAliasesClientListByServerOptions) *runtime.Pager[ServerDNSAliasesClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServerDNSAliasesClientListByServerResponse]{
 		More: func(page ServerDNSAliasesClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

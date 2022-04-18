@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/DatabaseMetricsListWithFilter.json
-func ExampleDatabasesClient_ListMetrics() {
+func ExampleDatabasesClient_NewListMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleDatabasesClient_ListMetrics() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListMetrics("<resource-group-name>",
+	pager := client.NewListMetricsPager("<resource-group-name>",
 		"<server-name>",
 		"<database-name>",
 		"<filter>",
@@ -51,7 +51,7 @@ func ExampleDatabasesClient_ListMetrics() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/DatabaseMetricsDefinitionsList.json
-func ExampleDatabasesClient_ListMetricDefinitions() {
+func ExampleDatabasesClient_NewListMetricDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -63,7 +63,7 @@ func ExampleDatabasesClient_ListMetricDefinitions() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListMetricDefinitions("<resource-group-name>",
+	pager := client.NewListMetricDefinitionsPager("<resource-group-name>",
 		"<server-name>",
 		"<database-name>",
 		nil)
@@ -81,7 +81,7 @@ func ExampleDatabasesClient_ListMetricDefinitions() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ListVCoreDatabasesByServer.json
-func ExampleDatabasesClient_ListByServer() {
+func ExampleDatabasesClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -93,7 +93,7 @@ func ExampleDatabasesClient_ListByServer() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByServer("<resource-group-name>",
+	pager := client.NewListByServerPager("<resource-group-name>",
 		"<server-name>",
 		&armsql.DatabasesClientListByServerOptions{SkipToken: nil})
 	for pager.More() {
@@ -478,7 +478,7 @@ func ExampleDatabasesClient_BeginUpgradeDataWarehouse() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ListDatabasesByElasticPool.json
-func ExampleDatabasesClient_ListByElasticPool() {
+func ExampleDatabasesClient_NewListByElasticPoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -490,7 +490,7 @@ func ExampleDatabasesClient_ListByElasticPool() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByElasticPool("<resource-group-name>",
+	pager := client.NewListByElasticPoolPager("<resource-group-name>",
 		"<server-name>",
 		"<elastic-pool-name>",
 		nil)
@@ -508,7 +508,7 @@ func ExampleDatabasesClient_ListByElasticPool() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ListVCoreInaccessibleDatabasesByServer.json
-func ExampleDatabasesClient_ListInaccessibleByServer() {
+func ExampleDatabasesClient_NewListInaccessibleByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -520,7 +520,7 @@ func ExampleDatabasesClient_ListInaccessibleByServer() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListInaccessibleByServer("<resource-group-name>",
+	pager := client.NewListInaccessibleByServerPager("<resource-group-name>",
 		"<server-name>",
 		nil)
 	for pager.More() {

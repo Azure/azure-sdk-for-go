@@ -288,12 +288,12 @@ func (client *MigrationConfigsClient) getHandleResponse(resp *http.Response) (Mi
 	return result, nil
 }
 
-// List - Gets all migrationConfigurations
+// NewListPager - Gets all migrationConfigurations
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // options - MigrationConfigsClientListOptions contains the optional parameters for the MigrationConfigsClient.List method.
-func (client *MigrationConfigsClient) List(resourceGroupName string, namespaceName string, options *MigrationConfigsClientListOptions) *runtime.Pager[MigrationConfigsClientListResponse] {
+func (client *MigrationConfigsClient) NewListPager(resourceGroupName string, namespaceName string, options *MigrationConfigsClientListOptions) *runtime.Pager[MigrationConfigsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MigrationConfigsClientListResponse]{
 		More: func(page MigrationConfigsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

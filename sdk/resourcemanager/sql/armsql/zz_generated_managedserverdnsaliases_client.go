@@ -312,14 +312,14 @@ func (client *ManagedServerDNSAliasesClient) getHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListByManagedInstance - Gets a list of managed server DNS aliases for a managed server.
+// NewListByManagedInstancePager - Gets a list of managed server DNS aliases for a managed server.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
 // options - ManagedServerDNSAliasesClientListByManagedInstanceOptions contains the optional parameters for the ManagedServerDNSAliasesClient.ListByManagedInstance
 // method.
-func (client *ManagedServerDNSAliasesClient) ListByManagedInstance(resourceGroupName string, managedInstanceName string, options *ManagedServerDNSAliasesClientListByManagedInstanceOptions) *runtime.Pager[ManagedServerDNSAliasesClientListByManagedInstanceResponse] {
+func (client *ManagedServerDNSAliasesClient) NewListByManagedInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedServerDNSAliasesClientListByManagedInstanceOptions) *runtime.Pager[ManagedServerDNSAliasesClientListByManagedInstanceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagedServerDNSAliasesClientListByManagedInstanceResponse]{
 		More: func(page ManagedServerDNSAliasesClientListByManagedInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

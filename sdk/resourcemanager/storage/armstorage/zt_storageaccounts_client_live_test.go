@@ -141,11 +141,11 @@ func (testsuite *StorageAccountsClientTestSuite) TestStorageAccountsCRUD() {
 	testsuite.Require().Equal(scName, *getResp.Name)
 
 	// list
-	listPager := storageAccountsClient.List(nil)
+	listPager := storageAccountsClient.NewListPager(nil)
 	testsuite.Require().True(listPager.More())
 
 	// list by resource group
-	listByResourceGroup := storageAccountsClient.ListByResourceGroup(testsuite.resourceGroupName, nil)
+	listByResourceGroup := storageAccountsClient.NewListByResourceGroupPager(testsuite.resourceGroupName, nil)
 	testsuite.Require().True(listByResourceGroup.More())
 
 	// list keys

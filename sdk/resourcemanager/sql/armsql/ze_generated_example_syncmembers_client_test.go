@@ -167,7 +167,7 @@ func ExampleSyncMembersClient_BeginUpdate() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SyncMemberListBySyncGroup.json
-func ExampleSyncMembersClient_ListBySyncGroup() {
+func ExampleSyncMembersClient_NewListBySyncGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -179,7 +179,7 @@ func ExampleSyncMembersClient_ListBySyncGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySyncGroup("<resource-group-name>",
+	pager := client.NewListBySyncGroupPager("<resource-group-name>",
 		"<server-name>",
 		"<database-name>",
 		"<sync-group-name>",
@@ -198,7 +198,7 @@ func ExampleSyncMembersClient_ListBySyncGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SyncMemberGetSchema.json
-func ExampleSyncMembersClient_ListMemberSchemas() {
+func ExampleSyncMembersClient_NewListMemberSchemasPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -210,7 +210,7 @@ func ExampleSyncMembersClient_ListMemberSchemas() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListMemberSchemas("<resource-group-name>",
+	pager := client.NewListMemberSchemasPager("<resource-group-name>",
 		"<server-name>",
 		"<database-name>",
 		"<sync-group-name>",

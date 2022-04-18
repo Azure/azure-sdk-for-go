@@ -418,14 +418,14 @@ func (client *TopicsClient) getAuthorizationRuleHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListAuthorizationRules - Gets authorization rules for a topic.
+// NewListAuthorizationRulesPager - Gets authorization rules for a topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // topicName - The topic name.
 // options - TopicsClientListAuthorizationRulesOptions contains the optional parameters for the TopicsClient.ListAuthorizationRules
 // method.
-func (client *TopicsClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, topicName string, options *TopicsClientListAuthorizationRulesOptions) *runtime.Pager[TopicsClientListAuthorizationRulesResponse] {
+func (client *TopicsClient) NewListAuthorizationRulesPager(resourceGroupName string, namespaceName string, topicName string, options *TopicsClientListAuthorizationRulesOptions) *runtime.Pager[TopicsClientListAuthorizationRulesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TopicsClientListAuthorizationRulesResponse]{
 		More: func(page TopicsClientListAuthorizationRulesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -492,12 +492,12 @@ func (client *TopicsClient) listAuthorizationRulesHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListByNamespace - Gets all the topics in a namespace.
+// NewListByNamespacePager - Gets all the topics in a namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // options - TopicsClientListByNamespaceOptions contains the optional parameters for the TopicsClient.ListByNamespace method.
-func (client *TopicsClient) ListByNamespace(resourceGroupName string, namespaceName string, options *TopicsClientListByNamespaceOptions) *runtime.Pager[TopicsClientListByNamespaceResponse] {
+func (client *TopicsClient) NewListByNamespacePager(resourceGroupName string, namespaceName string, options *TopicsClientListByNamespaceOptions) *runtime.Pager[TopicsClientListByNamespaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TopicsClientListByNamespaceResponse]{
 		More: func(page TopicsClientListByNamespaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -54,14 +54,14 @@ func NewServerUsagesClient(subscriptionID string, credential azcore.TokenCredent
 	return client, nil
 }
 
-// ListByServer - Returns server usages.
+// NewListByServerPager - Returns server usages.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - ServerUsagesClientListByServerOptions contains the optional parameters for the ServerUsagesClient.ListByServer
 // method.
-func (client *ServerUsagesClient) ListByServer(resourceGroupName string, serverName string, options *ServerUsagesClientListByServerOptions) *runtime.Pager[ServerUsagesClientListByServerResponse] {
+func (client *ServerUsagesClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerUsagesClientListByServerOptions) *runtime.Pager[ServerUsagesClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServerUsagesClientListByServerResponse]{
 		More: func(page ServerUsagesClientListByServerResponse) bool {
 			return false

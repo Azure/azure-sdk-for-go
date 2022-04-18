@@ -244,14 +244,14 @@ func (client *SubscriptionsClient) getHandleResponse(resp *http.Response) (Subsc
 	return result, nil
 }
 
-// ListByTopic - List all the subscriptions under a specified topic.
+// NewListByTopicPager - List all the subscriptions under a specified topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // topicName - The topic name.
 // options - SubscriptionsClientListByTopicOptions contains the optional parameters for the SubscriptionsClient.ListByTopic
 // method.
-func (client *SubscriptionsClient) ListByTopic(resourceGroupName string, namespaceName string, topicName string, options *SubscriptionsClientListByTopicOptions) *runtime.Pager[SubscriptionsClientListByTopicResponse] {
+func (client *SubscriptionsClient) NewListByTopicPager(resourceGroupName string, namespaceName string, topicName string, options *SubscriptionsClientListByTopicOptions) *runtime.Pager[SubscriptionsClientListByTopicResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SubscriptionsClientListByTopicResponse]{
 		More: func(page SubscriptionsClientListByTopicResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

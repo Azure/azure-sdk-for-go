@@ -124,7 +124,7 @@ func ExampleAvailabilityGroupListenersClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2021-11-01-preview/examples/ListByGroupAvailabilityGroupListener.json
-func ExampleAvailabilityGroupListenersClient_ListByGroup() {
+func ExampleAvailabilityGroupListenersClient_NewListByGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -136,7 +136,7 @@ func ExampleAvailabilityGroupListenersClient_ListByGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByGroup("<resource-group-name>",
+	pager := client.NewListByGroupPager("<resource-group-name>",
 		"<sql-virtual-machine-group-name>",
 		nil)
 	for pager.More() {

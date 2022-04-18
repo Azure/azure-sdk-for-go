@@ -264,7 +264,7 @@ func (client *WorkloadGroupsClient) getHandleResponse(resp *http.Response) (Work
 	return result, nil
 }
 
-// ListByDatabase - Gets the list of workload groups
+// NewListByDatabasePager - Gets the list of workload groups
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -272,7 +272,7 @@ func (client *WorkloadGroupsClient) getHandleResponse(resp *http.Response) (Work
 // databaseName - The name of the database.
 // options - WorkloadGroupsClientListByDatabaseOptions contains the optional parameters for the WorkloadGroupsClient.ListByDatabase
 // method.
-func (client *WorkloadGroupsClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *WorkloadGroupsClientListByDatabaseOptions) *runtime.Pager[WorkloadGroupsClientListByDatabaseResponse] {
+func (client *WorkloadGroupsClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *WorkloadGroupsClientListByDatabaseOptions) *runtime.Pager[WorkloadGroupsClientListByDatabaseResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkloadGroupsClientListByDatabaseResponse]{
 		More: func(page WorkloadGroupsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

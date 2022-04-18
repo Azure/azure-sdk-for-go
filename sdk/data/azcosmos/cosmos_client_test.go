@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -362,12 +363,14 @@ type pipelineVerifierRequest struct {
 	body        string
 	contentType string
 	isQuery     bool
+	url         *url.URL
 	headers     http.Header
 }
 
 func (p *pipelineVerifier) Do(req *policy.Request) (*http.Response, error) {
 	pr := pipelineVerifierRequest{}
 	pr.method = req.Raw().Method
+	pr.url = req.Raw().URL
 	if req.Body() != nil {
 		readBody, _ := ioutil.ReadAll(req.Body())
 		pr.body = string(readBody)

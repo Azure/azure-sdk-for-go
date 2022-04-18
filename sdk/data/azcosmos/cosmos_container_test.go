@@ -112,6 +112,305 @@ func TestContainerRead(t *testing.T) {
 	}
 }
 
+func TestContainerDeleteItem(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "13.42"),
+		mock.WithStatusCode(204))
+
+	verifier := pipelineVerifier{}
+
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	client := &Client{endpoint: srv.URL(), pipeline: pl}
+
+	database, _:=newDatabase("databaseId", client)
+	container, _:= newContainer("containerId",database)
+
+	resp, err := container.DeleteItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
+	if err != nil {
+		t.Fatalf("Failed to delete item: %v", err)
+	}
+
+	if resp.RawResponse == nil {
+		t.Fatal("RawResponse is nil")
+	}
+
+	if resp.ActivityID == "" {
+		t.Fatal("Activity id was not returned")
+	}
+
+	if resp.RequestCharge == 0 {
+		t.Fatal("Request charge was not returned")
+	}
+
+	if resp.RequestCharge != 13.42 {
+		t.Errorf("Expected RequestCharge to be %f, but got %f", 13.42, resp.RequestCharge)
+	}
+
+	if resp.ETag != "someEtag" {
+		t.Errorf("Expected ETag to be %s, but got %s", "someEtag", resp.ETag)
+	}
+
+	if verifier.requests[0].method != http.MethodDelete {
+		t.Errorf("Expected method to be %s, but got %s", http.MethodDelete, verifier.requests[0].method)
+	}
+
+	if verifier.requests[0].url.RequestURI() != "/dbs/databaseId/colls/containerId/docs/doc1" {
+		t.Errorf("Expected url to be %s, but got %s", "/dbs/databaseId/colls/containerId/docs/doc1", verifier.requests[0].url.RequestURI())
+	}
+}
+
+func TestContainerReadItem(t *testing.T) {
+	jsonString := []byte(`{"id":"doc1","foo":"bar"}`)
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(
+		mock.WithBody(jsonString),
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "13.42"),
+		mock.WithStatusCode(200))
+
+	verifier := pipelineVerifier{}
+
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	client := &Client{endpoint: srv.URL(), pipeline: pl}
+
+	database, _:=newDatabase("databaseId", client)
+	container, _:= newContainer("containerId",database)
+
+	resp, err := container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
+	if err != nil {
+		t.Fatalf("Failed to read item: %v", err)
+	}
+
+	if string(resp.Value) != string(jsonString) {
+		t.Errorf("Expected value to be %s, but got %s", string(jsonString), string(resp.Value))
+	}
+
+	if resp.RawResponse == nil {
+		t.Fatal("RawResponse is nil")
+	}
+
+	if resp.ActivityID == "" {
+		t.Fatal("Activity id was not returned")
+	}
+
+	if resp.RequestCharge == 0 {
+		t.Fatal("Request charge was not returned")
+	}
+
+	if resp.RequestCharge != 13.42 {
+		t.Errorf("Expected RequestCharge to be %f, but got %f", 13.42, resp.RequestCharge)
+	}
+
+	if resp.ETag != "someEtag" {
+		t.Errorf("Expected ETag to be %s, but got %s", "someEtag", resp.ETag)
+	}
+
+	if verifier.requests[0].method != http.MethodGet {
+		t.Errorf("Expected method to be %s, but got %s", http.MethodGet, verifier.requests[0].method)
+	}
+
+	if verifier.requests[0].url.RequestURI() != "/dbs/databaseId/colls/containerId/docs/doc1" {
+		t.Errorf("Expected url to be %s, but got %s", "/dbs/databaseId/colls/containerId/docs/doc1", verifier.requests[0].url.RequestURI())
+	}
+}
+
+func TestContainerReplaceItem(t *testing.T) {
+	jsonString := []byte(`{"id":"doc1","foo":"bar"}`)
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(
+		mock.WithBody(jsonString),
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "13.42"),
+		mock.WithStatusCode(200))
+
+	verifier := pipelineVerifier{}
+
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	client := &Client{endpoint: srv.URL(), pipeline: pl}
+
+	database, _:=newDatabase("databaseId", client)
+	container, _:= newContainer("containerId",database)
+
+	resp, err := container.ReplaceItem(context.TODO(), NewPartitionKeyString("1"), "doc1", jsonString, nil)
+	if err != nil {
+		t.Fatalf("Failed to read item: %v", err)
+	}
+
+	if string(resp.Value) != string(jsonString) {
+		t.Errorf("Expected value to be %s, but got %s", string(jsonString), string(resp.Value))
+	}
+
+	if resp.RawResponse == nil {
+		t.Fatal("RawResponse is nil")
+	}
+
+	if resp.ActivityID == "" {
+		t.Fatal("Activity id was not returned")
+	}
+
+	if resp.RequestCharge == 0 {
+		t.Fatal("Request charge was not returned")
+	}
+
+	if resp.RequestCharge != 13.42 {
+		t.Errorf("Expected RequestCharge to be %f, but got %f", 13.42, resp.RequestCharge)
+	}
+
+	if resp.ETag != "someEtag" {
+		t.Errorf("Expected ETag to be %s, but got %s", "someEtag", resp.ETag)
+	}
+
+	if verifier.requests[0].method != http.MethodPut {
+		t.Errorf("Expected method to be %s, but got %s", http.MethodPut, verifier.requests[0].method)
+	}
+
+	if verifier.requests[0].body != string(jsonString) {
+		t.Errorf("Expected body to be %s, but got %s", string(jsonString), string(verifier.requests[0].body))
+	}
+
+	if verifier.requests[0].url.RequestURI() != "/dbs/databaseId/colls/containerId/docs/doc1" {
+		t.Errorf("Expected url to be %s, but got %s", "/dbs/databaseId/colls/containerId/docs/doc1", verifier.requests[0].url.RequestURI())
+	}
+}
+
+func TestContainerUpsertItem(t *testing.T) {
+	jsonString := []byte(`{"id":"doc1","foo":"bar"}`)
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(
+		mock.WithBody(jsonString),
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "13.42"),
+		mock.WithStatusCode(200))
+
+	verifier := pipelineVerifier{}
+
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	client := &Client{endpoint: srv.URL(), pipeline: pl}
+
+	database, _:=newDatabase("databaseId", client)
+	container, _:= newContainer("containerId",database)
+
+	resp, err := container.UpsertItem(context.TODO(), NewPartitionKeyString("1"), jsonString, nil)
+	if err != nil {
+		t.Fatalf("Failed to read item: %v", err)
+	}
+
+	if string(resp.Value) != string(jsonString) {
+		t.Errorf("Expected value to be %s, but got %s", string(jsonString), string(resp.Value))
+	}
+
+	if resp.RawResponse == nil {
+		t.Fatal("RawResponse is nil")
+	}
+
+	if resp.ActivityID == "" {
+		t.Fatal("Activity id was not returned")
+	}
+
+	if resp.RequestCharge == 0 {
+		t.Fatal("Request charge was not returned")
+	}
+
+	if resp.RequestCharge != 13.42 {
+		t.Errorf("Expected RequestCharge to be %f, but got %f", 13.42, resp.RequestCharge)
+	}
+
+	if resp.ETag != "someEtag" {
+		t.Errorf("Expected ETag to be %s, but got %s", "someEtag", resp.ETag)
+	}
+
+	if verifier.requests[0].method != http.MethodPost {
+		t.Errorf("Expected method to be %s, but got %s", http.MethodPost, verifier.requests[0].method)
+	}
+
+	if verifier.requests[0].headers.Get(cosmosHeaderIsUpsert) != "true" {
+		t.Errorf("Expected header to be %s, but got %s", cosmosHeaderIsUpsert, verifier.requests[0].headers.Get(cosmosHeaderIsUpsert))
+	}
+
+	if verifier.requests[0].body != string(jsonString) {
+		t.Errorf("Expected body to be %s, but got %s", string(jsonString), string(verifier.requests[0].body))
+	}
+
+	if verifier.requests[0].url.RequestURI() != "/dbs/databaseId/colls/containerId/docs" {
+		t.Errorf("Expected url to be %s, but got %s", "/dbs/databaseId/colls/containerId/docs", verifier.requests[0].url.RequestURI())
+	}
+}
+
+func TestContainerCreateItem(t *testing.T) {
+	jsonString := []byte(`{"id":"doc1","foo":"bar"}`)
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(
+		mock.WithBody(jsonString),
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "13.42"),
+		mock.WithStatusCode(200))
+
+	verifier := pipelineVerifier{}
+
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	client := &Client{endpoint: srv.URL(), pipeline: pl}
+
+	database, _:=newDatabase("databaseId", client)
+	container, _:= newContainer("containerId",database)
+
+	resp, err := container.UpsertItem(context.TODO(), NewPartitionKeyString("1"), jsonString, nil)
+	if err != nil {
+		t.Fatalf("Failed to read item: %v", err)
+	}
+
+	if string(resp.Value) != string(jsonString) {
+		t.Errorf("Expected value to be %s, but got %s", string(jsonString), string(resp.Value))
+	}
+
+	if resp.RawResponse == nil {
+		t.Fatal("RawResponse is nil")
+	}
+
+	if resp.ActivityID == "" {
+		t.Fatal("Activity id was not returned")
+	}
+
+	if resp.RequestCharge == 0 {
+		t.Fatal("Request charge was not returned")
+	}
+
+	if resp.RequestCharge != 13.42 {
+		t.Errorf("Expected RequestCharge to be %f, but got %f", 13.42, resp.RequestCharge)
+	}
+
+	if resp.ETag != "someEtag" {
+		t.Errorf("Expected ETag to be %s, but got %s", "someEtag", resp.ETag)
+	}
+
+	if verifier.requests[0].method != http.MethodPost {
+		t.Errorf("Expected method to be %s, but got %s", http.MethodPost, verifier.requests[0].method)
+	}
+
+	if verifier.requests[0].headers.Get(cosmosHeaderIsUpsert) == "" {
+		t.Errorf("Expected header to be empty, but got %s", verifier.requests[0].headers.Get(cosmosHeaderIsUpsert))
+	}
+
+	if verifier.requests[0].body != string(jsonString) {
+		t.Errorf("Expected body to be %s, but got %s", string(jsonString), string(verifier.requests[0].body))
+	}
+
+	if verifier.requests[0].url.RequestURI() != "/dbs/databaseId/colls/containerId/docs" {
+		t.Errorf("Expected url to be %s, but got %s", "/dbs/databaseId/colls/containerId/docs", verifier.requests[0].url.RequestURI())
+	}
+}
+
 func TestContainerQueryItemsPerPartitionKey(t *testing.T) {
 	jsonStringpage1 := []byte(`{"Documents":[{"id":"doc1","foo":"bar"},{"id":"doc2","foo":"bar"}]}`)
 	jsonStringpage2 := []byte(`{"Documents":[{"id":"doc3","foo":"bar"},{"id":"doc4","foo":"bar"},{"id":"doc5","foo":"bar"}]}`)
@@ -192,6 +491,10 @@ func TestContainerQueryItemsPerPartitionKey(t *testing.T) {
 	for index, request := range verifier.requests {
 		if request.method != http.MethodPost {
 			t.Errorf("Expected method to be %s, but got %s", http.MethodPost, request.method)
+		}
+
+		if request.url.RequestURI() != "/dbs/databaseId/colls/containerId/docs" {
+			t.Errorf("Expected url to be %s, but got %s", "/dbs/databaseId/colls/containerId/docs", request.url.RequestURI())
 		}
 
 		if !request.isQuery {

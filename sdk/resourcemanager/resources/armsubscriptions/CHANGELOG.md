@@ -1,5 +1,19 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*TenantsClient.List` has been removed
+- Function `*Client.List` has been removed
+- Function `*Client.ListLocations` has been removed
+
+### Features Added
+
+- New function `*TenantsClient.NewListPager(*TenantsClientListOptions) *runtime.Pager[TenantsClientListResponse]`
+- New function `*Client.NewListPager(*ClientListOptions) *runtime.Pager[ClientListResponse]`
+- New function `*Client.NewListLocationsPager(string, *ClientListLocationsOptions) *runtime.Pager[ClientListLocationsResponse]`
+
+
 ## 0.3.0 (2022-04-14)
 ### Breaking Changes
 

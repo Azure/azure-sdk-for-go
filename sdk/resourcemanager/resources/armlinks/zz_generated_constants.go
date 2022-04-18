@@ -10,5 +10,5 @@ package armlinks
 
 const (
 	moduleName    = "armlinks"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v0.4.1"
 )

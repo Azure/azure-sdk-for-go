@@ -1,5 +1,23 @@
 # Release History
 
+## 0.6.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*Client.List` has been removed
+- Function `*Client.GetDescendants` has been removed
+- Function `*ManagementGroupSubscriptionsClient.GetSubscriptionsUnderManagementGroup` has been removed
+- Function `*EntitiesClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+
+### Features Added
+
+- New function `*Client.NewGetDescendantsPager(string, *ClientGetDescendantsOptions) *runtime.Pager[ClientGetDescendantsResponse]`
+- New function `*Client.NewListPager(*ClientListOptions) *runtime.Pager[ClientListResponse]`
+- New function `*ManagementGroupSubscriptionsClient.NewGetSubscriptionsUnderManagementGroupPager(string, *ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupOptions) *runtime.Pager[ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupResponse]`
+- New function `*EntitiesClient.NewListPager(*EntitiesClientListOptions) *runtime.Pager[EntitiesClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+
+
 ## 0.5.0 (2022-04-12)
 ### Breaking Changes
 

@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/managementgroups/resource-manager/Microsoft.Management/stable/2021-04-01/examples/ListManagementGroups.json
-func ExampleClient_List() {
+func ExampleClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(&armmanagementgroups.ClientListOptions{CacheControl: to.Ptr("<cache-control>"),
+	pager := client.NewListPager(&armmanagementgroups.ClientListOptions{CacheControl: to.Ptr("<cache-control>"),
 		Skiptoken: nil,
 	})
 	for pager.More() {
@@ -175,7 +175,7 @@ func ExampleClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/managementgroups/resource-manager/Microsoft.Management/stable/2021-04-01/examples/GetDescendants.json
-func ExampleClient_GetDescendants() {
+func ExampleClient_NewGetDescendantsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -187,7 +187,7 @@ func ExampleClient_GetDescendants() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.GetDescendants("<group-id>",
+	pager := client.NewGetDescendantsPager("<group-id>",
 		&armmanagementgroups.ClientGetDescendantsOptions{Skiptoken: nil,
 			Top: nil,
 		})

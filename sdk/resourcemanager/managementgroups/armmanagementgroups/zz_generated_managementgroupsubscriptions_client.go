@@ -207,13 +207,13 @@ func (client *ManagementGroupSubscriptionsClient) getSubscriptionHandleResponse(
 	return result, nil
 }
 
-// GetSubscriptionsUnderManagementGroup - Retrieves details about all subscriptions which are associated with the management
-// group.
+// NewGetSubscriptionsUnderManagementGroupPager - Retrieves details about all subscriptions which are associated with the
+// management group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // groupID - Management Group ID.
 // options - ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupOptions contains the optional parameters
 // for the ManagementGroupSubscriptionsClient.GetSubscriptionsUnderManagementGroup method.
-func (client *ManagementGroupSubscriptionsClient) GetSubscriptionsUnderManagementGroup(groupID string, options *ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupOptions) *runtime.Pager[ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupResponse] {
+func (client *ManagementGroupSubscriptionsClient) NewGetSubscriptionsUnderManagementGroupPager(groupID string, options *ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupOptions) *runtime.Pager[ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupResponse]{
 		More: func(page ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

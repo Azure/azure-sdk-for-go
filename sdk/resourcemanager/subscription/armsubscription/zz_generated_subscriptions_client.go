@@ -97,10 +97,10 @@ func (client *SubscriptionsClient) getHandleResponse(resp *http.Response) (Subsc
 	return result, nil
 }
 
-// List - Gets all subscriptions for a tenant.
+// NewListPager - Gets all subscriptions for a tenant.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SubscriptionsClientListOptions contains the optional parameters for the SubscriptionsClient.List method.
-func (client *SubscriptionsClient) List(options *SubscriptionsClientListOptions) *runtime.Pager[SubscriptionsClientListResponse] {
+func (client *SubscriptionsClient) NewListPager(options *SubscriptionsClientListOptions) *runtime.Pager[SubscriptionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SubscriptionsClientListResponse]{
 		More: func(page SubscriptionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -151,13 +151,13 @@ func (client *SubscriptionsClient) listHandleResponse(resp *http.Response) (Subs
 	return result, nil
 }
 
-// ListLocations - This operation provides all the locations that are available for resource providers; however, each resource
-// provider may support a subset of this list.
+// NewListLocationsPager - This operation provides all the locations that are available for resource providers; however, each
+// resource provider may support a subset of this list.
 // If the operation fails it returns an *azcore.ResponseError type.
 // subscriptionID - The ID of the target subscription.
 // options - SubscriptionsClientListLocationsOptions contains the optional parameters for the SubscriptionsClient.ListLocations
 // method.
-func (client *SubscriptionsClient) ListLocations(subscriptionID string, options *SubscriptionsClientListLocationsOptions) *runtime.Pager[SubscriptionsClientListLocationsResponse] {
+func (client *SubscriptionsClient) NewListLocationsPager(subscriptionID string, options *SubscriptionsClientListLocationsOptions) *runtime.Pager[SubscriptionsClientListLocationsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SubscriptionsClientListLocationsResponse]{
 		More: func(page SubscriptionsClientListLocationsResponse) bool {
 			return false

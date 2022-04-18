@@ -204,14 +204,14 @@ func (client *QuotaClient) getHandleResponse(resp *http.Response) (QuotaClientGe
 	return result, nil
 }
 
-// List - Gets a list of current quotas (service limits) and usage for all resources. The response from the list quota operation
-// can be leveraged to request quota updates.
+// NewListPager - Gets a list of current quotas (service limits) and usage for all resources. The response from the list quota
+// operation can be leveraged to request quota updates.
 // If the operation fails it returns an *azcore.ResponseError type.
 // subscriptionID - Azure subscription ID.
 // providerID - Azure resource provider ID.
 // location - Azure region.
 // options - QuotaClientListOptions contains the optional parameters for the QuotaClient.List method.
-func (client *QuotaClient) List(subscriptionID string, providerID string, location string, options *QuotaClientListOptions) *runtime.Pager[QuotaClientListResponse] {
+func (client *QuotaClient) NewListPager(subscriptionID string, providerID string, location string, options *QuotaClientListOptions) *runtime.Pager[QuotaClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[QuotaClientListResponse]{
 		More: func(page QuotaClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

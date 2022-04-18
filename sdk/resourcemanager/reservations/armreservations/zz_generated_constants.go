@@ -10,7 +10,7 @@ package armreservations
 
 const (
 	moduleName    = "armreservations"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.4.0"
 )
 
 // AppliedScopeType - Type of the Applied Scope.
@@ -486,31 +486,32 @@ func PossibleReservationTermValues() []ReservationTerm {
 type ReservedResourceType string
 
 const (
-	ReservedResourceTypeAVS                   ReservedResourceType = "AVS"
-	ReservedResourceTypeAppService            ReservedResourceType = "AppService"
-	ReservedResourceTypeAzureDataExplorer     ReservedResourceType = "AzureDataExplorer"
-	ReservedResourceTypeAzureFiles            ReservedResourceType = "AzureFiles"
-	ReservedResourceTypeBlockBlob             ReservedResourceType = "BlockBlob"
-	ReservedResourceTypeCosmosDb              ReservedResourceType = "CosmosDb"
-	ReservedResourceTypeDataFactory           ReservedResourceType = "DataFactory"
-	ReservedResourceTypeDatabricks            ReservedResourceType = "Databricks"
-	ReservedResourceTypeDedicatedHost         ReservedResourceType = "DedicatedHost"
-	ReservedResourceTypeManagedDisk           ReservedResourceType = "ManagedDisk"
-	ReservedResourceTypeMariaDb               ReservedResourceType = "MariaDb"
-	ReservedResourceTypeMySQL                 ReservedResourceType = "MySql"
-	ReservedResourceTypeNetAppStorage         ReservedResourceType = "NetAppStorage"
-	ReservedResourceTypePostgreSQL            ReservedResourceType = "PostgreSql"
-	ReservedResourceTypeRedHat                ReservedResourceType = "RedHat"
-	ReservedResourceTypeRedHatOsa             ReservedResourceType = "RedHatOsa"
-	ReservedResourceTypeRedisCache            ReservedResourceType = "RedisCache"
-	ReservedResourceTypeSQLAzureHybridBenefit ReservedResourceType = "SqlAzureHybridBenefit"
-	ReservedResourceTypeSQLDataWarehouse      ReservedResourceType = "SqlDataWarehouse"
-	ReservedResourceTypeSQLDatabases          ReservedResourceType = "SqlDatabases"
-	ReservedResourceTypeSQLEdge               ReservedResourceType = "SqlEdge"
-	ReservedResourceTypeSapHana               ReservedResourceType = "SapHana"
-	ReservedResourceTypeSuseLinux             ReservedResourceType = "SuseLinux"
-	ReservedResourceTypeVMwareCloudSimple     ReservedResourceType = "VMwareCloudSimple"
-	ReservedResourceTypeVirtualMachines       ReservedResourceType = "VirtualMachines"
+	ReservedResourceTypeAVS                    ReservedResourceType = "AVS"
+	ReservedResourceTypeAppService             ReservedResourceType = "AppService"
+	ReservedResourceTypeAzureDataExplorer      ReservedResourceType = "AzureDataExplorer"
+	ReservedResourceTypeAzureFiles             ReservedResourceType = "AzureFiles"
+	ReservedResourceTypeBlockBlob              ReservedResourceType = "BlockBlob"
+	ReservedResourceTypeCosmosDb               ReservedResourceType = "CosmosDb"
+	ReservedResourceTypeDataFactory            ReservedResourceType = "DataFactory"
+	ReservedResourceTypeDatabricks             ReservedResourceType = "Databricks"
+	ReservedResourceTypeDedicatedHost          ReservedResourceType = "DedicatedHost"
+	ReservedResourceTypeManagedDisk            ReservedResourceType = "ManagedDisk"
+	ReservedResourceTypeMariaDb                ReservedResourceType = "MariaDb"
+	ReservedResourceTypeMySQL                  ReservedResourceType = "MySql"
+	ReservedResourceTypeNetAppStorage          ReservedResourceType = "NetAppStorage"
+	ReservedResourceTypePostgreSQL             ReservedResourceType = "PostgreSql"
+	ReservedResourceTypeRedHat                 ReservedResourceType = "RedHat"
+	ReservedResourceTypeRedHatOsa              ReservedResourceType = "RedHatOsa"
+	ReservedResourceTypeRedisCache             ReservedResourceType = "RedisCache"
+	ReservedResourceTypeSQLAzureHybridBenefit  ReservedResourceType = "SqlAzureHybridBenefit"
+	ReservedResourceTypeSQLDataWarehouse       ReservedResourceType = "SqlDataWarehouse"
+	ReservedResourceTypeSQLDatabases           ReservedResourceType = "SqlDatabases"
+	ReservedResourceTypeSQLEdge                ReservedResourceType = "SqlEdge"
+	ReservedResourceTypeSapHana                ReservedResourceType = "SapHana"
+	ReservedResourceTypeSuseLinux              ReservedResourceType = "SuseLinux"
+	ReservedResourceTypeVMwareCloudSimple      ReservedResourceType = "VMwareCloudSimple"
+	ReservedResourceTypeVirtualMachineSoftware ReservedResourceType = "VirtualMachineSoftware"
+	ReservedResourceTypeVirtualMachines        ReservedResourceType = "VirtualMachines"
 )
 
 // PossibleReservedResourceTypeValues returns the possible values for the ReservedResourceType const type.
@@ -540,6 +541,7 @@ func PossibleReservedResourceTypeValues() []ReservedResourceType {
 		ReservedResourceTypeSapHana,
 		ReservedResourceTypeSuseLinux,
 		ReservedResourceTypeVMwareCloudSimple,
+		ReservedResourceTypeVirtualMachineSoftware,
 		ReservedResourceTypeVirtualMachines,
 	}
 }

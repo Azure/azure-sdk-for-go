@@ -129,7 +129,7 @@ func ExampleReservationClient_BeginMerge() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-03-01/examples/GetReservationsFromOrder.json
-func ExampleReservationClient_List() {
+func ExampleReservationClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -141,7 +141,7 @@ func ExampleReservationClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<reservation-order-id>",
+	pager := client.NewListPager("<reservation-order-id>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -218,7 +218,7 @@ func ExampleReservationClient_BeginUpdate() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-03-01/examples/GetReservationRevisions.json
-func ExampleReservationClient_ListRevisions() {
+func ExampleReservationClient_NewListRevisionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -230,7 +230,7 @@ func ExampleReservationClient_ListRevisions() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListRevisions("<reservation-id>",
+	pager := client.NewListRevisionsPager("<reservation-id>",
 		"<reservation-order-id>",
 		nil)
 	for pager.More() {
@@ -247,7 +247,7 @@ func ExampleReservationClient_ListRevisions() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-03-01/examples/GetReservations.json
-func ExampleReservationClient_ListAll() {
+func ExampleReservationClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -259,7 +259,7 @@ func ExampleReservationClient_ListAll() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListAll(&armreservations.ReservationClientListAllOptions{Filter: to.Ptr("<filter>"),
+	pager := client.NewListAllPager(&armreservations.ReservationClientListAllOptions{Filter: to.Ptr("<filter>"),
 		Orderby:        to.Ptr("<orderby>"),
 		RefreshSummary: nil,
 		Skiptoken:      to.Ptr[float32](50),

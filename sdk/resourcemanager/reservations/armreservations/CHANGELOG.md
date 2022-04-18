@@ -1,5 +1,28 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*OperationClient.List` has been removed
+- Function `*ReservationClient.ListRevisions` has been removed
+- Function `*ReservationClient.List` has been removed
+- Function `*QuotaRequestStatusClient.List` has been removed
+- Function `*QuotaClient.List` has been removed
+- Function `*ReservationClient.ListAll` has been removed
+- Function `*ReservationOrderClient.List` has been removed
+
+### Features Added
+
+- New const `ReservedResourceTypeVirtualMachineSoftware`
+- New function `*QuotaRequestStatusClient.NewListPager(string, string, string, *QuotaRequestStatusClientListOptions) *runtime.Pager[QuotaRequestStatusClientListResponse]`
+- New function `*ReservationClient.NewListAllPager(*ReservationClientListAllOptions) *runtime.Pager[ReservationClientListAllResponse]`
+- New function `*ReservationClient.NewListPager(string, *ReservationClientListOptions) *runtime.Pager[ReservationClientListResponse]`
+- New function `*QuotaClient.NewListPager(string, string, string, *QuotaClientListOptions) *runtime.Pager[QuotaClientListResponse]`
+- New function `*OperationClient.NewListPager(*OperationClientListOptions) *runtime.Pager[OperationClientListResponse]`
+- New function `*ReservationClient.NewListRevisionsPager(string, string, *ReservationClientListRevisionsOptions) *runtime.Pager[ReservationClientListRevisionsResponse]`
+- New function `*ReservationOrderClient.NewListPager(*ReservationOrderClientListOptions) *runtime.Pager[ReservationOrderClientListResponse]`
+
+
 ## 0.3.0 (2022-04-13)
 ### Breaking Changes
 

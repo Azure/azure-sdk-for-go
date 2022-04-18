@@ -163,11 +163,11 @@ func (client *ReservationClient) getHandleResponse(resp *http.Response) (Reserva
 	return result, nil
 }
 
-// List - List Reservations within a single ReservationOrder.
+// NewListPager - List Reservations within a single ReservationOrder.
 // If the operation fails it returns an *azcore.ResponseError type.
 // reservationOrderID - Order Id of the reservation
 // options - ReservationClientListOptions contains the optional parameters for the ReservationClient.List method.
-func (client *ReservationClient) List(reservationOrderID string, options *ReservationClientListOptions) *runtime.Pager[ReservationClientListResponse] {
+func (client *ReservationClient) NewListPager(reservationOrderID string, options *ReservationClientListOptions) *runtime.Pager[ReservationClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReservationClientListResponse]{
 		More: func(page ReservationClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -222,11 +222,11 @@ func (client *ReservationClient) listHandleResponse(resp *http.Response) (Reserv
 	return result, nil
 }
 
-// ListAll - List the reservations and the roll up counts of reservations group by provisioning states that the user has access
-// to in the current tenant.
+// NewListAllPager - List the reservations and the roll up counts of reservations group by provisioning states that the user
+// has access to in the current tenant.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ReservationClientListAllOptions contains the optional parameters for the ReservationClient.ListAll method.
-func (client *ReservationClient) ListAll(options *ReservationClientListAllOptions) *runtime.Pager[ReservationClientListAllResponse] {
+func (client *ReservationClient) NewListAllPager(options *ReservationClientListAllOptions) *runtime.Pager[ReservationClientListAllResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReservationClientListAllResponse]{
 		More: func(page ReservationClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -295,13 +295,13 @@ func (client *ReservationClient) listAllHandleResponse(resp *http.Response) (Res
 	return result, nil
 }
 
-// ListRevisions - List of all the revisions for the Reservation.
+// NewListRevisionsPager - List of all the revisions for the Reservation.
 // If the operation fails it returns an *azcore.ResponseError type.
 // reservationID - Id of the Reservation Item
 // reservationOrderID - Order Id of the reservation
 // options - ReservationClientListRevisionsOptions contains the optional parameters for the ReservationClient.ListRevisions
 // method.
-func (client *ReservationClient) ListRevisions(reservationID string, reservationOrderID string, options *ReservationClientListRevisionsOptions) *runtime.Pager[ReservationClientListRevisionsResponse] {
+func (client *ReservationClient) NewListRevisionsPager(reservationID string, reservationOrderID string, options *ReservationClientListRevisionsOptions) *runtime.Pager[ReservationClientListRevisionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReservationClientListRevisionsResponse]{
 		More: func(page ReservationClientListRevisionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -1,5 +1,19 @@
 # Release History
 
+## 0.6.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*AvailabilityStatusesClient.List` has been removed
+- Function `*AvailabilityStatusesClient.ListBySubscriptionID` has been removed
+- Function `*AvailabilityStatusesClient.ListByResourceGroup` has been removed
+
+### Features Added
+
+- New function `*AvailabilityStatusesClient.NewListPager(string, *AvailabilityStatusesClientListOptions) *runtime.Pager[AvailabilityStatusesClientListResponse]`
+- New function `*AvailabilityStatusesClient.NewListBySubscriptionIDPager(*AvailabilityStatusesClientListBySubscriptionIDOptions) *runtime.Pager[AvailabilityStatusesClientListBySubscriptionIDResponse]`
+- New function `*AvailabilityStatusesClient.NewListByResourceGroupPager(string, *AvailabilityStatusesClientListByResourceGroupOptions) *runtime.Pager[AvailabilityStatusesClientListByResourceGroupResponse]`
+
+
 ## 0.5.0 (2022-04-13)
 ### Breaking Changes
 

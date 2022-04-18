@@ -109,7 +109,7 @@ func (client *AvailabilityStatusesClient) getByResourceHandleResponse(resp *http
 	return result, nil
 }
 
-// List - Lists all historical availability transitions and impacting events for a single resource.
+// NewListPager - Lists all historical availability transitions and impacting events for a single resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceURI - The fully qualified ID of the resource, including the resource name and resource type. Currently the API
 // support not nested and one nesting level resource types :
@@ -118,7 +118,7 @@ func (client *AvailabilityStatusesClient) getByResourceHandleResponse(resp *http
 // /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}
 // options - AvailabilityStatusesClientListOptions contains the optional parameters for the AvailabilityStatusesClient.List
 // method.
-func (client *AvailabilityStatusesClient) List(resourceURI string, options *AvailabilityStatusesClientListOptions) *runtime.Pager[AvailabilityStatusesClientListResponse] {
+func (client *AvailabilityStatusesClient) NewListPager(resourceURI string, options *AvailabilityStatusesClientListOptions) *runtime.Pager[AvailabilityStatusesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AvailabilityStatusesClientListResponse]{
 		More: func(page AvailabilityStatusesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -176,12 +176,12 @@ func (client *AvailabilityStatusesClient) listHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListByResourceGroup - Lists the current availability status for all the resources in the resource group.
+// NewListByResourceGroupPager - Lists the current availability status for all the resources in the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - AvailabilityStatusesClientListByResourceGroupOptions contains the optional parameters for the AvailabilityStatusesClient.ListByResourceGroup
 // method.
-func (client *AvailabilityStatusesClient) ListByResourceGroup(resourceGroupName string, options *AvailabilityStatusesClientListByResourceGroupOptions) *runtime.Pager[AvailabilityStatusesClientListByResourceGroupResponse] {
+func (client *AvailabilityStatusesClient) NewListByResourceGroupPager(resourceGroupName string, options *AvailabilityStatusesClientListByResourceGroupOptions) *runtime.Pager[AvailabilityStatusesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AvailabilityStatusesClientListByResourceGroupResponse]{
 		More: func(page AvailabilityStatusesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -246,11 +246,11 @@ func (client *AvailabilityStatusesClient) listByResourceGroupHandleResponse(resp
 	return result, nil
 }
 
-// ListBySubscriptionID - Lists the current availability status for all the resources in the subscription.
+// NewListBySubscriptionIDPager - Lists the current availability status for all the resources in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AvailabilityStatusesClientListBySubscriptionIDOptions contains the optional parameters for the AvailabilityStatusesClient.ListBySubscriptionID
 // method.
-func (client *AvailabilityStatusesClient) ListBySubscriptionID(options *AvailabilityStatusesClientListBySubscriptionIDOptions) *runtime.Pager[AvailabilityStatusesClientListBySubscriptionIDResponse] {
+func (client *AvailabilityStatusesClient) NewListBySubscriptionIDPager(options *AvailabilityStatusesClientListBySubscriptionIDOptions) *runtime.Pager[AvailabilityStatusesClientListBySubscriptionIDResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AvailabilityStatusesClientListBySubscriptionIDResponse]{
 		More: func(page AvailabilityStatusesClientListBySubscriptionIDResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

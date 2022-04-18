@@ -1,5 +1,43 @@
 # Release History
 
+## 0.5.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*ExemptionsClient.ListForManagementGroup` has been removed
+- Function `*DefinitionsClient.List` has been removed
+- Function `*ExemptionsClient.ListForResourceGroup` has been removed
+- Function `*SetDefinitionsClient.ListByManagementGroup` has been removed
+- Function `*AssignmentsClient.List` has been removed
+- Function `*DataPolicyManifestsClient.List` has been removed
+- Function `*ExemptionsClient.ListForResource` has been removed
+- Function `*SetDefinitionsClient.List` has been removed
+- Function `*AssignmentsClient.ListForResource` has been removed
+- Function `*SetDefinitionsClient.ListBuiltIn` has been removed
+- Function `*AssignmentsClient.ListForResourceGroup` has been removed
+- Function `*DefinitionsClient.ListByManagementGroup` has been removed
+- Function `*DefinitionsClient.ListBuiltIn` has been removed
+- Function `*ExemptionsClient.List` has been removed
+- Function `*AssignmentsClient.ListForManagementGroup` has been removed
+
+### Features Added
+
+- New function `*AssignmentsClient.NewListForResourcePager(string, string, string, string, string, *AssignmentsClientListForResourceOptions) *runtime.Pager[AssignmentsClientListForResourceResponse]`
+- New function `*DefinitionsClient.NewListByManagementGroupPager(string, *DefinitionsClientListByManagementGroupOptions) *runtime.Pager[DefinitionsClientListByManagementGroupResponse]`
+- New function `*DefinitionsClient.NewListPager(*DefinitionsClientListOptions) *runtime.Pager[DefinitionsClientListResponse]`
+- New function `*DefinitionsClient.NewListBuiltInPager(*DefinitionsClientListBuiltInOptions) *runtime.Pager[DefinitionsClientListBuiltInResponse]`
+- New function `*ExemptionsClient.NewListPager(*ExemptionsClientListOptions) *runtime.Pager[ExemptionsClientListResponse]`
+- New function `*ExemptionsClient.NewListForResourceGroupPager(string, *ExemptionsClientListForResourceGroupOptions) *runtime.Pager[ExemptionsClientListForResourceGroupResponse]`
+- New function `*AssignmentsClient.NewListForResourceGroupPager(string, *AssignmentsClientListForResourceGroupOptions) *runtime.Pager[AssignmentsClientListForResourceGroupResponse]`
+- New function `*AssignmentsClient.NewListPager(*AssignmentsClientListOptions) *runtime.Pager[AssignmentsClientListResponse]`
+- New function `*SetDefinitionsClient.NewListByManagementGroupPager(string, *SetDefinitionsClientListByManagementGroupOptions) *runtime.Pager[SetDefinitionsClientListByManagementGroupResponse]`
+- New function `*SetDefinitionsClient.NewListBuiltInPager(*SetDefinitionsClientListBuiltInOptions) *runtime.Pager[SetDefinitionsClientListBuiltInResponse]`
+- New function `*SetDefinitionsClient.NewListPager(*SetDefinitionsClientListOptions) *runtime.Pager[SetDefinitionsClientListResponse]`
+- New function `*AssignmentsClient.NewListForManagementGroupPager(string, *AssignmentsClientListForManagementGroupOptions) *runtime.Pager[AssignmentsClientListForManagementGroupResponse]`
+- New function `*ExemptionsClient.NewListForManagementGroupPager(string, *ExemptionsClientListForManagementGroupOptions) *runtime.Pager[ExemptionsClientListForManagementGroupResponse]`
+- New function `*DataPolicyManifestsClient.NewListPager(*DataPolicyManifestsClientListOptions) *runtime.Pager[DataPolicyManifestsClientListResponse]`
+- New function `*ExemptionsClient.NewListForResourcePager(string, string, string, string, string, *ExemptionsClientListForResourceOptions) *runtime.Pager[ExemptionsClientListForResourceResponse]`
+
+
 ## 0.4.0 (2022-04-14)
 ### Breaking Changes
 

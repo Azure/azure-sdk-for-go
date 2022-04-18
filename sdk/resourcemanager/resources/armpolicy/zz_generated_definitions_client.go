@@ -393,8 +393,8 @@ func (client *DefinitionsClient) getBuiltInHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// List - This operation retrieves a list of all the policy definitions in a given subscription that match the optional given
-// $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or
+// NewListPager - This operation retrieves a list of all the policy definitions in a given subscription that match the optional
+// given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or
 // 'category eq '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated with
 // the subscription, including those that apply directly or from management groups
 // that contain the given subscription. If $filter=atExactScope() is provided, the returned list only includes all policy
@@ -404,7 +404,7 @@ func (client *DefinitionsClient) getBuiltInHandleResponse(resp *http.Response) (
 // {value}' is provided, the returned list only includes all policy definitions whose category match the {value}.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DefinitionsClientListOptions contains the optional parameters for the DefinitionsClient.List method.
-func (client *DefinitionsClient) List(options *DefinitionsClientListOptions) *runtime.Pager[DefinitionsClientListResponse] {
+func (client *DefinitionsClient) NewListPager(options *DefinitionsClientListOptions) *runtime.Pager[DefinitionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DefinitionsClientListResponse]{
 		More: func(page DefinitionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -467,14 +467,14 @@ func (client *DefinitionsClient) listHandleResponse(resp *http.Response) (Defini
 	return result, nil
 }
 
-// ListBuiltIn - This operation retrieves a list of all the built-in policy definitions that match the optional given $filter.
-// If $filter='policyType -eq {value}' is provided, the returned list only includes all
+// NewListBuiltInPager - This operation retrieves a list of all the built-in policy definitions that match the optional given
+// $filter. If $filter='policyType -eq {value}' is provided, the returned list only includes all
 // built-in policy definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom,
 // and Static. If $filter='category -eq {value}' is provided, the returned list
 // only includes all built-in policy definitions whose category match the {value}.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DefinitionsClientListBuiltInOptions contains the optional parameters for the DefinitionsClient.ListBuiltIn method.
-func (client *DefinitionsClient) ListBuiltIn(options *DefinitionsClientListBuiltInOptions) *runtime.Pager[DefinitionsClientListBuiltInResponse] {
+func (client *DefinitionsClient) NewListBuiltInPager(options *DefinitionsClientListBuiltInOptions) *runtime.Pager[DefinitionsClientListBuiltInResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DefinitionsClientListBuiltInResponse]{
 		More: func(page DefinitionsClientListBuiltInResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -533,8 +533,8 @@ func (client *DefinitionsClient) listBuiltInHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListByManagementGroup - This operation retrieves a list of all the policy definitions in a given management group that
-// match the optional given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq
+// NewListByManagementGroupPager - This operation retrieves a list of all the policy definitions in a given management group
+// that match the optional given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq
 // {value}' or 'category eq '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated
 // with the management group, including those that apply directly or from
 // management groups that contain the given management group. If $filter=atExactScope() is provided, the returned list only
@@ -547,7 +547,7 @@ func (client *DefinitionsClient) listBuiltInHandleResponse(resp *http.Response) 
 // managementGroupID - The ID of the management group.
 // options - DefinitionsClientListByManagementGroupOptions contains the optional parameters for the DefinitionsClient.ListByManagementGroup
 // method.
-func (client *DefinitionsClient) ListByManagementGroup(managementGroupID string, options *DefinitionsClientListByManagementGroupOptions) *runtime.Pager[DefinitionsClientListByManagementGroupResponse] {
+func (client *DefinitionsClient) NewListByManagementGroupPager(managementGroupID string, options *DefinitionsClientListByManagementGroupOptions) *runtime.Pager[DefinitionsClientListByManagementGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DefinitionsClientListByManagementGroupResponse]{
 		More: func(page DefinitionsClientListByManagementGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

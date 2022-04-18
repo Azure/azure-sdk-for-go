@@ -104,7 +104,7 @@ func ExampleExemptionsClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/preview/2020-07-01-preview/examples/listPolicyExemptionsForSubscription.json
-func ExampleExemptionsClient_List() {
+func ExampleExemptionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -116,7 +116,7 @@ func ExampleExemptionsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(&armpolicy.ExemptionsClientListOptions{Filter: to.Ptr("<filter>")})
+	pager := client.NewListPager(&armpolicy.ExemptionsClientListOptions{Filter: to.Ptr("<filter>")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -131,7 +131,7 @@ func ExampleExemptionsClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/preview/2020-07-01-preview/examples/listPolicyExemptionsForResourceGroup.json
-func ExampleExemptionsClient_ListForResourceGroup() {
+func ExampleExemptionsClient_NewListForResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -143,7 +143,7 @@ func ExampleExemptionsClient_ListForResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListForResourceGroup("<resource-group-name>",
+	pager := client.NewListForResourceGroupPager("<resource-group-name>",
 		&armpolicy.ExemptionsClientListForResourceGroupOptions{Filter: to.Ptr("<filter>")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -159,7 +159,7 @@ func ExampleExemptionsClient_ListForResourceGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/preview/2020-07-01-preview/examples/listPolicyExemptionsForResource.json
-func ExampleExemptionsClient_ListForResource() {
+func ExampleExemptionsClient_NewListForResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -171,7 +171,7 @@ func ExampleExemptionsClient_ListForResource() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListForResource("<resource-group-name>",
+	pager := client.NewListForResourcePager("<resource-group-name>",
 		"<resource-provider-namespace>",
 		"<parent-resource-path>",
 		"<resource-type>",
@@ -191,7 +191,7 @@ func ExampleExemptionsClient_ListForResource() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/preview/2020-07-01-preview/examples/listPolicyExemptionsForManagementGroup.json
-func ExampleExemptionsClient_ListForManagementGroup() {
+func ExampleExemptionsClient_NewListForManagementGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -203,7 +203,7 @@ func ExampleExemptionsClient_ListForManagementGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListForManagementGroup("<management-group-id>",
+	pager := client.NewListForManagementGroupPager("<management-group-id>",
 		&armpolicy.ExemptionsClientListForManagementGroupOptions{Filter: to.Ptr("<filter>")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

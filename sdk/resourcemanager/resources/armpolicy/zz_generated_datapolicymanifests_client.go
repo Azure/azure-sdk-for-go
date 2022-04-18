@@ -98,15 +98,15 @@ func (client *DataPolicyManifestsClient) getByPolicyModeHandleResponse(resp *htt
 	return result, nil
 }
 
-// List - This operation retrieves a list of all the data policy manifests that match the optional given $filter. Valid values
-// for $filter are: "$filter=namespace eq '{0}'". If $filter is not provided, the
+// NewListPager - This operation retrieves a list of all the data policy manifests that match the optional given $filter.
+// Valid values for $filter are: "$filter=namespace eq '{0}'". If $filter is not provided, the
 // unfiltered list includes all data policy manifests for data resource types. If $filter=namespace is provided, the returned
 // list only includes all data policy manifests that have a namespace matching
 // the provided value.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DataPolicyManifestsClientListOptions contains the optional parameters for the DataPolicyManifestsClient.List
 // method.
-func (client *DataPolicyManifestsClient) List(options *DataPolicyManifestsClientListOptions) *runtime.Pager[DataPolicyManifestsClientListResponse] {
+func (client *DataPolicyManifestsClient) NewListPager(options *DataPolicyManifestsClientListOptions) *runtime.Pager[DataPolicyManifestsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DataPolicyManifestsClientListResponse]{
 		More: func(page DataPolicyManifestsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

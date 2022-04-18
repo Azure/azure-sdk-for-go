@@ -233,10 +233,10 @@ func (client *GroupsClient) getHandleResponse(resp *http.Response) (GroupsClient
 	return result, nil
 }
 
-// List - Gets all SQL virtual machine groups in a subscription.
+// NewListPager - Gets all SQL virtual machine groups in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - GroupsClientListOptions contains the optional parameters for the GroupsClient.List method.
-func (client *GroupsClient) List(options *GroupsClientListOptions) *runtime.Pager[GroupsClientListResponse] {
+func (client *GroupsClient) NewListPager(options *GroupsClientListOptions) *runtime.Pager[GroupsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[GroupsClientListResponse]{
 		More: func(page GroupsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -291,13 +291,13 @@ func (client *GroupsClient) listHandleResponse(resp *http.Response) (GroupsClien
 	return result, nil
 }
 
-// ListByResourceGroup - Gets all SQL virtual machine groups in a resource group.
+// NewListByResourceGroupPager - Gets all SQL virtual machine groups in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 // Manager API or the portal.
 // options - GroupsClientListByResourceGroupOptions contains the optional parameters for the GroupsClient.ListByResourceGroup
 // method.
-func (client *GroupsClient) ListByResourceGroup(resourceGroupName string, options *GroupsClientListByResourceGroupOptions) *runtime.Pager[GroupsClientListByResourceGroupResponse] {
+func (client *GroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *GroupsClientListByResourceGroupOptions) *runtime.Pager[GroupsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[GroupsClientListByResourceGroupResponse]{
 		More: func(page GroupsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

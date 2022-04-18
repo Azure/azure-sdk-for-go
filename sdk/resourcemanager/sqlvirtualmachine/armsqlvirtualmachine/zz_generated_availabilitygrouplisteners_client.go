@@ -253,14 +253,14 @@ func (client *AvailabilityGroupListenersClient) getHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListByGroup - Lists all availability group listeners in a SQL virtual machine group.
+// NewListByGroupPager - Lists all availability group listeners in a SQL virtual machine group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 // Manager API or the portal.
 // sqlVirtualMachineGroupName - Name of the SQL virtual machine group.
 // options - AvailabilityGroupListenersClientListByGroupOptions contains the optional parameters for the AvailabilityGroupListenersClient.ListByGroup
 // method.
-func (client *AvailabilityGroupListenersClient) ListByGroup(resourceGroupName string, sqlVirtualMachineGroupName string, options *AvailabilityGroupListenersClientListByGroupOptions) *runtime.Pager[AvailabilityGroupListenersClientListByGroupResponse] {
+func (client *AvailabilityGroupListenersClient) NewListByGroupPager(resourceGroupName string, sqlVirtualMachineGroupName string, options *AvailabilityGroupListenersClientListByGroupOptions) *runtime.Pager[AvailabilityGroupListenersClientListByGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AvailabilityGroupListenersClientListByGroupResponse]{
 		More: func(page AvailabilityGroupListenersClientListByGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

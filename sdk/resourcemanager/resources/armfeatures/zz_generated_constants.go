@@ -10,7 +10,7 @@ package armfeatures
 
 const (
 	moduleName    = "armfeatures"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v0.4.1"
 )
 
 // SubscriptionFeatureRegistrationApprovalType - The feature approval type.

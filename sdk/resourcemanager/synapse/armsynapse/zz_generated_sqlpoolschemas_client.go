@@ -119,13 +119,13 @@ func (client *SQLPoolSchemasClient) getHandleResponse(resp *http.Response) (SQLP
 	return result, nil
 }
 
-// List - Gets schemas of a given SQL pool.
+// NewListPager - Gets schemas of a given SQL pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
 // options - SQLPoolSchemasClientListOptions contains the optional parameters for the SQLPoolSchemasClient.List method.
-func (client *SQLPoolSchemasClient) List(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolSchemasClientListOptions) *runtime.Pager[SQLPoolSchemasClientListResponse] {
+func (client *SQLPoolSchemasClient) NewListPager(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolSchemasClientListOptions) *runtime.Pager[SQLPoolSchemasClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLPoolSchemasClientListResponse]{
 		More: func(page SQLPoolSchemasClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

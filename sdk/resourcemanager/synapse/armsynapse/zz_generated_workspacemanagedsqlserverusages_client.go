@@ -54,13 +54,13 @@ func NewWorkspaceManagedSQLServerUsagesClient(subscriptionID string, credential 
 	return client, nil
 }
 
-// List - Get list of server usages metric for workspace managed sql server.
+// NewListPager - Get list of server usages metric for workspace managed sql server.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - WorkspaceManagedSQLServerUsagesClientListOptions contains the optional parameters for the WorkspaceManagedSQLServerUsagesClient.List
 // method.
-func (client *WorkspaceManagedSQLServerUsagesClient) List(resourceGroupName string, workspaceName string, options *WorkspaceManagedSQLServerUsagesClientListOptions) *runtime.Pager[WorkspaceManagedSQLServerUsagesClientListResponse] {
+func (client *WorkspaceManagedSQLServerUsagesClient) NewListPager(resourceGroupName string, workspaceName string, options *WorkspaceManagedSQLServerUsagesClientListOptions) *runtime.Pager[WorkspaceManagedSQLServerUsagesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkspaceManagedSQLServerUsagesClientListResponse]{
 		More: func(page WorkspaceManagedSQLServerUsagesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

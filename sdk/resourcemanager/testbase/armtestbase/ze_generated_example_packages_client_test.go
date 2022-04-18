@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/testbase/resource-manager/Microsoft.TestBase/preview/2020-12-16-preview/examples/PackagesList.json
-func ExamplePackagesClient_ListByTestBaseAccount() {
+func ExamplePackagesClient_NewListByTestBaseAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExamplePackagesClient_ListByTestBaseAccount() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByTestBaseAccount("<resource-group-name>",
+	pager := client.NewListByTestBaseAccountPager("<resource-group-name>",
 		"<test-base-account-name>",
 		nil)
 	for pager.More() {

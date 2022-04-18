@@ -251,13 +251,13 @@ func (client *IscsiTargetsClient) getHandleResponse(resp *http.Response) (IscsiT
 	return result, nil
 }
 
-// ListByDiskPool - Get iSCSI Targets in a Disk pool.
+// NewListByDiskPoolPager - Get iSCSI Targets in a Disk pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // diskPoolName - The name of the Disk Pool.
 // options - IscsiTargetsClientListByDiskPoolOptions contains the optional parameters for the IscsiTargetsClient.ListByDiskPool
 // method.
-func (client *IscsiTargetsClient) ListByDiskPool(resourceGroupName string, diskPoolName string, options *IscsiTargetsClientListByDiskPoolOptions) *runtime.Pager[IscsiTargetsClientListByDiskPoolResponse] {
+func (client *IscsiTargetsClient) NewListByDiskPoolPager(resourceGroupName string, diskPoolName string, options *IscsiTargetsClientListByDiskPoolOptions) *runtime.Pager[IscsiTargetsClientListByDiskPoolResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IscsiTargetsClientListByDiskPoolResponse]{
 		More: func(page IscsiTargetsClientListByDiskPoolResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

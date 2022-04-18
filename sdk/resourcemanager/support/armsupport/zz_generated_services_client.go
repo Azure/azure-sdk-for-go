@@ -97,15 +97,15 @@ func (client *ServicesClient) getHandleResponse(resp *http.Response) (ServicesCl
 	return result, nil
 }
 
-// List - Lists all the Azure services available for support ticket creation. For Technical issues, select the Service Id
-// that maps to the Azure service/product as displayed in the Services drop-down list on
+// NewListPager - Lists all the Azure services available for support ticket creation. For Technical issues, select the Service
+// Id that maps to the Azure service/product as displayed in the Services drop-down list on
 // the Azure portal's New support request [https://portal.azure.com/#blade/MicrosoftAzureSupport/HelpAndSupportBlade/overview]
 // page. Always use the service and its corresponding problem classification(s)
 // obtained programmatically for support ticket creation. This practice ensures that you always have the most recent set of
 // service and problem classification Ids.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ServicesClientListOptions contains the optional parameters for the ServicesClient.List method.
-func (client *ServicesClient) List(options *ServicesClientListOptions) *runtime.Pager[ServicesClientListResponse] {
+func (client *ServicesClient) NewListPager(options *ServicesClientListOptions) *runtime.Pager[ServicesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServicesClientListResponse]{
 		More: func(page ServicesClientListResponse) bool {
 			return false

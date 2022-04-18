@@ -104,11 +104,11 @@ func (client *LocationsClient) getHandleResponse(resp *http.Response) (Locations
 	return result, nil
 }
 
-// List - Returns a list of locations to which you can ship the disks associated with an import or export job. A location
+// NewListPager - Returns a list of locations to which you can ship the disks associated with an import or export job. A location
 // is a Microsoft data center region.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - LocationsClientListOptions contains the optional parameters for the LocationsClient.List method.
-func (client *LocationsClient) List(options *LocationsClientListOptions) *runtime.Pager[LocationsClientListResponse] {
+func (client *LocationsClient) NewListPager(options *LocationsClientListOptions) *runtime.Pager[LocationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LocationsClientListResponse]{
 		More: func(page LocationsClientListResponse) bool {
 			return false

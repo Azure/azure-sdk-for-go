@@ -114,12 +114,12 @@ func (client *TestTypesClient) getHandleResponse(resp *http.Response) (TestTypes
 	return result, nil
 }
 
-// List - Lists all the test types of a Test Base Account.
+// NewListPager - Lists all the test types of a Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // options - TestTypesClientListOptions contains the optional parameters for the TestTypesClient.List method.
-func (client *TestTypesClient) List(resourceGroupName string, testBaseAccountName string, options *TestTypesClientListOptions) *runtime.Pager[TestTypesClientListResponse] {
+func (client *TestTypesClient) NewListPager(resourceGroupName string, testBaseAccountName string, options *TestTypesClientListOptions) *runtime.Pager[TestTypesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TestTypesClientListResponse]{
 		More: func(page TestTypesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

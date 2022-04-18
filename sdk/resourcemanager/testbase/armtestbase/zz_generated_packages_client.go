@@ -377,13 +377,13 @@ func (client *PackagesClient) hardDeleteCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// ListByTestBaseAccount - Lists all the packages under a Test Base Account.
+// NewListByTestBaseAccountPager - Lists all the packages under a Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // options - PackagesClientListByTestBaseAccountOptions contains the optional parameters for the PackagesClient.ListByTestBaseAccount
 // method.
-func (client *PackagesClient) ListByTestBaseAccount(resourceGroupName string, testBaseAccountName string, options *PackagesClientListByTestBaseAccountOptions) *runtime.Pager[PackagesClientListByTestBaseAccountResponse] {
+func (client *PackagesClient) NewListByTestBaseAccountPager(resourceGroupName string, testBaseAccountName string, options *PackagesClientListByTestBaseAccountOptions) *runtime.Pager[PackagesClientListByTestBaseAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PackagesClientListByTestBaseAccountResponse]{
 		More: func(page PackagesClientListByTestBaseAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

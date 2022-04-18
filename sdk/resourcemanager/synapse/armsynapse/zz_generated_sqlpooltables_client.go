@@ -124,7 +124,7 @@ func (client *SQLPoolTablesClient) getHandleResponse(resp *http.Response) (SQLPo
 	return result, nil
 }
 
-// ListBySchema - Gets tables of a given schema in a SQL pool.
+// NewListBySchemaPager - Gets tables of a given schema in a SQL pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
@@ -132,7 +132,7 @@ func (client *SQLPoolTablesClient) getHandleResponse(resp *http.Response) (SQLPo
 // schemaName - The name of the schema.
 // options - SQLPoolTablesClientListBySchemaOptions contains the optional parameters for the SQLPoolTablesClient.ListBySchema
 // method.
-func (client *SQLPoolTablesClient) ListBySchema(resourceGroupName string, workspaceName string, sqlPoolName string, schemaName string, options *SQLPoolTablesClientListBySchemaOptions) *runtime.Pager[SQLPoolTablesClientListBySchemaResponse] {
+func (client *SQLPoolTablesClient) NewListBySchemaPager(resourceGroupName string, workspaceName string, sqlPoolName string, schemaName string, options *SQLPoolTablesClientListBySchemaOptions) *runtime.Pager[SQLPoolTablesClientListBySchemaResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLPoolTablesClientListBySchemaResponse]{
 		More: func(page SQLPoolTablesClientListBySchemaResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

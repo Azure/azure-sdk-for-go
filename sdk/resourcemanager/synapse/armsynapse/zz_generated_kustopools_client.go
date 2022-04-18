@@ -494,15 +494,15 @@ func (client *KustoPoolsClient) listByWorkspaceHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListFollowerDatabases - Returns a list of databases that are owned by this Kusto Pool and were followed by another Kusto
-// Pool.
+// NewListFollowerDatabasesPager - Returns a list of databases that are owned by this Kusto Pool and were followed by another
+// Kusto Pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 // workspaceName - The name of the workspace.
 // kustoPoolName - The name of the Kusto pool.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - KustoPoolsClientListFollowerDatabasesOptions contains the optional parameters for the KustoPoolsClient.ListFollowerDatabases
 // method.
-func (client *KustoPoolsClient) ListFollowerDatabases(workspaceName string, kustoPoolName string, resourceGroupName string, options *KustoPoolsClientListFollowerDatabasesOptions) *runtime.Pager[KustoPoolsClientListFollowerDatabasesResponse] {
+func (client *KustoPoolsClient) NewListFollowerDatabasesPager(workspaceName string, kustoPoolName string, resourceGroupName string, options *KustoPoolsClientListFollowerDatabasesOptions) *runtime.Pager[KustoPoolsClientListFollowerDatabasesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[KustoPoolsClientListFollowerDatabasesResponse]{
 		More: func(page KustoPoolsClientListFollowerDatabasesResponse) bool {
 			return false
@@ -563,14 +563,14 @@ func (client *KustoPoolsClient) listFollowerDatabasesHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListLanguageExtensions - Returns a list of language extensions that can run within KQL queries.
+// NewListLanguageExtensionsPager - Returns a list of language extensions that can run within KQL queries.
 // If the operation fails it returns an *azcore.ResponseError type.
 // workspaceName - The name of the workspace.
 // kustoPoolName - The name of the Kusto pool.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - KustoPoolsClientListLanguageExtensionsOptions contains the optional parameters for the KustoPoolsClient.ListLanguageExtensions
 // method.
-func (client *KustoPoolsClient) ListLanguageExtensions(workspaceName string, kustoPoolName string, resourceGroupName string, options *KustoPoolsClientListLanguageExtensionsOptions) *runtime.Pager[KustoPoolsClientListLanguageExtensionsResponse] {
+func (client *KustoPoolsClient) NewListLanguageExtensionsPager(workspaceName string, kustoPoolName string, resourceGroupName string, options *KustoPoolsClientListLanguageExtensionsOptions) *runtime.Pager[KustoPoolsClientListLanguageExtensionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[KustoPoolsClientListLanguageExtensionsResponse]{
 		More: func(page KustoPoolsClientListLanguageExtensionsResponse) bool {
 			return false
@@ -631,10 +631,10 @@ func (client *KustoPoolsClient) listLanguageExtensionsHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListSKUs - Lists eligible SKUs for Kusto Pool resource.
+// NewListSKUsPager - Lists eligible SKUs for Kusto Pool resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - KustoPoolsClientListSKUsOptions contains the optional parameters for the KustoPoolsClient.ListSKUs method.
-func (client *KustoPoolsClient) ListSKUs(options *KustoPoolsClientListSKUsOptions) *runtime.Pager[KustoPoolsClientListSKUsResponse] {
+func (client *KustoPoolsClient) NewListSKUsPager(options *KustoPoolsClientListSKUsOptions) *runtime.Pager[KustoPoolsClientListSKUsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[KustoPoolsClientListSKUsResponse]{
 		More: func(page KustoPoolsClientListSKUsResponse) bool {
 			return false
@@ -683,14 +683,14 @@ func (client *KustoPoolsClient) listSKUsHandleResponse(resp *http.Response) (Kus
 	return result, nil
 }
 
-// ListSKUsByResource - Returns the SKUs available for the provided resource.
+// NewListSKUsByResourcePager - Returns the SKUs available for the provided resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // workspaceName - The name of the workspace.
 // kustoPoolName - The name of the Kusto pool.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - KustoPoolsClientListSKUsByResourceOptions contains the optional parameters for the KustoPoolsClient.ListSKUsByResource
 // method.
-func (client *KustoPoolsClient) ListSKUsByResource(workspaceName string, kustoPoolName string, resourceGroupName string, options *KustoPoolsClientListSKUsByResourceOptions) *runtime.Pager[KustoPoolsClientListSKUsByResourceResponse] {
+func (client *KustoPoolsClient) NewListSKUsByResourcePager(workspaceName string, kustoPoolName string, resourceGroupName string, options *KustoPoolsClientListSKUsByResourceOptions) *runtime.Pager[KustoPoolsClientListSKUsByResourceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[KustoPoolsClientListSKUsByResourceResponse]{
 		More: func(page KustoPoolsClientListSKUsByResourceResponse) bool {
 			return false

@@ -54,11 +54,11 @@ func NewDiskPoolZonesClient(subscriptionID string, credential azcore.TokenCreden
 	return client, nil
 }
 
-// List - Lists available Disk Pool Skus in an Azure location.
+// NewListPager - Lists available Disk Pool Skus in an Azure location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - The location of the resource.
 // options - DiskPoolZonesClientListOptions contains the optional parameters for the DiskPoolZonesClient.List method.
-func (client *DiskPoolZonesClient) List(location string, options *DiskPoolZonesClientListOptions) *runtime.Pager[DiskPoolZonesClientListResponse] {
+func (client *DiskPoolZonesClient) NewListPager(location string, options *DiskPoolZonesClientListOptions) *runtime.Pager[DiskPoolZonesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DiskPoolZonesClientListResponse]{
 		More: func(page DiskPoolZonesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

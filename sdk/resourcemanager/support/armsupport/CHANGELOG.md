@@ -1,5 +1,23 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*CommunicationsClient.List` has been removed
+- Function `*ProblemClassificationsClient.List` has been removed
+- Function `*ServicesClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*TicketsClient.List` has been removed
+
+### Features Added
+
+- New function `*CommunicationsClient.NewListPager(string, *CommunicationsClientListOptions) *runtime.Pager[CommunicationsClientListResponse]`
+- New function `*TicketsClient.NewListPager(*TicketsClientListOptions) *runtime.Pager[TicketsClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*ProblemClassificationsClient.NewListPager(string, *ProblemClassificationsClientListOptions) *runtime.Pager[ProblemClassificationsClientListResponse]`
+- New function `*ServicesClient.NewListPager(*ServicesClientListOptions) *runtime.Pager[ServicesClientListResponse]`
+
+
 ## 0.3.0 (2022-04-13)
 ### Breaking Changes
 

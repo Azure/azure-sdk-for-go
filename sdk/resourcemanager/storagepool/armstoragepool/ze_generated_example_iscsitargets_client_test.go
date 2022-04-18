@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagepool/resource-manager/Microsoft.StoragePool/stable/2021-08-01/examples/IscsiTargets_ListByDiskPool.json
-func ExampleIscsiTargetsClient_ListByDiskPool() {
+func ExampleIscsiTargetsClient_NewListByDiskPoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleIscsiTargetsClient_ListByDiskPool() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByDiskPool("<resource-group-name>",
+	pager := client.NewListByDiskPoolPager("<resource-group-name>",
 		"<disk-pool-name>",
 		nil)
 	for pager.More() {

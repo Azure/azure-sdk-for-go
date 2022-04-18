@@ -183,13 +183,13 @@ func (client *WorkflowsClient) getHandleResponse(resp *http.Response) (Workflows
 	return result, nil
 }
 
-// ListByStorageSyncService - Get a Workflow List
+// NewListByStorageSyncServicePager - Get a Workflow List
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // storageSyncServiceName - Name of Storage Sync Service resource.
 // options - WorkflowsClientListByStorageSyncServiceOptions contains the optional parameters for the WorkflowsClient.ListByStorageSyncService
 // method.
-func (client *WorkflowsClient) ListByStorageSyncService(resourceGroupName string, storageSyncServiceName string, options *WorkflowsClientListByStorageSyncServiceOptions) *runtime.Pager[WorkflowsClientListByStorageSyncServiceResponse] {
+func (client *WorkflowsClient) NewListByStorageSyncServicePager(resourceGroupName string, storageSyncServiceName string, options *WorkflowsClientListByStorageSyncServiceOptions) *runtime.Pager[WorkflowsClientListByStorageSyncServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkflowsClientListByStorageSyncServiceResponse]{
 		More: func(page WorkflowsClientListByStorageSyncServiceResponse) bool {
 			return false

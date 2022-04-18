@@ -247,14 +247,14 @@ func (client *TicketsClient) getHandleResponse(resp *http.Response) (TicketsClie
 	return result, nil
 }
 
-// List - Lists all the support tickets for an Azure subscription. You can also filter the support tickets by Status or CreatedDate
-// using the $filter parameter. Output will be a paged result with nextLink,
+// NewListPager - Lists all the support tickets for an Azure subscription. You can also filter the support tickets by Status
+// or CreatedDate using the $filter parameter. Output will be a paged result with nextLink,
 // using which you can retrieve the next set of support tickets.
 // Support ticket data is available for 18 months after ticket creation. If a ticket was created more than 18 months ago,
 // a request for data might cause an error.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - TicketsClientListOptions contains the optional parameters for the TicketsClient.List method.
-func (client *TicketsClient) List(options *TicketsClientListOptions) *runtime.Pager[TicketsClientListResponse] {
+func (client *TicketsClient) NewListPager(options *TicketsClientListOptions) *runtime.Pager[TicketsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TicketsClientListResponse]{
 		More: func(page TicketsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

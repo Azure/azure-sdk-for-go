@@ -255,13 +255,13 @@ func (client *BigDataPoolsClient) getHandleResponse(resp *http.Response) (BigDat
 	return result, nil
 }
 
-// ListByWorkspace - List Big Data pools in a workspace.
+// NewListByWorkspacePager - List Big Data pools in a workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - BigDataPoolsClientListByWorkspaceOptions contains the optional parameters for the BigDataPoolsClient.ListByWorkspace
 // method.
-func (client *BigDataPoolsClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *BigDataPoolsClientListByWorkspaceOptions) *runtime.Pager[BigDataPoolsClientListByWorkspaceResponse] {
+func (client *BigDataPoolsClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *BigDataPoolsClientListByWorkspaceOptions) *runtime.Pager[BigDataPoolsClientListByWorkspaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BigDataPoolsClientListByWorkspaceResponse]{
 		More: func(page BigDataPoolsClientListByWorkspaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

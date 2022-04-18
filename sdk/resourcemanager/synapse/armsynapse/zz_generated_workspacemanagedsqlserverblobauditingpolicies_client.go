@@ -182,13 +182,13 @@ func (client *WorkspaceManagedSQLServerBlobAuditingPoliciesClient) getHandleResp
 	return result, nil
 }
 
-// ListByWorkspace - List workspace managed sql server's blob auditing policies.
+// NewListByWorkspacePager - List workspace managed sql server's blob auditing policies.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - WorkspaceManagedSQLServerBlobAuditingPoliciesClientListByWorkspaceOptions contains the optional parameters for
 // the WorkspaceManagedSQLServerBlobAuditingPoliciesClient.ListByWorkspace method.
-func (client *WorkspaceManagedSQLServerBlobAuditingPoliciesClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *WorkspaceManagedSQLServerBlobAuditingPoliciesClientListByWorkspaceOptions) *runtime.Pager[WorkspaceManagedSQLServerBlobAuditingPoliciesClientListByWorkspaceResponse] {
+func (client *WorkspaceManagedSQLServerBlobAuditingPoliciesClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *WorkspaceManagedSQLServerBlobAuditingPoliciesClientListByWorkspaceOptions) *runtime.Pager[WorkspaceManagedSQLServerBlobAuditingPoliciesClientListByWorkspaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkspaceManagedSQLServerBlobAuditingPoliciesClientListByWorkspaceResponse]{
 		More: func(page WorkspaceManagedSQLServerBlobAuditingPoliciesClientListByWorkspaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

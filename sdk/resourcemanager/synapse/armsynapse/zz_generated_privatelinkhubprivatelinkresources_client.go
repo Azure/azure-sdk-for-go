@@ -115,13 +115,13 @@ func (client *PrivateLinkHubPrivateLinkResourcesClient) getHandleResponse(resp *
 	return result, nil
 }
 
-// List - Get all private link resources for a private link hub
+// NewListPager - Get all private link resources for a private link hub
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateLinkHubName - The name of the private link hub
 // options - PrivateLinkHubPrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkHubPrivateLinkResourcesClient.List
 // method.
-func (client *PrivateLinkHubPrivateLinkResourcesClient) List(resourceGroupName string, privateLinkHubName string, options *PrivateLinkHubPrivateLinkResourcesClientListOptions) *runtime.Pager[PrivateLinkHubPrivateLinkResourcesClientListResponse] {
+func (client *PrivateLinkHubPrivateLinkResourcesClient) NewListPager(resourceGroupName string, privateLinkHubName string, options *PrivateLinkHubPrivateLinkResourcesClientListOptions) *runtime.Pager[PrivateLinkHubPrivateLinkResourcesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkHubPrivateLinkResourcesClientListResponse]{
 		More: func(page PrivateLinkHubPrivateLinkResourcesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

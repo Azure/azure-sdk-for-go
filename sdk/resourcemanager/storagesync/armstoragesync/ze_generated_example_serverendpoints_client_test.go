@@ -165,7 +165,7 @@ func ExampleServerEndpointsClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/ServerEndpoints_ListBySyncGroup.json
-func ExampleServerEndpointsClient_ListBySyncGroup() {
+func ExampleServerEndpointsClient_NewListBySyncGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -177,7 +177,7 @@ func ExampleServerEndpointsClient_ListBySyncGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySyncGroup("<resource-group-name>",
+	pager := client.NewListBySyncGroupPager("<resource-group-name>",
 		"<storage-sync-service-name>",
 		"<sync-group-name>",
 		nil)

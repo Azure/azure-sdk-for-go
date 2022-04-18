@@ -51,10 +51,10 @@ func NewOperationsClient(acceptLanguage *string, credential azcore.TokenCredenti
 	return client, nil
 }
 
-// List - Returns the list of operations supported by the import/export resource provider.
+// NewListPager - Returns the list of operations supported by the import/export resource provider.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
-func (client *OperationsClient) List(options *OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse] {
+func (client *OperationsClient) NewListPager(options *OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[OperationsClientListResponse]{
 		More: func(page OperationsClientListResponse) bool {
 			return false

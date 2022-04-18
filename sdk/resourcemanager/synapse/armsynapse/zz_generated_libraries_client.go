@@ -54,13 +54,13 @@ func NewLibrariesClient(subscriptionID string, credential azcore.TokenCredential
 	return client, nil
 }
 
-// ListByWorkspace - List libraries in a workspace.
+// NewListByWorkspacePager - List libraries in a workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - LibrariesClientListByWorkspaceOptions contains the optional parameters for the LibrariesClient.ListByWorkspace
 // method.
-func (client *LibrariesClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *LibrariesClientListByWorkspaceOptions) *runtime.Pager[LibrariesClientListByWorkspaceResponse] {
+func (client *LibrariesClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *LibrariesClientListByWorkspaceOptions) *runtime.Pager[LibrariesClientListByWorkspaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LibrariesClientListByWorkspaceResponse]{
 		More: func(page LibrariesClientListByWorkspaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

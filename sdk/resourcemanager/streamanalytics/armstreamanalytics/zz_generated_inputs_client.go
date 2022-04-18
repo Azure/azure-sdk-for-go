@@ -239,13 +239,13 @@ func (client *InputsClient) getHandleResponse(resp *http.Response) (InputsClient
 	return result, nil
 }
 
-// ListByStreamingJob - Lists all of the inputs under the specified streaming job.
+// NewListByStreamingJobPager - Lists all of the inputs under the specified streaming job.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // jobName - The name of the streaming job.
 // options - InputsClientListByStreamingJobOptions contains the optional parameters for the InputsClient.ListByStreamingJob
 // method.
-func (client *InputsClient) ListByStreamingJob(resourceGroupName string, jobName string, options *InputsClientListByStreamingJobOptions) *runtime.Pager[InputsClientListByStreamingJobResponse] {
+func (client *InputsClient) NewListByStreamingJobPager(resourceGroupName string, jobName string, options *InputsClientListByStreamingJobOptions) *runtime.Pager[InputsClientListByStreamingJobResponse] {
 	return runtime.NewPager(runtime.PageProcessor[InputsClientListByStreamingJobResponse]{
 		More: func(page InputsClientListByStreamingJobResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -114,13 +114,13 @@ func (client *AvailableOSClient) getHandleResponse(resp *http.Response) (Availab
 	return result, nil
 }
 
-// List - Lists all the available OSs to run a package under a Test Base Account.
+// NewListPager - Lists all the available OSs to run a package under a Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // osUpdateType - The type of the OS Update.
 // options - AvailableOSClientListOptions contains the optional parameters for the AvailableOSClient.List method.
-func (client *AvailableOSClient) List(resourceGroupName string, testBaseAccountName string, osUpdateType OsUpdateType, options *AvailableOSClientListOptions) *runtime.Pager[AvailableOSClientListResponse] {
+func (client *AvailableOSClient) NewListPager(resourceGroupName string, testBaseAccountName string, osUpdateType OsUpdateType, options *AvailableOSClientListOptions) *runtime.Pager[AvailableOSClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AvailableOSClientListResponse]{
 		More: func(page AvailableOSClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -188,14 +188,14 @@ func (client *DataMaskingRulesClient) getHandleResponse(resp *http.Response) (Da
 	return result, nil
 }
 
-// ListBySQLPool - Gets a list of Sql pool data masking rules.
+// NewListBySQLPoolPager - Gets a list of Sql pool data masking rules.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
 // options - DataMaskingRulesClientListBySQLPoolOptions contains the optional parameters for the DataMaskingRulesClient.ListBySQLPool
 // method.
-func (client *DataMaskingRulesClient) ListBySQLPool(resourceGroupName string, workspaceName string, sqlPoolName string, options *DataMaskingRulesClientListBySQLPoolOptions) *runtime.Pager[DataMaskingRulesClientListBySQLPoolResponse] {
+func (client *DataMaskingRulesClient) NewListBySQLPoolPager(resourceGroupName string, workspaceName string, sqlPoolName string, options *DataMaskingRulesClientListBySQLPoolOptions) *runtime.Pager[DataMaskingRulesClientListBySQLPoolResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DataMaskingRulesClientListBySQLPoolResponse]{
 		More: func(page DataMaskingRulesClientListBySQLPoolResponse) bool {
 			return false

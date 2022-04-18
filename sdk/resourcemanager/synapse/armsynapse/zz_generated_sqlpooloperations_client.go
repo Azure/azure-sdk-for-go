@@ -54,13 +54,13 @@ func NewSQLPoolOperationsClient(subscriptionID string, credential azcore.TokenCr
 	return client, nil
 }
 
-// List - Gets a list of operations performed on the SQL pool.
+// NewListPager - Gets a list of operations performed on the SQL pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
 // options - SQLPoolOperationsClientListOptions contains the optional parameters for the SQLPoolOperationsClient.List method.
-func (client *SQLPoolOperationsClient) List(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolOperationsClientListOptions) *runtime.Pager[SQLPoolOperationsClientListResponse] {
+func (client *SQLPoolOperationsClient) NewListPager(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolOperationsClientListOptions) *runtime.Pager[SQLPoolOperationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLPoolOperationsClientListResponse]{
 		More: func(page SQLPoolOperationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

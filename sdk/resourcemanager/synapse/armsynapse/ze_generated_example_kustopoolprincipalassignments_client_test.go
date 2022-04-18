@@ -50,7 +50,7 @@ func ExampleKustoPoolPrincipalAssignmentsClient_CheckNameAvailability() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolPrincipalAssignmentsList.json
-func ExampleKustoPoolPrincipalAssignmentsClient_List() {
+func ExampleKustoPoolPrincipalAssignmentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -62,7 +62,7 @@ func ExampleKustoPoolPrincipalAssignmentsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<workspace-name>",
+	pager := client.NewListPager("<workspace-name>",
 		"<kusto-pool-name>",
 		"<resource-group-name>",
 		nil)

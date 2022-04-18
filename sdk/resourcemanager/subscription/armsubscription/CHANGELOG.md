@@ -1,5 +1,23 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*SubscriptionsClient.List` has been removed
+- Function `*TenantsClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*SubscriptionsClient.ListLocations` has been removed
+- Function `*PolicyClient.ListPolicyForTenant` has been removed
+
+### Features Added
+
+- New function `*SubscriptionsClient.NewListLocationsPager(string, *SubscriptionsClientListLocationsOptions) *runtime.Pager[SubscriptionsClientListLocationsResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*SubscriptionsClient.NewListPager(*SubscriptionsClientListOptions) *runtime.Pager[SubscriptionsClientListResponse]`
+- New function `*PolicyClient.NewListPolicyForTenantPager(*PolicyClientListPolicyForTenantOptions) *runtime.Pager[PolicyClientListPolicyForTenantResponse]`
+- New function `*TenantsClient.NewListPager(*TenantsClientListOptions) *runtime.Pager[TenantsClientListResponse]`
+
+
 ## 0.3.0 (2022-04-13)
 ### Breaking Changes
 

@@ -227,12 +227,12 @@ func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsClientGetR
 	return result, nil
 }
 
-// ListByResourceGroup - Returns all active and completed jobs in a resource group.
+// NewListByResourceGroupPager - Returns all active and completed jobs in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name uniquely identifies the resource group within the user subscription.
 // options - JobsClientListByResourceGroupOptions contains the optional parameters for the JobsClient.ListByResourceGroup
 // method.
-func (client *JobsClient) ListByResourceGroup(resourceGroupName string, options *JobsClientListByResourceGroupOptions) *runtime.Pager[JobsClientListByResourceGroupResponse] {
+func (client *JobsClient) NewListByResourceGroupPager(resourceGroupName string, options *JobsClientListByResourceGroupOptions) *runtime.Pager[JobsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[JobsClientListByResourceGroupResponse]{
 		More: func(page JobsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -300,10 +300,10 @@ func (client *JobsClient) listByResourceGroupHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListBySubscription - Returns all active and completed jobs in a subscription.
+// NewListBySubscriptionPager - Returns all active and completed jobs in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - JobsClientListBySubscriptionOptions contains the optional parameters for the JobsClient.ListBySubscription method.
-func (client *JobsClient) ListBySubscription(options *JobsClientListBySubscriptionOptions) *runtime.Pager[JobsClientListBySubscriptionResponse] {
+func (client *JobsClient) NewListBySubscriptionPager(options *JobsClientListBySubscriptionOptions) *runtime.Pager[JobsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[JobsClientListBySubscriptionResponse]{
 		More: func(page JobsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

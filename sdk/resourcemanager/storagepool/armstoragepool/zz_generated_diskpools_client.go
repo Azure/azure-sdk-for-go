@@ -306,12 +306,12 @@ func (client *DiskPoolsClient) getHandleResponse(resp *http.Response) (DiskPools
 	return result, nil
 }
 
-// ListByResourceGroup - Gets a list of DiskPools in a resource group.
+// NewListByResourceGroupPager - Gets a list of DiskPools in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - DiskPoolsClientListByResourceGroupOptions contains the optional parameters for the DiskPoolsClient.ListByResourceGroup
 // method.
-func (client *DiskPoolsClient) ListByResourceGroup(resourceGroupName string, options *DiskPoolsClientListByResourceGroupOptions) *runtime.Pager[DiskPoolsClientListByResourceGroupResponse] {
+func (client *DiskPoolsClient) NewListByResourceGroupPager(resourceGroupName string, options *DiskPoolsClientListByResourceGroupOptions) *runtime.Pager[DiskPoolsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DiskPoolsClientListByResourceGroupResponse]{
 		More: func(page DiskPoolsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -370,11 +370,11 @@ func (client *DiskPoolsClient) listByResourceGroupHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListBySubscription - Gets a list of Disk Pools in a subscription
+// NewListBySubscriptionPager - Gets a list of Disk Pools in a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DiskPoolsClientListBySubscriptionOptions contains the optional parameters for the DiskPoolsClient.ListBySubscription
 // method.
-func (client *DiskPoolsClient) ListBySubscription(options *DiskPoolsClientListBySubscriptionOptions) *runtime.Pager[DiskPoolsClientListBySubscriptionResponse] {
+func (client *DiskPoolsClient) NewListBySubscriptionPager(options *DiskPoolsClientListBySubscriptionOptions) *runtime.Pager[DiskPoolsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DiskPoolsClientListBySubscriptionResponse]{
 		More: func(page DiskPoolsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -429,13 +429,13 @@ func (client *DiskPoolsClient) listBySubscriptionHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListOutboundNetworkDependenciesEndpoints - Gets the network endpoints of all outbound dependencies of a Disk Pool
+// NewListOutboundNetworkDependenciesEndpointsPager - Gets the network endpoints of all outbound dependencies of a Disk Pool
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // diskPoolName - The name of the Disk Pool.
 // options - DiskPoolsClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the DiskPoolsClient.ListOutboundNetworkDependenciesEndpoints
 // method.
-func (client *DiskPoolsClient) ListOutboundNetworkDependenciesEndpoints(resourceGroupName string, diskPoolName string, options *DiskPoolsClientListOutboundNetworkDependenciesEndpointsOptions) *runtime.Pager[DiskPoolsClientListOutboundNetworkDependenciesEndpointsResponse] {
+func (client *DiskPoolsClient) NewListOutboundNetworkDependenciesEndpointsPager(resourceGroupName string, diskPoolName string, options *DiskPoolsClientListOutboundNetworkDependenciesEndpointsOptions) *runtime.Pager[DiskPoolsClientListOutboundNetworkDependenciesEndpointsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DiskPoolsClientListOutboundNetworkDependenciesEndpointsResponse]{
 		More: func(page DiskPoolsClientListOutboundNetworkDependenciesEndpointsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

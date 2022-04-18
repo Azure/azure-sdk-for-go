@@ -248,13 +248,13 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListByStorageSyncService - Get a PrivateEndpointConnection List.
+// NewListByStorageSyncServicePager - Get a PrivateEndpointConnection List.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // storageSyncServiceName - Name of Storage Sync Service resource.
 // options - PrivateEndpointConnectionsClientListByStorageSyncServiceOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByStorageSyncService
 // method.
-func (client *PrivateEndpointConnectionsClient) ListByStorageSyncService(resourceGroupName string, storageSyncServiceName string, options *PrivateEndpointConnectionsClientListByStorageSyncServiceOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByStorageSyncServiceResponse] {
+func (client *PrivateEndpointConnectionsClient) NewListByStorageSyncServicePager(resourceGroupName string, storageSyncServiceName string, options *PrivateEndpointConnectionsClientListByStorageSyncServiceOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByStorageSyncServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionsClientListByStorageSyncServiceResponse]{
 		More: func(page PrivateEndpointConnectionsClientListByStorageSyncServiceResponse) bool {
 			return false

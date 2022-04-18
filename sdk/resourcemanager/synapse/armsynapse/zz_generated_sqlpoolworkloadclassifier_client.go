@@ -277,7 +277,7 @@ func (client *SQLPoolWorkloadClassifierClient) getHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// List - Get list of Sql pool's workload classifier for workload groups.
+// NewListPager - Get list of Sql pool's workload classifier for workload groups.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
@@ -285,7 +285,7 @@ func (client *SQLPoolWorkloadClassifierClient) getHandleResponse(resp *http.Resp
 // workloadGroupName - The name of the workload group.
 // options - SQLPoolWorkloadClassifierClientListOptions contains the optional parameters for the SQLPoolWorkloadClassifierClient.List
 // method.
-func (client *SQLPoolWorkloadClassifierClient) List(resourceGroupName string, workspaceName string, sqlPoolName string, workloadGroupName string, options *SQLPoolWorkloadClassifierClientListOptions) *runtime.Pager[SQLPoolWorkloadClassifierClientListResponse] {
+func (client *SQLPoolWorkloadClassifierClient) NewListPager(resourceGroupName string, workspaceName string, sqlPoolName string, workloadGroupName string, options *SQLPoolWorkloadClassifierClientListOptions) *runtime.Pager[SQLPoolWorkloadClassifierClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLPoolWorkloadClassifierClientListResponse]{
 		More: func(page SQLPoolWorkloadClassifierClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

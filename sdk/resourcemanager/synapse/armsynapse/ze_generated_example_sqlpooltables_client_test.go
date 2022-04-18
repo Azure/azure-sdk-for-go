@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListSqlPoolTables.json
-func ExampleSQLPoolTablesClient_ListBySchema() {
+func ExampleSQLPoolTablesClient_NewListBySchemaPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleSQLPoolTablesClient_ListBySchema() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySchema("<resource-group-name>",
+	pager := client.NewListBySchemaPager("<resource-group-name>",
 		"<workspace-name>",
 		"<sql-pool-name>",
 		"<schema-name>",

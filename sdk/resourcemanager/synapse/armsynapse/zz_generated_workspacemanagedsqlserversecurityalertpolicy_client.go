@@ -182,13 +182,13 @@ func (client *WorkspaceManagedSQLServerSecurityAlertPolicyClient) getHandleRespo
 	return result, nil
 }
 
-// List - Get workspace managed sql server's threat detection policies.
+// NewListPager - Get workspace managed sql server's threat detection policies.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - WorkspaceManagedSQLServerSecurityAlertPolicyClientListOptions contains the optional parameters for the WorkspaceManagedSQLServerSecurityAlertPolicyClient.List
 // method.
-func (client *WorkspaceManagedSQLServerSecurityAlertPolicyClient) List(resourceGroupName string, workspaceName string, options *WorkspaceManagedSQLServerSecurityAlertPolicyClientListOptions) *runtime.Pager[WorkspaceManagedSQLServerSecurityAlertPolicyClientListResponse] {
+func (client *WorkspaceManagedSQLServerSecurityAlertPolicyClient) NewListPager(resourceGroupName string, workspaceName string, options *WorkspaceManagedSQLServerSecurityAlertPolicyClientListOptions) *runtime.Pager[WorkspaceManagedSQLServerSecurityAlertPolicyClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkspaceManagedSQLServerSecurityAlertPolicyClientListResponse]{
 		More: func(page WorkspaceManagedSQLServerSecurityAlertPolicyClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

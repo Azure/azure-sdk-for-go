@@ -10,7 +10,7 @@ package armsupport
 
 const (
 	moduleName    = "armsupport"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.4.0"
 )
 
 // CommunicationDirection - Direction of communication.

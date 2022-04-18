@@ -54,7 +54,7 @@ func NewSQLPoolTableColumnsClient(subscriptionID string, credential azcore.Token
 	return client, nil
 }
 
-// ListByTableName - Gets columns in a given table in a SQL pool.
+// NewListByTableNamePager - Gets columns in a given table in a SQL pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
@@ -63,7 +63,7 @@ func NewSQLPoolTableColumnsClient(subscriptionID string, credential azcore.Token
 // tableName - The name of the table.
 // options - SQLPoolTableColumnsClientListByTableNameOptions contains the optional parameters for the SQLPoolTableColumnsClient.ListByTableName
 // method.
-func (client *SQLPoolTableColumnsClient) ListByTableName(resourceGroupName string, workspaceName string, sqlPoolName string, schemaName string, tableName string, options *SQLPoolTableColumnsClientListByTableNameOptions) *runtime.Pager[SQLPoolTableColumnsClientListByTableNameResponse] {
+func (client *SQLPoolTableColumnsClient) NewListByTableNamePager(resourceGroupName string, workspaceName string, sqlPoolName string, schemaName string, tableName string, options *SQLPoolTableColumnsClientListByTableNameOptions) *runtime.Pager[SQLPoolTableColumnsClientListByTableNameResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLPoolTableColumnsClientListByTableNameResponse]{
 		More: func(page SQLPoolTableColumnsClientListByTableNameResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -1,5 +1,121 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*SQLPoolSchemasClient.List` has been removed
+- Function `*SQLPoolTransparentDataEncryptionsClient.List` has been removed
+- Function `*LibrariesClient.ListByWorkspace` has been removed
+- Function `*DataMaskingRulesClient.ListBySQLPool` has been removed
+- Function `*KustoPoolsClient.ListSKUsByResource` has been removed
+- Function `*SQLPoolRestorePointsClient.List` has been removed
+- Function `*SQLPoolSecurityAlertPoliciesClient.List` has been removed
+- Function `*IPFirewallRulesClient.ListByWorkspace` has been removed
+- Function `*KeysClient.ListByWorkspace` has been removed
+- Function `*WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient.List` has been removed
+- Function `*WorkspaceManagedSQLServerBlobAuditingPoliciesClient.ListByWorkspace` has been removed
+- Function `*KustoPoolDatabasePrincipalAssignmentsClient.List` has been removed
+- Function `*WorkspacesClient.ListByResourceGroup` has been removed
+- Function `*SQLPoolWorkloadClassifierClient.List` has been removed
+- Function `*SparkConfigurationsClient.ListByWorkspace` has been removed
+- Function `*KustoPoolDataConnectionsClient.ListByDatabase` has been removed
+- Function `*PrivateLinkHubsClient.List` has been removed
+- Function `*KustoPoolAttachedDatabaseConfigurationsClient.ListByKustoPool` has been removed
+- Function `*WorkspaceManagedSQLServerVulnerabilityAssessmentsClient.List` has been removed
+- Function `*SQLPoolReplicationLinksClient.List` has been removed
+- Function `*BigDataPoolsClient.ListByWorkspace` has been removed
+- Function `*RestorableDroppedSQLPoolsClient.ListByWorkspace` has been removed
+- Function `*SQLPoolsClient.ListByWorkspace` has been removed
+- Function `*ExtendedSQLPoolBlobAuditingPoliciesClient.ListBySQLPool` has been removed
+- Function `*SQLPoolGeoBackupPoliciesClient.List` has been removed
+- Function `*SQLPoolOperationsClient.List` has been removed
+- Function `*PrivateEndpointConnectionsClient.List` has been removed
+- Function `*PrivateLinkHubsClient.ListByResourceGroup` has been removed
+- Function `*AzureADOnlyAuthenticationsClient.List` has been removed
+- Function `*WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient.ListByWorkspace` has been removed
+- Function `*SQLPoolSensitivityLabelsClient.ListCurrent` has been removed
+- Function `*WorkspacesClient.List` has been removed
+- Function `*WorkspaceManagedSQLServerSecurityAlertPolicyClient.List` has been removed
+- Function `*KustoPoolPrincipalAssignmentsClient.List` has been removed
+- Function `*SQLPoolSensitivityLabelsClient.ListRecommended` has been removed
+- Function `*WorkspaceManagedSQLServerUsagesClient.List` has been removed
+- Function `*KustoPoolsClient.ListLanguageExtensions` has been removed
+- Function `*PrivateLinkHubPrivateLinkResourcesClient.List` has been removed
+- Function `*SQLPoolTablesClient.ListBySchema` has been removed
+- Function `*KustoPoolDatabasesClient.ListByKustoPool` has been removed
+- Function `*SQLPoolBlobAuditingPoliciesClient.ListBySQLPool` has been removed
+- Function `*KustoOperationsClient.List` has been removed
+- Function `*SQLPoolTableColumnsClient.ListByTableName` has been removed
+- Function `*WorkspaceManagedSQLServerRecoverableSQLPoolsClient.List` has been removed
+- Function `*KustoPoolsClient.ListFollowerDatabases` has been removed
+- Function `*KustoPoolsClient.ListSKUs` has been removed
+- Function `*PrivateLinkResourcesClient.List` has been removed
+- Function `*SQLPoolVulnerabilityAssessmentScansClient.List` has been removed
+- Function `*SQLPoolVulnerabilityAssessmentsClient.List` has been removed
+- Function `*PrivateEndpointConnectionsPrivateLinkHubClient.List` has been removed
+- Function `*WorkspaceManagedSQLServerEncryptionProtectorClient.List` has been removed
+- Function `*SQLPoolWorkloadGroupClient.List` has been removed
+- Function `*IntegrationRuntimesClient.ListByWorkspace` has been removed
+- Function `*SQLPoolUsagesClient.List` has been removed
+
+### Features Added
+
+- New function `*PrivateLinkHubsClient.NewListByResourceGroupPager(string, *PrivateLinkHubsClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkHubsClientListByResourceGroupResponse]`
+- New function `*WorkspaceManagedSQLServerEncryptionProtectorClient.NewListPager(string, string, *WorkspaceManagedSQLServerEncryptionProtectorClientListOptions) *runtime.Pager[WorkspaceManagedSQLServerEncryptionProtectorClientListResponse]`
+- New function `*AzureADOnlyAuthenticationsClient.NewListPager(string, string, *AzureADOnlyAuthenticationsClientListOptions) *runtime.Pager[AzureADOnlyAuthenticationsClientListResponse]`
+- New function `*SQLPoolGeoBackupPoliciesClient.NewListPager(string, string, string, *SQLPoolGeoBackupPoliciesClientListOptions) *runtime.Pager[SQLPoolGeoBackupPoliciesClientListResponse]`
+- New function `*SQLPoolVulnerabilityAssessmentsClient.NewListPager(string, string, string, *SQLPoolVulnerabilityAssessmentsClientListOptions) *runtime.Pager[SQLPoolVulnerabilityAssessmentsClientListResponse]`
+- New function `*KustoPoolDataConnectionsClient.NewListByDatabasePager(string, string, string, string, *KustoPoolDataConnectionsClientListByDatabaseOptions) *runtime.Pager[KustoPoolDataConnectionsClientListByDatabaseResponse]`
+- New function `*PrivateEndpointConnectionsPrivateLinkHubClient.NewListPager(string, string, *PrivateEndpointConnectionsPrivateLinkHubClientListOptions) *runtime.Pager[PrivateEndpointConnectionsPrivateLinkHubClientListResponse]`
+- New function `*SQLPoolTablesClient.NewListBySchemaPager(string, string, string, string, *SQLPoolTablesClientListBySchemaOptions) *runtime.Pager[SQLPoolTablesClientListBySchemaResponse]`
+- New function `*WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient.NewListByWorkspacePager(string, string, *WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientListByWorkspaceOptions) *runtime.Pager[WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientListByWorkspaceResponse]`
+- New function `*KustoPoolsClient.NewListSKUsPager(*KustoPoolsClientListSKUsOptions) *runtime.Pager[KustoPoolsClientListSKUsResponse]`
+- New function `*KustoPoolsClient.NewListFollowerDatabasesPager(string, string, string, *KustoPoolsClientListFollowerDatabasesOptions) *runtime.Pager[KustoPoolsClientListFollowerDatabasesResponse]`
+- New function `*KustoPoolPrincipalAssignmentsClient.NewListPager(string, string, string, *KustoPoolPrincipalAssignmentsClientListOptions) *runtime.Pager[KustoPoolPrincipalAssignmentsClientListResponse]`
+- New function `*SQLPoolTableColumnsClient.NewListByTableNamePager(string, string, string, string, string, *SQLPoolTableColumnsClientListByTableNameOptions) *runtime.Pager[SQLPoolTableColumnsClientListByTableNameResponse]`
+- New function `*SQLPoolSensitivityLabelsClient.NewListRecommendedPager(string, string, string, *SQLPoolSensitivityLabelsClientListRecommendedOptions) *runtime.Pager[SQLPoolSensitivityLabelsClientListRecommendedResponse]`
+- New function `*DataMaskingRulesClient.NewListBySQLPoolPager(string, string, string, *DataMaskingRulesClientListBySQLPoolOptions) *runtime.Pager[DataMaskingRulesClientListBySQLPoolResponse]`
+- New function `*KustoPoolDatabasesClient.NewListByKustoPoolPager(string, string, string, *KustoPoolDatabasesClientListByKustoPoolOptions) *runtime.Pager[KustoPoolDatabasesClientListByKustoPoolResponse]`
+- New function `*SQLPoolWorkloadGroupClient.NewListPager(string, string, string, *SQLPoolWorkloadGroupClientListOptions) *runtime.Pager[SQLPoolWorkloadGroupClientListResponse]`
+- New function `*WorkspacesClient.NewListByResourceGroupPager(string, *WorkspacesClientListByResourceGroupOptions) *runtime.Pager[WorkspacesClientListByResourceGroupResponse]`
+- New function `*SparkConfigurationsClient.NewListByWorkspacePager(string, string, *SparkConfigurationsClientListByWorkspaceOptions) *runtime.Pager[SparkConfigurationsClientListByWorkspaceResponse]`
+- New function `*SQLPoolSecurityAlertPoliciesClient.NewListPager(string, string, string, *SQLPoolSecurityAlertPoliciesClientListOptions) *runtime.Pager[SQLPoolSecurityAlertPoliciesClientListResponse]`
+- New function `*LibrariesClient.NewListByWorkspacePager(string, string, *LibrariesClientListByWorkspaceOptions) *runtime.Pager[LibrariesClientListByWorkspaceResponse]`
+- New function `*SQLPoolRestorePointsClient.NewListPager(string, string, string, *SQLPoolRestorePointsClientListOptions) *runtime.Pager[SQLPoolRestorePointsClientListResponse]`
+- New function `*WorkspaceManagedSQLServerVulnerabilityAssessmentsClient.NewListPager(string, string, *WorkspaceManagedSQLServerVulnerabilityAssessmentsClientListOptions) *runtime.Pager[WorkspaceManagedSQLServerVulnerabilityAssessmentsClientListResponse]`
+- New function `*KustoPoolsClient.NewListLanguageExtensionsPager(string, string, string, *KustoPoolsClientListLanguageExtensionsOptions) *runtime.Pager[KustoPoolsClientListLanguageExtensionsResponse]`
+- New function `*KustoOperationsClient.NewListPager(*KustoOperationsClientListOptions) *runtime.Pager[KustoOperationsClientListResponse]`
+- New function `*WorkspacesClient.NewListPager(*WorkspacesClientListOptions) *runtime.Pager[WorkspacesClientListResponse]`
+- New function `*PrivateLinkHubPrivateLinkResourcesClient.NewListPager(string, string, *PrivateLinkHubPrivateLinkResourcesClientListOptions) *runtime.Pager[PrivateLinkHubPrivateLinkResourcesClientListResponse]`
+- New function `*IPFirewallRulesClient.NewListByWorkspacePager(string, string, *IPFirewallRulesClientListByWorkspaceOptions) *runtime.Pager[IPFirewallRulesClientListByWorkspaceResponse]`
+- New function `*PrivateLinkResourcesClient.NewListPager(string, string, *PrivateLinkResourcesClientListOptions) *runtime.Pager[PrivateLinkResourcesClientListResponse]`
+- New function `*SQLPoolUsagesClient.NewListPager(string, string, string, *SQLPoolUsagesClientListOptions) *runtime.Pager[SQLPoolUsagesClientListResponse]`
+- New function `*SQLPoolSchemasClient.NewListPager(string, string, string, *SQLPoolSchemasClientListOptions) *runtime.Pager[SQLPoolSchemasClientListResponse]`
+- New function `*SQLPoolReplicationLinksClient.NewListPager(string, string, string, *SQLPoolReplicationLinksClientListOptions) *runtime.Pager[SQLPoolReplicationLinksClientListResponse]`
+- New function `*PrivateEndpointConnectionsClient.NewListPager(string, string, *PrivateEndpointConnectionsClientListOptions) *runtime.Pager[PrivateEndpointConnectionsClientListResponse]`
+- New function `*WorkspaceManagedSQLServerSecurityAlertPolicyClient.NewListPager(string, string, *WorkspaceManagedSQLServerSecurityAlertPolicyClientListOptions) *runtime.Pager[WorkspaceManagedSQLServerSecurityAlertPolicyClientListResponse]`
+- New function `*KeysClient.NewListByWorkspacePager(string, string, *KeysClientListByWorkspaceOptions) *runtime.Pager[KeysClientListByWorkspaceResponse]`
+- New function `*WorkspaceManagedSQLServerRecoverableSQLPoolsClient.NewListPager(string, string, *WorkspaceManagedSQLServerRecoverableSQLPoolsClientListOptions) *runtime.Pager[WorkspaceManagedSQLServerRecoverableSQLPoolsClientListResponse]`
+- New function `*WorkspaceManagedSQLServerUsagesClient.NewListPager(string, string, *WorkspaceManagedSQLServerUsagesClientListOptions) *runtime.Pager[WorkspaceManagedSQLServerUsagesClientListResponse]`
+- New function `*SQLPoolWorkloadClassifierClient.NewListPager(string, string, string, string, *SQLPoolWorkloadClassifierClientListOptions) *runtime.Pager[SQLPoolWorkloadClassifierClientListResponse]`
+- New function `*KustoPoolDatabasePrincipalAssignmentsClient.NewListPager(string, string, string, string, *KustoPoolDatabasePrincipalAssignmentsClientListOptions) *runtime.Pager[KustoPoolDatabasePrincipalAssignmentsClientListResponse]`
+- New function `*KustoPoolAttachedDatabaseConfigurationsClient.NewListByKustoPoolPager(string, string, string, *KustoPoolAttachedDatabaseConfigurationsClientListByKustoPoolOptions) *runtime.Pager[KustoPoolAttachedDatabaseConfigurationsClientListByKustoPoolResponse]`
+- New function `*BigDataPoolsClient.NewListByWorkspacePager(string, string, *BigDataPoolsClientListByWorkspaceOptions) *runtime.Pager[BigDataPoolsClientListByWorkspaceResponse]`
+- New function `*IntegrationRuntimesClient.NewListByWorkspacePager(string, string, *IntegrationRuntimesClientListByWorkspaceOptions) *runtime.Pager[IntegrationRuntimesClientListByWorkspaceResponse]`
+- New function `*SQLPoolBlobAuditingPoliciesClient.NewListBySQLPoolPager(string, string, string, *SQLPoolBlobAuditingPoliciesClientListBySQLPoolOptions) *runtime.Pager[SQLPoolBlobAuditingPoliciesClientListBySQLPoolResponse]`
+- New function `*SQLPoolsClient.NewListByWorkspacePager(string, string, *SQLPoolsClientListByWorkspaceOptions) *runtime.Pager[SQLPoolsClientListByWorkspaceResponse]`
+- New function `*WorkspaceManagedSQLServerBlobAuditingPoliciesClient.NewListByWorkspacePager(string, string, *WorkspaceManagedSQLServerBlobAuditingPoliciesClientListByWorkspaceOptions) *runtime.Pager[WorkspaceManagedSQLServerBlobAuditingPoliciesClientListByWorkspaceResponse]`
+- New function `*SQLPoolVulnerabilityAssessmentScansClient.NewListPager(string, string, string, VulnerabilityAssessmentName, *SQLPoolVulnerabilityAssessmentScansClientListOptions) *runtime.Pager[SQLPoolVulnerabilityAssessmentScansClientListResponse]`
+- New function `*ExtendedSQLPoolBlobAuditingPoliciesClient.NewListBySQLPoolPager(string, string, string, *ExtendedSQLPoolBlobAuditingPoliciesClientListBySQLPoolOptions) *runtime.Pager[ExtendedSQLPoolBlobAuditingPoliciesClientListBySQLPoolResponse]`
+- New function `*SQLPoolTransparentDataEncryptionsClient.NewListPager(string, string, string, *SQLPoolTransparentDataEncryptionsClientListOptions) *runtime.Pager[SQLPoolTransparentDataEncryptionsClientListResponse]`
+- New function `*KustoPoolsClient.NewListSKUsByResourcePager(string, string, string, *KustoPoolsClientListSKUsByResourceOptions) *runtime.Pager[KustoPoolsClientListSKUsByResourceResponse]`
+- New function `*SQLPoolOperationsClient.NewListPager(string, string, string, *SQLPoolOperationsClientListOptions) *runtime.Pager[SQLPoolOperationsClientListResponse]`
+- New function `*RestorableDroppedSQLPoolsClient.NewListByWorkspacePager(string, string, *RestorableDroppedSQLPoolsClientListByWorkspaceOptions) *runtime.Pager[RestorableDroppedSQLPoolsClientListByWorkspaceResponse]`
+- New function `*WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient.NewListPager(string, string, *WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientListOptions) *runtime.Pager[WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientListResponse]`
+- New function `*PrivateLinkHubsClient.NewListPager(*PrivateLinkHubsClientListOptions) *runtime.Pager[PrivateLinkHubsClientListResponse]`
+- New function `*SQLPoolSensitivityLabelsClient.NewListCurrentPager(string, string, string, *SQLPoolSensitivityLabelsClientListCurrentOptions) *runtime.Pager[SQLPoolSensitivityLabelsClientListCurrentResponse]`
+
+
 ## 0.3.0 (2022-04-13)
 ### Breaking Changes
 

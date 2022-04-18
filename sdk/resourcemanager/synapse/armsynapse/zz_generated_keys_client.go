@@ -235,12 +235,12 @@ func (client *KeysClient) getHandleResponse(resp *http.Response) (KeysClientGetR
 	return result, nil
 }
 
-// ListByWorkspace - Returns a list of keys in a workspace
+// NewListByWorkspacePager - Returns a list of keys in a workspace
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - KeysClientListByWorkspaceOptions contains the optional parameters for the KeysClient.ListByWorkspace method.
-func (client *KeysClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *KeysClientListByWorkspaceOptions) *runtime.Pager[KeysClientListByWorkspaceResponse] {
+func (client *KeysClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *KeysClientListByWorkspaceOptions) *runtime.Pager[KeysClientListByWorkspaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[KeysClientListByWorkspaceResponse]{
 		More: func(page KeysClientListByWorkspaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -132,11 +132,11 @@ func (client *PolicyClient) getPolicyForTenantHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListPolicyForTenant - Get the subscription tenant policy for the user's tenant.
+// NewListPolicyForTenantPager - Get the subscription tenant policy for the user's tenant.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PolicyClientListPolicyForTenantOptions contains the optional parameters for the PolicyClient.ListPolicyForTenant
 // method.
-func (client *PolicyClient) ListPolicyForTenant(options *PolicyClientListPolicyForTenantOptions) *runtime.Pager[PolicyClientListPolicyForTenantResponse] {
+func (client *PolicyClient) NewListPolicyForTenantPager(options *PolicyClientListPolicyForTenantOptions) *runtime.Pager[PolicyClientListPolicyForTenantResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PolicyClientListPolicyForTenantResponse]{
 		More: func(page PolicyClientListPolicyForTenantResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

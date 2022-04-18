@@ -227,10 +227,10 @@ func (client *PrivateLinkHubsClient) getHandleResponse(resp *http.Response) (Pri
 	return result, nil
 }
 
-// List - Returns a list of privateLinkHubs in a subscription
+// NewListPager - Returns a list of privateLinkHubs in a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PrivateLinkHubsClientListOptions contains the optional parameters for the PrivateLinkHubsClient.List method.
-func (client *PrivateLinkHubsClient) List(options *PrivateLinkHubsClientListOptions) *runtime.Pager[PrivateLinkHubsClientListResponse] {
+func (client *PrivateLinkHubsClient) NewListPager(options *PrivateLinkHubsClientListOptions) *runtime.Pager[PrivateLinkHubsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkHubsClientListResponse]{
 		More: func(page PrivateLinkHubsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -285,12 +285,12 @@ func (client *PrivateLinkHubsClient) listHandleResponse(resp *http.Response) (Pr
 	return result, nil
 }
 
-// ListByResourceGroup - Returns a list of privateLinkHubs in a resource group
+// NewListByResourceGroupPager - Returns a list of privateLinkHubs in a resource group
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - PrivateLinkHubsClientListByResourceGroupOptions contains the optional parameters for the PrivateLinkHubsClient.ListByResourceGroup
 // method.
-func (client *PrivateLinkHubsClient) ListByResourceGroup(resourceGroupName string, options *PrivateLinkHubsClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkHubsClientListByResourceGroupResponse] {
+func (client *PrivateLinkHubsClient) NewListByResourceGroupPager(resourceGroupName string, options *PrivateLinkHubsClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkHubsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkHubsClientListByResourceGroupResponse]{
 		More: func(page PrivateLinkHubsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

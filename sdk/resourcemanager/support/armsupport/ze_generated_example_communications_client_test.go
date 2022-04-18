@@ -48,7 +48,7 @@ func ExampleCommunicationsClient_CheckNameAvailability() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/ListCommunicationsForSubscriptionSupportTicket.json
-func ExampleCommunicationsClient_List() {
+func ExampleCommunicationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -60,7 +60,7 @@ func ExampleCommunicationsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<support-ticket-name>",
+	pager := client.NewListPager("<support-ticket-name>",
 		&armsupport.CommunicationsClientListOptions{Top: nil,
 			Filter: nil,
 		})

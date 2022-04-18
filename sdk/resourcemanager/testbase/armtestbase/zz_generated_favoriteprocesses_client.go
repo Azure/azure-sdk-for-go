@@ -249,13 +249,13 @@ func (client *FavoriteProcessesClient) getHandleResponse(resp *http.Response) (F
 	return result, nil
 }
 
-// List - Lists the favorite processes for a specific package.
+// NewListPager - Lists the favorite processes for a specific package.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // packageName - The resource name of the Test Base Package.
 // options - FavoriteProcessesClientListOptions contains the optional parameters for the FavoriteProcessesClient.List method.
-func (client *FavoriteProcessesClient) List(resourceGroupName string, testBaseAccountName string, packageName string, options *FavoriteProcessesClientListOptions) *runtime.Pager[FavoriteProcessesClientListResponse] {
+func (client *FavoriteProcessesClient) NewListPager(resourceGroupName string, testBaseAccountName string, packageName string, options *FavoriteProcessesClientListOptions) *runtime.Pager[FavoriteProcessesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[FavoriteProcessesClientListResponse]{
 		More: func(page FavoriteProcessesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

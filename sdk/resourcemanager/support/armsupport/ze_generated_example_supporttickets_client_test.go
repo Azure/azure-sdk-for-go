@@ -47,7 +47,7 @@ func ExampleTicketsClient_CheckNameAvailability() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/ListSupportTicketsCreatedOnOrAfterAndInOpenStateBySubscription.json
-func ExampleTicketsClient_List() {
+func ExampleTicketsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -59,7 +59,7 @@ func ExampleTicketsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(&armsupport.TicketsClientListOptions{Top: nil,
+	pager := client.NewListPager(&armsupport.TicketsClientListOptions{Top: nil,
 		Filter: to.Ptr("<filter>"),
 	})
 	for pager.More() {

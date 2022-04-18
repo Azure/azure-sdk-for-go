@@ -115,7 +115,7 @@ func ExamplePrivateEndpointsClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/PrivateEndpoint_ListByCluster.json
-func ExamplePrivateEndpointsClient_ListByCluster() {
+func ExamplePrivateEndpointsClient_NewListByClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -127,7 +127,7 @@ func ExamplePrivateEndpointsClient_ListByCluster() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByCluster("<resource-group-name>",
+	pager := client.NewListByClusterPager("<resource-group-name>",
 		"<cluster-name>",
 		nil)
 	for pager.More() {

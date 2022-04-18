@@ -249,13 +249,13 @@ func (client *SQLPoolsClient) getHandleResponse(resp *http.Response) (SQLPoolsCl
 	return result, nil
 }
 
-// ListByWorkspace - List all SQL pools
+// NewListByWorkspacePager - List all SQL pools
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - SQLPoolsClientListByWorkspaceOptions contains the optional parameters for the SQLPoolsClient.ListByWorkspace
 // method.
-func (client *SQLPoolsClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *SQLPoolsClientListByWorkspaceOptions) *runtime.Pager[SQLPoolsClientListByWorkspaceResponse] {
+func (client *SQLPoolsClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *SQLPoolsClientListByWorkspaceOptions) *runtime.Pager[SQLPoolsClientListByWorkspaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLPoolsClientListByWorkspaceResponse]{
 		More: func(page SQLPoolsClientListByWorkspaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

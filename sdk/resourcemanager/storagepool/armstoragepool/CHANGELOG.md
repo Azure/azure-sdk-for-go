@@ -1,5 +1,27 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*DiskPoolsClient.ListByResourceGroup` has been removed
+- Function `*ResourceSKUsClient.List` has been removed
+- Function `*DiskPoolsClient.ListBySubscription` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*IscsiTargetsClient.ListByDiskPool` has been removed
+- Function `*DiskPoolZonesClient.List` has been removed
+- Function `*DiskPoolsClient.ListOutboundNetworkDependenciesEndpoints` has been removed
+
+### Features Added
+
+- New function `*ResourceSKUsClient.NewListPager(string, *ResourceSKUsClientListOptions) *runtime.Pager[ResourceSKUsClientListResponse]`
+- New function `*DiskPoolZonesClient.NewListPager(string, *DiskPoolZonesClientListOptions) *runtime.Pager[DiskPoolZonesClientListResponse]`
+- New function `*DiskPoolsClient.NewListBySubscriptionPager(*DiskPoolsClientListBySubscriptionOptions) *runtime.Pager[DiskPoolsClientListBySubscriptionResponse]`
+- New function `*DiskPoolsClient.NewListByResourceGroupPager(string, *DiskPoolsClientListByResourceGroupOptions) *runtime.Pager[DiskPoolsClientListByResourceGroupResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*IscsiTargetsClient.NewListByDiskPoolPager(string, string, *IscsiTargetsClientListByDiskPoolOptions) *runtime.Pager[IscsiTargetsClientListByDiskPoolResponse]`
+- New function `*DiskPoolsClient.NewListOutboundNetworkDependenciesEndpointsPager(string, string, *DiskPoolsClientListOutboundNetworkDependenciesEndpointsOptions) *runtime.Pager[DiskPoolsClientListOutboundNetworkDependenciesEndpointsResponse]`
+
+
 ## 0.3.0 (2022-04-13)
 ### Breaking Changes
 

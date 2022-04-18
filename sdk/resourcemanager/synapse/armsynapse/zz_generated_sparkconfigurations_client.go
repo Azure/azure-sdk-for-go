@@ -54,13 +54,13 @@ func NewSparkConfigurationsClient(subscriptionID string, credential azcore.Token
 	return client, nil
 }
 
-// ListByWorkspace - List sparkConfigurations in a workspace.
+// NewListByWorkspacePager - List sparkConfigurations in a workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - SparkConfigurationsClientListByWorkspaceOptions contains the optional parameters for the SparkConfigurationsClient.ListByWorkspace
 // method.
-func (client *SparkConfigurationsClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *SparkConfigurationsClientListByWorkspaceOptions) *runtime.Pager[SparkConfigurationsClientListByWorkspaceResponse] {
+func (client *SparkConfigurationsClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *SparkConfigurationsClientListByWorkspaceOptions) *runtime.Pager[SparkConfigurationsClientListByWorkspaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SparkConfigurationsClientListByWorkspaceResponse]{
 		More: func(page SparkConfigurationsClientListByWorkspaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

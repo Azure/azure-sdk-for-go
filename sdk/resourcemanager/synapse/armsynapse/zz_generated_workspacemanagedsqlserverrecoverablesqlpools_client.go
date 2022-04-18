@@ -115,13 +115,13 @@ func (client *WorkspaceManagedSQLServerRecoverableSQLPoolsClient) getHandleRespo
 	return result, nil
 }
 
-// List - Get list of recoverable sql pools for workspace managed sql server.
+// NewListPager - Get list of recoverable sql pools for workspace managed sql server.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - WorkspaceManagedSQLServerRecoverableSQLPoolsClientListOptions contains the optional parameters for the WorkspaceManagedSQLServerRecoverableSQLPoolsClient.List
 // method.
-func (client *WorkspaceManagedSQLServerRecoverableSQLPoolsClient) List(resourceGroupName string, workspaceName string, options *WorkspaceManagedSQLServerRecoverableSQLPoolsClientListOptions) *runtime.Pager[WorkspaceManagedSQLServerRecoverableSQLPoolsClientListResponse] {
+func (client *WorkspaceManagedSQLServerRecoverableSQLPoolsClient) NewListPager(resourceGroupName string, workspaceName string, options *WorkspaceManagedSQLServerRecoverableSQLPoolsClientListOptions) *runtime.Pager[WorkspaceManagedSQLServerRecoverableSQLPoolsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkspaceManagedSQLServerRecoverableSQLPoolsClientListResponse]{
 		More: func(page WorkspaceManagedSQLServerRecoverableSQLPoolsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

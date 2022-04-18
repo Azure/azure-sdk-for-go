@@ -93,7 +93,7 @@ func ExampleWorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient_BeginCre
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListWorkspaceManagedSqlServerExtendedBlobAuditingSettings.json
-func ExampleWorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient_ListByWorkspace() {
+func ExampleWorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient_NewListByWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -105,7 +105,7 @@ func ExampleWorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient_ListByWo
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByWorkspace("<resource-group-name>",
+	pager := client.NewListByWorkspacePager("<resource-group-name>",
 		"<workspace-name>",
 		nil)
 	for pager.More() {

@@ -250,13 +250,13 @@ func (client *SyncGroupsClient) getHandleResponse(resp *http.Response) (SyncGrou
 	return result, nil
 }
 
-// ListByStorageSyncService - Get a SyncGroup List.
+// NewListByStorageSyncServicePager - Get a SyncGroup List.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // storageSyncServiceName - Name of Storage Sync Service resource.
 // options - SyncGroupsClientListByStorageSyncServiceOptions contains the optional parameters for the SyncGroupsClient.ListByStorageSyncService
 // method.
-func (client *SyncGroupsClient) ListByStorageSyncService(resourceGroupName string, storageSyncServiceName string, options *SyncGroupsClientListByStorageSyncServiceOptions) *runtime.Pager[SyncGroupsClientListByStorageSyncServiceResponse] {
+func (client *SyncGroupsClient) NewListByStorageSyncServicePager(resourceGroupName string, storageSyncServiceName string, options *SyncGroupsClientListByStorageSyncServiceOptions) *runtime.Pager[SyncGroupsClientListByStorageSyncServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SyncGroupsClientListByStorageSyncServiceResponse]{
 		More: func(page SyncGroupsClientListByStorageSyncServiceResponse) bool {
 			return false

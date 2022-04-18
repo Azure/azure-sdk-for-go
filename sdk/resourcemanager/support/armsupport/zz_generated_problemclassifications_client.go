@@ -103,14 +103,14 @@ func (client *ProblemClassificationsClient) getHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// List - Lists all the problem classifications (categories) available for a specific Azure service. Always use the service
-// and problem classifications obtained programmatically. This practice ensures that you
+// NewListPager - Lists all the problem classifications (categories) available for a specific Azure service. Always use the
+// service and problem classifications obtained programmatically. This practice ensures that you
 // always have the most recent set of service and problem classification Ids.
 // If the operation fails it returns an *azcore.ResponseError type.
 // serviceName - Name of the Azure service for which the problem classifications need to be retrieved.
 // options - ProblemClassificationsClientListOptions contains the optional parameters for the ProblemClassificationsClient.List
 // method.
-func (client *ProblemClassificationsClient) List(serviceName string, options *ProblemClassificationsClientListOptions) *runtime.Pager[ProblemClassificationsClientListResponse] {
+func (client *ProblemClassificationsClient) NewListPager(serviceName string, options *ProblemClassificationsClientListOptions) *runtime.Pager[ProblemClassificationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProblemClassificationsClientListResponse]{
 		More: func(page ProblemClassificationsClientListResponse) bool {
 			return false

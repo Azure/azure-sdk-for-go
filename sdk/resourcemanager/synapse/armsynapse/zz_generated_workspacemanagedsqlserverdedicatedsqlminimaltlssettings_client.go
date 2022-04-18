@@ -115,13 +115,13 @@ func (client *WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient) get
 	return result, nil
 }
 
-// List - List workspace managed sql server's minimal tls settings.
+// NewListPager - List workspace managed sql server's minimal tls settings.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientListOptions contains the optional parameters for
 // the WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient.List method.
-func (client *WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient) List(resourceGroupName string, workspaceName string, options *WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientListOptions) *runtime.Pager[WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientListResponse] {
+func (client *WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient) NewListPager(resourceGroupName string, workspaceName string, options *WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientListOptions) *runtime.Pager[WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientListResponse]{
 		More: func(page WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

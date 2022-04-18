@@ -57,12 +57,12 @@ func NewBitLockerKeysClient(subscriptionID string, acceptLanguage *string, crede
 	return client, nil
 }
 
-// List - Returns the BitLocker Keys for all drives in the specified job.
+// NewListPager - Returns the BitLocker Keys for all drives in the specified job.
 // If the operation fails it returns an *azcore.ResponseError type.
 // jobName - The name of the import/export job.
 // resourceGroupName - The resource group name uniquely identifies the resource group within the user subscription.
 // options - BitLockerKeysClientListOptions contains the optional parameters for the BitLockerKeysClient.List method.
-func (client *BitLockerKeysClient) List(jobName string, resourceGroupName string, options *BitLockerKeysClientListOptions) *runtime.Pager[BitLockerKeysClientListResponse] {
+func (client *BitLockerKeysClient) NewListPager(jobName string, resourceGroupName string, options *BitLockerKeysClientListOptions) *runtime.Pager[BitLockerKeysClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BitLockerKeysClientListResponse]{
 		More: func(page BitLockerKeysClientListResponse) bool {
 			return false

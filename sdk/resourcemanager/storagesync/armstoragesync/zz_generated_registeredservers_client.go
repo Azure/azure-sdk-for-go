@@ -253,13 +253,13 @@ func (client *RegisteredServersClient) getHandleResponse(resp *http.Response) (R
 	return result, nil
 }
 
-// ListByStorageSyncService - Get a given registered server list.
+// NewListByStorageSyncServicePager - Get a given registered server list.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // storageSyncServiceName - Name of Storage Sync Service resource.
 // options - RegisteredServersClientListByStorageSyncServiceOptions contains the optional parameters for the RegisteredServersClient.ListByStorageSyncService
 // method.
-func (client *RegisteredServersClient) ListByStorageSyncService(resourceGroupName string, storageSyncServiceName string, options *RegisteredServersClientListByStorageSyncServiceOptions) *runtime.Pager[RegisteredServersClientListByStorageSyncServiceResponse] {
+func (client *RegisteredServersClient) NewListByStorageSyncServicePager(resourceGroupName string, storageSyncServiceName string, options *RegisteredServersClientListByStorageSyncServiceOptions) *runtime.Pager[RegisteredServersClientListByStorageSyncServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RegisteredServersClientListByStorageSyncServiceResponse]{
 		More: func(page RegisteredServersClientListByStorageSyncServiceResponse) bool {
 			return false

@@ -1,5 +1,45 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*AccountsClient.ListByResourceGroup` has been removed
+- Function `*TestTypesClient.List` has been removed
+- Function `*AvailableOSClient.List` has been removed
+- Function `*PackagesClient.ListByTestBaseAccount` has been removed
+- Function `*EmailEventsClient.List` has been removed
+- Function `*FavoriteProcessesClient.List` has been removed
+- Function `*AnalysisResultsClient.List` has been removed
+- Function `*FlightingRingsClient.List` has been removed
+- Function `*TestSummariesClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*SKUsClient.List` has been removed
+- Function `*TestResultsClient.List` has been removed
+- Function `*OSUpdatesClient.List` has been removed
+- Function `*UsageClient.List` has been removed
+- Function `*CustomerEventsClient.ListByTestBaseAccount` has been removed
+- Function `*AccountsClient.ListBySubscription` has been removed
+
+### Features Added
+
+- New function `*FlightingRingsClient.NewListPager(string, string, *FlightingRingsClientListOptions) *runtime.Pager[FlightingRingsClientListResponse]`
+- New function `*TestTypesClient.NewListPager(string, string, *TestTypesClientListOptions) *runtime.Pager[TestTypesClientListResponse]`
+- New function `*TestResultsClient.NewListPager(string, string, string, OsUpdateType, *TestResultsClientListOptions) *runtime.Pager[TestResultsClientListResponse]`
+- New function `*AvailableOSClient.NewListPager(string, string, OsUpdateType, *AvailableOSClientListOptions) *runtime.Pager[AvailableOSClientListResponse]`
+- New function `*AccountsClient.NewListByResourceGroupPager(string, *AccountsClientListByResourceGroupOptions) *runtime.Pager[AccountsClientListByResourceGroupResponse]`
+- New function `*AccountsClient.NewListBySubscriptionPager(*AccountsClientListBySubscriptionOptions) *runtime.Pager[AccountsClientListBySubscriptionResponse]`
+- New function `*FavoriteProcessesClient.NewListPager(string, string, string, *FavoriteProcessesClientListOptions) *runtime.Pager[FavoriteProcessesClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*EmailEventsClient.NewListPager(string, string, *EmailEventsClientListOptions) *runtime.Pager[EmailEventsClientListResponse]`
+- New function `*UsageClient.NewListPager(string, string, *UsageClientListOptions) *runtime.Pager[UsageClientListResponse]`
+- New function `*OSUpdatesClient.NewListPager(string, string, string, OsUpdateType, *OSUpdatesClientListOptions) *runtime.Pager[OSUpdatesClientListResponse]`
+- New function `*SKUsClient.NewListPager(*SKUsClientListOptions) *runtime.Pager[SKUsClientListResponse]`
+- New function `*TestSummariesClient.NewListPager(string, string, *TestSummariesClientListOptions) *runtime.Pager[TestSummariesClientListResponse]`
+- New function `*PackagesClient.NewListByTestBaseAccountPager(string, string, *PackagesClientListByTestBaseAccountOptions) *runtime.Pager[PackagesClientListByTestBaseAccountResponse]`
+- New function `*CustomerEventsClient.NewListByTestBaseAccountPager(string, string, *CustomerEventsClientListByTestBaseAccountOptions) *runtime.Pager[CustomerEventsClientListByTestBaseAccountResponse]`
+- New function `*AnalysisResultsClient.NewListPager(string, string, string, string, AnalysisResultType, *AnalysisResultsClientListOptions) *runtime.Pager[AnalysisResultsClientListResponse]`
+
+
 ## 0.3.0 (2022-04-13)
 ### Breaking Changes
 

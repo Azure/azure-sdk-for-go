@@ -345,7 +345,7 @@ func (client *KustoPoolDatabasePrincipalAssignmentsClient) getHandleResponse(res
 	return result, nil
 }
 
-// List - Lists all Kusto pool database principalAssignments.
+// NewListPager - Lists all Kusto pool database principalAssignments.
 // If the operation fails it returns an *azcore.ResponseError type.
 // workspaceName - The name of the workspace.
 // kustoPoolName - The name of the Kusto pool.
@@ -353,7 +353,7 @@ func (client *KustoPoolDatabasePrincipalAssignmentsClient) getHandleResponse(res
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - KustoPoolDatabasePrincipalAssignmentsClientListOptions contains the optional parameters for the KustoPoolDatabasePrincipalAssignmentsClient.List
 // method.
-func (client *KustoPoolDatabasePrincipalAssignmentsClient) List(workspaceName string, kustoPoolName string, databaseName string, resourceGroupName string, options *KustoPoolDatabasePrincipalAssignmentsClientListOptions) *runtime.Pager[KustoPoolDatabasePrincipalAssignmentsClientListResponse] {
+func (client *KustoPoolDatabasePrincipalAssignmentsClient) NewListPager(workspaceName string, kustoPoolName string, databaseName string, resourceGroupName string, options *KustoPoolDatabasePrincipalAssignmentsClientListOptions) *runtime.Pager[KustoPoolDatabasePrincipalAssignmentsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[KustoPoolDatabasePrincipalAssignmentsClientListResponse]{
 		More: func(page KustoPoolDatabasePrincipalAssignmentsClientListResponse) bool {
 			return false

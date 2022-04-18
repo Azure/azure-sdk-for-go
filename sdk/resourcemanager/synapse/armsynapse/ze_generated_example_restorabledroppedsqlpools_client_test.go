@@ -43,7 +43,7 @@ func ExampleRestorableDroppedSQLPoolsClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/RestorableDroppedSqlpoolList.json
-func ExampleRestorableDroppedSQLPoolsClient_ListByWorkspace() {
+func ExampleRestorableDroppedSQLPoolsClient_NewListByWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -55,7 +55,7 @@ func ExampleRestorableDroppedSQLPoolsClient_ListByWorkspace() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByWorkspace("<resource-group-name>",
+	pager := client.NewListByWorkspacePager("<resource-group-name>",
 		"<workspace-name>",
 		nil)
 	for pager.More() {

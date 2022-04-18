@@ -239,13 +239,13 @@ func (client *OutputsClient) getHandleResponse(resp *http.Response) (OutputsClie
 	return result, nil
 }
 
-// ListByStreamingJob - Lists all of the outputs under the specified streaming job.
+// NewListByStreamingJobPager - Lists all of the outputs under the specified streaming job.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // jobName - The name of the streaming job.
 // options - OutputsClientListByStreamingJobOptions contains the optional parameters for the OutputsClient.ListByStreamingJob
 // method.
-func (client *OutputsClient) ListByStreamingJob(resourceGroupName string, jobName string, options *OutputsClientListByStreamingJobOptions) *runtime.Pager[OutputsClientListByStreamingJobResponse] {
+func (client *OutputsClient) NewListByStreamingJobPager(resourceGroupName string, jobName string, options *OutputsClientListByStreamingJobOptions) *runtime.Pager[OutputsClientListByStreamingJobResponse] {
 	return runtime.NewPager(runtime.PageProcessor[OutputsClientListByStreamingJobResponse]{
 		More: func(page OutputsClientListByStreamingJobResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -251,13 +251,13 @@ func (client *IPFirewallRulesClient) getHandleResponse(resp *http.Response) (IPF
 	return result, nil
 }
 
-// ListByWorkspace - Returns a list of firewall rules
+// NewListByWorkspacePager - Returns a list of firewall rules
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - IPFirewallRulesClientListByWorkspaceOptions contains the optional parameters for the IPFirewallRulesClient.ListByWorkspace
 // method.
-func (client *IPFirewallRulesClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *IPFirewallRulesClientListByWorkspaceOptions) *runtime.Pager[IPFirewallRulesClientListByWorkspaceResponse] {
+func (client *IPFirewallRulesClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *IPFirewallRulesClientListByWorkspaceOptions) *runtime.Pager[IPFirewallRulesClientListByWorkspaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IPFirewallRulesClientListByWorkspaceResponse]{
 		More: func(page IPFirewallRulesClientListByWorkspaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

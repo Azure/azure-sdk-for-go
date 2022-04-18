@@ -1,5 +1,25 @@
 # Release History
 
+## 0.5.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*NamespacesClient.ListAll` has been removed
+- Function `*Client.ListAuthorizationRules` has been removed
+- Function `*NamespacesClient.ListAuthorizationRules` has been removed
+- Function `*Client.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*NamespacesClient.List` has been removed
+
+### Features Added
+
+- New function `*Client.NewListAuthorizationRulesPager(string, string, string, *ClientListAuthorizationRulesOptions) *runtime.Pager[ClientListAuthorizationRulesResponse]`
+- New function `*NamespacesClient.NewListAuthorizationRulesPager(string, string, *NamespacesClientListAuthorizationRulesOptions) *runtime.Pager[NamespacesClientListAuthorizationRulesResponse]`
+- New function `*Client.NewListPager(string, string, *ClientListOptions) *runtime.Pager[ClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*NamespacesClient.NewListPager(string, *NamespacesClientListOptions) *runtime.Pager[NamespacesClientListResponse]`
+- New function `*NamespacesClient.NewListAllPager(*NamespacesClientListAllOptions) *runtime.Pager[NamespacesClientListAllResponse]`
+
+
 ## 0.4.0 (2022-04-12)
 ### Breaking Changes
 

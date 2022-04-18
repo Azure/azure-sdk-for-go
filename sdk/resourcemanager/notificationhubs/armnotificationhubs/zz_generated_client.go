@@ -594,12 +594,12 @@ func (client *Client) getPnsCredentialsHandleResponse(resp *http.Response) (Clie
 	return result, nil
 }
 
-// List - Lists the notification hubs associated with a namespace.
+// NewListPager - Lists the notification hubs associated with a namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // namespaceName - The namespace name.
 // options - ClientListOptions contains the optional parameters for the Client.List method.
-func (client *Client) List(resourceGroupName string, namespaceName string, options *ClientListOptions) *runtime.Pager[ClientListResponse] {
+func (client *Client) NewListPager(resourceGroupName string, namespaceName string, options *ClientListOptions) *runtime.Pager[ClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClientListResponse]{
 		More: func(page ClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -662,13 +662,13 @@ func (client *Client) listHandleResponse(resp *http.Response) (ClientListRespons
 	return result, nil
 }
 
-// ListAuthorizationRules - Gets the authorization rules for a NotificationHub.
+// NewListAuthorizationRulesPager - Gets the authorization rules for a NotificationHub.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // namespaceName - The namespace name
 // notificationHubName - The notification hub name.
 // options - ClientListAuthorizationRulesOptions contains the optional parameters for the Client.ListAuthorizationRules method.
-func (client *Client) ListAuthorizationRules(resourceGroupName string, namespaceName string, notificationHubName string, options *ClientListAuthorizationRulesOptions) *runtime.Pager[ClientListAuthorizationRulesResponse] {
+func (client *Client) NewListAuthorizationRulesPager(resourceGroupName string, namespaceName string, notificationHubName string, options *ClientListAuthorizationRulesOptions) *runtime.Pager[ClientListAuthorizationRulesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClientListAuthorizationRulesResponse]{
 		More: func(page ClientListAuthorizationRulesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

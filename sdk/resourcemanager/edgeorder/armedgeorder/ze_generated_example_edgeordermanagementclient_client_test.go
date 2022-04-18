@@ -24,13 +24,11 @@ func ExampleManagementClient_NewListOperationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListOperationsPager(nil)
 	for pager.More() {
@@ -51,13 +49,11 @@ func ExampleManagementClient_NewListAddressesAtSubscriptionLevelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListAddressesAtSubscriptionLevelPager(&armedgeorder.ManagementClientListAddressesAtSubscriptionLevelOptions{Filter: nil,
 		SkipToken: nil,
@@ -80,13 +76,11 @@ func ExampleManagementClient_NewListProductFamiliesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListProductFamiliesPager(armedgeorder.ProductFamiliesRequest{
 		FilterableProperties: map[string][]*armedgeorder.FilterableProperty{
@@ -119,13 +113,11 @@ func ExampleManagementClient_NewListConfigurationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListConfigurationsPager(armedgeorder.ConfigurationsRequest{
 		ConfigurationFilters: []*armedgeorder.ConfigurationFilters{
@@ -162,13 +154,11 @@ func ExampleManagementClient_NewListProductFamiliesMetadataPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListProductFamiliesMetadataPager(&armedgeorder.ManagementClientListProductFamiliesMetadataOptions{SkipToken: nil})
 	for pager.More() {
@@ -189,13 +179,11 @@ func ExampleManagementClient_NewListOrderAtSubscriptionLevelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListOrderAtSubscriptionLevelPager(&armedgeorder.ManagementClientListOrderAtSubscriptionLevelOptions{SkipToken: nil})
 	for pager.More() {
@@ -216,13 +204,11 @@ func ExampleManagementClient_NewListOrderItemsAtSubscriptionLevelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListOrderItemsAtSubscriptionLevelPager(&armedgeorder.ManagementClientListOrderItemsAtSubscriptionLevelOptions{Filter: nil,
 		Expand:    nil,
@@ -246,13 +232,11 @@ func ExampleManagementClient_NewListAddressesAtResourceGroupLevelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListAddressesAtResourceGroupLevelPager("<resource-group-name>",
 		&armedgeorder.ManagementClientListAddressesAtResourceGroupLevelOptions{Filter: nil,
@@ -276,13 +260,11 @@ func ExampleManagementClient_GetAddressByName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetAddressByName(ctx,
 		"<address-name>",
@@ -290,7 +272,6 @@ func ExampleManagementClient_GetAddressByName() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -301,13 +282,11 @@ func ExampleManagementClient_BeginCreateAddress() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCreateAddress(ctx,
 		"<address-name>",
@@ -337,12 +316,10 @@ func ExampleManagementClient_BeginCreateAddress() {
 		&armedgeorder.ManagementClientBeginCreateAddressOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -353,13 +330,11 @@ func ExampleManagementClient_BeginDeleteAddressByName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDeleteAddressByName(ctx,
 		"<address-name>",
@@ -367,12 +342,10 @@ func ExampleManagementClient_BeginDeleteAddressByName() {
 		&armedgeorder.ManagementClientBeginDeleteAddressByNameOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -381,13 +354,11 @@ func ExampleManagementClient_BeginUpdateAddress() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginUpdateAddress(ctx,
 		"<address-name>",
@@ -422,12 +393,10 @@ func ExampleManagementClient_BeginUpdateAddress() {
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -438,13 +407,11 @@ func ExampleManagementClient_NewListOrderAtResourceGroupLevelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListOrderAtResourceGroupLevelPager("<resource-group-name>",
 		&armedgeorder.ManagementClientListOrderAtResourceGroupLevelOptions{SkipToken: nil})
@@ -466,13 +433,11 @@ func ExampleManagementClient_GetOrderByName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetOrderByName(ctx,
 		"<order-name>",
@@ -481,7 +446,6 @@ func ExampleManagementClient_GetOrderByName() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -492,13 +456,11 @@ func ExampleManagementClient_NewListOrderItemsAtResourceGroupLevelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListOrderItemsAtResourceGroupLevelPager("<resource-group-name>",
 		&armedgeorder.ManagementClientListOrderItemsAtResourceGroupLevelOptions{Filter: nil,
@@ -523,13 +485,11 @@ func ExampleManagementClient_GetOrderItemByName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetOrderItemByName(ctx,
 		"<order-item-name>",
@@ -537,7 +497,6 @@ func ExampleManagementClient_GetOrderItemByName() {
 		&armedgeorder.ManagementClientGetOrderItemByNameOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -548,13 +507,11 @@ func ExampleManagementClient_BeginCreateOrderItem() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCreateOrderItem(ctx,
 		"<order-item-name>",
@@ -605,12 +562,10 @@ func ExampleManagementClient_BeginCreateOrderItem() {
 		&armedgeorder.ManagementClientBeginCreateOrderItemOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -621,13 +576,11 @@ func ExampleManagementClient_BeginDeleteOrderItemByName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDeleteOrderItemByName(ctx,
 		"<order-item-name>",
@@ -635,12 +588,10 @@ func ExampleManagementClient_BeginDeleteOrderItemByName() {
 		&armedgeorder.ManagementClientBeginDeleteOrderItemByNameOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -649,13 +600,11 @@ func ExampleManagementClient_BeginUpdateOrderItem() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginUpdateOrderItem(ctx,
 		"<order-item-name>",
@@ -674,12 +623,10 @@ func ExampleManagementClient_BeginUpdateOrderItem() {
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -690,13 +637,11 @@ func ExampleManagementClient_CancelOrderItem() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.CancelOrderItem(ctx,
 		"<order-item-name>",
@@ -707,7 +652,6 @@ func ExampleManagementClient_CancelOrderItem() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -716,13 +660,11 @@ func ExampleManagementClient_BeginReturnOrderItem() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginReturnOrderItem(ctx,
 		"<order-item-name>",
@@ -733,11 +675,9 @@ func ExampleManagementClient_BeginReturnOrderItem() {
 		&armedgeorder.ManagementClientBeginReturnOrderItemOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }

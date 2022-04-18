@@ -21,13 +21,11 @@ func ExamplePrivateLinkResourcesClient_NewListByHostPoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdesktopvirtualization.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByHostPoolPager("<resource-group-name>",
 		"<host-pool-name>",
@@ -50,13 +48,11 @@ func ExamplePrivateLinkResourcesClient_NewListByWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdesktopvirtualization.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByWorkspacePager("<resource-group-name>",
 		"<workspace-name>",

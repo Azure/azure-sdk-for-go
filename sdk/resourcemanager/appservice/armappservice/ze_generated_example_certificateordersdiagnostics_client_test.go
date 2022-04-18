@@ -21,13 +21,11 @@ func ExampleCertificateOrdersDiagnosticsClient_NewListAppServiceCertificateOrder
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewCertificateOrdersDiagnosticsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListAppServiceCertificateOrderDetectorResponsePager("<resource-group-name>",
 		"<certificate-order-name>",
@@ -50,13 +48,11 @@ func ExampleCertificateOrdersDiagnosticsClient_GetAppServiceCertificateOrderDete
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewCertificateOrdersDiagnosticsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetAppServiceCertificateOrderDetectorResponse(ctx,
 		"<resource-group-name>",
@@ -68,7 +64,6 @@ func ExampleCertificateOrdersDiagnosticsClient_GetAppServiceCertificateOrderDete
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

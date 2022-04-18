@@ -22,7 +22,6 @@ func ExamplePowerBIResourcesClient_ListByResourceName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpowerbiprivatelinks.NewPowerBIResourcesClient("<subscription-id>",
@@ -30,13 +29,11 @@ func ExamplePowerBIResourcesClient_ListByResourceName() {
 		"<azure-resource-name>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.ListByResourceName(ctx,
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -47,7 +44,6 @@ func ExamplePowerBIResourcesClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpowerbiprivatelinks.NewPowerBIResourcesClient("<subscription-id>",
@@ -55,7 +51,6 @@ func ExamplePowerBIResourcesClient_Create() {
 		"<azure-resource-name>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Create(ctx,
 		armpowerbiprivatelinks.TenantResource{
@@ -71,7 +66,6 @@ func ExamplePowerBIResourcesClient_Create() {
 		&armpowerbiprivatelinks.PowerBIResourcesClientCreateOptions{ClientTenantID: to.Ptr("<client-tenant-id>")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -82,7 +76,6 @@ func ExamplePowerBIResourcesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpowerbiprivatelinks.NewPowerBIResourcesClient("<subscription-id>",
@@ -90,7 +83,6 @@ func ExamplePowerBIResourcesClient_Update() {
 		"<azure-resource-name>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Update(ctx,
 		armpowerbiprivatelinks.TenantResource{
@@ -106,7 +98,6 @@ func ExamplePowerBIResourcesClient_Update() {
 		&armpowerbiprivatelinks.PowerBIResourcesClientUpdateOptions{ClientTenantID: to.Ptr("<client-tenant-id>")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -117,7 +108,6 @@ func ExamplePowerBIResourcesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpowerbiprivatelinks.NewPowerBIResourcesClient("<subscription-id>",
@@ -125,12 +115,10 @@ func ExamplePowerBIResourcesClient_Delete() {
 		"<azure-resource-name>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.Delete(ctx,
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }

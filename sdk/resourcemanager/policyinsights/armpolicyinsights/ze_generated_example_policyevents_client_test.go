@@ -24,13 +24,11 @@ func ExamplePolicyEventsClient_NewListQueryResultsForManagementGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyEventsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListQueryResultsForManagementGroupPager(armpolicyinsights.PolicyEventsResourceTypeDefault,
 		"<management-group-name>",
@@ -63,13 +61,11 @@ func ExamplePolicyEventsClient_NewListQueryResultsForSubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyEventsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListQueryResultsForSubscriptionPager(armpolicyinsights.PolicyEventsResourceTypeDefault,
 		"<subscription-id>",
@@ -102,13 +98,11 @@ func ExamplePolicyEventsClient_NewListQueryResultsForResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyEventsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListQueryResultsForResourceGroupPager(armpolicyinsights.PolicyEventsResourceTypeDefault,
 		"<subscription-id>",
@@ -142,13 +136,11 @@ func ExamplePolicyEventsClient_NewListQueryResultsForResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyEventsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListQueryResultsForResourcePager(armpolicyinsights.PolicyEventsResourceTypeDefault,
 		"<resource-id>",
@@ -181,13 +173,11 @@ func ExamplePolicyEventsClient_NewListQueryResultsForPolicySetDefinitionPager() 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyEventsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListQueryResultsForPolicySetDefinitionPager(armpolicyinsights.PolicyEventsResourceTypeDefault,
 		"<subscription-id>",
@@ -221,13 +211,11 @@ func ExamplePolicyEventsClient_NewListQueryResultsForPolicyDefinitionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyEventsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListQueryResultsForPolicyDefinitionPager(armpolicyinsights.PolicyEventsResourceTypeDefault,
 		"<subscription-id>",
@@ -261,13 +249,11 @@ func ExamplePolicyEventsClient_NewListQueryResultsForSubscriptionLevelPolicyAssi
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyEventsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager(armpolicyinsights.PolicyEventsResourceTypeDefault,
 		"<subscription-id>",
@@ -301,13 +287,11 @@ func ExamplePolicyEventsClient_NewListQueryResultsForResourceGroupLevelPolicyAss
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyEventsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager(armpolicyinsights.PolicyEventsResourceTypeDefault,
 		"<subscription-id>",

@@ -21,13 +21,11 @@ func ExampleLookingGlassClient_Invoke() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpeering.NewLookingGlassClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Invoke(ctx,
 		armpeering.LookingGlassCommandTraceroute,
@@ -37,7 +35,6 @@ func ExampleLookingGlassClient_Invoke() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

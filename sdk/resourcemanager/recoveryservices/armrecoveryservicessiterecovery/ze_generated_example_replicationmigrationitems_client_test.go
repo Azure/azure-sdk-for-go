@@ -24,7 +24,6 @@ func ExampleReplicationMigrationItemsClient_NewListByReplicationProtectionContai
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("<resource-name>",
@@ -32,7 +31,6 @@ func ExampleReplicationMigrationItemsClient_NewListByReplicationProtectionContai
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByReplicationProtectionContainersPager("<fabric-name>",
 		"<protection-container-name>",
@@ -58,7 +56,6 @@ func ExampleReplicationMigrationItemsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("<resource-name>",
@@ -66,7 +63,6 @@ func ExampleReplicationMigrationItemsClient_Get() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Get(ctx,
 		"<fabric-name>",
@@ -75,7 +71,6 @@ func ExampleReplicationMigrationItemsClient_Get() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -86,7 +81,6 @@ func ExampleReplicationMigrationItemsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("<resource-name>",
@@ -94,7 +88,6 @@ func ExampleReplicationMigrationItemsClient_BeginCreate() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCreate(ctx,
 		"<fabric-name>",
@@ -123,12 +116,10 @@ func ExampleReplicationMigrationItemsClient_BeginCreate() {
 		&armrecoveryservicessiterecovery.ReplicationMigrationItemsClientBeginCreateOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -139,7 +130,6 @@ func ExampleReplicationMigrationItemsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("<resource-name>",
@@ -147,7 +137,6 @@ func ExampleReplicationMigrationItemsClient_BeginDelete() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDelete(ctx,
 		"<fabric-name>",
@@ -158,12 +147,10 @@ func ExampleReplicationMigrationItemsClient_BeginDelete() {
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -172,7 +159,6 @@ func ExampleReplicationMigrationItemsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("<resource-name>",
@@ -180,7 +166,6 @@ func ExampleReplicationMigrationItemsClient_BeginUpdate() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginUpdate(ctx,
 		"<fabric-name>",
@@ -196,12 +181,10 @@ func ExampleReplicationMigrationItemsClient_BeginUpdate() {
 		&armrecoveryservicessiterecovery.ReplicationMigrationItemsClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -212,7 +195,6 @@ func ExampleReplicationMigrationItemsClient_BeginMigrate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("<resource-name>",
@@ -220,7 +202,6 @@ func ExampleReplicationMigrationItemsClient_BeginMigrate() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginMigrate(ctx,
 		"<fabric-name>",
@@ -237,12 +218,10 @@ func ExampleReplicationMigrationItemsClient_BeginMigrate() {
 		&armrecoveryservicessiterecovery.ReplicationMigrationItemsClientBeginMigrateOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -253,7 +232,6 @@ func ExampleReplicationMigrationItemsClient_BeginResync() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("<resource-name>",
@@ -261,7 +239,6 @@ func ExampleReplicationMigrationItemsClient_BeginResync() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginResync(ctx,
 		"<fabric-name>",
@@ -278,12 +255,10 @@ func ExampleReplicationMigrationItemsClient_BeginResync() {
 		&armrecoveryservicessiterecovery.ReplicationMigrationItemsClientBeginResyncOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -294,7 +269,6 @@ func ExampleReplicationMigrationItemsClient_BeginTestMigrate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("<resource-name>",
@@ -302,7 +276,6 @@ func ExampleReplicationMigrationItemsClient_BeginTestMigrate() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginTestMigrate(ctx,
 		"<fabric-name>",
@@ -320,12 +293,10 @@ func ExampleReplicationMigrationItemsClient_BeginTestMigrate() {
 		&armrecoveryservicessiterecovery.ReplicationMigrationItemsClientBeginTestMigrateOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -336,7 +307,6 @@ func ExampleReplicationMigrationItemsClient_BeginTestMigrateCleanup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("<resource-name>",
@@ -344,7 +314,6 @@ func ExampleReplicationMigrationItemsClient_BeginTestMigrateCleanup() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginTestMigrateCleanup(ctx,
 		"<fabric-name>",
@@ -358,12 +327,10 @@ func ExampleReplicationMigrationItemsClient_BeginTestMigrateCleanup() {
 		&armrecoveryservicessiterecovery.ReplicationMigrationItemsClientBeginTestMigrateCleanupOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -374,7 +341,6 @@ func ExampleReplicationMigrationItemsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("<resource-name>",
@@ -382,7 +348,6 @@ func ExampleReplicationMigrationItemsClient_NewListPager() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListPager(&armrecoveryservicessiterecovery.ReplicationMigrationItemsClientListOptions{SkipToken: nil,
 		TakeToken: nil,

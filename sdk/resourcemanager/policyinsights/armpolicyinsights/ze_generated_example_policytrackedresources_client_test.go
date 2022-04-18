@@ -21,13 +21,11 @@ func ExamplePolicyTrackedResourcesClient_NewListQueryResultsForManagementGroupPa
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyTrackedResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListQueryResultsForManagementGroupPager("<management-group-name>",
 		armpolicyinsights.PolicyTrackedResourcesResourceTypeDefault,
@@ -60,13 +58,11 @@ func ExamplePolicyTrackedResourcesClient_NewListQueryResultsForSubscriptionPager
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyTrackedResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListQueryResultsForSubscriptionPager(armpolicyinsights.PolicyTrackedResourcesResourceTypeDefault,
 		&armpolicyinsights.QueryOptions{Top: nil,
@@ -98,13 +94,11 @@ func ExamplePolicyTrackedResourcesClient_NewListQueryResultsForResourceGroupPage
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyTrackedResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListQueryResultsForResourceGroupPager("<resource-group-name>",
 		armpolicyinsights.PolicyTrackedResourcesResourceTypeDefault,
@@ -137,13 +131,11 @@ func ExamplePolicyTrackedResourcesClient_NewListQueryResultsForResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyTrackedResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListQueryResultsForResourcePager("<resource-id>",
 		armpolicyinsights.PolicyTrackedResourcesResourceTypeDefault,

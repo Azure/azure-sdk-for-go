@@ -22,13 +22,11 @@ func ExampleTenantActivityLogsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmonitor.NewTenantActivityLogsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListPager(&armmonitor.TenantActivityLogsClientListOptions{Filter: to.Ptr("<filter>"),
 		Select: nil,

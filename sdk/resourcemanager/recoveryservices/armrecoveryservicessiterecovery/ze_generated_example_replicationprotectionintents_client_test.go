@@ -22,7 +22,6 @@ func ExampleReplicationProtectionIntentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationProtectionIntentsClient("<resource-name>",
@@ -30,7 +29,6 @@ func ExampleReplicationProtectionIntentsClient_NewListPager() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListPager(&armrecoveryservicessiterecovery.ReplicationProtectionIntentsClientListOptions{SkipToken: nil,
 		TakeToken: nil,
@@ -53,7 +51,6 @@ func ExampleReplicationProtectionIntentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationProtectionIntentsClient("<resource-name>",
@@ -61,14 +58,12 @@ func ExampleReplicationProtectionIntentsClient_Get() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Get(ctx,
 		"<intent-object-name>",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -79,7 +74,6 @@ func ExampleReplicationProtectionIntentsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationProtectionIntentsClient("<resource-name>",
@@ -87,7 +81,6 @@ func ExampleReplicationProtectionIntentsClient_Create() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Create(ctx,
 		"<intent-object-name>",
@@ -107,7 +100,6 @@ func ExampleReplicationProtectionIntentsClient_Create() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

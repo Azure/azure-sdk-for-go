@@ -24,13 +24,11 @@ func ExampleClient_Resources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armresourcegraph.NewClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Resources(ctx,
 		armresourcegraph.QueryRequest{
@@ -41,7 +39,6 @@ func ExampleClient_Resources() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -52,13 +49,11 @@ func ExampleClient_ResourcesHistory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armresourcegraph.NewClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.ResourcesHistory(ctx,
 		armresourcegraph.ResourcesHistoryRequest{
@@ -76,7 +71,6 @@ func ExampleClient_ResourcesHistory() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

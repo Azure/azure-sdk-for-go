@@ -22,13 +22,11 @@ func ExamplePrivateStoreClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmarketplace.NewPrivateStoreClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListPager(&armmarketplace.PrivateStoreClientListOptions{UseCache: nil})
 	for pager.More() {
@@ -49,20 +47,17 @@ func ExamplePrivateStoreClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmarketplace.NewPrivateStoreClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Get(ctx,
 		"<private-store-id>",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -73,13 +68,11 @@ func ExamplePrivateStoreClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmarketplace.NewPrivateStoreClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.CreateOrUpdate(ctx,
 		"<private-store-id>",
@@ -92,7 +85,6 @@ func ExamplePrivateStoreClient_CreateOrUpdate() {
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -101,20 +93,17 @@ func ExamplePrivateStoreClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmarketplace.NewPrivateStoreClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.Delete(ctx,
 		"<private-store-id>",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -123,20 +112,17 @@ func ExamplePrivateStoreClient_QueryOffers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmarketplace.NewPrivateStoreClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.QueryOffers(ctx,
 		"<private-store-id>",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -147,20 +133,17 @@ func ExamplePrivateStoreClient_BillingAccounts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmarketplace.NewPrivateStoreClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.BillingAccounts(ctx,
 		"<private-store-id>",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -171,13 +154,11 @@ func ExamplePrivateStoreClient_CollectionsToSubscriptionsMapping() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmarketplace.NewPrivateStoreClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.CollectionsToSubscriptionsMapping(ctx,
 		"<private-store-id>",
@@ -191,7 +172,6 @@ func ExamplePrivateStoreClient_CollectionsToSubscriptionsMapping() {
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -202,13 +182,11 @@ func ExamplePrivateStoreClient_QueryApprovedPlans() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmarketplace.NewPrivateStoreClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.QueryApprovedPlans(ctx,
 		"<private-store-id>",
@@ -224,7 +202,6 @@ func ExamplePrivateStoreClient_QueryApprovedPlans() {
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -235,13 +212,11 @@ func ExamplePrivateStoreClient_BulkCollectionsAction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmarketplace.NewPrivateStoreClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.BulkCollectionsAction(ctx,
 		"<private-store-id>",
@@ -256,7 +231,6 @@ func ExamplePrivateStoreClient_BulkCollectionsAction() {
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -267,20 +241,17 @@ func ExamplePrivateStoreClient_GetApprovalRequestsList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmarketplace.NewPrivateStoreClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetApprovalRequestsList(ctx,
 		"<private-store-id>",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -291,13 +262,11 @@ func ExamplePrivateStoreClient_GetRequestApproval() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmarketplace.NewPrivateStoreClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetRequestApproval(ctx,
 		"<private-store-id>",
@@ -305,7 +274,6 @@ func ExamplePrivateStoreClient_GetRequestApproval() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -316,13 +284,11 @@ func ExamplePrivateStoreClient_CreateApprovalRequest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmarketplace.NewPrivateStoreClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.CreateApprovalRequest(ctx,
 		"<private-store-id>",
@@ -330,7 +296,6 @@ func ExamplePrivateStoreClient_CreateApprovalRequest() {
 		&armmarketplace.PrivateStoreClientCreateApprovalRequestOptions{Payload: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -341,13 +306,11 @@ func ExamplePrivateStoreClient_QueryRequestApproval() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmarketplace.NewPrivateStoreClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.QueryRequestApproval(ctx,
 		"<private-store-id>",
@@ -364,7 +327,6 @@ func ExamplePrivateStoreClient_QueryRequestApproval() {
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -375,20 +337,17 @@ func ExamplePrivateStoreClient_AdminRequestApprovalsList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmarketplace.NewPrivateStoreClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.AdminRequestApprovalsList(ctx,
 		"<private-store-id>",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -399,13 +358,11 @@ func ExamplePrivateStoreClient_GetAdminRequestApproval() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmarketplace.NewPrivateStoreClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetAdminRequestApproval(ctx,
 		"<private-store-id>",
@@ -414,7 +371,6 @@ func ExamplePrivateStoreClient_GetAdminRequestApproval() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -425,13 +381,11 @@ func ExamplePrivateStoreClient_UpdateAdminRequestApproval() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmarketplace.NewPrivateStoreClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.UpdateAdminRequestApproval(ctx,
 		"<private-store-id>",
@@ -451,7 +405,6 @@ func ExamplePrivateStoreClient_UpdateAdminRequestApproval() {
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -462,20 +415,17 @@ func ExamplePrivateStoreClient_QueryNotificationsState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmarketplace.NewPrivateStoreClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.QueryNotificationsState(ctx,
 		"<private-store-id>",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -486,13 +436,11 @@ func ExamplePrivateStoreClient_AcknowledgeOfferNotification() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmarketplace.NewPrivateStoreClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.AcknowledgeOfferNotification(ctx,
 		"<private-store-id>",
@@ -509,7 +457,6 @@ func ExamplePrivateStoreClient_AcknowledgeOfferNotification() {
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -518,13 +465,11 @@ func ExamplePrivateStoreClient_WithdrawPlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmarketplace.NewPrivateStoreClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.WithdrawPlan(ctx,
 		"<private-store-id>",
@@ -538,7 +483,6 @@ func ExamplePrivateStoreClient_WithdrawPlan() {
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -547,20 +491,17 @@ func ExamplePrivateStoreClient_FetchAllSubscriptionsInTenant() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmarketplace.NewPrivateStoreClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.FetchAllSubscriptionsInTenant(ctx,
 		"<private-store-id>",
 		&armmarketplace.PrivateStoreClientFetchAllSubscriptionsInTenantOptions{NextPageToken: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -571,20 +512,17 @@ func ExamplePrivateStoreClient_ListNewPlansNotifications() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmarketplace.NewPrivateStoreClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.ListNewPlansNotifications(ctx,
 		"<private-store-id>",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -595,20 +533,17 @@ func ExamplePrivateStoreClient_ListStopSellOffersPlansNotifications() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmarketplace.NewPrivateStoreClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.ListStopSellOffersPlansNotifications(ctx,
 		"<private-store-id>",
 		&armmarketplace.PrivateStoreClientListStopSellOffersPlansNotificationsOptions{StopSellSubscriptions: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -619,20 +554,17 @@ func ExamplePrivateStoreClient_ListSubscriptionsContext() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmarketplace.NewPrivateStoreClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.ListSubscriptionsContext(ctx,
 		"<private-store-id>",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

@@ -21,13 +21,11 @@ func ExampleDiagnosticsClient_NewListHostingEnvironmentDetectorResponsesPager() 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListHostingEnvironmentDetectorResponsesPager("<resource-group-name>",
 		"<name>",
@@ -50,13 +48,11 @@ func ExampleDiagnosticsClient_GetHostingEnvironmentDetectorResponse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetHostingEnvironmentDetectorResponse(ctx,
 		"<resource-group-name>",
@@ -68,7 +64,6 @@ func ExampleDiagnosticsClient_GetHostingEnvironmentDetectorResponse() {
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -79,13 +74,11 @@ func ExampleDiagnosticsClient_NewListSiteDetectorResponsesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListSiteDetectorResponsesPager("<resource-group-name>",
 		"<site-name>",
@@ -108,13 +101,11 @@ func ExampleDiagnosticsClient_GetSiteDetectorResponse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetSiteDetectorResponse(ctx,
 		"<resource-group-name>",
@@ -126,7 +117,6 @@ func ExampleDiagnosticsClient_GetSiteDetectorResponse() {
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -137,13 +127,11 @@ func ExampleDiagnosticsClient_NewListSiteDiagnosticCategoriesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListSiteDiagnosticCategoriesPager("<resource-group-name>",
 		"<site-name>",
@@ -166,13 +154,11 @@ func ExampleDiagnosticsClient_GetSiteDiagnosticCategory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetSiteDiagnosticCategory(ctx,
 		"<resource-group-name>",
@@ -181,7 +167,6 @@ func ExampleDiagnosticsClient_GetSiteDiagnosticCategory() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -192,13 +177,11 @@ func ExampleDiagnosticsClient_NewListSiteAnalysesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListSiteAnalysesPager("<resource-group-name>",
 		"<site-name>",
@@ -222,13 +205,11 @@ func ExampleDiagnosticsClient_GetSiteAnalysis() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetSiteAnalysis(ctx,
 		"<resource-group-name>",
@@ -238,7 +219,6 @@ func ExampleDiagnosticsClient_GetSiteAnalysis() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -249,13 +229,11 @@ func ExampleDiagnosticsClient_ExecuteSiteAnalysis() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.ExecuteSiteAnalysis(ctx,
 		"<resource-group-name>",
@@ -268,7 +246,6 @@ func ExampleDiagnosticsClient_ExecuteSiteAnalysis() {
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -279,13 +256,11 @@ func ExampleDiagnosticsClient_NewListSiteDetectorsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListSiteDetectorsPager("<resource-group-name>",
 		"<site-name>",
@@ -309,13 +284,11 @@ func ExampleDiagnosticsClient_GetSiteDetector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetSiteDetector(ctx,
 		"<resource-group-name>",
@@ -325,7 +298,6 @@ func ExampleDiagnosticsClient_GetSiteDetector() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -336,13 +308,11 @@ func ExampleDiagnosticsClient_ExecuteSiteDetector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.ExecuteSiteDetector(ctx,
 		"<resource-group-name>",
@@ -355,7 +325,6 @@ func ExampleDiagnosticsClient_ExecuteSiteDetector() {
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -366,13 +335,11 @@ func ExampleDiagnosticsClient_NewListSiteDetectorResponsesSlotPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListSiteDetectorResponsesSlotPager("<resource-group-name>",
 		"<site-name>",
@@ -396,13 +363,11 @@ func ExampleDiagnosticsClient_GetSiteDetectorResponseSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetSiteDetectorResponseSlot(ctx,
 		"<resource-group-name>",
@@ -415,7 +380,6 @@ func ExampleDiagnosticsClient_GetSiteDetectorResponseSlot() {
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -426,13 +390,11 @@ func ExampleDiagnosticsClient_NewListSiteDiagnosticCategoriesSlotPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListSiteDiagnosticCategoriesSlotPager("<resource-group-name>",
 		"<site-name>",
@@ -456,13 +418,11 @@ func ExampleDiagnosticsClient_GetSiteDiagnosticCategorySlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetSiteDiagnosticCategorySlot(ctx,
 		"<resource-group-name>",
@@ -472,7 +432,6 @@ func ExampleDiagnosticsClient_GetSiteDiagnosticCategorySlot() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -483,13 +442,11 @@ func ExampleDiagnosticsClient_NewListSiteAnalysesSlotPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListSiteAnalysesSlotPager("<resource-group-name>",
 		"<site-name>",
@@ -514,13 +471,11 @@ func ExampleDiagnosticsClient_GetSiteAnalysisSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetSiteAnalysisSlot(ctx,
 		"<resource-group-name>",
@@ -531,7 +486,6 @@ func ExampleDiagnosticsClient_GetSiteAnalysisSlot() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -542,13 +496,11 @@ func ExampleDiagnosticsClient_ExecuteSiteAnalysisSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.ExecuteSiteAnalysisSlot(ctx,
 		"<resource-group-name>",
@@ -562,7 +514,6 @@ func ExampleDiagnosticsClient_ExecuteSiteAnalysisSlot() {
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -573,13 +524,11 @@ func ExampleDiagnosticsClient_NewListSiteDetectorsSlotPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListSiteDetectorsSlotPager("<resource-group-name>",
 		"<site-name>",
@@ -604,13 +553,11 @@ func ExampleDiagnosticsClient_GetSiteDetectorSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetSiteDetectorSlot(ctx,
 		"<resource-group-name>",
@@ -621,7 +568,6 @@ func ExampleDiagnosticsClient_GetSiteDetectorSlot() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -632,13 +578,11 @@ func ExampleDiagnosticsClient_ExecuteSiteDetectorSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.ExecuteSiteDetectorSlot(ctx,
 		"<resource-group-name>",
@@ -652,7 +596,6 @@ func ExampleDiagnosticsClient_ExecuteSiteDetectorSlot() {
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

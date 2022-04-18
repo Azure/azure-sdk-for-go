@@ -22,13 +22,11 @@ func ExampleWorkspacePurgeClient_Purge() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armoperationalinsights.NewWorkspacePurgeClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.Purge(ctx,
 		"<resource-group-name>",
@@ -45,7 +43,6 @@ func ExampleWorkspacePurgeClient_Purge() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -54,13 +51,11 @@ func ExampleWorkspacePurgeClient_GetPurgeStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armoperationalinsights.NewWorkspacePurgeClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetPurgeStatus(ctx,
 		"<resource-group-name>",
@@ -69,7 +64,6 @@ func ExampleWorkspacePurgeClient_GetPurgeStatus() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

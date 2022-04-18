@@ -21,13 +21,11 @@ func ExampleIotSecuritySolutionsAnalyticsAggregatedAlertClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsecurity.NewIotSecuritySolutionsAnalyticsAggregatedAlertClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListPager("<resource-group-name>",
 		"<solution-name>",
@@ -50,13 +48,11 @@ func ExampleIotSecuritySolutionsAnalyticsAggregatedAlertClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsecurity.NewIotSecuritySolutionsAnalyticsAggregatedAlertClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
@@ -65,7 +61,6 @@ func ExampleIotSecuritySolutionsAnalyticsAggregatedAlertClient_Get() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -76,13 +71,11 @@ func ExampleIotSecuritySolutionsAnalyticsAggregatedAlertClient_Dismiss() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsecurity.NewIotSecuritySolutionsAnalyticsAggregatedAlertClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.Dismiss(ctx,
 		"<resource-group-name>",
@@ -91,6 +84,5 @@ func ExampleIotSecuritySolutionsAnalyticsAggregatedAlertClient_Dismiss() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }

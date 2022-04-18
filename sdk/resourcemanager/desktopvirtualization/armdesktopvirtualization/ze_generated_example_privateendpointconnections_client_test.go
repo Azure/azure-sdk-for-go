@@ -22,13 +22,11 @@ func ExamplePrivateEndpointConnectionsClient_NewListByHostPoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByHostPoolPager("<resource-group-name>",
 		"<host-pool-name>",
@@ -51,13 +49,11 @@ func ExamplePrivateEndpointConnectionsClient_GetByHostPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetByHostPool(ctx,
 		"<resource-group-name>",
@@ -66,7 +62,6 @@ func ExamplePrivateEndpointConnectionsClient_GetByHostPool() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -77,13 +72,11 @@ func ExamplePrivateEndpointConnectionsClient_DeleteByHostPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.DeleteByHostPool(ctx,
 		"<resource-group-name>",
@@ -92,7 +85,6 @@ func ExamplePrivateEndpointConnectionsClient_DeleteByHostPool() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -101,13 +93,11 @@ func ExamplePrivateEndpointConnectionsClient_UpdateByHostPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.UpdateByHostPool(ctx,
 		"<resource-group-name>",
@@ -125,7 +115,6 @@ func ExamplePrivateEndpointConnectionsClient_UpdateByHostPool() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -136,13 +125,11 @@ func ExamplePrivateEndpointConnectionsClient_NewListByWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByWorkspacePager("<resource-group-name>",
 		"<workspace-name>",
@@ -165,13 +152,11 @@ func ExamplePrivateEndpointConnectionsClient_GetByWorkspace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetByWorkspace(ctx,
 		"<resource-group-name>",
@@ -180,7 +165,6 @@ func ExamplePrivateEndpointConnectionsClient_GetByWorkspace() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -191,13 +175,11 @@ func ExamplePrivateEndpointConnectionsClient_DeleteByWorkspace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.DeleteByWorkspace(ctx,
 		"<resource-group-name>",
@@ -206,7 +188,6 @@ func ExamplePrivateEndpointConnectionsClient_DeleteByWorkspace() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -215,13 +196,11 @@ func ExamplePrivateEndpointConnectionsClient_UpdateByWorkspace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.UpdateByWorkspace(ctx,
 		"<resource-group-name>",
@@ -239,7 +218,6 @@ func ExamplePrivateEndpointConnectionsClient_UpdateByWorkspace() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

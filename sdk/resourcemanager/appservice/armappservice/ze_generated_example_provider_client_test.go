@@ -21,13 +21,11 @@ func ExampleProviderClient_NewGetFunctionAppStacksPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewProviderClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewGetFunctionAppStacksPager(&armappservice.ProviderClientGetFunctionAppStacksOptions{StackOsType: nil})
 	for pager.More() {
@@ -48,13 +46,11 @@ func ExampleProviderClient_NewGetFunctionAppStacksForLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewProviderClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewGetFunctionAppStacksForLocationPager("<location>",
 		&armappservice.ProviderClientGetFunctionAppStacksForLocationOptions{StackOsType: nil})
@@ -76,13 +72,11 @@ func ExampleProviderClient_NewGetWebAppStacksForLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewProviderClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewGetWebAppStacksForLocationPager("<location>",
 		&armappservice.ProviderClientGetWebAppStacksForLocationOptions{StackOsType: nil})
@@ -104,13 +98,11 @@ func ExampleProviderClient_NewListOperationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewProviderClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListOperationsPager(nil)
 	for pager.More() {
@@ -131,13 +123,11 @@ func ExampleProviderClient_NewGetWebAppStacksPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewProviderClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewGetWebAppStacksPager(&armappservice.ProviderClientGetWebAppStacksOptions{StackOsType: nil})
 	for pager.More() {

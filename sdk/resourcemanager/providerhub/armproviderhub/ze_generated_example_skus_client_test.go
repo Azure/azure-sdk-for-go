@@ -22,13 +22,11 @@ func ExampleSKUsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Get(ctx,
 		"<provider-namespace>",
@@ -37,7 +35,6 @@ func ExampleSKUsClient_Get() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -48,13 +45,11 @@ func ExampleSKUsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<provider-namespace>",
@@ -82,7 +77,6 @@ func ExampleSKUsClient_CreateOrUpdate() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -93,13 +87,11 @@ func ExampleSKUsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.Delete(ctx,
 		"<provider-namespace>",
@@ -108,7 +100,6 @@ func ExampleSKUsClient_Delete() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -117,13 +108,11 @@ func ExampleSKUsClient_GetNestedResourceTypeFirst() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetNestedResourceTypeFirst(ctx,
 		"<provider-namespace>",
@@ -133,7 +122,6 @@ func ExampleSKUsClient_GetNestedResourceTypeFirst() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -144,13 +132,11 @@ func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeFirst() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.CreateOrUpdateNestedResourceTypeFirst(ctx,
 		"<provider-namespace>",
@@ -179,7 +165,6 @@ func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeFirst() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -190,13 +175,11 @@ func ExampleSKUsClient_DeleteNestedResourceTypeFirst() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.DeleteNestedResourceTypeFirst(ctx,
 		"<provider-namespace>",
@@ -206,7 +189,6 @@ func ExampleSKUsClient_DeleteNestedResourceTypeFirst() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -215,13 +197,11 @@ func ExampleSKUsClient_GetNestedResourceTypeSecond() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetNestedResourceTypeSecond(ctx,
 		"<provider-namespace>",
@@ -232,7 +212,6 @@ func ExampleSKUsClient_GetNestedResourceTypeSecond() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -243,13 +222,11 @@ func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeSecond() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.CreateOrUpdateNestedResourceTypeSecond(ctx,
 		"<provider-namespace>",
@@ -279,7 +256,6 @@ func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeSecond() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -290,13 +266,11 @@ func ExampleSKUsClient_DeleteNestedResourceTypeSecond() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.DeleteNestedResourceTypeSecond(ctx,
 		"<provider-namespace>",
@@ -307,7 +281,6 @@ func ExampleSKUsClient_DeleteNestedResourceTypeSecond() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -316,13 +289,11 @@ func ExampleSKUsClient_GetNestedResourceTypeThird() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetNestedResourceTypeThird(ctx,
 		"<provider-namespace>",
@@ -334,7 +305,6 @@ func ExampleSKUsClient_GetNestedResourceTypeThird() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -345,13 +315,11 @@ func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeThird() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.CreateOrUpdateNestedResourceTypeThird(ctx,
 		"<provider-namespace>",
@@ -382,7 +350,6 @@ func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeThird() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -393,13 +360,11 @@ func ExampleSKUsClient_DeleteNestedResourceTypeThird() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.DeleteNestedResourceTypeThird(ctx,
 		"<provider-namespace>",
@@ -411,7 +376,6 @@ func ExampleSKUsClient_DeleteNestedResourceTypeThird() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -420,13 +384,11 @@ func ExampleSKUsClient_NewListByResourceTypeRegistrationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByResourceTypeRegistrationsPager("<provider-namespace>",
 		"<resource-type>",
@@ -449,13 +411,11 @@ func ExampleSKUsClient_NewListByResourceTypeRegistrationsNestedResourceTypeFirst
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByResourceTypeRegistrationsNestedResourceTypeFirstPager("<provider-namespace>",
 		"<resource-type>",
@@ -479,13 +439,11 @@ func ExampleSKUsClient_NewListByResourceTypeRegistrationsNestedResourceTypeSecon
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByResourceTypeRegistrationsNestedResourceTypeSecondPager("<provider-namespace>",
 		"<resource-type>",
@@ -510,13 +468,11 @@ func ExampleSKUsClient_NewListByResourceTypeRegistrationsNestedResourceTypeThird
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByResourceTypeRegistrationsNestedResourceTypeThirdPager("<provider-namespace>",
 		"<resource-type>",

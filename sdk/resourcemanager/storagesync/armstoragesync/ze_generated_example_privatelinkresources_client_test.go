@@ -21,13 +21,11 @@ func ExamplePrivateLinkResourcesClient_ListByStorageSyncService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armstoragesync.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.ListByStorageSyncService(ctx,
 		"<resource-group-name>",
@@ -35,7 +33,6 @@ func ExamplePrivateLinkResourcesClient_ListByStorageSyncService() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

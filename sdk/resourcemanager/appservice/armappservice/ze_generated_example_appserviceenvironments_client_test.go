@@ -21,13 +21,11 @@ func ExampleEnvironmentsClient_NewGetInboundNetworkDependenciesEndpointsPager() 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewEnvironmentsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewGetInboundNetworkDependenciesEndpointsPager("<resource-group-name>",
 		"<name>",
@@ -50,13 +48,11 @@ func ExampleEnvironmentsClient_NewGetOutboundNetworkDependenciesEndpointsPager()
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewEnvironmentsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewGetOutboundNetworkDependenciesEndpointsPager("<resource-group-name>",
 		"<name>",

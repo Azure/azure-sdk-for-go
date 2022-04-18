@@ -21,14 +21,12 @@ func ExampleDevicesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armiotsecurity.NewDevicesClient("<subscription-id>",
 		"<iot-defender-location>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListPager("<device-group-name>",
 		&armiotsecurity.DevicesClientListOptions{SkipToken: nil})
@@ -50,14 +48,12 @@ func ExampleDevicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armiotsecurity.NewDevicesClient("<subscription-id>",
 		"<iot-defender-location>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Get(ctx,
 		"<device-group-name>",
@@ -65,7 +61,6 @@ func ExampleDevicesClient_Get() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

@@ -22,13 +22,11 @@ func ExampleMetricNamespacesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmonitor.NewMetricNamespacesClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListPager("<resource-uri>",
 		&armmonitor.MetricNamespacesClientListOptions{StartTime: to.Ptr("<start-time>")})

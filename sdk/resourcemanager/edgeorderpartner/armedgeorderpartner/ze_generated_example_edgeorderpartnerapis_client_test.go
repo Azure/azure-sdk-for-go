@@ -24,13 +24,11 @@ func ExampleAPISClient_NewListOperationsPartnerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armedgeorderpartner.NewAPISClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListOperationsPartnerPager(nil)
 	for pager.More() {
@@ -51,13 +49,11 @@ func ExampleAPISClient_BeginManageInventoryMetadata() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armedgeorderpartner.NewAPISClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginManageInventoryMetadata(ctx,
 		"<family-identifier>",
@@ -72,12 +68,10 @@ func ExampleAPISClient_BeginManageInventoryMetadata() {
 		&armedgeorderpartner.APISClientBeginManageInventoryMetadataOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -86,13 +80,11 @@ func ExampleAPISClient_ManageLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armedgeorderpartner.NewAPISClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.ManageLink(ctx,
 		"<family-identifier>",
@@ -106,7 +98,6 @@ func ExampleAPISClient_ManageLink() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -115,13 +106,11 @@ func ExampleAPISClient_NewSearchInventoriesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armedgeorderpartner.NewAPISClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewSearchInventoriesPager(armedgeorderpartner.SearchInventoriesRequest{
 		FamilyIdentifier: to.Ptr("<family-identifier>"),

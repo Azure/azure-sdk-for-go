@@ -22,13 +22,11 @@ func ExampleManagementLocksClient_CreateOrUpdateAtResourceGroupLevel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.CreateOrUpdateAtResourceGroupLevel(ctx,
 		"<resource-group-name>",
@@ -41,7 +39,6 @@ func ExampleManagementLocksClient_CreateOrUpdateAtResourceGroupLevel() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -52,13 +49,11 @@ func ExampleManagementLocksClient_DeleteAtResourceGroupLevel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.DeleteAtResourceGroupLevel(ctx,
 		"<resource-group-name>",
@@ -66,7 +61,6 @@ func ExampleManagementLocksClient_DeleteAtResourceGroupLevel() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -75,13 +69,11 @@ func ExampleManagementLocksClient_GetAtResourceGroupLevel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetAtResourceGroupLevel(ctx,
 		"<resource-group-name>",
@@ -89,7 +81,6 @@ func ExampleManagementLocksClient_GetAtResourceGroupLevel() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -100,13 +91,11 @@ func ExampleManagementLocksClient_CreateOrUpdateByScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.CreateOrUpdateByScope(ctx,
 		"<scope>",
@@ -119,7 +108,6 @@ func ExampleManagementLocksClient_CreateOrUpdateByScope() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -130,13 +118,11 @@ func ExampleManagementLocksClient_DeleteByScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.DeleteByScope(ctx,
 		"<scope>",
@@ -144,7 +130,6 @@ func ExampleManagementLocksClient_DeleteByScope() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -153,13 +138,11 @@ func ExampleManagementLocksClient_GetByScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetByScope(ctx,
 		"<scope>",
@@ -167,7 +150,6 @@ func ExampleManagementLocksClient_GetByScope() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -178,13 +160,11 @@ func ExampleManagementLocksClient_CreateOrUpdateAtResourceLevel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.CreateOrUpdateAtResourceLevel(ctx,
 		"<resource-group-name>",
@@ -201,7 +181,6 @@ func ExampleManagementLocksClient_CreateOrUpdateAtResourceLevel() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -212,13 +191,11 @@ func ExampleManagementLocksClient_DeleteAtResourceLevel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.DeleteAtResourceLevel(ctx,
 		"<resource-group-name>",
@@ -230,7 +207,6 @@ func ExampleManagementLocksClient_DeleteAtResourceLevel() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -239,13 +215,11 @@ func ExampleManagementLocksClient_GetAtResourceLevel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetAtResourceLevel(ctx,
 		"<resource-group-name>",
@@ -257,7 +231,6 @@ func ExampleManagementLocksClient_GetAtResourceLevel() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -268,13 +241,11 @@ func ExampleManagementLocksClient_CreateOrUpdateAtSubscriptionLevel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.CreateOrUpdateAtSubscriptionLevel(ctx,
 		"<lock-name>",
@@ -286,7 +257,6 @@ func ExampleManagementLocksClient_CreateOrUpdateAtSubscriptionLevel() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -297,20 +267,17 @@ func ExampleManagementLocksClient_DeleteAtSubscriptionLevel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.DeleteAtSubscriptionLevel(ctx,
 		"<lock-name>",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -319,20 +286,17 @@ func ExampleManagementLocksClient_GetAtSubscriptionLevel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetAtSubscriptionLevel(ctx,
 		"<lock-name>",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -343,13 +307,11 @@ func ExampleManagementLocksClient_NewListAtResourceGroupLevelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListAtResourceGroupLevelPager("<resource-group-name>",
 		&armlocks.ManagementLocksClientListAtResourceGroupLevelOptions{Filter: nil})
@@ -371,13 +333,11 @@ func ExampleManagementLocksClient_NewListAtResourceLevelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListAtResourceLevelPager("<resource-group-name>",
 		"<resource-provider-namespace>",
@@ -403,13 +363,11 @@ func ExampleManagementLocksClient_NewListAtSubscriptionLevelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListAtSubscriptionLevelPager(&armlocks.ManagementLocksClientListAtSubscriptionLevelOptions{Filter: nil})
 	for pager.More() {
@@ -430,13 +388,11 @@ func ExampleManagementLocksClient_NewListByScopePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByScopePager("<scope>",
 		&armlocks.ManagementLocksClientListByScopeOptions{Filter: nil})

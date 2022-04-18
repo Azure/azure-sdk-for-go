@@ -21,20 +21,17 @@ func ExampleAggregatedCostClient_GetByManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armconsumption.NewAggregatedCostClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetByManagementGroup(ctx,
 		"<management-group-id>",
 		&armconsumption.AggregatedCostClientGetByManagementGroupOptions{Filter: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -45,13 +42,11 @@ func ExampleAggregatedCostClient_GetForBillingPeriodByManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armconsumption.NewAggregatedCostClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetForBillingPeriodByManagementGroup(ctx,
 		"<management-group-id>",
@@ -59,7 +54,6 @@ func ExampleAggregatedCostClient_GetForBillingPeriodByManagementGroup() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

@@ -22,13 +22,11 @@ func ExampleReservationsDetailsClient_NewListByReservationOrderPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armconsumption.NewReservationsDetailsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByReservationOrderPager("<reservation-order-id>",
 		"<filter>",
@@ -51,13 +49,11 @@ func ExampleReservationsDetailsClient_NewListByReservationOrderAndReservationPag
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armconsumption.NewReservationsDetailsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByReservationOrderAndReservationPager("<reservation-order-id>",
 		"<reservation-id>",
@@ -81,13 +77,11 @@ func ExampleReservationsDetailsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armconsumption.NewReservationsDetailsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListPager("<scope>",
 		&armconsumption.ReservationsDetailsClientListOptions{StartDate: nil,
